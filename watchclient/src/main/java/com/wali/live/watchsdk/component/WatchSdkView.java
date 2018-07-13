@@ -568,17 +568,20 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     }
 
     public void updateRotateBtn() {
-        if (!mController.mMyRoomData.isVideoLandscape() && !mIsLandscape) {
+        if (mIsLandscape) {
             mRotateBtn.setVisibility(View.GONE);
         } else {
-            if (CommonUtils.isNotchPhone() && !CommonUtils.isOpenHideNotch()) {
-                int toRight = CommonUtils.getStatusBarHeight();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
-                layoutParams.setMargins(0, toRight, layoutParams.rightMargin, 0);
-                mRotateBtn.setLayoutParams(layoutParams);
+            if (!mController.mMyRoomData.isVideoLandscape()) {
+                mRotateBtn.setVisibility(View.GONE);
+            } else {
+                mRotateBtn.setVisibility(View.VISIBLE);
+                if (CommonUtils.isNotchPhone() && !CommonUtils.isOpenHideNotch()) {
+                    int toRight = CommonUtils.getStatusBarHeight();
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRotateBtn.getLayoutParams();
+                    layoutParams.setMargins(0, toRight, layoutParams.rightMargin, 0);
+                    mRotateBtn.setLayoutParams(layoutParams);
+                }
             }
-
-            mRotateBtn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -665,7 +668,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 if (mWatchBigTurnTablePanelPresenter != null) {
                     mWatchBigTurnTablePanelPresenter.orientationChange(true);
                 }
-                updateRotateBtn();
+                mRotateBtn.setVisibility(View.GONE);
                 return true;
             case MSG_INPUT_VIEW_SHOWED:
                 if (!mIsGameMode || !mIsLandscape) {
@@ -765,7 +768,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             case MSG_SHOW_BIG_TURN_TABLE_PANEL:
                 if (!PermissionUtils.checkSdcardAlertWindow(mActivity)) {
                     PermissionUtils.requestPermissionDialog(mActivity, PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE);
-                } else if(mWatchBigTurnTablePanelPresenter != null) {
+                } else if (mWatchBigTurnTablePanelPresenter != null) {
                     mWatchBigTurnTablePanelPresenter.showPanel();
                 }
                 break;

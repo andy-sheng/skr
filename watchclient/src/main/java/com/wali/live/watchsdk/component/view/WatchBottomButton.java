@@ -38,7 +38,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     private MyInfoIconView mMyInfoIconView;
     private GiftFastSendView mGiftFastSendView;
     private View mBigTurnTableBtn;
-    private View mShowAllBtn;
+    private View mRotateBtn;
 
     private boolean mIsGameMode = false;
 
@@ -47,6 +47,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
 
     boolean mIsHuYaLive = false;
 
+
+    private View mShowAllBtn;
     private RelativeLayout mClearScreenContainer;
 
     @Override
@@ -85,7 +87,7 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                 mPresenter.onBigTurnTableClick();
             }
-        }else if(id== R.id.show_btn){
+        } else if (id == R.id.show_btn) {
             mPresenter.cancelClearScreen();
         }
     }
@@ -266,8 +268,23 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     }
 
     protected final void orientChild() {
+        if (mIsLandscape) {
+            if (mRotateBtn == null) {
+                // 转屏按钮，只在横屏时显示
+                mRotateBtn = createImageView(R.drawable.live_icon_rotate_screen);
+                addCreatedView(mRotateBtn, R.id.rotate_btn);
+                mBottomBtnSetLand.add(mRotateBtn);
+                mRotateBtn.setOnClickListener(this);
+            }
+            mRotateBtn.setVisibility(View.VISIBLE);
+        } else {
+            if (mRotateBtn != null) {
+                mRotateBtn.setVisibility(View.GONE);
+            }
+        }
         super.orientChild();
     }
+
     @Override
     public IView getViewProxy() {
         /**

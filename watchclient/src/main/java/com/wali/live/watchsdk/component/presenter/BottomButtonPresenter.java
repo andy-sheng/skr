@@ -57,6 +57,7 @@ import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_CANCEL;
 import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_GONE;
 import static com.wali.live.component.BaseSdkController.MSG_CLEAR_SCREEN_VIEW_VISIABLE;
+import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_BIG_TURN_TABLE_BTN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_MENU_PANEL_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
@@ -146,6 +147,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     @Override
     public void rotateScreen() {
         // TODO 增加转屏处理 YangLi
+        mController.postEvent(MSG_FORCE_ROTATE_SCREEN);
     }
 
     @Override

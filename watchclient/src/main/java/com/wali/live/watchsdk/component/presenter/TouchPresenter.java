@@ -22,6 +22,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.wali.live.component.BaseSdkController.MSG_BACKGROUND_CLICK;
@@ -323,7 +324,8 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                         mController.postEvent(MSG_CLEAR_SCREEN_VIEW_GONE);
                     } else if (oldTranslateX == 0) {
                         MyLog.d(TAG, "onMoveHorizontal setVisibility VISIBLE");
-                        view.setVisibility(View.VISIBLE);
+                        int visiableValue = getPreViewVisiable(view,View.VISIBLE);
+                        view.setVisibility(visiableValue);
                         mController.postEvent(MSG_CLEAR_SCREEN_VIEW_VISIABLE);
                     }
                 } else {
@@ -344,12 +346,15 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         MyLog.d(TAG, "onFlingLeft setTranslationX 0");
     }
 
+    private HashMap<Integer, Integer> mPreViewVisiableMap = new HashMap<>();
+
     private void onFlingRight() {
         setHideAll(true);
         mTranslation = 0;
         for (View view : mHorizontalSet) {
             if (view != null) {
                 view.setTranslationX(0);
+                mPreViewVisiableMap.put(view.getId(),  view.getVisibility());
                 view.setVisibility(View.GONE);
             }
         }
@@ -362,8 +367,16 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         if (mIsHideAll) {
 
         } else {
-
+            mPreViewVisiableMap.clear();
         }
+    }
+
+    int getPreViewVisiable(View view, int defaultValue) {
+        Integer visiable = mPreViewVisiableMap.get(view.getId());
+        if (visiable == null) {
+            return defaultValue;
+        }
+        return visiable.intValue();
     }
 
     private void onCancelMoveHorizontal() {
@@ -462,7 +475,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                 mVerticalMoveEnabled = false;
                 return true;
             case MSG_CLEAR_SCREEN_CANCEL:
-                onMoveHorizontal(0,1);
+                onMoveHorizontal(0, 1);
                 onFlingLeft();
                 break;
             default:
