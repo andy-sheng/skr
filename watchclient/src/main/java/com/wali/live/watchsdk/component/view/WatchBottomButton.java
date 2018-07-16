@@ -371,6 +371,11 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             }
 
             @Override
+            public View getBigTurnTable() {
+                return mBigTurnTableBtn;
+            }
+
+            @Override
             public void notifyClearScreen(boolean viewVisiable) {
                 if (mShowAllBtn == null) {
                     mShowAllBtn = createImageView(R.drawable.live_bottom_return_btn);
@@ -467,6 +472,8 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
         void showBigTurnTable();
 
         void hideBigTurnTable();
+
+        View getBigTurnTable();
 
         void notifyClearScreen(boolean viewVisiable);
     }

@@ -157,4 +157,6 @@ public class PreferenceKeys {
     public static final String PRE_KEY_HOME_PAGE_GUIDE_COIN = "pref_home_page_guide_guide_coin";
 
     public static final String PRE_KEY_LAST_BARRAGE_POP_TIME ="pre_key_last_barrage_pop_time";
+
+    public static final String PRE_KEY_HAS_SHOWED_BIG_TURN_TABLE_GUIDE = "pref_has_show_beauty_guide";
 }

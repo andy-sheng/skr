@@ -213,6 +213,7 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_SHOW_BIG_TURN_TABLE_BTN = MSG_POPUP_FIRST + 20;
     public static final int MSG_HIDE_BIG_TURN_TABLE_BTN = MSG_POPUP_FIRST + 21;
     public static final int MSG_SHOW_BIG_TURN_TABLE_PANEL = MSG_POPUP_FIRST + 22;
+    public static final int MSG_SHOW_BIG_TURN_TABLE_TIPS = MSG_POPUP_FIRST + 23;
 
 
     //连麦/PK相关消息

@@ -32,6 +32,7 @@ import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.bigturntable.presenter.WatchBigTurnTablePanelPresenter;
+import com.wali.live.watchsdk.bigturntable.view.BigTurnTableGuideView;
 import com.wali.live.watchsdk.component.presenter.BarrageBtnPresenter;
 import com.wali.live.watchsdk.component.presenter.BottomButtonPresenter;
 import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
@@ -87,6 +88,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_BTN;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_TIPS;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FEEDBACK_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_FOLLOW_GUIDE;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_INPUT;
@@ -145,6 +147,8 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     private PanelContainerPresenter mPanelContainerPresenter;
     private WatchBigTurnTablePanelPresenter mWatchBigTurnTablePanelPresenter;
     private TurnTableConfigModel mTurnTableConfigModel;
+    private BottomButtonPresenter mBottomButtonPresenter;
+    private BigTurnTableGuideView mBigTurnTableGuideView;
 
     @Override
     protected String getTAG() {
@@ -353,10 +357,10 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             }
             relativeLayout.setVisibility(View.VISIBLE);
             mWatchBottomButton = new WatchBottomButton(relativeLayout, mIsGameMode, mIsHuYaLive);
-            BottomButtonPresenter presenter = new BottomButtonPresenter(
+            mBottomButtonPresenter = new BottomButtonPresenter(
                     mController, mController.mMyRoomData);
-            registerComponent(mWatchBottomButton, presenter);
-            presenter.processMoreBtnShow();
+            registerComponent(mWatchBottomButton, mBottomButtonPresenter);
+            mBottomButtonPresenter.processMoreBtnShow();
         }
         // 抢红包
         {
@@ -484,6 +488,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         registerAction(MSG_SHOW_FEEDBACK_VIEW);
         registerAction(MSG_SHOW_BIG_TURN_TABLE_BTN);
         registerAction(MSG_SHOW_BIG_TURN_TABLE_PANEL);
+        registerAction(MSG_SHOW_BIG_TURN_TABLE_TIPS);
 
         start();
     }
@@ -630,6 +635,14 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         myAlertDialog.create().show();
     }
 
+    private void showBigTurnTableTips(int offsetX, int offsetY) {
+        if(mIsLandscape) {
+            return;
+        }
+        mBigTurnTableGuideView = new BigTurnTableGuideView(mActivity);
+        mBigTurnTableGuideView.show(mContentView, offsetX, offsetY);
+    }
+
     @Override
     public boolean onEvent(int event, IParams params) {
         switch (event) {
@@ -668,6 +681,11 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 if (mWatchBigTurnTablePanelPresenter != null) {
                     mWatchBigTurnTablePanelPresenter.orientationChange(true);
                 }
+
+                if(mBigTurnTableGuideView != null) {
+                    mBigTurnTableGuideView.cancelAnimation();
+                }
+
                 mRotateBtn.setVisibility(View.GONE);
                 return true;
             case MSG_INPUT_VIEW_SHOWED:
@@ -771,6 +789,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 } else if (mWatchBigTurnTablePanelPresenter != null) {
                     mWatchBigTurnTablePanelPresenter.showPanel();
                 }
+                break;
+            case MSG_SHOW_BIG_TURN_TABLE_TIPS:
+                showBigTurnTableTips((Integer) params.getItem(0), (Integer) params.getItem(1));
                 break;
             default:
                 break;

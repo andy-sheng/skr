@@ -9,11 +9,13 @@ import android.view.View;
 import com.base.activity.BaseSdkActivity;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.event.TurnTableEvent;
 import com.mi.live.data.milink.event.MiLinkEvent;
+import com.mi.live.data.preference.PreferenceKeys;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -42,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
 
 import rx.Observable;
 import rx.Observer;
@@ -66,6 +69,7 @@ import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIP
 import static com.wali.live.component.BaseSdkController.MSG_SHOE_GAME_ICON;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_BTN;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_PANEL;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_TIPS;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_DOWNLOAD;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_MENU_PANEL;
@@ -210,6 +214,38 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     @Override
     public void onBigTurnTableClick() {
         postEvent(MSG_SHOW_BIG_TURN_TABLE_PANEL);
+    }
+
+    private void delayShowBigTurnTableTips() {
+        boolean hasShow = PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.PRE_KEY_HAS_SHOWED_BIG_TURN_TABLE_GUIDE, false);
+        if(hasShow) {
+            return;
+        }
+
+        Observable
+                .timer(500, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Object>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                        int[] ints = calculateWindowPos(mView.getBigTurnTable());
+                        Params params = new Params();
+                        params.putItem(ints[0]);
+                        params.putItem(ints[1]);
+                        postEvent(MSG_SHOW_BIG_TURN_TABLE_TIPS, params);
+                    }
+                });
+    }
+
+    private int[] calculateWindowPos(View view) {
+        int windowPos[] = new int[2];
+        int loc[] = new int[2];
+        view.getLocationInWindow(loc);
+        windowPos[0] = loc[0];
+        windowPos[1] = loc[1];
+        return windowPos;
     }
 
     @Override
@@ -445,6 +481,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                 break;
             case MSG_SHOW_BIG_TURN_TABLE_BTN:
                 mView.showBigTurnTable();
+                delayShowBigTurnTableTips();
                 break;
             case MSG_HIDE_BIG_TURN_TABLE_BTN:
                 mView.hideBigTurnTable();
