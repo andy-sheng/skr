@@ -29,11 +29,11 @@ import java.util.List;
 public class GiftContinueViewGroup extends RelativeLayout implements IBindActivityLIfeCycle {
     public static String TAG = GiftContinueViewGroup.class.getSimpleName();
 
-    private List<GiftContinuousView> mFeedGiftContinueViews;
+    private List<GiftContinuousView> mFeedGiftContinueViews = new ArrayList<>(2);
 
-    private List<GiftContinuousView> mSingleFeedViewList;
+    private List<GiftContinuousView> mSingleFeedViewList = new ArrayList<>(1);
 
-    private IGiftScheduler giftScheduler=new GiftScheduler();
+    private IGiftScheduler giftScheduler = new GiftScheduler();
 
 
     public GiftContinueViewGroup(Context context) {
@@ -60,12 +60,12 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
     protected void bindView() {
         GiftContinuousView v1 = (GiftContinuousView) findViewById(R.id.gift_continue_view1);
         v1.setMyId(1);
-        getFeedGiftContinueViews().add(v1);
-        getSingleFeedGiftContinueView().add(v1);
+        mFeedGiftContinueViews.add(v1);
+        mSingleFeedViewList.add(v1);
 
         GiftContinuousView v2 = (GiftContinuousView) findViewById(R.id.gift_continue_view2);
         v2.setMyId(2);
-        getFeedGiftContinueViews().add(v2);
+        mFeedGiftContinueViews.add(v2);
 
         giftScheduler.setGiftContinuousViews(getFeedViews());
     }
@@ -77,9 +77,11 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
     }
 
     public void onActivityDestroy() {
-        for (GiftContinuousView v : getFeedGiftContinueViews()) {
+        for (GiftContinuousView v : mFeedGiftContinueViews) {
             v.onDestroy();
         }
+        mFeedGiftContinueViews.clear();
+        mSingleFeedViewList.clear();
         giftScheduler.onDestroy();
         EventBus.getDefault().unregister(this);
     }
@@ -87,12 +89,11 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(UserActionEvent.SwitchAnchor event) {
         giftScheduler.clearQueue();
-        for (GiftContinuousView v : getFeedGiftContinueViews()) {
+        for (GiftContinuousView v : mFeedGiftContinueViews) {
             v.setVisibility(View.GONE);
             v.switchAnchor();
         }
     }
-
 
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -119,7 +120,7 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
             lp.height = DisplayUtils.dip2px(150);
             lp.alignWithParent = true;
             lp.bottomMargin = mGiftViewMarginBottom;
-            for(GiftContinuousView v:getFeedViews()){
+            for (GiftContinuousView v : getFeedViews()) {
                 v.tryAwake();
             }
         }
@@ -159,26 +160,12 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
         }
     }
 
-    private List<GiftContinuousView> getFeedGiftContinueViews() {
-        if (mFeedGiftContinueViews == null) {
-            mFeedGiftContinueViews = new ArrayList<>(2);
-        }
-        return mFeedGiftContinueViews;
-    }
-
-    private List<GiftContinuousView> getSingleFeedGiftContinueView() {
-        if (mSingleFeedViewList == null) {
-            mSingleFeedViewList = new ArrayList<>(1);
-        }
-        return mSingleFeedViewList;
-    }
-
     public List<GiftContinuousView> getFeedViews() {
         //当横屏时要防止上面的continueView遮挡运营位，故上面的continueView不显示
         if (mIsLandscape) {
-            return getSingleFeedGiftContinueView();
+            return mFeedGiftContinueViews;
         } else {
-            return getFeedGiftContinueViews();
+            return mSingleFeedViewList;
         }
     }
 
@@ -186,16 +173,16 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
      * 目前主要用来切换房间时，重置内部状态
      */
     public void reset() {
-        giftScheduler.onDestroy();
-        for (GiftContinuousView v : mFeedGiftContinueViews) {
-            v.setVisibility(View.GONE);
-            v.switchAnchor();
-        }
-        mFeedGiftContinueViews.clear();
-        for (GiftContinuousView v : mSingleFeedViewList) {
-            v.setVisibility(View.GONE);
-            v.switchAnchor();
-        }
-        mSingleFeedViewList.clear();
+//        giftScheduler.clearQueue();
+//        for (GiftContinuousView v : mFeedGiftContinueViews) {
+//            v.setVisibility(View.GONE);
+//            v.switchAnchor();
+//        }
+//        mFeedGiftContinueViews.clear();
+//        for (GiftContinuousView v : mSingleFeedViewList) {
+//            v.setVisibility(View.GONE);
+//            v.switchAnchor();
+//        }
+//        mSingleFeedViewList.clear();
     }
 }

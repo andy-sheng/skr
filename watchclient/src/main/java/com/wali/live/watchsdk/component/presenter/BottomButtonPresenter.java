@@ -27,14 +27,11 @@ import com.wali.live.common.gift.exception.GiftErrorCode;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.dao.Gift;
 import com.wali.live.proto.GiftProto;
-import com.wali.live.proto.VFansProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.view.WatchBottomButton;
 import com.wali.live.watchsdk.component.viewmodel.GameViewModel;
 import com.wali.live.watchsdk.eventbus.EventClass;
-import com.wali.live.watchsdk.fans.model.FansGroupListModel;
-import com.wali.live.watchsdk.fans.request.GetGroupListRequest;
 import com.wali.live.watchsdk.personalcenter.MyInfoHalfFragment;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.sixin.data.ConversationLocalStore;
@@ -88,9 +85,10 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     //快捷送礼物和快捷充值相关
     private String mWidgetLinkUrl;
     private int mFastGiftId;
+
     private int mRequestTimes;
-    private long mRequestContinueId;
-    private Subscription mClesrFastGiftFlagSubscriber;
+    private long mLastSendTs;
+    private long mContinueId;
 
     @Override
     protected final String getTAG() {
@@ -202,10 +200,10 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
     @Override
     public void onFastGiftClick() {
-        if(!TextUtils.isEmpty(mWidgetLinkUrl)) {
+        if (!TextUtils.isEmpty(mWidgetLinkUrl)) {
             SchemeSdkActivity.openActivity((Activity) mView.getRealView().getContext(), Uri.parse(mWidgetLinkUrl));
         } else {
-            if(mFastGiftId > 0) {
+            if (mFastGiftId > 0) {
                 sendFastGift(mFastGiftId);
             }
         }
@@ -256,20 +254,20 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     private void sendFastGift(final int giftId) {
         //保存此次请求发出时间
         //保存此次请求continuId
-        if (mRequestContinueId == -1) {
-            mRequestContinueId = System.currentTimeMillis();
+        long nowTs = System.currentTimeMillis();
+        if (nowTs - mLastSendTs > 3000) {
+            mRequestTimes = 1;
+            mContinueId = nowTs;
+        } else {
+            mRequestTimes++;
         }
-        mRequestTimes++;
-
-        if(mClesrFastGiftFlagSubscriber != null) {
-            mClesrFastGiftFlagSubscriber.unsubscribe();
-        }
+        mLastSendTs = nowTs;
 
         final Gift gift = GiftRepository.findGiftById(giftId);
         Observable.create(new Observable.OnSubscribe<GiftProto.BuyGiftRsp>() {
             @Override
             public void call(Subscriber<? super GiftProto.BuyGiftRsp> subscriber) {
-                if(gift == null) {
+                if (gift == null) {
                     subscriber.onError(new Exception("gift == null"));
                     subscriber.onCompleted();
                     return;
@@ -277,8 +275,12 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
                 GiftProto.BuyGiftRsp rsp;
                 rsp = GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mRequestTimes, System.currentTimeMillis()
-                        , mRequestContinueId, null, mMyRoomData.getLiveType(), false, mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
-
+                        , mContinueId, null, mMyRoomData.getLiveType(), false, mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
+                if (true) {
+                    rsp = GiftProto.BuyGiftRsp.newBuilder()
+                            .setRetCode(0)
+                            .build();
+                }
                 subscriber.onNext(rsp);
                 subscriber.onCompleted();
             }
@@ -296,21 +298,20 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                     public void onError(Throwable e) {
                         MyLog.d(TAG, e);
                         mRequestTimes = 0;
-                        mRequestContinueId = -1;
+                        mLastSendTs = -1;
                     }
 
                     @Override
                     public void onNext(GiftProto.BuyGiftRsp rsp) {
-                        if(rsp.getRetCode() == GiftErrorCode.SUCC) {
+                        if (rsp.getRetCode() == GiftErrorCode.SUCC) {
                             BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(giftId, gift.getName(), gift.getCatagory(),
                                     gift.getSendDescribe(), mRequestTimes, rsp.getReceiverTotalTickets(),
-                                    rsp.getTicketUpdateTime(), mRequestContinueId, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), rsp.getRedPacketId(),
+                                    rsp.getTicketUpdateTime(), mContinueId, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), rsp.getRedPacketId(),
                                     "", 0, false, 1, "");
                             BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
 
                             mView.startFastGiftPBarAnim();
-                            tryClearSendGiftFlag();
-                        } else if(rsp.getRetCode() == GiftErrorCode.GIFT_PAY_BARRAGE) {
+                        } else if (rsp.getRetCode() == GiftErrorCode.GIFT_PAY_BARRAGE) {
                             postEvent(MSG_POP_INSUFFICIENT_TIPS);
                         } else {
                             ToastUtils.showToast(mView.getRealView().getContext(), GlobalData.app().getResources().getString(R.string.buy_gift_failed_with_err_code) + rsp.getRetCode());
@@ -319,29 +320,6 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                 });
     }
 
-    private void tryClearSendGiftFlag() {
-        mClesrFastGiftFlagSubscriber = Observable.timer(3000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Long>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.d(TAG, e);
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        mRequestTimes = 0;
-                        mRequestContinueId = -1;
-                    }
-                });
-    }
 
     @Override
     public void showGameDownloadView() {
@@ -395,7 +373,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
         this.mWidgetLinkUrl = event.linkUrl;
         this.mFastGiftId = event.giftId;
-        if(!TextUtils.isEmpty(mWidgetLinkUrl)) {
+        if (!TextUtils.isEmpty(mWidgetLinkUrl)) {
             mView.setFastGift(event.widgetIcon, true);
         } else {
             Gift gift = GiftRepository.findGiftById(this.mFastGiftId);
@@ -407,7 +385,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(com.wali.live.event.EventClass.RechargeCheckOrderEvent event) {//支付成功需要刷新首充按钮和续费有礼
         MyLog.w(TAG, "onEvent RechargeCheckOrderEvent");
-        if(!TextUtils.isEmpty(mWidgetLinkUrl)) {
+        if (!TextUtils.isEmpty(mWidgetLinkUrl)) {
             onEvent(new EventClass.UpdateFastGiftInfoEvent(mFastGiftId, null, null));
         }
     }
@@ -415,7 +393,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
     //显示大转盘按钮event
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(TurnTableEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 

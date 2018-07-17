@@ -636,10 +636,12 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     }
 
     private void showBigTurnTableTips(int offsetX, int offsetY) {
-        if(mIsLandscape) {
+        if (mIsLandscape) {
             return;
         }
-        mBigTurnTableGuideView = new BigTurnTableGuideView(mActivity);
+        if (mBigTurnTableGuideView == null) {
+            mBigTurnTableGuideView = new BigTurnTableGuideView(mActivity);
+        }
         mBigTurnTableGuideView.show(mContentView, offsetX, offsetY);
     }
 
@@ -682,7 +684,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     mWatchBigTurnTablePanelPresenter.orientationChange(true);
                 }
 
-                if(mBigTurnTableGuideView != null) {
+                if (mBigTurnTableGuideView != null) {
                     mBigTurnTableGuideView.cancelAnimation();
                 }
 

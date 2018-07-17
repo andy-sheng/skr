@@ -11,6 +11,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,7 +30,7 @@ public class GiftScheduler implements IGiftScheduler {
     private static final String TAG = "GiftScheduler";
 
     private IGiftModelQueue mQueue = new GiftModelQueue();
-    private List<GiftContinuousView> views;
+    private List<GiftContinuousView> views = new ArrayList<>();
     private ExecutorService singleThreadForBuyGift;
 
     public GiftScheduler() {
@@ -125,7 +126,8 @@ public class GiftScheduler implements IGiftScheduler {
 
     @Override
     public void setGiftContinuousViews(List<GiftContinuousView> views) {
-        this.views = views;
+        this.views.clear();
+        this.views.addAll(views);
         for (GiftContinuousView view : views) {
             view.setGiftScheduler(this);
         }
@@ -149,6 +151,7 @@ public class GiftScheduler implements IGiftScheduler {
         if (singleThreadForBuyGift != null) {
             singleThreadForBuyGift.shutdown();
         }
+        views.clear();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -161,7 +164,7 @@ public class GiftScheduler implements IGiftScheduler {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(GiftEventClass.GiftAttrMessage.Normal event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event);
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         Observable.just((GiftRecvModel) event.obj1)
                 .throttleFirst(50, TimeUnit.MILLISECONDS)
                 .filter(new Func1<GiftRecvModel, Boolean>() {
