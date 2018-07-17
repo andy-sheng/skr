@@ -46,7 +46,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.component.view.LiveCommentView;
 import cache.ContestCurrentCache;
-import cache.ContestGlobalCache;
+import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import log.ContestLog;
 import model.AwardUser;
 import model.ContestNoticeModel;

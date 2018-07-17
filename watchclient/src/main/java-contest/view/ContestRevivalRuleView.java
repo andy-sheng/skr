@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.base.mvp.specific.RxRelativeLayout;
 import com.base.utils.toast.ToastUtils;
 import com.wali.live.watchsdk.R;
-import cache.ContestGlobalCache;
+import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import share.ContestShareHelper;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
 import com.wali.live.watchsdk.watch.presenter.SnsShareHelper;

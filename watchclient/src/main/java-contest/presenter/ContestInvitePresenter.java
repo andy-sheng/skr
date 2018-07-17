@@ -4,7 +4,7 @@ import com.base.log.MyLog;
 import com.base.mvp.BaseRxPresenter;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.LiveSummitProto;
-import cache.ContestGlobalCache;
+import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import request.GetContestInviteCodeRequest;
 import request.SetContestInviteCodeRequest;
 import request.UseSpecialCodeRequest;

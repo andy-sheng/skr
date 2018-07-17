@@ -15,7 +15,7 @@ import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.user.User;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import cache.ContestGlobalCache;
+import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import rank.adapter.ContestRankAdapter;
 import rank.model.ContestRankModel;
 import rank.presenter.ContestRankPresenter;

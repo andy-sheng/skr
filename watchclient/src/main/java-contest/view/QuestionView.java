@@ -26,7 +26,6 @@ import media.ContestMediaHelper;
 import cache.ContestCurrentCache;
 import presenter.CommitContestAnswerPresenter;
 import presenter.IContestCommitAnswerView;
-import com.wali.live.watchsdk.view.CountDownView;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.wali.live.watchsdk.view;
+package view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.base.log.MyLog;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.view.TimeCounterCircle;
+
 import media.ContestMediaHelper;
 
 /**

@@ -37,7 +37,7 @@ import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.channel.ChannelListSdkActivity;
 
-import activity.ContestPrepareActivity;
+//import activity.ContestPrepareActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.login.LoginPresenter;
 import com.wali.live.watchsdk.personalcenter.PersonalCenterFragment;
@@ -171,21 +171,23 @@ public class MainActivity extends BaseSdkActivity {
             }
         }));
 
-        dataList.add(new TestItem("冲顶大会(废弃功能)", new Runnable() {
-            @Override
-            public void run() {
-                inputDialog("输入id","0", new InputSuccessCallback() {
-                    @Override
-                    public void inputSuccess(String input) {
-                        if (CommonUtils.isNumeric(input)) {
-                            ContestPrepareActivity.open(MainActivity.this, Long.parseLong(input));
-                        } else {
-                            ContestPrepareActivity.open(MainActivity.this, 0);
-                        }
-                    }
-                });
-            }
-        }));
+        //TODO-冲顶大会入口隐藏了
+//        ToastUtils.showToast("冲顶大会入口隐藏了");
+//        dataList.add(new TestItem("冲顶大会(废弃功能)", new Runnable() {
+//            @Override
+//            public void run() {
+//                inputDialog("输入id","0", new InputSuccessCallback() {
+//                    @Override
+//                    public void inputSuccess(String input) {
+//                        if (CommonUtils.isNumeric(input)) {
+//                            ContestPrepareActivity.open(MainActivity.this, Long.parseLong(input));
+//                        } else {
+//                            ContestPrepareActivity.open(MainActivity.this, 0);
+//                        }
+//                    }
+//                });
+//            }
+//        }));
 
         dataList.add(new TestItem("跳到直播", new Runnable() {
             @Override
