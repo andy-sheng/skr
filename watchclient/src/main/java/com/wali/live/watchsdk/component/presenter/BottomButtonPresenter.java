@@ -276,11 +276,11 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                 GiftProto.BuyGiftRsp rsp;
                 rsp = GiftRepository.bugGiftSync(gift, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mRequestTimes, System.currentTimeMillis()
                         , mContinueId, null, mMyRoomData.getLiveType(), false, mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
-                if (true) {
-                    rsp = GiftProto.BuyGiftRsp.newBuilder()
-                            .setRetCode(0)
-                            .build();
-                }
+//                if (true) {
+//                    rsp = GiftProto.BuyGiftRsp.newBuilder()
+//                            .setRetCode(0)
+//                            .build();
+//                }
                 subscriber.onNext(rsp);
                 subscriber.onCompleted();
             }
