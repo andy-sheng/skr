@@ -21,8 +21,8 @@ public class LimitTaskHolder extends GroupTaskHolder<LimitJobModel> {
 
     @Override
     protected void initView() {
-        mTaskInfoTv = $(R.id.task_info_tv);
-        mTaskTipTv = $(R.id.task_tip_tv);
+        mTaskInfoTv = $(R.id.task_tv);
+        mTaskTipTv = $(R.id.task_tip);
     }
 
     @Override

@@ -161,6 +161,7 @@ public class GiftScheduler implements IGiftScheduler {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(GiftEventClass.GiftAttrMessage.Normal event) {
+        MyLog.d(TAG,"onEvent" + " event=" + event);
         Observable.just((GiftRecvModel) event.obj1)
                 .throttleFirst(50, TimeUnit.MILLISECONDS)
                 .filter(new Func1<GiftRecvModel, Boolean>() {
