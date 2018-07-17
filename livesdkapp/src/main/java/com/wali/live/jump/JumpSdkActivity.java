@@ -17,7 +17,7 @@ import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.channel.ChannelListSdkActivity;
-import activity.ContestPrepareActivity;
+//import activity.ContestPrepareActivity;
 //import activity.ContestWatchActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.income.income.UserIncomeActivity;
