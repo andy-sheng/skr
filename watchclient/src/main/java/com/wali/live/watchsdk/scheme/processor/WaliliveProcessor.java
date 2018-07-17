@@ -11,8 +11,6 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.LiveManager;
 import com.wali.live.event.EventClass;
 import com.wali.live.pay.activity.RechargeActivity;
-import com.wali.live.watchsdk.contest.ContestPrepareActivity;
-import com.wali.live.watchsdk.contest.ContestWatchActivity;
 import com.wali.live.watchsdk.longtext.LongTextActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
@@ -21,6 +19,9 @@ import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.greenrobot.eventbus.EventBus;
+
+import activity.ContestPrepareActivity;
+import activity.ContestWatchActivity;
 
 /**
  * Created by lan on 16/10/26.
@@ -129,6 +130,7 @@ public class WaliliveProcessor extends CommonProcessor {
          */
         boolean isContest = uri.getBooleanQueryParameter(SchemeConstants.PARAM_IS_CONTEST, false);
         if (isContest) {
+            
             ContestWatchActivity.open(activity, playerId, liveId, videoUrl);
             return;
         }

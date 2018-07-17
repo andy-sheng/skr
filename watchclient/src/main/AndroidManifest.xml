@@ -142,16 +142,16 @@
 
 
         <activity
-            android:name="com.wali.live.watchsdk.contest.ContestPrepareActivity"
+            android:name="activity.ContestPrepareActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.wali.live.watchsdk.contest.rank.ContestRankActivity"
+            android:name="rank.ContestRankActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.wali.live.watchsdk.contest.ContestWatchActivity"
+            android:name="activity.ContestWatchActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"

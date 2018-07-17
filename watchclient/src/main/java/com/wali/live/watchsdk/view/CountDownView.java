@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.base.log.MyLog;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.contest.media.ContestMediaHelper;
+import media.ContestMediaHelper;
 
 /**
  * Created by jiyangli on 16-11-30.

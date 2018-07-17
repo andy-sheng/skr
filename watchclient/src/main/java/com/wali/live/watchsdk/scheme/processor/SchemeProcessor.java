@@ -17,14 +17,14 @@ import com.wali.live.proto.Live2Proto;
 import com.wali.live.proto.LiveProto;
 import com.wali.live.proto.LiveProto.HistoryLiveRsp;
 import com.wali.live.proto.LiveProto.RoomInfoRsp;
-import com.wali.live.watchsdk.contest.ContestPrepareActivity;
-import com.wali.live.watchsdk.contest.ContestWatchActivity;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
+import activity.ContestPrepareActivity;
+import activity.ContestWatchActivity;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
