@@ -40,7 +40,7 @@ import com.wali.live.watchsdk.channel.ChannelListSdkActivity;
 //import activity.ContestPrepareActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.login.LoginPresenter;
-import com.wali.live.watchsdk.personalcenter.PersonalCenterFragment;
+//import com.wali.live.watchsdk.personalcenter.PersonalCenterFragment;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
@@ -270,17 +270,17 @@ public class MainActivity extends BaseSdkActivity {
             }
         }));
 
-        dataList.add(new TestItem("个人中心(废弃)", new Runnable() {
-
-            @Override
-            public void run() {
-                if (!UserAccountManager.getInstance().hasAccount()) {
-                    ToastUtils.showToast("请先登录");
-                    return;
-                }
-                PersonalCenterFragment.openFragment(MainActivity.this, R.id.main_act_container);
-            }
-        }));
+//        dataList.add(new TestItem("个人中心(废弃)", new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                if (!UserAccountManager.getInstance().hasAccount()) {
+//                    ToastUtils.showToast("请先登录");
+//                    return;
+//                }
+//                PersonalCenterFragment.openFragment(MainActivity.this, R.id.main_act_container);
+//            }
+//        }));
 
         dataList.add(new TestItem("日志全开", new Runnable() {
 
