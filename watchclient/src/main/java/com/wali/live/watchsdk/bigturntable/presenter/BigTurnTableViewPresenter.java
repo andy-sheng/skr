@@ -111,7 +111,7 @@ public class BigTurnTableViewPresenter extends RxLifeCyclePresenter implements B
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, e);
+                        MyLog.w(TAG, e);
                     }
 
                     @Override

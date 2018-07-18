@@ -43,8 +43,9 @@ public class BigTurnTableApi {
                         BigTurnTableProto.StartTurntableRsp rsp = BigTurnTableProto.StartTurntableRsp.parseFrom(rspData.getData());
                         if(rsp == null) {
                             subscriber.onError(new Exception("StartTurntableRsp rsp is null"));
+                        } else {
+                            subscriber.onNext(rsp);
                         }
-                        subscriber.onNext(rsp);
                         subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.d(TAG, e);
@@ -72,8 +73,9 @@ public class BigTurnTableApi {
                         BigTurnTableProto.StopTurntableRsp rsp = BigTurnTableProto.StopTurntableRsp.parseFrom(rspData.getData());
                         if(rsp == null) {
                             subscriber.onError(new Exception("StopTurntableRsp rsp is null"));
+                        } else {
+                            subscriber.onNext(rsp);
                         }
-                        subscriber.onNext(rsp);
                         subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.d(TAG, e);
@@ -94,8 +96,7 @@ public class BigTurnTableApi {
         PacketData rspData = sendToMiLinkClient(request.toByteArray(), MiLinkCommand.COMMAND_ROOM_ATTACHMENT);
         if(rspData != null) {
             try {
-                LiveProto.GetRoomAttachmentRsp rsp = LiveProto.GetRoomAttachmentRsp.parseFrom(rspData.getData());
-                return rsp;
+                return LiveProto.GetRoomAttachmentRsp.parseFrom(rspData.getData());
             } catch (InvalidProtocolBufferException e) {
                 MyLog.d(TAG, e);
                 e.printStackTrace();
@@ -121,8 +122,9 @@ public class BigTurnTableApi {
                         BigTurnTableProto.DrawTurntableRsp rsp = BigTurnTableProto.DrawTurntableRsp.parseFrom(rspData.getData());
                         if(rsp == null) {
                             subscriber.onError(new Exception("DrawTurntableRsp rsp is null"));
+                        } else {
+                            subscriber.onNext(rsp);
                         }
-                        subscriber.onNext(rsp);
                         subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.d(TAG, e);
@@ -151,8 +153,10 @@ public class BigTurnTableApi {
                         BigTurnTableProto.RewardTurntableRsp rsp = BigTurnTableProto.RewardTurntableRsp.parseFrom(rspData.getData());
                         if(rsp == null) {
                             subscriber.onError(new Exception("RewardTurntableRsp rsp is null"));
+                        } else {
+                            subscriber.onNext(rsp);
                         }
-                        subscriber.onNext(rsp);
+
                         subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.d(TAG, e);

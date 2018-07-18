@@ -30,7 +30,8 @@ import rx.functions.Action1;
 
 public class BigTurnTableGuideView extends PopupWindow {
     private static final String TAG = "BigTurnTableGuideView";
-    private static final int WIDTH_TIPS = 614;
+    private static final int WIDTH_TIPS = DisplayUtils.dip2px(204.67f);
+    private static final int WIDTH_ICON = DisplayUtils.dip2px(36.67f);
     private Context mContext;
     private RelativeLayout mContainer;
     private TextView mGuideIv;
@@ -67,7 +68,7 @@ public class BigTurnTableGuideView extends PopupWindow {
     }
 
     public void show(View view, int offsetX, int offsetY){
-        int rigihtMargin = DisplayUtils.getScreenWidth() - offsetX - (WIDTH_TIPS / 2) - 20;
+        int rigihtMargin = DisplayUtils.getScreenWidth() - offsetX - (WIDTH_TIPS / 2) - (WIDTH_ICON / 2);
         if(rigihtMargin < 0) {
             rigihtMargin = 0;
         }
