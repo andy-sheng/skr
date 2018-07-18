@@ -14,7 +14,7 @@ import com.mi.live.data.user.User;
 import com.wali.live.proto.ShareProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
+import cache.ContestGlobalCache;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.ipc.service.ShareInfo;
 
