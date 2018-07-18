@@ -71,6 +71,7 @@ public class BigTurnTablePresenter extends RxLifeCyclePresenter implements BigTu
                     if(turntableConfigList != null && !turntableConfigList.isEmpty()) {
                         List<TurnTableConfigModel> list = transformData(turntableConfigList);
                         subscriber.onNext(list);
+                        subscriber.onCompleted();
                     } else {
                         subscriber.onError(new Exception("turntableConfigList is empty"));
                     }
@@ -78,7 +79,6 @@ public class BigTurnTablePresenter extends RxLifeCyclePresenter implements BigTu
                 } else {
                     subscriber.onError(new Exception("GetRoomAttachmentRsp == null"));
                 }
-                subscriber.onCompleted();
             }
         })
                 .subscribeOn(Schedulers.io())
