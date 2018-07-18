@@ -32,7 +32,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 
-import cache.ContestGlobalCache;
+import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import fragment.MyContestInfoFragment;
 import manager.ContestDownloadManager;
 import model.ContestNoticeModel;

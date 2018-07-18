@@ -11,7 +11,7 @@ import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.LiveSummitProto;
 import com.wali.live.watchsdk.R;
 import cache.ContestCurrentCache;
-import cache.ContestGlobalCache;
+import com.wali.live.watchsdk.contest.cache.ContestGlobalCache;
 import log.ContestLog;
 import request.CommitContestAnswerRequest;
 

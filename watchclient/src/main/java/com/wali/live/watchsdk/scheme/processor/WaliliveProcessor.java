@@ -20,8 +20,8 @@ import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
-import activity.ContestPrepareActivity;
-import activity.ContestWatchActivity;
+//import activity.ContestPrepareActivity;
+//import activity.ContestWatchActivity;
 
 /**
  * Created by lan on 16/10/26.
@@ -77,7 +77,9 @@ public class WaliliveProcessor extends CommonProcessor {
 //                jumpToRechargeActivity(activity);
                 break;
             case SchemeConstants.HOST_CONTEST:
-                jumpToContestPrepare(uri, activity);
+                //TODO-冲顶大会入口隐藏了
+                ToastUtils.showToast("冲顶大会入口隐藏了");
+//                jumpToContestPrepare(uri, activity);
                 break;
             default:
                 String tips = String.format("无法识别的host:%s,下载小米直播体验完整功能", host);
@@ -130,8 +132,9 @@ public class WaliliveProcessor extends CommonProcessor {
          */
         boolean isContest = uri.getBooleanQueryParameter(SchemeConstants.PARAM_IS_CONTEST, false);
         if (isContest) {
-            
-            ContestWatchActivity.open(activity, playerId, liveId, videoUrl);
+            //TODO-冲顶大会入口隐藏了
+            ToastUtils.showToast("冲顶大会入口隐藏了");
+//            ContestWatchActivity.open(activity, playerId, liveId, videoUrl);
             return;
         }
 
@@ -163,7 +166,9 @@ public class WaliliveProcessor extends CommonProcessor {
             return;
         }
         long zuid = SchemeUtils.getLong(uri, SchemeConstants.PARAM_ZUID, 0);
-        ContestPrepareActivity.open(activity, zuid);
+        //TODO-冲顶大会入口隐藏了
+        ToastUtils.showToast("冲顶大会入口隐藏了");
+//        ContestPrepareActivity.open(activity, zuid);
     }
 
     private static void processRechargeDirectPay(Uri uri, @NonNull Activity activity) {

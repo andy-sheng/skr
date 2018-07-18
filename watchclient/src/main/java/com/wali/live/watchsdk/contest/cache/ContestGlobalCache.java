@@ -1,4 +1,4 @@
-package cache;
+package com.wali.live.watchsdk.contest.cache;
 
 import android.text.TextUtils;
 

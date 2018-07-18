@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.base.activity.BaseActivity;
 import com.base.activity.RxActivity;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.api.request.RoomInfoRequest;
@@ -23,8 +24,8 @@ import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
-import activity.ContestPrepareActivity;
-import activity.ContestWatchActivity;
+//import activity.ContestPrepareActivity;
+//import activity.ContestWatchActivity;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -74,7 +75,9 @@ public class SchemeProcessor extends CommonProcessor {
                 processHostLivesdk(uri, activity);
                 break;
             case SchemeConstants.HOST_CONTEST:
-                jumpToContestPrepare(uri, activity);
+                //TODO-冲顶大会入口隐藏了
+                ToastUtils.showToast("冲顶大会入口隐藏了");
+//                jumpToContestPrepare(uri, activity);
                 break;
             default:
                 return false;
@@ -124,7 +127,9 @@ public class SchemeProcessor extends CommonProcessor {
          */
         boolean isContest = uri.getBooleanQueryParameter(SchemeConstants.PARAM_IS_CONTEST, false);
         if (isContest) {
-            ContestWatchActivity.open(activity, playerId, liveId, videoUrl);
+            //TODO-冲顶大会入口隐藏了
+            ToastUtils.showToast("冲顶大会入口隐藏了");
+//            ContestWatchActivity.open(activity, playerId, liveId, videoUrl);
             return;
         }
 
@@ -258,6 +263,8 @@ public class SchemeProcessor extends CommonProcessor {
             return;
         }
         long zuid = SchemeUtils.getLong(uri, SchemeConstants.PARAM_ZUID, 0);
-        ContestPrepareActivity.open(activity, zuid);
+        //TODO-冲顶大会入口隐藏了
+        ToastUtils.showToast("冲顶大会入口隐藏了");
+//        ContestPrepareActivity.open(activity, zuid);
     }
 }

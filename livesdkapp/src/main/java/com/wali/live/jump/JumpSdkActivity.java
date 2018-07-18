@@ -9,6 +9,7 @@ import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.callback.ICommonCallBack;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.location.Location;
 import com.mi.liveassistant.R;
@@ -17,7 +18,7 @@ import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.channel.ChannelListSdkActivity;
 import activity.ContestPrepareActivity;
-import activity.ContestWatchActivity;
+//import activity.ContestWatchActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
 import com.wali.live.watchsdk.income.income.UserIncomeActivity;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
@@ -269,7 +270,9 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
-                                ContestPrepareActivity.open(JumpSdkActivity.this, 0);
+                                //TODO-冲顶大会入口隐藏了
+                                ToastUtils.showToast("冲顶大会入口隐藏了");
+//                                ContestPrepareActivity.open(JumpSdkActivity.this, 0);
                             }
                         }, true, ACTION_OPEN_CONTEST_PREPARE);
                 break;
@@ -283,7 +286,9 @@ public class JumpSdkActivity extends BaseSdkActivity {
                         new ICommonCallBack() {
                             @Override
                             public void process(Object objects) {
-                                ContestWatchActivity.open(JumpSdkActivity.this, playerId, liveId, videoUrl);
+                                //TODO-冲顶大会入口隐藏了
+                                ToastUtils.showToast("冲顶大会入口隐藏了");
+//                                ContestWatchActivity.open(JumpSdkActivity.this, playerId, liveId, videoUrl);
                             }
                         }, true, ACTION_OPEN_CONTEST_WATCH);
                 break;
