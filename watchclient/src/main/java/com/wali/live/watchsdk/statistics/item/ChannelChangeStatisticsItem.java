@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.statistics.item;
 
+import com.base.log.MyLog;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.wali.live.proto.StatisticsProto;
 
@@ -9,15 +10,18 @@ import com.wali.live.proto.StatisticsProto;
  */
 
 public class ChannelChangeStatisticsItem extends MilinkStatisticsItem{
+    private String TAG = getClass().getSimpleName();
     public static int CHANNEL_CHANGE_TYPE_MI_MUSIC = 605;
 
     public ChannelChangeStatisticsItem(long date, int type, int channelId) {
         super(date, type);
+        MyLog.d(TAG, "channelId= " + channelId);
         mCommonLog = StatisticsProto.CommonLog.newBuilder().setBizType(channelId).build();
     }
 
     @Override
     public StatisticsProto.LiveRecvFlagItem build() {
+        MyLog.d(TAG, "type= " + mType);
         mFlagItem = StatisticsProto.LiveRecvFlagItem.newBuilder()
                 .setDate(mDate)
                 .setType(mType)

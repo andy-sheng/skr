@@ -35,6 +35,13 @@ public class ChannelTabPagerAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
+    public ChannelShow getChannelShowByPosition(int position) {
+        if (mChannelList != null && mChannelList.size() > position) {
+            return mChannelList.get(position);
+        }
+        return null;
+    }
+
     @Override
     public CharSequence getPageTitle(int position) {
         if (mChannelList != null && mChannelList.size() > position) {
