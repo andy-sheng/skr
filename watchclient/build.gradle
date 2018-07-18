@@ -17,16 +17,16 @@ android {
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/aidl']
-            java.srcDirs +=['src/main/java-contest', 'src/main/aidl']
+//            java.srcDirs +=['src/main/java-contest', 'src/main/aidl']
             resources.srcDirs = ['src/main/java', 'src/main/aidl']
-            resources.srcDirs += ['src/main/java-contest', 'src/main/aidl']
+//            resources.srcDirs += ['src/main/java-contest', 'src/main/aidl']
             aidl.srcDirs = ['src/main/aidl']
             res.srcDirs = ['src/main/res']
             res.srcDirs += ['src/main/res-personal-center']
             res.srcDirs += ['src/main/res-vip']
             res.srcDirs += ['src/main/res-gift-fast-send']
             res.srcDirs += ['src/main/res-big-turn-table']
-            res.srcDirs += ['src/main/res-contest']
+//            res.srcDirs += ['src/main/res-contest']
             assets.srcDirs = ['src/main/assets']
         }
     }
