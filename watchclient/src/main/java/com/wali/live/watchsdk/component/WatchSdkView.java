@@ -83,6 +83,7 @@ import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_INPUT;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
@@ -489,6 +490,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         registerAction(MSG_SHOW_BIG_TURN_TABLE_BTN);
         registerAction(MSG_SHOW_BIG_TURN_TABLE_PANEL);
         registerAction(MSG_SHOW_BIG_TURN_TABLE_TIPS);
+        registerAction(MSG_ON_BACK_PRESSED);
 
         start();
     }
@@ -792,6 +794,13 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 break;
             case MSG_SHOW_BIG_TURN_TABLE_TIPS:
                 showBigTurnTableTips((Integer) params.getItem(0), (Integer) params.getItem(1));
+                break;
+            case MSG_ON_BACK_PRESSED:
+                if(mWatchBigTurnTablePanelPresenter != null
+                        && mWatchBigTurnTablePanelPresenter.isShow()) {
+                    mWatchBigTurnTablePanelPresenter.hidePanel();
+                    return true;
+                }
                 break;
             default:
                 break;

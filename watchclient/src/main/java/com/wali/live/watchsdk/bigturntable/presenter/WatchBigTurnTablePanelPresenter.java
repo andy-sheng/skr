@@ -75,6 +75,17 @@ public class WatchBigTurnTablePanelPresenter extends RxLifeCyclePresenter {
         loadData();
     }
 
+    public void hidePanel() {
+        if(mBigTurnTablePanelView != null) {
+            mBigTurnTablePanelView.setVisibility(View.GONE);
+        }
+    }
+
+    public boolean isShow() {
+        return mBigTurnTablePanelView != null
+                && mBigTurnTablePanelView.getVisibility() == View.VISIBLE;
+    }
+
     private long getZuid() {
         if (null != mMyRoomInfo.getUser()) {
             return mMyRoomInfo.getUser().getUid();
