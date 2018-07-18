@@ -101,13 +101,13 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
 
             @Override
             public void onPageSelected(int position) {
-                View view = mViewPager.getChildAt(position);
-                if (view instanceof LiveChannelView) {
+                ChannelShow channelShow = null;
+                if (mPagerAdapter != null && (channelShow = mPagerAdapter.getChannelShowByPosition(position)) != null) {
                     EventBus.getDefault().removeStickyEvent(EventClass.SelectChannelEvent.class);
-                    EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(((LiveChannelView) view).getChannelId()));
+                    EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(channelShow.getChannelId()));
 
                     // 频道切换打点
-                    MilinkStatistics.getInstance().statisticChannelChange((int) ((LiveChannelView) view).getChannelId());
+                    MilinkStatistics.getInstance().statisticChannelChange((int) channelShow.getChannelId());
                 }
             }
 
@@ -142,12 +142,15 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
                     }
                 }
                 if (!models.isEmpty()) {
-                    mViewPager.setCurrentItem(defaultSelected);
-                    long channelId = models.get(defaultSelected).getChannelId();
-                    EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(channelId));
-
-                    // 频道切换打点 首次展示频道
-                    MilinkStatistics.getInstance().statisticChannelChange((int) channelId);
+                    if (defaultSelected != 0) {
+                        // 由于defaultSelected不为0时setCurrentItem会触发onPageSelected 之后post和打点的步骤不用重复
+                        mViewPager.setCurrentItem(defaultSelected);
+                    } else {
+                        long channelId = models.get(defaultSelected).getChannelId();
+                        EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(channelId));
+                        // 频道切换打点 首次展示频道
+                        MilinkStatistics.getInstance().statisticChannelChange((int) channelId);
+                    }
                 }
                 mIsFirstLoad = false;
             }
