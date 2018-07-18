@@ -45,13 +45,15 @@ public class BigTurnTableApi {
                             subscriber.onError(new Exception("StartTurntableRsp rsp is null"));
                         } else {
                             subscriber.onNext(rsp);
+                            subscriber.onCompleted();
                         }
-                        subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.d(TAG, e);
                         e.printStackTrace();
                         subscriber.onError(e);
                     }
+                } else {
+                    subscriber.onError(new Exception("PacketData is null"));
                 }
             }
         });
@@ -75,13 +77,15 @@ public class BigTurnTableApi {
                             subscriber.onError(new Exception("StopTurntableRsp rsp is null"));
                         } else {
                             subscriber.onNext(rsp);
+                            subscriber.onCompleted();
                         }
-                        subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.d(TAG, e);
                         e.printStackTrace();
                         subscriber.onError(e);
                     }
+                } else {
+                    subscriber.onError(new Exception("PacketData is null"));
                 }
             }
         });
@@ -124,13 +128,15 @@ public class BigTurnTableApi {
                             subscriber.onError(new Exception("DrawTurntableRsp rsp is null"));
                         } else {
                             subscriber.onNext(rsp);
+                            subscriber.onCompleted();
                         }
-                        subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.d(TAG, e);
                         e.printStackTrace();
                         subscriber.onError(e);
                     }
+                } else {
+                    subscriber.onError(new Exception("PacketData is null"));
                 }
             }
         });
@@ -155,14 +161,15 @@ public class BigTurnTableApi {
                             subscriber.onError(new Exception("RewardTurntableRsp rsp is null"));
                         } else {
                             subscriber.onNext(rsp);
+                            subscriber.onCompleted();
                         }
-
-                        subscriber.onCompleted();
                     } catch (InvalidProtocolBufferException e) {
                         MyLog.d(TAG, e);
                         e.printStackTrace();
                         subscriber.onError(e);
                     }
+                } else {
+                    subscriber.onError(new Exception("PacketData is null"));
                 }
             }
         });
