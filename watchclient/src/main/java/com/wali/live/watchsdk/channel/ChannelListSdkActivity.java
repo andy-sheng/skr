@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.base.utils.SelfUpdateManager;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.BackTitleBar;
 import com.base.view.NestViewPager;
@@ -33,6 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -161,6 +163,8 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     public void onResume() {
         super.onResume();
         EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.RESUME));
+
+        SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
     }
 
     @Override

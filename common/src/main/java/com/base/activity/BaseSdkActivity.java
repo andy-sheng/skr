@@ -21,7 +21,6 @@ public abstract class BaseSdkActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         MyLog.w(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
     }
 
     @Override

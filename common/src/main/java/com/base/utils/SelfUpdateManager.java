@@ -34,6 +34,8 @@ public class SelfUpdateManager {
 
     static final long REMIND_MAX_INTERVAL = 3600 * 1000 * 24;
 
+    static long sLastShowDialogRemindTs = 0;
+
     static boolean sCanSilentDownload = false;
 
     static boolean sDownloading = false;
@@ -53,8 +55,9 @@ public class SelfUpdateManager {
     }
 
     private static void selfUpdate(WeakReference<Context> contextRef) {
-        VersionCheckManager.getInstance().checkNewVersion();
-
+        if (VersionCheckManager.getInstance().getRemoteVersion() <= 0) {
+            VersionCheckManager.getInstance().checkNewVersion();
+        }
         if (VersionManager.getCurrentVersionCode(GlobalData.app()) >= VersionCheckManager.getInstance().getRemoteVersion()) {
             MyLog.d(TAG, "// 不需要更新，本地是最新的");
         } else {
@@ -76,49 +79,57 @@ public class SelfUpdateManager {
 
             if (hasNewestApkInLocal) {
                 MyLog.d(TAG, "本地是有最新的apk");
-                // 包现成的
-                long ts = PreferenceUtils.getSettingLong(NO_REMIND_TS_APK_INSTALL, 0);
-                if (System.currentTimeMillis() - ts > REMIND_MAX_INTERVAL) {
-                    // 可提醒用户
-                    showDialog(contextRef.get(), "发现直播助手新版本，可直接安装", "免流量安装", new Runnable() {
-                        @Override
-                        public void run() {
-                            //安装apk
-                            VersionCheckManager.getInstance().installLocalPackageN("com.wali.live.watchsdk.editinfo.fileprovider", apkFile.getPath());
-                        }
-                    }, null);
+                if (System.currentTimeMillis() - sLastShowDialogRemindTs > 2 * 3600 * 1000) {
+                    // 包现成的
+                    long ts = PreferenceUtils.getSettingLong(NO_REMIND_TS_APK_INSTALL, 0);
+                    if (System.currentTimeMillis() - ts > REMIND_MAX_INTERVAL) {
+                        sLastShowDialogRemindTs = System.currentTimeMillis();
+                        // 可提醒用户
+                        showDialog(contextRef.get(), "发现直播助手新版本，可直接安装", "免流量安装", new Runnable() {
+                            @Override
+                            public void run() {
+                                //安装apk
+                                VersionCheckManager.getInstance().installLocalPackageN("com.wali.live.watchsdk.editinfo.fileprovider", apkFile.getPath());
+                            }
+                        }, null);
+                    } else {
+                        // 算了
+                    }
                 } else {
-                    // 算了
+                    // 算了 不弹了
                 }
             } else {
                 if (VersionCheckManager.getInstance().isForceUpdate()) {
                     MyLog.d(TAG, "强制更新");
-                    long ts = PreferenceUtils.getSettingLong(NO_REMIND_TS_APK_DOWNLOAD, 0);
-                    if (System.currentTimeMillis() - ts > REMIND_MAX_INTERVAL) {
-                        // 可提醒用户
-                        showDialog(contextRef.get(), "需要下载安装直播助手新版本", "下载", new Runnable() {
-                            @Override
-                            public void run() {
-                                // 开始下载
-                                Observable.create(new Observable.OnSubscribe<Object>() {
-                                    @Override
-                                    public void call(Subscriber<? super Object> subscriber) {
-                                        downloadApk(true);
-                                        subscriber.onCompleted();
-                                    }
-                                })
-                                        .subscribeOn(Schedulers.io())
-                                        .subscribe();
-                            }
-                        }, new Runnable() {
-                            @Override
-                            public void run() {
-                                sCanSilentDownload = true;
-                            }
-                        });
-                    } else {
-                        // 算了
-                        sCanSilentDownload = true;
+                    if (System.currentTimeMillis() - sLastShowDialogRemindTs > 2 * 3600 * 1000) {
+                        long ts = PreferenceUtils.getSettingLong(NO_REMIND_TS_APK_DOWNLOAD, 0);
+                        if (System.currentTimeMillis() - ts > REMIND_MAX_INTERVAL) {
+                            // 可提醒用户
+                            sLastShowDialogRemindTs = System.currentTimeMillis();
+                            showDialog(contextRef.get(), "需要下载安装直播助手新版本", "下载", new Runnable() {
+                                @Override
+                                public void run() {
+                                    // 开始下载
+                                    Observable.create(new Observable.OnSubscribe<Object>() {
+                                        @Override
+                                        public void call(Subscriber<? super Object> subscriber) {
+                                            downloadApk(true);
+                                            subscriber.onCompleted();
+                                        }
+                                    })
+                                            .subscribeOn(Schedulers.io())
+                                            .subscribe();
+                                }
+                            }, new Runnable() {
+                                @Override
+                                public void run() {
+                                    sCanSilentDownload = true;
+                                }
+                            });
+                        } else {
+                            // 算了
+                            sCanSilentDownload = true;
+                        }
                     }
                 } else {
                     sCanSilentDownload = true;
@@ -177,9 +188,22 @@ public class SelfUpdateManager {
             public void onDownloadSuccess(String path) {
                 MyLog.d(TAG, "onDownloadSuccess" + " path=" + path);
                 VersionCheckManager.getInstance().removeNotification();
-                // 删除旧的apk
+
                 sDownloading = false;
                 sCanSilentDownload = false;
+                // 删除旧的apk
+                File file = new File(path);
+                File parentFile = file.getParentFile();
+                for (File t : parentFile.listFiles()) {
+                    if (t.getPath().equals(file.getPath())) {
+                        continue;
+                    }
+                    String fileName = t.getName();
+                    if (fileName.startsWith(GlobalData.app().getPackageName())
+                            && fileName.endsWith(".apk")) {
+                        t.delete();
+                    }
+                }
             }
 
             @Override

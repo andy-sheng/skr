@@ -29,6 +29,7 @@ import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
+import com.base.utils.SelfUpdateManager;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
 import com.jakewharton.rxbinding.view.RxView;
@@ -425,6 +426,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     protected void onResume() {
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
+        SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
     }
 
     @Override
@@ -542,7 +544,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(com.wali.live.watchsdk.eventbus.EventClass.H5FirstPayEvent event) {
         MyLog.d(TAG, "H5FirstPayEvent");
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
@@ -899,7 +901,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
     private boolean check4GNet() {
-        if(true){
+        if (true) {
             return false;
         }
         if (AppNetworkUtils.is4g()) {
