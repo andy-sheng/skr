@@ -267,12 +267,12 @@ public class DynamicLoadSoManager {
                 public void onDownloaded(long downloaded, long totalLength) {
                     int p = (int) (downloaded * 100 / totalLength);
                     String tips = String.format("已下载%d%%", p);
-                    showDownloadNotification(tips);
+                    VersionCheckManager.getInstance().showDownloadNotification(tips);
                 }
 
                 @Override
                 public void onCompleted(String localPath) {
-                    removeNotification();
+                    VersionCheckManager.getInstance().removeNotification();
                 }
 
                 @Override
@@ -311,14 +311,14 @@ public class DynamicLoadSoManager {
             public void onDownloadProgress(int progress) {
                 MyLog.d(TAG, "onDownloadProgress" + " progress=" + progress);
                 String tips = String.format("已下载%d%%", progress);
-                showDownloadNotification(tips);
+                VersionCheckManager.getInstance().showDownloadNotification(tips);
             }
 
             @Override
             public void onDownloadSuccess(String path) {
                 MyLog.d(TAG, "onDownloadSuccess" + " path=" + path);
-                removeNotification();
-                VersionCheckManager.getInstance().installLocalPackageN("com.wali.live.watchsdk.editinfo.fileprovider");
+                VersionCheckManager.getInstance().removeNotification();
+                VersionCheckManager.getInstance().installLocalPackageN("com.wali.live.watchsdk.editinfo.fileprovider",path);
             }
 
             @Override
@@ -407,32 +407,6 @@ public class DynamicLoadSoManager {
             return -1;
         }
         return 0;
-    }
-
-
-    public static final int UPDATE_DOWNLOADING = 100001;
-
-    public void showDownloadNotification(String msg) {
-        NotificationManager mNotificationManager = (NotificationManager) GlobalData.app().getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification.Builder nb = new Notification.Builder(GlobalData.app());
-        nb.setContentText(msg);
-        nb.setContentTitle(GlobalData.app().getString(R.string.update_downloading));
-        nb.setSmallIcon(R.drawable.milive_ic);
-        nb.setAutoCancel(true);
-        int defaults = 0;
-        nb.setDefaults(defaults);
-        Notification notification = null;
-        if (Build.VERSION.SDK_INT >= 16) {
-            notification = nb.build();
-        } else {
-            notification = nb.getNotification();
-        }
-        mNotificationManager.notify(UPDATE_DOWNLOADING, notification);
-    }
-
-    public void removeNotification() {
-        NotificationManager mNotificationManager = (NotificationManager) GlobalData.app().getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.cancel(UPDATE_DOWNLOADING);
     }
 
 

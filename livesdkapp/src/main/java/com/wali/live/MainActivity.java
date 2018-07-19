@@ -23,6 +23,7 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
+import com.base.utils.callback.ICommonCallBack;
 import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionManager;
@@ -34,12 +35,14 @@ import com.mi.liveassistant.BuildConfig;
 import com.mi.liveassistant.R;
 import com.mi.milink.sdk.base.debug.TraceLevel;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.jump.JumpSdkActivity;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.channel.ChannelListSdkActivity;
 
 //import activity.ContestPrepareActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
+import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.login.LoginPresenter;
 //import com.wali.live.watchsdk.personalcenter.PersonalCenterFragment;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
@@ -268,8 +271,27 @@ public class MainActivity extends BaseSdkActivity {
 
             @Override
             public void run() {
-                HostChannelManager.getInstance().setChannelData(50019, "com.miui.player");
-                ChannelListSdkActivity.openActivity(MainActivity.this);
+                HostChannelManager.getInstance().checkChannel(50019, "com.miui.player")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Boolean>() {
+                            @Override
+                            public void onCompleted() {
+                                MyLog.v(TAG, "onCompleted");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.e(TAG, e);
+                            }
+
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+                                MyLog.v(TAG, "onNext");
+                                ChannelListSdkActivity.openActivity(MainActivity.this);
+                            }
+                        });
+
             }
         }));
 
@@ -303,7 +325,7 @@ public class MainActivity extends BaseSdkActivity {
 
             @Override
             public void run() {
-                XiaomiUpdateAgent.update(MainActivity.this);
+                XiaomiUpdateAgent.update(MainActivity.this,true);
             }
         }));
 

@@ -8,6 +8,7 @@ import android.view.TextureView;
 import com.base.event.SdkEventClass;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.utils.SelfUpdateManager;
 import com.base.utils.network.NetworkUtils;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
@@ -99,6 +100,9 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
         } else {
             mStreamerPresenter.startWatch();
         }
+
+        // 既然已经允许播放了，说明用户不在乎流量了，开始尝试下载apk包
+        SelfUpdateManager.tryDownloadNewestApk();
     }
 
     private boolean requestAudioFocus() {

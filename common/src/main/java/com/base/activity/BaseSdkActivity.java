@@ -4,9 +4,12 @@ import android.os.Bundle;
 
 import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
+import com.base.utils.SelfUpdateManager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by lan on 15/11/12.
@@ -18,6 +21,7 @@ public abstract class BaseSdkActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         MyLog.w(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
     }
 
     @Override

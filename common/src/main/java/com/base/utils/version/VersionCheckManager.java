@@ -1,5 +1,7 @@
 package com.base.utils.version;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +18,7 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
 
+import com.base.common.R;
 import com.base.global.GlobalData;
 import com.base.log.logger.Logger;
 import com.base.utils.CommonUtils;
@@ -60,8 +63,6 @@ public class VersionCheckManager {
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
     private static final String PREF_SHOW_UPGRADE_DIALOG = "show_upgrade_dialog";
     private static final String PREF_LAST_CHECK = "last_check";
-    private static final String PREF_FORCE_TO = "force_to";
-    private static final String PREF_REMOTE_VERSION = "remote_version";
 
     private static VersionCheckManager sInstance;
 
@@ -77,6 +78,8 @@ public class VersionCheckManager {
     private boolean mNeedUpdateApp = false;
 
     private boolean mIsStaging = false;
+
+    private boolean mForceUpdate = false;
 
     public static synchronized VersionCheckManager getInstance() {
         if (sInstance == null) {
@@ -102,6 +105,10 @@ public class VersionCheckManager {
      */
     public void setStaging(boolean isStaging) {
         mIsStaging = isStaging;
+    }
+
+    public boolean isForceUpdate(){
+        return mForceUpdate;
     }
 
     public int checkNewVersion() {
@@ -162,10 +169,7 @@ public class VersionCheckManager {
                 return CHECK_FAILED;
             }
             JSONObject dataObj = resultObj.getJSONObject("data");
-            boolean shouldUpdate = dataObj.getBoolean("newUpdate");
-            if (!shouldUpdate) {
-                return NO_UPGRADE;
-            }
+
             mRemoteAppVersion = dataObj.getInt("toVersion");
             mRemoteApkUrl = dataObj.getString("downloadUrl");
             mUpdateMessage = dataObj.optString("remark");
@@ -175,18 +179,22 @@ public class VersionCheckManager {
             // additionalUrl不为空，走增量升级
             mIsAdditionalUpgrade = !TextUtils.isEmpty(mAdditionalUrl)
                     && !TextUtils.isEmpty(mFullPackageHash);
-            JSONObject custom = dataObj.optJSONObject("custom");
-            boolean shouldForceUpdate = false;
-            if (custom != null) {
-                shouldForceUpdate = custom.optBoolean("forced", false);
+
+            boolean shouldUpdate = dataObj.getBoolean("newUpdate");
+            if (!shouldUpdate) {
+                return NO_UPGRADE;
             }
-            if (shouldForceUpdate) {
+
+            JSONObject custom = dataObj.optJSONObject("custom");
+            mForceUpdate = false;
+            if (custom != null) {
+                mForceUpdate = custom.optBoolean("forced", false);
+            }
+            if (mForceUpdate) {
                 mNeedUpdateApp = true;
-                setForceToVersion(true);
                 return HAS_FORCE_UPGRADE;
             } else {
                 mNeedUpdateApp = true;
-                setForceToVersion(false);
             }
         } catch (JSONException e) {
             return CHECK_FAILED;
@@ -237,18 +245,8 @@ public class VersionCheckManager {
         return null;
     }
 
-    public void saveRemoteVersion() {
-        SharedPreferences pref = GlobalData.app().getApplicationContext()
-                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        Editor ed = pref.edit();
-        ed.putInt(PREF_REMOTE_VERSION, mRemoteAppVersion);
-        ed.apply();
-    }
-
     public int getRemoteVersion() {
-        SharedPreferences pref = GlobalData.app().getApplicationContext()
-                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        return pref.getInt(PREF_REMOTE_VERSION, -1);
+        return mRemoteAppVersion;
     }
 
     public void startDownload(final IUpdateListener updateListener) {
@@ -349,20 +347,19 @@ public class VersionCheckManager {
 
     }
 
-    public boolean installLocalPackage() {
-        return installLocalPackageInner(null);
+    public boolean installLocalPackage(String localFilePath) {
+        return installLocalPackageInner(null,localFilePath);
     }
 
 
-    public boolean installLocalPackageN(String auth) {
-        return installLocalPackageInner(auth);
+    public boolean installLocalPackageN(String auth,String localFilePath) {
+        return installLocalPackageInner(auth,localFilePath);
     }
 
-    private boolean installLocalPackageInner(String auth) {
+    private boolean installLocalPackageInner(String auth,String localFileName) {
         // 首先将本地文件重命名，这样在下次检查的时候就会把这个文件删除，
         // 防止这次下载的是一个错误的包，安装失败后，下次继续会安装失败。
-        String localFileName = getCachePath(String.format("%s_%d.apk",
-                PACKAGE_NAME, mRemoteAppVersion)); //下载完成的安装包
+
         String newFileName = getCachePath(String.format("%s_%d_local.apk",
                 PACKAGE_NAME, mRemoteAppVersion)); //最终的安装包
         File f = new File(localFileName);
@@ -470,22 +467,6 @@ public class VersionCheckManager {
         return System.currentTimeMillis() - last >= 1800 * 1000;
     }
 
-    public void setForceToVersion(boolean needForceUpdate) {
-        SharedPreferences pref = GlobalData.app().getApplicationContext()
-                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        Editor ed = pref.edit();
-        ed.putBoolean(PREF_FORCE_TO, needForceUpdate);
-        ed.apply();
-    }
-
-    // 看当前版本是否低于要求的最低版本
-    public boolean needForceCheck() {
-        SharedPreferences pref = GlobalData.app().getApplicationContext()
-                .getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        boolean needForceUpdate = pref.getBoolean(PREF_FORCE_TO, false);
-        Logger.d(TAG, "need_force_to_version == " + needForceUpdate);
-        return needForceUpdate;
-    }
 
     public String getVersionNumberByTransfer() {
         return getVersionNumberByTransfer(mRemoteAppVersion);
@@ -500,6 +481,29 @@ public class VersionCheckManager {
         version += (versionNumber % 100000) / 1000 + ".";
         version += (versionNumber % 100000) % 1000;
         return version;
+    }
+
+    public void showDownloadNotification(String msg) {
+        NotificationManager mNotificationManager = (NotificationManager) GlobalData.app().getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification.Builder nb = new Notification.Builder(GlobalData.app());
+        nb.setContentText(msg);
+        nb.setContentTitle(GlobalData.app().getString(R.string.update_downloading));
+        nb.setSmallIcon(R.drawable.milive_ic);
+        nb.setAutoCancel(true);
+        int defaults = 0;
+        nb.setDefaults(defaults);
+        Notification notification = null;
+        if (Build.VERSION.SDK_INT >= 16) {
+            notification = nb.build();
+        } else {
+            notification = nb.getNotification();
+        }
+        mNotificationManager.notify(100001, notification);
+    }
+
+    public void removeNotification() {
+        NotificationManager mNotificationManager = (NotificationManager) GlobalData.app().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(100001);
     }
 
 
