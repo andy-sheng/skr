@@ -93,11 +93,10 @@ public class BigTurnTableViewPresenter extends RxLifeCyclePresenter implements B
                 HashMap map = (mMode == MODE_SMALL ? mSBmpMap : mBBmpMap);
                 if (!map.isEmpty()) {
                     subscriber.onNext(true);
+                    subscriber.onCompleted();
                 } else {
                     subscriber.onError(new Exception("load drawable fail"));
                 }
-
-                subscriber.onCompleted();
             }
         })
                 .subscribeOn(Schedulers.io())
