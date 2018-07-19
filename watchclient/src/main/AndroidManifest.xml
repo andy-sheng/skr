@@ -141,26 +141,26 @@
             android:theme="@style/AppThemeLive" />
 
 
-        <activity
-            android:name="activity.ContestPrepareActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
-            android:screenOrientation="portrait" />
+        <!--<activity-->
+            <!--android:name="activity.ContestPrepareActivity"-->
+            <!--android:configChanges="keyboardHidden|keyboard|orientation|screenSize"-->
+            <!--android:screenOrientation="portrait" />-->
 
-        <activity
-            android:name="rank.ContestRankActivity"
-            android:screenOrientation="portrait" />
+        <!--<activity-->
+            <!--android:name="rank.ContestRankActivity"-->
+            <!--android:screenOrientation="portrait" />-->
 
-        <activity
-            android:name="activity.ContestWatchActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeLive" />
+        <!--<activity-->
+            <!--android:name="activity.ContestWatchActivity"-->
+            <!--android:configChanges="keyboardHidden|keyboard|orientation|screenSize"-->
+            <!--android:hardwareAccelerated="true"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/AppThemeLive" />-->
 
-        <activity
-            android:name=".personalcenter.level.LevelActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
-            android:screenOrientation="portrait" />
+        <!--<activity-->
+            <!--android:name=".personalcenter.level.LevelActivity"-->
+            <!--android:configChanges="keyboardHidden|keyboard|orientation|screenSize"-->
+            <!--android:screenOrientation="portrait" />-->
 
         <service
             android:name="com.wali.live.watchsdk.service.PacketProcessService"

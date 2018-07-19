@@ -30,6 +30,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.data.repository.GiftRepository;
+import com.mi.liveassistant.BuildConfig;
 import com.mi.liveassistant.R;
 import com.mi.milink.sdk.base.debug.TraceLevel;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -45,6 +46,7 @@ import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.webview.WebViewActivity;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,9 +166,10 @@ public class MainActivity extends BaseSdkActivity {
         dataList.add(new TestItem("渠道版本", new Runnable() {
             @Override
             public void run() {
-                String info = String.format("渠道号%s,版本%s"
+                String info = String.format("渠道号%s,版本%s DEBUG:%s"
                         , ReleaseChannelUtils.getReleaseChannel()
-                        , VersionManager.getCurrentVersionCode(GlobalData.app()));
+                        , VersionManager.getCurrentVersionCode(GlobalData.app())
+                        , BuildConfig.DEBUG);
                 ToastUtils.showToast(info);
             }
         }));
@@ -192,7 +195,7 @@ public class MainActivity extends BaseSdkActivity {
         dataList.add(new TestItem("跳到直播", new Runnable() {
             @Override
             public void run() {
-                inputDialog("输入主播id","29719885", new InputSuccessCallback() {
+                inputDialog("输入主播id", "29719885", new InputSuccessCallback() {
                     @Override
                     public void inputSuccess(String input) {
                         RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
@@ -242,7 +245,7 @@ public class MainActivity extends BaseSdkActivity {
 
             @Override
             public void run() {
-                inputDialog("输入频道id","20", new InputSuccessCallback() {
+                inputDialog("输入频道id", "20", new InputSuccessCallback() {
                     @Override
                     public void inputSuccess(String input) {
                         int channelId = Integer.parseInt(input);
@@ -295,6 +298,15 @@ public class MainActivity extends BaseSdkActivity {
             }
         }));
 
+
+        dataList.add(new TestItem("检查更新", new Runnable() {
+
+            @Override
+            public void run() {
+                XiaomiUpdateAgent.update(MainActivity.this);
+            }
+        }));
+
         mTestItemAdapter.setDataList(dataList);
     }
 
@@ -320,7 +332,7 @@ public class MainActivity extends BaseSdkActivity {
     }
 
 
-    void inputDialog(String title,String defaultValue, final InputSuccessCallback callback) {
+    void inputDialog(String title, String defaultValue, final InputSuccessCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(title);
         final EditText input = new EditText(MainActivity.this);

@@ -111,4 +111,7 @@ dependencies {
 //    compile 'com.jakewharton.timber:timber:4.3.1'
 
     provided 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+
+    //添加依赖
+    compile 'mi-appstore:xiaomi-update-sdk:4.0.3'
 }
