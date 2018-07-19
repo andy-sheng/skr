@@ -65,13 +65,15 @@ public class BigTurnTablePresenter extends RxLifeCyclePresenter implements BigTu
             @Override
             public void call(Subscriber<? super List<TurnTableConfigModel>> subscriber) {
                 LiveProto.GetRoomAttachmentRsp rsp = BigTurnTableApi.getTurnTableInfoReq(zuid, roomId);
-                if(rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                if(rsp != null
+                        && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                     List<BigTurnTableProto.TurntableConfig> turntableConfigList = rsp.getTurntableConfigList();
                     if(turntableConfigList != null && !turntableConfigList.isEmpty()) {
                         List<TurnTableConfigModel> list = transformData(turntableConfigList);
                         subscriber.onNext(list);
+                    } else {
+                        subscriber.onError(new Exception("turntableConfigList is empty"));
                     }
-                    subscriber.onCompleted();
 
                 } else {
                     subscriber.onError(new Exception("GetRoomAttachmentRsp == null"));
@@ -90,7 +92,7 @@ public class BigTurnTablePresenter extends RxLifeCyclePresenter implements BigTu
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, e);
+                        MyLog.w(TAG, e);
                     }
 
                     @Override
@@ -156,12 +158,13 @@ public class BigTurnTablePresenter extends RxLifeCyclePresenter implements BigTu
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, e);
+                        MyLog.w(TAG, e);
                     }
 
                     @Override
                     public void onNext(BigTurnTableProto.StartTurntableRsp rsp) {
-                        if(rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                        if(rsp != null
+                                && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                             mIview.openSuccess(type);
                         } else {
                             MyLog.d(TAG, "open Turn Table fail :" + rsp.getRetCode());
@@ -185,12 +188,13 @@ public class BigTurnTablePresenter extends RxLifeCyclePresenter implements BigTu
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, e);
+                        MyLog.w(TAG, e);
                     }
 
                     @Override
                     public void onNext(BigTurnTableProto.StopTurntableRsp rsp) {
-                        if(rsp != null && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                        if(rsp != null &&
+                                rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
                             mIview.closeSuccess(type, inputTxt, needOpenOtherMode);
                         } else {
                             mIview.closeFail();

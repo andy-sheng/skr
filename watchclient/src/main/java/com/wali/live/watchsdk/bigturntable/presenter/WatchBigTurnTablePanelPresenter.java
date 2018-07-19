@@ -179,7 +179,7 @@ public class WatchBigTurnTablePanelPresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, e);
+                        MyLog.w(TAG, e);
                     }
 
                     @Override
@@ -206,7 +206,7 @@ public class WatchBigTurnTablePanelPresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, e);
+                        MyLog.w(TAG, e);
                     }
 
                     @Override
@@ -250,7 +250,7 @@ public class WatchBigTurnTablePanelPresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.d(TAG, e);
+                        MyLog.w(TAG, e);
                     }
 
                     @Override
