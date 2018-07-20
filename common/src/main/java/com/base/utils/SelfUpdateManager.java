@@ -16,6 +16,10 @@ import com.base.preference.PreferenceUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionCheckManager;
 import com.base.utils.version.VersionManager;
+import com.xiaomi.market.sdk.UpdateResponse;
+import com.xiaomi.market.sdk.UpdateStatus;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
+import com.xiaomi.market.sdk.XiaomiUpdateListener;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -55,7 +59,7 @@ public class SelfUpdateManager {
                 .subscribe();
     }
 
-    private static void selfUpdate(WeakReference<Context> contextRef) {
+    private static void selfUpdate(final WeakReference<Context> contextRef) {
         if (VersionCheckManager.getInstance().getRemoteVersion() <= 0) {
             VersionCheckManager.getInstance().checkNewVersion();
         }
@@ -114,7 +118,7 @@ public class SelfUpdateManager {
                                     Observable.create(new Observable.OnSubscribe<Object>() {
                                         @Override
                                         public void call(Subscriber<? super Object> subscriber) {
-                                            downloadApk(true);
+                                            downloadApkWithNotice(contextRef);
                                             subscriber.onCompleted();
                                         }
                                     })
@@ -144,7 +148,12 @@ public class SelfUpdateManager {
             Observable.create(new Observable.OnSubscribe<Object>() {
                 @Override
                 public void call(Subscriber<? super Object> subscriber) {
-                    downloadApk(true);
+                    if (sDownloading) {
+                        MyLog.d(TAG, "下载中");
+                        return;
+                    }
+                    // 下载
+                    doSelfArrage(false);
                     subscriber.onCompleted();
                 }
             }).subscribeOn(Schedulers.io())
@@ -152,17 +161,41 @@ public class SelfUpdateManager {
         }
     }
 
-    public static void downloadApk(final boolean noNotice) {
+    public static void downloadApkWithNotice(WeakReference<Context> contextRef) {
         if (sDownloading) {
             MyLog.d(TAG, "下载中");
             return;
         }
+
+        XiaomiUpdateAgent.setUpdateAutoPopup(false);
+        XiaomiUpdateAgent.setUpdateListener(new XiaomiUpdateListener() {
+            @Override
+            public void onUpdateReturned(int i, UpdateResponse updateResponse) {
+                // 这一步是为了使用增量更新
+                if (i ==  UpdateStatus.STATUS_UPDATE && updateResponse != null // 如果小米应用商店有更新
+                        // 并且有增量更新
+                        && updateResponse.diffSize > 0
+                        // 并且该更新后的版本不低于当前检测到的远端版本
+                        && updateResponse.versionCode >= VersionCheckManager.getInstance().getRemoteVersion()) {
+                    // 走小米应用商店SDK下载和安装流程
+                    XiaomiUpdateAgent.arrange();
+                } else {
+                    doSelfArrage(true);
+                }
+            }
+        });
+        if (contextRef != null && contextRef.get() != null) {
+            XiaomiUpdateAgent.update(contextRef.get());
+        }
+    }
+
+    private static void doSelfArrage(final boolean hasNotice) {
         sDownloading = true;
         VersionCheckManager.getInstance().startDownload(new VersionCheckManager.IUpdateListener() {
             @Override
             public void onRepeatedRequest() {
                 MyLog.d(TAG, "onRepeatedRequest");
-                if (noNotice) {
+                if (hasNotice) {
                     ToastUtils.showToast("直播组件正在更新中,可在通知栏查看进度");
                 }
             }
@@ -170,7 +203,7 @@ public class SelfUpdateManager {
             @Override
             public void onDownloadStart() {
                 MyLog.d(TAG, "onDownloadStart");
-                if (noNotice) {
+                if (hasNotice) {
                     ToastUtils.showToast("下载直播助手,可在通知栏查看进度");
                 }
             }
@@ -178,7 +211,7 @@ public class SelfUpdateManager {
             @Override
             public void onDownloadProgress(int progress) {
                 MyLog.d(TAG, "onDownloadProgress" + " progress=" + progress);
-                if (noNotice) {
+                if (hasNotice) {
                     String tips = String.format("已下载%d%%", progress);
                     VersionCheckManager.getInstance().showDownloadNotification(tips);
                 }
@@ -203,7 +236,7 @@ public class SelfUpdateManager {
                     }
                 }
 
-                if (noNotice) {
+                if (hasNotice) {
                     VersionCheckManager.getInstance().installLocalPackageN("com.wali.live.watchsdk.editinfo.fileprovider", path);
                 }
                 sDownloading = false;
@@ -215,7 +248,7 @@ public class SelfUpdateManager {
                 MyLog.d(TAG, "onDownloadFailed" + " errCode=" + errCode);
                 VersionCheckManager.getInstance().removeNotification();
                 sDownloading = false;
-                if (noNotice) {
+                if (hasNotice) {
                     ToastUtils.showToast("下载失败");
                 }
             }
@@ -284,5 +317,4 @@ public class SelfUpdateManager {
         });
 
     }
-
 }
