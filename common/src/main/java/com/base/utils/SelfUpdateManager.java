@@ -115,15 +115,7 @@ public class SelfUpdateManager {
                                 @Override
                                 public void run() {
                                     // 开始下载
-                                    Observable.create(new Observable.OnSubscribe<Object>() {
-                                        @Override
-                                        public void call(Subscriber<? super Object> subscriber) {
-                                            downloadApkWithNotice(contextRef);
-                                            subscriber.onCompleted();
-                                        }
-                                    })
-                                            .subscribeOn(Schedulers.io())
-                                            .subscribe();
+                                    downloadApkWithNotice(contextRef);
                                 }
                             }, new Runnable() {
                                 @Override
@@ -180,7 +172,15 @@ public class SelfUpdateManager {
                     // 走小米应用商店SDK下载和安装流程
                     XiaomiUpdateAgent.arrange();
                 } else {
-                    doSelfArrage(true);
+                    Observable.create(new Observable.OnSubscribe<Object>() {
+                        @Override
+                        public void call(Subscriber<? super Object> subscriber) {
+                            doSelfArrage(true);
+                            subscriber.onCompleted();
+                        }
+                    })
+                            .subscribeOn(Schedulers.io())
+                            .subscribe();
                 }
             }
         });
