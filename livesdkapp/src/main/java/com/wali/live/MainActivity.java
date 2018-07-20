@@ -19,13 +19,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.base.activity.BaseSdkActivity;
+import com.base.dialog.MyAlertDialog;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
+import com.base.utils.DynamicLoadSoManager;
+import com.base.utils.SelfUpdateManager;
 import com.base.utils.callback.ICommonCallBack;
 import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.toast.ToastUtils;
+import com.base.utils.version.VersionCheckManager;
 import com.base.utils.version.VersionManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.channel.HostChannelManager;
@@ -322,10 +326,82 @@ public class MainActivity extends BaseSdkActivity {
 
 
         dataList.add(new TestItem("检查更新", new Runnable() {
+            int mProgress = 0;
 
             @Override
             public void run() {
-                XiaomiUpdateAgent.update(MainActivity.this,true);
+                if (mProgress > 0) {
+                    ToastUtils.showToast(String.format("下载中,进度 %d/100", mProgress));
+                    return;
+                }
+                VersionCheckManager.getInstance().checkNewVersion();
+                if (VersionCheckManager.getInstance().getRemoteVersion() > VersionManager.getCurrentVersionCode(MainActivity.this)) {
+                    MyAlertDialog alertDialog = new MyAlertDialog.Builder(MainActivity.this).create();
+                    alertDialog.setMessage("有新版本，是否下载");
+                    alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                        }
+                    });
+                    alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialog) {
+
+                        }
+                    });
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "下载", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Observable.create(new Observable.OnSubscribe<Object>() {
+                                @Override
+                                public void call(Subscriber<? super Object> subscriber) {
+
+                                    VersionCheckManager.getInstance().startDownload(new VersionCheckManager.IUpdateListener() {
+                                        @Override
+                                        public void onRepeatedRequest() {
+
+                                        }
+
+                                        @Override
+                                        public void onDownloadStart() {
+
+                                        }
+
+                                        @Override
+                                        public void onDownloadProgress(int progress) {
+                                            mProgress = progress;
+                                        }
+
+                                        @Override
+                                        public void onDownloadSuccess(String path) {
+                                            mProgress = 0;
+                                            VersionCheckManager.getInstance().installLocalPackageN("com.wali.live.watchsdk.editinfo.fileprovider", path);
+                                        }
+
+                                        @Override
+                                        public void onDownloadFailed(int errCode) {
+                                            mProgress = 0;
+                                        }
+                                    });
+                                    subscriber.onCompleted();
+                                }
+                            })
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe();
+
+                        }
+                    });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+                }else{
+                    ToastUtils.showToast("已是最新");
+                }
             }
         }));
 

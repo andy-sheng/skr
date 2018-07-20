@@ -180,16 +180,19 @@ public class VersionCheckManager {
             mIsAdditionalUpgrade = !TextUtils.isEmpty(mAdditionalUrl)
                     && !TextUtils.isEmpty(mFullPackageHash);
 
+            // 别的字段都不下发，也是无奈。 默认这个message以三个!!!结尾就强制更新。
+
+            mForceUpdate = mUpdateMessage.endsWith("!!!");
+
             boolean shouldUpdate = dataObj.getBoolean("newUpdate");
             if (!shouldUpdate) {
                 return NO_UPGRADE;
             }
-
-            JSONObject custom = dataObj.optJSONObject("custom");
-            mForceUpdate = false;
-            if (custom != null) {
-                mForceUpdate = custom.optBoolean("forced", false);
-            }
+//            JSONObject custom = dataObj.optJSONObject("custom");
+//            mForceUpdate = false;
+//            if (custom != null) {
+//                mForceUpdate = custom.optBoolean("forced", false);
+//            }
             if (mForceUpdate) {
                 mNeedUpdateApp = true;
                 return HAS_FORCE_UPGRADE;

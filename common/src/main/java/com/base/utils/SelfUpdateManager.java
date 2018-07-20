@@ -43,6 +43,7 @@ public class SelfUpdateManager {
     static Handler sMainHandler = new Handler(Looper.getMainLooper());
 
     public static void selfUpdateAsnc(final WeakReference contextRef) {
+//        VersionCheckManager.getInstance().setStaging(true);
         Observable.create(new Observable.OnSubscribe<Object>() {
             @Override
             public void call(Subscriber<? super Object> subscriber) {
@@ -161,7 +162,7 @@ public class SelfUpdateManager {
             @Override
             public void onRepeatedRequest() {
                 MyLog.d(TAG, "onRepeatedRequest");
-                if (!noNotice) {
+                if (noNotice) {
                     ToastUtils.showToast("直播组件正在更新中,可在通知栏查看进度");
                 }
             }
@@ -169,15 +170,15 @@ public class SelfUpdateManager {
             @Override
             public void onDownloadStart() {
                 MyLog.d(TAG, "onDownloadStart");
-                if (!noNotice) {
-                    ToastUtils.showToast("更新直播助手");
+                if (noNotice) {
+                    ToastUtils.showToast("下载直播助手,可在通知栏查看进度");
                 }
             }
 
             @Override
             public void onDownloadProgress(int progress) {
                 MyLog.d(TAG, "onDownloadProgress" + " progress=" + progress);
-                if (!noNotice) {
+                if (noNotice) {
                     String tips = String.format("已下载%d%%", progress);
                     VersionCheckManager.getInstance().showDownloadNotification(tips);
                 }
@@ -188,9 +189,6 @@ public class SelfUpdateManager {
             public void onDownloadSuccess(String path) {
                 MyLog.d(TAG, "onDownloadSuccess" + " path=" + path);
                 VersionCheckManager.getInstance().removeNotification();
-
-                sDownloading = false;
-                sCanSilentDownload = false;
                 // 删除旧的apk
                 File file = new File(path);
                 File parentFile = file.getParentFile();
@@ -204,12 +202,22 @@ public class SelfUpdateManager {
                         t.delete();
                     }
                 }
+
+                if (noNotice) {
+                    VersionCheckManager.getInstance().installLocalPackageN("com.wali.live.watchsdk.editinfo.fileprovider", path);
+                }
+                sDownloading = false;
+                sCanSilentDownload = false;
             }
 
             @Override
             public void onDownloadFailed(int errCode) {
                 MyLog.d(TAG, "onDownloadFailed" + " errCode=" + errCode);
+                VersionCheckManager.getInstance().removeNotification();
                 sDownloading = false;
+                if (noNotice) {
+                    ToastUtils.showToast("下载失败");
+                }
             }
         });
     }
