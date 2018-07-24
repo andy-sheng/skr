@@ -25,7 +25,7 @@ public class ReleaseChannelUtils {
                     curChannel = Constants.ReleaseChannel;
                 }
 
-                if (curChannel.equals("meng_1254_48_android")) {
+                if ("meng_1254_48_android".equals(curChannel)) {
                     //如果当前的渠道是应用商店
                     String oldChannel = "";
                     if (GlobalData.app() != null) {
@@ -48,7 +48,7 @@ public class ReleaseChannelUtils {
                             PreferenceUtils.KEY_RELEASE_CHANNEL, DEFAULT_CHANNEL);
                 }
             }
-            if (curChannel.equals("3000_1_android")
+            if ("3000_1_android".equals(curChannel)
                     && !CommonUtils.isChineseLocale(GlobalData.app())) {
                 // 如果是android market的渠道，并且语言不是中文，更改渠道为android market国际版
                 curChannel = "3000_2_android";
