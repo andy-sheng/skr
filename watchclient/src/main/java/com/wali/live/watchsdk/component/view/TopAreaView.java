@@ -256,12 +256,12 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
             @Override
             public void updateTicketAndViewerCount(int ticketCount, int initTicket, int viewerCount) {
                 int thisLiveTicket = ticketCount - initTicket;
-                if (thisLiveTicket > 0 && initTicket > 0) {
+                if (thisLiveTicket >= 0 && initTicket >= 0) {
                     mTicketDescTv.setText("本场");
                     mTicketNumTv.setText(String.valueOf(thisLiveTicket));
                 } else {
-                    mTicketDescTv.setText("星票");
-                    mTicketNumTv.setText(String.valueOf(ticketCount));
+                    mTicketDescTv.setText("本场");
+                    mTicketNumTv.setText("加载中");
                 }
 
                 mViewersNumTv.setText(String.valueOf(viewerCount));
