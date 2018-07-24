@@ -3,6 +3,7 @@ package com.base.utils;
 import android.Manifest;
 import android.content.Context;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import com.base.global.GlobalData;
@@ -10,6 +11,7 @@ import com.base.log.MyLog;
 import com.base.permission.PermissionUtils;
 import com.base.permission.rxpermission.Permission;
 import com.base.permission.rxpermission.RxPermissions;
+import com.mi.milink.sdk.base.Global;
 
 import rx.Subscription;
 import rx.functions.Action1;
@@ -37,30 +39,11 @@ public class DeviceUtils {
                     imei = "N/A";
                 }
             } else if (imei == null) {
-                if (mPermissionSubsription == null || mPermissionSubsription.isUnsubscribed()) {
-                    mPermissionSubsription = RxPermissions.getInstance(GlobalData.app())
-                            .requestEach(Manifest.permission.READ_PHONE_STATE)
-                            .subscribe(new Action1<Permission>() {
-                                @Override
-                                public void call(Permission permission) {
-                                    if (permission.granted) {
-                                        TelephonyManager tm = (TelephonyManager) GlobalData.app().getSystemService(Context.TELEPHONY_SERVICE);
-                                        imei = tm.getDeviceId();
-                                    } else if (permission.shouldShowRequestPermissionRationale) {
-                                        imei = "N/A";
-//                                        ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.permission_deny_read_phone_state));
-                                    } else {
-                                        imei = "N/A";
-//                                        ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.permission_deny_read_phone_state));
-                                    }
-                                    mPermissionSubsription = null;
-                                }
-                            }, new Action1<Throwable>() {
-                                @Override
-                                public void call(Throwable throwable) {
-                                    MyLog.e(throwable);
-                                }
-                            });
+                try {
+                    return Settings.Secure.getString(Global.getApplicationContext().getContentResolver(),
+                            Settings.Secure.ANDROID_ID);
+                } catch (Exception e2) {
+                    return "N/A";
                 }
             }
         }

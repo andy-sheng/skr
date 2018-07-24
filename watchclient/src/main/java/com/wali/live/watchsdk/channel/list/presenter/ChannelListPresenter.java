@@ -103,7 +103,7 @@ public class ChannelListPresenter {
                     @Override
                     public void onError(Throwable e) {
                         MyLog.d(TAG, formatLog("getChannelObservable onError=" + e.getMessage()));
-                        mTimerSubscription.unsubscribe();
+//                        mTimerSubscription.unsubscribe();
                     }
 
                     @Override
