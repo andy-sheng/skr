@@ -679,10 +679,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private IWatchView mWatchView = new IWatchView() {
         @Override
         public void enterLive(EnterRoomInfo roomInfo) {
-            MyLog.d(TAG, "enterLive success");
+            MyLog.d(TAG, "enterLive success roomInfo:"+roomInfo);
             if (roomInfo != null) {
                 updateVideoUrl(roomInfo.getDownStreamUrl());
                 mMyRoomData.setHuyaInfo(roomInfo.getThirdPartyInfo());
+                mMyRoomData.setLiveType(roomInfo.getType());
             }
 
             //TODO 这段代码迁移到了switchRoom
@@ -1087,13 +1088,18 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 mGiftAnimationView.reset();
                 mGiftContinueViewGroup.reset();
                 mGiftRoomEffectView.reset();
-                mSdkView.reset();
+                if (mSdkView != null) {
+                    mSdkView.reset();
+                }
+
                 mController.postEvent(MSG_SWITCH_ROOM);
 
                 // 切换房间后，进入当前房间
                 mController.switchRoom();
                 MyLog.d(TAG, "liveType=" + mMyRoomData.getLiveType() + " @" + mMyRoomData.hashCode());
-                mSdkView.postSwitch(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
+                if (mSdkView != null) {
+                    mSdkView.postSwitch(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME);
+                }
 
                 // 重新获取当前房间信息，并重新进入房间
                 trySendDataWithServerOnce();

@@ -326,7 +326,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
                         mController.postEvent(MSG_CLEAR_SCREEN_VIEW_GONE);
                     } else if (oldTranslateX == 0) {
                         MyLog.d(TAG, "onMoveHorizontal setVisibility VISIBLE");
-                        int visiableValue = getPreViewVisiable(view,View.VISIBLE);
+                        int visiableValue = getPreViewVisiable(view, View.VISIBLE);
                         view.setVisibility(visiableValue);
                         mController.postEvent(MSG_CLEAR_SCREEN_VIEW_VISIABLE);
                     }
@@ -356,7 +356,7 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
         for (View view : mHorizontalSet) {
             if (view != null) {
                 view.setTranslationX(0);
-                mPreViewVisiableMap.put(view.getId(),  view.getVisibility());
+                mPreViewVisiableMap.put(view.getId(), view.getVisibility());
                 view.setVisibility(View.GONE);
             }
         }
@@ -383,14 +383,15 @@ public class TouchPresenter extends ComponentPresenter implements View.OnTouchLi
 
     private void onCancelMoveHorizontal() {
         mTranslation = 0;
-        int visibility = mIsHideAll ? View.GONE : View.VISIBLE;
         for (View view : mHorizontalSet) {
             if (view != null) {
                 if (isNotNeedToCare(view)) {
                     continue;
                 }
                 view.setTranslationX(0);
-                view.setVisibility(visibility);
+                if (mIsHideAll) {
+                    view.setVisibility(View.GONE);
+                }
             }
         }
         if (mIsHideAll) {
