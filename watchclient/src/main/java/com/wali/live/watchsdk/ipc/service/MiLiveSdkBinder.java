@@ -501,7 +501,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         }
         try {
             String key = String.format(StatisticsKey.KEY_SDK_LOGIN_ENTRANCE, channelId, miid);
-            MyLog.d(TAG, "reportLoginEntrance key=" + key);
+//            MyLog.d(TAG, "reportLoginEntrance key=" + key);
             StatisticsAlmightyWorker.getsInstance().recordImmediatelyDefault(key, 1);
         } catch (Exception e) {
             MyLog.e(TAG, "reportLoginEntrance e", e);
