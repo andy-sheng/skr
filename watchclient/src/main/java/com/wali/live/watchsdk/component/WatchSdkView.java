@@ -232,7 +232,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     R.id.game_barrage_view,
                     R.id.game_input_view,
                     R.id.close_btn,
-                    R.id.rotate_btn,
+//                    R.id.rotate_btn,
                     R.id.widget_view
             }, mGameHideSet);
         }
