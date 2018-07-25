@@ -216,7 +216,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
 
     private void delayShowBigTurnTableTips() {
         boolean hasShow = PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.PRE_KEY_HAS_SHOWED_BIG_TURN_TABLE_GUIDE, false);
-        if(hasShow) {
+        if (hasShow) {
             return;
         }
 
@@ -376,9 +376,24 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         if (!TextUtils.isEmpty(mWidgetLinkUrl)) {
             mView.setFastGift(event.widgetIcon, true);
         } else {
-            Gift gift = GiftRepository.findGiftById(this.mFastGiftId);
-            mView.setFastGift(gift != null ? gift.getPicture() : ""
-                    , gift != null);
+            GiftRepository.findGiftByIdAsync(this.mFastGiftId, new GiftRepository.FindGiftCallback() {
+                @Override
+                public void find(final Gift gift) {
+                    Observable.create(new Observable.OnSubscribe<Object>() {
+                        @Override
+                        public void call(Subscriber<? super Object> subscriber) {
+                            mView.setFastGift(gift != null ? gift.getPicture() : ""
+                                    , gift != null);
+                            subscriber.onCompleted();
+                        }
+                    })
+                            .compose(bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
+                            .subscribeOn(AndroidSchedulers.mainThread())
+                            .subscribe();
+
+                }
+            });
+
         }
     }
 

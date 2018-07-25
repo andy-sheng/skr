@@ -59,6 +59,8 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
@@ -685,11 +687,60 @@ public class GiftRepository {
         synchronized (mCache) {
             for (Gift gift : mCache) {
                 if (gift.getGiftId() == giftId) {
+                    MyLog.d(TAG, "find giftid=" + giftId);
                     return gift;
                 }
             }
         }
+        MyLog.d(TAG, "not find giftid=" + giftId);
         return null;
+    }
+
+    public static void findGiftByIdAsync(final int giftId, final FindGiftCallback callback) {
+        synchronized (mCache) {
+            if (mCache.isEmpty()) {
+                MyLog.d(TAG, "mCache.isEmpty()=true");
+                Observable.create(new Observable.OnSubscribe<Object>() {
+                    @Override
+                    public void call(Subscriber<? super Object> subscriber) {
+                        syncGiftList();
+                        MyLog.d(TAG, "syncGiftList over");
+                        MyLog.d(TAG, "interval find begin");
+                        final Subscription[] subscription = new Subscription[1];
+                        // 轮巡一下
+                        subscription[0] = Observable.interval(2, TimeUnit.SECONDS)
+                                .take(3)
+                                .subscribe(new Action1<Long>() {
+                                    @Override
+                                    public void call(Long aLong) {
+                                        Gift gift = findGiftById(giftId);
+                                        if (gift != null) {
+                                            if (callback != null) {
+                                                callback.find(gift);
+                                            }
+                                            subscription[0].unsubscribe();
+                                        }
+                                    }
+                                });
+                        subscriber.onCompleted();
+                    }
+                })
+                        .subscribeOn(Schedulers.io())
+                        .subscribe();
+            } else {
+                Gift gift = findGiftById(giftId);
+                if (gift != null) {
+                    if (callback != null) {
+                        callback.find(gift);
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    public interface FindGiftCallback {
+        void find(Gift gift);
     }
 
     /**
@@ -762,7 +813,7 @@ public class GiftRepository {
 
     public static BarrageMsg createGiftBarrageMessage(int giftId, String giftName, int giftType, String content, int count,
                                                       int zhuboAsset, long zhuboAssetTs, long continueId, String roomId, String ownerId,
-                                                      String redEnvelopeId, String giftSenderName, long senderAvatarTimestamp ,/*, boolean isPrivilegeGift*/
+                                                      String redEnvelopeId, String giftSenderName, long senderAvatarTimestamp,/*, boolean isPrivilegeGift*/
                                                       boolean isPrivilegeGift, int giftCount, String anchorName) {
         // 直接丢到队列
         BarrageMsg msg = new BarrageMsg();
@@ -892,7 +943,7 @@ public class GiftRepository {
         BarrageMsg barrageMsg = createGiftBarrageMessage(gift.getGiftId(), gift.getName(), gift.getOriginGiftType(), gift.getSendDescribe(),
                 msgExt.giftCount, msgExt.getZhuboAsset(), msgExt.getZhuboAssetTs(), msgExt.getContinueId(), msg.getRoomId(),
                 String.valueOf(msg.getSender()), msgExt.getRedEnvelopeId(), msg.getSenderName(), msgExt.getAvatarTimestamp(),
-                true,msgExt.getBatch_count(),"");
+                true, msgExt.getBatch_count(), "");
         return barrageMsg;
     }
 
