@@ -11,6 +11,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.event.TurnTableEvent;
@@ -304,6 +305,7 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                     @Override
                     public void onNext(GiftProto.BuyGiftRsp rsp) {
                         if (rsp.getRetCode() == GiftErrorCode.SUCC) {
+
                             BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(giftId, gift.getName(), gift.getCatagory(),
                                     gift.getSendDescribe(), mRequestTimes, rsp.getReceiverTotalTickets(),
                                     rsp.getTicketUpdateTime(), mContinueId, mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), rsp.getRedPacketId(),
@@ -311,6 +313,11 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
                             BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
 
                             mView.startFastGiftPBarAnim();
+
+                            //扣钱
+                            int deduct = rsp.getUsableGemCnt();
+                            int virtualGemCnt = rsp.getUsableVirtualGemCnt();
+                            MyUserInfoManager.getInstance().setDiamonds(deduct, virtualGemCnt);
                         } else if (rsp.getRetCode() == GiftErrorCode.GIFT_PAY_BARRAGE) {
                             postEvent(MSG_POP_INSUFFICIENT_TIPS);
                         } else {
