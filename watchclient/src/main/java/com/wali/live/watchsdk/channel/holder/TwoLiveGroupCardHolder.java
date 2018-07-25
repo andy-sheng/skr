@@ -9,8 +9,10 @@ import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.helper.HolderHelper;
 import com.wali.live.watchsdk.channel.view.LiveGroupListOuterThreeIcomView;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveGroupViewModel;
+import com.wali.live.watchsdk.scheme.SchemeUtils;
 
 import java.util.Arrays;
 
@@ -107,6 +109,7 @@ public class TwoLiveGroupCardHolder extends FixedHolder {
                                            jumpSchema(groupDate.getJumpSchemeUri(), channelLiveGroupViewModel.getSectionId());
                                        }
                                    });
+                                   HolderHelper.sendExposureCommand(SchemeUtils.getRecommendTag(groupDate.getJumpSchemeUri()));
                                }});
 
         if (channelLiveGroupViewModel.getItemDatas().size() == 1) {

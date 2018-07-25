@@ -116,6 +116,7 @@ public class SixMakeupHolder extends RepeatHolder {
                 } else {
                     mCountTvs[i].setVisibility(View.GONE);
                 }
+                exposureItem(item);
             }
         }
     }

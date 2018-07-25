@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.channel.helper.HolderHelper;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelNavigateViewModel.NavigateItem;
 
 import java.util.regex.Matcher;
@@ -57,6 +58,7 @@ public class TopicGridItemHolder extends RecyclerView.ViewHolder {
             } else {
                 mLabelTv.setVisibility(View.GONE);
             }
+            HolderHelper.sendExposureCommand(mItemData);
         }
     }
 

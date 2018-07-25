@@ -77,6 +77,9 @@ public abstract class FixedHolder extends HeadHolder {
     }
 
     protected void exposureItem(BaseJumpItem item) {
+        if (item == null) {
+            return;
+        }
         MyLog.d(TAG, "exposure item=" + item.isExposured());
         if (!item.isExposured()) {
             HolderHelper.sendExposureCommand(item);

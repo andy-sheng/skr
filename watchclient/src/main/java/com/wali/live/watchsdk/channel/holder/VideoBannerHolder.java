@@ -64,6 +64,7 @@ public class VideoBannerHolder extends FixedHolder implements BannerClickListene
             } else {
                 enterBannerMode(viewModel.getBannerItems());
             }
+            exposureItem(item);
         }
     }
 
