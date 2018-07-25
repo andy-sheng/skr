@@ -163,9 +163,9 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
     public List<GiftContinuousView> getFeedViews() {
         //当横屏时要防止上面的continueView遮挡运营位，故上面的continueView不显示
         if (mIsLandscape) {
-            return mFeedGiftContinueViews;
-        } else {
             return mSingleFeedViewList;
+        } else {
+            return mFeedGiftContinueViews;
         }
     }
 

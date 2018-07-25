@@ -58,12 +58,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -206,6 +208,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
     }
 
     public void buyGift(final int giftCount) {
+
         final long timestamp = System.currentTimeMillis();
 
         final GiftMallPresenter.GiftWithCard buyGiftWithCard = mGiftMallView.getSelectedGift();
@@ -237,6 +240,26 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
          */
         final Long[] requestContinueId = new Long[1];
 
+//        if (true) {
+//            Observable.interval(1000, TimeUnit.MILLISECONDS)
+//                    .take(10)
+//                    .subscribe(new Action1<Long>() {
+//                        @Override
+//                        public void call(Long aLong) {
+//                            requestContinueId[0] = continueId;
+//                            Gift buyGift = buyGiftWithCard.gift;
+//                            BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(buyGift.getGiftId(), buyGift.getName(), buyGift.getCatagory(),
+//                                    "msgCon"+buyGift.getName(), mContinueSend.get(requestContinueId[0]), 100,
+//                                    1000, requestContinueId[0], mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), "123123", "", 0,
+//                                    false, giftCount, mMyRoomData.getNickName());
+//                            BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
+//                            mContinueSend.add(requestTime[0], requestContinueId[0]);
+//                        }
+//                    });
+//            return;
+//        }
+
+
         Observable.just(buyGiftWithCard.gift)
                 .flatMap(new Func1<Gift, Observable<Gift>>() {
                     @Override
@@ -252,8 +275,8 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                                 //特权礼物
                                 return Observable.error(new GiftException(mContext.getResources().getQuantityString(R.plurals.verify_user_level_toast,
                                         gift.getLowerLimitLevel(), gift.getLowerLimitLevel())));
-                            } else if ((gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GIFT_BY_MI_COIN)&& (gift.getPrice() / 10) > getCurrentTotalBalance() ||
-                                    (gift.getCatagory() != GiftType.Mi_COIN_GIFT && gift.getPrice() > getCurrentTotalBalance())){
+                            } else if ((gift.getCatagory() == GiftType.Mi_COIN_GIFT || gift.getBuyType() == BuyGiftType.BUY_GIFT_BY_MI_COIN) && (gift.getPrice() / 10) > getCurrentTotalBalance() ||
+                                    (gift.getCatagory() != GiftType.Mi_COIN_GIFT && gift.getPrice() > getCurrentTotalBalance())) {
                                 return Observable.error(new GiftException(GiftErrorCode.GIFT_INSUFFICIENT_BALANCE, mContext.getString(R.string.insufficient_balance)));
                             }
                         }
@@ -283,7 +306,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                             case GiftType.BIG_PACK_OF_GIFT:
                             case GiftType.Mi_COIN_GIFT:
                             case GiftType.PRIVILEGE_GIFT:
-                            case GiftType.MAGIC_GIFT:{
+                            case GiftType.MAGIC_GIFT: {
                                 return Observable.just(gift);
                             }
                             default: {
@@ -417,7 +440,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                         BarrageMsg pushMsg = GiftRepository.createGiftBarrageMessage(buyGift.getGiftId(), buyGift.getName(), buyGift.getCatagory(),
                                 msgContent, mContinueSend.get(requestContinueId[0]), buyGiftRsp.getReceiverTotalTickets(),
                                 buyGiftRsp.getTicketUpdateTime(), requestContinueId[0], mMyRoomData.getRoomId(), String.valueOf(mMyRoomData.getUid()), buyGiftRsp.getRedPacketId(), "", 0,
-                                false , giftCount , mMyRoomData.getNickName());
+                                false, giftCount, mMyRoomData.getNickName());
                         BarrageMessageManager.getInstance().pretendPushBarrage(pushMsg);
                         mContinueSend.add(requestTime[0], requestContinueId[0]);
 
@@ -529,7 +552,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                              */
                             if (requestContinueId[0] == mContinueSend.getCurrentContinueId()) {
                                 giftDisPlayItemView.setContinueSendGiftNum(mContinueSend.get(requestContinueId[0]) - 1);
-                                EventBus.getDefault().post(new GiftEventClass.ContinueGiftSendNum(mContinueSend.get(requestContinueId[0]) - 1 , giftCount));
+                                EventBus.getDefault().post(new GiftEventClass.ContinueGiftSendNum(mContinueSend.get(requestContinueId[0]) - 1, giftCount));
                             }
                         }
 
@@ -765,7 +788,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
                     public Boolean call(Gift gift) {
                         // 暂时注掉
 //                        MyLog.d(TAG, "dataSourceGiftId:" + gift.toString());
-                        if(gift.getCostType() == Gift.COST_TYPE_GLOD_COIN){
+                        if (gift.getCostType() == Gift.COST_TYPE_GLOD_COIN) {
                             // 先把金币礼物都过滤掉
                             return false;
                         }
@@ -832,7 +855,7 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
      */
     private Gift getRandomPeckOfGift(PeckOfGift peckGift) {
         List<PeckOfGift.PeckOfGiftInfo> peckOfGiftInfoList = peckGift.getPeckOfGiftInfoList();
-        if(peckOfGiftInfoList == null || peckOfGiftInfoList.size() ==0){
+        if (peckOfGiftInfoList == null || peckOfGiftInfoList.size() == 0) {
             GiftRepository.checkOneAnimationRes(peckGift);
         }
         if (peckOfGiftInfoList == null || peckOfGiftInfoList.isEmpty()) {
@@ -1216,7 +1239,12 @@ public class GiftMallPresenter implements IBindActivityLIfeCycle {
             if (requestTime > lastResetTime) {
                 num++;
             } else {
-                mContinueMap.put(continueId, mContinueMap.get(continueId) + 1);
+                Integer num = mContinueMap.get(continueId);
+                int t = 0;
+                if (num != null) {
+                    t = num;
+                }
+                mContinueMap.put(continueId, t + 1);
             }
         }
 

@@ -43,8 +43,11 @@ import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.gift.model.BuyGiftType;
 import com.mi.live.data.gift.model.GiftType;
+import com.mi.live.data.push.model.BarrageMsg;
+import com.mi.live.data.repository.GiftRepository;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.trello.rxlifecycle.ActivityEvent;
+import com.wali.live.common.barrage.manager.BarrageMessageManager;
 import com.wali.live.common.gift.adapter.GiftDisplayRecycleViewAdapter;
 import com.wali.live.common.gift.adapter.GiftDisplayViewPagerAdapter;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
@@ -1516,6 +1519,7 @@ public class GiftMallView extends RxRelativeLayout implements IBindActivityLIfeC
         @Override
         public void onClickSend(Gift gift, View giftSelectedView) {
             MyLog.d(TAG, "sendGiftCallBack onClickSend gift:" + gift);
+
             if (!judgeBuyGiftCondition()) {
                 return;
             }
