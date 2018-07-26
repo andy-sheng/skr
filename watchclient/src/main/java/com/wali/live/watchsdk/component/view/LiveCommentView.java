@@ -440,7 +440,10 @@ public class LiveCommentView extends RelativeLayout implements IBindActivityLIfe
             mMoveToLastItemIv.setVisibility(View.GONE);
             mHasMore = 0;
         }
-        mDataList.clear();
+
+        if(mDataList != null) {
+            mDataList.clear();
+        }
         CommentVfansLevelCache.clear();
         refreshComment();
     }

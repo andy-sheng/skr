@@ -678,12 +678,18 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     private IWatchView mWatchView = new IWatchView() {
         @Override
-        public void enterLive(EnterRoomInfo roomInfo) {
+        public void enterLive(EnterRoomInfo roomInfo, boolean needCorrectType) {
             MyLog.d(TAG, "enterLive success roomInfo:"+roomInfo);
             if (roomInfo != null) {
                 updateVideoUrl(roomInfo.getDownStreamUrl());
                 mMyRoomData.setHuyaInfo(roomInfo.getThirdPartyInfo());
                 mMyRoomData.setLiveType(roomInfo.getType());
+
+                if (needCorrectType
+                        && mSdkView != null) {
+                    mSdkView.reset();
+                    mSdkView.postSwitch(mMyRoomData.getLiveType());
+                }
             }
 
             //TODO 这段代码迁移到了switchRoom
