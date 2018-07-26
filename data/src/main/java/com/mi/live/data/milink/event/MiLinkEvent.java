@@ -33,4 +33,5 @@ public class MiLinkEvent {
 
     public static class RequestUploadLog {
     }
+
 }

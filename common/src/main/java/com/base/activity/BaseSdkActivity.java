@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.base.event.SdkEventClass;
 import com.base.log.MyLog;
 import com.base.utils.SelfUpdateManager;
+import com.base.utils.toast.ToastUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -56,5 +57,24 @@ public abstract class BaseSdkActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SdkEventClass.FinishActivityEvent event) {
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PermissionDenied event) {
+        showPermissionDeniedTips();
+    }
+
+    static long sLastTs = 0;
+
+    static void showPermissionDeniedTips() {
+        long now = System.currentTimeMillis();
+        if (now - sLastTs > 10 * 1000) {
+            sLastTs = now;
+            ToastUtils.showToast("网络权限被禁止，请检查小米直播助手的网络设置");
+        }
+    }
+
+    public static class PermissionDenied {
+
     }
 }

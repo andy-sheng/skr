@@ -38,7 +38,11 @@ public class SecurityVerifyCacheManager {
             int chaId = jsonObject.getInt("channelId");
             String packName = jsonObject.getString("packageName");
             long timeStamp = jsonObject.getLong("timestamp");
-            if( (System.currentTimeMillis()-timeStamp) <= DEFAULF_TIME && timeStamp!= 0 && channelId == chaId && !TextUtils.isEmpty(packName) && packageName == packName){
+            if( (System.currentTimeMillis()-timeStamp) <= DEFAULF_TIME
+                    && timeStamp!= 0
+                    && channelId == chaId
+                    && !TextUtils.isEmpty(packName)
+                    && packageName.equals(packName)){
                 return true;
             }
         } catch (Exception e) {
