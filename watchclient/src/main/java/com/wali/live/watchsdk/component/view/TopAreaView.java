@@ -225,6 +225,8 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                         mAnimationHelper.startFollowAnim(false);
                     } else if (resultCode == -1) {
                         ToastUtils.showToast(getResources().getString(R.string.follow_failed));
+                    }else{
+                        ToastUtils.showToast("关注失败 code:"+resultCode);
                     }
                 }
             }
