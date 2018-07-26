@@ -83,8 +83,8 @@ public class ChannelLiveGroupViewModel extends ChannelViewModel<CommonChannelPro
     public boolean isNeedRemove() {
         if (mItemDatas != null && !CommonUtils.isAppInstalled(GlobalData.app(), CommonUtils.MI_VIDEO_PACKAGE)) {
             for (GroupDate item : mItemDatas) {
-                if (item != null && !TextUtils.isEmpty(item.getJumpSchemeUri())) {
-                    Uri uri = Uri.parse(item.getJumpSchemeUri());
+                if (item != null && !TextUtils.isEmpty(item.getSchemeUri())) {
+                    Uri uri = Uri.parse(item.getSchemeUri());
                     if (uri != null && !TextUtils.isEmpty(uri.getScheme())
                             && SpecificConstants.SCHEME_MI_VIDEO.equals(uri.getScheme())) {
                         return true;
@@ -95,13 +95,11 @@ public class ChannelLiveGroupViewModel extends ChannelViewModel<CommonChannelPro
         return false;
     }
 
-    public static class GroupDate {
+    public static class GroupDate extends BaseJumpItem{
 
         String frameUri; //边框
 
         String coverUri; //封面图
-
-        String jumpSchemeUri; //点击封面后的跳转
 
         String[] liveCovers;
 
@@ -110,7 +108,7 @@ public class ChannelLiveGroupViewModel extends ChannelViewModel<CommonChannelPro
         public GroupDate(CommonChannelProto.GroupData groupData){
             frameUri = groupData.getFrameUri();
             coverUri = groupData.getCoverUri();
-            jumpSchemeUri = groupData.getJumpSchemeUri();
+            mSchemeUri = groupData.getJumpSchemeUri();
             int liveCoverCount = groupData.getMemberCount();
             liveCovers = new String[liveCoverCount];
             for (int i = 0; i < liveCoverCount; i++){
@@ -125,10 +123,6 @@ public class ChannelLiveGroupViewModel extends ChannelViewModel<CommonChannelPro
 
         public String getCoverUri() {
             return coverUri;
-        }
-
-        public String getJumpSchemeUri() {
-            return jumpSchemeUri;
         }
 
         public String[] getLiveCovers() {

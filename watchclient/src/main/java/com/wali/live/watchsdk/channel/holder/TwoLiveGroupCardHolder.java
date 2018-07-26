@@ -106,10 +106,10 @@ public class TwoLiveGroupCardHolder extends FixedHolder {
                                    mFrameTwoIvs[integer].setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View v) {
-                                           jumpSchema(groupDate.getJumpSchemeUri(), channelLiveGroupViewModel.getSectionId());
+                                           jumpSchema(groupDate.getSchemeUri(), channelLiveGroupViewModel.getSectionId());
                                        }
                                    });
-                                   HolderHelper.sendExposureCommand(SchemeUtils.getRecommendTag(groupDate.getJumpSchemeUri()));
+                                   HolderHelper.sendExposureCommand(SchemeUtils.getRecommendTag(groupDate.getSchemeUri()));
                                }});
 
         if (channelLiveGroupViewModel.getItemDatas().size() == 1) {

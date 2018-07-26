@@ -21,9 +21,8 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelBannerViewModel;
  * @description 适配ChannelBannerViewModel2的广告位item
  * @notice 与BannerHolder不同，因为开始小米频道和推荐频道有两套代码，这里先做下兼容
  */
-public class BannerHolder extends BaseHolder<ChannelBannerViewModel> implements BannerClickListener {
+public class BannerHolder extends FixedHolder implements BannerClickListener {
     private static final int MARGIN = DisplayUtils.dip2px(3.33f);
-    protected View mSplitArea;
     protected ChannelBannerView mBannerView;
 
     public BannerHolder(View itemView) {
@@ -31,41 +30,28 @@ public class BannerHolder extends BaseHolder<ChannelBannerViewModel> implements 
     }
 
     @Override
-    protected void initView() {
-        mSplitArea = $(R.id.split_area);
-        mSplitArea.setVisibility(View.GONE);
-
+    protected void initContentView() {
         mBannerView = $(R.id.banner_view);
     }
 
     @Override
-    protected void bindView() {
+    protected void bindBannerViewModel(ChannelBannerViewModel viewModel) {
         mBannerView.setBannerClickListener(this);
-        mBannerView.setData(mViewModel.getItemDatas());
+        mBannerView.setData(viewModel.getItemDatas());
         mBannerView.startBannerAutoScroll();
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mBannerView.getLayoutParams();
-        if (mViewModel.isLargeSize()) {
+        if (viewModel.isLargeSize()) {
             lp.height = (GlobalData.screenWidth - MARGIN * 2) * 600 / 1080;
         } else {
             lp.height = (GlobalData.screenWidth - MARGIN * 2) * 300 / 1080;
         }
 
-        for (BaseJumpItem item : mViewModel.getItemDatas()) {
+        for (BaseJumpItem item : viewModel.getItemDatas()) {
             exposureItem(item);
         }
     }
 
-    /**
-     * 曝光打点
-     */
-    protected void exposureItem(BaseJumpItem item) {
-        MyLog.d(TAG, "exposureItem=" + item.isExposured());
-        if (!item.isExposured()) {
-            HolderHelper.sendExposureCommand(item);
-            item.setIsExposured(true);
-        }
-    }
 
     @Override
     public void clickBanner(ChannelBannerViewModel.Banner banner) {
