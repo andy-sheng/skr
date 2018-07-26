@@ -23,7 +23,6 @@ import com.base.permission.PermissionUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.Constants;
 import com.base.utils.display.DisplayUtils;
-import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.repository.model.turntable.TurnTableConfigModel;
@@ -174,9 +173,6 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
     public void setupView(boolean isGameMode, boolean isHuYaLive) {
         mIsGameMode = isGameMode;
         mIsHuYaLive = isHuYaLive;
-        if(mIsHuYaLive) {//虎牙直播没有单独的ui, ui和游戏直播ui共用一套,并根据游戏直播做微调
-            mIsGameMode = true;
-        }
         setupView();
         if (mIsGameMode) {
             setupGameView();
@@ -548,45 +544,14 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         if (mWidgetPresenter != null) {
             mWidgetPresenter.reset();
         }
-
-        if(mLiveCommentView != null) {
-            mLiveCommentView.reset();
-        }
-
-        if(mWatchBottomButton != null) {
-            mWatchBottomButton.reset();
-        }
-
-        if(mTopAreaView != null) {
-            mTopAreaView.reset();
-        }
+        mLiveCommentView.reset();
 //        mBarrageControlAnimView.reset();
+        mWatchBottomButton.reset();
+        mTopAreaView.reset();
 
         if (mSuperLevelUserBarrageAnimPresenter != null) {
             mSuperLevelUserBarrageAnimPresenter.reset();
         }
-    }
-
-    public void postSwitch(int type) {
-
-        if(type == LiveManager.TYPE_LIVE_GAME) {
-            mIsHuYaLive = false;
-            if(mTopAreaView != null) {
-                mTopAreaView.setTicketAreaShow(mIsHuYaLive);
-            }
-            postSwitch(true);
-        } else if(type == LiveManager.TYPE_LIVE_HUYA) {
-            mIsHuYaLive = true;
-            mIsGameMode = true;
-            setupGameView();
-        } else {
-            mIsHuYaLive = false;
-            mIsGameMode = false;
-            cancelGameView();
-        }
-
-        //走到这就直接修正把
-        mWatchBottomButton.correctType(type);
     }
 
     public void postSwitch(boolean isGameMode) {
@@ -688,7 +653,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
             case MSG_ON_ORIENT_PORTRAIT:
                 mIsLandscape = false;
                 mAnimationHelper.stopAllAnimator();
-                if (mIsGameMode ) {
+                if (mIsGameMode) {
                     mController.postEvent(MSG_ENABLE_MOVE_VIEW);
                     if (mAnimationHelper.mGameHide) { // 横屏转竖屏，恢复被隐藏的View，竖屏转横屏的逻辑在TouchPresenter中处理
                         mAnimationHelper.mGameHide = false;

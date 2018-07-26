@@ -149,7 +149,6 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 
                     @Override
                     public void onNext(EnterRoomInfo enterRoomInfo) {
-                        boolean needCorrectType = (mMyRoomData.getLiveType() != enterRoomInfo.getType());
                         MyLog.w(TAG, "enterRoomInfo code: " + enterRoomInfo.getRetCode());
                         RoomDataMapper.fillRoomDataModelByEnterRoomInfo(mMyRoomData, enterRoomInfo);
                         pullRoomMessage();
@@ -164,7 +163,7 @@ public class LiveTaskPresenter implements ILiveTaskPresenter, IBindActivityLIfeC
 //                            }
 //                        }
                         if (mView != null && enterRoomInfo.getRetCode() == ErrorCode.CODE_SUCCESS) {
-                            mView.enterLive(enterRoomInfo, needCorrectType);
+                            mView.enterLive(enterRoomInfo);
                         } else if (mView != null && enterRoomInfo.getRetCode() == ErrorCode.CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM) {
                             MyLog.w(TAG, "CODE_SERVER_RESPONSE_ERROR_CODE_NO_PERMISSION_TO_ENTER_ROOM");
                             EventBus.getDefault().post(new EventClass.KickEvent());

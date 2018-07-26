@@ -15,7 +15,6 @@ import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mi.live.data.api.LiveManager;
 import com.thornbirds.component.view.IOrientationListener;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.component.view.BaseBottomButton;
@@ -107,7 +106,9 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
     protected void initView() {
         mGiftBtn = createImageView(R.drawable.live_icon_gift_btn);
         addCreatedView(mGiftBtn, R.id.gift_btn);
-        mGiftBtn.setVisibility(mIsHuYaLive ? View.GONE : View.VISIBLE);
+        if (mIsHuYaLive) {
+            mGiftBtn.setVisibility(View.GONE);
+        }
 
         mMyInfoIconView = new MyInfoIconView(getContext());
         addCreatedView(mMyInfoIconView, R.id.my_info_btn);
@@ -169,43 +170,6 @@ public class WatchBottomButton extends BaseBottomButton<WatchBottomButton.IPrese
             mRightBtnSetPort.remove(mBigTurnTableBtn);
             mBottomBtnSetLand.remove(mBigTurnTableBtn);
             orientChild();
-        }
-    }
-
-    //这些标志位真恶心
-    public void correctType(int type) {
-        if(type == LiveManager.TYPE_LIVE_GAME) {
-            mIsGameMode = true;
-            mIsHuYaLive = false;
-            if(mGiftBtn != null) {
-                mGiftBtn.setVisibility(View.VISIBLE);
-            }
-
-            if(mGiftFastSendView != null) {
-                mGiftFastSendView.setVisibility(View.VISIBLE);
-            }
-        } else if(type == LiveManager.TYPE_LIVE_HUYA) {
-            mIsGameMode = false;
-            mIsHuYaLive = true;
-
-            if(mGiftBtn != null) {
-                mGiftBtn.setVisibility(View.GONE);
-            }
-
-            if(mGiftFastSendView != null) {
-                mGiftFastSendView.setVisibility(View.GONE);
-            }
-        } else {
-            mIsGameMode = false;
-            mIsHuYaLive = false;
-
-            if(mGiftBtn != null) {
-                mGiftBtn.setVisibility(View.VISIBLE);
-            }
-
-            if(mGiftFastSendView != null) {
-                mGiftFastSendView.setVisibility(View.VISIBLE);
-            }
         }
     }
 
