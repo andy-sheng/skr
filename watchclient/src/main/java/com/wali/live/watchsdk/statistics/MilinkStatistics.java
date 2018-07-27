@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.statistics;
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.StatisticsProto;
+import com.wali.live.watchsdk.statistics.item.AliveStatisticItem;
 import com.wali.live.watchsdk.statistics.item.ChannelChangeStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.ChannelStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.MilinkStatisticsItem;
@@ -103,6 +104,16 @@ public class MilinkStatistics {
         long date = System.currentTimeMillis();
         MilinkStatisticsItem item = new StayExposureStatisticItem(date, userId, recommend);
         uploadDelay(item);
+    }
+
+    public void statisticAlive(long userId, long times) {
+        int bizType = AliveStatisticItem.getBizTypeByChannel();
+        if (bizType == -1) {
+            return;
+        }
+        long date = System.currentTimeMillis();
+        MilinkStatisticsItem item = new AliveStatisticItem(date, userId, times);
+        upload(item);
     }
 
     private void upload(final MilinkStatisticsItem item) {
