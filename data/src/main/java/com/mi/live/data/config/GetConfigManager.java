@@ -204,8 +204,10 @@ public class GetConfigManager {
         boolean firstIn = false;
         if (sInstance == null) {
             synchronized (GetConfigManager.class) {
-                firstIn = true;
-                sInstance = new GetConfigManager();
+                if(sInstance==null) {
+                    firstIn = true;
+                    sInstance = new GetConfigManager();
+                }
             }
         }
         long timediff = Math.abs(System.currentTimeMillis() - sInstance.timestamp);
@@ -414,6 +416,7 @@ public class GetConfigManager {
                 } catch (InvalidProtocolBufferException e) {
                     MyLog.e(e);
                 }
+                subscriber.onCompleted();
             }
         })
                 .subscribeOn(Schedulers.io())
