@@ -107,7 +107,7 @@ public class VersionCheckManager {
         mIsStaging = isStaging;
     }
 
-    public boolean isForceUpdate(){
+    public boolean isForceUpdate() {
         return mForceUpdate;
     }
 
@@ -351,15 +351,15 @@ public class VersionCheckManager {
     }
 
     public boolean installLocalPackage(String localFilePath) {
-        return installLocalPackageInner(null,localFilePath);
+        return installLocalPackageInner(null, localFilePath);
     }
 
 
-    public boolean installLocalPackageN(String auth,String localFilePath) {
-        return installLocalPackageInner(auth,localFilePath);
+    public boolean installLocalPackageN(String auth, String localFilePath) {
+        return installLocalPackageInner(auth, localFilePath);
     }
 
-    private boolean installLocalPackageInner(String auth,String localFileName) {
+    private boolean installLocalPackageInner(String auth, String localFileName) {
         // 首先将本地文件重命名，这样在下次检查的时候就会把这个文件删除，
         // 防止这次下载的是一个错误的包，安装失败后，下次继续会安装失败。
 
@@ -382,12 +382,23 @@ public class VersionCheckManager {
                 Uri uri = FileProvider.getUriForFile(GlobalData.app().getApplicationContext(), auth, newFile);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(uri, "application/vnd.android.package-archive");
-            } else {
-                intent.setDataAndType(Uri.fromFile(newFile), "application/vnd.android.package-archive");
-            }
-            GlobalData.app().getApplicationContext().startActivity(intent);
-            return true;
 
+                if (intent.resolveActivity(GlobalData.app().getPackageManager()) != null) {
+                    try {
+                        GlobalData.app().startActivity(intent);
+                        return true;
+                    } catch (Exception e) {
+                    }
+                }
+            }
+            intent.setDataAndType(Uri.fromFile(newFile), "application/vnd.android.package-archive");
+            if (intent.resolveActivity(GlobalData.app().getPackageManager()) != null) {
+                try {
+                    GlobalData.app().startActivity(intent);
+                    return true;
+                } catch (Exception e) {
+                }
+            }
         }
         Logger.w("VersionCheckManager", "the apk file packageName is not com.wali.live");
         return false;

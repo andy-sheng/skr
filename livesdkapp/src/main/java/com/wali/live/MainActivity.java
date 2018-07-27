@@ -92,11 +92,11 @@ public class MainActivity extends BaseSdkActivity {
                 @Override
                 public void onClickConfirmButton() {
                     popFragment();
-                    syncDataFromServer();
+//                    syncDataFromServer();
                 }
             });
         } else {
-            syncDataFromServer();
+//            syncDataFromServer();
         }
     }
 
@@ -104,37 +104,37 @@ public class MainActivity extends BaseSdkActivity {
         FragmentNaviUtils.popFragment(this);
     }
 
-    private void syncDataFromServer() {
-        syncGiftList();
-    }
+//    private void syncDataFromServer() {
+//        syncGiftList();
+//    }
 
 
-    private void syncGiftList() {
-        Observable
-                .create(new Observable.OnSubscribe<Object>() {
-                    @Override
-                    public void call(Subscriber<? super Object> subscriber) {
-                        GiftRepository.syncGiftList();
-                        subscriber.onCompleted();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<Object>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-                    }
-                });
-    }
+//    private void syncGiftList() {
+//        Observable
+//                .create(new Observable.OnSubscribe<Object>() {
+//                    @Override
+//                    public void call(Subscriber<? super Object> subscriber) {
+//                        GiftRepository.syncGiftList();
+//                        subscriber.onCompleted();
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
+//                .subscribe(new Observer<Object>() {
+//                    @Override
+//                    public void onCompleted() {
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                    }
+//
+//                    @Override
+//                    public void onNext(Object o) {
+//                    }
+//                });
+//    }
 
     private void initViews() {
         mRefreshLayout = $(R.id.swipe_refresh_layout);
@@ -242,7 +242,7 @@ public class MainActivity extends BaseSdkActivity {
             @Override
             public void run() {
                 if (AccountAuthManager.triggerActionNeedAccount(MainActivity.this)) {
-                    LiveSdkActivity.openActivity(MainActivity.this, null, false, false);
+                    LiveSdkActivity.openActivity(MainActivity.this, null, false, true);
                 }
             }
         }));
