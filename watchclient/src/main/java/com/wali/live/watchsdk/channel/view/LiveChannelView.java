@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.base.activity.RxActivity;
@@ -14,10 +15,16 @@ import com.base.utils.network.NetworkUtils;
 import com.base.utils.toast.ToastUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
+import com.wali.live.watchsdk.channel.holder.StayExposureHolder;
 import com.wali.live.watchsdk.channel.list.model.ChannelShow;
 import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.eventbus.EventClass;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -47,6 +54,23 @@ public class LiveChannelView extends RelativeLayout implements IChannelView, Swi
         super(context, attrs);
         init(context);
     }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
 
     private void init(Context context) {
         inflate(context, R.layout.live_channel_layout, this);
@@ -146,7 +170,7 @@ public class LiveChannelView extends RelativeLayout implements IChannelView, Swi
 
 
     public void onDestroy() {
-
+        onCurrentHoldersVisible(false);
     }
 
     private RxActivity getActivity() {
@@ -160,4 +184,38 @@ public class LiveChannelView extends RelativeLayout implements IChannelView, Swi
         }
         throw new IllegalStateException("The LiveChannelView's Context is not an RxActivity.");
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onSelectChannelEvent(EventClass.SelectChannelEvent event) {
+        MyLog.d(TAG, "onSelectChannelEvent");
+        if (event != null && mChannelShow != null) {
+            onCurrentHoldersVisible(event.channelId == mChannelShow.getChannelId());
+        }
+    }
+
+    private void onCurrentHoldersVisible(boolean visible) {
+        if (mLayoutManager != null && mRecyclerView != null) {
+            int firstPosition = mLayoutManager.findFirstVisibleItemPosition();
+            int lastPosition = mLayoutManager.findLastVisibleItemPosition();
+            if (firstPosition == RecyclerView.NO_POSITION || lastPosition == RecyclerView.NO_POSITION ) {
+                return;
+            }
+            for (int i = firstPosition; i <= lastPosition; i ++) {
+                View view = mRecyclerView.getChildAt(i);
+                if (view != null) {
+                    RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(view);
+                    if (holder != null && holder instanceof StayExposureHolder) {
+                        if (visible) {
+                            ((StayExposureHolder) holder).onHolderAttached();
+                        } else {
+                            ((StayExposureHolder) holder).onHolderDetached();
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+
 }

@@ -97,6 +97,7 @@ public class MilinkStatistics {
     }
 
     public void statisticStayExposure(long userId, String recommend) {
+        MyLog.d(TAG, "StayExposure tag = " + recommend);
         int bizType = StayExposureStatisticItem.getBizTypeByChannel();
         if (bizType == -1) {
             return;
