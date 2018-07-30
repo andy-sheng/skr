@@ -88,6 +88,7 @@ import com.wali.live.watchsdk.ranking.RankingPagerFragment;
 import com.wali.live.watchsdk.receiver.ScreenStateReceiver;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.event.LiveEndEvent;
@@ -187,6 +188,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         protected void processMessage(Message message) {
         }
     };
+
+    private long mResumeTime;
+    private long mPauseTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -427,11 +431,21 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         super.onResume();
         KeyboardUtils.hideKeyboard(this);
         SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
+
+        mResumeTime = System.currentTimeMillis();
+        mPauseTime = mResumeTime;
+        MyLog.d(TAG, "activity onResume " + mResumeTime);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+        mPauseTime = System.currentTimeMillis();
+        long aliveTime = mPauseTime - mResumeTime;
+        MyLog.d(TAG, "activity onPause " + mPauseTime);
+        MyLog.d(TAG, "activity aliveTime " + aliveTime);
+        MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
     }
 
     @Override

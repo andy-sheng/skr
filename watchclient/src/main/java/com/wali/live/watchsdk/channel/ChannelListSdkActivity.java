@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
@@ -16,6 +14,7 @@ import com.base.utils.display.DisplayUtils;
 import com.base.view.BackTitleBar;
 import com.base.view.NestViewPager;
 import com.base.view.SlidingTabLayout;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.account.event.SetUserAccountEvent;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
@@ -25,7 +24,6 @@ import com.wali.live.watchsdk.channel.adapter.ChannelTabPagerAdapter;
 import com.wali.live.watchsdk.channel.list.model.ChannelShow;
 import com.wali.live.watchsdk.channel.list.presenter.ChannelListPresenter;
 import com.wali.live.watchsdk.channel.list.presenter.IChannelListView;
-import com.wali.live.watchsdk.channel.view.LiveChannelView;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.view.EmptyView;
@@ -51,6 +49,9 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     private boolean mIsFirstLoad = true;
 
     private BackTitleBar mTitleBar;
+
+    private long mResumeTime;
+    private long mPauseTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,12 +166,22 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
         EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.RESUME));
 
         SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
+
+        mResumeTime = System.currentTimeMillis();
+        mPauseTime = mResumeTime;
+        MyLog.d(TAG, "activity onResume " + mResumeTime);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.PAUSE));
+
+        mPauseTime = System.currentTimeMillis();
+        long aliveTime = mPauseTime - mResumeTime;
+        MyLog.d(TAG, "activity onPause " + mPauseTime);
+        MyLog.d(TAG, "activity aliveTime " + aliveTime);
+        MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
     }
 
     @Override
