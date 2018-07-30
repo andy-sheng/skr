@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * Created by chengsimin on 16/9/23.
  */
 public class AppNetworkUtils {
-    private static final String STAG = "AppNetworkUtils";
+    private static final String TAG = "AppNetworkUtils";
 
     /**
      * 同步
@@ -41,9 +41,13 @@ public class AppNetworkUtils {
                 FutureTask<Map<String, Double>> task = new FutureTask<Map<String, Double>>(new Callable<Map<String, Double>>() {
                     @Override
                     public Map<String, Double> call() throws Exception {
+                        MyLog.d(TAG,"hourseTraceSync "+hashCode()+" begin, ip:"+item );
+
                         double time = Ping.doPing(item);
                         HashMap<String, Double> result = new HashMap<String, Double>();
                         result.put(item, time);
+
+                        MyLog.d(TAG,"hourseTraceSync "+hashCode()+" over" );
                         return result;
                     }
                 });
@@ -188,7 +192,7 @@ public class AppNetworkUtils {
     public static boolean is4g() {
         NetworkReceiver.NetState netCode = NetworkReceiver.getCurrentNetStateCode(GlobalData.app());
         if (netCode != NetworkReceiver.NetState.NET_NO) {
-            MyLog.w(STAG, "onNetStateChanged netCode = " + netCode);
+            MyLog.w(TAG, "onNetStateChanged netCode = " + netCode);
             if (netCode == NetworkReceiver.NetState.NET_2G ||
                     netCode == NetworkReceiver.NetState.NET_3G ||
                     netCode == NetworkReceiver.NetState.NET_4G) {

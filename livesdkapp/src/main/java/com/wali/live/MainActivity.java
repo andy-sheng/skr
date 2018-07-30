@@ -24,45 +24,33 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
-import com.base.utils.DynamicLoadSoManager;
-import com.base.utils.SelfUpdateManager;
-import com.base.utils.callback.ICommonCallBack;
 import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.toast.ToastUtils;
 import com.base.utils.version.VersionCheckManager;
 import com.base.utils.version.VersionManager;
-import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.milink.MiLinkClientAdapter;
-import com.mi.live.data.repository.GiftRepository;
 import com.mi.liveassistant.BuildConfig;
 import com.mi.liveassistant.R;
 import com.mi.milink.sdk.base.debug.TraceLevel;
-import com.trello.rxlifecycle.ActivityEvent;
-import com.wali.live.jump.JumpSdkActivity;
 import com.wali.live.livesdk.live.LiveSdkActivity;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.channel.ChannelListSdkActivity;
-
-//import activity.ContestPrepareActivity;
 import com.wali.live.watchsdk.cta.CTANotifyFragment;
-import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.login.LoginPresenter;
-//import com.wali.live.watchsdk.personalcenter.PersonalCenterFragment;
 import com.wali.live.watchsdk.watch.VideoDetailSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.webview.WebViewActivity;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
 
 /**
  * Created by lan on 16/11/25.
