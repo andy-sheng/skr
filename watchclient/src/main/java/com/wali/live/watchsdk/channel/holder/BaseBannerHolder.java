@@ -16,7 +16,7 @@ import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
  * UiTemplateLiveOrReplayInfo模板的banner holder
  */
 
-public class BaseBannerHolder extends BaseHolder<ChannelLiveViewModel> implements BannerClickListener {
+public class BaseBannerHolder extends FixedHolder implements BannerClickListener {
 
     protected ChannelBannerView mBannerView;
 
@@ -25,30 +25,18 @@ public class BaseBannerHolder extends BaseHolder<ChannelLiveViewModel> implement
     }
 
     @Override
-    protected void initView() {
+    protected void initContentView() {
         mBannerView = $(R.id.banner_view);
     }
 
     @Override
-    protected void bindView() {
+    protected void bindLiveModel(ChannelLiveViewModel viewModel) {
         mBannerView.setBannerClickListener(this);
-        mBannerView.setData(mViewModel.getBannerItems());
+        mBannerView.setData(viewModel.getBannerItems());
         mBannerView.startBannerAutoScroll();
 
-        for (BaseJumpItem item : mViewModel.getItemDatas()) {
+        for (BaseJumpItem item : viewModel.getItemDatas()) {
             exposureItem(item);
-        }
-    }
-
-    /**
-     * 曝光打点
-     * @param item
-     */
-    protected void exposureItem(BaseJumpItem item) {
-        MyLog.i(TAG, "exposureItem=" + item.isExposured());
-        if (!item.isExposured()) {
-            HolderHelper.sendExposureCommand(item);
-            item.setIsExposured(true);
         }
     }
 
@@ -56,14 +44,6 @@ public class BaseBannerHolder extends BaseHolder<ChannelLiveViewModel> implement
     public void clickBanner(ChannelBannerViewModel.Banner banner) {
         String url = banner.getLinkUrl();
         if (!TextUtils.isEmpty(url)) {
-//            //打点
-//            {
-//                String key = banner.getEncodeKey();
-//                if (!TextUtils.isEmpty(key)) {
-//                    StatisticsWorker.getsInstance().sendCommandRealTime(StatisticsWorker.AC_APP, key, 1);
-//                }
-//                WebViewActivity.clickActStatic(url, WebViewActivity.STATIC_CLICK_FROM_BANNER);
-//            }
             HolderHelper.sendClickCommand(banner);  // 打点
             if (mJumpListener != null) {
                 mJumpListener.jumpScheme(banner.getLinkUrl());
