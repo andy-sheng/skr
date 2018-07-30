@@ -7,6 +7,7 @@ import com.wali.live.watchsdk.statistics.item.ChannelChangeStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.ChannelStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.MilinkStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.SimpleStatisticsItem;
+import com.wali.live.watchsdk.statistics.item.StayExposureStatisticItem;
 import com.wali.live.watchsdk.statistics.request.LiveRecvRequest;
 
 import org.json.JSONException;
@@ -92,6 +93,16 @@ public class MilinkStatistics {
         long date = System.currentTimeMillis();
         MilinkStatisticsItem item = new ChannelChangeStatisticsItem(date, type, channelId);
         upload(item);
+    }
+
+    public void statisticStayExposure(long userId, String recommend) {
+        int bizType = StayExposureStatisticItem.getBizTypeByChannel();
+        if (bizType == -1) {
+            return;
+        }
+        long date = System.currentTimeMillis();
+        MilinkStatisticsItem item = new StayExposureStatisticItem(date, userId, recommend);
+        uploadDelay(item);
     }
 
     private void upload(final MilinkStatisticsItem item) {

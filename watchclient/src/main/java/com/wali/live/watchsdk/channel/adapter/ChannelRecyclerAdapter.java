@@ -1,7 +1,6 @@
 package com.wali.live.watchsdk.channel.adapter;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +37,7 @@ import com.wali.live.watchsdk.channel.holder.PlaceHolder;
 import com.wali.live.watchsdk.channel.holder.RecommendCardHolder;
 import com.wali.live.watchsdk.channel.holder.SixMakeupHolder;
 import com.wali.live.watchsdk.channel.holder.SplitLineHolder;
+import com.wali.live.watchsdk.channel.holder.StayExposureHolder;
 import com.wali.live.watchsdk.channel.holder.ThreeCardHolder;
 import com.wali.live.watchsdk.channel.holder.ThreeCardLeftBigHolder;
 import com.wali.live.watchsdk.channel.holder.ThreeCardRightBigHolder;
@@ -337,5 +337,14 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
             return null;
         }
         return mChannelModels.get(channelModelPos);
+    }
+
+
+    @Override
+    public void onViewDetachedFromWindow(BaseHolder holder) {
+        MyLog.d(TAG, "onViewDetachedFromWindow " + mChannelId);
+        if (holder != null && holder instanceof StayExposureHolder) {
+            ((StayExposureHolder) holder).onHolderDetached();
+        }
     }
 }

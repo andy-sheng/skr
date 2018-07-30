@@ -40,6 +40,8 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
 
     protected boolean mIsHide; // 是否隐藏
 
+    private long mChannelId = -1;
+
     /**
      * 注意：此构造函数用于构造测试数据
      */
@@ -174,4 +176,12 @@ public abstract class ChannelViewModel<GM extends GeneratedMessage> extends Base
     }
 
     public abstract boolean isNeedRemove();
+
+    public long getChannelId() {
+        return mChannelId;
+    }
+
+    public void setChannelId(long mChannelId) {
+        this.mChannelId = mChannelId;
+    }
 }

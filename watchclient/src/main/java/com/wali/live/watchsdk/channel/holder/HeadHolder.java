@@ -25,7 +25,7 @@ import static android.view.View.GONE;
  * @module 频道
  * @description 显示head的抽象基类
  */
-public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
+public abstract class HeadHolder extends StayExposureHolder {
 
     public static int type = 0;
     public final int HEAD_TYPE_ONE_LINE = 2; // title样式 ,左标题 右箭头 一行标题  ！！！默认样式
@@ -84,6 +84,7 @@ public abstract class HeadHolder extends BaseHolder<ChannelViewModel> {
 
     @Override
     protected void bindView() {
+        super.bindView();
         if (needTitleView()) {
             bindTitleView();
         }

@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.channel.helper;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.watchsdk.channel.viewmodel.BaseJumpItem;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 
@@ -29,6 +30,20 @@ public class HolderHelper {
             MilinkStatistics.getInstance().statisticsChannelExposure(tag);
         }
     }
+
+    /**
+     * 停留1s曝光打点统计
+     */
+    public static void sendStayExposureCommand(BaseJumpItem item) {
+        if (item == null) {
+            return;
+        }
+        String tag = item.getRecommendTag();
+        if (!TextUtils.isEmpty(tag)) {
+            MilinkStatistics.getInstance().statisticStayExposure(MyUserInfoManager.getInstance().getUuid(), tag);
+        }
+    }
+
 
     /**
      * 点击打点统计

@@ -135,6 +135,8 @@ public class ChannelPresenter implements IChannelPresenter {
                 continue;
             }
 
+            viewModel.setChannelId(mChannelId);
+
             int uiType = viewModel.getUiType();
             if (ChannelUiType.ALL_CHANNEL_UI_TYPE.contains(uiType)) {
                 if (viewModel.getUiType() == ChannelUiType.TYPE_SPLIT_LINE) {
