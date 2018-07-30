@@ -75,7 +75,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
 
                 @Override
                 public void onClickCancelButton() {
-                    finish();
+                    realFinish();
                 }
 
                 @Override
