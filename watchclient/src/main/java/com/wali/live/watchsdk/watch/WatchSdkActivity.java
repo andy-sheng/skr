@@ -445,7 +445,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         long aliveTime = mPauseTime - mResumeTime;
         MyLog.d(TAG, "activity onPause " + mPauseTime);
         MyLog.d(TAG, "activity aliveTime " + aliveTime);
-        MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
+        if (aliveTime > 0 && mResumeTime > 0) {
+            MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
+        }
     }
 
     @Override
@@ -693,7 +695,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private IWatchView mWatchView = new IWatchView() {
         @Override
         public void enterLive(EnterRoomInfo roomInfo) {
-            MyLog.d(TAG, "enterLive success roomInfo:"+roomInfo);
+            MyLog.d(TAG, "enterLive success roomInfo:" + roomInfo);
             if (roomInfo != null) {
                 updateVideoUrl(roomInfo.getDownStreamUrl());
                 mMyRoomData.setHuyaInfo(roomInfo.getThirdPartyInfo());

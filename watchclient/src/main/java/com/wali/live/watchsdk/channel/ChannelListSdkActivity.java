@@ -193,7 +193,9 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
         long aliveTime = mPauseTime - mResumeTime;
         MyLog.d(TAG, "activity onPause " + mPauseTime);
         MyLog.d(TAG, "activity aliveTime " + aliveTime);
-        MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
+        if (aliveTime > 0 && mResumeTime > 0) {
+            MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
+        }
     }
 
     @Override
@@ -201,7 +203,7 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
         super.onDestroy();
 
         if (mViewPager != null) {
-            for (int i = 0; i < mViewPager.getChildCount(); i ++) {
+            for (int i = 0; i < mViewPager.getChildCount(); i++) {
                 View view = mViewPager.getChildAt(i);
                 if (view != null && view instanceof LiveChannelView) {
                     ((LiveChannelView) view).onDestroy();
