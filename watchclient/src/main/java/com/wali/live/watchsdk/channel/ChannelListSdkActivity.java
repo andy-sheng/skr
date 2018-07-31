@@ -24,6 +24,7 @@ import com.wali.live.watchsdk.channel.adapter.ChannelTabPagerAdapter;
 import com.wali.live.watchsdk.channel.list.model.ChannelShow;
 import com.wali.live.watchsdk.channel.list.presenter.ChannelListPresenter;
 import com.wali.live.watchsdk.channel.list.presenter.IChannelListView;
+import com.wali.live.watchsdk.channel.view.LiveChannelView;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.view.EmptyView;
@@ -165,6 +166,17 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
         super.onResume();
         EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.RESUME));
 
+
+        if (mPagerAdapter != null && mViewPager != null) {
+            int currentItem = mViewPager.getCurrentItem();
+            if (currentItem >= 0) {
+                ChannelShow channelShow = mPagerAdapter.getChannelShowByPosition(currentItem);
+                if (channelShow != null) {
+                    EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(channelShow.getChannelId()));
+                }
+            }
+        }
+
         SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
 
         mResumeTime = System.currentTimeMillis();
@@ -187,6 +199,18 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (mViewPager != null) {
+            for (int i = 0; i < mViewPager.getChildCount(); i ++) {
+                View view = mViewPager.getChildAt(i);
+                if (view != null && view instanceof LiveChannelView) {
+                    ((LiveChannelView) view).onDestroy();
+                }
+            }
+        }
+        if (mPagerAdapter != null) {
+            mPagerAdapter.destroyMap();
+        }
     }
 
     @Override

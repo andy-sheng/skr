@@ -45,18 +45,16 @@ public abstract class StayExposureHolder extends BaseHolder<ChannelViewModel> {
     @Override
     protected void bindView() {
         MyLog.d(TAG, "bindView");
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+    }
+
+    public void onHolderAttached() {
+        MyLog.d(TAG, "onHolderAttached");
+
         sendPostIfNeed();
     }
 
     public void onHolderDetached() {
         MyLog.d(TAG, "onHolderDetached");
-
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
 
         if (mUiHandler != null && mStayExposureRunnable != null) {
             MyLog.d(TAG, "removeCallbacks");
@@ -96,7 +94,11 @@ public abstract class StayExposureHolder extends BaseHolder<ChannelViewModel> {
         return new Runnable() {
             @Override
             public void run() {
-                if (mViewModel != null) {
+                if (mViewModel == null) {
+                    return;
+                }
+                EventClass.SelectChannelEvent event = EventBus.getDefault().getStickyEvent(EventClass.SelectChannelEvent.class);
+                if (event != null && event.channelId == mViewModel.getChannelId()) {
                     MyLog.d(TAG, "ready to send exposure tag");
                     // 打点
                     if (mViewModel instanceof ChannelShowViewModel) {
@@ -159,19 +161,4 @@ public abstract class StayExposureHolder extends BaseHolder<ChannelViewModel> {
         }
     }
 
-    /**
-     * 切换频道消息
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSelectChannelEvent(EventClass.SelectChannelEvent event) {
-        MyLog.d(TAG, "onSelectChannelEvent");
-        if (event != null) {
-            if (mUiHandler != null && mStayExposureRunnable != null) {
-                MyLog.d(TAG, "removeCallbacks");
-                mUiHandler.removeCallbacks(mStayExposureRunnable);
-            }
-            sendPostIfNeed(event);
-        }
-    }
 }

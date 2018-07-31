@@ -102,6 +102,9 @@ public class ChannelTabPagerAdapter extends PagerAdapter {
     }
 
     public void destroyMap() {
+        if (mLayoutCacheMap == null) {
+            return;
+        }
         int size = mLayoutCacheMap.size();
         for (int i = 0; i < size; ++i) {
             View view = mLayoutCacheMap.get(mLayoutCacheMap.keyAt(i));

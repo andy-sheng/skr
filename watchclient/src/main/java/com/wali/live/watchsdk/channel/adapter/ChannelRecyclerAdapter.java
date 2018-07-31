@@ -341,6 +341,14 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
 
 
     @Override
+    public void onViewAttachedToWindow(BaseHolder holder) {
+        MyLog.d(TAG, "onViewAttachedToWindow " + mChannelId);
+        if (holder != null && holder instanceof StayExposureHolder) {
+            ((StayExposureHolder) holder).onHolderAttached();
+        }
+    }
+
+    @Override
     public void onViewDetachedFromWindow(BaseHolder holder) {
         MyLog.d(TAG, "onViewDetachedFromWindow " + mChannelId);
         if (holder != null && holder instanceof StayExposureHolder) {
