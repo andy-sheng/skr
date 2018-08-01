@@ -13,6 +13,7 @@ import com.base.activity.RxActivity;
 import com.base.log.MyLog;
 import com.base.utils.network.NetworkUtils;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
 import com.wali.live.watchsdk.channel.holder.StayExposureHolder;
@@ -21,6 +22,7 @@ import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,6 +45,8 @@ public class LiveChannelView extends RelativeLayout implements IChannelView, Swi
 
     private ChannelPresenter mChannelPresenter;
     private ChannelShow mChannelShow;
+
+    private boolean isVisibleToUser = false;
 
 
     public LiveChannelView(Context context) {
@@ -154,13 +158,26 @@ public class LiveChannelView extends RelativeLayout implements IChannelView, Swi
     }
 
 
-    public void onResume() {
+    private long mResumeTime;
+    private long mPauseTime;
 
+    public void onResume() {
+        mResumeTime = System.currentTimeMillis();
     }
 
-
     public void onPause() {
+        mPauseTime = System.currentTimeMillis();
+        long aliveTime = mPauseTime - mResumeTime;
 
+        if (aliveTime > 0 && mResumeTime > 0) {
+            long channelId = 0;
+            if (mChannelShow != null) {
+                channelId = mChannelShow.getChannelId();
+            }
+            MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime, channelId);
+        }
+        mResumeTime = 0;
+        mPauseTime = 0;
     }
 
 
@@ -185,11 +202,31 @@ public class LiveChannelView extends RelativeLayout implements IChannelView, Swi
         throw new IllegalStateException("The LiveChannelView's Context is not an RxActivity.");
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.LiveListActivityLiveCycle event) {
+        if (event != null && isVisibleToUser) {
+            if (event.liveEvent == EventClass.LiveListActivityLiveCycle.Event.RESUME) {
+                onResume();
+                onCurrentHoldersVisible(true);
+            } else {
+                onPause();
+                onCurrentHoldersVisible(false);
+            }
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onSelectChannelEvent(EventClass.SelectChannelEvent event) {
-        MyLog.d(TAG, "onSelectChannelEvent");
+        MyLog.d(TAG, "onSelectChannelEvent channelId=" + event.channelId);
         if (event != null && mChannelShow != null) {
-            onCurrentHoldersVisible(event.channelId == mChannelShow.getChannelId());
+            isVisibleToUser = (event.channelId == mChannelShow.getChannelId());
+            if (isVisibleToUser) {
+                onResume();
+            } else {
+                onPause();
+            }
+            onCurrentHoldersVisible(isVisibleToUser);
         }
     }
 
@@ -200,7 +237,7 @@ public class LiveChannelView extends RelativeLayout implements IChannelView, Swi
             if (firstPosition == RecyclerView.NO_POSITION || lastPosition == RecyclerView.NO_POSITION ) {
                 return;
             }
-            for (int i = firstPosition; i <= lastPosition; i ++) {
+            for (int i = 0; i <= (lastPosition - firstPosition); i ++) {
                 View view = mRecyclerView.getChildAt(i);
                 if (view != null) {
                     RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(view);

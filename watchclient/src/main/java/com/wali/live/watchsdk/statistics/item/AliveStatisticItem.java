@@ -18,20 +18,23 @@ public class AliveStatisticItem extends MilinkStatisticsItem {
     private final static int ALIVE_BIZ_TYPE_GAME_CENTER = 1; // 游戏中心bizType
     private final static int ALIVE_BIZ_TYPE_MUSIC = 2; // 小米音乐bizType
 
-    public AliveStatisticItem(long date, long userId, long times) {
+    public AliveStatisticItem(long date, long userId, long times, long channelId) {
         super(date, ALIVE_TYPE);
         mCommonLog = StatisticsProto.CommonLog.newBuilder()
                 .setBizType(getBizTypeByChannel())
-                .setExtStr(getExtraString(userId, times))
+                .setExtStr(getExtraString(userId, times, channelId))
                 .build();
     }
 
-    private String getExtraString(long userId, long times) {
+    private String getExtraString(long userId, long times, long channelId) {
         MyLog.d(TAG, "userId=" + userId + " time=" + times);
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("user_id", userId);
             jsonObject.put("times", times);
+            if (channelId > 0) {
+                jsonObject.put("channel_id", channelId);
+            }
             return jsonObject.toString();
         } catch (Exception e) {
             e.printStackTrace();

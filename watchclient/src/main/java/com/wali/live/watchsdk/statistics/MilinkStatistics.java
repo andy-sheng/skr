@@ -108,12 +108,17 @@ public class MilinkStatistics {
     }
 
     public void statisticAlive(long userId, long times) {
+        statisticAlive(userId, times, 0);
+    }
+
+    public void statisticAlive(long userId, long times, long channelId) {
         int bizType = AliveStatisticItem.getBizTypeByChannel();
         if (bizType == -1) {
             return;
         }
+        MyLog.d(TAG, "statisticAlive times=" + times + " channelId=" + channelId);
         long date = System.currentTimeMillis();
-        MilinkStatisticsItem item = new AliveStatisticItem(date, userId, times);
+        MilinkStatisticsItem item = new AliveStatisticItem(date, userId, times, channelId);
         upload(item);
     }
 
