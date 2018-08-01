@@ -51,9 +51,6 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
 
     private BackTitleBar mTitleBar;
 
-    private long mResumeTime;
-    private long mPauseTime;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,37 +162,13 @@ public class ChannelListSdkActivity extends BaseSdkActivity implements IChannelL
     public void onResume() {
         super.onResume();
         EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.RESUME));
-
-
-        if (mPagerAdapter != null && mViewPager != null) {
-            int currentItem = mViewPager.getCurrentItem();
-            if (currentItem >= 0) {
-                ChannelShow channelShow = mPagerAdapter.getChannelShowByPosition(currentItem);
-                if (channelShow != null) {
-                    EventBus.getDefault().postSticky(new EventClass.SelectChannelEvent(channelShow.getChannelId()));
-                }
-            }
-        }
-
         SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
-
-        mResumeTime = System.currentTimeMillis();
-        mPauseTime = mResumeTime;
-        MyLog.d(TAG, "activity onResume " + mResumeTime);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         EventBus.getDefault().post(new EventClass.LiveListActivityLiveCycle(EventClass.LiveListActivityLiveCycle.Event.PAUSE));
-
-        mPauseTime = System.currentTimeMillis();
-        long aliveTime = mPauseTime - mResumeTime;
-        MyLog.d(TAG, "activity onPause " + mPauseTime);
-        MyLog.d(TAG, "activity aliveTime " + aliveTime);
-        if (aliveTime > 0 && mResumeTime > 0) {
-            MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
-        }
     }
 
     @Override

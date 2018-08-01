@@ -448,6 +448,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         if (aliveTime > 0 && mResumeTime > 0) {
             MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
         }
+        mResumeTime = 0;
+        mPauseTime = 0;
     }
 
     @Override
