@@ -161,7 +161,7 @@ public class VersionCheckManager {
         }
         try {
             JSONObject resultObj = new JSONObject(jsonString);
-            if (!resultObj.has("result") || !"ok" .equalsIgnoreCase(resultObj.getString("result"))) {
+            if (!resultObj.has("result") || !"ok".equalsIgnoreCase(resultObj.getString("result"))) {
                 return CHECK_FAILED;
             }
             Logger.w(TAG, "updateResult" + resultObj.toString());
@@ -409,6 +409,9 @@ public class VersionCheckManager {
                 return false;
             }
             if (packageInfo.versionCode != mRemoteAppVersion) {
+                return false;
+            }
+            if (!TextUtils.equals(PACKAGE_NAME, packageInfo.packageName)) {
                 return false;
             }
         } catch (Exception e) {

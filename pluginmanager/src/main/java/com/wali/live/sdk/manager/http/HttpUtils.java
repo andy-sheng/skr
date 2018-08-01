@@ -191,6 +191,8 @@ public class HttpUtils {
             conn.setConnectTimeout(CONNECTION_TIMEOUT);
             conn.setReadTimeout(READ_TIMEOUT);
             HttpURLConnection.setFollowRedirects(true);
+            conn.setRequestProperty("Accept-Encoding", "identity");
+            conn.setUseCaches(false);
             conn.connect();
             input = conn.getInputStream();
 
@@ -208,6 +210,8 @@ public class HttpUtils {
             if (null != progress) {
                 progress.onCompleted(outputFile.getAbsolutePath());
             }
+
+            conn.disconnect();
             return true;
         } catch (IOException e) {
             Logger.e(TAG, "downloadFile IOException=", e);
