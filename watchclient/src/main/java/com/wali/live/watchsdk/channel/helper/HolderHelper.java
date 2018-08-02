@@ -34,13 +34,13 @@ public class HolderHelper {
     /**
      * 停留1s曝光打点统计
      */
-    public static void sendStayExposureCommand(BaseJumpItem item) {
+    public static void sendStayExposureCommand(BaseJumpItem item, long channelId) {
         if (item == null) {
             return;
         }
         String tag = item.getRecommendTag();
         if (!TextUtils.isEmpty(tag)) {
-            MilinkStatistics.getInstance().statisticStayExposure(MyUserInfoManager.getInstance().getUuid(), tag);
+            MilinkStatistics.getInstance().statisticStayExposure(MyUserInfoManager.getInstance().getUuid(), tag, channelId);
         }
     }
 

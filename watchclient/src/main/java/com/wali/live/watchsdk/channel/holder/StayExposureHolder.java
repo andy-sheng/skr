@@ -104,42 +104,42 @@ public abstract class StayExposureHolder extends BaseHolder<ChannelViewModel> {
                     if (mViewModel instanceof ChannelShowViewModel) {
                         MyLog.d(TAG, "instanceof ChannelShowViewModel");
                         ChannelShowViewModel viewModel = (ChannelShowViewModel) mViewModel;
-                        sendStayExposureItemData(viewModel.getItemDatas());
+                        sendStayExposureItemData(viewModel.getItemDatas(), mViewModel.getChannelId());
 
                     } else if (mViewModel instanceof ChannelTwoTextViewModel) {
                         MyLog.d(TAG, "instanceof ChannelTwoTextViewModel");
                         ChannelTwoTextViewModel viewModel = (ChannelTwoTextViewModel) mViewModel;
-                        sendStayExposureItemData(viewModel.getItemDatas());
+                        sendStayExposureItemData(viewModel.getItemDatas(), mViewModel.getChannelId());
 
                     } else if (mViewModel instanceof ChannelUserViewModel) {
                         MyLog.d(TAG, "instanceof ChannelUserViewModel");
                         ChannelUserViewModel viewModel = (ChannelUserViewModel) mViewModel;
-                        sendStayExposureItemData(viewModel.getItemDatas());
+                        sendStayExposureItemData(viewModel.getItemDatas(), mViewModel.getChannelId());
 
                     } else if (mViewModel instanceof ChannelLiveViewModel) {
                         MyLog.d(TAG, "instanceof ChannelLiveViewModel");
                         ChannelLiveViewModel viewModel = (ChannelLiveViewModel) mViewModel;
-                        sendStayExposureItemData(viewModel.getItemDatas());
+                        sendStayExposureItemData(viewModel.getItemDatas(), mViewModel.getChannelId());
 
                     } else if (mViewModel instanceof ChannelNavigateViewModel) {
                         MyLog.d(TAG, "instanceof ChannelNavigateViewModel");
                         ChannelNavigateViewModel viewModel = ((ChannelNavigateViewModel) mViewModel);
-                        sendStayExposureItemData(viewModel.getItemDatas());
+                        sendStayExposureItemData(viewModel.getItemDatas(), mViewModel.getChannelId());
 
                     } else if (mViewModel instanceof ChannelRankingViewModel) {
                         MyLog.d(TAG, "instanceof ChannelRankingViewModel");
                         ChannelRankingViewModel viewModel = (ChannelRankingViewModel) mViewModel;
-                        sendStayExposureItemData(viewModel.getItemDatas());
+                        sendStayExposureItemData(viewModel.getItemDatas(), mViewModel.getChannelId());
 
                     } else if(mViewModel instanceof ChannelLiveGroupViewModel){
                         MyLog.d(TAG, "instanceof ChannelLiveGroupViewModel");
                         ChannelLiveGroupViewModel viewModel = (ChannelLiveGroupViewModel) mViewModel;
-                        sendStayExposureItemData(viewModel.getItemDatas());
+                        sendStayExposureItemData(viewModel.getItemDatas(), mViewModel.getChannelId());
 
                     }else if (mViewModel instanceof ChannelBannerViewModel) {
                         MyLog.d(TAG, "instanceof ChannelBannerViewModel");
                         ChannelBannerViewModel viewModel = (ChannelBannerViewModel) mViewModel;
-                        sendStayExposureItemData(viewModel.getItemDatas());
+                        sendStayExposureItemData(viewModel.getItemDatas(), mViewModel.getChannelId());
                     }
                 }
             }
@@ -150,11 +150,11 @@ public abstract class StayExposureHolder extends BaseHolder<ChannelViewModel> {
      * 发送曝光数据
      * @param list
      */
-    private void sendStayExposureItemData(List<? extends BaseJumpItem> list) {
+    private void sendStayExposureItemData(List<? extends BaseJumpItem> list, long channelId) {
         if (list != null && !list.isEmpty()) {
             for (BaseJumpItem item : list) {
                 MyLog.d(TAG,"item recommend= " + item.getRecommendTag());
-                HolderHelper.sendStayExposureCommand(item);
+                HolderHelper.sendStayExposureCommand(item, channelId);
             }
         } else {
             MyLog.d(TAG,"item list is empty");

@@ -17,20 +17,24 @@ public class StayExposureStatisticItem extends MilinkStatisticsItem {
 
     private final static int STAY_EXPOSURE_BIZ_TYPE_MUSIC = 2; // 小米音乐bizType
 
-    public StayExposureStatisticItem(long date, long userId, String recommend) {
+    public StayExposureStatisticItem(long date, long userId, String recommend, long channelId) {
         super(date, STAY_EXPOSURE_TYPE);
         mCommonLog = StatisticsProto.CommonLog.newBuilder()
                 .setBizType(getBizTypeByChannel())
-                .setExtStr(generateExtraString(userId))
+                .setExtStr(generateExtraString(userId, channelId))
                 .build();
         mRecommend = recommend;
     }
 
-    private String generateExtraString(long userId) {
+    private String generateExtraString(long userId, long channelId) {
         MyLog.d(TAG, "userId=" + userId);
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("user_id", userId);
+            if (channelId > 0) {
+                // recommend字段中有频道id 数据那边还是要加在extStr里
+                jsonObject.put("channel_id", channelId);
+            }
             return jsonObject.toString();
         } catch (Exception e) {
             e.printStackTrace();
