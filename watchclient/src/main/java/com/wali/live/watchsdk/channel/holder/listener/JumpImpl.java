@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import com.base.log.MyLog;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.channel.viewmodel.ChannelLiveViewModel;
-import com.wali.live.watchsdk.income.income.UserIncomeActivity;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
+import com.wali.live.watchsdk.scheme.SchemeUtils;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
@@ -27,10 +27,15 @@ public class JumpImpl implements JumpListener {
 
     private WeakReference<Activity> mActRef;
     private ArrayList<RoomInfo> mRoomList;
+    private long mChannelId;
 
     public JumpImpl(Activity activity) {
         mActRef = new WeakReference(activity);
         mRoomList = new ArrayList();
+    }
+
+    public void setChannelId(long channelId) {
+        mChannelId  = channelId;
     }
 
     public void process(List<? extends BaseViewModel> models) {
@@ -45,6 +50,7 @@ public class JumpImpl implements JumpListener {
                         if (liveItem.isEnterRoom()) {
                             if (!liveItem.isContestRoom()) {
                                 RoomInfo roomInfo = liveItem.toRoomInfo();
+                                roomInfo.setPageChannelId(mChannelId);
                                 mRoomList.add(roomInfo);
                                 liveItem.setListPosition(position);
                                 position++;
@@ -57,9 +63,28 @@ public class JumpImpl implements JumpListener {
     }
 
     @Override
-    public void jumpScheme(String uri) {
-        if (!TextUtils.isEmpty(uri)) {
-            SchemeSdkActivity.openActivity(mActRef.get(), Uri.parse(uri));
+    public void jumpScheme(String schema) {
+        if (!TextUtils.isEmpty(schema)) {
+            Uri uri = Uri.parse(schema);
+            String host = uri.getHost();
+            String path = uri.getPath();
+            if ("room".equals(host)) {
+                if ("/join".equals(path)) {
+                    String liveId = SchemeUtils.getString(uri, "liveid");
+                    long playerId = SchemeUtils.getLong(uri, "playerid", 0);
+                    String videoUrl = SchemeUtils.getString(uri, "videourl");
+                    int liveType = SchemeUtils.getInt(uri, "type", 0);
+                    if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                .setLiveType(liveType)
+                                .setPageChannelId(mChannelId)
+                                .build();
+                        WatchSdkActivity.openActivity(mActRef.get(), roomInfo);
+                        return;
+                    }
+                }
+            }
+            SchemeSdkActivity.openActivity(mActRef.get(), uri);
         }
     }
 

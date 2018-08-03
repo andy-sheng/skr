@@ -23,6 +23,7 @@ import com.wali.live.watchsdk.channel.presenter.IChannelView;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
+import com.wali.live.watchsdk.statistics.item.AliveStatisticItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -174,7 +175,8 @@ public class LiveChannelView extends RelativeLayout implements IChannelView, Swi
             if (mChannelShow != null) {
                 channelId = mChannelShow.getChannelId();
             }
-            MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime, channelId);
+            MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(),
+                    aliveTime, channelId, AliveStatisticItem.ALIVE_BIZ_TYPE_CHANNEL);
         }
         mResumeTime = 0;
         mPauseTime = 0;

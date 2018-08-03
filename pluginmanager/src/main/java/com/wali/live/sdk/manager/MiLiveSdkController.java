@@ -48,6 +48,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String EXTRA_VIDEO_URL = "extra_video_url";
     private static final String EXTRA_LIVE_TYPE = "extra_live_type";
     private static final String EXTRA_GAME_ID = "extra_game_id";
+    private static final String EXTRA_PAGE_CHANNEL_ID = "extra_page_channel_id";
 
     private static final String EXTRA_LOCATION = "extra_location";
 
@@ -111,7 +112,6 @@ public class MiLiveSdkController implements IMiLiveSdk {
      * 是否隐藏关系链，无法关注，无法私信
      */
     private boolean mEnableRelationChain = true;
-
 
     private ICallback mCallback;
 
@@ -445,6 +445,10 @@ public class MiLiveSdkController implements IMiLiveSdk {
      * @return
      */
     public boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback) {
+        return tryJumpBySchema(activity, schema, 0, callback);
+    }
+
+    public boolean tryJumpBySchema(Activity activity, String schema, long pageChannelId, IAssistantCallback callback) {
         //尝试使用schema跳转
         Uri uri = Uri.parse(schema);
         String host = uri.getHost();
@@ -456,7 +460,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
                 String videoUrl = SchemeUtils.getString(uri, "videourl");
                 int liveType = SchemeUtils.getInt(uri, "type", 0);
                 if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
-                    openWatch(activity, playerId, liveId, videoUrl, liveType, callback);
+                    if (pageChannelId > 0) {
+                        openWatch(activity, playerId, liveId, videoUrl, liveType, pageChannelId, callback);
+                    } else {
+                        openWatch(activity, playerId, liveId, videoUrl, liveType, callback);
+                    }
                     return true;
                 }
             }
@@ -487,6 +495,23 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
+    }
+
+
+    @Override
+    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, long pageChannelId, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
+            return;
+        }
+        checkHasInit();
+
+        Bundle bundle = getBasicBundle();
+        bundle.putLong(EXTRA_PLAYER_ID, playerId);
+        bundle.putString(EXTRA_LIVE_ID, liveId);
+        bundle.putString(EXTRA_VIDEO_URL, videoUrl);
+        bundle.putInt(EXTRA_LIVE_TYPE, liveType);
+        bundle.putLong(EXTRA_PAGE_CHANNEL_ID, pageChannelId);
         jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
     }
 

@@ -18,7 +18,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.base.activity.BaseActivity;
-import com.base.activity.BaseSdkActivity;
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
@@ -40,9 +39,7 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
-import com.mi.live.data.event.TurnTableEvent;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
-import com.mi.live.data.gift.model.GiftInfoForThisRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
@@ -89,6 +86,7 @@ import com.wali.live.watchsdk.receiver.ScreenStateReceiver;
 import com.wali.live.watchsdk.scheme.SchemeConstants;
 import com.wali.live.watchsdk.scheme.SchemeSdkActivity;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
+import com.wali.live.watchsdk.statistics.item.AliveStatisticItem;
 import com.wali.live.watchsdk.task.IActionCallBack;
 import com.wali.live.watchsdk.task.LiveTask;
 import com.wali.live.watchsdk.watch.event.LiveEndEvent;
@@ -133,7 +131,6 @@ import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
-import static com.wali.live.component.BaseSdkController.MSG_SHOW_BIG_TURN_TABLE_BTN;
 import static com.wali.live.component.BaseSdkController.MSG_SWITCH_ROOM;
 
 /**
@@ -188,9 +185,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         protected void processMessage(Message message) {
         }
     };
-
-    private long mResumeTime;
-    private long mPauseTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,6 +312,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             enableFollow = false;
         }
         mMyRoomData.setEnableRelationChain(enableFollow);
+        mMyRoomData.setChannelId(mRoomInfo.getPageChannelId());
         return true;
     }
 
@@ -432,24 +427,16 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         KeyboardUtils.hideKeyboard(this);
         SelfUpdateManager.selfUpdateAsnc(new WeakReference(this));
 
-        mResumeTime = System.currentTimeMillis();
-        mPauseTime = mResumeTime;
-        MyLog.d(TAG, "activity onResume " + mResumeTime);
+        initUploadAliveTime();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        mPauseTime = System.currentTimeMillis();
-        long aliveTime = mPauseTime - mResumeTime;
-        MyLog.d(TAG, "activity onPause " + mPauseTime);
-        MyLog.d(TAG, "activity aliveTime " + aliveTime);
-        if (aliveTime > 0 && mResumeTime > 0) {
-            MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(), aliveTime);
+        if (mMyRoomData != null) {
+            uploadAlive(mMyRoomData.getRoomId(), mMyRoomData.getChannelId());
         }
-        mResumeTime = 0;
-        mPauseTime = 0;
     }
 
     @Override
@@ -1084,6 +1071,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         private void switchRoom() {
             if (!isFinishing()) {
+                // 切换房间之前将上一个房间的观看时间上传
+                if (mMyRoomData != null) {
+                    uploadAlive(mMyRoomData.getRoomId(), mMyRoomData.getChannelId());
+                }
+
                 MyLog.w(TAG, "switch anchor: leave room user=" + mMyRoomData.getUser());
                 // 清除管理信息
                 WatchRoomCharactorManager.getInstance().clear();
@@ -1121,6 +1113,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
                 // 重新获取当前房间信息，并重新进入房间
                 trySendDataWithServerOnce();
+
+                // 切换房间后更新打点时间
+                initUploadAliveTime();
             }
         }
     }
@@ -1140,5 +1135,28 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         intent.putExtra(EXTRA_ROOM_INFO_POSITION, position);
         activity.startActivity(intent);
         return true;
+    }
+
+    private long mResumeTime;
+    private long mPauseTime;
+
+    private void initUploadAliveTime() {
+        mResumeTime = System.currentTimeMillis();
+        mPauseTime = mResumeTime;
+        MyLog.d(TAG, "alive onResume time" + mResumeTime);
+    }
+
+    private void uploadAlive(String roomId, long channelId) {
+        mPauseTime = System.currentTimeMillis();
+        long aliveTime = mPauseTime - mResumeTime;
+
+        MyLog.d(TAG, "alive aliveTime " + aliveTime);
+        if (aliveTime > 0 && mResumeTime > 0) {
+            MilinkStatistics.getInstance().statisticAlive(MyUserInfoManager.getInstance().getUuid(),
+                    aliveTime, roomId, channelId, AliveStatisticItem.ALIVE_BIZ_TYPE_LIVE_ROOM);
+        }
+
+        mResumeTime = 0;
+        mPauseTime = 0;
     }
 }

@@ -92,6 +92,7 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
 
     public void setData(List<? extends BaseViewModel> channelModels) {
         mChannelModels = channelModels;
+        mJumpImpl.setChannelId(mChannelId);
         mJumpImpl.process(mChannelModels);
         notifyDataSetChanged();
     }

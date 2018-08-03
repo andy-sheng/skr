@@ -34,11 +34,15 @@ public class RoomInfo implements Parcelable {
     // 是否支持分享
     private boolean mEnableRelationChain = true;
 
+    // 进入直播间的频道id(不是从频道进来的默认为0)
+    private long mPageChannelId;
+
     // 以下与ui相关的信息
     private String mCoverUrl;
 
     static final String JSON_KEY_GAME_ID = "game_id";
     static final String JSON_KEY_ENABLE_RELATION_CHAIN = "enable_relation_chain";
+    static final String JSON_KEY_PAGE_CHANNEL_ID = "page_channel_id";
 
     private RoomInfo(long playerId, String liveId, String videoUrl) {
         mPlayerId = playerId;
@@ -66,6 +70,7 @@ public class RoomInfo implements Parcelable {
                     JSONObject jsonObject = new JSONObject(ext);
                     mGameId = jsonObject.optString(JSON_KEY_GAME_ID);
                     mEnableRelationChain = jsonObject.optBoolean(JSON_KEY_ENABLE_RELATION_CHAIN);
+                    mPageChannelId = jsonObject.optLong(JSON_KEY_PAGE_CHANNEL_ID);
                 } catch (JSONException e) {
                     // 如果传的不是json
                     mGameId = ext;
@@ -108,6 +113,7 @@ public class RoomInfo implements Parcelable {
         try {
             jsonObject.put(JSON_KEY_GAME_ID, mGameId);
             jsonObject.put(JSON_KEY_ENABLE_RELATION_CHAIN, mEnableRelationChain);
+            jsonObject.put(JSON_KEY_PAGE_CHANNEL_ID, mPageChannelId);
         } catch (JSONException e) {
         }
         parcel.writeString(jsonObject.toString());
@@ -195,6 +201,14 @@ public class RoomInfo implements Parcelable {
         mEnableRelationChain = enableRelationChain;
     }
 
+    public long getPageChannelId() {
+        return mPageChannelId;
+    }
+
+    public void setPageChannelId(long pageChannelId) {
+        mPageChannelId = pageChannelId;
+    }
+
     public static class Builder {
         private RoomInfo mRoomInfo;
 
@@ -242,6 +256,11 @@ public class RoomInfo implements Parcelable {
             return this;
         }
 
+        public Builder setPageChannelId(long pageChannelId) {
+            mRoomInfo.setPageChannelId(pageChannelId);
+            return this;
+        }
+
         public RoomInfo build() {
             return mRoomInfo;
         }
@@ -258,6 +277,7 @@ public class RoomInfo implements Parcelable {
                 ", mAvatar=" + mAvatar +
                 ", mGameId='" + mGameId + '\'' +
                 ", mEnableShare=" + mEnableShare +
+                ", mPageChannelId=" + mPageChannelId +
                 ", mCoverUrl='" + mCoverUrl + '\'' +
                 '}';
     }

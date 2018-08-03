@@ -54,6 +54,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
     private static final String EXTRA_GAME_ID = "extra_game_id";
     private static final String EXTRA_ENABLE_SHARE = "extra_enable_share";
     private static final String EXTRA_ENABLE_FOLLOW = "extra_enable_follow";
+    private static final String EXTRA_PAGE_CHANNEL_ID = "extra_page_channel_id";
 
     private static final String EXTRA_LOCATION = "extra_location";
 
@@ -167,6 +168,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                 final String videoUrl = intent.getStringExtra(EXTRA_VIDEO_URL);
                 final int liveType = intent.getIntExtra(EXTRA_LIVE_TYPE, 0);
                 final String gameId = intent.getStringExtra(EXTRA_GAME_ID);
+                final long pageChannelId = intent.getLongExtra(EXTRA_PAGE_CHANNEL_ID, 0);
 
                 MiLiveSdkBinder.getInstance().openWatch(this, channelId, packageName, channelSecret,
                         new ICommonCallBack() {
@@ -177,6 +179,7 @@ public class JumpSdkActivity extends BaseSdkActivity {
                                         .setGameId(gameId)
                                         .setEnableShare(enableShare)
                                         .setEnableRelationChain(enableFollow)
+                                        .setPageChannelId(pageChannelId)
                                         .build();
                                 WatchSdkActivity.openActivity(JumpSdkActivity.this, roomInfo);
                             }

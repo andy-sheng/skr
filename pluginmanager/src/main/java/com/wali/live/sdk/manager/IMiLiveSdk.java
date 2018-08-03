@@ -112,6 +112,13 @@ public interface IMiLiveSdk {
     /**
      * 打开直播观看页面
      *
+     * @notice 带频道id 不带gameId
+     */
+     void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, long pageChannelId, IAssistantCallback callback);
+
+    /**
+     * 打开直播观看页面
+     *
      * @version 205037
      */
     void openWatchRoom(Activity activity, RoomInfo roomInfo, IAssistantCallback callback);

@@ -36,4 +36,13 @@ public class SchemeUtils {
         return uri.getQueryParameter(SchemeConstants.PARAM_RECOMMEND_TAG);
     }
 
+    public static String getString(Uri uri, String key) {
+        try {
+            return uri.getQueryParameter(key);
+        } catch (Exception e) {
+//            MyLog.e(e);
+        }
+        return "";
+    }
+
 }

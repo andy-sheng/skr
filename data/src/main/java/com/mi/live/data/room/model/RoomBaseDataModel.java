@@ -141,6 +141,11 @@ public class RoomBaseDataModel implements Serializable {
     private boolean mEnableRelationChain = true;
 
     /**
+     * 跳转进来的频道id 默认为0
+     */
+    private long mChannelId;
+
+    /**
      * 房间id，重要属性
      */
     private String mRoomId;
@@ -574,6 +579,14 @@ public class RoomBaseDataModel implements Serializable {
     public boolean isEnableRelationChain() { return mEnableRelationChain; }
 
     public void setEnableRelationChain(boolean enableFollow) { mEnableRelationChain = enableFollow; }
+
+    public long getChannelId() {
+        return mChannelId;
+    }
+
+    public void setChannelId(long channelId) {
+        mChannelId = channelId;
+    }
 
     public boolean isSupportMagicFace() {
         return mSupportMagicFace;

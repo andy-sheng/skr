@@ -1,7 +1,8 @@
 package com.wali.live.watchsdk.statistics.item;
 
+import android.text.TextUtils;
+
 import com.base.log.MyLog;
-import com.mi.live.data.account.channel.HostChannelManager;
 import com.wali.live.proto.StatisticsProto;
 
 import org.json.JSONObject;
@@ -15,24 +16,30 @@ public class AliveStatisticItem extends MilinkStatisticsItem {
 
     private final static int ALIVE_TYPE = 609; // 活跃时长 type 609
 
-    private final static int ALIVE_BIZ_TYPE_GAME_CENTER = 1; // 游戏中心bizType
-    private final static int ALIVE_BIZ_TYPE_MUSIC = 2; // 小米音乐bizType
+    public final static int ALIVE_BIZ_TYPE_ALL = 1; // APP总活跃时长
+    public final static int ALIVE_BIZ_TYPE_LIVE_ROOM = 2; // 直播间观看时长（切换一个房间上传一次）
+    public final static int ALIVE_BIZ_TYPE_CHANNEL = 3; // 频道停留时长（切换一次频道上传一次）
 
-    public AliveStatisticItem(long date, long userId, long times, long channelId) {
+    public AliveStatisticItem(long date, long userId, long times, String roomId, long channelId, int bizType) {
         super(date, ALIVE_TYPE);
         mCommonLog = StatisticsProto.CommonLog.newBuilder()
-                .setBizType(getBizTypeByChannel())
-                .setExtStr(getExtraString(userId, times, channelId))
+                .setBizType(bizType)
+                .setExtStr(getExtraString(userId, times, roomId, channelId))
                 .build();
     }
 
-    private String getExtraString(long userId, long times, long channelId) {
-        MyLog.d(TAG, "userId=" + userId + " time=" + times);
+    private String getExtraString(long userId, long times, String roomId, long channelId) {
+        MyLog.d(TAG, "user_id=" + userId + " times=" + times);
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("user_id", userId);
             jsonObject.put("times", times);
+            if (!TextUtils.isEmpty(roomId)) {
+                MyLog.d(TAG, "room_id=" + roomId);
+                jsonObject.put("room_id", roomId);
+            }
             if (channelId > 0) {
+                MyLog.d(TAG, "channel_id=" + channelId);
                 jsonObject.put("channel_id", channelId);
             }
             return jsonObject.toString();
@@ -51,26 +58,5 @@ public class AliveStatisticItem extends MilinkStatisticsItem {
                 .setLog(mCommonLog)
                 .build();
         return mFlagItem;
-    }
-
-    /**
-     * 通过渠道区分bizType
-     * @return
-     */
-    public static int getBizTypeByChannel() {
-        int channelId = HostChannelManager.getInstance().getChannelId();
-        switch (channelId) {
-            case 50010: {
-                // 游戏中心
-                return ALIVE_BIZ_TYPE_GAME_CENTER;
-            }
-            case 50019: {
-                // 小米音乐
-                return ALIVE_BIZ_TYPE_MUSIC;
-            }
-            default:
-                // 其他未定义 暂时不上传打点
-                return -1;
-        }
     }
 }

@@ -107,18 +107,20 @@ public class MilinkStatistics {
         uploadDelay(item);
     }
 
-    public void statisticAlive(long userId, long times) {
-        statisticAlive(userId, times, 0);
+    public void statisticAlive(long userId, long times, int bizType) {
+        statisticAlive(userId, times, "", -1, bizType);
     }
 
-    public void statisticAlive(long userId, long times, long channelId) {
-        int bizType = AliveStatisticItem.getBizTypeByChannel();
-        if (bizType == -1) {
-            return;
-        }
-        MyLog.d(TAG, "statisticAlive times=" + times + " channelId=" + channelId);
+    public void statisticAlive(long userId, long times, long channelId, int bizType) {
+        statisticAlive(userId, times, "", channelId, bizType);
+    }
+
+    public void statisticAlive(long userId, long times, String roomId, long channelId, int bizType) {
+        MyLog.d(TAG, "statisticAlive times=" + times + " bizType=" + bizType);
+        MyLog.d(TAG, "statisticAlive roomId=" + roomId + " channelId=" + channelId);
+
         long date = System.currentTimeMillis();
-        MilinkStatisticsItem item = new AliveStatisticItem(date, userId, times, channelId);
+        MilinkStatisticsItem item = new AliveStatisticItem(date, userId, times, roomId, channelId, bizType);
         upload(item);
     }
 
