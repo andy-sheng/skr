@@ -444,10 +444,12 @@ public class MiLiveSdkController implements IMiLiveSdk {
      * @param schema
      * @return
      */
+    @Override
     public boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback) {
         return tryJumpBySchema(activity, schema, 0, callback);
     }
 
+    @Override
     public boolean tryJumpBySchema(Activity activity, String schema, long pageChannelId, IAssistantCallback callback) {
         //尝试使用schema跳转
         Uri uri = Uri.parse(schema);

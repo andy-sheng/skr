@@ -85,6 +85,17 @@ public interface IMiLiveSdk {
     boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback);
 
     /**
+     * 尝试schema跳转
+     *
+     * @param activity
+     * @param schema
+     * @param callback
+     * @param pageChannelId
+     * @return
+     */
+    boolean tryJumpBySchema(Activity activity, String schema, long pageChannelId, IAssistantCallback callback);
+
+    /**
      * 打开直播观看页面
      *
      * @notice 不带gameId
