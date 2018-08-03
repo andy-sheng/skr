@@ -13,14 +13,12 @@ import org.json.JSONObject;
 public class StayExposureStatisticItem extends MilinkStatisticsItem {
     private String TAG = getClass().getSimpleName();
 
-    private final static int STAY_EXPOSURE_TYPE = 608; // 频道曝光type 608
-
-    private final static int STAY_EXPOSURE_BIZ_TYPE_MUSIC = 2; // 小米音乐bizType
+    private final static int STAY_EXPOSURE_TYPE = 630; // 频道曝光type 630
 
     public StayExposureStatisticItem(long date, long userId, String recommend, long channelId) {
         super(date, STAY_EXPOSURE_TYPE);
         mCommonLog = StatisticsProto.CommonLog.newBuilder()
-                .setBizType(getBizTypeByChannel())
+                .setBizType(0)
                 .setExtStr(generateExtraString(userId, channelId))
                 .build();
         mRecommend = recommend;
@@ -52,22 +50,5 @@ public class StayExposureStatisticItem extends MilinkStatisticsItem {
                 .setLog(mCommonLog)
                 .build();
         return mFlagItem;
-    }
-
-    /**
-     * 通过渠道区分bizType 目前只有小米音乐有曝光 游戏中心的频道曝光内嵌在app中
-     * @return
-     */
-    public static int getBizTypeByChannel() {
-        int channelId = HostChannelManager.getInstance().getChannelId();
-        switch (channelId) {
-            case 50019: {
-                // 小米音乐
-                return STAY_EXPOSURE_BIZ_TYPE_MUSIC;
-            }
-            default:
-                // 其他未定义 暂时不上传打点
-                return -1;
-        }
     }
 }

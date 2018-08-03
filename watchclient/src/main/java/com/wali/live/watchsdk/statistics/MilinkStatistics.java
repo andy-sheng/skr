@@ -98,10 +98,6 @@ public class MilinkStatistics {
 
     public void statisticStayExposure(long userId, String recommend, long channelId) {
         MyLog.d(TAG, "StayExposure tag = " + recommend);
-        int bizType = StayExposureStatisticItem.getBizTypeByChannel();
-        if (bizType == -1) {
-            return;
-        }
         long date = System.currentTimeMillis();
         MilinkStatisticsItem item = new StayExposureStatisticItem(date, userId, recommend, channelId);
         uploadDelay(item);
