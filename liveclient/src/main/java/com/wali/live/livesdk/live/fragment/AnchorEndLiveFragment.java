@@ -143,7 +143,7 @@ public class AnchorEndLiveFragment extends RxFragment implements View.OnClickLis
         mTicketTv.setText(mTicket + "");
         mLiveTimesTv.setText(SpanUtils.addColorSpan(String.valueOf(mHistoryLiveCount),
                 getResources().getQuantityString(R.plurals.live_end_history_live_count, mHistoryLiveCount, mHistoryLiveCount),
-                R.color.text_color_e5aa1c,
+                R.color.color_ff2966,
                 R.color.black));
 
         //根据准备直播页面的CheckedTextView来确定是否显示删除按钮

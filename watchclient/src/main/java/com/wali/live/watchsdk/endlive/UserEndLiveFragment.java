@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.endlive;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -212,18 +213,18 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
                 if (mHour > 0) {
                     mTimeHourTv.setText(SpanUtils.addColorSpan(String.valueOf(mHour),
                             String.format(getString(R.string.live_end_time_hours), String.valueOf(mHour)),
-                            R.color.text_color_e5aa1c,
+                            R.color.color_ff2966,
                             R.color.black));
                     mTimeMinuteTv.setText(SpanUtils.addColorSpan(String.valueOf(mMinute),
                             String.format(getString(R.string.live_end_time_minute), String.valueOf(mMinute)),
-                            R.color.text_color_e5aa1c,
+                            R.color.color_ff2966,
                             R.color.black));
                 } else {
                     mTimeHourTv.setVisibility(View.GONE);
                     if (mMinute > 0) {
                         mTimeMinuteTv.setText(SpanUtils.addColorSpan(String.valueOf(mMinute),
                                 String.format(getString(R.string.live_end_time_minute), String.valueOf(mMinute)),
-                                R.color.text_color_e5aa1c,
+                                R.color.color_ff2966,
                                 R.color.black));
                     } else {
                         mTimeMinuteTv.setVisibility(View.GONE);
@@ -231,11 +232,11 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
                 }
                 mTimeSecondTv.setText(SpanUtils.addColorSpan(String.valueOf(mSecond),
                         String.format(getString(R.string.live_end_time_second), String.valueOf(mSecond)),
-                        R.color.text_color_e5aa1c,
+                        R.color.color_ff2966,
                         R.color.black));
                 if (mTicket > 0) {
                     mTicketTv.setText(SpanUtils.addColorSpan(String.valueOf(mTicket), String.format(getString(R.string.endlive_user_ticket), String.valueOf(mTicket)),
-                            R.color.text_color_e5aa1c,
+                            R.color.color_ff2966,
                             R.color.black));
                 } else {
                     mTicketTv.setVisibility(View.GONE);
@@ -256,8 +257,9 @@ public class UserEndLiveFragment extends BaseEventBusFragment implements View.On
         if (mViewerCnt <= 0) {
             mViewerTv.setVisibility(View.INVISIBLE);
         } else {
-            mViewerTv.setText(getResources().getQuantityString(R.plurals.live_end_viewer_cnt,
-                    mViewerCnt, mViewerCnt));
+            String content = getResources().getQuantityString(R.plurals.live_end_viewer_cnt, mViewerCnt, mViewerCnt);
+            SpannableString stringBuilder = SpanUtils.addColorSpan(String.valueOf(mViewerCnt), content, R.color.color_ff2966, R.color.white);
+            mViewerTv.setText(stringBuilder);
         }
 
         if( mEnableRelationChain){

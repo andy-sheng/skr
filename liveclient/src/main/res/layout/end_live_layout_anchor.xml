@@ -211,10 +211,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ticket_tv"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginTop="6dp"
             android:text="23423"
-            android:textColor="@color/text_color_e5aa1c"
-            android:textSize="@dimen/text_size_45"/>
+            android:textColor="@color/color_ff2966"
+            android:textSize="@dimen/text_size_45" />
 
         <TextView
             android:id="@+id/top_three_tv"
@@ -277,20 +277,19 @@
             android:layout_marginLeft="@dimen/margin_15"
             android:gravity="center"
             android:text="@string/live_delete"
-            android:textColor="@color/text_color_e5aa1c"/>
+            android:textColor="@color/color_ff2966"/>
 
         <TextView
             android:id="@+id/back_tv"
             android:layout_width="@dimen/view_dimen_800"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/view_dimen_120"
             android:layout_above="@id/delete_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/view_dimen_50"
-            android:layout_marginTop="24.67dp"
-            android:background="@drawable/live_begin_btn_bg"
+            android:background="@drawable/zhibo_begin_btn_normal"
             android:gravity="center"
             android:text="@string/live_ended_back"
-            android:textColor="@color/color_white_pressed_white60_selected_fed533"
+            android:textColor="@color/color_text_next_bg"
             android:textSize="@dimen/text_size_44"/>
 
         <LinearLayout

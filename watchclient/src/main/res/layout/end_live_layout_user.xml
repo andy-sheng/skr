@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_220"
         android:text="@string/live_is_end"
-        android:textColor="@color/color_ffbe21"
+        android:textColor="@color/color_ff2966"
         android:textSize="@dimen/text_size_90"/>
 
     <TextView
@@ -162,7 +162,7 @@
             android:background="@drawable/login_but_button_zhuce_normal"
             android:gravity="center"
             android:text="@string/live_ended_concern"
-            android:textColor="@color/color_ffbe21"
+            android:textColor="@color/color_ff2966"
             android:textSize="@dimen/text_size_45"/>
 
         <TextView
@@ -185,10 +185,10 @@
         android:layout_below="@+id/middle_container"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_dimen_250"
-        android:background="@drawable/live_begin_btn_bg"
+        android:background="@drawable/zhibo_begin_btn_normal"
         android:gravity="center"
         android:text="@string/live_ended_home_page"
-        android:textColor="@color/color_black_trans_50"
+        android:textColor="@color/color_text_next_bg"
         android:textSize="@dimen/text_size_40"/>
 
     <LinearLayout
