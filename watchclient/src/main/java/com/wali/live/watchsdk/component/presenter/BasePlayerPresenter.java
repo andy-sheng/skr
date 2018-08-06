@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.base.dialog.MyAlertDialog;
 import com.base.log.MyLog;
+import com.base.utils.CommonUtils;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.watchsdk.R;
@@ -72,9 +73,25 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
             mSurfaceWidth = width;
             mSurfaceHeight = height;
             mStreamerPresenter.setSurface(mSurface);
-            mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
-                    mSurfaceWidth, mSurfaceHeight);
+//            mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
+//                    mSurfaceWidth, mSurfaceHeight);
+            updateGravity();
             updateShiftUp();
+        }
+    }
+
+    private void updateGravity() {
+        if (mStreamerPresenter != null && mSurfaceWidth != 0 && mSurfaceHeight != 0) {
+            if (CommonUtils.isNeedFill(mSurfaceWidth, mSurfaceHeight, mVideoWidth, mVideoHeight)) {
+                mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFill, mSurfaceWidth, mSurfaceHeight);
+            } else {
+                mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit, mSurfaceWidth, mSurfaceHeight);
+            }
+        } else {
+            if (mStreamerPresenter != null) {
+                mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
+                    mSurfaceWidth, mSurfaceHeight);
+            }
         }
     }
 
@@ -127,6 +144,7 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
         if (mVideoWidth != width || mVideoHeight != height) {
             mVideoWidth = width;
             mVideoHeight = height;
+            updateGravity();
             updateShiftUp();
             notifyVideoDirection();
         }
