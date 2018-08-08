@@ -309,13 +309,13 @@ public class OperationAnimManager {
         MyLog.d("animationResFile:" + animationResFile + ", jsonFileName:" + jsonFileName);
         if (!animationResFile.exists()) {
             //文件夹都不存在，肯定没有资源
-            MyLog.d(TAG, "zjnTest animationResFile is null");
+            MyLog.d(TAG, "animationResFile is null");
             return null;
         }
         // 文件夹存在
         String animationJsonPath = findConfigPath(animationResFile, jsonFileName);
         if (TextUtils.isEmpty(animationJsonPath)) {
-            MyLog.d(TAG, "zjnTest animationJsonPath is null");
+            MyLog.d(TAG, "animationJsonPath is null");
             return null;
         }
         // 且能找到json文件
@@ -323,7 +323,7 @@ public class OperationAnimManager {
     }
 
     private static String findConfigPath(File file, String fileName) {
-        MyLog.d("zjnTest fileName:" + fileName);
+        MyLog.d("fileName:" + fileName);
         if (file.isFile()) {
             if (file.getName().endsWith(fileName)) {
                 return file.getAbsolutePath();

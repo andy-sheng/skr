@@ -10,10 +10,9 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameView;
 
-public class WatchGameFragment extends BaseFragment {
+public class WatchGameFragment extends BaseWatchFragment {
 
     private WatchGameView mWatchGameView;
-
 
     @Override
     public int getRequestCode() {

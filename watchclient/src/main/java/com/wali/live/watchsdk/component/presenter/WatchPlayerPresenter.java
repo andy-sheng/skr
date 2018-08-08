@@ -94,6 +94,7 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
 
     @Override
     protected final void doStartPlay() {
+        MyLog.d(TAG, " doStartPlay");
         requestAudioFocus();
         if (mStreamerPresenter.isStarted()) {
             mStreamerPresenter.resumeWatch();
@@ -280,6 +281,7 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
                 onOrientation(true);
                 return true;
             case MSG_NEW_VIDEO_URL:
+                MyLog.d(TAG, "MSG_NEW_VIDEO_URL");
                 onNewVideoUrl((String) params.getItem(0));
                 return true;
             case MSG_PLAYER_COMPLETED:

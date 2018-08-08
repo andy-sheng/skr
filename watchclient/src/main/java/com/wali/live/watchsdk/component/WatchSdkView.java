@@ -166,8 +166,9 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
 
     public WatchSdkView(
             @NonNull Activity activity,
+            @NonNull ViewGroup parentView,
             @NonNull WatchComponentController controller) {
-        super(activity, (ViewGroup) activity.findViewById(android.R.id.content), controller);
+        super(activity, parentView, controller);
     }
 
     public void setupView(boolean isGameMode, boolean isHuYaLive) {
@@ -263,6 +264,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                 MyLog.e(TAG, "missing R.id.video_view");
                 return;
             }
+
             WatchPlayerPresenter presenter = new WatchPlayerPresenter(mController, mController.mStreamerPresenter);
             registerHybridComponent(presenter, view);
         }

@@ -1,6 +1,7 @@
 package com.base.event;
 
 import com.base.activity.BaseRotateSdkActivity;
+import com.base.log.MyLog;
 
 import org.greenrobot.eventbus.EventBus;
 

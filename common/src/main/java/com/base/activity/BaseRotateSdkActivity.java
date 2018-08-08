@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import com.base.event.SdkEventClass;
 import com.base.fragment.IRotateActivity;
 import com.base.keyboard.KeyboardUtils;
+import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 
 /**
@@ -80,6 +81,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
             mOrientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
                 @Override
                 public void onOrientationChanged(int orientation) {
+                    MyLog.d(TAG, "onOrientationChanged");
                     int currScreenOrientation = convertOrientation(orientation);
                     if (currScreenOrientation == ORIENTATION_DEFAULT) {
                         return;
@@ -113,6 +115,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     }
 
     private void rotateOrientationIfNeed() {
+        MyLog.d(TAG, "rotateOrientationIfNeed");
         if (mScreenOrientation != mScreenDisplayOrientation) {
             if (isLandscape(mScreenOrientation)) {
                 rotateOrientation();
@@ -127,6 +130,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
     }
 
     private void notifyOrientation(int orientation) {
+        MyLog.d(TAG, "notifyOrientation");
         SdkEventClass.postOrient(orientation);
     }
 
@@ -167,6 +171,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
 
     @Override
     public void openOrientation() {
+        MyLog.d(TAG, "openOrientation isRorateOn:" + isRotateOn());
         mOpenOrientation = true;
         if (isRotateOn()) {
             rotateOrientationIfNeed();
