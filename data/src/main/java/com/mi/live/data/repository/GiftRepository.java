@@ -95,7 +95,6 @@ public class GiftRepository {
         mDownloadAnimationRes
                 .onBackpressureBuffer()
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .subscribe(new Subscriber<Gift>() {
                     @Override
                     public void onCompleted() {
