@@ -16,4 +16,6 @@ public interface WatchSdkActivityInterface {
     WatchComponentController getController();
 
     GiftMallPresenter getGiftMallPresenter();
+
+    boolean isDisplayLandscape();
 }

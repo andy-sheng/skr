@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -170,6 +171,8 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         }
     };
 
+    Handler mUiHandler = new Handler();
+
     private BaseWatchFragment mBaseWatchFragment;
 
     @Override
@@ -207,14 +210,19 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         ft.add(R.id.container, mBaseWatchFragment, tag);
         ft.commitAllowingStateLoss();
 
-
         initPresenter();
         initReceiver();
 
 //        //尝试发送关键数据给服务器,允许即使多次调用，成功后就不再发送。
         if (!isMyRoom() && !check4GNet()) {
             WatchRoomCharactorManager.getInstance().clear();
-            trySendDataWithServerOnce();
+            // 放了防止 UI 还没 注册，事件已经发出
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    trySendDataWithServerOnce();
+                }
+            });
         }
     }
 
@@ -258,22 +266,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         if (TextUtils.isEmpty(mMyRoomData.getVideoUrl())) {
             getVideoUrlFromServer();
         } else {
-            delayPostEvent();
+            mController.postEvent(MSG_NEW_VIDEO_URL, new Params().putItem(mMyRoomData.getVideoUrl()));
         }
     }
 
-    private void delayPostEvent() {
-        MyLog.d(TAG, "delayPostEvent");
-        Observable.timer(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        mController.postEvent(MSG_NEW_VIDEO_URL, new Params().putItem(mMyRoomData.getVideoUrl()));
-                    }
-                });
-    }
 
     private void getVideoUrlFromServer() {
         if (mVideoShowPresenter == null) {
@@ -429,6 +425,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         if (mHandlerThread != null) {
             mHandlerThread.destroy();
+        }
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
         }
     }
 

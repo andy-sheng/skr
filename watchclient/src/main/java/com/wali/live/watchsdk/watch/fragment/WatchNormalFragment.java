@@ -74,7 +74,7 @@ public class WatchNormalFragment extends BaseWatchFragment {
                 });
         mCloseBtn.setVisibility(View.VISIBLE);
 
-        orientCloseBtn(((WatchSdkActivity) getActivity()).isDisplayLandscape());
+        orientCloseBtn(getWatchSdkInterface().isDisplayLandscape());
 
         mSdkView = new WatchSdkView(getActivity(), (ViewGroup) mRootView.findViewById(R.id.main_act_container), mController);
         mSdkView.setupView((roomBaseData.getLiveType() == LiveManager.TYPE_LIVE_GAME) || (roomBaseData.getLiveType() == LiveManager.TYPE_LIVE_HUYA), roomBaseData.getLiveType() == LiveManager.TYPE_LIVE_HUYA);

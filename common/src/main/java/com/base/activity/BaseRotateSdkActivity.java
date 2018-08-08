@@ -81,7 +81,7 @@ public abstract class BaseRotateSdkActivity extends BaseSdkActivity implements I
             mOrientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
                 @Override
                 public void onOrientationChanged(int orientation) {
-                    MyLog.d(TAG, "onOrientationChanged");
+//                    MyLog.d(TAG, "onOrientationChanged");
                     int currScreenOrientation = convertOrientation(orientation);
                     if (currScreenOrientation == ORIENTATION_DEFAULT) {
                         return;
