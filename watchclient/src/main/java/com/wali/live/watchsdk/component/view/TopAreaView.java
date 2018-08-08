@@ -266,7 +266,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
                     mTicketNumTv.setText("加载中");
                 }
 
-                mViewersNumTv.setText(String.valueOf(viewerCount));
+                mViewersNumTv.setText(String.valueOf(viewerCount) + "人");
             }
 
             @Override
@@ -377,7 +377,7 @@ public class TopAreaView extends RelativeLayout implements View.OnClickListener,
         AvatarUtils.loadAvatarByUidTs(mAnchorIv, 0, 0, true);
         mNameTv.setText("");
         mUserBadgeIv.setVisibility(View.GONE);
-        mViewersNumTv.setText("0");
+        mViewersNumTv.setText("0人");
         mTicketNumTv.setText("0");
         mAvatarRvAdapter.setViewerList(null);
         mFollowTv.setVisibility(View.GONE);
