@@ -40,7 +40,7 @@ public class WatchNormalFragment extends BaseWatchFragment {
 
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.frag_watch_normal, container, false);
+        return inflater.inflate(R.layout.fragment_watch_normal_layout, container, false);
     }
 
     @Override
