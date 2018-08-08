@@ -1,6 +1,5 @@
 package com.wali.live.watchsdk.watch.fragment;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,37 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.base.activity.BaseActivity;
-import com.base.fragment.BaseFragment;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.api.LiveManager;
-import com.mi.live.data.query.model.EnterRoomInfo;
 import com.mi.live.data.room.model.RoomBaseDataModel;
-import com.thornbirds.component.Params;
 import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
-import com.wali.live.common.gift.view.GiftAnimationView;
-import com.wali.live.common.gift.view.GiftContinueViewGroup;
-import com.wali.live.common.gift.view.GiftRoomEffectView;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.WatchSdkView;
-import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
 
-import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
-
-import static com.wali.live.component.BaseSdkController.MSG_ON_LINK_MIC_START;
-import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
-import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
-import static com.wali.live.watchsdk.base.BaseComponentSdkActivity.EXTRA_ROOM_INFO;
-import static com.wali.live.watchsdk.watch.WatchSdkActivity.EXTRA_ROOM_INFO_LIST;
-import static com.wali.live.watchsdk.watch.WatchSdkActivity.EXTRA_ROOM_INFO_POSITION;
-import static com.wali.live.watchsdk.watch.WatchSdkActivity.ROOM_DATA;
 
 public class WatchNormalFragment extends BaseWatchFragment {
 
@@ -67,8 +49,8 @@ public class WatchNormalFragment extends BaseWatchFragment {
 
         // 封面模糊图
         mMaskIv = $(R.id.mask_iv);
-        RoomInfo roomInfo = ((WatchSdkActivity) getActivity()).getRoomInfo();
-        RoomBaseDataModel roomBaseData = ((WatchSdkActivity) getActivity()).getRoomBaseData();
+        RoomInfo roomInfo = getWatchSdkInterface().getRoomInfo();
+        RoomBaseDataModel roomBaseData = getWatchSdkInterface().getRoomBaseData();
 
         String url = roomInfo.getCoverUrl();
         if (TextUtils.isEmpty(url)) {
@@ -186,7 +168,7 @@ public class WatchNormalFragment extends BaseWatchFragment {
         mFlyBarrageViewGroup.reset();
         if (mSdkView != null) {
             mSdkView.reset();
-            mSdkView.postSwitch(((WatchSdkActivity) getActivity()).getRoomBaseData().getLiveType() == LiveManager.TYPE_LIVE_GAME);
+            mSdkView.postSwitch(getWatchSdkInterface().getRoomBaseData().getLiveType() == LiveManager.TYPE_LIVE_GAME);
         }
     }
 }

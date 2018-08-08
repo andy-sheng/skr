@@ -12,20 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 
-import com.base.activity.BaseActivity;
 import com.base.dialog.DialogUtils;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
-import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
@@ -33,7 +27,6 @@ import com.base.utils.CommonUtils;
 import com.base.utils.SelfUpdateManager;
 import com.base.utils.rx.RxRetryAssist;
 import com.base.utils.toast.ToastUtils;
-import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.channel.HostChannelManager;
@@ -61,10 +54,7 @@ import com.thornbirds.component.IParams;
 import com.thornbirds.component.Params;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.common.barrage.manager.BarrageMessageManager;
-import com.wali.live.common.flybarrage.view.FlyBarrageViewGroup;
 import com.wali.live.common.gift.presenter.GiftMallPresenter;
-import com.wali.live.common.gift.view.GiftAnimationView;
-import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.dao.Gift;
 import com.wali.live.event.EventClass;
 import com.wali.live.event.EventEmitter;
@@ -75,11 +65,9 @@ import com.wali.live.receiver.PhoneStateReceiver;
 import com.wali.live.recharge.RechargeDirectPayFragment;
 import com.wali.live.recharge.view.RechargeFragment;
 import com.wali.live.utils.AppNetworkUtils;
-import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.base.BaseComponentSdkActivity;
 import com.wali.live.watchsdk.component.WatchComponentController;
-import com.wali.live.watchsdk.component.WatchSdkView;
 import com.wali.live.watchsdk.endlive.UserEndLiveFragment;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
@@ -124,7 +112,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
@@ -132,8 +119,6 @@ import static com.wali.live.component.BaseSdkController.MSG_NEW_VIDEO_URL;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LINK_MIC_START;
 import static com.wali.live.component.BaseSdkController.MSG_ON_LIVE_SUCCESS;
-import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
-import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_ON_PK_START;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
@@ -146,7 +131,7 @@ import static com.wali.live.component.BaseSdkController.MSG_SWITCH_ROOM;
  */
 public class WatchSdkActivity extends BaseComponentSdkActivity
         implements FloatInfoFragment.FloatInfoClickListener,
-        ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView {
+        ForbidManagePresenter.IForbidManageProvider, IActionCallBack, IWatchVideoView, WatchSdkActivityInterface {
 
     public static final String EXTRA_ROOM_INFO_LIST = "extra_room_info_list";
     public static final String EXTRA_ROOM_INFO_POSITION = "extra_room_info_position";
@@ -155,13 +140,6 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     protected WatchComponentController mController;
     protected final Action mAction = new Action();
 
-//    // 高斯蒙层
-//    private BaseImageView mMaskIv;
-//    protected GiftContinueViewGroup mGiftContinueViewGroup;
-//    // 礼物特效动画
-//    protected GiftAnimationView mGiftAnimationView;
-//    protected FlyBarrageViewGroup mFlyBarrageViewGroup;
-
     /**
      * presenter放在这里
      */
@@ -169,7 +147,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     private GiftPresenter mGiftPresenter;
     private RoomManagerPresenter mRoomManagerPresenter;
     private LiveTaskPresenter mLiveTaskPresenter;
-//    private GiftMallPresenter mGiftMallPresenter;
+    private GiftMallPresenter mGiftMallPresenter;
     private RoomViewerPresenter mRoomViewerPresenter;
     private RoomStatusPresenter mRoomStatusPresenter;
     private ForbidManagePresenter mForbidManagePresenter;
@@ -217,7 +195,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         mAction.registerAction();
 
         String tag = null;
-        if(mMyRoomData.getLiveType() != LiveManager.TYPE_LIVE_GAME
+        if (mMyRoomData.getLiveType() != LiveManager.TYPE_LIVE_GAME
                 && mMyRoomData.getLiveType() != LiveManager.TYPE_LIVE_HUYA) {
             mBaseWatchFragment = new WatchNormalFragment();
             tag = WatchNormalFragment.class.getSimpleName();
@@ -226,15 +204,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             tag = WatchGameFragment.class.getSimpleName();
         }
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable(ROOM_DATA, mMyRoomData);
-//        bundle.putParcelable(EXTRA_ROOM_INFO, mRoomInfo);
-//        bundle.putParcelableArrayList(EXTRA_ROOM_INFO_LIST, mRoomInfoList);
-//        bundle.putInt(EXTRA_ROOM_INFO_POSITION, mRoomInfoPosition);
-//        mBaseWatchFragment.setArguments(bundle);
-//        mBaseWatchFragment.setWatchComponentController(mController);
         ft.add(R.id.container, mBaseWatchFragment, tag);
         ft.commitAllowingStateLoss();
+
 
         initPresenter();
         initReceiver();
@@ -378,6 +350,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         addPresent(mRoomManagerPresenter);
         mRoomManagerPresenter.syncOwnerInfo(mMyRoomData.getUid(), true); // 拉取一下主播信息，同步观看端是否是管理员
 
+
+        mGiftMallPresenter = new GiftMallPresenter(this, getBaseContext(), mMyRoomData, mController);
+        addBindActivityLifeCycle(mGiftMallPresenter, true);
+
         mRoomViewerPresenter = new RoomViewerPresenter(mRoomChatMsgManager);
         addPushProcessor(mRoomViewerPresenter);
         addPresent(mRoomViewerPresenter);
@@ -487,16 +463,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
         if (userEndLiveFragment == null) {
 
-            int spendTickets = 0;
-            if(mBaseWatchFragment != null) {
-                spendTickets = mBaseWatchFragment.getGiftSendTickets();
-            }
-
             boolean hasRoomList = mController.removeCurrentRoom();
             this.userEndLiveFragment = UserEndLiveFragment.openFragment(this,
                     mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getAvatarTs(),
                     mMyRoomData.getUser(), mMyRoomData.getViewerCnt(), mMyRoomData.getLiveType(),
-                    spendTickets, System.currentTimeMillis() - mMyRoomData.getEnterRoomTime(), type,
+                    mGiftMallPresenter.getSpendTicket(), System.currentTimeMillis() - mMyRoomData.getEnterRoomTime(), type,
                     mMyRoomData.getNickName(), hasRoomList, mMyRoomData.isEnableRelationChain());
         }
     }
@@ -509,6 +480,30 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
             return;
         }
         FloatInfoFragment.openFragment(this, uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), this, mMyRoomData.getEnterRoomTime(), mMyRoomData.isEnableRelationChain());
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(GiftEventClass.GiftMallEvent event) {
+        switch (event.eventType) {
+            case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST: {
+                mGiftMallPresenter.hideGiftMallView();
+            }
+            break;
+            case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST: {
+                mGiftMallPresenter.showGiftMallView();
+            }
+            break;
+            case GiftEventClass.GiftMallEvent.EVENT_TYPE_CLICK_SELECT_GIFT: {
+                mGiftMallPresenter.showGiftMallView();
+                mGiftMallPresenter.selectGiftView((Integer) event.obj1);
+            }
+            break;
+            case GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE: {
+                goToRecharge();
+            }
+            break;
+        }
     }
 
 
@@ -614,11 +609,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         MyLog.d(TAG, "sdk OrientEvent");
         mMyRoomData.setLandscape(event.isLandscape());
         if (event.isLandscape()) {
-            if(mBaseWatchFragment != null) {
+            if (mBaseWatchFragment != null) {
                 mBaseWatchFragment.orientLandscape();
             }
         } else {
-            if(mBaseWatchFragment != null) {
+            if (mBaseWatchFragment != null) {
                 mBaseWatchFragment.orientPortrait();
             }
         }
@@ -682,6 +677,10 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 mMyRoomData.setLiveType(roomInfo.getType());
             }
 
+            //TODO 这段代码迁移到了switchRoom
+            //WatchRoomCharactorManager.getInstance().clear();
+            syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
+
             if (mController != null) {
                 mController.postEvent(MSG_ON_LIVE_SUCCESS);
                 if (roomInfo.getMicBeginInfo() != null) {
@@ -691,54 +690,16 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                     mController.postEvent(MSG_ON_PK_START, new Params().putItem(roomInfo.getPkStartInfo()));
                 }
             }
-
-            //TODO 这段代码迁移到了switchRoom
-            //WatchRoomCharactorManager.getInstance().clear();
-            syncRoomEffect(mMyRoomData.getRoomId(), UserAccountManager.getInstance().getUuidAsLong(), mMyRoomData.getUid(), null);
         }
     };
 
-//    @Override
-//    public void onClickHomepage(User user) {
-//        TODO 主页去掉
-//        if (user == null || user.getUid() == MyUserInfoManager.getInstance().getUser().getUid()) {
-//            return;
-//        }
-//
-//        long uuid = user.getUid();
-//        Bundle bundle = new Bundle();
-//        bundle.putLong(PersonInfoFragment.EXTRA_IN_USER_UUID, uuid);
-//        bundle.putInt(PersonInfoFragment.EXTRA_IN_USER_CERTIFICATION_TYPE, user.getCertificationType());
-//        clearTop();
-//
-//        if (mPersonInfoFragment == null) {
-//            mPersonInfoFragment = FragmentNaviUtils.addFragment(this, R.id.main_act_container, PersonInfoFragment.class, bundle, true, true, true);
-//        }
-//        if (mPersonInfoFragment != null && mPersonInfoFragment instanceof PersonInfoFragment) {
-//            PersonInfoFragment personInfoFragment = (PersonInfoFragment) mPersonInfoFragment;
-//            personInfoFragment.setPersonInfoClickListener(this);
-//        }
-//    }
 
     @Override
     public void onClickTopOne(User user) {
-//        TODO 打开注释
-//        if (user == null) {
-//            return;
-//        }
-//
-//        if (user.getUid() == mMyRoomData.getUid()) {
-//            RankingPagerFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingPagerFragment.PARAM_FROM_TOTAL, true);
-//        } else {
-//            RankingPagerFragment.openFragment(this, user.getLiveTicketNum(), mMyRoomData.getInitTicket(), user.getUid(), mMyRoomData.getRoomId(), RankingPagerFragment.PARAM_FROM_TOTAL, false);
-//        }
     }
 
     @Override
     public void onClickMainAvatar(User user) {
-        //onClickBigAvatar(user);
-        //qw 提的需求 点击头像进入主页而不是看大图
-        //onClickHomepage(user);
     }
 
     @Override
@@ -786,9 +747,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                             mMyRoomData.setTicket(giftInfoForEnterRoom.getInitStarStickCount() > mMyRoomData.getTicket() ?
                                     giftInfoForEnterRoom.getInitStarStickCount() : mMyRoomData.getTicket());//发送刷新的event
                             // 这个房间的的礼物橱窗信息交付
-                            if(mBaseWatchFragment != null) {
-                                mBaseWatchFragment.syncRoomEffect(giftInfoForEnterRoom);
-                            }
+                            mGiftMallPresenter.setGiftInfoForEnterRoom(giftInfoForEnterRoom.getmGiftInfoForThisRoom());
+                            mGiftMallPresenter.setPktGiftId(giftInfoForEnterRoom.getPktGiftId());
+
 
                             // 星票前10，以及禁言权限
                             List<Long> Top10RankList = giftInfoForEnterRoom.getEnterRoomTicketTop10lList();
@@ -845,7 +806,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         } else {
             if (mController != null && mController.postEvent(MSG_ON_BACK_PRESSED)) {
                 return;
-            } else if (mBaseWatchFragment != null && mBaseWatchFragment.isGiftMallViewVisibility()) {
+            } else if (mGiftMallPresenter != null && mGiftMallPresenter.isGiftMallViewVisibility()) {
                 EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_HIDE_MALL_LIST));
                 return;
             }
@@ -993,7 +954,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 //                        MyLog.d(TAG, "page down internal");
 //                        mSdkView.switchToNextRoom();
 //                    }
-                    if(mBaseWatchFragment != null) {
+                    if (mBaseWatchFragment != null) {
                         mBaseWatchFragment.pageUpEvent();
                     }
                     break;
@@ -1005,13 +966,13 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 //                        MyLog.d(TAG, "page up internal");
 //                        mSdkView.switchToLastRoom();
 //                    }
-                    if(mBaseWatchFragment != null) {
+                    if (mBaseWatchFragment != null) {
                         mBaseWatchFragment.PageDownEvent();
                     }
                     break;
                 case MSG_PLAYER_READY:
                     MyLog.d(TAG, "MSG_PLAYER_READY");
-                    if(mBaseWatchFragment != null) {
+                    if (mBaseWatchFragment != null) {
                         mBaseWatchFragment.playerReadyEvent();
                     }
 //                    if (mMaskIv.getVisibility() == View.VISIBLE) {
@@ -1047,10 +1008,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                     mVideoShowPresenter.reset();
                 }
 
+                mGiftMallPresenter.reset();
+
                 // 发送离开房间给服务器
                 leaveLiveToServer();
 
-                if(mBaseWatchFragment != null) {
+                if (mBaseWatchFragment != null) {
                     mBaseWatchFragment.switchRoom();
                 }
 
@@ -1087,6 +1050,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
     private long mResumeTime;
     private long mPauseTime;
+
     private void initUploadAliveTime() {
         mResumeTime = System.currentTimeMillis();
         mPauseTime = mResumeTime;
@@ -1115,11 +1079,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         return mMyRoomData;
     }
 
-    public ArrayList<RoomInfo> getRoomInfoList() {
-        return mRoomInfoList;
-    }
-
     public WatchComponentController getController() {
         return mController;
+    }
+
+    @Override
+    public GiftMallPresenter getGiftMallPresenter() {
+        return mGiftMallPresenter;
     }
 }

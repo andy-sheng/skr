@@ -12,12 +12,20 @@ public abstract class BaseEventBusFragment extends RxFragment implements Fragmen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        if(needEventBus()) {
+            if(!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this);
+            }
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    protected boolean needEventBus(){
+        return true;
     }
 }
