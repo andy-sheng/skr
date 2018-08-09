@@ -20,6 +20,7 @@ import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameBottom
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameTabPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameZTopPresenter;
 
+import static com.wali.live.component.BaseSdkController.MSG_NEW_GAME_WATCH_EXIST_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
@@ -70,6 +71,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         super.startView();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_NEW_GAME_WATCH_EXIST_CLICK);
     }
 
     @Override
@@ -141,6 +143,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             case MSG_ON_ORIENT_LANDSCAPE:
                 // 接收到切换为横屏通知
                 resetVideoLayoutSize(true);
+                return true;
+            case MSG_NEW_GAME_WATCH_EXIST_CLICK:
+                mActivity.finish();
                 return true;
         }
         return false;

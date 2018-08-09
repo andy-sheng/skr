@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -159,6 +159,9 @@
                 android:layout_weight="1"
                 android:layout_height="@dimen/view_dimen_86"
                 android:background="@drawable/watch_game_barrage_edit_bg"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:imeOptions="flagNoFullscreen"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_black_trans_30"
                 android:hint="@string/empty_edittext_hint"
@@ -179,7 +182,7 @@
                 android:background="@drawable/watch_game_barrage_send_bg"/>
         </LinearLayout>
     </RelativeLayout>
-</RelativeLayout>
+</merge>
 
 
 
