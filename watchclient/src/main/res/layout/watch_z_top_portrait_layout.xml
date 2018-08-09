@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/portrait_back_btn"
+        android:layout_width="@dimen/view_dimen_70"
+        android:layout_height="@dimen/view_dimen_70"
+        android:src="@drawable/live_video_icon_back"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/view_dimen_36"
+        android:layout_marginLeft="@dimen/view_dimen_30"/>
+    <com.wali.live.watchsdk.watch.view.watchgameview.PortraitLineUpButtons
+        android:id="@+id/portrait_line_up_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/view_dimen_22"
+        android:layout_marginRight="@dimen/view_dimen_30"/>
+
+</merge>
