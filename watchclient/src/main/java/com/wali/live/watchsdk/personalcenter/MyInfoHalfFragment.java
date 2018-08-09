@@ -16,6 +16,7 @@ import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.base.view.LazyNewView;
 import com.base.view.SlidingTabLayout;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.eventbus.EventClass;
@@ -78,7 +79,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
         }));
         mTitleAndViewList.add(new Pair<String, LazyNewView>("消息", new LazyNewView() {
             @Override
-            View newView() {
+            public View newView() {
                 return new MyInfoChatThreadView(getContext());
             }
 
@@ -261,16 +262,5 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    abstract class LazyNewView<V extends View> {
-        V view;
 
-        abstract V newView();
-
-        V getView() {
-            if (view == null) {
-                view = newView();
-            }
-            return view;
-        }
-    }
 }
