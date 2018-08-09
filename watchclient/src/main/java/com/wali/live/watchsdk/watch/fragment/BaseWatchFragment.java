@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.watch.fragment;
 
+import android.support.annotation.CallSuper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class BaseWatchFragment extends BaseEventBusFragment {
         return null;
     }
 
+    @CallSuper
     @Override
     protected void bindView() {
         setWatchComponentController(getWatchSdkInterface().getController());

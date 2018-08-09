@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import com.wali.live.watchsdk.R;
 public class WatchGameZTopView extends RelativeLayout implements View.OnClickListener,
         IComponentView<WatchGameZTopView.IPresenter, WatchGameZTopView.IView>,PortraitLineUpButtons.OnPortraitButtonClickListener {
 
+    @Nullable
+    protected IPresenter mPresenter;
     private boolean mIsLandscape = false; // 是否是横屏
 
     // 竖屏下展示的控件
@@ -94,6 +97,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             ToastUtils.showToast("点击暂停|播放");
         } else if (id == R.id.game_watch_portrait_fullscreen) {
             ToastUtils.showToast("点击全屏");
+            mPresenter.forceRotate();
         }
     }
 
@@ -104,12 +108,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
     @Override
     public void setPresenter(IPresenter iPresenter) {
-
+        this.mPresenter = iPresenter;
     }
 
 
     public interface  IPresenter {
-
+        void forceRotate();
     }
 
     public interface IView extends IViewProxy {

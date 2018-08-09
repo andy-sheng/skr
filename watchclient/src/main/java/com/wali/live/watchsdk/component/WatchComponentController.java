@@ -133,6 +133,10 @@ public class WatchComponentController extends BaseSdkController {
         }
         return false;
     }
+    public PullStreamerPresenter getStreamerPresenter() {
+        return mStreamerPresenter;
+    }
+
 
     public void enterRoomList(Activity activity) {
         MyLog.w(TAG, "enterRoomList roomList size=" + mRoomInfoList.size());

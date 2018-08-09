@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
     <!--包裹播放器和播放器浮层的容器 根据屏幕宽度和横竖屏调整大小-->
     <RelativeLayout
-        android:id="@+id/video_show_view"
+        android:id="@+id/video_show_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_608"
         android:layout_alignParentTop="true">
@@ -23,7 +23,7 @@
     <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameTabView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/video_show_view"
+        android:layout_below="@+id/video_show_layout"
         android:layout_above="@+id/watch_edit_view">
     </com.wali.live.watchsdk.watch.view.watchgameview.WatchGameTabView>
 

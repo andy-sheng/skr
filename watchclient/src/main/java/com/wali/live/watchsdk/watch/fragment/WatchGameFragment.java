@@ -6,8 +6,12 @@ import android.view.ViewGroup;
 
 import com.base.fragment.BaseFragment;
 import com.base.global.GlobalData;
+import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.watch.WatchSdkActivityInterface;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameView;
 
 public class WatchGameFragment extends BaseWatchFragment {
@@ -26,12 +30,9 @@ public class WatchGameFragment extends BaseWatchFragment {
 
     @Override
     protected void bindView() {
-        mWatchGameView = new WatchGameView(getActivity(), (ViewGroup) mRootView, getController());
+        super.bindView();
+        mWatchGameView = new WatchGameView(getActivity(), (ViewGroup) mRootView, mController);
+        mWatchGameView.setupView();
+        mWatchGameView.startView();
     }
-
-    private WatchComponentController getController() {
-        // TODO 讨论一下这个是用新的还是共用现有的
-        return null;
-    }
-
 }
