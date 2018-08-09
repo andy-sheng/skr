@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--游戏直播竖屏右边的操作按钮-->
+    <item type="id" name="game_watch_portrait_share"/>
+    <item type="id" name="game_watch_portrait_more"/>
+    <item type="id" name="game_watch_portrait_suspended"/>
+    <item type="id" name="game_watch_portrait_fullscreen"/>
+</resources>

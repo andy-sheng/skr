@@ -26,6 +26,7 @@ android {
             res.srcDirs += ['src/main/res-vip']
             res.srcDirs += ['src/main/res-gift-fast-send']
             res.srcDirs += ['src/main/res-big-turn-table']
+            res.srcDirs += ['src/main/res-new-game-watch']
 //            res.srcDirs += ['src/main/res-contest']
             assets.srcDirs = ['src/main/assets']
         }
