@@ -392,7 +392,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
         //大转盘presenter
         {
             mWatchBigTurnTablePanelPresenter = new WatchBigTurnTablePanelPresenter(mActivity, mIsLandscape, mController.mMyRoomData);
-            ViewStub stub = (ViewStub) mActivity.findViewById(R.id.big_turn_table_panel_view_stub);
+            ViewStub stub = (ViewStub) mContentView.findViewById(R.id.big_turn_table_panel_view_stub);
             mWatchBigTurnTablePanelPresenter.setViewStub(stub);
         }
 
@@ -750,7 +750,7 @@ public class WatchSdkView extends BaseSdkView<View, WatchComponentController> im
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                     layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-                    ViewGroup rootView = (ViewGroup) mActivity.findViewById(R.id.main_act_container);
+                    ViewGroup rootView = (ViewGroup) mContentView.findViewById(R.id.main_act_container);
                     rootView.addView(mFollowGuideView, layoutParams);
 
                     mFollowGuideView.post(new Runnable() {

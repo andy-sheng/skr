@@ -77,7 +77,7 @@ public class BaseWatchFragment extends BaseEventBusFragment {
     }
 
 
-    public void setWatchComponentController(WatchComponentController controller) {
+    private void setWatchComponentController(WatchComponentController controller) {
         this.mController = controller;
     }
 
