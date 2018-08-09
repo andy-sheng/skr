@@ -23,16 +23,24 @@
     <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameTabView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/video_show_layout"
-        android:layout_above="@+id/watch_edit_view">
+        android:layout_below="@id/video_show_layout"
+        android:layout_marginBottom="@dimen/view_dimen_150">
     </com.wali.live.watchsdk.watch.view.watchgameview.WatchGameTabView>
 
     <!--竖屏时底部的编辑框-->
     <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameBottomEditView
         android:id="@+id/watch_edit_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_dimen_150"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
+
+    <!--商城-->
+    <ViewStub
+        android:id="@+id/gift_mall_view_viewstub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/gift_mall_view"
+        android:layout="@layout/view_gift_mall" />
 
     <!--竖屏时真正的输入框-->
     <com.wali.live.watchsdk.component.view.InputAreaView

@@ -27,6 +27,16 @@ public class MyInfoIconView extends RelativeLayout {
         init(context);
     }
 
+    public MyInfoIconView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public MyInfoIconView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
     private void init(Context context) {
         inflate(context, R.layout.my_info_icon_view, this);
         mMyAvatarIv = (BaseImageView) this.findViewById(R.id.my_avatar_iv);

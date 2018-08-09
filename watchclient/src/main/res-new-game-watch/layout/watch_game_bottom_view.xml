@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.wali.live.watchsdk.component.view.MyInfoIconView
+        android:id="@+id/my_info_icon_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_150"
+        android:layout_below="@id/my_info_icon_container"
+        android:layout_marginTop="@dimen/view_dimen_48"
+        android:background="@color/color_white">
+
+        <com.wali.live.watchsdk.watch.view.watchgameview.PortraitGameBarregeBtnView
+            android:id="@+id/barrage_btn_container"
+            android:layout_width="@dimen/view_dimen_616"
+            android:layout_height="@dimen/view_dimen_110"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_20" />
+
+        <com.wali.live.watchsdk.fastsend.view.GiftFastSendView
+            android:id="@+id/gift_fast_sent_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/text_size_40"
+            android:layout_toLeftOf="@+id/gift_iv"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/gift_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_dimen_25"
+            android:background="@drawable/live_icon_gift_btn" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

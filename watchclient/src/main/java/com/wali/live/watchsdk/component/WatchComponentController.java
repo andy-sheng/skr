@@ -147,6 +147,14 @@ public class WatchComponentController extends BaseSdkController {
         }
     }
 
+    public RoomBaseDataModel getRoomBaseDataModel() {
+        return mMyRoomData;
+    }
+
+    public LiveRoomChatMsgManager getLiveRoomChatMsgManager() {
+        return mRoomChatMsgManager;
+    }
+
     public static class EventPlayerCallback extends PullStreamerPresenter.PlayerCallbackWrapper {
 
         private IEventController controller;

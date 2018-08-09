@@ -7,7 +7,7 @@ import com.base.log.MyLog;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
-import com.wali.live.watchsdk.component.view.BarrageBtnView;
+import com.wali.live.watchsdk.component.view.panel.BaseBarrageBtnView;
 
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
@@ -22,8 +22,8 @@ import static com.wali.live.component.BaseSdkController.MSG_SHOW_INPUT_VIEW;
  *
  * @module 底部输入框表现
  */
-public class BarrageBtnPresenter extends ComponentPresenter<BarrageBtnView.IView>
-        implements BarrageBtnView.IPresenter {
+public class BarrageBtnPresenter extends ComponentPresenter<BaseBarrageBtnView.IView>
+        implements BaseBarrageBtnView.IPresenter {
     private static final String TAG = "BarrageBtnPresenter";
 
     private boolean mIsGameMode = false;

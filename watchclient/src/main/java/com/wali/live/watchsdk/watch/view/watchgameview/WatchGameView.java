@@ -6,7 +6,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.thornbirds.component.IParams;
@@ -16,6 +15,7 @@ import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.WatchPlayerPresenter;
 import com.wali.live.watchsdk.component.view.InputAreaView;
+import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.BaseEnterRoomSyncResPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameBottomEditPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameTabPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameZTopPresenter;
@@ -51,6 +51,8 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     // 竖屏时真正的输入框
     private InputAreaView mInputArea;
     private InputAreaPresenter mInputPresenter;
+
+    private BaseEnterRoomSyncResPresenter mBaseEnterRoomSyncResPresenter;
 
 
 
@@ -93,6 +95,24 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             mWatchZTopView = $(mParentView, R.id.watch_ztop_view);
             mWatchZTopPresnter = new WatchGameZTopPresenter(mController);
             registerComponent(mWatchZTopView, mWatchZTopPresnter);
+        }
+
+        {
+            mBottomEditView = (WatchGameBottomEditView) mParentView.findViewById(R.id.watch_edit_view);
+            mBottomEditPresenter = new WatchGameBottomEditPresenter(mController);
+            registerComponent(mBottomEditView, mBottomEditPresenter);
+        }
+
+        {
+            mInputArea =(InputAreaView) mParentView.findViewById(R.id.input_area_view);
+            mInputPresenter = new InputAreaPresenter(
+                    mController, mController.getRoomBaseDataModel(), mController.getLiveRoomChatMsgManager(), true);
+            registerComponent(mInputArea, mInputPresenter);
+        }
+
+        {
+            mBaseEnterRoomSyncResPresenter = new BaseEnterRoomSyncResPresenter(mController, mController.getRoomBaseDataModel(), false);
+            registerComponent(mBaseEnterRoomSyncResPresenter);
         }
     }
 

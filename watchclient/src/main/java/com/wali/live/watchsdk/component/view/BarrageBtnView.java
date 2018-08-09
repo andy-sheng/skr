@@ -12,8 +12,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.activity.RxActivity;
@@ -26,14 +24,10 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.preference.PreferenceKeys;
-import com.thornbirds.component.view.IComponentView;
-import com.thornbirds.component.view.IViewProxy;
-import com.wali.live.common.statistics.StatisticsAlmightyWorker;
 import com.wali.live.event.EventClass;
-import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.component.view.panel.BaseBarrageBtnView;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -45,23 +39,13 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.statistics.StatisticsKey.AC_APP;
-import static com.wali.live.statistics.StatisticsKey.KEY;
-import static com.wali.live.statistics.StatisticsKey.TIMES;
-
 /**
  * Created by wangmengjie on 17-7-24.
  *
  * @module 底部输入框
  */
-public class BarrageBtnView extends FrameLayout implements
-        IComponentView<BarrageBtnView.IPresenter, BarrageBtnView.IView> {
+public class BarrageBtnView extends BaseBarrageBtnView {
     private static final String TAG = "BarrageBtnView";
-
-    protected IPresenter mPresenter;
-
-    protected TextView mBarrageBtnViewTv;
-    protected ImageView mBarrageBtnViewIv;
 
     protected final <T extends View> T $(@IdRes int resId) {
         return (T) findViewById(resId);
@@ -124,12 +108,10 @@ public class BarrageBtnView extends FrameLayout implements
         $click(mBarrageBtnViewTv, new OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyLog.w(TAG, "open input view!");
-                mPresenter.showInputView();
-                String msgType = StatisticsKey.KEY_LIVESDK_PLUG_FLOW_CLICK_SENDMESSAGE;
-                StatisticsAlmightyWorker.getsInstance().recordDelay(AC_APP, KEY,
-                        String.format(msgType, HostChannelManager.getInstance().getChannelId()),
-                        TIMES, "1");
+                if(mPresenter != null) {
+                    mPresenter.showInputView();
+                    optStatistics();
+                }
             }
         });
     }
@@ -233,26 +215,5 @@ public class BarrageBtnView extends FrameLayout implements
     public void onBarrageShowEvent(EventClass.ShowBarragePopEvent event) {
         MyLog.d(TAG, "got show barrage pop event");
         playShiningBgAnim();
-    }
-
-    @Override
-    public IView getViewProxy() {
-        class ComponentView implements IView {
-            @Override
-            public <T extends View> T getRealView() {
-                return (T) BarrageBtnView.this;
-            }
-        }
-        return new ComponentView();
-    }
-
-    public interface IPresenter {
-        /**
-         * 显示输入框
-         */
-        void showInputView();
-    }
-
-    public interface IView extends IViewProxy {
     }
 }
