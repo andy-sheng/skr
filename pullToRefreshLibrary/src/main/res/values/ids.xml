@@ -47,4 +47,10 @@
     <item type="id" name="watch_feedback_btn"/>
     <item type="id" name="watch_user_task_btn"/>
 
+    <!--游戏直播竖屏右边的操作按钮-->
+    <item type="id" name="game_watch_portrait_share"/>
+    <item type="id" name="game_watch_portrait_more"/>
+    <item type="id" name="game_watch_portrait_suspended"/>
+    <item type="id" name="game_watch_portrait_fullscreen"/>
+
 </resources>

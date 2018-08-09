@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners android:bottomRightRadius="@dimen/view_dimen_100"
+                android:topRightRadius="@dimen/view_dimen_100"/>
+            <solid android:color="@color/color_7a7a7a"/>
+        </shape>
+    </item>
+
+    <item  android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <corners android:bottomRightRadius="@dimen/view_dimen_100"
+                android:topRightRadius="@dimen/view_dimen_100"/>
+            <solid android:color="@color/color_14b9c7"/>
+        </shape>
+    </item>
+</selector>
