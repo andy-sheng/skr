@@ -5,19 +5,139 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
+    <RelativeLayout
+        android:id="@+id/game_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_260"
+        android:layout_marginBottom="@dimen/view_dimen_28"
+        android:layout_marginLeft="@dimen/view_dimen_36"
+        android:layout_marginRight="@dimen/view_dimen_36"
+        android:layout_marginTop="@dimen/view_dimen_28"
+        android:background="@color/white">
 
-    <TextView
-        android:id="@+id/desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/total_balance_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_dimen_12"
-        android:text="游戏主页"
-        android:textColor="@color/color_black_trans_40"
-        android:textSize="@dimen/view_dimen_40" />
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/game_icon_iv"
+            android:layout_width="@dimen/view_dimen_180"
+            android:layout_height="@dimen/view_dimen_180"
+            android:layout_centerVertical="true"
+            android:background="@color/color_14b9c7" />
+
+        <TextView
+            android:id="@+id/game_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/game_icon_iv"
+            android:layout_marginLeft="@dimen/view_dimen_30"
+            android:layout_marginTop="@dimen/view_dimen_15"
+            android:layout_toRightOf="@+id/game_icon_iv"
+            android:text="小米枪战"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/view_dimen_51" />
 
 
+        <TextView
+            android:id="@+id/score_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/game_name_tv"
+            android:layout_below="@+id/game_name_tv"
+            android:text="8.0"
+            android:textColor="@color/color_14b9c7"
+            android:textSize="@dimen/view_dimen_36" />
+
+        <TextView
+            android:id="@+id/install_btn"
+            android:layout_width="@dimen/view_dimen_240"
+            android:layout_height="@dimen/view_dimen_90"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_dimen_72"
+            android:background="@drawable/install_btn_bg"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_dimen_10"
+            android:paddingLeft="@dimen/view_dimen_30"
+            android:paddingRight="@dimen/view_dimen_30"
+            android:paddingTop="@dimen/view_dimen_10"
+            android:text="安装"
+            android:textColor="@color/white"
+            android:textSize="@dimen/view_dimen_42" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/game_preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_608"
+        android:layout_below="@+id/game_info_container"
+        android:layout_marginTop="@dimen/view_dimen_46">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/game_preview_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+        <TextureView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/player_control_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/index_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/view_dimen_51"
+            android:layout_marginRight="@dimen/view_dimen_63"
+            android:gravity="center"
+            android:padding="@dimen/view_dimen_10"
+            android:text="1/5"
+            android:textColor="@color/white"
+            android:textSize="@dimen/view_dimen_27" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/game_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/game_preview_container"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/game_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_dimen_64"
+            android:gravity="center"
+            android:text="全新百人大地图、新载具、新武器"
+            android:textColor="@color/color_black_trans_90"
+            android:textSize="@dimen/view_dimen_51" />
+
+        <TextView
+            android:id="@+id/game_introduce_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/game_desc_tv"
+            android:layout_marginLeft="@dimen/view_dimen_36"
+            android:layout_marginRight="@dimen/view_dimen_36"
+            android:layout_marginTop="@dimen/view_dimen_24"
+            android:gravity="left"
+            android:lineSpacingExtra="@dimen/view_dimen_24"
+            android:text="本游戏为小米枪战抢先测试服，测试服会频繁不定期更新，任何新要素会提前在体验服中到。任何新要素会提前在体验服中到在体验服中体验服中测试服..."
+            android:textColor="@color/color_black_trans_60"
+            android:textSize="@dimen/view_dimen_42" />
+
+    </RelativeLayout>
 </merge>
 
 
