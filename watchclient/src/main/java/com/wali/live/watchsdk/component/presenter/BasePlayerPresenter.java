@@ -191,6 +191,7 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
 
     protected final void showTrafficDialog() {
         if (System.currentTimeMillis() - PreferenceUtils.getSettingLong(LAST_AGREE_TRAFFIC_TS, 0) < 60 * 1000 * 60) {
+            doStartPlay();
             return;
         }
         MyAlertDialog trafficDialog = deRef(mTrafficDialogRef);
