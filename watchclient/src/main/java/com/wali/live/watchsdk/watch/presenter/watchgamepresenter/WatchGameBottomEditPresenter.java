@@ -199,7 +199,6 @@ public class WatchGameBottomEditPresenter extends BaseSdkRxPresenter<WatchGameBo
             return false;
         }
 
-        MyLog.e(TAG, "event" + event);
         switch (event) {
             case MSG_ON_ORIENT_LANDSCAPE:
                 if(mView.getRealView().getVisibility() != View.GONE) {

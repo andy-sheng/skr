@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.component.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
@@ -59,5 +61,9 @@ public class MyInfoIconView extends RelativeLayout {
         } else {
             mNewMsgPointIv.setVisibility(GONE);
         }
+    }
+
+    public void changeBg(Drawable drawable) {
+        this.findViewById(R.id.my_info_btn).setBackground(drawable);
     }
 }

@@ -50,6 +50,10 @@ public class BaseWatchFragment extends BaseEventBusFragment {
     protected void bindView() {
         setWatchComponentController(getWatchSdkInterface().getController());
         getWatchSdkInterface().getGiftMallPresenter().setViewStub((ViewStub) mRootView.findViewById(R.id.gift_mall_view_viewstub));
+
+        initGiftContinueViewGroup();
+        initGiftRoomEffectView();
+        initGiftAnimationView();
     }
 
     @Override

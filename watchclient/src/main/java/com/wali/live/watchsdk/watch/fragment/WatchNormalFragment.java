@@ -58,10 +58,6 @@ public class WatchNormalFragment extends BaseWatchFragment {
         }
         AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, true, R.drawable.rect_loading_bg_24292d);
 
-        initGiftContinueViewGroup();
-        initGiftRoomEffectView();
-        initGiftAnimationView();
-
         //关闭按钮
         mCloseBtn = $(R.id.close_btn);
         RxView.clicks(mCloseBtn)

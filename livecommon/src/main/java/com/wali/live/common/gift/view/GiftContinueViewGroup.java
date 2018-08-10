@@ -29,11 +29,16 @@ import java.util.List;
 public class GiftContinueViewGroup extends RelativeLayout implements IBindActivityLIfeCycle {
     public static String TAG = GiftContinueViewGroup.class.getSimpleName();
 
-    private List<GiftContinuousView> mFeedGiftContinueViews = new ArrayList<>(2);
+    protected List<GiftContinuousView> mFeedGiftContinueViews = new ArrayList<>(2);
 
     private List<GiftContinuousView> mSingleFeedViewList = new ArrayList<>(1);
 
-    private IGiftScheduler giftScheduler = new GiftScheduler();
+    protected IGiftScheduler mGiftScheduler = new GiftScheduler();
+
+    protected boolean mIsLandscape = false;
+    private int mGiftViewHeight = DisplayUtils.dip2px(140);
+    private int mGiftViewMarginBottom = DisplayUtils.dip2px(110.33f);
+    private int mLandscapeMarginBottom = DisplayUtils.dip2px(60f);
 
 
     public GiftContinueViewGroup(Context context) {
@@ -67,7 +72,7 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
         v2.setMyId(2);
         mFeedGiftContinueViews.add(v2);
 
-        giftScheduler.setGiftContinuousViews(getFeedViews());
+        mGiftScheduler.setGiftContinuousViews(getFeedViews());
     }
 
     public void onActivityCreate() {
@@ -82,13 +87,13 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
         }
         mFeedGiftContinueViews.clear();
         mSingleFeedViewList.clear();
-        giftScheduler.onDestroy();
+        mGiftScheduler.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(UserActionEvent.SwitchAnchor event) {
-        giftScheduler.clearQueue();
+        mGiftScheduler.clearQueue();
         for (GiftContinuousView v : mFeedGiftContinueViews) {
             v.setVisibility(View.GONE);
             v.switchAnchor();
@@ -101,14 +106,9 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
         orient(event.isLandscape());
     }
 
-    private boolean mIsLandscape = false;
-    private int mGiftViewHeight = DisplayUtils.dip2px(140);
-    private int mGiftViewMarginBottom = DisplayUtils.dip2px(110.33f);
-    private int mLandscapeMarginBottom = DisplayUtils.dip2px(60f);
-
     public void orient(boolean isLandscape) {
         mIsLandscape = isLandscape;
-        giftScheduler.setGiftContinuousViews(getFeedViews());
+        mGiftScheduler.setGiftContinuousViews(getFeedViews());
         MyLog.d(TAG, "isLandscape:" + isLandscape);
         if (isLandscape) {
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.getLayoutParams();
@@ -173,7 +173,7 @@ public class GiftContinueViewGroup extends RelativeLayout implements IBindActivi
      * 目前主要用来切换房间时，重置内部状态
      */
     public void reset() {
-//        giftScheduler.clearQueue();
+//        mGiftScheduler.clearQueue();
 //        for (GiftContinuousView v : mFeedGiftContinueViews) {
 //            v.setVisibility(View.GONE);
 //            v.switchAnchor();

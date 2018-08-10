@@ -1,6 +1,8 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.view.TextureView;
 import android.view.View;
@@ -8,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.base.log.MyLog;
+import com.base.dialog.MyAlertDialog;
+import com.base.global.GlobalData;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
+import com.mi.live.data.event.GiftEventClass;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
@@ -22,9 +27,12 @@ import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameBottom
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameTabPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameZTopPresenter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import static com.wali.live.component.BaseSdkController.MSG_NEW_GAME_WATCH_EXIST_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
 
 /**
  * Created by vera on 2018/8/7.
@@ -59,7 +67,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
 
     private BaseEnterRoomSyncResPresenter mBaseEnterRoomSyncResPresenter;
 
-
+    private MyAlertDialog mBalanceInsufficientDialog;
 
     public WatchGameView(@NonNull Activity activity, @NonNull ViewGroup parentView, @NonNull WatchComponentController controller) {
         super(activity, parentView, controller);
@@ -76,6 +84,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_NEW_GAME_WATCH_EXIST_CLICK);
+        registerAction(MSG_POP_INSUFFICIENT_TIPS);
     }
 
     @Override
@@ -162,6 +171,30 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             // 横屏切换到反向横屏　或者竖屏切换到反向竖屏
         }
     }
+    
+    private void popInsufficientTips() {
+        if (mBalanceInsufficientDialog == null) {
+            mBalanceInsufficientDialog = new MyAlertDialog.Builder(mActivity).create();
+            mBalanceInsufficientDialog.setTitle(R.string.account_withdraw_pay_user_account_not_enough);
+            mBalanceInsufficientDialog.setMessage(GlobalData.app().getResources().getString(R.string.account_withdraw_pay_user_account_not_enough_tip));
+            mBalanceInsufficientDialog.setButton(AlertDialog.BUTTON_POSITIVE, GlobalData.app().getResources().getString(R.string.recharge), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_GO_RECHARGE));
+                    dialog.dismiss();
+                }
+            });
+            mBalanceInsufficientDialog.setButton(AlertDialog.BUTTON_NEGATIVE, GlobalData.app().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        mBalanceInsufficientDialog.setCancelable(false);
+        mBalanceInsufficientDialog.show();
+    }
 
     @Override
     public boolean onEvent(int event, IParams iParams) {
@@ -177,6 +210,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             case MSG_NEW_GAME_WATCH_EXIST_CLICK:
                 mActivity.finish();
                 return true;
+            case MSG_POP_INSUFFICIENT_TIPS:
+                popInsufficientTips();
+                break;
         }
         return false;
     }
