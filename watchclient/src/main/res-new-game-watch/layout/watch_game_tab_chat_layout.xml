@@ -5,16 +5,89 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <TextView
-        android:id="@+id/desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/total_balance_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_dimen_12"
-        android:text="聊天"
-        android:textColor="@color/color_black_trans_40"
-        android:textSize="@dimen/view_dimen_40" />
+    <RelativeLayout
+        android:id="@+id/anchor_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_156"
+        android:background="@color/white">
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/anchor_avatar_iv"
+            android:layout_width="@dimen/view_dimen_100"
+            android:layout_height="@dimen/view_dimen_100"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_40" />
+
+        <TextView
+            android:id="@+id/anchor_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/anchor_avatar_iv"
+            android:layout_marginTop="@dimen/view_dimen_3"
+            android:layout_toRightOf="@+id/anchor_avatar_iv"
+            android:text="李克尔"
+            android:textColor="@color/color_black_trans_80"
+            android:textSize="@dimen/view_dimen_36" />
+
+
+        <TextView
+            android:id="@+id/anchor_room_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/anchor_name_tv"
+            android:layout_below="@+id/anchor_name_tv"
+            android:layout_marginTop="@dimen/view_dimen_6"
+            android:text="直播间号:10071"
+            android:textColor="@color/color_black_trans_40"
+            android:textSize="@dimen/view_dimen_27" />
+
+        <TextView
+            android:id="@+id/focus_btn"
+            android:layout_width="@dimen/view_dimen_144"
+            android:layout_height="@dimen/view_dimen_78"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_dimen_40"
+            android:background="@drawable/game_watch_chat_focus_btn_bg"
+            android:gravity="center"
+            android:text="关注"
+            android:textColor="@color/white"
+            android:textSize="@dimen/view_dimen_36" />
+
+        <TextView
+            android:id="@+id/viewer_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_dimen_39"
+            android:layout_toLeftOf="@+id/focus_btn"
+            android:text="100人"
+            android:textColor="@color/color_black_trans_40"
+            android:textSize="@dimen/view_dimen_36" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/comment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/anchor_info_container">
+
+        <!--评论栏-->
+        <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameLiveCommentView
+            android:id="@+id/live_comment_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="70dp"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:paddingBottom="@dimen/margin_30"
+            android:paddingLeft="6dip"
+            android:paddingRight="6.67dip"
+            android:requiresFadingEdge="none" />
+
+    </RelativeLayout>
 
 
 </merge>

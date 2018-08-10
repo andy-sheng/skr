@@ -39,6 +39,8 @@ public class WatchGameFragment extends BaseWatchFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mWatchGameView.stopView();
+        if (mWatchGameView != null) {
+            mWatchGameView.stopView();
+        }
     }
 }

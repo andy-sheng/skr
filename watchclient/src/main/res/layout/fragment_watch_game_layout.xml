@@ -21,6 +21,7 @@
 
     <!--竖屏时tab页-->
     <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameTabView
+        android:id="@+id/watch_game_tab_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/video_show_layout"

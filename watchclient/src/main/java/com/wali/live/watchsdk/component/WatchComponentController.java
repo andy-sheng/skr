@@ -40,7 +40,7 @@ public class WatchComponentController extends BaseSdkController {
     /**
      * 房间弹幕管理
      */
-    protected LiveRoomChatMsgManager mRoomChatMsgManager;
+    public LiveRoomChatMsgManager mRoomChatMsgManager;
 
     private boolean mSwitchNext;
 

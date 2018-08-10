@@ -140,6 +140,13 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             mBaseEnterRoomSyncResPresenter = new BaseEnterRoomSyncResPresenter(mController, mController.getRoomBaseDataModel(), false);
             registerComponent(mBaseEnterRoomSyncResPresenter);
         }
+
+        {
+            mWatchTabView = (WatchGameTabView) mParentView.findViewById(R.id.watch_game_tab_view);
+            mWatchTabView.setComponentControler(mController);
+            mWatchTabView.init(mParentView.getContext());
+            // presenter
+        }
     }
 
     private void resetVideoLayoutSize(boolean isLandscape) {

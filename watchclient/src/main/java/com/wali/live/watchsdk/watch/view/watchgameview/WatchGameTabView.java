@@ -14,6 +14,7 @@ import com.base.view.SlidingTabLayout;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.component.WatchComponentController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,8 @@ import java.util.List;
 public class WatchGameTabView extends RelativeLayout implements
         IComponentView<WatchGameTabView.IPresenter, WatchGameTabView.IView> {
 
+    WatchComponentController mWatchComponentController;
+
     SlidingTabLayout mWatchGameTab;
     View mSplitLine;
     ViewPager mWatchGameTabPager;
@@ -38,10 +41,13 @@ public class WatchGameTabView extends RelativeLayout implements
 
     public WatchGameTabView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
-    private void init(Context context) {
+    public void setComponentControler(WatchComponentController controller) {
+        mWatchComponentController = controller;
+    }
+
+    public void init(Context context) {
 
         inflate(context, R.layout.watch_game_tab_layout, this);
 
@@ -49,7 +55,7 @@ public class WatchGameTabView extends RelativeLayout implements
         mTitleAndViewMap.put("聊天", new LazyNewView() {
             @Override
             public View newView() {
-                return new WatchGameChatTabView(getContext());
+                return new WatchGameChatTabView(getContext(), mWatchComponentController);
             }
         });
 
@@ -63,7 +69,7 @@ public class WatchGameTabView extends RelativeLayout implements
         mTitleAndViewMap.put("观众", new LazyNewView() {
             @Override
             public View newView() {
-                return new WatchGameViewerTabView(getContext());
+                return new WatchGameViewerTabView(getContext(), mWatchComponentController);
             }
         });
         mTabTitleList.add("聊天");
@@ -140,6 +146,7 @@ public class WatchGameTabView extends RelativeLayout implements
     public void setPresenter(WatchGameTabView.IPresenter iPresenter) {
 
     }
+
 
     public interface IPresenter {
 

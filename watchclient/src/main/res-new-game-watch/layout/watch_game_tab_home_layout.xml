@@ -52,7 +52,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_dimen_72"
-            android:background="@drawable/install_btn_bg"
+            android:background="@drawable/game_watch_home_install_btn_bg"
             android:gravity="center"
             android:paddingBottom="@dimen/view_dimen_10"
             android:paddingLeft="@dimen/view_dimen_30"
