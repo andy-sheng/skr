@@ -78,6 +78,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private TextView mLandscapeBarrageSendBtn;
     private ImageView mLandscapeBarrageHideBtn;
     private ImageView getmLandscapeGiftBtn;
+    private WatchGameMenuDialog mWatchGameMenuDialog;
+
     // 横屏相关
     private boolean mEnableFollow = false;
     private ValueAnimator mFollowAniamator;
@@ -126,6 +128,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 }
             }
             // 清空当前布局上所有的子View
+            if(mWatchGameMenuDialog != null) {
+                mWatchGameMenuDialog.tryDismiss();
+            }
             removeAllViews();
 
             if (mLandscapeViews == null) {
@@ -321,6 +326,26 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             ToastUtils.showToast("点击分享");
         } else if (id == R.id.game_watch_portrait_more) {
             ToastUtils.showToast("点击更多");
+            if(mWatchGameMenuDialog == null) {
+                mWatchGameMenuDialog = new WatchGameMenuDialog(v.getContext());
+                mWatchGameMenuDialog.setListener(new WatchGameMenuDialog.OnWatchGameMenuDialogListener() {
+                    @Override
+                    public void onVoiceControlBtnClick() {
+
+                    }
+
+                    @Override
+                    public void onNotInterestBtnClick() {
+
+                    }
+
+                    @Override
+                    public void onReportBtnClick() {
+
+                    }
+                });
+            }
+            mWatchGameMenuDialog.show(WatchGameZTopView.this, v);
         } else if (id == R.id.game_watch_portrait_suspended) {
             if (v.isSelected()) {
 
