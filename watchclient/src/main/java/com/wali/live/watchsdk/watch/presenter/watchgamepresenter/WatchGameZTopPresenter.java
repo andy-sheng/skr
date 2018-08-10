@@ -4,6 +4,7 @@ import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
+import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
@@ -144,6 +145,13 @@ public class WatchGameZTopPresenter extends ComponentPresenter<WatchGameZTopView
                         mView.onFollowResult(-1);
                     }
                 });
+    }
+
+    @Override
+    public void showGiftView() {
+        MyLog.d(TAG, "showGiftView");
+        EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(
+                GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
