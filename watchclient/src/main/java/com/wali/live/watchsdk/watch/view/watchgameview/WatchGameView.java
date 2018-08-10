@@ -171,7 +171,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             // 横屏切换到反向横屏　或者竖屏切换到反向竖屏
         }
     }
-    
+
     private void popInsufficientTips() {
         if (mBalanceInsufficientDialog == null) {
             mBalanceInsufficientDialog = new MyAlertDialog.Builder(mActivity).create();

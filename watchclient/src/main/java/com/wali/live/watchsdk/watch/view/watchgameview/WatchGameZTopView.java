@@ -1,6 +1,10 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
 import android.animation.ValueAnimator;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
+import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
@@ -38,6 +43,9 @@ import java.util.List;
 public class WatchGameZTopView extends RelativeLayout implements View.OnClickListener,
         IComponentView<WatchGameZTopView.IPresenter, WatchGameZTopView.IView>,PortraitLineUpButtons.OnPortraitButtonClickListener {
     private final String TAG = getClass().getSimpleName();
+
+    private static final int ANIMATION_DURATION = 300;
+    private final static int BARRAGE_MAX_LEN = 30; // 弹幕最多一次输入三十个字
 
     @Nullable
     protected IPresenter mPresenter;
@@ -71,9 +79,16 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private ImageView mLandscapeBarrageHideBtn;
     private ImageView getmLandscapeGiftBtn;
     // 横屏相关
-    private final static int BARRAGE_MAX_LEN = 30; // 弹幕最多一次输入三十个字
     private boolean mEnableFollow = false;
     private ValueAnimator mFollowAniamator;
+    private View mTouchView;
+
+    private boolean mIsLandscapeHideOptMode = false;
+    private boolean mIsPortraitHideOptMode = false;
+    private AnimatorSet mHideLandscapeOptBarAnimatorSet;
+    private AnimatorSet mShowLandscapeOptBarAnimatorSet;
+    private AnimatorSet mHidePortraitOptBarAnimatorSet;
+    private AnimatorSet mShowPortraitOptBarAnimatorSet;
 
     public WatchGameZTopView(Context context) {
         super(context);
@@ -169,6 +184,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         // 全屏
         mPortraitLinUpButtons.addButton(R.drawable.live_video_function_icon_fullscreen, R.id.game_watch_portrait_fullscreen);
         mPortraitLinUpButtons.setOnButtonClickListener(this);
+
+        mTouchView = findViewById(R.id.touch_view);
+        mTouchView.setOnClickListener(this);
     }
 
     /**
@@ -247,6 +265,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         getmLandscapeGiftBtn = (ImageView) findViewById(R.id.landscape_gift_btn);
         getmLandscapeGiftBtn.setOnClickListener(this);
 
+        mTouchView = findViewById(R.id.touch_view);
+        mTouchView.setOnClickListener(this);
+
         if (mPresenter != null) {
             mPresenter.syncAnchorInfo();
         }
@@ -282,6 +303,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     mPresenter.exitRoom();
                 }
             }
+        }
+
+        if(id == R.id.touch_view) {
+            touchViewOnclick();
         }
     }
 
@@ -422,6 +447,195 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             ToastUtils.showToast(getResources().getString(R.string.follow_failed));
         }else{
             ToastUtils.showToast("关注失败 code:"+resultCode);
+        }
+    }
+
+    private void touchViewOnclick() {
+        if(mIsLandscape) {
+            if(!mIsLandscapeHideOptMode) {
+                hideOptBar();
+            } else {
+                showOptBar();
+            }
+        } else {
+            if(!mIsPortraitHideOptMode) {
+                hideOptBar();
+            } else {
+                showOptBar();
+            }
+        }
+    }
+
+    /**
+     * 点击显示隐藏操作栏bar
+     */
+    private void hideOptBar() {
+        if(mIsLandscape) {
+            hideLandscapeOptBar();
+        } else {
+            hidePortraitOptBar();
+        }
+    }
+
+    private void showOptBar() {
+        if(mIsLandscape) {
+            showLandscapeOptBar();
+        } else {
+            showPortraitOptBar();
+        }
+    }
+
+    private void hideLandscapeOptBar() {
+        if(mIsLandscapeHideOptMode) {
+            return;
+        }
+
+        if(mHideLandscapeOptBarAnimatorSet == null) {
+            ObjectAnimator landscapeBottomLayoutHideAnimator = ObjectAnimator.ofFloat(mLandscapeBottomLayout
+                    , View.TRANSLATION_Y
+                    , mLandscapeBottomLayout.getTranslationY()
+                    , mLandscapeBottomLayout.getTranslationY() + mLandscapeBottomLayout.getHeight());
+
+            ObjectAnimator andscapeTopLayoutHideAnimator = ObjectAnimator.ofFloat(mLandscapeTopLayout, View.TRANSLATION_Y
+                    , mLandscapeTopLayout.getTranslationY()
+                    , mLandscapeTopLayout.getTranslationY() - mLandscapeTopLayout.getHeight());
+            mHideLandscapeOptBarAnimatorSet = new AnimatorSet();
+            mHideLandscapeOptBarAnimatorSet.playTogether(landscapeBottomLayoutHideAnimator, andscapeTopLayoutHideAnimator);
+            mHideLandscapeOptBarAnimatorSet.setDuration(ANIMATION_DURATION);
+            mHideLandscapeOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mIsLandscapeHideOptMode = true;
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+            });
+        }
+
+        if (!mHideLandscapeOptBarAnimatorSet.isRunning()) {
+            mHideLandscapeOptBarAnimatorSet.start();
+        }
+    }
+
+    private void hidePortraitOptBar() {
+        if(mIsPortraitHideOptMode) {
+            return;
+        }
+
+        if(mHidePortraitOptBarAnimatorSet == null) {
+            ObjectAnimator portraitBackBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitBackBtn
+                    , View.TRANSLATION_Y
+                    , mPortraitBackBtn.getTranslationY()
+                    , mPortraitBackBtn.getTranslationY() - mPortraitBackBtn.getBottom());
+            ObjectAnimator portraitLinUpButtonsHideAnimator = ObjectAnimator.ofFloat(mPortraitLinUpButtons
+                    , View.TRANSLATION_X
+                    , mPortraitLinUpButtons.getTranslationX() + (DisplayUtils.getScreenWidth() - mPortraitLinUpButtons.getLeft()));
+
+            mHidePortraitOptBarAnimatorSet = new AnimatorSet();
+            mHidePortraitOptBarAnimatorSet.playTogether(portraitBackBtnHideAnimator, portraitLinUpButtonsHideAnimator);
+            mHidePortraitOptBarAnimatorSet.setDuration(ANIMATION_DURATION);
+            mHidePortraitOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mIsPortraitHideOptMode = true;
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+            });
+        }
+
+        if (!mHidePortraitOptBarAnimatorSet.isRunning()) {
+            mHidePortraitOptBarAnimatorSet.start();
+        }
+    }
+
+    private void showLandscapeOptBar() {
+        if(!mIsLandscapeHideOptMode) {
+            return;
+        }
+
+        if(mShowLandscapeOptBarAnimatorSet == null) {
+            ObjectAnimator landscapeBottomLayoutShowAnimator = ObjectAnimator.ofFloat(mLandscapeBottomLayout, View.TRANSLATION_Y
+                    , mLandscapeBottomLayout.getTranslationY()
+                    , mLandscapeBottomLayout.getTranslationY() - mLandscapeBottomLayout.getHeight());
+
+            ObjectAnimator andscapeTopLayoutShowAnimator = ObjectAnimator.ofFloat(mLandscapeTopLayout, View.TRANSLATION_Y
+                    , mLandscapeTopLayout.getTranslationY(), mLandscapeTopLayout.getTranslationY() + mLandscapeTopLayout.getHeight());
+            mShowLandscapeOptBarAnimatorSet = new AnimatorSet();
+            mShowLandscapeOptBarAnimatorSet.playTogether(landscapeBottomLayoutShowAnimator, andscapeTopLayoutShowAnimator);
+            mShowLandscapeOptBarAnimatorSet.setDuration(ANIMATION_DURATION);
+            mShowLandscapeOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mIsLandscapeHideOptMode = false;
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+            });
+        }
+
+        if (!mShowLandscapeOptBarAnimatorSet.isRunning()) {
+            mShowLandscapeOptBarAnimatorSet.start();
+        }
+    }
+
+    private void showPortraitOptBar() {
+        if(!mIsPortraitHideOptMode) {
+            return;
+        }
+
+        if(mShowPortraitOptBarAnimatorSet == null) {
+            ObjectAnimator portraitBackBtnShowAnimator = ObjectAnimator.ofFloat(mPortraitBackBtn
+                    , View.TRANSLATION_Y
+                    , mPortraitBackBtn.getTranslationY()
+                    , mPortraitBackBtn.getTranslationY() + mPortraitBackBtn.getBottom());
+
+            ObjectAnimator portraitLinUpButtonsShowAnimator = ObjectAnimator.ofFloat(mPortraitLinUpButtons
+                    , View.TRANSLATION_X
+                    , mPortraitLinUpButtons.getTranslationX() - (DisplayUtils.getScreenWidth() - mPortraitLinUpButtons.getLeft()));
+
+            mShowPortraitOptBarAnimatorSet = new AnimatorSet();
+            mShowPortraitOptBarAnimatorSet.playTogether(portraitBackBtnShowAnimator, portraitLinUpButtonsShowAnimator);
+            mShowPortraitOptBarAnimatorSet.setDuration(ANIMATION_DURATION);
+            mShowPortraitOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mIsPortraitHideOptMode = false;
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+            });
+        }
+
+        if (!mShowPortraitOptBarAnimatorSet.isRunning()) {
+            mShowPortraitOptBarAnimatorSet.start();
         }
     }
 
