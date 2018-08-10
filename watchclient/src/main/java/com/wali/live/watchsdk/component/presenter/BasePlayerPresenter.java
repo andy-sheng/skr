@@ -189,11 +189,15 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
 
     static final String LAST_AGREE_TRAFFIC_TS = "last_agree_traffic_ts";
 
-    protected final void showTrafficDialog() {
+    protected final boolean needShowTrafficDialog() {
         if (System.currentTimeMillis() - PreferenceUtils.getSettingLong(LAST_AGREE_TRAFFIC_TS, 0) < 60 * 1000 * 60) {
-            doStartPlay();
-            return;
+            return false;
         }
+        return true;
+    }
+
+    protected final void showTrafficDialog() {
+
         MyAlertDialog trafficDialog = deRef(mTrafficDialogRef);
         if (trafficDialog == null) {
             final Context context = getContext();

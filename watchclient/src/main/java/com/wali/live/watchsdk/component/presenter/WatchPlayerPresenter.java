@@ -171,6 +171,10 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
             boolean needShowTraffic = netCode == NetworkReceiver.NetState.NET_2G ||
                     netCode == NetworkReceiver.NetState.NET_3G ||
                     netCode == NetworkReceiver.NetState.NET_4G;
+            // 时间间隔太短，不需要显示
+            if (needShowTraffic && !needShowTrafficDialog()) {
+                needShowTraffic = false;
+            }
             if (mNeedShowTraffic == needShowTraffic) {
                 return;
             }
