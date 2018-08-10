@@ -32,7 +32,7 @@ public class WatchGameFragment extends BaseWatchFragment {
     protected void bindView() {
         super.bindView();
         mWatchGameView = new WatchGameView(getActivity(), (ViewGroup) mRootView, mController);
-        mWatchGameView.setupView();
+        mWatchGameView.setupView(getWatchSdkInterface().isDisplayLandscape());
         mWatchGameView.startView();
     }
 }
