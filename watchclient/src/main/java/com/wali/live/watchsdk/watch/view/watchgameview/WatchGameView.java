@@ -6,6 +6,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.thornbirds.component.IParams;
@@ -30,6 +32,8 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
  */
 
 public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
+    private boolean mIsLandscape = false; // 当前是否是横屏
+
     // 播放器
     private TextureView mVideoView;
     private WatchPlayerPresenter mWatchPlayerPresenter;
@@ -74,6 +78,11 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_NEW_GAME_WATCH_EXIST_CLICK);
     }
 
+    public void setupView(boolean isLandscape) {
+        mIsLandscape = isLandscape;
+        setupView();
+    }
+
     @Override
     public void setupView() {
         {
@@ -81,7 +90,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             mVideShowLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    resetVideoLayoutSize(false);
+                    resetVideoLayoutSize(mIsLandscape);
                 }
             });
         }
@@ -133,16 +142,31 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         mVideShowLayout.setLayoutParams(params);
     }
 
+    /**
+     * 接收横竖屏切换通知
+     * @param isLandscape
+     */
+    private void onReOrient(boolean isLandscape) {
+        MyLog.d(TAG, "change to" + (isLandscape ? "landscape" : "portrait"));
+        if (mIsLandscape != isLandscape) {
+            // 横竖屏相互切换
+            mIsLandscape = isLandscape;
+            resetVideoLayoutSize(mIsLandscape);
+        } else {
+            // 横屏切换到反向横屏　或者竖屏切换到反向竖屏
+        }
+    }
+
     @Override
     public boolean onEvent(int event, IParams iParams) {
         switch (event) {
             case MSG_ON_ORIENT_PORTRAIT:
                 // 接收到切换为竖屏通知
-                resetVideoLayoutSize(false);
+                onReOrient(false);
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
                 // 接收到切换为横屏通知
-                resetVideoLayoutSize(true);
+                onReOrient(true);
                 return true;
             case MSG_NEW_GAME_WATCH_EXIST_CLICK:
                 mActivity.finish();

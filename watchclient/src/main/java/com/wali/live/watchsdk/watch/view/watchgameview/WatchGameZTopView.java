@@ -60,21 +60,24 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
     public WatchGameZTopView(Context context) {
         super(context);
-        setUpLayout(context);
+        setUpLayout(context, false);
     }
 
     public WatchGameZTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setUpLayout(context);
+        setUpLayout(context, false);
     }
 
     /**
      * 根据横竖屏加载或切换不同布局
+     * 仅当首次加载布局或者横竖屏切换时被调用
      * @param context
+     * @param lastIsLandscape 切换前是横屏还是竖屏 首次加载传任意值都可
      */
-    private void setUpLayout(Context context) {
+    private void setUpLayout(Context context, boolean lastIsLandscape) {
         if (mIsLandscape) { // 切换到横屏
-            if (getChildCount() > 0) {
+            if (getChildCount() > 0 && !lastIsLandscape) {
+                // 切换前是竖屏
                 if (mPortritViews == null) {
                     mPortritViews = new ArrayList<>();
                 } else {
@@ -99,7 +102,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 }
             }
         } else { // 切换到竖屏
-            if (getChildCount() > 0) {
+            if (getChildCount() > 0 && lastIsLandscape) {
+                // 切换前是横屏
                 if (mLandscapeViews == null) {
                     mLandscapeViews = new ArrayList<>();
                 } else {
@@ -239,8 +243,13 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
      */
     private void onReOrient(boolean isLandscape) {
         MyLog.d(TAG, "change to" + (isLandscape ? "landscape" : "portrait"));
-        mIsLandscape = isLandscape;
-        setUpLayout(getContext());
+        if (mIsLandscape != isLandscape) {
+            // 横竖屏相互切换　重新加载布局
+            mIsLandscape = isLandscape;
+            setUpLayout(getContext(), !mIsLandscape);
+        } else {
+            // 横屏切换到反向横屏　或者竖屏切换到反向竖屏
+        }
     }
 
     private void updateAnchorInfo(long uid, long avatarTs, String nickName, boolean isFollowed) {
