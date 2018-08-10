@@ -63,7 +63,9 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
     @Override
     protected void bindView() {
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         initData();
         initView();
         initPresenter();
@@ -249,10 +251,10 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
         }
 
         MyLog.d(TAG, "PersonalInfoChangeEvent");
-        if(mTitleAndViewList != null && !mTitleAndViewList.isEmpty()) {
-            for(int i = 0; i < mTitleAndViewList.size(); i++) {
+        if (mTitleAndViewList != null && !mTitleAndViewList.isEmpty()) {
+            for (int i = 0; i < mTitleAndViewList.size(); i++) {
                 LazyNewView viewProxy = mTitleAndViewList.get(i).second;
-                if(viewProxy.getView() instanceof MyInfoSummaryView) {
+                if (viewProxy.getView() instanceof MyInfoSummaryView) {
                     ((MyInfoSummaryView) viewProxy.getView()).refreshUi();
                     break;
                 }

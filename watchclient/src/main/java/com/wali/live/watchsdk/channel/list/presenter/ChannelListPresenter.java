@@ -58,6 +58,7 @@ public class ChannelListPresenter {
         //  因为开始可能会拉不到数据，用个定时器不停拉
         mTimerSubscription = Observable.interval(0, 1, TimeUnit.SECONDS)
                 .take(10)
+                .onBackpressureBuffer()
                 .compose(mRxActivity.<Long>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Observer<Long>() {
                     @Override
