@@ -35,4 +35,10 @@ public class WatchGameFragment extends BaseWatchFragment {
         mWatchGameView.setupView(getWatchSdkInterface().isDisplayLandscape());
         mWatchGameView.startView();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mWatchGameView.stopView();
+    }
 }

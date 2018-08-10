@@ -1,12 +1,31 @@
 package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
+import com.base.log.MyLog;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.relation.RelationApi;
+import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.dao.RelationDaoAdapter;
+import com.wali.live.event.UserActionEvent;
+import com.wali.live.proto.RelationProto;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_GAME_WATCH_EXIST_CLICK;
@@ -20,6 +39,8 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 public class WatchGameZTopPresenter extends ComponentPresenter<WatchGameZTopView.IView>
         implements WatchGameZTopView.IPresenter {
     private RoomBaseDataModel mMyRoomData;
+
+    private Subscription mFollowSubscription;
 
     public WatchGameZTopPresenter(IEventController controller) {
         super(controller);
@@ -38,6 +59,22 @@ public class WatchGameZTopPresenter extends ComponentPresenter<WatchGameZTopView
         super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        unregisterAllAction();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        if (mView != null) {
+            mView.cancelAnimator();
+        }
     }
 
     @Override
@@ -66,7 +103,7 @@ public class WatchGameZTopPresenter extends ComponentPresenter<WatchGameZTopView
     }
 
     @Override
-    public void getAnchorInfo() {
+    public void syncAnchorInfo() {
         if (mMyRoomData == null) {
             return;
         }
@@ -77,7 +114,71 @@ public class WatchGameZTopPresenter extends ComponentPresenter<WatchGameZTopView
     }
 
     @Override
-    public void followAnchor() {
-
+    public void showAnchorInfo() {
+        if (mMyRoomData == null) {
+            return;
+        }
+        UserActionEvent.post(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_USER_INFO, mMyRoomData.getUid(), null);
     }
+
+    @Override
+    public void followAnchor() {
+        if (mFollowSubscription != null &&
+                !mFollowSubscription.isUnsubscribed() ||
+                !AccountAuthManager.triggerActionNeedAccount(mView.getRealView().getContext())) {
+            return;
+        }
+        mFollowSubscription = RelationApi.follow(UserAccountManager.getInstance().getUuidAsLong(),
+                mMyRoomData.getUid(), mMyRoomData.getRoomId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<RelationProto.FollowResponse>() {
+                    @Override
+                    public void call(RelationProto.FollowResponse followResponse) {
+                        MyLog.d(TAG, "followResultCode = " + followResponse.getCode());
+                        mView.onFollowResult(followResponse.getCode());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mView.onFollowResult(-1);
+                    }
+                });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FollowOrUnfollowEvent event) {
+        if (null != event && mMyRoomData != null && mMyRoomData.getUser() != null && mMyRoomData.getUser().getUid() == event.uuid) {
+            final User user = mMyRoomData.getUser();
+            if (user != null && user.getUid() == event.uuid) {
+                boolean needUpdateDb = false;
+
+                if (event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_FOLLOW) {
+                    user.setIsFocused(true);
+                    mView.showFollowBtn(false, true);
+                    needUpdateDb = true;
+                } else if (event.eventType == FollowOrUnfollowEvent.EVENT_TYPE_UNFOLLOW) {
+                    user.setIsFocused(false);
+                    mView.showFollowBtn(true, true);
+                    needUpdateDb = true;
+                } else {
+                    MyLog.e(TAG, "type error");
+                }
+                MyLog.d(TAG, "needUpdateDb=" + needUpdateDb);
+                if (needUpdateDb) {
+                    // 其后台线程
+                    Observable.just(null)
+                            .map(new Func1<Object, Object>() {
+                                @Override
+                                public Object call(Object o) {
+                                    return RelationDaoAdapter.getInstance().insertRelation(user.getRelation());
+                                }
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .subscribe();
+                }
+            }
+        }
+    }
+
 }
