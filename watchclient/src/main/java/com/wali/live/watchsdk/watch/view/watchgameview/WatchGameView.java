@@ -78,6 +78,11 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_NEW_GAME_WATCH_EXIST_CLICK);
     }
 
+    @Override
+    public void stopView() {
+        super.stopView();
+    }
+
     public void setupView(boolean isLandscape) {
         mIsLandscape = isLandscape;
         setupView();
@@ -105,6 +110,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         {
             mWatchZTopView = $(mParentView, R.id.watch_ztop_view);
             mWatchZTopPresnter = new WatchGameZTopPresenter(mController);
+            mWatchZTopView.setEnableFollow(mController.getRoomBaseDataModel().isEnableRelationChain());
             registerComponent(mWatchZTopView, mWatchZTopPresnter);
         }
 

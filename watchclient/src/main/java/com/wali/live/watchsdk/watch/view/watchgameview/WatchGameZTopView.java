@@ -1,10 +1,12 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,10 +14,12 @@ import android.widget.TextView;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.api.ErrorCode;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +45,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     // 竖屏下展示的控件 TODO 水印还没加上
     private ImageView mPortraitBackBtn;
     private PortraitLineUpButtons mPortraitLinUpButtons;
+    // 竖屏相关
+
 
     // 横屏下展示的控件
     private RelativeLayout mLandscapeTopLayout; // 横屏下上半部分的布局
@@ -57,6 +63,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private ImageView mLandscapeRefresh;
     private ImageView mLandscapeBarrageBtn;
     private ImageView getmLandscapeGiftBtn;
+    // 横屏相关
+    private boolean mEnableFollow = false;
+    private ValueAnimator mFollowAniamator;
 
     public WatchGameZTopView(Context context) {
         super(context);
@@ -67,6 +76,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         super(context, attrs);
         setUpLayout(context, false);
     }
+
+    public void setEnableFollow(boolean enableFollow) {
+        this.mEnableFollow = enableFollow;
+    }
+
 
     /**
      * 根据横竖屏加载或切换不同布局
@@ -188,7 +202,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         getmLandscapeGiftBtn.setOnClickListener(this);
 
         if (mPresenter != null) {
-            mPresenter.getAnchorInfo();
+            mPresenter.syncAnchorInfo();
         }
     }
 
@@ -197,9 +211,16 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         int id = view.getId();
         if (mIsLandscape) {
             // 横屏下的点击事件
+            if (mPresenter == null) {
+                return;
+            }
             if (id == R.id.landscape_back_btn) {
-                if (mPresenter != null) {
-                    mPresenter.exitRoom();
+                mPresenter.exitRoom();
+            } else if (id == R.id.landscape_anchor_layout) {
+                mPresenter.showAnchorInfo();
+            } else if (id == R.id.landscape_follow) {
+                if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                    mPresenter.followAnchor();
                 }
             }
         } else {
@@ -252,8 +273,15 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
     }
 
+    /**
+     * 同步主播信息
+     * @param uid
+     * @param avatarTs
+     * @param nickName
+     * @param isFollowed
+     */
     private void updateAnchorInfo(long uid, long avatarTs, String nickName, boolean isFollowed) {
-        if (mIsLandscape) {
+        if (mLandscapeAnchorAvatar != null && mLandscapeAnchorNameTv != null && mLandscapeFollowBtn != null) {
             AvatarUtils.loadAvatarByUidTs(mLandscapeAnchorAvatar, uid, avatarTs, true);
             if (!TextUtils.isEmpty(nickName)) {
                 mLandscapeAnchorNameTv.setText(nickName);
@@ -263,11 +291,85 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 mLandscapeAnchorNameTv.setText(R.string.watch_owner_name_default);
             }
 
-            if (isFollowed) {
-                mLandscapeFollowBtn.setVisibility(GONE);
+            if (mEnableFollow && !isFollowed) {
+                setFollowBtnWidth(mFollowBtnWidth);
             } else {
-                mLandscapeFollowBtn.setVisibility(VISIBLE);
+                setFollowBtnWidth(0);
             }
+        }
+    }
+
+    /**
+     * 关注或者取关后修改关注按钮状态
+     * @param needShow
+     */
+    private void showFollowBtn(boolean needShow, boolean needAnim) {
+        MyLog.d(TAG, "showFollowBtn needShow " + needShow + " useAnim " + needAnim);
+
+        if (!mEnableFollow || mLandscapeFollowBtn == null) {
+            return;
+        }
+
+        if (!needAnim) {
+            setFollowBtnWidth(needShow ? mFollowBtnWidth : 0);
+            return;
+        }
+
+        if (mFollowAniamator == null) {
+            mFollowAniamator = ValueAnimator.ofInt(0, getResources().getDimensionPixelSize(R.dimen.view_dimen_128));
+            mFollowAniamator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int value = (int) animation.getAnimatedValue();
+                    setFollowBtnWidth(value);
+                }
+            });
+            mFollowAniamator.setDuration(500);
+            mFollowAniamator.setRepeatCount(0);
+        }
+        if (mFollowAniamator.isStarted()) {
+            mFollowAniamator.cancel();
+        }
+        if (needShow) {
+            mFollowAniamator.start();
+        } else {
+            mFollowAniamator.reverse();
+        }
+    }
+
+    private final int mFollowBtnWidth = getResources().getDimensionPixelSize(R.dimen.view_dimen_128);
+    private void setFollowBtnWidth(int width) {
+        ViewGroup.LayoutParams params = mLandscapeFollowBtn.getLayoutParams();
+        if (params != null) {
+            params.width = width;
+            mLandscapeFollowBtn.setLayoutParams(params);
+        }
+    }
+
+    private void cancelAnimator() {
+        if (mFollowAniamator != null && mFollowAniamator.isStarted()) {
+            mFollowAniamator.cancel();
+        }
+    }
+
+    /**
+     * 关注结果回调
+     * @param resultCode
+     */
+    private void onFollowResult(int resultCode) {
+        MyLog.d(TAG, "onFollowResult " + resultCode);
+        if (!mEnableFollow || mLandscapeFollowBtn == null) {
+            return;
+        }
+        if (resultCode == ErrorCode.CODE_RELATION_BLACK) {
+            ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
+        } else if (resultCode == 0) {
+            ToastUtils.showToast(getResources().getString(R.string.follow_success));
+            showFollowBtn(false, true);
+        } else if (resultCode == -1) {
+            ToastUtils.showToast(getResources().getString(R.string.follow_failed));
+        }else{
+            ToastUtils.showToast("关注失败 code:"+resultCode);
         }
     }
 
@@ -289,12 +391,17 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
             @Override
             public void onFollowResult(int resultCode) {
-
+                WatchGameZTopView.this.onFollowResult(resultCode);
             }
 
             @Override
             public void showFollowBtn(boolean needShow, boolean needAnim) {
+                WatchGameZTopView.this.showFollowBtn(needShow, needAnim);
+            }
 
+            @Override
+            public void cancelAnimator() {
+                WatchGameZTopView.this.cancelAnimator();
             }
 
             @Override
@@ -325,7 +432,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         /**
          * 获取主播信息
          */
-        void getAnchorInfo();
+        void syncAnchorInfo();
+
+        /**
+         * 打开主播信息浮窗
+         */
+        void showAnchorInfo();
 
         /**
          * 关注主播
@@ -350,5 +462,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
          * 关注按钮状态变更
          */
         void showFollowBtn(boolean needShow, boolean needAnim);
+        /**
+         * 取消动画
+         */
+        void cancelAnimator();
     }
 }
