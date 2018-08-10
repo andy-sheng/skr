@@ -3,10 +3,14 @@ package com.wali.live.watchsdk.watch.view.watchgameview;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +18,7 @@ import android.widget.TextView;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
@@ -61,9 +66,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private ImageView mLandscapeShareBtn;
     private ImageView mLandscapeSuspend;
     private ImageView mLandscapeRefresh;
-    private ImageView mLandscapeBarrageBtn;
+    private EditText mLandscapeBarrageEt;
+    private TextView mLandscapeBarrageSendBtn;
+    private ImageView mLandscapeBarrageHideBtn;
     private ImageView getmLandscapeGiftBtn;
     // 横屏相关
+    private final static int BARRAGE_MAX_LEN = 30; // 弹幕最多一次输入三十个字
     private boolean mEnableFollow = false;
     private ValueAnimator mFollowAniamator;
 
@@ -195,8 +203,46 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mLandscapeRefresh = (ImageView) findViewById(R.id.landscape_refresh_btn);
         mLandscapeRefresh.setOnClickListener(this);
 
-        mLandscapeBarrageBtn = (ImageView) findViewById(R.id.landscape_hide_barrage_btn);
-        mLandscapeBarrageBtn.setOnClickListener(this);
+        mLandscapeBarrageEt = (EditText) findViewById(R.id.landscape_barrage_edit);
+        mLandscapeBarrageEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String result = s.toString();
+                if (result.length() > 0 && UserAccountManager.getInstance().hasAccount()) {
+                    mLandscapeBarrageSendBtn.setEnabled(true);
+                } else {
+                    mLandscapeBarrageSendBtn.setEnabled(false);
+                }
+                if (result.length() > BARRAGE_MAX_LEN) {
+                    mLandscapeBarrageEt.setText(result.substring(0, BARRAGE_MAX_LEN));
+                    ToastUtils.showToast(getContext(), getContext().getString(R.string.max_len_notice));
+                    mLandscapeBarrageEt.setSelection(BARRAGE_MAX_LEN);
+                }
+            }
+        });
+        mLandscapeBarrageEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (null == event) {
+                    return false;
+                }
+                return (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
+            }
+        });
+
+        mLandscapeBarrageSendBtn = (TextView) findViewById(R.id.landscape_barrage_send_btn);
+        mLandscapeBarrageSendBtn.setOnClickListener(this);
+
+        mLandscapeBarrageHideBtn = (ImageView) findViewById(R.id.landscape_hide_barrage_btn);
+        mLandscapeBarrageHideBtn.setOnClickListener(this);
 
         getmLandscapeGiftBtn = (ImageView) findViewById(R.id.landscape_gift_btn);
         getmLandscapeGiftBtn.setOnClickListener(this);
@@ -222,6 +268,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
                     mPresenter.followAnchor();
                 }
+            } else if (id == R.id.landscape_gift_btn) {
+                if(AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                    mPresenter.showGiftView();
+                }
+            } else if (id == R.id.landscape_barrage_send_btn) {
+
             }
         } else {
             // 竖屏下的点击事件
@@ -443,6 +495,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
          * 关注主播
          */
         void followAnchor();
+
+        /**
+         * 打开礼物面板
+         */
+        void showGiftView();
     }
 
     public interface IView extends IViewProxy {
