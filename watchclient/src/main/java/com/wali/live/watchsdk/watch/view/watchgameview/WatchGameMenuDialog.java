@@ -22,6 +22,7 @@ import com.wali.live.watchsdk.R;
 public class WatchGameMenuDialog extends PopupWindow implements View.OnClickListener {
 
     private static final int WIDTH_DIALOG = DisplayUtils.dip2px(77.33f);
+    private static final int PX_CORRECT = DisplayUtils.dip2px(3.33f);//ui小箭头位置和图标不对起做个修正
 
     private TextView mOptVoiceTv;
     private TextView mOptInsterestingTv;
@@ -63,7 +64,7 @@ public class WatchGameMenuDialog extends PopupWindow implements View.OnClickList
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void show(View parents, View view){
         int[] ints = calculateWindowPos(view);
-        this.showAtLocation(parents, Gravity.NO_GRAVITY, ints[0]- WIDTH_DIALOG, ints[1]);
+        this.showAtLocation(parents, Gravity.NO_GRAVITY, ints[0]- WIDTH_DIALOG, ints[1] - PX_CORRECT);
     }
 
     private int[] calculateWindowPos(View view) {
@@ -89,10 +90,12 @@ public class WatchGameMenuDialog extends PopupWindow implements View.OnClickList
         if(id == R.id.btn_0_tv) {
             mListener.onVoiceControlBtnClick();
         } else if(id == R.id.btn_1_tv) {
-            mListener.onNotInterestBtnClick();
+            mListener.onDisLikeBtnClick();
         } else if(id == R.id.btn_2_tv) {
             mListener.onReportBtnClick();
         }
+
+        tryDismiss();
     }
 
     private OnWatchGameMenuDialogListener mListener;
@@ -104,7 +107,7 @@ public class WatchGameMenuDialog extends PopupWindow implements View.OnClickList
     public interface OnWatchGameMenuDialogListener {
         void onVoiceControlBtnClick();
 
-        void onNotInterestBtnClick();
+        void onDisLikeBtnClick();
 
         void onReportBtnClick();
     }

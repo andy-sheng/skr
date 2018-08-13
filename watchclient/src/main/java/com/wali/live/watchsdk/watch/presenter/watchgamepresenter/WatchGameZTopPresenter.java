@@ -1,7 +1,10 @@
 package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.api.feedback.FeedBackApi;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.GiftEventClass;
@@ -10,11 +13,14 @@ import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.thornbirds.component.presenter.ComponentPresenter;
+import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.RelationProto;
+import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.feedback.ReportFragment;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,6 +28,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -37,7 +45,7 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
  * Created by vera on 2018/8/8.
  */
 
-public class WatchGameZTopPresenter extends ComponentPresenter<WatchGameZTopView.IView>
+public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView.IView>
         implements WatchGameZTopView.IPresenter {
     private RoomBaseDataModel mMyRoomData;
 
@@ -132,6 +140,7 @@ public class WatchGameZTopPresenter extends ComponentPresenter<WatchGameZTopView
         mFollowSubscription = RelationApi.follow(UserAccountManager.getInstance().getUuidAsLong(),
                 mMyRoomData.getUid(), mMyRoomData.getRoomId())
                 .subscribeOn(Schedulers.io())
+                .compose(this.<RelationProto.FollowResponse>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<RelationProto.FollowResponse>() {
                     @Override
@@ -152,6 +161,56 @@ public class WatchGameZTopPresenter extends ComponentPresenter<WatchGameZTopView
         MyLog.d(TAG, "showGiftView");
         EventBus.getDefault().post(new GiftEventClass.GiftMallEvent(
                 GiftEventClass.GiftMallEvent.EVENT_TYPE_GIFT_SHOW_MALL_LIST));
+    }
+
+    @Override
+    public void optDisLike() {
+        if(mMyRoomData == null) {
+            MyLog.w(TAG, "MyRoomData is null");
+            return;
+        }
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                boolean b = FeedBackApi.sendDisLikeLiveFeedBack(System.currentTimeMillis(), mMyRoomData.getUid(), mMyRoomData.getRoomId());
+                subscriber.onNext(b);
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .compose(this.<Boolean>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.d(TAG, e);
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        ToastUtils.showToast(aBoolean ? R.string.dislike_feedback_success : R.string.dislike_feedback_fail);
+                    }
+                });
+    }
+
+    @Override
+    public void optReprot() {
+        if(mMyRoomData == null) {
+            MyLog.w(TAG, "MyRoomData is null");
+            return;
+        }
+
+        ReportFragment.openFragment((BaseActivity) mView.getRealView().getContext()
+                , mMyRoomData.getUid()
+                , mMyRoomData.getRoomId()
+                , mMyRoomData.getVideoUrl()
+                , ReportFragment.LOCATION_ROOM, ReportFragment.EXT_ANCHOR);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

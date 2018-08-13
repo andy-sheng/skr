@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
@@ -325,23 +326,26 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         if (id == R.id.game_watch_portrait_share) {
             ToastUtils.showToast("点击分享");
         } else if (id == R.id.game_watch_portrait_more) {
-            ToastUtils.showToast("点击更多");
             if(mWatchGameMenuDialog == null) {
                 mWatchGameMenuDialog = new WatchGameMenuDialog(v.getContext());
                 mWatchGameMenuDialog.setListener(new WatchGameMenuDialog.OnWatchGameMenuDialogListener() {
                     @Override
                     public void onVoiceControlBtnClick() {
-
+                        ToastUtils.showToast(GlobalData.app().getResources().getString(R.string.not_support));
                     }
 
                     @Override
-                    public void onNotInterestBtnClick() {
-
+                    public void onDisLikeBtnClick() {
+                        if(mPresenter != null) {
+                            mPresenter.optDisLike();
+                        }
                     }
 
                     @Override
                     public void onReportBtnClick() {
-
+                        if(mPresenter != null) {
+                            mPresenter.optReprot();
+                        }
                     }
                 });
             }
@@ -739,6 +743,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
          * 打开礼物面板
          */
         void showGiftView();
+
+        void optDisLike();
+
+        void optReprot();
     }
 
     public interface IView extends IViewProxy {
