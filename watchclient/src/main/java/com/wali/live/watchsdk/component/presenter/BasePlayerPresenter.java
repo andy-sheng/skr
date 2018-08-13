@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.base.dialog.MyAlertDialog;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.presenter.ComponentPresenter;
@@ -90,7 +91,7 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
         } else {
             if (mStreamerPresenter != null) {
                 mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit,
-                    mSurfaceWidth, mSurfaceHeight);
+                        mSurfaceWidth, mSurfaceHeight);
             }
         }
     }
@@ -186,7 +187,17 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
         }
     }
 
+    static final String LAST_AGREE_TRAFFIC_TS = "last_agree_traffic_ts";
+
+    protected final boolean needShowTrafficDialog() {
+        if (System.currentTimeMillis() - PreferenceUtils.getSettingLong(LAST_AGREE_TRAFFIC_TS, 0) < 60 * 1000 * 60) {
+            return false;
+        }
+        return true;
+    }
+
     protected final void showTrafficDialog() {
+
         MyAlertDialog trafficDialog = deRef(mTrafficDialogRef);
         if (trafficDialog == null) {
             final Context context = getContext();
@@ -195,6 +206,7 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
                     .setPositiveButton(R.string.live_traffic_positive, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            PreferenceUtils.setSettingLong(LAST_AGREE_TRAFFIC_TS, System.currentTimeMillis());
                             doStartPlay();
                             dialog.dismiss();
                         }

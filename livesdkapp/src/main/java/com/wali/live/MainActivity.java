@@ -23,6 +23,7 @@ import com.base.dialog.MyAlertDialog;
 import com.base.fragment.utils.FragmentNaviUtils;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.base.utils.CommonUtils;
 import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.toast.ToastUtils;
@@ -63,6 +64,8 @@ public class MainActivity extends BaseSdkActivity {
     protected TestItemAdapter mTestItemAdapter;
 
     protected LoginPresenter mLoginPresenter;
+
+    public static final String PRE_KEY_LIVE_ROOM_ID = "pre_key_live_room_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,9 +193,11 @@ public class MainActivity extends BaseSdkActivity {
         dataList.add(new TestItem("跳到直播", new Runnable() {
             @Override
             public void run() {
-                inputDialog("输入主播id", "29719885", new InputSuccessCallback() {
+                String liveRoomId = PreferenceUtils.getSettingString(GlobalData.app(), PRE_KEY_LIVE_ROOM_ID, "29719885");
+                inputDialog("输入主播id", liveRoomId, new InputSuccessCallback() {
                     @Override
                     public void inputSuccess(String input) {
+                        PreferenceUtils.setSettingString(GlobalData.app(), PRE_KEY_LIVE_ROOM_ID, input);
                         RoomInfo roomInfo = RoomInfo.Builder.newInstance(Long.parseLong(input), null, null)
                                 .setLiveType(0)
                                 .setEnableRelationChain(false)
@@ -387,7 +392,7 @@ public class MainActivity extends BaseSdkActivity {
                         }
                     });
                     alertDialog.show();
-                }else{
+                } else {
                     ToastUtils.showToast("已是最新");
                 }
             }

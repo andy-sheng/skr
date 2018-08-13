@@ -85,12 +85,9 @@ public class FloatInfoFragment extends BaseEventBusFragment
     private TextView mFollowCountTv;        //显示关注数
     private TextView mFansCountTv;      //显示粉丝数
 
-    private RelativeLayout mFollowContainer;        //关注按钮
-    private TextView mFollowTv;
-    private RelativeLayout mForbidContainer;
+    private TextView mFollowTv; //关注按钮
     private TextView mForbidTv;
-    private RelativeLayout mMessageContainer;
-    private TextView mMessageTv;
+    private TextView mMessageTv; //私信按钮
 
     @Override
     public int getRequestCode() {
@@ -154,16 +151,13 @@ public class FloatInfoFragment extends BaseEventBusFragment
 
         //关注、禁言
         {
-            mFollowContainer = $(R.id.follow_container);
             mFollowTv = $(R.id.follow_tv);
-            mForbidContainer = $(R.id.forbid_container);
             mForbidTv = $(R.id.forbid_tv);
-            mMessageContainer = $(R.id.message_container);
             mMessageTv = $(R.id.message_tv);
 
-            $click(mFollowContainer, this);
-            $click(mForbidContainer, this);
-            $click(mMessageContainer, this);
+            $click(mFollowTv, this);
+            $click(mForbidTv, this);
+            $click(mMessageTv, this);
         }
 
         initPresenter();
@@ -189,38 +183,38 @@ public class FloatInfoFragment extends BaseEventBusFragment
         }
         //关注和禁言
         if (mUser.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
-            mFollowContainer.setVisibility(View.GONE);
-            mForbidContainer.setVisibility(View.GONE);
-            mMessageContainer.setVisibility(View.GONE);
+            mFollowTv.setVisibility(View.GONE);
+            mForbidTv.setVisibility(View.GONE);
+            mMessageTv.setVisibility(View.GONE);
         } else {
-            mFollowContainer.setVisibility(View.VISIBLE);
-            mMessageContainer.setVisibility(View.VISIBLE);
+            mFollowTv.setVisibility(View.VISIBLE);
+            mMessageTv.setVisibility(View.VISIBLE);
             if (getActivity() instanceof ForbidManagePresenter.IForbidManageProvider) {
                 //判断是否有禁言权限和踢人权限
                 if (ownerUid == UserAccountManager.getInstance().getUuidAsLong()) {
                     changeForbidSpeakBtnStatus(
                             LiveRoomCharacterManager.getInstance().isBanSpeaker(mUser.getUid()));
-                    mForbidContainer.setVisibility(View.VISIBLE);
+                    mForbidTv.setVisibility(View.VISIBLE);
                 } else if (mUser.getUid() != ownerUid &&
                         WatchRoomCharactorManager.getInstance().hasManagerPower(ownerUid)) {
                     changeForbidSpeakBtnStatus(
                             WatchRoomCharactorManager.getInstance().isBanSpeaker(mUser.getUid()));
-                    mForbidContainer.setVisibility(View.VISIBLE);
+                    mForbidTv.setVisibility(View.VISIBLE);
                 }
             }
         }
-        if (mForbidContainer.getVisibility() == View.GONE) {
-            updateLayoutParams(mFollowContainer, R.dimen.view_dimen_340);
-            updateLayoutParams(mMessageContainer, R.dimen.view_dimen_340);
+        if (mForbidTv.getVisibility() == View.GONE) {
+            updateLayoutParams(mFollowTv, R.dimen.view_dimen_340);
+            updateLayoutParams(mMessageTv, R.dimen.view_dimen_340);
         } else {
-            updateLayoutParams(mFollowContainer, R.dimen.view_dimen_240);
-            updateLayoutParams(mMessageContainer, R.dimen.view_dimen_240);
-            updateLayoutParams(mForbidContainer, R.dimen.view_dimen_240);
+            updateLayoutParams(mFollowTv, R.dimen.view_dimen_240);
+            updateLayoutParams(mMessageTv, R.dimen.view_dimen_240);
+            updateLayoutParams(mForbidTv, R.dimen.view_dimen_240);
         }
         MyLog.w(TAG, "user=" + mUser.toString());
     }
 
-    private void updateLayoutParams(ViewGroup vp, int dimenId) {
+    private void updateLayoutParams(View vp, int dimenId) {
         if (vp == null) {
             return;
         }
@@ -281,7 +275,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
     }
 
     public void changeForbidSpeakBtnStatus(boolean isForbid) {
-        mForbidContainer.setSelected(isForbid);
+        mForbidTv.setSelected(isForbid);
         if (isForbid) {
             mForbidTv.setText(getString(R.string.cancel_banspeaker));
             mForbidTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -328,9 +322,9 @@ public class FloatInfoFragment extends BaseEventBusFragment
 
     private void setFollowAreaShow(boolean enableFollow) {
         if (!enableFollow){
-            mFollowContainer.setVisibility(View.GONE);
-            mForbidContainer.setVisibility(View.GONE);
-            mMessageContainer.setVisibility(View.GONE);
+            mFollowTv.setVisibility(View.GONE);
+            mForbidTv.setVisibility(View.GONE);
+            mMessageTv.setVisibility(View.GONE);
         }
     }
 
@@ -412,8 +406,6 @@ public class FloatInfoFragment extends BaseEventBusFragment
                 mFollowTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             } else {
                 mFollowTv.setText(R.string.add_follow);
-                mFollowTv.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.live_card_add_attention, 0, 0, 0);
             }
         }
     }
@@ -497,11 +489,11 @@ public class FloatInfoFragment extends BaseEventBusFragment
             onClickEditIcon();
         } else if (v.getId() == R.id.top_one_avatar) {
             onClickTopOneAvatar();
-        } else if (v.getId() == R.id.follow_container) {
+        } else if (v.getId() == R.id.follow_tv) {
             onClickFollowButton();
-        } else if (v.getId() == R.id.forbid_container) {
+        } else if (v.getId() == R.id.forbid_tv) {
             onClickForbidSpeak();
-        } else if (v.getId() == R.id.message_container) {
+        } else if (v.getId() == R.id.message_tv) {
             onClickMessage();
         }
     }
@@ -550,7 +542,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
     private void onClickForbidSpeak() {
         MyLog.d(TAG, "click forbid speak");
         if (mForbidManagePresenter != null) {
-            if (mForbidContainer.isSelected()) {
+            if (mForbidTv.isSelected()) {
                 mForbidManagePresenter.cancelForbidSpeak(
                         mPresenter.getRoomId(),
                         mPresenter.getOwnerUid(),
@@ -609,9 +601,9 @@ public class FloatInfoFragment extends BaseEventBusFragment
                 mRootView.findViewById(R.id.splite_line).getLayoutParams();
         lpLine.topMargin = DisplayUtils.dip2px(isLandscape ? 10f : 14f);
 
-        RelativeLayout.LayoutParams lpFollow = (RelativeLayout.LayoutParams)
-                mRootView.findViewById(R.id.admin_area).getLayoutParams();
-        lpFollow.topMargin = DisplayUtils.dip2px(isLandscape ? 10f : 14f);
+//        RelativeLayout.LayoutParams lpFollow = (RelativeLayout.LayoutParams)
+//                mRootView.findViewById(R.id.admin_area).getLayoutParams();
+//        lpFollow.topMargin = DisplayUtils.dip2px(isLandscape ? 10f : 14f);
 
         RelativeLayout.LayoutParams lpBottom = (RelativeLayout.LayoutParams)
                 mRootView.findViewById(R.id.user_info_zone).getLayoutParams();
