@@ -61,6 +61,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_dimen_39"
             android:layout_toLeftOf="@+id/focus_btn"
+            android:drawableLeft="@drawable/live_video_focus_icon_watch"
+            android:drawablePadding="@dimen/view_dimen_16"
             android:text="100人"
             android:textColor="@color/color_black_trans_40"
             android:textSize="@dimen/view_dimen_36" />
