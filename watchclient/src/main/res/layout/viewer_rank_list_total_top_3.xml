@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/rankingRootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <RelativeLayout
+            android:id="@+id/current_rank_rlytSecondRoot"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_dimen_450"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+
+            <com.base.image.fresco.BaseImageView
+                android:id="@+id/current_rank_avatar_imgSecond"
+                android:layout_width="@dimen/view_dimen_168"
+                android:layout_height="@dimen/view_dimen_168"
+                android:padding="2dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_86"
+                android:background="@drawable/anchor_rank_round_bg_top2"/>
+
+            <TextView
+                android:id="@+id/current_rank_nameSecond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/current_rank_avatar_imgSecond"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:maxLines="1"
+                android:textColor="@color/color_black_trans_60"
+                android:textSize="@dimen/view_dimen_45" />
+
+            <ImageView
+                android:id="@+id/current_rank_levelSecond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/current_rank_nameSecond"
+                android:layout_marginTop="@dimen/view_dimen_6" />
+
+            <!-- 显示等级-->
+            <TextView
+                android:id="@+id/level_tvSecond"
+                android:layout_width="@dimen/lvl_tv_width"
+                android:layout_height="@dimen/lvl_tv_height"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/current_rank_levelSecond"
+                android:textColor="@color/lvl_txt_color"
+                android:layout_marginTop="@dimen/view_dimen_6"
+                android:gravity="center"
+                android:textSize="@dimen/lvl_text_size"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/current_rank_rlytFirstRoot"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_dimen_450"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+
+            <com.base.image.fresco.BaseImageView
+                android:id="@+id/current_rank_avatar_imgFirst"
+                android:layout_width="@dimen/view_dimen_214"
+                android:layout_height="@dimen/view_dimen_214"
+                android:padding="2dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_40"
+                android:background="@drawable/anchor_rank_round_bg_top1"/>
+
+            <TextView
+                android:id="@+id/current_rank_nameFirst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/current_rank_avatar_imgFirst"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/color_black_trans_60"
+                android:textSize="@dimen/view_dimen_45" />
+
+            <ImageView
+                android:id="@+id/current_rank_levelFirst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/current_rank_nameFirst"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_6" />
+
+            <!-- 显示等级-->
+            <TextView
+                android:id="@+id/level_tvFirst"
+                android:layout_width="@dimen/lvl_tv_width"
+                android:layout_height="@dimen/lvl_tv_height"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/current_rank_levelFirst"
+                android:textColor="@color/lvl_txt_color"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/view_dimen_6"
+                android:textSize="@dimen/lvl_text_size"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/current_rank_rlytThirdRoot"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_dimen_450"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+
+            <com.base.image.fresco.BaseImageView
+                android:id="@+id/current_rank_avatar_imgThird"
+                android:layout_width="@dimen/view_dimen_168"
+                android:layout_height="@dimen/view_dimen_168"
+                android:padding="2dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_dimen_86"
+                android:background="@drawable/anchor_rank_round_bg_top3"/>
+
+            <TextView
+                android:id="@+id/current_rank_nameThird"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/current_rank_avatar_imgThird"
+                android:layout_marginTop="@dimen/view_dimen_20"
+                android:maxLines="1"
+                android:textColor="@color/color_black_trans_60"
+                android:textSize="@dimen/view_dimen_45" />
+
+            <ImageView
+                android:id="@+id/current_rank_levelThird"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/current_rank_nameThird"
+                android:layout_marginTop="@dimen/view_dimen_6" />
+
+            <!-- 显示等级-->
+            <TextView
+                android:id="@+id/level_tvThird"
+                android:layout_width="@dimen/lvl_tv_width"
+                android:layout_height="@dimen/lvl_tv_height"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/current_rank_levelThird"
+                android:layout_marginTop="@dimen/view_dimen_6"
+                android:gravity="center"
+                android:textColor="@color/lvl_txt_color"
+                android:textSize="@dimen/lvl_text_size"
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!--分隔线-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_1"
+        android:background="@color/color_black_trans_10"/>
+
+</LinearLayout>
