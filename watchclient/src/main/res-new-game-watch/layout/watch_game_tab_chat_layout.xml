@@ -18,10 +18,19 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/view_dimen_40" />
 
+        <ImageView
+            android:id="@+id/anchor_badge_iv"
+            android:layout_width="@dimen/view_dimen_30"
+            android:layout_height="@dimen/view_dimen_30"
+            android:layout_alignBottom="@+id/anchor_avatar_iv"
+            android:layout_alignRight="@+id/anchor_avatar_iv"
+            android:scaleType="fitStart" />
+
         <TextView
             android:id="@+id/anchor_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_dimen_26"
             android:layout_alignTop="@+id/anchor_avatar_iv"
             android:layout_marginTop="@dimen/view_dimen_3"
             android:layout_toRightOf="@+id/anchor_avatar_iv"
@@ -37,7 +46,7 @@
             android:layout_alignLeft="@+id/anchor_name_tv"
             android:layout_below="@+id/anchor_name_tv"
             android:layout_marginTop="@dimen/view_dimen_6"
-            android:text="直播间号:10071"
+            android:text="直播间号:100001"
             android:textColor="@color/color_black_trans_40"
             android:textSize="@dimen/view_dimen_27" />
 
