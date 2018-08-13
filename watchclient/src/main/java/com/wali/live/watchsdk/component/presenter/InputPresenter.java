@@ -52,6 +52,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -424,7 +425,10 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
             vFansMemberBriefInfo.setVipExpire(System.currentTimeMillis() > fansPrivilegeModel.getExpireTime() * 1000);
             vFansMemberBriefInfo.setMedalValue(fansPrivilegeModel.getMedal());
             ext.setvFansMemberBriefInfo(vFansMemberBriefInfo);
-            globalRoomMsgExt.getInnerGlobalRoomMessageExtList().add(ext);
+            List<BarrageMsg.InnerGlobalRoomMessageExt> list = globalRoomMsgExt.getInnerGlobalRoomMessageExtList();
+            if (list != null) {
+                list.add(ext);
+            }
         }
 
         if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA) {

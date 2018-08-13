@@ -60,7 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name_tv"
                 android:layout_marginTop="@dimen/view_dimen_12"
-                android:src="@drawable/live_icon_people" />
+                android:src="@drawable/live_icon_people"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/viewers_num_tv"
