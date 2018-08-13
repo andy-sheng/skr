@@ -91,7 +91,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private AnimatorSet mShowLandscapeOptBarAnimatorSet;
     private AnimatorSet mHidePortraitOptBarAnimatorSet;
     private AnimatorSet mShowPortraitOptBarAnimatorSet;
+
     private GameNewLandscapeInputViewPresenter mGameNewLandscapeInputViewPresenter;
+    private boolean mIsVideoPause;
 
     public WatchGameZTopView(Context context) {
         super(context);
@@ -144,6 +146,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 for (View view: mLandscapeViews) {
                     addView(view);
                 }
+
+                mLandscapeSuspend.setBackgroundDrawable(mIsVideoPause ?
+                        GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_play)
+                        : GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended));
             }
 
             if(mGameNewLandscapeInputViewPresenter == null) {
@@ -172,6 +178,14 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             } else {
                 // 加载过竖屏布局 重新add
                 for (View view: mPortritViews) {
+                    if(view instanceof PortraitLineUpButtons) {
+                        View v = ((PortraitLineUpButtons) view).getViewById(R.id.game_watch_portrait_suspended);
+                        if(v != null
+                                && v instanceof ImageView) {
+                            ((ImageView) v).setImageDrawable(mIsVideoPause ? GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_play)
+                                    : GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_suspended));
+                        }
+                    }
                     addView(view);
                 }
             }
@@ -191,7 +205,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         // 更多
         mPortraitLinUpButtons.addButton(R.drawable.live_video_function_icon_more, R.id.game_watch_portrait_more);
         // 暂停　播放
-        mPortraitLinUpButtons.addButton(R.drawable.live_video_function_icon_suspended, R.id.game_watch_portrait_suspended);
+        mPortraitLinUpButtons.addButton((mIsVideoPause ? R.drawable.live_video_function_icon_play : R.drawable.live_video_function_icon_suspended), R.id.game_watch_portrait_suspended);
         // 全屏
         mPortraitLinUpButtons.addButton(R.drawable.live_video_function_icon_fullscreen, R.id.game_watch_portrait_fullscreen);
         mPortraitLinUpButtons.setOnButtonClickListener(this);
@@ -227,6 +241,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mLandscapeShareBtn.setOnClickListener(this);
 
         mLandscapeSuspend = (ImageView) findViewById(R.id.landscape_pause_resume_btn);
+        mLandscapeSuspend.setBackgroundDrawable(mIsVideoPause ?
+                GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_play)
+                : GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended));
         mLandscapeSuspend.setOnClickListener(this);
 
         mLandscapeRefresh = (ImageView) findViewById(R.id.landscape_refresh_btn);
@@ -267,6 +284,17 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 if(AccountAuthManager.triggerActionNeedAccount(getContext())) {
                     mPresenter.showGiftView();
                 }
+            } else if(id == R.id.landscape_pause_resume_btn) {
+                mLandscapeSuspend.setBackgroundDrawable(mIsVideoPause ?
+                        GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended)
+                        : GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_play));
+                playVideoControl();
+            } else if(id == R.id.landscape_refresh_btn) {
+                mPresenter.vodeoReFresh();
+                mIsVideoPause = false;
+                if(mLandscapeSuspend != null) {
+                    mLandscapeSuspend.setBackgroundDrawable(GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended));
+                }
             }
         } else {
             // 竖屏下的点击事件
@@ -280,6 +308,20 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         if(id == R.id.touch_view) {
             touchViewOnclick();
         }
+    }
+
+    private void playVideoControl() {
+        if(mPresenter == null) {
+            return;
+        }
+
+        if(mIsVideoPause) {
+            mPresenter.videoRestart();
+        } else {
+            mPresenter.videoPause();
+        }
+        mIsVideoPause = !mIsVideoPause;
+
     }
 
     /**
@@ -317,12 +359,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
             mWatchGameMenuDialog.show(WatchGameZTopView.this, v);
         } else if (id == R.id.game_watch_portrait_suspended) {
-            if (v.isSelected()) {
-
-            } else {
-
+            if(v instanceof ImageView) {
+                ((ImageView) v).setImageDrawable(mIsVideoPause ? GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_suspended)
+                        : GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_play));
+                playVideoControl();
             }
-            ToastUtils.showToast("点击暂停|播放");
         } else if (id == R.id.game_watch_portrait_fullscreen) {
             if (mPresenter != null) {
                 mPresenter.forceRotate();
@@ -735,6 +776,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void optReprot();
 
         WatchComponentController getController();
+
+        void videoPause();
+
+        void videoRestart();
+
+        void vodeoReFresh();
     }
 
     public interface IView extends IViewProxy {

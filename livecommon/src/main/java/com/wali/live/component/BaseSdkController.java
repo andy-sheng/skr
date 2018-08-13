@@ -149,8 +149,10 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_UPDATE_PLAY_PROGRESS = MSG_PLAYER_FIRST + 5; // 更新播放进度
     public static final int MSG_PLAYER_SHOW_LOADING = MSG_PLAYER_FIRST + 6;  // 显示 加载图标
     public static final int MSG_PLAYER_HIDE_LOADING = MSG_PLAYER_FIRST + 7;  // 隐藏 加载图标
-    //    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 8;
+    public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 8;
     public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 9;
+    public static final int MSG_PLAYER_RECONNECT = MSG_PLAYER_FIRST + 10;
+
 
     // UI消息
     // 复合消息(多个View同时响应的消息)
@@ -241,7 +243,7 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_UPDATE_TAB_TYPE = MSG_DETAIL_VIDEO_FIRST + 12;      // 更新 TAB数据(回放显示"评论"和"回放"，详情显示"详情"和评论)
 
     public static final int MSG_NEW_DETAIL_REPLAY = MSG_DETAIL_VIDEO_FIRST + 13;
-    public static final int MSG_PLAYER_START = MSG_DETAIL_VIDEO_FIRST + 14;
+//    public static final int MSG_PLAYER_START = MSG_DETAIL_VIDEO_FIRST + 14;
 
     // 其他
     private static final int MSG_MORE_FIRST = 90000;

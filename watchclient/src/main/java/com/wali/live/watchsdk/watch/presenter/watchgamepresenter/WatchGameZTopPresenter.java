@@ -40,6 +40,9 @@ import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_GAME_WATCH_EXIST_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 
 /**
  * Created by vera on 2018/8/8.
@@ -47,6 +50,8 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
 public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView.IView>
         implements WatchGameZTopView.IPresenter {
+    private static final String TAG = "WatchGameZTopPresenter";
+
     private RoomBaseDataModel mMyRoomData;
 
     private Subscription mFollowSubscription;
@@ -60,7 +65,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     @Override
     protected String getTAG() {
-        return null;
+        return TAG;
     }
 
     @Override
@@ -216,6 +221,24 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     @Override
     public WatchComponentController getController() {
         return (WatchComponentController) mController;
+    }
+
+    @Override
+    public void videoPause() {
+        MyLog.d(TAG, "videoPause");
+        postEvent(MSG_PLAYER_PAUSE);
+    }
+
+    @Override
+    public void videoRestart() {
+        MyLog.d(TAG, "videoRestart");
+        postEvent(MSG_PLAYER_START);
+    }
+
+    @Override
+    public void vodeoReFresh() {
+        MyLog.d(TAG, "vodeoReFresh");
+        postEvent(MSG_PLAYER_RECONNECT);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

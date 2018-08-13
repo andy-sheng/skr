@@ -61,6 +61,19 @@ public class PortraitLineUpButtons extends RelativeLayout {
         });
     }
 
+    public View getViewById(@IdRes int resId) {
+        if(mButtonList != null
+                && !mButtonList.isEmpty()) {
+            for(View v : mButtonList) {
+                if(v.getId() == resId) {
+                    return v;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public void setOnButtonClickListener(OnPortraitButtonClickListener listener) {
         this.mOnPortraitButtonClickListener = listener;
     }
