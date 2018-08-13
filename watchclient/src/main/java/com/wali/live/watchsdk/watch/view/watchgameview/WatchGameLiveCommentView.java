@@ -233,25 +233,6 @@ public class WatchGameLiveCommentView extends RelativeLayout implements IBindAct
         });
     }
 
-    private void changeAlpha() {
-        int visibleItemCount = mLayoutManager.getChildCount();
-        View first = mCommentRv.getChildAt(visibleItemCount - 1);
-        if (visibleItemCount > 1) {
-            for (int i = 0; i < visibleItemCount; ++i) {
-                View itemView = mCommentRv.getChildAt(i);
-                mCommentRv.getLocationOnScreen(mLocation);
-                itemView.getLocationOnScreen(mItemLocation);
-                float alpha = 1;
-                if (i == visibleItemCount - 1) {
-                    alpha = 1 - (mLocation[1] - mItemLocation[1]) / ((float) first.getHeight());
-                    alpha *= 0.7f;
-                }
-                itemView.setAlpha(alpha);
-            }
-        }
-
-    }
-
     private void setOnBottom(String from, boolean onBottom) {
         MyLog.d(TAG, "onBottom:" + this.mOnBottom + "-->" + onBottom + " from:" + from);
         if (this.mOnBottom != onBottom) {
@@ -298,18 +279,9 @@ public class WatchGameLiveCommentView extends RelativeLayout implements IBindAct
         public void run() {
             mHasDataUpdate = false;
             mCommentRv.smoothScrollToPosition(0);
-//            mHandler.removeCallbacks(changeAlphaRunnable);
-//            mHandler.postDelayed(changeAlphaRunnable, 100);
-//            postDelayed(() -> changeAlpha(), 100);//解决底部alpha复用问题
         }
     };
 
-//    Runnable changeAlphaRunnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            changeAlpha();
-//        }
-//    };
 
     private void refreshComment(boolean force) {
         if (mAdapter != null && mDataList != null) {
@@ -378,31 +350,19 @@ public class WatchGameLiveCommentView extends RelativeLayout implements IBindAct
     }
 
     private void adjustLayoutForOrient() {
-        LayoutParams layoutParams = (LayoutParams) getLayoutParams();
-        if (mIsLandscape) {
-            layoutParams.width = COMMENT_WIDTH_LANDSCAPE;
-            layoutParams.height = COMMENT_HEIGHT_LANDSCAPE;
-            layoutParams.rightMargin = 0;
-            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, PORTRAIT_COMMENT_PADDING_BOTTOM);
-        } else {
-            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-            layoutParams.height = COMMENT_HEIGHT_PORTRAIT;
-            layoutParams.rightMargin = Math.max(mExtraRightMargin, COMMENT_MARGIN_PORTRAIT);
-            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, PORTRAIT_COMMENT_PADDING_BOTTOM);
-        }
-        setLayoutParams(layoutParams);
-    }
-
-    public void setExtraRightMargin(int extraMargin) {
-        if (mExtraRightMargin == extraMargin) {
-            return;
-        }
-        MyLog.d(TAG, "setExtraRightMargin extraMargin=" + extraMargin);
-        mExtraRightMargin = extraMargin;
-        adjustLayoutForOrient();
-        if (!mIsLandscape && mExtraRightMargin == 0 && !mCommentRv.isComputingLayout()) {
-            mAdapter.notifyDataSetChanged();
-        }
+//        LayoutParams layoutParams = (LayoutParams) getLayoutParams();
+//        if (mIsLandscape) {
+//            layoutParams.width = COMMENT_WIDTH_LANDSCAPE;
+//            layoutParams.height = COMMENT_HEIGHT_LANDSCAPE;
+//            layoutParams.rightMargin = 0;
+//            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, PORTRAIT_COMMENT_PADDING_BOTTOM);
+//        } else {
+//            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+//            layoutParams.height = COMMENT_HEIGHT_PORTRAIT;
+//            layoutParams.rightMargin = Math.max(mExtraRightMargin, COMMENT_MARGIN_PORTRAIT);
+//            setPadding(COMMENT_PADDING_LEFT, 0, COMMENT_PADDING_RIGHT, PORTRAIT_COMMENT_PADDING_BOTTOM);
+//        }
+//        setLayoutParams(layoutParams);
     }
 
     public void onOrientation(boolean isLandscape) {
