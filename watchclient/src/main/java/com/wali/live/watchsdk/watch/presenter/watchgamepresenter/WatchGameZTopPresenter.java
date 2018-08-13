@@ -82,7 +82,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
             EventBus.getDefault().unregister(this);
         }
         if (mView != null) {
-            mView.cancelAnimator();
+            mView.stopView();
         }
     }
 
@@ -211,6 +211,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 , mMyRoomData.getRoomId()
                 , mMyRoomData.getVideoUrl()
                 , ReportFragment.LOCATION_ROOM, ReportFragment.EXT_ANCHOR);
+    }
+
+    @Override
+    public WatchComponentController getController() {
+        return (WatchComponentController) mController;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

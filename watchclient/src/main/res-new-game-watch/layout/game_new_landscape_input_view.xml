@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/landscape_barrage_edit"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_dimen_86"
+        android:layout_weight="1"
+        android:background="@drawable/watch_game_barrage_edit_bg"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/empty_edittext_hint"
+        android:imeOptions="flagNoFullscreen"
+        android:paddingBottom="@dimen/view_dimen_18"
+        android:paddingLeft="@dimen/view_dimen_48"
+        android:paddingRight="@dimen/view_dimen_48"
+        android:paddingTop="@dimen/view_dimen_18"
+        android:textColor="@color/color_black"
+        android:textColorHint="@color/color_black_trans_30"
+        android:textSize="@dimen/text_size_36" />
+
+    <TextView
+        android:id="@+id/landscape_barrage_send_btn"
+        android:layout_width="@dimen/view_dimen_198"
+        android:layout_height="@dimen/view_dimen_86"
+        android:background="@drawable/watch_game_barrage_send_bg"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/send"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/view_dimen_36" />
+
+</LinearLayout>
