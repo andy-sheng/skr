@@ -274,10 +274,14 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                     || type == BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE
                     || type == BarrageMsgType.B_MSG_TYPE_GLOBAL_SYS_MSG)
                     ) {
-                if (liveComment.getBackGround() == 0) {
-                    liveCommentHolder.itemView.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.live_bg_comment));
+                if (mIsGameLive) {
+                    liveCommentHolder.itemView.setBackground(null);
                 } else {
-                    liveCommentHolder.itemView.setBackground(GlobalData.app().getResources().getDrawable(liveComment.getBackGround()));
+                    if (liveComment.getBackGround() == 0) {
+                        liveCommentHolder.itemView.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.live_bg_comment));
+                    } else {
+                        liveCommentHolder.itemView.setBackground(GlobalData.app().getResources().getDrawable(liveComment.getBackGround()));
+                    }
                 }
                 RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) liveCommentHolder.itemView.getLayoutParams();
                 lp.setMargins(0, BACKGROUD_MARGIN, 0, BACKGROUD_MARGIN);
@@ -316,6 +320,9 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             liveCommentHolder.reset();
             liveCommentHolder.barrageTv.setText("");
             liveCommentHolder.setModel(liveComment);
+            if (mIsGameLive) {
+                liveCommentHolder.barrageTv.setShadowLayer(0, 0, 0, 0);
+            }
             setBackground(liveCommentHolder, liveComment);
 
             bindLevelView(liveCommentHolder, liveComment);

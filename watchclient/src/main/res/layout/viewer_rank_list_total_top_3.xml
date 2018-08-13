@@ -8,7 +8,6 @@
         android:id="@+id/rankingRootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
         android:gravity="bottom"
         android:orientation="horizontal"
         android:weightSum="3">

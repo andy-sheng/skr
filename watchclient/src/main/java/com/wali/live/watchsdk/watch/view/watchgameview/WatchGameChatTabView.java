@@ -48,7 +48,6 @@ public class WatchGameChatTabView extends RelativeLayout implements
     TextView mFocusBtn;
     TextView mViewerNum;
     RelativeLayout mCommentContainer;
-    WatchGameLiveCommentView mLiveCommentView;
 
     private boolean mEnableFollow = true;
 
@@ -66,10 +65,10 @@ public class WatchGameChatTabView extends RelativeLayout implements
         mAnchorRoomTv = (TextView) this.findViewById(R.id.anchor_room_tv);
         mFocusBtn = (TextView) this.findViewById(R.id.focus_btn);
         mViewerNum = (TextView) this.findViewById(R.id.viewer_num);
-        mCommentContainer = (RelativeLayout) this.findViewById(R.id.comment_container);
-        mLiveCommentView = (WatchGameLiveCommentView) this.findViewById(R.id.live_comment_view);
 
+        mCommentContainer = (RelativeLayout) this.findViewById(R.id.comment_container);
         mWatchGameLiveCommentView = (WatchGameLiveCommentView) this.findViewById(R.id.live_comment_view);
+        mWatchGameLiveCommentView.setIsGameLive(true);
         mWatchGameLiveCommentView.setToken(componentController.mRoomChatMsgManager.toString());
         mWatchGameLiveCommentPresenter = new WatchGameLiveCommentPresenter(componentController);
         mWatchGameLiveCommentPresenter.setView(mWatchGameLiveCommentView.getViewProxy());

@@ -82,7 +82,8 @@
         android:id="@+id/comment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/anchor_info_container">
+        android:layout_below="@+id/anchor_info_container"
+        android:background="@color/color_f7f7f7">
 
         <!--评论栏-->
         <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameLiveCommentView
