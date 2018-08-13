@@ -1,4 +1,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     
     <string name="input_tips">说点什么吧</string>
+    <string name="voice_tips">仅播放声音</string>
+    <string name="not_insteresting">不感兴趣</string>
+    <string name="report">举报</string>
 </resources>
