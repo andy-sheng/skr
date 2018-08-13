@@ -11,12 +11,14 @@ public class ViewerModel {
     private int level;      // 等级
     private long avatar;    // 头像
     private int certificationType;      // 认证类型
-    private boolean redName ; //被社区红名
+    private boolean redName; //被社区红名
     private int vipLevel;                      //该观众的vip等级
     private boolean isVipFrozen;               //该观众的vip是否被冻结（如果是vip才有意义）
     private int currentLiveTicket;             //该观众本场贡献的星票数
     private int nobleLevel;                    //该观众的贵族等级
     private String userNobelID;
+
+    private String nickName; //昵称
 
     public ViewerModel(long uid) {
         this.uid = uid;
@@ -39,7 +41,7 @@ public class ViewerModel {
         this.userNobelID = protoViewer.getUserNobleMedal().getPicId();
     }
 
-    public ViewerModel(long uid, int level, long avatar, int certificationType,boolean redName) {
+    public ViewerModel(long uid, int level, long avatar, int certificationType, boolean redName) {
         this.uid = uid;
         this.level = level;
         this.avatar = avatar;
@@ -158,5 +160,13 @@ public class ViewerModel {
         return "Viewer{" +
                 "uid=" + uid +
                 '}';
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }
