@@ -156,41 +156,15 @@
             android:layout_toLeftOf="@+id/splite_line_view_2"
             android:layout_marginRight="@dimen/view_dimen_34"
             android:layout_centerVertical="true"/>
-        <LinearLayout
+        
+        <com.wali.live.watchsdk.watch.view.watchgameview.GameNewLandscapeInputView
+            android:id="@+id/input_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/view_dimen_310"
-            android:layout_marginRight="@dimen/view_dimen_376">
-            <EditText
-                android:id="@+id/landscape_barrage_edit"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="@dimen/view_dimen_86"
-                android:background="@drawable/watch_game_barrage_edit_bg"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:imeOptions="flagNoFullscreen"
-                android:textColor="@color/color_black"
-                android:textColorHint="@color/color_black_trans_30"
-                android:hint="@string/empty_edittext_hint"
-                android:textSize="@dimen/text_size_36"
-                android:paddingLeft="@dimen/view_dimen_48"
-                android:paddingRight="@dimen/view_dimen_48"
-                android:paddingTop="@dimen/view_dimen_18"
-                android:paddingBottom="@dimen/view_dimen_18"/>
-            <TextView
-                android:id="@+id/landscape_barrage_send_btn"
-                android:layout_width="@dimen/view_dimen_198"
-                android:layout_height="@dimen/view_dimen_86"
-                android:gravity="center"
-                android:enabled="false"
-                android:textColor="@color/color_white"
-                android:text="@string/send"
-                android:textSize="@dimen/view_dimen_36"
-                android:background="@drawable/watch_game_barrage_send_bg"/>
-        </LinearLayout>
+            android:layout_marginRight="@dimen/view_dimen_376"/>
     </RelativeLayout>
 </merge>
 

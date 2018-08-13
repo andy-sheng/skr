@@ -61,7 +61,6 @@ public class WatchGameMenuDialog extends PopupWindow implements View.OnClickList
         mOptReportTv.setOnClickListener(this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void show(View parents, View view){
         int[] ints = calculateWindowPos(view);
         this.showAtLocation(parents, Gravity.NO_GRAVITY, ints[0]- WIDTH_DIALOG, ints[1] - PX_CORRECT);
