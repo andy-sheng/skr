@@ -35,6 +35,8 @@ import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.cache.RoomInfoGlobalCache;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.gamecenter.GameCenterDataManager;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.gift.model.GiftInfoForEnterRoom;
 import com.mi.live.data.gift.model.GiftRecvModel;
 import com.mi.live.data.location.Location;
@@ -111,8 +113,10 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_FOLLOW_COUNT_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
@@ -689,6 +693,12 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                     mController.postEvent(MSG_ON_PK_START, new Params().putItem(roomInfo.getPkStartInfo()));
                 }
             }
+
+            if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_GAME
+                    || mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
+                // 游戏直播
+                trySyncGameInfoModel();
+            }
         }
     };
 
@@ -774,6 +784,41 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                     }
 
                 });
+    }
+
+
+    void trySyncGameInfoModel(){
+            Observable.create(new Observable.OnSubscribe<GameInfoModel>() {
+                @Override
+                public void call(Subscriber<? super GameInfoModel> subscriber) {
+                    if(!TextUtils.isEmpty(mMyRoomData.getGameId()) || !TextUtils.isEmpty(mMyRoomData.getGamePackageName())){
+                        GameInfoModel gameInfoModel = GameCenterDataManager.getGameInfo(Long.parseLong(mMyRoomData.getGameId()),mMyRoomData.getGamePackageName());
+                        subscriber.onNext(gameInfoModel);
+                    }
+                    subscriber.onCompleted();
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .compose(this.<GameInfoModel>bindUntilEvent(ActivityEvent.DESTROY))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<GameInfoModel>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            MyLog.d(TAG,e);
+                        }
+
+                        @Override
+                        public void onNext(GameInfoModel gameInfoModel) {
+                            if (gameInfoModel != null) {
+                                mMyRoomData.setGameInfoModel(gameInfoModel);
+                            }
+                        }
+                    });
     }
 
     private boolean mBanSpeakerListAlreadyGet = false;

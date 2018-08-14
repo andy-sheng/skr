@@ -4,6 +4,7 @@ option java_outer_classname = "GameCenterProto";
 message GetGameInfoReq {
     optional uint64 gameId = 1;
     optional uint64 uuid = 2;
+    optional string packageName = 3;
 }
 
 message GetGameInfoRsp {

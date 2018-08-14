@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.LazyNewView;
 import com.base.view.SlidingTabLayout;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
@@ -62,7 +63,7 @@ public class WatchGameTabView extends RelativeLayout implements
         mTitleAndViewMap.put("游戏主页", new LazyNewView() {
             @Override
             public View newView() {
-                return new WatchGameHomeTabView(getContext(),mWatchComponentController);
+                return new WatchGameHomeTabView(getContext(), mWatchComponentController);
             }
         });
 
@@ -73,7 +74,6 @@ public class WatchGameTabView extends RelativeLayout implements
             }
         });
         mTabTitleList.add("聊天");
-        mTabTitleList.add("游戏主页");
         mTabTitleList.add("观众");
 
 
@@ -139,7 +139,35 @@ public class WatchGameTabView extends RelativeLayout implements
 
     @Override
     public WatchGameTabView.IView getViewProxy() {
-        return null;
+        return new IView() {
+            @Override
+            public void updateGameHomePage(RoomBaseDataModel source) {
+                boolean hasGameHomePage = true;
+                if (source.getGameInfoModel() == null) {
+                    hasGameHomePage = false;
+                }
+                if (hasGameHomePage) {
+                    if (mTabTitleList.size() > 1 && mTabTitleList.get(1).equals("游戏主页")) {
+                        // 游戏主页了
+                    } else {
+                        mTabTitleList.add(1, "游戏主页");
+                        mTabPagerAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    if (mTabTitleList.size() > 1 && mTabTitleList.get(1).equals("游戏主页")) {
+                        // 不应该有游戏主页
+                        mTabTitleList.remove(1);
+                        mTabPagerAdapter.notifyDataSetChanged();
+                    } else {
+                    }
+                }
+            }
+
+            @Override
+            public <T extends View> T getRealView() {
+                return (T) WatchGameTabView.this;
+            }
+        };
     }
 
     @Override
@@ -154,5 +182,6 @@ public class WatchGameTabView extends RelativeLayout implements
 
     public interface IView extends IViewProxy {
 
+        void updateGameHomePage(RoomBaseDataModel source);
     }
 }

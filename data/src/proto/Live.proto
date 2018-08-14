@@ -130,6 +130,20 @@ message EnterLiveRsp {
     optional NewPKInfo new_pk_info = 29; //pk状态传
     optional ContestInfo contest_info = 32;
     optional ThirdPartyInfo thirdPartyInfo = 35; //第三方直播相关信息
+    optional DiscountGiftInfo discountGiftInfo = 36; //520半价礼物信息
+    optional LikeInfo likeInfo = 37; // 免费人气赞
+    optional string gamePackName = 38; //游戏包名
+}
+
+message LikeInfo
+{
+    optional bool enable = 1; // 是否获得 true：获得 false：未获得（默认）
+    optional string desc = 2; // 文案
+}
+
+message DiscountGiftInfo
+{
+    optional uint64 remainTime = 1; //礼物剩余时间（单位：ms）
 }
 
 message ThirdPartyInfo

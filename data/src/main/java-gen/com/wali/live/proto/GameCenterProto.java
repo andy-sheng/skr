@@ -29,6 +29,20 @@ public final class GameCenterProto {
      * <code>optional uint64 uuid = 2;</code>
      */
     long getUuid();
+
+    /**
+     * <code>optional string packageName = 3;</code>
+     */
+    boolean hasPackageName();
+    /**
+     * <code>optional string packageName = 3;</code>
+     */
+    java.lang.String getPackageName();
+    /**
+     * <code>optional string packageName = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getPackageNameBytes();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetGameInfoReq}
@@ -90,6 +104,12 @@ public final class GameCenterProto {
             case 16: {
               bitField0_ |= 0x00000002;
               uuid_ = input.readUInt64();
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              packageName_ = bs;
               break;
             }
           }
@@ -162,9 +182,52 @@ public final class GameCenterProto {
       return uuid_;
     }
 
+    public static final int PACKAGENAME_FIELD_NUMBER = 3;
+    private java.lang.Object packageName_;
+    /**
+     * <code>optional string packageName = 3;</code>
+     */
+    public boolean hasPackageName() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string packageName = 3;</code>
+     */
+    public java.lang.String getPackageName() {
+      java.lang.Object ref = packageName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          packageName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string packageName = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPackageNameBytes() {
+      java.lang.Object ref = packageName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        packageName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       gameId_ = 0L;
       uuid_ = 0L;
+      packageName_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -185,6 +248,9 @@ public final class GameCenterProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeUInt64(2, uuid_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getPackageNameBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -201,6 +267,10 @@ public final class GameCenterProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(2, uuid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getPackageNameBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -323,6 +393,8 @@ public final class GameCenterProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         uuid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
+        packageName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -359,6 +431,10 @@ public final class GameCenterProto {
           to_bitField0_ |= 0x00000002;
         }
         result.uuid_ = uuid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.packageName_ = packageName_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -380,6 +456,11 @@ public final class GameCenterProto {
         }
         if (other.hasUuid()) {
           setUuid(other.getUuid());
+        }
+        if (other.hasPackageName()) {
+          bitField0_ |= 0x00000004;
+          packageName_ = other.packageName_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -468,6 +549,82 @@ public final class GameCenterProto {
       public Builder clearUuid() {
         bitField0_ = (bitField0_ & ~0x00000002);
         uuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object packageName_ = "";
+      /**
+       * <code>optional string packageName = 3;</code>
+       */
+      public boolean hasPackageName() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string packageName = 3;</code>
+       */
+      public java.lang.String getPackageName() {
+        java.lang.Object ref = packageName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            packageName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string packageName = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPackageNameBytes() {
+        java.lang.Object ref = packageName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          packageName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string packageName = 3;</code>
+       */
+      public Builder setPackageName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        packageName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string packageName = 3;</code>
+       */
+      public Builder clearPackageName() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        packageName_ = getDefaultInstance().getPackageName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string packageName = 3;</code>
+       */
+      public Builder setPackageNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        packageName_ = value;
         onChanged();
         return this;
       }
@@ -8777,33 +8934,33 @@ public final class GameCenterProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\020GameCenter.proto\022\023com.wali.live.proto\"" +
-      ".\n\016GetGameInfoReq\022\016\n\006gameId\030\001 \001(\004\022\014\n\004uui" +
-      "d\030\002 \001(\004\"N\n\016GetGameInfoRsp\022\013\n\003ret\030\001 \001(\r\022/" +
-      "\n\010gameInfo\030\002 \001(\0132\035.com.wali.live.proto.G" +
-      "ameInfo\"\220\002\n\010GameInfo\0227\n\014gameBaseInfo\030\001 \001" +
-      "(\0132!.com.wali.live.proto.GameBaseInfo\0222\n" +
-      "\ngameVideos\030\002 \003(\0132\036.com.wali.live.proto." +
-      "GameVideo\0224\n\013screenShots\030\003 \003(\0132\037.com.wal" +
-      "i.live.proto.ScreenShot\022.\n\010gameTags\030\004 \003(" +
-      "\0132\034.com.wali.live.proto.GameTag\0221\n\tdevel",
-      "oper\030\005 \001(\0132\036.com.wali.live.proto.Develop" +
-      "er\"\210\002\n\014GameBaseInfo\022\016\n\006gameId\030\001 \001(\004\022\020\n\010g" +
-      "ameName\030\002 \001(\t\022\017\n\007iconUrl\030\003 \001(\t\022\020\n\010fileSi" +
-      "ze\030\004 \001(\004\022\020\n\010gameType\030\005 \001(\r\022\014\n\004rank\030\006 \001(\r" +
-      "\022\r\n\005score\030\007 \001(\002\022\021\n\tfollowNum\030\010 \001(\004\022\020\n\010is" +
-      "Follow\030\t \001(\010\022\023\n\013packageName\030\n \001(\t\022\022\n\npac" +
-      "kageUrl\030\013 \001(\t\022\023\n\013packageSize\030\014 \001(\004\022\022\n\nin" +
-      "troTitle\030\r \001(\t\022\r\n\005intro\030\016 \001(\t\"\226\001\n\tGameVi" +
-      "deo\022\017\n\007videoId\030\001 \001(\t\022\r\n\005width\030\002 \001(\r\022\016\n\006h" +
-      "eight\030\003 \001(\r\022\020\n\010videoUrl\030\004 \001(\t\022\021\n\tvideoSi",
-      "ze\030\005 \001(\004\022\021\n\tscreenUrl\030\006 \001(\t\022\020\n\010duration\030" +
-      "\007 \001(\r\022\017\n\007playCnt\030\010 \001(\004\"J\n\007GameTag\022\r\n\005tag" +
-      "Id\030\001 \001(\r\022\017\n\007tagName\030\002 \001(\t\022\017\n\007tagType\030\003 \001" +
-      "(\r\022\016\n\006actUrl\030\004 \001(\t\"H\n\tDeveloper\022\023\n\013devel" +
-      "operId\030\001 \001(\r\022\025\n\rdeveloperName\030\002 \001(\t\022\017\n\007i" +
-      "conUrl\030\003 \001(\r\"<\n\nScreenShot\022\r\n\005picId\030\001 \001(" +
-      "\t\022\016\n\006picUrl\030\002 \001(\t\022\017\n\007picType\030\003 \001(\rB\021B\017Ga" +
-      "meCenterProto"
+      "C\n\016GetGameInfoReq\022\016\n\006gameId\030\001 \001(\004\022\014\n\004uui" +
+      "d\030\002 \001(\004\022\023\n\013packageName\030\003 \001(\t\"N\n\016GetGameI" +
+      "nfoRsp\022\013\n\003ret\030\001 \001(\r\022/\n\010gameInfo\030\002 \001(\0132\035." +
+      "com.wali.live.proto.GameInfo\"\220\002\n\010GameInf" +
+      "o\0227\n\014gameBaseInfo\030\001 \001(\0132!.com.wali.live." +
+      "proto.GameBaseInfo\0222\n\ngameVideos\030\002 \003(\0132\036" +
+      ".com.wali.live.proto.GameVideo\0224\n\013screen" +
+      "Shots\030\003 \003(\0132\037.com.wali.live.proto.Screen" +
+      "Shot\022.\n\010gameTags\030\004 \003(\0132\034.com.wali.live.p",
+      "roto.GameTag\0221\n\tdeveloper\030\005 \001(\0132\036.com.wa" +
+      "li.live.proto.Developer\"\210\002\n\014GameBaseInfo" +
+      "\022\016\n\006gameId\030\001 \001(\004\022\020\n\010gameName\030\002 \001(\t\022\017\n\007ic" +
+      "onUrl\030\003 \001(\t\022\020\n\010fileSize\030\004 \001(\004\022\020\n\010gameTyp" +
+      "e\030\005 \001(\r\022\014\n\004rank\030\006 \001(\r\022\r\n\005score\030\007 \001(\002\022\021\n\t" +
+      "followNum\030\010 \001(\004\022\020\n\010isFollow\030\t \001(\010\022\023\n\013pac" +
+      "kageName\030\n \001(\t\022\022\n\npackageUrl\030\013 \001(\t\022\023\n\013pa" +
+      "ckageSize\030\014 \001(\004\022\022\n\nintroTitle\030\r \001(\t\022\r\n\005i" +
+      "ntro\030\016 \001(\t\"\226\001\n\tGameVideo\022\017\n\007videoId\030\001 \001(" +
+      "\t\022\r\n\005width\030\002 \001(\r\022\016\n\006height\030\003 \001(\r\022\020\n\010vide",
+      "oUrl\030\004 \001(\t\022\021\n\tvideoSize\030\005 \001(\004\022\021\n\tscreenU" +
+      "rl\030\006 \001(\t\022\020\n\010duration\030\007 \001(\r\022\017\n\007playCnt\030\010 " +
+      "\001(\004\"J\n\007GameTag\022\r\n\005tagId\030\001 \001(\r\022\017\n\007tagName" +
+      "\030\002 \001(\t\022\017\n\007tagType\030\003 \001(\r\022\016\n\006actUrl\030\004 \001(\t\"" +
+      "H\n\tDeveloper\022\023\n\013developerId\030\001 \001(\r\022\025\n\rdev" +
+      "eloperName\030\002 \001(\t\022\017\n\007iconUrl\030\003 \001(\r\"<\n\nScr" +
+      "eenShot\022\r\n\005picId\030\001 \001(\t\022\016\n\006picUrl\030\002 \001(\t\022\017" +
+      "\n\007picType\030\003 \001(\rB\021B\017GameCenterProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8822,7 +8979,7 @@ public final class GameCenterProto {
     internal_static_com_wali_live_proto_GetGameInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetGameInfoReq_descriptor,
-        new java.lang.String[] { "GameId", "Uuid", });
+        new java.lang.String[] { "GameId", "Uuid", "PackageName", });
     internal_static_com_wali_live_proto_GetGameInfoRsp_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_wali_live_proto_GetGameInfoRsp_fieldAccessorTable = new

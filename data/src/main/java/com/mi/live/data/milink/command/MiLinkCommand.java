@@ -546,4 +546,6 @@ public class MiLinkCommand {
     public static final String COMMAND_DRAW_TURNTABLE = "zhibo.turntable.draw";
     public static final String COMMAND_REWARD_TURNTABLE = "zhibo.turntable.reward";
 
+    public static final String COMMAND_GAME_SUMMARY = "game.list.summaryPage";
+
 }

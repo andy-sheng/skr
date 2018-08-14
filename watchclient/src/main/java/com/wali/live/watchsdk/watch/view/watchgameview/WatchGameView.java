@@ -155,7 +155,10 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             mWatchTabView = (WatchGameTabView) mParentView.findViewById(R.id.watch_game_tab_view);
             mWatchTabView.setComponentControler(mController);
             mWatchTabView.init(mParentView.getContext());
+
             // presenter
+            mWatchTabPresenter = new WatchGameTabPresenter(mController);
+            registerComponent(mWatchTabView, mWatchTabPresenter);
         }
 
         {

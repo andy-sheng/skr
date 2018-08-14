@@ -93,6 +93,8 @@ public class RoomDataMapper {
                 enterRoomInfo.setContestId(rsp.getContestInfo().getContestId());
             }
             enterRoomInfo.setThirdPartyInfo(rsp.getThirdPartyInfo());
+            enterRoomInfo.setGamePackageName(rsp.getGamePackName());
+
         }
         return enterRoomInfo;
     }
@@ -137,5 +139,6 @@ public class RoomDataMapper {
         mMyRoomData.setRevivalNum(enterRoomInfo.getRevivalNum());
         mMyRoomData.setLate(enterRoomInfo.isLate());
         mMyRoomData.setContestId(enterRoomInfo.getContestId());
+        mMyRoomData.setGamePackageName(enterRoomInfo.getGamePackageName());
     }
 }
