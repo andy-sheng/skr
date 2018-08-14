@@ -1,6 +1,6 @@
 <resources>
     <dimen name="view_dimen_142">47.33dp</dimen>
-    <dimen name="person_card_float_top_margin">-37dip</dimen>
+    <dimen name="person_card_float_top_margin">-64dip</dimen>
     <dimen name="height_1302">434dip</dimen>
     <dimen name="margin_37">12.33dip</dimen>
     <dimen name="view_dimen_39">13dp</dimen>

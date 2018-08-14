@@ -10,10 +10,11 @@
         android:layout_height="match_parent" />
 
     <RelativeLayout
-        android:layout_width="280dp"
+        android:id="@+id/float_main_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/live_card_bg">
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/live_card">
 
         <!-- 关闭按钮　-->
         <ImageView
@@ -25,75 +26,8 @@
             android:layout_centerVertical="true"
             android:padding="@dimen/margin_40"
             android:scaleType="center"
-            android:src="@drawable/live_card_close" />
-
-        <!-- 顶部的头像-->
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/top_main_avatar"
-            android:layout_width="68.67dp"
-            android:layout_height="68.67dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_40"
-            app:placeholderImage="@drawable/live_show_avatar_loading"
-            app:roundAsCircle="true" />
-
-        <ImageView
-            android:id="@+id/edit_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/top_main_avatar"
-            android:layout_alignEnd="@id/top_main_avatar"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="4dp"
-            android:src="@drawable/edit_info_icon_bg"
-            android:visibility="gone" />
-
-        <!-- 微博认证角标-->
-        <ImageView
-            android:id="@+id/weibo_verify_conner"
-            android:layout_width="25.6dp"
-            android:layout_height="18.4dp"
-            android:layout_below="@id/top_main_avatar"
-            android:layout_marginStart="-16.67dp"
-            android:layout_marginTop="-14dp"
-            android:layout_toEndOf="@id/top_main_avatar"
-            android:scaleType="fitStart"
-            android:visibility="gone" />
-
-
-        <!-- 贡献排名第一和本人的联系角标-->
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/top_one_relation_avatar"
-            android:layout_width="13.33dp"
-            android:layout_height="13.33dp"
-            android:layout_marginEnd="4.67dp"
-            android:layout_marginTop="62.67dp"
-            android:layout_toStartOf="@id/top_main_avatar"
-            android:visibility="gone"
-            app:placeholderImage="@drawable/live_card_relation"
-            app:roundAsCircle="true" />
-
-        <!-- 贡献排名第一的人的头像-->
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/top_one_avatar"
-            android:layout_width="33.33dp"
-            android:layout_height="33.33dp"
-            android:layout_marginEnd="5.33dp"
-            android:layout_marginTop="62.67dp"
-            android:layout_toStartOf="@id/top_one_relation_avatar"
-            android:visibility="gone"
-            app:placeholderImage="@drawable/live_show_avatar_loading" />
-
-        <!-- 贡献排名第一的人的角标-->
-        <ImageView
-            android:id="@+id/top_one_conner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/top_one_avatar"
-            android:layout_alignEnd="@id/top_one_avatar"
-            android:background="@drawable/live_card_star_first"
-            android:visibility="gone" />
+            android:src="@drawable/live_card_close"
+            android:visibility="gone"/>
 
         <!--用户资料-->
         <include
@@ -101,7 +35,7 @@
             layout="@layout/layout_include_person_info_float"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_dimen_292" />
+            android:layout_marginTop="@dimen/view_dimen_132" />
 
         <!--星票、关注、粉丝文字-->
         <LinearLayout
@@ -233,7 +167,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:background="@color/color_black_trans_10"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/forbid_tv"
@@ -244,8 +178,17 @@
                 android:text="@string/forbid_speak"
                 android:textColor="@color/color_ff2966"
                 android:textSize="@dimen/text_size_42"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
 
     </RelativeLayout>
+
+    <include
+        layout="@layout/float_person_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/float_main_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/person_card_float_top_margin" />
+
 </RelativeLayout>

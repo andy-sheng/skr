@@ -281,7 +281,7 @@
     <dimen name="bottom_bar_height">45dp</dimen>
 
     <!--浮动名片页-->
-    <dimen name="person_card_float_top_margin">-37dip</dimen>
+    <dimen name="person_card_float_top_margin">-64dip</dimen>
 
     <!--动态页-->
     <dimen name="feeds_item_title_textsize">@dimen/text_size_50</dimen>
