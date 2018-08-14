@@ -152,7 +152,7 @@
             android:id="@+id/landscape_hide_barrage_btn"
             android:layout_width="@dimen/view_dimen_75"
             android:layout_height="@dimen/view_dimen_75"
-            android:src="@drawable/live_video_fullscreen_bottom_icon_subtitles"
+            android:background="@drawable/live_video_fullscreen_bottom_icon_subtitles"
             android:layout_toLeftOf="@+id/splite_line_view_2"
             android:layout_marginRight="@dimen/view_dimen_34"
             android:layout_centerVertical="true"/>

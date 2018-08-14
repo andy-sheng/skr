@@ -21,8 +21,10 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.WatchPlayerPresenter;
+import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.BaseEnterRoomSyncResPresenter;
+import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameNewBarrageViewPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameBottomEditPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameTabPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameZTopPresenter;
@@ -71,6 +73,8 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     private BaseEnterRoomSyncResPresenter mBaseEnterRoomSyncResPresenter;
 
     private MyAlertDialog mBalanceInsufficientDialog;
+    private GameBarrageView mGameBarrageView;
+    private GameNewBarrageViewPresenter mGameBarragePresenter;
 
     public WatchGameView(@NonNull Activity activity, @NonNull ViewGroup parentView, @NonNull WatchComponentController controller) {
         super(activity, parentView, controller);
@@ -152,6 +156,12 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             mWatchTabView.setComponentControler(mController);
             mWatchTabView.init(mParentView.getContext());
             // presenter
+        }
+
+        {
+            mGameBarrageView = (GameBarrageView) mParentView.findViewById(R.id.game_barrage_view);
+            mGameBarragePresenter = new GameNewBarrageViewPresenter(mController);
+            registerComponent(mGameBarrageView, mGameBarragePresenter);
         }
     }
 

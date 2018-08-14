@@ -35,6 +35,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 
+    <com.wali.live.watchsdk.component.view.GameBarrageView
+        android:id="@+id/game_barrage_view"
+        android:layout_width="match_parent"
+        android:layout_height="96.77dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/margin_168"
+        android:visibility="gone"/>
+
     <!--商城-->
     <ViewStub
         android:id="@+id/gift_mall_view_viewstub"
@@ -44,11 +53,6 @@
         android:layout="@layout/view_gift_mall" />
 
     <!--礼物展示需要 //TODO-位置待定-->
-    <!--<include-->
-        <!--layout="@layout/component_gift_continue_view_group"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/view_dimen_450"-->
-        <!--android:layout_marginBottom="@dimen/view_dimen_180"/>-->
     <com.wali.live.watchsdk.watch.view.watchgameview.GameGiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
