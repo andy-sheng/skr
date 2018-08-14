@@ -40,6 +40,7 @@ public class EnterRoomInfo {
     int revivalNum;//复活卡数量
     boolean isLate;//是否迟到 true：是
     String contestId;//场次id
+    private String mGamePackageName;
 
     public int getRetCode() {
         return retCode;
@@ -231,5 +232,13 @@ public class EnterRoomInfo {
 
     public void setContestId(String contestId) {
         this.contestId = contestId;
+    }
+
+    public void setGamePackageName(String gamePackageName) {
+        mGamePackageName = gamePackageName;
+    }
+
+    public String getGamePackageName() {
+        return mGamePackageName;
     }
 }

@@ -9,6 +9,7 @@ import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
+import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameHomeTabView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,10 +30,11 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
         implements WatchGameHomeTabView.IPresenter {
     private static final String TAG = "WatchGameBottomEditPresenter";
 
-    Subscription mGetGameInfoSubscription;
+    GameInfoModel mGameInfoModel;
 
-    public WatchGameHomeTabPresenter(IEventController controller) {
+    public WatchGameHomeTabPresenter(WatchComponentController controller) {
         super(controller);
+        mGameInfoModel = controller.getRoomBaseDataModel().getGameInfoModel();
     }
 
     @Override
@@ -51,40 +53,9 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        if (mGetGameInfoSubscription != null && !mGetGameInfoSubscription.isUnsubscribed()) {
-            mGetGameInfoSubscription.unsubscribe();
+        if (mView != null) {
+            mView.updateUi(mGameInfoModel);
         }
-        mGetGameInfoSubscription = Observable.create(new Observable.OnSubscribe<GameInfoModel>() {
-            @Override
-            public void call(Subscriber<? super GameInfoModel> subscriber) {
-                GameInfoModel gameInfoModel = GameCenterDataManager.getGameInfo(10);
-                subscriber.onNext(gameInfoModel);
-                subscriber.onCompleted();
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .compose(this.<GameInfoModel>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<GameInfoModel>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, e);
-                    }
-
-                    @Override
-                    public void onNext(GameInfoModel gameInfoModel) {
-                        if (gameInfoModel != null) {
-                            if (mView != null) {
-                                mView.updateUi(gameInfoModel);
-                            }
-                        }
-                    }
-                });
     }
 
     @Override
@@ -98,16 +69,10 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(RoomDataChangeEvent event) {
         switch (event.type) {
-            case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
-            }
-            break;
-            case RoomDataChangeEvent.TYPE_CHANGE_TICKET: {
-            }
-            break;
-            case RoomDataChangeEvent.TYPE_CHANGE_VIEWER_COUNT: {
-            }
-            break;
-            case RoomDataChangeEvent.TYPE_CHANGE_VIEWERS: {
+            case RoomDataChangeEvent.TYPE_CHANGE_GAME_INFO: {
+                if (mView != null) {
+                    mView.updateUi(mGameInfoModel);
+                }
             }
             break;
             default:

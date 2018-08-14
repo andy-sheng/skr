@@ -3,6 +3,7 @@ package com.mi.live.data.room.model;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.mi.live.data.query.model.MessageRule;
 import com.mi.live.data.query.model.ViewerModel;
@@ -129,6 +130,16 @@ public class RoomBaseDataModel implements Serializable {
      * 游戏id
      */
     private String mGameId;
+
+    /**
+     * 游戏包名
+     */
+    private String mGamePackageName;
+
+    /**
+     * 游戏详细信息
+     */
+    private GameInfoModel mGameInfoModel;
 
     /**
      * 分享类型
@@ -642,5 +653,23 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setLandscape(boolean landscape) {
         mIsLandscape = landscape;
+    }
+
+    public String getGamePackageName() {
+        return mGamePackageName;
+    }
+
+    public void setGamePackageName(String gamePackageName) {
+        mGamePackageName = gamePackageName;
+    }
+
+    public void setGameInfoModel(GameInfoModel gameInfoModel) {
+        mGameInfoModel = gameInfoModel;
+        // 通知获得游戏信息
+        EventBus.getDefault().post(new RoomDataChangeEvent(this, RoomDataChangeEvent.TYPE_CHANGE_GAME_INFO));
+    }
+
+    public GameInfoModel getGameInfoModel() {
+        return mGameInfoModel;
     }
 }

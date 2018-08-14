@@ -6,8 +6,8 @@ import com.wali.live.proto.GameCenterProto;
 
 public class GameCenterDataManager {
 
-    public static GameInfoModel getGameInfo(long gameId) {
-        GameCenterProto.GetGameInfoRsp rsp = GameCenterServerApi.getGameInfoRsp(UserAccountManager.getInstance().getUuidAsLong(), gameId);
+    public static GameInfoModel getGameInfo(long gameId,String gamePackageName) {
+        GameCenterProto.GetGameInfoRsp rsp = GameCenterServerApi.getGameInfoRsp(UserAccountManager.getInstance().getUuidAsLong(), gameId,gamePackageName);
         if (rsp != null && rsp.getRet() != 0) {
             GameInfoModel gameInfoModel = new GameInfoModel();
             gameInfoModel.parse(rsp.getGameInfo());

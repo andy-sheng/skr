@@ -96,6 +96,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                             .setCornerRadius(DisplayUtils.dip2px(10))
                             .build();
                     FrescoWorker.loadImage(mGameIconIv,baseImage);
+
                 }
             }
 
