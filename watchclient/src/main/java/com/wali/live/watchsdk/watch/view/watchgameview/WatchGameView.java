@@ -163,6 +163,11 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             mGameBarragePresenter = new GameNewBarrageViewPresenter(mController);
             registerComponent(mGameBarrageView, mGameBarragePresenter);
         }
+
+        {
+            WatchGameWaterMarkView watchGameWaterMarkView = (WatchGameWaterMarkView) mParentView.findViewById(R.id.watch_mark_view);
+            watchGameWaterMarkView.setRoomData(mController.getRoomBaseDataModel());
+        }
     }
 
     private void resetVideoLayoutSize(boolean isLandscape) {
