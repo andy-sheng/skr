@@ -19,7 +19,7 @@
 *************************************************************************/
 // wiki地址： http://wiki.n.miui.com/pages/viewpage.action?pageId=18999640
 
-package com.wali.live.proto.User;
+package com.wali.live.proto;
 
 option java_outer_classname = "UserProto";
 

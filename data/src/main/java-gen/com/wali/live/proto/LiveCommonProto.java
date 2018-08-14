@@ -3160,17 +3160,17 @@ public final class LiveCommonProto {
     int getNobleLevel();
 
     /**
-     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
      */
     boolean hasUserNobleMedal();
     /**
-     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
      */
-    com.wali.live.proto.User.UserProto.Medal getUserNobleMedal();
+    com.wali.live.proto.UserProto.Medal getUserNobleMedal();
     /**
-     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
      */
-    com.wali.live.proto.User.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder();
+    com.wali.live.proto.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.Viewer}
@@ -3275,11 +3275,11 @@ public final class LiveCommonProto {
               break;
             }
             case 90: {
-              com.wali.live.proto.User.UserProto.Medal.Builder subBuilder = null;
+              com.wali.live.proto.UserProto.Medal.Builder subBuilder = null;
               if (((bitField0_ & 0x00000400) == 0x00000400)) {
                 subBuilder = userNobleMedal_.toBuilder();
               }
-              userNobleMedal_ = input.readMessage(com.wali.live.proto.User.UserProto.Medal.PARSER, extensionRegistry);
+              userNobleMedal_ = input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(userNobleMedal_);
                 userNobleMedal_ = subBuilder.buildPartial();
@@ -3558,23 +3558,23 @@ public final class LiveCommonProto {
     }
 
     public static final int USERNOBLEMEDAL_FIELD_NUMBER = 11;
-    private com.wali.live.proto.User.UserProto.Medal userNobleMedal_;
+    private com.wali.live.proto.UserProto.Medal userNobleMedal_;
     /**
-     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
      */
     public boolean hasUserNobleMedal() {
       return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
      */
-    public com.wali.live.proto.User.UserProto.Medal getUserNobleMedal() {
+    public com.wali.live.proto.UserProto.Medal getUserNobleMedal() {
       return userNobleMedal_;
     }
     /**
-     * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+     * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
      */
-    public com.wali.live.proto.User.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder() {
+    public com.wali.live.proto.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder() {
       return userNobleMedal_;
     }
 
@@ -3589,7 +3589,7 @@ public final class LiveCommonProto {
       ticket_ = 0;
       appid_ = 0;
       nobleLevel_ = 0;
-      userNobleMedal_ = com.wali.live.proto.User.UserProto.Medal.getDefaultInstance();
+      userNobleMedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -3833,7 +3833,7 @@ public final class LiveCommonProto {
         nobleLevel_ = 0;
         bitField0_ = (bitField0_ & ~0x00000200);
         if (userNobleMedalBuilder_ == null) {
-          userNobleMedal_ = com.wali.live.proto.User.UserProto.Medal.getDefaultInstance();
+          userNobleMedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
         } else {
           userNobleMedalBuilder_.clear();
         }
@@ -4474,19 +4474,19 @@ public final class LiveCommonProto {
         return this;
       }
 
-      private com.wali.live.proto.User.UserProto.Medal userNobleMedal_ = com.wali.live.proto.User.UserProto.Medal.getDefaultInstance();
+      private com.wali.live.proto.UserProto.Medal userNobleMedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.User.UserProto.Medal, com.wali.live.proto.User.UserProto.Medal.Builder, com.wali.live.proto.User.UserProto.MedalOrBuilder> userNobleMedalBuilder_;
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> userNobleMedalBuilder_;
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
       public boolean hasUserNobleMedal() {
         return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
-      public com.wali.live.proto.User.UserProto.Medal getUserNobleMedal() {
+      public com.wali.live.proto.UserProto.Medal getUserNobleMedal() {
         if (userNobleMedalBuilder_ == null) {
           return userNobleMedal_;
         } else {
@@ -4494,9 +4494,9 @@ public final class LiveCommonProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
-      public Builder setUserNobleMedal(com.wali.live.proto.User.UserProto.Medal value) {
+      public Builder setUserNobleMedal(com.wali.live.proto.UserProto.Medal value) {
         if (userNobleMedalBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4510,10 +4510,10 @@ public final class LiveCommonProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
       public Builder setUserNobleMedal(
-          com.wali.live.proto.User.UserProto.Medal.Builder builderForValue) {
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
         if (userNobleMedalBuilder_ == null) {
           userNobleMedal_ = builderForValue.build();
           onChanged();
@@ -4524,14 +4524,14 @@ public final class LiveCommonProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
-      public Builder mergeUserNobleMedal(com.wali.live.proto.User.UserProto.Medal value) {
+      public Builder mergeUserNobleMedal(com.wali.live.proto.UserProto.Medal value) {
         if (userNobleMedalBuilder_ == null) {
           if (((bitField0_ & 0x00000400) == 0x00000400) &&
-              userNobleMedal_ != com.wali.live.proto.User.UserProto.Medal.getDefaultInstance()) {
+              userNobleMedal_ != com.wali.live.proto.UserProto.Medal.getDefaultInstance()) {
             userNobleMedal_ =
-              com.wali.live.proto.User.UserProto.Medal.newBuilder(userNobleMedal_).mergeFrom(value).buildPartial();
+              com.wali.live.proto.UserProto.Medal.newBuilder(userNobleMedal_).mergeFrom(value).buildPartial();
           } else {
             userNobleMedal_ = value;
           }
@@ -4543,11 +4543,11 @@ public final class LiveCommonProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
       public Builder clearUserNobleMedal() {
         if (userNobleMedalBuilder_ == null) {
-          userNobleMedal_ = com.wali.live.proto.User.UserProto.Medal.getDefaultInstance();
+          userNobleMedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
           onChanged();
         } else {
           userNobleMedalBuilder_.clear();
@@ -4556,17 +4556,17 @@ public final class LiveCommonProto {
         return this;
       }
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
-      public com.wali.live.proto.User.UserProto.Medal.Builder getUserNobleMedalBuilder() {
+      public com.wali.live.proto.UserProto.Medal.Builder getUserNobleMedalBuilder() {
         bitField0_ |= 0x00000400;
         onChanged();
         return getUserNobleMedalFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
-      public com.wali.live.proto.User.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder() {
+      public com.wali.live.proto.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder() {
         if (userNobleMedalBuilder_ != null) {
           return userNobleMedalBuilder_.getMessageOrBuilder();
         } else {
@@ -4574,14 +4574,14 @@ public final class LiveCommonProto {
         }
       }
       /**
-       * <code>optional .com.wali.live.proto.User.Medal userNobleMedal = 11;</code>
+       * <code>optional .com.wali.live.proto.Medal userNobleMedal = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.wali.live.proto.User.UserProto.Medal, com.wali.live.proto.User.UserProto.Medal.Builder, com.wali.live.proto.User.UserProto.MedalOrBuilder> 
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
           getUserNobleMedalFieldBuilder() {
         if (userNobleMedalBuilder_ == null) {
           userNobleMedalBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.wali.live.proto.User.UserProto.Medal, com.wali.live.proto.User.UserProto.Medal.Builder, com.wali.live.proto.User.UserProto.MedalOrBuilder>(
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
                   getUserNobleMedal(),
                   getParentForChildren(),
                   isClean());
@@ -25743,77 +25743,77 @@ public final class LiveCommonProto {
       "\004 \002(\002\"s\n\007MicInfo\022\016\n\006micuid\030\001 \002(\004\0226\n\nsubV" +
       "iewPos\030\002 \001(\0132\".com.wali.live.proto.MicSu" +
       "bViewPos\022\022\n\nmic_liveid\030\003 \001(\t\022\014\n\004type\030\004 \001" +
-      "(\r\"\366\001\n\006Viewer\022\014\n\004uuid\030\001 \002(\004\022\r\n\005level\030\002 \001",
+      "(\r\"\361\001\n\006Viewer\022\014\n\004uuid\030\001 \002(\004\022\r\n\005level\030\002 \001",
       "(\r\022\016\n\006avatar\030\003 \001(\004\022\032\n\022certification_type" +
       "\030\004 \001(\r\022\017\n\007redName\030\005 \001(\010\022\021\n\tvip_level\030\006 \001" +
       "(\r\022\023\n\013vip_disable\030\007 \001(\010\022\016\n\006ticket\030\010 \001(\r\022" +
-      "\r\n\005appid\030\t \001(\r\022\022\n\nnobleLevel\030\n \001(\r\0227\n\016us" +
-      "erNobleMedal\030\013 \001(\0132\037.com.wali.live.proto" +
-      ".User.Medal\"<\n\006PKInfo\022\014\n\004uuid\030\001 \001(\004\022\016\n\006l" +
-      "iveId\030\002 \001(\t\022\024\n\014pkInitTicket\030\003 \001(\r\";\n\rVie" +
-      "werInfoReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016" +
-      "\n\006liveId\030\003 \002(\t\"?\n\014UserRoomInfo\022\014\n\004type\030\001" +
-      " \001(\r\022\017\n\007appType\030\002 \001(\r\022\020\n\010tvRoomid\030\003 \001(\t\"",
-      "L\n\nWidgetInfo\022\020\n\010link_url\030\001 \002(\t\022\020\n\010posit" +
-      "ion\030\002 \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004text\030\004 \001(\t\"\032\n" +
-      "\013ColorConfig\022\013\n\003rgb\030\001 \002(\r\"\262\001\n\013CounterIte" +
-      "m\022\020\n\010imageUrl\030\001 \001(\t\022\023\n\013counterText\030\002 \001(\t" +
-      "\0223\n\ttextColor\030\003 \001(\0132 .com.wali.live.prot" +
-      "o.ColorConfig\0227\n\rtextEdgeColor\030\004 \001(\0132 .c" +
-      "om.wali.live.proto.ColorConfig\022\016\n\006isBold" +
-      "\030\005 \001(\010\"\275\001\n\tClickItem\022\021\n\tclickType\030\001 \002(\r\022" +
-      "\025\n\rclickImageUrl\030\002 \001(\t\022\025\n\rclickInterval\030" +
-      "\003 \001(\r\022\016\n\006giftId\030\004 \001(\r\022\034\n\024clickWaitingIma",
-      "geUrl\030\005 \001(\t\022\023\n\013warningText\030\006 \001(\t\022\030\n\020push" +
-      "SendSuccText\030\007 \001(\t\022\022\n\npkInterval\030\010 \001(\r\"\370" +
-      "\001\n\rNewWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n\004ic" +
-      "on\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004 \001(" +
-      "\0132 .com.wali.live.proto.ColorConfig\022\024\n\014u" +
-      "rlNeedParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001(\t\022" +
-      "\025\n\rschemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 \001(\r" +
-      "\022/\n\010h5Config\030\t \001(\0132\035.com.wali.live.proto" +
-      ".H5Config\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"\272\002\n" +
-      "\rNewWidgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010posi",
-      "tion\030\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwidge" +
-      "tUint\030\004 \003(\0132\".com.wali.live.proto.NewWid" +
-      "getUnit\022\023\n\013displayTime\030\005 \001(\r\0225\n\013counterI" +
-      "tem\030\006 \001(\0132 .com.wali.live.proto.CounterI" +
-      "tem\0221\n\tclickItem\030\007 \001(\0132\036.com.wali.live.p" +
-      "roto.ClickItem\0229\n\rsuperGiftInfo\030\010 \003(\0132\"." +
-      "com.wali.live.proto.SuperGiftInfo\"q\n\rSup" +
-      "erGiftInfo\022\016\n\006roomId\030\001 \001(\t\022\025\n\rgiftBeginT" +
-      "ime\030\002 \001(\004\022\023\n\013giftEndTime\030\003 \001(\004\022\017\n\007giftEx" +
-      "t\030\004 \001(\014\022\023\n\013currentTime\030\005 \001(\004\"\224\001\n\nWidgetG",
-      "ift\022\014\n\004uuid\030\001 \001(\004\022\024\n\014redEnvelopId\030\002 \001(\t\022" +
-      "\016\n\006gemcnt\030\003 \001(\r\022\020\n\010msg_body\030\004 \001(\t\022\020\n\010nic" +
-      "kname\030\005 \001(\t\022\r\n\005level\030\006 \001(\r\022\016\n\006avatar\030\007 \001" +
-      "(\004\022\017\n\007gift_id\030\010 \001(\r\"]\n\rNewWidgetInfo\0226\n\n" +
-      "widgetItem\030\001 \003(\0132\".com.wali.live.proto.N" +
-      "ewWidgetItem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016Sh" +
-      "oppingConfig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016" +
-      "RoomIconConfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002" +
-      " \001(\010\022\017\n\007noVideo\030\003 \001(\010\022\032\n\022noScreenProject" +
-      "ion\030\004 \001(\010\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMus",
-      "ic\030\006 \001(\010\022\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBa" +
-      "o\030\010 \001(\010\022\025\n\rnoConsumeTask\030\t \001(\010\";\n\021Widget" +
-      "CounterPush\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counter" +
-      "Value\030\002 \001(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(" +
-      "\0132\033.com.wali.live.proto.Viewer\022\r\n\005leave\030" +
-      "\002 \001(\010\022\021\n\tviewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r" +
-      "\n\005start\030\001 \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAn" +
-      "imationConfig\022>\n\020animation_config\030\001 \003(\0132" +
-      "$.com.wali.live.proto.AnimationConfig\"X\n" +
-      "\026UpgradeAnimationConfig\022>\n\020animation_con",
-      "fig\030\001 \003(\0132$.com.wali.live.proto.Animatio" +
-      "nConfig\"a\n\017AnimationConfig\022\030\n\020animation_" +
-      "effect\030\001 \001(\r\0224\n\013level_range\030\002 \001(\0132\037.com." +
-      "wali.live.proto.LevelRange\"\317\001\n\023RoomAnima" +
-      "tionConfig\022P\n\032join_room_animation_config" +
-      "\030\001 \001(\0132,.com.wali.live.proto.JoinRoomAni" +
-      "mationConfig\022M\n\030upgrade_animation_config" +
-      "\030\002 \001(\0132+.com.wali.live.proto.UpgradeAnim" +
-      "ationConfig\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023" +
-      "com.wali.live.protoB\017LiveCommonProto"
+      "\r\n\005appid\030\t \001(\r\022\022\n\nnobleLevel\030\n \001(\r\0222\n\016us" +
+      "erNobleMedal\030\013 \001(\0132\032.com.wali.live.proto" +
+      ".Medal\"<\n\006PKInfo\022\014\n\004uuid\030\001 \001(\004\022\016\n\006liveId" +
+      "\030\002 \001(\t\022\024\n\014pkInitTicket\030\003 \001(\r\";\n\rViewerIn" +
+      "foReq\022\014\n\004uuid\030\001 \002(\004\022\014\n\004zuid\030\002 \002(\004\022\016\n\006liv" +
+      "eId\030\003 \002(\t\"?\n\014UserRoomInfo\022\014\n\004type\030\001 \001(\r\022" +
+      "\017\n\007appType\030\002 \001(\r\022\020\n\010tvRoomid\030\003 \001(\t\"L\n\nWi",
+      "dgetInfo\022\020\n\010link_url\030\001 \002(\t\022\020\n\010position\030\002" +
+      " \002(\r\022\014\n\004icon\030\003 \001(\t\022\014\n\004text\030\004 \001(\t\"\032\n\013Colo" +
+      "rConfig\022\013\n\003rgb\030\001 \002(\r\"\262\001\n\013CounterItem\022\020\n\010" +
+      "imageUrl\030\001 \001(\t\022\023\n\013counterText\030\002 \001(\t\0223\n\tt" +
+      "extColor\030\003 \001(\0132 .com.wali.live.proto.Col" +
+      "orConfig\0227\n\rtextEdgeColor\030\004 \001(\0132 .com.wa" +
+      "li.live.proto.ColorConfig\022\016\n\006isBold\030\005 \001(" +
+      "\010\"\275\001\n\tClickItem\022\021\n\tclickType\030\001 \002(\r\022\025\n\rcl" +
+      "ickImageUrl\030\002 \001(\t\022\025\n\rclickInterval\030\003 \001(\r" +
+      "\022\016\n\006giftId\030\004 \001(\r\022\034\n\024clickWaitingImageUrl",
+      "\030\005 \001(\t\022\023\n\013warningText\030\006 \001(\t\022\030\n\020pushSendS" +
+      "uccText\030\007 \001(\t\022\022\n\npkInterval\030\010 \001(\r\"\370\001\n\rNe" +
+      "wWidgetUnit\022\020\n\010link_url\030\001 \001(\t\022\014\n\004icon\030\002 " +
+      "\001(\t\022\014\n\004text\030\003 \001(\t\0223\n\ttextColor\030\004 \001(\0132 .c" +
+      "om.wali.live.proto.ColorConfig\022\024\n\014urlNee" +
+      "dParam\030\005 \001(\010\022\024\n\014schemaPrefix\030\006 \001(\t\022\025\n\rsc" +
+      "hemaPostfix\030\007 \001(\t\022\020\n\010openType\030\010 \001(\r\022/\n\010h" +
+      "5Config\030\t \001(\0132\035.com.wali.live.proto.H5Co" +
+      "nfig\"\031\n\010H5Config\022\r\n\005h5Url\030\001 \001(\t\"\272\002\n\rNewW" +
+      "idgetItem\022\020\n\010widgetID\030\001 \002(\r\022\020\n\010position\030",
+      "\002 \002(\r\022\023\n\013displayType\030\003 \001(\r\0226\n\nwidgetUint" +
+      "\030\004 \003(\0132\".com.wali.live.proto.NewWidgetUn" +
+      "it\022\023\n\013displayTime\030\005 \001(\r\0225\n\013counterItem\030\006" +
+      " \001(\0132 .com.wali.live.proto.CounterItem\0221" +
+      "\n\tclickItem\030\007 \001(\0132\036.com.wali.live.proto." +
+      "ClickItem\0229\n\rsuperGiftInfo\030\010 \003(\0132\".com.w" +
+      "ali.live.proto.SuperGiftInfo\"q\n\rSuperGif" +
+      "tInfo\022\016\n\006roomId\030\001 \001(\t\022\025\n\rgiftBeginTime\030\002" +
+      " \001(\004\022\023\n\013giftEndTime\030\003 \001(\004\022\017\n\007giftExt\030\004 \001" +
+      "(\014\022\023\n\013currentTime\030\005 \001(\004\"\224\001\n\nWidgetGift\022\014",
+      "\n\004uuid\030\001 \001(\004\022\024\n\014redEnvelopId\030\002 \001(\t\022\016\n\006ge" +
+      "mcnt\030\003 \001(\r\022\020\n\010msg_body\030\004 \001(\t\022\020\n\010nickname" +
+      "\030\005 \001(\t\022\r\n\005level\030\006 \001(\r\022\016\n\006avatar\030\007 \001(\004\022\017\n" +
+      "\007gift_id\030\010 \001(\r\"]\n\rNewWidgetInfo\0226\n\nwidge" +
+      "tItem\030\001 \003(\0132\".com.wali.live.proto.NewWid" +
+      "getItem\022\024\n\014pullInterval\030\002 \001(\r\"\'\n\016Shoppin" +
+      "gConfig\022\025\n\tshop_type\030\001 \002(\005:\002-1\"\300\001\n\016RoomI" +
+      "conConfig\022\r\n\005noMic\030\001 \001(\010\022\r\n\005noPic\030\002 \001(\010\022" +
+      "\017\n\007noVideo\030\003 \001(\010\022\032\n\022noScreenProjection\030\004" +
+      " \001(\010\022\024\n\014noAtmosphere\030\005 \001(\010\022\017\n\007noMusic\030\006 ",
+      "\001(\010\022\022\n\nnoEmoticon\030\007 \001(\010\022\021\n\tnoHongBao\030\010 \001" +
+      "(\010\022\025\n\rnoConsumeTask\030\t \001(\010\";\n\021WidgetCount" +
+      "erPush\022\020\n\010widgetID\030\001 \002(\r\022\024\n\014counterValue" +
+      "\030\002 \001(\003\"[\n\nViewerPush\022+\n\006viewer\030\001 \002(\0132\033.c" +
+      "om.wali.live.proto.Viewer\022\r\n\005leave\030\002 \001(\010" +
+      "\022\021\n\tviewerCnt\030\003 \001(\r\"(\n\nLevelRange\022\r\n\005sta" +
+      "rt\030\001 \001(\r\022\013\n\003end\030\002 \001(\r\"Y\n\027JoinRoomAnimati" +
+      "onConfig\022>\n\020animation_config\030\001 \003(\0132$.com" +
+      ".wali.live.proto.AnimationConfig\"X\n\026Upgr" +
+      "adeAnimationConfig\022>\n\020animation_config\030\001",
+      " \003(\0132$.com.wali.live.proto.AnimationConf" +
+      "ig\"a\n\017AnimationConfig\022\030\n\020animation_effec" +
+      "t\030\001 \001(\r\0224\n\013level_range\030\002 \001(\0132\037.com.wali." +
+      "live.proto.LevelRange\"\317\001\n\023RoomAnimationC" +
+      "onfig\022P\n\032join_room_animation_config\030\001 \001(" +
+      "\0132,.com.wali.live.proto.JoinRoomAnimatio" +
+      "nConfig\022M\n\030upgrade_animation_config\030\002 \001(" +
+      "\0132+.com.wali.live.proto.UpgradeAnimation" +
+      "Config\022\027\n\017noJoinAnimation\030\003 \001(\rB&\n\023com.w" +
+      "ali.live.protoB\017LiveCommonProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -25826,7 +25826,7 @@ public final class LiveCommonProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.wali.live.proto.User.UserProto.getDescriptor(),
+          com.wali.live.proto.UserProto.getDescriptor(),
         }, assigner);
     internal_static_com_wali_live_proto_UpStreamUrl_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -25990,7 +25990,7 @@ public final class LiveCommonProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_RoomAnimationConfig_descriptor,
         new java.lang.String[] { "JoinRoomAnimationConfig", "UpgradeAnimationConfig", "NoJoinAnimation", });
-    com.wali.live.proto.User.UserProto.getDescriptor();
+    com.wali.live.proto.UserProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

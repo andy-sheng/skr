@@ -1,5 +1,5 @@
-import "User.proto";
 package com.wali.live.proto;
+import "User.proto";
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "LiveCommonProto";
@@ -41,7 +41,7 @@ message Viewer {
     optional uint32 ticket = 8; //本场对主播贡献的星票数
     optional uint32 appid = 9; //appid
     optional uint32 nobleLevel = 10; //贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王 0不是贵族
-    optional User.Medal userNobleMedal = 11;
+    optional Medal userNobleMedal = 11;
 }
 
 message PKInfo {
