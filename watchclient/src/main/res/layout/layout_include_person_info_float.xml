@@ -31,20 +31,20 @@
             android:layout_marginStart="4dp"
             android:layout_toEndOf="@id/my_nick" />
 
-        <!-- 显示等级-->
-        <TextView
-            android:id="@+id/level_tv"
-            android:layout_width="@dimen/lvl_tv_width"
-            android:layout_height="@dimen/lvl_tv_height"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="6.67dp"
-            android:layout_marginStart="2dp"
-            android:layout_toEndOf="@id/gender_iv"
-            android:drawablePadding="@dimen/lvl_drawable_padding"
-            android:gravity="center"
-            android:paddingEnd="@dimen/lvl_right_padding"
-            android:textColor="@color/lvl_txt_color"
-            android:textSize="@dimen/lvl_text_size" />
+        <!--&lt;!&ndash; 显示等级&ndash;&gt;-->
+        <!--<TextView-->
+            <!--android:id="@+id/level_tv"-->
+            <!--android:layout_width="@dimen/lvl_tv_width"-->
+            <!--android:layout_height="@dimen/lvl_tv_height"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginEnd="6.67dp"-->
+            <!--android:layout_marginStart="2dp"-->
+            <!--android:layout_toEndOf="@id/gender_iv"-->
+            <!--android:drawablePadding="@dimen/lvl_drawable_padding"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingEnd="@dimen/lvl_right_padding"-->
+            <!--android:textColor="@color/lvl_txt_color"-->
+            <!--android:textSize="@dimen/lvl_text_size" />-->
 
     </RelativeLayout>
 
@@ -56,6 +56,13 @@
         android:layout_marginTop="5dp"
         android:textColor="@color/color_black_trans_60"
         android:textSize="@dimen/text_size_34" />
+
+    <!--等级图标显示-->
+    <com.wali.live.common.view.LevelIconsLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12"
+        android:id="@+id/levels_ll"/>
 
     <!-- 显示认证部分, 产品要求小图标必须放在第一行, 多余一行要居中显示, 所以这里用两个textview吧, 我也想不起更优雅的-->
     <RelativeLayout

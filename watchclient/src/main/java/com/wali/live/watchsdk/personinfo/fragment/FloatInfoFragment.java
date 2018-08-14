@@ -5,11 +5,13 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,6 +33,8 @@ import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.LiveRoomManagerEvent;
 import com.mi.live.data.manager.LiveRoomCharacterManager;
 import com.mi.live.data.user.User;
+import com.wali.live.common.barrage.view.utils.NobleConfigUtils;
+import com.wali.live.common.view.LevelIconsLayout;
 import com.wali.live.dao.SixinMessage;
 import com.wali.live.manager.WatchRoomCharactorManager;
 import com.wali.live.proto.RankProto;
@@ -38,6 +42,7 @@ import com.wali.live.statistics.StatisticsKey;
 import com.wali.live.statistics.StatisticsWorker;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
+import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.editinfo.EditInfoActivity;
@@ -50,7 +55,8 @@ import com.wali.live.watchsdk.sixin.pojo.SixinTarget;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import rx.Observable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wangmengjie on 17-8-23.
@@ -64,6 +70,8 @@ public class FloatInfoFragment extends BaseEventBusFragment
     private FloatInfoClickListener mFloatInfoClickListener;
     private ForbidManagePresenter mForbidManagePresenter;
 
+    private View mCard;
+
     //views
     private SimpleDraweeView mMainAvatar;       //主头像
     private ImageView mEditIcon;
@@ -74,11 +82,12 @@ public class FloatInfoFragment extends BaseEventBusFragment
 
     private TextView mNicknameTV;       //昵称
     private TextView mIdTv;     //显示ID
+    private LevelIconsLayout mLevelIconsLayout;//等级图标显示容器
     private TextView mSignTv;       //显示签名
     private View mVerifyZone;       //认证信息
     private TextView mVerifyLine1Tv;     //显示第一行认证信息
     private TextView mSentDiamondTv;      //显示送出的钻石
-    private TextView mLevelTv;      //显示级别
+    //    private TextView mLevelTv;      //显示级别
     private ImageView mGenderIv;       //性别
 
     private TextView mLiveTicketCountTv;    //显示星票数量
@@ -107,6 +116,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
         $click($(R.id.out_view), this);
         $click($(R.id.close_btn), this);
 
+        mCard = $(R.id.float_main_view);
         //被查看者头像
         {
             mMainAvatar = $(R.id.top_main_avatar);
@@ -129,10 +139,11 @@ public class FloatInfoFragment extends BaseEventBusFragment
         //昵称区域
         {
             mNicknameTV = $(R.id.my_nick);
-            mLevelTv = $(R.id.level_tv);
+//            mLevelTv = $(R.id.level_tv);
             mVerifyZone = $(R.id.verify_zone);
             mVerifyLine1Tv = $(R.id.verify_line1_tv);
             mGenderIv = $(R.id.gender_iv);
+            mLevelIconsLayout = $(R.id.levels_ll);
         }
 
         //直播号码、签名、送出钻石
@@ -159,6 +170,10 @@ public class FloatInfoFragment extends BaseEventBusFragment
             $click(mForbidTv, this);
             $click(mMessageTv, this);
         }
+
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCard.getLayoutParams();
+        lp.width = DisplayUtils.getPhoneWidth();
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
         initPresenter();
     }
@@ -212,6 +227,42 @@ public class FloatInfoFragment extends BaseEventBusFragment
             updateLayoutParams(mForbidTv, R.dimen.view_dimen_240);
         }
         MyLog.w(TAG, "user=" + mUser.toString());
+    }
+
+    private void updateLevelIcons() {
+        if (isDetached()) {
+            return;
+        }
+        List<TextView> list = new ArrayList<>();
+        TextView view;
+        if (mUser.isNoble()) {
+            view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
+            view.setBackgroundResource(NobleConfigUtils.getImageResoucesByNobelLevelInBarrage(mUser.getNobleLevel()));
+            list.add(view);
+        }
+        // VIP
+        Pair<Boolean, Integer> pair = VipLevelUtil.getLevelBadgeResId(mUser.getVipLevel(), mUser.isVipFrozen(), false);
+        Activity activity = getActivity();
+        if (true == pair.first) {
+            view = LevelIconsLayout.getDefaultTextView(activity == null ? GlobalData.app() : activity);
+            view.setBackgroundResource(pair.second);
+            //view.setText(String.valueOf(mUser.getVipLevel()));
+            list.add(view);
+        }
+        // Plain
+        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(mUser.getLevel());
+        view = LevelIconsLayout.getDefaultTextView(activity == null ? GlobalData.app() : activity);
+        view.setText(String.valueOf(mUser.getLevel()));
+        view.setBackgroundDrawable(levelItem.drawableBG);
+        view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
+        if (mUser.getVipLevel() > 4 && !mUser.isVipFrozen()) {//解决高级Vip图标不居中问题
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
+            params.setMargins(DisplayUtils.dip2px(3), DisplayUtils.dip2px(2), 0, 0);
+            view.setLayoutParams(params);
+        }
+        list.add(view);
+
+        mLevelIconsLayout.addIconsWithClear(list);
     }
 
     private void updateLayoutParams(View vp, int dimenId) {
@@ -321,7 +372,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
     }
 
     private void setFollowAreaShow(boolean enableFollow) {
-        if (!enableFollow){
+        if (!enableFollow) {
             mFollowTv.setVisibility(View.GONE);
             mForbidTv.setVisibility(View.GONE);
             mMessageTv.setVisibility(View.GONE);
@@ -351,7 +402,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
             AvatarUtils.loadAvatarByUidTs(mTopOneAvatar, mTopOneUser.getUuid(), 0, true);
             mTopOneAvatar.setVisibility(View.VISIBLE);
             mTopOneConner.setVisibility(View.VISIBLE);
-            mTopOneRelationView.setVisibility(View.VISIBLE);
+//            mTopOneRelationView.setVisibility(View.VISIBLE);
         } else {
             mTopOneAvatar.setVisibility(View.GONE);
             mTopOneConner.setVisibility(View.GONE);
@@ -373,6 +424,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
         }
 
         refreshInfoZone();
+        updateLevelIcons();
 
         //显示送出的钻石
         int sentDiamondCount = mUser.getSendDiamondNum() < 0 ? 0 : mUser.getSendDiamondNum();
@@ -453,12 +505,12 @@ public class FloatInfoFragment extends BaseEventBusFragment
             mSignTv.setText(mUser.getSign());
         }
 
-        //显示等级
-        int level = mUser.getLevel() <= 1 ? 1 : mUser.getLevel();
-        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(level);
-        mLevelTv.setText(String.valueOf(level));
-        mLevelTv.setBackgroundDrawable(levelItem.drawableBG);
-        mLevelTv.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
+//        //显示等级
+//        int level = mUser.getLevel() <= 1 ? 1 : mUser.getLevel();
+//        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(level);
+//        mLevelTv.setText(String.valueOf(level));
+//        mLevelTv.setBackgroundDrawable(levelItem.drawableBG);
+//        mLevelTv.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
 
         //显示性别
         if (mUser.getGender() == 1) {
@@ -607,7 +659,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
 
         RelativeLayout.LayoutParams lpBottom = (RelativeLayout.LayoutParams)
                 mRootView.findViewById(R.id.user_info_zone).getLayoutParams();
-        lpBottom.topMargin = DisplayUtils.dip2px(isLandscape ? 95f : 97.3f);
+        lpBottom.topMargin = DisplayUtils.dip2px(isLandscape ? 44f : 44f);
     }
 
 
@@ -671,9 +723,10 @@ public class FloatInfoFragment extends BaseEventBusFragment
         bundle.putBoolean(FloatInfoPresenter.EXTRA_ENABLE_FOLLOW, enableFollow);
         bundle.putString(EXTRA_SCREEN_ORIENTATION, BaseFragment.PARAM_FOLLOW_SYS);
 
+        int[] anim = {R.anim.slide_bottom_in, R.anim.slide_bottom_out, R.anim.slide_bottom_in, R.anim.slide_bottom_out};
         FloatInfoFragment fragment = (FloatInfoFragment) FragmentNaviUtils
-                .addFragmentWithZoomInOutAnimation(activity, R.id.main_act_container,
-                        FloatInfoFragment.class, bundle, true, true, true);
+                .addFragment(activity, R.id.main_act_container,
+                        FloatInfoFragment.class, bundle, true, true, anim, true);
         fragment.setFloatPersonInfoClickListener(listener);
         return fragment;
     }
