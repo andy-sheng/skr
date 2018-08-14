@@ -67,7 +67,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     private WatchGameBottomEditPresenter mBottomEditPresenter;
 
     // 竖屏时真正的输入框
-    private InputAreaView mInputArea;
+    private WatchGameInputAreaView mInputArea;
     private InputAreaPresenter mInputPresenter;
 
     private BaseEnterRoomSyncResPresenter mBaseEnterRoomSyncResPresenter;
@@ -140,7 +140,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         }
 
         {
-            mInputArea =(InputAreaView) mParentView.findViewById(R.id.input_area_view);
+            mInputArea =(WatchGameInputAreaView) mParentView.findViewById(R.id.input_area_view);
             mInputPresenter = new InputAreaPresenter(
                     mController, mController.getRoomBaseDataModel(), mController.getLiveRoomChatMsgManager(), true);
             registerComponent(mInputArea, mInputPresenter);
