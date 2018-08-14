@@ -380,6 +380,19 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         setMinimumHeight(mIsLandscape ? mMinHeightLand : MINIMUM_HEIGHT_PORTRAIT);
     }
 
+    protected void barrageSelectViewEnable(boolean enable) {
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mInputView.getLayoutParams();
+        if (enable) {
+            mBarrageSwitchBtn.setVisibility(View.GONE);
+            mBarrageSelectBtn.setVisibility(View.VISIBLE);
+            lp.addRule(RIGHT_OF, mBarrageSelectBtn.getId());
+        } else {
+            mBarrageSwitchBtn.setVisibility(View.VISIBLE);
+            mBarrageSelectBtn.setVisibility(View.GONE);
+            lp.addRule(RIGHT_OF, mBarrageSwitchBtn.getId());
+        }
+    }
+
     @Override
     public IView getViewProxy() {
         /**
@@ -419,16 +432,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
 
             @Override
             public void enableBarrageSelectView(boolean enable) {
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mInputView.getLayoutParams();
-                if (enable) {
-                    mBarrageSwitchBtn.setVisibility(View.GONE);
-                    mBarrageSelectBtn.setVisibility(View.VISIBLE);
-                    lp.addRule(RIGHT_OF, mBarrageSelectBtn.getId());
-                } else {
-                    mBarrageSwitchBtn.setVisibility(View.VISIBLE);
-                    mBarrageSelectBtn.setVisibility(View.GONE);
-                    lp.addRule(RIGHT_OF, mBarrageSwitchBtn.getId());
-                }
+                barrageSelectViewEnable(enable);
             }
 
             @Override
