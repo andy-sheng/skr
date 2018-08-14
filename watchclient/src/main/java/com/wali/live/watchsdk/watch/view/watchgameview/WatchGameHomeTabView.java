@@ -12,17 +12,20 @@ import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
-import com.wali.live.watchsdk.component.view.ImagePagerView;
+import com.wali.live.watchsdk.watch.adapter.GamePreviewPagerAdapter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameHomeTabPresenter;
 
 public class WatchGameHomeTabView extends RelativeLayout implements
         IComponentView<WatchGameHomeTabView.IPresenter, WatchGameHomeTabView.IView> {
+
+    public final static String TAG = "WatchGameHomeTabView";
 
     RelativeLayout mGameInfoContainer;
     BaseImageView mGameIconIv;
@@ -38,8 +41,27 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     TextView mGameDescTv;
     TextView mGameIntroduceTv;
 
+    GamePreviewPagerAdapter mGamePreviewPagerAdapter;
 
     WatchGameHomeTabPresenter mWatchGameHomeTabPresenter;
+
+
+    ViewPager.OnPageChangeListener mPreviewPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            MyLog.d(TAG, "onPageScrolled" + " position=" + position + " positionOffset=" + positionOffset + " positionOffsetPixels=" + positionOffsetPixels);
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            MyLog.d(TAG, "onPageSelected" + " position=" + position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 
     public WatchGameHomeTabView(Context context, WatchComponentController componentController) {
         super(context);
@@ -56,6 +78,9 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mInstallBtn = (TextView) this.findViewById(R.id.install_btn);
         mGamePreviewContainer = (RelativeLayout) this.findViewById(R.id.game_preview_container);
         mGamePreviewViewPager = (ViewPager) this.findViewById(R.id.game_preview_view_pager);
+        mGamePreviewPagerAdapter = new GamePreviewPagerAdapter();
+        mGamePreviewViewPager.setAdapter(mGamePreviewPagerAdapter);
+
         mVideoView = (TextureView) this.findViewById(R.id.video_view);
         mPlayerControlBtn = (ImageView) this.findViewById(R.id.player_control_btn);
         mIndexTv = (TextView) this.findViewById(R.id.index_tv);
@@ -66,6 +91,8 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mWatchGameHomeTabPresenter = new WatchGameHomeTabPresenter(componentController);
         mWatchGameHomeTabPresenter.setView(this.getViewProxy());
         setPresenter(mWatchGameHomeTabPresenter);
+
+        mGamePreviewViewPager.addOnPageChangeListener(mPreviewPageChangeListener);
     }
 
     @Override
@@ -95,8 +122,8 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                     BaseImage baseImage = ImageFactory.newHttpImage(gameInfoModel.getIconUrl())
                             .setCornerRadius(DisplayUtils.dip2px(10))
                             .build();
-                    FrescoWorker.loadImage(mGameIconIv,baseImage);
-
+                    FrescoWorker.loadImage(mGameIconIv, baseImage);
+                    mGamePreviewPagerAdapter.setData(gameInfoModel);
                 }
             }
 

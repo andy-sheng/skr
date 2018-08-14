@@ -787,38 +787,47 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
     }
 
 
-    void trySyncGameInfoModel(){
-            Observable.create(new Observable.OnSubscribe<GameInfoModel>() {
-                @Override
-                public void call(Subscriber<? super GameInfoModel> subscriber) {
-                    if(!TextUtils.isEmpty(mMyRoomData.getGameId()) || !TextUtils.isEmpty(mMyRoomData.getGamePackageName())){
-                        GameInfoModel gameInfoModel = GameCenterDataManager.getGameInfo(Long.parseLong(mMyRoomData.getGameId()),mMyRoomData.getGamePackageName());
-                        subscriber.onNext(gameInfoModel);
+    void trySyncGameInfoModel() {
+        Observable.create(new Observable.OnSubscribe<GameInfoModel>() {
+            @Override
+            public void call(Subscriber<? super GameInfoModel> subscriber) {
+                long gameId = 0;
+                if (!TextUtils.isEmpty(mMyRoomData.getGameId())) {
+                    try {
+                        gameId = Long.parseLong(mMyRoomData.getGameId());
+                    } catch (Exception e) {
+                        gameId = 0;
                     }
-                    subscriber.onCompleted();
                 }
-            })
-                    .subscribeOn(Schedulers.io())
-                    .compose(this.<GameInfoModel>bindUntilEvent(ActivityEvent.DESTROY))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<GameInfoModel>() {
-                        @Override
-                        public void onCompleted() {
 
-                        }
+                if (gameId > 0 || !TextUtils.isEmpty(mMyRoomData.getGamePackageName())) {
+                    GameInfoModel gameInfoModel = GameCenterDataManager.getGameInfo(gameId, mMyRoomData.getGamePackageName());
+                    subscriber.onNext(gameInfoModel);
+                }
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .compose(this.<GameInfoModel>bindUntilEvent(ActivityEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GameInfoModel>() {
+                    @Override
+                    public void onCompleted() {
 
-                        @Override
-                        public void onError(Throwable e) {
-                            MyLog.d(TAG,e);
-                        }
+                    }
 
-                        @Override
-                        public void onNext(GameInfoModel gameInfoModel) {
-                            if (gameInfoModel != null) {
-                                mMyRoomData.setGameInfoModel(gameInfoModel);
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.d(TAG, e);
+                    }
+
+                    @Override
+                    public void onNext(GameInfoModel gameInfoModel) {
+                        if (gameInfoModel != null) {
+                            mMyRoomData.setGameInfoModel(gameInfoModel);
                         }
-                    });
+                    }
+                });
     }
 
     private boolean mBanSpeakerListAlreadyGet = false;
