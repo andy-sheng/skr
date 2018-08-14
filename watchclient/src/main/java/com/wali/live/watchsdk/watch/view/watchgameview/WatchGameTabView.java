@@ -62,7 +62,7 @@ public class WatchGameTabView extends RelativeLayout implements
         mTitleAndViewMap.put("游戏主页", new LazyNewView() {
             @Override
             public View newView() {
-                return new WatchGameHomeTabView(getContext());
+                return new WatchGameHomeTabView(getContext(),mWatchComponentController);
             }
         });
 
