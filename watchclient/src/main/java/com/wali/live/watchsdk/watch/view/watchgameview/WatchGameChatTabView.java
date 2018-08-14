@@ -74,7 +74,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
         mWatchGameLiveCommentPresenter.setView(mWatchGameLiveCommentView.getViewProxy());
         mWatchGameLiveCommentView.setPresenter(mWatchGameLiveCommentPresenter);
 
-        mWatchGameChatTabPresenter = new WatchGameChatTabPresenter(componentController, componentController.getRoomBaseDataModel());
+        mWatchGameChatTabPresenter = new WatchGameChatTabPresenter(componentController);
         mWatchGameChatTabPresenter.setView(this.getViewProxy());
         this.setPresenter(mWatchGameChatTabPresenter);
 
@@ -206,7 +206,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
     @Override
     public void setPresenter(IPresenter iPresenter) {
-        iPresenter.syncData();
+        iPresenter.updateUi();
     }
 
     public interface IView extends IViewProxy {
@@ -246,7 +246,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
         /**
          * 更新数据
          */
-        void syncData();
+        void updateUi();
 
     }
 }

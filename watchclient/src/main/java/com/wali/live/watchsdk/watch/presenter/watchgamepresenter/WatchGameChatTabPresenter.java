@@ -17,6 +17,7 @@ import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
+import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameChatTabView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,13 +42,13 @@ public class WatchGameChatTabPresenter extends BaseSdkRxPresenter<WatchGameChatT
     private RoomBaseDataModel mMyRoomData;
     private Subscription mFollowSubscription;
 
-    public WatchGameChatTabPresenter(@NonNull IEventController controller, @NonNull RoomBaseDataModel roomData) {
+    public WatchGameChatTabPresenter(@NonNull WatchComponentController controller) {
         super(controller);
-        mMyRoomData = roomData;
+        mMyRoomData = controller.getRoomBaseDataModel();
     }
 
     @Override
-    public void syncData() {
+    public void updateUi() {
         MyLog.d(TAG, "syncData");
         mView.updateAnchorInfo(mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
                 mMyRoomData.getCertificationType(), mMyRoomData.getLevel(), mMyRoomData.getNickName());
@@ -86,7 +87,7 @@ public class WatchGameChatTabPresenter extends BaseSdkRxPresenter<WatchGameChatT
     public void onEventMainThread(RoomDataChangeEvent event) {
         switch (event.type) {
             case RoomDataChangeEvent.TYPE_CHANGE_USER_INFO_COMPLETE: {
-                syncData();
+                updateUi();
             }
             break;
             case RoomDataChangeEvent.TYPE_CHANGE_TICKET: {
