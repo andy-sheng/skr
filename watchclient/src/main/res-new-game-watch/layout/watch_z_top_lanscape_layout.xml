@@ -113,7 +113,7 @@
             android:id="@+id/landscape_pause_resume_btn"
             android:layout_width="@dimen/view_dimen_70"
             android:layout_height="@dimen/view_dimen_70"
-            android:src="@drawable/live_video_fullscreen_bottom_icon_suspended"
+            android:background="@drawable/live_video_fullscreen_bottom_icon_suspended"
             android:layout_marginLeft="@dimen/view_dimen_49"
             android:layout_centerVertical="true"/>
         <View
@@ -156,7 +156,7 @@
             android:layout_toLeftOf="@+id/splite_line_view_2"
             android:layout_marginRight="@dimen/view_dimen_34"
             android:layout_centerVertical="true"/>
-        
+
         <com.wali.live.watchsdk.watch.view.watchgameview.GameNewLandscapeInputView
             android:id="@+id/input_container"
             android:layout_width="match_parent"

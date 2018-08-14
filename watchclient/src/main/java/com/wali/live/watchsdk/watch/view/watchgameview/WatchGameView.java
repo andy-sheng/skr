@@ -32,6 +32,9 @@ import org.greenrobot.eventbus.EventBus;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_GAME_WATCH_EXIST_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
 
 /**
@@ -85,6 +88,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_NEW_GAME_WATCH_EXIST_CLICK);
         registerAction(MSG_POP_INSUFFICIENT_TIPS);
+        registerAction(MSG_PLAYER_START);
+        registerAction(MSG_PLAYER_PAUSE);
+        registerAction(MSG_PLAYER_RECONNECT);
     }
 
     @Override
@@ -219,6 +225,15 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
                 return true;
             case MSG_POP_INSUFFICIENT_TIPS:
                 popInsufficientTips();
+                break;
+            case MSG_PLAYER_START:
+                mWatchPlayerPresenter.resumePlay();
+                break;
+            case MSG_PLAYER_PAUSE:
+                mWatchPlayerPresenter.pausePlay();
+                break;
+            case MSG_PLAYER_RECONNECT:
+                mWatchPlayerPresenter.startReconnect();
                 break;
         }
         return false;

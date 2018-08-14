@@ -195,6 +195,18 @@ public class PullStreamerPresenter extends BaseStreamerPresenter<PullStreamerPre
         }
     }
 
+    public void startReconnect() {
+        if (mStreamer == null || !mStarted|| !mIpSelectionHelper.hasStreamUrl()) {
+            return;
+        }
+        mPaused = false;
+        mReconnectHelper.startReconnect(0);
+        if (!mIsRealTime) {
+            mUIHandler.removeMessages(_MSG_PLAYER_PROGRESS);
+        }
+
+    }
+
     // 播放器回调
     protected class InnerPlayerCallback implements IPlayerCallback {
 
