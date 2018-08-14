@@ -75,6 +75,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
     protected ImageView mShowSmileyBtn;
     protected SmileyPicker mSmileyPicker;
     protected boolean mIsKeyboardShowed = false;
+    private View mTouchArea;
 
     @Override
     public void onClick(View view) {
@@ -115,6 +116,10 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
             }
             mInputView.setFilters(isSelected ? mFlyBarrageFilter : mNormalFilter);
             mPresenter.updateInputHint(mState);
+        } else if(id == R.id.split) {
+            if(mIsKeyboardShowed) {
+                KeyboardUtils.hideKeyboard((Activity) getContext());
+            }
         }
     }
 
@@ -149,6 +154,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         mPlaceHolderContainer = $(R.id.place_holder_view_container);
         mInputView = $(R.id.input_et);
         mSendBtn = $(R.id.send_btn);
+        mTouchArea = findViewById(R.id.split);
 
         mShowSmileyBtn = $(R.id.show_smiley_btn);
         mSmileyPicker = $(R.id.smiley_picker);
@@ -182,6 +188,7 @@ public class InputAreaView extends LinearLayout implements View.OnClickListener,
         $click(mSendBtn, this);
         $click(mShowSmileyBtn, this);
         $click(mBarrageSelectBtn, this);
+        $click(mTouchArea, this);
 
         setMinimumHeight(MINIMUM_HEIGHT_PORTRAIT);
         mInputContainer.setOnClickListener(this); // 吃掉点击事件

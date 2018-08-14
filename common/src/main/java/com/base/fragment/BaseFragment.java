@@ -127,7 +127,6 @@ public abstract class BaseFragment extends Fragment implements FragmentListener,
         return true;
     }
 
-
     protected abstract View createView(LayoutInflater inflater, ViewGroup container);
 
     protected abstract void bindView();

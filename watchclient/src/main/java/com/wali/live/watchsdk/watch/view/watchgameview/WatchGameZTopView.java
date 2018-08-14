@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
+import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
@@ -278,7 +279,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 return;
             }
             if (id == R.id.landscape_back_btn) {
-                mPresenter.exitRoom();
+                mPresenter.forceRotate();
             } else if (id == R.id.landscape_anchor_layout) {
                 mPresenter.showAnchorInfo();
             } else if (id == R.id.landscape_follow) {
@@ -499,6 +500,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
     private void touchViewOnclick() {
         if(mIsLandscape) {
+            if(KeyboardUtils.hideKeyboardThenReturnResult((Activity) getContext())) {
+                return;
+            }
+
             if(!mIsLandscapeHideOptMode) {
                 hideOptBar();
             } else {
