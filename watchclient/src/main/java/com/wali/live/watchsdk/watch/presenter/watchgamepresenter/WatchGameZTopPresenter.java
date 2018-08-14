@@ -37,12 +37,14 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
+import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_GAME_WATCH_EXIST_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
 
 /**
  * Created by vera on 2018/8/8.
@@ -239,6 +241,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     public void vodeoReFresh() {
         MyLog.d(TAG, "vodeoReFresh");
         postEvent(MSG_PLAYER_RECONNECT);
+    }
+
+    @Override
+    public void optBarrageControl(boolean needHide) {
+        postEvent(needHide ? MSG_HIDE_GAME_BARRAGE : MSG_SHOW_GAME_BARRAGE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

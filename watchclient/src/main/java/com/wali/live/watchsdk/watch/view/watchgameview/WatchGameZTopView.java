@@ -94,6 +94,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
     private GameNewLandscapeInputViewPresenter mGameNewLandscapeInputViewPresenter;
     private boolean mIsVideoPause;
+    private boolean mHasHideBarrage;
 
     public WatchGameZTopView(Context context) {
         super(context);
@@ -150,6 +151,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 mLandscapeSuspend.setBackgroundDrawable(mIsVideoPause ?
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_play)
                         : GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended));
+
+                mLandscapeBarrageHideBtn.setBackground(mHasHideBarrage ?
+                        GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage) :
+                        GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_subtitles));
             }
 
             if(mGameNewLandscapeInputViewPresenter == null) {
@@ -295,6 +300,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 if(mLandscapeSuspend != null) {
                     mLandscapeSuspend.setBackgroundDrawable(GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended));
                 }
+            } else if(id == R.id.landscape_hide_barrage_btn) {
+                mLandscapeBarrageHideBtn.setBackground(mHasHideBarrage ?
+                        GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_subtitles) :
+                        GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage));
+                mHasHideBarrage = !mHasHideBarrage;
+                mPresenter.optBarrageControl(mHasHideBarrage);
             }
         } else {
             // 竖屏下的点击事件
@@ -782,6 +793,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void videoRestart();
 
         void vodeoReFresh();
+
+        void optBarrageControl(boolean needHide);
     }
 
     public interface IView extends IViewProxy {

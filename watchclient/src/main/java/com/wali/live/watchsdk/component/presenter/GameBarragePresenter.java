@@ -15,6 +15,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
+import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
 
 /**
@@ -41,6 +43,8 @@ public class GameBarragePresenter extends ComponentPresenter<GameBarrageView.IVi
         super.startPresenter();
         registerAction(MSG_SHOW_GAME_BARRAGE);
         registerAction(MSG_HIDE_GAME_BARRAGE);
+        registerAction(MSG_ON_ORIENT_PORTRAIT);
+        registerAction(MSG_ON_ORIENT_LANDSCAPE);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -66,6 +70,21 @@ public class GameBarragePresenter extends ComponentPresenter<GameBarrageView.IVi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CommentRefreshEvent event) {
         MyLog.d(TAG, "CommentRefreshEvent ");
+        addCommentEvent(event);
+    }
+
+    protected void optEvent(int id) {
+        switch (id) {
+            case MSG_SHOW_GAME_BARRAGE:
+                mView.getRealView().setVisibility(View.VISIBLE);
+                break;
+            case MSG_HIDE_GAME_BARRAGE:
+                mView.getRealView().setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    protected void addCommentEvent(CommentRefreshEvent event) {
         if (mView != null) {
             mView.onCommentRefreshEvent(event);
         }
@@ -77,12 +96,15 @@ public class GameBarragePresenter extends ComponentPresenter<GameBarrageView.IVi
             MyLog.e(TAG, "onAction but mView is null, event=" + event);
             return false;
         }
+
         switch (event) {
             case MSG_SHOW_GAME_BARRAGE:
-                mView.getRealView().setVisibility(View.VISIBLE);
-                return true;
             case MSG_HIDE_GAME_BARRAGE:
-                mView.getRealView().setVisibility(View.GONE);
+                optEvent(event);
+                return true;
+            case MSG_ON_ORIENT_PORTRAIT:
+            case MSG_ON_ORIENT_LANDSCAPE:
+                optEvent(event);
                 return true;
             default:
                 break;
