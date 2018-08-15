@@ -47,5 +47,18 @@ public class WatchGameInputAreaView extends InputAreaView {
                 }
             }
         });
+
+        if(mBarrageSelectBtn != null) {
+            mBarrageSelectBtn.setVisibility(GONE);
+        }
+
+        if(mBarrageSwitchBtn != null) {
+            mBarrageSwitchBtn.setVisibility(GONE);
+        }
+    }
+
+    @Override
+    protected void barrageSelectViewEnable(boolean enable) {
+
     }
 }

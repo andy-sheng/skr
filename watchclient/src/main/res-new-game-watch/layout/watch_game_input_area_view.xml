@@ -27,7 +27,8 @@
             android:background="@drawable/live_barrage_switch_btn_bg"
             android:padding="@dimen/margin_3"
             android:scaleType="fitStart"
-            android:src="@drawable/live_barrage_switch_btn"/>
+            android:src="@drawable/live_barrage_switch_btn"
+            android:visibility="gone"/>
 
         <com.wali.live.watchsdk.component.view.BarrageSelectView
             android:id="@+id/barrage_select_btn"
