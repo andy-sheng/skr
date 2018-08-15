@@ -225,6 +225,18 @@ public class User implements Serializable {
         this.mVipLevel = protoUser.getVipLevel();
         this.mIsVipHide = protoUser.getVipHidden();
         this.mIsVipFrozen = protoUser.getVipDisable();
+        if (protoUser.getZhiboExt() != null) {
+            parseZhiboExt(protoUser.getZhiboExt());
+        }
+    }
+
+    private void parseZhiboExt(UserProto.ZhiboExt zhiboExt) {
+        if (zhiboExt != null) {
+            if (zhiboExt.hasNobleInfo()) {
+                UserProto.UserNobleInfo nobleInfo = zhiboExt.getNobleInfo();
+                this.mNobleLevel = nobleInfo.getNobleLevel();
+            }
+        }
     }
 
     public void parse(UserProto.PersonalData protoData) {

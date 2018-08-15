@@ -1809,6 +1809,31 @@ public final class UserProto {
      * </pre>
      */
     boolean getIsLive();
+
+    /**
+     * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+     *
+     * <pre>
+     *直播用户扩展信息
+     * </pre>
+     */
+    boolean hasZhiboExt();
+    /**
+     * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+     *
+     * <pre>
+     *直播用户扩展信息
+     * </pre>
+     */
+    com.wali.live.proto.UserProto.ZhiboExt getZhiboExt();
+    /**
+     * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+     *
+     * <pre>
+     *直播用户扩展信息
+     * </pre>
+     */
+    com.wali.live.proto.UserProto.ZhiboExtOrBuilder getZhiboExtOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.PersonalInfo}
@@ -1845,6 +1870,7 @@ public final class UserProto {
         throws com.google.protobuf.InvalidProtocolBufferException {
       initFields();
       int mutable_bitField0_ = 0;
+      int mutable_bitField1_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2057,6 +2083,19 @@ public final class UserProto {
             case 256: {
               bitField0_ |= 0x40000000;
               isLive_ = input.readBool();
+              break;
+            }
+            case 306: {
+              com.wali.live.proto.UserProto.ZhiboExt.Builder subBuilder = null;
+              if (((bitField0_ & 0x80000000) == 0x80000000)) {
+                subBuilder = zhiboExt_.toBuilder();
+              }
+              zhiboExt_ = input.readMessage(com.wali.live.proto.UserProto.ZhiboExt.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(zhiboExt_);
+                zhiboExt_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x80000000;
               break;
             }
           }
@@ -3016,6 +3055,39 @@ public final class UserProto {
       return isLive_;
     }
 
+    public static final int ZHIBO_EXT_FIELD_NUMBER = 38;
+    private com.wali.live.proto.UserProto.ZhiboExt zhiboExt_;
+    /**
+     * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+     *
+     * <pre>
+     *直播用户扩展信息
+     * </pre>
+     */
+    public boolean hasZhiboExt() {
+      return ((bitField0_ & 0x80000000) == 0x80000000);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+     *
+     * <pre>
+     *直播用户扩展信息
+     * </pre>
+     */
+    public com.wali.live.proto.UserProto.ZhiboExt getZhiboExt() {
+      return zhiboExt_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+     *
+     * <pre>
+     *直播用户扩展信息
+     * </pre>
+     */
+    public com.wali.live.proto.UserProto.ZhiboExtOrBuilder getZhiboExtOrBuilder() {
+      return zhiboExt_;
+    }
+
     private void initFields() {
       zuid_ = 0L;
       avatar_ = 0L;
@@ -3049,6 +3121,7 @@ public final class UserProto {
       vipDisable_ = false;
       vipHidden_ = false;
       isLive_ = false;
+      zhiboExt_ = com.wali.live.proto.UserProto.ZhiboExt.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -3059,6 +3132,12 @@ public final class UserProto {
       if (!hasZuid()) {
         memoizedIsInitialized = 0;
         return false;
+      }
+      if (hasZhiboExt()) {
+        if (!getZhiboExt().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -3162,6 +3241,9 @@ public final class UserProto {
       }
       if (((bitField0_ & 0x40000000) == 0x40000000)) {
         output.writeBool(32, isLive_);
+      }
+      if (((bitField0_ & 0x80000000) == 0x80000000)) {
+        output.writeMessage(38, zhiboExt_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -3305,6 +3387,10 @@ public final class UserProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(32, isLive_);
       }
+      if (((bitField0_ & 0x80000000) == 0x80000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(38, zhiboExt_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
@@ -3416,6 +3502,7 @@ public final class UserProto {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getBusinessUserInfoFieldBuilder();
           getRegionFieldBuilder();
+          getZhiboExtFieldBuilder();
         }
       }
       private static Builder create() {
@@ -3496,6 +3583,12 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x40000000);
         isLive_ = false;
         bitField0_ = (bitField0_ & ~0x80000000);
+        if (zhiboExtBuilder_ == null) {
+          zhiboExt_ = com.wali.live.proto.UserProto.ZhiboExt.getDefaultInstance();
+        } else {
+          zhiboExtBuilder_.clear();
+        }
+        bitField1_ = (bitField1_ & ~0x00000001);
         return this;
       }
 
@@ -3523,6 +3616,7 @@ public final class UserProto {
       public com.wali.live.proto.UserProto.PersonalInfo buildPartial() {
         com.wali.live.proto.UserProto.PersonalInfo result = new com.wali.live.proto.UserProto.PersonalInfo(this);
         int from_bitField0_ = bitField0_;
+        int from_bitField1_ = bitField1_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
@@ -3661,6 +3755,14 @@ public final class UserProto {
           to_bitField0_ |= 0x40000000;
         }
         result.isLive_ = isLive_;
+        if (((from_bitField1_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x80000000;
+        }
+        if (zhiboExtBuilder_ == null) {
+          result.zhiboExt_ = zhiboExt_;
+        } else {
+          result.zhiboExt_ = zhiboExtBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3790,6 +3892,9 @@ public final class UserProto {
         if (other.hasIsLive()) {
           setIsLive(other.getIsLive());
         }
+        if (other.hasZhiboExt()) {
+          mergeZhiboExt(other.getZhiboExt());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -3798,6 +3903,12 @@ public final class UserProto {
         if (!hasZuid()) {
           
           return false;
+        }
+        if (hasZhiboExt()) {
+          if (!getZhiboExt().isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -3820,6 +3931,7 @@ public final class UserProto {
         return this;
       }
       private int bitField0_;
+      private int bitField1_;
 
       private long zuid_ ;
       /**
@@ -5855,6 +5967,158 @@ public final class UserProto {
         return this;
       }
 
+      private com.wali.live.proto.UserProto.ZhiboExt zhiboExt_ = com.wali.live.proto.UserProto.ZhiboExt.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.UserProto.ZhiboExt, com.wali.live.proto.UserProto.ZhiboExt.Builder, com.wali.live.proto.UserProto.ZhiboExtOrBuilder> zhiboExtBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      public boolean hasZhiboExt() {
+        return ((bitField1_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      public com.wali.live.proto.UserProto.ZhiboExt getZhiboExt() {
+        if (zhiboExtBuilder_ == null) {
+          return zhiboExt_;
+        } else {
+          return zhiboExtBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      public Builder setZhiboExt(com.wali.live.proto.UserProto.ZhiboExt value) {
+        if (zhiboExtBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          zhiboExt_ = value;
+          onChanged();
+        } else {
+          zhiboExtBuilder_.setMessage(value);
+        }
+        bitField1_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      public Builder setZhiboExt(
+          com.wali.live.proto.UserProto.ZhiboExt.Builder builderForValue) {
+        if (zhiboExtBuilder_ == null) {
+          zhiboExt_ = builderForValue.build();
+          onChanged();
+        } else {
+          zhiboExtBuilder_.setMessage(builderForValue.build());
+        }
+        bitField1_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      public Builder mergeZhiboExt(com.wali.live.proto.UserProto.ZhiboExt value) {
+        if (zhiboExtBuilder_ == null) {
+          if (((bitField1_ & 0x00000001) == 0x00000001) &&
+              zhiboExt_ != com.wali.live.proto.UserProto.ZhiboExt.getDefaultInstance()) {
+            zhiboExt_ =
+              com.wali.live.proto.UserProto.ZhiboExt.newBuilder(zhiboExt_).mergeFrom(value).buildPartial();
+          } else {
+            zhiboExt_ = value;
+          }
+          onChanged();
+        } else {
+          zhiboExtBuilder_.mergeFrom(value);
+        }
+        bitField1_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      public Builder clearZhiboExt() {
+        if (zhiboExtBuilder_ == null) {
+          zhiboExt_ = com.wali.live.proto.UserProto.ZhiboExt.getDefaultInstance();
+          onChanged();
+        } else {
+          zhiboExtBuilder_.clear();
+        }
+        bitField1_ = (bitField1_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      public com.wali.live.proto.UserProto.ZhiboExt.Builder getZhiboExtBuilder() {
+        bitField1_ |= 0x00000001;
+        onChanged();
+        return getZhiboExtFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      public com.wali.live.proto.UserProto.ZhiboExtOrBuilder getZhiboExtOrBuilder() {
+        if (zhiboExtBuilder_ != null) {
+          return zhiboExtBuilder_.getMessageOrBuilder();
+        } else {
+          return zhiboExt_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.ZhiboExt zhibo_ext = 38;</code>
+       *
+       * <pre>
+       *直播用户扩展信息
+       * </pre>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.UserProto.ZhiboExt, com.wali.live.proto.UserProto.ZhiboExt.Builder, com.wali.live.proto.UserProto.ZhiboExtOrBuilder> 
+          getZhiboExtFieldBuilder() {
+        if (zhiboExtBuilder_ == null) {
+          zhiboExtBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.UserProto.ZhiboExt, com.wali.live.proto.UserProto.ZhiboExt.Builder, com.wali.live.proto.UserProto.ZhiboExtOrBuilder>(
+                  getZhiboExt(),
+                  getParentForChildren(),
+                  isClean());
+          zhiboExt_ = null;
+        }
+        return zhiboExtBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.PersonalInfo)
     }
 
@@ -5864,6 +6128,971 @@ public final class UserProto {
     }
 
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.PersonalInfo)
+  }
+
+  public interface ZhiboExtOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ZhiboExt)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+     */
+    boolean hasNobleInfo();
+    /**
+     * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+     */
+    com.wali.live.proto.UserProto.UserNobleInfo getNobleInfo();
+    /**
+     * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+     */
+    com.wali.live.proto.UserProto.UserNobleInfoOrBuilder getNobleInfoOrBuilder();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ZhiboExt}
+   *
+   * <pre>
+   *&#47;////////////////////这里有历史原因米聊和直播共用pb所以32 到38之间有米聊字段暂时不需要，没加入/////////////
+   * </pre>
+   */
+  public static final class ZhiboExt extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ZhiboExt)
+      ZhiboExtOrBuilder {
+    // Use ZhiboExt.newBuilder() to construct.
+    private ZhiboExt(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ZhiboExt(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ZhiboExt defaultInstance;
+    public static ZhiboExt getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ZhiboExt getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ZhiboExt(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.wali.live.proto.UserProto.UserNobleInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = nobleInfo_.toBuilder();
+              }
+              nobleInfo_ = input.readMessage(com.wali.live.proto.UserProto.UserNobleInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(nobleInfo_);
+                nobleInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ZhiboExt_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ZhiboExt_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.ZhiboExt.class, com.wali.live.proto.UserProto.ZhiboExt.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ZhiboExt> PARSER =
+        new com.google.protobuf.AbstractParser<ZhiboExt>() {
+      public ZhiboExt parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ZhiboExt(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ZhiboExt> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NOBLE_INFO_FIELD_NUMBER = 1;
+    private com.wali.live.proto.UserProto.UserNobleInfo nobleInfo_;
+    /**
+     * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+     */
+    public boolean hasNobleInfo() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+     */
+    public com.wali.live.proto.UserProto.UserNobleInfo getNobleInfo() {
+      return nobleInfo_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+     */
+    public com.wali.live.proto.UserProto.UserNobleInfoOrBuilder getNobleInfoOrBuilder() {
+      return nobleInfo_;
+    }
+
+    private void initFields() {
+      nobleInfo_ = com.wali.live.proto.UserProto.UserNobleInfo.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (hasNobleInfo()) {
+        if (!getNobleInfo().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, nobleInfo_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, nobleInfo_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.ZhiboExt parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ZhiboExt parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.ZhiboExt prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ZhiboExt}
+     *
+     * <pre>
+     *&#47;////////////////////这里有历史原因米聊和直播共用pb所以32 到38之间有米聊字段暂时不需要，没加入/////////////
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ZhiboExt)
+        com.wali.live.proto.UserProto.ZhiboExtOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ZhiboExt_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ZhiboExt_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.ZhiboExt.class, com.wali.live.proto.UserProto.ZhiboExt.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.ZhiboExt.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getNobleInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (nobleInfoBuilder_ == null) {
+          nobleInfo_ = com.wali.live.proto.UserProto.UserNobleInfo.getDefaultInstance();
+        } else {
+          nobleInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ZhiboExt_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.ZhiboExt getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.ZhiboExt.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.ZhiboExt build() {
+        com.wali.live.proto.UserProto.ZhiboExt result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.ZhiboExt buildPartial() {
+        com.wali.live.proto.UserProto.ZhiboExt result = new com.wali.live.proto.UserProto.ZhiboExt(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (nobleInfoBuilder_ == null) {
+          result.nobleInfo_ = nobleInfo_;
+        } else {
+          result.nobleInfo_ = nobleInfoBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.ZhiboExt) {
+          return mergeFrom((com.wali.live.proto.UserProto.ZhiboExt)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.ZhiboExt other) {
+        if (other == com.wali.live.proto.UserProto.ZhiboExt.getDefaultInstance()) return this;
+        if (other.hasNobleInfo()) {
+          mergeNobleInfo(other.getNobleInfo());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (hasNobleInfo()) {
+          if (!getNobleInfo().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.ZhiboExt parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.ZhiboExt) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.wali.live.proto.UserProto.UserNobleInfo nobleInfo_ = com.wali.live.proto.UserProto.UserNobleInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.UserProto.UserNobleInfo, com.wali.live.proto.UserProto.UserNobleInfo.Builder, com.wali.live.proto.UserProto.UserNobleInfoOrBuilder> nobleInfoBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      public boolean hasNobleInfo() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      public com.wali.live.proto.UserProto.UserNobleInfo getNobleInfo() {
+        if (nobleInfoBuilder_ == null) {
+          return nobleInfo_;
+        } else {
+          return nobleInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      public Builder setNobleInfo(com.wali.live.proto.UserProto.UserNobleInfo value) {
+        if (nobleInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          nobleInfo_ = value;
+          onChanged();
+        } else {
+          nobleInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      public Builder setNobleInfo(
+          com.wali.live.proto.UserProto.UserNobleInfo.Builder builderForValue) {
+        if (nobleInfoBuilder_ == null) {
+          nobleInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          nobleInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      public Builder mergeNobleInfo(com.wali.live.proto.UserProto.UserNobleInfo value) {
+        if (nobleInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              nobleInfo_ != com.wali.live.proto.UserProto.UserNobleInfo.getDefaultInstance()) {
+            nobleInfo_ =
+              com.wali.live.proto.UserProto.UserNobleInfo.newBuilder(nobleInfo_).mergeFrom(value).buildPartial();
+          } else {
+            nobleInfo_ = value;
+          }
+          onChanged();
+        } else {
+          nobleInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      public Builder clearNobleInfo() {
+        if (nobleInfoBuilder_ == null) {
+          nobleInfo_ = com.wali.live.proto.UserProto.UserNobleInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          nobleInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      public com.wali.live.proto.UserProto.UserNobleInfo.Builder getNobleInfoBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getNobleInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      public com.wali.live.proto.UserProto.UserNobleInfoOrBuilder getNobleInfoOrBuilder() {
+        if (nobleInfoBuilder_ != null) {
+          return nobleInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return nobleInfo_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.UserNobleInfo noble_info = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.UserProto.UserNobleInfo, com.wali.live.proto.UserProto.UserNobleInfo.Builder, com.wali.live.proto.UserProto.UserNobleInfoOrBuilder> 
+          getNobleInfoFieldBuilder() {
+        if (nobleInfoBuilder_ == null) {
+          nobleInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.UserProto.UserNobleInfo, com.wali.live.proto.UserProto.UserNobleInfo.Builder, com.wali.live.proto.UserProto.UserNobleInfoOrBuilder>(
+                  getNobleInfo(),
+                  getParentForChildren(),
+                  isClean());
+          nobleInfo_ = null;
+        }
+        return nobleInfoBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ZhiboExt)
+    }
+
+    static {
+      defaultInstance = new ZhiboExt(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ZhiboExt)
+  }
+
+  public interface UserNobleInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.UserNobleInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 nobleLevel = 1;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+     * </pre>
+     */
+    boolean hasNobleLevel();
+    /**
+     * <code>required uint32 nobleLevel = 1;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+     * </pre>
+     */
+    int getNobleLevel();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.UserNobleInfo}
+   */
+  public static final class UserNobleInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.UserNobleInfo)
+      UserNobleInfoOrBuilder {
+    // Use UserNobleInfo.newBuilder() to construct.
+    private UserNobleInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UserNobleInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UserNobleInfo defaultInstance;
+    public static UserNobleInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UserNobleInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UserNobleInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              nobleLevel_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_UserNobleInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_UserNobleInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.UserNobleInfo.class, com.wali.live.proto.UserProto.UserNobleInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UserNobleInfo> PARSER =
+        new com.google.protobuf.AbstractParser<UserNobleInfo>() {
+      public UserNobleInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UserNobleInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UserNobleInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NOBLELEVEL_FIELD_NUMBER = 1;
+    private int nobleLevel_;
+    /**
+     * <code>required uint32 nobleLevel = 1;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+     * </pre>
+     */
+    public boolean hasNobleLevel() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 nobleLevel = 1;</code>
+     *
+     * <pre>
+     *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+     * </pre>
+     */
+    public int getNobleLevel() {
+      return nobleLevel_;
+    }
+
+    private void initFields() {
+      nobleLevel_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasNobleLevel()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, nobleLevel_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, nobleLevel_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.UserNobleInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.UserNobleInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.UserNobleInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.UserNobleInfo)
+        com.wali.live.proto.UserProto.UserNobleInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_UserNobleInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_UserNobleInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.UserNobleInfo.class, com.wali.live.proto.UserProto.UserNobleInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.UserNobleInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        nobleLevel_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_UserNobleInfo_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.UserNobleInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.UserNobleInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.UserNobleInfo build() {
+        com.wali.live.proto.UserProto.UserNobleInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.UserNobleInfo buildPartial() {
+        com.wali.live.proto.UserProto.UserNobleInfo result = new com.wali.live.proto.UserProto.UserNobleInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.nobleLevel_ = nobleLevel_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.UserNobleInfo) {
+          return mergeFrom((com.wali.live.proto.UserProto.UserNobleInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.UserNobleInfo other) {
+        if (other == com.wali.live.proto.UserProto.UserNobleInfo.getDefaultInstance()) return this;
+        if (other.hasNobleLevel()) {
+          setNobleLevel(other.getNobleLevel());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasNobleLevel()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.UserNobleInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.UserNobleInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int nobleLevel_ ;
+      /**
+       * <code>required uint32 nobleLevel = 1;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+       * </pre>
+       */
+      public boolean hasNobleLevel() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 nobleLevel = 1;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+       * </pre>
+       */
+      public int getNobleLevel() {
+        return nobleLevel_;
+      }
+      /**
+       * <code>required uint32 nobleLevel = 1;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+       * </pre>
+       */
+      public Builder setNobleLevel(int value) {
+        bitField0_ |= 0x00000001;
+        nobleLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 nobleLevel = 1;</code>
+       *
+       * <pre>
+       *贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+       * </pre>
+       */
+      public Builder clearNobleLevel() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        nobleLevel_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.UserNobleInfo)
+    }
+
+    static {
+      defaultInstance = new UserNobleInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.UserNobleInfo)
   }
 
   public interface PersonalDataOrBuilder extends
@@ -6031,6 +7260,23 @@ public final class UserProto {
      * </pre>
      */
     int getUsableMibiTicketCnt();
+
+    /**
+     * <code>optional bytes gcoin_user_eco_attr = 19;</code>
+     *
+     * <pre>
+     *金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+     * </pre>
+     */
+    boolean hasGcoinUserEcoAttr();
+    /**
+     * <code>optional bytes gcoin_user_eco_attr = 19;</code>
+     *
+     * <pre>
+     *金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+     * </pre>
+     */
+    com.google.protobuf.ByteString getGcoinUserEcoAttr();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.PersonalData}
@@ -6132,6 +7378,11 @@ public final class UserProto {
             case 136: {
               bitField0_ |= 0x00000200;
               usableMibiTicketCnt_ = input.readUInt32();
+              break;
+            }
+            case 154: {
+              bitField0_ |= 0x00000400;
+              gcoinUserEcoAttr_ = input.readBytes();
               break;
             }
           }
@@ -6396,6 +7647,29 @@ public final class UserProto {
       return usableMibiTicketCnt_;
     }
 
+    public static final int GCOIN_USER_ECO_ATTR_FIELD_NUMBER = 19;
+    private com.google.protobuf.ByteString gcoinUserEcoAttr_;
+    /**
+     * <code>optional bytes gcoin_user_eco_attr = 19;</code>
+     *
+     * <pre>
+     *金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+     * </pre>
+     */
+    public boolean hasGcoinUserEcoAttr() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional bytes gcoin_user_eco_attr = 19;</code>
+     *
+     * <pre>
+     *金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+     * </pre>
+     */
+    public com.google.protobuf.ByteString getGcoinUserEcoAttr() {
+      return gcoinUserEcoAttr_;
+    }
+
     private void initFields() {
       zuid_ = 0L;
       mliveTicketNum_ = 0;
@@ -6407,6 +7681,7 @@ public final class UserProto {
       diamondNum_ = 0;
       userEcoAttr_ = com.google.protobuf.ByteString.EMPTY;
       usableMibiTicketCnt_ = 0;
+      gcoinUserEcoAttr_ = com.google.protobuf.ByteString.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -6454,6 +7729,9 @@ public final class UserProto {
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeUInt32(17, usableMibiTicketCnt_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeBytes(19, gcoinUserEcoAttr_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -6503,6 +7781,10 @@ public final class UserProto {
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(17, usableMibiTicketCnt_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(19, gcoinUserEcoAttr_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6641,6 +7923,8 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000100);
         usableMibiTicketCnt_ = 0;
         bitField0_ = (bitField0_ & ~0x00000200);
+        gcoinUserEcoAttr_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -6709,6 +7993,10 @@ public final class UserProto {
           to_bitField0_ |= 0x00000200;
         }
         result.usableMibiTicketCnt_ = usableMibiTicketCnt_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.gcoinUserEcoAttr_ = gcoinUserEcoAttr_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6754,6 +8042,9 @@ public final class UserProto {
         }
         if (other.hasUsableMibiTicketCnt()) {
           setUsableMibiTicketCnt(other.getUsableMibiTicketCnt());
+        }
+        if (other.hasGcoinUserEcoAttr()) {
+          setGcoinUserEcoAttr(other.getGcoinUserEcoAttr());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -7249,6 +8540,57 @@ public final class UserProto {
       public Builder clearUsableMibiTicketCnt() {
         bitField0_ = (bitField0_ & ~0x00000200);
         usableMibiTicketCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString gcoinUserEcoAttr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes gcoin_user_eco_attr = 19;</code>
+       *
+       * <pre>
+       *金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+       * </pre>
+       */
+      public boolean hasGcoinUserEcoAttr() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional bytes gcoin_user_eco_attr = 19;</code>
+       *
+       * <pre>
+       *金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+       * </pre>
+       */
+      public com.google.protobuf.ByteString getGcoinUserEcoAttr() {
+        return gcoinUserEcoAttr_;
+      }
+      /**
+       * <code>optional bytes gcoin_user_eco_attr = 19;</code>
+       *
+       * <pre>
+       *金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+       * </pre>
+       */
+      public Builder setGcoinUserEcoAttr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        gcoinUserEcoAttr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes gcoin_user_eco_attr = 19;</code>
+       *
+       * <pre>
+       *金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+       * </pre>
+       */
+      public Builder clearGcoinUserEcoAttr() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        gcoinUserEcoAttr_ = getDefaultInstance().getGcoinUserEcoAttr();
         onChanged();
         return this;
       }
@@ -9073,6 +10415,23 @@ public final class UserProto {
      * </pre>
      */
     boolean getGetLiveInfo();
+
+    /**
+     * <code>optional bool getGcoinInfo = 3 [default = false];</code>
+     *
+     * <pre>
+     *是否拉取金币信息,默认fals
+     * </pre>
+     */
+    boolean hasGetGcoinInfo();
+    /**
+     * <code>optional bool getGcoinInfo = 3 [default = false];</code>
+     *
+     * <pre>
+     *是否拉取金币信息,默认fals
+     * </pre>
+     */
+    boolean getGetGcoinInfo();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetOwnInfoReq}
@@ -9139,6 +10498,11 @@ public final class UserProto {
             case 16: {
               bitField0_ |= 0x00000002;
               getLiveInfo_ = input.readBool();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              getGcoinInfo_ = input.readBool();
               break;
             }
           }
@@ -9219,9 +10583,33 @@ public final class UserProto {
       return getLiveInfo_;
     }
 
+    public static final int GETGCOININFO_FIELD_NUMBER = 3;
+    private boolean getGcoinInfo_;
+    /**
+     * <code>optional bool getGcoinInfo = 3 [default = false];</code>
+     *
+     * <pre>
+     *是否拉取金币信息,默认fals
+     * </pre>
+     */
+    public boolean hasGetGcoinInfo() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bool getGcoinInfo = 3 [default = false];</code>
+     *
+     * <pre>
+     *是否拉取金币信息,默认fals
+     * </pre>
+     */
+    public boolean getGetGcoinInfo() {
+      return getGcoinInfo_;
+    }
+
     private void initFields() {
       zuid_ = 0L;
       getLiveInfo_ = true;
+      getGcoinInfo_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9246,6 +10634,9 @@ public final class UserProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBool(2, getLiveInfo_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(3, getGcoinInfo_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9262,6 +10653,10 @@ public final class UserProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, getLiveInfo_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, getGcoinInfo_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9389,6 +10784,8 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         getLiveInfo_ = true;
         bitField0_ = (bitField0_ & ~0x00000002);
+        getGcoinInfo_ = false;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -9425,6 +10822,10 @@ public final class UserProto {
           to_bitField0_ |= 0x00000002;
         }
         result.getLiveInfo_ = getLiveInfo_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.getGcoinInfo_ = getGcoinInfo_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9446,6 +10847,9 @@ public final class UserProto {
         }
         if (other.hasGetLiveInfo()) {
           setGetLiveInfo(other.getGetLiveInfo());
+        }
+        if (other.hasGetGcoinInfo()) {
+          setGetGcoinInfo(other.getGetGcoinInfo());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -9554,6 +10958,54 @@ public final class UserProto {
       public Builder clearGetLiveInfo() {
         bitField0_ = (bitField0_ & ~0x00000002);
         getLiveInfo_ = true;
+        onChanged();
+        return this;
+      }
+
+      private boolean getGcoinInfo_ ;
+      /**
+       * <code>optional bool getGcoinInfo = 3 [default = false];</code>
+       *
+       * <pre>
+       *是否拉取金币信息,默认fals
+       * </pre>
+       */
+      public boolean hasGetGcoinInfo() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bool getGcoinInfo = 3 [default = false];</code>
+       *
+       * <pre>
+       *是否拉取金币信息,默认fals
+       * </pre>
+       */
+      public boolean getGetGcoinInfo() {
+        return getGcoinInfo_;
+      }
+      /**
+       * <code>optional bool getGcoinInfo = 3 [default = false];</code>
+       *
+       * <pre>
+       *是否拉取金币信息,默认fals
+       * </pre>
+       */
+      public Builder setGetGcoinInfo(boolean value) {
+        bitField0_ |= 0x00000004;
+        getGcoinInfo_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool getGcoinInfo = 3 [default = false];</code>
+       *
+       * <pre>
+       *是否拉取金币信息,默认fals
+       * </pre>
+       */
+      public Builder clearGetGcoinInfo() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        getGcoinInfo_ = false;
         onChanged();
         return this;
       }
@@ -9747,6 +11199,19 @@ public final class UserProto {
      */
     @java.lang.Deprecated com.google.protobuf.ByteString
         getPhoneNumBytes();
+
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+     */
+    boolean hasUserNobelMmedal();
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+     */
+    com.wali.live.proto.UserProto.Medal getUserNobelMmedal();
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+     */
+    com.wali.live.proto.UserProto.MedalOrBuilder getUserNobelMmedalOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetOwnInfoRsp}
@@ -9885,6 +11350,19 @@ public final class UserProto {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
               phoneNum_ = bs;
+              break;
+            }
+            case 106: {
+              com.wali.live.proto.UserProto.Medal.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                subBuilder = userNobelMmedal_.toBuilder();
+              }
+              userNobelMmedal_ = input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(userNobelMmedal_);
+                userNobelMmedal_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000020;
               break;
             }
           }
@@ -10212,6 +11690,27 @@ public final class UserProto {
       }
     }
 
+    public static final int USER_NOBEL_MMEDAL_FIELD_NUMBER = 13;
+    private com.wali.live.proto.UserProto.Medal userNobelMmedal_;
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+     */
+    public boolean hasUserNobelMmedal() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+     */
+    public com.wali.live.proto.UserProto.Medal getUserNobelMmedal() {
+      return userNobelMmedal_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+     */
+    public com.wali.live.proto.UserProto.MedalOrBuilder getUserNobelMmedalOrBuilder() {
+      return userNobelMmedal_;
+    }
+
     private void initFields() {
       errorCode_ = 0;
       personalInfo_ = com.wali.live.proto.UserProto.PersonalInfo.getDefaultInstance();
@@ -10222,6 +11721,7 @@ public final class UserProto {
       userCardMedal_ = java.util.Collections.emptyList();
       needBindPhone_ = false;
       phoneNum_ = "";
+      userNobelMmedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -10279,6 +11779,9 @@ public final class UserProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBytes(12, getPhoneNumBytes());
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(13, userNobelMmedal_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -10328,6 +11831,10 @@ public final class UserProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(12, getPhoneNumBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(13, userNobelMmedal_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -10443,6 +11950,7 @@ public final class UserProto {
           getBeforeNicknameMedalFieldBuilder();
           getAfterNicknameMedalFieldBuilder();
           getUserCardMedalFieldBuilder();
+          getUserNobelMmedalFieldBuilder();
         }
       }
       private static Builder create() {
@@ -10489,6 +11997,12 @@ public final class UserProto {
         bitField0_ = (bitField0_ & ~0x00000080);
         phoneNum_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
+        if (userNobelMmedalBuilder_ == null) {
+          userNobelMmedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
+        } else {
+          userNobelMmedalBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -10577,6 +12091,14 @@ public final class UserProto {
           to_bitField0_ |= 0x00000010;
         }
         result.phoneNum_ = phoneNum_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        if (userNobelMmedalBuilder_ == null) {
+          result.userNobelMmedal_ = userNobelMmedal_;
+        } else {
+          result.userNobelMmedal_ = userNobelMmedalBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10697,6 +12219,9 @@ public final class UserProto {
           bitField0_ |= 0x00000100;
           phoneNum_ = other.phoneNum_;
           onChanged();
+        }
+        if (other.hasUserNobelMmedal()) {
+          mergeUserNobelMmedal(other.getUserNobelMmedal());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -11965,6 +13490,122 @@ public final class UserProto {
         phoneNum_ = value;
         onChanged();
         return this;
+      }
+
+      private com.wali.live.proto.UserProto.Medal userNobelMmedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> userNobelMmedalBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      public boolean hasUserNobelMmedal() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal getUserNobelMmedal() {
+        if (userNobelMmedalBuilder_ == null) {
+          return userNobelMmedal_;
+        } else {
+          return userNobelMmedalBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      public Builder setUserNobelMmedal(com.wali.live.proto.UserProto.Medal value) {
+        if (userNobelMmedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          userNobelMmedal_ = value;
+          onChanged();
+        } else {
+          userNobelMmedalBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      public Builder setUserNobelMmedal(
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (userNobelMmedalBuilder_ == null) {
+          userNobelMmedal_ = builderForValue.build();
+          onChanged();
+        } else {
+          userNobelMmedalBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      public Builder mergeUserNobelMmedal(com.wali.live.proto.UserProto.Medal value) {
+        if (userNobelMmedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
+              userNobelMmedal_ != com.wali.live.proto.UserProto.Medal.getDefaultInstance()) {
+            userNobelMmedal_ =
+              com.wali.live.proto.UserProto.Medal.newBuilder(userNobelMmedal_).mergeFrom(value).buildPartial();
+          } else {
+            userNobelMmedal_ = value;
+          }
+          onChanged();
+        } else {
+          userNobelMmedalBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000200;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      public Builder clearUserNobelMmedal() {
+        if (userNobelMmedalBuilder_ == null) {
+          userNobelMmedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
+          onChanged();
+        } else {
+          userNobelMmedalBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000200);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder getUserNobelMmedalBuilder() {
+        bitField0_ |= 0x00000200;
+        onChanged();
+        return getUserNobelMmedalFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      public com.wali.live.proto.UserProto.MedalOrBuilder getUserNobelMmedalOrBuilder() {
+        if (userNobelMmedalBuilder_ != null) {
+          return userNobelMmedalBuilder_.getMessageOrBuilder();
+        } else {
+          return userNobelMmedal_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_nobel_mmedal = 13;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
+          getUserNobelMmedalFieldBuilder() {
+        if (userNobelMmedalBuilder_ == null) {
+          userNobelMmedalBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
+                  getUserNobelMmedal(),
+                  getParentForChildren(),
+                  isClean());
+          userNobelMmedal_ = null;
+        }
+        return userNobelMmedalBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetOwnInfoRsp)
@@ -14202,6 +15843,19 @@ public final class UserProto {
      */
     com.wali.live.proto.UserProto.MedalOrBuilder getUserCardMedalOrBuilder(
         int index);
+
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+     */
+    boolean hasUserNobleMedal();
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+     */
+    com.wali.live.proto.UserProto.Medal getUserNobleMedal();
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+     */
+    com.wali.live.proto.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetHomepageResp}
@@ -14346,6 +16000,19 @@ public final class UserProto {
                 mutable_bitField0_ |= 0x00000200;
               }
               userCardMedal_.add(input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry));
+              break;
+            }
+            case 106: {
+              com.wali.live.proto.UserProto.Medal.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                subBuilder = userNobleMedal_.toBuilder();
+              }
+              userNobleMedal_ = input.readMessage(com.wali.live.proto.UserProto.Medal.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(userNobleMedal_);
+                userNobleMedal_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000040;
               break;
             }
           }
@@ -14727,6 +16394,27 @@ public final class UserProto {
       return userCardMedal_.get(index);
     }
 
+    public static final int USER_NOBLE_MEDAL_FIELD_NUMBER = 13;
+    private com.wali.live.proto.UserProto.Medal userNobleMedal_;
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+     */
+    public boolean hasUserNobleMedal() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+     */
+    public com.wali.live.proto.UserProto.Medal getUserNobleMedal() {
+      return userNobleMedal_;
+    }
+    /**
+     * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+     */
+    public com.wali.live.proto.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder() {
+      return userNobleMedal_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       personalInfo_ = com.wali.live.proto.UserProto.PersonalInfo.getDefaultInstance();
@@ -14738,6 +16426,7 @@ public final class UserProto {
       beforeNicknameMedal_ = java.util.Collections.emptyList();
       afterNicknameMedal_ = java.util.Collections.emptyList();
       userCardMedal_ = java.util.Collections.emptyList();
+      userNobleMedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -14798,6 +16487,9 @@ public final class UserProto {
       for (int i = 0; i < userCardMedal_.size(); i++) {
         output.writeMessage(11, userCardMedal_.get(i));
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeMessage(13, userNobleMedal_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -14851,6 +16543,10 @@ public final class UserProto {
       for (int i = 0; i < userCardMedal_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(11, userCardMedal_.get(i));
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(13, userNobleMedal_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -14966,6 +16662,7 @@ public final class UserProto {
           getBeforeNicknameMedalFieldBuilder();
           getAfterNicknameMedalFieldBuilder();
           getUserCardMedalFieldBuilder();
+          getUserNobleMedalFieldBuilder();
         }
       }
       private static Builder create() {
@@ -15014,6 +16711,12 @@ public final class UserProto {
         } else {
           userCardMedalBuilder_.clear();
         }
+        if (userNobleMedalBuilder_ == null) {
+          userNobleMedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
+        } else {
+          userNobleMedalBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -15105,6 +16808,14 @@ public final class UserProto {
           result.userCardMedal_ = userCardMedal_;
         } else {
           result.userCardMedal_ = userCardMedalBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        if (userNobleMedalBuilder_ == null) {
+          result.userNobleMedal_ = userNobleMedal_;
+        } else {
+          result.userNobleMedal_ = userNobleMedalBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -15231,6 +16942,9 @@ public final class UserProto {
               userCardMedalBuilder_.addAllMessages(other.userCardMedal_);
             }
           }
+        }
+        if (other.hasUserNobleMedal()) {
+          mergeUserNobleMedal(other.getUserNobleMedal());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -16602,6 +18316,122 @@ public final class UserProto {
           userCardMedal_ = null;
         }
         return userCardMedalBuilder_;
+      }
+
+      private com.wali.live.proto.UserProto.Medal userNobleMedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> userNobleMedalBuilder_;
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      public boolean hasUserNobleMedal() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal getUserNobleMedal() {
+        if (userNobleMedalBuilder_ == null) {
+          return userNobleMedal_;
+        } else {
+          return userNobleMedalBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      public Builder setUserNobleMedal(com.wali.live.proto.UserProto.Medal value) {
+        if (userNobleMedalBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          userNobleMedal_ = value;
+          onChanged();
+        } else {
+          userNobleMedalBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000400;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      public Builder setUserNobleMedal(
+          com.wali.live.proto.UserProto.Medal.Builder builderForValue) {
+        if (userNobleMedalBuilder_ == null) {
+          userNobleMedal_ = builderForValue.build();
+          onChanged();
+        } else {
+          userNobleMedalBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000400;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      public Builder mergeUserNobleMedal(com.wali.live.proto.UserProto.Medal value) {
+        if (userNobleMedalBuilder_ == null) {
+          if (((bitField0_ & 0x00000400) == 0x00000400) &&
+              userNobleMedal_ != com.wali.live.proto.UserProto.Medal.getDefaultInstance()) {
+            userNobleMedal_ =
+              com.wali.live.proto.UserProto.Medal.newBuilder(userNobleMedal_).mergeFrom(value).buildPartial();
+          } else {
+            userNobleMedal_ = value;
+          }
+          onChanged();
+        } else {
+          userNobleMedalBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000400;
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      public Builder clearUserNobleMedal() {
+        if (userNobleMedalBuilder_ == null) {
+          userNobleMedal_ = com.wali.live.proto.UserProto.Medal.getDefaultInstance();
+          onChanged();
+        } else {
+          userNobleMedalBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000400);
+        return this;
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      public com.wali.live.proto.UserProto.Medal.Builder getUserNobleMedalBuilder() {
+        bitField0_ |= 0x00000400;
+        onChanged();
+        return getUserNobleMedalFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      public com.wali.live.proto.UserProto.MedalOrBuilder getUserNobleMedalOrBuilder() {
+        if (userNobleMedalBuilder_ != null) {
+          return userNobleMedalBuilder_.getMessageOrBuilder();
+        } else {
+          return userNobleMedal_;
+        }
+      }
+      /**
+       * <code>optional .com.wali.live.proto.Medal user_noble_medal = 13;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder> 
+          getUserNobleMedalFieldBuilder() {
+        if (userNobleMedalBuilder_ == null) {
+          userNobleMedalBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.wali.live.proto.UserProto.Medal, com.wali.live.proto.UserProto.Medal.Builder, com.wali.live.proto.UserProto.MedalOrBuilder>(
+                  getUserNobleMedal(),
+                  getParentForChildren(),
+                  isClean());
+          userNobleMedal_ = null;
+        }
+        return userNobleMedalBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetHomepageResp)
@@ -49322,6 +51152,2769 @@ public final class UserProto {
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GetBindPhoneNumRsp)
   }
 
+  public interface ApplyZhimaCertificationReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ApplyZhimaCertificationReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *用户ID
+     * </pre>
+     */
+    boolean hasZuid();
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *用户ID
+     * </pre>
+     */
+    long getZuid();
+
+    /**
+     * <code>optional string certName = 2;</code>
+     *
+     * <pre>
+     *姓名
+     * </pre>
+     */
+    boolean hasCertName();
+    /**
+     * <code>optional string certName = 2;</code>
+     *
+     * <pre>
+     *姓名
+     * </pre>
+     */
+    java.lang.String getCertName();
+    /**
+     * <code>optional string certName = 2;</code>
+     *
+     * <pre>
+     *姓名
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCertNameBytes();
+
+    /**
+     * <code>optional string certNo = 3;</code>
+     *
+     * <pre>
+     *身份证
+     * </pre>
+     */
+    boolean hasCertNo();
+    /**
+     * <code>optional string certNo = 3;</code>
+     *
+     * <pre>
+     *身份证
+     * </pre>
+     */
+    java.lang.String getCertNo();
+    /**
+     * <code>optional string certNo = 3;</code>
+     *
+     * <pre>
+     *身份证
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCertNoBytes();
+
+    /**
+     * <code>optional string retUrl = 4;</code>
+     *
+     * <pre>
+     *回调url
+     * </pre>
+     */
+    boolean hasRetUrl();
+    /**
+     * <code>optional string retUrl = 4;</code>
+     *
+     * <pre>
+     *回调url
+     * </pre>
+     */
+    java.lang.String getRetUrl();
+    /**
+     * <code>optional string retUrl = 4;</code>
+     *
+     * <pre>
+     *回调url
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getRetUrlBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ApplyZhimaCertificationReq}
+   *
+   * <pre>
+   *cmd:zhibo.user.applyzhimacertification
+   * </pre>
+   */
+  public static final class ApplyZhimaCertificationReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ApplyZhimaCertificationReq)
+      ApplyZhimaCertificationReqOrBuilder {
+    // Use ApplyZhimaCertificationReq.newBuilder() to construct.
+    private ApplyZhimaCertificationReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ApplyZhimaCertificationReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ApplyZhimaCertificationReq defaultInstance;
+    public static ApplyZhimaCertificationReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ApplyZhimaCertificationReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ApplyZhimaCertificationReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              zuid_ = input.readUInt64();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              certName_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              certNo_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              retUrl_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.ApplyZhimaCertificationReq.class, com.wali.live.proto.UserProto.ApplyZhimaCertificationReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ApplyZhimaCertificationReq> PARSER =
+        new com.google.protobuf.AbstractParser<ApplyZhimaCertificationReq>() {
+      public ApplyZhimaCertificationReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ApplyZhimaCertificationReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ApplyZhimaCertificationReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ZUID_FIELD_NUMBER = 1;
+    private long zuid_;
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *用户ID
+     * </pre>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     *
+     * <pre>
+     *用户ID
+     * </pre>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    public static final int CERTNAME_FIELD_NUMBER = 2;
+    private java.lang.Object certName_;
+    /**
+     * <code>optional string certName = 2;</code>
+     *
+     * <pre>
+     *姓名
+     * </pre>
+     */
+    public boolean hasCertName() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string certName = 2;</code>
+     *
+     * <pre>
+     *姓名
+     * </pre>
+     */
+    public java.lang.String getCertName() {
+      java.lang.Object ref = certName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          certName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string certName = 2;</code>
+     *
+     * <pre>
+     *姓名
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCertNameBytes() {
+      java.lang.Object ref = certName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        certName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CERTNO_FIELD_NUMBER = 3;
+    private java.lang.Object certNo_;
+    /**
+     * <code>optional string certNo = 3;</code>
+     *
+     * <pre>
+     *身份证
+     * </pre>
+     */
+    public boolean hasCertNo() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string certNo = 3;</code>
+     *
+     * <pre>
+     *身份证
+     * </pre>
+     */
+    public java.lang.String getCertNo() {
+      java.lang.Object ref = certNo_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          certNo_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string certNo = 3;</code>
+     *
+     * <pre>
+     *身份证
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCertNoBytes() {
+      java.lang.Object ref = certNo_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        certNo_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RETURL_FIELD_NUMBER = 4;
+    private java.lang.Object retUrl_;
+    /**
+     * <code>optional string retUrl = 4;</code>
+     *
+     * <pre>
+     *回调url
+     * </pre>
+     */
+    public boolean hasRetUrl() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string retUrl = 4;</code>
+     *
+     * <pre>
+     *回调url
+     * </pre>
+     */
+    public java.lang.String getRetUrl() {
+      java.lang.Object ref = retUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          retUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string retUrl = 4;</code>
+     *
+     * <pre>
+     *回调url
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getRetUrlBytes() {
+      java.lang.Object ref = retUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        retUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      zuid_ = 0L;
+      certName_ = "";
+      certNo_ = "";
+      retUrl_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasZuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, zuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getCertNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getCertNoBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getRetUrlBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, zuid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getCertNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getCertNoBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getRetUrlBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.ApplyZhimaCertificationReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ApplyZhimaCertificationReq}
+     *
+     * <pre>
+     *cmd:zhibo.user.applyzhimacertification
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ApplyZhimaCertificationReq)
+        com.wali.live.proto.UserProto.ApplyZhimaCertificationReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.ApplyZhimaCertificationReq.class, com.wali.live.proto.UserProto.ApplyZhimaCertificationReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.ApplyZhimaCertificationReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        certName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        certNo_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        retUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.ApplyZhimaCertificationReq getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.ApplyZhimaCertificationReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.ApplyZhimaCertificationReq build() {
+        com.wali.live.proto.UserProto.ApplyZhimaCertificationReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.ApplyZhimaCertificationReq buildPartial() {
+        com.wali.live.proto.UserProto.ApplyZhimaCertificationReq result = new com.wali.live.proto.UserProto.ApplyZhimaCertificationReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.zuid_ = zuid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.certName_ = certName_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.certNo_ = certNo_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.retUrl_ = retUrl_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.ApplyZhimaCertificationReq) {
+          return mergeFrom((com.wali.live.proto.UserProto.ApplyZhimaCertificationReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.ApplyZhimaCertificationReq other) {
+        if (other == com.wali.live.proto.UserProto.ApplyZhimaCertificationReq.getDefaultInstance()) return this;
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        if (other.hasCertName()) {
+          bitField0_ |= 0x00000002;
+          certName_ = other.certName_;
+          onChanged();
+        }
+        if (other.hasCertNo()) {
+          bitField0_ |= 0x00000004;
+          certNo_ = other.certNo_;
+          onChanged();
+        }
+        if (other.hasRetUrl()) {
+          bitField0_ |= 0x00000008;
+          retUrl_ = other.retUrl_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasZuid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.ApplyZhimaCertificationReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.ApplyZhimaCertificationReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long zuid_ ;
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *用户ID
+       * </pre>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *用户ID
+       * </pre>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *用户ID
+       * </pre>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000001;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       *
+       * <pre>
+       *用户ID
+       * </pre>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object certName_ = "";
+      /**
+       * <code>optional string certName = 2;</code>
+       *
+       * <pre>
+       *姓名
+       * </pre>
+       */
+      public boolean hasCertName() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string certName = 2;</code>
+       *
+       * <pre>
+       *姓名
+       * </pre>
+       */
+      public java.lang.String getCertName() {
+        java.lang.Object ref = certName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string certName = 2;</code>
+       *
+       * <pre>
+       *姓名
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCertNameBytes() {
+        java.lang.Object ref = certName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          certName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string certName = 2;</code>
+       *
+       * <pre>
+       *姓名
+       * </pre>
+       */
+      public Builder setCertName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        certName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string certName = 2;</code>
+       *
+       * <pre>
+       *姓名
+       * </pre>
+       */
+      public Builder clearCertName() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        certName_ = getDefaultInstance().getCertName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string certName = 2;</code>
+       *
+       * <pre>
+       *姓名
+       * </pre>
+       */
+      public Builder setCertNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        certName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object certNo_ = "";
+      /**
+       * <code>optional string certNo = 3;</code>
+       *
+       * <pre>
+       *身份证
+       * </pre>
+       */
+      public boolean hasCertNo() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string certNo = 3;</code>
+       *
+       * <pre>
+       *身份证
+       * </pre>
+       */
+      public java.lang.String getCertNo() {
+        java.lang.Object ref = certNo_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certNo_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string certNo = 3;</code>
+       *
+       * <pre>
+       *身份证
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCertNoBytes() {
+        java.lang.Object ref = certNo_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          certNo_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string certNo = 3;</code>
+       *
+       * <pre>
+       *身份证
+       * </pre>
+       */
+      public Builder setCertNo(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        certNo_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string certNo = 3;</code>
+       *
+       * <pre>
+       *身份证
+       * </pre>
+       */
+      public Builder clearCertNo() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        certNo_ = getDefaultInstance().getCertNo();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string certNo = 3;</code>
+       *
+       * <pre>
+       *身份证
+       * </pre>
+       */
+      public Builder setCertNoBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        certNo_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object retUrl_ = "";
+      /**
+       * <code>optional string retUrl = 4;</code>
+       *
+       * <pre>
+       *回调url
+       * </pre>
+       */
+      public boolean hasRetUrl() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string retUrl = 4;</code>
+       *
+       * <pre>
+       *回调url
+       * </pre>
+       */
+      public java.lang.String getRetUrl() {
+        java.lang.Object ref = retUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            retUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string retUrl = 4;</code>
+       *
+       * <pre>
+       *回调url
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getRetUrlBytes() {
+        java.lang.Object ref = retUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          retUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string retUrl = 4;</code>
+       *
+       * <pre>
+       *回调url
+       * </pre>
+       */
+      public Builder setRetUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        retUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string retUrl = 4;</code>
+       *
+       * <pre>
+       *回调url
+       * </pre>
+       */
+      public Builder clearRetUrl() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        retUrl_ = getDefaultInstance().getRetUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string retUrl = 4;</code>
+       *
+       * <pre>
+       *回调url
+       * </pre>
+       */
+      public Builder setRetUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        retUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ApplyZhimaCertificationReq)
+    }
+
+    static {
+      defaultInstance = new ApplyZhimaCertificationReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ApplyZhimaCertificationReq)
+  }
+
+  public interface ApplyZhimCertificationRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.ApplyZhimCertificationRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional string certUrl = 2;</code>
+     *
+     * <pre>
+     *zhima返回的url
+     * </pre>
+     */
+    boolean hasCertUrl();
+    /**
+     * <code>optional string certUrl = 2;</code>
+     *
+     * <pre>
+     *zhima返回的url
+     * </pre>
+     */
+    java.lang.String getCertUrl();
+    /**
+     * <code>optional string certUrl = 2;</code>
+     *
+     * <pre>
+     *zhima返回的url
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCertUrlBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.ApplyZhimCertificationRsp}
+   */
+  public static final class ApplyZhimCertificationRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.ApplyZhimCertificationRsp)
+      ApplyZhimCertificationRspOrBuilder {
+    // Use ApplyZhimCertificationRsp.newBuilder() to construct.
+    private ApplyZhimCertificationRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ApplyZhimCertificationRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ApplyZhimCertificationRsp defaultInstance;
+    public static ApplyZhimCertificationRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ApplyZhimCertificationRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ApplyZhimCertificationRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              certUrl_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.ApplyZhimCertificationRsp.class, com.wali.live.proto.UserProto.ApplyZhimCertificationRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ApplyZhimCertificationRsp> PARSER =
+        new com.google.protobuf.AbstractParser<ApplyZhimCertificationRsp>() {
+      public ApplyZhimCertificationRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ApplyZhimCertificationRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ApplyZhimCertificationRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int CERTURL_FIELD_NUMBER = 2;
+    private java.lang.Object certUrl_;
+    /**
+     * <code>optional string certUrl = 2;</code>
+     *
+     * <pre>
+     *zhima返回的url
+     * </pre>
+     */
+    public boolean hasCertUrl() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string certUrl = 2;</code>
+     *
+     * <pre>
+     *zhima返回的url
+     * </pre>
+     */
+    public java.lang.String getCertUrl() {
+      java.lang.Object ref = certUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          certUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string certUrl = 2;</code>
+     *
+     * <pre>
+     *zhima返回的url
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCertUrlBytes() {
+      java.lang.Object ref = certUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        certUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      certUrl_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getCertUrlBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getCertUrlBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.ApplyZhimCertificationRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.ApplyZhimCertificationRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.ApplyZhimCertificationRsp)
+        com.wali.live.proto.UserProto.ApplyZhimCertificationRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.ApplyZhimCertificationRsp.class, com.wali.live.proto.UserProto.ApplyZhimCertificationRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.ApplyZhimCertificationRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        certUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.ApplyZhimCertificationRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.ApplyZhimCertificationRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.ApplyZhimCertificationRsp build() {
+        com.wali.live.proto.UserProto.ApplyZhimCertificationRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.ApplyZhimCertificationRsp buildPartial() {
+        com.wali.live.proto.UserProto.ApplyZhimCertificationRsp result = new com.wali.live.proto.UserProto.ApplyZhimCertificationRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.certUrl_ = certUrl_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.ApplyZhimCertificationRsp) {
+          return mergeFrom((com.wali.live.proto.UserProto.ApplyZhimCertificationRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.ApplyZhimCertificationRsp other) {
+        if (other == com.wali.live.proto.UserProto.ApplyZhimCertificationRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasCertUrl()) {
+          bitField0_ |= 0x00000002;
+          certUrl_ = other.certUrl_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.ApplyZhimCertificationRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.ApplyZhimCertificationRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object certUrl_ = "";
+      /**
+       * <code>optional string certUrl = 2;</code>
+       *
+       * <pre>
+       *zhima返回的url
+       * </pre>
+       */
+      public boolean hasCertUrl() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string certUrl = 2;</code>
+       *
+       * <pre>
+       *zhima返回的url
+       * </pre>
+       */
+      public java.lang.String getCertUrl() {
+        java.lang.Object ref = certUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            certUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string certUrl = 2;</code>
+       *
+       * <pre>
+       *zhima返回的url
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCertUrlBytes() {
+        java.lang.Object ref = certUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          certUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string certUrl = 2;</code>
+       *
+       * <pre>
+       *zhima返回的url
+       * </pre>
+       */
+      public Builder setCertUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        certUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string certUrl = 2;</code>
+       *
+       * <pre>
+       *zhima返回的url
+       * </pre>
+       */
+      public Builder clearCertUrl() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        certUrl_ = getDefaultInstance().getCertUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string certUrl = 2;</code>
+       *
+       * <pre>
+       *zhima返回的url
+       * </pre>
+       */
+      public Builder setCertUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        certUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.ApplyZhimCertificationRsp)
+    }
+
+    static {
+      defaultInstance = new ApplyZhimCertificationRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.ApplyZhimCertificationRsp)
+  }
+
+  public interface QueryZhimaCertReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.QueryZhimaCertReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     */
+    boolean hasZuid();
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     */
+    long getZuid();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.QueryZhimaCertReq}
+   */
+  public static final class QueryZhimaCertReq extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.QueryZhimaCertReq)
+      QueryZhimaCertReqOrBuilder {
+    // Use QueryZhimaCertReq.newBuilder() to construct.
+    private QueryZhimaCertReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private QueryZhimaCertReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final QueryZhimaCertReq defaultInstance;
+    public static QueryZhimaCertReq getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public QueryZhimaCertReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private QueryZhimaCertReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              zuid_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.QueryZhimaCertReq.class, com.wali.live.proto.UserProto.QueryZhimaCertReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<QueryZhimaCertReq> PARSER =
+        new com.google.protobuf.AbstractParser<QueryZhimaCertReq>() {
+      public QueryZhimaCertReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new QueryZhimaCertReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<QueryZhimaCertReq> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ZUID_FIELD_NUMBER = 1;
+    private long zuid_;
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     */
+    public boolean hasZuid() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint64 zuid = 1;</code>
+     */
+    public long getZuid() {
+      return zuid_;
+    }
+
+    private void initFields() {
+      zuid_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasZuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, zuid_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, zuid_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.QueryZhimaCertReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.QueryZhimaCertReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.QueryZhimaCertReq)
+        com.wali.live.proto.UserProto.QueryZhimaCertReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.QueryZhimaCertReq.class, com.wali.live.proto.UserProto.QueryZhimaCertReq.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.QueryZhimaCertReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        zuid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertReq_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.QueryZhimaCertReq getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.QueryZhimaCertReq.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.QueryZhimaCertReq build() {
+        com.wali.live.proto.UserProto.QueryZhimaCertReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.QueryZhimaCertReq buildPartial() {
+        com.wali.live.proto.UserProto.QueryZhimaCertReq result = new com.wali.live.proto.UserProto.QueryZhimaCertReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.zuid_ = zuid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.QueryZhimaCertReq) {
+          return mergeFrom((com.wali.live.proto.UserProto.QueryZhimaCertReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.QueryZhimaCertReq other) {
+        if (other == com.wali.live.proto.UserProto.QueryZhimaCertReq.getDefaultInstance()) return this;
+        if (other.hasZuid()) {
+          setZuid(other.getZuid());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasZuid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.QueryZhimaCertReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.QueryZhimaCertReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long zuid_ ;
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       */
+      public boolean hasZuid() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       */
+      public long getZuid() {
+        return zuid_;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       */
+      public Builder setZuid(long value) {
+        bitField0_ |= 0x00000001;
+        zuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint64 zuid = 1;</code>
+       */
+      public Builder clearZuid() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        zuid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.QueryZhimaCertReq)
+    }
+
+    static {
+      defaultInstance = new QueryZhimaCertReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.QueryZhimaCertReq)
+  }
+
+  public interface QueryZhimaCertRspOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.QueryZhimaCertRsp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    boolean hasRetCode();
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    int getRetCode();
+
+    /**
+     * <code>optional bool pass = 2;</code>
+     */
+    boolean hasPass();
+    /**
+     * <code>optional bool pass = 2;</code>
+     */
+    boolean getPass();
+
+    /**
+     * <code>optional string failedReason = 3;</code>
+     *
+     * <pre>
+     *zhima返回的提示语
+     * </pre>
+     */
+    boolean hasFailedReason();
+    /**
+     * <code>optional string failedReason = 3;</code>
+     *
+     * <pre>
+     *zhima返回的提示语
+     * </pre>
+     */
+    java.lang.String getFailedReason();
+    /**
+     * <code>optional string failedReason = 3;</code>
+     *
+     * <pre>
+     *zhima返回的提示语
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getFailedReasonBytes();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.QueryZhimaCertRsp}
+   */
+  public static final class QueryZhimaCertRsp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.QueryZhimaCertRsp)
+      QueryZhimaCertRspOrBuilder {
+    // Use QueryZhimaCertRsp.newBuilder() to construct.
+    private QueryZhimaCertRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private QueryZhimaCertRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final QueryZhimaCertRsp defaultInstance;
+    public static QueryZhimaCertRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public QueryZhimaCertRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private QueryZhimaCertRsp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              retCode_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              pass_ = input.readBool();
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              failedReason_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertRsp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertRsp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.UserProto.QueryZhimaCertRsp.class, com.wali.live.proto.UserProto.QueryZhimaCertRsp.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<QueryZhimaCertRsp> PARSER =
+        new com.google.protobuf.AbstractParser<QueryZhimaCertRsp>() {
+      public QueryZhimaCertRsp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new QueryZhimaCertRsp(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<QueryZhimaCertRsp> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int RETCODE_FIELD_NUMBER = 1;
+    private int retCode_;
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public boolean hasRetCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required uint32 retCode = 1;</code>
+     */
+    public int getRetCode() {
+      return retCode_;
+    }
+
+    public static final int PASS_FIELD_NUMBER = 2;
+    private boolean pass_;
+    /**
+     * <code>optional bool pass = 2;</code>
+     */
+    public boolean hasPass() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional bool pass = 2;</code>
+     */
+    public boolean getPass() {
+      return pass_;
+    }
+
+    public static final int FAILEDREASON_FIELD_NUMBER = 3;
+    private java.lang.Object failedReason_;
+    /**
+     * <code>optional string failedReason = 3;</code>
+     *
+     * <pre>
+     *zhima返回的提示语
+     * </pre>
+     */
+    public boolean hasFailedReason() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string failedReason = 3;</code>
+     *
+     * <pre>
+     *zhima返回的提示语
+     * </pre>
+     */
+    public java.lang.String getFailedReason() {
+      java.lang.Object ref = failedReason_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          failedReason_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string failedReason = 3;</code>
+     *
+     * <pre>
+     *zhima返回的提示语
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getFailedReasonBytes() {
+      java.lang.Object ref = failedReason_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        failedReason_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      retCode_ = 0;
+      pass_ = false;
+      failedReason_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRetCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBool(2, pass_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getFailedReasonBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, retCode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, pass_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getFailedReasonBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.UserProto.QueryZhimaCertRsp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.UserProto.QueryZhimaCertRsp prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.QueryZhimaCertRsp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.QueryZhimaCertRsp)
+        com.wali.live.proto.UserProto.QueryZhimaCertRspOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertRsp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertRsp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.UserProto.QueryZhimaCertRsp.class, com.wali.live.proto.UserProto.QueryZhimaCertRsp.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.UserProto.QueryZhimaCertRsp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        retCode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        pass_ = false;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        failedReason_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.UserProto.internal_static_com_wali_live_proto_QueryZhimaCertRsp_descriptor;
+      }
+
+      public com.wali.live.proto.UserProto.QueryZhimaCertRsp getDefaultInstanceForType() {
+        return com.wali.live.proto.UserProto.QueryZhimaCertRsp.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.UserProto.QueryZhimaCertRsp build() {
+        com.wali.live.proto.UserProto.QueryZhimaCertRsp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.UserProto.QueryZhimaCertRsp buildPartial() {
+        com.wali.live.proto.UserProto.QueryZhimaCertRsp result = new com.wali.live.proto.UserProto.QueryZhimaCertRsp(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.retCode_ = retCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.pass_ = pass_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.failedReason_ = failedReason_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.UserProto.QueryZhimaCertRsp) {
+          return mergeFrom((com.wali.live.proto.UserProto.QueryZhimaCertRsp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.UserProto.QueryZhimaCertRsp other) {
+        if (other == com.wali.live.proto.UserProto.QueryZhimaCertRsp.getDefaultInstance()) return this;
+        if (other.hasRetCode()) {
+          setRetCode(other.getRetCode());
+        }
+        if (other.hasPass()) {
+          setPass(other.getPass());
+        }
+        if (other.hasFailedReason()) {
+          bitField0_ |= 0x00000004;
+          failedReason_ = other.failedReason_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRetCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.UserProto.QueryZhimaCertRsp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.UserProto.QueryZhimaCertRsp) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int retCode_ ;
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public boolean hasRetCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public int getRetCode() {
+        return retCode_;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder setRetCode(int value) {
+        bitField0_ |= 0x00000001;
+        retCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required uint32 retCode = 1;</code>
+       */
+      public Builder clearRetCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        retCode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean pass_ ;
+      /**
+       * <code>optional bool pass = 2;</code>
+       */
+      public boolean hasPass() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional bool pass = 2;</code>
+       */
+      public boolean getPass() {
+        return pass_;
+      }
+      /**
+       * <code>optional bool pass = 2;</code>
+       */
+      public Builder setPass(boolean value) {
+        bitField0_ |= 0x00000002;
+        pass_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool pass = 2;</code>
+       */
+      public Builder clearPass() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        pass_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object failedReason_ = "";
+      /**
+       * <code>optional string failedReason = 3;</code>
+       *
+       * <pre>
+       *zhima返回的提示语
+       * </pre>
+       */
+      public boolean hasFailedReason() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string failedReason = 3;</code>
+       *
+       * <pre>
+       *zhima返回的提示语
+       * </pre>
+       */
+      public java.lang.String getFailedReason() {
+        java.lang.Object ref = failedReason_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            failedReason_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string failedReason = 3;</code>
+       *
+       * <pre>
+       *zhima返回的提示语
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getFailedReasonBytes() {
+        java.lang.Object ref = failedReason_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          failedReason_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string failedReason = 3;</code>
+       *
+       * <pre>
+       *zhima返回的提示语
+       * </pre>
+       */
+      public Builder setFailedReason(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        failedReason_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string failedReason = 3;</code>
+       *
+       * <pre>
+       *zhima返回的提示语
+       * </pre>
+       */
+      public Builder clearFailedReason() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        failedReason_ = getDefaultInstance().getFailedReason();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string failedReason = 3;</code>
+       *
+       * <pre>
+       *zhima返回的提示语
+       * </pre>
+       */
+      public Builder setFailedReasonBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        failedReason_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.QueryZhimaCertRsp)
+    }
+
+    static {
+      defaultInstance = new QueryZhimaCertRsp(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.QueryZhimaCertRsp)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_BusinessUserInfo_descriptor;
   private static
@@ -49332,6 +53925,16 @@ public final class UserProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_PersonalInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ZhiboExt_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ZhiboExt_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_UserNobleInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_UserNobleInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_PersonalData_descriptor;
   private static
@@ -49567,6 +54170,26 @@ public final class UserProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GetBindPhoneNumRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_QueryZhimaCertReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_QueryZhimaCertReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_QueryZhimaCertRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_QueryZhimaCertRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -49579,7 +54202,7 @@ public final class UserProto {
       "\n\nUser.proto\022\023com.wali.live.proto\"a\n\020Bus" +
       "inessUserInfo\022\025\n\rservice_phone\030\001 \003(\t\022\017\n\007" +
       "address\030\002 \001(\t\022\026\n\016business_hours\030\003 \001(\t\022\r\n" +
-      "\005intro\030\004 \001(\t\"\367\005\n\014PersonalInfo\022\014\n\004zuid\030\001 " +
+      "\005intro\030\004 \001(\t\"\251\006\n\014PersonalInfo\022\014\n\004zuid\030\001 " +
       "\002(\004\022\016\n\006avatar\030\002 \001(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n" +
       "\004sign\030\004 \001(\t\022\016\n\006gender\030\005 \001(\r\022\r\n\005level\030\006 \001" +
       "(\r\022\r\n\005badge\030\007 \001(\r\022\022\n\nupdateTime\030\010 \001(\004\022\021\n" +
@@ -49598,132 +54221,146 @@ public final class UserProto {
       "number\030\032 \001(\r\022\023\n\013seller_type\030\033 \001(\r\022\026\n\016is_",
       "union_admin\030\034 \001(\010\022\021\n\tvip_level\030\035 \001(\r\022\023\n\013" +
       "vip_disable\030\036 \001(\010\022\022\n\nvip_hidden\030\037 \001(\010\022\017\n" +
-      "\007is_live\030  \001(\010\"\334\001\n\014PersonalData\022\014\n\004zuid\030" +
-      "\001 \002(\004\022\026\n\016mliveTicketNum\030\t \001(\r\022\017\n\007fansNum" +
-      "\030\n \001(\r\022\021\n\tfollowNum\030\013 \001(\r\022\026\n\016sendDiamond" +
-      "Num\030\014 \001(\r\022\016\n\006vodNum\030\r \001(\r\022\017\n\007earnNum\030\016 \001" +
-      "(\r\022\022\n\ndiamondNum\030\017 \001(\r\022\025\n\ruser_eco_attr\030" +
-      "\020 \001(\014\022\036\n\026usable_mibi_ticket_cnt\030\021 \001(\r\"}\n" +
-      "\013UserEcoAttr\022\026\n\016bullet_gift_id\030\001 \001(\r\022\026\n\016" +
-      "bullet_gem_cnt\030\002 \001(\r\022\036\n\026consum_virtual_g",
-      "em_cnt\030\003 \001(\r\022\036\n\026usable_virtual_gem_cnt\030\004" +
-      " \001(\r\"\"\n\022GetUserInfoByIdReq\022\014\n\004zuid\030\001 \002(\004" +
-      "\"`\n\022GetUserInfoByIdRsp\022\021\n\terrorCode\030\001 \002(" +
-      "\r\0227\n\014personalInfo\030\002 \001(\0132!.com.wali.live." +
-      "proto.PersonalInfo\"8\n\rGetOwnInfoReq\022\014\n\004z" +
-      "uid\030\001 \002(\004\022\031\n\013getLiveInfo\030\002 \001(\010:\004true\"\212\003\n" +
-      "\rGetOwnInfoRsp\022\021\n\terrorCode\030\001 \002(\r\0227\n\014per" +
-      "sonalInfo\030\002 \001(\0132!.com.wali.live.proto.Pe" +
-      "rsonalInfo\0227\n\014personalData\030\003 \001(\0132!.com.w" +
-      "ali.live.proto.PersonalData\022\033\n\023rank_top_",
-      "three_list\030\006 \003(\004\0229\n\025before_nickname_meda" +
-      "l\030\010 \003(\0132\032.com.wali.live.proto.Medal\0228\n\024a" +
-      "fter_nickname_medal\030\t \003(\0132\032.com.wali.liv" +
-      "e.proto.Medal\0223\n\017user_card_medal\030\n \003(\0132\032" +
-      ".com.wali.live.proto.Medal\022\027\n\017need_bind_" +
-      "phone\030\013 \001(\010\022\024\n\010phoneNum\030\014 \001(\tB\002\030\001\"\027\n\005Med" +
-      "al\022\016\n\006pic_id\030\001 \001(\t\"&\n\026GetPersonalDataByI" +
-      "dReq\022\014\n\004zuid\030\001 \002(\004\"d\n\026GetPersonalDataByI" +
-      "dRsp\022\021\n\terrorCode\030\001 \002(\r\0227\n\014personalData\030" +
-      "\002 \001(\0132!.com.wali.live.proto.PersonalData",
-      "\"9\n\016GetHomepageReq\022\014\n\004zuid\030\001 \002(\004\022\031\n\013getL" +
-      "iveInfo\030\002 \001(\010:\004true\"\216\003\n\017GetHomepageResp\022" +
-      "\017\n\007retCode\030\001 \002(\r\0227\n\014personalInfo\030\002 \001(\0132!" +
-      ".com.wali.live.proto.PersonalInfo\0227\n\014per" +
-      "sonalData\030\003 \001(\0132!.com.wali.live.proto.Pe" +
-      "rsonalData\022\017\n\007viewUrl\030\004 \001(\t\022\033\n\023rank_top_" +
-      "three_list\030\006 \003(\004\022\016\n\006roomId\030\007 \001(\t\022\020\n\010room" +
-      "Info\030\010 \001(\014\0229\n\025before_nickname_medal\030\t \003(" +
-      "\0132\032.com.wali.live.proto.Medal\0228\n\024after_n" +
-      "ickname_medal\030\n \003(\0132\032.com.wali.live.prot",
-      "o.Medal\0223\n\017user_card_medal\030\013 \003(\0132\032.com.w" +
-      "ali.live.proto.Medal\"\230\001\n\024UploadUserSetti" +
-      "ngReq\022\014\n\004zuid\030\001 \002(\004\022\022\n\nisPushable\030\002 \001(\010\022" +
-      "\031\n\021isNotifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyNo" +
-      "Sound\030\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\022\021\n\t" +
-      "isVipHide\030\006 \001(\010\")\n\024UploadUserSettingRsp\022" +
-      "\021\n\terrorCode\030\001 \002(\r\"X\n\021SearchUserInfoReq\022" +
-      "\017\n\007keyword\030\001 \002(\t\022\016\n\006offset\030\002 \002(\r\022\r\n\005limi" +
-      "t\030\003 \002(\r\022\023\n\013live_status\030\004 \001(\010\"r\n\021SearchUs" +
-      "erInfoRsp\022\021\n\terrorCode\030\001 \002(\r\022\020\n\010totalNum",
-      "\030\002 \001(\r\0228\n\rpersonalInfos\030\003 \003(\0132!.com.wali" +
-      ".live.proto.PersonalInfo\"\274\002\n\027UploadUserP" +
-      "ropertiesReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006avatar\030\002 \001" +
-      "(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n\004sign\030\004 \001(\t\022\016\n\006ge" +
-      "nder\030\005 \001(\r\022\025\n\rcertification\030\006 \001(\t\022\031\n\021cer" +
-      "tificationType\030\007 \001(\r\022\030\n\tis_manual\030\n \001(\010:" +
-      "\005false\022\023\n\013cover_photo\030\013 \001(\t\022\017\n\007address\030\014" +
-      " \001(\t\022\022\n\navatar_md5\030\r \001(\t\022+\n\006region\030\016 \001(\013" +
-      "2\033.com.wali.live.proto.Region\022 \n\030modify_" +
-      "nickname_interval\030\017 \001(\r\"\201\001\n\027UploadUserPr",
-      "opertiesRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030" +
-      "\002 \001(\t\022\020\n\010nickname\030\003 \001(\t\022\034\n\024update_nickna" +
-      "me_time\030\004 \001(\004\022\024\n\014current_time\030\005 \001(\004\"F\n\017A" +
-      "dminSettingReq\022\020\n\010adminUid\030\001 \002(\004\022\021\n\toper" +
-      "ation\030\002 \002(\r\022\016\n\006roomId\030\003 \001(\t\"\"\n\017AdminSett" +
-      "ingRsp\022\017\n\007retCode\030\001 \002(\r\"\034\n\014AdminListReq\022" +
-      "\014\n\004zuid\030\001 \002(\004\"U\n\014AdminListRsp\022\017\n\007retCode" +
-      "\030\001 \002(\r\0224\n\tuserInfos\030\002 \003(\0132!.com.wali.liv" +
-      "e.proto.PersonalInfo\" \n\020GetOwnSettingReq" +
-      "\022\014\n\004zuid\030\001 \002(\004\"\227\001\n\020GetOwnSettingRsp\022\017\n\007r",
-      "etCode\030\001 \002(\r\022\022\n\nisPushable\030\002 \001(\010\022\031\n\021isNo" +
-      "tifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyNoSound\030\004" +
-      " \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\022\021\n\tisVipHi" +
-      "de\030\006 \001(\010\"\032\n\nHisRoomReq\022\014\n\004zuid\030\001 \002(\004\"^\n\n" +
-      "HisRoomRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006liveId\030\002 " +
-      "\001(\t\022\020\n\010shareUrl\030\003 \001(\t\022\017\n\007viewUrl\030\004 \001(\t\022\014" +
-      "\n\004type\030\005 \001(\r\"\"\n\022MutiGetUserInfoReq\022\014\n\004zu" +
-      "id\030\001 \003(\004\"^\n\022MutiGetUserInfoRsp\022\017\n\007retCod" +
-      "e\030\001 \002(\r\0227\n\014personalInfo\030\002 \003(\0132!.com.wali" +
-      ".live.proto.PersonalInfo\"=\n\rGetCaptchaRe",
-      "q\022\020\n\010phoneNum\030\001 \002(\t\022\014\n\004type\030\002 \002(\r\022\014\n\004lan" +
-      "g\030\003 \001(\t\" \n\rGetCaptchaRsp\022\017\n\007retCode\030\001 \002(" +
-      "\r\"V\n\020VerifyCaptchaReq\022\020\n\010phoneNum\030\001 \002(\t\022" +
-      "\014\n\004type\030\002 \002(\r\022\017\n\007captcha\030\003 \002(\t\022\021\n\tidCard" +
-      "Num\030\004 \001(\t\"#\n\020VerifyCaptchaRsp\022\017\n\007retCode" +
-      "\030\001 \002(\r\"C\n\025ApplyCertificationReq\022\031\n\021certi" +
-      "ficationInfo\030\001 \002(\014\022\017\n\004type\030\002 \001(\r:\0011\"(\n\025A" +
-      "pplyCertificationRsp\022\017\n\007retCode\030\001 \002(\r\"\366\002" +
-      "\n\021CertificationInfo\022\014\n\004uuid\030\001 \001(\004\022\014\n\004nam" +
-      "e\030\002 \001(\t\022\020\n\010phoneNum\030\003 \001(\t\022/\n\006idcard\030\004 \003(",
-      "\0132\037.com.wali.live.proto.PrivateImg\022\025\n\rce" +
-      "rtification\030\005 \001(\t\022\023\n\013companyName\030\006 \001(\t\022\022" +
-      "\n\nprofession\030\007 \001(\t\0222\n\tproofJobs\030\010 \003(\0132\037." +
-      "com.wali.live.proto.PrivateImg\0224\n\013otherI" +
-      "dCard\030\t \003(\0132\037.com.wali.live.proto.Privat" +
-      "eImg\022\r\n\005works\030\n \001(\t\022\021\n\tidCardNum\030\013 \001(\t\022\020" +
-      "\n\010birthday\030\014 \001(\t\022\017\n\004type\030\r \001(\r:\0011\022\023\n\010car" +
-      "dType\030\016 \001(\r:\0011\"/\n\nPrivateImg\022\016\n\006bucket\030\001" +
-      " \001(\t\022\021\n\tobjectKey\030\002 \001(\t\"\035\n\tLiveCover\022\020\n\010" +
-      "coverUrl\030\001 \001(\t\"\364\001\n\007HisLive\022\016\n\006liveId\030\001 \002",
-      "(\t\022\021\n\tviewerCnt\030\002 \001(\r\022\013\n\003url\030\003 \001(\t\022\021\n\tst" +
-      "artTime\030\004 \001(\004\022\017\n\007endTime\030\005 \001(\004\022\021\n\tliveTi" +
-      "tle\030\006 \001(\t\022\020\n\010shareUrl\030\007 \001(\t\0221\n\tliveCover" +
-      "\030\010 \001(\0132\036.com.wali.live.proto.LiveCover\022/" +
-      "\n\004user\030\t \001(\0132!.com.wali.live.proto.Perso" +
-      "nalInfo\022\014\n\004type\030\n \001(\r\"D\n\021FirstAudit4ProR" +
-      "eq\022\014\n\004zuid\030\001 \002(\004\022\017\n\007headurl\030\002 \001(\t\022\020\n\010nic" +
-      "kname\030\003 \001(\t\"5\n\021FirstAudit4ProRsp\022\017\n\007retC" +
-      "ode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\"&\n\021GetCountry" +
-      "ListReq\022\021\n\tlang_type\030\001 \002(\r\"\246\001\n\021GetCountr",
-      "yListRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001" +
-      "(\t\0225\n\013countryinfo\030\003 \003(\0132 .com.wali.live." +
-      "proto.CountryInfo\0228\n\016hotcountryinfo\030\004 \003(" +
-      "\0132 .com.wali.live.proto.CountryInfo\"D\n\006R" +
-      "egion\022\023\n\013source_type\030\001 \001(\r\022\017\n\007country\030\002 " +
-      "\001(\t\022\024\n\014country_code\030\003 \001(\t\"4\n\013CountryInfo" +
-      "\022\017\n\007country\030\001 \002(\t\022\024\n\014country_code\030\002 \002(\t\"" +
-      "\265\001\n\021GetCountryCodeReq\022\017\n\007gps_lon\030\001 \001(\001\022\017" +
-      "\n\007gps_lat\030\002 \001(\001\022\023\n\013gps_country\030\003 \001(\t\022\030\n\020" +
-      "gps_country_code\030\004 \001(\t\022\024\n\014gps_province\030\005",
-      " \001(\t\022\020\n\010gps_city\030\006 \001(\t\022\020\n\010gps_type\030\007 \001(\r" +
-      "\022\025\n\rgps_lang_type\030\010 \001(\r\"K\n\021GetCountryCod" +
-      "eRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022\024" +
-      "\n\014country_code\030\003 \001(\t\"\"\n\022GetBindPhoneNumR" +
-      "eq\022\014\n\004zuid\030\001 \002(\004\"`\n\022GetBindPhoneNumRsp\022\017" +
-      "\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022\022\n\nbind" +
-      "Status\030\003 \001(\r\022\024\n\014bindPhoneNum\030\004 \001(\tB \n\023co" +
-      "m.wali.live.protoB\tUserProto"
+      "\007is_live\030  \001(\010\0220\n\tzhibo_ext\030& \001(\0132\035.com." +
+      "wali.live.proto.ZhiboExt\"B\n\010ZhiboExt\0226\n\n" +
+      "noble_info\030\001 \001(\0132\".com.wali.live.proto.U" +
+      "serNobleInfo\"#\n\rUserNobleInfo\022\022\n\nnobleLe" +
+      "vel\030\001 \002(\r\"\371\001\n\014PersonalData\022\014\n\004zuid\030\001 \002(\004" +
+      "\022\026\n\016mliveTicketNum\030\t \001(\r\022\017\n\007fansNum\030\n \001(" +
+      "\r\022\021\n\tfollowNum\030\013 \001(\r\022\026\n\016sendDiamondNum\030\014" +
+      " \001(\r\022\016\n\006vodNum\030\r \001(\r\022\017\n\007earnNum\030\016 \001(\r\022\022\n",
+      "\ndiamondNum\030\017 \001(\r\022\025\n\ruser_eco_attr\030\020 \001(\014" +
+      "\022\036\n\026usable_mibi_ticket_cnt\030\021 \001(\r\022\033\n\023gcoi" +
+      "n_user_eco_attr\030\023 \001(\014\"}\n\013UserEcoAttr\022\026\n\016" +
+      "bullet_gift_id\030\001 \001(\r\022\026\n\016bullet_gem_cnt\030\002" +
+      " \001(\r\022\036\n\026consum_virtual_gem_cnt\030\003 \001(\r\022\036\n\026" +
+      "usable_virtual_gem_cnt\030\004 \001(\r\"\"\n\022GetUserI" +
+      "nfoByIdReq\022\014\n\004zuid\030\001 \002(\004\"`\n\022GetUserInfoB" +
+      "yIdRsp\022\021\n\terrorCode\030\001 \002(\r\0227\n\014personalInf" +
+      "o\030\002 \001(\0132!.com.wali.live.proto.PersonalIn" +
+      "fo\"U\n\rGetOwnInfoReq\022\014\n\004zuid\030\001 \002(\004\022\031\n\013get",
+      "LiveInfo\030\002 \001(\010:\004true\022\033\n\014getGcoinInfo\030\003 \001" +
+      "(\010:\005false\"\301\003\n\rGetOwnInfoRsp\022\021\n\terrorCode" +
+      "\030\001 \002(\r\0227\n\014personalInfo\030\002 \001(\0132!.com.wali." +
+      "live.proto.PersonalInfo\0227\n\014personalData\030" +
+      "\003 \001(\0132!.com.wali.live.proto.PersonalData" +
+      "\022\033\n\023rank_top_three_list\030\006 \003(\004\0229\n\025before_" +
+      "nickname_medal\030\010 \003(\0132\032.com.wali.live.pro" +
+      "to.Medal\0228\n\024after_nickname_medal\030\t \003(\0132\032" +
+      ".com.wali.live.proto.Medal\0223\n\017user_card_" +
+      "medal\030\n \003(\0132\032.com.wali.live.proto.Medal\022",
+      "\027\n\017need_bind_phone\030\013 \001(\010\022\024\n\010phoneNum\030\014 \001" +
+      "(\tB\002\030\001\0225\n\021user_nobel_mmedal\030\r \001(\0132\032.com." +
+      "wali.live.proto.Medal\"\027\n\005Medal\022\016\n\006pic_id" +
+      "\030\001 \001(\t\"&\n\026GetPersonalDataByIdReq\022\014\n\004zuid" +
+      "\030\001 \002(\004\"d\n\026GetPersonalDataByIdRsp\022\021\n\terro" +
+      "rCode\030\001 \002(\r\0227\n\014personalData\030\002 \001(\0132!.com." +
+      "wali.live.proto.PersonalData\"9\n\016GetHomep" +
+      "ageReq\022\014\n\004zuid\030\001 \002(\004\022\031\n\013getLiveInfo\030\002 \001(" +
+      "\010:\004true\"\304\003\n\017GetHomepageResp\022\017\n\007retCode\030\001" +
+      " \002(\r\0227\n\014personalInfo\030\002 \001(\0132!.com.wali.li",
+      "ve.proto.PersonalInfo\0227\n\014personalData\030\003 " +
+      "\001(\0132!.com.wali.live.proto.PersonalData\022\017" +
+      "\n\007viewUrl\030\004 \001(\t\022\033\n\023rank_top_three_list\030\006" +
+      " \003(\004\022\016\n\006roomId\030\007 \001(\t\022\020\n\010roomInfo\030\010 \001(\014\0229" +
+      "\n\025before_nickname_medal\030\t \003(\0132\032.com.wali" +
+      ".live.proto.Medal\0228\n\024after_nickname_meda" +
+      "l\030\n \003(\0132\032.com.wali.live.proto.Medal\0223\n\017u" +
+      "ser_card_medal\030\013 \003(\0132\032.com.wali.live.pro" +
+      "to.Medal\0224\n\020user_noble_medal\030\r \001(\0132\032.com" +
+      ".wali.live.proto.Medal\"\230\001\n\024UploadUserSet",
+      "tingReq\022\014\n\004zuid\030\001 \002(\004\022\022\n\nisPushable\030\002 \001(" +
+      "\010\022\031\n\021isNotifyNoDisturb\030\003 \001(\010\022\027\n\017isNotify" +
+      "NoSound\030\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\022\021" +
+      "\n\tisVipHide\030\006 \001(\010\")\n\024UploadUserSettingRs" +
+      "p\022\021\n\terrorCode\030\001 \002(\r\"X\n\021SearchUserInfoRe" +
+      "q\022\017\n\007keyword\030\001 \002(\t\022\016\n\006offset\030\002 \002(\r\022\r\n\005li" +
+      "mit\030\003 \002(\r\022\023\n\013live_status\030\004 \001(\010\"r\n\021Search" +
+      "UserInfoRsp\022\021\n\terrorCode\030\001 \002(\r\022\020\n\010totalN" +
+      "um\030\002 \001(\r\0228\n\rpersonalInfos\030\003 \003(\0132!.com.wa" +
+      "li.live.proto.PersonalInfo\"\274\002\n\027UploadUse",
+      "rPropertiesReq\022\014\n\004zuid\030\001 \002(\004\022\016\n\006avatar\030\002" +
+      " \001(\004\022\020\n\010nickname\030\003 \001(\t\022\014\n\004sign\030\004 \001(\t\022\016\n\006" +
+      "gender\030\005 \001(\r\022\025\n\rcertification\030\006 \001(\t\022\031\n\021c" +
+      "ertificationType\030\007 \001(\r\022\030\n\tis_manual\030\n \001(" +
+      "\010:\005false\022\023\n\013cover_photo\030\013 \001(\t\022\017\n\007address" +
+      "\030\014 \001(\t\022\022\n\navatar_md5\030\r \001(\t\022+\n\006region\030\016 \001" +
+      "(\0132\033.com.wali.live.proto.Region\022 \n\030modif" +
+      "y_nickname_interval\030\017 \001(\r\"\201\001\n\027UploadUser" +
+      "PropertiesRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_ms" +
+      "g\030\002 \001(\t\022\020\n\010nickname\030\003 \001(\t\022\034\n\024update_nick",
+      "name_time\030\004 \001(\004\022\024\n\014current_time\030\005 \001(\004\"F\n" +
+      "\017AdminSettingReq\022\020\n\010adminUid\030\001 \002(\004\022\021\n\top" +
+      "eration\030\002 \002(\r\022\016\n\006roomId\030\003 \001(\t\"\"\n\017AdminSe" +
+      "ttingRsp\022\017\n\007retCode\030\001 \002(\r\"\034\n\014AdminListRe" +
+      "q\022\014\n\004zuid\030\001 \002(\004\"U\n\014AdminListRsp\022\017\n\007retCo" +
+      "de\030\001 \002(\r\0224\n\tuserInfos\030\002 \003(\0132!.com.wali.l" +
+      "ive.proto.PersonalInfo\" \n\020GetOwnSettingR" +
+      "eq\022\014\n\004zuid\030\001 \002(\004\"\227\001\n\020GetOwnSettingRsp\022\017\n" +
+      "\007retCode\030\001 \002(\r\022\022\n\nisPushable\030\002 \001(\010\022\031\n\021is" +
+      "NotifyNoDisturb\030\003 \001(\010\022\027\n\017isNotifyNoSound",
+      "\030\004 \001(\010\022\027\n\017isNotifyNoShake\030\005 \001(\010\022\021\n\tisVip" +
+      "Hide\030\006 \001(\010\"\032\n\nHisRoomReq\022\014\n\004zuid\030\001 \002(\004\"^" +
+      "\n\nHisRoomRsp\022\017\n\007retCode\030\001 \002(\r\022\016\n\006liveId\030" +
+      "\002 \001(\t\022\020\n\010shareUrl\030\003 \001(\t\022\017\n\007viewUrl\030\004 \001(\t" +
+      "\022\014\n\004type\030\005 \001(\r\"\"\n\022MutiGetUserInfoReq\022\014\n\004" +
+      "zuid\030\001 \003(\004\"^\n\022MutiGetUserInfoRsp\022\017\n\007retC" +
+      "ode\030\001 \002(\r\0227\n\014personalInfo\030\002 \003(\0132!.com.wa" +
+      "li.live.proto.PersonalInfo\"=\n\rGetCaptcha" +
+      "Req\022\020\n\010phoneNum\030\001 \002(\t\022\014\n\004type\030\002 \002(\r\022\014\n\004l" +
+      "ang\030\003 \001(\t\" \n\rGetCaptchaRsp\022\017\n\007retCode\030\001 ",
+      "\002(\r\"V\n\020VerifyCaptchaReq\022\020\n\010phoneNum\030\001 \002(" +
+      "\t\022\014\n\004type\030\002 \002(\r\022\017\n\007captcha\030\003 \002(\t\022\021\n\tidCa" +
+      "rdNum\030\004 \001(\t\"#\n\020VerifyCaptchaRsp\022\017\n\007retCo" +
+      "de\030\001 \002(\r\"C\n\025ApplyCertificationReq\022\031\n\021cer" +
+      "tificationInfo\030\001 \002(\014\022\017\n\004type\030\002 \001(\r:\0011\"(\n" +
+      "\025ApplyCertificationRsp\022\017\n\007retCode\030\001 \002(\r\"" +
+      "\366\002\n\021CertificationInfo\022\014\n\004uuid\030\001 \001(\004\022\014\n\004n" +
+      "ame\030\002 \001(\t\022\020\n\010phoneNum\030\003 \001(\t\022/\n\006idcard\030\004 " +
+      "\003(\0132\037.com.wali.live.proto.PrivateImg\022\025\n\r" +
+      "certification\030\005 \001(\t\022\023\n\013companyName\030\006 \001(\t",
+      "\022\022\n\nprofession\030\007 \001(\t\0222\n\tproofJobs\030\010 \003(\0132" +
+      "\037.com.wali.live.proto.PrivateImg\0224\n\013othe" +
+      "rIdCard\030\t \003(\0132\037.com.wali.live.proto.Priv" +
+      "ateImg\022\r\n\005works\030\n \001(\t\022\021\n\tidCardNum\030\013 \001(\t" +
+      "\022\020\n\010birthday\030\014 \001(\t\022\017\n\004type\030\r \001(\r:\0011\022\023\n\010c" +
+      "ardType\030\016 \001(\r:\0011\"/\n\nPrivateImg\022\016\n\006bucket" +
+      "\030\001 \001(\t\022\021\n\tobjectKey\030\002 \001(\t\"\035\n\tLiveCover\022\020" +
+      "\n\010coverUrl\030\001 \001(\t\"\364\001\n\007HisLive\022\016\n\006liveId\030\001" +
+      " \002(\t\022\021\n\tviewerCnt\030\002 \001(\r\022\013\n\003url\030\003 \001(\t\022\021\n\t" +
+      "startTime\030\004 \001(\004\022\017\n\007endTime\030\005 \001(\004\022\021\n\tlive",
+      "Title\030\006 \001(\t\022\020\n\010shareUrl\030\007 \001(\t\0221\n\tliveCov" +
+      "er\030\010 \001(\0132\036.com.wali.live.proto.LiveCover" +
+      "\022/\n\004user\030\t \001(\0132!.com.wali.live.proto.Per" +
+      "sonalInfo\022\014\n\004type\030\n \001(\r\"D\n\021FirstAudit4Pr" +
+      "oReq\022\014\n\004zuid\030\001 \002(\004\022\017\n\007headurl\030\002 \001(\t\022\020\n\010n" +
+      "ickname\030\003 \001(\t\"5\n\021FirstAudit4ProRsp\022\017\n\007re" +
+      "tCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\"&\n\021GetCount" +
+      "ryListReq\022\021\n\tlang_type\030\001 \002(\r\"\246\001\n\021GetCoun" +
+      "tryListRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002" +
+      " \001(\t\0225\n\013countryinfo\030\003 \003(\0132 .com.wali.liv",
+      "e.proto.CountryInfo\0228\n\016hotcountryinfo\030\004 " +
+      "\003(\0132 .com.wali.live.proto.CountryInfo\"D\n" +
+      "\006Region\022\023\n\013source_type\030\001 \001(\r\022\017\n\007country\030" +
+      "\002 \001(\t\022\024\n\014country_code\030\003 \001(\t\"4\n\013CountryIn" +
+      "fo\022\017\n\007country\030\001 \002(\t\022\024\n\014country_code\030\002 \002(" +
+      "\t\"\265\001\n\021GetCountryCodeReq\022\017\n\007gps_lon\030\001 \001(\001" +
+      "\022\017\n\007gps_lat\030\002 \001(\001\022\023\n\013gps_country\030\003 \001(\t\022\030" +
+      "\n\020gps_country_code\030\004 \001(\t\022\024\n\014gps_province" +
+      "\030\005 \001(\t\022\020\n\010gps_city\030\006 \001(\t\022\020\n\010gps_type\030\007 \001" +
+      "(\r\022\025\n\rgps_lang_type\030\010 \001(\r\"K\n\021GetCountryC",
+      "odeRsp\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t" +
+      "\022\024\n\014country_code\030\003 \001(\t\"\"\n\022GetBindPhoneNu" +
+      "mReq\022\014\n\004zuid\030\001 \002(\004\"`\n\022GetBindPhoneNumRsp" +
+      "\022\017\n\007retCode\030\001 \002(\r\022\017\n\007err_msg\030\002 \001(\t\022\022\n\nbi" +
+      "ndStatus\030\003 \001(\r\022\024\n\014bindPhoneNum\030\004 \001(\t\"\\\n\032" +
+      "ApplyZhimaCertificationReq\022\014\n\004zuid\030\001 \002(\004" +
+      "\022\020\n\010certName\030\002 \001(\t\022\016\n\006certNo\030\003 \001(\t\022\016\n\006re" +
+      "tUrl\030\004 \001(\t\"=\n\031ApplyZhimCertificationRsp\022" +
+      "\017\n\007retCode\030\001 \002(\r\022\017\n\007certUrl\030\002 \001(\t\"!\n\021Que" +
+      "ryZhimaCertReq\022\014\n\004zuid\030\001 \002(\004\"H\n\021QueryZhi",
+      "maCertRsp\022\017\n\007retCode\030\001 \002(\r\022\014\n\004pass\030\002 \001(\010" +
+      "\022\024\n\014failedReason\030\003 \001(\tB\013B\tUserProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -49748,289 +54385,325 @@ public final class UserProto {
     internal_static_com_wali_live_proto_PersonalInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PersonalInfo_descriptor,
-        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "IsFocused", "Certification", "IsBothwayFollowing", "CertificationType", "IsBlocked", "IsInspector", "AdminUids", "WaitingCertificationType", "CertificationId", "RealNameCertificationStatus", "CoverPhoto", "UserType", "BusinessUserInfo", "SellerStatus", "IsFirstAudit", "IsRedname", "Region", "FansNumber", "SellerType", "IsUnionAdmin", "VipLevel", "VipDisable", "VipHidden", "IsLive", });
-    internal_static_com_wali_live_proto_PersonalData_descriptor =
+        new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Level", "Badge", "UpdateTime", "IsFocused", "Certification", "IsBothwayFollowing", "CertificationType", "IsBlocked", "IsInspector", "AdminUids", "WaitingCertificationType", "CertificationId", "RealNameCertificationStatus", "CoverPhoto", "UserType", "BusinessUserInfo", "SellerStatus", "IsFirstAudit", "IsRedname", "Region", "FansNumber", "SellerType", "IsUnionAdmin", "VipLevel", "VipDisable", "VipHidden", "IsLive", "ZhiboExt", });
+    internal_static_com_wali_live_proto_ZhiboExt_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_com_wali_live_proto_ZhiboExt_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ZhiboExt_descriptor,
+        new java.lang.String[] { "NobleInfo", });
+    internal_static_com_wali_live_proto_UserNobleInfo_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_wali_live_proto_UserNobleInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_UserNobleInfo_descriptor,
+        new java.lang.String[] { "NobleLevel", });
+    internal_static_com_wali_live_proto_PersonalData_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_wali_live_proto_PersonalData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PersonalData_descriptor,
-        new java.lang.String[] { "Zuid", "MliveTicketNum", "FansNum", "FollowNum", "SendDiamondNum", "VodNum", "EarnNum", "DiamondNum", "UserEcoAttr", "UsableMibiTicketCnt", });
+        new java.lang.String[] { "Zuid", "MliveTicketNum", "FansNum", "FollowNum", "SendDiamondNum", "VodNum", "EarnNum", "DiamondNum", "UserEcoAttr", "UsableMibiTicketCnt", "GcoinUserEcoAttr", });
     internal_static_com_wali_live_proto_UserEcoAttr_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_com_wali_live_proto_UserEcoAttr_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UserEcoAttr_descriptor,
         new java.lang.String[] { "BulletGiftId", "BulletGemCnt", "ConsumVirtualGemCnt", "UsableVirtualGemCnt", });
     internal_static_com_wali_live_proto_GetUserInfoByIdReq_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_wali_live_proto_GetUserInfoByIdReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetUserInfoByIdReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_GetUserInfoByIdRsp_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_wali_live_proto_GetUserInfoByIdRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetUserInfoByIdRsp_descriptor,
         new java.lang.String[] { "ErrorCode", "PersonalInfo", });
     internal_static_com_wali_live_proto_GetOwnInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_com_wali_live_proto_GetOwnInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetOwnInfoReq_descriptor,
-        new java.lang.String[] { "Zuid", "GetLiveInfo", });
+        new java.lang.String[] { "Zuid", "GetLiveInfo", "GetGcoinInfo", });
     internal_static_com_wali_live_proto_GetOwnInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_com_wali_live_proto_GetOwnInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetOwnInfoRsp_descriptor,
-        new java.lang.String[] { "ErrorCode", "PersonalInfo", "PersonalData", "RankTopThreeList", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", "NeedBindPhone", "PhoneNum", });
+        new java.lang.String[] { "ErrorCode", "PersonalInfo", "PersonalData", "RankTopThreeList", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", "NeedBindPhone", "PhoneNum", "UserNobelMmedal", });
     internal_static_com_wali_live_proto_Medal_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_com_wali_live_proto_Medal_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Medal_descriptor,
         new java.lang.String[] { "PicId", });
     internal_static_com_wali_live_proto_GetPersonalDataByIdReq_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_com_wali_live_proto_GetPersonalDataByIdReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetPersonalDataByIdReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_GetPersonalDataByIdRsp_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_com_wali_live_proto_GetPersonalDataByIdRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetPersonalDataByIdRsp_descriptor,
         new java.lang.String[] { "ErrorCode", "PersonalData", });
     internal_static_com_wali_live_proto_GetHomepageReq_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_com_wali_live_proto_GetHomepageReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetHomepageReq_descriptor,
         new java.lang.String[] { "Zuid", "GetLiveInfo", });
     internal_static_com_wali_live_proto_GetHomepageResp_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_com_wali_live_proto_GetHomepageResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetHomepageResp_descriptor,
-        new java.lang.String[] { "RetCode", "PersonalInfo", "PersonalData", "ViewUrl", "RankTopThreeList", "RoomId", "RoomInfo", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", });
+        new java.lang.String[] { "RetCode", "PersonalInfo", "PersonalData", "ViewUrl", "RankTopThreeList", "RoomId", "RoomInfo", "BeforeNicknameMedal", "AfterNicknameMedal", "UserCardMedal", "UserNobleMedal", });
     internal_static_com_wali_live_proto_UploadUserSettingReq_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_com_wali_live_proto_UploadUserSettingReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UploadUserSettingReq_descriptor,
         new java.lang.String[] { "Zuid", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", "IsVipHide", });
     internal_static_com_wali_live_proto_UploadUserSettingRsp_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_com_wali_live_proto_UploadUserSettingRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UploadUserSettingRsp_descriptor,
         new java.lang.String[] { "ErrorCode", });
     internal_static_com_wali_live_proto_SearchUserInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_com_wali_live_proto_SearchUserInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SearchUserInfoReq_descriptor,
         new java.lang.String[] { "Keyword", "Offset", "Limit", "LiveStatus", });
     internal_static_com_wali_live_proto_SearchUserInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_com_wali_live_proto_SearchUserInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_SearchUserInfoRsp_descriptor,
         new java.lang.String[] { "ErrorCode", "TotalNum", "PersonalInfos", });
     internal_static_com_wali_live_proto_UploadUserPropertiesReq_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_com_wali_live_proto_UploadUserPropertiesReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UploadUserPropertiesReq_descriptor,
         new java.lang.String[] { "Zuid", "Avatar", "Nickname", "Sign", "Gender", "Certification", "CertificationType", "IsManual", "CoverPhoto", "Address", "AvatarMd5", "Region", "ModifyNicknameInterval", });
     internal_static_com_wali_live_proto_UploadUserPropertiesRsp_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_com_wali_live_proto_UploadUserPropertiesRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_UploadUserPropertiesRsp_descriptor,
         new java.lang.String[] { "RetCode", "ErrMsg", "Nickname", "UpdateNicknameTime", "CurrentTime", });
     internal_static_com_wali_live_proto_AdminSettingReq_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_com_wali_live_proto_AdminSettingReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminSettingReq_descriptor,
         new java.lang.String[] { "AdminUid", "Operation", "RoomId", });
     internal_static_com_wali_live_proto_AdminSettingRsp_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_com_wali_live_proto_AdminSettingRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminSettingRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_AdminListReq_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_AdminListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminListReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_AdminListRsp_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_com_wali_live_proto_AdminListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_AdminListRsp_descriptor,
         new java.lang.String[] { "RetCode", "UserInfos", });
     internal_static_com_wali_live_proto_GetOwnSettingReq_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_com_wali_live_proto_GetOwnSettingReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetOwnSettingReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_GetOwnSettingRsp_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_com_wali_live_proto_GetOwnSettingRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetOwnSettingRsp_descriptor,
         new java.lang.String[] { "RetCode", "IsPushable", "IsNotifyNoDisturb", "IsNotifyNoSound", "IsNotifyNoShake", "IsVipHide", });
     internal_static_com_wali_live_proto_HisRoomReq_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_com_wali_live_proto_HisRoomReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HisRoomReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_HisRoomRsp_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_com_wali_live_proto_HisRoomRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HisRoomRsp_descriptor,
         new java.lang.String[] { "RetCode", "LiveId", "ShareUrl", "ViewUrl", "Type", });
     internal_static_com_wali_live_proto_MutiGetUserInfoReq_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_com_wali_live_proto_MutiGetUserInfoReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MutiGetUserInfoReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_MutiGetUserInfoRsp_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_com_wali_live_proto_MutiGetUserInfoRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_MutiGetUserInfoRsp_descriptor,
         new java.lang.String[] { "RetCode", "PersonalInfo", });
     internal_static_com_wali_live_proto_GetCaptchaReq_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(31);
     internal_static_com_wali_live_proto_GetCaptchaReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCaptchaReq_descriptor,
         new java.lang.String[] { "PhoneNum", "Type", "Lang", });
     internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor =
-      getDescriptor().getMessageTypes().get(30);
+      getDescriptor().getMessageTypes().get(32);
     internal_static_com_wali_live_proto_GetCaptchaRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCaptchaRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_VerifyCaptchaReq_descriptor =
-      getDescriptor().getMessageTypes().get(31);
+      getDescriptor().getMessageTypes().get(33);
     internal_static_com_wali_live_proto_VerifyCaptchaReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VerifyCaptchaReq_descriptor,
         new java.lang.String[] { "PhoneNum", "Type", "Captcha", "IdCardNum", });
     internal_static_com_wali_live_proto_VerifyCaptchaRsp_descriptor =
-      getDescriptor().getMessageTypes().get(32);
+      getDescriptor().getMessageTypes().get(34);
     internal_static_com_wali_live_proto_VerifyCaptchaRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_VerifyCaptchaRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_ApplyCertificationReq_descriptor =
-      getDescriptor().getMessageTypes().get(33);
+      getDescriptor().getMessageTypes().get(35);
     internal_static_com_wali_live_proto_ApplyCertificationReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ApplyCertificationReq_descriptor,
         new java.lang.String[] { "CertificationInfo", "Type", });
     internal_static_com_wali_live_proto_ApplyCertificationRsp_descriptor =
-      getDescriptor().getMessageTypes().get(34);
+      getDescriptor().getMessageTypes().get(36);
     internal_static_com_wali_live_proto_ApplyCertificationRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ApplyCertificationRsp_descriptor,
         new java.lang.String[] { "RetCode", });
     internal_static_com_wali_live_proto_CertificationInfo_descriptor =
-      getDescriptor().getMessageTypes().get(35);
+      getDescriptor().getMessageTypes().get(37);
     internal_static_com_wali_live_proto_CertificationInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CertificationInfo_descriptor,
         new java.lang.String[] { "Uuid", "Name", "PhoneNum", "Idcard", "Certification", "CompanyName", "Profession", "ProofJobs", "OtherIdCard", "Works", "IdCardNum", "Birthday", "Type", "CardType", });
     internal_static_com_wali_live_proto_PrivateImg_descriptor =
-      getDescriptor().getMessageTypes().get(36);
+      getDescriptor().getMessageTypes().get(38);
     internal_static_com_wali_live_proto_PrivateImg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_PrivateImg_descriptor,
         new java.lang.String[] { "Bucket", "ObjectKey", });
     internal_static_com_wali_live_proto_LiveCover_descriptor =
-      getDescriptor().getMessageTypes().get(37);
+      getDescriptor().getMessageTypes().get(39);
     internal_static_com_wali_live_proto_LiveCover_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LiveCover_descriptor,
         new java.lang.String[] { "CoverUrl", });
     internal_static_com_wali_live_proto_HisLive_descriptor =
-      getDescriptor().getMessageTypes().get(38);
+      getDescriptor().getMessageTypes().get(40);
     internal_static_com_wali_live_proto_HisLive_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_HisLive_descriptor,
         new java.lang.String[] { "LiveId", "ViewerCnt", "Url", "StartTime", "EndTime", "LiveTitle", "ShareUrl", "LiveCover", "User", "Type", });
     internal_static_com_wali_live_proto_FirstAudit4ProReq_descriptor =
-      getDescriptor().getMessageTypes().get(39);
+      getDescriptor().getMessageTypes().get(41);
     internal_static_com_wali_live_proto_FirstAudit4ProReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_FirstAudit4ProReq_descriptor,
         new java.lang.String[] { "Zuid", "Headurl", "Nickname", });
     internal_static_com_wali_live_proto_FirstAudit4ProRsp_descriptor =
-      getDescriptor().getMessageTypes().get(40);
+      getDescriptor().getMessageTypes().get(42);
     internal_static_com_wali_live_proto_FirstAudit4ProRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_FirstAudit4ProRsp_descriptor,
         new java.lang.String[] { "RetCode", "ErrMsg", });
     internal_static_com_wali_live_proto_GetCountryListReq_descriptor =
-      getDescriptor().getMessageTypes().get(41);
+      getDescriptor().getMessageTypes().get(43);
     internal_static_com_wali_live_proto_GetCountryListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCountryListReq_descriptor,
         new java.lang.String[] { "LangType", });
     internal_static_com_wali_live_proto_GetCountryListRsp_descriptor =
-      getDescriptor().getMessageTypes().get(42);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_com_wali_live_proto_GetCountryListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCountryListRsp_descriptor,
         new java.lang.String[] { "RetCode", "ErrMsg", "Countryinfo", "Hotcountryinfo", });
     internal_static_com_wali_live_proto_Region_descriptor =
-      getDescriptor().getMessageTypes().get(43);
+      getDescriptor().getMessageTypes().get(45);
     internal_static_com_wali_live_proto_Region_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Region_descriptor,
         new java.lang.String[] { "SourceType", "Country", "CountryCode", });
     internal_static_com_wali_live_proto_CountryInfo_descriptor =
-      getDescriptor().getMessageTypes().get(44);
+      getDescriptor().getMessageTypes().get(46);
     internal_static_com_wali_live_proto_CountryInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_CountryInfo_descriptor,
         new java.lang.String[] { "Country", "CountryCode", });
     internal_static_com_wali_live_proto_GetCountryCodeReq_descriptor =
-      getDescriptor().getMessageTypes().get(45);
+      getDescriptor().getMessageTypes().get(47);
     internal_static_com_wali_live_proto_GetCountryCodeReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCountryCodeReq_descriptor,
         new java.lang.String[] { "GpsLon", "GpsLat", "GpsCountry", "GpsCountryCode", "GpsProvince", "GpsCity", "GpsType", "GpsLangType", });
     internal_static_com_wali_live_proto_GetCountryCodeRsp_descriptor =
-      getDescriptor().getMessageTypes().get(46);
+      getDescriptor().getMessageTypes().get(48);
     internal_static_com_wali_live_proto_GetCountryCodeRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetCountryCodeRsp_descriptor,
         new java.lang.String[] { "RetCode", "ErrMsg", "CountryCode", });
     internal_static_com_wali_live_proto_GetBindPhoneNumReq_descriptor =
-      getDescriptor().getMessageTypes().get(47);
+      getDescriptor().getMessageTypes().get(49);
     internal_static_com_wali_live_proto_GetBindPhoneNumReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetBindPhoneNumReq_descriptor,
         new java.lang.String[] { "Zuid", });
     internal_static_com_wali_live_proto_GetBindPhoneNumRsp_descriptor =
-      getDescriptor().getMessageTypes().get(48);
+      getDescriptor().getMessageTypes().get(50);
     internal_static_com_wali_live_proto_GetBindPhoneNumRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetBindPhoneNumRsp_descriptor,
         new java.lang.String[] { "RetCode", "ErrMsg", "BindStatus", "BindPhoneNum", });
+    internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_descriptor =
+      getDescriptor().getMessageTypes().get(51);
+    internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ApplyZhimaCertificationReq_descriptor,
+        new java.lang.String[] { "Zuid", "CertName", "CertNo", "RetUrl", });
+    internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_descriptor =
+      getDescriptor().getMessageTypes().get(52);
+    internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_ApplyZhimCertificationRsp_descriptor,
+        new java.lang.String[] { "RetCode", "CertUrl", });
+    internal_static_com_wali_live_proto_QueryZhimaCertReq_descriptor =
+      getDescriptor().getMessageTypes().get(53);
+    internal_static_com_wali_live_proto_QueryZhimaCertReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_QueryZhimaCertReq_descriptor,
+        new java.lang.String[] { "Zuid", });
+    internal_static_com_wali_live_proto_QueryZhimaCertRsp_descriptor =
+      getDescriptor().getMessageTypes().get(54);
+    internal_static_com_wali_live_proto_QueryZhimaCertRsp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_QueryZhimaCertRsp_descriptor,
+        new java.lang.String[] { "RetCode", "Pass", "FailedReason", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
