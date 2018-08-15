@@ -146,7 +146,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_DO_FEED_BACK, 205058);
         mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
         mMinVersionMap.put(ACTION_OP_GET_BARRAGE, 206003);
-        mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST,430020);
+        mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST, 430020);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -316,18 +316,18 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void startBarragePull(String roomId,int []msgType, IGetBarrageCallback callback) {
-        Logger.d(TAG, "beginBarragePull roomId:"+roomId+" msgtype:"+msgType);
+    public void startBarragePull(String roomId, int[] msgType, IGetBarrageCallback callback) {
+        Logger.d(TAG, "beginBarragePull roomId:" + roomId + " msgtype:" + msgType);
         if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
             return;
         }
         checkHasInit();
-        MiLiveSdkServiceProxy.getInstance().startBarragePull(roomId,msgType,callback);
+        MiLiveSdkServiceProxy.getInstance().startBarragePull(roomId, msgType, callback);
     }
 
     @Override
-    public void stopBarragePull(String roomId,IAssistantCallback callback) {
-        Logger.d(TAG,"stopBarragePull" + " roomId=" + roomId);
+    public void stopBarragePull(String roomId, IAssistantCallback callback) {
+        Logger.d(TAG, "stopBarragePull" + " roomId=" + roomId);
         if (!checkVersion(ACTION_OP_GET_BARRAGE, callback)) {
             return;
         }
@@ -345,8 +345,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public boolean openChannelList(Activity activity,IAssistantCallback callback) {
-        Logger.d(TAG,"openChannelList");
+    public boolean openChannelList(Activity activity, IAssistantCallback callback) {
+        Logger.d(TAG, "openChannelList");
         if (!checkVersion(ACTION_OPEN_CHANNEL_LIST, callback)) {
             return false;
         }
@@ -363,8 +363,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public boolean enableRelationChain(boolean enable,IAssistantCallback callback) {
-        if(!enable){
+    public boolean enableRelationChain(boolean enable, IAssistantCallback callback) {
+        if (!enable) {
             if (!checkVersion(ACTION_DISABLE_RELATION_CHAIN, callback)) {
                 return false;
             }
@@ -461,11 +461,19 @@ public class MiLiveSdkController implements IMiLiveSdk {
                 long playerId = SchemeUtils.getLong(uri, "playerid", 0);
                 String videoUrl = SchemeUtils.getString(uri, "videourl");
                 int liveType = SchemeUtils.getInt(uri, "type", 0);
+                int gameId = SchemeUtils.getInt(uri, "gameid", 0);
                 if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
-                    if (pageChannelId > 0) {
-                        openWatch(activity, playerId, liveId, videoUrl, liveType, pageChannelId, callback);
+                    if (gameId > 0) {
+                        RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
+                                .setGameId(String.valueOf(gameId))
+                                .build();
+                        openWatchRoom(activity, roomInfo, callback);
                     } else {
-                        openWatch(activity, playerId, liveId, videoUrl, liveType, callback);
+                        if (pageChannelId > 0) {
+                            openWatch(activity, playerId, liveId, videoUrl, liveType, pageChannelId, callback);
+                        } else {
+                            openWatch(activity, playerId, liveId, videoUrl, liveType, callback);
+                        }
                     }
                     return true;
                 }

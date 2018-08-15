@@ -3268,7 +3268,7 @@ public final class GameCenterProto {
     int getRank();
 
     /**
-     * <code>optional float score = 7;</code>
+     * <code>optional double score = 7;</code>
      *
      * <pre>
      *游戏评分
@@ -3276,13 +3276,13 @@ public final class GameCenterProto {
      */
     boolean hasScore();
     /**
-     * <code>optional float score = 7;</code>
+     * <code>optional double score = 7;</code>
      *
      * <pre>
      *游戏评分
      * </pre>
      */
-    float getScore();
+    double getScore();
 
     /**
      * <code>optional uint64 followNum = 8;</code>
@@ -3503,9 +3503,9 @@ public final class GameCenterProto {
               rank_ = input.readUInt32();
               break;
             }
-            case 61: {
+            case 57: {
               bitField0_ |= 0x00000040;
-              score_ = input.readFloat();
+              score_ = input.readDouble();
               break;
             }
             case 64: {
@@ -3756,9 +3756,9 @@ public final class GameCenterProto {
     }
 
     public static final int SCORE_FIELD_NUMBER = 7;
-    private float score_;
+    private double score_;
     /**
-     * <code>optional float score = 7;</code>
+     * <code>optional double score = 7;</code>
      *
      * <pre>
      *游戏评分
@@ -3768,13 +3768,13 @@ public final class GameCenterProto {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional float score = 7;</code>
+     * <code>optional double score = 7;</code>
      *
      * <pre>
      *游戏评分
      * </pre>
      */
-    public float getScore() {
+    public double getScore() {
       return score_;
     }
 
@@ -4050,7 +4050,7 @@ public final class GameCenterProto {
       fileSize_ = 0L;
       gameType_ = 0;
       rank_ = 0;
-      score_ = 0F;
+      score_ = 0D;
       followNum_ = 0L;
       isFollow_ = false;
       packageName_ = "";
@@ -4091,7 +4091,7 @@ public final class GameCenterProto {
         output.writeUInt32(6, rank_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeFloat(7, score_);
+        output.writeDouble(7, score_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeUInt64(8, followNum_);
@@ -4149,7 +4149,7 @@ public final class GameCenterProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(7, score_);
+          .computeDoubleSize(7, score_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
@@ -4308,7 +4308,7 @@ public final class GameCenterProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         rank_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        score_ = 0F;
+        score_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000040);
         followNum_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
@@ -4833,9 +4833,9 @@ public final class GameCenterProto {
         return this;
       }
 
-      private float score_ ;
+      private double score_ ;
       /**
-       * <code>optional float score = 7;</code>
+       * <code>optional double score = 7;</code>
        *
        * <pre>
        *游戏评分
@@ -4845,30 +4845,30 @@ public final class GameCenterProto {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional float score = 7;</code>
+       * <code>optional double score = 7;</code>
        *
        * <pre>
        *游戏评分
        * </pre>
        */
-      public float getScore() {
+      public double getScore() {
         return score_;
       }
       /**
-       * <code>optional float score = 7;</code>
+       * <code>optional double score = 7;</code>
        *
        * <pre>
        *游戏评分
        * </pre>
        */
-      public Builder setScore(float value) {
+      public Builder setScore(double value) {
         bitField0_ |= 0x00000040;
         score_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional float score = 7;</code>
+       * <code>optional double score = 7;</code>
        *
        * <pre>
        *游戏评分
@@ -4876,7 +4876,7 @@ public final class GameCenterProto {
        */
       public Builder clearScore() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        score_ = 0F;
+        score_ = 0D;
         onChanged();
         return this;
       }
@@ -5401,62 +5401,31 @@ public final class GameCenterProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string videoId = 1;</code>
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
      */
-    boolean hasVideoId();
+    java.util.List<com.wali.live.proto.GameCenterProto.VideoBaseInfo> 
+        getVideoBaseInfoList();
     /**
-     * <code>optional string videoId = 1;</code>
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
      */
-    java.lang.String getVideoId();
+    com.wali.live.proto.GameCenterProto.VideoBaseInfo getVideoBaseInfo(int index);
     /**
-     * <code>optional string videoId = 1;</code>
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
      */
-    com.google.protobuf.ByteString
-        getVideoIdBytes();
+    int getVideoBaseInfoCount();
+    /**
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+     */
+    java.util.List<? extends com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder> 
+        getVideoBaseInfoOrBuilderList();
+    /**
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+     */
+    com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder getVideoBaseInfoOrBuilder(
+        int index);
 
     /**
-     * <code>optional uint32 width = 2;</code>
-     */
-    boolean hasWidth();
-    /**
-     * <code>optional uint32 width = 2;</code>
-     */
-    int getWidth();
-
-    /**
-     * <code>optional uint32 height = 3;</code>
-     */
-    boolean hasHeight();
-    /**
-     * <code>optional uint32 height = 3;</code>
-     */
-    int getHeight();
-
-    /**
-     * <code>optional string videoUrl = 4;</code>
-     */
-    boolean hasVideoUrl();
-    /**
-     * <code>optional string videoUrl = 4;</code>
-     */
-    java.lang.String getVideoUrl();
-    /**
-     * <code>optional string videoUrl = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getVideoUrlBytes();
-
-    /**
-     * <code>optional uint64 videoSize = 5;</code>
-     */
-    boolean hasVideoSize();
-    /**
-     * <code>optional uint64 videoSize = 5;</code>
-     */
-    long getVideoSize();
-
-    /**
-     * <code>optional string screenUrl = 6;</code>
+     * <code>optional string screenUrl = 2;</code>
      *
      * <pre>
      *封面
@@ -5464,7 +5433,7 @@ public final class GameCenterProto {
      */
     boolean hasScreenUrl();
     /**
-     * <code>optional string screenUrl = 6;</code>
+     * <code>optional string screenUrl = 2;</code>
      *
      * <pre>
      *封面
@@ -5472,7 +5441,7 @@ public final class GameCenterProto {
      */
     java.lang.String getScreenUrl();
     /**
-     * <code>optional string screenUrl = 6;</code>
+     * <code>optional string screenUrl = 2;</code>
      *
      * <pre>
      *封面
@@ -5482,7 +5451,7 @@ public final class GameCenterProto {
         getScreenUrlBytes();
 
     /**
-     * <code>optional uint32 duration = 7;</code>
+     * <code>optional uint32 duration = 3;</code>
      *
      * <pre>
      *时长
@@ -5490,7 +5459,7 @@ public final class GameCenterProto {
      */
     boolean hasDuration();
     /**
-     * <code>optional uint32 duration = 7;</code>
+     * <code>optional uint32 duration = 3;</code>
      *
      * <pre>
      *时长
@@ -5499,7 +5468,7 @@ public final class GameCenterProto {
     int getDuration();
 
     /**
-     * <code>optional uint64 playCnt = 8;</code>
+     * <code>optional uint64 playCnt = 4;</code>
      *
      * <pre>
      *播放数
@@ -5507,13 +5476,39 @@ public final class GameCenterProto {
      */
     boolean hasPlayCnt();
     /**
-     * <code>optional uint64 playCnt = 8;</code>
+     * <code>optional uint64 playCnt = 4;</code>
      *
      * <pre>
      *播放数
      * </pre>
      */
     long getPlayCnt();
+
+    /**
+     * <code>optional string videoTitle = 5;</code>
+     *
+     * <pre>
+     *视频标题
+     * </pre>
+     */
+    boolean hasVideoTitle();
+    /**
+     * <code>optional string videoTitle = 5;</code>
+     *
+     * <pre>
+     *视频标题
+     * </pre>
+     */
+    java.lang.String getVideoTitle();
+    /**
+     * <code>optional string videoTitle = 5;</code>
+     *
+     * <pre>
+     *视频标题
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getVideoTitleBytes();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GameVideo}
@@ -5568,46 +5563,33 @@ public final class GameCenterProto {
               break;
             }
             case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                videoBaseInfo_ = new java.util.ArrayList<com.wali.live.proto.GameCenterProto.VideoBaseInfo>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              videoBaseInfo_.add(input.readMessage(com.wali.live.proto.GameCenterProto.VideoBaseInfo.PARSER, extensionRegistry));
+              break;
+            }
+            case 18: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              videoId_ = bs;
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              width_ = input.readUInt32();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              height_ = input.readUInt32();
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              videoUrl_ = bs;
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              videoSize_ = input.readUInt64();
-              break;
-            }
-            case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000020;
               screenUrl_ = bs;
               break;
             }
-            case 56: {
-              bitField0_ |= 0x00000040;
+            case 24: {
+              bitField0_ |= 0x00000002;
               duration_ = input.readUInt32();
               break;
             }
-            case 64: {
-              bitField0_ |= 0x00000080;
+            case 32: {
+              bitField0_ |= 0x00000004;
               playCnt_ = input.readUInt64();
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              videoTitle_ = bs;
               break;
             }
           }
@@ -5618,6 +5600,9 @@ public final class GameCenterProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          videoBaseInfo_ = java.util.Collections.unmodifiableList(videoBaseInfo_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -5650,149 +5635,55 @@ public final class GameCenterProto {
     }
 
     private int bitField0_;
-    public static final int VIDEOID_FIELD_NUMBER = 1;
-    private java.lang.Object videoId_;
+    public static final int VIDEOBASEINFO_FIELD_NUMBER = 1;
+    private java.util.List<com.wali.live.proto.GameCenterProto.VideoBaseInfo> videoBaseInfo_;
     /**
-     * <code>optional string videoId = 1;</code>
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
      */
-    public boolean hasVideoId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+    public java.util.List<com.wali.live.proto.GameCenterProto.VideoBaseInfo> getVideoBaseInfoList() {
+      return videoBaseInfo_;
     }
     /**
-     * <code>optional string videoId = 1;</code>
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
      */
-    public java.lang.String getVideoId() {
-      java.lang.Object ref = videoId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          videoId_ = s;
-        }
-        return s;
-      }
+    public java.util.List<? extends com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder> 
+        getVideoBaseInfoOrBuilderList() {
+      return videoBaseInfo_;
     }
     /**
-     * <code>optional string videoId = 1;</code>
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getVideoIdBytes() {
-      java.lang.Object ref = videoId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        videoId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getVideoBaseInfoCount() {
+      return videoBaseInfo_.size();
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+     */
+    public com.wali.live.proto.GameCenterProto.VideoBaseInfo getVideoBaseInfo(int index) {
+      return videoBaseInfo_.get(index);
+    }
+    /**
+     * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+     */
+    public com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder getVideoBaseInfoOrBuilder(
+        int index) {
+      return videoBaseInfo_.get(index);
     }
 
-    public static final int WIDTH_FIELD_NUMBER = 2;
-    private int width_;
-    /**
-     * <code>optional uint32 width = 2;</code>
-     */
-    public boolean hasWidth() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional uint32 width = 2;</code>
-     */
-    public int getWidth() {
-      return width_;
-    }
-
-    public static final int HEIGHT_FIELD_NUMBER = 3;
-    private int height_;
-    /**
-     * <code>optional uint32 height = 3;</code>
-     */
-    public boolean hasHeight() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional uint32 height = 3;</code>
-     */
-    public int getHeight() {
-      return height_;
-    }
-
-    public static final int VIDEOURL_FIELD_NUMBER = 4;
-    private java.lang.Object videoUrl_;
-    /**
-     * <code>optional string videoUrl = 4;</code>
-     */
-    public boolean hasVideoUrl() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional string videoUrl = 4;</code>
-     */
-    public java.lang.String getVideoUrl() {
-      java.lang.Object ref = videoUrl_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          videoUrl_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string videoUrl = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getVideoUrlBytes() {
-      java.lang.Object ref = videoUrl_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        videoUrl_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int VIDEOSIZE_FIELD_NUMBER = 5;
-    private long videoSize_;
-    /**
-     * <code>optional uint64 videoSize = 5;</code>
-     */
-    public boolean hasVideoSize() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional uint64 videoSize = 5;</code>
-     */
-    public long getVideoSize() {
-      return videoSize_;
-    }
-
-    public static final int SCREENURL_FIELD_NUMBER = 6;
+    public static final int SCREENURL_FIELD_NUMBER = 2;
     private java.lang.Object screenUrl_;
     /**
-     * <code>optional string screenUrl = 6;</code>
+     * <code>optional string screenUrl = 2;</code>
      *
      * <pre>
      *封面
      * </pre>
      */
     public boolean hasScreenUrl() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional string screenUrl = 6;</code>
+     * <code>optional string screenUrl = 2;</code>
      *
      * <pre>
      *封面
@@ -5813,7 +5704,7 @@ public final class GameCenterProto {
       }
     }
     /**
-     * <code>optional string screenUrl = 6;</code>
+     * <code>optional string screenUrl = 2;</code>
      *
      * <pre>
      *封面
@@ -5833,20 +5724,20 @@ public final class GameCenterProto {
       }
     }
 
-    public static final int DURATION_FIELD_NUMBER = 7;
+    public static final int DURATION_FIELD_NUMBER = 3;
     private int duration_;
     /**
-     * <code>optional uint32 duration = 7;</code>
+     * <code>optional uint32 duration = 3;</code>
      *
      * <pre>
      *时长
      * </pre>
      */
     public boolean hasDuration() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional uint32 duration = 7;</code>
+     * <code>optional uint32 duration = 3;</code>
      *
      * <pre>
      *时长
@@ -5856,20 +5747,20 @@ public final class GameCenterProto {
       return duration_;
     }
 
-    public static final int PLAYCNT_FIELD_NUMBER = 8;
+    public static final int PLAYCNT_FIELD_NUMBER = 4;
     private long playCnt_;
     /**
-     * <code>optional uint64 playCnt = 8;</code>
+     * <code>optional uint64 playCnt = 4;</code>
      *
      * <pre>
      *播放数
      * </pre>
      */
     public boolean hasPlayCnt() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional uint64 playCnt = 8;</code>
+     * <code>optional uint64 playCnt = 4;</code>
      *
      * <pre>
      *播放数
@@ -5879,15 +5770,66 @@ public final class GameCenterProto {
       return playCnt_;
     }
 
+    public static final int VIDEOTITLE_FIELD_NUMBER = 5;
+    private java.lang.Object videoTitle_;
+    /**
+     * <code>optional string videoTitle = 5;</code>
+     *
+     * <pre>
+     *视频标题
+     * </pre>
+     */
+    public boolean hasVideoTitle() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string videoTitle = 5;</code>
+     *
+     * <pre>
+     *视频标题
+     * </pre>
+     */
+    public java.lang.String getVideoTitle() {
+      java.lang.Object ref = videoTitle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          videoTitle_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string videoTitle = 5;</code>
+     *
+     * <pre>
+     *视频标题
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getVideoTitleBytes() {
+      java.lang.Object ref = videoTitle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        videoTitle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
-      videoId_ = "";
-      width_ = 0;
-      height_ = 0;
-      videoUrl_ = "";
-      videoSize_ = 0L;
+      videoBaseInfo_ = java.util.Collections.emptyList();
       screenUrl_ = "";
       duration_ = 0;
       playCnt_ = 0L;
+      videoTitle_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5902,29 +5844,20 @@ public final class GameCenterProto {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
+      for (int i = 0; i < videoBaseInfo_.size(); i++) {
+        output.writeMessage(1, videoBaseInfo_.get(i));
+      }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getVideoIdBytes());
+        output.writeBytes(2, getScreenUrlBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt32(2, width_);
+        output.writeUInt32(3, duration_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeUInt32(3, height_);
+        output.writeUInt64(4, playCnt_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getVideoUrlBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeUInt64(5, videoSize_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBytes(6, getScreenUrlBytes());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeUInt32(7, duration_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeUInt64(8, playCnt_);
+        output.writeBytes(5, getVideoTitleBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -5935,37 +5868,25 @@ public final class GameCenterProto {
       if (size != -1) return size;
 
       size = 0;
+      for (int i = 0; i < videoBaseInfo_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, videoBaseInfo_.get(i));
+      }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getVideoIdBytes());
+          .computeBytesSize(2, getScreenUrlBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, width_);
+          .computeUInt32Size(3, duration_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(3, height_);
+          .computeUInt64Size(4, playCnt_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getVideoUrlBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(5, videoSize_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, getScreenUrlBytes());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(7, duration_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, playCnt_);
+          .computeBytesSize(5, getVideoTitleBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6076,6 +5997,7 @@ public final class GameCenterProto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getVideoBaseInfoFieldBuilder();
         }
       }
       private static Builder create() {
@@ -6084,22 +6006,20 @@ public final class GameCenterProto {
 
       public Builder clear() {
         super.clear();
-        videoId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        width_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        height_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        videoUrl_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        videoSize_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000010);
+        if (videoBaseInfoBuilder_ == null) {
+          videoBaseInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          videoBaseInfoBuilder_.clear();
+        }
         screenUrl_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000002);
         duration_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000004);
         playCnt_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000008);
+        videoTitle_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -6128,38 +6048,31 @@ public final class GameCenterProto {
         com.wali.live.proto.GameCenterProto.GameVideo result = new com.wali.live.proto.GameCenterProto.GameVideo(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+        if (videoBaseInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            videoBaseInfo_ = java.util.Collections.unmodifiableList(videoBaseInfo_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.videoBaseInfo_ = videoBaseInfo_;
+        } else {
+          result.videoBaseInfo_ = videoBaseInfoBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.videoId_ = videoId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+        result.screenUrl_ = screenUrl_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.width_ = width_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+        result.duration_ = duration_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.height_ = height_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+        result.playCnt_ = playCnt_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.videoUrl_ = videoUrl_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.videoSize_ = videoSize_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.screenUrl_ = screenUrl_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.duration_ = duration_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.playCnt_ = playCnt_;
+        result.videoTitle_ = videoTitle_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6176,27 +6089,34 @@ public final class GameCenterProto {
 
       public Builder mergeFrom(com.wali.live.proto.GameCenterProto.GameVideo other) {
         if (other == com.wali.live.proto.GameCenterProto.GameVideo.getDefaultInstance()) return this;
-        if (other.hasVideoId()) {
-          bitField0_ |= 0x00000001;
-          videoId_ = other.videoId_;
-          onChanged();
-        }
-        if (other.hasWidth()) {
-          setWidth(other.getWidth());
-        }
-        if (other.hasHeight()) {
-          setHeight(other.getHeight());
-        }
-        if (other.hasVideoUrl()) {
-          bitField0_ |= 0x00000008;
-          videoUrl_ = other.videoUrl_;
-          onChanged();
-        }
-        if (other.hasVideoSize()) {
-          setVideoSize(other.getVideoSize());
+        if (videoBaseInfoBuilder_ == null) {
+          if (!other.videoBaseInfo_.isEmpty()) {
+            if (videoBaseInfo_.isEmpty()) {
+              videoBaseInfo_ = other.videoBaseInfo_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureVideoBaseInfoIsMutable();
+              videoBaseInfo_.addAll(other.videoBaseInfo_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.videoBaseInfo_.isEmpty()) {
+            if (videoBaseInfoBuilder_.isEmpty()) {
+              videoBaseInfoBuilder_.dispose();
+              videoBaseInfoBuilder_ = null;
+              videoBaseInfo_ = other.videoBaseInfo_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              videoBaseInfoBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getVideoBaseInfoFieldBuilder() : null;
+            } else {
+              videoBaseInfoBuilder_.addAllMessages(other.videoBaseInfo_);
+            }
+          }
         }
         if (other.hasScreenUrl()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000002;
           screenUrl_ = other.screenUrl_;
           onChanged();
         }
@@ -6205,6 +6125,11 @@ public final class GameCenterProto {
         }
         if (other.hasPlayCnt()) {
           setPlayCnt(other.getPlayCnt());
+        }
+        if (other.hasVideoTitle()) {
+          bitField0_ |= 0x00000010;
+          videoTitle_ = other.videoTitle_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -6233,267 +6158,259 @@ public final class GameCenterProto {
       }
       private int bitField0_;
 
-      private java.lang.Object videoId_ = "";
+      private java.util.List<com.wali.live.proto.GameCenterProto.VideoBaseInfo> videoBaseInfo_ =
+        java.util.Collections.emptyList();
+      private void ensureVideoBaseInfoIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          videoBaseInfo_ = new java.util.ArrayList<com.wali.live.proto.GameCenterProto.VideoBaseInfo>(videoBaseInfo_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.GameCenterProto.VideoBaseInfo, com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder, com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder> videoBaseInfoBuilder_;
+
       /**
-       * <code>optional string videoId = 1;</code>
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
        */
-      public boolean hasVideoId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+      public java.util.List<com.wali.live.proto.GameCenterProto.VideoBaseInfo> getVideoBaseInfoList() {
+        if (videoBaseInfoBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(videoBaseInfo_);
+        } else {
+          return videoBaseInfoBuilder_.getMessageList();
+        }
       }
       /**
-       * <code>optional string videoId = 1;</code>
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
        */
-      public java.lang.String getVideoId() {
-        java.lang.Object ref = videoId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            videoId_ = s;
+      public int getVideoBaseInfoCount() {
+        if (videoBaseInfoBuilder_ == null) {
+          return videoBaseInfo_.size();
+        } else {
+          return videoBaseInfoBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public com.wali.live.proto.GameCenterProto.VideoBaseInfo getVideoBaseInfo(int index) {
+        if (videoBaseInfoBuilder_ == null) {
+          return videoBaseInfo_.get(index);
+        } else {
+          return videoBaseInfoBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public Builder setVideoBaseInfo(
+          int index, com.wali.live.proto.GameCenterProto.VideoBaseInfo value) {
+        if (videoBaseInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
           }
-          return s;
+          ensureVideoBaseInfoIsMutable();
+          videoBaseInfo_.set(index, value);
+          onChanged();
         } else {
-          return (java.lang.String) ref;
+          videoBaseInfoBuilder_.setMessage(index, value);
         }
+        return this;
       }
       /**
-       * <code>optional string videoId = 1;</code>
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
        */
-      public com.google.protobuf.ByteString
-          getVideoIdBytes() {
-        java.lang.Object ref = videoId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          videoId_ = b;
-          return b;
+      public Builder setVideoBaseInfo(
+          int index, com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder builderForValue) {
+        if (videoBaseInfoBuilder_ == null) {
+          ensureVideoBaseInfoIsMutable();
+          videoBaseInfo_.set(index, builderForValue.build());
+          onChanged();
         } else {
-          return (com.google.protobuf.ByteString) ref;
+          videoBaseInfoBuilder_.setMessage(index, builderForValue.build());
         }
-      }
-      /**
-       * <code>optional string videoId = 1;</code>
-       */
-      public Builder setVideoId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        videoId_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>optional string videoId = 1;</code>
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
        */
-      public Builder clearVideoId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        videoId_ = getDefaultInstance().getVideoId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string videoId = 1;</code>
-       */
-      public Builder setVideoIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        videoId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int width_ ;
-      /**
-       * <code>optional uint32 width = 2;</code>
-       */
-      public boolean hasWidth() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional uint32 width = 2;</code>
-       */
-      public int getWidth() {
-        return width_;
-      }
-      /**
-       * <code>optional uint32 width = 2;</code>
-       */
-      public Builder setWidth(int value) {
-        bitField0_ |= 0x00000002;
-        width_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 width = 2;</code>
-       */
-      public Builder clearWidth() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        width_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int height_ ;
-      /**
-       * <code>optional uint32 height = 3;</code>
-       */
-      public boolean hasHeight() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional uint32 height = 3;</code>
-       */
-      public int getHeight() {
-        return height_;
-      }
-      /**
-       * <code>optional uint32 height = 3;</code>
-       */
-      public Builder setHeight(int value) {
-        bitField0_ |= 0x00000004;
-        height_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 height = 3;</code>
-       */
-      public Builder clearHeight() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        height_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object videoUrl_ = "";
-      /**
-       * <code>optional string videoUrl = 4;</code>
-       */
-      public boolean hasVideoUrl() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional string videoUrl = 4;</code>
-       */
-      public java.lang.String getVideoUrl() {
-        java.lang.Object ref = videoUrl_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            videoUrl_ = s;
+      public Builder addVideoBaseInfo(com.wali.live.proto.GameCenterProto.VideoBaseInfo value) {
+        if (videoBaseInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
           }
-          return s;
+          ensureVideoBaseInfoIsMutable();
+          videoBaseInfo_.add(value);
+          onChanged();
         } else {
-          return (java.lang.String) ref;
+          videoBaseInfoBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public Builder addVideoBaseInfo(
+          int index, com.wali.live.proto.GameCenterProto.VideoBaseInfo value) {
+        if (videoBaseInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureVideoBaseInfoIsMutable();
+          videoBaseInfo_.add(index, value);
+          onChanged();
+        } else {
+          videoBaseInfoBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public Builder addVideoBaseInfo(
+          com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder builderForValue) {
+        if (videoBaseInfoBuilder_ == null) {
+          ensureVideoBaseInfoIsMutable();
+          videoBaseInfo_.add(builderForValue.build());
+          onChanged();
+        } else {
+          videoBaseInfoBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public Builder addVideoBaseInfo(
+          int index, com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder builderForValue) {
+        if (videoBaseInfoBuilder_ == null) {
+          ensureVideoBaseInfoIsMutable();
+          videoBaseInfo_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          videoBaseInfoBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public Builder addAllVideoBaseInfo(
+          java.lang.Iterable<? extends com.wali.live.proto.GameCenterProto.VideoBaseInfo> values) {
+        if (videoBaseInfoBuilder_ == null) {
+          ensureVideoBaseInfoIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, videoBaseInfo_);
+          onChanged();
+        } else {
+          videoBaseInfoBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public Builder clearVideoBaseInfo() {
+        if (videoBaseInfoBuilder_ == null) {
+          videoBaseInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          videoBaseInfoBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public Builder removeVideoBaseInfo(int index) {
+        if (videoBaseInfoBuilder_ == null) {
+          ensureVideoBaseInfoIsMutable();
+          videoBaseInfo_.remove(index);
+          onChanged();
+        } else {
+          videoBaseInfoBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder getVideoBaseInfoBuilder(
+          int index) {
+        return getVideoBaseInfoFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
+       */
+      public com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder getVideoBaseInfoOrBuilder(
+          int index) {
+        if (videoBaseInfoBuilder_ == null) {
+          return videoBaseInfo_.get(index);  } else {
+          return videoBaseInfoBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>optional string videoUrl = 4;</code>
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
        */
-      public com.google.protobuf.ByteString
-          getVideoUrlBytes() {
-        java.lang.Object ref = videoUrl_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          videoUrl_ = b;
-          return b;
+      public java.util.List<? extends com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder> 
+           getVideoBaseInfoOrBuilderList() {
+        if (videoBaseInfoBuilder_ != null) {
+          return videoBaseInfoBuilder_.getMessageOrBuilderList();
         } else {
-          return (com.google.protobuf.ByteString) ref;
+          return java.util.Collections.unmodifiableList(videoBaseInfo_);
         }
       }
       /**
-       * <code>optional string videoUrl = 4;</code>
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
        */
-      public Builder setVideoUrl(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        videoUrl_ = value;
-        onChanged();
-        return this;
+      public com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder addVideoBaseInfoBuilder() {
+        return getVideoBaseInfoFieldBuilder().addBuilder(
+            com.wali.live.proto.GameCenterProto.VideoBaseInfo.getDefaultInstance());
       }
       /**
-       * <code>optional string videoUrl = 4;</code>
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
        */
-      public Builder clearVideoUrl() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        videoUrl_ = getDefaultInstance().getVideoUrl();
-        onChanged();
-        return this;
+      public com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder addVideoBaseInfoBuilder(
+          int index) {
+        return getVideoBaseInfoFieldBuilder().addBuilder(
+            index, com.wali.live.proto.GameCenterProto.VideoBaseInfo.getDefaultInstance());
       }
       /**
-       * <code>optional string videoUrl = 4;</code>
+       * <code>repeated .com.wali.live.proto.VideoBaseInfo videoBaseInfo = 1;</code>
        */
-      public Builder setVideoUrlBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        videoUrl_ = value;
-        onChanged();
-        return this;
+      public java.util.List<com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder> 
+           getVideoBaseInfoBuilderList() {
+        return getVideoBaseInfoFieldBuilder().getBuilderList();
       }
-
-      private long videoSize_ ;
-      /**
-       * <code>optional uint64 videoSize = 5;</code>
-       */
-      public boolean hasVideoSize() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional uint64 videoSize = 5;</code>
-       */
-      public long getVideoSize() {
-        return videoSize_;
-      }
-      /**
-       * <code>optional uint64 videoSize = 5;</code>
-       */
-      public Builder setVideoSize(long value) {
-        bitField0_ |= 0x00000010;
-        videoSize_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint64 videoSize = 5;</code>
-       */
-      public Builder clearVideoSize() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        videoSize_ = 0L;
-        onChanged();
-        return this;
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.wali.live.proto.GameCenterProto.VideoBaseInfo, com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder, com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder> 
+          getVideoBaseInfoFieldBuilder() {
+        if (videoBaseInfoBuilder_ == null) {
+          videoBaseInfoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.wali.live.proto.GameCenterProto.VideoBaseInfo, com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder, com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder>(
+                  videoBaseInfo_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          videoBaseInfo_ = null;
+        }
+        return videoBaseInfoBuilder_;
       }
 
       private java.lang.Object screenUrl_ = "";
       /**
-       * <code>optional string screenUrl = 6;</code>
+       * <code>optional string screenUrl = 2;</code>
        *
        * <pre>
        *封面
        * </pre>
        */
       public boolean hasScreenUrl() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional string screenUrl = 6;</code>
+       * <code>optional string screenUrl = 2;</code>
        *
        * <pre>
        *封面
@@ -6514,7 +6431,7 @@ public final class GameCenterProto {
         }
       }
       /**
-       * <code>optional string screenUrl = 6;</code>
+       * <code>optional string screenUrl = 2;</code>
        *
        * <pre>
        *封面
@@ -6534,7 +6451,7 @@ public final class GameCenterProto {
         }
       }
       /**
-       * <code>optional string screenUrl = 6;</code>
+       * <code>optional string screenUrl = 2;</code>
        *
        * <pre>
        *封面
@@ -6545,26 +6462,26 @@ public final class GameCenterProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000002;
         screenUrl_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string screenUrl = 6;</code>
+       * <code>optional string screenUrl = 2;</code>
        *
        * <pre>
        *封面
        * </pre>
        */
       public Builder clearScreenUrl() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000002);
         screenUrl_ = getDefaultInstance().getScreenUrl();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string screenUrl = 6;</code>
+       * <code>optional string screenUrl = 2;</code>
        *
        * <pre>
        *封面
@@ -6575,7 +6492,7 @@ public final class GameCenterProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000002;
         screenUrl_ = value;
         onChanged();
         return this;
@@ -6583,17 +6500,17 @@ public final class GameCenterProto {
 
       private int duration_ ;
       /**
-       * <code>optional uint32 duration = 7;</code>
+       * <code>optional uint32 duration = 3;</code>
        *
        * <pre>
        *时长
        * </pre>
        */
       public boolean hasDuration() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional uint32 duration = 7;</code>
+       * <code>optional uint32 duration = 3;</code>
        *
        * <pre>
        *时长
@@ -6603,27 +6520,27 @@ public final class GameCenterProto {
         return duration_;
       }
       /**
-       * <code>optional uint32 duration = 7;</code>
+       * <code>optional uint32 duration = 3;</code>
        *
        * <pre>
        *时长
        * </pre>
        */
       public Builder setDuration(int value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000004;
         duration_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint32 duration = 7;</code>
+       * <code>optional uint32 duration = 3;</code>
        *
        * <pre>
        *时长
        * </pre>
        */
       public Builder clearDuration() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000004);
         duration_ = 0;
         onChanged();
         return this;
@@ -6631,17 +6548,17 @@ public final class GameCenterProto {
 
       private long playCnt_ ;
       /**
-       * <code>optional uint64 playCnt = 8;</code>
+       * <code>optional uint64 playCnt = 4;</code>
        *
        * <pre>
        *播放数
        * </pre>
        */
       public boolean hasPlayCnt() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional uint64 playCnt = 8;</code>
+       * <code>optional uint64 playCnt = 4;</code>
        *
        * <pre>
        *播放数
@@ -6651,28 +6568,128 @@ public final class GameCenterProto {
         return playCnt_;
       }
       /**
-       * <code>optional uint64 playCnt = 8;</code>
+       * <code>optional uint64 playCnt = 4;</code>
        *
        * <pre>
        *播放数
        * </pre>
        */
       public Builder setPlayCnt(long value) {
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000008;
         playCnt_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 playCnt = 8;</code>
+       * <code>optional uint64 playCnt = 4;</code>
        *
        * <pre>
        *播放数
        * </pre>
        */
       public Builder clearPlayCnt() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000008);
         playCnt_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object videoTitle_ = "";
+      /**
+       * <code>optional string videoTitle = 5;</code>
+       *
+       * <pre>
+       *视频标题
+       * </pre>
+       */
+      public boolean hasVideoTitle() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string videoTitle = 5;</code>
+       *
+       * <pre>
+       *视频标题
+       * </pre>
+       */
+      public java.lang.String getVideoTitle() {
+        java.lang.Object ref = videoTitle_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            videoTitle_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string videoTitle = 5;</code>
+       *
+       * <pre>
+       *视频标题
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getVideoTitleBytes() {
+        java.lang.Object ref = videoTitle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          videoTitle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string videoTitle = 5;</code>
+       *
+       * <pre>
+       *视频标题
+       * </pre>
+       */
+      public Builder setVideoTitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        videoTitle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string videoTitle = 5;</code>
+       *
+       * <pre>
+       *视频标题
+       * </pre>
+       */
+      public Builder clearVideoTitle() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        videoTitle_ = getDefaultInstance().getVideoTitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string videoTitle = 5;</code>
+       *
+       * <pre>
+       *视频标题
+       * </pre>
+       */
+      public Builder setVideoTitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        videoTitle_ = value;
         onChanged();
         return this;
       }
@@ -6686,6 +6703,716 @@ public final class GameCenterProto {
     }
 
     // @@protoc_insertion_point(class_scope:com.wali.live.proto.GameVideo)
+  }
+
+  public interface VideoBaseInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.wali.live.proto.VideoBaseInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 width = 1;</code>
+     */
+    boolean hasWidth();
+    /**
+     * <code>optional uint32 width = 1;</code>
+     */
+    int getWidth();
+
+    /**
+     * <code>optional uint32 height = 2;</code>
+     */
+    boolean hasHeight();
+    /**
+     * <code>optional uint32 height = 2;</code>
+     */
+    int getHeight();
+
+    /**
+     * <code>optional string videoUrl = 3;</code>
+     */
+    boolean hasVideoUrl();
+    /**
+     * <code>optional string videoUrl = 3;</code>
+     */
+    java.lang.String getVideoUrl();
+    /**
+     * <code>optional string videoUrl = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getVideoUrlBytes();
+
+    /**
+     * <code>optional uint64 videoSize = 4;</code>
+     */
+    boolean hasVideoSize();
+    /**
+     * <code>optional uint64 videoSize = 4;</code>
+     */
+    long getVideoSize();
+  }
+  /**
+   * Protobuf type {@code com.wali.live.proto.VideoBaseInfo}
+   */
+  public static final class VideoBaseInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.wali.live.proto.VideoBaseInfo)
+      VideoBaseInfoOrBuilder {
+    // Use VideoBaseInfo.newBuilder() to construct.
+    private VideoBaseInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private VideoBaseInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final VideoBaseInfo defaultInstance;
+    public static VideoBaseInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public VideoBaseInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private VideoBaseInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              width_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              height_ = input.readUInt32();
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              videoUrl_ = bs;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              videoSize_ = input.readUInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.wali.live.proto.GameCenterProto.internal_static_com_wali_live_proto_VideoBaseInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.wali.live.proto.GameCenterProto.internal_static_com_wali_live_proto_VideoBaseInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.wali.live.proto.GameCenterProto.VideoBaseInfo.class, com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<VideoBaseInfo> PARSER =
+        new com.google.protobuf.AbstractParser<VideoBaseInfo>() {
+      public VideoBaseInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new VideoBaseInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<VideoBaseInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int WIDTH_FIELD_NUMBER = 1;
+    private int width_;
+    /**
+     * <code>optional uint32 width = 1;</code>
+     */
+    public boolean hasWidth() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 width = 1;</code>
+     */
+    public int getWidth() {
+      return width_;
+    }
+
+    public static final int HEIGHT_FIELD_NUMBER = 2;
+    private int height_;
+    /**
+     * <code>optional uint32 height = 2;</code>
+     */
+    public boolean hasHeight() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 height = 2;</code>
+     */
+    public int getHeight() {
+      return height_;
+    }
+
+    public static final int VIDEOURL_FIELD_NUMBER = 3;
+    private java.lang.Object videoUrl_;
+    /**
+     * <code>optional string videoUrl = 3;</code>
+     */
+    public boolean hasVideoUrl() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string videoUrl = 3;</code>
+     */
+    public java.lang.String getVideoUrl() {
+      java.lang.Object ref = videoUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          videoUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string videoUrl = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVideoUrlBytes() {
+      java.lang.Object ref = videoUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        videoUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VIDEOSIZE_FIELD_NUMBER = 4;
+    private long videoSize_;
+    /**
+     * <code>optional uint64 videoSize = 4;</code>
+     */
+    public boolean hasVideoSize() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 videoSize = 4;</code>
+     */
+    public long getVideoSize() {
+      return videoSize_;
+    }
+
+    private void initFields() {
+      width_ = 0;
+      height_ = 0;
+      videoUrl_ = "";
+      videoSize_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, width_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, height_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getVideoUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(4, videoSize_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, width_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, height_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getVideoUrlBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, videoSize_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.wali.live.proto.GameCenterProto.VideoBaseInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.wali.live.proto.GameCenterProto.VideoBaseInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.wali.live.proto.VideoBaseInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.wali.live.proto.VideoBaseInfo)
+        com.wali.live.proto.GameCenterProto.VideoBaseInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.wali.live.proto.GameCenterProto.internal_static_com_wali_live_proto_VideoBaseInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.wali.live.proto.GameCenterProto.internal_static_com_wali_live_proto_VideoBaseInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.wali.live.proto.GameCenterProto.VideoBaseInfo.class, com.wali.live.proto.GameCenterProto.VideoBaseInfo.Builder.class);
+      }
+
+      // Construct using com.wali.live.proto.GameCenterProto.VideoBaseInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        width_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        height_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        videoUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        videoSize_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.wali.live.proto.GameCenterProto.internal_static_com_wali_live_proto_VideoBaseInfo_descriptor;
+      }
+
+      public com.wali.live.proto.GameCenterProto.VideoBaseInfo getDefaultInstanceForType() {
+        return com.wali.live.proto.GameCenterProto.VideoBaseInfo.getDefaultInstance();
+      }
+
+      public com.wali.live.proto.GameCenterProto.VideoBaseInfo build() {
+        com.wali.live.proto.GameCenterProto.VideoBaseInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.wali.live.proto.GameCenterProto.VideoBaseInfo buildPartial() {
+        com.wali.live.proto.GameCenterProto.VideoBaseInfo result = new com.wali.live.proto.GameCenterProto.VideoBaseInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.width_ = width_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.height_ = height_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.videoUrl_ = videoUrl_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.videoSize_ = videoSize_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.wali.live.proto.GameCenterProto.VideoBaseInfo) {
+          return mergeFrom((com.wali.live.proto.GameCenterProto.VideoBaseInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.wali.live.proto.GameCenterProto.VideoBaseInfo other) {
+        if (other == com.wali.live.proto.GameCenterProto.VideoBaseInfo.getDefaultInstance()) return this;
+        if (other.hasWidth()) {
+          setWidth(other.getWidth());
+        }
+        if (other.hasHeight()) {
+          setHeight(other.getHeight());
+        }
+        if (other.hasVideoUrl()) {
+          bitField0_ |= 0x00000004;
+          videoUrl_ = other.videoUrl_;
+          onChanged();
+        }
+        if (other.hasVideoSize()) {
+          setVideoSize(other.getVideoSize());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.wali.live.proto.GameCenterProto.VideoBaseInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.wali.live.proto.GameCenterProto.VideoBaseInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int width_ ;
+      /**
+       * <code>optional uint32 width = 1;</code>
+       */
+      public boolean hasWidth() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 width = 1;</code>
+       */
+      public int getWidth() {
+        return width_;
+      }
+      /**
+       * <code>optional uint32 width = 1;</code>
+       */
+      public Builder setWidth(int value) {
+        bitField0_ |= 0x00000001;
+        width_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 width = 1;</code>
+       */
+      public Builder clearWidth() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        width_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int height_ ;
+      /**
+       * <code>optional uint32 height = 2;</code>
+       */
+      public boolean hasHeight() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 height = 2;</code>
+       */
+      public int getHeight() {
+        return height_;
+      }
+      /**
+       * <code>optional uint32 height = 2;</code>
+       */
+      public Builder setHeight(int value) {
+        bitField0_ |= 0x00000002;
+        height_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 height = 2;</code>
+       */
+      public Builder clearHeight() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        height_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object videoUrl_ = "";
+      /**
+       * <code>optional string videoUrl = 3;</code>
+       */
+      public boolean hasVideoUrl() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string videoUrl = 3;</code>
+       */
+      public java.lang.String getVideoUrl() {
+        java.lang.Object ref = videoUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            videoUrl_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string videoUrl = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVideoUrlBytes() {
+        java.lang.Object ref = videoUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          videoUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string videoUrl = 3;</code>
+       */
+      public Builder setVideoUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        videoUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string videoUrl = 3;</code>
+       */
+      public Builder clearVideoUrl() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        videoUrl_ = getDefaultInstance().getVideoUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string videoUrl = 3;</code>
+       */
+      public Builder setVideoUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        videoUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long videoSize_ ;
+      /**
+       * <code>optional uint64 videoSize = 4;</code>
+       */
+      public boolean hasVideoSize() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint64 videoSize = 4;</code>
+       */
+      public long getVideoSize() {
+        return videoSize_;
+      }
+      /**
+       * <code>optional uint64 videoSize = 4;</code>
+       */
+      public Builder setVideoSize(long value) {
+        bitField0_ |= 0x00000008;
+        videoSize_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 videoSize = 4;</code>
+       */
+      public Builder clearVideoSize() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        videoSize_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.wali.live.proto.VideoBaseInfo)
+    }
+
+    static {
+      defaultInstance = new VideoBaseInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.wali.live.proto.VideoBaseInfo)
   }
 
   public interface GameTagOrBuilder extends
@@ -8910,6 +9637,11 @@ public final class GameCenterProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_wali_live_proto_GameVideo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_wali_live_proto_VideoBaseInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_wali_live_proto_VideoBaseInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_wali_live_proto_GameTag_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -8947,20 +9679,22 @@ public final class GameCenterProto {
       "li.live.proto.Developer\"\210\002\n\014GameBaseInfo" +
       "\022\016\n\006gameId\030\001 \001(\004\022\020\n\010gameName\030\002 \001(\t\022\017\n\007ic" +
       "onUrl\030\003 \001(\t\022\020\n\010fileSize\030\004 \001(\004\022\020\n\010gameTyp" +
-      "e\030\005 \001(\r\022\014\n\004rank\030\006 \001(\r\022\r\n\005score\030\007 \001(\002\022\021\n\t" +
+      "e\030\005 \001(\r\022\014\n\004rank\030\006 \001(\r\022\r\n\005score\030\007 \001(\001\022\021\n\t" +
       "followNum\030\010 \001(\004\022\020\n\010isFollow\030\t \001(\010\022\023\n\013pac" +
       "kageName\030\n \001(\t\022\022\n\npackageUrl\030\013 \001(\t\022\023\n\013pa" +
       "ckageSize\030\014 \001(\004\022\022\n\nintroTitle\030\r \001(\t\022\r\n\005i" +
-      "ntro\030\016 \001(\t\"\226\001\n\tGameVideo\022\017\n\007videoId\030\001 \001(" +
-      "\t\022\r\n\005width\030\002 \001(\r\022\016\n\006height\030\003 \001(\r\022\020\n\010vide",
-      "oUrl\030\004 \001(\t\022\021\n\tvideoSize\030\005 \001(\004\022\021\n\tscreenU" +
-      "rl\030\006 \001(\t\022\020\n\010duration\030\007 \001(\r\022\017\n\007playCnt\030\010 " +
-      "\001(\004\"J\n\007GameTag\022\r\n\005tagId\030\001 \001(\r\022\017\n\007tagName" +
-      "\030\002 \001(\t\022\017\n\007tagType\030\003 \001(\r\022\016\n\006actUrl\030\004 \001(\t\"" +
-      "H\n\tDeveloper\022\023\n\013developerId\030\001 \001(\r\022\025\n\rdev" +
-      "eloperName\030\002 \001(\t\022\017\n\007iconUrl\030\003 \001(\r\"<\n\nScr" +
-      "eenShot\022\r\n\005picId\030\001 \001(\t\022\016\n\006picUrl\030\002 \001(\t\022\017" +
-      "\n\007picType\030\003 \001(\rB\021B\017GameCenterProto"
+      "ntro\030\016 \001(\t\"\220\001\n\tGameVideo\0229\n\rvideoBaseInf" +
+      "o\030\001 \003(\0132\".com.wali.live.proto.VideoBaseI",
+      "nfo\022\021\n\tscreenUrl\030\002 \001(\t\022\020\n\010duration\030\003 \001(\r" +
+      "\022\017\n\007playCnt\030\004 \001(\004\022\022\n\nvideoTitle\030\005 \001(\t\"S\n" +
+      "\rVideoBaseInfo\022\r\n\005width\030\001 \001(\r\022\016\n\006height\030" +
+      "\002 \001(\r\022\020\n\010videoUrl\030\003 \001(\t\022\021\n\tvideoSize\030\004 \001" +
+      "(\004\"J\n\007GameTag\022\r\n\005tagId\030\001 \001(\r\022\017\n\007tagName\030" +
+      "\002 \001(\t\022\017\n\007tagType\030\003 \001(\r\022\016\n\006actUrl\030\004 \001(\t\"H" +
+      "\n\tDeveloper\022\023\n\013developerId\030\001 \001(\r\022\025\n\rdeve" +
+      "loperName\030\002 \001(\t\022\017\n\007iconUrl\030\003 \001(\r\"<\n\nScre" +
+      "enShot\022\r\n\005picId\030\001 \001(\t\022\016\n\006picUrl\030\002 \001(\t\022\017\n" +
+      "\007picType\030\003 \001(\rB\021B\017GameCenterProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9003,21 +9737,27 @@ public final class GameCenterProto {
     internal_static_com_wali_live_proto_GameVideo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GameVideo_descriptor,
-        new java.lang.String[] { "VideoId", "Width", "Height", "VideoUrl", "VideoSize", "ScreenUrl", "Duration", "PlayCnt", });
-    internal_static_com_wali_live_proto_GameTag_descriptor =
+        new java.lang.String[] { "VideoBaseInfo", "ScreenUrl", "Duration", "PlayCnt", "VideoTitle", });
+    internal_static_com_wali_live_proto_VideoBaseInfo_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_com_wali_live_proto_VideoBaseInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_wali_live_proto_VideoBaseInfo_descriptor,
+        new java.lang.String[] { "Width", "Height", "VideoUrl", "VideoSize", });
+    internal_static_com_wali_live_proto_GameTag_descriptor =
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_wali_live_proto_GameTag_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GameTag_descriptor,
         new java.lang.String[] { "TagId", "TagName", "TagType", "ActUrl", });
     internal_static_com_wali_live_proto_Developer_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_wali_live_proto_Developer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_Developer_descriptor,
         new java.lang.String[] { "DeveloperId", "DeveloperName", "IconUrl", });
     internal_static_com_wali_live_proto_ScreenShot_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_com_wali_live_proto_ScreenShot_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_ScreenShot_descriptor,

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.LazyNewView;
 import com.base.view.SlidingTabLayout;
@@ -28,6 +29,8 @@ import java.util.List;
 
 public class WatchGameTabView extends RelativeLayout implements
         IComponentView<WatchGameTabView.IPresenter, WatchGameTabView.IView> {
+
+    public final static String TAG = "WatchGameTabView";
 
     WatchComponentController mWatchComponentController;
 
@@ -93,14 +96,18 @@ public class WatchGameTabView extends RelativeLayout implements
         mTabPagerAdapter = new PagerAdapter() {
             @Override
             public void destroyItem(ViewGroup viewGroup, int position, Object arg2) {
+                MyLog.d(TAG, "destroyItem" + " viewGroup=" + viewGroup + " position=" + position + " arg2=" + arg2);
                 LazyNewView viewProxy = mTitleAndViewMap.get(mTabTitleList.get(position));
                 viewGroup.removeView(viewProxy.getView());
             }
 
             @Override
             public Object instantiateItem(ViewGroup viewGroup, int position) {
+                MyLog.d(TAG, "instantiateItem" + " viewGroup=" + viewGroup + " position=" + position);
                 LazyNewView viewProxy = mTitleAndViewMap.get(mTabTitleList.get(position));
-                viewGroup.addView(viewProxy.getView());
+                if (viewGroup.indexOfChild(viewProxy.getView()) == -1) {
+                    viewGroup.addView(viewProxy.getView());
+                }
                 return viewProxy.getView();
             }
 
@@ -111,7 +118,9 @@ public class WatchGameTabView extends RelativeLayout implements
 
             @Override
             public int getCount() {
-                return mTabTitleList.size();
+                int size = mTabTitleList.size();
+                MyLog.d(TAG, "getCount size=" + size);
+                return size;
             }
 
             @Override
@@ -125,13 +134,16 @@ public class WatchGameTabView extends RelativeLayout implements
             }
         };
 
-        mTabPagerAdapter.notifyDataSetChanged();
         mWatchGameTabPager.setAdapter(mTabPagerAdapter);
+
         mWatchGameTab.setViewPager(mWatchGameTabPager);
+
+        mTabPagerAdapter.notifyDataSetChanged();
 
         mWatchGameTabPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                MyLog.d(TAG, "onPageSelected" + " position=" + position);
             }
         });
 
@@ -146,18 +158,25 @@ public class WatchGameTabView extends RelativeLayout implements
                 if (source.getGameInfoModel() == null) {
                     hasGameHomePage = false;
                 }
+                MyLog.d(TAG, "hasGameHomePage=" + hasGameHomePage);
                 if (hasGameHomePage) {
                     if (mTabTitleList.size() > 1 && mTabTitleList.get(1).equals("游戏主页")) {
                         // 游戏主页了
                     } else {
+                        MyLog.d(TAG, "add 游戏主页");
                         mTabTitleList.add(1, "游戏主页");
+
                         mTabPagerAdapter.notifyDataSetChanged();
+
+                        mWatchGameTab.notifyDataChange();
                     }
                 } else {
                     if (mTabTitleList.size() > 1 && mTabTitleList.get(1).equals("游戏主页")) {
                         // 不应该有游戏主页
                         mTabTitleList.remove(1);
                         mTabPagerAdapter.notifyDataSetChanged();
+
+                        mWatchGameTab.notifyDataChange();
                     } else {
                     }
                 }

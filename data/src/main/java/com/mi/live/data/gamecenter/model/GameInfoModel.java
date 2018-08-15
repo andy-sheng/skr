@@ -13,7 +13,7 @@ public class GameInfoModel {
     long fileSize; //游戏大小
     int gameType; //游戏类型
     int rank; //游戏排名
-    float score; //游戏评分
+    double score; //游戏评分
     long followNum; //关注人数
     boolean isFollow; //是否关注
     String packageName; //包名
@@ -53,7 +53,7 @@ public class GameInfoModel {
         return rank;
     }
 
-    public float getScore() {
+    public double getScore() {
         return score;
     }
 
@@ -154,44 +154,21 @@ public class GameInfoModel {
 
 
     public static class GameVideo {
-        String videoId;
-        int width;
-        int height;
-        String videoUrl;
-        long videoSize;
+        List<VideoBaseInfo> videoInfoList = new ArrayList<>();
+
         String screenUrl; //封面
         int duration; //时长
         long playCnt; //播放数
 
         public void parse(GameCenterProto.GameVideo gameVideo) {
-            videoId = gameVideo.getVideoId();
-            width = gameVideo.getWidth();
-            height = gameVideo.getHeight();
-            videoUrl = gameVideo.getVideoUrl();
-            videoSize = gameVideo.getVideoSize();
             screenUrl = gameVideo.getScreenUrl();
             duration = gameVideo.getDuration();
             playCnt = gameVideo.getPlayCnt();
-        }
-
-        public String getVideoId() {
-            return videoId;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public String getVideoUrl() {
-            return videoUrl;
-        }
-
-        public long getVideoSize() {
-            return videoSize;
+            for (GameCenterProto.VideoBaseInfo vbi : gameVideo.getVideoBaseInfoList()) {
+                VideoBaseInfo videoBaseInfo = new VideoBaseInfo();
+                videoBaseInfo.parse(vbi);
+                videoInfoList.add(videoBaseInfo);
+            }
         }
 
         public String getScreenUrl() {
@@ -204,6 +181,20 @@ public class GameInfoModel {
 
         public long getPlayCnt() {
             return playCnt;
+        }
+
+        public static class VideoBaseInfo {
+            int width;
+            int height;
+            String videoUrl;
+            long videoSize;
+
+            public void parse(GameCenterProto.VideoBaseInfo vbi) {
+                width = vbi.getWidth();
+                height = vbi.getHeight();
+                videoUrl = vbi.getVideoUrl();
+                videoSize = vbi.getVideoSize();
+            }
         }
     }
 
