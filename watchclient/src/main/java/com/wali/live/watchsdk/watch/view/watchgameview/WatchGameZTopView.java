@@ -206,8 +206,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mPortraitBackBtn.setOnClickListener(this);
 
         mPortraitLinUpButtons = (PortraitLineUpButtons) findViewById(R.id.portrait_line_up_buttons);
-        // 分享
-        mPortraitLinUpButtons.addButton(R.drawable.live_video_function_icon_share, R.id.game_watch_portrait_share);
+//        // 分享
+//        mPortraitLinUpButtons.addButton(R.drawable.live_video_function_icon_share, R.id.game_watch_portrait_share);
         // 更多
         mPortraitLinUpButtons.addButton(R.drawable.live_video_function_icon_more, R.id.game_watch_portrait_more);
         // 暂停　播放

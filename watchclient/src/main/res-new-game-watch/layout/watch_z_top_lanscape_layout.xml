@@ -99,7 +99,8 @@
                 android:layout_width="@dimen/view_dimen_70"
                 android:layout_height="@dimen/view_dimen_70"
                 android:src="@drawable/live_video_fullscreen_top_icon_share"
-                android:layout_marginLeft="@dimen/view_dimen_73"/>
+                android:layout_marginLeft="@dimen/view_dimen_73"
+                android:visibility="gone"/>
         </LinearLayout>
     </RelativeLayout>
 
