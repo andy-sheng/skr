@@ -119,7 +119,7 @@ public class WatchGameTabView extends RelativeLayout implements
             @Override
             public int getCount() {
                 int size = mTabTitleList.size();
-                MyLog.d(TAG, "getCount size=" + size);
+//                MyLog.d(TAG, "getCount size=" + size);
                 return size;
             }
 

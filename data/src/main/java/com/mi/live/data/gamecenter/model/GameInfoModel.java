@@ -152,6 +152,29 @@ public class GameInfoModel {
         }
     }
 
+    @Override
+    public String toString() {
+        return "GameInfoModel{" +
+                "gameId=" + gameId +
+                ", gameName='" + gameName + '\'' +
+                ", iconUrl='" + iconUrl + '\'' +
+                ", fileSize=" + fileSize +
+                ", gameType=" + gameType +
+                ", rank=" + rank +
+                ", score=" + score +
+                ", followNum=" + followNum +
+                ", isFollow=" + isFollow +
+                ", packageName='" + packageName + '\'' +
+                ", packageUrl='" + packageUrl + '\'' +
+                ", packageSize=" + packageSize +
+                ", introTitle='" + introTitle + '\'' +
+                ", intro='" + intro + '\'' +
+                ", mDeveloper=" + mDeveloper +
+                ", mGameVideoList=" + mGameVideoList +
+                ", mScreenShotList=" + mScreenShotList +
+                ", mGameTagList=" + mGameTagList +
+                '}';
+    }
 
     public static class GameVideo {
         List<VideoBaseInfo> videoInfoList = new ArrayList<>();
@@ -195,6 +218,26 @@ public class GameInfoModel {
                 videoUrl = vbi.getVideoUrl();
                 videoSize = vbi.getVideoSize();
             }
+
+            @Override
+            public String toString() {
+                return "VideoBaseInfo{" +
+                        "width=" + width +
+                        ", height=" + height +
+                        ", videoUrl='" + videoUrl + '\'' +
+                        ", videoSize=" + videoSize +
+                        '}';
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "GameVideo{" +
+                    "videoInfoList=" + videoInfoList +
+                    ", screenUrl='" + screenUrl + '\'' +
+                    ", duration=" + duration +
+                    ", playCnt=" + playCnt +
+                    '}';
         }
     }
 
@@ -219,6 +262,15 @@ public class GameInfoModel {
 
         public int getPicType() {
             return picType;
+        }
+
+        @Override
+        public String toString() {
+            return "ScreenShot{" +
+                    "picId='" + picId + '\'' +
+                    ", picUrl='" + picUrl + '\'' +
+                    ", picType=" + picType +
+                    '}';
         }
     }
 
@@ -250,6 +302,16 @@ public class GameInfoModel {
         public String getActUrl() {
             return actUrl;
         }
+
+        @Override
+        public String toString() {
+            return "GameTag{" +
+                    "tagId=" + tagId +
+                    ", tagName='" + tagName + '\'' +
+                    ", tagType=" + tagType +
+                    ", actUrl='" + actUrl + '\'' +
+                    '}';
+        }
     }
 
 
@@ -269,5 +331,28 @@ public class GameInfoModel {
         public int getIconUrl() {
             return iconUrl;
         }
+
+        @Override
+        public String toString() {
+            return "Developer{" +
+                    "developerId=" + developerId +
+                    ", developerName='" + developerName + '\'' +
+                    ", iconUrl=" + iconUrl +
+                    '}';
+        }
     }
+
+    /**
+     *
+     * @param url 游戏中心的返回都是个后缀，要自己拼完整的url
+     * @param size 240 480 640 这些
+     * @return
+     */
+    public static String getUrlWithPrefix(String url,int size){
+        if(url.startsWith("http")){
+            return url;
+        }
+        return String.format("http://t1.g.mi.com/thumbnail/webp/w%dq90/%s",size,url);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.watch.view.watchgameview;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
@@ -55,6 +56,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         @Override
         public void onPageSelected(int position) {
             MyLog.d(TAG, "onPageSelected" + " position=" + position);
+            mIndexTv.setText(String.format("%d/%d", position + 1, mGamePreviewPagerAdapter.getCount()));
         }
 
         @Override
@@ -117,15 +119,21 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             @Override
             public void updateUi(GameInfoModel gameInfoModel) {
                 if (gameInfoModel != null) {
+                    MyLog.d(TAG, "updateUi" + " gameInfoModel=" + gameInfoModel);
                     mGameNameTv.setText(gameInfoModel.getGameName());
                     mGameScoreTv.setText(String.valueOf(gameInfoModel.getScore()));
-                    BaseImage baseImage = ImageFactory.newHttpImage(gameInfoModel.getIconUrl())
+                    BaseImage baseImage = ImageFactory.newHttpImage(GameInfoModel.getUrlWithPrefix(gameInfoModel.getIconUrl(), 480))
                             .setCornerRadius(DisplayUtils.dip2px(10))
                             .build();
                     FrescoWorker.loadImage(mGameIconIv, baseImage);
+
                     mGamePreviewPagerAdapter.setData(gameInfoModel);
 
-                    mGameDescTv.setText(gameInfoModel.getIntroTitle());
+                    String introTitle = gameInfoModel.getIntroTitle();
+                    if (TextUtils.isEmpty(introTitle)) {
+                        introTitle = gameInfoModel.getGameName();
+                    }
+                    mGameDescTv.setText(introTitle);
                     mGameIntroduceTv.setText(gameInfoModel.getIntro());
 
                     // 自定义标签页面

@@ -5,11 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.base.image.fresco.BaseImageView;
+import com.base.log.MyLog;
 import com.base.view.LazyNewView;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.wali.live.watchsdk.watch.view.watchgameview.GamePreviewImageView;
 
 public class GamePreviewPagerAdapter extends PagerAdapter {
+
+    public final static String TAG = "GamePreviewPagerAdapter";
 
     GameInfoModel mGameInfoModel = new GameInfoModel();
 
@@ -37,21 +40,24 @@ public class GamePreviewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup viewGroup, int position, Object arg2) {
+        MyLog.d(TAG,"destroyItem" + " viewGroup=" + viewGroup + " position=" + position + " arg2=" + arg2);
         GamePreviewImageView gamePreviewImageView = (GamePreviewImageView) arg2;
         viewGroup.removeView(gamePreviewImageView);
     }
 
     @Override
     public Object instantiateItem(ViewGroup viewGroup, int position) {
+        MyLog.d(TAG,"instantiateItem" + " viewGroup=" + viewGroup + " position=" + position);
         GamePreviewImageView gamePreviewImageView = new GamePreviewImageView(viewGroup.getContext());
         viewGroup.addView(gamePreviewImageView);
         String imageUrl;
         int videoNum = mGameInfoModel.getGameVideoList().size();
-        if(position < videoNum){
+        if (position < videoNum) {
             imageUrl = mGameInfoModel.getGameVideoList().get(position).getScreenUrl();
-        }else{
+        } else {
             imageUrl = mGameInfoModel.getScreenShotList().get(position - videoNum).getPicUrl();
         }
+        imageUrl = GameInfoModel.getUrlWithPrefix(imageUrl, 640);
         gamePreviewImageView.setImageUrl(imageUrl);
         return gamePreviewImageView;
     }
