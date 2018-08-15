@@ -118,12 +118,18 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             public void updateUi(GameInfoModel gameInfoModel) {
                 if (gameInfoModel != null) {
                     mGameNameTv.setText(gameInfoModel.getGameName());
-                    mGameScoreTv.setText(String.format(".1f%", gameInfoModel.getScore()));
+                    mGameScoreTv.setText(String.valueOf(gameInfoModel.getScore()));
                     BaseImage baseImage = ImageFactory.newHttpImage(gameInfoModel.getIconUrl())
                             .setCornerRadius(DisplayUtils.dip2px(10))
                             .build();
                     FrescoWorker.loadImage(mGameIconIv, baseImage);
                     mGamePreviewPagerAdapter.setData(gameInfoModel);
+
+                    mGameDescTv.setText(gameInfoModel.getIntroTitle());
+                    mGameIntroduceTv.setText(gameInfoModel.getIntro());
+
+                    // 自定义标签页面
+
                 }
             }
 

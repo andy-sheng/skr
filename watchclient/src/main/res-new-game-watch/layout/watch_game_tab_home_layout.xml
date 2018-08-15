@@ -37,7 +37,10 @@
         <TextView
             android:id="@+id/game_score_tv"
             android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/view_dimen_30"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/live_teb_gameintroduced_icon_score"
+            android:drawablePadding="@dimen/view_dimen_15"
             android:layout_alignLeft="@+id/game_name_tv"
             android:layout_below="@+id/game_name_tv"
             android:text="8.0"
@@ -84,6 +87,8 @@
 
         <ImageView
             android:id="@+id/player_control_btn"
+            android:layout_centerInParent="true"
+            android:src="@drawable/live_teb_gameintroduced_video_icon_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -135,6 +140,7 @@
             android:text="本游戏为小米枪战抢先测试服，测试服会频繁不定期更新，任何新要素会提前在体验服中到。任何新要素会提前在体验服中到在体验服中体验服中测试服..."
             android:textColor="@color/color_black_trans_60"
             android:textSize="@dimen/view_dimen_42" />
+
 
     </RelativeLayout>
 </merge>
