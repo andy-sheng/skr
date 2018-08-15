@@ -102,6 +102,43 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/live_teb_gameintroduced_video_icon_play" />
 
+                <RelativeLayout
+                    android:id="@+id/label_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/view_dimen_40">
+
+                    <TextView
+                        android:id="@+id/video_label_tv"
+                        android:layout_width="@dimen/view_dimen_136"
+                        android:layout_height="@dimen/view_dimen_60"
+                        android:background="@drawable/game_watch_home_preview_label_bg"
+                        android:drawableLeft="@drawable/live_teb_gameintroduced_icon_play"
+                        android:drawablePadding="@dimen/view_dimen_1"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/view_dimen_30"
+                        android:text="视频"
+                        android:textColor="@color/color_watch_game_home_page_label_text_color"
+                        android:textSize="@dimen/view_dimen_27" />
+
+                    <TextView
+                        android:id="@+id/pic_label_tv"
+                        android:layout_width="@dimen/view_dimen_136"
+                        android:layout_height="@dimen/view_dimen_60"
+                        android:layout_marginLeft="@dimen/view_dimen_34"
+                        android:layout_toRightOf="@+id/video_label_tv"
+                        android:background="@drawable/game_watch_home_preview_label_bg"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/view_dimen_10"
+                        android:paddingRight="@dimen/view_dimen_10"
+                        android:text="图片"
+                        android:textColor="@color/color_watch_game_home_page_label_text_color"
+                        android:textSize="@dimen/view_dimen_27" />
+
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/index_tv"
                     android:layout_width="wrap_content"

@@ -27,7 +27,7 @@ import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameLiveCo
 import static com.wali.live.component.view.Utils.$click;
 
 public class WatchGameChatTabView extends RelativeLayout implements
-        IComponentView<WatchGameChatTabView.IPresenter, WatchGameChatTabView.IView>, View.OnClickListener {
+        IComponentView<WatchGameChatTabView.IPresenter, WatchGameChatTabView.IView>,WatchGameTabView.GameTabChildView, View.OnClickListener {
 
     private static final int ANCHOR_BADGE_CERT = DisplayUtils.dip2px(16f);
     private static final int ANCHOR_BADGE_UN_CERT = DisplayUtils.dip2px(11f);
@@ -207,6 +207,16 @@ public class WatchGameChatTabView extends RelativeLayout implements
     @Override
     public void setPresenter(IPresenter iPresenter) {
         iPresenter.updateUi();
+    }
+
+    @Override
+    public void select() {
+
+    }
+
+    @Override
+    public void unselect() {
+
     }
 
     public interface IView extends IViewProxy {

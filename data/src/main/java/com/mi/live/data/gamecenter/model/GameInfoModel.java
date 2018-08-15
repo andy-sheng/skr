@@ -206,6 +206,10 @@ public class GameInfoModel {
             return playCnt;
         }
 
+        public List<VideoBaseInfo> getVideoInfoList() {
+            return videoInfoList;
+        }
+
         public static class VideoBaseInfo {
             int width;
             int height;
@@ -217,6 +221,22 @@ public class GameInfoModel {
                 height = vbi.getHeight();
                 videoUrl = vbi.getVideoUrl();
                 videoSize = vbi.getVideoSize();
+            }
+
+            public int getWidth() {
+                return width;
+            }
+
+            public int getHeight() {
+                return height;
+            }
+
+            public String getVideoUrl() {
+                return videoUrl;
+            }
+
+            public long getVideoSize() {
+                return videoSize;
             }
 
             @Override

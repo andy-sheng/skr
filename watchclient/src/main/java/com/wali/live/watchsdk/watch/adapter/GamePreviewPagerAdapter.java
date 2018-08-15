@@ -62,4 +62,12 @@ public class GamePreviewPagerAdapter extends PagerAdapter {
         return gamePreviewImageView;
     }
 
+    public Object getItemByPosition(int position) {
+        int videoNum = mGameInfoModel.getGameVideoList().size();
+        if (position < videoNum) {
+            return mGameInfoModel.getGameVideoList().get(position);
+        } else {
+            return mGameInfoModel.getScreenShotList().get(position - videoNum);
+        }
+    }
 }

@@ -31,4 +31,5 @@ dependencies {
 
     provided project(':common')
     compile 'com.google.android.exoplayer:exoplayer-core:r2.4.1'
+    compile 'com.google.android.exoplayer:exoplayer-hls:r2.4.1'
 }

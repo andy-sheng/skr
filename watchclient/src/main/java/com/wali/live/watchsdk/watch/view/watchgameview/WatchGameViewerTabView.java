@@ -20,7 +20,7 @@ import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.ViewerRankPrese
 
 import java.util.List;
 
-public class WatchGameViewerTabView extends RelativeLayout implements IComponentView<WatchGameViewerTabView.IPresenter, WatchGameViewerTabView.IView>, ViewerRankRecyclerAdapter.OnItemClickListener {
+public class WatchGameViewerTabView extends RelativeLayout implements IComponentView<WatchGameViewerTabView.IPresenter, WatchGameViewerTabView.IView>, ViewerRankRecyclerAdapter.OnItemClickListener,WatchGameTabView.GameTabChildView {
 
     RecyclerView recyclerView;
     ViewerRankRecyclerAdapter mAdapter;
@@ -104,6 +104,16 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
     @Override
     public void onItemClick(long uid) {
         FloatInfoFragment.openFragment((BaseActivity) getContext(), uid, mMyRoomData.getUid(), mMyRoomData.getRoomId(), mMyRoomData.getVideoUrl(), null, mMyRoomData.getEnterRoomTime(), mMyRoomData.isEnableRelationChain());
+    }
+
+    @Override
+    public void select() {
+
+    }
+
+    @Override
+    public void unselect() {
+
     }
 
 

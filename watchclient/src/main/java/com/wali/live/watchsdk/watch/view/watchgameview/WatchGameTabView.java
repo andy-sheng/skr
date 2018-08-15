@@ -140,10 +140,30 @@ public class WatchGameTabView extends RelativeLayout implements
 
         mTabPagerAdapter.notifyDataSetChanged();
 
-        mWatchGameTabPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mWatchGameTabPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            GameTabChildView mPreSelectView;
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
             @Override
             public void onPageSelected(int position) {
-                MyLog.d(TAG, "onPageSelected" + " position=" + position);
+
+                LazyNewView viewProxy = mTitleAndViewMap.get(mTabTitleList.get(position));
+                View view = viewProxy.getView();
+                if(mPreSelectView!=null && view!=mPreSelectView){
+                    mPreSelectView.unselect();
+                }
+                if(view!=null){
+                    mPreSelectView = (GameTabChildView) view;
+                    mPreSelectView.select();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
 
@@ -202,5 +222,10 @@ public class WatchGameTabView extends RelativeLayout implements
     public interface IView extends IViewProxy {
 
         void updateGameHomePage(RoomBaseDataModel source);
+    }
+
+    public interface GameTabChildView{
+        void select();
+        void unselect();
     }
 }
