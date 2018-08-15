@@ -221,13 +221,13 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                             .build();
                     FrescoWorker.loadImage(mGameIconIv, baseImage);
 
+                    if (gameInfoModel.getGameVideoList().isEmpty()) {
+                        mLabelContainer.setVisibility(GONE);
+                        mPlayerControlBtn.setVisibility(GONE);
+                    } else {
+                        mLabelContainer.setVisibility(VISIBLE);
+                    }
                     mGamePreviewPagerAdapter.setData(gameInfoModel);
-                    mUiHanlder.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mGamePreviewViewPager.setCurrentItem(0);
-                        }
-                    });
                     String introTitle = gameInfoModel.getIntroTitle();
                     if (TextUtils.isEmpty(introTitle)) {
                         introTitle = gameInfoModel.getGameName();
