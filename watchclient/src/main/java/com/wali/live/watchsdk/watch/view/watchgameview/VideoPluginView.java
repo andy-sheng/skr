@@ -21,7 +21,7 @@ import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameIntroVideoP
 /**
  * 一个完整的播放器 view 组件，有seekbar等
  */
-public class VideoPluginView extends RelativeLayout {
+public class VideoPluginView extends RelativeLayout implements GameIntroVideoPresenter.IView {
 
     public final static String TAG = "VideoPluginView";
 
@@ -31,6 +31,7 @@ public class VideoPluginView extends RelativeLayout {
     TextView mPlayerTimeTv;
     VideoSeekBar mVideoSeekbar;
     ImageView mPlayerControlBtn;
+    TextView mVideoRepeatBtn;
 
     IEventController mIEventController;
 
@@ -79,6 +80,7 @@ public class VideoPluginView extends RelativeLayout {
         if (mGameIntroVideoPresenter == null) {
             mGameIntroVideoPresenter = new GameIntroVideoPresenter(mIEventController);
             mGameIntroVideoPresenter.setView(mVideoView);
+            mGameIntroVideoPresenter.setIView(this);
             mGameIntroVideoPresenter.startPresenter();
         }
         return mGameIntroVideoPresenter;
@@ -97,6 +99,7 @@ public class VideoPluginView extends RelativeLayout {
         mPlayerTimeTv = (TextView) this.findViewById(R.id.player_time_tv);
         mVideoSeekbar = (VideoSeekBar) this.findViewById(R.id.video_seekbar);
         mPlayerControlBtn = (ImageView) this.findViewById(R.id.player_control_btn);
+        mVideoRepeatBtn = (TextView) this.findViewById(R.id.video_repeat_btn);
 
         mVideoSeekbar.setVideoSeekBarListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -145,7 +148,8 @@ public class VideoPluginView extends RelativeLayout {
                     getGameIntroVideoPresenter().pauseVideo();
                 } else {
                     // 视频开始播放
-                    mPlayerControlBtn.setVisibility(GONE);
+                    mVideoRepeatBtn.setVisibility(GONE);
+                    setPlayerControlBtnVisibility(GONE);
                     mPlayerControlBtn.setSelected(true);
                     mVideoView.setVisibility(VISIBLE);
                     getGameIntroVideoPresenter().setOriginalStreamUrl(mVideoUrl);
@@ -159,7 +163,19 @@ public class VideoPluginView extends RelativeLayout {
             }
         });
 
-
+        mVideoRepeatBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVideoRepeatBtn.setVisibility(GONE);
+                setPlayerControlBtnVisibility(GONE);
+                mPlayerControlBtn.setSelected(true);
+                mVideoView.setVisibility(VISIBLE);
+                getGameIntroVideoPresenter().setOriginalStreamUrl(mVideoUrl);
+                mUIHandler.post(mOnSeekProgressRunnable);
+                getGameIntroVideoPresenter().seekTo(0);
+                getGameIntroVideoPresenter().startVideo();
+            }
+        });
         /**
          * 这里会拦截掉兄弟节点事件，导致viewpager无法滑动
          */
@@ -190,27 +206,33 @@ public class VideoPluginView extends RelativeLayout {
     }
 
     void processControlView() {
+        if (mVideoRepeatBtn.getVisibility() == VISIBLE) {
+            return;
+        }
+        if (mGameIntroVideoPresenter == null || !mGameIntroVideoPresenter.isStarted()) {
+            return;
+        }
         if (mPlayerControlBtn.isSelected()) {
             //按钮是暂停状态，说明在播放中
             if (mPlayerControlContainer.getVisibility() == VISIBLE) {
                 //控制面板可见，再点击应该立刻消失
                 mPlayerControlContainer.setVisibility(GONE);
-                mPlayerControlBtn.setVisibility(GONE);
+                setPlayerControlBtnVisibility(GONE);
             } else {
                 // 如果控制面板不可见，点击应该出现，3s后无操作就消失
                 mPlayerControlContainer.setVisibility(VISIBLE);
-                mPlayerControlBtn.setVisibility(VISIBLE);
+                setPlayerControlBtnVisibility(VISIBLE);
             }
         } else {
             //按钮是播放状态，说明目前是暂停的
             if (mPlayerControlContainer.getVisibility() == VISIBLE) {
                 //控制面板可见，再点击应该立刻消失
                 mPlayerControlContainer.setVisibility(GONE);
-                mPlayerControlBtn.setVisibility(GONE);
+                setPlayerControlBtnVisibility(GONE);
             } else {
                 // 如果控制面板不可见，点击应该出现，3s后无操作就消失
                 mPlayerControlContainer.setVisibility(VISIBLE);
-                mPlayerControlBtn.setVisibility(VISIBLE);
+                setPlayerControlBtnVisibility(VISIBLE);
             }
         }
     }
@@ -224,7 +246,7 @@ public class VideoPluginView extends RelativeLayout {
                 mVideoView.setVisibility(GONE);
 
                 mPlayerControlBtn.setSelected(false);
-                mPlayerControlBtn.setVisibility(VISIBLE);
+                setPlayerControlBtnVisibility(VISIBLE);
 
             }
         }
@@ -259,7 +281,34 @@ public class VideoPluginView extends RelativeLayout {
             mGameIntroVideoPresenter.pauseVideo();
 
             mPlayerControlBtn.setSelected(false);
-            mPlayerControlBtn.setVisibility(VISIBLE);
+            setPlayerControlBtnVisibility(VISIBLE);
         }
     }
+
+    public void setPlayerControlBtnVisibility(int visiable) {
+        if (visiable == View.VISIBLE) {
+            if (mVideoRepeatBtn.getVisibility() == VISIBLE) {
+
+            } else {
+                mPlayerControlBtn.setVisibility(visiable);
+            }
+        } else {
+            mPlayerControlBtn.setVisibility(visiable);
+        }
+    }
+
+    @Override
+    public void onCompleted() {
+        mVideoRepeatBtn.setVisibility(VISIBLE);
+        setPlayerControlBtnVisibility(GONE);
+        mVideoView.setVisibility(GONE);
+        getGameIntroVideoPresenter().stopVideo();
+    }
+
+    @Override
+    public void onPrepared() {
+
+    }
+
+
 }

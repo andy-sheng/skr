@@ -14,6 +14,7 @@ import com.thornbirds.component.IParams;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.presenter.BasePlayerPresenter;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
+import com.wali.live.watchsdk.watch.view.watchgameview.VideoPluginView;
 
 /**
  * Created by zyh on 2017/10/23.
@@ -22,6 +23,8 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
         implements TextureView.SurfaceTextureListener {
 
     String mOriginUrl;
+
+    IView mVideoPluginView;
 
     @Override
     protected final String getTAG() {
@@ -41,6 +44,10 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
         }
     }
 
+    public void setIView(IView mVideoPluginView) {
+        this.mVideoPluginView = mVideoPluginView;
+    }
+
     public GameIntroVideoPresenter(@NonNull IEventController controller) {
         super(controller);
 //        mStreamerPresenter = new PullStreamerPresenter(new WatchComponentController.EventPlayerCallback(controller));
@@ -48,7 +55,16 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
         mStreamerPresenter = new PullStreamerPresenter(new PullStreamerPresenter.PlayerCallbackWrapper() {
             @Override
             public void onPrepared() {
+                if (mVideoPluginView != null) {
+                    mVideoPluginView.onPrepared();
+                }
+            }
 
+            @Override
+            public void onCompletion() {
+                if (mVideoPluginView != null) {
+                    mVideoPluginView.onCompleted();
+                }
             }
         });
         mStreamerPresenter.setIsRealTime(true);
@@ -135,5 +151,11 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
     @Override
     public boolean onEvent(int event, IParams params) {
         return false;
+    }
+
+    public  interface IView {
+        void onCompleted();
+
+        void onPrepared();
     }
 }

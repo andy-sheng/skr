@@ -158,7 +158,12 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mVideoPluginView.setEventController(componentController);
         mVideoPluginView.setOnClickListener(null);
         mVideoPluginView.setClickable(false);
-        
+
+        /**
+         * 这里为了解决如果在  VideoPluginView setOnClickListener 的话，他就会吃掉点击事件
+         * 导致他的兄弟节点的 viewpager 无法滑动。
+         * 所以这里将事件源全部聚合到 mGamePreviewViewPager 中
+         */
         mGamePreviewViewPager.setOutClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

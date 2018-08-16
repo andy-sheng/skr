@@ -54,6 +54,20 @@
         android:layout_centerInParent="true"
         android:src="@drawable/watch_game_preview_play_btn_bg" />
 
+    <TextView
+        android:id="@+id/video_repeat_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:drawablePadding="@dimen/view_dimen_20"
+        android:drawableTop="@drawable/watch_game_video_repeat_bg"
+        android:gravity="center"
+        android:text="重播"
+        android:visibility="gone"
+        android:textColor="@color/color_white_trans_90"
+        android:textSize="@dimen/view_dimen_36" />
+
 </merge>
 
 
