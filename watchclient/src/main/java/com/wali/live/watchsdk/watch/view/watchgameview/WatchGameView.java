@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
 import com.base.dialog.MyAlertDialog;
 import com.base.global.GlobalData;
@@ -19,10 +20,12 @@ import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.component.presenter.EnvelopePresenter;
 import com.wali.live.watchsdk.component.presenter.InputAreaPresenter;
 import com.wali.live.watchsdk.component.presenter.WatchPlayerPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
+import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.BaseEnterRoomSyncResPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameNewBarrageViewPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameBottomEditPresenter;
@@ -38,6 +41,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
 
 /**
  * Created by vera on 2018/8/7.
@@ -95,6 +99,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_PLAYER_START);
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_PLAYER_RECONNECT);
+        registerAction(MSG_SHOW_SEND_ENVELOPE);
     }
 
     @Override
@@ -170,6 +175,13 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         {
             WatchGameWaterMarkView watchGameWaterMarkView = (WatchGameWaterMarkView) mParentView.findViewById(R.id.watch_mark_view);
             watchGameWaterMarkView.setRoomData(mController.getRoomBaseDataModel());
+        }
+
+        // 抢红包
+        {
+            RelativeLayout relativeLayout = (RelativeLayout) mParentView.findViewById(R.id.envelope_view);
+            EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.getRoomBaseDataModel());
+            registerHybridComponent(presenter, relativeLayout);
         }
     }
 
@@ -253,6 +265,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             case MSG_PLAYER_RECONNECT:
                 mWatchPlayerPresenter.startReconnect();
                 break;
+            case MSG_SHOW_SEND_ENVELOPE:
+                SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.getRoomBaseDataModel());
+                return true;
         }
         return false;
     }

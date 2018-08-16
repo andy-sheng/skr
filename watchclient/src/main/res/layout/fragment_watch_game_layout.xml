@@ -94,5 +94,12 @@
         android:orientation="vertical"
         android:visibility="invisible" />
 
+    <!--红包容器-->
+    <RelativeLayout
+        android:id="@+id/envelope_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <!--飘屏弹幕、礼物、进场特性等后续加上-->
 </RelativeLayout>
