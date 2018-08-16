@@ -41,7 +41,7 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
         }
     }
 
-    public GameIntroVideoPresenter(@NonNull IEventController controller, boolean isRealTime) {
+    public GameIntroVideoPresenter(@NonNull IEventController controller) {
         super(controller);
 //        mStreamerPresenter = new PullStreamerPresenter(new WatchComponentController.EventPlayerCallback(controller));
 
@@ -51,7 +51,7 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
 
             }
         });
-        mStreamerPresenter.setIsRealTime(isRealTime);
+        mStreamerPresenter.setIsRealTime(true);
 
     }
 
@@ -99,6 +99,18 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
 
     public void mute(boolean mute) {
         mStreamerPresenter.mute(mute);
+    }
+
+    public void seekTo(long position) {
+        mStreamerPresenter.seekTo(position);
+    }
+
+    public  long getCurrentPosition(){
+        return mStreamerPresenter.getCurrentPosition();
+    }
+
+    public  long getDuration(){
+        return mStreamerPresenter.getDuration();
     }
 
     @Override

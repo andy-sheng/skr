@@ -89,18 +89,11 @@
 
                 </android.support.v4.view.ViewPager>
 
-                <TextureView
-                    android:id="@+id/video_view"
+                <!-- 看看是否要将播放器的所有控件封装一下 -->
+                <com.wali.live.watchsdk.watch.view.watchgameview.VideoPluginView
+                    android:id="@+id/video_plugin_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/player_control_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/live_teb_gameintroduced_video_icon_play" />
+                    android:layout_height="match_parent"/>
 
                 <RelativeLayout
                     android:id="@+id/label_container"

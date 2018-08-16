@@ -8,6 +8,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.base.image.fresco.BaseImageView;
@@ -15,10 +16,13 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
+import com.base.utils.date.DateTimeUtils;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.common.gift.utils.DataformatUtils;
+import com.wali.live.video.view.VideoSeekBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.SupportHelper;
@@ -37,6 +41,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
     WatchComponentController mWatchComponentController;
 
+
     RelativeLayout mGameInfoContainer;
     BaseImageView mGameIconIv;
     TextView mGameNameTv;
@@ -44,32 +49,23 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     TextView mInstallBtn;
     RelativeLayout mGamePreviewContainer;
     ViewPager mGamePreviewViewPager;
-    TextureView mVideoView;
-    ImageView mPlayerControlBtn;
+    VideoPluginView mVideoPluginView;
+    RelativeLayout mLabelContainer;
+    TextView mVideoLabelTv;
+    TextView mPicLabelTv;
     TextView mIndexTv;
     RelativeLayout mGameDetailContainer;
     TextView mGameDescTv;
     TextView mGameIntroduceTv;
-    RelativeLayout mLabelContainer;
-    TextView mVideoLabelTv;
-    TextView mPicLabelTv;
     private GameTagView mGameTagView;
     private GameTagView mGameTagView1;
+
 
     GamePreviewPagerAdapter mGamePreviewPagerAdapter;
 
 
     WatchGameHomeTabPresenter mWatchGameHomeTabPresenter;
-    GameIntroVideoPresenter mGameIntroVideoPresenter;
 
-    GameIntroVideoPresenter getGameIntroVideoPresenter() {
-        if (mGameIntroVideoPresenter == null) {
-            mGameIntroVideoPresenter = new GameIntroVideoPresenter(mWatchComponentController, true);
-            mGameIntroVideoPresenter.setView(mVideoView);
-            mGameIntroVideoPresenter.startPresenter();
-        }
-        return mGameIntroVideoPresenter;
-    }
 
     ViewPager.OnPageChangeListener mPreviewPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -84,23 +80,21 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             //如果是视频，显示控制区域
             Object object = mGamePreviewPagerAdapter.getItemByPosition(position);
             if (object instanceof GameInfoModel.GameVideo) {
-                mPlayerControlBtn.setVisibility(VISIBLE);
+
+                mVideoPluginView.setVisibility(VISIBLE);
+
                 mVideoLabelTv.setSelected(true);
                 mPicLabelTv.setSelected(false);
 
                 // 如果暂停模式 并且 播放是当前 item 的url，则显示视频view
-                if (getGameIntroVideoPresenter().isPause()) {
                     GameInfoModel.GameVideo gameVideo = (GameInfoModel.GameVideo) object;
                     List<GameInfoModel.GameVideo.VideoBaseInfo> list = gameVideo.getVideoInfoList();
                     if (list.size() > 0) {
                         GameInfoModel.GameVideo.VideoBaseInfo baseInfo = list.get(0);
-                        if (baseInfo.getVideoUrl().equals(getGameIntroVideoPresenter().getOriginalStreamUrl())) {
-                            mVideoView.setVisibility(VISIBLE);
-                        }
+                        mVideoPluginView.setVideoUrl(baseInfo.getVideoUrl());
                     }
-                }
             } else {
-                mPlayerControlBtn.setVisibility(GONE);
+                mVideoPluginView.setVisibility(GONE);
                 mVideoLabelTv.setSelected(false);
                 mPicLabelTv.setSelected(true);
             }
@@ -110,16 +104,12 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         public void onPageScrollStateChanged(int state) {
             MyLog.d(TAG, "onPageScrollStateChanged" + " state=" + state);
             if (state == ViewPager.SCROLL_STATE_IDLE) {
-            } else {
-                // 滑动时，隐藏视频控制区域
-                mPlayerControlBtn.setVisibility(GONE);
-                // 播放页面隐藏
-                mVideoView.setVisibility(GONE);
 
-                // 当前播放的视频停止
-                if (getGameIntroVideoPresenter().isStarted()) {
-                    getGameIntroVideoPresenter().pauseVideo();
-                }
+            } else {
+                // 滑动时
+                // 播放页面隐藏
+                mVideoPluginView.setVisibility(GONE);
+                mVideoPluginView.tryPauseVideo();
             }
         }
     };
@@ -133,6 +123,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     private void init(Context context, WatchComponentController componentController) {
         inflate(context, R.layout.watch_game_tab_home_layout, this);
 
+
         mGameInfoContainer = (RelativeLayout) this.findViewById(R.id.game_info_container);
         mGameIconIv = (BaseImageView) this.findViewById(R.id.game_icon_iv);
         mGameNameTv = (TextView) this.findViewById(R.id.game_name_tv);
@@ -140,16 +131,11 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mInstallBtn = (TextView) this.findViewById(R.id.install_btn);
         mGamePreviewContainer = (RelativeLayout) this.findViewById(R.id.game_preview_container);
         mGamePreviewViewPager = (ViewPager) this.findViewById(R.id.game_preview_view_pager);
-        mGamePreviewPagerAdapter = new GamePreviewPagerAdapter();
-        mGamePreviewViewPager.setAdapter(mGamePreviewPagerAdapter);
-
-        mVideoView = (TextureView) this.findViewById(R.id.video_view);
-        mPlayerControlBtn = (ImageView) this.findViewById(R.id.player_control_btn);
-        mIndexTv = (TextView) this.findViewById(R.id.index_tv);
+        mVideoPluginView = (VideoPluginView) this.findViewById(R.id.video_plugin_view);
         mLabelContainer = (RelativeLayout) this.findViewById(R.id.label_container);
         mVideoLabelTv = (TextView) this.findViewById(R.id.video_label_tv);
         mPicLabelTv = (TextView) this.findViewById(R.id.pic_label_tv);
-
+        mIndexTv = (TextView) this.findViewById(R.id.index_tv);
         mGameDetailContainer = (RelativeLayout) this.findViewById(R.id.game_detail_container);
         mGameDescTv = (TextView) this.findViewById(R.id.game_desc_tv);
         mGameIntroduceTv = (TextView) this.findViewById(R.id.game_introduce_tv);
@@ -161,36 +147,16 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mGameTagView1 = (GameTagView) this.findViewById(R.id.game_tag_1_view);
         mGameTagView1.setSingleLine(true);
         mGameTagView1.setLineCenter(true);
+        mGamePreviewPagerAdapter = new GamePreviewPagerAdapter();
+        mGamePreviewViewPager.setAdapter(mGamePreviewPagerAdapter);
 
         mWatchGameHomeTabPresenter = new WatchGameHomeTabPresenter(componentController);
         mWatchGameHomeTabPresenter.setView(this.getViewProxy());
         setPresenter(mWatchGameHomeTabPresenter);
 
+        mVideoPluginView.setEventController(componentController);
         mGamePreviewViewPager.addOnPageChangeListener(mPreviewPageChangeListener);
 
-        mPlayerControlBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 视频开始播放
-                int position = mGamePreviewViewPager.getCurrentItem();
-                Object object = mGamePreviewPagerAdapter.getItemByPosition(position);
-                if (object instanceof GameInfoModel.GameVideo) {
-                    GameInfoModel.GameVideo gameVideo = (GameInfoModel.GameVideo) object;
-                    List<GameInfoModel.GameVideo.VideoBaseInfo> list = gameVideo.getVideoInfoList();
-                    if (list.size() > 0) {
-                        GameInfoModel.GameVideo.VideoBaseInfo baseInfo = list.get(0);
-                        mVideoView.setVisibility(VISIBLE);
-                        mPlayerControlBtn.setVisibility(GONE);
-                        getGameIntroVideoPresenter().setOriginalStreamUrl(baseInfo.getVideoUrl());
-                        if (getGameIntroVideoPresenter().isStarted()) {
-                            getGameIntroVideoPresenter().resumeVideo();
-                        } else {
-                            getGameIntroVideoPresenter().startVideo();
-                        }
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -199,9 +165,6 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         if (mWatchGameHomeTabPresenter != null) {
             mWatchGameHomeTabPresenter.startPresenter();
         }
-        if (mGameIntroVideoPresenter != null) {
-            mGameIntroVideoPresenter.startPresenter();
-        }
     }
 
     @Override
@@ -209,9 +172,6 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         super.onDetachedFromWindow();
         if (mWatchGameHomeTabPresenter != null) {
             mWatchGameHomeTabPresenter.stopPresenter();
-        }
-        if (mGameIntroVideoPresenter != null) {
-            mGameIntroVideoPresenter.stopPresenter();
         }
         if (mUiHanlder != null) {
             mUiHanlder.removeCallbacksAndMessages(null);
@@ -234,9 +194,18 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
                     if (gameInfoModel.getGameVideoList().isEmpty()) {
                         mLabelContainer.setVisibility(GONE);
-                        mPlayerControlBtn.setVisibility(GONE);
+                        mVideoPluginView.setVisibility(GONE);
                     } else {
                         mLabelContainer.setVisibility(VISIBLE);
+                        mVideoPluginView.setVisibility(VISIBLE);
+                        mVideoPluginView.getVideoView().setVisibility(GONE);
+
+                        List<GameInfoModel.GameVideo.VideoBaseInfo> list = gameInfoModel.getGameVideoList().get(0).getVideoInfoList();
+                        if (list.size() > 0) {
+                            GameInfoModel.GameVideo.VideoBaseInfo baseInfo = list.get(0);
+                            mVideoPluginView.setVideoUrl(baseInfo.getVideoUrl());
+                        }
+
                     }
                     mGamePreviewPagerAdapter.setData(gameInfoModel);
                     String introTitle = gameInfoModel.getIntroTitle();
@@ -283,8 +252,8 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
     @Override
     public void unselect() {
-        if (mGameIntroVideoPresenter != null) {
-            mGameIntroVideoPresenter.stopVideo();
+        if (mVideoPluginView != null) {
+            mVideoPluginView.tryPauseVideo();
         }
     }
 
