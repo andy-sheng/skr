@@ -65,7 +65,7 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mPresenter != null) {
-            mPresenter.startPresenter();
+            mPresenter.stopPresenter();
         }
     }
 
