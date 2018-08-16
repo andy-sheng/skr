@@ -82,16 +82,17 @@
                 android:layout_below="@+id/game_info_container"
                 android:layout_marginTop="@dimen/view_dimen_46">
 
-                <android.support.v4.view.ViewPager
+                <com.wali.live.watchsdk.watch.view.watchgameview.GameWatchPreviewViewPager
                     android:id="@+id/game_preview_view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                </android.support.v4.view.ViewPager>
+                </com.wali.live.watchsdk.watch.view.watchgameview.GameWatchPreviewViewPager>
 
                 <!-- 看看是否要将播放器的所有控件封装一下 -->
                 <com.wali.live.watchsdk.watch.view.watchgameview.VideoPluginView
                     android:id="@+id/video_plugin_view"
+                    android:background="@color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 

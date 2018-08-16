@@ -15,8 +15,8 @@
         android:id="@+id/player_control_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_120"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/voice_btn"
@@ -41,8 +41,7 @@
         <com.wali.live.video.view.VideoSeekBar
             android:id="@+id/video_seekbar"
             android:layout_width="@dimen/view_dimen_600"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_height="@dimen/view_dimen_30"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/view_dimen_20"
             android:layout_toRightOf="@+id/player_time_tv" />

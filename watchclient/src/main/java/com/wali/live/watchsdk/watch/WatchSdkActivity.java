@@ -802,13 +802,19 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
 
                 if (gameId > 0 || !TextUtils.isEmpty(mMyRoomData.getGamePackageName())) {
                     GameInfoModel gameInfoModel = GameCenterDataManager.getGameInfo(gameId, mMyRoomData.getGamePackageName());
-                    subscriber.onNext(gameInfoModel);
+                    if (gameInfoModel == null) {
+                        subscriber.onError(new Exception("pull data error"));
+                        return;
+                    } else {
+                        subscriber.onNext(gameInfoModel);
+                    }
                 }
                 subscriber.onCompleted();
             }
         })
                 .subscribeOn(Schedulers.io())
                 .compose(this.<GameInfoModel>bindUntilEvent(ActivityEvent.DESTROY))
+                .retryWhen(new RxRetryAssist(3, 5, false))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<GameInfoModel>() {
                     @Override

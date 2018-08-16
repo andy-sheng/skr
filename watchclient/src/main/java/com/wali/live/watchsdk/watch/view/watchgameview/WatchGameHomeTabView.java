@@ -48,7 +48,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     TextView mGameScoreTv;
     TextView mInstallBtn;
     RelativeLayout mGamePreviewContainer;
-    ViewPager mGamePreviewViewPager;
+    GameWatchPreviewViewPager mGamePreviewViewPager;
     VideoPluginView mVideoPluginView;
     RelativeLayout mLabelContainer;
     TextView mVideoLabelTv;
@@ -87,12 +87,13 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                 mPicLabelTv.setSelected(false);
 
                 // 如果暂停模式 并且 播放是当前 item 的url，则显示视频view
-                    GameInfoModel.GameVideo gameVideo = (GameInfoModel.GameVideo) object;
-                    List<GameInfoModel.GameVideo.VideoBaseInfo> list = gameVideo.getVideoInfoList();
-                    if (list.size() > 0) {
-                        GameInfoModel.GameVideo.VideoBaseInfo baseInfo = list.get(0);
-                        mVideoPluginView.setVideoUrl(baseInfo.getVideoUrl());
-                    }
+                GameInfoModel.GameVideo gameVideo = (GameInfoModel.GameVideo) object;
+                List<GameInfoModel.GameVideo.VideoBaseInfo> list = gameVideo.getVideoInfoList();
+                if (list.size() > 0) {
+                    GameInfoModel.GameVideo.VideoBaseInfo baseInfo = list.get(0);
+                    mVideoPluginView.setVideoUrl(baseInfo.getVideoUrl());
+                }
+
             } else {
                 mVideoPluginView.setVisibility(GONE);
                 mVideoLabelTv.setSelected(false);
@@ -130,7 +131,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mGameScoreTv = (TextView) this.findViewById(R.id.game_score_tv);
         mInstallBtn = (TextView) this.findViewById(R.id.install_btn);
         mGamePreviewContainer = (RelativeLayout) this.findViewById(R.id.game_preview_container);
-        mGamePreviewViewPager = (ViewPager) this.findViewById(R.id.game_preview_view_pager);
+        mGamePreviewViewPager = (GameWatchPreviewViewPager) this.findViewById(R.id.game_preview_view_pager);
         mVideoPluginView = (VideoPluginView) this.findViewById(R.id.video_plugin_view);
         mLabelContainer = (RelativeLayout) this.findViewById(R.id.label_container);
         mVideoLabelTv = (TextView) this.findViewById(R.id.video_label_tv);
@@ -155,6 +156,16 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         setPresenter(mWatchGameHomeTabPresenter);
 
         mVideoPluginView.setEventController(componentController);
+        mVideoPluginView.setOnClickListener(null);
+        mVideoPluginView.setClickable(false);
+        
+        mGamePreviewViewPager.setOutClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVideoPluginView.processControlView();
+            }
+        });
+
         mGamePreviewViewPager.addOnPageChangeListener(mPreviewPageChangeListener);
 
     }
@@ -216,9 +227,9 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                     mGameIntroduceTv.setText(gameInfoModel.getIntro());
 
                     List<GameInfoModel.GameTag> gameTagList = gameInfoModel.getGameTagList();
-                    if(gameTagList != null && !gameTagList.isEmpty()) {
-                        for(GameInfoModel.GameTag tag : gameTagList) {
-                            if(tag.getTagType() == 0) {
+                    if (gameTagList != null && !gameTagList.isEmpty()) {
+                        for (GameInfoModel.GameTag tag : gameTagList) {
+                            if (tag.getTagType() == 0) {
                                 mGameTagView.addTag(tag);
                             } else {
                                 //做容错-没有的就不展示了

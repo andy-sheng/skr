@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.watch.view.watchgameview;
 import android.content.Context;
 import android.widget.RelativeLayout;
 
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
@@ -25,6 +26,7 @@ public class GamePreviewImageView extends RelativeLayout {
 
     public void setImageUrl(String imageUrl) {
         BaseImage baseImage = ImageFactory.newHttpImage(imageUrl)
+                .setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.loading_empty))
                 .build();
         FrescoWorker.loadImage(mMainIv, baseImage);
     }
