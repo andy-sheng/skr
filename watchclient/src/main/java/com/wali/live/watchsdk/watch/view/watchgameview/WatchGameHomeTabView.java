@@ -95,6 +95,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
             } else {
                 mVideoPluginView.setVisibility(GONE);
+                mLabelContainer.setVisibility(VISIBLE);
                 mVideoLabelTv.setSelected(false);
                 mPicLabelTv.setSelected(true);
             }
@@ -158,7 +159,16 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mVideoPluginView.setEventController(componentController);
         mVideoPluginView.setOnClickListener(null);
         mVideoPluginView.setClickable(false);
-
+        mVideoPluginView.setViewListener(new VideoPluginView.ViewListener() {
+            @Override
+            public void onControlViewVisiable(boolean visiable) {
+                if (visiable) {
+                    mLabelContainer.setVisibility(GONE);
+                } else {
+                    mLabelContainer.setVisibility(VISIBLE);
+                }
+            }
+        });
         /**
          * 这里为了解决如果在  VideoPluginView setOnClickListener 的话，他就会吃掉点击事件
          * 导致他的兄弟节点的 viewpager 无法滑动。
@@ -375,5 +385,6 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     public interface IPresenter {
         void beginDownload();
     }
+
 
 }

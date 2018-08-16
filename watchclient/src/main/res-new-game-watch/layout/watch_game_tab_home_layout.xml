@@ -11,7 +11,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/color_f7f7f7">
 
             <RelativeLayout
                 android:id="@+id/game_info_container"
@@ -102,9 +103,9 @@
                 <!-- 看看是否要将播放器的所有控件封装一下 -->
                 <com.wali.live.watchsdk.watch.view.watchgameview.VideoPluginView
                     android:id="@+id/video_plugin_view"
-                    android:background="@color/transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent" />
 
                 <RelativeLayout
                     android:id="@+id/label_container"
@@ -198,17 +199,17 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/game_introduce_tv"
                     android:layout_marginLeft="@dimen/view_dimen_30"
-                    android:layout_marginRight="@dimen/view_dimen_30"/>
+                    android:layout_marginRight="@dimen/view_dimen_30" />
 
                 <com.wali.live.watchsdk.watch.view.watchgameview.GameTagView
                     android:id="@+id/game_tag_1_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_dimen_28"
                     android:layout_below="@id/game_tag_view"
+                    android:layout_marginBottom="@dimen/view_dimen_30"
                     android:layout_marginLeft="@dimen/view_dimen_30"
                     android:layout_marginRight="@dimen/view_dimen_30"
-                    android:layout_marginBottom="@dimen/view_dimen_30"/>
+                    android:layout_marginTop="@dimen/view_dimen_28" />
 
             </RelativeLayout>
 

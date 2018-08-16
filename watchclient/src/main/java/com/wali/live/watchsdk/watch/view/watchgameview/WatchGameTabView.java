@@ -97,8 +97,8 @@ public class WatchGameTabView extends RelativeLayout implements
             @Override
             public void destroyItem(ViewGroup viewGroup, int position, Object arg2) {
                 MyLog.d(TAG, "destroyItem" + " viewGroup=" + viewGroup + " position=" + position + " arg2=" + arg2);
-                LazyNewView viewProxy = mTitleAndViewMap.get(mTabTitleList.get(position));
-                viewGroup.removeView(viewProxy.getView());
+//                LazyNewView viewProxy = mTitleAndViewMap.get(mTabTitleList.get(position));
+                viewGroup.removeView((View) arg2);
             }
 
             @Override
@@ -142,6 +142,7 @@ public class WatchGameTabView extends RelativeLayout implements
 
         mWatchGameTabPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             GameTabChildView mPreSelectView;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -152,10 +153,10 @@ public class WatchGameTabView extends RelativeLayout implements
 
                 LazyNewView viewProxy = mTitleAndViewMap.get(mTabTitleList.get(position));
                 View view = viewProxy.getView();
-                if(mPreSelectView!=null && view!=mPreSelectView){
+                if (mPreSelectView != null && view != mPreSelectView) {
                     mPreSelectView.unselect();
                 }
-                if(view!=null){
+                if (view != null) {
                     mPreSelectView = (GameTabChildView) view;
                     mPreSelectView.select();
                 }
@@ -224,8 +225,9 @@ public class WatchGameTabView extends RelativeLayout implements
         void updateGameHomePage(RoomBaseDataModel source);
     }
 
-    public interface GameTabChildView{
+    public interface GameTabChildView {
         void select();
+
         void unselect();
     }
 }
