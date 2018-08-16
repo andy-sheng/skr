@@ -10,4 +10,27 @@
 
     <string name="follow">关注</string>
     <string name="followed">已关注</string>
+
+    <string name="gameinfo_support_cn">中文</string>
+    <string name="gameinfo_support_tw">中文</string>
+    <string name="gameinfo_support_en">英语</string>
+    <string name="gameinfo_support_ko">韩语</string>
+    <string name="gameinfo_support_ja">日语</string>
+    <string name="gameinfo_support_ru">俄语</string>
+    <string name="gameinfo_support_wifi">需要网络</string>
+    <string name="gameinfo_support_no_wifi">无需网络</string>
+    <string name="gameinfo_support_multi_local">本地多人</string>
+    <string name="gameinfo_support_multi_online">联网多人</string>
+    <string name="gameinfo_support_vpn">VPN</string>
+    <string name="gameinfo_support_gamepad">支持手柄</string>
+    <string name="gameinfo_support_google">需谷歌服务</string>
+    <string name="gameinfo_support_extra_data">额外下载数据</string>
+    <string name="gameinfo_support_3_plus">3岁以上</string>
+    <string name="gameinfo_support_6_plus">6岁以上</string>
+    <string name="gameinfo_support_12_plus">12岁以上</string>
+    <string name="gameinfo_support_16_plus">16岁以上</string>
+    <string name="gameinfo_support_18_plus">18岁以上</string>
+    <string name="gameinfo_support_ad">广告</string>
+    <string name="gameinfo_support_iap">内购</string>
+    <string name="gameinfo_support_download">付费下载</string>
 </resources>

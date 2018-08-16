@@ -21,6 +21,7 @@ import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.watch.SupportHelper;
 import com.wali.live.watchsdk.watch.adapter.GamePreviewPagerAdapter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameIntroVideoPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameHomeTabPresenter;
@@ -52,6 +53,8 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     RelativeLayout mLabelContainer;
     TextView mVideoLabelTv;
     TextView mPicLabelTv;
+    private GameTagView mGameTagView;
+    private GameTagView mGameTagView1;
 
     GamePreviewPagerAdapter mGamePreviewPagerAdapter;
 
@@ -151,6 +154,14 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mGameDescTv = (TextView) this.findViewById(R.id.game_desc_tv);
         mGameIntroduceTv = (TextView) this.findViewById(R.id.game_introduce_tv);
 
+        mGameTagView = (GameTagView) this.findViewById(R.id.game_tag_view);
+        mGameTagView.setSingleLine(true);
+        mGameTagView.setLineCenter(true);
+
+        mGameTagView1 = (GameTagView) this.findViewById(R.id.game_tag_1_view);
+        mGameTagView1.setSingleLine(true);
+        mGameTagView1.setLineCenter(true);
+
         mWatchGameHomeTabPresenter = new WatchGameHomeTabPresenter(componentController);
         mWatchGameHomeTabPresenter.setView(this.getViewProxy());
         setPresenter(mWatchGameHomeTabPresenter);
@@ -235,8 +246,21 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                     mGameDescTv.setText(introTitle);
                     mGameIntroduceTv.setText(gameInfoModel.getIntro());
 
-                    // 自定义标签页面
-
+                    List<GameInfoModel.GameTag> gameTagList = gameInfoModel.getGameTagList();
+                    if(gameTagList != null && !gameTagList.isEmpty()) {
+                        for(GameInfoModel.GameTag tag : gameTagList) {
+                            if(tag.getTagType() == 0) {
+                                mGameTagView.addTag(tag);
+                            } else {
+                                //做容错-没有的就不展示了
+                                if(SupportHelper.contain(tag.getTagName())) {
+                                    GameUsageTagItemView gameUsageTagItemView = new GameUsageTagItemView(getContext());
+                                    gameUsageTagItemView.bind(tag);
+                                    mGameTagView1.addTag(gameUsageTagItemView);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

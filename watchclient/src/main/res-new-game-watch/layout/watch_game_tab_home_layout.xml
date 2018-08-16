@@ -187,6 +187,25 @@
                     android:text="本游戏为小米枪战抢先测试服，测试服会频繁不定期更新，任何新要素会提前在体验服中到。任何新要素会提前在体验服中到在体验服中体验服中测试服..."
                     android:textColor="@color/color_black_trans_90"
                     android:textSize="@dimen/view_dimen_42" />
+
+                <com.wali.live.watchsdk.watch.view.watchgameview.GameTagView
+                    android:id="@+id/game_tag_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/game_introduce_tv"
+                    android:layout_marginLeft="@dimen/view_dimen_30"
+                    android:layout_marginRight="@dimen/view_dimen_30"/>
+
+                <com.wali.live.watchsdk.watch.view.watchgameview.GameTagView
+                    android:id="@+id/game_tag_1_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_dimen_28"
+                    android:layout_below="@id/game_tag_view"
+                    android:layout_marginLeft="@dimen/view_dimen_30"
+                    android:layout_marginRight="@dimen/view_dimen_30"
+                    android:layout_marginBottom="@dimen/view_dimen_30"/>
+
             </RelativeLayout>
 
         </RelativeLayout>
