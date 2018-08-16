@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import com.base.log.MyLog;
 import com.wali.live.watchsdk.R;
 
 /**

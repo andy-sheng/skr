@@ -253,7 +253,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                                 mGameTagView.addTag(tag);
                             } else {
                                 //做容错-没有的就不展示了
-                                if(SupportHelper.contain(tag.getTagName())) {
+                                if(SupportHelper.contain(tag.getTagName()) || SupportHelper.getSupportResByUrl(tag.getActUrl()) != null) {
                                     GameUsageTagItemView gameUsageTagItemView = new GameUsageTagItemView(getContext());
                                     gameUsageTagItemView.bind(tag);
                                     mGameTagView1.addTag(gameUsageTagItemView);
