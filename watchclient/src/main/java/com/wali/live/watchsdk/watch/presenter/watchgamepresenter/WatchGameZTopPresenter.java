@@ -13,7 +13,6 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.thornbirds.component.presenter.ComponentPresenter;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.dao.RelationDaoAdapter;
 import com.wali.live.event.UserActionEvent;
@@ -23,7 +22,7 @@ import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.feedback.ReportFragment;
-import com.wali.live.watchsdk.watch.download.GameDownLoadUtil;
+import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -59,16 +58,12 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     private RoomBaseDataModel mMyRoomData;
 
-    private GameInfoModel mGameInfoModel;
-
     private Subscription mFollowSubscription;
 
     public WatchGameZTopPresenter(IEventController controller) {
         super(controller);
         if (controller != null && controller instanceof WatchComponentController) {
             mMyRoomData = ((WatchComponentController) mController).getRoomBaseDataModel();
-            mGameInfoModel = mMyRoomData.getGameInfoModel();
-            GameDownLoadUtil.getInstance().init(mGameInfoModel);
         }
     }
 
@@ -95,7 +90,6 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        GameDownLoadUtil.getInstance().destory();
         if (mView != null) {
             mView.stopView();
         }
@@ -257,8 +251,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     }
 
     @Override
-    public void checkDownLoad() {
-        GameDownLoadUtil.getInstance().checkDownLoad(mMyRoomData.getGameInfoModel());
+    public void clickDownLoad() {
+        if (mMyRoomData.getGameInfoModel() != null) {
+            CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
+            CustomDownloadManager.getInstance().beginDownload(item);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -292,27 +289,6 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                             .subscribeOn(Schedulers.io())
                             .subscribe();
                 }
-            }
-        }
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.GameDownLoadEvent event) {
-        if (null != event && event.gameId == mGameInfoModel.getGameId()) {
-            switch (event.status) {
-                case GameDownLoadUtil.DOWNLOAD:
-                    break;
-                case GameDownLoadUtil.DOWNLOAD_RUNNING:
-                    break;
-                case GameDownLoadUtil.GAME_INSTALL:
-                    break;
-                case GameDownLoadUtil.GAME_LUNCH:
-                    break;
-                default:
-                    break;
-
-
             }
         }
     }
