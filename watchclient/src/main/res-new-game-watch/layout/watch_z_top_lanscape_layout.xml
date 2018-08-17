@@ -123,7 +123,7 @@
             android:layout_height="@dimen/view_dimen_60"
             android:background="@color/color_white_trans_40"
             android:layout_toRightOf="@+id/landscape_pause_resume_btn"
-            android:layout_marginLeft="@dimen/view_dimen_18"
+            android:layout_marginLeft="@dimen/view_dimen_24"
            android:layout_centerVertical="true"/>
 
         <ImageView
@@ -132,7 +132,7 @@
             android:layout_height="@dimen/view_dimen_70"
             android:src="@drawable/live_video_fullscreen_bottom_icon_refresh"
             android:layout_toRightOf="@+id/splite_line_view_1"
-            android:layout_marginLeft="@dimen/view_dimen_18"
+            android:layout_marginLeft="@dimen/view_dimen_24"
             android:layout_centerVertical="true"/>
 
         <LinearLayout
@@ -141,6 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_dimen_33"
             android:orientation="horizontal">
 
             <ImageView
@@ -148,7 +149,7 @@
                 android:layout_width="@dimen/view_dimen_75"
                 android:layout_height="@dimen/view_dimen_75"
                 android:background="@drawable/live_video_fullscreen_bottom_icon_subtitles"
-                android:layout_marginRight="@dimen/view_dimen_34" />
+                android:layout_marginRight="@dimen/view_dimen_38" />
 
             <View
                 android:id="@+id/splite_line_view_2"
@@ -156,14 +157,14 @@
                 android:layout_height="@dimen/view_dimen_60"
                 android:background="@color/color_white_trans_40"
                 android:layout_toLeftOf="@+id/landscape_gift_btn"
-                android:layout_marginRight="@dimen/view_dimen_40" />
+                android:layout_marginRight="@dimen/view_dimen_38" />
 
             <ImageView
                 android:id="@+id/landscape_gift_btn"
                 android:layout_width="@dimen/view_dimen_75"
                 android:layout_height="@dimen/view_dimen_75"
                 android:src="@drawable/live_icon_gift_btn"
-                android:layout_marginRight="@dimen/view_dimen_49" />
+                android:layout_marginRight="@dimen/view_dimen_38" />
 
         </LinearLayout>
 

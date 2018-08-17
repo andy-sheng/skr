@@ -20,9 +20,9 @@ import com.wali.live.watchsdk.R;
 public class MyInfoIconView extends RelativeLayout {
     private static final String TAG = "MyInfoIconView";
 
-    BaseImageView mMyAvatarIv;
-    TextView mDescTv;
-    ImageView mNewMsgPointIv;
+    protected BaseImageView mMyAvatarIv;
+    protected TextView mDescTv;
+    protected ImageView mNewMsgPointIv;
 
     public MyInfoIconView(Context context) {
         super(context);
@@ -39,8 +39,12 @@ public class MyInfoIconView extends RelativeLayout {
         init(context);
     }
 
-    private void init(Context context) {
+    protected void init(Context context) {
         inflate(context, R.layout.my_info_icon_view, this);
+        bindView();
+    }
+
+    protected void bindView() {
         mMyAvatarIv = (BaseImageView) this.findViewById(R.id.my_avatar_iv);
         mDescTv = (TextView) this.findViewById(R.id.desc_tv);
         mNewMsgPointIv = (ImageView) this.findViewById(R.id.new_msg_point_iv);

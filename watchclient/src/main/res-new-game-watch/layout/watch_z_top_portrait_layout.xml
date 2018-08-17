@@ -22,7 +22,7 @@
         android:id="@+id/portrait_line_up_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/view_dimen_22"
         android:layout_marginRight="@dimen/view_dimen_30"/>

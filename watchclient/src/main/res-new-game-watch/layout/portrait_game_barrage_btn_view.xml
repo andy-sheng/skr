@@ -12,7 +12,7 @@
         android:maxLines="1"
         android:paddingLeft="@dimen/margin_37"
         android:text=""
-        android:textColor="@color/color_white_trans_70"
+        android:textColor="@color/color_black_trans_30"
         android:textSize="@dimen/text_size_44"
         android:background="@drawable/shape_portrait_game_barrage_btn_view"/>
 

@@ -29,7 +29,7 @@ public class WatchGameBottomEditView extends RelativeLayout implements
     @Nullable
     protected IPresenter mPresenter;
 
-    private MyInfoIconView mMyInfoIconView;
+    private GameMyInfoIconView mMyInfoIconView;
     private PortraitGameBarregeBtnView mPortraitGameBarregeBtnView;
     private GiftFastSendView mGiftFastSendView;
     private ImageView mGiftIv;
@@ -49,7 +49,7 @@ public class WatchGameBottomEditView extends RelativeLayout implements
 
     private void init(Context context) {
         View root = inflate(context, R.layout.watch_game_bottom_view, this);
-        mMyInfoIconView = (MyInfoIconView) root.findViewById(R.id.my_info_icon_container);
+        mMyInfoIconView = (GameMyInfoIconView) root.findViewById(R.id.my_info_icon_container);
         mMyInfoIconView.changeBg(GlobalData.app().getResources().getDrawable(R.drawable.game_my_info_btn_bg));
         mPortraitGameBarregeBtnView = (PortraitGameBarregeBtnView) root.findViewById(R.id.barrage_btn_container);
         mGiftFastSendView = (GiftFastSendView) root.findViewById(R.id.gift_fast_sent_container);
