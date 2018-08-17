@@ -18,6 +18,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.MD5;
+import com.base.utils.WLReflect;
 import com.base.utils.toast.ToastUtils;
 import com.wali.live.utils.FileUtils;
 import com.wali.live.watchsdk.R;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import rx.Observable;
@@ -57,7 +59,7 @@ public class CustomDownloadManager {
     /**
      * 监听那些downloadid
      */
-    private List<Pair<String, Long>> mMonitorDownloadIds = new ArrayList<>();
+    private HashSet<Holder> mMonitorDownloadIds = new HashSet<>();
 
     // 注册下载监听回调
     private BroadcastReceiver mDownloadReceiver;
@@ -76,6 +78,7 @@ public class CustomDownloadManager {
     private ContentObserver mDownloadObserver = new ContentObserver(mHandler) {
         @Override
         public void onChange(boolean selfChange) {
+            MyLog.d(TAG, "onChange" + " selfChange=" + selfChange);
             updateProgress();
         }
     };
@@ -146,7 +149,7 @@ public class CustomDownloadManager {
         if (!TextUtils.isEmpty(ext)) {
             fileName += "." + ext;
         }
-        MyLog.d(TAG,"beginDownload" + " fileName=" + fileName);
+        MyLog.d(TAG, "beginDownload" + " fileName=" + fileName);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
 
         long downloadId = mDownloadManager.enqueue(request);
@@ -157,12 +160,29 @@ public class CustomDownloadManager {
         ToastUtils.showToast(R.string.downloading);
     }
 
+    public void pauseDownload(String url) {
+        String key = MD5.MD5_32(url);
+        long did = mDownloadingMap.get(key);
+        WLReflect.pauseDownload(mDownloadManager, new long[]{did});
+    }
+
     public void addMonitorUrl(String url) {
         String downloadKey = MD5.MD5_32(url);
         long downloadId = mDownloadingMap.get(downloadKey);
-        mMonitorDownloadIds.add(new Pair<String, Long>(downloadKey, downloadId));
+        if (downloadId != 0) {
+            Holder h = new Holder(downloadKey, downloadId);
+            // 这里先 remove 再 add 是因为 复写 Holder 的 hashcode 和 equals 方法，这根据key字段来
+            // 这里先remove 再 add 保证 key 对应 downloadid 是最新的
+            mMonitorDownloadIds.remove(h);
+            mMonitorDownloadIds.add(h);
+        }
     }
 
+    public void removeMonitorUrl(String url) {
+        String downloadKey = MD5.MD5_32(url);
+        long downloadId = mDownloadingMap.get(downloadKey);
+        mMonitorDownloadIds.remove(new Holder(downloadKey, downloadId));
+    }
 
     private void updateProgress() {
         if (mDownloadSubscription != null && !mDownloadSubscription.isUnsubscribed()) {
@@ -174,18 +194,15 @@ public class CustomDownloadManager {
                     public void call(Subscriber<? super Pair<String, int[]>> subscriber) {
                         Cursor cursor = null;
                         try {
-                            for (int i = 0; i < mMonitorDownloadIds.size(); i++) {
+                            for (Holder h : mMonitorDownloadIds) {
+                                MyLog.d(TAG, "updateProgress" + " holder=" + h);
                                 int[] result = new int[]{
-                                        -1, -1, 0
+                                        -1, -1, 0, 0
                                 };
-                                Pair<String, Long> p = mMonitorDownloadIds.get(i);
-                                long downloadId = p.second;
+                                long downloadId = h.downloadId;
                                 DownloadManager.Query query = new DownloadManager.Query()
                                         .setFilterById(downloadId);
                                 cursor = mDownloadManager.query(query);
-                                if (cursor != null) {
-
-                                }
                                 if (cursor != null && cursor.moveToFirst()) {
                                     //已经下载文件大小
                                     result[0] = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
@@ -193,8 +210,14 @@ public class CustomDownloadManager {
                                     result[1] = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
                                     //下载状态
                                     result[2] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                                    //变成这种状态的原因，如因为没有网络而暂停等
+                                    result[3] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
+                                    subscriber.onNext(new Pair<>(h.key, result));
+                                } else {
+                                    // 查不到了，说明任务已经被取消了或者删除了，这时别的状态没关系，
+                                    // 如果之前是下载中状态就要变为未下载了
+                                    EventBus.getDefault().post(new TaskEvent(h.key, TaskEvent.STATUS_REMOVE));
                                 }
-                                subscriber.onNext(new Pair<String, int[]>(p.first, result));
                             }
                         } catch (Exception e) {
                             subscriber.onError(e);
@@ -213,12 +236,28 @@ public class CustomDownloadManager {
                     public void call(Pair<String, int[]> result) {
                         // 下载状态以数据库为准
                         int status = result.second[2];
-                        MyLog.d(TAG, "call" + " status=" + result);
+                        MyLog.d(TAG, "call" + " status=" + result.second[2] + " key:" + result.first);
+
                         if (status == DownloadManager.STATUS_RUNNING) {
                             if (result.second[0] >= 0 && result.second[1] > 0) {
                                 int progress = (int) (result.second[0] * 100l / result.second[1]);
-                                EventBus.getDefault().post(new ApkStatusEvent(result.first, ApkStatusEvent.STATUS_DOWNLOADING, progress));
+                                ApkStatusEvent event = new ApkStatusEvent(result.first, ApkStatusEvent.STATUS_DOWNLOADING);
+                                event.progress = progress;
+                                EventBus.getDefault().post(event);
                             }
+                        } else if (status == DownloadManager.STATUS_PAUSED) {
+                            if (result.second[0] >= 0 && result.second[1] > 0) {
+                                int progress = (int) (result.second[0] * 100l / result.second[1]);
+                                ApkStatusEvent event = new ApkStatusEvent(result.first, ApkStatusEvent.STATUS_PAUSE_DOWNLOAD);
+                                event.progress = progress;
+                                event.reason = result.second[3];
+                                EventBus.getDefault().post(event);
+                            }
+                        } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                            ApkStatusEvent event = new ApkStatusEvent(result.first, ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
+                            EventBus.getDefault().post(event);
+                        } else if (status == DownloadManager.STATUS_FAILED) {
+
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -230,12 +269,13 @@ public class CustomDownloadManager {
     }
 
     private void registerObserver() {
-            GlobalData.app().getApplicationContext().getContentResolver().
-                    registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, mDownloadObserver);
+        GlobalData.app().getApplicationContext().getContentResolver().
+                registerContentObserver(
+                        Uri.parse("content://downloads/my_downloads"), true, mDownloadObserver);
     }
 
     private void unregisterObserver() {
-            GlobalData.app().getApplicationContext().getContentResolver().unregisterContentObserver(mDownloadObserver);
+        GlobalData.app().getApplicationContext().getContentResolver().unregisterContentObserver(mDownloadObserver);
     }
 
     private void registerReceiver() {
@@ -246,8 +286,10 @@ public class CustomDownloadManager {
         mDownloadReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                MyLog.d(TAG, "onReceive" + " context=" + context + " intent=" + intent);
                 // 非暂停直接删除任务，也会触发，所以暂时先不用
                 long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+
             }
         };
         GlobalData.app().getApplicationContext().registerReceiver(mDownloadReceiver, intentFilter);
@@ -259,7 +301,7 @@ public class CustomDownloadManager {
         mInstallReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                MyLog.d(TAG, "onReceive" + " context=" + context + " intent=" + intent);
             }
         };
         GlobalData.app().getApplicationContext().registerReceiver(mInstallReceiver, installFilter);
@@ -309,23 +351,71 @@ public class CustomDownloadManager {
             this.title = title;
         }
 
+        public String getKey() {
+            String key = MD5.MD5_32(url);
+            return key;
+        }
+    }
+
+    public static class Holder {
+        String key;
+        long downloadId;
+
+        public Holder(String key, long downloadId) {
+            this.key = key;
+            this.downloadId = downloadId;
+        }
+
+        @Override
+        public int hashCode() {
+            return key.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Holder) {
+                Holder a = (Holder) obj;
+                if (a.key.equals(key)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Holder{" +
+                    "key='" + key + '\'' +
+                    ", downloadId=" + downloadId +
+                    '}';
+        }
     }
 
     public static class ApkStatusEvent {
         public String downloadKey;
         public int status;
         public int progress;
-
+        public int reason;
         public static final int STATUS_NO_DOWNLOAD = 1; //未下载
         public static final int STATUS_DOWNLOADING = 2; //下载中
+        public static final int STATUS_PAUSE_DOWNLOAD = 5; //下载中
         public static final int STATUS_DOWNLOAD_COMPELED = 3;//已下载待安装
         public static final int STATUS_LAUNCH = 4;//启动
 
-        public ApkStatusEvent(String downloadKey, int status, int progress) {
+        public ApkStatusEvent(String downloadKey, int status) {
             this.downloadKey = downloadKey;
             this.status = status;
-            this.progress = progress;
         }
+    }
 
+    public static class TaskEvent {
+        public String downloadKey;
+        public int status;
+        public static final int STATUS_REMOVE = 4;//启动
+
+        public TaskEvent(String downloadKey, int status) {
+            this.downloadKey = downloadKey;
+            this.status = status;
+        }
     }
 }

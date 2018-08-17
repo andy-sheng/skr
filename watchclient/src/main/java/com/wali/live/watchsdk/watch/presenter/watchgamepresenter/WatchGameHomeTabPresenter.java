@@ -57,6 +57,9 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
         }
         if (mView != null) {
             mView.updateUi(mGameInfoModel);
+            if (mGameInfoModel != null) {
+                CustomDownloadManager.getInstance().addMonitorUrl(mGameInfoModel.getPackageUrl());
+            }
         }
     }
 
@@ -65,6 +68,9 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     public void stopPresenter() {
         super.stopPresenter();
         EventBus.getDefault().unregister(this);
+        if (mGameInfoModel != null) {
+            CustomDownloadManager.getInstance().removeMonitorUrl(mGameInfoModel.getPackageUrl());
+        }
     }
 
 
@@ -121,13 +127,28 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
         String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
         if (event.downloadKey.equals(key)) {
-            mView.updateDownLoadUi(event.status, event.progress);
+            mView.updateDownLoadUi(event.status, event.progress, event.reason);
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CustomDownloadManager.TaskEvent event) {
+        String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
+        if (event.downloadKey.equals(key)) {
+            mView.notifyTaskRemove(event.status);
+        }
+    }
+
+
 
     @Override
     public void beginDownload() {
         CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
         CustomDownloadManager.getInstance().beginDownload(item);
+    }
+
+    @Override
+    public void pauseDownload() {
+        CustomDownloadManager.getInstance().pauseDownload(mGameInfoModel.getPackageUrl());
     }
 }
