@@ -37,7 +37,7 @@ public class WatchGameMenuDialog extends PopupWindow implements View.OnClickList
         this.setContentView(mRootView);
         this.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
         // 设置SelectPicPopupWindow弹出窗体的高
-        this.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        this.setHeight(DisplayUtils.dip2px(76.67f));
 //         设置SelectPicPopupWindow弹出窗体可点击
         this.setOutsideTouchable(true);
         this.setFocusable(true);
@@ -63,7 +63,7 @@ public class WatchGameMenuDialog extends PopupWindow implements View.OnClickList
 
     public void show(View parents, View view){
         int[] ints = calculateWindowPos(view);
-        this.showAtLocation(parents, Gravity.NO_GRAVITY, ints[0]- WIDTH_DIALOG, ints[1] - PX_CORRECT);
+        this.showAtLocation(parents, Gravity.NO_GRAVITY, ints[0]- WIDTH_DIALOG - PX_CORRECT, ints[1] - PX_CORRECT);
     }
 
     private int[] calculateWindowPos(View view) {
