@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/view_dimen_232"
-    android:layout_height="@dimen/view_dimen_315"
-    android:background="@drawable/live_video_function_icon_more_list_png">
+    android:layout_height="@dimen/view_dimen_230"
+    android:background="@drawable/live_video_function_icon_more_list_png"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/btn_0_tv"
@@ -11,11 +12,12 @@
         android:text="@string/voice_tips"
         android:gravity="center"
         android:textSize="@dimen/text_size_36"
-        android:textColor="@color/color_white" />
+        android:textColor="@color/color_white"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/btn_1_tv"
-        android:layout_width="@dimen/view_dimen_210"
+        android:layout_width="@dimen/view_dimen_190"
         android:layout_height="@dimen/view_dimen_105"
         android:text="@string/not_insteresting"
         android:gravity="center"
@@ -23,9 +25,14 @@
         android:textColor="@color/color_white"
         android:layout_below="@id/btn_0_tv"/>
 
+    <View
+        android:layout_width="@dimen/view_dimen_190"
+        android:layout_height="@dimen/view_dimen_1"
+        android:background="@color/color_white_trans_10"/>
+
     <TextView
         android:id="@+id/btn_2_tv"
-        android:layout_width="@dimen/view_dimen_210"
+        android:layout_width="@dimen/view_dimen_190"
         android:layout_height="@dimen/view_dimen_105"
         android:text="@string/report"
         android:gravity="center"
@@ -33,4 +40,4 @@
         android:textColor="@color/color_white"
         android:layout_below="@id/btn_1_tv"/>
 
-</RelativeLayout>
+</LinearLayout>
