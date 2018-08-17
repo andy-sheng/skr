@@ -99,7 +99,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    protected int getBasicItemCount() {
+    public int getBasicItemCount() {
         return mUsersList.size();
     }
 

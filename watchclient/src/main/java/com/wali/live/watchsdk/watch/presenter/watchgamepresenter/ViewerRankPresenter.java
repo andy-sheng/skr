@@ -5,13 +5,17 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.LruCache;
 
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.preference.PreferenceUtils;
 import com.mi.live.data.manager.UserInfoManager;
 import com.mi.live.data.query.model.ViewerModel;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameViewerTabView;
 
@@ -37,12 +41,19 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
 
     private static final String TAG = "ViewerRankPresenter";
 
+    private static final String PRE_KEY_LAST_UPDATE_VIEWERS_TIME = "pre_key_last_update_viewers_time";
+
+    private RoomBaseDataModel mMyRoomData;
+
+    private long lastTime = 0; //上次更新时间
+
     //保存 name 保存观众的昵称
     static final int MAX_SIZE = 1000;
     private LruCache<Long, String> mUserInfoCache = new LruCache<>(MAX_SIZE);
 
     public ViewerRankPresenter(@NonNull WatchComponentController controller) {
         super(controller);
+        mMyRoomData = controller.getRoomBaseDataModel();
         initViewers(controller.getRoomBaseDataModel().getViewersList());
     }
 
@@ -53,6 +64,27 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
             return;
         }
 
+        updateUi(dataList);
+    }
+
+
+    public void updateViewers(final List<ViewerModel> dataList) {
+
+        if (dataList == null || dataList.size() == 0) {
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        if ((now - lastTime) < 3 * 1000) {
+            return;
+        } else {
+            lastTime = now;
+        }
+
+        updateUi(dataList);
+    }
+
+    private void updateUi(final List<ViewerModel> dataList) {
         if (mViewerChangeSubscription != null && !mViewerChangeSubscription.isUnsubscribed()) {
             return;
         }
@@ -139,7 +171,7 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
             }
             break;
             case RoomDataChangeEvent.TYPE_CHANGE_VIEWERS: {
-                initViewers(event.source.getViewersList());
+                updateViewers(event.source.getViewersList());
             }
             break;
             default:
@@ -195,6 +227,13 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
             for (User user : list) {
                 saveViewerInfo(user.getUid(), user.getNickname());
             }
+        }
+    }
+
+    @Override
+    public void postAvatarEvent(int eventTypeRequestLookMoreViewer, int itemCount) {
+        if (mMyRoomData.getViewerCnt() > itemCount) {
+            UserActionEvent.post(eventTypeRequestLookMoreViewer, mMyRoomData, null);
         }
     }
 }
