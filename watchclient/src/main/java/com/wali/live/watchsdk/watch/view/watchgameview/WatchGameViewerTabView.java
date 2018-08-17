@@ -12,6 +12,7 @@ import com.mi.live.data.query.model.ViewerModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.event.UserActionEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.personinfo.fragment.FloatInfoFragment;
@@ -20,7 +21,7 @@ import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.ViewerRankPrese
 
 import java.util.List;
 
-public class WatchGameViewerTabView extends RelativeLayout implements IComponentView<WatchGameViewerTabView.IPresenter, WatchGameViewerTabView.IView>, ViewerRankRecyclerAdapter.OnItemClickListener,WatchGameTabView.GameTabChildView {
+public class WatchGameViewerTabView extends RelativeLayout implements IComponentView<WatchGameViewerTabView.IPresenter, WatchGameViewerTabView.IView>, ViewerRankRecyclerAdapter.OnItemClickListener, WatchGameTabView.GameTabChildView {
 
     RecyclerView recyclerView;
     ViewerRankRecyclerAdapter mAdapter;
@@ -42,9 +43,22 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int totalItemCount = recyclerView.getAdapter().getItemCount();
+                int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                int visibleItemCount = recyclerView.getChildCount();
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItemPosition == totalItemCount - 1
+                        && visibleItemCount > 0) {
+                    //加载更多
+                    mPresenter.postAvatarEvent(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER, mAdapter.getBasicItemCount());
+                }
             }
         });
 
@@ -119,6 +133,10 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
 
     public interface IPresenter {
 
+        /**
+         * 发送查看更多观众的event
+         */
+        void postAvatarEvent(int eventTypeRequestLookMoreViewer, int itemCount);
     }
 
     public interface IView extends IViewProxy {
