@@ -69,8 +69,6 @@ public class WatchGameBottomEditPresenter extends BaseSdkRxPresenter<WatchGameBo
     public WatchGameBottomEditPresenter(WatchComponentController controller) {
         super(controller);
         mMyRoomData = controller.getRoomBaseDataModel();
-
-        syncUnreadCount();
     }
 
     @Override
@@ -80,6 +78,15 @@ public class WatchGameBottomEditPresenter extends BaseSdkRxPresenter<WatchGameBo
         EventBus.getDefault().register(this);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_ORIENT_PORTRAIT);
+
+        if(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
+            if(mView != null) {
+                mView.hideGiftBtn();
+                mView.hideFastGfitBtn();
+            }
+        }
+
+        syncUnreadCount();
     }
 
     @Override
@@ -277,7 +284,9 @@ public class WatchGameBottomEditPresenter extends BaseSdkRxPresenter<WatchGameBo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventClass.UpdateFastGiftInfoEvent event) {
         MyLog.d(TAG, "UpdateFastGiftInfoEvent");
-        if (event == null || mView == null) {
+        if (event == null
+                || mView == null
+                || mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
             return;
         }
 
@@ -310,6 +319,10 @@ public class WatchGameBottomEditPresenter extends BaseSdkRxPresenter<WatchGameBo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(com.wali.live.event.EventClass.RechargeCheckOrderEvent event) {//支付成功需要刷新首充按钮和续费有礼
         MyLog.w(TAG, "onEvent RechargeCheckOrderEvent");
+        if(mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
+            return;
+        }
+
         if (!TextUtils.isEmpty(mWidgetLinkUrl)) {
             onEvent(new EventClass.UpdateFastGiftInfoEvent(mFastGiftId, null, null));
         }

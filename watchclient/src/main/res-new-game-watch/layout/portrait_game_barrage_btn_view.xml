@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/barrage_btn_view_txt"
-        android:layout_width="@dimen/view_dimen_616"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_110"
         android:layout_gravity="bottom|left"
         android:gravity="left|center_vertical"

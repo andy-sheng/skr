@@ -117,6 +117,16 @@ public class WatchGameBottomEditView extends RelativeLayout implements
             public void onUpdateUnreadCount(int unReadCnt) {
                 mMyInfoIconView.setMsgUnreadCnt(unReadCnt);
             }
+
+            @Override
+            public void hideGiftBtn() {
+                mGiftIv.setVisibility(GONE);
+            }
+
+            @Override
+            public void hideFastGfitBtn() {
+                mGiftFastSendView.setVisibility(GONE);
+            }
         }
         return new ComponentView();
     }
@@ -144,5 +154,9 @@ public class WatchGameBottomEditView extends RelativeLayout implements
         void startFastGiftPBarAnim();
 
         void onUpdateUnreadCount(int unReadCnt);
+
+        void hideGiftBtn();
+
+        void hideFastGfitBtn();
     }
 }

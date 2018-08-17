@@ -18,28 +18,36 @@
 
         <com.wali.live.watchsdk.watch.view.watchgameview.PortraitGameBarregeBtnView
             android:id="@+id/barrage_btn_container"
-            android:layout_width="@dimen/view_dimen_616"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_110"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_dimen_20" />
+            android:layout_marginRight="@dimen/view_dimen_30"
+            android:layout_marginLeft="@dimen/view_dimen_30"
+            android:layout_toLeftOf="@+id/icon_container"/>
 
-        <com.wali.live.watchsdk.fastsend.view.GiftFastSendView
-            android:id="@+id/gift_fast_sent_container"
+        <LinearLayout
+            android:id="@+id/icon_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/text_size_40"
-            android:layout_toLeftOf="@+id/gift_iv"
-            android:visibility="gone" />
+            android:layout_alignParentRight="true">
 
-        <ImageView
-            android:id="@+id/gift_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_dimen_25"
-            android:background="@drawable/live_icon_gift_btn" />
+            <com.wali.live.watchsdk.fastsend.view.GiftFastSendView
+                android:id="@+id/gift_fast_sent_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/text_size_40"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/gift_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_dimen_25"
+                android:background="@drawable/live_icon_gift_btn" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 
