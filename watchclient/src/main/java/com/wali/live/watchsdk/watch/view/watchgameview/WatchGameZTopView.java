@@ -319,7 +319,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 mHasHideBarrage = !mHasHideBarrage;
                 mPresenter.optBarrageControl(mHasHideBarrage);
             } else if(id == R.id.landscape_download){
-                mPresenter.checkDownLoad();
+                mPresenter.clickDownLoad();
             }
         } else {
             // 竖屏下的点击事件
@@ -814,7 +814,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
         void optBarrageControl(boolean needHide);
 
-        void checkDownLoad();
+        void clickDownLoad();
     }
 
     public interface IView extends IViewProxy {

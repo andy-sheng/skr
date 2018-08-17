@@ -1,54 +1,28 @@
 package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.ContentObserver;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.CallSuper;
 import android.support.v4.content.FileProvider;
-import android.text.TextUtils;
 
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
-import com.base.preference.PreferenceUtils;
-import com.base.utils.toast.ToastUtils;
+import com.base.utils.MD5;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
-import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.editinfo.fragment.presenter.EditAvatarPresenter;
-import com.wali.live.watchsdk.eventbus.EventClass;
-import com.wali.live.watchsdk.watch.download.GameDownLoadUtil;
+import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameHomeTabView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-
-import static android.content.Context.DOWNLOAD_SERVICE;
 
 /**
  * Created by vera on 2018/8/8.
@@ -63,7 +37,6 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     public WatchGameHomeTabPresenter(WatchComponentController controller) {
         super(controller);
         mGameInfoModel = controller.getRoomBaseDataModel().getGameInfoModel();
-        GameDownLoadUtil.getInstance().init(mGameInfoModel);
     }
 
     @Override
@@ -92,7 +65,6 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     public void stopPresenter() {
         super.stopPresenter();
         EventBus.getDefault().unregister(this);
-        GameDownLoadUtil.getInstance().destory();
     }
 
 
@@ -146,14 +118,16 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.GameDownLoadEvent event) {
-        if (null != event && event.gameId == mGameInfoModel.getGameId()) {
+    public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
+        String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
+        if (event.downloadKey.equals(key)) {
             mView.updateDownLoadUi(event.status, event.progress);
         }
     }
 
     @Override
     public void beginDownload() {
-        GameDownLoadUtil.getInstance().beginDownload(mGameInfoModel);
+        CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
+        CustomDownloadManager.getInstance().beginDownload(item);
     }
 }
