@@ -1,33 +1,31 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.TextureView;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
-import com.base.utils.date.DateTimeUtils;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
-import com.wali.live.common.gift.utils.DataformatUtils;
-import com.wali.live.video.view.VideoSeekBar;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.SupportHelper;
 import com.wali.live.watchsdk.watch.adapter.GamePreviewPagerAdapter;
-import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameIntroVideoPresenter;
+import com.wali.live.watchsdk.watch.download.GameDownLoadUtil;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameHomeTabPresenter;
 
 import java.util.List;
@@ -47,6 +45,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     TextView mGameNameTv;
     TextView mGameScoreTv;
     TextView mInstallBtn;
+    ProgressBar mDownLoad;
     RelativeLayout mGamePreviewContainer;
     GameWatchPreviewViewPager mGamePreviewViewPager;
     VideoPluginView mVideoPluginView;
@@ -130,6 +129,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mGameNameTv = (TextView) this.findViewById(R.id.game_name_tv);
         mGameScoreTv = (TextView) this.findViewById(R.id.game_score_tv);
         mInstallBtn = (TextView) this.findViewById(R.id.install_btn);
+        mDownLoad = (ProgressBar) this.findViewById(R.id.install_progress);
         mGamePreviewContainer = (RelativeLayout) this.findViewById(R.id.game_preview_container);
         mGamePreviewViewPager = (GameWatchPreviewViewPager) this.findViewById(R.id.game_preview_view_pager);
         mVideoPluginView = (VideoPluginView) this.findViewById(R.id.video_plugin_view);
@@ -172,6 +172,22 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         });
 
         mGamePreviewViewPager.addOnPageChangeListener(mPreviewPageChangeListener);
+
+        mInstallBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mInstallBtn.getText().equals(GlobalData.app().getResources().getString(R.string.download))) {
+                    //下载
+                    mWatchGameHomeTabPresenter.beginDownload();
+                } else if (mInstallBtn.getText().equals(GlobalData.app().getResources().getString(R.string.install))) {
+                    //安装
+
+                } else if (mInstallBtn.getText().equals(GlobalData.app().getResources().getString(R.string.open))) {
+                    //启动 先不做
+
+                }
+            }
+        });
 
     }
 
@@ -238,7 +254,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                                 mGameTagView.addTag(tag);
                             } else {
                                 //做容错-没有的就不展示了
-                                if(SupportHelper.contain(tag.getTagName()) || SupportHelper.getSupportResByUrl(tag.getActUrl()) != null) {
+                                if (SupportHelper.contain(tag.getTagName()) || SupportHelper.getSupportResByUrl(tag.getActUrl()) != null) {
                                     GameUsageTagItemView gameUsageTagItemView = new GameUsageTagItemView(getContext());
                                     gameUsageTagItemView.bind(tag);
                                     mGameTagView1.addTag(gameUsageTagItemView);
@@ -246,7 +262,41 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                             }
                         }
                     }
+
+                    checkInstalledOrUpdate(gameInfoModel);
                 }
+            }
+
+            @Override
+            public void updateDownLoadUi(int status, int progress) {
+                MyLog.d(TAG, " status " + status + " progress " + progress);
+                switch (status) {
+                    case GameDownLoadUtil.DOWNLOAD:
+                        mDownLoad.setVisibility(GONE);
+                        mInstallBtn.setText(R.string.download);
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
+                        break;
+                    case GameDownLoadUtil.DOWNLOAD_RUNNING:
+                        mDownLoad.setVisibility(VISIBLE);
+                        mDownLoad.setProgress(progress);
+                        mInstallBtn.setText(progress + "%");
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.transparent_drawable));
+                        break;
+                    case GameDownLoadUtil.GAME_INSTALL:
+                        mDownLoad.setVisibility(GONE);
+                        mInstallBtn.setText(R.string.install);
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
+                        break;
+                    case GameDownLoadUtil.GAME_LUNCH:
+                        mDownLoad.setVisibility(GONE);
+                        mInstallBtn.setText("已安装");
+//                        mInstallBtn.setText(R.string.open);
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
+                        break;
+                    default:
+                        break;
+                }
+
             }
 
             @Override
@@ -254,6 +304,42 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                 return (T) WatchGameHomeTabView.this;
             }
         };
+    }
+
+    private void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
+        // TODO 需要优化,检查是否有下载完成的包
+        String packageName = gameInfoModel.getPackageName();
+        if (TextUtils.isEmpty(packageName)) {
+            // 未安装
+            mInstallBtn.setText("下载");
+            return;
+        }
+
+        PackageManager packageManager = GlobalData.app().getPackageManager();
+        List<PackageInfo> infos = null;
+        PackageInfo localApp = null;
+        try {
+            infos = packageManager.getInstalledPackages(0);
+            localApp = getContext().getPackageManager().getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            mInstallBtn.setText("下载");
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (infos == infos || infos.size() == 0) {
+            return;
+        }
+
+        if (infos.contains(localApp)) {
+            // 已安装
+            mInstallBtn.setText("已安装");
+            return;
+        } else {
+            mInstallBtn.setText("下载");
+        }
     }
 
     @Override
@@ -275,9 +361,19 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
     public interface IView extends IViewProxy {
         void updateUi(GameInfoModel gameInfoModel);
+
+
+        /**
+         * 下载回调
+         *
+         * @param status   下载的状态
+         * @param progress 进度条
+         */
+        void updateDownLoadUi(int status, int progress);
     }
 
     public interface IPresenter {
+        void beginDownload();
     }
 
 }

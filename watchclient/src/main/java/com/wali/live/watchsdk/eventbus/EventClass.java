@@ -185,6 +185,7 @@ public class EventClass {
 
     public static class PersonalInfoChangeEvent {
         public boolean isAvatorChange;
+
         public PersonalInfoChangeEvent() {
         }
     }
@@ -258,5 +259,24 @@ public class EventClass {
             this.payType = payType;
             this.channel = channel;
         }
+    }
+
+    public static class GameDownLoadEvent {
+        public long gameId;
+        public int status;
+        public int progress;
+
+        public static final int STATUS_NONE = 0;
+        public static final int DOWNLOAD = 1; //下载
+        public static final int DOWNLOAD_RUNNING = 2; //下载中
+        public static final int GAME_INSTALL = 3;//安装
+        public static final int GAME_LUNCH = 4;//启动
+
+        public GameDownLoadEvent(long gameId, int status, int progress) {
+            this.gameId = gameId;
+            this.status = status;
+            this.progress = progress;
+        }
+
     }
 }

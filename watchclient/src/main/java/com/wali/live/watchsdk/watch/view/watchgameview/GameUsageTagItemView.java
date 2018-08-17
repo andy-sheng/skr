@@ -47,6 +47,7 @@ public class GameUsageTagItemView extends BaseGameTagItemView {
         MyLog.d(TAG, "tag :" + tag.toString());
         if(tag.getTagType() == 1) {
             SupportHelper.SupportRes supportRes = SupportHelper.getSupportRes(tag.getTagName());
+
             if(supportRes == null) {
                 supportRes = SupportHelper.getSupportResByUrl(tag.getActUrl());
             }

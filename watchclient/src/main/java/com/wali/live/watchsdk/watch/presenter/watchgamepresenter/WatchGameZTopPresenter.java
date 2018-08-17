@@ -8,6 +8,7 @@ import com.mi.live.data.api.feedback.FeedBackApi;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
@@ -20,7 +21,9 @@ import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.feedback.ReportFragment;
+import com.wali.live.watchsdk.watch.download.GameDownLoadUtil;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,12 +59,16 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     private RoomBaseDataModel mMyRoomData;
 
+    private GameInfoModel mGameInfoModel;
+
     private Subscription mFollowSubscription;
 
     public WatchGameZTopPresenter(IEventController controller) {
         super(controller);
         if (controller != null && controller instanceof WatchComponentController) {
             mMyRoomData = ((WatchComponentController) mController).getRoomBaseDataModel();
+            mGameInfoModel = mMyRoomData.getGameInfoModel();
+            GameDownLoadUtil.getInstance().init(mGameInfoModel);
         }
     }
 
@@ -88,6 +95,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        GameDownLoadUtil.getInstance().destory();
         if (mView != null) {
             mView.stopView();
         }
@@ -126,7 +134,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
         boolean isFollowed = mMyRoomData.isFocused() || mMyRoomData.getUid() == UserAccountManager.getInstance().getUuidAsLong();
         mView.updateAnchorInfo(mMyRoomData.getUid(), mMyRoomData.getAvatarTs(),
-                 mMyRoomData.getNickName(), isFollowed);
+                mMyRoomData.getNickName(), isFollowed);
     }
 
     @Override
@@ -172,7 +180,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     @Override
     public void optDisLike() {
-        if(mMyRoomData == null) {
+        if (mMyRoomData == null) {
             MyLog.w(TAG, "MyRoomData is null");
             return;
         }
@@ -208,7 +216,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     @Override
     public void optReprot() {
-        if(mMyRoomData == null) {
+        if (mMyRoomData == null) {
             MyLog.w(TAG, "MyRoomData is null");
             return;
         }
@@ -248,6 +256,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         postEvent(needHide ? MSG_HIDE_GAME_BARRAGE : MSG_SHOW_GAME_BARRAGE);
     }
 
+    @Override
+    public void checkDownLoad() {
+        GameDownLoadUtil.getInstance().checkDownLoad(mMyRoomData.getGameInfoModel());
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FollowOrUnfollowEvent event) {
         if (null != event && mMyRoomData != null && mMyRoomData.getUser() != null && mMyRoomData.getUser().getUid() == event.uuid) {
@@ -279,6 +292,27 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                             .subscribeOn(Schedulers.io())
                             .subscribe();
                 }
+            }
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.GameDownLoadEvent event) {
+        if (null != event && event.gameId == mGameInfoModel.getGameId()) {
+            switch (event.status) {
+                case GameDownLoadUtil.DOWNLOAD:
+                    break;
+                case GameDownLoadUtil.DOWNLOAD_RUNNING:
+                    break;
+                case GameDownLoadUtil.GAME_INSTALL:
+                    break;
+                case GameDownLoadUtil.GAME_LUNCH:
+                    break;
+                default:
+                    break;
+
+
             }
         }
     }

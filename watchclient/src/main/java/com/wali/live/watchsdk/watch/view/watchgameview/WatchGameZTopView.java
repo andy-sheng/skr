@@ -307,6 +307,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage));
                 mHasHideBarrage = !mHasHideBarrage;
                 mPresenter.optBarrageControl(mHasHideBarrage);
+            } else if(id == R.id.landscape_download){
+                mPresenter.checkDownLoad();
             }
         } else {
             // 竖屏下的点击事件
@@ -800,6 +802,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void vodeoReFresh();
 
         void optBarrageControl(boolean needHide);
+
+        void checkDownLoad();
     }
 
     public interface IView extends IViewProxy {

@@ -4,17 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.TextureView;
 
-import com.base.global.GlobalData;
-import com.mi.live.data.account.UserAccountManager;
-import com.mi.live.data.milink.MiLinkClientAdapter;
 import com.mi.live.engine.player.ExoPlayer;
-import com.mi.live.engine.player.GalileoPlayer;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
-import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.component.presenter.BasePlayerPresenter;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
-import com.wali.live.watchsdk.watch.view.watchgameview.VideoPluginView;
 
 /**
  * Created by zyh on 2017/10/23.
@@ -69,6 +63,7 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
         });
         mStreamerPresenter.setIsRealTime(true);
 
+
     }
 
     public void setOriginalStreamUrl(String videoUrl) {
@@ -117,6 +112,7 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
         mStreamerPresenter.mute(mute);
     }
 
+
     public void seekTo(long position) {
         mStreamerPresenter.seekTo(position);
     }
@@ -153,9 +149,11 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
         return false;
     }
 
+
     public  interface IView {
         void onCompleted();
 
         void onPrepared();
     }
+
 }

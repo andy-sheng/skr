@@ -42,6 +42,16 @@
                     android:textColor="@color/color_black_trans_90"
                     android:textSize="@dimen/view_dimen_51" />
 
+                <ProgressBar
+                    android:id="@+id/install_progress"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="@dimen/view_dimen_240"
+                    android:layout_height="@dimen/view_dimen_90"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/view_dimen_72"
+                    android:progressDrawable="@drawable/listitem_app_download_progress_style"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/game_score_tv"
@@ -69,7 +79,7 @@
                     android:paddingLeft="@dimen/view_dimen_30"
                     android:paddingRight="@dimen/view_dimen_30"
                     android:paddingTop="@dimen/view_dimen_10"
-                    android:text="安装"
+                    android:text="下载"
                     android:textColor="@color/white"
                     android:textSize="@dimen/view_dimen_42" />
 
