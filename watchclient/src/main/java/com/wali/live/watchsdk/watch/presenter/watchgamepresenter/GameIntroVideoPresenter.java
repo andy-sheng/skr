@@ -42,7 +42,12 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
         this.mVideoPluginView = mVideoPluginView;
     }
 
-    public GameIntroVideoPresenter(@NonNull IEventController controller) {
+    /**
+     *
+     * @param controller
+     * @param realtime 直播传true 视频传 false
+     */
+    public GameIntroVideoPresenter(@NonNull IEventController controller,boolean realtime) {
         super(controller);
 //        mStreamerPresenter = new PullStreamerPresenter(new WatchComponentController.EventPlayerCallback(controller));
 
@@ -61,7 +66,7 @@ public class GameIntroVideoPresenter extends BasePlayerPresenter<TextureView, Pu
                 }
             }
         });
-        mStreamerPresenter.setIsRealTime(true);
+        mStreamerPresenter.setIsRealTime(realtime);
 
 
     }

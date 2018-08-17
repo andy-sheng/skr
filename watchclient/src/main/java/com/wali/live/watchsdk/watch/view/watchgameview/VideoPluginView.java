@@ -41,6 +41,10 @@ public class VideoPluginView extends RelativeLayout implements GameIntroVideoPre
 
     String mVideoUrl;
 
+    ViewListener mViewListener;
+
+    boolean mTouchSeekBar = false;
+
     public VideoPluginView(Context context) {
         super(context);
         init(context);
@@ -67,7 +71,9 @@ public class VideoPluginView extends RelativeLayout implements GameIntroVideoPre
                     long mPlayedTime = mGameIntroVideoPresenter.getCurrentPosition();
                     long mTotalTime = mGameIntroVideoPresenter.getDuration();
                     if (mVideoSeekbar != null) {
-                        mVideoSeekbar.setProgress(mPlayedTime, mTotalTime);
+                        if(!mTouchSeekBar) {
+                            mVideoSeekbar.setProgress(mPlayedTime, mTotalTime);
+                        }
                         mUIHandler.postDelayed(mOnSeekProgressRunnable, 500);
                     }
                 }
@@ -78,7 +84,7 @@ public class VideoPluginView extends RelativeLayout implements GameIntroVideoPre
 
     GameIntroVideoPresenter getGameIntroVideoPresenter() {
         if (mGameIntroVideoPresenter == null) {
-            mGameIntroVideoPresenter = new GameIntroVideoPresenter(mIEventController);
+            mGameIntroVideoPresenter = new GameIntroVideoPresenter(mIEventController,false);
             mGameIntroVideoPresenter.setView(mVideoView);
             mGameIntroVideoPresenter.setIView(this);
             mGameIntroVideoPresenter.startPresenter();
@@ -112,11 +118,12 @@ public class VideoPluginView extends RelativeLayout implements GameIntroVideoPre
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                mTouchSeekBar = true;
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                mTouchSeekBar = false;
                 long p = seekBar.getProgress() * getGameIntroVideoPresenter().getDuration() / 100;
                 MyLog.d(TAG, "onStopTrackingTouch" + "seek p=" + p);
                 getGameIntroVideoPresenter().seekTo(p);
@@ -206,6 +213,9 @@ public class VideoPluginView extends RelativeLayout implements GameIntroVideoPre
     }
 
     void processControlView() {
+        if(this.getVisibility() != VISIBLE){
+            return;
+        }
         if (mVideoRepeatBtn.getVisibility() == VISIBLE) {
             return;
         }
@@ -234,6 +244,9 @@ public class VideoPluginView extends RelativeLayout implements GameIntroVideoPre
                 mPlayerControlContainer.setVisibility(VISIBLE);
                 setPlayerControlBtnVisibility(VISIBLE);
             }
+        }
+        if (mViewListener != null) {
+            mViewListener.onControlViewVisiable(mPlayerControlContainer.getVisibility() == VISIBLE);
         }
     }
 
@@ -310,5 +323,11 @@ public class VideoPluginView extends RelativeLayout implements GameIntroVideoPre
 
     }
 
+    public void setViewListener(ViewListener viewListener){
+        mViewListener = viewListener;
+    }
 
+    public interface ViewListener{
+        void onControlViewVisiable(boolean visiable);
+    }
 }
