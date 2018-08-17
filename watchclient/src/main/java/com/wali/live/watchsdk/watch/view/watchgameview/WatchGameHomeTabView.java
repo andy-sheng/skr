@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -44,7 +45,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     TextView mGameNameTv;
     TextView mGameScoreTv;
     TextView mInstallBtn;
-    ProgressBar mDownLoad;
+    ProgressBar mDownLoadProgressBar;
     RelativeLayout mGamePreviewContainer;
     GameWatchPreviewViewPager mGamePreviewViewPager;
     VideoPluginView mVideoPluginView;
@@ -129,7 +130,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mGameNameTv = (TextView) this.findViewById(R.id.game_name_tv);
         mGameScoreTv = (TextView) this.findViewById(R.id.game_score_tv);
         mInstallBtn = (TextView) this.findViewById(R.id.install_btn);
-        mDownLoad = (ProgressBar) this.findViewById(R.id.install_progress);
+        mDownLoadProgressBar = (ProgressBar) this.findViewById(R.id.install_progress);
         mGamePreviewContainer = (RelativeLayout) this.findViewById(R.id.game_preview_container);
         mGamePreviewViewPager = (GameWatchPreviewViewPager) this.findViewById(R.id.game_preview_view_pager);
         mVideoPluginView = (VideoPluginView) this.findViewById(R.id.video_plugin_view);
@@ -186,12 +187,16 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             @Override
             public void onClick(View v) {
                 int flag = 0;
-                if(mInstallBtn.getTag()!=null){
+                if (mInstallBtn.getTag() != null) {
                     flag = (int) mInstallBtn.getTag();
                 }
-                if(flag == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD){
+                if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
                     mWatchGameHomeTabPresenter.beginDownload();
-                }else if(flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED){
+                } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
+                    mWatchGameHomeTabPresenter.pauseDownload();
+                } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
+                    mWatchGameHomeTabPresenter.beginDownload();
+                } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
 
                 }
             }
@@ -276,30 +281,41 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             }
 
             @Override
-            public void updateDownLoadUi(int status, int progress) {
+            public void updateDownLoadUi(int status, int progress, int reason) {
                 MyLog.d(TAG, " status " + status + " progress " + progress);
                 switch (status) {
                     case CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD:
-                        mDownLoad.setVisibility(GONE);
+                        mDownLoadProgressBar.setVisibility(GONE);
                         mInstallBtn.setText(R.string.download);
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
                         break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING:
-                        mDownLoad.setVisibility(VISIBLE);
-                        mDownLoad.setProgress(progress);
+                        mDownLoadProgressBar.setVisibility(VISIBLE);
+                        mDownLoadProgressBar.setProgress(progress);
                         mInstallBtn.setText(progress + "%");
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.transparent_drawable));
                         break;
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD:
+                        mDownLoadProgressBar.setVisibility(VISIBLE);
+                        mDownLoadProgressBar.setProgress(progress);
+                        if (reason == DownloadManager.PAUSED_WAITING_FOR_NETWORK) {
+                            mInstallBtn.setText("等待网络");
+                        } else {
+                            mInstallBtn.setText("继续");
+                        }
+                        mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD);
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.transparent_drawable));
+                        break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED:
-                        mDownLoad.setVisibility(GONE);
+                        mDownLoadProgressBar.setVisibility(GONE);
                         mInstallBtn.setText(R.string.install);
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
                         break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:
-                        mDownLoad.setVisibility(GONE);
+                        mDownLoadProgressBar.setVisibility(GONE);
                         mInstallBtn.setText("启动");
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
@@ -311,12 +327,27 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             }
 
             @Override
+            public void notifyTaskRemove(int status) {
+                int flag = 0;
+                if (mInstallBtn.getTag() != null) {
+                    flag = (int) mInstallBtn.getTag();
+                }
+                if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING
+                        || flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
+                    // 任务被取消了，已下载或者下载中变为未下载
+                    mDownLoadProgressBar.setVisibility(GONE);
+                    mInstallBtn.setText(R.string.download);
+                    mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                    mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
+                }
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameHomeTabView.this;
             }
         };
     }
-
 
 
     private void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
@@ -325,12 +356,12 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             // 无效的包名
             mInstallBtn.setVisibility(GONE);
             return;
-        }else{
+        } else {
             mInstallBtn.setVisibility(VISIBLE);
-            if(PackageUtils.isInstallPackage(packageName)){
+            if (PackageUtils.isInstallPackage(packageName)) {
                 mInstallBtn.setText("已安装");
                 mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-            }else{
+            } else {
                 mInstallBtn.setText("下载");
                 mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
             }
@@ -364,11 +395,15 @@ public class WatchGameHomeTabView extends RelativeLayout implements
          * @param status   下载的状态
          * @param progress 进度条
          */
-        void updateDownLoadUi(int status, int progress);
+        void updateDownLoadUi(int status, int progress, int reason);
+
+        void notifyTaskRemove(int status);
     }
 
     public interface IPresenter {
         void beginDownload();
+
+        void pauseDownload();
     }
 
 
