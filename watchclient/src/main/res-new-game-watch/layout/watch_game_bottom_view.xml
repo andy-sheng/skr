@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.wali.live.watchsdk.component.view.MyInfoIconView
+    <com.wali.live.watchsdk.watch.view.watchgameview.GameMyInfoIconView
         android:id="@+id/my_info_icon_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
