@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.activity.RxActivity;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.keyboard.KeyboardUtils;
@@ -27,6 +28,7 @@ import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
+import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
@@ -35,6 +37,13 @@ import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameNewLandscap
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by vera on 2018/8/7.
@@ -98,6 +107,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private GameNewLandscapeInputViewPresenter mGameNewLandscapeInputViewPresenter;
     private boolean mIsVideoPause;
     private boolean mHasHideBarrage;
+
+    private Subscription mHideLandscapeOptBarSubscription;
+    private Subscription mHidePortraitOptBarSubscription;
 
     public WatchGameZTopView(Context context) {
         super(context);
@@ -172,6 +184,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             if(mGameNewLandscapeInputViewPresenter == null) {
                 initInputPresenter();
             }
+
+            tryToHideLandscapeOptBar();
         } else { // 切换到竖屏
             if (getChildCount() > 0 && lastIsLandscape) {
                 // 切换前是横屏
@@ -206,6 +220,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     addView(view);
                 }
             }
+
+            tryToHidePortraitOptBar();
         }
     }
 
@@ -404,6 +420,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         MyLog.d(TAG, "change to" + (isLandscape ? "landscape" : "portrait"));
         if (mIsLandscape != isLandscape) {
             // 横竖屏相互切换　重新加载布局
+            tryUnSubscribe();
             mIsLandscape = isLandscape;
             setUpLayout(getContext(), !mIsLandscape);
         } else {
@@ -488,6 +505,26 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         if (mFollowAniamator != null && mFollowAniamator.isStarted()) {
             mFollowAniamator.cancel();
         }
+
+        if(mHideLandscapeOptBarAnimatorSet != null
+                && mHideLandscapeOptBarAnimatorSet.isRunning()) {
+            mHideLandscapeOptBarAnimatorSet.cancel();
+        }
+
+        if(mHidePortraitOptBarAnimatorSet != null
+                && mHidePortraitOptBarAnimatorSet.isRunning()) {
+            mHidePortraitOptBarAnimatorSet.cancel();
+        }
+
+        if(mShowLandscapeOptBarAnimatorSet != null
+                && mShowLandscapeOptBarAnimatorSet.isRunning()) {
+            mShowLandscapeOptBarAnimatorSet.cancel();
+        }
+
+        if(mShowPortraitOptBarAnimatorSet != null
+                && mShowPortraitOptBarAnimatorSet.isRunning()) {
+            mShowPortraitOptBarAnimatorSet.cancel();
+        }
     }
 
     /**
@@ -555,6 +592,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             return;
         }
 
+        if(mHideLandscapeOptBarSubscription != null
+                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
+            mHideLandscapeOptBarSubscription.unsubscribe();
+        }
+
         if(mHideLandscapeOptBarAnimatorSet == null) {
             ObjectAnimator landscapeBottomLayoutHideAnimator = ObjectAnimator.ofFloat(mLandscapeBottomLayout
                     , View.TRANSLATION_Y
@@ -594,6 +636,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             return;
         }
 
+        if(mHidePortraitOptBarSubscription != null
+                && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
+            mHidePortraitOptBarSubscription.unsubscribe();
+        }
+
         if(mHidePortraitOptBarAnimatorSet == null) {
             ObjectAnimator portraitBackBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitBackBtn
                     , View.TRANSLATION_Y
@@ -628,6 +675,75 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
     }
 
+    /**
+     * 每次bar展现出来后5秒后就尝试取
+     */
+    private void tryToHideLandscapeOptBar() {
+        if(!mIsLandscape) {
+            return;
+        }
+
+        if(mHideLandscapeOptBarSubscription != null
+                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
+            mHideLandscapeOptBarSubscription.unsubscribe();
+        }
+
+        mHideLandscapeOptBarSubscription = Observable
+                .timer(5, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(((RxActivity) getContext()).<Long>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        hideLandscapeOptBar();
+                    }
+                });
+    }
+
+    private void tryToHidePortraitOptBar() {
+        if(mIsLandscape) {
+            return;
+        }
+
+        if(mHidePortraitOptBarSubscription != null
+                && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
+            mHidePortraitOptBarSubscription.unsubscribe();
+        }
+
+        mHidePortraitOptBarSubscription = Observable
+                .timer(5, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(((RxActivity) getContext()).<Long>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        hidePortraitOptBar();
+                    }
+                });
+    }
+
     private void showLandscapeOptBar() {
         if(!mIsLandscapeHideOptMode) {
             return;
@@ -651,6 +767,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     mIsLandscapeHideOptMode = false;
+                    tryToHideLandscapeOptBar();
                 }
 
                 @Override
@@ -690,6 +807,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     mIsPortraitHideOptMode = false;
+                    tryToHidePortraitOptBar();
                 }
 
                 @Override
@@ -719,6 +837,17 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mGameNewLandscapeInputViewPresenter.setView(mGameNewLandscapeInputView.getViewProxy());
         mGameNewLandscapeInputView.setPresenter(mGameNewLandscapeInputViewPresenter);
         mGameNewLandscapeInputViewPresenter.startPresenter();
+    }
+
+    private void tryUnSubscribe() {
+        if(mHideLandscapeOptBarSubscription != null
+                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
+            mHideLandscapeOptBarSubscription.unsubscribe();
+        }
+
+        if(mHidePortraitOptBarSubscription != null && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
+            mHidePortraitOptBarSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -753,6 +882,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 if(mGameNewLandscapeInputViewPresenter != null) {
                     mGameNewLandscapeInputViewPresenter.stopPresenter();
                 }
+
+                tryUnSubscribe();
             }
 
             @Override
