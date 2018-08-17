@@ -23,6 +23,8 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.api.LiveManager;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
@@ -156,6 +158,15 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 mLandscapeBarrageHideBtn.setBackground(mHasHideBarrage ?
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage) :
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_subtitles));
+            }
+
+            if(mPresenter != null
+                    && mPresenter.getController() != null
+                    && mPresenter.getController().getRoomBaseDataModel() != null
+                    && mPresenter.getController().getRoomBaseDataModel().getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
+                getmLandscapeGiftBtn.setVisibility(GONE);
+                View view = findViewById(R.id.splite_line_view_2);
+                view.setVisibility(GONE);
             }
 
             if(mGameNewLandscapeInputViewPresenter == null) {
