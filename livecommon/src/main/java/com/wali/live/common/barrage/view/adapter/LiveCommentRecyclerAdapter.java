@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,6 +170,7 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                 name += "...";
             }
         }
+
         if (innerGlobalRoomMessageTypeList != null && !innerGlobalRoomMessageTypeList.isEmpty()) {
             List<String> beforeNickNameConfigList = new ArrayList<>();
             List<String> afterNickNameConfigList = new ArrayList<>();
@@ -307,6 +309,7 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
         if (mIsGameLive) {
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) liveCommentHolder.barrageTv.getLayoutParams();
             params.rightMargin = DisplayUtils.dip2px(3.33f);
+            params.topMargin = DisplayUtils.dip2px(8.33f);
         }
         return liveCommentHolder;
     }
@@ -322,7 +325,9 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
             liveCommentHolder.setModel(liveComment);
             if (mIsGameLive) {
                 liveCommentHolder.barrageTv.setShadowLayer(0, 0, 0, 0);
+                liveCommentHolder.barrageTv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.33f);
             }
+
             setBackground(liveCommentHolder, liveComment);
 
             bindLevelView(liveCommentHolder, liveComment);

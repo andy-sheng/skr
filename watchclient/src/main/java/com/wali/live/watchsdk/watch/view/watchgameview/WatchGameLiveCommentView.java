@@ -292,6 +292,7 @@ public class WatchGameLiveCommentView extends RelativeLayout implements IBindAct
                     for (CommentModel model : mDataList) {
                         if (model.getCommentColor() == R.color.white) {
                             model.setCommentColor(R.color.color_black_trans_80);
+                            model.setNameColor(R.color.color_black_trans_40);
                         }
                     }
                     mAdapter.setLiveCommentList(mDataList, afterRefresh);
@@ -299,6 +300,7 @@ public class WatchGameLiveCommentView extends RelativeLayout implements IBindAct
                     for (CommentModel model : mDataList) {
                         if (model.getCommentColor() == R.color.white) {
                             model.setCommentColor(R.color.color_black_trans_80);
+                            model.setNameColor(R.color.color_black_trans_40);
                         }
                     }
                     mAdapter.setLiveCommentList(mDataList, afterRefresh);

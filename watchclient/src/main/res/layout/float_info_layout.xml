@@ -7,7 +7,9 @@
     <View
         android:id="@+id/out_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/color_black_trans_60"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/float_main_view"

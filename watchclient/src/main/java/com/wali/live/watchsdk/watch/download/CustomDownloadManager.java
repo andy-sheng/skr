@@ -5,12 +5,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -28,10 +32,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -166,6 +169,82 @@ public class CustomDownloadManager {
         WLReflect.pauseDownload(mDownloadManager, new long[]{did});
     }
 
+    public boolean checkDownLoadPackage(String packageName, String packageUrl) {
+        String downloadKey = MD5.MD5_32(packageUrl);
+        String ext = FileUtils.getFileExt(packageUrl);
+        String fileName = downloadKey;
+        if (!TextUtils.isEmpty(ext)) {
+            fileName += "." + ext;
+        }
+
+        MyLog.w(TAG, "checkDownLoadPackage" + " fileName = " + fileName);
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        if (!file.exists()) {
+            return false;
+        }
+        String mDownloadFilename = Uri.withAppendedPath(Uri.fromFile(file), fileName).getPath();
+
+        try {
+            PackageManager pm = GlobalData.app().getApplicationContext().getPackageManager();
+            PackageInfo packageInfo = pm.getPackageArchiveInfo(mDownloadFilename, PackageManager.GET_ACTIVITIES);
+            if (packageInfo == null) {
+                return false;
+            }
+            if (!TextUtils.equals(packageName, packageInfo.packageName)) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void tryInstall(Item item) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        String downloadKey = MD5.MD5_32(item.getUrl());
+        String ext = FileUtils.getFileExt(item.getUrl());
+        String fileName = downloadKey;
+        if (!TextUtils.isEmpty(ext)) {
+            fileName += "." + ext;
+        }
+
+        MyLog.w(TAG, "tryInstall" + " fileName = " + fileName);
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String mDownloadFilename = Uri.withAppendedPath(Uri.fromFile(file), fileName).getPath();
+
+        Uri uri;
+        // 判断版本大于等于7.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // 待补充
+            uri = FileProvider.getUriForFile(GlobalData.app().getApplicationContext(), "com.wali.live.watchsdk.editinfo.fileprovider", new File(mDownloadFilename));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(new File(mDownloadFilename));
+        }
+
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        GlobalData.app().startActivity(intent);
+
+    }
+
+    public void tryLaunch(String packageName) {
+        if (TextUtils.isEmpty(packageName)) {
+            return;
+        }
+
+        Intent intent = GlobalData.app().getPackageManager().getLaunchIntentForPackage(packageName);
+        if (intent != null) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            GlobalData.app().startActivity(intent);
+        } else {
+            MyLog.w(TAG, "intent launch fail, packageName=" + packageName);
+        }
+    }
+
     public void addMonitorUrl(String url) {
         String downloadKey = MD5.MD5_32(url);
         long downloadId = mDownloadingMap.get(downloadKey);
@@ -180,6 +259,9 @@ public class CustomDownloadManager {
 
     public void removeMonitorUrl(String url) {
         String downloadKey = MD5.MD5_32(url);
+        if (TextUtils.isEmpty(downloadKey)) {
+            return;
+        }
         long downloadId = mDownloadingMap.get(downloadKey);
         mMonitorDownloadIds.remove(new Holder(downloadKey, downloadId));
     }
@@ -302,6 +384,22 @@ public class CustomDownloadManager {
             @Override
             public void onReceive(Context context, Intent intent) {
                 MyLog.d(TAG, "onReceive" + " context=" + context + " intent=" + intent);
+                if (intent != null) {
+                    String action = intent.getAction();
+                    String packageName = intent.getData().getSchemeSpecificPart();
+                    MyLog.w(TAG, "intent action=" + action);
+                    switch (action) {
+                        case Intent.ACTION_PACKAGE_ADDED:
+                            // 安装的广播监听
+                            ApkStatusEvent event = new ApkStatusEvent(packageName, null, ApkStatusEvent.STATUS_LAUNCH);
+                            EventBus.getDefault().post(event);
+                            break;
+                        case Intent.ACTION_PACKAGE_REMOVED:
+
+                            break;
+                    }
+
+                }
             }
         };
         GlobalData.app().getApplicationContext().registerReceiver(mInstallReceiver, installFilter);
@@ -393,16 +491,23 @@ public class CustomDownloadManager {
 
     public static class ApkStatusEvent {
         public String downloadKey;
+        public String packageName;
         public int status;
         public int progress;
         public int reason;
         public static final int STATUS_NO_DOWNLOAD = 1; //未下载
         public static final int STATUS_DOWNLOADING = 2; //下载中
-        public static final int STATUS_PAUSE_DOWNLOAD = 5; //下载中
+        public static final int STATUS_PAUSE_DOWNLOAD = 5; //暂停下载
         public static final int STATUS_DOWNLOAD_COMPELED = 3;//已下载待安装
         public static final int STATUS_LAUNCH = 4;//启动
 
         public ApkStatusEvent(String downloadKey, int status) {
+            this.downloadKey = downloadKey;
+            this.status = status;
+        }
+
+        public ApkStatusEvent(String packageName, String downloadKey, int status) {
+            this.packageName = packageName;
             this.downloadKey = downloadKey;
             this.status = status;
         }

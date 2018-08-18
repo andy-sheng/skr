@@ -2,14 +2,15 @@ package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
 import com.base.activity.BaseActivity;
 import com.base.log.MyLog;
+import com.base.utils.MD5;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.feedback.FeedBackApi;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.GiftEventClass;
-import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
@@ -20,7 +21,6 @@ import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
-import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.feedback.ReportFragment;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView;
@@ -251,10 +251,24 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     }
 
     @Override
-    public void clickDownLoad() {
+    public void clickDownLoad(int flag) {
         if (mMyRoomData.getGameInfoModel() != null) {
-            CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
-            CustomDownloadManager.getInstance().beginDownload(item);
+            if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
+                CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
+                CustomDownloadManager.getInstance().beginDownload(item);
+            } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
+                ToastUtils.showToast("暂停下载");
+                CustomDownloadManager.getInstance().pauseDownload(mMyRoomData.getGameInfoModel().getPackageUrl());
+            } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
+                ToastUtils.showToast("继续下载");
+                CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
+                CustomDownloadManager.getInstance().beginDownload(item);
+            } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
+                CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
+                CustomDownloadManager.getInstance().tryInstall(item);
+            } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
+                CustomDownloadManager.getInstance().tryLaunch(mMyRoomData.getGameInfoModel().getPackageName());
+            }
         }
     }
 
@@ -293,4 +307,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
+        String key = MD5.MD5_32(mMyRoomData.getGameInfoModel().getPackageUrl());
+        if (event.downloadKey.equals(key)) {
+            mView.updateInstallStatus(event.status, event.progress, event.reason);
+        }
+    }
 }

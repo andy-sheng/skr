@@ -116,6 +116,12 @@ public class FloatInfoFragment extends BaseEventBusFragment
         $click($(R.id.out_view), this);
         $click($(R.id.close_btn), this);
 
+        $(R.id.out_view).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                $(R.id.out_view).setVisibility(View.VISIBLE);
+            }
+        }, 700);
         mCard = $(R.id.float_main_view);
         //被查看者头像
         {
@@ -530,6 +536,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
             return;
         }
         if (v.getId() == R.id.close_btn || v.getId() == R.id.out_view) {
+            $(R.id.out_view).setVisibility(View.GONE);
             onBackPressed();
             return;
         } else if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {

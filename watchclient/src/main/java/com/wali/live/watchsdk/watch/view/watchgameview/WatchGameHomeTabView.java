@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.watch.view.watchgameview;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -197,7 +198,9 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
                     mWatchGameHomeTabPresenter.beginDownload();
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
-
+                    mWatchGameHomeTabPresenter.tryInstall();
+                } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
+                    mWatchGameHomeTabPresenter.tryLaunch();
                 }
             }
         });
@@ -361,6 +364,9 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             if (PackageUtils.isInstallPackage(packageName)) {
                 mInstallBtn.setText("已安装");
                 mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
+            } else if (CustomDownloadManager.getInstance().checkDownLoadPackage(gameInfoModel.getPackageName(), gameInfoModel.getPackageUrl())) {
+                mInstallBtn.setText("安装");
+                mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
             } else {
                 mInstallBtn.setText("下载");
                 mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
@@ -404,6 +410,10 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         void beginDownload();
 
         void pauseDownload();
+
+        void tryInstall();
+
+        void tryLaunch();
     }
 
 
