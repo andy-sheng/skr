@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wali.live.watchsdk.watch.view.watchgameview.GameInfoPopView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/game_info_pop_container"
+    android:layout_width="@dimen/view_dimen_140"
+    android:layout_height="@dimen/view_dimen_160">
+
+</com.wali.live.watchsdk.watch.view.watchgameview.GameInfoPopView>

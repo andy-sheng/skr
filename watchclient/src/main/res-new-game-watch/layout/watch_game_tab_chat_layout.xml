@@ -101,7 +101,15 @@
 
     </RelativeLayout>
 
-
+    <ViewStub
+        android:id="@+id/game_info_pop_view_stub"
+        android:layout="@layout/game_info_pop_view"
+        android:layout_width="@dimen/view_dimen_140"
+        android:layout_height="@dimen/view_dimen_160"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/view_dimen_232"
+        android:layout_marginRight="@dimen/view_dimen_42"/>
 </merge>
 
 
