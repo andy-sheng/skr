@@ -97,20 +97,26 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
             String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
             if (event.downloadKey.equals(key)) {
                 mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
+                if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
+                    String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl());
+                    PackageUtils.tryInstall(apkPath);
+                }
             }
         } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
             // 安装应用
-            if (!TextUtils.isEmpty(event.packageName)) {
-                if (event.packageName.equals(mGameInfoModel.getPackageName())) {
-                    mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
-                }
+            if (TextUtils.isEmpty(event.packageName)) {
+                return;
+            }
+            if (event.packageName.equals(mGameInfoModel.getPackageName())) {
+                mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
             }
         } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
             // 卸载应用
-            if (!TextUtils.isEmpty(event.packageName)) {
-                if (event.packageName.equals(mGameInfoModel.getPackageName())) {
-                    mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
-                }
+            if (TextUtils.isEmpty(event.packageName)) {
+                return;
+            }
+            if (event.packageName.equals(mGameInfoModel.getPackageName())) {
+                mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
             }
         }
     }

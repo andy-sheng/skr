@@ -100,12 +100,6 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
             public void initViewers(List<ViewerModel> viewersList) {
                 mAdapter.setUserList(viewersList);
             }
-
-            @Override
-            public void updateViewers(List<ViewerModel> viewersList) {
-                mAdapter.setUserList(viewersList);
-
-            }
         }
         return new ComponentView();
     }
@@ -144,11 +138,6 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
          * 初始化观众列表
          */
         void initViewers(List<ViewerModel> viewersList);
-
-        /**
-         * 更新观看者头像
-         */
-        void updateViewers(List<ViewerModel> viewersList);
 
     }
 }

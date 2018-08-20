@@ -548,4 +548,40 @@ public class StringUtils {
         }
         return 0;
     }
+
+    /**
+     * 截取指定长度字符串,多余用...表示
+     *
+     * @param content
+     * @param maxSize
+     * @return
+     */
+    public static String subString(String content, Integer maxSize) {
+        String result = content;
+        if (result.length() <= maxSize) {
+            return result;
+        }
+
+        if (!TextUtils.isEmpty(result)) {
+            int valueLength = 0;
+            String chinese = "[\u0391-\uFFE5]";
+            /* 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1 */
+            for (int i = 0; i < result.length(); i++) {
+                /* 获取一个字符 */
+                String temp = result.substring(i, i + 1);
+                /* 判断是否为中文字符 */
+                if (temp.matches(chinese)) {
+                    /* 中文字符长度为2 */
+                    valueLength += 2;
+                } else {
+                    /* 其他字符长度为1 */
+                    valueLength += 1;
+                }
+            }
+            if (valueLength > maxSize) {
+                result = result.substring(0, maxSize) + "...";
+            }
+        }
+        return result;
+    }
 }

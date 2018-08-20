@@ -19,6 +19,7 @@ import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
 import com.base.utils.MD5;
+import com.base.utils.StringUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
@@ -250,7 +251,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             public void updateUi(GameInfoModel gameInfoModel) {
                 if (gameInfoModel != null) {
                     MyLog.d(TAG, "updateUi" + " gameInfoModel=" + gameInfoModel);
-                    mGameNameTv.setText(gameInfoModel.getGameName());
+                    mGameNameTv.setText(StringUtils.subString(gameInfoModel.getGameName(), 6));
                     mGameScoreTv.setText(String.valueOf(gameInfoModel.getScore()));
                     BaseImage baseImage = ImageFactory.newHttpImage(GameInfoModel.getUrlWithPrefix(gameInfoModel.getIconUrl(), 480))
                             .setCornerRadius(DisplayUtils.dip2px(10))

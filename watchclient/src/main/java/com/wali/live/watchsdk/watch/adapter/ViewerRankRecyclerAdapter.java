@@ -1,25 +1,31 @@
 package com.wali.live.watchsdk.watch.adapter;
 
 import android.support.annotation.DrawableRes;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
+import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.query.model.ViewerModel;
 import com.mi.live.data.user.User;
 import com.wali.live.common.barrage.view.utils.NobleConfigUtils;
+import com.wali.live.common.view.LevelIconsLayout;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -116,15 +122,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
 
             AvatarUtils.loadAvatarByUidTs(topThreeData.imgAvatars[i], viewerModel.getUid(), viewerModel.getAvatar(), true);
             topThreeData.txtNames[i].setText(viewerModel.getNickName());
-            if (viewerModel.getNobleLevel() > 0) {
-                bindNobelIcon(topThreeData.imgLevels[i], viewerModel.getNobleLevel());
-            } else if (viewerModel.getVipLevel() > 0) {
-                bindVipLevel(topThreeData.imgLevels[i], viewerModel.getVipLevel());
-            } else {
-                topThreeData.imgLevels[i].setVisibility(View.GONE);
-                topThreeData.levels[i].setVisibility(View.VISIBLE);
-                bindLevel(topThreeData.levels[i], viewerModel.getLevel());
-            }
+            updateLevelIcon(topThreeData.mLevelIconsLayouts[i], viewerModel);
 
             topThreeData.rlytRoots[i].setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -135,31 +133,40 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void bindNobelIcon(ImageView imageView, int nobleLevel) {
-        imageView.setImageResource(NobleConfigUtils.getImageResoucesByNobelLevelInAvatar(nobleLevel));
-    }
+    private void updateLevelIcon(LevelIconsLayout levelIconsLayout, ViewerModel viewerModel) {
+        List<TextView> list = new ArrayList<>();
+        TextView view;
+        if (viewerModel.isNoble()) {
+            view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
+            view.setBackgroundResource(NobleConfigUtils.getImageResoucesByNobelLevelInBarrage(viewerModel.getNobleLevel()));
+            list.add(view);
+            levelIconsLayout.addIconsWithClear(list);
+            return;
 
-    private void bindVipLevel(ImageView imageView, int vipLevel) {
-        int vipLevelIconIndex = vipLevel > VipLevelUtil.MAX_LEVEL_IMAGE_NO ? VipLevelUtil.MAX_LEVEL_IMAGE_NO : vipLevel;
-        String iconName = "vipicon_" + vipLevelIconIndex;
-        @DrawableRes int vipLevelIconId;
-        try {
-            vipLevelIconId = (int) R.drawable.class.getField(iconName).get(null);
-            imageView.setImageResource(vipLevelIconId);
-        } catch (NoSuchFieldException e) {
-            MyLog.e(TAG, "not found drawable:" + iconName, e);
-        } catch (IllegalAccessException e) {
-            MyLog.e(TAG, "IllegalAccess:" + iconName, e);
         }
-    }
+        // VIP
+        Pair<Boolean, Integer> pair = VipLevelUtil.getLevelBadgeResId(viewerModel.getVipLevel(), viewerModel.isVipFrozen(), false);
+        if (true == pair.first) {
+            view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
+            view.setBackgroundResource(pair.second);
+            list.add(view);
+            levelIconsLayout.addIconsWithClear(list);
+            return;
+        }
 
-    private void bindLevel(TextView textView, int level) {
-        //显示等级
-        int leve = level <= 1 ? 1 : level;
-        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(leve);
-        textView.setText(String.valueOf(level));
-        textView.setBackgroundDrawable(levelItem.drawableBG);
-        textView.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
+        // Plain
+        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(viewerModel.getLevel());
+        view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
+        view.setText(String.valueOf(viewerModel.getLevel()) + " ");
+        view.setBackgroundDrawable(levelItem.drawableBG);
+        view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
+        if (viewerModel.getVipLevel() > 4 && !viewerModel.isVipFrozen()) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
+            params.setMargins(DisplayUtils.dip2px(3), DisplayUtils.dip2px(2), 0, 0);
+            view.setLayoutParams(params);
+        }
+        list.add(view);
+        levelIconsLayout.addIconsWithClear(list);
     }
 
     private class ViewerRankTopHolder extends RecyclerView.ViewHolder {
@@ -169,8 +176,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         public BaseImageView[] imgAvatars;
         public RelativeLayout[] rlytRoots;
         public TextView[] txtNames;
-        public ImageView[] imgLevels;
-        public TextView[] levels;
+        public LevelIconsLayout[] mLevelIconsLayouts;
 
 
         public ViewerRankTopHolder(View itemView) {
@@ -179,8 +185,8 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
             rlytRoots = new RelativeLayout[CARD_NUM];
             imgAvatars = new BaseImageView[CARD_NUM];
             txtNames = new TextView[CARD_NUM];
-            imgLevels = new ImageView[CARD_NUM];
-            levels = new TextView[CARD_NUM];
+            mLevelIconsLayouts = new LevelIconsLayout[CARD_NUM];
+
 
             imgAvatars[0] = (BaseImageView) itemView.findViewById(R.id.current_rank_avatar_imgFirst);
             imgAvatars[1] = (BaseImageView) itemView.findViewById(R.id.current_rank_avatar_imgSecond);
@@ -194,27 +200,22 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
             txtNames[1] = (TextView) (itemView.findViewById(R.id.current_rank_nameSecond));
             txtNames[2] = (TextView) (itemView.findViewById(R.id.current_rank_nameThird));
 
-            imgLevels[0] = (ImageView) (itemView.findViewById(R.id.current_rank_levelFirst));
-            imgLevels[1] = (ImageView) (itemView.findViewById(R.id.current_rank_levelSecond));
-            imgLevels[2] = (ImageView) (itemView.findViewById(R.id.current_rank_levelThird));
-
-            levels[0] = (TextView) (itemView.findViewById(R.id.level_tvFirst));
-            levels[1] = (TextView) (itemView.findViewById(R.id.level_tvSecond));
-            levels[2] = (TextView) (itemView.findViewById(R.id.level_tvThird));
+            mLevelIconsLayouts[0] = (LevelIconsLayout) (itemView.findViewById(R.id.level_tvFirst));
+            mLevelIconsLayouts[1] = (LevelIconsLayout) (itemView.findViewById(R.id.level_tvSecond));
+            mLevelIconsLayouts[2] = (LevelIconsLayout) (itemView.findViewById(R.id.level_tvThird));
         }
     }
 
     private class ViewerRankViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageLevel;
         TextView mTextView;
-        TextView mLevelView;
+        LevelIconsLayout mLevelView;
 
         public ViewerRankViewHolder(View itemView) {
             super(itemView);
-            imageLevel = (ImageView) itemView.findViewById(R.id.current_rank_level);
+
             mTextView = (TextView) itemView.findViewById(R.id.current_rank_name);
-            mLevelView = (TextView) itemView.findViewById(R.id.current_rank_level_tv);
+            mLevelView = (LevelIconsLayout) itemView.findViewById(R.id.current_rank_level_tv);
         }
 
         public void bind(final ViewerModel model) {
@@ -223,15 +224,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
             }
 
             mTextView.setText(model.getNickName());
-            if (model.getNobleLevel() > 0) {
-                bindNobelIcon(imageLevel, model.getNobleLevel());
-            } else if (model.getVipLevel() > 0) {
-                bindVipLevel(imageLevel, model.getVipLevel());
-            } else {
-                imageLevel.setVisibility(View.GONE);
-                mLevelView.setVisibility(View.VISIBLE);
-                bindLevel(mLevelView, model.getLevel());
-            }
+            updateLevelIcon(mLevelView, model);
 
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
