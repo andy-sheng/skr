@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.watch.download;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.util.Pair;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+import com.base.permission.PermissionUtils;
 import com.base.preference.PreferenceUtils;
 import com.base.utils.MD5;
 import com.base.utils.WLReflect;
@@ -96,7 +98,7 @@ public class CustomDownloadManager {
 
         MyLog.w(TAG, "checkDownLoadPackage" + " fileName = " + fileName);
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        return new File(file,fileName).getPath();
+        return new File(file, fileName).getPath();
     }
 
     private static class CustomDownloadManagerHolder {
@@ -136,7 +138,7 @@ public class CustomDownloadManager {
             try {
                 jsonObject.putOpt(JSON_KEY_DOWNLOAD_KEY, key);
                 Long value = mDownloadingMap.get(key);
-                if(value!=null) {
+                if (value != null) {
                     jsonObject.putOpt(JSON_KEY_DOWNLOAD_VALUE, value);
                 }
             } catch (JSONException e) {
@@ -147,7 +149,13 @@ public class CustomDownloadManager {
         PreferenceUtils.setSettingString(GlobalData.app(), PF_KEY_DOWNLOAD_ID_MAP, content);
     }
 
-    public void beginDownload(Item item) {
+    /**
+     * 没有sdcard 权限时 ，弹窗的处理
+     *
+     * @param item
+     * @param context
+     */
+    public void beginDownload(Item item, Context context) {
         MyLog.d(TAG, "beginDownload item:" + item);
         if (TextUtils.isEmpty(item.getUrl())) {
             return;
@@ -169,29 +177,34 @@ public class CustomDownloadManager {
         }
         MyLog.d(TAG, "beginDownload" + " fileName=" + fileName);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+        if (PermissionUtils.checkSdcardAlertWindow(context)) {
+            long downloadId = mDownloadManager.enqueue(request);
+            MyLog.w(TAG, "downloadId=" + downloadId);
+            mDownloadingMap.put(downloadKey, downloadId);
+            addMonitorUrl(item.getUrl());
+            saveDownloadIdToPFFromMap();
+            ToastUtils.showToast(R.string.downloading);
+        } else {
+            if (context instanceof Activity) {
+                PermissionUtils.requestPermissionDialog((Activity) context, PermissionUtils.PermissionType.WRITE_EXTERNAL_STORAGE);
+            }
+        }
 
-        long downloadId = mDownloadManager.enqueue(request);
-        MyLog.w(TAG, "downloadId=" + downloadId);
-        mDownloadingMap.put(downloadKey, downloadId);
-        addMonitorUrl(item.getUrl());
-        saveDownloadIdToPFFromMap();
-        ToastUtils.showToast(R.string.downloading);
     }
 
     public void pauseDownload(String url) {
         String key = MD5.MD5_32(url);
         Long did = mDownloadingMap.get(key);
-        if(did!=null) {
+        if (did != null) {
             WLReflect.pauseDownload(mDownloadManager, new long[]{did});
         }
     }
 
 
-
     public void addMonitorUrl(String url) {
         String downloadKey = MD5.MD5_32(url);
         Long downloadId = mDownloadingMap.get(downloadKey);
-        if (downloadId != null && downloadId!=0) {
+        if (downloadId != null && downloadId != 0) {
             Holder h = new Holder(downloadKey, downloadId);
             // 这里先 remove 再 add 是因为 复写 Holder 的 hashcode 和 equals 方法，这根据key字段来
             // 这里先remove 再 add 保证 key 对应 downloadid 是最新的
@@ -206,7 +219,7 @@ public class CustomDownloadManager {
             return;
         }
         Long downloadId = mDownloadingMap.get(downloadKey);
-        if(downloadId!=null) {
+        if (downloadId != null) {
             mMonitorDownloadIds.remove(new Holder(downloadKey, downloadId));
         }
     }

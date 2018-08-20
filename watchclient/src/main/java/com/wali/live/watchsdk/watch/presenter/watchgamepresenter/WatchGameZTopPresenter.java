@@ -257,14 +257,14 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         if (mMyRoomData.getGameInfoModel() != null) {
             if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
-                CustomDownloadManager.getInstance().beginDownload(item);
+                CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
                 ToastUtils.showToast("暂停下载");
                 CustomDownloadManager.getInstance().pauseDownload(mMyRoomData.getGameInfoModel().getPackageUrl());
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
                 ToastUtils.showToast("继续下载");
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
-                CustomDownloadManager.getInstance().beginDownload(item);
+                CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
                 String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mMyRoomData.getGameInfoModel().getPackageUrl());
                 PackageUtils.tryInstall(apkPath);

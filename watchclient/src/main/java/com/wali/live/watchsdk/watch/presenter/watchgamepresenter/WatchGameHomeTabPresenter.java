@@ -116,7 +116,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     @Override
     public void beginDownload() {
         CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
-        CustomDownloadManager.getInstance().beginDownload(item);
+        CustomDownloadManager.getInstance().beginDownload(item,mView.getRealView().getContext());
     }
 
     @Override
