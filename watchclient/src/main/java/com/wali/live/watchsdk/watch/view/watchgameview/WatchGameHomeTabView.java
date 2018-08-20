@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.watch.view.watchgameview;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -17,8 +18,10 @@ import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.ImageFactory;
 import com.base.log.MyLog;
+import com.base.utils.MD5;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.system.PackageUtils;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
@@ -29,6 +32,7 @@ import com.wali.live.watchsdk.watch.adapter.GamePreviewPagerAdapter;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameHomeTabPresenter;
 
+import java.io.File;
 import java.util.List;
 
 public class WatchGameHomeTabView extends RelativeLayout implements
@@ -198,9 +202,22 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
                     mWatchGameHomeTabPresenter.beginDownload();
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
-                    mWatchGameHomeTabPresenter.tryInstall();
+                    if(mWatchGameHomeTabPresenter.tryInstall()){
+
+                    }else{
+                        // 安装失败，可能有地方信息不对称，重新下载吧。
+                        ToastUtils.showToast("apk包解析失败，重新下载");
+                        mDownLoadProgressBar.setVisibility(GONE);
+                        mInstallBtn.setText(R.string.download);
+                        mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
+                    }
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
-                    mWatchGameHomeTabPresenter.tryLaunch();
+                    if(mWatchGameHomeTabPresenter.tryLaunch()){
+
+                    }else{
+                        ToastUtils.showToast("启动失败");
+                    }
                 }
             }
         });
@@ -362,14 +379,17 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         } else {
             mInstallBtn.setVisibility(VISIBLE);
             if (PackageUtils.isInstallPackage(packageName)) {
-                mInstallBtn.setText("已安装");
+                mInstallBtn.setText("启动");
                 mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-            } else if (CustomDownloadManager.getInstance().checkDownLoadPackage(gameInfoModel.getPackageName(), gameInfoModel.getPackageUrl())) {
-                mInstallBtn.setText("安装");
-                mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-            } else {
-                mInstallBtn.setText("下载");
-                mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+            }else{
+                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
+                if(PackageUtils.isCompletedPackage(apkPath,gameInfoModel.getPackageName())){
+                    mInstallBtn.setText("安装");
+                    mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
+                }else{
+                    mInstallBtn.setText("下载");
+                    mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                }
             }
         }
     }
@@ -411,9 +431,9 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
         void pauseDownload();
 
-        void tryInstall();
+        boolean tryInstall();
 
-        void tryLaunch();
+        boolean tryLaunch();
     }
 
 

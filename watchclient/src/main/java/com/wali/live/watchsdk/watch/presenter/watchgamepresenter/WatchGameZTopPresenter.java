@@ -1,8 +1,10 @@
 package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
 import com.base.activity.BaseActivity;
+import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.MD5;
+import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.feedback.FeedBackApi;
@@ -264,12 +266,14 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
                 CustomDownloadManager.getInstance().beginDownload(item);
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
-                CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
-                CustomDownloadManager.getInstance().tryInstall(item);
+                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mMyRoomData.getGameInfoModel().getPackageUrl());
+                PackageUtils.tryInstall(apkPath);
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
-                CustomDownloadManager.getInstance().tryLaunch(mMyRoomData.getGameInfoModel().getPackageName());
+                PackageUtils.tryLaunch(mMyRoomData.getGameInfoModel().getPackageName());
             }
         }
+
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

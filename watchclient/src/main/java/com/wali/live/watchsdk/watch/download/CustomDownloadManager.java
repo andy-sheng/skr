@@ -86,6 +86,19 @@ public class CustomDownloadManager {
         }
     };
 
+    public String getDownloadPath(String packageUrl) {
+        String downloadKey = MD5.MD5_32(packageUrl);
+        String ext = FileUtils.getFileExt(packageUrl);
+        String fileName = downloadKey;
+        if (!TextUtils.isEmpty(ext)) {
+            fileName += "." + ext;
+        }
+
+        MyLog.w(TAG, "checkDownLoadPackage" + " fileName = " + fileName);
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        return new File(file,fileName).getPath();
+    }
+
     private static class CustomDownloadManagerHolder {
         private static final CustomDownloadManager INSTANCE = new CustomDownloadManager();
     }
@@ -169,81 +182,7 @@ public class CustomDownloadManager {
         WLReflect.pauseDownload(mDownloadManager, new long[]{did});
     }
 
-    public boolean checkDownLoadPackage(String packageName, String packageUrl) {
-        String downloadKey = MD5.MD5_32(packageUrl);
-        String ext = FileUtils.getFileExt(packageUrl);
-        String fileName = downloadKey;
-        if (!TextUtils.isEmpty(ext)) {
-            fileName += "." + ext;
-        }
 
-        MyLog.w(TAG, "checkDownLoadPackage" + " fileName = " + fileName);
-        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        if (!file.exists()) {
-            return false;
-        }
-        String mDownloadFilename = Uri.withAppendedPath(Uri.fromFile(file), fileName).getPath();
-
-        try {
-            PackageManager pm = GlobalData.app().getApplicationContext().getPackageManager();
-            PackageInfo packageInfo = pm.getPackageArchiveInfo(mDownloadFilename, PackageManager.GET_ACTIVITIES);
-            if (packageInfo == null) {
-                return false;
-            }
-            if (!TextUtils.equals(packageName, packageInfo.packageName)) {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public void tryInstall(Item item) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        String downloadKey = MD5.MD5_32(item.getUrl());
-        String ext = FileUtils.getFileExt(item.getUrl());
-        String fileName = downloadKey;
-        if (!TextUtils.isEmpty(ext)) {
-            fileName += "." + ext;
-        }
-
-        MyLog.w(TAG, "tryInstall" + " fileName = " + fileName);
-        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String mDownloadFilename = Uri.withAppendedPath(Uri.fromFile(file), fileName).getPath();
-
-        Uri uri;
-        // 判断版本大于等于7.0
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // 待补充
-            uri = FileProvider.getUriForFile(GlobalData.app().getApplicationContext(), "com.wali.live.watchsdk.editinfo.fileprovider", new File(mDownloadFilename));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        } else {
-            uri = Uri.fromFile(new File(mDownloadFilename));
-        }
-
-        intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        GlobalData.app().startActivity(intent);
-
-    }
-
-    public void tryLaunch(String packageName) {
-        if (TextUtils.isEmpty(packageName)) {
-            return;
-        }
-
-        Intent intent = GlobalData.app().getPackageManager().getLaunchIntentForPackage(packageName);
-        if (intent != null) {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            GlobalData.app().startActivity(intent);
-        } else {
-            MyLog.w(TAG, "intent launch fail, packageName=" + packageName);
-        }
-    }
 
     public void addMonitorUrl(String url) {
         String downloadKey = MD5.MD5_32(url);

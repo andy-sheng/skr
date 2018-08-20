@@ -28,7 +28,6 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
-import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -162,7 +161,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 // 还没有加载过横屏布局 先加载
                 inflate(context, R.layout.watch_z_top_lanscape_layout, this);
                 bindLandscapeViews();
-                initInstallStatus(mPresenter.getController().getRoomBaseDataModel().getGameInfoModel());
+                checkInstalledOrUpdate(mPresenter.getController().getRoomBaseDataModel().getGameInfoModel());
             } else {
                 // 加载过横屏布局 重新add
                 for (View view : mLandscapeViews) {
@@ -584,7 +583,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
     }
 
-    public void initInstallStatus(GameInfoModel gameInfoModel) {
+    public void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
         String packageName = gameInfoModel.getPackageName();
         if (TextUtils.isEmpty(packageName)) {
             // 无效的包名
@@ -595,12 +594,13 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             if (PackageUtils.isInstallPackage(packageName)) {
                 // 启动
                 mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-            } else if (CustomDownloadManager.getInstance().checkDownLoadPackage(gameInfoModel.getPackageName(), gameInfoModel.getPackageUrl())) {
-                // 安装
-                mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-            } else {
-                // 下载
-                mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+            }else{
+                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
+                if(PackageUtils.isCompletedPackage(apkPath,gameInfoModel.getPackageName())){
+                    mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
+                }else{
+                    mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                }
             }
         }
     }
