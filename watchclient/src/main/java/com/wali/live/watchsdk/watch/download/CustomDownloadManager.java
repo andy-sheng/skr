@@ -349,11 +349,12 @@ public class CustomDownloadManager {
                     switch (action) {
                         case Intent.ACTION_PACKAGE_ADDED:
                             // 安装的广播监听
-                            ApkStatusEvent event = new ApkStatusEvent(packageName, null, ApkStatusEvent.STATUS_LAUNCH);
-                            EventBus.getDefault().post(event);
+                            ApkStatusEvent event1 = new ApkStatusEvent(packageName, null, ApkStatusEvent.STATUS_LAUNCH);
+                            EventBus.getDefault().post(event1);
                             break;
                         case Intent.ACTION_PACKAGE_REMOVED:
-
+                            ApkStatusEvent event2 = new ApkStatusEvent(packageName, null, ApkStatusEvent.STATUS_REMOVE);
+                            EventBus.getDefault().post(event2);
                             break;
                     }
 
@@ -458,6 +459,7 @@ public class CustomDownloadManager {
         public static final int STATUS_PAUSE_DOWNLOAD = 5; //暂停下载
         public static final int STATUS_DOWNLOAD_COMPELED = 3;//已下载待安装
         public static final int STATUS_LAUNCH = 4;//启动
+        public static final int STATUS_REMOVE = 6;//卸载
 
         public ApkStatusEvent(String downloadKey, int status) {
             this.downloadKey = downloadKey;

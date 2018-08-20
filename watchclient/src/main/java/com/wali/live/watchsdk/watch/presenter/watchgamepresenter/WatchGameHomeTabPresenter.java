@@ -94,12 +94,19 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
         String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
-        if (event.downloadKey.equals(key)) {
-            mView.updateDownLoadUi(event.status, event.progress, event.reason);
+        if (!TextUtils.isEmpty(event.downloadKey)) {
+            if (event.downloadKey.equals(key)) {
+                mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
+            }
         } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
-            // 安装完成
+            // 安装应用
             if (event.packageName.equals(mGameInfoModel.getPackageName())) {
-                mView.updateDownLoadUi(event.status, event.progress, event.reason);
+                mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
+            }
+        } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
+            // 卸载应用
+            if (event.packageName.equals(mGameInfoModel.getPackageName())) {
+                mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
+import android.text.TextUtils;
+
 import com.base.activity.BaseActivity;
 import com.base.event.KeyboardEvent;
 import com.base.log.MyLog;
@@ -314,9 +316,16 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
         String key = MD5.MD5_32(mMyRoomData.getGameInfoModel().getPackageUrl());
-        if (event.downloadKey.equals(key)) {
-            mView.updateInstallStatus(event.status, event.progress, event.reason);
+        if (!TextUtils.isEmpty(event.downloadKey)) {
+            if (event.downloadKey.equals(key)) {
+                mView.updateInstallStatus(event.status, event.progress, event.reason);
+            }
+        } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
+            // 安装完成
+        } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
+            // 卸载完成
         }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

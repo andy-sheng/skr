@@ -202,9 +202,9 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
                     mWatchGameHomeTabPresenter.beginDownload();
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
-                    if(mWatchGameHomeTabPresenter.tryInstall()){
+                    if (mWatchGameHomeTabPresenter.tryInstall()) {
 
-                    }else{
+                    } else {
                         // 安装失败，可能有地方信息不对称，重新下载吧。
                         ToastUtils.showToast("apk包解析失败，重新下载");
                         mDownLoadProgressBar.setVisibility(GONE);
@@ -213,9 +213,9 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
                     }
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
-                    if(mWatchGameHomeTabPresenter.tryLaunch()){
+                    if (mWatchGameHomeTabPresenter.tryLaunch()) {
 
-                    }else{
+                    } else {
                         ToastUtils.showToast("启动失败");
                     }
                 }
@@ -301,7 +301,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             }
 
             @Override
-            public void updateDownLoadUi(int status, int progress, int reason) {
+            public void updateDownLoadUi(int status, int progress, int reason, GameInfoModel gameInfoModel) {
                 MyLog.d(TAG, " status " + status + " progress " + progress);
                 switch (status) {
                     case CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD:
@@ -340,6 +340,10 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
                         break;
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE:
+                        // 卸载,纠正tag和状态
+                        checkInstalledOrUpdate(gameInfoModel);
+                        break;
                     default:
                         break;
                 }
@@ -371,6 +375,10 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
 
     private void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
+        if (gameInfoModel == null) {
+            MyLog.w(TAG, "gameInfoModel is null");
+            return;
+        }
         String packageName = gameInfoModel.getPackageName();
         if (TextUtils.isEmpty(packageName)) {
             // 无效的包名
@@ -381,12 +389,12 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             if (PackageUtils.isInstallPackage(packageName)) {
                 mInstallBtn.setText("启动");
                 mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-            }else{
+            } else {
                 String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
-                if(PackageUtils.isCompletedPackage(apkPath,gameInfoModel.getPackageName())){
+                if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
                     mInstallBtn.setText("安装");
                     mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-                }else{
+                } else {
                     mInstallBtn.setText("下载");
                     mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
                 }
@@ -421,7 +429,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
          * @param status   下载的状态
          * @param progress 进度条
          */
-        void updateDownLoadUi(int status, int progress, int reason);
+        void updateDownLoadUi(int status, int progress, int reason, GameInfoModel gameInfoModel);
 
         void notifyTaskRemove(int status);
     }
