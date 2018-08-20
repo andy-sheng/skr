@@ -7,6 +7,8 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.base.activity.BaseRotateSdkActivity;
 import com.base.activity.BaseSdkActivity;
@@ -165,22 +167,51 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
             public void onPageSelected(int position) {
             }
         });
+    }
 
-        Observable.timer(700, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(((RxActivity) getActivity()).<Long>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Action1<Long>() {
-                    @Override
-                    public void call(Long aLong) {
-                        mPlaceHolderView.setVisibility(View.VISIBLE);
-                    }
-                });
+    @Override
+    public Animation onCreateAnimation(int transit, final boolean enter, int nextAnim) {
+        Animation animation;
+
+        if(enter) {
+            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_bottom_in);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mPlaceHolderView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+        } else {
+            mPlaceHolderView.setVisibility(View.GONE);
+            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_bottom_out);
+        }
+
+        return animation;
+    }
+
+
+
+    public static void openFragment(BaseSdkActivity activity) {
+        Bundle bundle = new Bundle();
+        // 看设计需不需要横竖屏
+        FragmentNaviUtils.openFragment(activity, MyInfoHalfFragment.class, bundle, R.id.main_act_container,
+                true, R.anim.slide_bottom_in, R.anim.slide_bottom_out);
     }
 
     private void finish() {
         EventBus.getDefault().unregister(this);
         KeyboardUtils.hideKeyboardImmediately(getActivity());
-        FragmentNaviUtils.popFragmentFromStack(getActivity());
+        FragmentNaviUtils.popFragment(getActivity());
         EventBus.getDefault().post(new ConversationLocalStore.NotifyUnreadCountChangeEvent(0));
     }
 
@@ -206,16 +237,6 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    public static void openFragment(BaseSdkActivity activity) {
-        Bundle bundle = new Bundle();
-        // 看设计需不需要横竖屏
-        if (activity instanceof BaseRotateSdkActivity) {
-
-        }
-        FragmentNaviUtils.openFragment(activity, MyInfoHalfFragment.class, bundle, R.id.main_act_container,
-                true, R.anim.slide_bottom_in, R.anim.slide_bottom_out);
     }
 
     @Override
