@@ -135,8 +135,10 @@ public class CustomDownloadManager {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.putOpt(JSON_KEY_DOWNLOAD_KEY, key);
-                long value = mDownloadingMap.get(key);
-                jsonObject.putOpt(JSON_KEY_DOWNLOAD_VALUE, value);
+                Long value = mDownloadingMap.get(key);
+                if(value!=null) {
+                    jsonObject.putOpt(JSON_KEY_DOWNLOAD_VALUE, value);
+                }
             } catch (JSONException e) {
             }
             jsonArray.put(jsonObject);
@@ -178,16 +180,18 @@ public class CustomDownloadManager {
 
     public void pauseDownload(String url) {
         String key = MD5.MD5_32(url);
-        long did = mDownloadingMap.get(key);
-        WLReflect.pauseDownload(mDownloadManager, new long[]{did});
+        Long did = mDownloadingMap.get(key);
+        if(did!=null) {
+            WLReflect.pauseDownload(mDownloadManager, new long[]{did});
+        }
     }
 
 
 
     public void addMonitorUrl(String url) {
         String downloadKey = MD5.MD5_32(url);
-        long downloadId = mDownloadingMap.get(downloadKey);
-        if (downloadId != 0) {
+        Long downloadId = mDownloadingMap.get(downloadKey);
+        if (downloadId != null && downloadId!=0) {
             Holder h = new Holder(downloadKey, downloadId);
             // 这里先 remove 再 add 是因为 复写 Holder 的 hashcode 和 equals 方法，这根据key字段来
             // 这里先remove 再 add 保证 key 对应 downloadid 是最新的
@@ -201,8 +205,10 @@ public class CustomDownloadManager {
         if (TextUtils.isEmpty(downloadKey)) {
             return;
         }
-        long downloadId = mDownloadingMap.get(downloadKey);
-        mMonitorDownloadIds.remove(new Holder(downloadKey, downloadId));
+        Long downloadId = mDownloadingMap.get(downloadKey);
+        if(downloadId!=null) {
+            mMonitorDownloadIds.remove(new Holder(downloadKey, downloadId));
+        }
     }
 
     private void updateProgress() {
