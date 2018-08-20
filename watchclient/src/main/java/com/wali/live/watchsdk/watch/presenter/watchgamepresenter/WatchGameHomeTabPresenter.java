@@ -93,26 +93,33 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
-        String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
         if (!TextUtils.isEmpty(event.downloadKey)) {
+            String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
             if (event.downloadKey.equals(key)) {
                 mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
             }
         } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
             // 安装应用
-            if (event.packageName.equals(mGameInfoModel.getPackageName())) {
-                mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
+            if (!TextUtils.isEmpty(event.packageName)) {
+                if (event.packageName.equals(mGameInfoModel.getPackageName())) {
+                    mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
+                }
             }
         } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
             // 卸载应用
-            if (event.packageName.equals(mGameInfoModel.getPackageName())) {
-                mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
+            if (!TextUtils.isEmpty(event.packageName)) {
+                if (event.packageName.equals(mGameInfoModel.getPackageName())) {
+                    mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
+                }
             }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.TaskEvent event) {
+        if (mGameInfoModel == null || event.downloadKey == null) {
+            return;
+        }
         String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
         if (event.downloadKey.equals(key)) {
             mView.notifyTaskRemove(event.status);
@@ -123,7 +130,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     @Override
     public void beginDownload() {
         CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
-        CustomDownloadManager.getInstance().beginDownload(item,mView.getRealView().getContext());
+        CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
     }
 
     @Override
