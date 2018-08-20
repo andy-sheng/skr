@@ -93,8 +93,11 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
             @Override
             public void call(Subscriber<? super List<ViewerModel>> subscriber) {
 
+                // 所有观众
+                List<ViewerModel> viwerList = new ArrayList<>();
+                //保存所有的去服务器查询的ID
                 final List<Long> uuidList = new ArrayList<>();
-                //保存uid和观众model
+                //保存要去查询观众id和数据
                 HashMap<Long, ViewerModel> mViwersMap = new HashMap<>();
 
                 for (ViewerModel model : dataList) {
@@ -104,6 +107,7 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
                             mViwersMap.put(model.getUid(), model);
                         } else {
                             model.setNickName(mUserInfoCache.get(model.getUid()));
+                            viwerList.add(model);
                         }
                     }
                 }
@@ -115,11 +119,12 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
                         ViewerModel model = mViwersMap.get(user.getUid());
                         if (model != null) {
                             model.setNickName(user.getNickname());
+                            viwerList.add(model);
                         }
                     }
                 }
 
-                subscriber.onNext(dataList);
+                subscriber.onNext(viwerList);
                 subscriber.onCompleted();
             }
         }).flatMap(new Func1<List<ViewerModel>, Observable<List<ViewerModel>>>() {
@@ -152,7 +157,7 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
 
                     @Override
                     public void onNext(List<ViewerModel> list) {
-                        MyLog.d(TAG, "onNext" + " list=" + list);
+                        MyLog.d(TAG, "onNext" + " list.size =" + list.size());
                         mView.initViewers(list);
                     }
                 });

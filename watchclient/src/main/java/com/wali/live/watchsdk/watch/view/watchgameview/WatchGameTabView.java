@@ -85,7 +85,7 @@ public class WatchGameTabView extends RelativeLayout implements
         mWatchGameTab.setCustomTabView(R.layout.watch_game_tab_button_view, R.id.tab_tv);
         mWatchGameTab.setSelectedIndicatorColors(getResources().getColor(R.color.color_14b9c7));
         mWatchGameTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
-        mWatchGameTab.setIndicatorWidth(DisplayUtils.dip2px(12));
+        mWatchGameTab.setIndicatorWidth(DisplayUtils.dip2px(25));
         mWatchGameTab.setIndicatorBottomMargin(DisplayUtils.dip2px(6));
 
 

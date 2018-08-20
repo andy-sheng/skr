@@ -16,15 +16,15 @@
             android:id="@+id/current_rank_rlytSecondRoot"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_dimen_450"
-            android:layout_weight="1"
-            android:gravity="center_horizontal">
+            android:layout_weight="1">
 
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/current_rank_avatar_imgSecond"
                 android:layout_width="@dimen/view_dimen_168"
                 android:layout_height="@dimen/view_dimen_168"
                 android:padding="2dp"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/view_dimen_86"
                 android:background="@drawable/anchor_rank_round_bg_top2"/>
 
@@ -32,49 +32,38 @@
                 android:id="@+id/current_rank_nameSecond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:layout_below="@+id/current_rank_avatar_imgSecond"
                 android:layout_marginTop="@dimen/view_dimen_20"
                 android:maxLines="1"
                 android:textColor="@color/color_black_trans_60"
                 android:textSize="@dimen/view_dimen_45" />
 
-            <ImageView
-                android:id="@+id/current_rank_levelSecond"
+            <!-- 显示等级-->
+            <com.wali.live.common.view.LevelIconsLayout
+                android:id="@+id/level_tvSecond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/current_rank_nameSecond"
-                android:layout_marginTop="@dimen/view_dimen_6" />
-
-            <!-- 显示等级-->
-            <TextView
-                android:id="@+id/level_tvSecond"
-                android:layout_width="@dimen/lvl_tv_width"
-                android:layout_height="@dimen/lvl_tv_height"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/current_rank_levelSecond"
-                android:textColor="@color/lvl_txt_color"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/view_dimen_6"
-                android:gravity="center"
-                android:textSize="@dimen/lvl_text_size"
-                android:visibility="gone"/>
-
+                android:layout_below="@+id/current_rank_nameSecond"
+                android:layout_marginLeft="@dimen/view_dimen_8" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/current_rank_rlytFirstRoot"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_dimen_450"
-            android:layout_weight="1"
-            android:gravity="center_horizontal">
+            android:layout_weight="1">
 
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/current_rank_avatar_imgFirst"
                 android:layout_width="@dimen/view_dimen_214"
                 android:layout_height="@dimen/view_dimen_214"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
                 android:padding="2dp"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_dimen_40"
                 android:background="@drawable/anchor_rank_round_bg_top1"/>
 
@@ -82,33 +71,23 @@
                 android:id="@+id/current_rank_nameFirst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_below="@+id/current_rank_avatar_imgFirst"
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/view_dimen_20"
-                android:layout_centerHorizontal="true"
                 android:textColor="@color/color_black_trans_60"
                 android:textSize="@dimen/view_dimen_45" />
 
-            <ImageView
-                android:id="@+id/current_rank_levelFirst"
+            <!-- 显示等级-->
+            <com.wali.live.common.view.LevelIconsLayout
+                android:id="@+id/level_tvFirst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/current_rank_nameFirst"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_dimen_6" />
-
-            <!-- 显示等级-->
-            <TextView
-                android:id="@+id/level_tvFirst"
-                android:layout_width="@dimen/lvl_tv_width"
-                android:layout_height="@dimen/lvl_tv_height"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/current_rank_levelFirst"
-                android:textColor="@color/lvl_txt_color"
-                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/view_dimen_6"
-                android:textSize="@dimen/lvl_text_size"
-                android:visibility="gone"/>
+                android:layout_below="@+id/current_rank_nameFirst"
+                android:layout_marginLeft="@dimen/view_dimen_8" />
 
         </RelativeLayout>
 
@@ -116,15 +95,15 @@
             android:id="@+id/current_rank_rlytThirdRoot"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_dimen_450"
-            android:layout_weight="1"
-            android:gravity="center_horizontal">
+            android:layout_weight="1">
 
             <com.base.image.fresco.BaseImageView
                 android:id="@+id/current_rank_avatar_imgThird"
                 android:layout_width="@dimen/view_dimen_168"
                 android:layout_height="@dimen/view_dimen_168"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
                 android:padding="2dp"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_dimen_86"
                 android:background="@drawable/anchor_rank_round_bg_top3"/>
 
@@ -139,26 +118,16 @@
                 android:textColor="@color/color_black_trans_60"
                 android:textSize="@dimen/view_dimen_45" />
 
-            <ImageView
-                android:id="@+id/current_rank_levelThird"
+            <!-- 显示等级-->
+            <com.wali.live.common.view.LevelIconsLayout
+                android:id="@+id/level_tvThird"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/current_rank_nameThird"
-                android:layout_marginTop="@dimen/view_dimen_6" />
-
-            <!-- 显示等级-->
-            <TextView
-                android:id="@+id/level_tvThird"
-                android:layout_width="@dimen/lvl_tv_width"
-                android:layout_height="@dimen/lvl_tv_height"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/current_rank_levelThird"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/view_dimen_6"
-                android:gravity="center"
-                android:textColor="@color/lvl_txt_color"
-                android:textSize="@dimen/lvl_text_size"
-                android:visibility="gone"/>
+                android:layout_below="@+id/current_rank_nameThird"
+                android:layout_marginLeft="@dimen/view_dimen_8" />
         </RelativeLayout>
     </LinearLayout>
 

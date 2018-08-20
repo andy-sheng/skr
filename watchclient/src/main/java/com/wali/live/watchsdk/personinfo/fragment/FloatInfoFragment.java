@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -117,12 +119,6 @@ public class FloatInfoFragment extends BaseEventBusFragment
         $click($(R.id.out_view), this);
         $click($(R.id.close_btn), this);
 
-        $(R.id.out_view).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                $(R.id.out_view).setVisibility(View.VISIBLE);
-            }
-        }, 700);
         mCard = $(R.id.float_main_view);
         //被查看者头像
         {
@@ -237,9 +233,6 @@ public class FloatInfoFragment extends BaseEventBusFragment
     }
 
     private void updateLevelIcons() {
-        if (isDetached()) {
-            return;
-        }
         List<TextView> list = new ArrayList<>();
         TextView view;
         if (mUser.isNoble()) {
@@ -249,16 +242,15 @@ public class FloatInfoFragment extends BaseEventBusFragment
         }
         // VIP
         Pair<Boolean, Integer> pair = VipLevelUtil.getLevelBadgeResId(mUser.getVipLevel(), mUser.isVipFrozen(), false);
-        Activity activity = getActivity();
         if (true == pair.first) {
-            view = LevelIconsLayout.getDefaultTextView(activity == null ? GlobalData.app() : activity);
+            view = LevelIconsLayout.getDefaultTextView(getContext());
             view.setBackgroundResource(pair.second);
             //view.setText(String.valueOf(mUser.getVipLevel()));
             list.add(view);
         }
         // Plain
         GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(mUser.getLevel());
-        view = LevelIconsLayout.getDefaultTextView(activity == null ? GlobalData.app() : activity);
+        view = LevelIconsLayout.getDefaultTextView(getContext());
         view.setText(String.valueOf(mUser.getLevel()));
         view.setBackgroundDrawable(levelItem.drawableBG);
         view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
@@ -537,7 +529,6 @@ public class FloatInfoFragment extends BaseEventBusFragment
             return;
         }
         if (v.getId() == R.id.close_btn || v.getId() == R.id.out_view) {
-            $(R.id.out_view).setVisibility(View.GONE);
             onBackPressed();
             return;
         } else if (!AccountAuthManager.triggerActionNeedAccount(getActivity())) {
@@ -700,6 +691,37 @@ public class FloatInfoFragment extends BaseEventBusFragment
                 event.orientation == BaseRotateSdkActivity.ORIENTATION_PORTRAIT_REVERSED) {
             onOrientation(false);
         }
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, final boolean enter, int nextAnim) {
+        Animation animation;
+
+        if(enter) {
+            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_bottom_in);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    $(R.id.out_view).setVisibility(View.VISIBLE);
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+        } else {
+            $(R.id.out_view).setVisibility(View.GONE);
+            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_bottom_out);
+        }
+
+        return animation;
     }
 
     public static FloatInfoFragment openFragment(

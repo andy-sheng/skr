@@ -3,42 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_dimen_135">
 
-    <ImageView
-        android:id="@+id/current_rank_level"
+    <com.wali.live.common.view.LevelIconsLayout
+        android:id="@+id/current_rank_level_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_dimen_20"/>
-
-    <!-- 显示等级-->
-    <TextView
-        android:id="@+id/current_rank_level_tv"
-        android:layout_width="@dimen/lvl_tv_width"
-        android:layout_height="@dimen/lvl_tv_height"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/current_rank_nameThird"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/view_dimen_20"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:layout_toRightOf="@+id/current_rank_level"
-        android:textColor="@color/lvl_txt_color"
-        android:textSize="@dimen/lvl_text_size"
-        android:visibility="gone"/>
+        android:layout_marginTop="@dimen/view_dimen_6"
+        android:gravity="center_vertical" />
 
     <TextView
         android:id="@+id/current_rank_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/current_rank_level_tv"
         android:layout_marginLeft="@dimen/view_dimen_20"
+        android:layout_toRightOf="@+id/current_rank_level_tv"
         android:text="啊哈哈哈哈哈"
-        android:textSize="@dimen/text_size_45"
-        android:textColor="@color/color_black_trans_60"/>
+        android:textColor="@color/color_black_trans_60"
+        android:textSize="@dimen/text_size_45" />
 
     <!--分隔线-->
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_1"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_black_trans_10"/>
+        android:background="@color/color_black_trans_10" />
 
 </RelativeLayout>
