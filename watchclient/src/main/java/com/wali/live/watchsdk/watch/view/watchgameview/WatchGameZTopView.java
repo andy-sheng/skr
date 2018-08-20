@@ -887,6 +887,18 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
     }
 
+    private void resolveKeyBoardEvent(boolean isHide) {
+        if(!mIsLandscape) {
+            return;
+        }
+
+        if(isHide ) {
+            tryToHideLandscapeOptBar();
+        } else {
+            tryUnSubscribe();
+        }
+    }
+
     @Override
     public IView getViewProxy() {
         class ComponentView implements IView {
@@ -948,6 +960,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     default:
                         break;
                 }
+            }
+
+            @Override
+            public void keyBoardEvent(boolean isHide) {
+                resolveKeyBoardEvent(isHide);
             }
 
             @Override
@@ -1045,5 +1062,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
          */
         void updateInstallStatus(int status, int progress, int reason);
 
+        void keyBoardEvent(boolean isHide);
     }
 }
