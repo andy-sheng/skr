@@ -584,6 +584,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     public void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
+        if(gameInfoModel == null) {
+            return;
+        }
         String packageName = gameInfoModel.getPackageName();
         if (TextUtils.isEmpty(packageName)) {
             // 无效的包名
