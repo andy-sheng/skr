@@ -102,6 +102,12 @@ public class WatchGameChatTabPresenter extends BaseSdkRxPresenter<WatchGameChatT
             case RoomDataChangeEvent.TYPE_CHANGE_VIEWERS: {
             }
             break;
+            case RoomDataChangeEvent.TYPE_CHANGE_GAME_INFO: {
+                if (mView != null) {
+                    mView.updateGameInfo(event.source);
+                }
+            }
+            break;
             default:
                 break;
         }

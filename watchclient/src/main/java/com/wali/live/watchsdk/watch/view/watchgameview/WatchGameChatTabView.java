@@ -1,9 +1,9 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,13 +14,14 @@ import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
-import com.wali.live.watchsdk.component.presenter.LiveCommentPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameChatTabPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameLiveCommentPresenter;
 
@@ -49,6 +50,9 @@ public class WatchGameChatTabView extends RelativeLayout implements
     TextView mViewerNum;
     RelativeLayout mCommentContainer;
 
+    ViewStub mGameInfoPopViewStub;
+    GameInfoPopView mGameInfoPopView; // 可能为空
+
     private boolean mEnableFollow = true;
 
     public WatchGameChatTabView(Context context, WatchComponentController componentController) {
@@ -65,6 +69,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
         mAnchorRoomTv = (TextView) this.findViewById(R.id.anchor_room_tv);
         mFocusBtn = (TextView) this.findViewById(R.id.focus_btn);
         mViewerNum = (TextView) this.findViewById(R.id.viewer_num);
+        mGameInfoPopViewStub = (ViewStub) this.findViewById(R.id.game_info_pop_view_stub);
 
         mCommentContainer = (RelativeLayout) this.findViewById(R.id.comment_container);
         mWatchGameLiveCommentView = (WatchGameLiveCommentView) this.findViewById(R.id.live_comment_view);
@@ -78,8 +83,33 @@ public class WatchGameChatTabView extends RelativeLayout implements
         mWatchGameChatTabPresenter.setView(this.getViewProxy());
         this.setPresenter(mWatchGameChatTabPresenter);
 
+        if (componentController.getRoomBaseDataModel() != null) {
+            loadGameInfoPopView(componentController.getRoomBaseDataModel().getGameInfoModel());
+        }
+
         $click(mAnchorAvatarIv, this);
         $click(mFocusBtn, this);
+    }
+
+    /**
+     * 初始化和切换房间的时候调用更新游戏信息
+     * @param gameInfoModel
+     */
+    private void loadGameInfoPopView(GameInfoModel gameInfoModel) {
+        if (gameInfoModel == null) {
+            if (mGameInfoPopView != null) {
+                mGameInfoPopView.setVisibility(GONE);
+            }
+            return;
+        }
+
+        if (mGameInfoPopView == null) {
+            mGameInfoPopView = (GameInfoPopView) mGameInfoPopViewStub.inflate().findViewById(R.id.game_info_pop_container);
+        } else {
+            mGameInfoPopView.setVisibility(VISIBLE);
+        }
+
+        mGameInfoPopView.setGameInfoModel(gameInfoModel);
     }
 
     @Override
@@ -196,6 +226,14 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
             }
 
+            @Override
+            public void updateGameInfo(RoomBaseDataModel source) {
+                if (source == null) {
+                    return;
+                }
+                loadGameInfoPopView(source.getGameInfoModel());
+            }
+
 
             @Override
             public <T extends View> T getRealView() {
@@ -239,6 +277,11 @@ public class WatchGameChatTabView extends RelativeLayout implements
          * 更新主播信息
          */
         void updateAnchorInfo(long uid, long avatarTs, int certificationType, int level, String nickName);
+
+        /**
+         * 更新游戏信息
+         */
+        void updateGameInfo(RoomBaseDataModel source);
     }
 
     public interface IPresenter {
