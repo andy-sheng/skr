@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.base.activity.BaseRotateSdkActivity;
 import com.base.activity.BaseSdkActivity;
+import com.base.activity.RxActivity;
 import com.base.fragment.BaseFragment;
 import com.base.fragment.FragmentDataListener;
 import com.base.fragment.utils.FragmentNaviUtils;
@@ -18,6 +19,7 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.LazyNewView;
 import com.base.view.SlidingTabLayout;
+import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.personalcenter.fragment.ChatThreadHalfFragment;
@@ -35,6 +37,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * Created by chengsimin
@@ -157,6 +165,16 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
             public void onPageSelected(int position) {
             }
         });
+
+        Observable.timer(700, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(((RxActivity) getActivity()).<Long>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        mPlaceHolderView.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
     private void finish() {

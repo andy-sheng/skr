@@ -45,6 +45,7 @@ import rx.schedulers.Schedulers;
 import static com.wali.live.component.BaseSdkController.MSG_FORCE_ROTATE_SCREEN;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_GAME_BARRAGE;
 import static com.wali.live.component.BaseSdkController.MSG_NEW_GAME_WATCH_EXIST_CLICK;
+import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
@@ -64,6 +65,8 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     private Subscription mFollowSubscription;
 
+    private boolean mIsLandscape;
+
     public WatchGameZTopPresenter(IEventController controller) {
         super(controller);
         if (controller != null && controller instanceof WatchComponentController) {
@@ -81,6 +84,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         super.startPresenter();
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
+        registerAction(MSG_ON_BACK_PRESSED);
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -105,11 +109,19 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
             case MSG_ON_ORIENT_PORTRAIT:
                 // 接收到切换为竖屏通知
                 mView.reOrient(false);
+                mIsLandscape = false;
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
                 // 接收到切换为横屏通知
                 mView.reOrient(true);
+                mIsLandscape = true;
                 return true;
+            case MSG_ON_BACK_PRESSED:
+                if(mIsLandscape) {
+                    forceRotate();
+                    return true;
+                }
+                return false;
         }
         return false;
     }
