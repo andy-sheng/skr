@@ -1,7 +1,7 @@
 package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
 import com.base.activity.BaseActivity;
-import com.base.global.GlobalData;
+import com.base.event.KeyboardEvent;
 import com.base.log.MyLog;
 import com.base.utils.MD5;
 import com.base.utils.system.PackageUtils;
@@ -316,6 +316,22 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         String key = MD5.MD5_32(mMyRoomData.getGameInfoModel().getPackageUrl());
         if (event.downloadKey.equals(key)) {
             mView.updateInstallStatus(event.status, event.progress, event.reason);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(KeyboardEvent event) {
+        if(mView == null) {
+            return;
+        }
+        MyLog.d(TAG, "KeyboardEvent");
+        switch (event.eventType) {
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
+                mView.keyBoardEvent(false);
+                break;
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
+                mView.keyBoardEvent(true);
+                break;
         }
     }
 }
