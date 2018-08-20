@@ -192,7 +192,7 @@ public class EditInfoFragment extends RxFragment implements FragmentDataListener
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        FragmentNaviUtils.popAllFragmentFromStack(getActivity());
+                        FragmentNaviUtils.popFragment(getActivity());
                     }
                 });
     }

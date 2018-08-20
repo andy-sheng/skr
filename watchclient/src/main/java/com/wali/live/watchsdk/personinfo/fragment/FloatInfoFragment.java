@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.base.activity.BaseActivity;
 import com.base.activity.BaseRotateSdkActivity;
+import com.base.activity.BaseSdkActivity;
 import com.base.dialog.MyAlertDialog;
 import com.base.event.SdkEventClass;
 import com.base.fragment.BaseEventBusFragment;
@@ -45,7 +46,7 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
-import com.wali.live.watchsdk.editinfo.EditInfoActivity;
+import com.wali.live.watchsdk.personalcenter.fragment.EditInfoFragment;
 import com.wali.live.watchsdk.personinfo.presenter.FloatInfoPresenter;
 import com.wali.live.watchsdk.personinfo.presenter.ForbidManagePresenter;
 import com.wali.live.watchsdk.personinfo.presenter.IFloatInfoView;
@@ -579,7 +580,8 @@ public class FloatInfoFragment extends BaseEventBusFragment
 
     private void onClickEditIcon() {
         if (mEditIcon.getVisibility() == View.VISIBLE) {
-            EditInfoActivity.open(getActivity());
+//            EditInfoActivity.open(getActivity());
+            EditInfoFragment.openFragment((BaseSdkActivity) getActivity(), R.id.main_act_container);
         }
     }
 
