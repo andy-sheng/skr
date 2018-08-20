@@ -10,6 +10,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.SelfUpdateManager;
 import com.base.utils.network.NetworkUtils;
+import com.base.utils.toast.ToastUtils;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.event.EventClass;
@@ -181,6 +182,7 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
             // 时间间隔太短，不需要显示
             if (needShowTraffic && !needShowTrafficDialog()) {
                 needShowTraffic = false;
+                ToastUtils.showToast("正在使用流量播放");
             }
             if (mNeedShowTraffic == needShowTraffic) {
                 return;

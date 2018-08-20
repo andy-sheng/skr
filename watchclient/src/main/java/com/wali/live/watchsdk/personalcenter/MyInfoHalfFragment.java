@@ -182,7 +182,9 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    mPlaceHolderView.setVisibility(View.VISIBLE);
+                    if (mPlaceHolderView != null) {
+                        mPlaceHolderView.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
@@ -192,7 +194,9 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
             });
 
         } else {
-            mPlaceHolderView.setVisibility(View.GONE);
+            if (mPlaceHolderView != null) {
+                mPlaceHolderView.setVisibility(View.GONE);
+            }
             animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_bottom_out);
         }
 
