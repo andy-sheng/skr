@@ -1,30 +1,20 @@
 package com.wali.live.watchsdk.personalcenter.view;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.util.Pair;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.dialog.DialogUtils;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
-import com.base.utils.channel.ReleaseChannelUtils;
 import com.base.utils.display.DisplayUtils;
-import com.base.utils.toast.ToastUtils;
-import com.base.utils.version.VersionManager;
 import com.base.view.AlwaysMarqueeTextView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.mi.live.data.account.MyUserInfoManager;
@@ -37,8 +27,6 @@ import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.utils.level.VipLevelUtil;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.eventbus.EventClass;
-import com.wali.live.watchsdk.watch.WatchSdkActivity;
-import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
