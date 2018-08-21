@@ -371,6 +371,15 @@ public class SlidingTabLayout extends HorizontalScrollView {
         mTabStrip.setIndicatorWidth(indicatorWidth);
     }
 
+    public void setSelectedIndicatorThickness(float mSelectedIndicatorThickness) {
+        mTabStrip.setSelectedIndicatorThickness(mSelectedIndicatorThickness);
+    }
+
+    public void setIndicatorCornorRadius(float indicatorCornorRadius) {
+        mTabStrip.setIndicatorCornorRadius(indicatorCornorRadius);
+    }
+
+
     private class InternalViewPagerListener implements ViewPager.OnPageChangeListener {
         private int mScrollState;
 
