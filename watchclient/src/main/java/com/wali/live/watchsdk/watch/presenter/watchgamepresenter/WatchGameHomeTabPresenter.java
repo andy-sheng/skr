@@ -27,6 +27,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
+
 /**
  * Created by vera on 2018/8/8.
  */
@@ -102,6 +104,8 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
                 mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
                 // 下载完成，尝试自动安装
                 if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
+                    //取暂停视频播放
+                    postEvent(MSG_PLAYER_PAUSE);
                     String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl());
                     if(PackageUtils.tryInstall(apkPath)){
 
@@ -156,6 +160,8 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
     @Override
     public boolean tryInstall() {
+        //取暂停视频播放
+        postEvent(MSG_PLAYER_PAUSE);
         String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl());
         return PackageUtils.tryInstall(apkPath);
     }

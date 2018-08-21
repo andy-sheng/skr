@@ -156,6 +156,14 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
         }
     }
 
+    public boolean isPause() {
+        if(mStreamerPresenter != null && mStreamerPresenter.isPaused()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public void startReconnect() {
         if(mStreamerPresenter.isStarted()) {
             mStreamerPresenter.startReconnect();

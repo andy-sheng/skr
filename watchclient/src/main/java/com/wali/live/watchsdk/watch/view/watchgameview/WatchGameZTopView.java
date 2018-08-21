@@ -323,9 +323,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     mPresenter.showGiftView();
                 }
             } else if (id == R.id.landscape_pause_resume_btn) {
-                mLandscapeSuspend.setBackgroundDrawable(mIsVideoPause ?
-                        GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended)
-                        : GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_play));
                 playVideoControl();
             } else if (id == R.id.landscape_refresh_btn) {
                 mPresenter.vodeoReFresh();
@@ -365,14 +362,32 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             return;
         }
 
-        if (mIsVideoPause) {
-            mPresenter.videoRestart();
-        } else {
-            mPresenter.videoPause();
-        }
         mIsVideoPause = !mIsVideoPause;
-
+        if (mIsVideoPause) {
+            mPresenter.videoPause();
+        } else {
+            mPresenter.videoRestart();
+        }
     }
+
+    private void updatePlayBtnUi() {
+        if(mIsLandscape) {
+            mLandscapeSuspend.setBackgroundDrawable(mIsVideoPause ?
+                    GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_play)
+                    : GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended));
+        } else {
+            if(mPortraitLinUpButtons != null) {
+                View v = mPortraitLinUpButtons.getViewById(R.id.game_watch_portrait_suspended);
+                if (v != null
+                        && v instanceof ImageView) {
+                    ((ImageView) v).setImageDrawable(mIsVideoPause ? GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_play)
+                            : GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_suspended));
+                }
+            }
+        }
+    }
+
+
 
     /**
      * PortraitLineUpButtons的各个Button的点击回调
@@ -421,8 +436,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
         } else if (id == R.id.game_watch_portrait_suspended) {
             if (v instanceof ImageView) {
-                ((ImageView) v).setImageDrawable(mIsVideoPause ? GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_suspended)
-                        : GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_play));
                 playVideoControl();
             }
         } else if (id == R.id.game_watch_portrait_fullscreen) {
@@ -986,6 +999,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
+            public void updatePauseEvent(boolean isPause) {
+                mIsVideoPause = isPause;
+                updatePlayBtnUi();
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameZTopView.this;
             }
@@ -1081,5 +1100,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void updateInstallStatus(int status, int progress, int reason);
 
         void keyBoardEvent(boolean isHide);
+
+        void updatePauseEvent(boolean isPause);
     }
 }

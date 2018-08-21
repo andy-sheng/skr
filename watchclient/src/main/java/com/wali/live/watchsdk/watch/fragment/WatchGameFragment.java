@@ -43,4 +43,12 @@ public class WatchGameFragment extends BaseWatchFragment {
             mWatchGameView.stopView();
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mWatchGameView != null) {
+            mWatchGameView.onResume();
+        }
+    }
 }

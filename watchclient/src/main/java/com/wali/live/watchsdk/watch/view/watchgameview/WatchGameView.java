@@ -112,6 +112,14 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         setupView();
     }
 
+    public void onResume() {
+        if(mWatchPlayerPresenter != null
+                && mWatchPlayerPresenter.isPause()) {
+            //如果暂停就尝试让它播放下
+            mController.postEvent(MSG_PLAYER_START);
+        }
+    }
+
     @Override
     public void setupView() {
         {
@@ -257,13 +265,19 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
                 popInsufficientTips();
                 break;
             case MSG_PLAYER_START:
-                mWatchPlayerPresenter.resumePlay();
+                if(mWatchPlayerPresenter != null) {
+                    mWatchPlayerPresenter.resumePlay();
+                }
                 break;
             case MSG_PLAYER_PAUSE:
-                mWatchPlayerPresenter.pausePlay();
+                if(mWatchPlayerPresenter != null) {
+                    mWatchPlayerPresenter.pausePlay();
+                }
                 break;
             case MSG_PLAYER_RECONNECT:
-                mWatchPlayerPresenter.startReconnect();
+                if(mWatchPlayerPresenter != null) {
+                    mWatchPlayerPresenter.startReconnect();
+                }
                 break;
             case MSG_SHOW_SEND_ENVELOPE:
                 SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.getRoomBaseDataModel());
