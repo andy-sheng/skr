@@ -105,12 +105,11 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
                         if (TextUtils.isEmpty(mUserInfoCache.get(model.getUid()))) {
                             queryUuidList.add(model.getUid());
                             mViwersMap.put(model.getUid(), model);
-                            viwerList.add(model);
                         } else {
                             model.setNickName(mUserInfoCache.get(model.getUid()));
-                            viwerList.add(model);
                         }
                     }
+                    viwerList.add(model);
                 }
 
                 if(!viwerList.isEmpty()){
@@ -124,7 +123,7 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
                         ViewerModel model = mViwersMap.get(user.getUid());
                         if (model != null) {
                             model.setNickName(user.getNickname());
-                            viwerList.add(model);
+//                            viwerList.add(model);
                             hasNew = true;
                         }
                     }

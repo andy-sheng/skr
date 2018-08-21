@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.watch.adapter;
 
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
             return new ViewerRankTopHolder(view);
         } else if (viewType == TYPE_ITEM) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewer_rank_list_item, parent, false);
-            return new ViewerRankViewHolder(view);
+            return new ViewerRankViewHolder(view, mClickListener);
         }
         return null;
     }
@@ -119,7 +120,15 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
             }
 
             AvatarUtils.loadAvatarByUidTs(topThreeData.imgAvatars[i], viewerModel.getUid(), viewerModel.getAvatar(), true);
-            topThreeData.txtNames[i].setText(StringUtils.subString(viewerModel.getNickName(), 6));
+
+            String name = viewerModel.getNickName();
+            if (TextUtils.isEmpty(name)) {
+                topThreeData.txtNames[i].setText("直播用户");
+            } else {
+                String t = StringUtils.subString(name, 6);
+                topThreeData.txtNames[i].setText(t);
+            }
+
             updateLevelIcon(topThreeData.mLevelIconsLayouts[i], viewerModel);
 
             topThreeData.rlytRoots[i].setOnClickListener(new View.OnClickListener() {
@@ -131,43 +140,8 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void updateLevelIcon(LevelIconsLayout levelIconsLayout, ViewerModel viewerModel) {
-        List<TextView> list = new ArrayList<>();
-        TextView view;
-        if (viewerModel.isNoble()) {
-            view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
-            view.setBackgroundResource(NobleConfigUtils.getImageResoucesByNobelLevelInBarrage(viewerModel.getNobleLevel()));
-            list.add(view);
-            levelIconsLayout.addIconsWithClear(list);
-            return;
 
-        }
-        // VIP
-        Pair<Boolean, Integer> pair = VipLevelUtil.getLevelBadgeResId(viewerModel.getVipLevel(), viewerModel.isVipFrozen(), false);
-        if (true == pair.first) {
-            view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
-            view.setBackgroundResource(pair.second);
-            list.add(view);
-            levelIconsLayout.addIconsWithClear(list);
-            return;
-        }
-
-        // Plain
-        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(viewerModel.getLevel());
-        view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
-        view.setText(String.valueOf(viewerModel.getLevel()) + " ");
-        view.setBackground(levelItem.drawableBG);
-        view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
-        if (viewerModel.getVipLevel() > 4 && !viewerModel.isVipFrozen()) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
-            params.setMargins(DisplayUtils.dip2px(3), DisplayUtils.dip2px(2), 0, 0);
-            view.setLayoutParams(params);
-        }
-        list.add(view);
-        levelIconsLayout.addIconsWithClear(list);
-    }
-
-    private class ViewerRankTopHolder extends RecyclerView.ViewHolder {
+    private static class ViewerRankTopHolder extends RecyclerView.ViewHolder {
 
         private static final int CARD_NUM = 3;
 
@@ -204,14 +178,50 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class ViewerRankViewHolder extends RecyclerView.ViewHolder {
+    private static void updateLevelIcon(LevelIconsLayout levelIconsLayout, ViewerModel viewerModel) {
+        List<TextView> list = new ArrayList<>();
+        TextView view;
+        if (viewerModel.isNoble()) {
+            view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
+            view.setBackgroundResource(NobleConfigUtils.getImageResoucesByNobelLevelInBarrage(viewerModel.getNobleLevel()));
+            list.add(view);
+            levelIconsLayout.addIconsWithClear(list);
+            return;
+
+        }
+        // VIP
+        Pair<Boolean, Integer> pair = VipLevelUtil.getLevelBadgeResId(viewerModel.getVipLevel(), viewerModel.isVipFrozen(), false);
+        if (true == pair.first) {
+            view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
+            view.setBackgroundResource(pair.second);
+            list.add(view);
+            levelIconsLayout.addIconsWithClear(list);
+            return;
+        }
+
+        // Plain
+        GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(viewerModel.getLevel());
+        view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
+        view.setText(String.valueOf(viewerModel.getLevel()) + " ");
+        view.setBackground(levelItem.drawableBG);
+        view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
+        if (viewerModel.getVipLevel() > 4 && !viewerModel.isVipFrozen()) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
+            params.setMargins(DisplayUtils.dip2px(3), DisplayUtils.dip2px(2), 0, 0);
+            view.setLayoutParams(params);
+        }
+        list.add(view);
+        levelIconsLayout.addIconsWithClear(list);
+    }
+
+    private static class ViewerRankViewHolder extends RecyclerView.ViewHolder {
 
         TextView mTextView;
         LevelIconsLayout mLevelView;
 
         ViewerModel mViewerModel;
 
-        public ViewerRankViewHolder(View itemView) {
+        public ViewerRankViewHolder(View itemView, final OnItemClickListener l) {
             super(itemView);
 
             mTextView = (TextView) itemView.findViewById(R.id.current_rank_name);
@@ -220,7 +230,9 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mClickListener.onItemClick(mViewerModel.getUid());
+                    if (l != null) {
+                        l.onItemClick(mViewerModel.getUid());
+                    }
                 }
             });
         }
@@ -231,10 +243,17 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
             }
 
             this.mViewerModel = model;
-
-            mTextView.setText(StringUtils.subString(model.getNickName(), 12));
+            String name = model.getNickName();
+            if (TextUtils.isEmpty(name)) {
+                mTextView.setText("直播用户");
+            } else {
+                String t = StringUtils.subString(name, 12);
+                mTextView.setText(t);
+            }
             updateLevelIcon(mLevelView, model);
         }
+
+
     }
 
     public interface OnItemClickListener {
