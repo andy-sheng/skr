@@ -92,7 +92,7 @@ public class WatchGameLiveCommentPresenter extends ComponentPresenter<WatchGameL
                 mView.onOrientation(true);
                 return true;
             case MSG_BOTTOM_POPUP_SHOWED:
-                mView.getRealView().setVisibility(View.INVISIBLE);
+//                mView.getRealView().setVisibility(View.INVISIBLE);
                 return true;
             case MSG_BOTTOM_POPUP_HIDDEN:
                 return true;
