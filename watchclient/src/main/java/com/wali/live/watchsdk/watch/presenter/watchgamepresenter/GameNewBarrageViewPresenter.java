@@ -27,6 +27,14 @@ public class GameNewBarrageViewPresenter extends GameBarragePresenter {
     }
 
     @Override
+    public void stopPresenter() {
+        super.stopPresenter();
+        if(mView != null) {
+            mView.destroy();
+        }
+    }
+
+    @Override
     protected void addCommentEvent(CommentRefreshEvent event) {
         if(mIsLandscape
                 && mView != null) {
