@@ -95,7 +95,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
-        if(mGameInfoModel==null){
+        if (mGameInfoModel == null) {
             return;
         }
         if (!TextUtils.isEmpty(event.downloadKey)) {
@@ -105,12 +105,11 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
                 // 下载完成，尝试自动安装
                 if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
                     //取暂停视频播放
-                    postEvent(MSG_PLAYER_PAUSE);
                     String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl());
-                    if(PackageUtils.tryInstall(apkPath)){
-
-                    }else{
-                        if(!new File(apkPath).exists()){
+                    if (PackageUtils.tryInstall(apkPath)) {
+                        postEvent(MSG_PLAYER_PAUSE);
+                    } else {
+                        if (!new File(apkPath).exists()) {
                             CustomDownloadManager.getInstance().removeMonitorUrl(mGameInfoModel.getPackageUrl());
                         }
                     }
@@ -161,9 +160,13 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     @Override
     public boolean tryInstall() {
         //取暂停视频播放
-        postEvent(MSG_PLAYER_PAUSE);
         String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl());
-        return PackageUtils.tryInstall(apkPath);
+        if (PackageUtils.tryInstall(apkPath)) {
+            postEvent(MSG_PLAYER_PAUSE);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
