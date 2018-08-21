@@ -12,6 +12,7 @@ import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
@@ -22,6 +23,7 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameChatTabPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameLiveCommentPresenter;
 
@@ -97,10 +99,38 @@ public class WatchGameChatTabView extends RelativeLayout implements
      */
     private void loadGameInfoPopView(GameInfoModel gameInfoModel) {
         if (gameInfoModel == null) {
+            // 游戏信息为空 隐藏
             if (mGameInfoPopView != null) {
                 mGameInfoPopView.setVisibility(GONE);
             }
             return;
+        }
+
+        int apkStatus = -1;
+        String packageName = gameInfoModel.getPackageName();
+        if (TextUtils.isEmpty(packageName)) {
+            // 无效的包名 隐藏
+            if (mGameInfoPopView != null) {
+                mGameInfoPopView.setVisibility(GONE);
+            }
+            return;
+        } else {
+            if (PackageUtils.isInstallPackage(packageName)) {
+                // 已经安装 隐藏
+                if (mGameInfoPopView != null) {
+                    mGameInfoPopView.setVisibility(GONE);
+                }
+                return;
+            } else {
+                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
+                if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
+                    // 存在包
+                    apkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED;
+                } else {
+                    // 下载不完全
+                    apkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
+                }
+            }
         }
 
         if (mGameInfoPopView == null) {
@@ -109,7 +139,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
             mGameInfoPopView.setVisibility(VISIBLE);
         }
 
-        mGameInfoPopView.setGameInfoModel(gameInfoModel);
+        mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus);
     }
 
     @Override
