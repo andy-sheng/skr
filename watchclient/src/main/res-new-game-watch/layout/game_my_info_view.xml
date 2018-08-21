@@ -38,7 +38,7 @@
         android:layout_toRightOf="@id/avator_container"
         android:gravity="center"
         android:text="我的"
-        android:textColor="@color/color_black"
+        android:textColor="@color/color_white"
         android:textSize="@dimen/view_dimen_36" />
 
     <ImageView
