@@ -6,16 +6,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -234,7 +230,8 @@ public class CustomDownloadManager {
                     public void call(Subscriber<? super Pair<String, int[]>> subscriber) {
                         Cursor cursor = null;
                         try {
-                            for (Holder h : mMonitorDownloadIds) {
+                            HashSet<Holder> temp = new HashSet<>(mMonitorDownloadIds);
+                            for (Holder h : temp) {
                                 MyLog.d(TAG, "updateProgress" + " holder=" + h);
                                 int[] result = new int[]{
                                         -1, -1, 0, 0
@@ -252,6 +249,10 @@ public class CustomDownloadManager {
                                     result[2] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
                                     //变成这种状态的原因，如因为没有网络而暂停等
                                     result[3] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
+
+                                    if(result[2]==DownloadManager.STATUS_SUCCESSFUL){
+                                        // 如果返回的是下载成功，有可能用户去文件管理器把文件删除了,选不管这种情况
+                                    }
                                     subscriber.onNext(new Pair<>(h.key, result));
                                 } else {
                                     // 查不到了，说明任务已经被取消了或者删除了，这时别的状态没关系，

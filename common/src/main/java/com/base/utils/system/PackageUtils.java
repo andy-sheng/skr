@@ -63,6 +63,9 @@ public class PackageUtils {
     }
 
     public static boolean tryInstall(String apkPath){
+        if(new File(apkPath).exists()){
+            return false;
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
