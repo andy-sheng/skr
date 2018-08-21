@@ -96,15 +96,16 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
                 // 所有观众
                 List<ViewerModel> viwerList = new ArrayList<>();
                 //保存所有的去服务器查询的ID
-                final List<Long> uuidList = new ArrayList<>();
+                final List<Long> queryUuidList = new ArrayList<>();
                 //保存要去查询观众id和数据
                 HashMap<Long, ViewerModel> mViwersMap = new HashMap<>();
 
                 for (ViewerModel model : dataList) {
                     if (TextUtils.isEmpty(model.getNickName())) {
                         if (TextUtils.isEmpty(mUserInfoCache.get(model.getUid()))) {
-                            uuidList.add(model.getUid());
+                            queryUuidList.add(model.getUid());
                             mViwersMap.put(model.getUid(), model);
+                            viwerList.add(model);
                         } else {
                             model.setNickName(mUserInfoCache.get(model.getUid()));
                             viwerList.add(model);
@@ -112,19 +113,25 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
                     }
                 }
 
-                if (uuidList != null && uuidList.size() > 0) {
-                    List<User> userServer = UserInfoManager.getUserListById(uuidList);
+                if(!viwerList.isEmpty()){
+                    subscriber.onNext(viwerList);
+                }
+                if (queryUuidList != null && queryUuidList.size() > 0) {
+                    List<User> userServer = UserInfoManager.getUserListById(queryUuidList);
                     saveViewerInfo(userServer);
+                    boolean hasNew = false;
                     for (User user : userServer) {
                         ViewerModel model = mViwersMap.get(user.getUid());
                         if (model != null) {
                             model.setNickName(user.getNickname());
                             viwerList.add(model);
+                            hasNew = true;
                         }
                     }
+                    if(hasNew){
+                        subscriber.onNext(viwerList);
+                    }
                 }
-
-                subscriber.onNext(viwerList);
                 subscriber.onCompleted();
             }
         }).flatMap(new Func1<List<ViewerModel>, Observable<List<ViewerModel>>>() {
