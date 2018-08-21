@@ -406,9 +406,19 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                             mPresenter.optReprot();
                         }
                     }
+
+                    @Override
+                    public void onDismissCallback() {
+                        if(!mIsLandscape) {
+                            tryToHidePortraitOptBar();
+                        }
+                    }
                 });
             }
             mWatchGameMenuDialog.show(WatchGameZTopView.this, v);
+            if(!mIsLandscape) {
+                tryUnSubscribe();
+            }
         } else if (id == R.id.game_watch_portrait_suspended) {
             if (v instanceof ImageView) {
                 ((ImageView) v).setImageDrawable(mIsVideoPause ? GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_suspended)

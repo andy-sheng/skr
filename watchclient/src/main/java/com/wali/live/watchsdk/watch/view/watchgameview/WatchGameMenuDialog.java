@@ -80,6 +80,14 @@ public class WatchGameMenuDialog extends PopupWindow implements View.OnClickList
     }
 
     @Override
+    public void dismiss() {
+        super.dismiss();
+        if(mListener != null) {
+            mListener.onDismissCallback();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         if(mListener == null) {
             return;
@@ -109,5 +117,7 @@ public class WatchGameMenuDialog extends PopupWindow implements View.OnClickList
         void onDisLikeBtnClick();
 
         void onReportBtnClick();
+
+        void onDismissCallback();
     }
 }
