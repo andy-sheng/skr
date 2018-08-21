@@ -109,10 +109,9 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
                     if (PackageUtils.tryInstall(apkPath)) {
                         postEvent(MSG_PLAYER_PAUSE);
                     } else {
-                        if (!new File(apkPath).exists()) {
-                            CustomDownloadManager.getInstance().removeMonitorUrl(mGameInfoModel.getPackageUrl());
-                        }
                     }
+                    // 下载完成都不再监听 关于这个包的事件
+                    CustomDownloadManager.getInstance().removeMonitorUrl(mGameInfoModel.getPackageUrl());
                 }
             }
         } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
