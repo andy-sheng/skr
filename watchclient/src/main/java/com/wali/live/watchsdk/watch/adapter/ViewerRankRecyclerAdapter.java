@@ -15,6 +15,7 @@ import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
 import com.base.utils.StringUtils;
 import com.base.utils.display.DisplayUtils;
+import com.base.view.RoundRectDradable;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.query.model.ViewerModel;
 import com.wali.live.common.barrage.view.utils.NobleConfigUtils;
@@ -62,7 +63,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         MyLog.d(TAG, " position " + position);
         if (holder instanceof ViewerRankTopHolder) {
             final ViewerRankTopHolder topHolder = (ViewerRankTopHolder) holder;
-            setTopThreeData(topHolder, position);
+            setTopThreeData(topHolder);
         } else if (holder instanceof ViewerRankViewHolder) {
             ((ViewerRankViewHolder) holder).bind(getRankUser(position));
         }
@@ -108,7 +109,8 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         return mUsersList.size();
     }
 
-    public void setTopThreeData(ViewerRankTopHolder topThreeData, int position) {
+    public void setTopThreeData(ViewerRankTopHolder topThreeData) {
+        MyLog.d(TAG, "setTopThreeData" + " topThreeData=" + topThreeData);
         if (getBasicItemCount() < 3) {
             return;
         }
@@ -128,7 +130,10 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
                 String t = StringUtils.subString(name, 6);
                 topThreeData.txtNames[i].setText(t);
             }
-
+            MyLog.d(TAG, "setTopThreeData" + " topThreeData=" + topThreeData);
+//            if (i == 2) {
+//                viewerModel.setLevel(12);
+//            }
             updateLevelIcon(topThreeData.mLevelIconsLayouts[i], viewerModel);
 
             topThreeData.rlytRoots[i].setOnClickListener(new View.OnClickListener() {
@@ -203,7 +208,15 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(viewerModel.getLevel());
         view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
         view.setText(String.valueOf(viewerModel.getLevel()) + " ");
-        view.setBackground(levelItem.drawableBG);
+
+        // 为了解决  drawableBG 复用导致的 ui 问题。
+        if (levelItem.drawableBGType == GetConfigManager.LevelItem.JUST_COLOR) {
+            RoundRectDradable roundRectDradable = new RoundRectDradable(levelItem.drawableBGColor);
+            view.setBackground(roundRectDradable);
+        } else {
+            view.setBackground(levelItem.drawableBG);
+        }
+
         view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
         if (viewerModel.getVipLevel() > 4 && !viewerModel.isVipFrozen()) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());

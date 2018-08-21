@@ -378,6 +378,8 @@ public class GetConfigManager {
             itemDefault.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12), DisplayUtils.dip2px(12));
             int color = Color.parseColor("#58d4eb");
             itemDefault.drawableBG = new RoundRectDradable(color);
+            itemDefault.drawableBGType = LevelItem.JUST_COLOR;
+            itemDefault.drawableBGColor = color;
             lvlDataListLocal.add(itemDefault);
         }
         return itemDefault;
@@ -536,7 +538,10 @@ public class GetConfigManager {
 //                                            } else {
 //                                                item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(16), DisplayUtils.dip2px(12));
 //                                            }
-                                                item.drawableBG = new RoundRectDradable(Color.parseColor(itemStr[4]));
+                                                int color = Color.parseColor(itemStr[4]);
+                                                item.drawableBG = new RoundRectDradable(color);
+                                                item.drawableBGType = LevelItem.JUST_COLOR;
+                                                item.drawableBGColor = color;
                                                 data.add(item);
                                                 MyLog.v(TAG + " (" + level + ") " + itemStr[0] + " " + itemStr[1] + " " + itemStr[2] + " " + itemStr[3] + " " + itemStr[4]);
                                             } catch (Exception e) {
@@ -1052,6 +1057,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_1);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
             item = new LevelItem();
             item.min = 6;
@@ -1061,6 +1068,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_2);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12f), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
             item = new LevelItem();
             item.min = 16;
@@ -1070,6 +1079,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_3);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12f), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
             item = new LevelItem();
             item.min = 31;
@@ -1079,6 +1090,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_4_1);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12f), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
             item = new LevelItem();
             item.min = 51;
@@ -1088,6 +1101,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_4_2);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12f), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
             item = new LevelItem();
             item.min = 71;
@@ -1097,6 +1112,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_4_3);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12f), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
             item = new LevelItem();
             item.min = 91;
@@ -1106,6 +1123,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_5_1);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
             item = new LevelItem();
             item.min = 111;
@@ -1115,6 +1134,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_5_2);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
 
             item = new LevelItem();
@@ -1125,6 +1146,8 @@ public class GetConfigManager {
             item.drawableLevel = GlobalData.app().getResources().getDrawable(R.drawable.lv_5_3);
             item.drawableLevel.setBounds(0, 0, DisplayUtils.dip2px(12), DisplayUtils.dip2px(12));
             item.drawableBG = new RoundRectDradable(color);
+            item.drawableBGType = LevelItem.JUST_COLOR;
+            item.drawableBGColor = color;
             lvlDataListLocal.add(item);
 
         }
@@ -1160,18 +1183,20 @@ public class GetConfigManager {
     }
 
     public static class LevelItem {
+        public static final int JUST_COLOR = 1;
         public int min;
         public int max;
         public Drawable drawableBadge;
         public Drawable drawableLevel;
         public Drawable drawableBG;
-
+        public int drawableBGType;
+        // 如果 drawableBGType = JUST_COLOR ，这项有意义
+        // 为什么要保存 color，因为之前那种方式 drawableBG 会使得 A B 对象共用一个 drawable ，有问题
+        // 为什么不用深拷贝 this.drawableBG.getConstantState().newDrawable().mutate();
+        // 因为不是 BitmapDrawable 会有空指针问题
+        public int drawableBGColor;
         //等级背景色
         public LevelItem() {
-        }
-
-        public LevelItem(@DrawableRes int id) {
-            drawableBG = GlobalData.app().getResources().getDrawable(id);
         }
 
         @Override
@@ -1184,6 +1209,16 @@ public class GetConfigManager {
             }
             return false;
         }
+
+//        public LevelItem copy(){
+//            LevelItem levelItem = new LevelItem();
+//            levelItem.min = this.min;
+//            levelItem.max = this.max;
+//            levelItem.drawableBadge = this.drawableBadge;
+//            levelItem.drawableLevel = this.drawableLevel;
+//            levelItem.drawableBG = this.drawableBG.getConstantState().newDrawable().mutate();
+//            return levelItem;
+//        }
 
         public boolean isDrawablEmpty() {
             return !(drawableBadge != null && drawableLevel != null && drawableBG != null);
