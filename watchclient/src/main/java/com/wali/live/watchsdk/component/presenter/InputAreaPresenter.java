@@ -23,6 +23,7 @@ import static com.wali.live.component.BaseSdkController.MSG_BARRAGE_VIP;
 import static com.wali.live.component.BaseSdkController.MSG_HIDE_INPUT_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_JUMP_INTO_GAME_MSG_TAB;
 import static com.wali.live.component.BaseSdkController.MSG_ON_BACK_PRESSED;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
@@ -38,6 +39,7 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
     private static final String TAG = "InputAreaPresenter";
 
     private int mMinHeightLand;
+    private boolean mIsLandscape;
 
     @Override
     protected String getTAG() {
@@ -96,6 +98,16 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
     }
 
     @Override
+    protected void sendBarrageByType(String msg, int type) {
+        super.sendBarrageByType(msg, type);
+        //游戏直播间普通弹幕送完之后尝试发送跳转游戏聊天tab
+        MyLog.d(TAG, "sendBarrageByType");
+        if(!mIsLandscape) {
+            postEvent(MSG_JUMP_INTO_GAME_MSG_TAB);
+        }
+    }
+
+    @Override
     public void notifyInputViewHidden() {
         postEvent(MSG_INPUT_VIEW_HIDDEN);
     }
@@ -126,9 +138,11 @@ public class InputAreaPresenter extends InputPresenter<InputAreaView.IView>
         switch (event) {
             case MSG_ON_ORIENT_PORTRAIT:
                 mView.onOrientation(false);
+                mIsLandscape = false;
                 return true;
             case MSG_ON_ORIENT_LANDSCAPE:
                 mView.onOrientation(true);
+                mIsLandscape = true;
                 return true;
             case MSG_ON_BACK_PRESSED:
                 return mView.processBackPress();

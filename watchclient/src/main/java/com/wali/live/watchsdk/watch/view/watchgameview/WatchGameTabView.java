@@ -204,6 +204,15 @@ public class WatchGameTabView extends RelativeLayout implements
             }
 
             @Override
+            public void switchMsgTab() {
+                MyLog.d(TAG, "switchMsgTab");
+                int currentItem = mWatchGameTabPager.getCurrentItem();
+                if(currentItem != 0) {
+                    mWatchGameTabPager.setCurrentItem(0);
+                }
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameTabView.this;
             }
@@ -223,6 +232,8 @@ public class WatchGameTabView extends RelativeLayout implements
     public interface IView extends IViewProxy {
 
         void updateGameHomePage(RoomBaseDataModel source);
+
+        void switchMsgTab();
     }
 
     public interface GameTabChildView {
