@@ -101,6 +101,8 @@ public class FloatInfoFragment extends BaseEventBusFragment
     private TextView mForbidTv;
     private TextView mMessageTv; //私信按钮
 
+    private View outView; //外层点击view
+
     @Override
     public int getRequestCode() {
         return GlobalData.getRequestCode();
@@ -116,8 +118,10 @@ public class FloatInfoFragment extends BaseEventBusFragment
     protected void bindView() {
         MyLog.d(TAG, "bindView");
 
-        $click($(R.id.out_view), this);
         $click($(R.id.close_btn), this);
+
+        outView = $(R.id.out_view);
+        $click(outView, this);
 
         mCard = $(R.id.float_main_view);
         //被查看者头像
@@ -242,17 +246,18 @@ public class FloatInfoFragment extends BaseEventBusFragment
         }
         // VIP
         Pair<Boolean, Integer> pair = VipLevelUtil.getLevelBadgeResId(mUser.getVipLevel(), mUser.isVipFrozen(), false);
+        Activity activity = getActivity();
         if (true == pair.first) {
-            view = LevelIconsLayout.getDefaultTextView(getContext());
+            view = LevelIconsLayout.getDefaultTextView(activity == null ? GlobalData.app() : activity);
             view.setBackgroundResource(pair.second);
             //view.setText(String.valueOf(mUser.getVipLevel()));
             list.add(view);
         }
         // Plain
         GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(mUser.getLevel());
-        view = LevelIconsLayout.getDefaultTextView(getContext());
-        view.setText(String.valueOf(mUser.getLevel()));
-        view.setBackgroundDrawable(levelItem.drawableBG);
+        view = LevelIconsLayout.getDefaultTextView(activity == null ? GlobalData.app() : activity);
+        view.setText(String.valueOf(mUser.getLevel()) + " ");
+        view.setBackground(levelItem.drawableBG);
         view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
         if (mUser.getVipLevel() > 4 && !mUser.isVipFrozen()) {//解决高级Vip图标不居中问题
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
@@ -706,9 +711,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    if ($(R.id.out_view) != null) {
-                        $(R.id.out_view).setVisibility(View.VISIBLE);
-                    }
+                    outView.setVisibility(View.VISIBLE);
 
                 }
 
@@ -719,9 +722,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
             });
 
         } else {
-            if ($(R.id.out_view) != null){
-                $(R.id.out_view).setVisibility(View.GONE);
-            }
+            outView.setVisibility(View.GONE);
             animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_bottom_out);
         }
 
