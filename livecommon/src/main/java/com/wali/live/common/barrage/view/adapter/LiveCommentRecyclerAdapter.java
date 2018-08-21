@@ -163,13 +163,14 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void bindNameAndCommentView(LiveCommentHolder liveCommentHolder, CommentModel liveComment) {
         List<Integer> innerGlobalRoomMessageTypeList = liveComment.getInnerGlobalRoomMessageTypeList();
-        String name = liveComment.getName();
-        if (mIsGameLive && !TextUtils.isEmpty(name)) {
-            if (name.length() > DEFAULT_SUB_NAME_LENGTH) {
-                name = name.substring(0, DEFAULT_SUB_NAME_LENGTH);
-                name += "...";
-            }
-        }
+        // todo 和娱乐直播保持一致
+//        String name = liveComment.getName();
+//        if (mIsGameLive && !TextUtils.isEmpty(name)) {
+//            if (name.length() > DEFAULT_SUB_NAME_LENGTH) {
+//                name = name.substring(0, DEFAULT_SUB_NAME_LENGTH);
+//                name += "...";
+//            }
+//        }
 
         if (innerGlobalRoomMessageTypeList != null && !innerGlobalRoomMessageTypeList.isEmpty()) {
             List<String> beforeNickNameConfigList = new ArrayList<>();
@@ -191,7 +192,7 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                 }
             }
 
-            liveCommentHolder.setNameSpan(beforeNickNameConfigList, afterNickNameConfigList, name, liveComment.getNameColor(), liveComment.getCertificationType(),
+            liveCommentHolder.setNameSpan(beforeNickNameConfigList, afterNickNameConfigList, liveComment.getName(), liveComment.getNameColor(), liveComment.getCertificationType(),
                     liveComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_TEXT && liveComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE, liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_SELL,
                     liveCommentHolder.getClickSpan(true), liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIKE || liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN);
 

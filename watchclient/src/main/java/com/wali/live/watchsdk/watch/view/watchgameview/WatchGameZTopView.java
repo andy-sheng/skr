@@ -594,7 +594,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     public void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
-        if(gameInfoModel == null) {
+        if (gameInfoModel == null) {
             return;
         }
         String packageName = gameInfoModel.getPackageName();
@@ -607,11 +607,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             if (PackageUtils.isInstallPackage(packageName)) {
                 // 启动
                 mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-            }else{
+            } else {
                 String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
-                if(PackageUtils.isCompletedPackage(apkPath,gameInfoModel.getPackageName())){
+                if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
                     mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-                }else{
+                } else {
                     mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
                 }
             }
@@ -901,11 +901,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     private void resolveKeyBoardEvent(boolean isHide) {
-        if(!mIsLandscape) {
+        if (!mIsLandscape) {
             return;
         }
 
-        if(isHide ) {
+        if (isHide) {
             tryToHideLandscapeOptBar();
         } else {
             tryUnSubscribe();
@@ -951,6 +951,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             @Override
             public void updateInstallStatus(int status, int progress, int reason) {
                 MyLog.d(TAG, " status " + status + " progress " + progress);
+                if (!mIsLandscape) {
+                    // 竖屏不加载
+                    return;
+                }
                 switch (status) {
                     case CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD:
                         mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
@@ -972,6 +976,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                         break;
                     default:
                         break;
+
                 }
             }
 
