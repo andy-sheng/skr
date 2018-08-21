@@ -58,13 +58,21 @@
         android:textSize="@dimen/text_size_34" />
 
 
-    <!--等级图标显示-->
-    <com.wali.live.common.view.LevelIconsLayout
-        android:id="@+id/levels_ll"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_dimen_10"
-        android:layout_gravity="center"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_dimen_10">
+
+        <!--等级图标显示-->
+        <com.wali.live.common.view.LevelIconsLayout
+            android:id="@+id/levels_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"/>
+
+    </RelativeLayout>
 
     <!-- 显示认证部分, 产品要求小图标必须放在第一行, 多余一行要居中显示, 所以这里用两个textview吧, 我也想不起更优雅的-->
     <RelativeLayout
