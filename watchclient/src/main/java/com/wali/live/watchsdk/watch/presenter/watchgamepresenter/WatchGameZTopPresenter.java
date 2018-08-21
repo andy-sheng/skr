@@ -85,6 +85,8 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         registerAction(MSG_ON_ORIENT_PORTRAIT);
         registerAction(MSG_ON_ORIENT_LANDSCAPE);
         registerAction(MSG_ON_BACK_PRESSED);
+        registerAction(MSG_PLAYER_PAUSE);
+        registerAction(MSG_PLAYER_START);
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -105,6 +107,9 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     @Override
     public boolean onEvent(int event, IParams iParams) {
+        if(mView == null) {
+            return false;
+        }
         switch (event) {
             case MSG_ON_ORIENT_PORTRAIT:
                 // 接收到切换为竖屏通知
@@ -122,6 +127,13 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                     return true;
                 }
                 return false;
+            //其他地方调用暂停时候手动的去更新下ui
+            case MSG_PLAYER_PAUSE:
+                mView.updatePauseEvent(true);
+                break;
+            case MSG_PLAYER_START:
+                mView.updatePauseEvent(false);
+                break;
         }
         return false;
     }
