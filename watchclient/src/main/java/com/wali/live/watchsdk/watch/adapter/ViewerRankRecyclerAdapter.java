@@ -1,12 +1,10 @@
 package com.wali.live.watchsdk.watch.adapter;
 
-import android.support.annotation.DrawableRes;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,7 +15,6 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.query.model.ViewerModel;
-import com.mi.live.data.user.User;
 import com.wali.live.common.barrage.view.utils.NobleConfigUtils;
 import com.wali.live.common.view.LevelIconsLayout;
 import com.wali.live.utils.AvatarUtils;
@@ -158,7 +155,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(viewerModel.getLevel());
         view = LevelIconsLayout.getDefaultTextView(GlobalData.app());
         view.setText(String.valueOf(viewerModel.getLevel()) + " ");
-        view.setBackgroundDrawable(levelItem.drawableBG);
+        view.setBackground(levelItem.drawableBG);
         view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
         if (viewerModel.getVipLevel() > 4 && !viewerModel.isVipFrozen()) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());

@@ -29,6 +29,8 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
 
     RoomBaseDataModel mMyRoomData;
 
+    boolean isScroll = false;
+
     public WatchGameViewerTabView(Context context, WatchComponentController componentController) {
         super(context);
         mMyRoomData = componentController.getRoomBaseDataModel();
@@ -57,7 +59,11 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
                         && lastVisibleItemPosition == totalItemCount - 1
                         && visibleItemCount > 0) {
                     //加载更多
+                    isScroll = false;
                     mPresenter.postAvatarEvent(UserActionEvent.EVENT_TYPE_REQUEST_LOOK_MORE_VIEWER, mAdapter.getBasicItemCount());
+                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    //滚动状态,不要刷新数据
+                    isScroll = true;
                 }
             }
         });
@@ -98,7 +104,9 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
 
             @Override
             public void initViewers(List<ViewerModel> viewersList) {
-                mAdapter.setUserList(viewersList);
+                if (!isScroll) {
+                    mAdapter.setUserList(viewersList);
+                }
             }
         }
         return new ComponentView();

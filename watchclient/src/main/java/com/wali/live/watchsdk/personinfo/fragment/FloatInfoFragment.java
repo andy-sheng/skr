@@ -697,7 +697,7 @@ public class FloatInfoFragment extends BaseEventBusFragment
     public Animation onCreateAnimation(int transit, final boolean enter, int nextAnim) {
         Animation animation;
 
-        if(enter) {
+        if (enter) {
             animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_bottom_in);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -706,7 +706,9 @@ public class FloatInfoFragment extends BaseEventBusFragment
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    $(R.id.out_view).setVisibility(View.VISIBLE);
+                    if ($(R.id.out_view) != null) {
+                        $(R.id.out_view).setVisibility(View.VISIBLE);
+                    }
 
                 }
 
@@ -717,7 +719,9 @@ public class FloatInfoFragment extends BaseEventBusFragment
             });
 
         } else {
-            $(R.id.out_view).setVisibility(View.GONE);
+            if ($(R.id.out_view) != null){
+                $(R.id.out_view).setVisibility(View.GONE);
+            }
             animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_bottom_out);
         }
 
