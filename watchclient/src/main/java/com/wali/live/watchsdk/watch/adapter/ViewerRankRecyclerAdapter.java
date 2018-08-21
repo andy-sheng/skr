@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.log.MyLog;
+import com.base.utils.StringUtils;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.config.GetConfigManager;
 import com.mi.live.data.query.model.ViewerModel;
@@ -56,7 +57,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         MyLog.d(TAG, " position " + position);
         if (holder instanceof ViewerRankTopHolder) {
             final ViewerRankTopHolder topHolder = (ViewerRankTopHolder) holder;
@@ -118,7 +119,7 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
             }
 
             AvatarUtils.loadAvatarByUidTs(topThreeData.imgAvatars[i], viewerModel.getUid(), viewerModel.getAvatar(), true);
-            topThreeData.txtNames[i].setText(viewerModel.getNickName());
+            topThreeData.txtNames[i].setText(StringUtils.subString(viewerModel.getNickName(), 6));
             updateLevelIcon(topThreeData.mLevelIconsLayouts[i], viewerModel);
 
             topThreeData.rlytRoots[i].setOnClickListener(new View.OnClickListener() {
@@ -208,11 +209,20 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
         TextView mTextView;
         LevelIconsLayout mLevelView;
 
+        ViewerModel mViewerModel;
+
         public ViewerRankViewHolder(View itemView) {
             super(itemView);
 
             mTextView = (TextView) itemView.findViewById(R.id.current_rank_name);
             mLevelView = (LevelIconsLayout) itemView.findViewById(R.id.current_rank_level_tv);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mClickListener.onItemClick(mViewerModel.getUid());
+                }
+            });
         }
 
         public void bind(final ViewerModel model) {
@@ -220,15 +230,10 @@ public class ViewerRankRecyclerAdapter extends RecyclerView.Adapter {
                 return;
             }
 
-            mTextView.setText(model.getNickName());
-            updateLevelIcon(mLevelView, model);
+            this.mViewerModel = model;
 
-            mTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mClickListener.onItemClick(model.getUid());
-                }
-            });
+            mTextView.setText(StringUtils.subString(model.getNickName(), 12));
+            updateLevelIcon(mLevelView, model);
         }
     }
 
