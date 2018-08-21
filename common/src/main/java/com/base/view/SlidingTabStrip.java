@@ -46,7 +46,7 @@ class SlidingTabStrip extends LinearLayout {
     private final int mBottomBorderThickness;
     private final Paint mBottomBorderPaint;
 
-    private final float mSelectedIndicatorThickness;
+    private float mSelectedIndicatorThickness;
     private final Paint mSelectedIndicatorPaint;
 
     private final int mDefaultBottomBorderColor;
@@ -63,6 +63,7 @@ class SlidingTabStrip extends LinearLayout {
     private int mIndicatorTopMargin;
     private SlidingTabLayout.ITabNameBottomPositionGetter mTabNameBottomPositionGetter;
     private int mIndicatorWidth;
+    private float mIndicatorCornorRadius;
     private GradientDrawable mIndicatorDrawable;
 
     private boolean mIsTabAsDividerMode;
@@ -91,6 +92,8 @@ class SlidingTabStrip extends LinearLayout {
         mBottomBorderThickness = (int) (DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS * density);
         mBottomBorderPaint = new Paint();
         mBottomBorderPaint.setColor(mDefaultBottomBorderColor);
+
+        mIndicatorCornorRadius = getResources().getDimension(R.dimen.view_dimen_2);
 
         mSelectedIndicatorThickness =  (SELECTED_INDICATOR_THICKNESS_DIPS * density);
         mSelectedIndicatorPaint = new Paint();
@@ -250,6 +253,14 @@ class SlidingTabStrip extends LinearLayout {
         invalidate();
     }
 
+    public void setSelectedIndicatorThickness(float mSelectedIndicatorThickness) {
+        this.mSelectedIndicatorThickness = mSelectedIndicatorThickness;
+    }
+
+    public void setIndicatorCornorRadius(float indicatorCornorRadius) {
+        this.mIndicatorCornorRadius = indicatorCornorRadius;
+    }
+
     /**
      * Set the alpha value of the {@code color} to be the given {@code alpha} value.
      */
@@ -308,6 +319,7 @@ class SlidingTabStrip extends LinearLayout {
         }
         mIndicatorDrawable.setBounds(l, t, r, b);
         mIndicatorDrawable.setColor(color);
+        mIndicatorDrawable.setCornerRadius(mIndicatorCornorRadius);
         mIndicatorDrawable.draw(canvas);
     }
 

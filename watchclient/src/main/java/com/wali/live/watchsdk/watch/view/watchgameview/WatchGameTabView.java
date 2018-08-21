@@ -87,6 +87,8 @@ public class WatchGameTabView extends RelativeLayout implements
         mWatchGameTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE);
         mWatchGameTab.setIndicatorWidth(DisplayUtils.dip2px(25));
         mWatchGameTab.setIndicatorBottomMargin(DisplayUtils.dip2px(6));
+        mWatchGameTab.setSelectedIndicatorThickness(DisplayUtils.dip2px(3f));
+        mWatchGameTab.setIndicatorCornorRadius(getResources().getDimension(R.dimen.view_dimen_100));
 
 
         mSplitLine = (View) this.findViewById(R.id.split_line);
