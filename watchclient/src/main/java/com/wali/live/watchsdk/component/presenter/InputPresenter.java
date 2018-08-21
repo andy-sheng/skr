@@ -413,7 +413,7 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
         setSendedBarrage();
     }
 
-    private void sendBarrageByType(String msg, int type) {
+    protected void sendBarrageByType(String msg, int type) {
         FansPrivilegeModel fansPrivilegeModel = mFansPrivilegeModel;
         BarrageMsg.GlobalRoomMessageExt globalRoomMsgExt = null;
         if (fansPrivilegeModel != null && fansPrivilegeModel.getMemType() != VFansCommonProto.GroupMemType.NONE.getNumber()) {

@@ -1,5 +1,6 @@
 package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
+import com.base.log.MyLog;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
@@ -14,6 +15,7 @@ import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_BOTTOM_POPUP_SHOWED;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_HIDDEN;
 import static com.wali.live.component.BaseSdkController.MSG_INPUT_VIEW_SHOWED;
+import static com.wali.live.component.BaseSdkController.MSG_JUMP_INTO_GAME_MSG_TAB;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 
@@ -39,6 +41,7 @@ public class WatchGameTabPresenter extends ComponentPresenter<WatchGameTabView.I
     @Override
     public void startPresenter() {
         super.startPresenter();
+        registerAction(MSG_JUMP_INTO_GAME_MSG_TAB);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -48,11 +51,21 @@ public class WatchGameTabPresenter extends ComponentPresenter<WatchGameTabView.I
     public void stopPresenter() {
         super.stopPresenter();
         unregisterAllAction();
-            EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public boolean onEvent(int i, IParams iParams) {
+        if(mView == null) {
+            return false;
+        }
+
+        switch (i) {
+            case MSG_JUMP_INTO_GAME_MSG_TAB:
+                MyLog.d(TAG, "MSG_JUMP_INTO_GAME_MSG_TAB");
+                mView.switchMsgTab();
+                break;
+        }
         return false;
     }
 
