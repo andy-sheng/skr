@@ -29,6 +29,7 @@ import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.base.view.RoundRectDradable;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.config.GetConfigManager;
@@ -258,7 +259,13 @@ public class FloatInfoFragment extends BaseEventBusFragment
         GetConfigManager.LevelItem levelItem = ItemDataFormatUtils.getLevelItem(mUser.getLevel());
         view = LevelIconsLayout.getDefaultTextView(activity == null ? GlobalData.app() : activity);
         view.setText(String.valueOf(mUser.getLevel()) + " ");
-        view.setBackground(levelItem.drawableBG);
+
+        if (levelItem.drawableBGType == GetConfigManager.LevelItem.JUST_COLOR) {
+            RoundRectDradable roundRectDradable = new RoundRectDradable(levelItem.drawableBGColor);
+            view.setBackground(roundRectDradable);
+        } else {
+            view.setBackground(levelItem.drawableBG);
+        }
         view.setCompoundDrawables(levelItem.drawableLevel, null, null, null);
         if (mUser.getVipLevel() > 4 && !mUser.isVipFrozen()) {//解决高级Vip图标不居中问题
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getLayoutParams());
