@@ -75,8 +75,6 @@ public class CustomDownloadManager {
     // 安装监听
     private BroadcastReceiver mInstallReceiver;
 
-    private boolean mHasInstalled;
-
     private DownloadManager mDownloadManager;
 
     private Subscription mDownloadSubscription;
@@ -85,7 +83,7 @@ public class CustomDownloadManager {
 
     // 当前处于下载过程中的dowloadkey集合(用户在本次进程中点击暂停的也包括在内)　用于统计本次进程中的开始下载和完成下载打点
     // mDownloadingMap和数据库挂钩已经持久化　mMonitorDownloadIds只用作监听　两个都不符合要求
-    private List<String> mCurrentDownloading = new ArrayList<>();
+//    private List<String> mCurrentDownloading = new ArrayList<>();
 
     private ContentObserver mDownloadObserver = new ContentObserver(mHandler) {
         @Override
@@ -187,10 +185,10 @@ public class CustomDownloadManager {
         if (PermissionUtils.checkSdcardAlertWindow(context)) {
             long downloadId = mDownloadManager.enqueue(request);
             MyLog.w(TAG, "downloadId=" + downloadId);
-            if (!mCurrentDownloading.contains(downloadKey)) {
+            if (!mDownloadingMap.containsKey(downloadKey)) {
                 // 首次加入下载
                 firstStartDownloadStatistic(item.getUrl());
-                mCurrentDownloading.add(downloadKey);
+//                mDownloadingMap.add(downloadKey);
             }
             mDownloadingMap.put(downloadKey, downloadId);
             addMonitorUrl(item.getUrl());
@@ -314,7 +312,7 @@ public class CustomDownloadManager {
                             ApkStatusEvent event = new ApkStatusEvent(result.first, ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
                             EventBus.getDefault().post(event);
                             completeDownloadStatistic(result.first);
-                            mCurrentDownloading.remove(result.first);
+                            mDownloadingMap.remove(result.first);
                         } else if (status == DownloadManager.STATUS_FAILED) {
 
                         }
