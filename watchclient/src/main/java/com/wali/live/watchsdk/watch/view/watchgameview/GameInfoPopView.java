@@ -19,11 +19,18 @@ import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
+import com.wali.live.watchsdk.watch.model.WatchGameInfoConfig;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_POP_CLICK;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_POP_EXPOSURE;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_EXPOSURE;
 
 /**
  * Created by liuting on 18-8-20.
@@ -78,6 +85,7 @@ public class GameInfoPopView extends RelativeLayout{
 
                 if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
                     // 状态是未下载
+                    clickDownloadStatistic();
                     CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
 
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
@@ -111,14 +119,27 @@ public class GameInfoPopView extends RelativeLayout{
             return;
         }
 
-        handleStatus(apkStatus, 0);
-
-        if (mGameInfoModel != null && TextUtils.equals(mGameInfoModel.getIconUrl(), gameInfoModel.getIconUrl())) {
+        if (mGameInfoModel != null && TextUtils.equals(mGameInfoModel.getPackageName(), gameInfoModel.getPackageName())) {
+            if (mApkStatus != apkStatus) {
+                // 游戏数据相同只是状态不同
+                int lastVisibility = getVisibility();
+                handleStatus(apkStatus, 0);
+                if (lastVisibility != VISIBLE && getVisibility() == VISIBLE) {
+                    // 从不可见到可见　曝光打点
+                    onExposureStatistic();
+                }
+            }
             return;
-        }
-        mGameInfoModel = gameInfoModel;
+        } else {
+            // 更新游戏信息
+            mGameInfoModel = gameInfoModel;
+            handleStatus(apkStatus, 0);
 
-        loadGameIcon(gameInfoModel.getIconUrl());
+            loadGameIcon(gameInfoModel.getIconUrl());
+
+            // 游戏信息变更　曝光打点
+            onExposureStatistic();
+        }
     }
 
     private void loadGameIcon(String iconUrl) {
@@ -154,7 +175,12 @@ public class GameInfoPopView extends RelativeLayout{
         }
 
         if (apkEquals) {
+            int lastVisibility = getVisibility();
             handleStatus(event.status, event.progress);
+            if (lastVisibility != VISIBLE && getVisibility() == VISIBLE) {
+                // 从不可见到可见　曝光打点
+                onExposureStatistic();
+            }
         }
     }
 
@@ -209,6 +235,27 @@ public class GameInfoPopView extends RelativeLayout{
                     mApkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
                 }
             }
+        }
+    }
+
+    public void onExposureStatistic() {
+        if (mGameInfoModel != null && getVisibility() == VISIBLE) {
+            String url = mGameInfoModel.getPackageUrl();
+            WatchGameInfoConfig.InfoItem infoItem = WatchGameInfoConfig.sGameInfoMap.get(url);
+            if (infoItem != null) {
+                MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_EXPOSURE,
+                        GAME_WATCH_BIZTYPE_POP_EXPOSURE, infoItem.anchorId, infoItem.channelId, infoItem.packageName);
+            }
+        }
+    }
+
+
+    private void clickDownloadStatistic() {
+        String url = mGameInfoModel.getPackageUrl();
+        WatchGameInfoConfig.InfoItem infoItem = WatchGameInfoConfig.sGameInfoMap.get(url);
+        if (infoItem != null) {
+            MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_CLICK,
+                    GAME_WATCH_BIZTYPE_POP_CLICK, infoItem.anchorId, infoItem.channelId, infoItem.packageName);
         }
     }
 }

@@ -87,6 +87,7 @@ import com.wali.live.watchsdk.watch.fragment.BaseWatchFragment;
 import com.wali.live.watchsdk.watch.fragment.WatchGameFragment;
 import com.wali.live.watchsdk.watch.fragment.WatchNormalFragment;
 import com.wali.live.watchsdk.watch.model.RoomInfo;
+import com.wali.live.watchsdk.watch.model.WatchGameInfoConfig;
 import com.wali.live.watchsdk.watch.presenter.IWatchView;
 import com.wali.live.watchsdk.watch.presenter.LiveTaskPresenter;
 import com.wali.live.watchsdk.watch.presenter.UserInfoPresenter;
@@ -833,6 +834,9 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                     public void onNext(GameInfoModel gameInfoModel) {
                         if (gameInfoModel != null) {
                             mMyRoomData.setGameInfoModel(gameInfoModel);
+
+                            WatchGameInfoConfig.update(gameInfoModel.getPackageUrl(),
+                                    mMyRoomData.getUid(), mMyRoomData.getChannelId(), gameInfoModel.getPackageName());
                         }
                     }
                 });

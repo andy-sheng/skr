@@ -281,7 +281,9 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
     @Override
     public void select() {
-
+        if (mGameInfoPopView != null) {
+            mGameInfoPopView.onExposureStatistic();
+        }
     }
 
     @Override
