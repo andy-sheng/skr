@@ -7,6 +7,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.mvp.BaseRxPresenter;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.relation.RelationApi;
@@ -193,6 +194,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
                                             StatisticsKey.STATISTICS_FOLLOW_ANCHOR_DURATION,
                                             String.valueOf(SystemClock.elapsedRealtime() - mEnterTime));
                                 }
+                                MyUserInfoManager.getInstance().getUser().setFollowNum(MyUserInfoManager.getInstance().getUser().getFollowNum() + 1);
                             }
                         } else {  //取消关注
                             MyLog.d(TAG, "un follow");
@@ -203,6 +205,7 @@ public class FloatInfoPresenter extends BaseRxPresenter<IFloatInfoView> {
                                 mUser.setIsFocused(false);
                                 mUser.setFansNum(mUser.getFansNum() - 1);
                                 RelationDaoAdapter.getInstance().deleteRelation(mUser.getUid());
+                                MyUserInfoManager.getInstance().getUser().setFollowNum(MyUserInfoManager.getInstance().getUser().getFollowNum() - 1);
                             }
                         }
                         subscriber.onNext(result);
