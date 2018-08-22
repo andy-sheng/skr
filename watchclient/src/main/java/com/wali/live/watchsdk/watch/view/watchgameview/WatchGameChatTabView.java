@@ -136,6 +136,13 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
         if (mGameInfoPopView == null) {
             mGameInfoPopView = (GameInfoPopView) mGameInfoPopViewStub.inflate().findViewById(R.id.game_info_pop_container);
+            mGameInfoPopView.setOnInstallOrLaunchListener(new GameInfoPopView.OnInstallOrLaunchListener() {
+                @Override
+                public void onInstallorLaunch() {
+                    // 点击游戏挂件安装游戏　此时要暂停视频
+                    mWatchGameChatTabPresenter.pauseVideo();
+                }
+            });
         } else {
             mGameInfoPopView.setVisibility(VISIBLE);
         }
@@ -334,6 +341,11 @@ public class WatchGameChatTabView extends RelativeLayout implements
          * 更新数据
          */
         void updateUi();
+
+        /**
+         * 暂停视频
+         */
+        void pauseVideo();
 
     }
 }
