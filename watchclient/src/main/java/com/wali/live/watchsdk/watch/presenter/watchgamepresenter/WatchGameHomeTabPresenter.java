@@ -178,7 +178,12 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
     @Override
     public boolean tryLaunch() {
-        return PackageUtils.tryLaunch(mGameInfoModel.getPackageName());
+        if(PackageUtils.tryLaunch(mGameInfoModel.getPackageName())){
+            postEvent(MSG_PLAYER_PAUSE);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     private void clickDownloadStatistic() {

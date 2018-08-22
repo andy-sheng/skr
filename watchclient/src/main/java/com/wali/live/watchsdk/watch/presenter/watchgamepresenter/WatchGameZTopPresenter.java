@@ -80,12 +80,12 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     }
 
     private void checkDownLoadBtnStatus() {
-        if(mView == null) {
+        if (mView == null) {
             return;
         }
 
         GameInfoModel gameInfoModel = mMyRoomData.getGameInfoModel();
-        if(gameInfoModel == null) {
+        if (gameInfoModel == null) {
             MyLog.w(TAG, "GameInfoModel is null");
             mView.setDownLoadBtnVisibility(false);
             return;
@@ -143,7 +143,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     @Override
     public boolean onEvent(int event, IParams iParams) {
-        if(mView == null) {
+        if (mView == null) {
             return false;
         }
         switch (event) {
@@ -158,7 +158,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 mIsLandscape = true;
                 return true;
             case MSG_ON_BACK_PRESSED:
-                if(mIsLandscape) {
+                if (mIsLandscape) {
                     forceRotate();
                     return true;
                 }
@@ -331,11 +331,13 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
                 String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mMyRoomData.getGameInfoModel().getPackageUrl());
-                postEvent(MSG_PLAYER_PAUSE);
-                PackageUtils.tryInstall(apkPath);
+                if (PackageUtils.tryInstall(apkPath)) {
+                    postEvent(MSG_PLAYER_PAUSE);
+                }
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
-                postEvent(MSG_PLAYER_PAUSE);
-                PackageUtils.tryLaunch(mMyRoomData.getGameInfoModel().getPackageName());
+                if (PackageUtils.tryLaunch(mMyRoomData.getGameInfoModel().getPackageName())) {
+                    postEvent(MSG_PLAYER_PAUSE);
+                }
             }
         }
 
@@ -408,7 +410,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(KeyboardEvent event) {
-        if(mView == null) {
+        if (mView == null) {
             return;
         }
         MyLog.d(TAG, "KeyboardEvent");
