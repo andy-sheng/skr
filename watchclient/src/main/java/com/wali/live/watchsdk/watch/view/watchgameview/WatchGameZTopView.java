@@ -110,6 +110,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private GameNewLandscapeInputViewPresenter mGameNewLandscapeInputViewPresenter;
     private boolean mIsVideoPause;
     private boolean mHasHideBarrage;
+    private boolean mNeedHideDownLoadBtn;
 
     private Subscription mHideLandscapeOptBarSubscription;
     private Subscription mHidePortraitOptBarSubscription;
@@ -191,6 +192,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             tryToHideLandscapeOptBar();
+            mLandscapeDownloadBtn.setVisibility(mNeedHideDownLoadBtn ? GONE : VISIBLE);
         } else { // 切换到竖屏
             if (getChildCount() > 0 && lastIsLandscape) {
                 // 切换前是横屏
@@ -1005,6 +1007,15 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
+            public void setDownLoadBtnVisibility(boolean needShow) {
+                mNeedHideDownLoadBtn = !needShow;
+                if(mIsLandscape
+                        && mLandscapeDownloadBtn != null) {
+                    mLandscapeDownloadBtn.setVisibility(needShow ? VISIBLE : GONE);
+                }
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameZTopView.this;
             }
@@ -1102,5 +1113,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void keyBoardEvent(boolean isHide);
 
         void updatePauseEvent(boolean isPause);
+
+        void setDownLoadBtnVisibility(boolean needShow);
     }
 }

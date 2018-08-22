@@ -13,6 +13,7 @@ import com.mi.live.data.api.feedback.FeedBackApi;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
@@ -74,6 +75,35 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         }
     }
 
+    private void checkDownLoadBtnStatus() {
+        if(mView == null) {
+            return;
+        }
+
+        GameInfoModel gameInfoModel = mMyRoomData.getGameInfoModel();
+        if(gameInfoModel == null) {
+            MyLog.w(TAG, "GameInfoModel is null");
+            mView.setDownLoadBtnVisibility(false);
+            return;
+        }
+
+        String packageName = gameInfoModel.getPackageName();
+        if (TextUtils.isEmpty(packageName)) {
+            // 无效的包名 隐藏
+            mView.setDownLoadBtnVisibility(false);
+            return;
+        } else {
+//            if (PackageUtils.isInstallPackage(packageName)) {
+//                // 已经安装 隐藏
+//                mView.setDownLoadBtnVisibility(false);
+//                return;
+//            } else {
+//                mView.setDownLoadBtnVisibility(true);
+//            }
+            mView.setDownLoadBtnVisibility(true);
+        }
+    }
+
     @Override
     protected String getTAG() {
         return TAG;
@@ -91,6 +121,8 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        checkDownLoadBtnStatus();
     }
 
     @Override
@@ -293,8 +325,10 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
                 String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mMyRoomData.getGameInfoModel().getPackageUrl());
+                postEvent(MSG_PLAYER_PAUSE);
                 PackageUtils.tryInstall(apkPath);
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
+                postEvent(MSG_PLAYER_PAUSE);
                 PackageUtils.tryLaunch(mMyRoomData.getGameInfoModel().getPackageName());
             }
         }
@@ -346,8 +380,22 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
             }
         } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
             // 安装完成
+            if (TextUtils.isEmpty(event.packageName)) {
+                return;
+            }
+            if (mMyRoomData.getGameInfoModel() != null
+                    && event.packageName.equals(mMyRoomData.getGameInfoModel().getPackageName())) {
+                checkDownLoadBtnStatus();
+            }
         } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
             // 卸载完成
+            if (TextUtils.isEmpty(event.packageName)) {
+                return;
+            }
+            if (mMyRoomData.getGameInfoModel() != null
+                    && event.packageName.equals(mMyRoomData.getGameInfoModel().getPackageName())) {
+                checkDownLoadBtnStatus();
+            }
         }
 
     }
@@ -364,6 +412,19 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 break;
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN:
                 mView.keyBoardEvent(true);
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(RoomDataChangeEvent event) {
+        switch (event.type) {
+            case RoomDataChangeEvent.TYPE_CHANGE_GAME_INFO: {
+                mMyRoomData = event.source;
+                checkDownLoadBtnStatus();
+            }
+            break;
+            default:
                 break;
         }
     }
