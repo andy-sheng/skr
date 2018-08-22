@@ -49,7 +49,17 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
 
     //保存 name 保存观众的昵称
     static final int MAX_SIZE = 1000;
-    private LruCache<Long, String> mUserInfoCache = new LruCache<>(MAX_SIZE);
+    private LruCache<Long, UserData> mUserInfoCache = new LruCache<>(MAX_SIZE);
+
+    static class UserData {
+        public String nickName;
+        public int level;
+
+        public UserData(String nickName, int level) {
+            this.nickName = nickName;
+            this.level = level;
+        }
+    }
 
     public ViewerRankPresenter(@NonNull WatchComponentController controller) {
         super(controller);
@@ -102,17 +112,19 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
 
                 for (ViewerModel model : dataList) {
                     if (TextUtils.isEmpty(model.getNickName())) {
-                        if (TextUtils.isEmpty(mUserInfoCache.get(model.getUid()))) {
+                        UserData userData = mUserInfoCache.get(model.getUid());
+                        if (userData == null) {
                             queryUuidList.add(model.getUid());
                             mViwersMap.put(model.getUid(), model);
                         } else {
-                            model.setNickName(mUserInfoCache.get(model.getUid()));
+                            model.setNickName(userData.nickName);
+                            model.setLevel(userData.level);
                         }
                     }
                     viwerList.add(model);
                 }
 
-                if(!viwerList.isEmpty()){
+                if (!viwerList.isEmpty()) {
                     subscriber.onNext(viwerList);
                 }
                 if (queryUuidList != null && queryUuidList.size() > 0) {
@@ -123,11 +135,11 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
                         ViewerModel model = mViwersMap.get(user.getUid());
                         if (model != null) {
                             model.setNickName(user.getNickname());
-//                            viwerList.add(model);
+                            model.setLevel(user.getLevel());
                             hasNew = true;
                         }
                     }
-                    if(hasNew){
+                    if (hasNew) {
                         subscriber.onNext(viwerList);
                     }
                 }
@@ -219,12 +231,12 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
         }
     }
 
-    public void saveViewerInfo(long uid, String nickName) {
+    public void saveViewerInfo(long uid, String nickName,int level) {
         if (uid == 0 || TextUtils.isEmpty(nickName)) {
             return;
         }
 
-        mUserInfoCache.put(uid, nickName);
+        mUserInfoCache.put(uid, new UserData(nickName,level));
         if (mUserInfoCache.size() > MAX_SIZE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 MyLog.w(TAG, "buddyCache size = " + mUserInfoCache.size() + ",trime");
@@ -236,7 +248,7 @@ public class ViewerRankPresenter extends BaseSdkRxPresenter<WatchGameViewerTabVi
     public void saveViewerInfo(List<User> list) {
         if (null != list && list.size() > 0) {
             for (User user : list) {
-                saveViewerInfo(user.getUid(), user.getNickname());
+                saveViewerInfo(user.getUid(), user.getNickname(),user.getLevel());
             }
         }
     }
