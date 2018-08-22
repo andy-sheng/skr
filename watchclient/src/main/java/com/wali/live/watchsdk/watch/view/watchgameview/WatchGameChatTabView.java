@@ -14,6 +14,7 @@ import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -209,6 +210,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
                         ToastUtils.showToast(getResources().getString(R.string.follow_success));
                         mFocusBtn.setText(R.string.followed);
                         mFocusBtn.setEnabled(false);
+                        MyUserInfoManager.getInstance().getUser().setFollowNum(MyUserInfoManager.getInstance().getUser().getFollowNum() + 1);
                     } else if (resultCode == -1) {
                         ToastUtils.showToast(getResources().getString(R.string.follow_failed));
                     } else {
