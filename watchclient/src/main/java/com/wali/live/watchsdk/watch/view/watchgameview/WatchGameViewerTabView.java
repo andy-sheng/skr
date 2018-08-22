@@ -64,6 +64,8 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
                 } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     //滚动状态,不要刷新数据
                     isScroll = true;
+                } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    isScroll = false;
                 }
             }
         });
