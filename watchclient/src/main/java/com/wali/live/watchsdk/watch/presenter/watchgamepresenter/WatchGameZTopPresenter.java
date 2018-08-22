@@ -27,7 +27,9 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.feedback.ReportFragment;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
+import com.wali.live.watchsdk.watch.model.WatchGameInfoConfig;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,6 +55,8 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_LAND_DOWNLOAD_CLICK;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
 
 /**
  * Created by vera on 2018/8/8.
@@ -314,6 +318,8 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     public void clickDownLoad(int flag) {
         if (mMyRoomData.getGameInfoModel() != null) {
             if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
+                clickDownloadStatistic(mMyRoomData.getGameInfoModel().getPackageUrl());
+
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
                 CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
             } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
@@ -426,6 +432,14 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
             break;
             default:
                 break;
+        }
+    }
+
+    private void clickDownloadStatistic(String url) {
+        WatchGameInfoConfig.InfoItem infoItem = WatchGameInfoConfig.sGameInfoMap.get(url);
+        if (infoItem != null) {
+            MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_CLICK,
+                    GAME_WATCH_BIZTYPE_LAND_DOWNLOAD_CLICK, infoItem.anchorId, infoItem.channelId, infoItem.packageName);
         }
     }
 }

@@ -24,6 +24,8 @@ import com.base.utils.WLReflect;
 import com.base.utils.toast.ToastUtils;
 import com.wali.live.utils.FileUtils;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
+import com.wali.live.watchsdk.watch.model.WatchGameInfoConfig;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
@@ -31,8 +33,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -42,6 +46,9 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_DOWNLOAD_COMPLETED;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_START_DOWNLOAD;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_DOWNLOAD;
 
 public class CustomDownloadManager {
 
@@ -75,6 +82,10 @@ public class CustomDownloadManager {
     private Subscription mDownloadSubscription;
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
+
+    // 当前处于下载过程中的dowloadkey集合(用户在本次进程中点击暂停的也包括在内)　用于统计本次进程中的开始下载和完成下载打点
+    // mDownloadingMap和数据库挂钩已经持久化　mMonitorDownloadIds只用作监听　两个都不符合要求
+    private List<String> mCurrentDownloading = new ArrayList<>();
 
     private ContentObserver mDownloadObserver = new ContentObserver(mHandler) {
         @Override
@@ -176,6 +187,11 @@ public class CustomDownloadManager {
         if (PermissionUtils.checkSdcardAlertWindow(context)) {
             long downloadId = mDownloadManager.enqueue(request);
             MyLog.w(TAG, "downloadId=" + downloadId);
+            if (!mCurrentDownloading.contains(downloadKey)) {
+                // 首次加入下载
+                firstStartDownloadStatistic(item.getUrl());
+                mCurrentDownloading.add(downloadKey);
+            }
             mDownloadingMap.put(downloadKey, downloadId);
             addMonitorUrl(item.getUrl());
             saveDownloadIdToPFFromMap();
@@ -251,7 +267,7 @@ public class CustomDownloadManager {
                                     result[3] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
 
                                     if(result[2]==DownloadManager.STATUS_SUCCESSFUL){
-                                        // 如果返回的是下载成功，有可能用户去文件管理器把文件删除了,选不管这种情况
+                                        // 如果返回的是下载成功，有可能用户去文件管理器把文件删除了,先不管这种情况
                                     }
                                     subscriber.onNext(new Pair<>(h.key, result));
                                 } else {
@@ -297,6 +313,8 @@ public class CustomDownloadManager {
                         } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
                             ApkStatusEvent event = new ApkStatusEvent(result.first, ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
                             EventBus.getDefault().post(event);
+                            completeDownloadStatistic(result.first);
+                            mCurrentDownloading.remove(result.first);
                         } else if (status == DownloadManager.STATUS_FAILED) {
 
                         }
@@ -382,6 +400,26 @@ public class CustomDownloadManager {
 //        unregisterObserver();
 //        unregisterReceiver();
 //    }
+
+    private void firstStartDownloadStatistic(String url) {
+        WatchGameInfoConfig.InfoItem infoItem = WatchGameInfoConfig.sGameInfoMap.get(url);
+        if (infoItem != null) {
+            MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_DOWNLOAD,
+                    GAME_WATCH_BIZTYPE_START_DOWNLOAD, infoItem.anchorId, infoItem.channelId, infoItem.packageName);
+        }
+    }
+
+    private void completeDownloadStatistic(String downloadKey) {
+        for (String url : WatchGameInfoConfig.sGameInfoMap.keySet()) {
+            if (TextUtils.equals(MD5.MD5_32(url), downloadKey)) {
+                WatchGameInfoConfig.InfoItem infoItem = WatchGameInfoConfig.sGameInfoMap.get(url);
+                if (infoItem != null) {
+                    MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_DOWNLOAD,
+                            GAME_WATCH_BIZTYPE_DOWNLOAD_COMPLETED, infoItem.anchorId, infoItem.channelId, infoItem.packageName);
+                }
+            }
+        }
+    }
 
 
     public static class Item {

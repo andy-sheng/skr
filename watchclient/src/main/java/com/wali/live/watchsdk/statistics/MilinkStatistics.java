@@ -6,6 +6,7 @@ import com.wali.live.proto.StatisticsProto;
 import com.wali.live.watchsdk.statistics.item.AliveStatisticItem;
 import com.wali.live.watchsdk.statistics.item.ChannelChangeStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.ChannelStatisticsItem;
+import com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem;
 import com.wali.live.watchsdk.statistics.item.MilinkStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.SimpleStatisticsItem;
 import com.wali.live.watchsdk.statistics.item.StayExposureStatisticItem;
@@ -119,6 +120,13 @@ public class MilinkStatistics {
         MilinkStatisticsItem item = new AliveStatisticItem(date, userId, times, roomId, channelId, bizType);
         upload(item);
     }
+
+    public void statisticGameWatchDownload(int type, int bizType, long anchorId, long channelId, String gamePackage) {
+        long date = System.currentTimeMillis();
+        MilinkStatisticsItem item = new GameWatchDownloadStatisticItem(date,type, bizType, anchorId, channelId, gamePackage);
+        upload(item);
+    }
+
 
     private void upload(final MilinkStatisticsItem item) {
         Observable.just(0)

@@ -197,11 +197,11 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                     flag = (int) mInstallBtn.getTag();
                 }
                 if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
-                    mWatchGameHomeTabPresenter.beginDownload();
+                    mWatchGameHomeTabPresenter.beginDownload(true);
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
                     mWatchGameHomeTabPresenter.pauseDownload();
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
-                    mWatchGameHomeTabPresenter.beginDownload();
+                    mWatchGameHomeTabPresenter.beginDownload(false);
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
                     if (mWatchGameHomeTabPresenter.tryInstall()) {
 
@@ -436,7 +436,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
     }
 
     public interface IPresenter {
-        void beginDownload();
+        void beginDownload(boolean isFirst);
 
         void pauseDownload();
 

@@ -18,7 +18,9 @@ import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.utils.FileUtils;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
+import com.wali.live.watchsdk.watch.model.WatchGameInfoConfig;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameHomeTabView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +30,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_GAME_HOME_PAGE_CLICK;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
 
 /**
  * Created by vera on 2018/8/8.
@@ -146,7 +150,11 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
 
     @Override
-    public void beginDownload() {
+    public void beginDownload(boolean isFirst) {
+        if (isFirst) {
+            clickDownloadStatistic();
+        }
+
         CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
         CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
     }
@@ -171,5 +179,17 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     @Override
     public boolean tryLaunch() {
         return PackageUtils.tryLaunch(mGameInfoModel.getPackageName());
+    }
+
+    private void clickDownloadStatistic() {
+        if (mGameInfoModel == null) {
+            return;
+        }
+        String url = mGameInfoModel.getPackageUrl();
+        WatchGameInfoConfig.InfoItem infoItem = WatchGameInfoConfig.sGameInfoMap.get(url);
+        if (infoItem != null) {
+            MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_CLICK,
+                    GAME_WATCH_BIZTYPE_GAME_HOME_PAGE_CLICK, infoItem.anchorId, infoItem.channelId, infoItem.packageName);
+        }
     }
 }
