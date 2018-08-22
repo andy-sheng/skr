@@ -80,6 +80,13 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     private GameBarrageView mGameBarrageView;
     private GameNewBarrageViewPresenter mGameBarragePresenter;
 
+    Runnable mResetRunnable = new Runnable() {
+        @Override
+        public void run() {
+            resetVideoLayoutSize(mIsLandscape);
+        }
+    };
+
     public WatchGameView(@NonNull Activity activity, @NonNull ViewGroup parentView, @NonNull WatchComponentController controller) {
         super(activity, parentView, controller);
     }
@@ -105,6 +112,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     @Override
     public void stopView() {
         super.stopView();
+        if (mVideShowLayout != null) {
+            mVideShowLayout.removeCallbacks(mResetRunnable);
+        }
     }
 
     public void setupView(boolean isLandscape) {
@@ -124,12 +134,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     public void setupView() {
         {
             mVideShowLayout = $(mParentView, R.id.video_show_layout);
-            mVideShowLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    resetVideoLayoutSize(mIsLandscape);
-                }
-            });
+            mVideShowLayout.post(mResetRunnable);
         }
 
         {
