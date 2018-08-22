@@ -73,6 +73,10 @@ public class WatchGameChatTabPresenter extends BaseSdkRxPresenter<WatchGameChatT
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        if (mMyRoomData != null) {
+            mView.updateGameInfo(mMyRoomData);
+        }
     }
 
     @Override

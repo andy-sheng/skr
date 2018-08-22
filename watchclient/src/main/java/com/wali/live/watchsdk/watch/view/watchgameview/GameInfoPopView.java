@@ -76,9 +76,8 @@ public class GameInfoPopView extends RelativeLayout{
 
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
 
-                if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD
-                        || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
-                    // 状态是未下载或者刚刚卸载 点击重新下载
+                if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
+                    // 状态是未下载
                     CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
 
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
@@ -112,7 +111,6 @@ public class GameInfoPopView extends RelativeLayout{
             return;
         }
 
-        mApkStatus = apkStatus;
         handleStatus(apkStatus, 0);
 
         if (mGameInfoModel != null && TextUtils.equals(mGameInfoModel.getIconUrl(), gameInfoModel.getIconUrl())) {
@@ -156,13 +154,19 @@ public class GameInfoPopView extends RelativeLayout{
         }
 
         if (apkEquals) {
-            mApkStatus = event.status;
-            handleStatus(mApkStatus, event.progress);
+            handleStatus(event.status, event.progress);
         }
     }
 
     private void handleStatus(int apkStatus, int progress) {
-        if (apkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING){
+        mApkStatus = apkStatus;
+
+        if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
+            // 游戏被卸载 重新检查状态
+            checkInstalledOrUpdate();
+        }
+
+        if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING){
             setVisibility(VISIBLE);
 
             mGameIconShadow.setVisibility(VISIBLE);
@@ -170,7 +174,7 @@ public class GameInfoPopView extends RelativeLayout{
             mDownloadProgressBar.setProgress(progress);
             mBottomText.setText(R.string.game_info_pop_download);
 
-        } else if(apkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH){
+        } else if(mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH){
             // 已经安装了该游戏 隐藏这个浮窗
             setVisibility(GONE);
 
@@ -180,6 +184,31 @@ public class GameInfoPopView extends RelativeLayout{
             mGameIconShadow.setVisibility(GONE);
             mDownloadProgressBar.setVisibility(GONE);
             mBottomText.setText(R.string.game_info_pop_tip);
+        }
+    }
+
+    private void checkInstalledOrUpdate() {
+        if (mGameInfoModel == null) {
+            return;
+        }
+        String packageName = mGameInfoModel.getPackageName();
+        if (TextUtils.isEmpty(packageName)) {
+            // 无效的包名
+            return;
+        } else {
+            if (PackageUtils.isInstallPackage(packageName)) {
+                // 已经安装 点击则启动
+                mApkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH;
+            } else {
+                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl());
+                if (PackageUtils.isCompletedPackage(apkPath, mGameInfoModel.getPackageName())) {
+                    // 存在包 点击则安装
+                    mApkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED;
+                } else {
+                    // 下载不完全 点击则下载
+                    mApkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
+                }
+            }
         }
     }
 }
