@@ -31,6 +31,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
+
 /**
  * Created by vera on 2018/8/8.
  */
@@ -54,6 +56,11 @@ public class WatchGameChatTabPresenter extends BaseSdkRxPresenter<WatchGameChatT
                 mMyRoomData.getCertificationType(), mMyRoomData.getLevel(), mMyRoomData.getNickName());
         mView.updateViewerNum(mMyRoomData.getViewerCnt());
         mView.showFollowBtn(mMyRoomData.isEnableRelationChain(), mMyRoomData.isFocused());
+    }
+
+    @Override
+    public void pauseVideo() {
+        postEvent(MSG_PLAYER_PAUSE);
     }
 
     @Override

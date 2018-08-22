@@ -13,7 +13,6 @@ import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.HttpImage;
-import com.base.log.MyLog;
 import com.base.utils.MD5;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
@@ -44,6 +43,8 @@ public class GameInfoPopView extends RelativeLayout{
     private View mGameIconShadow;
     private ProgressBar mDownloadProgressBar;
     private TextView mBottomText;
+
+    private OnInstallOrLaunchListener mOnInstallOrLaunchListener;
 
     public GameInfoPopView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -95,6 +96,9 @@ public class GameInfoPopView extends RelativeLayout{
                     CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
 
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
+                    if (mOnInstallOrLaunchListener != null) {
+                        mOnInstallOrLaunchListener.onInstallorLaunch();
+                    }
                     if (PackageUtils.tryInstall(CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl()))) {
 
                     } else {
@@ -104,6 +108,9 @@ public class GameInfoPopView extends RelativeLayout{
                         CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
                     }
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
+                    if (mOnInstallOrLaunchListener != null) {
+                        mOnInstallOrLaunchListener.onInstallorLaunch();
+                    }
                     if (PackageUtils.tryLaunch(mGameInfoModel.getPackageName())) {
 
                     } else {
@@ -257,5 +264,13 @@ public class GameInfoPopView extends RelativeLayout{
             MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_CLICK,
                     GAME_WATCH_BIZTYPE_POP_CLICK, infoItem.anchorId, infoItem.channelId, infoItem.packageName);
         }
+    }
+
+    public void setOnInstallOrLaunchListener(OnInstallOrLaunchListener listener) {
+        mOnInstallOrLaunchListener = listener;
+    }
+
+    public interface OnInstallOrLaunchListener {
+        void onInstallorLaunch();
     }
 }
