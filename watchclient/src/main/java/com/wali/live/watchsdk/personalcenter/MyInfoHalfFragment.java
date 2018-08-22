@@ -213,10 +213,15 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
     }
 
     private void finish() {
-        EventBus.getDefault().unregister(this);
         KeyboardUtils.hideKeyboardImmediately(getActivity());
         FragmentNaviUtils.popFragment(getActivity());
         EventBus.getDefault().post(new ConversationLocalStore.NotifyUnreadCountChangeEvent(0));
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override

@@ -215,7 +215,6 @@ public class SelfUpdateManager {
                     String tips = String.format("已下载%d%%", progress);
                     VersionCheckManager.getInstance().showDownloadNotification(tips);
                 }
-
             }
 
             @Override
