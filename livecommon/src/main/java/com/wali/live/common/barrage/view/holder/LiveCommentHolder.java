@@ -144,7 +144,7 @@ public class LiveCommentHolder extends RecyclerView.ViewHolder {
      * @param isEnter
      */
     public void setNameSpan(List<String> beforeNickNameConfigList, List<String> afterNickNameConfigList, String name, @ColorRes int colorId,
-                            int certificationType, boolean isNotTextBarrage, boolean isSell, SpanUtils.MyClickableSpan clickListener, boolean isEnter) {
+                            int certificationType, boolean isNotTextBarrage, boolean isSell, SpanUtils.MyClickableSpan clickListener, boolean isEnter, boolean isGameLive) {
 
         if (TextUtils.isEmpty(name)) {
             return;
@@ -185,7 +185,9 @@ public class LiveCommentHolder extends RecyclerView.ViewHolder {
         }
 
         //名字加粗
-        commentSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, commentSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (!isGameLive){
+            commentSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, commentSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
 
         setMedalIconPrefix(afterNickNameConfigList);
 

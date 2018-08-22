@@ -45,6 +45,7 @@
     <color name="color_at_comment">#bef194</color>
     <color name="noble_comment_nick_color">#FFEA4C</color>
 
+
     <color name="outer_stroketextview">#8df9ff</color>
     <!-- 礼物连送数字的变化 -->
     <color name="gift_number_first">#5ec1e8</color>
@@ -106,4 +107,7 @@
     <color name="color_db5990">#db5990</color>
     <color name="color_line_e0dfde">#e0dfde</color>
     <color name="color_90_dcab42">#e5dcab42</color>
+
+    <color name="color_56A7FF">#56A7FF</color>
+    <color name="color_DF870B_trans_80">#CCDF870B</color>
 </resources>

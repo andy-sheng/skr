@@ -96,7 +96,7 @@ public class GameRepeatScrollItemView extends RelativeLayout {
             Gift gift = GiftRepository.findGiftById((int) commentModel.getGiftId());
             if (gift != null) {
                 mGiftIv.setVisibility(View.VISIBLE);
-                setComment(GlobalData.app().getString(R.string.game_give_one_gift, gift.getName()), R.color.color_7EEEFF);
+                setComment(GlobalData.app().getString(R.string.game_give_one_gift, gift.getName()), commentModel.getCommentColor());
                 FrescoWorker.loadImage(mGiftIv, ImageFactory.newHttpImage(gift.getPicture()).build());
                 mBarrageTv.setMaxWidth(DisplayUtils.dip2px(190));
             }

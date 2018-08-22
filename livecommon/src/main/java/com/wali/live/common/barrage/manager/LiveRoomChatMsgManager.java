@@ -131,7 +131,7 @@ public class LiveRoomChatMsgManager {
         if ((msgTypeFilter != null && !msgTypeFilter.isAcceptMsg(msg)) || !canAddToChatMsgManager(msg)) {
             return false;
         }
-        CommentModel commentModel = CommentModel.loadFromBarrage(msg);
+        CommentModel commentModel = CommentModel.loadFromBarrage(msg, mIsGameLiveMode);
 //        chatMsgList.insert(commentModel);
         newInsert(commentModel);
         EventBus.getDefault().post(new CommentRefreshEvent(getMsgList(), !isInBound, this.toString()));
@@ -149,7 +149,7 @@ public class LiveRoomChatMsgManager {
                     if ((msgTypeFilter != null && !msgTypeFilter.isAcceptMsg(barrageMsg)) || !canAddToChatMsgManager(barrageMsg)) {
                         continue;
                     }
-                    CommentModel commentModel = CommentModel.loadFromBarrage(barrageMsg);
+                    CommentModel commentModel = CommentModel.loadFromBarrage(barrageMsg, mIsGameLiveMode);
                     chatMsgList.insert(commentModel);
                     commentModels.add(commentModel);
                 }
@@ -160,7 +160,7 @@ public class LiveRoomChatMsgManager {
                         continue;
                     }
 //                    chatMsgList.insert(CommentModel.loadFromBarrage(barrageMsg));
-                    replaceEnterAndLike(CommentModel.loadFromBarrage(barrageMsg));
+                    replaceEnterAndLike(CommentModel.loadFromBarrage(barrageMsg, mIsGameLiveMode));
                 }
             }
             EventBus.getDefault().post(new CommentRefreshEvent(getMsgList(), !isInBound, this.toString()));

@@ -289,20 +289,8 @@ public class WatchGameLiveCommentView extends RelativeLayout implements IBindAct
             mLastSetCommentListTs = System.currentTimeMillis();
             if (!mCommentRv.isComputingLayout()) {
                 if (force) {
-                    for (CommentModel model : mDataList) {
-                        if (model.getCommentColor() == R.color.white) {
-                            model.setCommentColor(R.color.color_black_trans_80);
-                            model.setNameColor(R.color.color_black_trans_40);
-                        }
-                    }
                     mAdapter.setLiveCommentList(mDataList, afterRefresh);
                 } else if (mOnBottom && this.getVisibility() == VISIBLE && !mDraging) {
-                    for (CommentModel model : mDataList) {
-                        if (model.getCommentColor() == R.color.white) {
-                            model.setCommentColor(R.color.color_black_trans_80);
-                            model.setNameColor(R.color.color_black_trans_40);
-                        }
-                    }
                     mAdapter.setLiveCommentList(mDataList, afterRefresh);
                 } else {
 

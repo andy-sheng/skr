@@ -206,9 +206,11 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                 && mMyRoomData.getLiveType() != LiveManager.TYPE_LIVE_HUYA) {
             mBaseWatchFragment = new WatchNormalFragment();
             tag = WatchNormalFragment.class.getSimpleName();
+            mRoomChatMsgManager.setIsGameLiveMode(false);
         } else {
             mBaseWatchFragment = new WatchGameFragment();
             tag = WatchGameFragment.class.getSimpleName();
+            mRoomChatMsgManager.setIsGameLiveMode(true);
         }
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.container, mBaseWatchFragment, tag);

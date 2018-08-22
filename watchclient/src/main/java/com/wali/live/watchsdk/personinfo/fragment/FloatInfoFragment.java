@@ -197,7 +197,8 @@ public class FloatInfoFragment extends BaseEventBusFragment
         if (mUser.getUid() != 0 &&
                 mUser.getUid() != ownerUid &&
                 mUser.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
-            mEditIcon.setVisibility(View.VISIBLE);
+//            mEditIcon.setVisibility(View.VISIBLE);
+            mEditIcon.setVisibility(View.GONE);
             $click(mEditIcon, this);
         } else {
             mEditIcon.setVisibility(View.GONE);

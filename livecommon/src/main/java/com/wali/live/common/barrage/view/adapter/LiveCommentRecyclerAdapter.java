@@ -194,13 +194,13 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
 
             liveCommentHolder.setNameSpan(beforeNickNameConfigList, afterNickNameConfigList, liveComment.getName(), liveComment.getNameColor(), liveComment.getCertificationType(),
                     liveComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_TEXT && liveComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE, liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_SELL,
-                    liveCommentHolder.getClickSpan(true), liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIKE || liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN);
+                    liveCommentHolder.getClickSpan(true), liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIKE || liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN, mIsGameLive);
 
             bindCommentView(schemeUrl, beforeContentConfigList, afterContentConfigList, liveCommentHolder, liveComment);
         } else {
             liveCommentHolder.setNameSpan(null, null, liveComment.getName(), liveComment.getNameColor(), liveComment.getCertificationType(),
                     liveComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_TEXT && liveComment.getMsgType() != BarrageMsgType.B_MSG_TYPE_PAY_BARRAGE, liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_SELL,
-                    liveCommentHolder.getClickSpan(true), liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIKE || liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN);
+                    liveCommentHolder.getClickSpan(true), liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_LIKE || liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_JOIN, mIsGameLive);
 
             bindCommentView("", null, null, liveCommentHolder, liveComment);
         }
@@ -225,11 +225,11 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (count <= 1) {
                     liveCommentHolder.setComment(bConfigList, aConfigList,
                             GlobalData.app().getString(R.string.game_give_one_gift, gift.getName()),
-                            R.color.color_7EEEFF, liveCommentHolder.getClickSpan(false));
+                            liveComment.getCommentColor(), liveCommentHolder.getClickSpan(false));
                 } else {
                     liveCommentHolder.setComment(bConfigList, aConfigList,
                             GlobalData.app().getResources().getQuantityString(R.plurals.game_give_n_gift, count, count, gift.getName()),
-                            R.color.color_7EEEFF, liveCommentHolder.getClickSpan(false));
+                            liveComment.getCommentColor(), liveCommentHolder.getClickSpan(false));
                 }
 
                 FrescoWorker.loadImage(liveCommentHolder.giftIv, ImageFactory.newHttpImage(gift.getPicture()).build());

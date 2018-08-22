@@ -375,7 +375,7 @@ public class CommentModel implements Comparable<CommentModel> {
                 || this.nobleLevel == User.NOBLE_LEVEL_TOP;
     }
 
-    public static CommentModel loadFromBarrage(BarrageMsg msg) {
+    public static CommentModel loadFromBarrage(BarrageMsg msg, boolean isGameLive) {
         CommentModel liveComment = new CommentModel();
         liveComment.setSenderId(msg.getSender());
         liveComment.setMsgType(msg.getMsgType());
@@ -389,8 +389,13 @@ public class CommentModel implements Comparable<CommentModel> {
         }
         liveComment.setSentTime(msg.getSentTime());
         liveComment.setSenderMsgId(msg.getSenderMsgId());
-        liveComment.setCommentColor(R.color.white);
-        liveComment.setNameColor(R.color.color_f0d388);
+        if (isGameLive) {
+            liveComment.setNameColor(R.color.color_black_trans_40);
+            liveComment.setCommentColor(R.color.color_black_trans_80);
+        } else {
+            liveComment.setCommentColor(R.color.white);
+            liveComment.setNameColor(R.color.color_f0d388);
+        }
         liveComment.setRedName(msg.isRedName());
         liveComment.setVipLevel(msg.getVipLevel());
         liveComment.setNobleLevel(msg.getNobleLevel());
@@ -458,7 +463,11 @@ public class CommentModel implements Comparable<CommentModel> {
                     liveComment.setName(null);
                     liveComment.setBody(msg.getBody(), false);
                 }
-                liveComment.setCommentColor(R.color.color_7eeeff);
+                if (isGameLive) {
+                    liveComment.setCommentColor(R.color.color_56A7FF);
+                } else {
+                    liveComment.setCommentColor(R.color.color_7eeeff);
+                }
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_LEAVE: {
@@ -477,6 +486,10 @@ public class CommentModel implements Comparable<CommentModel> {
                         String welcomeVipEnterRoomTip = getWelcomeVipEnterRoomTip();
                         if (!TextUtils.isEmpty(welcomeVipEnterRoomTip)) {
                             liveComment.setBody(welcomeVipEnterRoomTip, false);
+                            if (isGameLive) {
+                                liveComment.setCommentColor(R.color.color_DF870B_trans_80);
+                                liveComment.setNameColor(R.color.color_DF870B_trans_80);
+                            }
                             break;
                         }
                     }
@@ -493,7 +506,12 @@ public class CommentModel implements Comparable<CommentModel> {
                     liveComment.setName(null);
                     liveComment.setBody(msg.getBody(), false);
                 }
-                liveComment.setCommentColor(R.color.color_f0d388);
+                if (isGameLive) {
+                    liveComment.setNameColor(R.color.color_f0d388);
+                    liveComment.setCommentColor(R.color.color_DF870B_trans_80);
+                } else {
+                    liveComment.setCommentColor(R.color.color_f0d388);
+                }
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_LIKE: {
@@ -508,7 +526,11 @@ public class CommentModel implements Comparable<CommentModel> {
             break;
             case BarrageMsgType.B_MSG_TYPE_RECORD_SHARE: {
                 liveComment.setBody(msg.getBody(), false);
-                liveComment.setCommentColor(R.color.color_7eeeff);
+                if (isGameLive) {
+                    liveComment.setCommentColor(R.color.color_56A7FF);
+                } else {
+                    liveComment.setCommentColor(R.color.color_7eeeff);
+                }
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_SHARE: {
@@ -518,13 +540,21 @@ public class CommentModel implements Comparable<CommentModel> {
                     liveComment.setName(null);
                     liveComment.setBody(msg.getBody(), false);
                 }
-                liveComment.setCommentColor(R.color.color_7eeeff);
+                if (isGameLive) {
+                    liveComment.setCommentColor(R.color.color_56A7FF);
+                } else {
+                    liveComment.setCommentColor(R.color.color_7eeeff);
+                }
             }
             break;
             case BarrageMsgType.B_MSG_TYPE_ADD_SHOP: {
                 BarrageMsg.ShopMessageExt ext = (BarrageMsg.ShopMessageExt) msg.getMsgExt();
                 if (ext.shop_type == 3) {
-                    liveComment.setCommentColor(R.color.color_7eeeff);
+                    if (isGameLive) {
+                        liveComment.setCommentColor(R.color.color_56A7FF);
+                    } else {
+                        liveComment.setCommentColor(R.color.color_7eeeff);
+                    }
                     liveComment.setBody(String.valueOf(ext.shop_content), false);
                 }
             }
@@ -539,7 +569,12 @@ public class CommentModel implements Comparable<CommentModel> {
                     liveComment.setGiftId(giftExt.giftId);
                     liveComment.setGiftCount(giftExt.batch_count);
                 }
-                liveComment.setCommentColor(R.color.color_7eeeff);
+                if (isGameLive) {
+                    liveComment.setNameColor(R.color.color_DF870B_trans_80);
+                    liveComment.setCommentColor(R.color.color_56A7FF);
+                } else {
+                    liveComment.setCommentColor(R.color.color_7eeeff);
+                }
                 break;
             }
             case BarrageMsgType.B_MSG_TYPE_LIGHT_UP_GIFT:
@@ -564,7 +599,11 @@ public class CommentModel implements Comparable<CommentModel> {
                                 LiveMessageProto.AtMessage atMessage = LiveMessageProto.AtMessage.parseFrom(ext.getExt());
                                 if (atMessage.hasAtUser()
                                         && atMessage.getAtUser() == UserAccountManager.getInstance().getUuidAsLong()) {
-                                    liveComment.setCommentColor(R.color.color_at_comment);// TODO: 17-6-5
+                                    if (isGameLive) {
+                                        liveComment.setCommentColor(R.color.color_ff2966);
+                                    } else {
+                                        liveComment.setCommentColor(R.color.color_at_comment);// TODO: 17-6-5
+                                    }
                                 }
                             } catch (InvalidProtocolBufferException e) {
                                 MyLog.e(TAG, "parse AtMessage fail, type:" + ext.getType());
@@ -575,12 +614,20 @@ public class CommentModel implements Comparable<CommentModel> {
                     long atTargetUserId = StringUtils.getAtTargetUserId(msg.getBody());
                     if (atTargetUserId != 0) {
                         if (atTargetUserId == UserAccountManager.getInstance().getUuidAsLong()) {
-                            liveComment.setCommentColor(R.color.color_at_comment);// TODO: 17-6-5
+                            if (isGameLive) {
+                                liveComment.setCommentColor(R.color.color_ff2966);
+                            } else {
+                                liveComment.setCommentColor(R.color.color_at_comment);// TODO: 17-6-5
+                            }
                         }
                         body = msg.getBody().replace("<" + atTargetUserId + ">", "");
                     }
                 } else {
-                    liveComment.setCommentColor(R.color.white);
+                    if (isGameLive) {
+                        liveComment.setCommentColor(R.color.color_black_trans_80);
+                    } else {
+                        liveComment.setCommentColor(R.color.white);
+                    }
                 }
                 if (msg.getNobleLevel() >= User.NOBLE_LEVEL_FOURTH) {
                     liveComment.setNameColor(R.color.noble_comment_nick_color);
