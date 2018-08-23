@@ -27,6 +27,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -235,7 +236,9 @@ public enum PreDnsManager {
             mPreFetchSub = null;
         }
         mDomainIpMap.clear();
-        mPreFetchSub = Observable.from(domainSet)
+        ArrayList<String> tempList = new ArrayList<>();
+        tempList.addAll(domainSet);
+        mPreFetchSub = Observable.from(tempList)
                 .map(new Func1<String, Pair<String, IpInfo>>() {
                     @Override
                     public Pair<String, IpInfo> call(String host) {
