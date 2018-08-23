@@ -457,7 +457,13 @@ public class FragmentNaviUtils {
             return null;
         }
         if (bundle != null) {
-            fragment.setArguments(bundle);
+            Bundle arguments = fragment.getArguments();
+            if(arguments != null) {
+                arguments.clear();
+                arguments.putAll(bundle);
+            } else {
+                fragment.setArguments(bundle);
+            }
         }
         FragmentTransaction ft = fragmentManager.beginTransaction();
         if (hasAnimation) {
@@ -514,7 +520,13 @@ public class FragmentNaviUtils {
             return;
         }
         if (bundle != null) {
-            fragment.setArguments(bundle);
+            Bundle arguments = fragment.getArguments();
+            if(arguments != null) {
+                arguments.clear();
+                arguments.putAll(bundle);
+            } else {
+                fragment.setArguments(bundle);
+            }
         }
         fragment.setTargetFragment(sourceFragment, fragment.getRequestCode());
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -546,7 +558,13 @@ public class FragmentNaviUtils {
             return;
         }
         if (bundle != null) {
-            fragment.setArguments(bundle);
+            Bundle arguments = fragment.getArguments();
+            if(arguments != null) {
+                arguments.clear();
+                arguments.putAll(bundle);
+            } else {
+                fragment.setArguments(bundle);
+            }
         }
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -575,7 +593,13 @@ public class FragmentNaviUtils {
             return;
         }
         if (bundle != null) {
-            fragment.setArguments(bundle);
+            Bundle arguments = fragment.getArguments();
+            if(arguments != null) {
+                arguments.clear();
+                arguments.putAll(bundle);
+            } else {
+                fragment.setArguments(bundle);
+            }
         }
         //fragment.setTargetFragment(sourceFragment,fragment.requestCode);
         FragmentTransaction t = fragmentManager.beginTransaction();
@@ -602,7 +626,13 @@ public class FragmentNaviUtils {
             return null;
         }
         if (bundle != null) {
-            fragment.setArguments(bundle);
+            Bundle arguments = fragment.getArguments();
+            if(arguments != null) {
+                arguments.clear();
+                arguments.putAll(bundle);
+            } else {
+                fragment.setArguments(bundle);
+            }
         }
         FragmentTransaction ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
         if (hasAnimation) {
@@ -704,7 +734,13 @@ public class FragmentNaviUtils {
             return null;
         }
         if (bundle != null) {
-            fragment.setArguments(bundle);
+            Bundle arguments = fragment.getArguments();
+            if(arguments != null) {
+                arguments.clear();
+                arguments.putAll(bundle);
+            } else {
+                fragment.setArguments(bundle);
+            }
         }
         FragmentTransaction ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
         if (hasAnimation) {
@@ -911,7 +947,13 @@ public class FragmentNaviUtils {
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
         if (newFragment != null && bundle != null) {
-            newFragment.setArguments(bundle);
+            Bundle arguments = newFragment.getArguments();
+            if(arguments != null) {
+                arguments.clear();
+                arguments.putAll(bundle);
+            } else {
+                newFragment.setArguments(bundle);
+            }
         }
         if (hasAnimation) {
             ft.setCustomAnimations(enterAnimation, exitAnimation, enterAnimation, exitAnimation);

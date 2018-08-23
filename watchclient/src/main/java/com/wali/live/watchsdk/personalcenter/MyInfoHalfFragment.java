@@ -206,9 +206,7 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
 
 
     public static void openFragment(BaseSdkActivity activity) {
-        Bundle bundle = new Bundle();
-        // 看设计需不需要横竖屏
-        FragmentNaviUtils.openFragment(activity, MyInfoHalfFragment.class, bundle, R.id.main_act_container,
+        FragmentNaviUtils.openFragment(activity, MyInfoHalfFragment.class, null, R.id.main_act_container,
                 true, R.anim.slide_bottom_in, R.anim.slide_bottom_out);
     }
 
