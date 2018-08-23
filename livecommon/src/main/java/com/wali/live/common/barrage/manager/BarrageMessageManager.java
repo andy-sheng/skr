@@ -389,9 +389,12 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
             builder.setRoomType(msg.getRoomType());
             if (msg.getGlobalRoomMessageExt() != null) {
                 LiveMessageProto.GlobalRoomMessageExt.Builder builder2 = LiveMessageProto.GlobalRoomMessageExt.newBuilder();
-                for (int i = 0; i < msg.getGlobalRoomMessageExt().getInnerGlobalRoomMessageExtList().size(); i++) {
-                    if (msg.getGlobalRoomMessageExt().getInnerGlobalRoomMessageExtList().get(i).getType() != BarrageMsg.INNER_GLOBAL_VFAN) {
-                        builder2.addInnerGlobalRoomMsgExt(i, LiveMessageProto.InnerGlobalRoomMessageExt.newBuilder().setType(msg.getGlobalRoomMessageExt().getInnerGlobalRoomMessageExtList().get(i).getType()).build());
+                List<BarrageMsg.InnerGlobalRoomMessageExt> list = msg.getGlobalRoomMessageExt().getInnerGlobalRoomMessageExtList();
+                if (list != null) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (msg.getGlobalRoomMessageExt().getInnerGlobalRoomMessageExtList().get(i).getType() != BarrageMsg.INNER_GLOBAL_VFAN) {
+                            builder2.addInnerGlobalRoomMsgExt(i, LiveMessageProto.InnerGlobalRoomMessageExt.newBuilder().setType(msg.getGlobalRoomMessageExt().getInnerGlobalRoomMessageExtList().get(i).getType()).build());
+                        }
                     }
                 }
 
