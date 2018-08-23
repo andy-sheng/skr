@@ -29,6 +29,7 @@ import com.base.global.GlobalData;
 import com.base.keyboard.KeyboardUtils;
 import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
+import com.base.utils.toast.ToastUtils;
 import com.base.view.RoundRectDradable;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mi.live.data.account.UserAccountManager;
@@ -563,6 +564,10 @@ public class FloatInfoFragment extends BaseEventBusFragment
     }
 
     private void onClickMessage() {
+        if (mUser == null) {
+            ToastUtils.showToast(R.string.unknown_error);
+            return;
+        }
         onBackPressed();
         int focusState = SixinMessage.MSG_STATUS_UNFOUCS;
         if (mUser.isBothwayFollowing()) {
