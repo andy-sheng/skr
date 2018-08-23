@@ -64,7 +64,7 @@ public class Ping {
             Message msg = Message.obtain();
             msg.obj = reader;
             msg.what =  flag;
-            mHandler.sendMessageDelayed(msg,5*1000);
+            mHandler.sendMessageDelayed(msg,2*1000);
 
             MyLog.d(TAG, "doPing 2");
 
