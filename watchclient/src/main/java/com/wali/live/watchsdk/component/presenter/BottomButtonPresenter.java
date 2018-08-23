@@ -2,6 +2,7 @@ package com.wali.live.watchsdk.component.presenter;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -126,6 +127,9 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         super.stopPresenter();
         unregisterAllAction();
         EventBus.getDefault().unregister(this);
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     @Override
@@ -215,32 +219,34 @@ public class BottomButtonPresenter extends BaseSdkRxPresenter<WatchBottomButton.
         postEvent(MSG_SHOW_BIG_TURN_TABLE_PANEL);
     }
 
+    android.os.Handler mHandler;
+
     private void delayShowBigTurnTableTips() {
         boolean hasShow = PreferenceUtils.getSettingBoolean(GlobalData.app(), PreferenceKeys.PRE_KEY_HAS_SHOWED_BIG_TURN_TABLE_GUIDE, false);
         if (hasShow) {
             return;
         }
-
-        Observable
-                .timer(500, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Object>bindUntilEvent(BaseSdkRxPresenter.PresenterEvent.STOP))
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        int[] ints = calculateWindowPos(mView.getBigTurnTable());
-                        Params params = new Params();
-                        params.putItem(ints[0]);
-                        params.putItem(ints[1]);
-                        postEvent(MSG_SHOW_BIG_TURN_TABLE_TIPS, params);
-                    }
-                });
+        if (mHandler == null) {
+            mHandler = new android.os.Handler(Looper.getMainLooper());
+        }
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int[] ints = calculateWindowPos(mView.getBigTurnTable());
+                Params params = new Params();
+                params.putItem(ints[0]);
+                params.putItem(ints[1]);
+                postEvent(MSG_SHOW_BIG_TURN_TABLE_TIPS, params);
+            }
+        }, 500);
     }
 
     private int[] calculateWindowPos(View view) {
         int windowPos[] = new int[2];
         int loc[] = new int[2];
+        if (view == null) {
+            return windowPos;
+        }
         view.getLocationInWindow(loc);
         windowPos[0] = loc[0];
         windowPos[1] = loc[1];
