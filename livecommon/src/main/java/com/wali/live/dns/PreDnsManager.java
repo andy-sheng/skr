@@ -252,7 +252,7 @@ public enum PreDnsManager {
                     } catch (Exception e) {
                         MyLog.e(TAG, "fetchIpSetForDomainList hourseTraceSync failed, exception=" + e);
                     }
-                    Pair pair = Pair.create(host, new IpInfo(localIpSet, httpIpSet))
+                    Pair pair = Pair.create(host, new IpInfo(localIpSet, httpIpSet));
                     subscriber.onNext(pair);
                 }
                 subscriber.onCompleted();
