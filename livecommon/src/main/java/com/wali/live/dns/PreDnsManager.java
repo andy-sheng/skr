@@ -236,26 +236,28 @@ public enum PreDnsManager {
             mPreFetchSub = null;
         }
         mDomainIpMap.clear();
-        ArrayList<String> tempList = new ArrayList<>();
+        final ArrayList<String> tempList = new ArrayList<>();
         tempList.addAll(domainSet);
-        mPreFetchSub = Observable.from(tempList)
-                .map(new Func1<String, Pair<String, IpInfo>>() {
-                    @Override
-                    public Pair<String, IpInfo> call(String host) {
-                        MyLog.d(TAG, "fetchIpSetForDomainList host=" + host);
-                        List<String> httpIpSet = getHttpDnsIpSet(host); // Note: 网络请求即使在unsubscribe之后线程也会继续执行
-                        List<String> localIpSet = getLocalDnsIpSet(host);
-                        localIpSet.removeAll(httpIpSet); // 去重
-                        try {
-                            httpIpSet = AppNetworkUtils.hourseTraceSync(httpIpSet);
-                            localIpSet = AppNetworkUtils.hourseTraceSync(localIpSet);
-                        } catch (Exception e) {
-                            MyLog.e(TAG, "fetchIpSetForDomainList hourseTraceSync failed, exception=" + e);
-                        }
-                        return Pair.create(host, new IpInfo(localIpSet, httpIpSet));
+        mPreFetchSub = Observable.create(new Observable.OnSubscribe<Pair<String, IpInfo>>() {
+            @Override
+            public void call(Subscriber<? super Pair<String, IpInfo>> subscriber) {
+                for (String host : tempList) {
+                    MyLog.d(TAG, "fetchIpSetForDomainList host=" + host);
+                    List<String> httpIpSet = getHttpDnsIpSet(host); // Note: 网络请求即使在unsubscribe之后线程也会继续执行
+                    List<String> localIpSet = getLocalDnsIpSet(host);
+                    localIpSet.removeAll(httpIpSet); // 去重
+                    try {
+                        httpIpSet = AppNetworkUtils.hourseTraceSync(httpIpSet);
+                        localIpSet = AppNetworkUtils.hourseTraceSync(localIpSet);
+                    } catch (Exception e) {
+                        MyLog.e(TAG, "fetchIpSetForDomainList hourseTraceSync failed, exception=" + e);
                     }
-                })
-                .subscribeOn(Schedulers.io())
+                    Pair pair = Pair.create(host, new IpInfo(localIpSet, httpIpSet))
+                    subscriber.onNext(pair);
+                }
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Pair<String, IpInfo>>() {
                     @Override
@@ -277,6 +279,7 @@ public enum PreDnsManager {
                         }
                     }
                 });
+
     }
 
     // Local-Dns解析，拉取到IP列表之后执行跑马再返回
