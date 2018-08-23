@@ -72,7 +72,7 @@ public class WidgetPresenter extends BaseEnterRoomSyncResPresenter
     private static final int FROM_WATCH = 1;
     private static final int FROM_LIVE = 2;
 
-    protected RoomBaseDataModel mMyRoomData;
+ //   protected RoomBaseDataModel mMyRoomData; // 父类已经定义赋值了
     private Handler mUIHandler;
     private boolean mIsAnchor;
     private long mAttachmentStamp = 0;
