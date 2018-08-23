@@ -220,6 +220,13 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                 || liveComment.getMsgType() == BarrageMsgType.B_MSG_TYPE_GLABAL_MSG) && mIsGameLive) {
             Gift gift = GiftRepository.findGiftById((int) liveComment.getGiftId());
             if (gift != null) {
+                if (mIsGameLive) {
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) liveCommentHolder.barrageTv.getLayoutParams();
+                    if (layoutParams.width != RelativeLayout.LayoutParams.WRAP_CONTENT) {
+                        layoutParams.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                        liveCommentHolder.barrageTv.setLayoutParams(layoutParams);
+                    }
+                }
                 liveCommentHolder.giftIv.setVisibility(View.VISIBLE);
                 int count = liveComment.getGiftCount();
                 if (count <= 1) {
@@ -235,6 +242,13 @@ public class LiveCommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
                 FrescoWorker.loadImage(liveCommentHolder.giftIv, ImageFactory.newHttpImage(gift.getPicture()).build());
             }
         } else {
+            if (mIsGameLive) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) liveCommentHolder.barrageTv.getLayoutParams();
+                if (layoutParams.width != RelativeLayout.LayoutParams.MATCH_PARENT) {
+                    layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+                    liveCommentHolder.barrageTv.setLayoutParams(layoutParams);
+                }
+            }
             liveCommentHolder.giftIv.setVisibility(View.GONE);
             liveCommentHolder.setComment(bConfigList, aConfigList, liveComment.getBody(), liveComment.getCommentColor(), liveCommentHolder.getClickSpan(false));
         }
