@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root_water_mark_view"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/live_mibologo_bg">
+    android:layout_height="wrap_content">
 
     <com.base.image.fresco.BaseImageView
         android:scaleType="fitXY"
-        android:layout_alignParentRight="true"
         android:visibility="gone"
         android:id="@+id/iv_huya_logo"
-        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"/>
 
     <RelativeLayout
         android:visibility="visible"
@@ -22,7 +20,9 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true">
         <ImageView
             android:id="@+id/mi_logo_img"
             android:layout_width="wrap_content"
@@ -86,4 +86,4 @@
     </RelativeLayout>
 
 
-</RelativeLayout>
+</merge>
