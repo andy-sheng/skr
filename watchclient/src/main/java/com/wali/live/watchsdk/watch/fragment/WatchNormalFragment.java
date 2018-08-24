@@ -28,8 +28,6 @@ public class WatchNormalFragment extends BaseWatchFragment {
 
     protected WatchSdkView mSdkView;
 
-    // 高斯蒙层
-    private BaseImageView mMaskIv;
     // 礼物特效动画
     private FlyBarrageViewGroup mFlyBarrageViewGroup;
 
@@ -47,16 +45,7 @@ public class WatchNormalFragment extends BaseWatchFragment {
     protected void bindView() {
         super.bindView();
 
-        // 封面模糊图
-        mMaskIv = $(R.id.mask_iv);
-        RoomInfo roomInfo = getWatchSdkInterface().getRoomInfo();
         RoomBaseDataModel roomBaseData = getWatchSdkInterface().getRoomBaseData();
-
-        String url = roomInfo.getCoverUrl();
-        if (TextUtils.isEmpty(url)) {
-            url = AvatarUtils.getAvatarUrlByUidTs(roomInfo.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, roomInfo.getAvatar());
-        }
-        AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, true, R.drawable.rect_loading_bg_24292d);
 
         //关闭按钮
         mCloseBtn = $(R.id.close_btn);
@@ -138,9 +127,6 @@ public class WatchNormalFragment extends BaseWatchFragment {
     @Override
     public void playerReadyEvent() {
         super.playerReadyEvent();
-        if (mMaskIv.getVisibility() == View.VISIBLE) {
-            mMaskIv.setVisibility(View.GONE);
-        }
         if (mSdkView != null) {
             mSdkView.postPrepare();
         }
