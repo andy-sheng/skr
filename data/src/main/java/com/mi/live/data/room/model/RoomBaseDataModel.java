@@ -190,6 +190,8 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setHuyaInfo(LiveProto.ThirdPartyInfo huyaInfo) {
         this.huyaInfo = huyaInfo;
+        // 通知获得第三方
+        EventBus.getDefault().post(new RoomDataChangeEvent(this, RoomDataChangeEvent.TYPE_CHANGE_THIRD_PARTY_INFO));
     }
 
 

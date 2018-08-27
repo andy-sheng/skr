@@ -11,6 +11,7 @@ public class RoomDataChangeEvent {
     public static final int TYPE_CHANGE_USER_INFO_COMPLETE = 5;
     public static final int TYPE_CHANGE_USER_MANAGER = 6;
     public static final int TYPE_CHANGE_GAME_INFO = 7;
+    public static final int TYPE_CHANGE_THIRD_PARTY_INFO = 8;
 
     public int type;
     public RoomBaseDataModel source;

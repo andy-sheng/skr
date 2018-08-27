@@ -15,8 +15,13 @@ import com.base.utils.display.DisplayUtils;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.room.model.RoomBaseDataModel;
+import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * 直播水印（观看）
@@ -28,8 +33,6 @@ public class WatchWaterMarkView extends RelativeLayout{
     private static final int TOP_MAGIN_LAND = DisplayUtils.dip2px(10f);
 
     private static final int RIGHT_MARGIN = DisplayUtils.dip2px(6.67f);
-
-    View rootView;
 
     ImageView mMiboImg;
 
@@ -62,9 +65,24 @@ public class WatchWaterMarkView extends RelativeLayout{
         init(context, attrs, defStyleAttr);
     }
 
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.water_mark_view, this);
-        rootView = findViewById(R.id.root_water_mark_view);
         mIvHuYaLogo = (BaseImageView) this.findViewById(R.id.iv_huya_logo);
         mMiLogoArea = (RelativeLayout) this.findViewById(R.id.rl_mi_logo_area);
         mMiboImg = (ImageView) this.findViewById(R.id.mi_logo_img);
@@ -104,8 +122,8 @@ public class WatchWaterMarkView extends RelativeLayout{
                 });
             }
             mMiLogoArea.setVisibility(GONE);
-            rootView.setBackground(null);
-            rootView.setPadding(0, 0, 0, 0);
+            setBackground(null);
+            setPadding(0, 0, 0, 0);
         } else {
             //正常直播
             mIsHuya = false;
@@ -113,8 +131,8 @@ public class WatchWaterMarkView extends RelativeLayout{
             mIvHuYaLogo.setVisibility(GONE);
             mMiboImg.setVisibility(VISIBLE);
             mMiLogoView.setText(String.valueOf(myRoomData.getUid()));
-            rootView.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.live_mibologo_bg));
-            rootView.setPadding(DisplayUtils.dip2px(7.33f), 0, DisplayUtils.dip2px(7.33f), 0);
+            setBackground(GlobalData.app().getResources().getDrawable(R.drawable.live_mibologo_bg));
+            setPadding(DisplayUtils.dip2px(7.33f), 0, DisplayUtils.dip2px(7.33f), 0);
         }
     }
 
@@ -144,6 +162,19 @@ public class WatchWaterMarkView extends RelativeLayout{
         this.mIsLandscape = isLandscape;
         if(mIsHuya){
             adjustPosition();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(RoomDataChangeEvent event) {
+        if (event != null && event.source != null) {
+            switch (event.type) {
+                case RoomDataChangeEvent.TYPE_CHANGE_THIRD_PARTY_INFO:
+                    setRoomData(event.source);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
