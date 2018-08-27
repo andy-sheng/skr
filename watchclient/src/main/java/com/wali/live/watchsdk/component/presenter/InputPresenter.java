@@ -433,8 +433,16 @@ public abstract class InputPresenter<VIEW extends InputPresenter.IView>
 
         if (mMyRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
             long huyaAnchorId = mMyRoomData.getHuyaInfo() == null ? 0 : mMyRoomData.getHuyaInfo().getUuid();
-            mLiveRoomChatMsgManager.sendHuyaBarrageMessageAsync(msg, type,
-                    mMyRoomData.getRoomId(), mMyRoomData.getUid(), huyaAnchorId, null, null, mMyRoomData.getLiveType(), globalRoomMsgExt, mMyRoomData.getHuyaInfo().getSource());
+            mLiveRoomChatMsgManager.sendHuyaBarrageMessageAsync(msg
+                    , type
+                    , mMyRoomData.getRoomId()
+                    , mMyRoomData.getUid()
+                    , huyaAnchorId
+                    , null
+                    , null
+                    , mMyRoomData.getLiveType()
+                    , globalRoomMsgExt
+                    , mMyRoomData.getHuyaInfo() != null ? mMyRoomData.getHuyaInfo().getSource() : 0);
         } else {
             mLiveRoomChatMsgManager.sendBarrageMessageAsync(msg, type,
                     mMyRoomData.getRoomId(), mMyRoomData.getUid(), null, null, globalRoomMsgExt);
