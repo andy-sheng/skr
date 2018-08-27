@@ -1,19 +1,24 @@
 package com.wali.live.watchsdk.watch.fragment;
 
 import android.support.annotation.CallSuper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.base.fragment.BaseEventBusFragment;
+import com.base.image.fresco.BaseImageView;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.common.gift.view.GiftAnimationView;
 import com.wali.live.common.gift.view.GiftContinueViewGroup;
 import com.wali.live.common.gift.view.GiftRoomEffectView;
+import com.wali.live.utils.AvatarUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.WatchSdkActivity;
 import com.wali.live.watchsdk.watch.WatchSdkActivityInterface;
+import com.wali.live.watchsdk.watch.model.RoomInfo;
 
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
@@ -27,6 +32,8 @@ public class BaseWatchFragment extends BaseEventBusFragment {
     protected GiftRoomEffectView mGiftRoomEffectView;
     protected GiftContinueViewGroup mGiftContinueViewGroup;
     protected GiftAnimationView mGiftAnimationView;
+    // 高斯蒙层
+    protected BaseImageView mMaskIv;
 
     protected WatchComponentController mController;
 
@@ -54,11 +61,24 @@ public class BaseWatchFragment extends BaseEventBusFragment {
         initGiftContinueViewGroup();
         initGiftRoomEffectView();
         initGiftAnimationView();
+        initMaskIv();
     }
 
     @Override
     protected boolean needForceActivityOrientation() {
         return false;
+    }
+
+    private void initMaskIv() {
+        // 封面模糊图
+        mMaskIv = $(R.id.mask_iv);
+        RoomInfo roomInfo = getWatchSdkInterface().getRoomInfo();
+
+        String url = roomInfo.getCoverUrl();
+        if (TextUtils.isEmpty(url)) {
+            url = AvatarUtils.getAvatarUrlByUidTs(roomInfo.getPlayerId(), AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, roomInfo.getAvatar());
+        }
+        AvatarUtils.loadAvatarByUrl(mMaskIv, url, false, true, R.drawable.rect_loading_bg_24292d);
     }
 
     protected void initGiftRoomEffectView() {
@@ -96,7 +116,9 @@ public class BaseWatchFragment extends BaseEventBusFragment {
     }
 
     public void playerReadyEvent() {
-
+        if (mMaskIv.getVisibility() == View.VISIBLE) {
+            mMaskIv.setVisibility(View.GONE);
+        }
     }
 
     public void switchRoom() {
