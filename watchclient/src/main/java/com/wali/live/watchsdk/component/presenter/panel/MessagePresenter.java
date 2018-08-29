@@ -156,7 +156,9 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
 
     public void startPresenter(int mode) {
         super.startPresenter();
-        EventBus.getDefault().register(this);
+        if(!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         if (mode == MODE_FOCUS) {
             switchToFocusMode();
         } else if (mode == MODE_UN_FOCUS) {
@@ -167,7 +169,9 @@ public class MessagePresenter extends BaseSdkRxPresenter<MessagePanel.IView>
     @Override
     public void stopPresenter() {
         super.stopPresenter();
-        EventBus.getDefault().unregister(this);
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         if (mFocusPuller != null) {
             mFocusPuller.reset();
         }
