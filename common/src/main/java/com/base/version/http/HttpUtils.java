@@ -188,6 +188,8 @@ public class HttpUtils {
             conn.setConnectTimeout(CONNECTION_TIMEOUT);
             conn.setReadTimeout(READ_TIMEOUT);
             HttpURLConnection.setFollowRedirects(true);
+            conn.setRequestProperty("Accept-Encoding", "identity");
+            conn.setUseCaches(false);
             conn.connect();
             input = conn.getInputStream();
 
