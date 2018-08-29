@@ -11,8 +11,8 @@
         android:id="@+id/iv_huya_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
 
     <RelativeLayout
         android:visibility="visible"
@@ -21,8 +21,11 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true">
+        android:paddingLeft="@dimen/view_dimen_22"
+        android:paddingRight="@dimen/view_dimen_22"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/live_mibologo_bg">
         <ImageView
             android:id="@+id/mi_logo_img"
             android:layout_width="wrap_content"

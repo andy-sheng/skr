@@ -1,6 +1,7 @@
 package com.wali.live.watchsdk.component.view;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +46,9 @@ public class WatchWaterMarkView extends RelativeLayout{
 
     TextView mLiveTypeView;
 
-    RelativeLayout mMiLogoArea;
+    protected RelativeLayout mMiLogoArea;
 
-    BaseImageView mIvHuYaLogo;
+    protected BaseImageView mIvHuYaLogo;
 
     private boolean mIsLandscape = false;
     private boolean mIsHuya = false;
@@ -81,7 +82,8 @@ public class WatchWaterMarkView extends RelativeLayout{
         }
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+    @CallSuper
+    protected void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.water_mark_view, this);
         mIvHuYaLogo = (BaseImageView) this.findViewById(R.id.iv_huya_logo);
         mMiLogoArea = (RelativeLayout) this.findViewById(R.id.rl_mi_logo_area);
@@ -122,8 +124,6 @@ public class WatchWaterMarkView extends RelativeLayout{
                 });
             }
             mMiLogoArea.setVisibility(GONE);
-            setBackground(null);
-            setPadding(0, 0, 0, 0);
         } else {
             //正常直播
             mIsHuya = false;
@@ -131,8 +131,6 @@ public class WatchWaterMarkView extends RelativeLayout{
             mIvHuYaLogo.setVisibility(GONE);
             mMiboImg.setVisibility(VISIBLE);
             mMiLogoView.setText(String.valueOf(myRoomData.getUid()));
-            setBackground(GlobalData.app().getResources().getDrawable(R.drawable.live_mibologo_bg));
-            setPadding(DisplayUtils.dip2px(7.33f), 0, DisplayUtils.dip2px(7.33f), 0);
         }
     }
 
