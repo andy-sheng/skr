@@ -98,7 +98,7 @@ public class WatchWaterMarkView extends RelativeLayout{
         if (myRoomData != null && myRoomData.getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
             //虎牙直播
             mIsHuya = true;
-            adjustPosition();
+         //   adjustPosition();
             mIvHuYaLogo.setVisibility(VISIBLE);
 
             if (myRoomData.getHuyaInfo() != null && myRoomData.getHuyaInfo().hasLogoUrl()) {
@@ -137,29 +137,33 @@ public class WatchWaterMarkView extends RelativeLayout{
     public static final float THIRD_LOGO_TOP_MARGIN = 140f + 22f;
 
     private void adjustPosition() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+        // 旧版本直播间会将第三方游戏直播的logo调整到视频右上角（而非秀场直播时整个区域的右上角）
+        // 新版游戏直播直接放到视频区域的左下角　不需要这个位置调整了
+        // type不准的游戏直播跟秀场直播的logo位置统一
 
-        if (mIsLandscape) {
-            layoutParams.topMargin = TOP_MAGIN_LAND;
-            layoutParams.rightMargin = RIGHT_MARGIN;
-            RelativeLayout.LayoutParams ivHuYaLogoLayoutParams = (RelativeLayout.LayoutParams) mIvHuYaLogo.getLayoutParams();
-            ivHuYaLogoLayoutParams.setMargins(0, 0, 0, 0);
-        } else {
-            layoutParams.topMargin = TOP_MAGIN_PORT;
-            layoutParams.rightMargin = RIGHT_MARGIN;
-
-            RelativeLayout.LayoutParams ivHuYaLogoLayoutParams = (RelativeLayout.LayoutParams) mIvHuYaLogo.getLayoutParams();
-            int targetMargin = DisplayUtils.dip2px(THIRD_LOGO_TOP_MARGIN);
-            ivHuYaLogoLayoutParams.setMargins(0, targetMargin, 0, 0);
-        }
-
-        setLayoutParams(layoutParams);
+//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+//
+//        if (mIsLandscape) {
+//            layoutParams.topMargin = TOP_MAGIN_LAND;
+//            layoutParams.rightMargin = RIGHT_MARGIN;
+//            RelativeLayout.LayoutParams ivHuYaLogoLayoutParams = (RelativeLayout.LayoutParams) mIvHuYaLogo.getLayoutParams();
+//            ivHuYaLogoLayoutParams.setMargins(0, 0, 0, 0);
+//        } else {
+//            layoutParams.topMargin = TOP_MAGIN_PORT;
+//            layoutParams.rightMargin = RIGHT_MARGIN;
+//
+//            RelativeLayout.LayoutParams ivHuYaLogoLayoutParams = (RelativeLayout.LayoutParams) mIvHuYaLogo.getLayoutParams();
+//            int targetMargin = DisplayUtils.dip2px(THIRD_LOGO_TOP_MARGIN);
+//            ivHuYaLogoLayoutParams.setMargins(0, targetMargin, 0, 0);
+//        }
+//
+//        setLayoutParams(layoutParams);
     }
 
     public void onOrientation(boolean isLandscape){
         this.mIsLandscape = isLandscape;
         if(mIsHuya){
-            adjustPosition();
+           // adjustPosition();
         }
     }
 
