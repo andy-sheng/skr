@@ -11,10 +11,12 @@ import com.base.log.MyLog;
 import com.base.utils.SelfUpdateManager;
 import com.base.utils.network.NetworkUtils;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.api.LiveManager;
 import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.event.EventClass;
 import com.wali.live.receiver.NetworkReceiver;
+import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.videodetail.data.PullStreamerPresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -94,6 +96,21 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
     }
 
     @Override
+    protected boolean canFill() {
+        if (mController instanceof WatchComponentController) {
+            WatchComponentController watchComponentController = (WatchComponentController) mController;
+            if (watchComponentController.getRoomBaseDataModel() != null) {
+                int type = watchComponentController.getRoomBaseDataModel().getLiveType();
+                if (type == LiveManager.TYPE_LIVE_GAME
+                        || type == LiveManager.TYPE_LIVE_HUYA) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     protected final void doStartPlay() {
         MyLog.d(TAG, " doStartPlay");
         requestAudioFocus();
@@ -157,7 +174,7 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
     }
 
     public boolean isPause() {
-        if(mStreamerPresenter != null && mStreamerPresenter.isPaused()) {
+        if (mStreamerPresenter != null && mStreamerPresenter.isPaused()) {
             return true;
         }
 
@@ -165,7 +182,7 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
     }
 
     public void startReconnect() {
-        if(mStreamerPresenter.isStarted()) {
+        if (mStreamerPresenter.isStarted()) {
             mStreamerPresenter.startReconnect();
         }
     }

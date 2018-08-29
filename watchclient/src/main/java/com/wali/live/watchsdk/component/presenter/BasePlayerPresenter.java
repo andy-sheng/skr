@@ -83,7 +83,7 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
 
     private void updateGravity() {
         if (mStreamerPresenter != null && mSurfaceWidth != 0 && mSurfaceHeight != 0) {
-            if (CommonUtils.isNeedFill(mSurfaceWidth, mSurfaceHeight, mVideoWidth, mVideoHeight)) {
+            if (CommonUtils.isNeedFill(mSurfaceWidth, mSurfaceHeight, mVideoWidth, mVideoHeight) && canFill()) {
                 mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFill, mSurfaceWidth, mSurfaceHeight);
             } else {
                 mStreamerPresenter.setGravity(mView, Player.SurfaceGravity.SurfaceGravityResizeAspectFit, mSurfaceWidth, mSurfaceHeight);
@@ -94,6 +94,10 @@ public abstract class BasePlayerPresenter<VIEW, STREAMER extends PullStreamerPre
                         mSurfaceWidth, mSurfaceHeight);
             }
         }
+    }
+
+    protected boolean canFill(){
+        return true;
     }
 
     @Override
