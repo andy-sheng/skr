@@ -87,13 +87,13 @@ public class GameInfoPopView extends RelativeLayout{
                 if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
                     // 状态是未下载
                     clickDownloadStatistic();
-                    CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
+                    CustomDownloadManager.getInstance().beginDownload(item, getContext());
 
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
                     // 正在下载中的包再次点击不作暂停处理
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
 
-                    CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
+                    CustomDownloadManager.getInstance().beginDownload(item, getContext());
 
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
                     if (mOnInstallOrLaunchListener != null) {
@@ -105,7 +105,7 @@ public class GameInfoPopView extends RelativeLayout{
                         // 安装失败，重新下载
                         ToastUtils.showToast("apk包解析失败，重新下载");
                         mApkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
-                        CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
+                        CustomDownloadManager.getInstance().beginDownload(item, getContext());
                     }
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
                     if (mOnInstallOrLaunchListener != null) {
