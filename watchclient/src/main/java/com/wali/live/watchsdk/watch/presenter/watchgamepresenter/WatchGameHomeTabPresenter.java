@@ -11,6 +11,8 @@ import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.download.GameDownloadOptControl;
@@ -86,13 +88,24 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     public void onEventMainThread(RoomDataChangeEvent event) {
         switch (event.type) {
             case RoomDataChangeEvent.TYPE_CHANGE_GAME_INFO: {
-                if (mView != null) {
-                    mView.updateUi(mGameInfoModel);
-                }
+
+                mView.updateUi(mGameInfoModel);
             }
             break;
             default:
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.UpdateGameInfoStatus event) {
+        if(event == null) {
+            return;
+        }
+
+        if(mView != null
+                && !mIsDownLoadByGc) {
+            mView.checkInstallOrUpdateByZB(mGameInfoModel);
         }
     }
 
@@ -162,7 +175,8 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.TaskEvent event) {
-        if (mIsDownLoadByGc || mGameInfoModel == null || event.downloadKey == null) {
+        if (mIsDownLoadByGc
+                || mGameInfoModel == null || event.downloadKey == null) {
             return;
         }
         String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
@@ -201,6 +215,10 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
             String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl());
             if (PackageUtils.tryInstall(apkPath)) {
                 postEvent(MSG_PLAYER_PAUSE);
+            } else {
+                if(mView != null) {
+                    mView.notifyTryInstallFail();
+                }
             }
         } else {
         }
@@ -214,6 +232,13 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
         }else {
             return false;
         }
+    }
+
+    @Override
+    public void checkInstallOrUpdate() {
+        //变化了应该现发起向游戏中心那边查询下状态
+        //如果查寻失败再走助手下载那一套
+        GameDownloadOptControl.tryQueryGameDownStatus(mGameInfoModel);
     }
 
     private void clickDownloadStatistic() {

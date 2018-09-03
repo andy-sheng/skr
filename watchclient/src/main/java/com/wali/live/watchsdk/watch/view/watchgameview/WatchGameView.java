@@ -27,6 +27,7 @@ import com.wali.live.watchsdk.component.presenter.WatchPlayerPresenter;
 import com.wali.live.watchsdk.component.view.GameBarrageView;
 import com.wali.live.watchsdk.component.view.InputAreaView;
 import com.wali.live.watchsdk.envelope.SendEnvelopeFragment;
+import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.BaseEnterRoomSyncResPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameNewBarrageViewPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameBottomEditPresenter;

@@ -143,6 +143,17 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 mCallback.notifyGameInstallOpt(type, gameId, packageName, apkUrl);
             }
         }
+
+        @Override
+        public boolean onEventQueryGameDownloadstatus(long gameId, String packageName, String apkUrl) throws RemoteException {
+            Logger.w(TAG, "onEventQueryGameDownloadstatus");
+
+            if (mCallback != null) {
+                return mCallback.notifyQueryGameDownloadStatus(gameId, packageName, apkUrl);
+            }
+
+            return false;
+        }
     };
 
     private static MiLiveSdkServiceProxy sInstance;

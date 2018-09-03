@@ -1070,6 +1070,43 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         return aidlSuccess;
     }
 
+    @WorkerThread
+    public boolean onEventQueryGameDownloadStatus(final int channelId, final long gameId, final String packageName, final String apkUrl) {
+        MyLog.w(TAG, "onEventGameInstallOpt type="
+                + ", gameId:"
+                + gameId + ", packageName:"
+                + packageName
+                + ", aokUrl:"
+                + apkUrl
+                + ", channelId:"
+                + channelId);
+
+        boolean aidlSuccess = false;
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+        if(callbackList != null) {
+            MyLog.w(TAG, "callbackList != null");
+            int n = callbackList.beginBroadcast();
+            for (int i = 0; i < n; i++) {
+                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                try {
+                    aidlSuccess = callback.onEventQueryGameDownloadstatus(gameId, packageName, apkUrl);
+                } catch (Exception e) {
+                    MyLog.v(TAG, "dead callback.");
+                    deadCallback.add(callback);
+                }
+            }
+            callbackList.finishBroadcast();
+            for (IMiLiveSdkEventCallback callback : deadCallback) {
+                MyLog.v(TAG, "unregister event callback.");
+                callbackList.unregister(callback);
+            }
+        }
+
+        MyLog.w(TAG, "onEventQueryGameDownloadStatus aidl success=" + aidlSuccess);
+        return aidlSuccess;
+    }
+
     public void onEventVerifyFailure(final int channelId, final int code) {
         if (mAARCallback != null) {
             mAARCallback.notifyVerifyFailure(code);

@@ -6,7 +6,10 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
+
+import org.greenrobot.eventbus.EventBus;
 
 import rx.Observable;
 import rx.Observer;
@@ -33,7 +36,53 @@ public class GameDownloadOptControl {
     public static final int TYPE_GAME_INSTALLING= 8;//待定
 
     private static Subscription mDownloadSubscription;
+    private static Subscription mQueryGameDownStatusSubscription;
 
+    /**
+     * 如果成功就交给宿主的回调
+     * 如果不成功抛出eventbus事件
+     * @param model
+     */
+    public static void tryQueryGameDownStatus(final GameInfoModel model) {
+        if(model == null) {
+            return;
+        }
+        MyLog.d(TAG, "game info tostirng:" + model.toString());
+        if (mQueryGameDownStatusSubscription != null && !mQueryGameDownStatusSubscription.isUnsubscribed()) {
+            return;
+        }
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                boolean isLaunshSucess = MiLiveSdkBinder.getInstance().onEventQueryGameDownloadStatus(HostChannelManager.getInstance().getChannelId()
+                        , model.getGameId()
+                        , model.getPackageName()
+                        , model.getPackageUrl());
+                subscriber.onNext(isLaunshSucess);
+                subscriber.onCompleted();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.d(TAG, e);
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if(!aBoolean) {
+                            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus());
+                        }
+                    }
+                });
+    }
 
     public static void tryDownloadGame(final int type, final GameInfoModel model) {
         if(model == null) {
