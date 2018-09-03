@@ -134,6 +134,15 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                 mCallback.notifyRecvInfo(type, json);
             }
         }
+
+        @Override
+        public void onEventGameInstallOpt(int type, long gameId, String packageName, String apkUrl) throws RemoteException {
+            Logger.w(TAG, "onEventGameInstallOpt");
+
+            if (mCallback != null) {
+                mCallback.notifyGameInstallOpt(type, gameId, packageName, apkUrl);
+            }
+        }
     };
 
     private static MiLiveSdkServiceProxy sInstance;
@@ -449,6 +458,25 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             } catch (RemoteException e) {
                 mClearAccountFlag = true;
                 resolveException(e, IMiLiveSdk.ICallback.CLEAR_ACCOUNT_AIDL);
+            }
+        }
+    }
+
+    public void updateGameDownloadstatus(final long gameId, final int type, final int progress) {
+        Logger.w(TAG, "updateGameDownloadstatus");
+        if (mRemoteService == null) {
+           //TODO
+            resolveNullService(IMiLiveSdk.ICallback.UPDATE_GAME_DOWNLOAD_STATUS);
+        } else {
+            try {
+                mRemoteService.updateGameDownloadstatus( MiLiveSdkController.getInstance().getChannelId()
+                        , GlobalData.app().getPackageName()
+                        , MiLiveSdkController.getInstance().getChannelSecret()
+                        , gameId
+                        , type
+                        , progress);
+            } catch (RemoteException e) {
+
             }
         }
     }

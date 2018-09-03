@@ -122,6 +122,14 @@ public interface IMiLiveSdk {
     void getFollowingLiveList(IFollowingLivesCallback callback);
 
     /**
+     * 下载游戏的回调
+     * @param gameId
+     * @param type
+     * @param progress
+     */
+    void updateGameDownloadstatus(long gameId, int type, int progress);
+
+    /**
      * sdk 上层应用回调
      */
     @Keep

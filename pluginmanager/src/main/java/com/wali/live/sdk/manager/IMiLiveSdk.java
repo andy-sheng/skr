@@ -185,6 +185,8 @@ public interface IMiLiveSdk {
      */
     void openContestWithdrawals(Activity activity, IAssistantCallback callback);
 
+    void updateGameDownloadstatus(IAssistantCallback callback, long gameId, int type, int progress);
+
     /**
      * 第三方登录
      *
@@ -313,6 +315,8 @@ public interface IMiLiveSdk {
          */
         int DO_FEED_BACK = 1301;
 
+        int UPDATE_GAME_DOWNLOAD_STATUS = 1302;
+
         /**
          * 登录相关接口的返回码
          */
@@ -362,6 +366,8 @@ public interface IMiLiveSdk {
          * 通知上层分享
          */
         void notifyRecvInfo(int type,String json);
+
+        void notifyGameInstallOpt(int type, long gameId, String packageName, String apkUrl);
     }
 
     /**
@@ -487,6 +493,10 @@ public interface IMiLiveSdk {
         @Override
         public void notifyRecvInfo(int type, String json) {
 
+        }
+
+        @Override
+        public void notifyGameInstallOpt(int type, long gameId, String packageName, String apkUrl) {
         }
     }
 }

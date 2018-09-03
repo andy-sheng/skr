@@ -491,12 +491,16 @@ public class CustomDownloadManager {
         public int status;
         public int progress;
         public int reason;
+        public long gameId;
+        public boolean isByGame;
         public static final int STATUS_NO_DOWNLOAD = 1; //未下载
         public static final int STATUS_DOWNLOADING = 2; //下载中
         public static final int STATUS_PAUSE_DOWNLOAD = 5; //暂停下载
         public static final int STATUS_DOWNLOAD_COMPELED = 3;//已下载待安装
         public static final int STATUS_LAUNCH = 4;//启动
         public static final int STATUS_REMOVE = 6;//卸载
+        public static final int STATUS_CONTINUE = 7;//继续
+        public static final int STATUS_INSTALLING = 8;
 
         public ApkStatusEvent(String downloadKey, int status) {
             this.downloadKey = downloadKey;
@@ -506,6 +510,10 @@ public class CustomDownloadManager {
         public ApkStatusEvent(String packageName, String downloadKey, int status) {
             this.packageName = packageName;
             this.downloadKey = downloadKey;
+            this.status = status;
+        }
+
+        public ApkStatusEvent(int status) {
             this.status = status;
         }
     }

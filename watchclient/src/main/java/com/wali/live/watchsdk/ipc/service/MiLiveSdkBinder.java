@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
 import com.base.global.GlobalData;
@@ -39,6 +40,7 @@ import com.wali.live.watchsdk.list.RelationCaller;
 import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
+import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -320,6 +322,35 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                     e.printStackTrace();
                 }
 
+            }
+
+            @Override
+            public void postError() {
+            }
+
+            @Override
+            public void processFailure() {
+            }
+        });
+    }
+
+    @Override
+    public void updateGameDownloadstatus(int channelId, String packageName, String channelSecret, final long gameId, final int type, final int progress) throws RemoteException {
+        MyLog.d(TAG,"getLiveUid"
+                + " channelId=" + channelId
+                + " packageName=" + packageName
+                + " gameId=" + gameId
+                + ",type" + type
+                + ",progress: " + progress);
+
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                MyLog.d(TAG, "updateGameDownloadstatus postSuccess");
+                CustomDownloadManager.ApkStatusEvent apkStatusEvent = new CustomDownloadManager.ApkStatusEvent(type);
+                apkStatusEvent.progress = progress;
+                apkStatusEvent.gameId = gameId;
+                EventBus.getDefault().post(apkStatusEvent);
             }
 
             @Override
@@ -1001,6 +1032,44 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
+    @WorkerThread
+    public boolean onEventGameInstallOpt(final int channelId, final int type, final long gameId, final String packageName, final String aokUrl) {
+        MyLog.w(TAG, "onEventGameInstallOpt type="
+                + type
+                + ", gameId:"
+                + gameId + ", packageName:"
+                + packageName
+                + ", aokUrl:"
+                + aokUrl
+                + ", channelId:"
+                + channelId);
+
+        boolean aidlSuccess = false;
+        List<IMiLiveSdkEventCallback> deadCallback = new ArrayList(1);
+        RemoteCallbackList<IMiLiveSdkEventCallback> callbackList = mEventCallBackListMap.get(channelId);
+        if (callbackList != null) {
+            MyLog.w(TAG, "callbackList != null");
+            int n = callbackList.beginBroadcast();
+            for (int i = 0; i < n; i++) {
+                IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
+                try {
+                    callback.onEventGameInstallOpt(type, gameId, packageName, aokUrl);
+                    aidlSuccess = true;
+                } catch (Exception e) {
+                    MyLog.v(TAG, "dead callback.");
+                    deadCallback.add(callback);
+                }
+            }
+            callbackList.finishBroadcast();
+            for (IMiLiveSdkEventCallback callback : deadCallback) {
+                MyLog.v(TAG, "unregister event callback.");
+                callbackList.unregister(callback);
+            }
+        }
+        MyLog.w(TAG, "onEventGameInstallOpt aidl success=" + aidlSuccess);
+        return aidlSuccess;
+    }
+
     public void onEventVerifyFailure(final int channelId, final int code) {
         if (mAARCallback != null) {
             mAARCallback.notifyVerifyFailure(code);
@@ -1243,7 +1312,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         });
     }
-
 
     public void onEventShare(final int channelId, final ShareInfo shareInfo) {
         MyLog.w(TAG, "onEventShare");

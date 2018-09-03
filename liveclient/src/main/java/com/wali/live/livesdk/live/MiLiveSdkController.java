@@ -159,6 +159,17 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
+    public void updateGameDownloadstatus(long gameId, int type, int progress) {
+        MyLog.d(TAG, "updateGameDownloadstatus");
+        checkHasInit();
+        try {
+            MiLiveSdkBinder.getInstance().updateGameDownloadstatus(mChannelId, mPackageName, mChannelSecret, gameId, type, progress);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void clearAccount() {
         checkHasInit();
         try {

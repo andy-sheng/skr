@@ -16,6 +16,7 @@ import com.base.global.GlobalData;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;
@@ -31,8 +32,11 @@ import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameNewBarrageV
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameBottomEditPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameTabPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameZTopPresenter;
+import com.wali.live.watchsdk.watch.receiver.WatchGameDownloadBroadcastReceiver;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static com.wali.live.component.BaseSdkController.MSG_NEW_GAME_WATCH_EXIST_CLICK;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
@@ -80,6 +84,8 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     private GameBarrageView mGameBarrageView;
     private GameNewBarrageViewPresenter mGameBarragePresenter;
 
+    private WatchGameDownloadBroadcastReceiver mWatchGameDownloadBroadcastReceiver;
+
     Runnable mResetRunnable = new Runnable() {
         @Override
         public void run() {
@@ -107,6 +113,18 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_PLAYER_RECONNECT);
         registerAction(MSG_SHOW_SEND_ENVELOPE);
+
+        EventBus.getDefault().register(this);
+
+        if(mWatchGameDownloadBroadcastReceiver == null) {
+            mWatchGameDownloadBroadcastReceiver = new WatchGameDownloadBroadcastReceiver();
+            if(mController.getRoomBaseDataModel() != null
+                    && mController.getRoomBaseDataModel().getGameInfoModel() != null) {
+                mWatchGameDownloadBroadcastReceiver.add(mController.getRoomBaseDataModel().getGameInfoModel().getGameId());
+            } else {
+                mWatchGameDownloadBroadcastReceiver.initRegister();
+            }
+        }
     }
 
     @Override
@@ -115,6 +133,12 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         if (mVideShowLayout != null) {
             mVideShowLayout.removeCallbacks(mResetRunnable);
         }
+
+        if(mWatchGameDownloadBroadcastReceiver != null) {
+            mWatchGameDownloadBroadcastReceiver.unRegister();
+        }
+
+        EventBus.getDefault().unregister(this);
     }
 
     public void setupView(boolean isLandscape) {
@@ -289,5 +313,20 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
                 return true;
         }
         return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(RoomDataChangeEvent event) {
+        switch (event.type) {
+            case RoomDataChangeEvent.TYPE_CHANGE_GAME_INFO: {
+                if(mWatchGameDownloadBroadcastReceiver != null
+                        && event.source.getGameInfoModel() != null) {
+                    mWatchGameDownloadBroadcastReceiver.add(event.source.getGameInfoModel().getGameId());
+                }
+            }
+            break;
+            default:
+                break;
+        }
     }
 }
