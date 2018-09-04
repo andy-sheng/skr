@@ -22,6 +22,8 @@ import com.base.preference.PreferenceUtils;
 import com.base.utils.MD5;
 import com.base.utils.WLReflect;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
+import com.wali.live.proto.GameCenterProto;
 import com.wali.live.utils.FileUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
@@ -525,6 +527,24 @@ public class CustomDownloadManager {
 
         public TaskEvent(String downloadKey, int status) {
             this.downloadKey = downloadKey;
+            this.status = status;
+        }
+    }
+
+    public static class InstallOrLaunchEvent{
+        public GameInfoModel mGameInfoModel;
+        public int status;
+        public int type;
+
+        public static final int STATTUS_INSTALL = 1;
+        public static final int STATTUS_LAUNCH = 2;
+
+        public static final int SUCCESS = 0;
+        public static final int FAILED = 1;
+
+        public InstallOrLaunchEvent(GameInfoModel mGameInfoModel, int type, int status){
+            this.mGameInfoModel = mGameInfoModel;
+            this.type = type;
             this.status = status;
         }
     }

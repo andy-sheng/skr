@@ -192,7 +192,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mInstallBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int flag = 0;
+                int flag = CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
                 if (mInstallBtn.getTag() != null) {
                     flag = (int) mInstallBtn.getTag();
                 }
@@ -342,6 +342,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                         mDownLoadProgressBar.setVisibility(GONE);
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.transparent_drawable));
+                        mInstallBtn.setTextColor(getResources().getColor(R.color.black));
                         mInstallBtn.setText("安装中");
                     default:
                         break;

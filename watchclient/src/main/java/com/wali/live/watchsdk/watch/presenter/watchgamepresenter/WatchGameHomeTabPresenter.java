@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.base.log.MyLog;
 import com.base.utils.MD5;
 import com.base.utils.system.PackageUtils;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.thornbirds.component.IParams;
@@ -31,6 +32,9 @@ import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkSta
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_INSTALL;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_LAUNCH;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.SUCCESS;
 
 /**
  * Created by vera on 2018/8/8.
@@ -99,11 +103,11 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.UpdateGameInfoStatus event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
-        if(mView != null
+        if (mView != null
                 && !mIsDownLoadByGc) {
             mView.checkInstallOrUpdateByZB(mGameInfoModel);
         }
@@ -117,9 +121,9 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
             return;
         }
 
-        if(event.isByGame) {
-            mIsDownLoadByGc= true;
-            if(mGameInfoModel.getGameId() == event.gameId) {
+        if (event.isByGame) {
+            mIsDownLoadByGc = true;
+            if (mGameInfoModel.getGameId() == event.gameId) {
                 mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
                 switch (event.status) {
                     case STATUS_DOWNLOADING:
@@ -185,6 +189,31 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CustomDownloadManager.InstallOrLaunchEvent event) {
+        if (event.mGameInfoModel == null) {
+            return;
+        }
+
+        if (event.mGameInfoModel.getGameId() == mGameInfoModel.getGameId()){
+            if (event.type == STATTUS_INSTALL) {
+                if (event.status == SUCCESS) {
+                    postEvent(MSG_PLAYER_PAUSE);
+                } else {
+                    if (mView != null) {
+                        mView.notifyTryInstallFail();
+                    }
+                }
+            } else if (event.type == STATTUS_LAUNCH) {
+                if (event.status == SUCCESS) {
+                    postEvent(MSG_PLAYER_PAUSE);
+                } else {
+                    ToastUtils.showToast("启动失败");
+                }
+            }
+        }
+    }
+
 
     @Override
     public void beginDownload(boolean isFirst) {
@@ -210,28 +239,36 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     @Override
     public void tryInstall() {
 
-        if(!mIsDownLoadByGc) {
+        if (!mIsDownLoadByGc) {
 //取暂停视频播放
             String apkPath = CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl());
             if (PackageUtils.tryInstall(apkPath)) {
                 postEvent(MSG_PLAYER_PAUSE);
             } else {
-                if(mView != null) {
+                if (mView != null) {
                     mView.notifyTryInstallFail();
                 }
             }
         } else {
+            // 通知上层应用,下载完成
+            GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_DOWNLOAD_COMPELED, mGameInfoModel);
         }
     }
 
     @Override
     public boolean tryLaunch() {
-        if(PackageUtils.tryLaunch(mGameInfoModel.getPackageName())){
-            postEvent(MSG_PLAYER_PAUSE);
+        if (!mIsDownLoadByGc) {
+            if (PackageUtils.tryLaunch(mGameInfoModel.getPackageName())) {
+                postEvent(MSG_PLAYER_PAUSE);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_INSTALL_FINISH, mGameInfoModel);
             return true;
-        }else {
-            return false;
         }
+
     }
 
     @Override

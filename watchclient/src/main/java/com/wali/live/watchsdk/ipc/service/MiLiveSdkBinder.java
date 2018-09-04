@@ -350,6 +350,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 CustomDownloadManager.ApkStatusEvent apkStatusEvent = new CustomDownloadManager.ApkStatusEvent(type);
                 apkStatusEvent.progress = progress;
                 apkStatusEvent.gameId = gameId;
+                apkStatusEvent.isByGame = true;
                 EventBus.getDefault().post(apkStatusEvent);
             }
 
