@@ -495,6 +495,7 @@ public class CustomDownloadManager {
         public int reason;
         public long gameId;
         public boolean isByGame;
+        public boolean isByQuery;
         public static final int STATUS_NO_DOWNLOAD = 1; //未下载
         public static final int STATUS_DOWNLOADING = 2; //下载中
         public static final int STATUS_PAUSE_DOWNLOAD = 5; //暂停下载

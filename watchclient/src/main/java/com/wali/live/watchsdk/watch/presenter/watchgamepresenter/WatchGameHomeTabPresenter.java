@@ -121,9 +121,10 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
             return;
         }
 
-        if (event.isByGame) {
-            mIsDownLoadByGc = true;
-            if (mGameInfoModel.getGameId() == event.gameId) {
+        if(event.isByGame) {
+            mIsDownLoadByGc= true;
+            if(mGameInfoModel.getGameId() == event.gameId
+                    && mGameInfoModel.getPackageName().equals(event.packageName)) {
                 mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
                 switch (event.status) {
                     case STATUS_DOWNLOADING:
@@ -141,6 +142,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
                 }
             }
         } else {
+            mIsDownLoadByGc= false;
             if (!TextUtils.isEmpty(event.downloadKey)) {
                 String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
                 if (event.downloadKey.equals(key)) {
@@ -224,15 +226,11 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
             type = GameDownloadOptControl.TYPE_GAME_BEGIN_DOWNLOAD;
         }
 
-        //TODO
-//        CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
-//        CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
         GameDownloadOptControl.tryDownloadGame(type, mGameInfoModel);
     }
 
     @Override
     public void pauseDownload() {
-//        CustomDownloadManager.getInstance().pauseDownload(mGameInfoModel.getPackageUrl());
         GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_PAUSE_DOWNLOAD, mGameInfoModel);
     }
 

@@ -473,7 +473,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
     }
 
-    public void updateGameDownloadstatus(final long gameId, final int type, final int progress) {
+    public void updateGameDownloadstatus(final long gameId, final int type, final int progress, final String gamePackageName, boolean isByQuery) {
         Logger.w(TAG, "updateGameDownloadstatus");
         if (mRemoteService == null) {
            //TODO
@@ -485,7 +485,9 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
                         , MiLiveSdkController.getInstance().getChannelSecret()
                         , gameId
                         , type
-                        , progress);
+                        , progress
+                        , gamePackageName
+                        , isByQuery);
             } catch (RemoteException e) {
 
             }

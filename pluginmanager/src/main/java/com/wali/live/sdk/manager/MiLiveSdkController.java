@@ -444,13 +444,13 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void updateGameDownloadstatus(IAssistantCallback callback, long gameId, int type, int progress) {
-        //TODO-这种方式暂时没用到
+    public void updateGameDownloadstatus(IAssistantCallback callback, long gameId, int type, int progress, String gamePackageName, boolean isByQuery) {
 //        if (!checkVersion(ACTION_UPDATE_GAME_DOWNLOAD_STATUS, callback)) {
 //            return;
 //        }
-//        checkHasInit();
-//        MiLiveSdkServiceProxy.getInstance().updateGameDownloadstatus(gameId, type, progress);
+//        Log.d(TAG, "updateGameDownloadstatus");
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().updateGameDownloadstatus(gameId, type, progress, gamePackageName, isByQuery);
     }
 
     /**

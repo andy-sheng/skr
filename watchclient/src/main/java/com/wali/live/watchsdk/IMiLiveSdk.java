@@ -127,7 +127,7 @@ public interface IMiLiveSdk {
      * @param type
      * @param progress
      */
-    void updateGameDownloadstatus(long gameId, int type, int progress);
+    void updateGameDownloadstatus(long gameId, int type, int progress, String packageName, boolean isByQuery);
 
     /**
      * sdk 上层应用回调

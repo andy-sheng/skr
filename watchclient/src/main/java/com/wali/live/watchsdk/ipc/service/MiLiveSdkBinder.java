@@ -335,7 +335,15 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @Override
-    public void updateGameDownloadstatus(int channelId, String packageName, String channelSecret, final long gameId, final int type, final int progress) throws RemoteException {
+    public void updateGameDownloadstatus(int channelId
+            , String packageName
+            , String channelSecret
+            , final long gameId
+            , final int type
+            , final int progress
+            , final String gamePackageName
+            , final boolean isByQuery) throws RemoteException {
+
         MyLog.d(TAG,"getLiveUid"
                 + " channelId=" + channelId
                 + " packageName=" + packageName
@@ -351,6 +359,8 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 apkStatusEvent.progress = progress;
                 apkStatusEvent.gameId = gameId;
                 apkStatusEvent.isByGame = true;
+                apkStatusEvent.packageName = gamePackageName;
+                apkStatusEvent.isByQuery = isByQuery;
                 EventBus.getDefault().post(apkStatusEvent);
             }
 

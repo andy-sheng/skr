@@ -185,7 +185,7 @@ public interface IMiLiveSdk {
      */
     void openContestWithdrawals(Activity activity, IAssistantCallback callback);
 
-    void updateGameDownloadstatus(IAssistantCallback callback, long gameId, int type, int progress);
+    void updateGameDownloadstatus(IAssistantCallback callback, long gameId, int type, int progress, String gamePageName, boolean isByQuery);
 
     /**
      * 第三方登录

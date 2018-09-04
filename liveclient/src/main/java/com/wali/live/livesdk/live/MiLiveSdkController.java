@@ -159,11 +159,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void updateGameDownloadstatus(long gameId, int type, int progress) {
+    public void updateGameDownloadstatus(long gameId, int type, int progress, String gamePackageName, boolean isByQuery) {
         MyLog.d(TAG, "updateGameDownloadstatus");
         checkHasInit();
         try {
-            MiLiveSdkBinder.getInstance().updateGameDownloadstatus(mChannelId, mPackageName, mChannelSecret, gameId, type, progress);
+            MiLiveSdkBinder.getInstance().updateGameDownloadstatus(mChannelId, mPackageName, mChannelSecret, gameId, type, progress, gamePackageName, isByQuery);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
