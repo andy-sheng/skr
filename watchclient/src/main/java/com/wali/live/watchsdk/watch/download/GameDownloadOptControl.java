@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.system.PackageUtils;
+import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.wali.live.watchsdk.eventbus.EventClass;
@@ -140,6 +141,7 @@ public class GameDownloadOptControl {
                                 if (PackageUtils.tryInstall(apkPath)) {
                                    EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_INSTALL, SUCCESS));
                                 } else {
+                                    ToastUtils.showToast("apk包解析失败，重新下载");
                                     EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_INSTALL, FAILED));
                                 }
                             } else if (type == TYPE_GAME_INSTALL_FINISH){
@@ -147,6 +149,7 @@ public class GameDownloadOptControl {
                                     EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_LAUNCH, SUCCESS));
                                 } else {
                                     EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_LAUNCH, FAILED));
+                                    ToastUtils.showToast("启动失败");
                                 }
                             }
                         }

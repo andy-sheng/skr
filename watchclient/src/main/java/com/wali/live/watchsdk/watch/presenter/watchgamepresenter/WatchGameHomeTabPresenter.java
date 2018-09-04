@@ -31,6 +31,7 @@ import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkSta
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_INSTALL;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_LAUNCH;
@@ -139,6 +140,9 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 //                        } else {
 //                        }
                         break;
+                    case STATUS_LAUNCH_SUCEESS:
+                        postEvent(MSG_PLAYER_PAUSE);
+                        break;
                 }
             }
         } else {
@@ -209,8 +213,6 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
             } else if (event.type == STATTUS_LAUNCH) {
                 if (event.status == SUCCESS) {
                     postEvent(MSG_PLAYER_PAUSE);
-                } else {
-                    ToastUtils.showToast("启动失败");
                 }
             }
         }
