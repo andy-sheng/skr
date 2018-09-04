@@ -328,7 +328,14 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
                         break;
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED:
+                        mDownLoadProgressBar.setVisibility(GONE);
+                        mInstallBtn.setText(R.string.download);
+                        mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
+                        break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS:
                         mDownLoadProgressBar.setVisibility(GONE);
                         mInstallBtn.setText("启动");
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);

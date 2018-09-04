@@ -92,8 +92,8 @@ public class GameInfoPopView extends RelativeLayout {
 
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
 
-                if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
-                    // 状态是未下载
+                if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED) {
+                    // 状态是未下载 或 下载失败
                     clickDownloadStatistic();
 //                    CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
                     GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_BEGIN_DOWNLOAD, mGameInfoModel);
@@ -113,7 +113,8 @@ public class GameInfoPopView extends RelativeLayout {
                     }
 
                     GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_DOWNLOAD_COMPELED, mGameInfoModel);
-                } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
+                } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS) {
+                    // 启动 或 成功启动
                     if (mOnInstallOrLaunchListener != null) {
                         mOnInstallOrLaunchListener.onInstallorLaunch();
                     }
@@ -243,7 +244,7 @@ public class GameInfoPopView extends RelativeLayout {
             mDownloadProgressBar.setProgress(progress);
             mBottomText.setText(R.string.game_info_pop_download);
 
-        } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
+        } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS) {
             // 已经安装了该游戏 隐藏这个浮窗
             setVisibility(GONE);
 

@@ -413,6 +413,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                     case CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD:
                     case CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD:
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED:
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED:
                         mView.updateInstallStatus(event.status, event.progress, event.reason);
                         break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:

@@ -29,6 +29,7 @@ import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticI
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS;
@@ -139,6 +140,8 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 //                            postEvent(MSG_PLAYER_PAUSE);
 //                        } else {
 //                        }
+                        break;
+                    case STATUS_DOWNLOAD_FAILED:
                         break;
                     case STATUS_LAUNCH_SUCEESS:
                         postEvent(MSG_PLAYER_PAUSE);

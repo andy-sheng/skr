@@ -506,6 +506,7 @@ public class CustomDownloadManager {
         public static final int STATUS_INSTALLING = 8;
 
         public static final int STATUS_LAUNCH_SUCEESS = 9; //启动成功
+        public static final int STATUS_DOWNLOAD_FAILED = 10; //下载失败
 
         public ApkStatusEvent(String downloadKey, int status) {
             this.downloadKey = downloadKey;
