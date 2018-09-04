@@ -136,12 +136,14 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
         }
 
         @Override
-        public void onEventGameInstallOpt(int type, long gameId, String packageName, String apkUrl) throws RemoteException {
+        public boolean onEventGameInstallOpt(int type, long gameId, String packageName, String apkUrl) throws RemoteException {
             Logger.w(TAG, "onEventGameInstallOpt");
 
             if (mCallback != null) {
-                mCallback.notifyGameInstallOpt(type, gameId, packageName, apkUrl);
+                return mCallback.notifyGameInstallOpt(type, gameId, packageName, apkUrl);
             }
+
+            return false;
         }
 
         @Override

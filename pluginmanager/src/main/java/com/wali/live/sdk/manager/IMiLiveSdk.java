@@ -367,7 +367,7 @@ public interface IMiLiveSdk {
          */
         void notifyRecvInfo(int type,String json);
 
-        void notifyGameInstallOpt(int type, long gameId, String packageName, String apkUrl);
+        boolean notifyGameInstallOpt(int type, long gameId, String packageName, String apkUrl);
 
         boolean notifyQueryGameDownloadStatus(long gameId, String packageName, String apkUrl);
     }
@@ -498,7 +498,8 @@ public interface IMiLiveSdk {
         }
 
         @Override
-        public void notifyGameInstallOpt(int type, long gameId, String packageName, String apkUrl) {
+        public boolean notifyGameInstallOpt(int type, long gameId, String packageName, String apkUrl) {
+            return false;
         }
 
         @Override

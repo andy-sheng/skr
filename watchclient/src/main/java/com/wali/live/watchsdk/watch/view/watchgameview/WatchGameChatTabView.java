@@ -64,7 +64,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
     private boolean mEnableFollow = true;
 
-    private boolean mIsDownLoadByGc = true;
+    private boolean mIsDownLoadByGc = false;
     private WatchComponentController mController;
 
     public WatchGameChatTabView(Context context, WatchComponentController componentController) {

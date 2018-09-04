@@ -1064,8 +1064,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             for (int i = 0; i < n; i++) {
                 IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
                 try {
-                    callback.onEventGameInstallOpt(type, gameId, packageName, aokUrl);
-                    aidlSuccess = true;
+                    aidlSuccess = callback.onEventGameInstallOpt(type, gameId, packageName, aokUrl);
                 } catch (Exception e) {
                     MyLog.v(TAG, "dead callback.");
                     deadCallback.add(callback);

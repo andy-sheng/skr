@@ -13,6 +13,7 @@ import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.HttpImage;
+import com.base.log.MyLog;
 import com.base.utils.MD5;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
@@ -42,6 +43,8 @@ import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.Instal
  */
 
 public class GameInfoPopView extends RelativeLayout {
+    private static final String TAG = "GameInfoPopView";
+
     private GameInfoModel mGameInfoModel;
     private int mApkStatus = -1;
 
@@ -230,6 +233,7 @@ public class GameInfoPopView extends RelativeLayout {
     }
 
     private void handleStatus(int apkStatus, int progress) {
+        MyLog.d(TAG, "handleStatus");
         mApkStatus = apkStatus;
         if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
             // 游戏被卸载 重新检查状态

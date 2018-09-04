@@ -76,6 +76,8 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     private boolean mIsLandscape;
 
+    private boolean mIsDownloadByGc;
+
     public WatchGameZTopPresenter(IEventController controller) {
         super(controller);
         if (controller != null && controller instanceof WatchComponentController) {
@@ -405,9 +407,10 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
             return;
         }
 
-        if(event.isByGame) {
+        if(event.isByGame || mIsDownloadByGc) {
             if(event.gameId == mMyRoomData.getGameInfoModel().getGameId()
                     && event.packageName.equals(mMyRoomData.getGameInfoModel().getPackageName())) {
+                mIsDownloadByGc = true;
                 switch (event.status) {
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING:
                     case CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD:
@@ -432,6 +435,7 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 }
             }
         } else {
+            mIsDownloadByGc = false;
             String key = MD5.MD5_32(mMyRoomData.getGameInfoModel().getPackageUrl());
             if (!TextUtils.isEmpty(event.downloadKey)) {
                 if (event.downloadKey.equals(key)) {

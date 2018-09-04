@@ -34,6 +34,7 @@ import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkSta
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_INSTALL;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_LAUNCH;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.SUCCESS;
@@ -123,16 +124,18 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
             return;
         }
 
-        if(event.isByGame) {
-            mIsDownLoadByGc= true;
+        if(event.isByGame || mIsDownLoadByGc) {
             if(mGameInfoModel.getGameId() == event.gameId
                     && mGameInfoModel.getPackageName().equals(event.packageName)) {
+                mIsDownLoadByGc= true;
                 mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
                 switch (event.status) {
                     case STATUS_DOWNLOADING:
                     case STATUS_PAUSE_DOWNLOAD:
                     case STATUS_INSTALLING:
                     case STATUS_LAUNCH:
+                    case STATUS_DOWNLOAD_FAILED:
+                    case STATUS_REMOVE:
                         break;
                     case STATUS_DOWNLOAD_COMPELED:
                         //TODO-
@@ -140,8 +143,6 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 //                            postEvent(MSG_PLAYER_PAUSE);
 //                        } else {
 //                        }
-                        break;
-                    case STATUS_DOWNLOAD_FAILED:
                         break;
                     case STATUS_LAUNCH_SUCEESS:
                         postEvent(MSG_PLAYER_PAUSE);
@@ -174,7 +175,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
                 if (event.packageName.equals(mGameInfoModel.getPackageName())) {
                     mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
                 }
-            } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
+            } else if (event.status == STATUS_REMOVE) {
                 // 卸载应用
                 if (TextUtils.isEmpty(event.packageName)) {
                     return;

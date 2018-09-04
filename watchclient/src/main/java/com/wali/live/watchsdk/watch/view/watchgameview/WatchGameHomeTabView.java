@@ -346,10 +346,11 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                         checkInstalledOrUpdate(gameInfoModel);
                         break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING:
-                        mDownLoadProgressBar.setVisibility(GONE);
+                        mDownLoadProgressBar.setVisibility(VISIBLE);
+                        mDownLoadProgressBar.setProgress(progress);
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.transparent_drawable));
-                        mInstallBtn.setTextColor(getResources().getColor(R.color.black));
+//                        mInstallBtn.setTextColor(getResources().getColor(R.color.black));
                         mInstallBtn.setText("安装中");
                     default:
                         break;
