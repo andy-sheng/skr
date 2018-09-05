@@ -1,8 +1,5 @@
 package com.wali.live.watchsdk.watch.download;
 
-import android.content.Intent;
-
-import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
@@ -20,11 +17,13 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.FAILED;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_INSTALL;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_LAUNCH;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.SUCCESS;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.FAILED;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_BEGIN_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_CONTINUE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_INSTALL;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_LAUNCH;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_PAUSE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.SUCCESS;
 
 /**
  * Created by zhujianning on 18-8-30.
@@ -147,25 +146,25 @@ public class GameDownloadOptControl {
     }
 
     private static void downloadByMiLive(int type, GameInfoModel model) {
-        if (type == TYPE_GAME_BEGIN_DOWNLOAD
-                || type == TYPE_GAME_CONTINUE_DOWNLOAD) {
-            CustomDownloadManager.Item item = new CustomDownloadManager.Item(model.getPackageUrl(), model.getGameName());
-            CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
+        if (type == TYPE_GAME_BEGIN_DOWNLOAD) {
+            EventBus.getDefault().post(new CustomDownloadManager.RequestGameDownloadByMiLiveEvent(model, STATTUS_BEGIN_DOWNLOAD));
+        } else if(type == TYPE_GAME_CONTINUE_DOWNLOAD) {
+            EventBus.getDefault().post(new CustomDownloadManager.RequestGameDownloadByMiLiveEvent(model, STATTUS_CONTINUE_DOWNLOAD));
         } else if (type == TYPE_GAME_PAUSE_DOWNLOAD) {
-            CustomDownloadManager.getInstance().pauseDownload(model.getPackageUrl());
+            EventBus.getDefault().post(new CustomDownloadManager.RequestGameDownloadByMiLiveEvent(model, STATTUS_PAUSE_DOWNLOAD));
         } else if (type == TYPE_GAME_DOWNLOAD_COMPELED) {
             String apkPath = CustomDownloadManager.getInstance().getDownloadPath(model.getPackageUrl());
             if (PackageUtils.tryInstall(apkPath)) {
-                EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_INSTALL, SUCCESS));
+                EventBus.getDefault().post(new CustomDownloadManager.RequestGameDownloadByMiLiveEvent(model, STATTUS_INSTALL, SUCCESS));
             } else {
                 ToastUtils.showToast("apk包解析失败，重新下载");
-                EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_INSTALL, FAILED));
+                EventBus.getDefault().post(new CustomDownloadManager.RequestGameDownloadByMiLiveEvent(model, STATTUS_INSTALL, FAILED));
             }
         } else if (type == TYPE_GAME_INSTALL_FINISH){
             if (PackageUtils.tryLaunch(model.getPackageName())) {
-                EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_LAUNCH, SUCCESS));
+                EventBus.getDefault().post(new CustomDownloadManager.RequestGameDownloadByMiLiveEvent(model, STATTUS_LAUNCH, SUCCESS));
             } else {
-                EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_LAUNCH, FAILED));
+                EventBus.getDefault().post(new CustomDownloadManager.RequestGameDownloadByMiLiveEvent(model, STATTUS_LAUNCH, FAILED));
                 ToastUtils.showToast("启动失败");
             }
         }

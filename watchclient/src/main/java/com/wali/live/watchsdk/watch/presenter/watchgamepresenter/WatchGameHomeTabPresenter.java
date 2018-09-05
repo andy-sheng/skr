@@ -6,14 +6,12 @@ import android.text.TextUtils;
 import com.base.log.MyLog;
 import com.base.utils.MD5;
 import com.base.utils.system.PackageUtils;
-import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.eventbus.EventClass;
-import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.download.GameDownloadOptControl;
@@ -35,9 +33,12 @@ import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkSta
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_INSTALL;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.STATTUS_LAUNCH;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.InstallOrLaunchEvent.SUCCESS;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_BEGIN_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_CONTINUE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_INSTALL;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_LAUNCH;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_PAUSE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.SUCCESS;
 
 /**
  * Created by vera on 2018/8/8.
@@ -112,6 +113,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
         if (mView != null
                 && !mIsDownLoadByGc) {
+            mIsDownLoadByGc = false;
             mView.checkInstallOrUpdateByZB(mGameInfoModel);
         }
     }
@@ -194,7 +196,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(CustomDownloadManager.InstallOrLaunchEvent event) {
+    public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {
         if (event.mGameInfoModel == null) {
             return;
         }
@@ -212,6 +214,12 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
                 if (event.status == SUCCESS) {
                     postEvent(MSG_PLAYER_PAUSE);
                 }
+            } else if(event.type == STATTUS_BEGIN_DOWNLOAD
+                    || event.type == STATTUS_CONTINUE_DOWNLOAD) {
+                CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
+                CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
+            } else if(event.type == STATTUS_PAUSE_DOWNLOAD) {
+                CustomDownloadManager.getInstance().pauseDownload(mGameInfoModel.getPackageUrl());
             }
         }
     }

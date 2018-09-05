@@ -535,21 +535,29 @@ public class CustomDownloadManager {
         }
     }
 
-    public static class InstallOrLaunchEvent{
+    public static class RequestGameDownloadByMiLiveEvent {
         public GameInfoModel mGameInfoModel;
         public int status;
         public int type;
 
         public static final int STATTUS_INSTALL = 1;
         public static final int STATTUS_LAUNCH = 2;
+        public static final int STATTUS_BEGIN_DOWNLOAD = 3;
+        public static final int STATTUS_PAUSE_DOWNLOAD = 4;
+        public static final int STATTUS_CONTINUE_DOWNLOAD = 5;
 
         public static final int SUCCESS = 0;
         public static final int FAILED = 1;
 
-        public InstallOrLaunchEvent(GameInfoModel mGameInfoModel, int type, int status){
+        public RequestGameDownloadByMiLiveEvent(GameInfoModel mGameInfoModel, int type, int status){
             this.mGameInfoModel = mGameInfoModel;
             this.type = type;
             this.status = status;
+        }
+
+        public RequestGameDownloadByMiLiveEvent(GameInfoModel mGameInfoModel, int type){
+            this.mGameInfoModel = mGameInfoModel;
+            this.type = type;
         }
     }
 }
