@@ -27,7 +27,7 @@ interface IMiLiveSdkEventCallback {
 
     void onEventRecvInfo(int type,String json);
 
-    boolean onEventGameInstallOpt(int type, long gameId, String packageName, String apkUrl);
+    boolean onEventSendGameDownloadRequest(int type, long gameId, String packageName, String apkUrl);
 
     boolean onEventQueryGameDownloadstatus(long gameId, String packageName, String apkUrl);
 }

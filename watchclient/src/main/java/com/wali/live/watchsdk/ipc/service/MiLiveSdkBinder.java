@@ -1044,7 +1044,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     }
 
     @WorkerThread
-    public boolean onEventGameInstallOpt(final int channelId, final int type, final long gameId, final String packageName, final String aokUrl) {
+    public boolean onEventSendGameDownloadRequest(final int channelId, final int type, final long gameId, final String packageName, final String aokUrl) {
         MyLog.w(TAG, "onEventGameInstallOpt type="
                 + type
                 + ", gameId:"
@@ -1064,7 +1064,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             for (int i = 0; i < n; i++) {
                 IMiLiveSdkEventCallback callback = callbackList.getBroadcastItem(i);
                 try {
-                    aidlSuccess = callback.onEventGameInstallOpt(type, gameId, packageName, aokUrl);
+                    aidlSuccess = callback.onEventSendGameDownloadRequest(type, gameId, packageName, aokUrl);
                 } catch (Exception e) {
                     MyLog.v(TAG, "dead callback.");
                     deadCallback.add(callback);

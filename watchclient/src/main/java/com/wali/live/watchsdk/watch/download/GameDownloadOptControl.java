@@ -55,19 +55,25 @@ public class GameDownloadOptControl {
         if (model == null) {
             return;
         }
-        MyLog.d(TAG, "game info tostirng:" + model.toString());
+
+        if(!HostChannelManager.getInstance().isFromGameCenter()) {
+            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus());
+            return;
+        }
+
         if (mQueryGameDownStatusSubscription != null && !mQueryGameDownStatusSubscription.isUnsubscribed()) {
             return;
         }
 
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
+        mQueryGameDownStatusSubscription = Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                boolean isLaunshSucess = MiLiveSdkBinder.getInstance().onEventQueryGameDownloadStatus(HostChannelManager.getInstance().getChannelId()
+                boolean ret = MiLiveSdkBinder.getInstance().onEventQueryGameDownloadStatus(HostChannelManager.getInstance().getChannelId()
                         , model.getGameId()
                         , model.getPackageName()
                         , model.getPackageUrl());
-                subscriber.onNext(isLaunshSucess);
+
+                subscriber.onNext(ret);
                 subscriber.onCompleted();
             }
         })
@@ -97,7 +103,10 @@ public class GameDownloadOptControl {
             return;
         }
 
-        MyLog.d(TAG, "game info tostirng:" + model.toString());
+        if(!HostChannelManager.getInstance().isFromGameCenter()) {
+            downloadByMiLive(type, model);
+            return;
+        }
 
         if (mDownloadSubscription != null && !mDownloadSubscription.isUnsubscribed()) {
             return;
@@ -106,12 +115,13 @@ public class GameDownloadOptControl {
         mDownloadSubscription = Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                boolean isLaunshSucess = MiLiveSdkBinder.getInstance().onEventGameInstallOpt(HostChannelManager.getInstance().getChannelId()
+                boolean ret = MiLiveSdkBinder.getInstance().onEventSendGameDownloadRequest(HostChannelManager.getInstance().getChannelId()
                         , type
                         , model.getGameId()
                         , model.getPackageName()
                         , model.getPackageUrl());
-                subscriber.onNext(isLaunshSucess);
+
+                subscriber.onNext(ret);
                 subscriber.onCompleted();
             }
         }).subscribeOn(Schedulers.io())
@@ -130,30 +140,35 @@ public class GameDownloadOptControl {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (!aBoolean) {
-                            if (type == TYPE_GAME_BEGIN_DOWNLOAD
-                                    || type == TYPE_GAME_CONTINUE_DOWNLOAD) {
-                                CustomDownloadManager.Item item = new CustomDownloadManager.Item(model.getPackageUrl(), model.getGameName());
-                                CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
-                            } else if (type == TYPE_GAME_PAUSE_DOWNLOAD) {
-                                CustomDownloadManager.getInstance().pauseDownload(model.getPackageUrl());
-                            } else if (type == TYPE_GAME_DOWNLOAD_COMPELED) {
-                                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(model.getPackageUrl());
-                                if (PackageUtils.tryInstall(apkPath)) {
-                                   EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_INSTALL, SUCCESS));
-                                } else {
-                                    ToastUtils.showToast("apk包解析失败，重新下载");
-                                    EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_INSTALL, FAILED));
-                                }
-                            } else if (type == TYPE_GAME_INSTALL_FINISH){
-                                if (PackageUtils.tryLaunch(model.getPackageName())) {
-                                    EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_LAUNCH, SUCCESS));
-                                } else {
-                                    EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_LAUNCH, FAILED));
-                                    ToastUtils.showToast("启动失败");
-                                }
-                            }
+                            downloadByMiLive(type, model);
                         }
                     }
                 });
     }
+
+    private static void downloadByMiLive(int type, GameInfoModel model) {
+        if (type == TYPE_GAME_BEGIN_DOWNLOAD
+                || type == TYPE_GAME_CONTINUE_DOWNLOAD) {
+            CustomDownloadManager.Item item = new CustomDownloadManager.Item(model.getPackageUrl(), model.getGameName());
+            CustomDownloadManager.getInstance().beginDownload(item, GlobalData.app());
+        } else if (type == TYPE_GAME_PAUSE_DOWNLOAD) {
+            CustomDownloadManager.getInstance().pauseDownload(model.getPackageUrl());
+        } else if (type == TYPE_GAME_DOWNLOAD_COMPELED) {
+            String apkPath = CustomDownloadManager.getInstance().getDownloadPath(model.getPackageUrl());
+            if (PackageUtils.tryInstall(apkPath)) {
+                EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_INSTALL, SUCCESS));
+            } else {
+                ToastUtils.showToast("apk包解析失败，重新下载");
+                EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_INSTALL, FAILED));
+            }
+        } else if (type == TYPE_GAME_INSTALL_FINISH){
+            if (PackageUtils.tryLaunch(model.getPackageName())) {
+                EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_LAUNCH, SUCCESS));
+            } else {
+                EventBus.getDefault().post(new CustomDownloadManager.InstallOrLaunchEvent(model, STATTUS_LAUNCH, FAILED));
+                ToastUtils.showToast("启动失败");
+            }
+        }
+    }
 }
+
