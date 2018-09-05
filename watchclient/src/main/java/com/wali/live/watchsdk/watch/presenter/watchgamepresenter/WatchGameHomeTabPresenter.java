@@ -136,13 +136,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
                     case STATUS_LAUNCH:
                     case STATUS_DOWNLOAD_FAILED:
                     case STATUS_REMOVE:
-                        break;
                     case STATUS_DOWNLOAD_COMPELED:
-                        //TODO-
-//                        if (PackageUtils.tryLaunch(mGameInfoModel.getPackageName())) {
-//                            postEvent(MSG_PLAYER_PAUSE);
-//                        } else {
-//                        }
                         break;
                     case STATUS_LAUNCH_SUCEESS:
                         postEvent(MSG_PLAYER_PAUSE);
