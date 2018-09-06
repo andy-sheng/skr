@@ -19,6 +19,7 @@ public class HostChannelManager {
     public final static String TAG = HostChannelManager.class.getSimpleName();
     public final static String KEY_SHARE_ENABLE = "key_share_enable";
     public final static String KEY_FOLLOW_ENABLE = "key_follow_enable";
+    private final static int GAME_CENTER_CHANNEL_ID = 50010;
 
     // 当前账号的渠道
     private final static int NO_CHANNEL = 0;
@@ -106,6 +107,10 @@ public class HostChannelManager {
             mDataMap.put(channelId, map);
         }
         map.put(key, obj);
+    }
+
+    public boolean isFromGameCenter() {
+        return mChannelId == GAME_CENTER_CHANNEL_ID;
     }
 
     public Object get(String key) {

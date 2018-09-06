@@ -35,4 +35,6 @@ interface IMiLiveSdkService {
     void stopBarragePull(int channelId, String packageName, String channelSecret,String roomId);
 
     void getLiveUid(int channelId, String packageName, String channelSecret);
+
+    void updateGameDownloadstatus(int channelId, String packageName, String channelSecret, long gameId, int type, int progress, String gamePackageName, boolean isByQuery);
 }

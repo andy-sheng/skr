@@ -24,9 +24,15 @@ import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
+import com.wali.live.watchsdk.watch.download.GameDownloadOptControl;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameChatTabPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameLiveCommentPresenter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static com.wali.live.component.view.Utils.$click;
 
@@ -58,6 +64,9 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
     private boolean mEnableFollow = true;
 
+    private boolean mIsDownLoadByGc = false;
+    private WatchComponentController mController;
+
     public WatchGameChatTabView(Context context, WatchComponentController componentController) {
         super(context);
         init(context, componentController);
@@ -65,6 +74,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
     private void init(Context context, WatchComponentController componentController) {
         inflate(context, R.layout.watch_game_tab_chat_layout, this);
+        mController = componentController;
         mAnchorInfoContainer = (RelativeLayout) this.findViewById(R.id.anchor_info_container);
         mAnchorAvatarIv = (BaseImageView) this.findViewById(R.id.anchor_avatar_iv);
         mUserBadgeIv = (ImageView) this.findViewById(R.id.anchor_badge_iv);
@@ -87,7 +97,11 @@ public class WatchGameChatTabView extends RelativeLayout implements
         this.setPresenter(mWatchGameChatTabPresenter);
 
         if (componentController.getRoomBaseDataModel() != null) {
-            loadGameInfoPopView(componentController.getRoomBaseDataModel().getGameInfoModel());
+//            loadGameInfoPopView(componentController.getRoomBaseDataModel().getGameInfoModel());
+
+            if(componentController.getRoomBaseDataModel().getGameInfoModel() != null) {
+                GameDownloadOptControl.tryQueryGameDownStatus(componentController.getRoomBaseDataModel().getGameInfoModel());
+            }
         }
 
         $click(mAnchorAvatarIv, this);
@@ -98,7 +112,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
      * 初始化和切换房间的时候调用更新游戏信息
      * @param gameInfoModel
      */
-    private void loadGameInfoPopView(GameInfoModel gameInfoModel) {
+    private void loadGameInfoPopView(GameInfoModel gameInfoModel, int status) {
         if (gameInfoModel == null) {
             // 游戏信息为空 隐藏
             if (mGameInfoPopView != null) {
@@ -109,12 +123,15 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
         int apkStatus = -1;
         String packageName = gameInfoModel.getPackageName();
-        if (TextUtils.isEmpty(packageName)) {
+        if(TextUtils.isEmpty(packageName)) {
             // 无效的包名 隐藏
             if (mGameInfoPopView != null) {
                 mGameInfoPopView.setVisibility(GONE);
             }
             return;
+        }
+        if(mIsDownLoadByGc) {
+            apkStatus = status;
         } else {
             if (PackageUtils.isInstallPackage(packageName)) {
                 // 已经安装 隐藏
@@ -147,7 +164,42 @@ public class WatchGameChatTabView extends RelativeLayout implements
             mGameInfoPopView.setVisibility(VISIBLE);
         }
 
-        mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus);
+        mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus, mIsDownLoadByGc);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.UpdateGameInfoStatus event) {
+        if(event == null) {
+            return;
+        }
+
+        MyLog.d(TAG, "UpdateGameInfoStatus");
+
+        mIsDownLoadByGc = false;
+        loadGameInfoPopView(mController.getRoomBaseDataModel().getGameInfoModel(), -1);
+    }
+
+    @Subscribe (threadMode = ThreadMode.MAIN)
+    public void onDownloadEvent(CustomDownloadManager.ApkStatusEvent event) {
+        if(event == null) {
+            return;
+        }
+
+        MyLog.d(TAG, "ApkStatusEvent" + event.status + "event.isByGc:" + event.isByQuery);
+        RoomBaseDataModel roomBaseDataModel = mController.getRoomBaseDataModel();
+        if(roomBaseDataModel != null
+                && roomBaseDataModel.getGameInfoModel() != null) {
+            GameInfoModel gameInfoModel = roomBaseDataModel.getGameInfoModel();
+            if(gameInfoModel.getGameId() == event.gameId
+                    && gameInfoModel.getPackageName().equals(event.packageName)) {
+                MyLog.d(TAG, "ApkStatusEvent" + event.status + "event.isByGc:" + event.isByQuery);
+                if(event.isByQuery) {
+                    mIsDownLoadByGc = true;
+                    loadGameInfoPopView(mController.getRoomBaseDataModel().getGameInfoModel(), event.status);
+                }
+            }
+        }
     }
 
     @Override
@@ -158,6 +210,10 @@ public class WatchGameChatTabView extends RelativeLayout implements
         }
         if (mWatchGameChatTabPresenter != null) {
             mWatchGameChatTabPresenter.startPresenter();
+        }
+
+        if(!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 
@@ -170,6 +226,8 @@ public class WatchGameChatTabView extends RelativeLayout implements
         if (mWatchGameChatTabPresenter != null) {
             mWatchGameChatTabPresenter.stopPresenter();
         }
+
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -270,7 +328,8 @@ public class WatchGameChatTabView extends RelativeLayout implements
                 if (source == null) {
                     return;
                 }
-                loadGameInfoPopView(source.getGameInfoModel());
+//                loadGameInfoPopView(source.getGameInfoModel());
+                GameDownloadOptControl.tryQueryGameDownStatus(source.getGameInfoModel());
             }
 
 

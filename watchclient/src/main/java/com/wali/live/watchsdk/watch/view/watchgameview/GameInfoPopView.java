@@ -8,18 +8,18 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
 import com.base.image.fresco.FrescoWorker;
 import com.base.image.fresco.image.BaseImage;
 import com.base.image.fresco.image.HttpImage;
+import com.base.log.MyLog;
 import com.base.utils.MD5;
 import com.base.utils.system.PackageUtils;
-import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
+import com.wali.live.watchsdk.watch.download.GameDownloadOptControl;
 import com.wali.live.watchsdk.watch.model.WatchGameInfoConfig;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,12 +30,20 @@ import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticI
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_POP_EXPOSURE;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_EXPOSURE;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_BEGIN_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_CONTINUE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_INSTALL;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_LAUNCH;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_PAUSE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.SUCCESS;
 
 /**
  * Created by liuting on 18-8-20.
  */
 
-public class GameInfoPopView extends RelativeLayout{
+public class GameInfoPopView extends RelativeLayout {
+    private static final String TAG = "GameInfoPopView";
+
     private GameInfoModel mGameInfoModel;
     private int mApkStatus = -1;
 
@@ -43,6 +51,8 @@ public class GameInfoPopView extends RelativeLayout{
     private View mGameIconShadow;
     private ProgressBar mDownloadProgressBar;
     private TextView mBottomText;
+
+    private boolean mIsDownloadByGc;
 
     private OnInstallOrLaunchListener mOnInstallOrLaunchListener;
 
@@ -84,47 +94,37 @@ public class GameInfoPopView extends RelativeLayout{
 
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
 
-                if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
-                    // 状态是未下载
+                if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED) {
+                    // 状态是未下载 或 下载失败
                     clickDownloadStatistic();
-                    CustomDownloadManager.getInstance().beginDownload(item, getContext());
+                    GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_BEGIN_DOWNLOAD, mGameInfoModel);
 
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
                     // 正在下载中的包再次点击不作暂停处理
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
-
-                    CustomDownloadManager.getInstance().beginDownload(item, getContext());
-
-                } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
+                    GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_CONTINUE_DOWNLOAD, mGameInfoModel);
+                }  else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
                     if (mOnInstallOrLaunchListener != null) {
                         mOnInstallOrLaunchListener.onInstallorLaunch();
                     }
-                    if (PackageUtils.tryInstall(CustomDownloadManager.getInstance().getDownloadPath(mGameInfoModel.getPackageUrl()))) {
-
-                    } else {
-                        // 安装失败，重新下载
-                        ToastUtils.showToast("apk包解析失败，重新下载");
-                        mApkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
-                        CustomDownloadManager.getInstance().beginDownload(item, getContext());
-                    }
-                } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
+                    GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_DOWNLOAD_COMPELED, mGameInfoModel);
+                } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS) {
+                    // 启动 或 成功启动
                     if (mOnInstallOrLaunchListener != null) {
                         mOnInstallOrLaunchListener.onInstallorLaunch();
                     }
-                    if (PackageUtils.tryLaunch(mGameInfoModel.getPackageName())) {
-
-                    } else {
-                        ToastUtils.showToast("启动失败");
-                    }
+                    GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_INSTALL_FINISH, mGameInfoModel);
                 }
             }
         });
     }
 
-    public void setGameInfoModel(GameInfoModel gameInfoModel, int apkStatus) {
+    public void setGameInfoModel(GameInfoModel gameInfoModel, int apkStatus, boolean isDownloadBygc) {
         if (gameInfoModel == null) {
             return;
         }
+
+        mIsDownloadByGc = isDownloadBygc;
 
         if (mGameInfoModel != null && TextUtils.equals(mGameInfoModel.getPackageName(), gameInfoModel.getPackageName())) {
             if (mApkStatus != apkStatus) {
@@ -162,22 +162,30 @@ public class GameInfoPopView extends RelativeLayout{
         FrescoWorker.loadImage(mGameIconIv, baseImage);
     }
 
-    @Subscribe (threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDownloadEvent(CustomDownloadManager.ApkStatusEvent event) {
         if (mGameInfoModel == null || event == null) {
             return;
         }
         boolean apkEquals = false;
-        if (!TextUtils.isEmpty(event.downloadKey) && !TextUtils.isEmpty(mGameInfoModel.getPackageUrl())) {
-            // 根据downloadKey比较是不是同一个apk
-            String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
-            if (event.downloadKey.equals(key)) {
+
+        if (mIsDownloadByGc) {
+            if (mGameInfoModel.getGameId() == event.gameId
+                    && mGameInfoModel.getPackageName().equals(event.packageName)) {
                 apkEquals = true;
             }
-        } else if (!TextUtils.isEmpty(event.packageName)){
-            // 根据包名比较是不是同一个apk
-            if (event.packageName.equals(mGameInfoModel.getPackageName())) {
-                apkEquals = true;
+        } else {
+            if (!TextUtils.isEmpty(event.downloadKey) && !TextUtils.isEmpty(mGameInfoModel.getPackageUrl())) {
+                // 根据downloadKey比较是不是同一个apk
+                String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
+                if (event.downloadKey.equals(key)) {
+                    apkEquals = true;
+                }
+            } else if (!TextUtils.isEmpty(event.packageName)) {
+                // 根据包名比较是不是同一个apk
+                if (event.packageName.equals(mGameInfoModel.getPackageName())) {
+                    apkEquals = true;
+                }
             }
         }
 
@@ -191,15 +199,45 @@ public class GameInfoPopView extends RelativeLayout{
         }
     }
 
-    private void handleStatus(int apkStatus, int progress) {
-        mApkStatus = apkStatus;
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {
+        if (event.mGameInfoModel == null) {
+            return;
+        }
+
+        if (event.mGameInfoModel.getGameId() == mGameInfoModel.getGameId()) {
+            if (event.type == STATTUS_INSTALL) {
+                if (event.status == SUCCESS) {
+                    if (mOnInstallOrLaunchListener != null) {
+                        mOnInstallOrLaunchListener.onInstallorLaunch();
+                    }
+                }
+            } else if (event.type == STATTUS_LAUNCH) {
+                if (event.status == SUCCESS) {
+                    if (mOnInstallOrLaunchListener != null) {
+                        mOnInstallOrLaunchListener.onInstallorLaunch();
+                    }
+                }
+            } else if(event.type == STATTUS_BEGIN_DOWNLOAD
+                    || event.type == STATTUS_CONTINUE_DOWNLOAD) {
+                CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
+                CustomDownloadManager.getInstance().beginDownload(item, getContext());
+            } else if(event.type == STATTUS_PAUSE_DOWNLOAD) {
+                CustomDownloadManager.getInstance().pauseDownload(mGameInfoModel.getPackageUrl());
+            }
+        }
+    }
+
+    private void handleStatus(int apkStatus, int progress) {
+        MyLog.d(TAG, "handleStatus");
+        mApkStatus = apkStatus;
         if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
             // 游戏被卸载 重新检查状态
             checkInstalledOrUpdate();
         }
 
-        if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING){
+        if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
             setVisibility(VISIBLE);
 
             mGameIconShadow.setVisibility(VISIBLE);
@@ -207,7 +245,7 @@ public class GameInfoPopView extends RelativeLayout{
             mDownloadProgressBar.setProgress(progress);
             mBottomText.setText(R.string.game_info_pop_download);
 
-        } else if(mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH){
+        } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS) {
             // 已经安装了该游戏 隐藏这个浮窗
             setVisibility(GONE);
 
@@ -228,6 +266,10 @@ public class GameInfoPopView extends RelativeLayout{
         if (TextUtils.isEmpty(packageName)) {
             // 无效的包名
             return;
+        }
+
+        if (mIsDownloadByGc) {
+            GameDownloadOptControl.tryQueryGameDownStatus(mGameInfoModel);
         } else {
             if (PackageUtils.isInstallPackage(packageName)) {
                 // 已经安装 点击则启动

@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -86,6 +87,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_OP_GET_BARRAGE = "get_barrage";
 
     private static final String ACTION_OPEN_CHANNEL_LIST = "open_channel_list";
+
+//    private static final String ACTION_UPDATE_GAME_DOWNLOAD_STATUS = "action_update_game_download_status";
     ;
     private static final String ACTION_STATISTIC = "statistic";
 
@@ -147,6 +150,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
         mMinVersionMap.put(ACTION_OP_GET_BARRAGE, 206003);
         mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST, 430020);
+
+//        //TODO-具体版本后面修正
+//        mMinVersionMap.put(ACTION_UPDATE_GAME_DOWNLOAD_STATUS, 430020);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -435,6 +441,16 @@ public class MiLiveSdkController implements IMiLiveSdk {
         }
         checkHasInit();
         MiLiveSdkServiceProxy.getInstance().clearAccount();
+    }
+
+    @Override
+    public void updateGameDownloadstatus(IAssistantCallback callback, long gameId, int type, int progress, String gamePackageName, boolean isByQuery) {
+//        if (!checkVersion(ACTION_UPDATE_GAME_DOWNLOAD_STATUS, callback)) {
+//            return;
+//        }
+//        Log.d(TAG, "updateGameDownloadstatus");
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().updateGameDownloadstatus(gameId, type, progress, gamePackageName, isByQuery);
     }
 
     /**

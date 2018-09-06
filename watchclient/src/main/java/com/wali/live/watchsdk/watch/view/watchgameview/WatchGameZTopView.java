@@ -986,6 +986,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED:
                         mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
                         break;
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED:
+                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                        break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:
                         mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
                         break;

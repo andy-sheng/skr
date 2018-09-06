@@ -16,6 +16,7 @@ import com.base.global.GlobalData;
 import com.base.utils.CommonUtils;
 import com.base.utils.display.DisplayUtils;
 import com.mi.live.data.event.GiftEventClass;
+import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.BaseSdkView;
 import com.wali.live.watchsdk.R;

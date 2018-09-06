@@ -22,6 +22,8 @@ import com.base.preference.PreferenceUtils;
 import com.base.utils.MD5;
 import com.base.utils.WLReflect;
 import com.base.utils.toast.ToastUtils;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
+import com.wali.live.proto.GameCenterProto;
 import com.wali.live.utils.FileUtils;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
@@ -491,12 +493,20 @@ public class CustomDownloadManager {
         public int status;
         public int progress;
         public int reason;
+        public long gameId;
+        public boolean isByGame;
+        public boolean isByQuery;
         public static final int STATUS_NO_DOWNLOAD = 1; //未下载
         public static final int STATUS_DOWNLOADING = 2; //下载中
         public static final int STATUS_PAUSE_DOWNLOAD = 5; //暂停下载
         public static final int STATUS_DOWNLOAD_COMPELED = 3;//已下载待安装
         public static final int STATUS_LAUNCH = 4;//启动
         public static final int STATUS_REMOVE = 6;//卸载
+        public static final int STATUS_CONTINUE = 7;//继续
+        public static final int STATUS_INSTALLING = 8;
+
+        public static final int STATUS_LAUNCH_SUCEESS = 9; //启动成功
+        public static final int STATUS_DOWNLOAD_FAILED = 10; //下载失败
 
         public ApkStatusEvent(String downloadKey, int status) {
             this.downloadKey = downloadKey;
@@ -506,6 +516,10 @@ public class CustomDownloadManager {
         public ApkStatusEvent(String packageName, String downloadKey, int status) {
             this.packageName = packageName;
             this.downloadKey = downloadKey;
+            this.status = status;
+        }
+
+        public ApkStatusEvent(int status) {
             this.status = status;
         }
     }
@@ -518,6 +532,32 @@ public class CustomDownloadManager {
         public TaskEvent(String downloadKey, int status) {
             this.downloadKey = downloadKey;
             this.status = status;
+        }
+    }
+
+    public static class RequestGameDownloadByMiLiveEvent {
+        public GameInfoModel mGameInfoModel;
+        public int status;
+        public int type;
+
+        public static final int STATTUS_INSTALL = 1;
+        public static final int STATTUS_LAUNCH = 2;
+        public static final int STATTUS_BEGIN_DOWNLOAD = 3;
+        public static final int STATTUS_PAUSE_DOWNLOAD = 4;
+        public static final int STATTUS_CONTINUE_DOWNLOAD = 5;
+
+        public static final int SUCCESS = 0;
+        public static final int FAILED = 1;
+
+        public RequestGameDownloadByMiLiveEvent(GameInfoModel mGameInfoModel, int type, int status){
+            this.mGameInfoModel = mGameInfoModel;
+            this.type = type;
+            this.status = status;
+        }
+
+        public RequestGameDownloadByMiLiveEvent(GameInfoModel mGameInfoModel, int type){
+            this.mGameInfoModel = mGameInfoModel;
+            this.type = type;
         }
     }
 }

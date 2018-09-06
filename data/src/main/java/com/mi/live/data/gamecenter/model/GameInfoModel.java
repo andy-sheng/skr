@@ -119,6 +119,7 @@ public class GameInfoModel {
                 packageSize = gameBaseInfo.getPackageSize();
                 introTitle = gameBaseInfo.getIntroTitle();
                 intro = gameBaseInfo.getIntro();
+
             }
 
             GameCenterProto.Developer developer = gameInfo.getDeveloper();
