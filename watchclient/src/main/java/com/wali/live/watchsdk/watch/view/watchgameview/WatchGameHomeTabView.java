@@ -192,7 +192,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         mInstallBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int flag = 0;
+                int flag = CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
                 if (mInstallBtn.getTag() != null) {
                     flag = (int) mInstallBtn.getTag();
                 }
@@ -203,22 +203,15 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
                     mWatchGameHomeTabPresenter.beginDownload(false);
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
-                    if (mWatchGameHomeTabPresenter.tryInstall()) {
-
-                    } else {
-                        // 安装失败，可能有地方信息不对称，重新下载吧。
-                        ToastUtils.showToast("apk包解析失败，重新下载");
-                        mDownLoadProgressBar.setVisibility(GONE);
-                        mInstallBtn.setText(R.string.download);
-                        mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
-                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
-                    }
+                    mWatchGameHomeTabPresenter.tryInstall();
                 } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
                     if (mWatchGameHomeTabPresenter.tryLaunch()) {
 
                     } else {
                         ToastUtils.showToast("启动失败");
                     }
+                } else if(flag == CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING) {
+
                 }
             }
         });
@@ -314,7 +307,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING:
                         mDownLoadProgressBar.setVisibility(VISIBLE);
                         mDownLoadProgressBar.setProgress(progress);
-                        mInstallBtn.setText(progress + "%");
+                        mInstallBtn.setText(String.valueOf(progress + "%"));
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.transparent_drawable));
                         break;
@@ -335,7 +328,14 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
                         mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
                         break;
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED:
+                        mDownLoadProgressBar.setVisibility(GONE);
+                        mInstallBtn.setText(R.string.download);
+                        mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
+                        break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS:
                         mDownLoadProgressBar.setVisibility(GONE);
                         mInstallBtn.setText("启动");
                         mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
@@ -345,6 +345,13 @@ public class WatchGameHomeTabView extends RelativeLayout implements
                         // 卸载,纠正tag和状态
                         checkInstalledOrUpdate(gameInfoModel);
                         break;
+                    case CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING:
+                        mDownLoadProgressBar.setVisibility(VISIBLE);
+                        mDownLoadProgressBar.setProgress(progress);
+                        mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING);
+                        mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.transparent_drawable));
+//                        mInstallBtn.setTextColor(getResources().getColor(R.color.black));
+                        mInstallBtn.setText("安装中");
                     default:
                         break;
                 }
@@ -353,6 +360,7 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
             @Override
             public void notifyTaskRemove(int status) {
+                MyLog.d(TAG, "notifyTaskRemove");
                 int flag = 0;
                 if (mInstallBtn.getTag() != null) {
                     flag = (int) mInstallBtn.getTag();
@@ -368,6 +376,43 @@ public class WatchGameHomeTabView extends RelativeLayout implements
             }
 
             @Override
+            public void notifyTryInstallFail() {
+                // 安装失败，可能有地方信息不对称，重新下载吧。
+                ToastUtils.showToast("apk包解析失败，重新下载");
+                mDownLoadProgressBar.setVisibility(GONE);
+                mInstallBtn.setText(R.string.download);
+                mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                mInstallBtn.setBackground(GlobalData.app().getResources().getDrawable(R.drawable.game_watch_home_install_btn_bg));
+            }
+
+            @Override
+            public void checkInstallOrUpdateByZB(GameInfoModel gameInfoModel) {
+
+                //仅直播助手的走这一套
+                String packageName = gameInfoModel.getPackageName();
+                if (TextUtils.isEmpty(packageName)) {
+                    // 无效的包名
+                    mInstallBtn.setVisibility(GONE);
+                    return;
+                } else {
+                    mInstallBtn.setVisibility(VISIBLE);
+                    if (PackageUtils.isInstallPackage(packageName)) {
+                        mInstallBtn.setText("启动");
+                        mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
+                    } else {
+                        String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
+                        if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
+                            mInstallBtn.setText("安装");
+                            mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
+                        } else {
+                            mInstallBtn.setText("下载");
+                            mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
+                        }
+                    }
+                }
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameHomeTabView.this;
             }
@@ -376,31 +421,13 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
 
     private void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
+        MyLog.d(TAG, "checkInstalledOrUpdate");
         if (gameInfoModel == null) {
             MyLog.w(TAG, "gameInfoModel is null");
             return;
         }
-        String packageName = gameInfoModel.getPackageName();
-        if (TextUtils.isEmpty(packageName)) {
-            // 无效的包名
-            mInstallBtn.setVisibility(GONE);
-            return;
-        } else {
-            mInstallBtn.setVisibility(VISIBLE);
-            if (PackageUtils.isInstallPackage(packageName)) {
-                mInstallBtn.setText("启动");
-                mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-            } else {
-                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
-                if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
-                    mInstallBtn.setText("安装");
-                    mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-                } else {
-                    mInstallBtn.setText("下载");
-                    mInstallBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
-                }
-            }
-        }
+
+        mWatchGameHomeTabPresenter.checkInstallOrUpdate();
     }
 
     @Override
@@ -433,6 +460,10 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         void updateDownLoadUi(int status, int progress, int reason, GameInfoModel gameInfoModel);
 
         void notifyTaskRemove(int status);
+
+        void notifyTryInstallFail();
+
+        void checkInstallOrUpdateByZB(GameInfoModel gameInfoModel);
     }
 
     public interface IPresenter {
@@ -440,9 +471,11 @@ public class WatchGameHomeTabView extends RelativeLayout implements
 
         void pauseDownload();
 
-        boolean tryInstall();
+        void tryInstall();
 
         boolean tryLaunch();
+
+        void checkInstallOrUpdate();
     }
 
 

@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -86,6 +87,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_OP_GET_BARRAGE = "get_barrage";
 
     private static final String ACTION_OPEN_CHANNEL_LIST = "open_channel_list";
+
+//    private static final String ACTION_UPDATE_GAME_DOWNLOAD_STATUS = "action_update_game_download_status";
     ;
     private static final String ACTION_STATISTIC = "statistic";
 
@@ -147,6 +150,9 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
         mMinVersionMap.put(ACTION_OP_GET_BARRAGE, 206003);
         mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST, 430020);
+
+//        //TODO-具体版本后面修正
+//        mMinVersionMap.put(ACTION_UPDATE_GAME_DOWNLOAD_STATUS, 430020);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -437,6 +443,16 @@ public class MiLiveSdkController implements IMiLiveSdk {
         MiLiveSdkServiceProxy.getInstance().clearAccount();
     }
 
+    @Override
+    public void updateGameDownloadstatus(IAssistantCallback callback, long gameId, int type, int progress, String gamePackageName, boolean isByQuery) {
+//        if (!checkVersion(ACTION_UPDATE_GAME_DOWNLOAD_STATUS, callback)) {
+//            return;
+//        }
+//        Log.d(TAG, "updateGameDownloadstatus");
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().updateGameDownloadstatus(gameId, type, progress, gamePackageName, isByQuery);
+    }
+
     /**
      * migamecenter://room/join?liveid=4431273_1527670977&playerid=4431273
      * &videourl=http%3A%2F%2Fv2.zb.mi.com%2Flive%2F4431273_1527670977.flv%3Fplayui%3D0&type=8&recommend=r-0-0-4431273-4431273_1527670977-2001-8240-1527685008-1-1-1-0-1-56
@@ -466,6 +482,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                     if (gameId > 0) {
                         RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                                 .setGameId(String.valueOf(gameId))
+                                .setLiveType(liveType)
                                 .build();
                         openWatchRoom(activity, roomInfo, callback);
                     } else {

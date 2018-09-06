@@ -173,6 +173,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
+
+            @Override
+            public void notifyGameInstallOpt(int i, long l, String s, String s1) {
+            }
+
+            @Override
+            public boolean notifyQueryGameDownloadStatus(long l, String s, String s1) {
+                return false;
+            }
         });
         MiLiveSdkController.getInstance().setLogEnabled(true);
         MiLiveSdkController.getInstance().enableShare(true);

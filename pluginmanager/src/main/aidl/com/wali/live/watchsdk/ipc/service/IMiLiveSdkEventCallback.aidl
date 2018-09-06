@@ -26,4 +26,8 @@ interface IMiLiveSdkEventCallback {
     void onEventRecvBarrage(in List<BarrageInfo> barrageInfos);
 
     void onEventRecvInfo(int type,String json);
+
+    boolean onEventSendGameDownloadRequest(int type, long gameId, String packageName, String apkUrl);
+
+    boolean onEventQueryGameDownloadstatus(long gameId, String packageName, String apkUrl);
 }
