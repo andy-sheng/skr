@@ -273,12 +273,12 @@ public class FrescoWorker {
         if (null != request) {
             try {
                 CacheKey cacheKey = MLCacheKeyFactory.getInstance().getEncodedCacheKey(request, null);
-                if (ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey)) {
-                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainDiskStorageCache().getResource(cacheKey);
+                if (ImagePipelineFactory.getInstance().getMainFileCache().hasKey(cacheKey)) {
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
                     File cacheFile = ((FileBinaryResource) resource).getFile();
                     return cacheFile;
-                } else if (ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().hasKey(cacheKey)) {
-                    BinaryResource resource = ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().getResource(cacheKey);
+                } else if (ImagePipelineFactory.getInstance().getSmallImageFileCache().hasKey(cacheKey)) {
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getSmallImageFileCache().getResource(cacheKey);
                     File cacheFile = ((FileBinaryResource) resource).getFile();
                     return cacheFile;
                 }

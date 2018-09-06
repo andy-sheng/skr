@@ -6,19 +6,14 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.base.log.MyLog;
-import com.facebook.imagepipeline.backends.okhttp.OkHttpNetworkFetcher;
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpNetworkFetcher;
 import com.facebook.imagepipeline.image.EncodedImage;
 import com.facebook.imagepipeline.producers.BaseNetworkFetcher;
 import com.facebook.imagepipeline.producers.BaseProducerContextCallbacks;
 import com.facebook.imagepipeline.producers.Consumer;
 import com.facebook.imagepipeline.producers.FetchState;
 import com.facebook.imagepipeline.producers.ProducerContext;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Request.Builder;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
+
 import com.wali.live.statistics.StatisticUtils;
 import com.wali.live.statistics.StatisticsKey;
 
@@ -26,6 +21,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
+
+import okhttp3.CacheControl;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * @module OkHttp的图片加载
@@ -41,7 +43,7 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
 
     public CustomOkHttpNetworkFetcher(OkHttpClient okHttpClient) {
         this.mOkHttpClient = okHttpClient;
-        this.mCancellationExecutor = okHttpClient.getDispatcher().getExecutorService();
+        this.mCancellationExecutor = okHttpClient.dispatcher().executorService();
     }
 
     public OkHttpNetworkFetcher.OkHttpNetworkFetchState createFetchState(Consumer<EncodedImage> consumer, ProducerContext context) {
@@ -68,7 +70,7 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
             }
         }
         MyLog.d(TAG, "当前进程名2:" + Thread.currentThread().getName() + "urlWithIp:" + urlWithIp);
-        Request request = (new Builder()).cacheControl((new com.squareup.okhttp.CacheControl.Builder()).noStore().build())
+        Request request = (new Request.Builder()).cacheControl((new CacheControl.Builder()).noStore().build())
                 .header("host", host)
                 .url(urlWithIp).get()
                 .build();
@@ -86,8 +88,21 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
                 }
             }
         });
-        call.enqueue(new com.squareup.okhttp.Callback() {
-            public void onResponse(Response response) {
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // 如果有保底ip，再尝试
+                String ip = ImageUrlDNSManager.getNextAvailableUrl(url, index + 1);
+                if (!TextUtils.isEmpty(ip)) {
+                    work(fetchState, callback, url, index + 1);
+                } else {
+                    StatisticUtils.addToMiLinkMonitor(StatisticsKey.KEY_DOWNLOAD_IMG, StatisticUtils.FAILED, url + ":" + e.getMessage());
+                    CustomOkHttpNetworkFetcher.this.handleException(call, e, callback);
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
                 fetchState.responseTime = SystemClock.elapsedRealtime();
                 ResponseBody body = response.body();
                 try {
@@ -120,17 +135,6 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
                     } catch (Exception var12) {
                         MyLog.w("OkHttpNetworkFetchProducer", "Exception when closing response body", var12);
                     }
-                }
-            }
-
-            public void onFailure(Request request, IOException e) {
-                // 如果有保底ip，再尝试
-                String ip = ImageUrlDNSManager.getNextAvailableUrl(url, index + 1);
-                if (!TextUtils.isEmpty(ip)) {
-                    work(fetchState, callback, url, index + 1);
-                } else {
-                    StatisticUtils.addToMiLinkMonitor(StatisticsKey.KEY_DOWNLOAD_IMG, StatisticUtils.FAILED, url + ":" + e.getMessage());
-                    CustomOkHttpNetworkFetcher.this.handleException(call, e, callback);
                 }
             }
         });

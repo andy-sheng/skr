@@ -18,7 +18,6 @@ import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
-import com.squareup.okhttp.OkHttpClient;
 import com.wali.live.network.CustomOkHttpNetworkFetcher;
 import com.wali.live.utils.HttpUtils;
 import com.wali.live.utils.UserAgentInterceptor;
@@ -26,6 +25,8 @@ import com.wali.live.utils.UserAgentInterceptor;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by lan on 16/7/20.
@@ -44,8 +45,8 @@ public class FrescoManager {
         Set<RequestListener> requestListeners = new HashSet();
         requestListeners.add(new RequestLoggingListener());
 
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.networkInterceptors().add(new UserAgentInterceptor(HttpUtils.buildUserAgent(GlobalData.app())));
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new UserAgentInterceptor(HttpUtils.buildUserAgent(GlobalData.app()))).build();
         ImagePipelineConfig.Builder imagePipelineConfig = ImagePipelineConfig.newBuilder(context)
                 .setNetworkFetcher(new CustomOkHttpNetworkFetcher(okHttpClient))
                 .setMainDiskCacheConfig(diskCacheConfig)

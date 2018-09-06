@@ -19,7 +19,7 @@ ext {
     rxAndroidVersion = '1.1.0'
     javaxAnnotationVersion = '1.0'
     androidAnnotationsVersion = '24.2.1'
-    frescoVersion = '0.14.1'
+    frescoVersion = '1.10.0'
 
     //Testing
     robolectricVersion = '3.0'
@@ -42,7 +42,7 @@ ext {
             rxAndroid        : "io.reactivex:rxandroid:${rxAndroidVersion}",
             javaxAnnotation  : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
             fresco           : "com.facebook.fresco:fresco:${frescoVersion}",
-            frescoOkHttp     : "com.facebook.fresco:imagepipeline-okhttp:${frescoVersion}",
+//            frescoOkHttp     : "com.facebook.fresco:imagepipeline-okhttp:${frescoVersion}",
             frescoWebp       : "com.facebook.fresco:animated-webp:${frescoVersion}",
             frescoGif        : "com.facebook.fresco:animated-gif:${frescoVersion}",
             frescoWebpSupport: "com.facebook.fresco:webpsupport:${frescoVersion}",

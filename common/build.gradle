@@ -82,7 +82,7 @@ dependencies {
         exclude module: 'support-v4'
         exclude module: 'print', group: 'android.support.v4'
     }
-    compile presentationDependencies.frescoOkHttp
+//    compile presentationDependencies.frescoOkHttp
     compile presentationDependencies.frescoWebp
     compile presentationDependencies.frescoWebpSupport
     compile presentationDependencies.frescoGif

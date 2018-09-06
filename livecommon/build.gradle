@@ -68,6 +68,9 @@ dependencies {
     compile presentationDependencies.butterKnife
     compile presentationDependencies.recyclerView
 
+    compile 'com.squareup.okhttp3:okhttp:3.11.0'
+    compile "com.facebook.fresco:imagepipeline-okhttp3:0.12.0+"
+
     compile 'com.thornbirds:component:1.0.0'
     compile 'com.thornbirds:componentAndroid:1.0.0'
     compile project(':data')
