@@ -482,6 +482,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                     if (gameId > 0) {
                         RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                                 .setGameId(String.valueOf(gameId))
+                                .setLiveType(liveType)
                                 .build();
                         openWatchRoom(activity, roomInfo, callback);
                     } else {
