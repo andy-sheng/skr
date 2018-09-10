@@ -29,6 +29,9 @@ public class NestViewPager extends ViewPager {
 
     @Override
     protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
+        if (!mCanScroll) {
+            return false;
+        }
         if (v instanceof ViewGroup) {
             final ViewGroup group = (ViewGroup) v;
             final int scrollX = v.getScrollX();

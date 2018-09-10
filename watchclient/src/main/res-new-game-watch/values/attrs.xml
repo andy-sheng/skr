@@ -12,4 +12,11 @@
         <attr name="cutLine" format="boolean"/>
         <attr name="lineCenter" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="TwoSelectTabLayout">
+        <attr name="tabColor" format="color"/>
+        <attr name="leftText" format="string"/>
+        <attr name="rightText" format="string"/>
+        <attr name="cornorRadius" format="dimension"/>
+    </declare-styleable>
 </resources>

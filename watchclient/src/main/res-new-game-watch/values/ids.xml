@@ -5,4 +5,7 @@
     <item type="id" name="game_watch_portrait_more"/>
     <item type="id" name="game_watch_portrait_suspended"/>
     <item type="id" name="game_watch_portrait_fullscreen"/>
+
+    <item type="id" name="two_select_tab_left"/>
+    <item type="id" name="two_select_tab_right"/>
 </resources>

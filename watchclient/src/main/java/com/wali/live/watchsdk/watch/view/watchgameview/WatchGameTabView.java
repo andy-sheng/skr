@@ -76,9 +76,16 @@ public class WatchGameTabView extends RelativeLayout implements
                 return new WatchGameViewerTabView(getContext(), mWatchComponentController);
             }
         });
+
+        mTitleAndViewMap.put("更多直播", new LazyNewView() {
+            @Override
+            public View newView() {
+                return new WatchGameMoreTabView(getContext(), mWatchComponentController);
+            }
+        });
         mTabTitleList.add("聊天");
         mTabTitleList.add("观众");
-
+        mTabTitleList.add("更多直播");
 
         mWatchGameTab = (SlidingTabLayout) this.findViewById(R.id.watch_game_tab);
 
