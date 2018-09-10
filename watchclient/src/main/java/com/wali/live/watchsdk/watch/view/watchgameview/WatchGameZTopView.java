@@ -37,6 +37,7 @@ import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameNewLandscapeInputViewPresenter;
+import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameTouchPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +115,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
     private Subscription mHideLandscapeOptBarSubscription;
     private Subscription mHidePortraitOptBarSubscription;
+
+    private WatchGameTouchPresenter mWatchGameTouchPresenter;
 
     public WatchGameZTopView(Context context) {
         super(context);
@@ -297,6 +300,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         getmLandscapeGiftBtn.setOnClickListener(this);
 
         mTouchView = findViewById(R.id.touch_view);
+        mWatchGameTouchPresenter = new WatchGameTouchPresenter(mPresenter.getController(), mTouchView);
         mTouchView.setOnClickListener(this);
 
         if (mPresenter != null) {
@@ -373,12 +377,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     private void updatePlayBtnUi() {
-        if(mIsLandscape) {
+        if (mIsLandscape) {
             mLandscapeSuspend.setBackgroundDrawable(mIsVideoPause ?
                     GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_play)
                     : GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended));
         } else {
-            if(mPortraitLinUpButtons != null) {
+            if (mPortraitLinUpButtons != null) {
                 View v = mPortraitLinUpButtons.getViewById(R.id.game_watch_portrait_suspended);
                 if (v != null
                         && v instanceof ImageView) {
@@ -388,7 +392,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
         }
     }
-
 
 
     /**
@@ -426,14 +429,14 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
                     @Override
                     public void onDismissCallback() {
-                        if(!mIsLandscape) {
+                        if (!mIsLandscape) {
                             tryToHidePortraitOptBar();
                         }
                     }
                 });
             }
             mWatchGameMenuDialog.show(WatchGameZTopView.this, v);
-            if(!mIsLandscape) {
+            if (!mIsLandscape) {
                 tryUnSubscribe();
             }
         } else if (id == R.id.game_watch_portrait_suspended) {
@@ -1012,7 +1015,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             @Override
             public void setDownLoadBtnVisibility(boolean needShow) {
                 mNeedHideDownLoadBtn = !needShow;
-                if(mIsLandscape
+                if (mIsLandscape
                         && mLandscapeDownloadBtn != null) {
                     mLandscapeDownloadBtn.setVisibility(needShow ? VISIBLE : GONE);
                 }

@@ -223,6 +223,7 @@
     <dimen name="view_dimen_450">150dp</dimen>
     <dimen name="view_dimen_460">153.33dp</dimen>
     <dimen name="view_dimen_470">156.66dp</dimen>
+    <dimen name="view_dimen_476">158.66dp</dimen>
     <dimen name="view_dimen_480">160dp</dimen>
     <dimen name="view_dimen_485">161.67dp</dimen>
     <dimen name="view_dimen_490">163.33dp</dimen>

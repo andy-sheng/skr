@@ -64,7 +64,6 @@
 
     <color name="color_fa7993_trans_30">#4dfa7993</color>
     <color name="color_fa7993_trans_50">#7ffa7993</color>
-
     <color name="color_f55a4f_trans_30">#4df55a4f</color>
     <color name="color_f55a4f_trans_50">#7ff55a4f</color>
     <color name="color_f55a4f">#f55a4f</color>
@@ -126,4 +125,6 @@
     <color name="color_fee58a">#FEE58A</color>
 
     <color name="color_f8a500">#f8a500</color>
+
+    <color name="color_d8d8d8_trans_50">#7FD8D8D8</color>
 </resources>

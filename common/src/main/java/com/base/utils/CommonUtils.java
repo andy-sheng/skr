@@ -1629,11 +1629,29 @@ public abstract class CommonUtils {
         cmb.setText(content.trim());
     }
 
-    public static void setScreenBrightness(Activity activity, float value) {
-        Window window = activity.getWindow();
+    public static void setScreenBrightness(Context context, float percent) {
+        if (!(context instanceof Activity)) {
+            return;
+        }
+
+        if (percent < 0.01f) {
+            percent = 0.01f;
+        } else if (percent > 1.0f) {
+            percent = 1.0f;
+        }
+
+        Window window = ((Activity) context).getWindow();
         WindowManager.LayoutParams mParams = window.getAttributes();
-        mParams.screenBrightness = value / 255.0F;
+
+        mParams.screenBrightness = percent;
         window.setAttributes(mParams);
+    }
+
+    public static float getScreenBrightness(Context context) {
+        Activity activity = (Activity) context;
+        WindowManager.LayoutParams layoutParams = activity.getWindow().getAttributes();
+
+        return layoutParams.screenBrightness;
     }
 
     public static int getStreamMaxVolume() {
@@ -1650,6 +1668,12 @@ public abstract class CommonUtils {
             volume = maxVolume;
         }
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+    }
+
+    public static int getStreamVolume() {
+        AudioManager audioManager = (AudioManager) GlobalData.app().getSystemService(Context.AUDIO_SERVICE);
+        return audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
     }
 
     /**
@@ -2021,8 +2045,8 @@ public abstract class CommonUtils {
     /*
      * 判断是否开启刘海屏幕隐藏
      * */
-    public static boolean isOpenHideNotch(){
-        int ret = Settings.Global.getInt(GlobalData.app().getContentResolver(),"force_black",0);
+    public static boolean isOpenHideNotch() {
+        int ret = Settings.Global.getInt(GlobalData.app().getContentResolver(), "force_black", 0);
         return ret == 1;
     }
 

@@ -81,6 +81,8 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     private GameBarrageView mGameBarrageView;
     private GameNewBarrageViewPresenter mGameBarragePresenter;
 
+    private WatchGameControllerView mWatchGameControllerView;
+
     Runnable mResetRunnable = new Runnable() {
         @Override
         public void run() {
@@ -124,7 +126,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     }
 
     public void onResume() {
-        if(mWatchPlayerPresenter != null
+        if (mWatchPlayerPresenter != null
                 && mWatchPlayerPresenter.isPause()) {
             //如果暂停就尝试让它播放下
             mController.postEvent(MSG_PLAYER_START);
@@ -159,7 +161,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         }
 
         {
-            mInputArea =(WatchGameInputAreaView) mParentView.findViewById(R.id.input_area_view);
+            mInputArea = (WatchGameInputAreaView) mParentView.findViewById(R.id.input_area_view);
             mInputPresenter = new InputAreaPresenter(
                     mController, mController.getRoomBaseDataModel(), mController.getLiveRoomChatMsgManager(), true);
             registerComponent(mInputArea, mInputPresenter);
@@ -197,6 +199,11 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.getRoomBaseDataModel());
             registerHybridComponent(presenter, relativeLayout);
         }
+
+        // 控制音量和亮度
+        {
+            mWatchGameControllerView = (WatchGameControllerView) mParentView.findViewById(R.id.controller_view);
+        }
     }
 
     private void resetVideoLayoutSize(boolean isLandscape) {
@@ -216,6 +223,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
 
     /**
      * 接收横竖屏切换通知
+     *
      * @param isLandscape
      */
     private void onReOrient(boolean isLandscape) {
@@ -271,17 +279,17 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
                 popInsufficientTips();
                 break;
             case MSG_PLAYER_START:
-                if(mWatchPlayerPresenter != null) {
+                if (mWatchPlayerPresenter != null) {
                     mWatchPlayerPresenter.resumePlay();
                 }
                 break;
             case MSG_PLAYER_PAUSE:
-                if(mWatchPlayerPresenter != null) {
+                if (mWatchPlayerPresenter != null) {
                     mWatchPlayerPresenter.pausePlay();
                 }
                 break;
             case MSG_PLAYER_RECONNECT:
-                if(mWatchPlayerPresenter != null) {
+                if (mWatchPlayerPresenter != null) {
                     mWatchPlayerPresenter.startReconnect();
                 }
                 break;
