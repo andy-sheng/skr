@@ -192,10 +192,10 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             registerComponent(mGameBarrageView, mGameBarragePresenter);
         }
 
-        {
-            WatchGameWaterMarkView watchGameWaterMarkView = (WatchGameWaterMarkView) mParentView.findViewById(R.id.watch_mark_view);
-            watchGameWaterMarkView.setRoomData(mController.getRoomBaseDataModel());
-        }
+//        {
+//            WatchGameWaterMarkView watchGameWaterMarkView = (WatchGameWaterMarkView) mParentView.findViewById(R.id.watch_mark_view);
+//            watchGameWaterMarkView.setRoomData(mController.getRoomBaseDataModel());
+//        }
 
         // 抢红包
         {

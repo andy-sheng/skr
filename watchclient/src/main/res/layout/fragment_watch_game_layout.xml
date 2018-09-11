@@ -19,14 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameWaterMarkView
-            android:id="@+id/watch_mark_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="@dimen/view_dimen_43"
-            android:layout_marginLeft="@dimen/view_dimen_30" />
+        <!--<com.wali.live.watchsdk.watch.view.watchgameview.WatchGameWaterMarkView-->
+            <!--android:id="@+id/watch_mark_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_marginBottom="@dimen/view_dimen_43"-->
+            <!--android:layout_marginLeft="@dimen/view_dimen_30" />-->
 
         <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView
             android:id="@+id/watch_ztop_view"

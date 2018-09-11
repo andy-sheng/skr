@@ -8,6 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameWaterMarkView
+        android:id="@+id/landscape_watch_mark_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/view_dimen_43"
+        android:layout_marginLeft="@dimen/view_dimen_30" />
+
     <RelativeLayout
         android:id="@+id/landscape_top_layout"
         android:layout_width="match_parent"
@@ -180,6 +189,7 @@
             android:layout_marginRight="@dimen/view_dimen_76"
             android:layout_toLeftOf="@id/right_container"/>
     </RelativeLayout>
+
 </merge>
 
 

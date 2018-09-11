@@ -29,6 +29,7 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -118,6 +119,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private Handler mUiHanlder = new Handler();
 
     private WatchGameTouchPresenter mWatchGameTouchPresenter;
+    private WatchGameWaterMarkView mPortraitWatchGameWaterMarkView;
+    private RelativeLayout mPortraitTitleContainer;
+    private WatchGameWaterMarkView mLandscapeWatchGameWaterMarkView;
 
     public WatchGameZTopView(Context context) {
         super(context);
@@ -184,11 +188,19 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
             if (mPresenter != null
                     && mPresenter.getController() != null
-                    && mPresenter.getController().getRoomBaseDataModel() != null
-                    && mPresenter.getController().getRoomBaseDataModel().getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
-                getmLandscapeGiftBtn.setVisibility(GONE);
-                View view = findViewById(R.id.splite_line_view_2);
-                view.setVisibility(GONE);
+                    && mPresenter.getController().getRoomBaseDataModel() != null) {
+
+                if(mPresenter.getController().getRoomBaseDataModel().getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
+                    getmLandscapeGiftBtn.setVisibility(GONE);
+                    View view = findViewById(R.id.splite_line_view_2);
+                    view.setVisibility(GONE);
+                }
+
+
+                if(mLandscapeWatchGameWaterMarkView != null) {
+                    mLandscapeWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+                    mLandscapeWatchGameWaterMarkView.onOrientation(mIsLandscape);
+                }
             }
 
             if (mGameNewLandscapeInputViewPresenter == null) {
@@ -233,6 +245,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
                 mPortraitVoiceBtn.setImageDrawable(mIsVideoMute ? GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_mute) : GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_voice));
 
+                if(mPresenter != null
+                        && mPresenter.getController() != null
+                        && mPresenter.getController().getRoomBaseDataModel() != null) {
+                    mPortraitWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+                    mPortraitWatchGameWaterMarkView.onOrientation(mIsLandscape);
+                }
             }
 
             tryToHidePortraitOptBar();
@@ -262,6 +280,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
         mTouchView = findViewById(R.id.touch_view);
         mTouchView.setOnClickListener(this);
+
+        mPortraitWatchGameWaterMarkView = (WatchGameWaterMarkView) findViewById(R.id.portrait_watch_mark_view);
+        mPortraitWatchGameWaterMarkView.onOrientation(false);
+        mPortraitTitleContainer = (RelativeLayout) findViewById(R.id.portrait_title_container);
     }
 
     /**
@@ -309,6 +331,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mTouchView = findViewById(R.id.touch_view);
         mWatchGameTouchPresenter = new WatchGameTouchPresenter(mPresenter.getController(), mTouchView);
         mTouchView.setOnClickListener(this);
+
+        mLandscapeWatchGameWaterMarkView = (WatchGameWaterMarkView) findViewById(R.id.landscape_watch_mark_view);
+        mLandscapeWatchGameWaterMarkView.onOrientation(true);
 
         if (mPresenter != null) {
             mPresenter.syncAnchorInfo();
@@ -728,10 +753,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mUiHanlder.removeCallbacks(mHidePortraitOptBarRunnable);
 
         if (mHidePortraitOptBarAnimatorSet == null) {
-            ObjectAnimator portraitBackBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitBackBtn
+            ObjectAnimator portraitBackBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitTitleContainer
                     , View.TRANSLATION_Y
-                    , mPortraitBackBtn.getTranslationY()
-                    , mPortraitBackBtn.getTranslationY() - mPortraitBackBtn.getBottom());
+                    , mPortraitTitleContainer.getTranslationY()
+                    , mPortraitTitleContainer.getTranslationY() - mPortraitTitleContainer.getBottom());
             ObjectAnimator portraitVoiceBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitVoiceBtn
                     , View.TRANSLATION_Y
                     , mPortraitVoiceBtn.getTranslationY()
@@ -844,10 +869,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
 
         if (mShowPortraitOptBarAnimatorSet == null) {
-            ObjectAnimator portraitBackBtnShowAnimator = ObjectAnimator.ofFloat(mPortraitBackBtn
+            ObjectAnimator portraitBackBtnShowAnimator = ObjectAnimator.ofFloat(mPortraitTitleContainer
                     , View.TRANSLATION_Y
-                    , mPortraitBackBtn.getTranslationY()
-                    , mPortraitBackBtn.getTranslationY() + mPortraitBackBtn.getBottom());
+                    , mPortraitTitleContainer.getTranslationY()
+                    , mPortraitTitleContainer.getTranslationY() + mPortraitTitleContainer.getBottom());
 
             ObjectAnimator portraitVoiceBtnShowAnimator = ObjectAnimator.ofFloat(mPortraitVoiceBtn
                     , View.TRANSLATION_Y
@@ -1033,6 +1058,15 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     public void setPresenter(IPresenter iPresenter) {
         this.mPresenter = iPresenter;
         initInputPresenter();
+        if(mPresenter != null) {
+            if(mPortraitWatchGameWaterMarkView != null) {
+                mPortraitWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+            }
+
+            if(mLandscapeWatchGameWaterMarkView != null) {
+                mLandscapeWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+            }
+        }
     }
 
     public interface IPresenter {
