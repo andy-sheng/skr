@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 /**
  * Created by vera on 2018/5/28.
- *
+ * <p>
  * 解决多个ViewPager嵌套滑动冲突
  */
 
@@ -50,7 +50,7 @@ public class NestViewPager extends ViewPager {
 
         if (checkV) {
             if (v instanceof ViewPager) {
-                return ((ViewPager)v).canScrollHorizontally(-dx);
+                return ((ViewPager) v).canScrollHorizontally(-dx);
             } else {
                 return ViewCompat.canScrollHorizontally(v, -dx);
             }
@@ -60,13 +60,27 @@ public class NestViewPager extends ViewPager {
     }
 
     @Override
+    public boolean canScrollHorizontally(int direction) {
+        if (!mCanScroll) {
+            return false;
+        }
+        return super.canScrollHorizontally(direction);
+    }
+
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return mCanScroll && super.onInterceptTouchEvent(ev);
+        if (!mCanScroll) {
+            return false;
+        }
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return mCanScroll && super.onTouchEvent(ev);
+        if (!mCanScroll) {
+            return false;
+        }
+        return super.onTouchEvent(ev);
 
     }
 
