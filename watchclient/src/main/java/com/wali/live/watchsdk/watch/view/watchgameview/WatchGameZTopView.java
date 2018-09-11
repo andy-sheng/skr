@@ -8,6 +8,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -114,8 +115,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private boolean mHasHideBarrage;
     private boolean mNeedHideDownLoadBtn;
 
-    private Subscription mHideLandscapeOptBarSubscription;
-    private Subscription mHidePortraitOptBarSubscription;
+    private Handler mUiHanlder = new Handler();
 
     private WatchGameTouchPresenter mWatchGameTouchPresenter;
 
@@ -685,10 +685,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             return;
         }
 
-        if (mHideLandscapeOptBarSubscription != null
-                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
-            mHideLandscapeOptBarSubscription.unsubscribe();
-        }
+        mUiHanlder.removeCallbacks(mHideLandscapeOptBarRunnable);
 
         if (mHideLandscapeOptBarAnimatorSet == null) {
             ObjectAnimator landscapeBottomLayoutHideAnimator = ObjectAnimator.ofFloat(mLandscapeBottomLayout
@@ -728,11 +725,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         if (mIsPortraitHideOptMode) {
             return;
         }
-
-        if (mHidePortraitOptBarSubscription != null
-                && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
-            mHidePortraitOptBarSubscription.unsubscribe();
-        }
+        mUiHanlder.removeCallbacks(mHidePortraitOptBarRunnable);
 
         if (mHidePortraitOptBarAnimatorSet == null) {
             ObjectAnimator portraitBackBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitBackBtn
@@ -753,6 +746,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             mHidePortraitOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationCancel(Animator animation) {
+                    onAnimationEnd(animation);
                 }
 
                 @Override
@@ -772,6 +766,13 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
     }
 
+    Runnable mHideLandscapeOptBarRunnable = new Runnable() {
+        @Override
+        public void run() {
+            hideLandscapeOptBar();
+        }
+    };
+
     /**
      * 每次bar展现出来后5秒后就尝试取
      */
@@ -780,65 +781,24 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             return;
         }
 
-        if (mHideLandscapeOptBarSubscription != null
-                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
-            mHideLandscapeOptBarSubscription.unsubscribe();
-        }
-
-        mHideLandscapeOptBarSubscription = Observable
-                .timer(5, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(((RxActivity) getContext()).<Long>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        hideLandscapeOptBar();
-                    }
-                });
+        mUiHanlder.removeCallbacks(mHideLandscapeOptBarRunnable);
+        mUiHanlder.postDelayed(mHideLandscapeOptBarRunnable,5000);
     }
+
+    Runnable mHidePortraitOptBarRunnable = new Runnable() {
+        @Override
+        public void run() {
+            hidePortraitOptBar();
+        }
+    };
 
     private void tryToHidePortraitOptBar() {
         if (mIsLandscape) {
             return;
         }
 
-        if (mHidePortraitOptBarSubscription != null
-                && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
-            mHidePortraitOptBarSubscription.unsubscribe();
-        }
-
-        mHidePortraitOptBarSubscription = Observable
-                .timer(5, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(((RxActivity) getContext()).<Long>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        hidePortraitOptBar();
-                    }
-                });
+        mUiHanlder.removeCallbacks(mHidePortraitOptBarRunnable);
+        mUiHanlder.postDelayed(mHidePortraitOptBarRunnable,5000);
     }
 
     private void showLandscapeOptBar() {
@@ -942,14 +902,14 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     private void tryUnSubscribe() {
-        if (mHideLandscapeOptBarSubscription != null
-                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
-            mHideLandscapeOptBarSubscription.unsubscribe();
-        }
+        mUiHanlder.removeCallbacks(mHidePortraitOptBarRunnable);
+        mUiHanlder.removeCallbacks(mHideLandscapeOptBarRunnable);
+    }
 
-        if (mHidePortraitOptBarSubscription != null && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
-            mHidePortraitOptBarSubscription.unsubscribe();
-        }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mUiHanlder.removeCallbacksAndMessages(null);
     }
 
     private void resolveKeyBoardEvent(boolean isHide) {
