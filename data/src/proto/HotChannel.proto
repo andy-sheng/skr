@@ -1,6 +1,6 @@
 import "CommonChannel.proto";
 import "Common.proto";
-package com.mi.liveassistant.proto;
+package com.wali.live.proto;
 
 option java_package = "com.wali.live.proto";
 option java_outer_classname = "HotChannelProto";
@@ -60,4 +60,20 @@ message GameInfo {
     optional string jumpSchemeUri   = 4; //跳转scheme
     optional string desc            = 5; //游戏描述
     optional uint32 grade           = 6; //评分，数值[1-10]对应[0.5星-5星]
+}
+
+/***************************************** zhibo.recommend.reclist ****************************************/
+//根据当前观看的直播，关注等信息，获取推荐的直播列表
+message GetRecListReq {
+    optional uint64 viewerId = 1; //观众id
+    optional uint64 anchorId = 2; //主播id
+    optional string packageName = 3; //app包名
+    optional uint64 gameId = 4; //游戏id
+    optional uint32 recType = 5; //推荐类型，决定内容，1=根据当前观看的游戏直播推荐，2=我的关注
+    optional uint32 reqFrom = 6; //请求来源，决定样式，1=游戏聊天室-更多直播，2=游戏全屏
+}
+
+message GetRecListRsp {
+    required uint32 retCode = 1;
+    repeated ChannelItem items = 2;
 }

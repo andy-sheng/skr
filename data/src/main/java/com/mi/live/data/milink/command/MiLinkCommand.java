@@ -346,6 +346,7 @@ public class MiLinkCommand {
     public static final String COMMAND_FEEDS_HOMEPAGE_LIST = "zhibo.feed.getHomePageFeedList"; // 关注频道
     public static final String COMMAND_HOT_CHANNEL_LIST = "zhibo.recommend.list";
     public static final String COMMAND_HOT_CHANNEL_SUB_LIST = "zhibo.recommend.sublist";
+    public static final String COMMAND_HOT_CHANNEL_REC_LIST = "zhibo.recommend.reclist"; //直播间内根据当前观看的直播，关注等信息，获取推荐的直播列表
     public static final String COMMAND_MI_CHANNEL_GET_MJ = "zhibo.michannel.getmj";
 
     public static final Set<String> CHANNEL_COMMAND = new HashSet();
