@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.base.event.SdkEventClass;
+import com.base.log.MyLog;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.eventbus.EventClass;
 
@@ -59,6 +61,17 @@ public class WatchGameControllerView extends RelativeLayout {
         }
 
         adjust(event.type, event.percent, event.isShow);
+    }
+
+    @Subscribe
+    public void onEvent(SdkEventClass.OrientEvent event) {
+        if(event == null) {
+            return;
+        }
+
+        if(!event.isLandscape()) {
+            rootView.setVisibility(GONE);
+        }
     }
 
     private void adjust(int type, float percent, boolean isShow) {
