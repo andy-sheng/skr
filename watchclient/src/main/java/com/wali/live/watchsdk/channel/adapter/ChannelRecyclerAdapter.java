@@ -18,6 +18,7 @@ import com.wali.live.watchsdk.channel.holder.EffectCardHolder;
 import com.wali.live.watchsdk.channel.holder.FiveCircleHolder;
 import com.wali.live.watchsdk.channel.holder.FiveCircleWithStrokeHolder;
 import com.wali.live.watchsdk.channel.holder.GameCardHolder;
+import com.wali.live.watchsdk.channel.holder.GameLiveSingleHolder;
 import com.wali.live.watchsdk.channel.holder.LargeCardFloatHeaderHolder;
 import com.wali.live.watchsdk.channel.holder.LargeCardHeadHolder;
 import com.wali.live.watchsdk.channel.holder.LargeCardHolder;
@@ -310,6 +311,10 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
             case ChannelUiType.TYPE_ONE_WIDE_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_one_wide_item, parent, false);
                 holder = new OneWideCardHolder(view);
+                break;
+            case ChannelUiType.TYPE_GAME_WATCH_SINGLE_LIVE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_one_game_live_single_item, parent, false);
+                holder = new GameLiveSingleHolder(view);
                 break;
             default:
                 MyLog.d(TAG, "viewType is : " + viewType);

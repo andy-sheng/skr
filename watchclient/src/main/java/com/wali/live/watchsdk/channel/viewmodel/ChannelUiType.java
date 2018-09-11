@@ -63,6 +63,8 @@ public class ChannelUiType {
 
     public static final int TYPE_ONE_WIDE_CARD = 51 ; // 一个长方形卡片 扁的
 
+    public static final int TYPE_GAME_WATCH_SINGLE_LIVE = 66; // 直播助手游戏直播间全屏　更多直播新增单排样式
+
     public static final HashSet<Integer> ALL_CHANNEL_UI_TYPE =
             new HashSet<>(Arrays.asList(
                     TYPE_MAX_FIVE_CIRCLE,
@@ -111,6 +113,7 @@ public class ChannelUiType {
                     TYPE_LIVE_OR_VIDEO_COLLECTION,
                     TYPE_LIVE_OR_LIVE_GROUP,
                     TYPE_ONE_SQUARE_CARD,
-                    TYPE_ONE_WIDE_CARD
+                    TYPE_ONE_WIDE_CARD,
+                    TYPE_GAME_WATCH_SINGLE_LIVE
             ));
 }
