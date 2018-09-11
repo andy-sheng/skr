@@ -7,7 +7,9 @@ import android.view.View;
 
 import com.base.activity.BaseSdkActivity;
 import com.base.log.MyLog;
+import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
+import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
@@ -263,6 +265,27 @@ public class TopAreaPresenter extends BaseSdkRxPresenter<TopAreaView.IView>
             default:
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UserInfoEvent event) {
+        if(event == null
+                || mView == null) {
+            return;
+        }
+
+        List<ViewerModel> viewersList = mMyRoomData.getViewersList();
+        if(viewersList != null && !viewersList.isEmpty()) {
+            for(ViewerModel item : viewersList) {
+                if(item.getUid() == MyUserInfoManager.getInstance().getUuid()) {
+                    item.setAvatar(MyUserInfoManager.getInstance().getAvatar());
+                    item.setNickName(MyUserInfoManager.getInstance().getNickname());
+                    break;
+                }
+            }
+        }
+
+        dealViewers();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

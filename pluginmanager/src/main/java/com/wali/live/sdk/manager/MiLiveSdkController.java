@@ -38,6 +38,18 @@ import java.util.concurrent.ExecutorService;
 public class MiLiveSdkController implements IMiLiveSdk {
     public static final String TAG = MiLiveSdkController.class.getSimpleName();
 
+    //TODO-method params name-请不要更改
+    public static final String PARAM_XUID = "param_xuid";
+    public static final String PARAM_SEX = "param_sex";
+    public static final String PARAM_NICK_NAME = "param_nick_name";
+    public static final String PARAM_HEAD_URL = "param_head_url";
+    public static final String PARAM_SIGN = "param_sign";
+    public static final String PARAM_FORCE_UPLOAD_USERINFO_FLAG = "param_force_upload_userinfo_flag";
+
+    //TODO-method type-请不要更改
+    public static final int TYPE_METHOD_THIRD_LOGIN_WITH_FORCE_UPLOAD_USEINFO = 1;
+
+    //action
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
     private static final String EXTRA_PACKAGE_NAME = "extra_package_name";
     private static final String EXTRA_CHANNEL_SECRET = "extra_channel_secret";
@@ -91,6 +103,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
 //    private static final String ACTION_UPDATE_GAME_DOWNLOAD_STATUS = "action_update_game_download_status";
     ;
     private static final String ACTION_STATISTIC = "statistic";
+
+    private static final String ACTION_ADD_METHOD_TYPE_THIRD_LOGIN = "add_method_type_third_login";
 
     /*SharedPreferences File & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
@@ -150,9 +164,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_DISABLE_RELATION_CHAIN, 205061);
         mMinVersionMap.put(ACTION_OP_GET_BARRAGE, 206003);
         mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST, 430020);
-
-//        //TODO-具体版本后面修正
-//        mMinVersionMap.put(ACTION_UPDATE_GAME_DOWNLOAD_STATUS, 430020);
+        mMinVersionMap.put(ACTION_ADD_METHOD_TYPE_THIRD_LOGIN, 450002);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -414,6 +426,18 @@ public class MiLiveSdkController implements IMiLiveSdk {
         }
         checkHasInit();
         MiLiveSdkServiceProxy.getInstance().thirdPartLogin(channelId, xuid, sex, nickname, headUrl, sign);
+    }
+
+    @Override
+    public boolean thirdPartLoginWithJudgeUploadUserInfo(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, boolean forceUploadUserInfo, IAssistantCallback callback) {
+        if (!checkVersion(ACTION_ADD_METHOD_TYPE_THIRD_LOGIN, callback)) {
+            return false;
+        }
+
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().thirdPartLoginWithJudgeUploadUserInfo(channelId, xuid, sex, nickname, headUrl, sign, forceUploadUserInfo);
+
+        return true;
     }
 
     @Override

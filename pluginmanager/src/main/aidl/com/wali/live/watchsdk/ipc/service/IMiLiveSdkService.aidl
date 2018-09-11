@@ -37,4 +37,6 @@ interface IMiLiveSdkService {
     void getLiveUid(int channelId, String packageName, String channelSecret);
 
     void updateGameDownloadstatus(int channelId, String packageName, String channelSecret, long gameId, int type, int progress, String gamePackageName, boolean isByQuery);
+
+    void opt(int channelId, String packageName, String channelSecret, int type, String json);
 }

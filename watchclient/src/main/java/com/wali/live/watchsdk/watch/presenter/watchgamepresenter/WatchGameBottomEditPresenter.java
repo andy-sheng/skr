@@ -10,6 +10,7 @@ import com.base.global.GlobalData;
 import com.base.log.MyLog;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.account.event.UserInfoEvent;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.event.GiftEventClass;
 import com.mi.live.data.milink.event.MiLinkEvent;
@@ -325,6 +326,17 @@ public class WatchGameBottomEditPresenter extends BaseSdkRxPresenter<WatchGameBo
 
         if (!TextUtils.isEmpty(mWidgetLinkUrl)) {
             onEvent(new EventClass.UpdateFastGiftInfoEvent(mFastGiftId, null, null));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UserInfoEvent event) {
+        if(event == null) {
+            return;
+        }
+
+        if(mView != null) {
+            mView.tryBindAvatar();
         }
     }
 }

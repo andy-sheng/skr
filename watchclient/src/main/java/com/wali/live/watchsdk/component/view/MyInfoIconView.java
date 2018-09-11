@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.base.global.GlobalData;
 import com.base.image.fresco.BaseImageView;
+import com.base.log.MyLog;
 import com.mi.live.data.account.MyUserInfoManager;
 import com.mi.live.data.account.UserAccountManager;
 import com.wali.live.utils.AvatarUtils;

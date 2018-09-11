@@ -21,6 +21,8 @@ import com.base.log.MyLog;
 import com.base.utils.display.DisplayUtils;
 import com.base.view.LazyNewView;
 import com.base.view.SlidingTabLayout;
+import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.account.event.UserInfoEvent;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.eventbus.EventClass;
@@ -298,6 +300,24 @@ public class MyInfoHalfFragment extends BaseFragment implements View.OnClickList
         }
 
         MyLog.d(TAG, "PersonalInfoChangeEvent");
+        if (mTitleAndViewList != null && !mTitleAndViewList.isEmpty()) {
+            for (int i = 0; i < mTitleAndViewList.size(); i++) {
+                LazyNewView viewProxy = mTitleAndViewList.get(i).second;
+                if (viewProxy.getView() instanceof MyInfoSummaryView) {
+                    ((MyInfoSummaryView) viewProxy.getView()).refreshUi();
+                    break;
+                }
+
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UserInfoEvent event) {
+        if(event == null) {
+            return;
+        }
+
         if (mTitleAndViewList != null && !mTitleAndViewList.isEmpty()) {
             for (int i = 0; i < mTitleAndViewList.size(); i++) {
                 LazyNewView viewProxy = mTitleAndViewList.get(i).second;

@@ -59,7 +59,7 @@ public class UploadRunnable implements Runnable {
         }
         MyLog.w(TAG, "uploadUserInfo start,UploadUserInfo:" + mUploadInfo.toString());
         if (!mUploadInfo.hasInnerAvatar && !TextUtils.isEmpty(mUploadInfo.avatar)
-                && PermissionUtils.checkReadPhoneState(GlobalData.app())) {
+                && PermissionUtils.checkSdcardAlertWindow(GlobalData.app())) {
             String localImgUrl = mUploadInfo.avatar;
             if (mUploadInfo.avatarNeedDownload) {
                 localImgUrl = CommonUtils.downloadImg(mUploadInfo.avatar);

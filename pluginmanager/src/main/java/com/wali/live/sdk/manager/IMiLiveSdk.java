@@ -201,6 +201,8 @@ public interface IMiLiveSdk {
      */
     void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, IAssistantCallback callback);
 
+    boolean thirdPartLoginWithJudgeUploadUserInfo(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, boolean forceUploadUserInfo, IAssistantCallback callback);
+
     /**
      * 编辑用户资料
      *
@@ -316,6 +318,8 @@ public interface IMiLiveSdk {
         int DO_FEED_BACK = 1301;
 
         int UPDATE_GAME_DOWNLOAD_STATUS = 1302;
+
+        int ADD_METHOD_THIRD_LOGIN = 1303;
 
         /**
          * 登录相关接口的返回码

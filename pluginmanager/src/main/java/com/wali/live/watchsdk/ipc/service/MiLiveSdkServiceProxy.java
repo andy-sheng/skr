@@ -15,7 +15,18 @@ import com.wali.live.sdk.manager.global.GlobalData;
 import com.wali.live.sdk.manager.log.Logger;
 import com.wali.live.sdk.manager.version.VersionCheckManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
+
+import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_FORCE_UPLOAD_USERINFO_FLAG;
+import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_HEAD_URL;
+import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_NICK_NAME;
+import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_SEX;
+import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_SIGN;
+import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_XUID;
+import static com.wali.live.sdk.manager.MiLiveSdkController.TYPE_METHOD_THIRD_LOGIN_WITH_FORCE_UPLOAD_USEINFO;
 
 /**
  * Created by chengsimin on 2016/12/27.
@@ -289,7 +300,7 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void thirdPartLogin(int channelId, String xuid, int sex, String nickname, String headUrl, String sign) {
-        Logger.w(TAG, "thirdPartLogin channelId=" + channelId + ", xuid=" + xuid);
+        Logger.w(TAG, "thirdPartLogin channelId=" + channelId + ", xuid=" + xuid );
         ThirdPartLoginData data = new ThirdPartLoginData(channelId, xuid, sex, nickname, headUrl, sign);
         if (mRemoteService == null) {
             mThirdPartLoginData = data;
@@ -300,6 +311,34 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
             } catch (RemoteException e) {
                 mThirdPartLoginData = data;
                 resolveException(e, IMiLiveSdk.ICallback.THIRD_PART_LOGIN);
+            }
+        }
+    }
+
+    public void thirdPartLoginWithJudgeUploadUserInfo(int channelId, String xuid, int sex, String nickname, String headUrl, String sign, boolean forceUploadUserInfo) {
+        Logger.w(TAG, "thirdPartLoginWithJudgeUploadUserInfo channelId=" + channelId + ", xuid=" + xuid );
+        ThirdPartLoginData data = new ThirdPartLoginData(channelId, xuid, sex, nickname, headUrl, sign);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(PARAM_XUID, xuid);
+            jsonObject.put(PARAM_SEX, sex);
+            jsonObject.put(PARAM_NICK_NAME, nickname);
+            jsonObject.put(PARAM_HEAD_URL, headUrl);
+            jsonObject.put(PARAM_SIGN, sign);
+            jsonObject.put(PARAM_FORCE_UPLOAD_USERINFO_FLAG, forceUploadUserInfo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (mRemoteService == null) {
+            mThirdPartLoginData = data;
+            resolveNullService(IMiLiveSdk.ICallback.ADD_METHOD_THIRD_LOGIN);
+        } else {
+            try {
+                mRemoteService.opt(channelId, GlobalData.app().getPackageName(), MiLiveSdkController.getInstance().getChannelSecret(), TYPE_METHOD_THIRD_LOGIN_WITH_FORCE_UPLOAD_USEINFO, jsonObject.toString());
+            } catch (RemoteException e) {
+                mThirdPartLoginData = data;
+                resolveException(e, IMiLiveSdk.ICallback.ADD_METHOD_THIRD_LOGIN);
             }
         }
     }

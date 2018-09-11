@@ -175,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void notifyGameInstallOpt(int i, long l, String s, String s1) {
+            public boolean notifyGameInstallOpt(int i, long l, String s, String s1) {
+                return false;
             }
 
             @Override

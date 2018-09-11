@@ -55,12 +55,25 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.watchsdk.login.UploadService.UploadInfo.FIRST_LOGIN_YES;
+
 /**
  * Created by chengsimin on 2016/12/26.
  */
 public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     public final static String TAG = MiLiveSdkBinder.class.getSimpleName();
     private static MiLiveSdkBinder sInstance;
+
+    //TODO-method params name-请不要更改
+    private static final String PARAM_XUID = "param_xuid";
+    private static final String PARAM_SEX = "param_sex";
+    private static final String PARAM_NICK_NAME = "param_nick_name";
+    private static final String PARAM_HEAD_URL = "param_head_url";
+    private static final String PARAM_SIGN = "param_sign";
+    private static final String PARAM_FORCE_UPLOAD_USERINFO_FLAG = "param_force_upload_userinfo_flag";
+
+    //TODO-method type-请不要更改
+    public static final int TYPE_METHOD_THIRD_LOGIN_WITH_FORCE_UPLOAD_USEINFO = 1;
 
     private final HashMap<Integer, String> mAuthMap;
     private final HashMap<Integer, RemoteCallbackList<IMiLiveSdkEventCallback>> mEventCallBackListMap;
@@ -1189,8 +1202,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
-    @Override
-    public void thirdPartLogin(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
+    private void thirdPartLoginWithJudgeUploadUserInfo(final String packageName, final String channelSecret, final boolean needForceUpload, final ThirdPartLoginData loginData) throws RemoteException {
         if (loginData == null) {
             MyLog.w(TAG, "thirdPartLogin loginData is null");
             return;
@@ -1217,9 +1229,16 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
 
                             @Override
                             public void onNext(AccountProto.ThirdPartSignLoginRsp rsp) {
-                                MyLog.w(TAG, "thirdPartLogin onNext,retCode:" + rsp.getRetCode());
-                                if (rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
-                                    UploadService.toUpload(new UploadService.UploadInfo(rsp, loginData));
+                                if (rsp != null
+                                        && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
+                                    UploadService.UploadInfo uploadInfo = null;
+                                    uploadInfo = new UploadService.UploadInfo(rsp, loginData);
+                                    if(needForceUpload) {
+                                        uploadInfo.loginStatus = FIRST_LOGIN_YES;
+                                        uploadInfo.hasInnerSex = false;
+                                        uploadInfo.hasInnerAvatar = false;
+                                    }
+                                    UploadService.toUpload(uploadInfo);
                                 }
                                 if (rsp != null) {
                                     onEventLogin(channelId, rsp.getRetCode());
@@ -1249,6 +1268,71 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 onEventLogin(channelId, ErrorCode.CODE_ERROR_NORMAL);
             }
         });
+    }
+
+    @Override
+    public void thirdPartLogin(String packageName, String channelSecret, final ThirdPartLoginData loginData) throws RemoteException {
+        thirdPartLoginWithJudgeUploadUserInfo(packageName, channelSecret, false, loginData);
+    }
+
+    @Override
+    public void opt(int channelId, String packageName, String channelSecret, int type, String json) throws RemoteException {
+        switch (type) {
+            case TYPE_METHOD_THIRD_LOGIN_WITH_FORCE_UPLOAD_USEINFO:
+                if(TextUtils.isEmpty(json)) {
+                    return;
+                }
+
+                String xuid = "";
+                int sex = 0;
+                String nickname = "";
+                String headUrl = "";
+                String sign = "";
+                boolean forceUploadUserInfoFlag = false;
+                ThirdPartLoginData data = null;
+                try {
+                    JSONObject object = new JSONObject(json);
+                    if(object.has(PARAM_XUID)) {
+                        xuid = object.optString(PARAM_XUID);
+                    }
+
+                    if(object.has(PARAM_SEX)) {
+                        sex = object.optInt(PARAM_SEX);
+                    }
+
+                    if(object.has(PARAM_NICK_NAME)) {
+                        nickname = object.optString(PARAM_NICK_NAME);
+                    }
+
+                    if(object.has(PARAM_HEAD_URL)) {
+                        headUrl = object.optString(PARAM_HEAD_URL);
+                    }
+
+                    if(object.has(PARAM_SIGN)) {
+                        sign = object.optString(PARAM_SIGN);
+                    }
+
+                    if(object.has(PARAM_FORCE_UPLOAD_USERINFO_FLAG)) {
+                        forceUploadUserInfoFlag = object.optBoolean(PARAM_FORCE_UPLOAD_USERINFO_FLAG);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                ThirdPartLoginData thirdPartLoginData = new ThirdPartLoginData();
+                thirdPartLoginData.setChannelId(channelId);
+                thirdPartLoginData.setXuid(xuid);
+                thirdPartLoginData.setSex(sex);
+                thirdPartLoginData.setNickname(nickname);
+                thirdPartLoginData.setHeadUrl(headUrl);
+                thirdPartLoginData.setSign(sign);
+
+                thirdPartLoginWithJudgeUploadUserInfo(packageName
+                        , channelSecret
+                        , forceUploadUserInfoFlag
+                        , thirdPartLoginData);
+                break;
+        }
     }
 
     public void onEventGetRecommendLives(final int channelId, final int errCode, final List<LiveInfo> liveInfos) {
@@ -1286,7 +1370,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             }
         });
     }
-
 
     public void onEventGetFollowingUserList(final int channelId, final int errCode, final List<UserInfo> userInfos, final int total, final long timeStamp) {
         MyLog.w(TAG, "onEventGetFollowingUserList channelId=" + channelId);
