@@ -40,6 +40,8 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_OFF;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_ON;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
@@ -110,6 +112,8 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_PLAYER_RECONNECT);
         registerAction(MSG_SHOW_SEND_ENVELOPE);
+        registerAction(MSG_PLAYER_SOUND_OFF);
+        registerAction(MSG_PLAYER_SOUND_ON);
     }
 
     @Override
@@ -286,6 +290,16 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             case MSG_PLAYER_PAUSE:
                 if (mWatchPlayerPresenter != null) {
                     mWatchPlayerPresenter.pausePlay();
+                }
+                break;
+            case MSG_PLAYER_SOUND_OFF:
+                if (mWatchPlayerPresenter != null) {
+                    mWatchPlayerPresenter.mutePlay(true);
+                }
+                break;
+            case MSG_PLAYER_SOUND_ON:
+                if (mWatchPlayerPresenter != null) {
+                    mWatchPlayerPresenter.mutePlay(false);
                 }
                 break;
             case MSG_PLAYER_RECONNECT:

@@ -70,7 +70,7 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
                         float brightness = Math.abs(CommonUtils.getScreenBrightness(touchView.getContext()));
                         float brightnessOffset = percent / 10; // 减少灵敏度
 
-                        if (((int) Math.abs(brightness * 100)) >= 1) {
+                        if (Math.abs(brightnessOffset) >= 0.01) {
                             brightness += brightnessOffset;
                             if (brightness < 0) {
                                 brightness = 0;
@@ -91,8 +91,7 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
 
                         float volumeOffsetAccurate = maxVolume * percent / 10; // 减少灵敏度
                         int volumeOffset = (int) volumeOffsetAccurate;
-
-                        MyLog.d(TAG, "volumeOffsetAccurate" + volumeOffsetAccurate);
+                        
                         if (volumeOffset == 0 && Math.abs(volumeOffsetAccurate) > 0.2f) {
                             if (distanceY > 0) {
                                 volumeOffset = 1;

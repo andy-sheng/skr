@@ -150,8 +150,10 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_PLAYER_SHOW_LOADING = MSG_PLAYER_FIRST + 6;  // 显示 加载图标
     public static final int MSG_PLAYER_HIDE_LOADING = MSG_PLAYER_FIRST + 7;  // 隐藏 加载图标
     public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 8;
-    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 9;
+    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 9; // 暂停
     public static final int MSG_PLAYER_RECONNECT = MSG_PLAYER_FIRST + 10;
+    public static final int MSG_PLAYER_SOUND_OFF = MSG_PLAYER_FIRST + 11; // 静音
+    public static final int MSG_PLAYER_SOUND_ON = MSG_PLAYER_FIRST + 12; // 开启声音
 
 
     // UI消息

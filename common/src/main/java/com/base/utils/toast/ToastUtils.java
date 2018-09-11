@@ -2,13 +2,20 @@
 package com.base.utils.toast;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.base.global.GlobalData;
 import com.base.log.MyLog;
+
+import org.w3c.dom.Text;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -56,6 +63,22 @@ public class ToastUtils {
                 try {
                     Toast toast = Toast.makeText(GlobalData.app(), tips, Toast.LENGTH_SHORT);
                     toast.setGravity(gravity, 0, 0);
+                    toast.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void showMultiToast(final String tips, final int gravity) {
+        sMainHanlder.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Toast toast = Toast.makeText(GlobalData.app(), tips, Toast.LENGTH_SHORT);
+                    int textview_id = Resources.getSystem().getIdentifier("message", "id", "android");
+                    ((TextView) toast.getView().findViewById(textview_id)).setGravity(gravity);
                     toast.show();
                 } catch (Exception e) {
                     e.printStackTrace();

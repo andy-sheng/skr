@@ -110,6 +110,17 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/view_dimen_232"
         android:layout_marginRight="@dimen/view_dimen_42"/>
+
+    <ImageView
+        android:id="@+id/game_follow_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/anchor_info_container"
+        android:layout_marginTop="-5.0dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_dimen_40"
+        android:src="@drawable/live_follow_toast_png"
+        android:visibility="gone"/>
 </merge>
 
 

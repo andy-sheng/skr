@@ -1,7 +1,9 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
@@ -34,10 +36,17 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import static com.wali.live.component.view.Utils.$click;
 
 public class WatchGameChatTabView extends RelativeLayout implements
-        IComponentView<WatchGameChatTabView.IPresenter, WatchGameChatTabView.IView>,WatchGameTabView.GameTabChildView, View.OnClickListener {
+        IComponentView<WatchGameChatTabView.IPresenter, WatchGameChatTabView.IView>, WatchGameTabView.GameTabChildView, View.OnClickListener {
 
     private static final int ANCHOR_BADGE_CERT = DisplayUtils.dip2px(16f);
     private static final int ANCHOR_BADGE_UN_CERT = DisplayUtils.dip2px(11f);
@@ -62,6 +71,13 @@ public class WatchGameChatTabView extends RelativeLayout implements
     ViewStub mGameInfoPopViewStub;
     GameInfoPopView mGameInfoPopView; // 可能为空
 
+    ImageView mGuideFollowView; //关注引导浮层
+
+    private Handler mUiHandler = new Handler();
+
+    public long mFollowGuideShowTimeInterval = 2 * 60 * 1000;//从开始观看到显示关注引导浮层的时间间隔
+    public int mFollowGuideShowUserNum = 200;   //关注引导浮层显示的人数限制
+
     private boolean mEnableFollow = true;
 
     private boolean mIsDownLoadByGc = false;
@@ -84,6 +100,8 @@ public class WatchGameChatTabView extends RelativeLayout implements
         mViewerNum = (TextView) this.findViewById(R.id.viewer_num);
         mGameInfoPopViewStub = (ViewStub) this.findViewById(R.id.game_info_pop_view_stub);
 
+        mGuideFollowView = (ImageView) this.findViewById(R.id.game_follow_guide);
+
         mCommentContainer = (RelativeLayout) this.findViewById(R.id.comment_container);
         mWatchGameLiveCommentView = (WatchGameLiveCommentView) this.findViewById(R.id.live_comment_view);
         mWatchGameLiveCommentView.setIsGameLive(true);
@@ -99,17 +117,48 @@ public class WatchGameChatTabView extends RelativeLayout implements
         if (componentController.getRoomBaseDataModel() != null) {
 //            loadGameInfoPopView(componentController.getRoomBaseDataModel().getGameInfoModel());
 
-            if(componentController.getRoomBaseDataModel().getGameInfoModel() != null) {
+            if (componentController.getRoomBaseDataModel().getGameInfoModel() != null) {
                 GameDownloadOptControl.tryQueryGameDownStatus(componentController.getRoomBaseDataModel().getGameInfoModel());
             }
         }
 
         $click(mAnchorAvatarIv, this);
         $click(mFocusBtn, this);
+
+        mGuideFollowView.postDelayed(mCheckShowFollowGuideRunnable, mFollowGuideShowTimeInterval);
+    }
+
+    Runnable mCheckShowFollowGuideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            checkShowFollowGuide(this);
+        }
+    };
+
+    Runnable mHideFollowGuideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            dismissFollowGuidePopupWindow();
+        }
+    };
+
+    private void checkShowFollowGuide(Runnable runnable) {
+        // 是否已经关注了
+        // 关注人数是否超过200
+        if (mController.getRoomBaseDataModel().isFocused()) {
+            return;
+        }
+
+        if (mController.getRoomBaseDataModel().getViewerCnt() < mFollowGuideShowUserNum) {
+            return;
+        }
+
+        showFollowGuidePopupWindow();
     }
 
     /**
      * 初始化和切换房间的时候调用更新游戏信息
+     *
      * @param gameInfoModel
      */
     private void loadGameInfoPopView(GameInfoModel gameInfoModel, int status) {
@@ -123,14 +172,14 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
         int apkStatus = -1;
         String packageName = gameInfoModel.getPackageName();
-        if(TextUtils.isEmpty(packageName)) {
+        if (TextUtils.isEmpty(packageName)) {
             // 无效的包名 隐藏
             if (mGameInfoPopView != null) {
                 mGameInfoPopView.setVisibility(GONE);
             }
             return;
         }
-        if(mIsDownLoadByGc) {
+        if (mIsDownLoadByGc) {
             apkStatus = status;
         } else {
             if (PackageUtils.isInstallPackage(packageName)) {
@@ -167,10 +216,32 @@ public class WatchGameChatTabView extends RelativeLayout implements
         mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus, mIsDownLoadByGc);
     }
 
+    /**
+     * 显示关注引导浮层
+     * <p>
+     * 显示条件：1)热门主播（当前房间观众数>=200）
+     * 2)观众未关注主播
+     * 3)观众停留在直播间1分钟
+     * 消失条件：点击弹窗区之外的屏幕，或者，3秒后消失
+     */
+    public void showFollowGuidePopupWindow() {
+        mGuideFollowView.setVisibility(VISIBLE);
+
+        mUiHandler.removeCallbacks(mHideFollowGuideRunnable);
+        mUiHandler.postDelayed(mHideFollowGuideRunnable, 3000);
+    }
+
+
+    /**
+     * 销毁关注引导浮层
+     */
+    public void dismissFollowGuidePopupWindow() {
+        mGuideFollowView.setVisibility(GONE);
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventClass.UpdateGameInfoStatus event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
@@ -180,21 +251,21 @@ public class WatchGameChatTabView extends RelativeLayout implements
         loadGameInfoPopView(mController.getRoomBaseDataModel().getGameInfoModel(), -1);
     }
 
-    @Subscribe (threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDownloadEvent(CustomDownloadManager.ApkStatusEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
         MyLog.d(TAG, "ApkStatusEvent" + event.status + "event.isByGc:" + event.isByQuery);
         RoomBaseDataModel roomBaseDataModel = mController.getRoomBaseDataModel();
-        if(roomBaseDataModel != null
+        if (roomBaseDataModel != null
                 && roomBaseDataModel.getGameInfoModel() != null) {
             GameInfoModel gameInfoModel = roomBaseDataModel.getGameInfoModel();
-            if(gameInfoModel.getGameId() == event.gameId
+            if (gameInfoModel.getGameId() == event.gameId
                     && gameInfoModel.getPackageName().equals(event.packageName)) {
                 MyLog.d(TAG, "ApkStatusEvent" + event.status + "event.isByGc:" + event.isByQuery);
-                if(event.isByQuery) {
+                if (event.isByQuery) {
                     mIsDownLoadByGc = true;
                     loadGameInfoPopView(mController.getRoomBaseDataModel().getGameInfoModel(), event.status);
                 }
@@ -212,7 +283,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
             mWatchGameChatTabPresenter.startPresenter();
         }
 
-        if(!EventBus.getDefault().isRegistered(this)) {
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -256,6 +327,8 @@ public class WatchGameChatTabView extends RelativeLayout implements
                     if (isFollow) {
                         mFocusBtn.setText(R.string.followed);
                         mFocusBtn.setEnabled(false);
+                        mUiHandler.removeCallbacks(mHideFollowGuideRunnable);
+                        dismissFollowGuidePopupWindow();
                     } else {
                         mFocusBtn.setText(R.string.follow);
                         mFocusBtn.setEnabled(true);
@@ -272,10 +345,10 @@ public class WatchGameChatTabView extends RelativeLayout implements
                     if (resultCode == ErrorCode.CODE_RELATION_BLACK) {
                         ToastUtils.showToast(getResources().getString(R.string.setting_black_follow_hint));
                     } else if (resultCode == 0) {
-                        ToastUtils.showToast(getResources().getString(R.string.follow_success));
                         mFocusBtn.setText(R.string.followed);
                         mFocusBtn.setEnabled(false);
                         MyUserInfoManager.getInstance().getUser().setFollowNum(MyUserInfoManager.getInstance().getUser().getFollowNum() + 1);
+                        ToastUtils.showMultiToast("关注成功,小米直播更多虎牙、\n熊猫顶尖游戏玩家等你哦", Gravity.CENTER);
                     } else if (resultCode == -1) {
                         ToastUtils.showToast(getResources().getString(R.string.follow_failed));
                     } else {

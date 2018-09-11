@@ -53,6 +53,8 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_OFF;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_ON;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_LAND_DOWNLOAD_CLICK;
@@ -122,6 +124,8 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         registerAction(MSG_ON_BACK_PRESSED);
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_PLAYER_START);
+        registerAction(MSG_PLAYER_SOUND_OFF);
+        registerAction(MSG_PLAYER_SOUND_ON);
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -170,6 +174,12 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 break;
             case MSG_PLAYER_START:
                 mView.updatePauseEvent(false);
+                break;
+            case MSG_PLAYER_SOUND_OFF:
+                mView.updateMuteEvent(true);
+                break;
+            case MSG_PLAYER_SOUND_ON:
+                mView.updateMuteEvent(false);
                 break;
         }
         return false;
@@ -335,6 +345,17 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         }
     }
 
+    @Override
+    public void videoMute(boolean isMute) {
+        MyLog.d(TAG, "videoMute isMute = " + isMute);
+        if (isMute) {
+            postEvent(MSG_PLAYER_SOUND_OFF);
+        } else {
+            postEvent(MSG_PLAYER_SOUND_ON);
+        }
+
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {
@@ -351,11 +372,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 if (event.status == SUCCESS) {
                     postEvent(MSG_PLAYER_PAUSE);
                 }
-            } else if(event.type == STATTUS_BEGIN_DOWNLOAD
+            } else if (event.type == STATTUS_BEGIN_DOWNLOAD
                     || event.type == STATTUS_CONTINUE_DOWNLOAD) {
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
                 CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
-            } else if(event.type == STATTUS_PAUSE_DOWNLOAD) {
+            } else if (event.type == STATTUS_PAUSE_DOWNLOAD) {
                 CustomDownloadManager.getInstance().pauseDownload(mMyRoomData.getGameInfoModel().getPackageUrl());
             }
         }
@@ -398,12 +419,12 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
-        if(event.isByGame || mIsDownloadByGc) {
-            if(event.gameId == mMyRoomData.getGameInfoModel().getGameId()
+        if (event.isByGame || mIsDownloadByGc) {
+            if (event.gameId == mMyRoomData.getGameInfoModel().getGameId()
                     && event.packageName.equals(mMyRoomData.getGameInfoModel().getPackageName())) {
                 mIsDownloadByGc = true;
                 switch (event.status) {

@@ -74,8 +74,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     // 竖屏下展示的控件 TODO 水印还没加上
     private ImageView mPortraitBackBtn;
     private PortraitLineUpButtons mPortraitLinUpButtons;
+    private ImageView mPortraitVoiceBtn;
     // 竖屏相关
-
+    private boolean mIsVideoMute = false; //是否静音
 
     // 横屏下展示的控件
     private RelativeLayout mLandscapeTopLayout; // 横屏下上半部分的布局
@@ -229,6 +230,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     }
                     addView(view);
                 }
+
+                mPortraitVoiceBtn.setImageDrawable(mIsVideoMute ? GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_mute) : GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_voice));
+
             }
 
             tryToHidePortraitOptBar();
@@ -241,6 +245,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private void bindPortraitViews() {
         mPortraitBackBtn = (ImageView) findViewById(R.id.portrait_back_btn);
         mPortraitBackBtn.setOnClickListener(this);
+
+        mPortraitVoiceBtn = (ImageView) findViewById(R.id.protrait_voice_btn);
+        mPortraitVoiceBtn.setOnClickListener(this);
 
         mPortraitLinUpButtons = (PortraitLineUpButtons) findViewById(R.id.portrait_line_up_buttons);
 //        // 分享
@@ -355,11 +362,27 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 if (mPresenter != null) {
                     mPresenter.exitRoom();
                 }
+            } else if (id == R.id.protrait_voice_btn) {
+                touchVoiceOnClick();
             }
         }
 
         if (id == R.id.touch_view) {
             touchViewOnclick();
+        }
+    }
+
+    private void touchVoiceOnClick() {
+        if (mIsVideoMute) {
+            // 打开声音
+//            mIsVideoMute = false;
+            mPresenter.videoMute(false);
+//            mPortraitVoiceBtn.setImageResource(R.drawable.live_function_icon_voice);
+        } else {
+            // 静音
+//            mIsVideoMute = true;
+            mPresenter.videoMute(true);
+//            mPortraitVoiceBtn.setImageResource(R.drawable.live_function_icon_mute);
         }
     }
 
@@ -390,6 +413,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                             : GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_suspended));
                 }
             }
+
+            mPortraitVoiceBtn.setImageDrawable(mIsVideoMute ? GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_mute) : GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_voice));
         }
     }
 
@@ -714,12 +739,16 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     , View.TRANSLATION_Y
                     , mPortraitBackBtn.getTranslationY()
                     , mPortraitBackBtn.getTranslationY() - mPortraitBackBtn.getBottom());
+            ObjectAnimator portraitVoiceBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitVoiceBtn
+                    , View.TRANSLATION_Y
+                    , mPortraitVoiceBtn.getTranslationY()
+                    , mPortraitVoiceBtn.getBottom() - mPortraitVoiceBtn.getTranslationY());
             ObjectAnimator portraitLinUpButtonsHideAnimator = ObjectAnimator.ofFloat(mPortraitLinUpButtons
                     , View.TRANSLATION_X
                     , mPortraitLinUpButtons.getTranslationX() + (DisplayUtils.getScreenWidth() - mPortraitLinUpButtons.getLeft()));
 
             mHidePortraitOptBarAnimatorSet = new AnimatorSet();
-            mHidePortraitOptBarAnimatorSet.playTogether(portraitBackBtnHideAnimator, portraitLinUpButtonsHideAnimator);
+            mHidePortraitOptBarAnimatorSet.playTogether(portraitBackBtnHideAnimator, portraitLinUpButtonsHideAnimator, portraitVoiceBtnHideAnimator);
             mHidePortraitOptBarAnimatorSet.setDuration(ANIMATION_DURATION);
             mHidePortraitOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
@@ -860,12 +889,17 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     , mPortraitBackBtn.getTranslationY()
                     , mPortraitBackBtn.getTranslationY() + mPortraitBackBtn.getBottom());
 
+            ObjectAnimator portraitVoiceBtnShowAnimator = ObjectAnimator.ofFloat(mPortraitVoiceBtn
+                    , View.TRANSLATION_Y
+                    , mPortraitVoiceBtn.getBottom()
+                    , mPortraitVoiceBtn.getBottom() - mPortraitVoiceBtn.getTranslationY());
+
             ObjectAnimator portraitLinUpButtonsShowAnimator = ObjectAnimator.ofFloat(mPortraitLinUpButtons
                     , View.TRANSLATION_X
                     , mPortraitLinUpButtons.getTranslationX() - (DisplayUtils.getScreenWidth() - mPortraitLinUpButtons.getLeft()));
 
             mShowPortraitOptBarAnimatorSet = new AnimatorSet();
-            mShowPortraitOptBarAnimatorSet.playTogether(portraitBackBtnShowAnimator, portraitLinUpButtonsShowAnimator);
+            mShowPortraitOptBarAnimatorSet.playTogether(portraitBackBtnShowAnimator, portraitLinUpButtonsShowAnimator, portraitVoiceBtnShowAnimator);
             mShowPortraitOptBarAnimatorSet.setDuration(ANIMATION_DURATION);
             mShowPortraitOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
@@ -1022,6 +1056,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
+            public void updateMuteEvent(boolean isMute) {
+                mIsVideoMute = isMute;
+                updatePlayBtnUi();
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameZTopView.this;
             }
@@ -1081,6 +1121,8 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void optBarrageControl(boolean needHide);
 
         void clickDownLoad(int flag);
+
+        void videoMute(boolean isMute);
     }
 
     public interface IView extends IViewProxy {
@@ -1121,5 +1163,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void updatePauseEvent(boolean isPause);
 
         void setDownLoadBtnVisibility(boolean needShow);
+
+        void updateMuteEvent(boolean isMute);
     }
 }
