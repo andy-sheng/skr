@@ -66,9 +66,9 @@ public class ChannelTabPagerAdapter extends PagerAdapter {
                     channelView = cachedView;
                 } else {
                     channelView = new LiveChannelView(container.getContext());
-                    ((LiveChannelView) channelView).setChannelShow(channelShow);
+                    ((LiveChannelView) channelView).setChannelId(channelShow.getChannelId());
+                    ((LiveChannelView) channelView).loadData();
                 }
-                ((LiveChannelView) channelView).onStart();
             }
         }
 
@@ -94,7 +94,6 @@ public class ChannelTabPagerAdapter extends PagerAdapter {
             container.removeView(v);
             if (v instanceof LiveChannelView) {
                 cacheViewToMap(((LiveChannelView) v).getChannelId(), v);
-                ((LiveChannelView) v).onStop();
             }
         } else {
             MyLog.e(TAG, "destroyItem but index is error! index=" + index + ",count=" + count);

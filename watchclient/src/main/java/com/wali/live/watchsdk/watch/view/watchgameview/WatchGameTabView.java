@@ -70,12 +70,12 @@ public class WatchGameTabView extends RelativeLayout implements
             }
         });
 
-        mTitleAndViewMap.put("观众", new LazyNewView() {
-            @Override
-            public View newView() {
-                return new WatchGameViewerTabView(getContext(), mWatchComponentController);
-            }
-        });
+//        mTitleAndViewMap.put("观众", new LazyNewView() {
+//            @Override
+//            public View newView() {
+//                return new WatchGameViewerTabView(getContext(), mWatchComponentController);
+//            }
+//        });
 
         mTitleAndViewMap.put("更多直播", new LazyNewView() {
             @Override
@@ -84,7 +84,7 @@ public class WatchGameTabView extends RelativeLayout implements
             }
         });
         mTabTitleList.add("聊天");
-        mTabTitleList.add("观众");
+//        mTabTitleList.add("观众");
         mTabTitleList.add("更多直播");
 
         mWatchGameTab = (SlidingTabLayout) this.findViewById(R.id.watch_game_tab);

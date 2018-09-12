@@ -49,7 +49,6 @@ public class ChannelPresenter implements IChannelPresenter {
         mView = view;
     }
 
-    @Override
     public void setChannelId(long channelId) {
         mChannelId = channelId;
     }
@@ -117,7 +116,7 @@ public class ChannelPresenter implements IChannelPresenter {
                     public void onNext(List<? extends BaseViewModel> list) {
                         MyLog.d(TAG, formatLog("getChannelObservable onNext"));
                         if (list != null) {
-                            mView.updateView(list);
+                            mView.updateView(list, mChannelId);
                         }
                     }
                 });
