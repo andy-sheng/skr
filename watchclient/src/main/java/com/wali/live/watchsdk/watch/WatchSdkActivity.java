@@ -836,7 +836,7 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
                             mMyRoomData.setGameInfoModel(gameInfoModel);
 
                             WatchGameInfoConfig.update(gameInfoModel.getPackageUrl(),
-                                    mMyRoomData.getUid(), mMyRoomData.getChannelId(), gameInfoModel.getPackageName());
+                                    mMyRoomData.getUid(), mMyRoomData.getChannelId(), gameInfoModel.getPackageName(), gameInfoModel.getGameId());
                         }
                     }
                 });
