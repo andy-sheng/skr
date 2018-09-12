@@ -99,4 +99,11 @@ public class VideoBannerHolder extends FixedHolder implements BannerClickListene
             mJumpListener.jumpScheme(url);
         }
     }
+
+    @Override
+    protected void postChannelData() {
+        if (mVideoView != null) {
+            mVideoView.postInit(mChannelId);
+        }
+    }
 }
