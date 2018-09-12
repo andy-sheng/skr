@@ -59,6 +59,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_OFF;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_ON;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
+import static com.wali.live.watchsdk.eventbus.EventClass.WatchGameControllChangeEvent.WATCH_GAME_CONTROLL_VOLUME;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_LAND_DOWNLOAD_CLICK;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_BEGIN_DOWNLOAD;
@@ -355,7 +356,6 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         } else {
             postEvent(MSG_PLAYER_SOUND_ON);
         }
-
     }
 
     @Override
@@ -363,6 +363,15 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         GameDownloadOptControl.tryQueryGameDownStatus(mMyRoomData.getGameInfoModel());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.WatchGameControllChangeEvent event) {
+        if (event == null) {
+            return;
+        }
+        if (event.type == WATCH_GAME_CONTROLL_VOLUME && event.percent != 0) {
+            videoMute(false);
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {

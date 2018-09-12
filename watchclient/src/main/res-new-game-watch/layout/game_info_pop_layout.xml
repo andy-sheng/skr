@@ -65,7 +65,7 @@
         android:paddingBottom="@dimen/view_dimen_10"
         android:paddingRight="@dimen/view_dimen_20"
         android:paddingTop="@dimen/view_dimen_20"
-        android:layout_marginTop="@dimen/view_dimen_20"
-        android:layout_marginRight="@dimen/view_dimen_20"
+        android:layout_marginTop="@dimen/view_dimen_30"
+        android:layout_marginRight="@dimen/view_dimen_30"
         android:background="@drawable/pendant_shut" />
 </RelativeLayout>

@@ -33,8 +33,8 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
     private int startType; //记录开始时调节的类型
 
     private boolean isClick;
-    private long startTime = 0;
-    private long endTime = 0;
+    private float distanceX;
+    private float distanceY;
 
     private float brightness; //记录开始调节时亮度
     private int currVolume; //记录开始调节时音量
@@ -61,12 +61,13 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
                 currVolume = CommonUtils.getStreamVolume();
 
                 isClick = false;
-                startTime = System.currentTimeMillis();
                 break;
             case MotionEvent.ACTION_MOVE:
                 float endX = event.getX();
                 float endY = event.getY();
-                float distanceY = startY - endY;
+
+                distanceX = startX - endX;
+                distanceY = startY - endY;
 
                 if (endX < DisplayUtils.getScreenWidth() / 2) {
                     // 左边屏幕控制亮度
@@ -93,7 +94,7 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
                         float percent = distanceY / (float) DisplayUtils.getScreenHeight();
                         int maxVolume = CommonUtils.getStreamMaxVolume();
 
-                        float volumeOffsetAccurate = maxVolume * percent ; // 减少灵敏度
+                        float volumeOffsetAccurate = maxVolume * percent; // 减少灵敏度
                         int volumeOffset = (int) volumeOffsetAccurate;
 
                         MyLog.d(TAG, "volumeOffsetAccurate = " + volumeOffsetAccurate);
@@ -113,8 +114,8 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                endTime = System.currentTimeMillis();
-                if ((endTime - startTime) > 0.1 * 1000L) {
+                if (Math.abs(distanceY) > 10
+                        || Math.abs(distanceX) > 10) {
                     isClick = true;
                 } else {
                     isClick = false;
