@@ -268,7 +268,8 @@ public class GameInfoPopView extends RelativeLayout {
             mDownloadProgressBar.setProgress(progress);
             mBottomText.setText(R.string.game_info_pop_download);
 
-        } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS) {
+        } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH
+                || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS) {
             // 已经安装了该游戏 隐藏这个浮窗
             showOrHidePopView(GONE);
 

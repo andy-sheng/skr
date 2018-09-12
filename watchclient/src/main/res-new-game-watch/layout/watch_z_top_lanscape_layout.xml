@@ -97,13 +97,13 @@
                     android:layout_toRightOf="@+id/landscape_anchor_name"
                     android:layout_marginRight="@dimen/view_dimen_18"/>
             </RelativeLayout>
-            <ImageView
-                android:id="@+id/landscape_download"
-                android:layout_width="@dimen/view_dimen_70"
-                android:layout_height="@dimen/view_dimen_70"
-                android:src="@drawable/live_video_fullscreen_top_download"
-                android:layout_marginLeft="@dimen/view_dimen_76"
-                android:visibility="gone"/>
+            <!--<ImageView-->
+                <!--android:id="@+id/landscape_download"-->
+                <!--android:layout_width="@dimen/view_dimen_70"-->
+                <!--android:layout_height="@dimen/view_dimen_70"-->
+                <!--android:src="@drawable/live_video_fullscreen_top_download"-->
+                <!--android:layout_marginLeft="@dimen/view_dimen_76"-->
+                <!--android:visibility="gone"/>-->
             <ImageView
                 android:id="@+id/landscape_share"
                 android:layout_width="@dimen/view_dimen_70"

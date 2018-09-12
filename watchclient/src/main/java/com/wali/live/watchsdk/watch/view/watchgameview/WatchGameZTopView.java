@@ -119,7 +119,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private GameNewLandscapeInputViewPresenter mGameNewLandscapeInputViewPresenter;
     private boolean mIsVideoPause;
     private boolean mHasHideBarrage;
-    private boolean mNeedHideDownLoadBtn;
 
     private Handler mUiHanlder = new Handler();
 
@@ -175,7 +174,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 // 还没有加载过横屏布局 先加载
                 inflate(context, R.layout.watch_z_top_lanscape_layout, this);
                 bindLandscapeViews();
-                checkInstalledOrUpdate(mPresenter.getController().getRoomBaseDataModel().getGameInfoModel());
             } else {
                 // 加载过横屏布局 重新add
                 for (View view : mLandscapeViews) {
@@ -189,6 +187,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 mLandscapeBarrageHideBtn.setBackground(mHasHideBarrage ?
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage) :
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_subtitles));
+
+                if(mPresenter != null) {
+                    mPresenter.tryUpdateDownloadStatus();
+                }
             }
 
             if (mPresenter != null
@@ -213,7 +215,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             tryToHideLandscapeOptBar();
-            mLandscapeDownloadBtn.setVisibility(mNeedHideDownLoadBtn ? GONE : VISIBLE);
         } else { // 切换到竖屏
             if (getChildCount() > 0 && lastIsLandscape) {
                 // 切换前是横屏
@@ -311,9 +312,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mLandscapeFollowBtn = (TextView) findViewById(R.id.landscape_follow);
         mLandscapeFollowBtn.setOnClickListener(this);
 
-        mLandscapeDownloadBtn = (ImageView) findViewById(R.id.landscape_download);
-        mLandscapeDownloadBtn.setOnClickListener(this);
-
         mLandscapeShareBtn = (ImageView) findViewById(R.id.landscape_share);
         mLandscapeShareBtn.setOnClickListener(this);
 
@@ -382,12 +380,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage));
                 mHasHideBarrage = !mHasHideBarrage;
                 mPresenter.optBarrageControl(mHasHideBarrage);
-            } else if (id == R.id.landscape_download) {
-                int flag = 0;
-                if (mLandscapeDownloadBtn.getTag() != null) {
-                    flag = (int) mLandscapeDownloadBtn.getTag();
-                }
-                mPresenter.clickDownLoad(flag);
             }
         } else {
             // 竖屏下的点击事件
@@ -665,31 +657,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
     }
 
-    public void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
-        if (gameInfoModel == null) {
-            return;
-        }
-        String packageName = gameInfoModel.getPackageName();
-        if (TextUtils.isEmpty(packageName)) {
-            // 无效的包名
-            mLandscapeDownloadBtn.setVisibility(GONE);
-            return;
-        } else {
-            mLandscapeDownloadBtn.setVisibility(VISIBLE);
-            if (PackageUtils.isInstallPackage(packageName)) {
-                // 启动
-                mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-            } else {
-                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
-                if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
-                    mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-                } else {
-                    mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
-                }
-            }
-        }
-    }
-
     /**
      * 点击显示隐藏操作栏bar
      */
@@ -954,6 +921,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     public void showGameInfoPopView(GameInfoModel gameInfoModel, int apkStatus, boolean isShow, boolean isDownloadBygc) {
+        if(mGameInfoPopViewStub == null) {
+            return;
+        }
         if (isShow) {
             if (mGameInfoPopView == null) {
                 mGameInfoPopView = (GameInfoPopView) mGameInfoPopViewStub.inflate().findViewById(R.id.game_info_pop_container);
@@ -1015,41 +985,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
-            public void updateInstallStatus(int status, int progress, int reason) {
-                MyLog.d(TAG, " status " + status + " progress " + progress);
-                if (!mIsLandscape) {
-                    // 竖屏不加载
-                    return;
-                }
-                switch (status) {
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD:
-                        if (reason == DownloadManager.PAUSED_WAITING_FOR_NETWORK) {
-                            ToastUtils.showToast("等待网络");
-                        }
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-                        break;
-                    default:
-                        break;
-
-                }
-            }
-
-            @Override
             public void keyBoardEvent(boolean isHide) {
                 resolveKeyBoardEvent(isHide);
             }
@@ -1061,15 +996,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
-            public void setDownLoadBtnVisibility(boolean needShow) {
-                mNeedHideDownLoadBtn = !needShow;
-                if (mIsLandscape
-                        && mLandscapeDownloadBtn != null) {
-                    mLandscapeDownloadBtn.setVisibility(needShow ? VISIBLE : GONE);
-                }
-            }
-
-            @Override
             public void updateMuteEvent(boolean isMute) {
                 mIsVideoMute = isMute;
                 updatePlayBtnUi();
@@ -1078,6 +1004,14 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             @Override
             public void updateGamePopView(GameInfoModel model, int apkStatus, boolean isShow, boolean isDownloadBygc) {
                 showGameInfoPopView(model, apkStatus, isShow, isDownloadBygc);
+            }
+
+            @Override
+            public void updateGameInfo(RoomBaseDataModel data) {
+                if (data == null) {
+                    return;
+                }
+                GameDownloadOptControl.tryQueryGameDownStatus(data.getGameInfoModel());
             }
 
             @Override
@@ -1148,14 +1082,14 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
         void optBarrageControl(boolean needHide);
 
-        void clickDownLoad(int flag);
-
         void videoMute(boolean isMute);
 
         /**
          * 同步游戏信息
          */
         void syncGameInfo();
+
+        void tryUpdateDownloadStatus();
     }
 
     public interface IView extends IViewProxy {
@@ -1182,20 +1116,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
          */
         void stopView();
 
-        /**
-         * 下载回调
-         *
-         * @param status   下载的状态
-         * @param progress 下载的进度条
-         * @param reason
-         */
-        void updateInstallStatus(int status, int progress, int reason);
-
         void keyBoardEvent(boolean isHide);
 
         void updatePauseEvent(boolean isPause);
-
-        void setDownLoadBtnVisibility(boolean needShow);
 
         void updateMuteEvent(boolean isMute);
 
@@ -1203,5 +1126,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
          * 更新游戏挂件(下载安装)
          */
         void updateGamePopView(GameInfoModel model, int apkStatus, boolean isShow, boolean isDownloadBygc);
+
+        void updateGameInfo(RoomBaseDataModel data);
     }
 }
