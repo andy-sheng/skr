@@ -82,17 +82,14 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
     private JumpImpl mJumpImpl;
     private long mChannelId;
 
-    public ChannelRecyclerAdapter(Activity activity, long channelId) {
+    public ChannelRecyclerAdapter(Activity activity) {
         mJumpImpl = new JumpImpl(activity);
-        mChannelId = channelId;
     }
 
-    public void setChannelId(long channelId) {
-        mChannelId = channelId;
-    }
-
-    public void setData(List<? extends BaseViewModel> channelModels) {
+    public void setData(List<? extends BaseViewModel> channelModels, long channelId) {
         mChannelModels = channelModels;
+        mChannelId = channelId;
+
         mJumpImpl.setChannelId(mChannelId);
         mJumpImpl.process(mChannelModels);
         notifyDataSetChanged();

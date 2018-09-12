@@ -7,7 +7,6 @@ package com.wali.live.watchsdk.channel.presenter;
  * @description 频道的Presenter接口，提供开始，结束的接口
  */
 public interface IChannelPresenter {
-    void setChannelId(long channelId);
 
     void start();
 
