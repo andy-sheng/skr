@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
+import com.wali.live.watchsdk.watch.download.GameDownloadOptControl;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameNewLandscapeInputViewPresenter;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameTouchPresenter;
 
@@ -97,6 +99,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private ImageView getmLandscapeGiftBtn;
     private WatchGameMenuDialog mWatchGameMenuDialog;
     private GameNewLandscapeInputView mGameNewLandscapeInputView;
+
+    private ViewStub mGameInfoPopViewStub;
+    private GameInfoPopView mGameInfoPopView; // 可能为空
 
     // 横屏相关
     private boolean mEnableFollow = false;
@@ -335,8 +340,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mLandscapeWatchGameWaterMarkView = (WatchGameWaterMarkView) findViewById(R.id.landscape_watch_mark_view);
         mLandscapeWatchGameWaterMarkView.onOrientation(true);
 
+        mGameInfoPopViewStub = (ViewStub) findViewById(R.id.game_info_pop_view_stub);
+
         if (mPresenter != null) {
             mPresenter.syncAnchorInfo();
+            mPresenter.syncGameInfo();
         }
     }
 
@@ -400,14 +408,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private void touchVoiceOnClick() {
         if (mIsVideoMute) {
             // 打开声音
-//            mIsVideoMute = false;
             mPresenter.videoMute(false);
-//            mPortraitVoiceBtn.setImageResource(R.drawable.live_function_icon_voice);
         } else {
             // 静音
-//            mIsVideoMute = true;
             mPresenter.videoMute(true);
-//            mPortraitVoiceBtn.setImageResource(R.drawable.live_function_icon_mute);
         }
     }
 
@@ -949,6 +953,31 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
     }
 
+    public void showGameInfoPopView(GameInfoModel gameInfoModel, int apkStatus, boolean isShow, boolean isDownloadBygc) {
+        if (isShow) {
+            if (mGameInfoPopView == null) {
+                mGameInfoPopView = (GameInfoPopView) mGameInfoPopViewStub.inflate().findViewById(R.id.game_info_pop_container);
+                mGameInfoPopView.setOnInstallOrLaunchListener(new GameInfoPopView.OnInstallOrLaunchListener() {
+                    @Override
+                    public void onInstallorLaunch() {
+                        // 点击游戏挂件安装游戏　此时要暂停视频
+                    }
+                });
+            } else {
+                mGameInfoPopView.showOrHidePopView(VISIBLE);
+            }
+
+            // 绑定数据
+            mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus, isDownloadBygc);
+        } else {
+            if (mGameInfoPopView != null) {
+                mGameInfoPopView.showOrHidePopView(GONE);
+            }
+        }
+
+    }
+
+
     @Override
     public IView getViewProxy() {
         class ComponentView implements IView {
@@ -1047,6 +1076,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
+            public void updateGamePopView(GameInfoModel model, int apkStatus, boolean isShow, boolean isDownloadBygc) {
+                showGameInfoPopView(model, apkStatus, isShow, isDownloadBygc);
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameZTopView.this;
             }
@@ -1117,6 +1151,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void clickDownLoad(int flag);
 
         void videoMute(boolean isMute);
+
+        /**
+         * 同步游戏信息
+         */
+        void syncGameInfo();
     }
 
     public interface IView extends IViewProxy {
@@ -1159,5 +1198,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         void setDownLoadBtnVisibility(boolean needShow);
 
         void updateMuteEvent(boolean isMute);
+
+        /**
+         * 更新游戏挂件(下载安装)
+         */
+        void updateGamePopView(GameInfoModel model, int apkStatus, boolean isShow, boolean isDownloadBygc);
     }
 }

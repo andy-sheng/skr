@@ -56,7 +56,7 @@ public class GameDownloadOptControl {
         }
 
         if(!HostChannelManager.getInstance().isFromGameCenter()) {
-            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus());
+            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus(model));
             return;
         }
 
@@ -91,7 +91,7 @@ public class GameDownloadOptControl {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (!aBoolean) {
-                            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus());
+                            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus(model));
                         }
                     }
                 });

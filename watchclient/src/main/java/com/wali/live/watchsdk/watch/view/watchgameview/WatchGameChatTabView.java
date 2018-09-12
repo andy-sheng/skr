@@ -22,6 +22,7 @@ import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
+import com.wali.live.proto.GameCenterProto;
 import com.wali.live.utils.AvatarUtils;
 import com.wali.live.utils.ItemDataFormatUtils;
 import com.wali.live.watchsdk.R;
@@ -44,6 +45,16 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.component.view.Utils.$click;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_CONTINUE;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_INSTALLING;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE;
 
 public class WatchGameChatTabView extends RelativeLayout implements
         IComponentView<WatchGameChatTabView.IPresenter, WatchGameChatTabView.IView>, WatchGameTabView.GameTabChildView, View.OnClickListener {
@@ -90,6 +101,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
     private void init(Context context, WatchComponentController componentController) {
         inflate(context, R.layout.watch_game_tab_chat_layout, this);
+
         mController = componentController;
         mAnchorInfoContainer = (RelativeLayout) this.findViewById(R.id.anchor_info_container);
         mAnchorAvatarIv = (BaseImageView) this.findViewById(R.id.anchor_avatar_iv);
@@ -115,8 +127,6 @@ public class WatchGameChatTabView extends RelativeLayout implements
         this.setPresenter(mWatchGameChatTabPresenter);
 
         if (componentController.getRoomBaseDataModel() != null) {
-//            loadGameInfoPopView(componentController.getRoomBaseDataModel().getGameInfoModel());
-
             if (componentController.getRoomBaseDataModel().getGameInfoModel() != null) {
                 GameDownloadOptControl.tryQueryGameDownStatus(componentController.getRoomBaseDataModel().getGameInfoModel());
             }
@@ -157,66 +167,6 @@ public class WatchGameChatTabView extends RelativeLayout implements
     }
 
     /**
-     * 初始化和切换房间的时候调用更新游戏信息
-     *
-     * @param gameInfoModel
-     */
-    private void loadGameInfoPopView(GameInfoModel gameInfoModel, int status) {
-        if (gameInfoModel == null) {
-            // 游戏信息为空 隐藏
-            if (mGameInfoPopView != null) {
-                mGameInfoPopView.setVisibility(GONE);
-            }
-            return;
-        }
-
-        int apkStatus = -1;
-        String packageName = gameInfoModel.getPackageName();
-        if (TextUtils.isEmpty(packageName)) {
-            // 无效的包名 隐藏
-            if (mGameInfoPopView != null) {
-                mGameInfoPopView.setVisibility(GONE);
-            }
-            return;
-        }
-        if (mIsDownLoadByGc) {
-            apkStatus = status;
-        } else {
-            if (PackageUtils.isInstallPackage(packageName)) {
-                // 已经安装 隐藏
-                if (mGameInfoPopView != null) {
-                    mGameInfoPopView.setVisibility(GONE);
-                }
-                return;
-            } else {
-                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
-                if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
-                    // 存在包
-                    apkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED;
-                } else {
-                    // 下载不完全
-                    apkStatus = CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD;
-                }
-            }
-        }
-
-        if (mGameInfoPopView == null) {
-            mGameInfoPopView = (GameInfoPopView) mGameInfoPopViewStub.inflate().findViewById(R.id.game_info_pop_container);
-            mGameInfoPopView.setOnInstallOrLaunchListener(new GameInfoPopView.OnInstallOrLaunchListener() {
-                @Override
-                public void onInstallorLaunch() {
-                    // 点击游戏挂件安装游戏　此时要暂停视频
-                    mWatchGameChatTabPresenter.pauseVideo();
-                }
-            });
-        } else {
-            mGameInfoPopView.setVisibility(VISIBLE);
-        }
-
-        mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus, mIsDownLoadByGc);
-    }
-
-    /**
      * 显示关注引导浮层
      * <p>
      * 显示条件：1)热门主播（当前房间观众数>=200）
@@ -231,7 +181,6 @@ public class WatchGameChatTabView extends RelativeLayout implements
         mUiHandler.postDelayed(mHideFollowGuideRunnable, 3000);
     }
 
-
     /**
      * 销毁关注引导浮层
      */
@@ -239,38 +188,63 @@ public class WatchGameChatTabView extends RelativeLayout implements
         mGuideFollowView.setVisibility(GONE);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.UpdateGameInfoStatus event) {
-        if (event == null) {
-            return;
-        }
 
-        MyLog.d(TAG, "UpdateGameInfoStatus");
-
-        mIsDownLoadByGc = false;
-        loadGameInfoPopView(mController.getRoomBaseDataModel().getGameInfoModel(), -1);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDownloadEvent(CustomDownloadManager.ApkStatusEvent event) {
-        if (event == null) {
-            return;
-        }
-
-        MyLog.d(TAG, "ApkStatusEvent" + event.status + "event.isByGc:" + event.isByQuery);
-        RoomBaseDataModel roomBaseDataModel = mController.getRoomBaseDataModel();
-        if (roomBaseDataModel != null
-                && roomBaseDataModel.getGameInfoModel() != null) {
-            GameInfoModel gameInfoModel = roomBaseDataModel.getGameInfoModel();
-            if (gameInfoModel.getGameId() == event.gameId
-                    && gameInfoModel.getPackageName().equals(event.packageName)) {
-                MyLog.d(TAG, "ApkStatusEvent" + event.status + "event.isByGc:" + event.isByQuery);
-                if (event.isByQuery) {
-                    mIsDownLoadByGc = true;
-                    loadGameInfoPopView(mController.getRoomBaseDataModel().getGameInfoModel(), event.status);
+    public void showGameInfoPopView(GameInfoModel gameInfoModel, int apkStatus, boolean isShow, boolean isDownloadBygc) {
+        if (isShow) {
+            if (isDownloadBygc) {
+                switch (apkStatus) {
+                    case STATUS_NO_DOWNLOAD: //未下载
+                    case STATUS_DOWNLOADING: //下载中
+                    case STATUS_PAUSE_DOWNLOAD: //暂停下载
+                    case STATUS_DOWNLOAD_COMPELED://已下载待安装
+                    case STATUS_DOWNLOAD_FAILED: //下载失败
+                    case STATUS_INSTALLING: //安装中
+                        if (mGameInfoPopView == null) {
+                            mGameInfoPopView = (GameInfoPopView) mGameInfoPopViewStub.inflate().findViewById(R.id.game_info_pop_container);
+                            mGameInfoPopView.setOnInstallOrLaunchListener(new GameInfoPopView.OnInstallOrLaunchListener() {
+                                @Override
+                                public void onInstallorLaunch() {
+                                    // 点击游戏挂件安装游戏　此时要暂停视频
+                                    mWatchGameChatTabPresenter.pauseVideo();
+                                }
+                            });
+                        } else {
+                            mGameInfoPopView.showOrHidePopView(VISIBLE);
+                        }
+                        // 绑定数据
+                        mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus, isDownloadBygc);
+                        break;
+                    case STATUS_LAUNCH://启动
+                    case STATUS_REMOVE://卸载
+                    case STATUS_CONTINUE://继续
+                    case STATUS_LAUNCH_SUCEESS: //启动成功
+                        if (mGameInfoPopView != null) {
+                            mGameInfoPopView.showOrHidePopView(GONE);
+                        }
+                        break;
                 }
+            } else {
+                if (mGameInfoPopView == null) {
+                    mGameInfoPopView = (GameInfoPopView) mGameInfoPopViewStub.inflate().findViewById(R.id.game_info_pop_container);
+                    mGameInfoPopView.setOnInstallOrLaunchListener(new GameInfoPopView.OnInstallOrLaunchListener() {
+                        @Override
+                        public void onInstallorLaunch() {
+                            // 点击游戏挂件安装游戏　此时要暂停视频
+                            mWatchGameChatTabPresenter.pauseVideo();
+                        }
+                    });
+                } else {
+                    mGameInfoPopView.showOrHidePopView(VISIBLE);
+                }
+                // 绑定数据
+                mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus, isDownloadBygc);
+            }
+        } else {
+            if (mGameInfoPopView != null) {
+                mGameInfoPopView.showOrHidePopView(GONE);
             }
         }
+
     }
 
     @Override
@@ -281,10 +255,6 @@ public class WatchGameChatTabView extends RelativeLayout implements
         }
         if (mWatchGameChatTabPresenter != null) {
             mWatchGameChatTabPresenter.startPresenter();
-        }
-
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
         }
     }
 
@@ -297,8 +267,9 @@ public class WatchGameChatTabView extends RelativeLayout implements
         if (mWatchGameChatTabPresenter != null) {
             mWatchGameChatTabPresenter.stopPresenter();
         }
-
-        EventBus.getDefault().unregister(this);
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     @Override
@@ -401,8 +372,12 @@ public class WatchGameChatTabView extends RelativeLayout implements
                 if (source == null) {
                     return;
                 }
-//                loadGameInfoPopView(source.getGameInfoModel());
                 GameDownloadOptControl.tryQueryGameDownStatus(source.getGameInfoModel());
+            }
+
+            @Override
+            public void updateGamePopView(GameInfoModel model, int apkStatus, boolean isShow, boolean isDownloadBygc) {
+                showGameInfoPopView(model, apkStatus, isShow, isDownloadBygc);
             }
 
 
@@ -455,6 +430,11 @@ public class WatchGameChatTabView extends RelativeLayout implements
          * 更新游戏信息
          */
         void updateGameInfo(RoomBaseDataModel source);
+
+        /**
+         * 更新游戏挂件(下载安装,初始化)
+         */
+        void updateGamePopView(GameInfoModel model, int apkStatus, boolean isShow, boolean isDownloadBygc);
     }
 
     public interface IPresenter {

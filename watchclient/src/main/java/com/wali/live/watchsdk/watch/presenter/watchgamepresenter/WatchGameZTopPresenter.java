@@ -6,6 +6,7 @@ import com.base.activity.BaseActivity;
 import com.base.event.KeyboardEvent;
 import com.base.log.MyLog;
 import com.base.utils.MD5;
+import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.feedback.FeedBackApi;
@@ -25,6 +26,7 @@ import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.feedback.ReportFragment;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
@@ -356,6 +358,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     }
 
+    @Override
+    public void syncGameInfo() {
+        GameDownloadOptControl.tryQueryGameDownStatus(mMyRoomData.getGameInfoModel());
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {
@@ -434,6 +441,9 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED:
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED:
                         mView.updateInstallStatus(event.status, event.progress, event.reason);
+                        if (event.isByQuery) {
+                            mView.updateGamePopView(mMyRoomData.getGameInfoModel(), event.status, true, true);
+                        }
                         break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:
                     case CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE:
@@ -505,6 +515,41 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
             break;
             default:
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.UpdateGameInfoStatus event) {
+        if (event == null) {
+            return;
+        }
+
+        if (mMyRoomData != null
+                && mMyRoomData.getGameInfoModel() != null && event.mGameInfoModel != null) {
+            GameInfoModel gameInfoModel = mMyRoomData.getGameInfoModel();
+            if (TextUtils.isEmpty(gameInfoModel.getPackageName()) || TextUtils.isEmpty(event.mGameInfoModel.getPackageName())) {
+                // 包名无效
+                return;
+            }
+
+            if (gameInfoModel.getGameId() == event.mGameInfoModel.getGameId()
+                    && gameInfoModel.getPackageName().equals(event.mGameInfoModel.getPackageName())) {
+                // 是当前需要处理的本地游戏
+                if (PackageUtils.isInstallPackage(gameInfoModel.getPackageName())) {
+                    // 已经安装 隐藏
+                    mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH, false, false);
+                } else {
+                    // 未安装 显示挂件
+                    String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
+                    if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
+                        // 存在包
+                        mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED, true, false);
+                    } else {
+                        // 下载不完全
+                        mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD, true, false);
+                    }
+                }
+            }
         }
     }
 

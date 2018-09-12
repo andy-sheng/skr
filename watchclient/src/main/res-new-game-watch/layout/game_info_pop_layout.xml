@@ -1,45 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/view_dimen_140"
-    android:layout_height="@dimen/view_dimen_160">
-    <com.base.image.fresco.BaseImageView
-        android:id="@+id/game_icon_iv"
-        android:layout_width="@dimen/view_dimen_130"
-        android:layout_height="@dimen/view_dimen_130"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/view_dimen_4"/>
-    <View
-        android:id="@+id/game_icon_shadow"
-        android:layout_width="@dimen/view_dimen_130"
-        android:layout_height="@dimen/view_dimen_130"
-        android:background="@drawable/game_info_shadow_bg"
-        android:layout_alignTop="@+id/game_icon_iv"
-        android:layout_alignLeft="@+id/game_icon_iv"
-        android:visibility="gone"/>
-    <ProgressBar
-        android:id="@+id/game_download_progress"
-        android:layout_width="@dimen/view_dimen_106"
-        android:layout_height="@dimen/view_dimen_12"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:progressDrawable="@drawable/game_download_progress_bg"
-        android:layout_centerHorizontal="true"
-        android:layout_alignTop="@id/game_icon_shadow"
-        android:layout_marginTop="@dimen/view_dimen_56"
-        android:progress="0"
-        android:visibility="gone"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/game_down_info"
+        android:layout_marginTop="@dimen/view_dimen_40"
+        android:layout_width="@dimen/view_dimen_140"
+        android:layout_height="@dimen/view_dimen_160">
+
+        <com.base.image.fresco.BaseImageView
+            android:id="@+id/game_icon_iv"
+            android:layout_width="@dimen/view_dimen_130"
+            android:layout_height="@dimen/view_dimen_130"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_dimen_4" />
+
+        <View
+            android:id="@+id/game_icon_shadow"
+            android:layout_width="@dimen/view_dimen_130"
+            android:layout_height="@dimen/view_dimen_130"
+            android:layout_alignLeft="@+id/game_icon_iv"
+            android:layout_alignTop="@+id/game_icon_iv"
+            android:background="@drawable/game_info_shadow_bg"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/game_download_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="@dimen/view_dimen_106"
+            android:layout_height="@dimen/view_dimen_12"
+            android:layout_alignTop="@id/game_icon_shadow"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_dimen_56"
+            android:progress="0"
+            android:progressDrawable="@drawable/game_download_progress_bg"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/live_chat_activity_download_game_png" />
+
+        <TextView
+            android:id="@+id/bottom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_dimen_4"
+            android:text="@string/game_info_pop_tip"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_26" />
+    </RelativeLayout>
+
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/live_chat_activity_download_game_png"/>
-    <TextView
-        android:id="@+id/bottom_text"
+        android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_26"
-        android:textColor="@color/color_white"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_dimen_4"
-        android:text="@string/game_info_pop_tip"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="@dimen/view_dimen_10"
+        android:paddingBottom="@dimen/view_dimen_10"
+        android:paddingRight="@dimen/view_dimen_20"
+        android:paddingTop="@dimen/view_dimen_20"
+        android:layout_marginTop="@dimen/view_dimen_20"
+        android:layout_marginRight="@dimen/view_dimen_20"
+        android:background="@drawable/pendant_shut" />
 </RelativeLayout>

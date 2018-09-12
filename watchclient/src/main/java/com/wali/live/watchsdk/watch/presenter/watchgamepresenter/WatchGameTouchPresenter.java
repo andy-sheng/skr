@@ -36,6 +36,9 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
     private long startTime = 0;
     private long endTime = 0;
 
+    private float brightness; //记录开始调节时亮度
+    private int currVolume; //记录开始调节时音量
+
     public WatchGameTouchPresenter(@NonNull IEventController controller, @NonNull View touchView) {
         super(controller);
         this.touchView = touchView;
@@ -54,6 +57,8 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
                 } else {
                     startType = WATCH_GAME_CONTROLL_VOLUME;
                 }
+                brightness = Math.abs(CommonUtils.getScreenBrightness(touchView.getContext()));
+                currVolume = CommonUtils.getStreamVolume();
 
                 isClick = false;
                 startTime = System.currentTimeMillis();
@@ -67,49 +72,41 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
                     // 左边屏幕控制亮度
                     if (startType == WATCH_GAME_CONTROLL_BRIGHTNESS) {
                         float percent = distanceY / (float) DisplayUtils.getScreenHeight();
-                        float brightness = Math.abs(CommonUtils.getScreenBrightness(touchView.getContext()));
-                        float brightnessOffset = percent / 10; // 减少灵敏度
+                        float brightnessOffset = percent / 1.5f; // 减少灵敏度
 
+                        MyLog.d(TAG, "brightnessOffset = " + brightnessOffset);
                         if (Math.abs(brightnessOffset) >= 0.01) {
-                            brightness += brightnessOffset;
-                            if (brightness < 0) {
-                                brightness = 0;
-                            } else if (brightness > 1) {
-                                brightness = 1;
+                            float setBrightness = brightness + brightnessOffset;
+                            if (setBrightness < 0) {
+                                setBrightness = 0;
+                            } else if (setBrightness > 1) {
+                                setBrightness = 1;
                             }
 
-                            CommonUtils.setScreenBrightness(touchView.getContext(), brightness);
-                            EventBus.getDefault().post(new EventClass.WatchGameControllChangeEvent(WATCH_GAME_CONTROLL_BRIGHTNESS, brightness, true));
+                            CommonUtils.setScreenBrightness(touchView.getContext(), setBrightness);
+                            EventBus.getDefault().post(new EventClass.WatchGameControllChangeEvent(WATCH_GAME_CONTROLL_BRIGHTNESS, setBrightness, true));
                         }
                     }
                 } else {
                     // 右边屏幕控制音量
                     if (startType == WATCH_GAME_CONTROLL_VOLUME) {
                         float percent = distanceY / (float) DisplayUtils.getScreenHeight();
-                        int currVolume = CommonUtils.getStreamVolume();
                         int maxVolume = CommonUtils.getStreamMaxVolume();
 
-                        float volumeOffsetAccurate = maxVolume * percent / 10; // 减少灵敏度
+                        float volumeOffsetAccurate = maxVolume * percent ; // 减少灵敏度
                         int volumeOffset = (int) volumeOffsetAccurate;
-                        
-                        if (volumeOffset == 0 && Math.abs(volumeOffsetAccurate) > 0.2f) {
-                            if (distanceY > 0) {
-                                volumeOffset = 1;
-                            } else if (distanceY < 0) {
-                                volumeOffset = -1;
-                            }
-                        }
 
+                        MyLog.d(TAG, "volumeOffsetAccurate = " + volumeOffsetAccurate);
                         if (Math.abs(volumeOffset) >= 1) {
-                            currVolume += volumeOffset;
-                            if (currVolume < 0) {
-                                currVolume = 0;
-                            } else if (currVolume >= maxVolume) {
-                                currVolume = maxVolume;
+                            int setVolume = currVolume + volumeOffset;
+                            if (setVolume < 0) {
+                                setVolume = 0;
+                            } else if (setVolume >= maxVolume) {
+                                setVolume = maxVolume;
                             }
 
-                            CommonUtils.setStreamVolume(currVolume);
-                            float volumePercent = (float) currVolume / (float) maxVolume;
+                            CommonUtils.setStreamVolume(setVolume);
+                            float volumePercent = (float) setVolume / (float) maxVolume;
                             EventBus.getDefault().post(new EventClass.WatchGameControllChangeEvent(WATCH_GAME_CONTROLL_VOLUME, volumePercent, true));
                         }
                     }

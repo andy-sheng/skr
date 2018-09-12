@@ -79,7 +79,11 @@ public class WatchGameControllerView extends RelativeLayout {
             case WATCH_GAME_CONTROLL_VOLUME:
                 if (isShow) {
                     rootView.setVisibility(VISIBLE);
-                    mImageView.setImageResource(R.drawable.live_video_fullscreen_control_icon_sound);
+                    if (percent != 0){
+                        mImageView.setImageResource(R.drawable.live_video_fullscreen_control_icon_sound);
+                    }else {
+                        mImageView.setImageResource(R.drawable.live_video_fullscreen_control_icon_mute);
+                    }
                     mProgressBar.setProgress((int) (percent * 100));
                 }
                 break;
