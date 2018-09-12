@@ -53,9 +53,9 @@ public class GameNewLandscapeInputView extends LinearLayout implements IComponen
         public void afterTextChanged(Editable s) {
             String result = s.toString();
             if (result.length() > 0 && UserAccountManager.getInstance().hasAccount()) {
-                mLandscapeBarrageSendBtn.setEnabled(true);
+                mLandscapeBarrageSendBtn.setSelected(true);
             } else {
-                mLandscapeBarrageSendBtn.setEnabled(false);
+                mLandscapeBarrageSendBtn.setSelected(false);
             }
             if (result.length() > BARRAGE_MAX_LEN) {
                 mLandscapeBarrageEt.setText(result.substring(0, BARRAGE_MAX_LEN));

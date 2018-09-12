@@ -17,6 +17,7 @@ import com.base.utils.display.DisplayUtils;
 import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.MyUserInfoManager;
+import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
@@ -141,7 +142,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
     Runnable mCheckShowFollowGuideRunnable = new Runnable() {
         @Override
         public void run() {
-            checkShowFollowGuide(this);
+            checkShowFollowGuide();
         }
     };
 
@@ -152,18 +153,25 @@ public class WatchGameChatTabView extends RelativeLayout implements
         }
     };
 
-    private void checkShowFollowGuide(Runnable runnable) {
-        // 是否已经关注了
-        // 关注人数是否超过200
-        if (mController.getRoomBaseDataModel().isFocused()) {
-            return;
-        }
+    private void checkShowFollowGuide() {
 
+        // 关注人数是否超过200
         if (mController.getRoomBaseDataModel().getViewerCnt() < mFollowGuideShowUserNum) {
             return;
         }
 
-        showFollowGuidePopupWindow();
+        if (UserAccountManager.getInstance().hasAccount()) {
+            // 有帐号
+            // 是否已经关注了
+            if (mController.getRoomBaseDataModel().isFocused()) {
+                return;
+            }
+            showFollowGuidePopupWindow();
+        } else {
+            showFollowGuidePopupWindow();
+        }
+
+
     }
 
     /**
