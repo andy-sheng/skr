@@ -8501,6 +8501,15 @@ public final class HotChannelProto {
      */
     com.wali.live.proto.CommonChannelProto.ChannelItemOrBuilder getItemsOrBuilder(
         int index);
+
+    /**
+     * <code>optional uint32 channelId = 3;</code>
+     */
+    boolean hasChannelId();
+    /**
+     * <code>optional uint32 channelId = 3;</code>
+     */
+    int getChannelId();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.GetRecListRsp}
@@ -8565,6 +8574,11 @@ public final class HotChannelProto {
                 mutable_bitField0_ |= 0x00000002;
               }
               items_.add(input.readMessage(com.wali.live.proto.CommonChannelProto.ChannelItem.PARSER, extensionRegistry));
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000002;
+              channelId_ = input.readUInt32();
               break;
             }
           }
@@ -8660,9 +8674,25 @@ public final class HotChannelProto {
       return items_.get(index);
     }
 
+    public static final int CHANNELID_FIELD_NUMBER = 3;
+    private int channelId_;
+    /**
+     * <code>optional uint32 channelId = 3;</code>
+     */
+    public boolean hasChannelId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 channelId = 3;</code>
+     */
+    public int getChannelId() {
+      return channelId_;
+    }
+
     private void initFields() {
       retCode_ = 0;
       items_ = java.util.Collections.emptyList();
+      channelId_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -8693,6 +8723,9 @@ public final class HotChannelProto {
       for (int i = 0; i < items_.size(); i++) {
         output.writeMessage(2, items_.get(i));
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(3, channelId_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -8709,6 +8742,10 @@ public final class HotChannelProto {
       for (int i = 0; i < items_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, items_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, channelId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -8836,6 +8873,8 @@ public final class HotChannelProto {
         } else {
           itemsBuilder_.clear();
         }
+        channelId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -8877,6 +8916,10 @@ public final class HotChannelProto {
         } else {
           result.items_ = itemsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.channelId_ = channelId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -8921,6 +8964,9 @@ public final class HotChannelProto {
               itemsBuilder_.addAllMessages(other.items_);
             }
           }
+        }
+        if (other.hasChannelId()) {
+          setChannelId(other.getChannelId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -9231,6 +9277,38 @@ public final class HotChannelProto {
         return itemsBuilder_;
       }
 
+      private int channelId_ ;
+      /**
+       * <code>optional uint32 channelId = 3;</code>
+       */
+      public boolean hasChannelId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 channelId = 3;</code>
+       */
+      public int getChannelId() {
+        return channelId_;
+      }
+      /**
+       * <code>optional uint32 channelId = 3;</code>
+       */
+      public Builder setChannelId(int value) {
+        bitField0_ |= 0x00000004;
+        channelId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 channelId = 3;</code>
+       */
+      public Builder clearChannelId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        channelId_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.GetRecListRsp)
     }
 
@@ -9326,10 +9404,11 @@ public final class HotChannelProto {
       "c\030\005 \001(\t\022\r\n\005grade\030\006 \001(\r\"z\n\rGetRecListReq\022" +
       "\020\n\010viewerId\030\001 \001(\004\022\020\n\010anchorId\030\002 \001(\004\022\023\n\013p" +
       "ackageName\030\003 \001(\t\022\016\n\006gameId\030\004 \001(\004\022\017\n\007recT" +
-      "ype\030\005 \001(\r\022\017\n\007reqFrom\030\006 \001(\r\"Q\n\rGetRecList" +
+      "ype\030\005 \001(\r\022\017\n\007reqFrom\030\006 \001(\r\"d\n\rGetRecList" +
       "Rsp\022\017\n\007retCode\030\001 \002(\r\022/\n\005items\030\002 \003(\0132 .co" +
-      "m.wali.live.proto.ChannelItemB&\n\023com.wal" +
-      "i.live.protoB\017HotChannelProto"
+      "m.wali.live.proto.ChannelItem\022\021\n\tchannel" +
+      "Id\030\003 \001(\rB&\n\023com.wali.live.protoB\017HotChan" +
+      "nelProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9404,7 +9483,7 @@ public final class HotChannelProto {
     internal_static_com_wali_live_proto_GetRecListRsp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_GetRecListRsp_descriptor,
-        new java.lang.String[] { "RetCode", "Items", });
+        new java.lang.String[] { "RetCode", "Items", "ChannelId", });
     com.wali.live.proto.CommonChannelProto.getDescriptor();
     com.wali.live.proto.CommonProto.getDescriptor();
   }
