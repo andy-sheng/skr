@@ -40,6 +40,9 @@
             android:layout_marginLeft="@dimen/view_dimen_40"
             android:layout_marginTop="@dimen/view_dimen_74"
             android:textSize="@dimen/text_size_40"
+            android:maxWidth="@dimen/view_dimen_800"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/color_white_trans_60"/>
         <LinearLayout
             android:layout_width="wrap_content"

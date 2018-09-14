@@ -208,6 +208,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     mLandscapeWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
                     mLandscapeWatchGameWaterMarkView.onOrientation(mIsLandscape);
                 }
+
+                if(mLandscapeLiveTitle != null) {
+                    mLandscapeLiveTitle.setText(mPresenter.getController().getRoomBaseDataModel().getLiveTitle());
+                }
             }
 
             if (mGameNewLandscapeInputViewPresenter == null) {
@@ -1033,6 +1037,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
             if(mLandscapeWatchGameWaterMarkView != null) {
                 mLandscapeWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+            }
+
+            if(mLandscapeLiveTitle != null) {
+                mLandscapeLiveTitle.setText(mPresenter.getController().getRoomBaseDataModel().getLiveTitle());
             }
         }
     }
