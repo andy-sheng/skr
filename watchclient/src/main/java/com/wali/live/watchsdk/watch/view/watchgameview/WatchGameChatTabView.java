@@ -413,6 +413,11 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
     }
 
+    @Override
+    public void stopView() {
+
+    }
+
     public interface IView extends IViewProxy {
         /**
          * 初始化关注

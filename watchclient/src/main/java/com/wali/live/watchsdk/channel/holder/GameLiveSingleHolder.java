@@ -53,20 +53,17 @@ public class GameLiveSingleHolder extends FixedHolder {
     }
 
     protected void bindBaseLiveItem(ChannelLiveViewModel.BaseLiveItem item) {
-        bindText(mLiveTitle, item.getLineOneText());
+        bindText(mLiveTitle, item.getTitleText());
+        FrescoWorker.loadImage(mCoverImage,
+                ImageFactory.newHttpImage(item.getImageUrl())
+                        .setIsCircle(false)
+                        .setCornerRadius(DisplayUtils.dip2px(5.33f))
+                        .setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.live_show_avatar_loading))
+                        .setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.live_show_avatar_loading))
+                        .build()
+        );
 
         if (item.getUser() != null) {
-            String avatarUrl = AvatarUtils.getAvatarUrlByUidTs(item.getUser().getUid(),
-                    AvatarUtils.SIZE_TYPE_AVATAR_MIDDLE, item.getUser().getAvatar());
-            FrescoWorker.loadImage(mCoverImage,
-                    ImageFactory.newHttpImage(avatarUrl)
-                            .setIsCircle(false)
-                            .setCornerRadius(DisplayUtils.dip2px(5.33f))
-                            .setLoadingDrawable(GlobalData.app().getResources().getDrawable(R.drawable.live_show_avatar_loading))
-                            .setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.live_show_avatar_loading))
-                            .build()
-            );
-
             bindText(mLiveAnchor, item.getUser().getNickname());
         }
 

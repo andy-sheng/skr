@@ -44,6 +44,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_OFF;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_ON;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
 
 /**
@@ -64,6 +65,8 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
 
     // 播放器和浮层的父布局
     private RelativeLayout mVideShowLayout;
+
+    private WatchGameFullScreenMoreView mFullScreenMoreLiveView;
 
     // 竖屏时播放器下方的tab页
     private WatchGameTabView mWatchTabView;
@@ -114,6 +117,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_SHOW_SEND_ENVELOPE);
         registerAction(MSG_PLAYER_SOUND_OFF);
         registerAction(MSG_PLAYER_SOUND_ON);
+        registerAction(MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW);
     }
 
     @Override
@@ -121,6 +125,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         super.stopView();
         if (mVideShowLayout != null) {
             mVideShowLayout.removeCallbacks(mResetRunnable);
+        }
+        if (mFullScreenMoreLiveView != null) {
+            mFullScreenMoreLiveView.stopView();
         }
     }
 
@@ -226,6 +233,28 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     }
 
     /**
+     * 在横屏下第一次点击更多直播时　
+     * 接收到MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW将View add到布局里
+     * 之后弹出更多直播都由该View内部自己处理
+     */
+    private void showMoreLiveViewIfNeed() {
+        if (!mIsLandscape) {
+            return;
+        }
+        mParentView.post(new Runnable() {
+            // 不要去掉这个postRunable的使用
+            // 目的是要fix一个postEvent的同时新new出来的对象同时注册该event引起的Concurrent bug
+            @Override
+            public void run() {
+                if (mFullScreenMoreLiveView == null) {
+                    mFullScreenMoreLiveView = new WatchGameFullScreenMoreView(mParentView.getContext(), mController);
+                    mFullScreenMoreLiveView.addSelfToWatchLayoutAndShow(mParentView );
+                }
+            }
+        });
+    }
+
+    /**
      * 接收横竖屏切换通知
      *
      * @param isLandscape
@@ -309,6 +338,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
                 break;
             case MSG_SHOW_SEND_ENVELOPE:
                 SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.getRoomBaseDataModel());
+                return true;
+            case MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW:
+                showMoreLiveViewIfNeed();
                 return true;
         }
         return false;

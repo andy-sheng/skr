@@ -179,6 +179,17 @@ public class WatchGameTabView extends RelativeLayout implements
 
     }
 
+    private void stopAllTabView() {
+        if (mTitleAndViewMap != null) {
+            for (LazyNewView lazyNewView : mTitleAndViewMap.values()) {
+                if (lazyNewView != null && lazyNewView.isViewInited()
+                        && lazyNewView.getView() instanceof GameTabChildView) {
+                    ((GameTabChildView) lazyNewView.getView()).stopView();
+                }
+            }
+        }
+    }
+
     @Override
     public WatchGameTabView.IView getViewProxy() {
         return new IView() {
@@ -222,6 +233,11 @@ public class WatchGameTabView extends RelativeLayout implements
             }
 
             @Override
+            public void stopView() {
+                stopAllTabView();
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameTabView.this;
             }
@@ -243,11 +259,15 @@ public class WatchGameTabView extends RelativeLayout implements
         void updateGameHomePage(RoomBaseDataModel source);
 
         void switchMsgTab();
+
+        void stopView();
     }
 
     public interface GameTabChildView {
         void select();
 
         void unselect();
+
+        void stopView();
     }
 }

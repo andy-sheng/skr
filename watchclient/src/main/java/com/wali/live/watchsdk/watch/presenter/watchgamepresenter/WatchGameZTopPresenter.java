@@ -58,7 +58,9 @@ import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_OFF;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_ON;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
+import static com.wali.live.component.BaseSdkController.MSG_VIDEO_TOUCH_VIEW;
 import static com.wali.live.watchsdk.eventbus.EventClass.WatchGameControllChangeEvent.WATCH_GAME_CONTROLL_VOLUME;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_LAND_DOWNLOAD_CLICK;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
@@ -320,6 +322,16 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     @Override
     public void syncGameInfo() {
         GameDownloadOptControl.tryQueryGameDownStatus(mMyRoomData.getGameInfoModel());
+    }
+
+    @Override
+    public void openFullScreenMoreLiveView() {
+        postEvent(MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW);
+    }
+
+    @Override
+    public void videoTouchViewClick() {
+        postEvent(MSG_VIDEO_TOUCH_VIEW);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

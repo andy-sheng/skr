@@ -1,5 +1,7 @@
 package com.wali.live.watchsdk.channel.data;
 
+import android.support.annotation.IntDef;
+
 import com.base.log.MyLog;
 import com.mi.live.data.api.ErrorCode;
 import com.wali.live.proto.HotChannelProto;
@@ -7,6 +9,9 @@ import com.wali.live.proto.LiveShowProto;
 import com.wali.live.watchsdk.channel.list.request.ChannelListRequest;
 import com.wali.live.watchsdk.channel.request.GetChannelRequest;
 import com.wali.live.watchsdk.channel.request.GetRecListRequest;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -57,9 +62,15 @@ public class ChannelDataStore {
     }
 
 
+    @IntDef({GAME_WATCH_CHANNEL_TYPE_RECOMMEND, GAME_WATCH_CHANNEL_TYPE_FOCUS})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface RecType {}
     public static final int GAME_WATCH_CHANNEL_TYPE_RECOMMEND = 1; // 推荐类型，根据当前观看的游戏直播推荐
     public static final int GAME_WATCH_CHANNEL_TYPE_FOCUS = 2; // 推荐类型，我的关注
 
+    @IntDef({GAME_WATCH_CHANNEL_FROM_PORTRAIT, GAME_WATCH_CHANNEL_FROM_LANDSCAPE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ReqFrom {}
     public static final int GAME_WATCH_CHANNEL_FROM_PORTRAIT = 1; //请求来源，竖屏
     public static final int GAME_WATCH_CHANNEL_FROM_LANDSCAPE = 2; //请求来源，游戏全屏
     /**
@@ -73,7 +84,7 @@ public class ChannelDataStore {
      * @param reqFrom 请求来源，决定样式，1=竖屏-更多直播，2=游戏全屏-更多直播
      * @return
      */
-    public Observable<HotChannelProto.GetRecListRsp> getRecListObservable(final long viewerId, final long anchorId, final String packageName, final long gameId, final int recType, final int reqFrom) {
+    public Observable<HotChannelProto.GetRecListRsp> getRecListObservable(final long viewerId, final long anchorId, final String packageName, final long gameId, @RecType final int recType, @ReqFrom final int reqFrom) {
         return Observable.create(new Observable.OnSubscribe<HotChannelProto.GetRecListRsp>() {
                                      @Override
                                      public void call(Subscriber<? super HotChannelProto.GetRecListRsp> subscriber) {

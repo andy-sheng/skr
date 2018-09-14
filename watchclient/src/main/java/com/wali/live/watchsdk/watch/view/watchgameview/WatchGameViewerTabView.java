@@ -134,6 +134,11 @@ public class WatchGameViewerTabView extends RelativeLayout implements IComponent
 
     }
 
+    @Override
+    public void stopView() {
+
+    }
+
 
     public interface IPresenter {
 

@@ -14,4 +14,8 @@ public abstract class LazyNewView<V extends View> {
         }
         return view;
     }
+
+    public boolean isViewInited() {
+        return view != null;
+    }
 }

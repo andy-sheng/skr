@@ -92,6 +92,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private TextView mLandscapeAnchorNameTv;
     private TextView mLandscapeFollowBtn;
     private ImageView mLandscapeDownloadBtn;
+    private ImageView mLandscapeMoreLiveBtn;
     private ImageView mLandscapeShareBtn;
     private ImageView mLandscapeSuspend;
     private ImageView mLandscapeRefresh;
@@ -316,6 +317,11 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mLandscapeFollowBtn = (TextView) findViewById(R.id.landscape_follow);
         mLandscapeFollowBtn.setOnClickListener(this);
 
+
+        mLandscapeMoreLiveBtn = (ImageView) findViewById(R.id.landscape_more_live);
+        mLandscapeMoreLiveBtn.setOnClickListener(this);
+
+
         mLandscapeShareBtn = (ImageView) findViewById(R.id.landscape_share);
         mLandscapeShareBtn.setOnClickListener(this);
 
@@ -384,6 +390,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage));
                 mHasHideBarrage = !mHasHideBarrage;
                 mPresenter.optBarrageControl(mHasHideBarrage);
+
+            } else if (id == R.id.landscape_more_live) {
+                hideOptBar();
+                mPresenter.openFullScreenMoreLiveView();
             }
         } else {
             // 竖屏下的点击事件
@@ -642,6 +652,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     private void touchViewOnclick() {
+        mPresenter.videoTouchViewClick();
         if (mIsLandscape) {
             if (KeyboardUtils.hideKeyboardThenReturnResult((Activity) getContext())) {
                 return;
@@ -1097,7 +1108,18 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
          */
         void syncGameInfo();
 
+
         void tryUpdateDownloadStatus();
+
+        /**
+         * 横屏下打开更多直播
+         */
+        void openFullScreenMoreLiveView();
+
+        /**
+         * 空白区域点击
+         */
+        void videoTouchViewClick();
     }
 
     public interface IView extends IViewProxy {

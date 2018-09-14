@@ -1,9 +1,9 @@
 package com.wali.live.watchsdk.channel.view;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import com.wali.live.watchsdk.channel.data.ChannelDataStore;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.RecChannelPresenter;
 import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
@@ -35,7 +35,8 @@ public class RecLiveChannelView extends BaseLiveChannelView {
         super.updateView(models, channelId);
     }
 
-    public void setRequestParam(long viewerId, long anchorId, String packageName, long gameId, int recType, int reqFrom) {
+    public void setRequestParam(long viewerId, long anchorId, String packageName, long gameId,
+                                @ChannelDataStore.RecType int recType, @ChannelDataStore.ReqFrom int reqFrom) {
         ((RecChannelPresenter)mPresenter).setRequestParam(viewerId, anchorId, packageName, gameId, recType, reqFrom);
     }
 }

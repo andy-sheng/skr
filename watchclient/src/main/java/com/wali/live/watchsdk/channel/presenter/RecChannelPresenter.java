@@ -20,7 +20,6 @@ import java.util.List;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -41,7 +40,9 @@ public class RecChannelPresenter implements IChannelPresenter{
     long mAnchorId;
     String mPackageName = "";
     long mGameId;
+    @ChannelDataStore.RecType
     int mRecType;
+    @ChannelDataStore.ReqFrom
     int mReqFrom;
 
     private Subscription mSubscription;
@@ -52,7 +53,8 @@ public class RecChannelPresenter implements IChannelPresenter{
         mView = view;
     }
 
-    public void setRequestParam(long viewerId, long anchorId, String packageName, long gameId, int recType, int reqFrom) {
+    public void setRequestParam(long viewerId, long anchorId, String packageName, long gameId,
+                                @ChannelDataStore.RecType int recType, @ChannelDataStore.ReqFrom int reqFrom) {
         mViewerId = viewerId;
         mAnchorId = anchorId;
         if (!TextUtils.isEmpty(packageName)) {
