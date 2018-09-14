@@ -52,7 +52,7 @@ public class GameLiveSingleHolder extends FixedHolder {
         }
     }
 
-    protected void bindBaseLiveItem(ChannelLiveViewModel.BaseLiveItem item) {
+    protected void bindBaseLiveItem(final ChannelLiveViewModel.BaseLiveItem item) {
         bindText(mLiveTitle, item.getTitleText());
         FrescoWorker.loadImage(mCoverImage,
                 ImageFactory.newHttpImage(item.getImageUrl())
@@ -68,6 +68,13 @@ public class GameLiveSingleHolder extends FixedHolder {
         }
 
         bindText(mLiveViewer, parseCountString(item.getViewerCnt()));
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpItem(item);
+            }
+        });
     }
 
     public static String parseCountString(int count) {
