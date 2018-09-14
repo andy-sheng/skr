@@ -13,6 +13,8 @@ import java.util.List;
 public interface IChannelView {
     void updateView(List<? extends BaseViewModel> models, long channelId);
 
+    void onDataLoadFail();
+
     void finishRefresh();
 
     void doRefresh();

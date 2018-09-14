@@ -81,6 +81,7 @@ public class RecChannelPresenter implements IChannelPresenter{
                     @Override
                     public void onError(Throwable e) {
                         MyLog.d(TAG, "getRecListObservable onError=" + e.getMessage());
+                        mView.onDataLoadFail();
                         mView.finishRefresh();
                     }
 

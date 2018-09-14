@@ -28,6 +28,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -126,6 +127,12 @@ public abstract class BaseLiveChannelView extends RelativeLayout implements ICha
             mRecyclerAdapter.setData(models, mChannelId);
         }
     }
+
+    @Override
+    public void onDataLoadFail() {
+       updateView(new ArrayList<BaseViewModel>(), -1);
+    }
+
 
     @Override
     public void finishRefresh() {

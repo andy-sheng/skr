@@ -108,6 +108,7 @@ public class ChannelPresenter implements IChannelPresenter {
                     @Override
                     public void onError(Throwable e) {
                         MyLog.d(TAG, formatLog("getChannelObservable onError=" + e.getMessage()));
+                        mView.onDataLoadFail();
                         mView.finishRefresh();
                         mTimerSubscription.unsubscribe();
                     }

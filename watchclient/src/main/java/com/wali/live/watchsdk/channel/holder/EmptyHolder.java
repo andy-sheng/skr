@@ -3,6 +3,7 @@ package com.wali.live.watchsdk.channel.holder;
 import android.view.View;
 import android.widget.TextView;
 
+import com.base.global.GlobalData;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.channel.viewmodel.EmptyViewModel;
 
@@ -22,6 +23,9 @@ public class EmptyHolder extends BaseHolder<EmptyViewModel> {
     @Override
     protected void initView() {
         mEmptyTv = $(R.id.empty_tv);
+
+        mEmptyTv.setTextColor(GlobalData.app().getResources().getColor(R.color.color_949494_trans_80));
+        itemView.setBackgroundColor(GlobalData.app().getResources().getColor(R.color.transparent));
     }
 
     @Override
