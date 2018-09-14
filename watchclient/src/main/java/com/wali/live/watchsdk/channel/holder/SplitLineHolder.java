@@ -34,6 +34,8 @@ public class SplitLineHolder extends BaseHolder<ChannelSplitViewModel> {
     protected void bindView() {
         if (mViewModel.getColor() == 2) {
             mSplitArea.setBackgroundColor(itemView.getResources().getColor(R.color.color_white));
+        } else if (mViewModel.getColor() == 3) {
+            mSplitArea.setBackgroundColor(itemView.getResources().getColor(R.color.color_white_trans_20));
         } else {
             mSplitArea.setBackgroundColor(itemView.getResources().getColor(R.color.color_f2f2f2));
         }
@@ -43,10 +45,20 @@ public class SplitLineHolder extends BaseHolder<ChannelSplitViewModel> {
 
         if (mViewModel.getHeight() == 2) {
             mSplitArea.getLayoutParams().height = DisplayUtils.dip2px(6.67f);
+            ((RelativeLayout.LayoutParams)mSplitArea.getLayoutParams()).leftMargin = 0;
+            ((RelativeLayout.LayoutParams)mSplitArea.getLayoutParams()).rightMargin = 0;
         } else if (mViewModel.getHeight() == 3) {
             mSplitTitle.setText(mViewModel.getTitle());
+            ((RelativeLayout.LayoutParams)mSplitArea.getLayoutParams()).leftMargin = 0;
+            ((RelativeLayout.LayoutParams)mSplitArea.getLayoutParams()).rightMargin = 0;
+        } else if (mViewModel.getHeight() == 5) {
+            mSplitArea.getLayoutParams().height = DisplayUtils.dip2px(0.33f);
+            ((RelativeLayout.LayoutParams)mSplitArea.getLayoutParams()).leftMargin = DisplayUtils.dip2px(20);
+            ((RelativeLayout.LayoutParams)mSplitArea.getLayoutParams()).rightMargin = DisplayUtils.dip2px(20);
         } else {
             mSplitArea.getLayoutParams().height = DisplayUtils.dip2px(6.67f);
+            ((RelativeLayout.LayoutParams)mSplitArea.getLayoutParams()).leftMargin = 0;
+            ((RelativeLayout.LayoutParams)mSplitArea.getLayoutParams()).rightMargin = 0;
         }
     }
 }
