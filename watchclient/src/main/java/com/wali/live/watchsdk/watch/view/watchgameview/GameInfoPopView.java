@@ -171,7 +171,7 @@ public class GameInfoPopView extends RelativeLayout {
         }
         boolean apkEquals = false;
 
-        if (event.isByGame || event.isByQuery) {
+        if (event.isByGame || mIsDownloadByGc) {
             if (mGameInfoModel.getGameId() == event.gameId
                     && mGameInfoModel.getPackageName().equals(event.packageName)) {
                 apkEquals = true;
