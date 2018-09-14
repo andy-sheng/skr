@@ -110,17 +110,10 @@ public class TwoSelectTabLayout extends LinearLayout implements View.OnClickList
         if (v.isSelected()) {
             return;
         }
-        v.setSelected(true);
         if (v.getId() == R.id.two_select_tab_left) {
-            mRightTextView.setSelected(false);
-            if (mOnTabSelectListener != null) {
-                mOnTabSelectListener.onLeftTabSelect();
-            }
+            setTabSelectedWithCallBack(0);
         } else {
-            mLeftTextView.setSelected(false);
-            if (mOnTabSelectListener != null) {
-                mOnTabSelectListener.onRightTabSelect();
-            }
+            setTabSelectedWithCallBack(1);
         }
     }
 
@@ -136,16 +129,14 @@ public class TwoSelectTabLayout extends LinearLayout implements View.OnClickList
 
     public void setTabSelectedWithCallBack(int position) {
         if (position == 0 && !mLeftTextView.isSelected()) {
-            mLeftTextView.setSelected(true);
-            mRightTextView.setSelected(false);
-            if (mOnTabSelectListener != null) {
-                mOnTabSelectListener.onLeftTabSelect();
+            if (mOnTabSelectListener != null && mOnTabSelectListener.onLeftTabSelect()) {
+                mLeftTextView.setSelected(true);
+                mRightTextView.setSelected(false);
             }
         } else if (position == 1 && !mRightTextView.isSelected()) {
-            mRightTextView.setSelected(true);
-            mLeftTextView.setSelected(false);
-            if (mOnTabSelectListener != null) {
-                mOnTabSelectListener.onRightTabSelect();
+            if (mOnTabSelectListener != null && mOnTabSelectListener.onRightTabSelect()) {
+                mRightTextView.setSelected(true);
+                mLeftTextView.setSelected(false);
             }
         }
     }
@@ -155,7 +146,7 @@ public class TwoSelectTabLayout extends LinearLayout implements View.OnClickList
     }
 
     public interface OnTabSelectListener {
-        void onLeftTabSelect();
-        void onRightTabSelect();
+        boolean onLeftTabSelect();
+        boolean onRightTabSelect();
     }
 }

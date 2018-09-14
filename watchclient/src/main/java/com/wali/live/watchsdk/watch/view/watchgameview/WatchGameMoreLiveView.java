@@ -14,6 +14,7 @@ import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.wali.live.watchsdk.R;
+import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.channel.adapter.RecChannelPagerAdapter;
 import com.wali.live.watchsdk.channel.data.ChannelDataStore;
 import com.wali.live.watchsdk.component.WatchComponentController;
@@ -108,17 +109,23 @@ public abstract class WatchGameMoreLiveView extends RelativeLayout
     }
 
     @Override
-    public void onLeftTabSelect() {
+    public boolean onLeftTabSelect() {
         if (mViewPager.getChildCount() >= 1) {
             mViewPager.setCurrentItem(0);
+            return true;
         }
+        return false;
     }
 
     @Override
-    public void onRightTabSelect() {
+    public boolean onRightTabSelect() {
         if (mViewPager.getChildCount() >= 2) {
-            mViewPager.setCurrentItem(1);
+            if (AccountAuthManager.triggerActionNeedAccount(getContext())) {
+                mViewPager.setCurrentItem(1);
+                return true;
+            }
         }
+        return false;
     }
 
     protected void destroyView() {
