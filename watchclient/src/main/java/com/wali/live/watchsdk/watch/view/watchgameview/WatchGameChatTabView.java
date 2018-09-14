@@ -156,9 +156,9 @@ public class WatchGameChatTabView extends RelativeLayout implements
     private void checkShowFollowGuide() {
 
         // 关注人数是否超过200
-        if (mController.getRoomBaseDataModel().getViewerCnt() < mFollowGuideShowUserNum) {
-            return;
-        }
+//        if (mController.getRoomBaseDataModel().getViewerCnt() < mFollowGuideShowUserNum) {
+//            return;
+//        }
 
         if (UserAccountManager.getInstance().hasAccount()) {
             // 有帐号
