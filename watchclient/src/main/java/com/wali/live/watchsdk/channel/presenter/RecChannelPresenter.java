@@ -95,7 +95,7 @@ public class RecChannelPresenter implements IChannelPresenter{
                 });
     }
 
-    private List<? extends BaseViewModel> processRsp(@NonNull HotChannelProto.GetRecListRsp rsp) {
+    private List<ChannelViewModel> processRsp(@NonNull HotChannelProto.GetRecListRsp rsp) {
         long channelId = rsp.getChannelId();
 
         List<ChannelViewModel> models = new ArrayList();

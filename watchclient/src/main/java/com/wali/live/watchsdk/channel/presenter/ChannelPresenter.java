@@ -86,9 +86,9 @@ public class ChannelPresenter implements IChannelPresenter {
         MyLog.d(TAG, formatLog("getDataFromServer"));
         mSubscription = mDataStore.getHotChannelObservable(mChannelId)
                 .subscribeOn(Schedulers.io())
-                .map(new Func1<HotChannelProto.GetRecommendListRsp, List<? extends BaseViewModel>>() {
+                .map(new Func1<HotChannelProto.GetRecommendListRsp, List<ChannelViewModel>>() {
                     @Override
-                    public List<? extends BaseViewModel> call(HotChannelProto.GetRecommendListRsp getRecommendListRsp) {
+                    public List<ChannelViewModel> call(HotChannelProto.GetRecommendListRsp getRecommendListRsp) {
                         if (getRecommendListRsp != null) {
                             return processRsp(getRecommendListRsp);
                         }
@@ -96,8 +96,8 @@ public class ChannelPresenter implements IChannelPresenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(mRxActivity.<List<? extends BaseViewModel>>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<List<? extends BaseViewModel>>() {
+                .compose(mRxActivity.<List<ChannelViewModel>>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Observer<List<ChannelViewModel>>() {
                     @Override
                     public void onCompleted() {
                         MyLog.d(TAG, formatLog("getChannelObservable onCompleted"));
@@ -114,7 +114,7 @@ public class ChannelPresenter implements IChannelPresenter {
                     }
 
                     @Override
-                    public void onNext(List<? extends BaseViewModel> list) {
+                    public void onNext(List<ChannelViewModel> list) {
                         MyLog.d(TAG, formatLog("getChannelObservable onNext"));
                         if (list != null) {
                             mView.updateView(list, mChannelId);
@@ -123,7 +123,7 @@ public class ChannelPresenter implements IChannelPresenter {
                 });
     }
 
-    private List<? extends BaseViewModel> processRsp(@NonNull HotChannelProto.GetRecommendListRsp rsp) {
+    private List<ChannelViewModel> processRsp(@NonNull HotChannelProto.GetRecommendListRsp rsp) {
         MyLog.d(TAG, formatLog("processRsp"));
         List<ChannelViewModel> models = new ArrayList();
         boolean splitFirst = true;

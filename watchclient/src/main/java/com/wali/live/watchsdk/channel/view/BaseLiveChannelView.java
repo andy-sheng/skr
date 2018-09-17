@@ -19,7 +19,7 @@ import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
 import com.wali.live.watchsdk.channel.holder.StayExposureHolder;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
-import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.statistics.item.AliveStatisticItem;
@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  * Created by liuting on 18-9-12.
- * 游戏直播间　更多直播频道列表
+ * 直播频道列表基类
  */
 
 public abstract class BaseLiveChannelView extends RelativeLayout implements IChannelView, SwipeRefreshLayout.OnRefreshListener{
@@ -76,7 +76,7 @@ public abstract class BaseLiveChannelView extends RelativeLayout implements ICha
     }
 
 
-    private void init(Context context) {
+    protected void init(Context context) {
         inflate(context, R.layout.live_channel_layout, this);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
@@ -118,7 +118,7 @@ public abstract class BaseLiveChannelView extends RelativeLayout implements ICha
 
 
     @Override
-    public void updateView(List<? extends BaseViewModel> models, long channelId) {
+    public void updateView(List<ChannelViewModel> models, long channelId) {
         if (models != null) {
             if (mRecyclerAdapter == null) {
                 mRecyclerAdapter = new ChannelRecyclerAdapter(getActivity());
@@ -130,7 +130,7 @@ public abstract class BaseLiveChannelView extends RelativeLayout implements ICha
 
     @Override
     public void onDataLoadFail() {
-       updateView(new ArrayList<BaseViewModel>(), -1);
+       updateView(new ArrayList<ChannelViewModel>(), -1);
     }
 
 

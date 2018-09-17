@@ -20,7 +20,7 @@ import com.wali.live.watchsdk.channel.adapter.ChannelRecyclerAdapter;
 import com.wali.live.watchsdk.channel.presenter.ChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelPresenter;
 import com.wali.live.watchsdk.channel.presenter.IChannelView;
-import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -112,13 +112,13 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
     }
 
     @Override
-    public void updateView(List<? extends BaseViewModel> models, long channelId) {
+    public void updateView(List<ChannelViewModel> models, long channelId) {
         mRecyclerAdapter.setData(models, mChannelId);
     }
 
     @Override
     public void onDataLoadFail() {
-        updateView(new ArrayList<BaseViewModel>(), -1);
+        updateView(new ArrayList<ChannelViewModel>(), -1);
     }
 
     @Override

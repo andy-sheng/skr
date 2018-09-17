@@ -1,21 +1,12 @@
 package com.wali.live.watchsdk.watch.view.watchgameview;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
-import android.support.v4.view.ViewPager;
-import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.base.view.NestViewPager;
-import com.mi.live.data.milink.command.MiLinkCommand;
-import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.wali.live.watchsdk.R;
-import com.wali.live.watchsdk.channel.adapter.ChannelTabPagerAdapter;
-import com.wali.live.watchsdk.channel.list.model.ChannelShow;
 import com.wali.live.watchsdk.component.WatchComponentController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.wali.live.watchsdk.channel.data.ChannelDataStore.GAME_WATCH_CHANNEL_FROM_PORTRAIT;
 
@@ -42,6 +33,11 @@ public class WatchGameMoreTabView extends WatchGameMoreLiveView implements Watch
     }
 
     @Override
+    protected void onRecLiveChannelShowTabBarEvent(boolean show, long channelId) {
+        showTabBar(show);
+    }
+
+    @Override
     protected int getLiveReqFrom() {
         return GAME_WATCH_CHANNEL_FROM_PORTRAIT;
     }
@@ -59,5 +55,40 @@ public class WatchGameMoreTabView extends WatchGameMoreLiveView implements Watch
     @Override
     public void stopView() {
         destroyView();
+    }
+
+    private ValueAnimator mTabBarAnimator;
+    private boolean mIsTabBarShowed = true;
+    private void showTabBar(boolean show) {
+        if (mTopTabContainer == null) {
+            return;
+        }
+        if (mIsTabBarShowed == show) {
+            return;
+        }
+        mIsTabBarShowed = show;
+
+        if (mTabBarAnimator == null) {
+            mTabBarAnimator = ValueAnimator.ofInt(0, mTopTabContainer.getHeight());
+            mTabBarAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mTopTabContainer.getLayoutParams();
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int value = (int) animation.getAnimatedValue();
+                    layoutParams.topMargin = - value;
+                    mTopTabContainer.setLayoutParams(layoutParams);
+                }
+            });
+            mTabBarAnimator.setRepeatCount(0);
+            mTabBarAnimator.setDuration(300);
+        }
+        if (mTabBarAnimator.isRunning()) {
+            mTabBarAnimator.end();
+        }
+        if (show) {
+            mTabBarAnimator.reverse();
+        } else {
+            mTabBarAnimator.start();
+        }
     }
 }

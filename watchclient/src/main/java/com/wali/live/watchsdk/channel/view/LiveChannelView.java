@@ -34,6 +34,7 @@ import java.util.List;
 
 /**
  * Created by vera on 2018/5/24.
+ * 首页频道列表
  */
 
 public class LiveChannelView extends BaseLiveChannelView {

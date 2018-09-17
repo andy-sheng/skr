@@ -146,6 +146,11 @@ public abstract class WatchGameMoreLiveView extends RelativeLayout
 
     }
 
+    protected void onRecLiveChannelShowTabBarEvent(boolean show, long channelId) {
+
+    }
+
+
 
     @Override
     public WatchGameMoreTabView.IView getViewProxy() {
@@ -172,6 +177,11 @@ public abstract class WatchGameMoreLiveView extends RelativeLayout
             }
 
             @Override
+            public void onTabBarEvent(boolean show, long channelId) {
+                onRecLiveChannelShowTabBarEvent(show, channelId);
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameMoreLiveView.this;
             }
@@ -192,5 +202,6 @@ public abstract class WatchGameMoreLiveView extends RelativeLayout
         void onOrientChange(boolean isLandscape);
         void onFullScreenMoreLiveClick();
         void onVideoTouchViewClick();
+        void onTabBarEvent(boolean show, long channelId);
     }
 }

@@ -11,6 +11,7 @@ import com.wali.live.watchsdk.channel.holder.BannerHolder;
 import com.wali.live.watchsdk.channel.holder.BannerNoSpaceHolder;
 import com.wali.live.watchsdk.channel.holder.BaseHolder;
 import com.wali.live.watchsdk.channel.holder.ChannelPageHeaderHolder;
+import com.wali.live.watchsdk.channel.holder.ChannelPlaceHolder;
 import com.wali.live.watchsdk.channel.holder.CommunityRankHolder;
 import com.wali.live.watchsdk.channel.holder.ConcernCardHolder;
 import com.wali.live.watchsdk.channel.holder.DefaultCardHolder;
@@ -237,10 +238,6 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.community_head_layout, parent, false);
                 holder = new CommunityRankHolder(view);
                 break;
-            case ChannelUiType.TYPE_PLACEHOLDER:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.live_show_placeholder_item, parent, false);
-                holder = new PlaceHolder(view);
-                break;
             case ChannelUiType.TYPE_FOUR_LINE_NAVIGATION:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_circle_navigation_item, parent, false);
                 holder = new NavigationListHolder(view);
@@ -312,6 +309,10 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
             case ChannelUiType.TYPE_GAME_WATCH_SINGLE_LIVE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_one_game_live_single_item, parent, false);
                 holder = new GameLiveSingleHolder(view);
+                break;
+            case ChannelUiType.TYPE_PLACEHOLDER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_place_holder_item, parent, false);
+                holder = new ChannelPlaceHolder(view);
                 break;
             default:
                 MyLog.d(TAG, "viewType is : " + viewType);
