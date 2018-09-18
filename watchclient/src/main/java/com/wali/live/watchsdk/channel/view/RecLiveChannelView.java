@@ -48,6 +48,11 @@ public class RecLiveChannelView extends BaseLiveChannelView {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                if (mReqFrom != GAME_WATCH_CHANNEL_FROM_PORTRAIT) {
+                    // 只有竖屏更多直播滑动时隐藏tabbar
+                    return;
+                }
+
                 mTotalDy += dy;
                 if (mChannelId != -1) {
                     if (dy < 0 && (-dy) > 8) {
@@ -68,7 +73,7 @@ public class RecLiveChannelView extends BaseLiveChannelView {
     @Override
     public void updateView(List<ChannelViewModel> models, long channelId) {
         setChannelId(channelId); // 首页频道的channelId 是外部set进来的　直播间更多直播频道Id是拉取的数据返回
-        if (mReqFrom == GAME_WATCH_CHANNEL_FROM_PORTRAIT) {
+        if (mReqFrom == GAME_WATCH_CHANNEL_FROM_PORTRAIT && models != null &&  !models.isEmpty()) {
             ChannelViewModel channelViewModel = new ChannelPlaceHolderModel(getResources().getDimensionPixelSize(R.dimen.view_dimen_208));
             models.add(0, channelViewModel);
         }
