@@ -67,7 +67,12 @@ public class GameLiveSingleHolder extends FixedHolder {
             bindText(mLiveAnchor, item.getUser().getNickname());
         }
 
-        bindText(mLiveViewer, parseCountString(item.getViewerCnt()));
+        if (item instanceof ChannelLiveViewModel.LiveItem) {
+            bindText(mLiveViewer, parseCountString(((ChannelLiveViewModel.LiveItem) item).getHotScore()));
+        } else {
+            bindText(mLiveViewer, parseCountString(item.getViewerCnt()));
+        }
+
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,15 +80,6 @@ public class GameLiveSingleHolder extends FixedHolder {
                 jumpItem(item);
             }
         });
-    }
-
-    public static String parseCountString(int count) {
-        String sCount = String.valueOf(count);
-        if (count > 10000) {
-            String unit = "w";
-            sCount = String.format("%.1f" + unit, (float) (count / 10000.0));
-        }
-        return sCount;
     }
 
     private void setItemSelected(boolean isSelected) {

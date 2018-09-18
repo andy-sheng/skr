@@ -127,9 +127,9 @@ public class TwoCardWideHolder extends FixedHolder {
                 mAnchorNameTvs[i].setText(baseLiveItem.getUserNickName());
             }
             if (baseLiveItem instanceof ChannelLiveViewModel.LiveItem) {
-                mViewerCntTvs[i].setText(((ChannelLiveViewModel.LiveItem)baseLiveItem).getHotScore() + "");
+                mViewerCntTvs[i].setText(parseCountString(((ChannelLiveViewModel.LiveItem)baseLiveItem).getHotScore()));
             } else {
-                mViewerCntTvs[i].setText(baseLiveItem.getViewerCnt());
+                mViewerCntTvs[i].setText(parseCountString(baseLiveItem.getViewerCnt()));
             }
             mViewerCntTvs[i].setCompoundDrawablesWithIntrinsicBounds(GlobalData.app().getResources().getDrawable(getRandomIconRes()), null, null, null);
             mViewerCntTvs[i].setCompoundDrawablePadding(GlobalData.app().getResources().getDimensionPixelSize(R.dimen.view_dimen_7));

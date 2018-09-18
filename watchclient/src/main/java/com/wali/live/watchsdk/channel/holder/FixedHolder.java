@@ -220,6 +220,15 @@ public abstract class FixedHolder extends HeadHolder {
         }
     }
 
+    public static String parseCountString(int count) {
+        String sCount = String.valueOf(count);
+        if (count > 10000) {
+            String unit = "w";
+            sCount = String.format("%.1f" + unit, (float) (count / 10000.0));
+        }
+        return sCount;
+    }
+
     public class LabelClickSpan extends ClickableSpan {
         String url;
 
