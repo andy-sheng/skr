@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/controller_pop_root"
+    android:layout_width="@dimen/view_dimen_476"
+    android:layout_height="@dimen/view_dimen_243"
+    android:layout_gravity="center"
+    android:background="@drawable/watch_game_cotroll_bg"
+    android:visibility="gone">
+    
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_dimen_56"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_6"
+        android:layout_below="@+id/image"
+        android:layout_marginTop="@dimen/view_dimen_46"
+        android:layout_marginLeft="@dimen/view_dimen_67"
+        android:layout_marginRight="@dimen/view_dimen_67"
+        android:progressDrawable="@drawable/watch_controll_progress"/>
+
+</RelativeLayout>

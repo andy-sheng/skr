@@ -40,8 +40,11 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_OFF;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_ON;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
 import static com.wali.live.component.BaseSdkController.MSG_POP_INSUFFICIENT_TIPS;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_SEND_ENVELOPE;
 
 /**
@@ -63,6 +66,8 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     // 播放器和浮层的父布局
     private RelativeLayout mVideShowLayout;
 
+    private WatchGameFullScreenMoreView mFullScreenMoreLiveView;
+
     // 竖屏时播放器下方的tab页
     private WatchGameTabView mWatchTabView;
     private WatchGameTabPresenter mWatchTabPresenter;
@@ -80,6 +85,8 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     private MyAlertDialog mBalanceInsufficientDialog;
     private GameBarrageView mGameBarrageView;
     private GameNewBarrageViewPresenter mGameBarragePresenter;
+
+    private WatchGameControllerView mWatchGameControllerView;
 
     Runnable mResetRunnable = new Runnable() {
         @Override
@@ -108,6 +115,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_PLAYER_RECONNECT);
         registerAction(MSG_SHOW_SEND_ENVELOPE);
+        registerAction(MSG_PLAYER_SOUND_OFF);
+        registerAction(MSG_PLAYER_SOUND_ON);
+        registerAction(MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW);
     }
 
     @Override
@@ -115,6 +125,9 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         super.stopView();
         if (mVideShowLayout != null) {
             mVideShowLayout.removeCallbacks(mResetRunnable);
+        }
+        if (mFullScreenMoreLiveView != null) {
+            mFullScreenMoreLiveView.stopView();
         }
     }
 
@@ -124,7 +137,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     }
 
     public void onResume() {
-        if(mWatchPlayerPresenter != null
+        if (mWatchPlayerPresenter != null
                 && mWatchPlayerPresenter.isPause()) {
             //如果暂停就尝试让它播放下
             mController.postEvent(MSG_PLAYER_START);
@@ -159,7 +172,7 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
         }
 
         {
-            mInputArea =(WatchGameInputAreaView) mParentView.findViewById(R.id.input_area_view);
+            mInputArea = (WatchGameInputAreaView) mParentView.findViewById(R.id.input_area_view);
             mInputPresenter = new InputAreaPresenter(
                     mController, mController.getRoomBaseDataModel(), mController.getLiveRoomChatMsgManager(), true);
             registerComponent(mInputArea, mInputPresenter);
@@ -186,16 +199,21 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
             registerComponent(mGameBarrageView, mGameBarragePresenter);
         }
 
-        {
-            WatchGameWaterMarkView watchGameWaterMarkView = (WatchGameWaterMarkView) mParentView.findViewById(R.id.watch_mark_view);
-            watchGameWaterMarkView.setRoomData(mController.getRoomBaseDataModel());
-        }
+//        {
+//            WatchGameWaterMarkView watchGameWaterMarkView = (WatchGameWaterMarkView) mParentView.findViewById(R.id.watch_mark_view);
+//            watchGameWaterMarkView.setRoomData(mController.getRoomBaseDataModel());
+//        }
 
         // 抢红包
         {
             RelativeLayout relativeLayout = (RelativeLayout) mParentView.findViewById(R.id.envelope_view);
             EnvelopePresenter presenter = new EnvelopePresenter(mController, mController.getRoomBaseDataModel());
             registerHybridComponent(presenter, relativeLayout);
+        }
+
+        // 控制音量和亮度
+        {
+            mWatchGameControllerView = (WatchGameControllerView) mParentView.findViewById(R.id.controller_view);
         }
     }
 
@@ -215,7 +233,30 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
     }
 
     /**
+     * 在横屏下第一次点击更多直播时　
+     * 接收到MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW将View add到布局里
+     * 之后弹出更多直播都由该View内部自己处理
+     */
+    private void showMoreLiveViewIfNeed() {
+        if (!mIsLandscape) {
+            return;
+        }
+        mParentView.post(new Runnable() {
+            // 不要去掉这个postRunable的使用
+            // 目的是要fix一个postEvent的同时新new出来的对象同时注册该event引起的Concurrent bug
+            @Override
+            public void run() {
+                if (mFullScreenMoreLiveView == null) {
+                    mFullScreenMoreLiveView = new WatchGameFullScreenMoreView(mParentView.getContext(), mController);
+                    mFullScreenMoreLiveView.addSelfToWatchLayoutAndShow(mParentView );
+                }
+            }
+        });
+    }
+
+    /**
      * 接收横竖屏切换通知
+     *
      * @param isLandscape
      */
     private void onReOrient(boolean isLandscape) {
@@ -271,22 +312,35 @@ public class WatchGameView extends BaseSdkView<View, WatchComponentController> {
                 popInsufficientTips();
                 break;
             case MSG_PLAYER_START:
-                if(mWatchPlayerPresenter != null) {
+                if (mWatchPlayerPresenter != null) {
                     mWatchPlayerPresenter.resumePlay();
                 }
                 break;
             case MSG_PLAYER_PAUSE:
-                if(mWatchPlayerPresenter != null) {
+                if (mWatchPlayerPresenter != null) {
                     mWatchPlayerPresenter.pausePlay();
                 }
                 break;
+            case MSG_PLAYER_SOUND_OFF:
+                if (mWatchPlayerPresenter != null) {
+                    mWatchPlayerPresenter.mutePlay(true);
+                }
+                break;
+            case MSG_PLAYER_SOUND_ON:
+                if (mWatchPlayerPresenter != null) {
+                    mWatchPlayerPresenter.mutePlay(false);
+                }
+                break;
             case MSG_PLAYER_RECONNECT:
-                if(mWatchPlayerPresenter != null) {
+                if (mWatchPlayerPresenter != null) {
                     mWatchPlayerPresenter.startReconnect();
                 }
                 break;
             case MSG_SHOW_SEND_ENVELOPE:
                 SendEnvelopeFragment.openFragment((BaseActivity) mActivity, mController.getRoomBaseDataModel());
+                return true;
+            case MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW:
+                showMoreLiveViewIfNeed();
                 return true;
         }
         return false;

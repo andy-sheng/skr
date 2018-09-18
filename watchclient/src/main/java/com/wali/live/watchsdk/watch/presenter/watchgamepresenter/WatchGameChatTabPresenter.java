@@ -2,11 +2,14 @@ package com.wali.live.watchsdk.watch.presenter.watchgamepresenter;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.base.log.MyLog;
+import com.base.utils.system.PackageUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.relation.RelationApi;
 import com.mi.live.data.event.FollowOrUnfollowEvent;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.mi.live.data.room.model.RoomDataChangeEvent;
 import com.mi.live.data.user.User;
@@ -18,6 +21,8 @@ import com.wali.live.event.UserActionEvent;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.eventbus.EventClass;
+import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameChatTabView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -189,5 +194,57 @@ public class WatchGameChatTabPresenter extends BaseSdkRxPresenter<WatchGameChatT
                 }
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.UpdateGameInfoStatus event) {
+        if (event == null) {
+            return;
+        }
+
+        if (mMyRoomData != null
+                && mMyRoomData.getGameInfoModel() != null && event.mGameInfoModel != null) {
+            GameInfoModel gameInfoModel = mMyRoomData.getGameInfoModel();
+            if (TextUtils.isEmpty(gameInfoModel.getPackageName()) || TextUtils.isEmpty(event.mGameInfoModel.getPackageName())) {
+                // 包名无效
+                return;
+            }
+
+            if (gameInfoModel.getGameId() == event.mGameInfoModel.getGameId()
+                    && gameInfoModel.getPackageName().equals(event.mGameInfoModel.getPackageName())) {
+                // 是当前需要处理的本地游戏
+                if (PackageUtils.isInstallPackage(gameInfoModel.getPackageName())) {
+                    // 已经安装 隐藏
+                    mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH, false, false);
+                } else {
+                    // 未安装 显示挂件
+                    String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
+                    if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
+                        // 存在包
+                        mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED, true, false);
+                    } else {
+                        // 下载不完全
+                        mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD, true, false);
+                    }
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
+        if (event == null) {
+            return;
+        }
+
+        MyLog.d(TAG, "ApkStatusEvent" + event.status + "event.isByGc" + event.isByQuery);
+        if (mMyRoomData != null
+                && mMyRoomData.getGameInfoModel().getPackageName().equals(event.packageName)) {
+            MyLog.d(TAG, "ApkStatusEvent" + event.status + "event.isByGc" + event.isByQuery);
+            if (event.isByQuery) {
+                mView.updateGamePopView(mMyRoomData.getGameInfoModel(), event.status, true, true);
+            }
+        }
+
     }
 }

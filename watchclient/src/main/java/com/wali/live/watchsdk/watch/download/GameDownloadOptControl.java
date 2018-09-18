@@ -7,6 +7,8 @@ import com.mi.live.data.account.channel.HostChannelManager;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.ipc.service.MiLiveSdkBinder;
+import com.wali.live.watchsdk.statistics.MilinkStatistics;
+import com.wali.live.watchsdk.watch.model.WatchGameInfoConfig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,6 +19,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_START_DOWNLOAD;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_DOWNLOAD;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.FAILED;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_BEGIN_DOWNLOAD;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_CONTINUE_DOWNLOAD;
@@ -40,6 +44,8 @@ public class GameDownloadOptControl {
     public static final int TYPE_GAME_REMOVE = 6;
     public static final int TYPE_GAME_CONTINUE_DOWNLOAD = 7;
     public static final int TYPE_GAME_INSTALLING = 8;//待定
+    public static final int TYPE_GAME_LAUNCH_SUCCESS = 9; //启动成功
+    public static final int TYPE_GAME_DOWNLOAD_FAILED = 10; //下载失败
 
     private static Subscription mDownloadSubscription;
     private static Subscription mQueryGameDownStatusSubscription;
@@ -56,7 +62,7 @@ public class GameDownloadOptControl {
         }
 
         if(!HostChannelManager.getInstance().isFromGameCenter()) {
-            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus());
+            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus(model));
             return;
         }
 
@@ -91,7 +97,7 @@ public class GameDownloadOptControl {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (!aBoolean) {
-                            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus());
+                            EventBus.getDefault().post(new EventClass.UpdateGameInfoStatus(model));
                         }
                     }
                 });
@@ -140,6 +146,11 @@ public class GameDownloadOptControl {
                     public void onNext(Boolean aBoolean) {
                         if (!aBoolean) {
                             downloadByMiLive(type, model);
+                        } else {
+                            //从游戏中心发起下载打点
+                            if(type == TYPE_GAME_BEGIN_DOWNLOAD) {
+                                firstStartDownloadStatistic(model.getPackageUrl());
+                            }
                         }
                     }
                 });
@@ -167,6 +178,15 @@ public class GameDownloadOptControl {
                 EventBus.getDefault().post(new CustomDownloadManager.RequestGameDownloadByMiLiveEvent(model, STATTUS_LAUNCH, FAILED));
                 ToastUtils.showToast("启动失败");
             }
+        }
+    }
+
+    private static void firstStartDownloadStatistic(String url) {
+        WatchGameInfoConfig.InfoItem infoItem = WatchGameInfoConfig.sGameInfoMap.get(url);
+        if (infoItem != null) {
+            MyLog.d(TAG, "firstStartDownloadStatistic gameId:" + infoItem.gameId + ", packageName:" + infoItem.packageName);
+            MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_DOWNLOAD,
+                    GAME_WATCH_BIZTYPE_START_DOWNLOAD, infoItem.anchorId, infoItem.channelId, infoItem.packageName);
         }
     }
 }

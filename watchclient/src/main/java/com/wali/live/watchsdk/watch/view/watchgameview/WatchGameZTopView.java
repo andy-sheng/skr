@@ -8,11 +8,13 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.api.ErrorCode;
 import com.mi.live.data.api.LiveManager;
 import com.mi.live.data.gamecenter.model.GameInfoModel;
+import com.mi.live.data.room.model.RoomBaseDataModel;
 import com.thornbirds.component.view.IComponentView;
 import com.thornbirds.component.view.IViewProxy;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -36,7 +39,9 @@ import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
+import com.wali.live.watchsdk.watch.download.GameDownloadOptControl;
 import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.GameNewLandscapeInputViewPresenter;
+import com.wali.live.watchsdk.watch.presenter.watchgamepresenter.WatchGameTouchPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +78,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     // 竖屏下展示的控件 TODO 水印还没加上
     private ImageView mPortraitBackBtn;
     private PortraitLineUpButtons mPortraitLinUpButtons;
+    private ImageView mPortraitVoiceBtn;
     // 竖屏相关
-
+    private boolean mIsVideoMute = false; //是否静音
 
     // 横屏下展示的控件
     private RelativeLayout mLandscapeTopLayout; // 横屏下上半部分的布局
@@ -86,6 +92,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private TextView mLandscapeAnchorNameTv;
     private TextView mLandscapeFollowBtn;
     private ImageView mLandscapeDownloadBtn;
+    private ImageView mLandscapeMoreLiveBtn;
     private ImageView mLandscapeShareBtn;
     private ImageView mLandscapeSuspend;
     private ImageView mLandscapeRefresh;
@@ -93,6 +100,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private ImageView getmLandscapeGiftBtn;
     private WatchGameMenuDialog mWatchGameMenuDialog;
     private GameNewLandscapeInputView mGameNewLandscapeInputView;
+
+    private ViewStub mGameInfoPopViewStub;
+    private GameInfoPopView mGameInfoPopView; // 可能为空
 
     // 横屏相关
     private boolean mEnableFollow = false;
@@ -110,10 +120,13 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private GameNewLandscapeInputViewPresenter mGameNewLandscapeInputViewPresenter;
     private boolean mIsVideoPause;
     private boolean mHasHideBarrage;
-    private boolean mNeedHideDownLoadBtn;
 
-    private Subscription mHideLandscapeOptBarSubscription;
-    private Subscription mHidePortraitOptBarSubscription;
+    private Handler mUiHanlder = new Handler();
+
+    private WatchGameTouchPresenter mWatchGameTouchPresenter;
+    private WatchGameWaterMarkView mPortraitWatchGameWaterMarkView;
+    private RelativeLayout mPortraitTitleContainer;
+    private WatchGameWaterMarkView mLandscapeWatchGameWaterMarkView;
 
     public WatchGameZTopView(Context context) {
         super(context);
@@ -162,7 +175,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 // 还没有加载过横屏布局 先加载
                 inflate(context, R.layout.watch_z_top_lanscape_layout, this);
                 bindLandscapeViews();
-                checkInstalledOrUpdate(mPresenter.getController().getRoomBaseDataModel().getGameInfoModel());
             } else {
                 // 加载过横屏布局 重新add
                 for (View view : mLandscapeViews) {
@@ -176,15 +188,31 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 mLandscapeBarrageHideBtn.setBackground(mHasHideBarrage ?
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage) :
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_subtitles));
+
+                if(mPresenter != null) {
+                    mPresenter.tryUpdateDownloadStatus();
+                }
             }
 
             if (mPresenter != null
                     && mPresenter.getController() != null
-                    && mPresenter.getController().getRoomBaseDataModel() != null
-                    && mPresenter.getController().getRoomBaseDataModel().getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
-                getmLandscapeGiftBtn.setVisibility(GONE);
-                View view = findViewById(R.id.splite_line_view_2);
-                view.setVisibility(GONE);
+                    && mPresenter.getController().getRoomBaseDataModel() != null) {
+
+                if(mPresenter.getController().getRoomBaseDataModel().getLiveType() == LiveManager.TYPE_LIVE_HUYA) {
+                    getmLandscapeGiftBtn.setVisibility(GONE);
+                    View view = findViewById(R.id.splite_line_view_2);
+                    view.setVisibility(GONE);
+                }
+
+
+                if(mLandscapeWatchGameWaterMarkView != null) {
+                    mLandscapeWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+                    mLandscapeWatchGameWaterMarkView.onOrientation(mIsLandscape);
+                }
+
+                if(mLandscapeLiveTitle != null) {
+                    mLandscapeLiveTitle.setText(mPresenter.getController().getRoomBaseDataModel().getLiveTitle());
+                }
             }
 
             if (mGameNewLandscapeInputViewPresenter == null) {
@@ -192,7 +220,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             tryToHideLandscapeOptBar();
-            mLandscapeDownloadBtn.setVisibility(mNeedHideDownLoadBtn ? GONE : VISIBLE);
         } else { // 切换到竖屏
             if (getChildCount() > 0 && lastIsLandscape) {
                 // 切换前是横屏
@@ -226,6 +253,15 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                     }
                     addView(view);
                 }
+
+                mPortraitVoiceBtn.setImageDrawable(mIsVideoMute ? GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_mute) : GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_voice));
+
+                if(mPresenter != null
+                        && mPresenter.getController() != null
+                        && mPresenter.getController().getRoomBaseDataModel() != null) {
+                    mPortraitWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+                    mPortraitWatchGameWaterMarkView.onOrientation(mIsLandscape);
+                }
             }
 
             tryToHidePortraitOptBar();
@@ -238,6 +274,9 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     private void bindPortraitViews() {
         mPortraitBackBtn = (ImageView) findViewById(R.id.portrait_back_btn);
         mPortraitBackBtn.setOnClickListener(this);
+
+        mPortraitVoiceBtn = (ImageView) findViewById(R.id.protrait_voice_btn);
+        mPortraitVoiceBtn.setOnClickListener(this);
 
         mPortraitLinUpButtons = (PortraitLineUpButtons) findViewById(R.id.portrait_line_up_buttons);
 //        // 分享
@@ -252,6 +291,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
         mTouchView = findViewById(R.id.touch_view);
         mTouchView.setOnClickListener(this);
+
+        mPortraitWatchGameWaterMarkView = (WatchGameWaterMarkView) findViewById(R.id.portrait_watch_mark_view);
+        mPortraitWatchGameWaterMarkView.onOrientation(false);
+        mPortraitTitleContainer = (RelativeLayout) findViewById(R.id.portrait_title_container);
     }
 
     /**
@@ -274,8 +317,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         mLandscapeFollowBtn = (TextView) findViewById(R.id.landscape_follow);
         mLandscapeFollowBtn.setOnClickListener(this);
 
-        mLandscapeDownloadBtn = (ImageView) findViewById(R.id.landscape_download);
-        mLandscapeDownloadBtn.setOnClickListener(this);
+
+        mLandscapeMoreLiveBtn = (ImageView) findViewById(R.id.landscape_more_live);
+        mLandscapeMoreLiveBtn.setOnClickListener(this);
+
 
         mLandscapeShareBtn = (ImageView) findViewById(R.id.landscape_share);
         mLandscapeShareBtn.setOnClickListener(this);
@@ -297,10 +342,17 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         getmLandscapeGiftBtn.setOnClickListener(this);
 
         mTouchView = findViewById(R.id.touch_view);
+        mWatchGameTouchPresenter = new WatchGameTouchPresenter(mPresenter.getController(), mTouchView);
         mTouchView.setOnClickListener(this);
+
+        mLandscapeWatchGameWaterMarkView = (WatchGameWaterMarkView) findViewById(R.id.landscape_watch_mark_view);
+        mLandscapeWatchGameWaterMarkView.onOrientation(true);
+
+        mGameInfoPopViewStub = (ViewStub) findViewById(R.id.game_info_pop_view_stub);
 
         if (mPresenter != null) {
             mPresenter.syncAnchorInfo();
+            mPresenter.syncGameInfo();
         }
     }
 
@@ -338,12 +390,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                         GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_banbarrage));
                 mHasHideBarrage = !mHasHideBarrage;
                 mPresenter.optBarrageControl(mHasHideBarrage);
-            } else if (id == R.id.landscape_download) {
-                int flag = 0;
-                if (mLandscapeDownloadBtn.getTag() != null) {
-                    flag = (int) mLandscapeDownloadBtn.getTag();
-                }
-                mPresenter.clickDownLoad(flag);
+
+            } else if (id == R.id.landscape_more_live) {
+                hideOptBar();
+                mPresenter.openFullScreenMoreLiveView();
             }
         } else {
             // 竖屏下的点击事件
@@ -351,11 +401,23 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 if (mPresenter != null) {
                     mPresenter.exitRoom();
                 }
+            } else if (id == R.id.protrait_voice_btn) {
+                touchVoiceOnClick();
             }
         }
 
         if (id == R.id.touch_view) {
             touchViewOnclick();
+        }
+    }
+
+    private void touchVoiceOnClick() {
+        if (mIsVideoMute) {
+            // 打开声音
+            mPresenter.videoMute(false);
+        } else {
+            // 静音
+            mPresenter.videoMute(true);
         }
     }
 
@@ -373,12 +435,12 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     private void updatePlayBtnUi() {
-        if(mIsLandscape) {
+        if (mIsLandscape) {
             mLandscapeSuspend.setBackgroundDrawable(mIsVideoPause ?
                     GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_play)
                     : GlobalData.app().getResources().getDrawable(R.drawable.live_video_fullscreen_bottom_icon_suspended));
         } else {
-            if(mPortraitLinUpButtons != null) {
+            if (mPortraitLinUpButtons != null) {
                 View v = mPortraitLinUpButtons.getViewById(R.id.game_watch_portrait_suspended);
                 if (v != null
                         && v instanceof ImageView) {
@@ -386,9 +448,10 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                             : GlobalData.app().getResources().getDrawable(R.drawable.live_video_function_icon_suspended));
                 }
             }
+
+            mPortraitVoiceBtn.setImageDrawable(mIsVideoMute ? GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_mute) : GlobalData.app().getResources().getDrawable(R.drawable.live_function_icon_voice));
         }
     }
-
 
 
     /**
@@ -426,14 +489,14 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
                     @Override
                     public void onDismissCallback() {
-                        if(!mIsLandscape) {
+                        if (!mIsLandscape) {
                             tryToHidePortraitOptBar();
                         }
                     }
                 });
             }
             mWatchGameMenuDialog.show(WatchGameZTopView.this, v);
-            if(!mIsLandscape) {
+            if (!mIsLandscape) {
                 tryUnSubscribe();
             }
         } else if (id == R.id.game_watch_portrait_suspended) {
@@ -589,6 +652,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     private void touchViewOnclick() {
+        mPresenter.videoTouchViewClick();
         if (mIsLandscape) {
             if (KeyboardUtils.hideKeyboardThenReturnResult((Activity) getContext())) {
                 return;
@@ -604,31 +668,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
                 hideOptBar();
             } else {
                 showOptBar();
-            }
-        }
-    }
-
-    public void checkInstalledOrUpdate(GameInfoModel gameInfoModel) {
-        if (gameInfoModel == null) {
-            return;
-        }
-        String packageName = gameInfoModel.getPackageName();
-        if (TextUtils.isEmpty(packageName)) {
-            // 无效的包名
-            mLandscapeDownloadBtn.setVisibility(GONE);
-            return;
-        } else {
-            mLandscapeDownloadBtn.setVisibility(VISIBLE);
-            if (PackageUtils.isInstallPackage(packageName)) {
-                // 启动
-                mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-            } else {
-                String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
-                if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
-                    mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-                } else {
-                    mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
-                }
             }
         }
     }
@@ -657,10 +696,7 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             return;
         }
 
-        if (mHideLandscapeOptBarSubscription != null
-                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
-            mHideLandscapeOptBarSubscription.unsubscribe();
-        }
+        mUiHanlder.removeCallbacks(mHideLandscapeOptBarRunnable);
 
         if (mHideLandscapeOptBarAnimatorSet == null) {
             ObjectAnimator landscapeBottomLayoutHideAnimator = ObjectAnimator.ofFloat(mLandscapeBottomLayout
@@ -700,27 +736,28 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         if (mIsPortraitHideOptMode) {
             return;
         }
-
-        if (mHidePortraitOptBarSubscription != null
-                && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
-            mHidePortraitOptBarSubscription.unsubscribe();
-        }
+        mUiHanlder.removeCallbacks(mHidePortraitOptBarRunnable);
 
         if (mHidePortraitOptBarAnimatorSet == null) {
-            ObjectAnimator portraitBackBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitBackBtn
+            ObjectAnimator portraitBackBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitTitleContainer
                     , View.TRANSLATION_Y
-                    , mPortraitBackBtn.getTranslationY()
-                    , mPortraitBackBtn.getTranslationY() - mPortraitBackBtn.getBottom());
+                    , mPortraitTitleContainer.getTranslationY()
+                    , mPortraitTitleContainer.getTranslationY() - mPortraitTitleContainer.getBottom());
+            ObjectAnimator portraitVoiceBtnHideAnimator = ObjectAnimator.ofFloat(mPortraitVoiceBtn
+                    , View.TRANSLATION_Y
+                    , mPortraitVoiceBtn.getTranslationY()
+                    , mPortraitVoiceBtn.getBottom() - mPortraitVoiceBtn.getTranslationY());
             ObjectAnimator portraitLinUpButtonsHideAnimator = ObjectAnimator.ofFloat(mPortraitLinUpButtons
                     , View.TRANSLATION_X
                     , mPortraitLinUpButtons.getTranslationX() + (DisplayUtils.getScreenWidth() - mPortraitLinUpButtons.getLeft()));
 
             mHidePortraitOptBarAnimatorSet = new AnimatorSet();
-            mHidePortraitOptBarAnimatorSet.playTogether(portraitBackBtnHideAnimator, portraitLinUpButtonsHideAnimator);
+            mHidePortraitOptBarAnimatorSet.playTogether(portraitBackBtnHideAnimator, portraitLinUpButtonsHideAnimator, portraitVoiceBtnHideAnimator);
             mHidePortraitOptBarAnimatorSet.setDuration(ANIMATION_DURATION);
             mHidePortraitOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationCancel(Animator animation) {
+                    onAnimationEnd(animation);
                 }
 
                 @Override
@@ -740,6 +777,13 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
     }
 
+    Runnable mHideLandscapeOptBarRunnable = new Runnable() {
+        @Override
+        public void run() {
+            hideLandscapeOptBar();
+        }
+    };
+
     /**
      * 每次bar展现出来后5秒后就尝试取
      */
@@ -748,65 +792,24 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             return;
         }
 
-        if (mHideLandscapeOptBarSubscription != null
-                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
-            mHideLandscapeOptBarSubscription.unsubscribe();
-        }
-
-        mHideLandscapeOptBarSubscription = Observable
-                .timer(5, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(((RxActivity) getContext()).<Long>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        hideLandscapeOptBar();
-                    }
-                });
+        mUiHanlder.removeCallbacks(mHideLandscapeOptBarRunnable);
+        mUiHanlder.postDelayed(mHideLandscapeOptBarRunnable,5000);
     }
+
+    Runnable mHidePortraitOptBarRunnable = new Runnable() {
+        @Override
+        public void run() {
+            hidePortraitOptBar();
+        }
+    };
 
     private void tryToHidePortraitOptBar() {
         if (mIsLandscape) {
             return;
         }
 
-        if (mHidePortraitOptBarSubscription != null
-                && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
-            mHidePortraitOptBarSubscription.unsubscribe();
-        }
-
-        mHidePortraitOptBarSubscription = Observable
-                .timer(5, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(((RxActivity) getContext()).<Long>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        hidePortraitOptBar();
-                    }
-                });
+        mUiHanlder.removeCallbacks(mHidePortraitOptBarRunnable);
+        mUiHanlder.postDelayed(mHidePortraitOptBarRunnable,5000);
     }
 
     private void showLandscapeOptBar() {
@@ -852,17 +855,22 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
         }
 
         if (mShowPortraitOptBarAnimatorSet == null) {
-            ObjectAnimator portraitBackBtnShowAnimator = ObjectAnimator.ofFloat(mPortraitBackBtn
+            ObjectAnimator portraitBackBtnShowAnimator = ObjectAnimator.ofFloat(mPortraitTitleContainer
                     , View.TRANSLATION_Y
-                    , mPortraitBackBtn.getTranslationY()
-                    , mPortraitBackBtn.getTranslationY() + mPortraitBackBtn.getBottom());
+                    , mPortraitTitleContainer.getTranslationY()
+                    , mPortraitTitleContainer.getTranslationY() + mPortraitTitleContainer.getBottom());
+
+            ObjectAnimator portraitVoiceBtnShowAnimator = ObjectAnimator.ofFloat(mPortraitVoiceBtn
+                    , View.TRANSLATION_Y
+                    , mPortraitVoiceBtn.getBottom()
+                    , mPortraitVoiceBtn.getBottom() - mPortraitVoiceBtn.getTranslationY());
 
             ObjectAnimator portraitLinUpButtonsShowAnimator = ObjectAnimator.ofFloat(mPortraitLinUpButtons
                     , View.TRANSLATION_X
                     , mPortraitLinUpButtons.getTranslationX() - (DisplayUtils.getScreenWidth() - mPortraitLinUpButtons.getLeft()));
 
             mShowPortraitOptBarAnimatorSet = new AnimatorSet();
-            mShowPortraitOptBarAnimatorSet.playTogether(portraitBackBtnShowAnimator, portraitLinUpButtonsShowAnimator);
+            mShowPortraitOptBarAnimatorSet.playTogether(portraitBackBtnShowAnimator, portraitLinUpButtonsShowAnimator, portraitVoiceBtnShowAnimator);
             mShowPortraitOptBarAnimatorSet.setDuration(ANIMATION_DURATION);
             mShowPortraitOptBarAnimatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
@@ -905,14 +913,14 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     }
 
     private void tryUnSubscribe() {
-        if (mHideLandscapeOptBarSubscription != null
-                && !mHideLandscapeOptBarSubscription.isUnsubscribed()) {
-            mHideLandscapeOptBarSubscription.unsubscribe();
-        }
+        mUiHanlder.removeCallbacks(mHidePortraitOptBarRunnable);
+        mUiHanlder.removeCallbacks(mHideLandscapeOptBarRunnable);
+    }
 
-        if (mHidePortraitOptBarSubscription != null && !mHidePortraitOptBarSubscription.isUnsubscribed()) {
-            mHidePortraitOptBarSubscription.unsubscribe();
-        }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mUiHanlder.removeCallbacksAndMessages(null);
     }
 
     private void resolveKeyBoardEvent(boolean isHide) {
@@ -926,6 +934,34 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             tryUnSubscribe();
         }
     }
+
+    public void showGameInfoPopView(GameInfoModel gameInfoModel, int apkStatus, boolean isShow, boolean isDownloadBygc) {
+        if(mGameInfoPopViewStub == null) {
+            return;
+        }
+        if (isShow) {
+            if (mGameInfoPopView == null) {
+                mGameInfoPopView = (GameInfoPopView) mGameInfoPopViewStub.inflate().findViewById(R.id.game_info_pop_container);
+                mGameInfoPopView.setOnInstallOrLaunchListener(new GameInfoPopView.OnInstallOrLaunchListener() {
+                    @Override
+                    public void onInstallorLaunch() {
+                        // 点击游戏挂件安装游戏　此时要暂停视频
+                    }
+                });
+            } else {
+                mGameInfoPopView.showOrHidePopView(VISIBLE);
+            }
+
+            // 绑定数据
+            mGameInfoPopView.setGameInfoModel(gameInfoModel, apkStatus, isDownloadBygc);
+        } else {
+            if (mGameInfoPopView != null) {
+                mGameInfoPopView.showOrHidePopView(GONE);
+            }
+        }
+
+    }
+
 
     @Override
     public IView getViewProxy() {
@@ -964,41 +1000,6 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
-            public void updateInstallStatus(int status, int progress, int reason) {
-                MyLog.d(TAG, " status " + status + " progress " + progress);
-                if (!mIsLandscape) {
-                    // 竖屏不加载
-                    return;
-                }
-                switch (status) {
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD:
-                        if (reason == DownloadManager.PAUSED_WAITING_FOR_NETWORK) {
-                            ToastUtils.showToast("等待网络");
-                        }
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:
-                        mLandscapeDownloadBtn.setTag(CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH);
-                        break;
-                    default:
-                        break;
-
-                }
-            }
-
-            @Override
             public void keyBoardEvent(boolean isHide) {
                 resolveKeyBoardEvent(isHide);
             }
@@ -1010,12 +1011,22 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
-            public void setDownLoadBtnVisibility(boolean needShow) {
-                mNeedHideDownLoadBtn = !needShow;
-                if(mIsLandscape
-                        && mLandscapeDownloadBtn != null) {
-                    mLandscapeDownloadBtn.setVisibility(needShow ? VISIBLE : GONE);
+            public void updateMuteEvent(boolean isMute) {
+                mIsVideoMute = isMute;
+                updatePlayBtnUi();
+            }
+
+            @Override
+            public void updateGamePopView(GameInfoModel model, int apkStatus, boolean isShow, boolean isDownloadBygc) {
+                showGameInfoPopView(model, apkStatus, isShow, isDownloadBygc);
+            }
+
+            @Override
+            public void updateGameInfo(RoomBaseDataModel data) {
+                if (data == null) {
+                    return;
                 }
+                GameDownloadOptControl.tryQueryGameDownStatus(data.getGameInfoModel());
             }
 
             @Override
@@ -1030,6 +1041,19 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
     public void setPresenter(IPresenter iPresenter) {
         this.mPresenter = iPresenter;
         initInputPresenter();
+        if(mPresenter != null) {
+            if(mPortraitWatchGameWaterMarkView != null) {
+                mPortraitWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+            }
+
+            if(mLandscapeWatchGameWaterMarkView != null) {
+                mLandscapeWatchGameWaterMarkView.setRoomData(mPresenter.getController().getRoomBaseDataModel());
+            }
+
+            if(mLandscapeLiveTitle != null) {
+                mLandscapeLiveTitle.setText(mPresenter.getController().getRoomBaseDataModel().getLiveTitle());
+            }
+        }
     }
 
     public interface IPresenter {
@@ -1077,7 +1101,25 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
 
         void optBarrageControl(boolean needHide);
 
-        void clickDownLoad(int flag);
+        void videoMute(boolean isMute);
+
+        /**
+         * 同步游戏信息
+         */
+        void syncGameInfo();
+
+
+        void tryUpdateDownloadStatus();
+
+        /**
+         * 横屏下打开更多直播
+         */
+        void openFullScreenMoreLiveView();
+
+        /**
+         * 空白区域点击
+         */
+        void videoTouchViewClick();
     }
 
     public interface IView extends IViewProxy {
@@ -1104,19 +1146,17 @@ public class WatchGameZTopView extends RelativeLayout implements View.OnClickLis
          */
         void stopView();
 
-        /**
-         * 下载回调
-         *
-         * @param status   下载的状态
-         * @param progress 下载的进度条
-         * @param reason
-         */
-        void updateInstallStatus(int status, int progress, int reason);
-
         void keyBoardEvent(boolean isHide);
 
         void updatePauseEvent(boolean isPause);
 
-        void setDownLoadBtnVisibility(boolean needShow);
+        void updateMuteEvent(boolean isMute);
+
+        /**
+         * 更新游戏挂件(下载安装)
+         */
+        void updateGamePopView(GameInfoModel model, int apkStatus, boolean isShow, boolean isDownloadBygc);
+
+        void updateGameInfo(RoomBaseDataModel data);
     }
 }

@@ -50,7 +50,7 @@ public class WatchWaterMarkView extends RelativeLayout{
 
     protected BaseImageView mIvHuYaLogo;
 
-    private boolean mIsLandscape = false;
+    protected boolean mIsLandscape = false;
     private boolean mIsHuya = false;
 
     public WatchWaterMarkView(Context context) {

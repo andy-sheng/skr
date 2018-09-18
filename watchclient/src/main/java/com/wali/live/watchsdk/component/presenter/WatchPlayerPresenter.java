@@ -173,6 +173,12 @@ public class WatchPlayerPresenter extends BasePlayerPresenter<TextureView, PullS
         }
     }
 
+    public void mutePlay(boolean mute) {
+        if (mStreamerPresenter.isStarted()) {
+            mStreamerPresenter.mute(mute);
+        }
+    }
+
     public boolean isPause() {
         if (mStreamerPresenter != null && mStreamerPresenter.isPaused()) {
             return true;

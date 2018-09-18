@@ -50,6 +50,9 @@ public class WatchGameTabPresenter extends ComponentPresenter<WatchGameTabView.I
     @Override
     public void stopPresenter() {
         super.stopPresenter();
+        if (mView != null) {
+            mView.stopView();
+        }
         unregisterAllAction();
         EventBus.getDefault().unregister(this);
     }

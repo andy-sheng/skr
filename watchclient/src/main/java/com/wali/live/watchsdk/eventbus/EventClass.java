@@ -2,7 +2,7 @@ package com.wali.live.watchsdk.eventbus;
 
 import android.support.annotation.NonNull;
 
-import com.mi.live.data.gift.model.GiftCard;
+import com.mi.live.data.gamecenter.model.GameInfoModel;
 import com.mi.live.data.push.model.BarrageMsg;
 import com.wali.live.watchsdk.fans.adapter.FansMemberAdapter;
 
@@ -262,7 +262,28 @@ public class EventClass {
     }
 
     public static class UpdateGameInfoStatus {
+        public GameInfoModel mGameInfoModel;
 
+        public UpdateGameInfoStatus(GameInfoModel gameInfoModel) {
+            mGameInfoModel = gameInfoModel;
+        }
+
+    }
+
+    public static class WatchGameControllChangeEvent {
+        public int type;
+        public float percent;
+        public boolean isShow;
+
+        public static final int WATCH_GAME_CONTROLL_DEFAULT = 0;
+        public static final int WATCH_GAME_CONTROLL_VOLUME = 1;
+        public static final int WATCH_GAME_CONTROLL_BRIGHTNESS = 2;
+
+        public WatchGameControllChangeEvent(int type, float percent, boolean isShow) {
+            this.type = type;
+            this.percent = percent;
+            this.isShow = isShow;
+        }
     }
 
 }

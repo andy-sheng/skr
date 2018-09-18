@@ -70,15 +70,22 @@ public class WatchGameTabView extends RelativeLayout implements
             }
         });
 
-        mTitleAndViewMap.put("观众", new LazyNewView() {
+//        mTitleAndViewMap.put("观众", new LazyNewView() {
+//            @Override
+//            public View newView() {
+//                return new WatchGameViewerTabView(getContext(), mWatchComponentController);
+//            }
+//        });
+
+        mTitleAndViewMap.put("更多直播", new LazyNewView() {
             @Override
             public View newView() {
-                return new WatchGameViewerTabView(getContext(), mWatchComponentController);
+                return new WatchGameMoreTabView(getContext(), mWatchComponentController);
             }
         });
         mTabTitleList.add("聊天");
-        mTabTitleList.add("观众");
-
+//        mTabTitleList.add("观众");
+        mTabTitleList.add("更多直播");
 
         mWatchGameTab = (SlidingTabLayout) this.findViewById(R.id.watch_game_tab);
 
@@ -172,6 +179,17 @@ public class WatchGameTabView extends RelativeLayout implements
 
     }
 
+    private void stopAllTabView() {
+        if (mTitleAndViewMap != null) {
+            for (LazyNewView lazyNewView : mTitleAndViewMap.values()) {
+                if (lazyNewView != null && lazyNewView.isViewInited()
+                        && lazyNewView.getView() instanceof GameTabChildView) {
+                    ((GameTabChildView) lazyNewView.getView()).stopView();
+                }
+            }
+        }
+    }
+
     @Override
     public WatchGameTabView.IView getViewProxy() {
         return new IView() {
@@ -215,6 +233,11 @@ public class WatchGameTabView extends RelativeLayout implements
             }
 
             @Override
+            public void stopView() {
+                stopAllTabView();
+            }
+
+            @Override
             public <T extends View> T getRealView() {
                 return (T) WatchGameTabView.this;
             }
@@ -236,11 +259,15 @@ public class WatchGameTabView extends RelativeLayout implements
         void updateGameHomePage(RoomBaseDataModel source);
 
         void switchMsgTab();
+
+        void stopView();
     }
 
     public interface GameTabChildView {
         void select();
 
         void unselect();
+
+        void stopView();
     }
 }

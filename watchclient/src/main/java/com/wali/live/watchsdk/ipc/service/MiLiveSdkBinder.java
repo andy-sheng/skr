@@ -41,6 +41,7 @@ import com.wali.live.watchsdk.login.UploadService;
 import com.wali.live.watchsdk.request.VerifyRequest;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
+import com.wali.live.watchsdk.watch.model.WatchGameInfoConfig;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -49,6 +50,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -56,6 +59,9 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.wali.live.watchsdk.login.UploadService.UploadInfo.FIRST_LOGIN_YES;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_DOWNLOAD_COMPLETED;
+import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_DOWNLOAD;
+import static com.wali.live.watchsdk.watch.download.GameDownloadOptControl.TYPE_GAME_DOWNLOAD_COMPELED;
 
 /**
  * Created by chengsimin on 2016/12/26.
@@ -367,7 +373,6 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
             @Override
             public void postSuccess() {
-                MyLog.d(TAG, "updateGameDownloadstatus postSuccess");
                 CustomDownloadManager.ApkStatusEvent apkStatusEvent = new CustomDownloadManager.ApkStatusEvent(type);
                 apkStatusEvent.progress = progress;
                 apkStatusEvent.gameId = gameId;
@@ -375,6 +380,10 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 apkStatusEvent.packageName = gamePackageName;
                 apkStatusEvent.isByQuery = isByQuery;
                 EventBus.getDefault().post(apkStatusEvent);
+
+                if(!isByQuery && type == TYPE_GAME_DOWNLOAD_COMPELED) {
+                    completeDownloadStatistic(gameId, gamePackageName);
+                }
             }
 
             @Override
@@ -405,6 +414,32 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
             public void processFailure() {
             }
         });
+    }
+
+    /**
+     * 这样子打点有部分下载完成的点没办法打上
+     * 应为WatchGameInfoConfig.sGameInfoMap中可能根本没有infoItem
+     * 但游戏中心那边有可能存在某次杀死app前直播这边发起没下在完成的点
+     * 最好的做法是游戏中心那边打这个点
+     * @param gameId
+     */
+    private void completeDownloadStatistic(long gameId, String packageName) {
+        Map<String, WatchGameInfoConfig.InfoItem> sGameInfoMap = WatchGameInfoConfig.sGameInfoMap;
+
+        if(!sGameInfoMap.isEmpty()) {
+            for(String key : sGameInfoMap.keySet()) {
+                WatchGameInfoConfig.InfoItem item = sGameInfoMap.get(key);
+                if(item != null
+                        && item.gameId == gameId
+                        && item.packageName.equals(packageName)) {
+                    MyLog.d(TAG, "completeDownloadStatistic gameId:" + gameId + ", packageName:" + packageName);
+                    MilinkStatistics.getInstance().statisticGameWatchDownload(GAME_WATCH_TYPE_DOWNLOAD,
+                            GAME_WATCH_BIZTYPE_DOWNLOAD_COMPLETED, item.anchorId, item.channelId, item.packageName);
+                    break;
+                }
+
+            }
+        }
     }
 
     @Override

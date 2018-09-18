@@ -25,6 +25,7 @@ import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
     protected LinearLayoutManager mLayoutManager;
     protected ChannelRecyclerAdapter mRecyclerAdapter;
 
-    private IChannelPresenter mPresenter;
+    private ChannelPresenter mPresenter;
     private long mChannelId = 0;
     private String mTitle;
 
@@ -97,7 +98,7 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerAdapter = new ChannelRecyclerAdapter(this, mChannelId);
+        mRecyclerAdapter = new ChannelRecyclerAdapter(this);
         mRecyclerView.setAdapter(mRecyclerAdapter);
     }
 
@@ -111,8 +112,13 @@ public class ChannelSdkActivity extends BaseSdkActivity implements IChannelView 
     }
 
     @Override
-    public void updateView(List<? extends BaseViewModel> models) {
-        mRecyclerAdapter.setData(models);
+    public void updateView(List<? extends BaseViewModel> models, long channelId) {
+        mRecyclerAdapter.setData(models, mChannelId);
+    }
+
+    @Override
+    public void onDataLoadFail() {
+        updateView(new ArrayList<BaseViewModel>(), -1);
     }
 
     @Override

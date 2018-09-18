@@ -447,6 +447,11 @@ public class WatchGameHomeTabView extends RelativeLayout implements
         }
     }
 
+    @Override
+    public void stopView() {
+
+    }
+
     public interface IView extends IViewProxy {
         void updateUi(GameInfoModel gameInfoModel);
 

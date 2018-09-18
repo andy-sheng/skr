@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,12 +48,16 @@ public class GameInfoPopView extends RelativeLayout {
     private GameInfoModel mGameInfoModel;
     private int mApkStatus = -1;
 
+    private RelativeLayout mGameArea;
     private BaseImageView mGameIconIv;
     private View mGameIconShadow;
     private ProgressBar mDownloadProgressBar;
     private TextView mBottomText;
 
+    private ImageView mCloseView;
+
     private boolean mIsDownloadByGc;
+    private boolean mIsCloseByBtn = false;
 
     private OnInstallOrLaunchListener mOnInstallOrLaunchListener;
 
@@ -80,12 +85,14 @@ public class GameInfoPopView extends RelativeLayout {
     private void init(Context context) {
         inflate(context, R.layout.game_info_pop_layout, this);
 
+        mGameArea = (RelativeLayout) findViewById(R.id.game_down_info);
         mGameIconIv = (BaseImageView) findViewById(R.id.game_icon_iv);
         mGameIconShadow = findViewById(R.id.game_icon_shadow);
         mDownloadProgressBar = (ProgressBar) findViewById(R.id.game_download_progress);
         mBottomText = (TextView) findViewById(R.id.bottom_text);
+        mCloseView = (ImageView) findViewById(R.id.close);
 
-        setOnClickListener(new OnClickListener() {
+        mGameArea.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mGameInfoModel == null || TextUtils.isEmpty(mGameInfoModel.getPackageUrl())) {
@@ -103,7 +110,7 @@ public class GameInfoPopView extends RelativeLayout {
                     // 正在下载中的包再次点击不作暂停处理
                 } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
                     GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_CONTINUE_DOWNLOAD, mGameInfoModel);
-                }  else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
+                } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
                     if (mOnInstallOrLaunchListener != null) {
                         mOnInstallOrLaunchListener.onInstallorLaunch();
                     }
@@ -115,6 +122,14 @@ public class GameInfoPopView extends RelativeLayout {
                     }
                     GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_INSTALL_FINISH, mGameInfoModel);
                 }
+            }
+        });
+
+        mCloseView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIsCloseByBtn = true;
+                showOrHidePopView(GONE);
             }
         });
     }
@@ -149,19 +164,6 @@ public class GameInfoPopView extends RelativeLayout {
         }
     }
 
-    private void loadGameIcon(String iconUrl) {
-        if (TextUtils.isEmpty(iconUrl)) {
-            return;
-        }
-
-        BaseImage baseImage = new HttpImage(GameInfoModel.getUrlWithPrefix(iconUrl, 480));
-        baseImage.setWidth(getResources().getDimensionPixelSize(R.dimen.view_dimen_130));
-        baseImage.setHeight(getResources().getDimensionPixelSize(R.dimen.view_dimen_130));
-        baseImage.setCornerRadius(getResources().getDimensionPixelSize(R.dimen.view_dimen_20));
-
-        FrescoWorker.loadImage(mGameIconIv, baseImage);
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDownloadEvent(CustomDownloadManager.ApkStatusEvent event) {
         if (mGameInfoModel == null || event == null) {
@@ -169,10 +171,11 @@ public class GameInfoPopView extends RelativeLayout {
         }
         boolean apkEquals = false;
 
-        if (mIsDownloadByGc) {
+        if (event.isByGame || mIsDownloadByGc) {
             if (mGameInfoModel.getGameId() == event.gameId
                     && mGameInfoModel.getPackageName().equals(event.packageName)) {
                 apkEquals = true;
+                mIsDownloadByGc = true;
             }
         } else {
             if (!TextUtils.isEmpty(event.downloadKey) && !TextUtils.isEmpty(mGameInfoModel.getPackageUrl())) {
@@ -199,7 +202,6 @@ public class GameInfoPopView extends RelativeLayout {
         }
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {
         if (event.mGameInfoModel == null) {
@@ -219,14 +221,35 @@ public class GameInfoPopView extends RelativeLayout {
                         mOnInstallOrLaunchListener.onInstallorLaunch();
                     }
                 }
-            } else if(event.type == STATTUS_BEGIN_DOWNLOAD
+            } else if (event.type == STATTUS_BEGIN_DOWNLOAD
                     || event.type == STATTUS_CONTINUE_DOWNLOAD) {
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mGameInfoModel.getPackageUrl(), mGameInfoModel.getGameName());
                 CustomDownloadManager.getInstance().beginDownload(item, getContext());
-            } else if(event.type == STATTUS_PAUSE_DOWNLOAD) {
+            } else if (event.type == STATTUS_PAUSE_DOWNLOAD) {
                 CustomDownloadManager.getInstance().pauseDownload(mGameInfoModel.getPackageUrl());
             }
         }
+    }
+
+    public void showOrHidePopView(int visible) {
+        if (visible == VISIBLE && mIsCloseByBtn) {
+            // 退出按键不再显示
+            return;
+        }
+        setVisibility(visible);
+    }
+
+    private void loadGameIcon(String iconUrl) {
+        if (TextUtils.isEmpty(iconUrl)) {
+            return;
+        }
+
+        BaseImage baseImage = new HttpImage(GameInfoModel.getUrlWithPrefix(iconUrl, 480));
+        baseImage.setWidth(getResources().getDimensionPixelSize(R.dimen.view_dimen_130));
+        baseImage.setHeight(getResources().getDimensionPixelSize(R.dimen.view_dimen_130));
+        baseImage.setCornerRadius(getResources().getDimensionPixelSize(R.dimen.view_dimen_20));
+
+        FrescoWorker.loadImage(mGameIconIv, baseImage);
     }
 
     private void handleStatus(int apkStatus, int progress) {
@@ -238,19 +261,20 @@ public class GameInfoPopView extends RelativeLayout {
         }
 
         if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
-            setVisibility(VISIBLE);
+            showOrHidePopView(VISIBLE);
 
             mGameIconShadow.setVisibility(VISIBLE);
             mDownloadProgressBar.setVisibility(VISIBLE);
             mDownloadProgressBar.setProgress(progress);
             mBottomText.setText(R.string.game_info_pop_download);
 
-        } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS) {
+        } else if (mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH
+                || mApkStatus == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS) {
             // 已经安装了该游戏 隐藏这个浮窗
-            setVisibility(GONE);
+            showOrHidePopView(GONE);
 
         } else {
-            setVisibility(VISIBLE);
+            showOrHidePopView(VISIBLE);
 
             mGameIconShadow.setVisibility(GONE);
             mDownloadProgressBar.setVisibility(GONE);
@@ -297,7 +321,6 @@ public class GameInfoPopView extends RelativeLayout {
             }
         }
     }
-
 
     private void clickDownloadStatistic() {
         String url = mGameInfoModel.getPackageUrl();

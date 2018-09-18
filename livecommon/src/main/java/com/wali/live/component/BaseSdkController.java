@@ -150,8 +150,10 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_PLAYER_SHOW_LOADING = MSG_PLAYER_FIRST + 6;  // 显示 加载图标
     public static final int MSG_PLAYER_HIDE_LOADING = MSG_PLAYER_FIRST + 7;  // 隐藏 加载图标
     public static final int MSG_PLAYER_START = MSG_PLAYER_FIRST + 8;
-    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 9;
+    public static final int MSG_PLAYER_PAUSE = MSG_PLAYER_FIRST + 9; // 暂停
     public static final int MSG_PLAYER_RECONNECT = MSG_PLAYER_FIRST + 10;
+    public static final int MSG_PLAYER_SOUND_OFF = MSG_PLAYER_FIRST + 11; // 静音
+    public static final int MSG_PLAYER_SOUND_ON = MSG_PLAYER_FIRST + 12; // 开启声音
 
 
     // UI消息
@@ -179,6 +181,7 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_PAGE_DOWN = MSG_TOUCH_FIRST + 3;         // 下滑点击
     public static final int MSG_PAGE_UP = MSG_TOUCH_FIRST + 4;           // 上滑点击
     public static final int MSG_SWITCH_ROOM = MSG_TOUCH_FIRST + 5;       // 切换房间
+    public static final int MSG_VIDEO_TOUCH_VIEW = MSG_TOUCH_FIRST + 6; // 游戏直播间视频以上空白区域点击
 
     // 输入框相关消息
     private static final int MSG_INPUT_FIRST = 22000;
@@ -218,6 +221,7 @@ public abstract class BaseSdkController extends ComponentController {
     public static final int MSG_HIDE_BIG_TURN_TABLE_BTN = MSG_POPUP_FIRST + 21;
     public static final int MSG_SHOW_BIG_TURN_TABLE_PANEL = MSG_POPUP_FIRST + 22;
     public static final int MSG_SHOW_BIG_TURN_TABLE_TIPS = MSG_POPUP_FIRST + 23;
+    public static final int MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW = MSG_POPUP_FIRST + 24; // 游戏直播间横屏弹出更多直播
 
 
     //连麦/PK相关消息

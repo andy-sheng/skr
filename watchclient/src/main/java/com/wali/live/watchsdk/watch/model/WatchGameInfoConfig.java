@@ -13,12 +13,13 @@ import java.util.Map;
 public class WatchGameInfoConfig {
     public static Map<String, InfoItem> sGameInfoMap = new HashMap<>(); // key为包下载地址
 
-    public static void update(String downloadUrl, long anchorId, long channelId, String packageName) {
+    public static void update(String downloadUrl, long anchorId, long channelId, String packageName, long gameId) {
         if (!TextUtils.isEmpty(downloadUrl)) {
             InfoItem infoItem = new InfoItem();
             infoItem.anchorId = anchorId;
             infoItem.channelId = channelId;
             infoItem.packageName = packageName;
+            infoItem.gameId = gameId;
             sGameInfoMap.put(downloadUrl, infoItem);
         }
     }
@@ -27,6 +28,7 @@ public class WatchGameInfoConfig {
         public long anchorId;
         public long channelId;
         public String packageName;
+        public long gameId;
     }
 
 }

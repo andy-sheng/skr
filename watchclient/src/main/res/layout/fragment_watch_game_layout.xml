@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dimen_608"
         android:layout_alignParentTop="true">
+
         <TextureView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
@@ -18,20 +19,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameWaterMarkView
-            android:id="@+id/watch_mark_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/view_dimen_43"
-            android:layout_marginLeft="@dimen/view_dimen_30"/>
+        <!--<com.wali.live.watchsdk.watch.view.watchgameview.WatchGameWaterMarkView-->
+            <!--android:id="@+id/watch_mark_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_marginBottom="@dimen/view_dimen_43"-->
+            <!--android:layout_marginLeft="@dimen/view_dimen_30" />-->
 
         <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView
             android:id="@+id/watch_ztop_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView>
+            android:layout_height="match_parent"></com.wali.live.watchsdk.watch.view.watchgameview.WatchGameZTopView>
 
     </RelativeLayout>
 
@@ -41,15 +41,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/video_show_layout"
-        android:layout_marginBottom="@dimen/view_dimen_150">
-    </com.wali.live.watchsdk.watch.view.watchgameview.WatchGameTabView>
+        android:layout_marginBottom="@dimen/view_dimen_150"></com.wali.live.watchsdk.watch.view.watchgameview.WatchGameTabView>
 
     <!--竖屏时底部的编辑框-->
     <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameBottomEditView
         android:id="@+id/watch_edit_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
     <com.wali.live.watchsdk.component.view.GameBarrageView
         android:id="@+id/game_barrage_view"
@@ -58,7 +57,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/margin_168"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!--商城-->
     <ViewStub
@@ -73,9 +72,9 @@
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_dimen_450"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_dimen_600"/>
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/view_dimen_600" />
 
     <!--房间特效礼物-->
     <com.wali.live.common.gift.view.GiftRoomEffectView
@@ -107,4 +106,10 @@
         android:visibility="gone" />
 
     <!--飘屏弹幕、礼物、进场特性等后续加上-->
+
+    <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameControllerView
+        android:id="@+id/controller_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"></com.wali.live.watchsdk.watch.view.watchgameview.WatchGameControllerView>
 </RelativeLayout>

@@ -161,7 +161,7 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
 
-            mRecyclerAdapter = new ChannelRecyclerAdapter(this, mParam.getChannelId());
+            mRecyclerAdapter = new ChannelRecyclerAdapter(this);
             mRecyclerView.setAdapter(mRecyclerAdapter);
 
             if (!EventBus.getDefault().isRegistered(this)) {
@@ -192,7 +192,7 @@ public class SubChannelActivity extends BaseSdkActivity implements View.OnClickL
 
     @Override
     public void updateView(List<? extends BaseViewModel> models) {
-        mRecyclerAdapter.setData(models);
+        mRecyclerAdapter.setData(models, mParam.getChannelId());
         mRefreshLayout.setRefreshing(false);
     }
 

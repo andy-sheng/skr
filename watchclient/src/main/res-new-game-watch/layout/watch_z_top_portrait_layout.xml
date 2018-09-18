@@ -8,15 +8,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <ImageView
-        android:id="@+id/portrait_back_btn"
-        android:layout_width="@dimen/view_dimen_70"
-        android:layout_height="@dimen/view_dimen_70"
-        android:src="@drawable/live_video_icon_back"
+    <RelativeLayout
+        android:id="@+id/portrait_title_container"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_dimen_144"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="@dimen/view_dimen_36"
-        android:layout_marginLeft="@dimen/view_dimen_30"/>
+        android:layout_alignParentLeft="true">
+
+        <ImageView
+            android:id="@+id/portrait_back_btn"
+            android:layout_width="@dimen/view_dimen_70"
+            android:layout_height="@dimen/view_dimen_70"
+            android:src="@drawable/live_video_icon_back"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_30"/>
+
+        <com.wali.live.watchsdk.watch.view.watchgameview.WatchGameWaterMarkView
+            android:id="@+id/portrait_watch_mark_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/portrait_back_btn"
+            android:layout_marginLeft="@dimen/view_dimen_20"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
 
     <com.wali.live.watchsdk.watch.view.watchgameview.PortraitLineUpButtons
         android:id="@+id/portrait_line_up_buttons"
@@ -26,5 +42,15 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/view_dimen_42"
         android:layout_marginRight="@dimen/view_dimen_30"/>
+
+    <ImageView
+        android:id="@+id/protrait_voice_btn"
+        android:layout_width="@dimen/view_dimen_87"
+        android:layout_height="@dimen/view_dimen_87"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_dimen_32"
+        android:layout_marginLeft="@dimen/view_dimen_32"
+        android:background="@drawable/live_function_icon_voice"/>
 
 </merge>

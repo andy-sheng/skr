@@ -6,6 +6,7 @@ import com.base.activity.BaseActivity;
 import com.base.event.KeyboardEvent;
 import com.base.log.MyLog;
 import com.base.utils.MD5;
+import com.base.utils.system.PackageUtils;
 import com.base.utils.toast.ToastUtils;
 import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.api.feedback.FeedBackApi;
@@ -25,6 +26,7 @@ import com.wali.live.proto.RelationProto;
 import com.wali.live.watchsdk.R;
 import com.wali.live.watchsdk.auth.AccountAuthManager;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.feedback.ReportFragment;
 import com.wali.live.watchsdk.statistics.MilinkStatistics;
 import com.wali.live.watchsdk.watch.download.CustomDownloadManager;
@@ -53,8 +55,13 @@ import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_LANDSCAPE;
 import static com.wali.live.component.BaseSdkController.MSG_ON_ORIENT_PORTRAIT;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_PAUSE;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_RECONNECT;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_OFF;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_ON;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_START;
+import static com.wali.live.component.BaseSdkController.MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW;
 import static com.wali.live.component.BaseSdkController.MSG_SHOW_GAME_BARRAGE;
+import static com.wali.live.component.BaseSdkController.MSG_VIDEO_TOUCH_VIEW;
+import static com.wali.live.watchsdk.eventbus.EventClass.WatchGameControllChangeEvent.WATCH_GAME_CONTROLL_VOLUME;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_LAND_DOWNLOAD_CLICK;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
 import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_BEGIN_DOWNLOAD;
@@ -80,6 +87,8 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     private boolean mIsDownloadByGc;
 
+    private CustomDownloadManager.ApkStatusEvent mLastStatusEvent;//存储最后一个有用的状态
+
     public WatchGameZTopPresenter(IEventController controller) {
         super(controller);
         if (controller != null && controller instanceof WatchComponentController) {
@@ -87,27 +96,6 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         }
     }
 
-    private void checkDownLoadBtnStatus() {
-        if (mView == null) {
-            return;
-        }
-
-        GameInfoModel gameInfoModel = mMyRoomData.getGameInfoModel();
-        if (gameInfoModel == null) {
-            MyLog.w(TAG, "GameInfoModel is null");
-            mView.setDownLoadBtnVisibility(false);
-            return;
-        }
-
-        String packageName = gameInfoModel.getPackageName();
-        if (TextUtils.isEmpty(packageName)) {
-            // 无效的包名 隐藏
-            mView.setDownLoadBtnVisibility(false);
-            return;
-        } else {
-            mView.setDownLoadBtnVisibility(true);
-        }
-    }
 
     @Override
     protected String getTAG() {
@@ -122,12 +110,12 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         registerAction(MSG_ON_BACK_PRESSED);
         registerAction(MSG_PLAYER_PAUSE);
         registerAction(MSG_PLAYER_START);
+        registerAction(MSG_PLAYER_SOUND_OFF);
+        registerAction(MSG_PLAYER_SOUND_ON);
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
-        checkDownLoadBtnStatus();
     }
 
     @Override
@@ -170,6 +158,12 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 break;
             case MSG_PLAYER_START:
                 mView.updatePauseEvent(false);
+                break;
+            case MSG_PLAYER_SOUND_OFF:
+                mView.updateMuteEvent(true);
+                break;
+            case MSG_PLAYER_SOUND_ON:
+                mView.updateMuteEvent(false);
                 break;
         }
         return false;
@@ -316,25 +310,54 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     }
 
     @Override
-    public void clickDownLoad(int flag) {
-        if (mMyRoomData.getGameInfoModel() != null) {
-            if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD) {
-                clickDownloadStatistic(mMyRoomData.getGameInfoModel().getPackageUrl());
-                GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_BEGIN_DOWNLOAD, mMyRoomData.getGameInfoModel());
-            } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING) {
-                ToastUtils.showToast("暂停下载");
-                GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_PAUSE_DOWNLOAD, mMyRoomData.getGameInfoModel());
-            } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD) {
-                ToastUtils.showToast("继续下载");
-                GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_CONTINUE_DOWNLOAD, mMyRoomData.getGameInfoModel());
-            } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED) {
-                GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_DOWNLOAD_COMPELED, mMyRoomData.getGameInfoModel());
-            } else if (flag == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
-                GameDownloadOptControl.tryDownloadGame(GameDownloadOptControl.TYPE_GAME_INSTALL_FINISH, mMyRoomData.getGameInfoModel());
-            }
+    public void videoMute(boolean isMute) {
+        MyLog.d(TAG, "videoMute isMute = " + isMute);
+        if (isMute) {
+            postEvent(MSG_PLAYER_SOUND_OFF);
+        } else {
+            postEvent(MSG_PLAYER_SOUND_ON);
         }
     }
 
+    @Override
+    public void syncGameInfo() {
+        GameDownloadOptControl.tryQueryGameDownStatus(mMyRoomData.getGameInfoModel());
+    }
+
+    @Override
+    public void openFullScreenMoreLiveView() {
+        postEvent(MSG_SHOW_FULLSCREEN_MORE_LIVE_VIEW);
+    }
+
+    @Override
+    public void videoTouchViewClick() {
+        postEvent(MSG_VIDEO_TOUCH_VIEW);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.WatchGameControllChangeEvent event) {
+        if (event == null) {
+            return;
+        }
+        if (event.type == WATCH_GAME_CONTROLL_VOLUME && event.percent != 0) {
+            videoMute(false);
+        }
+    }
+
+    @Override
+    public void tryUpdateDownloadStatus() {
+        if(mLastStatusEvent != null
+                && mMyRoomData.getGameInfoModel() != null
+                && mLastStatusEvent.gameId == mMyRoomData.getGameInfoModel().getGameId()) {
+
+            if(mIsDownloadByGc) {
+                mLastStatusEvent.isByQuery = true;
+                onEventMainThread(mLastStatusEvent);
+            } else {
+                onEventMainThread(new EventClass.UpdateGameInfoStatus(mMyRoomData.getGameInfoModel()));
+            }
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {
@@ -351,11 +374,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 if (event.status == SUCCESS) {
                     postEvent(MSG_PLAYER_PAUSE);
                 }
-            } else if(event.type == STATTUS_BEGIN_DOWNLOAD
+            } else if (event.type == STATTUS_BEGIN_DOWNLOAD
                     || event.type == STATTUS_CONTINUE_DOWNLOAD) {
                 CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
                 CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
-            } else if(event.type == STATTUS_PAUSE_DOWNLOAD) {
+            } else if (event.type == STATTUS_PAUSE_DOWNLOAD) {
                 CustomDownloadManager.getInstance().pauseDownload(mMyRoomData.getGameInfoModel().getPackageUrl());
             }
         }
@@ -398,13 +421,14 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CustomDownloadManager.ApkStatusEvent event) {
-        if(event == null) {
+        if (event == null) {
             return;
         }
 
-        if(event.isByGame || mIsDownloadByGc) {
-            if(event.gameId == mMyRoomData.getGameInfoModel().getGameId()
+        if (event.isByGame || mIsDownloadByGc) {
+            if (event.gameId == mMyRoomData.getGameInfoModel().getGameId()
                     && event.packageName.equals(mMyRoomData.getGameInfoModel().getPackageName())) {
+                mLastStatusEvent = event;
                 mIsDownloadByGc = true;
                 switch (event.status) {
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOADING:
@@ -412,16 +436,8 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                     case CustomDownloadManager.ApkStatusEvent.STATUS_PAUSE_DOWNLOAD:
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED:
                     case CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_FAILED:
-                        mView.updateInstallStatus(event.status, event.progress, event.reason);
-                        break;
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH:
-                    case CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE:
-                        if (TextUtils.isEmpty(event.packageName)) {
-                            return;
-                        }
-                        if (mMyRoomData.getGameInfoModel() != null
-                                && event.packageName.equals(mMyRoomData.getGameInfoModel().getPackageName())) {
-                            checkDownLoadBtnStatus();
+                        if (event.isByQuery) {
+                            mView.updateGamePopView(mMyRoomData.getGameInfoModel(), event.status, true, true);
                         }
                         break;
                     case CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH_SUCEESS:
@@ -430,30 +446,11 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 }
             }
         } else {
-            mIsDownloadByGc = false;
-            String key = MD5.MD5_32(mMyRoomData.getGameInfoModel().getPackageUrl());
-            if (!TextUtils.isEmpty(event.downloadKey)) {
-                if (event.downloadKey.equals(key)) {
-                    mView.updateInstallStatus(event.status, event.progress, event.reason);
-                }
-            } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH) {
-                // 安装完成
-                if (TextUtils.isEmpty(event.packageName)) {
-                    return;
-                }
-                if (mMyRoomData.getGameInfoModel() != null
-                        && event.packageName.equals(mMyRoomData.getGameInfoModel().getPackageName())) {
-                    checkDownLoadBtnStatus();
-                }
-            } else if (event.status == CustomDownloadManager.ApkStatusEvent.STATUS_REMOVE) {
-                // 卸载完成
-                if (TextUtils.isEmpty(event.packageName)) {
-                    return;
-                }
-                if (mMyRoomData.getGameInfoModel() != null
-                        && event.packageName.equals(mMyRoomData.getGameInfoModel().getPackageName())) {
-                    checkDownLoadBtnStatus();
-                }
+            if(mMyRoomData != null
+                    && mMyRoomData.getGameInfoModel() != null
+                    && mMyRoomData.getGameInfoModel().getGameId() == event.gameId) {
+                mIsDownloadByGc = false;
+                mLastStatusEvent = event;//
             }
         }
     }
@@ -479,11 +476,49 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
         switch (event.type) {
             case RoomDataChangeEvent.TYPE_CHANGE_GAME_INFO: {
                 mMyRoomData = event.source;
-                checkDownLoadBtnStatus();
+                if (mView != null) {
+                    mView.updateGameInfo(event.source);
+                }
             }
             break;
             default:
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.UpdateGameInfoStatus event) {
+        if (event == null
+                || mView == null) {
+            return;
+        }
+
+        if (mMyRoomData != null
+                && mMyRoomData.getGameInfoModel() != null && event.mGameInfoModel != null) {
+            GameInfoModel gameInfoModel = mMyRoomData.getGameInfoModel();
+            if (TextUtils.isEmpty(gameInfoModel.getPackageName()) || TextUtils.isEmpty(event.mGameInfoModel.getPackageName())) {
+                // 包名无效
+                return;
+            }
+
+            if (gameInfoModel.getGameId() == event.mGameInfoModel.getGameId()
+                    && gameInfoModel.getPackageName().equals(event.mGameInfoModel.getPackageName())) {
+                // 是当前需要处理的本地游戏
+                if (PackageUtils.isInstallPackage(gameInfoModel.getPackageName())) {
+                    // 已经安装 隐藏
+                    mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_LAUNCH, false, false);
+                } else {
+                    // 未安装 显示挂件
+                    String apkPath = CustomDownloadManager.getInstance().getDownloadPath(gameInfoModel.getPackageUrl());
+                    if (PackageUtils.isCompletedPackage(apkPath, gameInfoModel.getPackageName())) {
+                        // 存在包
+                        mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_DOWNLOAD_COMPELED, true, false);
+                    } else {
+                        // 下载不完全
+                        mView.updateGamePopView(gameInfoModel, CustomDownloadManager.ApkStatusEvent.STATUS_NO_DOWNLOAD, true, false);
+                    }
+                }
+            }
         }
     }
 
