@@ -27669,6 +27669,23 @@ public final class CommonChannelProto {
      * <code>optional .com.wali.live.proto.MicBrief mic = 16;</code>
      */
     com.wali.live.proto.CommonChannelProto.MicBriefOrBuilder getMicOrBuilder();
+
+    /**
+     * <code>optional uint32 hotScore = 18;</code>
+     *
+     * <pre>
+     *热度值
+     * </pre>
+     */
+    boolean hasHotScore();
+    /**
+     * <code>optional uint32 hotScore = 18;</code>
+     *
+     * <pre>
+     *热度值
+     * </pre>
+     */
+    int getHotScore();
   }
   /**
    * Protobuf type {@code com.wali.live.proto.LiveInfo}
@@ -27832,6 +27849,11 @@ public final class CommonChannelProto {
                 mic_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00002000;
+              break;
+            }
+            case 144: {
+              bitField0_ |= 0x00004000;
+              hotScore_ = input.readUInt32();
               break;
             }
           }
@@ -28398,6 +28420,29 @@ public final class CommonChannelProto {
       return mic_;
     }
 
+    public static final int HOTSCORE_FIELD_NUMBER = 18;
+    private int hotScore_;
+    /**
+     * <code>optional uint32 hotScore = 18;</code>
+     *
+     * <pre>
+     *热度值
+     * </pre>
+     */
+    public boolean hasHotScore() {
+      return ((bitField0_ & 0x00004000) == 0x00004000);
+    }
+    /**
+     * <code>optional uint32 hotScore = 18;</code>
+     *
+     * <pre>
+     *热度值
+     * </pre>
+     */
+    public int getHotScore() {
+      return hotScore_;
+    }
+
     private void initFields() {
       liveId_ = "";
       user_ = com.wali.live.proto.CommonChannelProto.UserBrief.getDefaultInstance();
@@ -28413,6 +28458,7 @@ public final class CommonChannelProto {
       liveType_ = 0;
       pk_ = com.wali.live.proto.CommonChannelProto.PKBrief.getDefaultInstance();
       mic_ = com.wali.live.proto.CommonChannelProto.MicBrief.getDefaultInstance();
+      hotScore_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -28479,6 +28525,9 @@ public final class CommonChannelProto {
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         output.writeMessage(16, mic_);
       }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        output.writeUInt32(18, hotScore_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -28543,6 +28592,10 @@ public final class CommonChannelProto {
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(16, mic_);
+      }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(18, hotScore_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -28713,6 +28766,8 @@ public final class CommonChannelProto {
           micBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00002000);
+        hotScore_ = 0;
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
 
@@ -28813,6 +28868,10 @@ public final class CommonChannelProto {
         } else {
           result.mic_ = micBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00004000;
+        }
+        result.hotScore_ = hotScore_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -28882,6 +28941,9 @@ public final class CommonChannelProto {
         }
         if (other.hasMic()) {
           mergeMic(other.getMic());
+        }
+        if (other.hasHotScore()) {
+          setHotScore(other.getHotScore());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -30246,6 +30308,54 @@ public final class CommonChannelProto {
           mic_ = null;
         }
         return micBuilder_;
+      }
+
+      private int hotScore_ ;
+      /**
+       * <code>optional uint32 hotScore = 18;</code>
+       *
+       * <pre>
+       *热度值
+       * </pre>
+       */
+      public boolean hasHotScore() {
+        return ((bitField0_ & 0x00004000) == 0x00004000);
+      }
+      /**
+       * <code>optional uint32 hotScore = 18;</code>
+       *
+       * <pre>
+       *热度值
+       * </pre>
+       */
+      public int getHotScore() {
+        return hotScore_;
+      }
+      /**
+       * <code>optional uint32 hotScore = 18;</code>
+       *
+       * <pre>
+       *热度值
+       * </pre>
+       */
+      public Builder setHotScore(int value) {
+        bitField0_ |= 0x00004000;
+        hotScore_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 hotScore = 18;</code>
+       *
+       * <pre>
+       *热度值
+       * </pre>
+       */
+      public Builder clearHotScore() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        hotScore_ = 0;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:com.wali.live.proto.LiveInfo)
@@ -72752,7 +72862,7 @@ public final class CommonChannelProto {
       "\004 \001(\r\022\020\n\010certType\030\005 \001(\r\"2\n\tShopBrief\022\021\n\t" +
       "hideGoods\030\001 \001(\010\022\022\n\ndesiredCnt\030\002 \001(\r\"\030\n\007P" +
       "KBrief\022\r\n\005is_pk\030\001 \001(\010\"-\n\010MicBrief\022\017\n\007mic" +
-      "_uid\030\001 \001(\004\022\020\n\010mic_type\030\002 \001(\r\"\344\002\n\010LiveInf" +
+      "_uid\030\001 \001(\004\022\020\n\010mic_type\030\002 \001(\r\"\366\002\n\010LiveInf" +
       "o\022\016\n\006liveId\030\001 \002(\t\022,\n\004user\030\002 \001(\0132\036.com.wa" +
       "li.live.proto.UserBrief\022\020\n\010location\030\003 \001(" +
       "\t\022\021\n\tviewerCnt\030\004 \001(\r\022\013\n\003url\030\005 \001(\t\022\020\n\010cov" +
@@ -72761,119 +72871,119 @@ public final class CommonChannelProto {
       ".wali.live.proto.ShopBrief\022\017\n\007appType\030\013 ",
       "\001(\r\022\020\n\010liveType\030\014 \001(\r\022(\n\002pk\030\017 \001(\0132\034.com." +
       "wali.live.proto.PKBrief\022*\n\003mic\030\020 \001(\0132\035.c" +
-      "om.wali.live.proto.MicBrief\"\325\001\n\010BackInfo" +
-      "\022\016\n\006backId\030\001 \002(\t\022,\n\004user\030\002 \001(\0132\036.com.wal" +
-      "i.live.proto.UserBrief\022\021\n\tviewerCnt\030\003 \001(" +
-      "\r\022\013\n\003url\030\004 \001(\t\022\021\n\tstartTime\030\005 \001(\004\022\017\n\007end" +
-      "Time\030\006 \001(\004\022\021\n\tbackTitle\030\007 \001(\t\022\020\n\010coverUr" +
-      "l\030\010 \001(\t\022\020\n\010shareUrl\030\t \001(\t\022\020\n\010location\030\n " +
-      "\001(\t\"\225\001\n\tVideoInfo\022\n\n\002id\030\001 \002(\t\022\022\n\nview_co" +
-      "unt\030\002 \001(\004\0220\n\tuser_info\030\003 \001(\0132\035.com.wali.",
-      "live.proto.UserInfo\022\020\n\010duration\030\004 \001(\004\022\022\n" +
-      "\nlike_count\030\005 \001(\004\022\020\n\010is_liked\030\006 \001(\010\"6\n\025L" +
-      "iveOrReplayImageData\022\014\n\004name\030\001 \001(\t\022\017\n\007ic" +
-      "onUrl\030\002 \001(\t\"l\n\020LiveGroupExtData\022\020\n\010frame" +
-      "Url\030\001 \001(\t\0224\n\006member\030\002 \003(\0132$.com.wali.liv" +
-      "e.proto.GroupMemberData\022\020\n\010groupCnt\030\003 \001(" +
-      "\r\"[\n\021RadioGroupExtData\0224\n\006member\030\001 \003(\0132$" +
-      ".com.wali.live.proto.GroupMemberData\022\020\n\010" +
-      "groupCnt\030\002 \001(\r\"\241\001\n\016NavigationData\022\014\n\004nam" +
-      "e\030\001 \001(\t\022\020\n\010bgImgUrl\030\002 \001(\t\022\017\n\007iconUrl\030\003 \001",
-      "(\t\022\025\n\rjumpSchemeUri\030\004 \001(\t\022\021\n\ttextColor\030\005" +
-      " \001(\r\022\024\n\014hexColorCode\030\006 \001(\t\022\r\n\005text1\030\007 \001(" +
-      "\t\022\017\n\007apkName\030\010 \001(\t\"N\n\024UiTemplateNavigati" +
-      "on\0226\n\titemDatas\030\001 \003(\0132#.com.wali.live.pr" +
-      "oto.NavigationData\"b\n\020UiTemplateNotice\0224" +
-      "\n\013noticeItems\030\001 \003(\0132\037.com.wali.live.prot" +
-      "o.NoticeData\022\030\n\020headerViewAllUri\030\002 \001(\t\"N" +
-      "\n\nNoticeData\022\020\n\010noticeId\030\001 \001(\t\022\014\n\004zuid\030\002" +
-      " \001(\004\022\021\n\tbeginTime\030\003 \001(\004\022\r\n\005title\030\004 \001(\t\"\224" +
-      "\001\n\021UiTemplateRanking\0227\n\titemDatas\030\001 \003(\0132",
-      "$.com.wali.live.proto.RankingItemData\022\025\n" +
-      "\rjumpSchemeUri\030\002 \001(\t\022\r\n\005text1\030\003 \001(\t\022\r\n\005t" +
-      "ext2\030\004 \001(\t\022\021\n\ticonStyle\030\005 \001(\r\"\277\002\n\024UiTemp" +
-      "latePageHeader\022\021\n\tcover_url\030\001 \001(\t\022\030\n\020cov" +
-      "er_scheme_uri\030\002 \001(\t\022\021\n\tvideo_url\030\003 \001(\t\022\027" +
-      "\n\017video_cover_url\030\004 \001(\t\022\030\n\020video_scheme_" +
-      "uri\030\005 \001(\t\0226\n\tnavi_data\030\006 \003(\0132#.com.wali." +
-      "live.proto.NavigationData\022\023\n\013cover_width" +
-      "\030\007 \001(\r\022\024\n\014cover_height\030\010 \001(\r\022\014\n\004type\030\t \001" +
-      "(\r\022\023\n\013video_width\030\n \001(\r\022\024\n\014video_height\030",
-      "\013 \001(\r\022\030\n\020video_cutout_num\030\014 \001(\002\"Y\n\017Ranki" +
-      "ngItemData\022/\n\010userInfo\030\001 \001(\0132\035.com.wali." +
-      "live.proto.UserInfo\022\025\n\rjumpSchemeUri\030\002 \001" +
-      "(\t\"G\n\017LiveRecvFlagReq\0224\n\005items\030\001 \003(\0132%.c" +
-      "om.wali.live.proto.LiveRecvFlagItem\"\177\n\020L" +
-      "iveRecvFlagItem\022\014\n\004date\030\001 \001(\004\022\014\n\004type\030\002 " +
-      "\001(\r\022\017\n\007extData\030\003 \001(\014\022\021\n\trecommend\030\004 \001(\t\022" +
-      "+\n\003log\030\005 \001(\0132\036.com.wali.live.proto.Commo" +
-      "nLog\",\n\tCommonLog\022\017\n\007bizType\030\001 \001(\r\022\016\n\006ex" +
-      "tStr\030\002 \001(\t\"/\n\nGiftDetail\022\016\n\006giftId\030\001 \001(\r",
-      "\022\021\n\tgiftWorth\030\002 \001(\r\"1\n\tLeaveRoom\022\021\n\tente" +
-      "rTime\030\001 \001(\004\022\021\n\tleaveTime\030\002 \001(\004\"3\n\nFollow" +
-      "Room\022\021\n\tenterTime\030\001 \001(\004\022\022\n\nfollowTime\030\002 " +
-      "\001(\004\",\n\014LikeFeedback\022\014\n\004zuid\030\001 \001(\004\022\016\n\006roo" +
-      "mId\030\002 \001(\t\"\035\n\tVideoLike\022\020\n\010befCount\030\001 \001(\004" +
-      "\"\037\n\014VideoComment\022\017\n\007content\030\001 \001(\t\"\"\n\017Liv" +
-      "eRecvFlagRsp\022\017\n\007retCode\030\001 \002(\r\"{\n\nBarMess" +
-      "age\0220\n\003bmt\030\001 \001(\0162#.com.wali.live.proto.B" +
-      "arMessageType\022\017\n\007content\030\002 \001(\t\022\016\n\006schema" +
-      "\030\003 \001(\t\022\r\n\005start\030\004 \001(\004\022\013\n\003end\030\005 \001(\004\"$\n\024Ge",
-      "tBarMessageRequest\022\014\n\004from\030\001 \001(\004\"g\n\025GetB" +
-      "arMessageResponse\022\013\n\003ret\030\001 \001(\r\022\017\n\007err_ms" +
-      "g\030\002 \001(\t\0220\n\007bar_msg\030\003 \003(\0132\037.com.wali.live" +
-      ".proto.BarMessage\"\211\001\n\023GetWaterfallListRe" +
-      "q\022\013\n\003uid\030\001 \002(\004\022\021\n\toper_type\030\002 \001(\r\022\022\n\ncha" +
-      "nnel_id\030\003 \001(\r\022\r\n\005param\030\004 \001(\014\022/\n\010location" +
-      "\030\005 \001(\0132\035.com.wali.live.proto.Location\"r\n" +
-      "\023GetWaterfallListRsp\022\013\n\003ret\030\001 \002(\r\022-\n\004ele" +
-      "m\030\002 \003(\0132\037.com.wali.live.proto.WatElement" +
-      "\022\r\n\005param\030\003 \001(\014\022\020\n\010has_more\030\004 \001(\010\"-\n\nWat",
-      "Element\022\021\n\tdata_type\030\001 \002(\r\022\014\n\004data\030\002 \002(\014" +
-      "\"\217\002\n\tVideoData\022\017\n\007feed_id\030\001 \001(\t\022\020\n\010jump_" +
-      "uri\030\002 \001(\t\022\021\n\tcover_url\030\003 \001(\t\022\r\n\005width\030\004 " +
-      "\001(\r\022\016\n\006height\030\005 \001(\r\022\r\n\005title\030\006 \001(\t\022\022\n\nli" +
-      "ke_count\030\007 \001(\004\022+\n\004user\030\010 \001(\0132\035.com.wali." +
-      "live.proto.UserInfo\022+\n\004mark\030\t \001(\0132\035.com." +
-      "wali.live.proto.RichText\022\020\n\010is_liked\030\n \001" +
-      "(\010\022\020\n\010distance\030\013 \001(\r\022\014\n\004city\030\014 \001(\t\"\255\001\n\006M" +
-      "VData\022\017\n\007feed_id\030\001 \001(\t\022\021\n\tcover_url\030\002 \001(" +
-      "\t\022\r\n\005width\030\003 \001(\r\022\016\n\006height\030\004 \001(\r\022\r\n\005titl",
-      "e\030\005 \001(\t\022\020\n\010duration\030\006 \001(\004\022\022\n\nplay_count\030" +
-      "\007 \001(\r\022+\n\004user\030\010 \001(\0132\035.com.wali.live.prot" +
-      "o.UserInfo\"P\n\014ImageExtData\022\020\n\010join_num\030\001" +
-      " \001(\r\022\016\n\006image1\030\002 \001(\t\022\016\n\006image2\030\003 \001(\t\022\016\n\006" +
-      "image3\030\004 \001(\t\"\320\001\n\tImageData\022\021\n\timage_url\030" +
-      "\001 \001(\t\022\020\n\010jump_uri\030\002 \001(\t\022\r\n\005width\030\003 \001(\r\022\016" +
-      "\n\006height\030\004 \001(\r\022\r\n\005title\030\005 \001(\t\022+\n\004mark\030\006 " +
-      "\001(\0132\035.com.wali.live.proto.RichText\022\016\n\006ex" +
-      "t_ui\030\007 \001(\r\0223\n\010ext_data\030\010 \001(\0132!.com.wali." +
-      "live.proto.ImageExtData\"h\n\nButtonData\022\023\n",
-      "\013button_text\030\001 \001(\t\022\022\n\nbutton_uri\030\002 \001(\t\022\021" +
-      "\n\timage_url\030\003 \001(\t\022\014\n\004text\030\004 \001(\t\022\020\n\010jump_" +
-      "uri\030\005 \001(\t\"\214\001\n\026GetWaterfallSubListReq\022\013\n\003" +
-      "uid\030\001 \002(\004\022\021\n\toper_type\030\002 \001(\r\022\022\n\nchannel_" +
-      "id\030\003 \001(\r\022\r\n\005param\030\004 \001(\014\022/\n\010location\030\005 \001(" +
-      "\0132\035.com.wali.live.proto.Location\"u\n\026GetW" +
-      "aterfallSubListRsp\022\013\n\003ret\030\001 \002(\r\022-\n\004elem\030" +
-      "\002 \003(\0132\037.com.wali.live.proto.WatElement\022\r" +
-      "\n\005param\030\003 \001(\014\022\020\n\010has_more\030\004 \001(\010\".\n\020GetLi" +
-      "kedVideoReq\022\013\n\003uid\030\001 \002(\004\022\r\n\005start\030\002 \001(\004\"",
-      "b\n\020GetLikedVideoRsp\022\013\n\003ret\030\001 \002(\r\022-\n\004elem" +
-      "\030\002 \003(\0132\037.com.wali.live.proto.WatElement\022" +
-      "\022\n\nnext_start\030\003 \001(\004\"\313\001\n\017UiTemplateGroup\022" +
-      "-\n\005items\030\001 \003(\0132\036.com.wali.live.proto.Gro" +
-      "upData\022\022\n\nheaderName\030\002 \001(\t\022\030\n\020headerView" +
-      "AllUri\030\003 \001(\t\022\025\n\rsubHeaderName\030\004 \001(\t\022\024\n\014h" +
-      "eaderUiType\030\005 \001(\r\022\023\n\013header_icon\030\006 \001(\t\022\031" +
-      "\n\021headerViewAllText\030\007 \001(\t\"\216\001\n\tGroupData\022" +
-      "\020\n\010frameUri\030\001 \001(\t\022\020\n\010coverUri\030\002 \001(\t\022\025\n\rj" +
-      "umpSchemeUri\030\003 \001(\t\0224\n\006member\030\004 \003(\0132$.com",
-      ".wali.live.proto.GroupMemberData\022\020\n\010grou" +
-      "pCnt\030\005 \001(\r\"$\n\017GroupMemberData\022\021\n\tliveCov" +
-      "er\030\001 \001(\t**\n\016BarMessageType\022\006\n\002OP\020\001\022\007\n\003SY" +
-      "S\020\002\022\007\n\003NTF\020\003B)\n\023com.wali.live.protoB\022Com" +
-      "monChannelProto"
+      "om.wali.live.proto.MicBrief\022\020\n\010hotScore\030" +
+      "\022 \001(\r\"\325\001\n\010BackInfo\022\016\n\006backId\030\001 \002(\t\022,\n\004us" +
+      "er\030\002 \001(\0132\036.com.wali.live.proto.UserBrief" +
+      "\022\021\n\tviewerCnt\030\003 \001(\r\022\013\n\003url\030\004 \001(\t\022\021\n\tstar" +
+      "tTime\030\005 \001(\004\022\017\n\007endTime\030\006 \001(\004\022\021\n\tbackTitl" +
+      "e\030\007 \001(\t\022\020\n\010coverUrl\030\010 \001(\t\022\020\n\010shareUrl\030\t " +
+      "\001(\t\022\020\n\010location\030\n \001(\t\"\225\001\n\tVideoInfo\022\n\n\002i" +
+      "d\030\001 \002(\t\022\022\n\nview_count\030\002 \001(\004\0220\n\tuser_info",
+      "\030\003 \001(\0132\035.com.wali.live.proto.UserInfo\022\020\n" +
+      "\010duration\030\004 \001(\004\022\022\n\nlike_count\030\005 \001(\004\022\020\n\010i" +
+      "s_liked\030\006 \001(\010\"6\n\025LiveOrReplayImageData\022\014" +
+      "\n\004name\030\001 \001(\t\022\017\n\007iconUrl\030\002 \001(\t\"l\n\020LiveGro" +
+      "upExtData\022\020\n\010frameUrl\030\001 \001(\t\0224\n\006member\030\002 " +
+      "\003(\0132$.com.wali.live.proto.GroupMemberDat" +
+      "a\022\020\n\010groupCnt\030\003 \001(\r\"[\n\021RadioGroupExtData" +
+      "\0224\n\006member\030\001 \003(\0132$.com.wali.live.proto.G" +
+      "roupMemberData\022\020\n\010groupCnt\030\002 \001(\r\"\241\001\n\016Nav" +
+      "igationData\022\014\n\004name\030\001 \001(\t\022\020\n\010bgImgUrl\030\002 ",
+      "\001(\t\022\017\n\007iconUrl\030\003 \001(\t\022\025\n\rjumpSchemeUri\030\004 " +
+      "\001(\t\022\021\n\ttextColor\030\005 \001(\r\022\024\n\014hexColorCode\030\006" +
+      " \001(\t\022\r\n\005text1\030\007 \001(\t\022\017\n\007apkName\030\010 \001(\t\"N\n\024" +
+      "UiTemplateNavigation\0226\n\titemDatas\030\001 \003(\0132" +
+      "#.com.wali.live.proto.NavigationData\"b\n\020" +
+      "UiTemplateNotice\0224\n\013noticeItems\030\001 \003(\0132\037." +
+      "com.wali.live.proto.NoticeData\022\030\n\020header" +
+      "ViewAllUri\030\002 \001(\t\"N\n\nNoticeData\022\020\n\010notice" +
+      "Id\030\001 \001(\t\022\014\n\004zuid\030\002 \001(\004\022\021\n\tbeginTime\030\003 \001(" +
+      "\004\022\r\n\005title\030\004 \001(\t\"\224\001\n\021UiTemplateRanking\0227",
+      "\n\titemDatas\030\001 \003(\0132$.com.wali.live.proto." +
+      "RankingItemData\022\025\n\rjumpSchemeUri\030\002 \001(\t\022\r" +
+      "\n\005text1\030\003 \001(\t\022\r\n\005text2\030\004 \001(\t\022\021\n\ticonStyl" +
+      "e\030\005 \001(\r\"\277\002\n\024UiTemplatePageHeader\022\021\n\tcove" +
+      "r_url\030\001 \001(\t\022\030\n\020cover_scheme_uri\030\002 \001(\t\022\021\n" +
+      "\tvideo_url\030\003 \001(\t\022\027\n\017video_cover_url\030\004 \001(" +
+      "\t\022\030\n\020video_scheme_uri\030\005 \001(\t\0226\n\tnavi_data" +
+      "\030\006 \003(\0132#.com.wali.live.proto.NavigationD" +
+      "ata\022\023\n\013cover_width\030\007 \001(\r\022\024\n\014cover_height" +
+      "\030\010 \001(\r\022\014\n\004type\030\t \001(\r\022\023\n\013video_width\030\n \001(",
+      "\r\022\024\n\014video_height\030\013 \001(\r\022\030\n\020video_cutout_" +
+      "num\030\014 \001(\002\"Y\n\017RankingItemData\022/\n\010userInfo" +
+      "\030\001 \001(\0132\035.com.wali.live.proto.UserInfo\022\025\n" +
+      "\rjumpSchemeUri\030\002 \001(\t\"G\n\017LiveRecvFlagReq\022" +
+      "4\n\005items\030\001 \003(\0132%.com.wali.live.proto.Liv" +
+      "eRecvFlagItem\"\177\n\020LiveRecvFlagItem\022\014\n\004dat" +
+      "e\030\001 \001(\004\022\014\n\004type\030\002 \001(\r\022\017\n\007extData\030\003 \001(\014\022\021" +
+      "\n\trecommend\030\004 \001(\t\022+\n\003log\030\005 \001(\0132\036.com.wal" +
+      "i.live.proto.CommonLog\",\n\tCommonLog\022\017\n\007b" +
+      "izType\030\001 \001(\r\022\016\n\006extStr\030\002 \001(\t\"/\n\nGiftDeta",
+      "il\022\016\n\006giftId\030\001 \001(\r\022\021\n\tgiftWorth\030\002 \001(\r\"1\n" +
+      "\tLeaveRoom\022\021\n\tenterTime\030\001 \001(\004\022\021\n\tleaveTi" +
+      "me\030\002 \001(\004\"3\n\nFollowRoom\022\021\n\tenterTime\030\001 \001(" +
+      "\004\022\022\n\nfollowTime\030\002 \001(\004\",\n\014LikeFeedback\022\014\n" +
+      "\004zuid\030\001 \001(\004\022\016\n\006roomId\030\002 \001(\t\"\035\n\tVideoLike" +
+      "\022\020\n\010befCount\030\001 \001(\004\"\037\n\014VideoComment\022\017\n\007co" +
+      "ntent\030\001 \001(\t\"\"\n\017LiveRecvFlagRsp\022\017\n\007retCod" +
+      "e\030\001 \002(\r\"{\n\nBarMessage\0220\n\003bmt\030\001 \001(\0162#.com" +
+      ".wali.live.proto.BarMessageType\022\017\n\007conte" +
+      "nt\030\002 \001(\t\022\016\n\006schema\030\003 \001(\t\022\r\n\005start\030\004 \001(\004\022",
+      "\013\n\003end\030\005 \001(\004\"$\n\024GetBarMessageRequest\022\014\n\004" +
+      "from\030\001 \001(\004\"g\n\025GetBarMessageResponse\022\013\n\003r" +
+      "et\030\001 \001(\r\022\017\n\007err_msg\030\002 \001(\t\0220\n\007bar_msg\030\003 \003" +
+      "(\0132\037.com.wali.live.proto.BarMessage\"\211\001\n\023" +
+      "GetWaterfallListReq\022\013\n\003uid\030\001 \002(\004\022\021\n\toper" +
+      "_type\030\002 \001(\r\022\022\n\nchannel_id\030\003 \001(\r\022\r\n\005param" +
+      "\030\004 \001(\014\022/\n\010location\030\005 \001(\0132\035.com.wali.live" +
+      ".proto.Location\"r\n\023GetWaterfallListRsp\022\013" +
+      "\n\003ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com.wali.liv" +
+      "e.proto.WatElement\022\r\n\005param\030\003 \001(\014\022\020\n\010has",
+      "_more\030\004 \001(\010\"-\n\nWatElement\022\021\n\tdata_type\030\001" +
+      " \002(\r\022\014\n\004data\030\002 \002(\014\"\217\002\n\tVideoData\022\017\n\007feed" +
+      "_id\030\001 \001(\t\022\020\n\010jump_uri\030\002 \001(\t\022\021\n\tcover_url" +
+      "\030\003 \001(\t\022\r\n\005width\030\004 \001(\r\022\016\n\006height\030\005 \001(\r\022\r\n" +
+      "\005title\030\006 \001(\t\022\022\n\nlike_count\030\007 \001(\004\022+\n\004user" +
+      "\030\010 \001(\0132\035.com.wali.live.proto.UserInfo\022+\n" +
+      "\004mark\030\t \001(\0132\035.com.wali.live.proto.RichTe" +
+      "xt\022\020\n\010is_liked\030\n \001(\010\022\020\n\010distance\030\013 \001(\r\022\014" +
+      "\n\004city\030\014 \001(\t\"\255\001\n\006MVData\022\017\n\007feed_id\030\001 \001(\t" +
+      "\022\021\n\tcover_url\030\002 \001(\t\022\r\n\005width\030\003 \001(\r\022\016\n\006he",
+      "ight\030\004 \001(\r\022\r\n\005title\030\005 \001(\t\022\020\n\010duration\030\006 " +
+      "\001(\004\022\022\n\nplay_count\030\007 \001(\r\022+\n\004user\030\010 \001(\0132\035." +
+      "com.wali.live.proto.UserInfo\"P\n\014ImageExt" +
+      "Data\022\020\n\010join_num\030\001 \001(\r\022\016\n\006image1\030\002 \001(\t\022\016" +
+      "\n\006image2\030\003 \001(\t\022\016\n\006image3\030\004 \001(\t\"\320\001\n\tImage" +
+      "Data\022\021\n\timage_url\030\001 \001(\t\022\020\n\010jump_uri\030\002 \001(" +
+      "\t\022\r\n\005width\030\003 \001(\r\022\016\n\006height\030\004 \001(\r\022\r\n\005titl" +
+      "e\030\005 \001(\t\022+\n\004mark\030\006 \001(\0132\035.com.wali.live.pr" +
+      "oto.RichText\022\016\n\006ext_ui\030\007 \001(\r\0223\n\010ext_data" +
+      "\030\010 \001(\0132!.com.wali.live.proto.ImageExtDat",
+      "a\"h\n\nButtonData\022\023\n\013button_text\030\001 \001(\t\022\022\n\n" +
+      "button_uri\030\002 \001(\t\022\021\n\timage_url\030\003 \001(\t\022\014\n\004t" +
+      "ext\030\004 \001(\t\022\020\n\010jump_uri\030\005 \001(\t\"\214\001\n\026GetWater" +
+      "fallSubListReq\022\013\n\003uid\030\001 \002(\004\022\021\n\toper_type" +
+      "\030\002 \001(\r\022\022\n\nchannel_id\030\003 \001(\r\022\r\n\005param\030\004 \001(" +
+      "\014\022/\n\010location\030\005 \001(\0132\035.com.wali.live.prot" +
+      "o.Location\"u\n\026GetWaterfallSubListRsp\022\013\n\003" +
+      "ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com.wali.live." +
+      "proto.WatElement\022\r\n\005param\030\003 \001(\014\022\020\n\010has_m" +
+      "ore\030\004 \001(\010\".\n\020GetLikedVideoReq\022\013\n\003uid\030\001 \002",
+      "(\004\022\r\n\005start\030\002 \001(\004\"b\n\020GetLikedVideoRsp\022\013\n" +
+      "\003ret\030\001 \002(\r\022-\n\004elem\030\002 \003(\0132\037.com.wali.live" +
+      ".proto.WatElement\022\022\n\nnext_start\030\003 \001(\004\"\313\001" +
+      "\n\017UiTemplateGroup\022-\n\005items\030\001 \003(\0132\036.com.w" +
+      "ali.live.proto.GroupData\022\022\n\nheaderName\030\002" +
+      " \001(\t\022\030\n\020headerViewAllUri\030\003 \001(\t\022\025\n\rsubHea" +
+      "derName\030\004 \001(\t\022\024\n\014headerUiType\030\005 \001(\r\022\023\n\013h" +
+      "eader_icon\030\006 \001(\t\022\031\n\021headerViewAllText\030\007 " +
+      "\001(\t\"\216\001\n\tGroupData\022\020\n\010frameUri\030\001 \001(\t\022\020\n\010c" +
+      "overUri\030\002 \001(\t\022\025\n\rjumpSchemeUri\030\003 \001(\t\0224\n\006",
+      "member\030\004 \003(\0132$.com.wali.live.proto.Group" +
+      "MemberData\022\020\n\010groupCnt\030\005 \001(\r\"$\n\017GroupMem" +
+      "berData\022\021\n\tliveCover\030\001 \001(\t**\n\016BarMessage" +
+      "Type\022\006\n\002OP\020\001\022\007\n\003SYS\020\002\022\007\n\003NTF\020\003B)\n\023com.wa" +
+      "li.live.protoB\022CommonChannelProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -73025,7 +73135,7 @@ public final class CommonChannelProto {
     internal_static_com_wali_live_proto_LiveInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_wali_live_proto_LiveInfo_descriptor,
-        new java.lang.String[] { "LiveId", "User", "Location", "ViewerCnt", "Url", "CoverUrl", "LiTitle", "StartTime", "Tag", "Shop", "AppType", "LiveType", "Pk", "Mic", });
+        new java.lang.String[] { "LiveId", "User", "Location", "ViewerCnt", "Url", "CoverUrl", "LiTitle", "StartTime", "Tag", "Shop", "AppType", "LiveType", "Pk", "Mic", "HotScore", });
     internal_static_com_wali_live_proto_BackInfo_descriptor =
       getDescriptor().getMessageTypes().get(23);
     internal_static_com_wali_live_proto_BackInfo_fieldAccessorTable = new

@@ -220,6 +220,7 @@ message LiveInfo {
     optional uint32 liveType    = 12;//直播类型[和房间接口一致]. 0=公开, 1=私密, 2=口令, 3=门票
     optional PKBrief pk       = 15;
     optional MicBrief mic     = 16;
+    optional uint32 hotScore = 18; //热度值
 }
 
 //一条回放记录详情

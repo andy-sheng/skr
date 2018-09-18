@@ -279,7 +279,7 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
                 holder = new RecommendCardHolder(view);
                 break;
             case ChannelUiType.TYPE_TWO_CARD_WIDE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_card_item, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_live_two_card_wide_item, parent, false);
                 holder = new TwoCardWideHolder(view);
                 break;
             case ChannelUiType.TYPE_LIVE_GROUP:

@@ -519,6 +519,8 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         private int mAppType = 0;
         private int mLiveType = 0;
 
+        private int mHotScore = 0;
+
         private int mListPosition = -1;  //list的位置，不是服务器的数据
         private RoomInfo mRoomInfo;
 
@@ -561,6 +563,8 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             mAppType = protoItem.getAppType();
             mLiveType = protoItem.getLiveType();
 
+            mHotScore = protoItem.getHotScore();
+
             if (protoItem.hasShop()) {
                 parseShop(protoItem.getShop());
             }
@@ -575,8 +579,28 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return mAppType == 4;
         }
 
+        public boolean isMiLive() {
+            return mAppType == 0 || mAppType == 1 || mAppType == 2 || mAppType == 3;
+        }
+
+        public boolean isHuyaLive() {
+            return mAppType == 8;
+        }
+
+        public boolean isPandaLive() {
+            return mAppType == 9;
+        }
+
+        public boolean isYyLive() {
+            return mAppType == 10;
+        }
+
         public boolean isTicket() {
             return mLiveType == LIVE_TYPE_TICKET;
+        }
+
+        public int getHotScore() {
+            return mHotScore;
         }
 
         public void parseShop(CommonChannelProto.ShopBrief shopBrief) {
