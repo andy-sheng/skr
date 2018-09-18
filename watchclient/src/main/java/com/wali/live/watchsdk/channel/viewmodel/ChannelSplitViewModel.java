@@ -29,7 +29,7 @@ public class ChannelSplitViewModel extends ChannelViewModel<ChannelItem> {
         mSectionId = protoItem.getSectionId();
         parseUI(UiTemplateSeparator.parseFrom(protoItem.getUiData()));
 
-        if (mColor != 1 && mColor != 2) {
+        if (mColor != 1 && mColor != 2 && mColor != 3) {
             throw new Exception("ChannelSplitViewModel not supported color=" + mColor);
         }
     }
