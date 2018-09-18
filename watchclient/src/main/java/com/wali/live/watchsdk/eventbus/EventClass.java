@@ -286,4 +286,13 @@ public class EventClass {
         }
     }
 
+    // 游戏直播间竖屏更多直播　向上滑动时隐藏tabbar 向下滑动时show tabbar
+    public static class RecLiveChannelShowTabBarEvent {
+        public long channelId;
+        public boolean onTitleShow;
+        public RecLiveChannelShowTabBarEvent(boolean show, long channelId) {
+            this.onTitleShow = show;
+            this.channelId = channelId;
+        }
+    }
 }

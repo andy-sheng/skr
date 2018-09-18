@@ -9,6 +9,7 @@ import com.thornbirds.component.IEventController;
 import com.thornbirds.component.IParams;
 import com.wali.live.component.presenter.BaseSdkRxPresenter;
 import com.wali.live.watchsdk.component.WatchComponentController;
+import com.wali.live.watchsdk.eventbus.EventClass;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameChatTabView;
 import com.wali.live.watchsdk.watch.view.watchgameview.WatchGameMoreTabView;
 
@@ -68,6 +69,15 @@ public class WatchGameMoreTabPresenter extends BaseSdkRxPresenter<WatchGameMoreT
             }
             break;
             default:break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.RecLiveChannelShowTabBarEvent event) {
+        if (event != null) {
+            if (mView != null) {
+                mView.onTabBarEvent(event.onTitleShow, event.channelId);
+            }
         }
     }
 

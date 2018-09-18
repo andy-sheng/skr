@@ -1,6 +1,6 @@
 package com.wali.live.watchsdk.channel.presenter;
 
-import com.wali.live.watchsdk.channel.viewmodel.BaseViewModel;
+import com.wali.live.watchsdk.channel.viewmodel.ChannelViewModel;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @description 频道View的接口，提供刷新，滚动，生命周期的接口
  */
 public interface IChannelView {
-    void updateView(List<? extends BaseViewModel> models, long channelId);
+    void updateView(List<ChannelViewModel> models, long channelId);
 
     void onDataLoadFail();
 

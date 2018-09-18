@@ -53,7 +53,7 @@ public class ChannelUiType {
     public static final int TYPE_PAGE_HEADER = 39;           // 39.频道页头图
     public static final int TYPE_BANNER_NO_SPACE = 40;      // 40.无四周空隙的banner
     public static final int TYPE_RECOMMEND_CARD = 41;       // 41.一图一文，可滑动的推荐卡片样式
-    public static final int TYPE_PLACEHOLDER = 42;
+//    public static final int TYPE_PLACEHOLDER = 42; // 这个42和模板协议中的42不一致　模板42现在也不使用　过滤掉
     public static final int TYPE_TWO_CARD_WIDE = 43;       // 43.和样式7差不多一样, 只是高度矮一点
     public static final int TYPE_LIVE_GROUP = 45;       // 45.直播组
     public static final int TYPE_ONE_CARD_LIVE = 46;        //46.一行一列，播放直播画面
@@ -64,6 +64,9 @@ public class ChannelUiType {
     public static final int TYPE_ONE_WIDE_CARD = 51 ; // 一个长方形卡片 扁的
 
     public static final int TYPE_GAME_WATCH_SINGLE_LIVE = 66; // 直播助手游戏直播间全屏　更多直播新增单排样式
+
+
+    public static final int TYPE_PLACEHOLDER = 1000;
 
     public static final HashSet<Integer> ALL_CHANNEL_UI_TYPE =
             new HashSet<>(Arrays.asList(
@@ -106,7 +109,6 @@ public class ChannelUiType {
                     TYPE_PAGE_HEADER,
                     TYPE_BANNER_NO_SPACE,
                     TYPE_RECOMMEND_CARD,
-                    TYPE_PLACEHOLDER,
                     TYPE_TWO_CARD_WIDE,
                     TYPE_LIVE_GROUP,
                     TYPE_ONE_CARD_LIVE,
