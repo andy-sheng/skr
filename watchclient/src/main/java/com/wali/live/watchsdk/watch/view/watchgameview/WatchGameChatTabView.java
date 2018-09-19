@@ -135,8 +135,6 @@ public class WatchGameChatTabView extends RelativeLayout implements
 
         $click(mAnchorAvatarIv, this);
         $click(mFocusBtn, this);
-
-        mGuideFollowView.postDelayed(mCheckShowFollowGuideRunnable, mFollowGuideShowTimeInterval);
     }
 
     Runnable mCheckShowFollowGuideRunnable = new Runnable() {
@@ -311,6 +309,7 @@ public class WatchGameChatTabView extends RelativeLayout implements
                     } else {
                         mFocusBtn.setText(R.string.follow);
                         mFocusBtn.setEnabled(true);
+                        mGuideFollowView.postDelayed(mCheckShowFollowGuideRunnable, mFollowGuideShowTimeInterval);
                     }
                 } else {
                     mFocusBtn.setVisibility(INVISIBLE);

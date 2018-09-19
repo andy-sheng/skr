@@ -192,6 +192,11 @@ public class CustomDownloadManager {
                 firstStartDownloadStatistic(item.getUrl());
 //                mDownloadingMap.add(downloadKey);
             }
+
+            if (mDownloadingMap.containsKey(downloadKey) && downloadId == mDownloadingMap.get(downloadKey)) {
+                return;
+            }
+
             mDownloadingMap.put(downloadKey, downloadId);
             addMonitorUrl(item.getUrl());
             saveDownloadIdToPFFromMap();
@@ -266,7 +271,7 @@ public class CustomDownloadManager {
                                     //变成这种状态的原因，如因为没有网络而暂停等
                                     result[3] = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
 
-                                    if(result[2]==DownloadManager.STATUS_SUCCESSFUL){
+                                    if (result[2] == DownloadManager.STATUS_SUCCESSFUL) {
                                         // 如果返回的是下载成功，有可能用户去文件管理器把文件删除了,先不管这种情况
                                     }
                                     subscriber.onNext(new Pair<>(h.key, result));
@@ -549,13 +554,13 @@ public class CustomDownloadManager {
         public static final int SUCCESS = 0;
         public static final int FAILED = 1;
 
-        public RequestGameDownloadByMiLiveEvent(GameInfoModel mGameInfoModel, int type, int status){
+        public RequestGameDownloadByMiLiveEvent(GameInfoModel mGameInfoModel, int type, int status) {
             this.mGameInfoModel = mGameInfoModel;
             this.type = type;
             this.status = status;
         }
 
-        public RequestGameDownloadByMiLiveEvent(GameInfoModel mGameInfoModel, int type){
+        public RequestGameDownloadByMiLiveEvent(GameInfoModel mGameInfoModel, int type) {
             this.mGameInfoModel = mGameInfoModel;
             this.type = type;
         }
