@@ -25,6 +25,8 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
 
     private static final String TAG = "WatchGameTouchPresenter";
 
+    private static final int PX_DISTANCE = DisplayUtils.dip2px(3.33f);
+
     View touchView;
 
     private float startX;
@@ -51,6 +53,8 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
             case MotionEvent.ACTION_DOWN:
                 startX = event.getX();
                 startY = event.getY();
+                distanceX = 0;
+                distanceY = 0;
 
                 if (startX < DisplayUtils.getScreenWidth() / 2) {
                     startType = WATCH_GAME_CONTROLL_BRIGHTNESS;
@@ -114,8 +118,8 @@ public class WatchGameTouchPresenter extends ComponentPresenter implements View.
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (Math.abs(distanceY) > 10
-                        || Math.abs(distanceX) > 10) {
+                if (Math.abs(distanceY) > PX_DISTANCE
+                        || Math.abs(distanceX) > PX_DISTANCE) {
                     isClick = true;
                 } else {
                     isClick = false;
