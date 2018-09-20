@@ -52,6 +52,8 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
 
     private boolean mIsDownLoadByGc;
 
+    private CustomDownloadManager.ApkStatusEvent mLastApkStatus;
+
     public WatchGameHomeTabPresenter(WatchComponentController controller) {
         super(controller);
         mGameInfoModel = controller.getRoomBaseDataModel().getGameInfoModel();
@@ -114,6 +116,12 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
         if (mView != null
                 && !mIsDownLoadByGc) {
             mIsDownLoadByGc = false;
+            if(mLastApkStatus != null
+                    && (mLastApkStatus.status == STATUS_DOWNLOADING
+                    || mLastApkStatus.status == STATUS_PAUSE_DOWNLOAD)) {
+                return;
+            }
+
             mView.checkInstallOrUpdateByZB(mGameInfoModel);
         }
     }
@@ -129,6 +137,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
         if(event.isByGame || mIsDownLoadByGc) {
             if(mGameInfoModel.getGameId() == event.gameId
                     && mGameInfoModel.getPackageName().equals(event.packageName)) {
+                mLastApkStatus = event;
                 mIsDownLoadByGc= true;
                 mView.updateDownLoadUi(event.status, event.progress, event.reason, mGameInfoModel);
                 switch (event.status) {
@@ -147,6 +156,7 @@ public class WatchGameHomeTabPresenter extends BaseSdkRxPresenter<WatchGameHomeT
             }
         } else {
             mIsDownLoadByGc= false;
+            mLastApkStatus = event;
             if (!TextUtils.isEmpty(event.downloadKey)) {
                 String key = MD5.MD5_32(mGameInfoModel.getPackageUrl());
                 if (event.downloadKey.equals(key)) {
