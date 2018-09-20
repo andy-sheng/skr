@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.ViewStub;
 import android.view.WindowManager;
 
@@ -130,6 +131,7 @@ import static com.wali.live.component.BaseSdkController.MSG_PAGE_DOWN;
 import static com.wali.live.component.BaseSdkController.MSG_PAGE_UP;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_COMPLETED;
 import static com.wali.live.component.BaseSdkController.MSG_PLAYER_READY;
+import static com.wali.live.component.BaseSdkController.MSG_PLAYER_SOUND_ON;
 import static com.wali.live.component.BaseSdkController.MSG_SWITCH_ROOM;
 
 /**
@@ -1111,6 +1113,17 @@ public class WatchSdkActivity extends BaseComponentSdkActivity
         intent.putExtra(EXTRA_ROOM_INFO_POSITION, position);
         activity.startActivity(intent);
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                mController.postEvent(MSG_PLAYER_SOUND_ON);
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                mController.postEvent(MSG_PLAYER_SOUND_ON);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private long mResumeTime;
