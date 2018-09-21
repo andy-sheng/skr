@@ -64,12 +64,6 @@ import static com.wali.live.component.BaseSdkController.MSG_VIDEO_TOUCH_VIEW;
 import static com.wali.live.watchsdk.eventbus.EventClass.WatchGameControllChangeEvent.WATCH_GAME_CONTROLL_VOLUME;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_BIZTYPE_LAND_DOWNLOAD_CLICK;
 import static com.wali.live.watchsdk.statistics.item.GameWatchDownloadStatisticItem.GAME_WATCH_TYPE_CLICK;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_BEGIN_DOWNLOAD;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_CONTINUE_DOWNLOAD;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_INSTALL;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_LAUNCH;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.STATTUS_PAUSE_DOWNLOAD;
-import static com.wali.live.watchsdk.watch.download.CustomDownloadManager.RequestGameDownloadByMiLiveEvent.SUCCESS;
 
 /**
  * Created by vera on 2018/8/8.
@@ -347,42 +341,52 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
     @Override
     public void tryUpdateDownloadStatus() {
         if(mLastStatusEvent != null
-                && mMyRoomData.getGameInfoModel() != null
-                && mLastStatusEvent.gameId == mMyRoomData.getGameInfoModel().getGameId()) {
+                && mMyRoomData.getGameInfoModel() != null) {
 
             if(mIsDownloadByGc) {
-                mLastStatusEvent.isByQuery = true;
-                onEventMainThread(mLastStatusEvent);
+                if(mLastStatusEvent.gameId == mMyRoomData.getGameInfoModel().getGameId()) {
+                    mLastStatusEvent.isByQuery = true;
+                    onEventMainThread(mLastStatusEvent);
+                }
             } else {
-                onEventMainThread(new EventClass.UpdateGameInfoStatus(mMyRoomData.getGameInfoModel()));
+
+                if(!TextUtils.isEmpty(mLastStatusEvent.downloadKey)) {
+                    if(mMyRoomData != null
+                            && mMyRoomData.getGameInfoModel() != null) {
+                        String key = MD5.MD5_32(mMyRoomData.getGameInfoModel().getPackageUrl());
+                        if(mLastStatusEvent.downloadKey.equals(key)) {
+                            onEventMainThread(new EventClass.UpdateGameInfoStatus(mMyRoomData.getGameInfoModel()));
+                        }
+                    }
+                }
             }
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {
-        if (event.mGameInfoModel == null) {
-            return;
-        }
-
-        if (event.mGameInfoModel.getGameId() == mMyRoomData.getGameInfoModel().getGameId()) {
-            if (event.type == STATTUS_INSTALL) {
-                if (event.status == SUCCESS) {
-                    postEvent(MSG_PLAYER_PAUSE);
-                }
-            } else if (event.type == STATTUS_LAUNCH) {
-                if (event.status == SUCCESS) {
-                    postEvent(MSG_PLAYER_PAUSE);
-                }
-            } else if (event.type == STATTUS_BEGIN_DOWNLOAD
-                    || event.type == STATTUS_CONTINUE_DOWNLOAD) {
-                CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
-                CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
-            } else if (event.type == STATTUS_PAUSE_DOWNLOAD) {
-                CustomDownloadManager.getInstance().pauseDownload(mMyRoomData.getGameInfoModel().getPackageUrl());
-            }
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEventMainThread(CustomDownloadManager.RequestGameDownloadByMiLiveEvent event) {
+//        if (event.mGameInfoModel == null) {
+//            return;
+//        }
+//
+//        if (event.mGameInfoModel.getGameId() == mMyRoomData.getGameInfoModel().getGameId()) {
+//            if (event.type == STATTUS_INSTALL) {
+//                if (event.status == SUCCESS) {
+//                    postEvent(MSG_PLAYER_PAUSE);
+//                }
+//            } else if (event.type == STATTUS_LAUNCH) {
+//                if (event.status == SUCCESS) {
+//                    postEvent(MSG_PLAYER_PAUSE);
+//                }
+//            } else if (event.type == STATTUS_BEGIN_DOWNLOAD
+//                    || event.type == STATTUS_CONTINUE_DOWNLOAD) {
+//                CustomDownloadManager.Item item = new CustomDownloadManager.Item(mMyRoomData.getGameInfoModel().getPackageUrl(), mMyRoomData.getGameInfoModel().getGameName());
+//                CustomDownloadManager.getInstance().beginDownload(item, mView.getRealView().getContext());
+//            } else if (event.type == STATTUS_PAUSE_DOWNLOAD) {
+//                CustomDownloadManager.getInstance().pauseDownload(mMyRoomData.getGameInfoModel().getPackageUrl());
+//            }
+//        }
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FollowOrUnfollowEvent event) {
@@ -446,12 +450,17 @@ public class WatchGameZTopPresenter extends BaseSdkRxPresenter<WatchGameZTopView
                 }
             }
         } else {
-            if(mMyRoomData != null
-                    && mMyRoomData.getGameInfoModel() != null
-                    && mMyRoomData.getGameInfoModel().getGameId() == event.gameId) {
-                mIsDownloadByGc = false;
-                mLastStatusEvent = event;//
+            if(!TextUtils.isEmpty(event.downloadKey)) {
+                if(mMyRoomData != null
+                        && mMyRoomData.getGameInfoModel() != null) {
+                    String key = MD5.MD5_32(mMyRoomData.getGameInfoModel().getPackageUrl());
+                    if(event.downloadKey.equals(key)) {
+                        mIsDownloadByGc = false;
+                        mLastStatusEvent = event;
+                    }
+                }
             }
+
         }
     }
 
