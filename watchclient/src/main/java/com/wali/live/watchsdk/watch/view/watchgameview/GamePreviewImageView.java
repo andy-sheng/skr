@@ -28,6 +28,8 @@ public class GamePreviewImageView extends RelativeLayout {
         BaseImage baseImage = ImageFactory.newHttpImage(imageUrl)
                 .setFailureDrawable(GlobalData.app().getResources().getDrawable(R.drawable.loading_empty))
                 .build();
+        baseImage.setWidth(getResources().getDimensionPixelSize(R.dimen.view_dimen_1080));
+        baseImage.setHeight(getResources().getDimensionPixelSize(R.dimen.view_dimen_608));
         FrescoWorker.loadImage(mMainIv, baseImage);
     }
 }
