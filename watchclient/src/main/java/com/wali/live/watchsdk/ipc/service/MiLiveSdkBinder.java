@@ -19,6 +19,7 @@ import com.mi.live.data.account.UserAccountManager;
 import com.mi.live.data.account.login.LoginType;
 import com.mi.live.data.account.task.AccountCaller;
 import com.mi.live.data.api.ErrorCode;
+import com.mi.live.data.api.request.RoomInfoRequest;
 import com.mi.live.data.milink.event.MiLinkEvent;
 import com.mi.live.data.push.presenter.RoomMessagePresenter;
 import com.wali.live.common.statistics.StatisticsAlmightyWorker;
@@ -26,6 +27,7 @@ import com.wali.live.event.EventClass;
 import com.wali.live.proto.AccountProto;
 import com.wali.live.proto.CommonChannelProto;
 import com.wali.live.proto.ListProto;
+import com.wali.live.proto.LiveProto;
 import com.wali.live.proto.RelationProto;
 import com.wali.live.proto.SecurityProto;
 import com.wali.live.statistics.StatisticsKey;
@@ -53,7 +55,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -78,8 +82,12 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
     private static final String PARAM_SIGN = "param_sign";
     private static final String PARAM_FORCE_UPLOAD_USERINFO_FLAG = "param_force_upload_userinfo_flag";
 
+    public static final String PARAM_ANCHOR_ID = "param_anchor_id";
+    public static final String PARAM_LIVE_ID = "param_live_id";
+
     //TODO-method type-请不要更改
     public static final int TYPE_METHOD_THIRD_LOGIN_WITH_FORCE_UPLOAD_USEINFO = 1;
+    public static final int TYPE_METHOD_GET_NEWST_ROOM_INFO = 2;
 
     private final HashMap<Integer, String> mAuthMap;
     private final HashMap<Integer, RemoteCallbackList<IMiLiveSdkEventCallback>> mEventCallBackListMap;
@@ -336,7 +344,7 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("uid", UserAccountManager.getInstance().getUuidAsLong());
-                    onEventRecvInfo(channelId, 1, jsonObject.toString());
+                    onEventRecvInfo(channelId, EVENT_RECV_INFO_TYPE_LIVE_UID, jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -972,6 +980,11 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
         });
     }
 
+
+    // onEventRecvInfo相应Type
+    public static int EVENT_RECV_INFO_TYPE_LIVE_UID = 1;
+    public static int EVENT_RECV_INFO_TYPE_NEWST_ROOM_INFO = 2;
+
     /**
      * 登出的结果
      */
@@ -1367,7 +1380,84 @@ public class MiLiveSdkBinder extends IMiLiveSdkService.Stub {
                         , forceUploadUserInfoFlag
                         , thirdPartLoginData);
                 break;
+            case TYPE_METHOD_GET_NEWST_ROOM_INFO:
+                if(TextUtils.isEmpty(json)) {
+                    return;
+                }
+                long anchorId = 0;
+                String liveId = "";
+                try {
+                    JSONObject object = new JSONObject(json);
+                    anchorId = object.optLong(PARAM_ANCHOR_ID, 0);
+                    liveId = object.optString(PARAM_LIVE_ID, "");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                getNewstRoomInfo(channelId, packageName, channelSecret, anchorId, liveId);
+                break;
         }
+    }
+
+    private void getNewstRoomInfo(final int channelId, String packageName, String channelSecret, final long anchorId, final String liveId) {
+        secureOperate(channelId, packageName, channelSecret, new SecureCommonCallBack() {
+            @Override
+            public void postSuccess() {
+                Observable.create(new Observable.OnSubscribe<LiveProto.RoomInfoRsp>() {
+                    @Override
+                    public void call(Subscriber<? super LiveProto.RoomInfoRsp> subscriber) {
+                        LiveProto.RoomInfoRsp rsp = new RoomInfoRequest(anchorId, liveId).syncRsp();
+                        if (rsp != null) {
+                            MyLog.d(TAG, "rsp=" + rsp.toString());
+                            int retCode = rsp.getRetCode();
+                            if (retCode == ErrorCode.CODE_SUCCESS) {
+                                subscriber.onNext(rsp);
+                            } else {
+                                MyLog.w(TAG, "roomInfoRsp code=" + retCode);
+                            }
+                        } else {
+                            MyLog.w(TAG, "roomInfoRsp is null");
+                        }
+                        subscriber.onCompleted();
+                    }
+                })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<LiveProto.RoomInfoRsp>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                MyLog.d(TAG, e);
+                            }
+
+                            @Override
+                            public void onNext(LiveProto.RoomInfoRsp rsp) {
+                                String downStreamUrl = rsp.getDownStreamUrl();
+                                if (!TextUtils.isEmpty(downStreamUrl)) {
+                                    JSONObject jsonObject = new JSONObject();
+                                    try {
+                                        jsonObject.put("downStreamUrl", downStreamUrl);
+                                        jsonObject.put("liveId", liveId);
+                                        onEventRecvInfo(channelId, EVENT_RECV_INFO_TYPE_NEWST_ROOM_INFO, jsonObject.toString());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void postError() {
+            }
+
+            @Override
+            public void processFailure() {
+            }
+        });
     }
 
     public void onEventGetRecommendLives(final int channelId, final int errCode, final List<LiveInfo> liveInfos) {

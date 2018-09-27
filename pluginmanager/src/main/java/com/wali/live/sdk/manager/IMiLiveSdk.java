@@ -273,6 +273,8 @@ public interface IMiLiveSdk {
 
     void getLiveUid(IAssistantCallback assistantCallback);
 
+    void getNewstRoomInfo(long anchorId, String liveId, IAssistantCallback callback);
+
     /**
      * sdk 上层应用回调
      */
@@ -302,6 +304,8 @@ public interface IMiLiveSdk {
         int GET_BARRAGE = 1103;
 
         int GET_LIVE_UID = 1104;
+
+        int GET_NEWST_ROOM_INFO = 1105;
         /**
          * 分享相关接口标志
          */

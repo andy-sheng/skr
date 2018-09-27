@@ -20,12 +20,15 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_ANCHOR_ID;
 import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_FORCE_UPLOAD_USERINFO_FLAG;
 import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_HEAD_URL;
+import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_LIVE_ID;
 import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_NICK_NAME;
 import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_SEX;
 import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_SIGN;
 import static com.wali.live.sdk.manager.MiLiveSdkController.PARAM_XUID;
+import static com.wali.live.sdk.manager.MiLiveSdkController.TYPE_METHOD_GET_NEWST_ROOM_INFO;
 import static com.wali.live.sdk.manager.MiLiveSdkController.TYPE_METHOD_THIRD_LOGIN_WITH_FORCE_UPLOAD_USEINFO;
 
 /**
@@ -469,15 +472,37 @@ public class MiLiveSdkServiceProxy implements ServiceConnection {
     }
 
     public void getLiveUid() {
-        Logger.w(TAG, "stopBarragePull");
+        Logger.w(TAG, "getLiveUid");
         if (mRemoteService == null) {
-            resolveNullService(IMiLiveSdk.ICallback.GET_BARRAGE);
+            resolveNullService(IMiLiveSdk.ICallback.GET_LIVE_UID);
         } else {
             try {
                 mRemoteService.getLiveUid(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
                         MiLiveSdkController.getInstance().getChannelSecret());
             } catch (RemoteException e) {
                 resolveException(e, IMiLiveSdk.ICallback.GET_LIVE_UID);
+            }
+        }
+    }
+
+    public void getNewstRoomInfo(long anchorId, String liveId) {
+        Logger.w(TAG, "getNewstRoomInfo");
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(PARAM_ANCHOR_ID, anchorId);
+            jsonObject.put(PARAM_LIVE_ID, liveId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (mRemoteService == null) {
+            resolveNullService(IMiLiveSdk.ICallback.GET_NEWST_ROOM_INFO);
+        } else {
+            try {
+                mRemoteService.opt(MiLiveSdkController.getInstance().getChannelId(), GlobalData.app().getPackageName(),
+                        MiLiveSdkController.getInstance().getChannelSecret(), TYPE_METHOD_GET_NEWST_ROOM_INFO, jsonObject.toString());
+            } catch (RemoteException e) {
+                resolveException(e, IMiLiveSdk.ICallback.GET_NEWST_ROOM_INFO);
             }
         }
     }

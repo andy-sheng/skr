@@ -46,8 +46,12 @@ public class MiLiveSdkController implements IMiLiveSdk {
     public static final String PARAM_SIGN = "param_sign";
     public static final String PARAM_FORCE_UPLOAD_USERINFO_FLAG = "param_force_upload_userinfo_flag";
 
+    public static final String PARAM_ANCHOR_ID = "param_anchor_id";
+    public static final String PARAM_LIVE_ID = "param_live_id";
+
     //TODO-method type-请不要更改
     public static final int TYPE_METHOD_THIRD_LOGIN_WITH_FORCE_UPLOAD_USEINFO = 1;
+    public static final int TYPE_METHOD_GET_NEWST_ROOM_INFO = 2;
 
     //action
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
@@ -105,6 +109,8 @@ public class MiLiveSdkController implements IMiLiveSdk {
     private static final String ACTION_STATISTIC = "statistic";
 
     private static final String ACTION_ADD_METHOD_TYPE_THIRD_LOGIN = "add_method_type_third_login";
+
+    private static final String ACTION_GET_NEWST_ROOM_INFO = "get_newst_room_info";
 
     /*SharedPreferences File & Key*/
     private static final String PREF_FILE_NAME = "liveassistant_upgrade";
@@ -165,6 +171,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         mMinVersionMap.put(ACTION_OP_GET_BARRAGE, 206003);
         mMinVersionMap.put(ACTION_OPEN_CHANNEL_LIST, 430020);
         mMinVersionMap.put(ACTION_ADD_METHOD_TYPE_THIRD_LOGIN, 450002);
+        mMinVersionMap.put(ACTION_GET_NEWST_ROOM_INFO, 451002);
     }
 
     public static IMiLiveSdk getInstance() {
@@ -360,6 +367,16 @@ public class MiLiveSdkController implements IMiLiveSdk {
 //        }
         checkHasInit();
         MiLiveSdkServiceProxy.getInstance().getLiveUid();
+    }
+
+    @Override
+    public void getNewstRoomInfo(long anchorId, String liveId, IAssistantCallback callback) {
+        Logger.d(TAG, "getNewstRoomInfo" + " liveId=" + liveId);
+        if (!checkVersion(ACTION_GET_NEWST_ROOM_INFO, callback)) {
+            return;
+        }
+        checkHasInit();
+        MiLiveSdkServiceProxy.getInstance().getNewstRoomInfo(anchorId, liveId);
     }
 
     @Override
