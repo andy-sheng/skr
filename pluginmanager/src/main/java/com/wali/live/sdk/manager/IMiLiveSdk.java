@@ -2,6 +2,7 @@ package com.wali.live.sdk.manager;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.support.annotation.IntRange;
 import android.support.annotation.Keep;
 
@@ -77,23 +78,23 @@ public interface IMiLiveSdk {
     /**
      * 尝试schema跳转
      *
-     * @param activity
+     * @param context
      * @param schema
      * @param callback
      * @return
      */
-    boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback);
+    boolean tryJumpBySchema(Context context, String schema, IAssistantCallback callback);
 
     /**
      * 尝试schema跳转
      *
-     * @param activity
+     * @param context
      * @param schema
      * @param callback
      * @param pageChannelId
      * @return
      */
-    boolean tryJumpBySchema(Activity activity, String schema, long pageChannelId, IAssistantCallback callback);
+    boolean tryJumpBySchema(Context context, String schema, long pageChannelId, IAssistantCallback callback);
 
     /**
      * 打开直播观看页面
@@ -101,7 +102,7 @@ public interface IMiLiveSdk {
      * @notice 不带gameId
      * @version 204000
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+    void openWatch(Context context, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
 
     /**
      * 打开直播回放页面
@@ -109,7 +110,7 @@ public interface IMiLiveSdk {
      * @notice 不带gameId
      * @version 204000
      */
-    void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
+    void openReplay(Context context, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback);
 
 
     /**
@@ -118,21 +119,21 @@ public interface IMiLiveSdk {
      * @notice 带gameId
      * @version 204000
      */
-    void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
+    void openWatch(Context context, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback);
 
     /**
      * 打开直播观看页面
      *
      * @notice 带频道id 不带gameId
      */
-     void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, long pageChannelId, IAssistantCallback callback);
+     void openWatch(Context context, long playerId, String liveId, String videoUrl, int liveType, long pageChannelId, IAssistantCallback callback);
 
     /**
      * 打开直播观看页面
      *
      * @version 205037
      */
-    void openWatchRoom(Activity activity, RoomInfo roomInfo, IAssistantCallback callback);
+    void openWatchRoom(Context context, RoomInfo roomInfo, IAssistantCallback callback);
 
 
     /**

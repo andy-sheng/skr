@@ -502,12 +502,12 @@ public class MiLiveSdkController implements IMiLiveSdk {
      * @return
      */
     @Override
-    public boolean tryJumpBySchema(Activity activity, String schema, IAssistantCallback callback) {
-        return tryJumpBySchema(activity, schema, 0, callback);
+    public boolean tryJumpBySchema(Context context, String schema, IAssistantCallback callback) {
+        return tryJumpBySchema(context, schema, 0, callback);
     }
 
     @Override
-    public boolean tryJumpBySchema(Activity activity, String schema, long pageChannelId, IAssistantCallback callback) {
+    public boolean tryJumpBySchema(Context context, String schema, long pageChannelId, IAssistantCallback callback) {
         //尝试使用schema跳转
         Uri uri = Uri.parse(schema);
         String host = uri.getHost();
@@ -519,18 +519,18 @@ public class MiLiveSdkController implements IMiLiveSdk {
                 String videoUrl = SchemeUtils.getString(uri, "videourl");
                 int liveType = SchemeUtils.getInt(uri, "type", 0);
                 int gameId = SchemeUtils.getInt(uri, "gameid", 0);
-                if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
+                if (playerId > 0) {
                     if (gameId > 0) {
                         RoomInfo roomInfo = RoomInfo.Builder.newInstance(playerId, liveId, videoUrl)
                                 .setGameId(String.valueOf(gameId))
                                 .setLiveType(liveType)
                                 .build();
-                        openWatchRoom(activity, roomInfo, callback);
+                        openWatchRoom(context, roomInfo, callback);
                     } else {
                         if (pageChannelId > 0) {
-                            openWatch(activity, playerId, liveId, videoUrl, liveType, pageChannelId, callback);
+                            openWatch(context, playerId, liveId, videoUrl, liveType, pageChannelId, callback);
                         } else {
-                            openWatch(activity, playerId, liveId, videoUrl, liveType, callback);
+                            openWatch(context, playerId, liveId, videoUrl, liveType, callback);
                         }
                     }
                     return true;
@@ -543,7 +543,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
                 String videoUrl = SchemeUtils.getString(uri, "videourl");
                 int liveType = SchemeUtils.getInt(uri, "type", 0);
                 if (!TextUtils.isEmpty(liveId) && !TextUtils.isEmpty(videoUrl)) {
-                    openReplay(activity, playerId, liveId, videoUrl, liveType, callback);
+                    openReplay(context, playerId, liveId, videoUrl, liveType, callback);
                     return true;
                 }
             }
@@ -552,7 +552,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
+    public void openWatch(Context context, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
         }
@@ -563,12 +563,12 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
-        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
+        jumpToSdk(context, bundle, ACTION_OPEN_WATCH, callback);
     }
 
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, long pageChannelId, IAssistantCallback callback) {
+    public void openWatch(Context context, long playerId, String liveId, String videoUrl, int liveType, long pageChannelId, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
         }
@@ -580,11 +580,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
         bundle.putLong(EXTRA_PAGE_CHANNEL_ID, pageChannelId);
-        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
+        jumpToSdk(context, bundle, ACTION_OPEN_WATCH, callback);
     }
 
     @Override
-    public void openReplay(Activity activity, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
+    public void openReplay(Context context, long playerId, String liveId, String videoUrl, int liveType, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_REPLAY, callback)) {
             return;
         }
@@ -595,11 +595,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_LIVE_ID, liveId);
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
-        jumpToSdk(activity, bundle, ACTION_OPEN_REPLAY, callback);
+        jumpToSdk(context, bundle, ACTION_OPEN_REPLAY, callback);
     }
 
     @Override
-    public void openWatch(Activity activity, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback) {
+    public void openWatch(Context context, long playerId, String liveId, String videoUrl, int liveType, String gameId, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_WATCH, callback)) {
             return;
         }
@@ -611,11 +611,11 @@ public class MiLiveSdkController implements IMiLiveSdk {
         bundle.putString(EXTRA_VIDEO_URL, videoUrl);
         bundle.putInt(EXTRA_LIVE_TYPE, liveType);
         bundle.putString(EXTRA_GAME_ID, gameId);
-        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH, callback);
+        jumpToSdk(context, bundle, ACTION_OPEN_WATCH, callback);
     }
 
     @Override
-    public void openWatchRoom(Activity activity, RoomInfo roomInfo, IAssistantCallback callback) {
+    public void openWatchRoom(Context context, RoomInfo roomInfo, IAssistantCallback callback) {
         if (!checkVersion(ACTION_OPEN_WATCH_ROOM, callback)) {
             return;
         }
@@ -623,7 +623,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
 
         Bundle bundle = getBasicBundle();
         bundle.putParcelable(EXTRA_WATCH_ROOM, roomInfo);
-        jumpToSdk(activity, bundle, ACTION_OPEN_WATCH_ROOM, callback);
+        jumpToSdk(context, bundle, ACTION_OPEN_WATCH_ROOM, callback);
     }
 
     @Override
@@ -778,7 +778,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return pInfo != null;
     }
 
-    private void jumpToSdk(@NonNull Activity activity, @NonNull Bundle bundle, @NonNull String action, IAssistantCallback callback) {
+    private void jumpToSdk(@NonNull Context context, @NonNull Bundle bundle, @NonNull String action, IAssistantCallback callback) {
         if (CommonUtils.isFastDoubleClick()) {
             Logger.d(TAG, "jumpToSdk fast double click, action=" + action);
             return;
@@ -789,7 +789,7 @@ public class MiLiveSdkController implements IMiLiveSdk {
         intent.setClassName(VersionCheckManager.PACKAGE_NAME, VersionCheckManager.JUMP_CLASS_NAME);
         intent.putExtras(bundle);
         intent.setAction(action);
-        if (!startActivity(activity, intent)) {
+        if (!startActivity(context, intent)) {
             if (callback != null) {
                 callback.notifyNotInstall();
                 getApkVersion();
@@ -814,11 +814,14 @@ public class MiLiveSdkController implements IMiLiveSdk {
         return bundle;
     }
 
-    private boolean startActivity(Activity activity, Intent intent) {
+    private boolean startActivity(Context context, Intent intent) {
         Logger.d(TAG, "start activity action=" + intent.getAction());
         if (intent.resolveActivity(GlobalData.app().getPackageManager()) != null) {
             try {
-                activity.startActivity(intent);
+                if (!(context instanceof Activity)) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+                context.startActivity(intent);
                 return true;
             } catch (Exception e) {
             }
