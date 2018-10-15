@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        titlebar:centerText="droidplugin专项调试"
+        titlebar:centerType="textView" />
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/titlebar"
+        android:orientation="vertical">
+
+        <com.common.view.viewpager.SlidingTabLayout
+            android:id="@+id/title_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/public_view_dimen_100"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/public_view_dimen_188"
+            android:layout_marginRight="@dimen/public_view_dimen_188" />
+
+        <View
+            android:id="@+id/split_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/public_view_dimen_2"
+            android:background="@color/public_black_trans_10" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/op_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:requiresFadingEdge="none" />
+    </LinearLayout>
+</RelativeLayout>

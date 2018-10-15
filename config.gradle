@@ -1,0 +1,160 @@
+ext {
+
+    android = [
+            compileSdkVersion: 27,
+            buildToolsVersion: "27.0.3",
+            minSdkVersion    : 16,
+            targetSdkVersion : 27,
+            versionCode      : 1,
+            versionName      : "1.0.0"
+    ]
+
+    version = [
+            androidSupportSdkVersion: "27.1.0",
+            retrofitSdkVersion      : "2.4.0",
+            dagger2SdkVersion       : "2.15",
+            glideSdkVersion         : "4.6.1",
+            butterknifeSdkVersion   : "8.8.1",
+            rxlifecycleSdkVersion   : "1.0",
+            rxlifecycle2SdkVersion  : "2.2.1",
+            espressoSdkVersion      : "3.0.1",
+            canarySdkVersion        : "1.5.4",
+            frescoVersion           : "1.9.0",
+            greenDaoVersion         : "3.2.2"
+    ]
+
+    dependencies = [
+            //support
+            //此库包含对 Material Design 用户界面实现的支持，依赖v4 。
+            /**
+             * ActionBar - 提供操作栏用户界面模式的实现。如需了解有关使用操作栏的详细信息，请参阅操作栏开发者指南。
+             * AppCompatActivity - 添加一个应用 Activity 类，此类可作为使用支持库操作栏实现的 Activity 的基础类。
+             * AppCompatDialog - 添加一个对话框类，此类可作为 AppCompat 主题对话框的基础类。
+             * ShareActionProvider - 包含对可以添加到操作栏中的标准化分享操作（例如电子邮件或发帖至社交应用）的支持。
+             */
+            "appcompat-v7"             : "com.android.support:appcompat-v7:${version["androidSupportSdkVersion"]}",
+
+            /**
+             * 包括
+             * AppBarLayout 配合下面这个layout用
+             * CollapsingToolbarLayout 配合下面这个layout用
+             * CoordinatorLayout  协调布局，例子 https://appkfz.com/2015/11/12/mastering-coordinator/?hmsr=toutiao.io
+             * FloatingActionButton
+             * NavigationView 侧滑菜单栏
+             * Snackbar  依赖于 view 的类似 toast 的提示
+             * TabLayout 关联viewpager
+             * TextInputLayout hint不会消失
+             */
+            "design"                   : "com.android.support:design:${version["androidSupportSdkVersion"]}",
+
+            "support-v4"               : "com.android.support:support-v4:${version["androidSupportSdkVersion"]}",
+            // 支持cardview
+            "cardview-v7"              : "com.android.support:cardview-v7:${version["androidSupportSdkVersion"]}",
+            "annotations"              : "com.android.support:support-annotations:${version["androidSupportSdkVersion"]}",
+            "recyclerview-v7"          : "com.android.support:recyclerview-v7:${version["androidSupportSdkVersion"]}",
+            // 支持从图像冲抽取突出颜色，用来凸显主题背景
+            "palette"                  : "com.android.support:palette-v7:${version["androidSupportSdkVersion"]}",
+
+            //network
+            "retrofit"                 : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",
+            "retrofit-converter-gson"  : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
+            "retrofit-adapter-rxjava"  : "com.squareup.retrofit2:adapter-rxjava:${version["retrofitSdkVersion"]}",
+            "retrofit-adapter-rxjava2" : "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitSdkVersion"]}",
+            "okhttp3"                  : "com.squareup.okhttp3:okhttp:3.10.0",
+            "okhttp-urlconnection"     : "com.squareup.okhttp:okhttp-urlconnection:2.0.0",
+            "glide"                    : "com.github.bumptech.glide:glide:${version["glideSdkVersion"]}",
+            "glide-compiler"           : "com.github.bumptech.glide:compiler:${version["glideSdkVersion"]}",
+            "glide-loader-okhttp3"     : "com.github.bumptech.glide:okhttp3-integration:${version["glideSdkVersion"]}",
+            "picasso"                  : "com.squareup.picasso:picasso:2.5.2",
+
+            "fresco"                   : "com.facebook.fresco:fresco:${version["frescoVersion"]}",
+            // For animated GIF support
+            "fresco-gif"               : "com.facebook.fresco:animated-gif:${version["frescoVersion"]}",
+            // For WebP support, including animated WebP
+            "fresco-animated-webp"     : "com.facebook.fresco:animated-webp:${version["frescoVersion"]}",
+            "fresco-webpsupport"       : "com.facebook.fresco:webpsupport:${version["frescoVersion"]}",
+            "fresco-okhttp"            : "com.facebook.fresco:imagepipeline-okhttp:${version["frescoVersion"]}",
+
+            //view
+            "autolayout"               : "com.zhy:autolayout:1.4.5",
+            "butterknife"              : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
+            "butterknife-compiler"     : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
+            "pickerview"               : "com.contrarywind:Android-PickerView:3.2.5",
+            "photoview"                : "com.github.chrisbanes.photoview:library:1.2.3",
+            "numberprogressbar"        : "com.daimajia.numberprogressbar:library:1.2@aar",
+            "nineoldandroids"          : "com.nineoldandroids:library:2.4.0",
+            "paginate"                 : "com.github.markomilos:paginate:0.5.1",
+            "vlayout"                  : "com.alibaba.android:vlayout:1.1.0@aar",
+            "lottie"                   : "com.airbnb.android:lottie:2.5.4",
+
+            //rx1
+            "rxandroid"                : "io.reactivex:rxandroid:1.2.1",
+            "rxjava"                   : "io.reactivex:rxjava:1.3.0",
+            "rxlifecycle"              : "com.trello:rxlifecycle:${version["rxlifecycleSdkVersion"]}",
+            "rxlifecycle-components"   : "com.trello:rxlifecycle-components:${version["rxlifecycleSdkVersion"]}",
+            "rxcache"                  : "com.github.VictorAlbertos.RxCache:runtime:1.7.0-1.x",
+            "rxcache-jolyglot-gson"    : "com.github.VictorAlbertos.Jolyglot:gson:0.0.3",
+            "rxbinding-recyclerview-v7": "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:1.0.1",
+            "rxpermissions"            : "com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar",
+            "rxerrorhandler"           : "me.jessyan:rxerrorhandler:1.0.1",
+
+            //rx2
+            "rxandroid2"               : "io.reactivex.rxjava2:rxandroid:2.0.2",
+            "rxjava2"                  : "io.reactivex.rxjava2:rxjava:2.1.12",
+            "rxlifecycle2"             : "com.trello.rxlifecycle2:rxlifecycle:${version["rxlifecycle2SdkVersion"]}",
+            "rxlifecycle2-android"     : "com.trello.rxlifecycle2:rxlifecycle-android:${version["rxlifecycle2SdkVersion"]}",
+            "rxlifecycle2-components"  : "com.trello.rxlifecycle2:rxlifecycle-components:${version["rxlifecycle2SdkVersion"]}",
+            "rxcache2"                 : "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x",
+            "rxpermissions2"           : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar",
+            "rxerrorhandler2"          : "me.jessyan:rxerrorhandler:2.1.1",
+
+            //tools
+            "dagger2"                  : "com.google.dagger:dagger:${version["dagger2SdkVersion"]}",
+            "dagger2-android"          : "com.google.dagger:dagger-android:${version["dagger2SdkVersion"]}",
+            "dagger2-android-support"  : "com.google.dagger:dagger-android-support:${version["dagger2SdkVersion"]}",
+            "dagger2-compiler"         : "com.google.dagger:dagger-compiler:${version["dagger2SdkVersion"]}",
+            "dagger2-android-processor": "com.google.dagger:dagger-android-processor:${version["dagger2SdkVersion"]}",
+            "androideventbus"          : "org.simple:androideventbus:1.0.5.1",
+            "eventbus"                 : "org.greenrobot:eventbus:3.1.1",
+            "otto"                     : "com.squareup:otto:1.3.8",
+            "gson"                     : "com.google.code.gson:gson:2.8.2",
+            "multidex"                 : "com.android.support:multidex:1.0.1",
+            "javax.annotation"         : "javax.annotation:jsr250-api:1.0",
+            "arouter"                  : "com.alibaba:arouter-api:1.3.1",
+            "arouter-compiler"         : "com.alibaba:arouter-compiler:1.1.4",
+            "progressmanager"          : "me.jessyan:progressmanager:1.5.0",
+            "retrofit-url-manager"     : "me.jessyan:retrofit-url-manager:1.2.5",
+            "lifecyclemodel"           : "me.jessyan:lifecyclemodel:1.0.1",
+            "xlog"                     : "com.elvishew:xlog:1.4.0",
+
+            // facebook 性能调试工具 国内被墙，不好用
+            "stetho"                   : "com.facebook.stetho:stetho:1.5.0",
+
+            "debug-db"                 : "com.amitshekhar.android:debug-db:1.0.3",
+
+            // 左滑退出activity
+            "swipebackhelper"          : 'com.jude:swipebackhelper:3.1.2',
+
+            //db
+            "greendao"                 : "org.greenrobot:greendao:${version["greenDaoVersion"]}",
+            "greendao-upgrade"         : "com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.0.3",
+
+            //pb
+            "wire"                     : "com.squareup.wire:wire-runtime:2.3.0+",
+
+            //test
+            "junit"                    : "junit:junit:4.12",
+            "androidJUnitRunner"       : "android.support.test.runner.AndroidJUnitRunner",
+            "runner"                   : "com.android.support.test:runner:1.0.1",
+            "espresso-core"            : "com.android.support.test.espresso:espresso-core:${version["espressoSdkVersion"]}",
+            "espresso-contrib"         : "com.android.support.test.espresso:espresso-contrib:${version["espressoSdkVersion"]}",
+            "espresso-intents"         : "com.android.support.test.espresso:espresso-intents:${version["espressoSdkVersion"]}",
+            "mockito-core"             : "org.mockito:mockito-core:1.+",
+            "timber"                   : "com.jakewharton.timber:timber:4.7.0",
+            "logger"                   : "com.orhanobut:logger:2.2.0",
+            "canary-debug"             : "com.squareup.leakcanary:leakcanary-android:${version["canarySdkVersion"]}",
+            "canary-release"           : "com.squareup.leakcanary:leakcanary-android-no-op:${version["canarySdkVersion"]}",
+            "umeng-analytics"          : "com.umeng.analytics:analytics:6.0.1"
+    ]
+
+}

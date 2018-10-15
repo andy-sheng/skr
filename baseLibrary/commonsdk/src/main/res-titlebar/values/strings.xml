@@ -1,0 +1,3 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="titlebar_search_hint" tools:ignore="ResourceName">Search</string>
+</resources>

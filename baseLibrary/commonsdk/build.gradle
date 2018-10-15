@@ -1,0 +1,159 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
+        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+
+        multiDexEnabled true
+    }
+
+    buildTypes {
+
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "USE_CANARY", "true"
+            debuggable true
+        }
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "USE_CANARY", "false"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    resourcePrefix "public_" //给 Module 内的资源名增加前缀, 避免资源名冲突
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java-gen-db', 'src/main/java-gen-pb']
+            res.srcDirs = ['src/main/res']
+            res.srcDirs += ['src/main/res-titlebar']
+            if(repluginHostEnable.toBoolean()){
+                java.srcDirs += 'src/main/java-replugin-host'
+            }else{
+                java.srcDirs += 'src/main/java-replugin-plugin'
+            }
+        }
+
+//        release {
+//            java.srcDirs += "src/main/java-stetho-no-op"
+//        }
+    }
+
+//    dexOptions {
+//        javaMaxHeapSize "1g"
+//        preDexLibraries = false
+//        additionalParameters = [    //配置multidex参数
+//                                    '--multi-dex',//多dex分包
+//                                    '--set-max-idx-number=30000',//每个包内方法数上限
+//                                    '--main-dex-list='+projectDir+'/main-dex-rule', //打包到主classes.dex的文件列表
+//                                    '--minimal-main-dex'
+//        ]
+//    }
+}
+
+dependencies {
+    // New api keyword is exactly the same as the old compile keyword.
+    // implementation 只会引入依赖的A，不会把A依赖的B也引进来
+    api(rootProject.ext.dependencies["support-v4"])
+    api(rootProject.ext.dependencies["appcompat-v7"])
+    api(rootProject.ext.dependencies["design"])
+
+    // 导入ARouter库
+    api(rootProject.ext.dependencies["arouter"])
+    // eventbus 事件总线
+    api rootProject.ext.dependencies["eventbus"]
+    //rx
+    api rootProject.ext.dependencies["rxjava2"]
+    api(rootProject.ext.dependencies["rxandroid2"])
+    api(rootProject.ext.dependencies["rxlifecycle2"])
+    api(rootProject.ext.dependencies["rxlifecycle2-android"])
+
+    // 权限检查
+    api(rootProject.ext.dependencies["rxpermissions2"])
+    // 日志
+    implementation(rootProject.ext.dependencies["xlog"])
+
+    // fresco图片加载
+    api(rootProject.ext.dependencies["fresco"])
+    api(rootProject.ext.dependencies["fresco-gif"])
+    api(rootProject.ext.dependencies["fresco-webpsupport"])
+    api(rootProject.ext.dependencies["fresco-animated-webp"])
+    api(rootProject.ext.dependencies["fresco-okhttp"])
+
+    //greendao
+    api rootProject.ext.dependencies["greendao"]
+
+    //wire pb
+    api rootProject.ext.dependencies["wire"]
+
+    api rootProject.ext.dependencies["swipebackhelper"]
+
+    debugImplementation rootProject.ext.dependencies["debug-db"]
+//    debugApi rootProject.ext.dependencies["stetho"]
+    // 封装了一个可以上拉刷新，下拉加载的recyclerview库。后续把这些库以源码的方式一一引入，
+    // 或者以一个单独module的方式演示这些库的使用。
+//    implementation rootProject.ext.dependencies["paginate"]
+    // 使用矢量图来播动画的库
+//    implementation rootProject.ext.dependencies["lottie"]
+
+    api files('libs/milinksdk-3.2.0.jar')
+
+    if (virtualApkEnable.toBoolean()) {
+        // VirtualApk 组件
+        api 'com.didi.virtualapk:core:0.9.8'
+    }
+
+    if (droidPluginEnable.toBoolean()) {
+        // DroidPlugin 组件
+        api project(":baseLibrary:DroidPlugin")
+    }
+
+    if (repluginHostEnable.toBoolean()) {
+        // replugin 组件
+        api project(":baseLibrary:replugin-host-library")
+    }
+}
+
+//与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
+greendao {
+
+    schemaVersion 1//数据库版本号
+
+    daoPackage 'com.common.base.db'//设置DaoMaster、DaoSession、Dao包名
+
+    targetGenDir 'src/main/java-gen-db'//设置DaoMaster、DaoSession、Dao目录
+
+    //targetGenDirTest：设置生成单元测试目录
+
+    //generateTests：设置自动生成单元测试用例
+
+}
+
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: local_maven)
+        pom.groupId = 'com.mi.live'
+        pom.artifactId = 'common-sdk'
+        pom.version = '2.0'
+    }
+}

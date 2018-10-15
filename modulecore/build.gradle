@@ -1,0 +1,69 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    resourcePrefix "core_" //给 Module 内的资源名增加前缀, 避免资源名冲突
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
+        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += 'src/main/java-gen-db'
+            java.srcDirs += 'src/main/java-gen-pb'
+            res.srcDirs += ['src/main/res-login']
+        }
+    }
+
+}
+
+dependencies {
+    // commonsdk 也能远程 maven 依赖
+//    api "com.mi.live:common-sdk:2.0"
+    api project(":baseLibrary:commonsdk")
+    // arouter 解析注解代码，需要在 defaultConfig 中注明 moduleName
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+
+    api files('libs/protobuf-java-2.6.0.jar')
+    // 小米oauth登录用
+    api files('libs/oauth.jar')
+    api files('libs/ks3-android-sdk-v-1.4.6.jar')
+
+}
+
+//与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
+greendao {
+
+    schemaVersion 3//数据库版本号
+
+    daoPackage 'com.common.core.db'//设置DaoMaster、DaoSession、Dao包名
+
+    targetGenDir 'src/main/java-gen-db'//设置DaoMaster、DaoSession、Dao目录
+
+    //targetGenDirTest：设置生成单元测试目录
+
+    //generateTests：设置自动生成单元测试用例
+
+}

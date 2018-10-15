@@ -1,35 +1,86 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.1"
-
-
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
     defaultConfig {
-        applicationId "com.wali.live.sdk.manager.demo"
-        minSdkVersion 18
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        applicationId "com.wali.live.pldemo"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionName rootProject.ext.android["versionName"]
+        versionCode rootProject.ext.android["versionCode"]
+        multiDexEnabled true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_7
+    }
+
+
+    flavorDimensions("channel")
+
+    productFlavors {
+        channel_default{
+            flavorDimensions("channel")
+            buildConfigField("String","CHANNEL_NAME",'\"DEFAULT\"')
+            resValue("string","demo_title",'这是default demo')
+        }
+
+        channel_replugin_plugin {
+            flavorDimensions("channel")
+            buildConfigField("String","CHANNEL_NAME",'\"REPLUGIN_PLUGIN\"')
+            resValue("string","demo_title",'这是replugin_plugin demo')
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../app/com.xiaomi.debug.keystore")
+            storePassword "XiaomiIs#1"
+            keyAlias "release_key"
+            keyPassword "XiaomiIs#1"
+            v2SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../app/proguard-rules.pro'
+        }
+    }
+}
+
+if (virtualApkEnable.toBoolean()) {
+    apply plugin: 'com.didi.virtualapk.plugin'
+
+    virtualApk {
+        packageId = 0x6f // the package id of Resources.
+        targetHost = './app' // the path of application module in host project.
+        applyHostMapping = true //optional, default value: true.
+    }
+}
+
+
+if (repluginPluginEnable.toBoolean()) {
+    apply plugin: 'replugin-plugin-gradle'
+
+    dependencies {
+        api project(":replugin-plugin-library")
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-//    compile project(':pluginmanager')
-    compile files('libs/oauth.jar')
-    compile files('libs/accountsdk.jar')
-    compile files('libs/liveplugin.jar')
+    //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
+    api project(":modulecore")
+    api project(":commonservice")
+    // the following aars are also compiled in host project, so they will be filterd when build plugin apk.
+    // but, wo can still visit their Class and Resources.
+//    implementation 'com.didi.virtualapk:core:0.9.8'
 }

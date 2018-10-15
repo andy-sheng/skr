@@ -1,61 +1,59 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-apply from: 'buildsystem/dependencies.gradle'
+apply from: "config.gradle"
 
-configurations.all {
-    // check for updates every build
-    resolutionStrategy.cacheChangingModulesFor 5, 'minutes'
-}
-
+/**
+ * buildscript里是gradle脚本执行所需依赖，分别是对应的maven库和插件
+ */
 buildscript {
 
     repositories {
-        jcenter()
-        mavenCentral()
-
-        maven {
-            url "http://dl.bintray.com/vigidroid/maven"
+        /*** 优先从本地 Maven 中找库 ***/
+//        flatDir{dirs '...replugin-host-gradle.jar'} // 直接找 jar 包
+        maven{
+            //远程maven路径
+            url 'https://raw.githubusercontent.com/simonjava/maven_repo/master'
         }
+        // 这里改成自己的本地路径
+        maven{ url local_maven }
+
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        mavenCentral()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-        classpath "com.fernandocejas.frodo:frodo-plugin:0.8.3"
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        if (virtualApkEnable.toBoolean()) {
+            //VirtualApk
+            classpath 'com.didi.virtualapk:gradle:0.9.8.6'
+        }
+        if (repluginHostEnable.toBoolean()){
+            // replugin 9.9 版本在本地 maven 中
+            classpath 'com.qihoo360.replugin:replugin-host-gradle:9.9'
+        }
+        if (repluginPluginEnable.toBoolean()){
+            // replugin 9.9 版本在本地 maven 中
+            classpath 'com.qihoo360.replugin:replugin-plugin-gradle:9.8'
+        }
 
-        classpath 'me.vigi:fat-aar-plugin:0.2.8'
-
-        // 图片压缩
-//        classpath 'com.mogujie.gradle:tinyPicPlugin:1.1.4'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
+/**
+ * allprojects里是项目本身需要的依赖，比如我现在要依赖我自己maven库的
+ */
 allprojects {
-
     repositories {
+        maven{
+            //远程maven路径
+            url 'https://raw.githubusercontent.com/simonjava/maven_repo/master'
+        }
+        maven{ url local_maven }
+        google()
         jcenter()
-        mavenCentral()
-        //        flatDir {
-//        maven { url '//            dirs \'../framework/libs\'' }
-        //        }
-
-        maven {
-            url 'https://maven.google.com'
-        }
-
-        maven {
-            url 'https://raw.githubusercontent.com/ModerateFish/mvn-repo/master/'
-        }
-    }
-    ext {
-        androidApplicationId = 'com.fernanependocejas.android10.sample.presentation'
-        androidVersionCode = 1
-        androidVersionName = "1.0"
-        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
-        testApplicationId = 'com.fernandocejas.android10.sample.presentation.test'
     }
 }
 

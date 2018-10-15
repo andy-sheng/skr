@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wali.live.moduletest">
+
+
+    <application
+        android:name="com.common.base.BaseApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/test_icon"
+        android:label="@string/test_app_name"
+        android:supportsRtl="true"
+        android:theme="@style/public_AppTheme_Main">
+        <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
+        <meta-data
+            android:name="com.wali.live.modulechannel.TestConfiguration"
+            android:value="ConfigModule" />
+        <activity android:name=".activity.TestSdkActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

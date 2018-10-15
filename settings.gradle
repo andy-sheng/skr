@@ -1,1 +1,16 @@
-include ':greendaogenerator', ':data', ':common', ':livecommon', ':watchclient', ':livesdkapp', ':engineplayer', ':liveclient', ':enginelive', ':enginebase', ':pluginmanager', ':plugindemo', ':pluginplayerdemo', ':livesdkaar', ':aardemo', ':pluginplayer', ':lite', ':litedemo', ':litedemo', ':litegreendaogenerator', ':pullToRefreshLibrary'
+include ':app', ':baseLibrary:commonsdk', ':commonservice', ':modulecore', ':modulewatch', ':modulechannel', ':moduletest'
+
+include ':plugindemo'
+
+if (droidPluginEnable.toBoolean()) {
+    include ':baseLibrary:DroidPlugin'
+}
+
+if (repluginHostEnable.toBoolean()) {
+    include ':baseLibrary:replugin-host-gradle', ':baseLibrary:replugin-host-library'
+}
+if (repluginPluginEnable.toBoolean()) {
+    include ':baseLibrary:replugin-plugin-gradle', ':baseLibrary:replugin-plugin-library'
+}
+
+

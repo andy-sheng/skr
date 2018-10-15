@@ -1,0 +1,27 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
+        consumerProguardFiles 'replugin-rules.pro'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+    // 务必要加上此段话，这样默认会出Debug版AAR，会带上日志方便定位
+    defaultPublishConfig "debug"
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly rootProject.ext.dependencies["appcompat-v7"]
+}
+
+
