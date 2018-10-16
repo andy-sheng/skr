@@ -96,6 +96,12 @@ public class UploadUtils {
 
         String localPath;
 
+        /**
+         * 上传文件类型(包含image/jpg, image/png, image/gif, image/bmp图片格式,图片类型可从FileUtils中获得
+         * audio/音频类型
+         * video/视频类型
+         * 等
+         */
         String mimeType;
 
         /**
@@ -197,6 +203,22 @@ public class UploadUtils {
             }
 
             public UploadParams build() {
+                if (this.mUploadParams == null) {
+                    this.mUploadParams = new UploadParams();
+                }
+
+                if (TextUtils.isEmpty(mUploadParams.getLocalPath())) {
+                    throw new IllegalArgumentException("UploadParams.Build must setLocalPath not null");
+                }
+
+                if (TextUtils.isEmpty(mUploadParams.getMimeType())) {
+                    throw new IllegalArgumentException("UploadParams.Build must setMimeType not null");
+                }
+
+                if (mUploadParams.getType() == null) {
+                    throw new IllegalArgumentException("UploadParams.Build must set AuthType not null");
+                }
+
                 return this.mUploadParams;
             }
         }
