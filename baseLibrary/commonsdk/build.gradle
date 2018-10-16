@@ -42,6 +42,7 @@ android {
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen-db', 'src/main/java-gen-pb']
+            java.srcDirs +=  'src/main/java-player'
             res.srcDirs = ['src/main/res']
             res.srcDirs += ['src/main/res-titlebar']
             if(repluginHostEnable.toBoolean()){
@@ -107,8 +108,9 @@ dependencies {
 
     debugImplementation rootProject.ext.dependencies["debug-db"]
 
-    api 'com.google.android.exoplayer:exoplayer-core:r2.4.1'
-    api 'com.google.android.exoplayer:exoplayer-hls:r2.4.1'
+    // exo 播放器
+    api rootProject.ext.dependencies["exoplayer-core"]
+    api rootProject.ext.dependencies["exoplayer-hls"]
 
 //    debugApi rootProject.ext.dependencies["stetho"]
     // 封装了一个可以上拉刷新，下拉加载的recyclerview库。后续把这些库以源码的方式一一引入，

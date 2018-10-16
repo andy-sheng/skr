@@ -1,3 +1,5 @@
+// 注意 会修改 jar 包的 activity ，编译完可能要 checkout 一下
+
 changePLuginBuildModule(){
     echo "changeBuildModule$1"
 	if [[ $1 = true ]]; then

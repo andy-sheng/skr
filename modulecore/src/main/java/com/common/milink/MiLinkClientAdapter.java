@@ -75,7 +75,7 @@ public class MiLinkClientAdapter {
 //                String inputIp = PreferenceUtils.getSettingString(U.app(), "spKeyIpManual", "");
 //                String inputPort = PreferenceUtils.getSettingString(U.app(), "spKeyPortManual", "");
 //                MyLog.w(TAG + " initMilinkSdkByLoginMode inputIp == " + inputIp + " inputPort == " + inputPort);
-//                MiLinkClientIpc.init(vuid, serviceToken, sSecurity, null, first);
+                MiLinkClientIpc.init(vuid, serviceToken, sSecurity, null, first);
 //                if (!TextUtils.isEmpty(inputIp) && !TextUtils.isEmpty(inputPort)) {   //ip不为空
 //                    MyLog.w(TAG + " enableConnectModeManual true");
 //                    MiLinkClientIpc.enableConnectModeManual(true);

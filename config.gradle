@@ -142,6 +142,10 @@ ext {
             //pb
             "wire"                     : "com.squareup.wire:wire-runtime:2.3.0+",
 
+            //exoplayer
+            "exoplayer-core"           : "com.google.android.exoplayer:exoplayer-core:r2.4.1",
+            "exoplayer-hls"            : "com.google.android.exoplayer:exoplayer-hls:r2.4.1",
+
             //test
             "junit"                    : "junit:junit:4.12",
             "androidJUnitRunner"       : "android.support.test.runner.AndroidJUnitRunner",
