@@ -2,10 +2,6 @@ package com.common.player;
 
 import android.view.Surface;
 
-import com.google.android.exoplayer2.C;
-
-import java.util.List;
-
 /**
  * Created by yangli on 2017/9/20.
  */
