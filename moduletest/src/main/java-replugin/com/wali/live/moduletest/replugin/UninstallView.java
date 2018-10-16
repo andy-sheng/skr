@@ -88,7 +88,7 @@ public class UninstallView extends RelativeLayout {
     }
 
     private void loadData() {
-        if (U.getPermissionUtils().checkExternalStorage(new RxPermissions((Activity) getContext()))) {
+        if (U.getPermissionUtils().checkExternalStorage((Activity) getContext())) {
             Observable.create(new ObservableOnSubscribe<List<PackageData>>() {
                 @Override
                 public void subscribe(ObservableEmitter<List<PackageData>> emitter) throws Exception {
@@ -137,7 +137,7 @@ public class UninstallView extends RelativeLayout {
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
                 }
-            }, new RxPermissions(U.getActivityUtils().getTopActivity()));
+            }, (Activity) getContext());
         }
     }
 

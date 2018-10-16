@@ -40,7 +40,7 @@ public class ChannelSdkActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (!U.getPermissionUtils().checkExternalStorage(new RxPermissions(ChannelSdkActivity.this))) {
+                if (!U.getPermissionUtils().checkExternalStorage(ChannelSdkActivity.this)) {
                     U.getPermissionUtils().requestExternalStorage(new PermissionUtil.RequestPermission() {
                         @Override
                         public void onRequestPermissionSuccess() {
@@ -56,7 +56,7 @@ public class ChannelSdkActivity extends BaseActivity {
                         public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                             MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
                         }
-                    }, new RxPermissions(U.getActivityUtils().getTopActivity()));
+                    }, ChannelSdkActivity.this);
                 }
 
                 U.getActivityUtils().showSnackbar("测试", true);

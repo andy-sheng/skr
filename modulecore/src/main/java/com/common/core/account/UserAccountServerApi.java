@@ -19,7 +19,7 @@ import io.reactivex.Observable;
  * Created by chengsimin on 16/7/1.
  */
 public class UserAccountServerApi {
-    public final static String TAG = "UserAccountServerStore";
+    public final static String TAG = "UserAccountServerApi";
 
 
     /**
@@ -94,6 +94,7 @@ public class UserAccountServerApi {
             try {
                 LoginRsp rsp = LoginRsp.parseFrom(rspData.getData());
                 MyLog.w(TAG, "loginRspFromServer response : \n" + rsp.toString());
+
                 return rsp;
             } catch (Exception e) {
                 MyLog.e(e);

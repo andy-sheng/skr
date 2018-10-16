@@ -47,7 +47,7 @@ public class WatchSdkAcitivity extends BaseActivity {
             public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                 MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
             }
-        }, new RxPermissions(U.getActivityUtils().getTopActivity()));
+        }, this);
 
         FrescoWorker.loadImage(mLoginBtn,
                 ImageFactory.newHttpImage("http://yifeng.studio/assets/imgSite/avatar.png")

@@ -16,6 +16,7 @@
 package com.common.utils;
 
 import android.Manifest;
+import android.app.Activity;
 
 import com.common.log.MyLog;
 import com.tbruyelle.rxpermissions2.Permission;
@@ -42,7 +43,7 @@ public class PermissionUtil {
     public static final String TAG = "Permission";
 
 
-     PermissionUtil() {
+    PermissionUtil() {
     }
 
     public interface RequestPermission {
@@ -66,6 +67,15 @@ public class PermissionUtil {
         void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions);
     }
 
+    public void requestPermission(final RequestPermission requestPermission, Activity activity, String... permissions) {
+        if (activity == null) {
+            activity = U.getActivityUtils().getTopActivity();
+            if (activity == null) {
+                return;
+            }
+        }
+        requestPermission(requestPermission, new RxPermissions(activity), permissions);
+    }
 
     public void requestPermission(final RequestPermission requestPermission, RxPermissions rxPermissions, String... permissions) {
         if (permissions == null || permissions.length == 0) return;
@@ -122,8 +132,18 @@ public class PermissionUtil {
 
     }
 
-    public boolean checkExternalStorage(RxPermissions rxPermissions) {
-        return rxPermissions.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    public boolean checkExternalStorage(Activity activity) {
+        return checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+    public boolean checkPermission(Activity activity, String permission) {
+        if (activity == null) {
+            activity = U.getActivityUtils().getTopActivity();
+            if (activity == null) {
+                return false;
+            }
+        }
+        return new RxPermissions(activity).isGranted(permission);
     }
 
     public boolean checkPermission(RxPermissions rxPermissions, String permission) {
@@ -133,40 +153,40 @@ public class PermissionUtil {
     /**
      * 请求摄像头权限
      */
-    public void launchCamera(RequestPermission requestPermission, RxPermissions rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+    public void launchCamera(RequestPermission requestPermission, Activity activity) {
+        requestPermission(requestPermission, activity, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
     }
 
 
     /**
      * 请求外部存储的权限
      */
-    public void requestExternalStorage(RequestPermission requestPermission, RxPermissions rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    public void requestExternalStorage(RequestPermission requestPermission, Activity activity) {
+        requestPermission(requestPermission, activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
 
     /**
      * 请求发送短信权限
      */
-    public void requestSendSms(RequestPermission requestPermission, RxPermissions rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.SEND_SMS);
+    public void requestSendSms(RequestPermission requestPermission, Activity activity) {
+        requestPermission(requestPermission, activity, Manifest.permission.SEND_SMS);
     }
 
 
     /**
      * 请求打电话权限
      */
-    public void requestCallPhone(RequestPermission requestPermission, RxPermissions rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.CALL_PHONE);
+    public void requestCallPhone(RequestPermission requestPermission, Activity activity) {
+        requestPermission(requestPermission, activity, Manifest.permission.CALL_PHONE);
     }
 
 
     /**
      * 请求获取手机状态的权限
      */
-    public void requestReadPhonestate(RequestPermission requestPermission, RxPermissions rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.READ_PHONE_STATE);
+    public void requestReadPhonestate(RequestPermission requestPermission, Activity activity) {
+        requestPermission(requestPermission, activity, Manifest.permission.READ_PHONE_STATE);
     }
 
 }

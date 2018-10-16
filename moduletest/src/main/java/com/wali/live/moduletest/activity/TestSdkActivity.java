@@ -18,8 +18,10 @@ import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.log.MyLog;
+import com.common.utils.PermissionUtil;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wali.live.moduletest.R;
 
 import java.io.File;
@@ -173,6 +175,29 @@ public class TestSdkActivity extends BaseActivity {
                 });
             }
         }));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!U.getPermissionUtils().checkExternalStorage(this)){
+            U.getPermissionUtils().requestExternalStorage(new PermissionUtil.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    MyLog.d(TAG, "onRequestPermissionSuccess");
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                    MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
+                }
+            }, this);
+        }
     }
 
     @Override

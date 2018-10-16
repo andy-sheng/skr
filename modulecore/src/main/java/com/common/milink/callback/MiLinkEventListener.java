@@ -2,6 +2,7 @@ package com.common.milink.callback;
 
 import com.common.log.MyLog;
 import com.common.milink.event.MiLinkEvent;
+import com.common.utils.U;
 import com.mi.milink.sdk.client.IEventListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,5 +45,6 @@ public class MiLinkEventListener implements IEventListener {
     public void onEventPermissionDenied() {
         MyLog.d(TAG,"onEventPermissionDenied" );
         // 移动网络开启，但是禁止app联网时会触发此提示，保证提示在app在前台时才弹出
+        
     }
 }

@@ -151,8 +151,9 @@ public class UserAccountManager {
                     userAccount.setServiceToken(rsp.getServiceToken());
                     userAccount.setSSecurity(rsp.getSecurityKey());
                     userAccount.setNeedEditUserInfo(rsp.getIsSetGuide());
+                    userAccount.setIsLogOff(false);
 
-                    UserAccountManager.getInstance().onLoginResult(userAccount);
+                    onLoginResult(userAccount);
                 } else {
                     emitter.onError(new Exception("retcode = " + rsp.getRetCode()));
                 }
@@ -195,6 +196,7 @@ public class UserAccountManager {
                 userAccount.setServiceToken(rsp.getServiceToken());
                 userAccount.setSSecurity(rsp.getSecurityKey());
                 userAccount.setNeedEditUserInfo(rsp.getIsSetGuide());
+                userAccount.setIsLogOff(false);
 //                userAccount.setMiid(miid);
                 UserAccountManager.getInstance().onLoginResult(userAccount);
                 emitter.onComplete();

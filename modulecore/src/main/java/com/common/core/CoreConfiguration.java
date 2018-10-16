@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
+import com.common.core.account.UserAccountManager;
 import com.common.integration.ConfigModule;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -62,6 +63,7 @@ public class CoreConfiguration implements ConfigModule {
             @Override
             public void onCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
+                UserAccountManager.getInstance().init();
             }
 
             @Override
