@@ -11,12 +11,12 @@ import java.util.HashMap;
  */
 public class FileUtils {
 
-    public static final int KB = 1024;
-    public static final int MB = 1024 * KB;
+    public int KB = 1024;
+    public int MB = 1024 * KB;
 
-    private static final HashMap<String, String> mFileTypes = new HashMap<>();
+    private final HashMap<String, String> mFileTypes = new HashMap<>();
 
-    static {
+    {
         // images
         mFileTypes.put("FFD8FF", "jpg");
         mFileTypes.put("89504E47", "png");

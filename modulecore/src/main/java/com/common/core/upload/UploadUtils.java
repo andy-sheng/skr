@@ -31,8 +31,7 @@ public class UploadUtils {
                 if (!TextUtils.isEmpty(fileMd5)) {
                     // 获取上传的bucket url，先到app业务服务器鉴权等，然后开始上传
                     // 目前用的是金山云的存储
-                    long rid = System.currentTimeMillis();
-                    AuthResponse response = UploadServerApi.getKs3AuthToken(rid, "PUT", fileMd5,
+                    AuthResponse response = UploadServerApi.getKs3AuthToken(up.getRid(), "PUT", fileMd5,
                             up.mimeType, DateUtil.GetUTCTime(), "",
                             up.getSuffixFromFilePath(), up.type);
                     if (response != null) {
@@ -61,7 +60,7 @@ public class UploadUtils {
                                 up.setBucketName(fileInfo.getBucket());
                             }
 
-                            Ks3FileUploader uploader = new Ks3FileUploader(up, rid, mKs3AuthToken, fileInfo.getAcl(), response.getDate(), callBuck);
+                            Ks3FileUploader uploader = new Ks3FileUploader(up, mKs3AuthToken, fileInfo.getAcl(), response.getDate(), callBuck);
                             return uploader.startUpload();
 //                            Ks3FileUploader uploader = new Ks3FileUploader(att, att.bucketName, fileInfo.getObjectKey(),
 //                                    fileInfo.getAcl(), att.getAttId(), mKs3AuthToken, callBack, response.getDate(), type);
@@ -116,6 +115,15 @@ public class UploadUtils {
         String bucketName;
         String objectKey;
 
+        private long rid;
+
+        public long getRid() {
+            return rid;
+        }
+
+        private void setRid(long rid) {
+            this.rid = rid;
+        }
 
         public String getLocalPath() {
             return localPath;
@@ -217,6 +225,10 @@ public class UploadUtils {
 
                 if (mUploadParams.getType() == null) {
                     throw new IllegalArgumentException("UploadParams.Build must set AuthType not null");
+                }
+
+                if (mUploadParams.getRid() == 0) {
+                    mUploadParams.setRid(System.currentTimeMillis());
                 }
 
                 return this.mUploadParams;

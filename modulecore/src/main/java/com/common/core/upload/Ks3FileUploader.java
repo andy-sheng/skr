@@ -68,9 +68,9 @@ public class Ks3FileUploader {
 
     private Ks3Client mKs3Client;
 
-    public Ks3FileUploader(UploadUtils.UploadParams uploadParams, long msgId, String ks3AuthToken, String acl, String authDate, UploadCallBack uploadCallBack) {
+    public Ks3FileUploader(UploadUtils.UploadParams uploadParams, String ks3AuthToken, String acl, String authDate, UploadCallBack uploadCallBack) {
         this.mUploadParams = uploadParams;
-        this.mMsgId = msgId;
+        this.mMsgId = uploadParams.getRid();
         this.mToken = ks3AuthToken;
         this.mList = generateObjectAcl(acl);
         this.authDate = authDate;
@@ -239,8 +239,8 @@ public class Ks3FileUploader {
                 request = new InitiateMultipartUploadRequest(uploadParams.getBucketName(), uploadParams.getObjectKey());
                 request.setCannedAcl(mList);
                 request.setHttpMethod(HttpMethod.POST);
-                request.setContentType(uploadParams.getMimeType());
-                final long startTime = System.currentTimeMillis();
+//                request.setContentType(uploadParams.getMimeType());
+//                final long startTime = System.currentTimeMillis();
                 client.initiateMultipartUpload(request,
                         new InitiateMultipartUploadResponceHandler() {
                             @Override
@@ -251,7 +251,7 @@ public class Ks3FileUploader {
                             @Override
                             public void onFailure(int statesCode, Ks3Error ks3Error, Header[] responceHeaders,
                                                   String response, Throwable throwable, StringBuffer var4) {
-
+                                MyLog.w(TAG, "sliceFile error:" + ks3Error.getErrorCode() + " " + ks3Error.getErrorMessage() + " " + uploadParams.getLocalPath());
                             }
                         });
                 emitter.onComplete();
@@ -445,8 +445,8 @@ public class Ks3FileUploader {
                                 MyLog.e(e);
                             }
 
-                            String multipartKs3AuthToken = UploadServerApi.getMultipartKs3AuthToken(System.currentTimeMillis(), Resource == null ? "" : Resource, date == null ? "" : date
-                                    , httpMethod == null ? "" : httpMethod, contentMD5 == null ? "" : contentMD5, contentType == null ? "" : contentType, aclData);
+                            String multipartKs3AuthToken = UploadServerApi.getMultipartKs3AuthToken(mUploadParams.getRid(), Resource == null ? "" : Resource, date == null ? "" : date
+                                    , httpMethod == null ? "" : httpMethod, contentMD5 == null ? "" : contentMD5, contentType == null ? "" : contentType, aclData, mUploadParams.getBucketName());
                             if (!TextUtils.isEmpty(multipartKs3AuthToken)) {
                                 mToken = multipartKs3AuthToken;
                                 authDate = date;

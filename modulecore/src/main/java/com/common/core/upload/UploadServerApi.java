@@ -88,7 +88,7 @@ public class UploadServerApi {
 
     /**
      * 分片上传认证
-     *
+     * todo 等服务器支持
      * @param attId
      * @param resource
      * @param date
@@ -96,9 +96,10 @@ public class UploadServerApi {
      * @param contentMd5
      * @param contentType
      * @param acl
+     * @param bucketName
      * @return
      */
-    public static String getMultipartKs3AuthToken(long attId, String resource, String date, String httpVerb, String contentMd5, String contentType, String acl) {
+    public static String getMultipartKs3AuthToken(long attId, String resource, String date, String httpVerb, String contentMd5, String contentType, String acl, String bucketName) {
         MultipartAuthRequest multipartAuthRequest = new MultipartAuthRequest.Builder()
                 .setRid(attId).setResource(resource).setDate(date).setHttpVerb(httpVerb).setContentMd5(contentMd5).setContentType(contentType)
                 .setAcl(acl).build();
