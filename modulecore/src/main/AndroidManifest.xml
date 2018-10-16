@@ -17,8 +17,6 @@
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
 
-
-
         <!-- milinkservice -->
         <service
             android:name="com.mi.milink.sdk.service.MiLinkService"
@@ -31,7 +29,7 @@
 
         <receiver
             android:name="com.mi.milink.sdk.receiver.AlarmReceiver"
-            android:process=":remote">
+            android:process=":remote" >
             <intent-filter>
                 <action android:name="com.milink.sdk.heartbeat" />
             </intent-filter>
@@ -40,9 +38,10 @@
             </intent-filter>
         </receiver>
 
+
         <receiver
             android:name="com.mi.milink.sdk.receiver.NetworkReceiver"
-            android:process=":remote">
+            android:process=":remote" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -50,12 +49,11 @@
 
         <receiver
             android:name="com.mi.milink.sdk.receiver.BootReceiver"
-            android:process=":remote">
+            android:process=":remote" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
 
     </application>
 

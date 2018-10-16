@@ -29,6 +29,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="小米登录" />
+
+        <TextView
+            android:id="@+id/mi_upload"
+            android:layout_margin="@dimen/public_view_dimen_30"
+            android:textSize="@dimen/public_view_dimen_30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mi_btn"
+            android:text="上传文件"/>
     </RelativeLayout>
 
 

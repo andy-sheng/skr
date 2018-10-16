@@ -25,6 +25,10 @@ android {
                 includeCompileClasspath true
             }
         }
+
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
     }
 
     signingConfigs {

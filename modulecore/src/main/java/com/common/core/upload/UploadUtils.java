@@ -11,13 +11,12 @@ import com.wali.live.proto.AuthUpload.AuthType;
 import com.wali.live.proto.AuthUpload.FileInfo;
 
 import java.io.File;
-import java.io.IOException;
 
 public class UploadUtils {
 
     public final static String TAG = "UploadUtils";
 
-    public boolean upload(UploadParams up) {
+    public static boolean upload(UploadParams up, UploadCallBack callBuck) {
         boolean check = check(up);
         if (check) {
             File file = new File(up.localPath);
@@ -26,14 +25,15 @@ public class UploadUtils {
                 String fileMd5 = null;
                 try {
                     fileMd5 = Md5Utils.md5AsBase64(file);
-                } catch (IOException e) {
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 if (!TextUtils.isEmpty(fileMd5)) {
                     // 获取上传的bucket url，先到app业务服务器鉴权等，然后开始上传
                     // 目前用的是金山云的存储
                     long rid = System.currentTimeMillis();
                     AuthResponse response = UploadServerApi.getKs3AuthToken(rid, "PUT", fileMd5,
-                            up.mineType, DateUtil.GetUTCTime(), "",
+                            up.mimeType, DateUtil.GetUTCTime(), "",
                             up.getSuffixFromFilePath(), up.type);
                     if (response != null) {
                         String mKs3AuthToken = response.getAuthorization();
@@ -60,6 +60,9 @@ public class UploadUtils {
                             if (!TextUtils.isEmpty(fileInfo.getBucket())) {
                                 up.setBucketName(fileInfo.getBucket());
                             }
+
+                            Ks3FileUploader uploader = new Ks3FileUploader(up, rid, mKs3AuthToken, fileInfo.getAcl(), response.getDate(), callBuck);
+                            return uploader.startUpload();
 //                            Ks3FileUploader uploader = new Ks3FileUploader(att, att.bucketName, fileInfo.getObjectKey(),
 //                                    fileInfo.getAcl(), att.getAttId(), mKs3AuthToken, callBack, response.getDate(), type);
 //                            return uploader.startUpload();
@@ -78,7 +81,7 @@ public class UploadUtils {
         return false;
     }
 
-    private boolean check(UploadParams uploadParams) {
+    private static boolean check(UploadParams uploadParams) {
         if (uploadParams == null) {
             return false;
         }
@@ -91,7 +94,7 @@ public class UploadUtils {
     public static class UploadParams {
         String localPath;
 
-        String mineType;
+        String mimeType;
 
         /**
          * 取值在 {@link AuthType} 中
@@ -114,12 +117,12 @@ public class UploadUtils {
             this.localPath = localPath;
         }
 
-        public String getMineType() {
-            return mineType;
+        public String getMimeType() {
+            return mimeType;
         }
 
-        public void setMineType(String mineType) {
-            this.mineType = mineType;
+        public void setMimeType(String mimeType) {
+            this.mimeType = mimeType;
         }
 
         public AuthType getType() {
@@ -159,7 +162,41 @@ public class UploadUtils {
         }
 
         public static class Builder {
+            private UploadParams mUploadParams = new UploadParams();
 
+            public UploadParams.Builder setLocalPath(String localPath) {
+                this.mUploadParams.setLocalPath(localPath);
+                return this;
+            }
+
+            public UploadParams.Builder setMimeType(String mimeType) {
+                this.mUploadParams.mimeType = mimeType;
+                return this;
+            }
+
+            public UploadParams.Builder setType(AuthType type) {
+                this.mUploadParams.type = type;
+                return this;
+            }
+
+            public UploadParams.Builder setUrl(String url) {
+                this.mUploadParams.url = url;
+                return this;
+            }
+
+            public UploadParams.Builder setBucketName(String bucketName) {
+                this.mUploadParams.bucketName = bucketName;
+                return this;
+            }
+
+            public UploadParams.Builder setObjectKey(String objectKey) {
+                this.mUploadParams.objectKey = objectKey;
+                return this;
+            }
+
+            public UploadParams build() {
+                return this.mUploadParams;
+            }
         }
     }
 
