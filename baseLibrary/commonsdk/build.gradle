@@ -106,6 +106,10 @@ dependencies {
     api rootProject.ext.dependencies["swipebackhelper"]
 
     debugImplementation rootProject.ext.dependencies["debug-db"]
+
+    api 'com.google.android.exoplayer:exoplayer-core:r2.4.1'
+    api 'com.google.android.exoplayer:exoplayer-hls:r2.4.1'
+
 //    debugApi rootProject.ext.dependencies["stetho"]
     // 封装了一个可以上拉刷新，下拉加载的recyclerview库。后续把这些库以源码的方式一一引入，
     // 或者以一个单独module的方式演示这些库的使用。

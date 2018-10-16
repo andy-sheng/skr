@@ -72,7 +72,7 @@ if (repluginPluginEnable.toBoolean()) {
     apply plugin: 'replugin-plugin-gradle'
 
     dependencies {
-        api project(":replugin-plugin-library")
+        api project(":baseLibrary:replugin-plugin-library")
     }
 }
 
