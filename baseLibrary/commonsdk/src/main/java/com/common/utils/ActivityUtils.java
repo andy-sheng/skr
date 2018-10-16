@@ -31,6 +31,7 @@ public class ActivityUtils {
     private List<Activity> mActivityList;
     //当前在前台的 Activity
     private Activity mCurrentActivity;
+    private boolean mIsAppForeground;
     //提供给外部扩展 AppManager 的 onReceive 方法
 //    private HandleListener mHandleListener;
 //
@@ -253,6 +254,22 @@ public class ActivityUtils {
                 mActivityList.remove(activity);
             }
         }
+    }
+
+
+    /**
+     * 由 ActivityLifecycle 来判断是否在前台
+     * @param isAppForeground
+     */
+    public void setAppForeground(boolean isAppForeground) {
+        this.mIsAppForeground = isAppForeground;
+    }
+
+    /**
+     * 返回app 是否在前台
+     */
+    public boolean isAppForeground() {
+        return this.mIsAppForeground;
     }
 
 //    /**

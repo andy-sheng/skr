@@ -92,6 +92,8 @@ public class UploadUtils {
     }
 
     public static class UploadParams {
+
+
         String localPath;
 
         String mimeType;

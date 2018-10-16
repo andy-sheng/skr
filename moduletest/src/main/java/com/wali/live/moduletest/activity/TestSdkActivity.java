@@ -3,6 +3,7 @@ package com.wali.live.moduletest.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,8 @@ public class TestSdkActivity extends BaseActivity {
     CommonTitleBar mTitlebar;
     RecyclerView mListRv;
     List<H> mDataList = new ArrayList<>();
+
+    Handler mUiHanlder = new Handler();
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -173,6 +176,19 @@ public class TestSdkActivity extends BaseActivity {
 
                     }
                 });
+            }
+        }));
+
+
+        mDataList.add(new H("判断5s后app是否在前台", new Runnable() {
+            @Override
+            public void run() {
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        U.getToastUtil().showToast("在前台 "+U.getActivityUtils().isAppForeground());
+                    }
+                },5000);
             }
         }));
     }

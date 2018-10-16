@@ -62,6 +62,9 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     }
 
 
+    int resumeNum;
+    int pauseNum;
+
     public ActivityLifecycle() {
 
     }
@@ -86,10 +89,19 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityResumed(Activity activity) {
         U.getActivityUtils().setCurrentActivity(activity);
+        resumeNum++;
+        if(resumeNum>pauseNum){
+            U.getActivityUtils().setAppForeground(true);
+        }
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
+        pauseNum++;
+        if(resumeNum<=pauseNum){
+            U.getActivityUtils().setAppForeground(false);
+        }
+
     }
 
     @Override

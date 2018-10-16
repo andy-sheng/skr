@@ -9,6 +9,9 @@ public class CommonUtils {
 
     private long sLastClickTime = 0;
 
+    CommonUtils() {
+    }
+
     /**
      * 判断是否是快速点击
      */
