@@ -1,0 +1,474 @@
+/******************************************************************************
+ * 文件名称： mlive_userapi.proto
+ * 文件描述： 直播用户服务与客户端之间的协议
+ * 创建日期： 2016-02-18
+ * 作    者： wuxiaoshan
+ * 函数列表：
+ * Copyright 2010 - 2015 XIAOMI Inc. All Rights Reserved
+ * 修改历史：
+ *            <作者>        <修改日期>          <修改描述>
+ ******************************************************************************/
+
+/*****************    pb规范   *******************************************
+1.用pascal规则(每个单词首字段都用大写)命名message消息类型
+2.用camel规则(第一个字母小写，余下单词首字母大写)命名字段名
+3.全大写命名extend消息类型的字段名
+4.string统一采用utf8编码
+5.除unixtime、32位网络IP用fixed32外，其余无符号都用uint32，有符号用sint32
+6.result用无符号:0代表成功，错误码全局分段管理,高24位用于分段，低8位为具体错误
+*************************************************************************/
+// wiki地址： http://wiki.n.miui.com/pages/viewpage.action?pageId=18999640
+
+package com.wali.live.proto.User;
+
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./modulecore/src/main/java-gen-pb/ User.proto
+
+*/
+
+//商铺类型用户的扩展信息
+message BusinessUserInfo {
+    repeated string service_phone = 1; //电话0
+    optional string address = 2; //位置
+    optional string business_hours = 3; //营业时间
+    optional string intro = 4; //简介
+}
+
+message PersonalInfo {
+    required uint64 zuid = 1;
+    optional uint64 avatar = 2; //头像
+    optional string nickname = 3; //昵称
+    optional string sign = 4; //签名
+    optional uint32 gender = 5; //性别
+    optional uint32 level = 6; //等级
+    optional uint32 badge = 7; //徽章
+    optional uint64 updateTime = 8; //更新时间，水位
+    optional bool isFocused = 9; //是否被关注
+    optional string certification = 10; //认证信息
+    optional bool isBothwayFollowing = 11; //是否双向关注
+    optional uint32 certificationType = 12; //认证类型, 0表示未认证, 1表示新浪微博　2：官方账号，3：推荐认证，4：小米认证
+    optional bool isBlocked = 13; //是否拉黑
+    optional bool isInspector = 14; //是否是巡查员
+    repeated uint64 adminUids = 15; //管理员
+    optional uint32 waiting_certification_type = 16; //等待审核的用户认证类型，目前只有4：小米认证 需要审核；审核通过或未通过后waiting_certification_type会置0
+    optional string certification_id = 17; //认证绑定信息
+    optional uint32 real_name_certification_status = 18; //实名认证状态，1：审核中  2：实名认证已通过  3:实名认证未通过
+    optional string cover_photo = 19; // 个人主页的封面图片，格式如下 {"ts":"1465295801" , "img":"xxx"}
+
+    optional uint32 user_type = 20; //默认0表示普通用户，1为商铺类型
+    optional BusinessUserInfo business_user_info = 21; //user_type为1时则有该字段，否则为空
+    optional uint32 seller_status = 22; //0 普通用户，1 白名单内(可以申请成为卖家) , 2. 正在申请中 3.小米卖家 4.京东卖家 5淘宝卖家
+    optional bool isFirstAudit = 23; //头像昵称是否先审后发
+    optional bool isRedname = 24; //是否社区红名
+    optional Region region = 25; //地区信息
+    optional uint32 fans_number = 26; //粉丝数
+    optional uint32 seller_type = 27; //卖家类型
+    optional bool is_union_admin = 28; //  是否是工会管理员
+    optional uint32 vip_level = 29; //财富等级
+    optional bool vip_disable = 30; //财富等级是否被冻结
+    optional bool vip_hidden = 31; //是否VIP隐身
+    optional bool is_live = 32; //是否正在直播
+    optional ZhiboExt zhibo_ext = 38; //直播用户扩展信息
+}
+
+///////////////////////这里有历史原因米聊和直播共用pb所以32 到38之间有米聊字段暂时不需要，没加入/////////////
+message ZhiboExt {
+    optional UserNobleInfo noble_info = 1;
+}
+
+message UserNobleInfo {
+    required uint32 nobleLevel = 1; //贵族id 100表示子爵 200表示伯爵 300表示侯爵 400表示公爵 500表示国王
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+message PersonalData {
+    required uint64 zuid = 1;
+    optional uint32 mliveTicketNum = 9; //星票数
+    optional uint32 fansNum = 10; //粉丝数
+    optional uint32 followNum = 11; //关注数
+    optional uint32 sendDiamondNum = 12; //送出钻石数
+    optional uint32 vodNum = 13; //点播数
+    optional uint32 earnNum = 14; //收益数
+    optional uint32 diamondNum = 15; //钻石数
+    optional bytes user_eco_attr = 16; //用户的经济金融属性
+    optional uint32 usable_mibi_ticket_cnt = 17; //可用米币星票数量
+
+    optional bytes gcoin_user_eco_attr = 19;//金币余额，GetOwnInfoReq 设置为true可拉取，默认为false
+}
+
+message UserEcoAttr {
+    optional uint32 bullet_gift_id = 1; //收费弹幕礼物ID
+    optional uint32 bullet_gem_cnt = 2; //收费弹幕钻石数
+    optional uint32 consum_virtual_gem_cnt = 3; //消费的虚拟钻石数
+    optional uint32 usable_virtual_gem_cnt = 4; //可用的虚拟钻石数
+}
+
+//由ID获取用户信息
+//cmd:zhibo.user.getuserinfobyid
+message GetUserInfoByIdReq {
+    required uint64 zuid = 1;
+}
+message GetUserInfoByIdRsp {
+    required uint32 errorCode = 1;
+    optional PersonalInfo personalInfo = 2;
+}
+
+//获取自己的信息
+//cmd:zhibo.user.getowninfo
+message GetOwnInfoReq {
+    required uint64 zuid = 1;
+    optional bool getLiveInfo = 2 [default = true]; //是否拉取直播回放数、直播URL、直播roomid等直播房间信息，在一些用不到房间信息的调用入口请传false
+    optional bool getGcoinInfo=3 [default=false];//是否拉取金币信息,默认fals
+}
+
+message GetOwnInfoRsp {
+    required uint32 errorCode = 1;
+    optional PersonalInfo personalInfo = 2;
+    optional PersonalData personalData = 3;
+    repeated uint64 rank_top_three_list = 6; //排行榜前三用户ID
+    repeated Medal before_nickname_medal = 8;
+    repeated Medal after_nickname_medal = 9;
+    repeated Medal user_card_medal = 10;
+    optional bool need_bind_phone = 11; // 是否需要绑定手机号 true 需要绑定弹窗 false 不需要弹窗
+    optional string phoneNum = 12 [deprecated = true]; // 绑定的手机号码 新版废弃 移植到GetBindPhoneNumInfoReq
+    optional Medal user_nobel_mmedal = 13;
+}
+
+message Medal {
+    optional string pic_id = 1;
+}
+
+//获取个人数据
+message GetPersonalDataByIdReq {
+    required uint64 zuid = 1;
+}
+
+message GetPersonalDataByIdRsp {
+    required uint32 errorCode = 1;
+    optional PersonalData personalData = 2;
+}
+
+//获取个人主页
+//cmd:zhibo.user.gethomepage
+message GetHomepageReq {
+    required uint64 zuid = 1;
+    optional bool getLiveInfo = 2 [default = true]; //是否拉取直播回放数、直播URL、直播roomid等直播房间信息，在一些用不到房间信息的调用入口请传false
+}
+
+message GetHomepageResp {
+    required uint32 retCode = 1;
+    optional PersonalInfo personalInfo = 2;
+    optional PersonalData personalData = 3;
+    optional string viewUrl = 4; //直播地址
+    repeated uint64 rank_top_three_list = 6; //排行榜前三用户ID
+    optional string roomId = 7; //正在直播的id, 房间号
+    optional bytes roomInfo = 8; //房间的信息
+    repeated Medal before_nickname_medal = 9;
+    repeated Medal after_nickname_medal = 10;
+    repeated Medal user_card_medal = 11;
+    optional Medal user_noble_medal = 13;
+}
+
+//上传设置
+//cmd:zhibo.user.uploadusersetting
+message UploadUserSettingReq {
+    required uint64 zuid = 1;
+    optional bool isPushable = 2; //push开关, 0:关闭, 1:开启
+    optional bool isNotifyNoDisturb = 3; //是否开启提醒免打扰
+    optional bool isNotifyNoSound = 4; //是否开启提醒无声模式
+    optional bool isNotifyNoShake = 5; //是否开启提醒无振动模式
+    optional bool isVipHide = 6; //是否设置vip隐身
+}
+
+message UploadUserSettingRsp {
+    required uint32 errorCode = 1;
+}
+
+//搜索
+//cmd:zhibo.user.search
+message SearchUserInfoReq {
+    required string keyword = 1;
+    required uint32 offset = 2;
+    required uint32 limit = 3;
+    optional bool live_status = 4; //是否显示直播状态
+}
+
+message SearchUserInfoRsp {
+    required uint32 errorCode = 1;
+    optional uint32 totalNum = 2;
+    repeated PersonalInfo personalInfos = 3;
+}
+
+//更新用户信息
+//cmd:zhibo.user.uploaduserpro
+message UploadUserPropertiesReq {
+    required uint64 zuid = 1;
+    optional uint64 avatar = 2; //头像
+    optional string nickname = 3; //昵称
+    optional string sign = 4; //签名
+    optional uint32 gender = 5; //性别
+    optional string certification = 6; //认证信息
+    optional uint32 certificationType = 7; //认证类型, 新浪微博为1
+    optional bool is_manual = 10 [default = false];
+    optional string cover_photo = 11; // 个人主页的封面图片
+    optional string address = 12; //位置信息 , user_type=2时可修改
+    optional string avatar_md5 = 13; //头像鉴权时传递的MD5值
+    optional Region region = 14; //更新用户地区信息
+    optional uint32 modify_nickname_interval = 15; // 修改昵称间隔(秒). 如果为0 则不会限制
+}
+
+message UploadUserPropertiesRsp {
+    required uint32 retCode = 1;
+    optional string err_msg = 2; //错误提示文案, 非空时显示，否则显示客户端默认文案
+    optional string nickname = 3; //经过敏感词过滤后的昵称
+    optional uint64 update_nickname_time = 4; // 当retcode=7031时生效，记录昵称上次修改时间(秒)
+    optional uint64 current_time = 5; // 服务器当前时间戳(秒) 当 update_nickname_time 存在时生效
+}
+
+//管理员设置
+//cmd:zhibo.user.adminsetting
+message AdminSettingReq {
+    required uint64 adminUid = 1;
+    required uint32 operation = 2; //操作：1、添加 2、删除
+
+    optional string roomId = 3; //房间id
+
+}
+
+message AdminSettingRsp {
+    required uint32 retCode = 1;
+}
+
+//查询管理员列表
+
+//cmd:zhibo.user.adminlist
+message AdminListReq {
+    required uint64 zuid = 1;
+}
+
+message AdminListRsp {
+    required uint32 retCode = 1;
+    repeated PersonalInfo userInfos = 2; //管理员列表
+}
+
+//获取自己的设置
+//cmd:zhibo.user.getownsetting
+message GetOwnSettingReq {
+    required uint64 zuid = 1;
+}
+
+message GetOwnSettingRsp {
+    required uint32 retCode = 1;
+    optional bool isPushable = 2; //push开关,0:关 1:开
+
+    optional bool isNotifyNoDisturb = 3; //是否开启提醒免打扰
+    optional bool isNotifyNoSound = 4; //是否开启提醒无声模式
+    optional bool isNotifyNoShake = 5; //是否开启提醒无振动模式
+    optional bool isVipHide = 6; //是否开启vip隐身
+}
+
+//查询别人房间信息,取道的是拉流地址
+//zhibo.live.hisroom
+message HisRoomReq {
+    required uint64 zuid = 1; //查询的主播id
+}
+
+message HisRoomRsp {
+    required uint32 retCode = 1; //0:表示成功
+    optional string liveId = 2; //房间号
+    optional string shareUrl = 3; //分享的url
+    optional string viewUrl = 4; //完整的观看url
+    optional uint32 type = 5; //类型，0公开，1私密
+}
+
+//批量获取用户信息及和请求方的关系
+//cmd:zhibo.user.mutigetuserinfo
+message MutiGetUserInfoReq {
+    repeated uint64 zuid = 1;
+}
+
+message MutiGetUserInfoRsp {
+    required uint32 retCode = 1;
+    repeated PersonalInfo personalInfo = 2;
+}
+
+//获取验证码
+//cmd:zhibo.user.getcaptcha
+message GetCaptchaReq {
+    required string phoneNum = 1; //手机号
+    required uint32 type = 2; // 1: 小米认证验证码
+    optional string lang = 3; //下发短信的语言类型，lang的值可以为 en, zh-cn, zh-hant 之一，分别对应英文，中文简体，中文繁体。此参数为空，返回文案为简体中文格式
+}
+
+
+message GetCaptchaRsp {
+    required uint32 retCode = 1; //0:表示成功
+}
+
+//校验验证码
+//cmd:zhibo.user.verifycaptcha
+message VerifyCaptchaReq {
+    required string phoneNum = 1; //手机号
+    required uint32 type = 2; // 1: 小米认证验证码 2:实名认证请求
+    required string captcha = 3; //短信验证码
+    optional string idCardNum = 4; //身份证号，只在小米直播认证请求时填写，实名认证请求时不要填写
+}
+
+
+message VerifyCaptchaRsp {
+    required uint32 retCode = 1; //0:表示成功
+}
+
+//申请认证(提交申请认证资料)
+//cmd:zhibo.user.applycertification
+message ApplyCertificationReq {
+    required bytes certificationInfo = 1; //认证申请资料信息，由CertificationInfo序列化所得，用户模块透传申请资料二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+    optional uint32 type = 2 [default = 1]; // 1：小米直播认证请求    2:实名认证请求
+}
+
+message ApplyCertificationRsp {
+    required uint32 retCode = 1;
+}
+
+//认证申请资料信息,用户模块透传CertificationInfo的二进制给管理后台，管理后台@小山和客户端约定CertificationInfo的字段内容
+message CertificationInfo {
+
+    optional uint64 uuid = 1; //用户ID
+
+    optional string name = 2; //名称
+
+    optional string phoneNum = 3; //手机号
+
+    repeated PrivateImg idcard = 4; //身份证信息
+
+    optional string certification = 5; //认证内容
+
+    optional string companyName = 6; //公司名称
+
+    optional string profession = 7; //职业
+
+    repeated PrivateImg proofJobs = 8; //工作证明、名品、工牌
+
+    repeated PrivateImg otherIdCard = 9; //其它身份证明
+
+    optional string works = 10; //作品
+
+    optional string idCardNum = 11; //身份证号或者护照号
+
+    optional string birthday = 12; //出生年月日，格式为: 1986/02/23
+
+    optional uint32 type = 13 [default = 1]; // 1：小米直播认证请求    2:实名认证请求
+
+    optional uint32 cardType = 14 [default = 1]; // 1: 身份证, 2: 护照
+
+}
+
+message PrivateImg {
+    optional string bucket = 1;
+    optional string objectKey = 2;
+}
+
+message LiveCover {
+    optional string coverUrl = 1; //房间的封面图片地址
+}
+message HisLive {
+    required string liveId = 1; //房间id
+    optional uint32 viewerCnt = 2; //观众数
+    optional string url = 3; //回放地址
+    optional uint64 startTime = 4; //直播开始时间
+    optional uint64 endTime = 5; //直播结束时间
+    optional string liveTitle = 6; //直播标题
+    optional string shareUrl = 7; //分享的url
+    optional LiveCover liveCover = 8; //房间的封面信息
+    optional PersonalInfo user = 9; //主播信息
+    optional uint32 type = 10; //类型，0公开，1私密，2:口令，3门票 //同Live.proto里的直播间type
+}
+
+//先审后发协议 头像、昵称先审后发
+//cmd:zhibo.user.firstaudit4pro
+message FirstAudit4ProReq {
+    required uint64 zuid = 1;
+    optional string headurl = 2; //待审核的头像url，头像暂时先使用USER_PIC类型，上地域名：zbupic.ul.zb.mi.com 下载域名：zbupic.zb.mi.com 参考：mfas命令字
+    optional string nickname = 3; //待审核的昵称
+
+}
+message FirstAudit4ProRsp {
+    required uint32 retCode = 1; //如果取了保护名单的昵称会返回7022错误码，参考返回码:返回码
+    optional string err_msg = 2; //错误提示文案, 非空时显示，否则显示客户端默认文案
+}
+//拉取国家、国家编码列表
+//cmd:zhibo.user.getcountrylist
+message GetCountryListReq {
+    required uint32 lang_type = 1; //语言类型  1:简体中文  2：繁体中文  3：英文
+}
+message GetCountryListRsp {
+    required uint32 retCode = 1;
+    optional string err_msg = 2; //错误提示文案, 非空时显示，否则显示客户端默认文案
+    repeated CountryInfo countryinfo = 3; //国家列表
+    repeated CountryInfo hotcountryinfo = 4; //热门国家列表
+}
+//地区信息
+message Region {
+    optional uint32 source_type = 1; //录入来源类型，1：客户端用户手工录入   2：官方运营人员录入  3.客户端程序静默录入  4.后台分析IP录入
+    optional string country = 2; //具体国家，比如中国、美国、中国台湾等
+    optional string country_code = 3; //国家编码，ISO A2标准，中国为CN   台湾为TW
+}
+message CountryInfo {
+    required string country = 1; //具体国家，比如中国、美国、中国台湾等
+    required string country_code = 2; //国家编码，ISO A2标准，中国为CN   台湾为TW
+}
+//客户端上传gps的位置信息来查询对应的countrycode 【用于android客户端拿不到正确国家编码的情况】
+//cmd:zhibo.user.getcountrycode
+message GetCountryCodeReq {
+    optional double gps_lon = 1; //经度
+    optional double gps_lat = 2; //纬度
+    optional string gps_country = 3; //国家
+    optional string gps_country_code = 4; //gps返回的国家编码【百度地图的country_code不准的】
+    optional string gps_province = 5; //省份
+    optional string gps_city = 6; //市
+    optional uint32 gps_type = 7; //地址定位的地图类型：0:百度，1:ios原生，2:高德,3:其他
+    optional uint32 gps_lang_type = 8; //gps位置信息对应的语言类型 1:简体中文 2：繁体中文 3：英文  [要未知可不填]
+}
+message GetCountryCodeRsp {
+    required uint32 retCode = 1;
+    optional string err_msg = 2; //错误提示文案, 非空时显示，否则显示客户端默认文案
+    optional string country_code = 3; //国家编码
+}
+
+// 获取用户绑定手机号信息
+// cmd zhibo.user.getbindphonenum
+message GetBindPhoneNumReq {
+    required uint64 zuid = 1;
+}
+message GetBindPhoneNumRsp {
+    required uint32 retCode = 1;
+    optional string err_msg = 2; //错误提示文案, 非空时显示，否则显示客户端默认文案
+    optional uint32 bindStatus = 3; // 绑定状态 0 没绑定 1 已经绑定
+    optional string bindPhoneNum = 4; // 如果已经绑定 则显示绑定的手机号码
+}
+//cmd:zhibo.user.applyzhimacertification
+message ApplyZhimaCertificationReq {
+    required uint64 zuid = 1; //用户ID
+    optional string certName = 2; //姓名
+    optional string certNo = 3; //身份证
+    optional string retUrl = 4; //回调url
+}
+
+message ApplyZhimCertificationRsp {
+    required uint32 retCode = 1;
+    optional string certUrl = 2; //zhima返回的url
+}
+//cmd:zhibo.user.queryzhimaCertification
+
+message QueryZhimaCertReq {
+    required uint64 zuid = 1;
+}
+
+message QueryZhimaCertRsp {
+    required uint32 retCode = 1;
+    optional bool pass = 2;
+    optional string failedReason = 3; //zhima返回的提示语
+}
