@@ -102,7 +102,7 @@ public class FrescoInitManager {
         Fresco.initialize(context, imagePipelineConfig.build());
 
         FLog.setLoggingDelegate(new FrescoLogDelegate("FrescoLogDelegate"));
-        FLog.setMinimumLoggingLevel(BuildConfig.DEBUG ? FLog.WARN : FLog.ERROR);
+        FLog.setMinimumLoggingLevel(BuildConfig.DEBUG ? FLog.VERBOSE : FLog.ERROR);
     }
 
 
@@ -110,16 +110,21 @@ public class FrescoInitManager {
      * Configures disk and memory cache not to exceed common limits
      */
     private static void configureCaches(ImagePipelineConfig.Builder configBuilder, Context context) {
-        MyLog.w("InitManager", "configureCaches MAX_MEMORY_CACHE_SIZE=" + getMaxCacheSize()
-        );
+        MyLog.w("InitManager", "configureCaches MAX_MEMORY_CACHE_SIZE=" + getMaxCacheSize());
         final MemoryCacheParams bitmapCacheParams = getMemoryCacheParams();          // Max cache entry size
-        configBuilder
-                .setBitmapMemoryCacheParamsSupplier(
+
+        configBuilder.setBitmapMemoryCacheParamsSupplier(
                         new Supplier<MemoryCacheParams>() {
                             public MemoryCacheParams get() {
                                 return bitmapCacheParams;
                             }
                         })
+//                .setEncodedMemoryCacheParamsSupplier(new Supplier<MemoryCacheParams>() {
+//                    @Override
+//                    public MemoryCacheParams get() {
+//                        return encodeBitmapCacheParams;
+//                    }
+//                })
                 .setCacheKeyFactory(MLCacheKeyFactory.getInstance());
     }
 

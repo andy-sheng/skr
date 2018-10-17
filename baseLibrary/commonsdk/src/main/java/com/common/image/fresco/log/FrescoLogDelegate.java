@@ -10,7 +10,7 @@ import com.facebook.common.logging.LoggingDelegate;
  */
 public class FrescoLogDelegate implements LoggingDelegate {
 
-    private int mMinimumLoggingLevel = Log.ERROR;
+    private int mMinimumLoggingLevel = Log.VERBOSE;
 
     private boolean sSwitch = true;
 

@@ -44,9 +44,9 @@ public class UserAccountLocalApi {
         if (account != null) {
             String sql = String.format("update %s set %s=%s where %s=%s",
                     UserAccountDao.TABLENAME
-                    , UserAccountDao.Properties.IsLogOff
+                    , UserAccountDao.Properties.IsLogOff.columnName
                     , 1
-                    , UserAccountDao.Properties.ChannelId
+                    , UserAccountDao.Properties.ChannelId.columnName
                     , account.getChannelId());
             MyLog.d(TAG, "loginAccount" + " sql=" + sql);
             getAccountDao().getDatabase().execSQL(sql);

@@ -119,14 +119,10 @@ public class UploadUtils {
         String bucketName;
         String objectKey;
 
-        private long rid;
+        long rid;
 
         public long getRid() {
             return rid;
-        }
-
-        private void setRid(long rid) {
-            this.rid = rid;
         }
 
         public String getLocalPath() {
@@ -238,9 +234,7 @@ public class UploadUtils {
                     throw new IllegalArgumentException("UploadParams.Build must set AuthType not null");
                 }
 
-                if (mUploadParams.getRid() == 0) {
-                    mUploadParams.setRid(System.currentTimeMillis());
-                }
+                mUploadParams.rid = System.currentTimeMillis();
 
                 return this.mUploadParams;
             }

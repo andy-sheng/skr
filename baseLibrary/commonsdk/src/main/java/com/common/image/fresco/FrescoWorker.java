@@ -80,18 +80,25 @@ public class FrescoWorker {
 
     private static ImageRequestBuilder getImageRequest(BaseImage baseImage) {
         ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(baseImage.getUri());
-        //resize时的 宽与高
+        /**
+         * resize时的 宽与高
+         */
         if (baseImage.getWidth() > 0 && baseImage.getHeight() > 0) {
             imageRequestBuilder.setResizeOptions(new ResizeOptions(baseImage.getWidth(), baseImage.getHeight()));
         }
-        //后处理
+        /**
+         * 后处理
+         */
         if (baseImage.getPostprocessor() != null) {
             imageRequestBuilder.setPostprocessor(baseImage.getPostprocessor());
         }
 
         imageRequestBuilder.setImageDecodeOptions(getImageDecodeOptions());
-        imageRequestBuilder
-                .setProgressiveRenderingEnabled(baseImage.isProgressiveRenderingEnabled()) //支持图片渐进式加载
+
+        /**
+         * 支持图片渐进式加载 & 加载优先级
+         */
+        imageRequestBuilder.setProgressiveRenderingEnabled(baseImage.isProgressiveRenderingEnabled())
                 .setRequestPriority(baseImage.getRequestPriority());
         return imageRequestBuilder;
     }
@@ -99,8 +106,8 @@ public class FrescoWorker {
     private static ImageDecodeOptions getImageDecodeOptions() {
         ImageDecodeOptions decodeOptions = ImageDecodeOptions.newBuilder()
 //              .setBackgroundColor(Color.TRANSPARENT) //图片的背景颜色
-//              .setDecodeAllFrames(true)              //解码所有帧
-//              .setDecodePreviewFrame(true)           //解码预览框
+              .setDecodeAllFrames(true)              //解码所有帧
+              .setDecodePreviewFrame(true)           //解码预览框
 //              .setForceOldAnimationCode(true)        //使用以前动画
 //              .setFrom(options)                      //使用已经存在的图像解码
 //              .setMinDecodeIntervalMs(intervalMs)    //最小解码间隔（分位单位）
@@ -154,24 +161,34 @@ public class FrescoWorker {
         if (baseImage.getScaleType() != null) {
             draweeView.getHierarchy().setActualImageScaleType(baseImage.getScaleType());
         }
-        //失败时显示的图
+        /**
+         * 失败时显示的图
+         */
         if (baseImage.getFailureDrawable() != null) {
             draweeView.getHierarchy().setFailureImage(baseImage.getFailureDrawable(), baseImage.getFailureScaleType());
         }
-        //loading时显示的图
+        /**
+         * loading时显示的图
+         */
         if (null != baseImage.getLoadingDrawable()) {
             draweeView.getHierarchy().setPlaceholderImage(baseImage.getLoadingDrawable(), baseImage.getLoadingScaleType());
         }
-        //loading时的进度条
+        /**
+         * loading时的进度条
+         */
         if (null != baseImage.getProgressBarDrawable()) {
             draweeView.getHierarchy().setProgressBarImage(baseImage.getProgressBarDrawable());
         }
 
+        /**
+         * 设置边框 是否是圆形
+         */
         RoundingParams roundingParams = draweeView.getHierarchy().getRoundingParams();
         if (null == roundingParams) {
             roundingParams = new RoundingParams();
         }
         roundingParams.setRoundAsCircle(baseImage.isCircle());
+
         if (baseImage.getBorderWidth() > 0) {
             roundingParams.setBorderWidth(baseImage.getBorderWidth());
             roundingParams.setBorderColor(baseImage.getBorderColor());
@@ -203,6 +220,7 @@ public class FrescoWorker {
                     .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.ENCODED_MEMORY_CACHE)
                     .build();
         }
+
         PipelineDraweeControllerBuilder builder = Fresco.newDraweeControllerBuilder()
                 .setLowResImageRequest(lowResRequest)
                 .setImageRequest(imageRequest)

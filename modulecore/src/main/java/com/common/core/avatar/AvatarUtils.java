@@ -236,7 +236,8 @@ public class AvatarUtils {
                 }
 
                 if (mUploadParams.uid == 0) {
-                    throw new IllegalArgumentException("LoadParams.Build must uid not 0");
+                    MyLog.e("LoadParams.Build must uid not 0");
+//                    throw new IllegalArgumentException("");
                 }
 
                 return this.mUploadParams;
