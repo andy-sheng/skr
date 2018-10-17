@@ -12,6 +12,9 @@ import android.util.Pair;
 public class DisplayUtils {
     private DisplayMetrics sMetrics = null;
 
+    DisplayUtils() {
+    }
+
     public void initialize() {
         if (sMetrics == null) {
             if (U.app() != null && U.app().getResources() != null) {

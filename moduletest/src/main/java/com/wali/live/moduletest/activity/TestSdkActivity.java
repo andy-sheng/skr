@@ -18,6 +18,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
@@ -45,6 +47,7 @@ public class TestSdkActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
+        mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
         mListRv = (RecyclerView) findViewById(R.id.list_rv);
 
         mListRv.setLayoutManager(new LinearLayoutManager(this));
@@ -75,7 +78,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 //跳到LoginActivity,要用ARouter跳
-                ARouter.getInstance().build("/channel/ChannelSdkActivity").navigation(TestSdkActivity.this, new NavigationCallback() {
+                ARouter.getInstance().build("/watch/WatchSdkAcitivity").navigation(TestSdkActivity.this, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
                         MyLog.d(TAG, "onFound" + " postcard=" + postcard);
@@ -183,6 +186,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("判断5s后app是否在前台", new Runnable() {
             @Override
             public void run() {
+                U.getAppInfoUtils().showDebugDBAddressLogToast();
                 mUiHanlder.postDelayed(new Runnable() {
                     @Override
                     public void run() {

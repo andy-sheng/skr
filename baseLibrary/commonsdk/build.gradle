@@ -42,6 +42,7 @@ android {
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen-db', 'src/main/java-gen-pb']
+            // 可以通过开关随时取消依赖 exoplayer
             java.srcDirs +=  'src/main/java-exoplayer'
             res.srcDirs = ['src/main/res']
             res.srcDirs += ['src/main/res-titlebar']

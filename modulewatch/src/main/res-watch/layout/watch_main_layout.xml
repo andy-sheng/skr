@@ -2,13 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:titlebar="http://schemas.android.com/apk/res-auto">
 
-    <com.common.image.fresco.BaseImageView
-        android:id="@+id/login_btn"
-        android:layout_width="@dimen/public_view_dimen_200"
-        android:layout_height="@dimen/public_view_dimen_200"
-        android:background="@color/public_black"
-        android:layout_centerInParent="true" />
+
+    <!--<com.common.view.titlebar.CommonTitleBar-->
+        <!--android:id="@+id/titlebar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--titlebar:centerText="LoginActivity"-->
+        <!--titlebar:centerType="textView"-->
+        <!--titlebar:leftDrawable="@drawable/comm_titlebar_back_normal"-->
+        <!--titlebar:leftDrawablePadding="0dp"-->
+        <!--titlebar:leftText="返回"-->
+        <!--titlebar:leftType="textView" />-->
+
+    <TextureView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
