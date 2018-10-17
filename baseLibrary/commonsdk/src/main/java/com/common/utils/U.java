@@ -22,6 +22,8 @@ public class U {
 
     private static ImageUtils imageUtils;
 
+    private static VideoUtils videoUtils;
+
     private static BlurUtils blurUtils;
 
     private static HttpUtils httpUtils;
@@ -171,6 +173,13 @@ public class U {
             channelUtils = new ChannelUtils();
         }
         return channelUtils;
+    }
+
+    public static VideoUtils getVideoUtils() {
+        if (videoUtils == null) {
+            videoUtils = new VideoUtils();
+        }
+        return videoUtils;
     }
 
     public static void setCoreProcess(boolean coreProcess) {

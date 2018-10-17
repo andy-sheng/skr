@@ -64,7 +64,6 @@ public class CommonConfiguration implements ConfigModule {
                 if (BuildConfig.DEBUG) {
                     ARouter.openLog();
                     ARouter.openDebug();
-                    U.getAppInfoUtils().showDebugDBAddressLogToast();
                 }
                 ARouter.init(application); // 尽可能早,推荐在Application中初始化
                 MyLog.init();

@@ -462,7 +462,7 @@ public class ExoPlayer implements IPlayer {
     }
 
     @Override
-    public void setVideoPath(String path, String host) {
+    public void setVideoPath(String path) {
         if (path != null && !path.equals(mUrl)) {
             mUrl = path;
             mUrlChange = true;

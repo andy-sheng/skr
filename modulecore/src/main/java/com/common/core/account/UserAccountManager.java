@@ -17,12 +17,14 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
 /**
- * 保准账号token等信息
+ * 保存账号token等信息
+ * 数据库支持多账号的
  * Created by chengsimin on 16/7/1.
  */
 public class UserAccountManager {
@@ -51,7 +53,8 @@ public class UserAccountManager {
     public void onLoginResult(UserAccount account) {
         MyLog.w(TAG, "login" + " account=" + account);
         if (account != null) {
-            UserAccountLocalApi.insertOrReplace(account);
+            // 登出所有其他账号
+            UserAccountLocalApi.loginAccount(account);
             // 用户登录成功，这里应该是要发出通知的
             setAccount(account);
             U.getActivityUtils().showSnackbar("登录成功", false);
@@ -125,6 +128,25 @@ public class UserAccountManager {
         return "";
     }
 
+    public void logoff(final boolean deleteAccount){
+        if(mAccount!=null){
+            Observable.create(new ObservableOnSubscribe<Object>() {
+                @Override
+                public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                    if(deleteAccount){
+                        UserAccountLocalApi.delete(mAccount);
+                    }else {
+                        mAccount.setIsLogOff(true);
+                        UserAccountLocalApi.insertOrReplace(mAccount);
+                    }
+                    mAccount = null;
+                    emitter.onComplete();
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .subscribe();
+        }
+    }
 
     /**
      * 具体发登录请求
@@ -147,6 +169,8 @@ public class UserAccountManager {
                     UserAccount userAccount = new UserAccount();
                     userAccount.setChannelId(channelId);
                     userAccount.setUid(String.valueOf(rsp.getUuid()));
+                    userAccount.setNickName(rsp.getNickname());
+                    userAccount.setImgUrl(rsp.getHeadimgurl());
                     userAccount.setPassToken(rsp.getPassToken());
                     userAccount.setServiceToken(rsp.getServiceToken());
                     userAccount.setSSecurity(rsp.getSecurityKey());
@@ -154,10 +178,11 @@ public class UserAccountManager {
                     userAccount.setIsLogOff(false);
 
                     onLoginResult(userAccount);
+                    emitter.onComplete();
                 } else {
                     emitter.onError(new Exception("retcode = " + rsp.getRetCode()));
                 }
-                emitter.onComplete();
+
             }
         }).subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Object>() {
@@ -198,7 +223,7 @@ public class UserAccountManager {
                 userAccount.setNeedEditUserInfo(rsp.getIsSetGuide());
                 userAccount.setIsLogOff(false);
 //                userAccount.setMiid(miid);
-                UserAccountManager.getInstance().onLoginResult(userAccount);
+                onLoginResult(userAccount);
                 emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())

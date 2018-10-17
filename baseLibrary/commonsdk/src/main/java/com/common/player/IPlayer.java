@@ -45,7 +45,7 @@ public interface IPlayer {
 
     void setSurface(Surface surface);
 
-    void setVideoPath(String path, String host);
+    void setVideoPath(String path);
 
     void prepare(boolean realTime);
 
