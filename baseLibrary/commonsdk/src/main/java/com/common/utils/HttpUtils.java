@@ -78,7 +78,11 @@ public class HttpUtils {
     public String buildUserAgent() {
         if (USER_AGENT == null) {
             StringBuilder sb = new StringBuilder();
-            sb.append(U.getAppInfoUtils().getAppName()).append(" ");
+            /**
+             * 注意这个 如果是 中文名字 崩溃
+             */
+//            sb.append(U.getAppInfoUtils().getAppName()).append(" ");
+            sb.append("LIVE").append(" ");
             sb.append(U.getAppInfoUtils().getVersionCode());
             sb.append(" (");
             sb.append(U.getStringUtils().join(new String[]{

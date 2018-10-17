@@ -29,7 +29,7 @@ public class AppInfoUtils {
 
     /**
      * 获取应用程序名称
-     *
+     * 如 直播助手
      * @return
      */
     public String getAppName() {

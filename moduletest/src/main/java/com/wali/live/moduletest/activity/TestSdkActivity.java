@@ -51,10 +51,10 @@ public class TestSdkActivity extends BaseActivity {
         View view = mTitlebar.getLeftCustomView();
         BaseImageView baseImageView = view.findViewById(R.id.head_img);
 
-        AvatarUtils.loadAvatarByUrl(baseImageView,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatarTs())
-                        .build());
+//        AvatarUtils.loadAvatarByUrl(baseImageView,
+//                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+//                        .setTimestamp(MyUserInfoManager.getInstance().getAvatarTs())
+//                        .build());
 
         mListRv = (RecyclerView) findViewById(R.id.list_rv);
 

@@ -1,5 +1,6 @@
 package com.common.http;
 
+import com.common.log.MyLog;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -33,7 +34,7 @@ public class UserAgentInterceptor implements Interceptor {
                     .header("User-Agent", userAgent)
                     .build();
         } catch (Exception e) {
-
+            MyLog.e(e);
         }
         return chain.proceed(requestWithUserAgent);
     }

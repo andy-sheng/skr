@@ -1,6 +1,7 @@
 package com.common.image.fresco;
 
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
@@ -39,7 +40,6 @@ import java.util.concurrent.TimeUnit;
  * Created by lan on 16-1-11.
  */
 public class FrescoInitManager {
-
     public final static String TAG = "FrescoInitManager";
 
     public final static String FRESCO_DIR_PATH = String.format("/%s/fresco", U.getAppInfoUtils().getAppName());
@@ -55,12 +55,14 @@ public class FrescoInitManager {
                 .setMaxCacheSize(500 * ByteConstants.MB)
                 .build();
 
+        // 小文件的目录
         DiskCacheConfig smallDiskCacheConfig = DiskCacheConfig.newBuilder(context)
                 .setBaseDirectoryPath(new File(Environment.getExternalStorageDirectory(), FRESCO_DIR_PATH))
                 .setBaseDirectoryName("thumbnail")
                 .setVersion(1)
                 .setMaxCacheSize(500 * ByteConstants.MB)
                 .build();
+
         // 当内存紧张时采取的措施
         MemoryTrimmableRegistry memoryTrimmableRegistry = NoOpMemoryTrimmableRegistry.getInstance();
         memoryTrimmableRegistry.registerMemoryTrimmable(new MemoryTrimmable() {
@@ -78,15 +80,20 @@ public class FrescoInitManager {
                 }
             }
         });
+        // 配置自定义的网络请求处理
         OkHttpClient okHttpClient = new OkHttpClient();
         Set<RequestListener> requestListeners = new HashSet<>();
         requestListeners.add(new RequestLoggingListener());
+
+        //自定义一个拦截器
         okHttpClient.networkInterceptors().add(new UserAgentInterceptor(U.getHttpUtils().buildUserAgent()));
+
         final File baseDir = context.getCacheDir();
         if (baseDir != null) {
             final File cacheDir = new File(baseDir, "HttpResponseCache");
             okHttpClient.setCache(new com.squareup.okhttp.Cache(cacheDir, 10 * ByteConstants.MB));
         }
+
         okHttpClient.setReadTimeout(20 * 1000, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(15 * 1000, TimeUnit.MILLISECONDS);
 
@@ -114,11 +121,11 @@ public class FrescoInitManager {
         final MemoryCacheParams bitmapCacheParams = getMemoryCacheParams();          // Max cache entry size
 
         configBuilder.setBitmapMemoryCacheParamsSupplier(
-                        new Supplier<MemoryCacheParams>() {
-                            public MemoryCacheParams get() {
-                                return bitmapCacheParams;
-                            }
-                        })
+                new Supplier<MemoryCacheParams>() {
+                    public MemoryCacheParams get() {
+                        return bitmapCacheParams;
+                    }
+                })
 //                .setEncodedMemoryCacheParamsSupplier(new Supplier<MemoryCacheParams>() {
 //                    @Override
 //                    public MemoryCacheParams get() {
@@ -129,17 +136,18 @@ public class FrescoInitManager {
     }
 
     static MemoryCacheParams getMemoryCacheParams() {
+        int maxCacheSize = getMaxCacheSize();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return new MemoryCacheParams(getMaxCacheSize(), // 内存缓存中总图片的最大大小,以字节为单位。
+            return new MemoryCacheParams(maxCacheSize, // 内存缓存中总图片的最大大小,以字节为单位。
                     56,                                     // 内存缓存中图片的最大数量。
-                    Integer.MAX_VALUE,                      // 内存缓存中准备清除但尚未被删除的总图片的最大大小,以字节为单位。
+                    maxCacheSize,                      // 内存缓存中准备清除但尚未被删除的总图片的最大大小,以字节为单位。
                     Integer.MAX_VALUE,                      // 内存缓存中准备清除的总图片的最大数量。
                     Integer.MAX_VALUE);                     // 内存缓存中单个图片的最大大小。
         } else {
             return new MemoryCacheParams(
-                    getMaxCacheSize(),
+                    maxCacheSize,
                     256,
-                    Integer.MAX_VALUE,
+                    maxCacheSize,
                     Integer.MAX_VALUE,
                     Integer.MAX_VALUE);
         }
@@ -169,5 +177,4 @@ public class FrescoInitManager {
         requestListeners.add(new RequestLoggingListener());
         configBuilder.setRequestListeners(requestListeners);
     }
-
 }

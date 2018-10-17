@@ -6,13 +6,14 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.facebook.imagepipeline.backends.okhttp.OkHttpNetworkFetcher;
+import com.facebook.imagepipeline.common.BytesRange;
 import com.facebook.imagepipeline.image.EncodedImage;
 import com.facebook.imagepipeline.producers.BaseNetworkFetcher;
 import com.facebook.imagepipeline.producers.BaseProducerContextCallbacks;
 import com.facebook.imagepipeline.producers.Consumer;
 import com.facebook.imagepipeline.producers.ProducerContext;
+import com.squareup.okhttp.CacheControl;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -34,6 +35,9 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
     private static final String FETCH_TIME = "fetch_time";
     private static final String TOTAL_TIME = "total_time";
     private static final String IMAGE_SIZE = "image_size";
+
+    CacheControl mCacheControl;
+
     private final OkHttpClient mOkHttpClient;
     private Executor mCancellationExecutor;
     private Url2IpManager mUrl2IpManager;
@@ -41,16 +45,19 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
     public CustomOkHttpNetworkFetcher(OkHttpClient okHttpClient) {
         this.mOkHttpClient = okHttpClient;
         this.mCancellationExecutor = okHttpClient.getDispatcher().getExecutorService();
+        mCacheControl = new CacheControl.Builder().noStore().build();
         mUrl2IpManager = new Url2IpManager();
     }
 
     @Override
     public OkHttpNetworkFetcher.OkHttpNetworkFetchState createFetchState(Consumer<EncodedImage> consumer, ProducerContext context) {
+        MyLog.d(TAG, "createFetchState" + " consumer=" + consumer + " context=" + context);
         return new OkHttpNetworkFetcher.OkHttpNetworkFetchState(consumer, context);
     }
 
     @Override
     public void fetch(final OkHttpNetworkFetcher.OkHttpNetworkFetchState fetchState, final Callback callback) {
+        MyLog.d(TAG, "fetch" + " fetchState=" + fetchState + " callback=" + callback);
         fetchState.submitTime = SystemClock.elapsedRealtime();
         Uri uri = fetchState.getUri();
         String url = uri.toString();
@@ -58,7 +65,7 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
     }
 
     private void work(final OkHttpNetworkFetcher.OkHttpNetworkFetchState fetchState, final Callback callback, String url, int index, int callNum) {
-//        MyLog.d(TAG, "当前线程名1:" + Thread.currentThread().getName() + "url:" + url);
+        MyLog.d(TAG, "当前线程名1:" + Thread.currentThread().getName() + "url:" + url);
         if (callNum >= 10) {
             //做个保护，避免死递归
             return;
@@ -70,27 +77,40 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
         }
         MyLog.d(TAG, "ThreadId=" + Thread.currentThread().getId() + ",ThreadNam:" + Thread.currentThread().getName()
                 + ",urlWithIp:" + urlWithIp);
-        Request request = (new Builder()).cacheControl((new com.squareup.okhttp.CacheControl.Builder()).noStore().build())
-                .header("host", host)
-                .header("User-Agent", U.getHttpUtils().buildUserAgent())
-                .url(urlWithIp).get()
-                .build();
-        final Call call = this.mOkHttpClient.newCall(request);
-        fetchState.getContext().addCallbacks(new BaseProducerContextCallbacks() {
-            @Override
-            public void onCancellationRequested() {
-                if (Looper.myLooper() != Looper.getMainLooper()) {
-                    call.cancel();
-                } else {
-                    CustomOkHttpNetworkFetcher.this.mCancellationExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
+
+
+        final Builder requestBuilder = new Builder()
+                .url(urlWithIp)
+                .get();
+
+        if (mCacheControl != null) {
+            requestBuilder.cacheControl(mCacheControl);
+        }
+
+        final BytesRange bytesRange = fetchState.getContext().getImageRequest().getBytesRange();
+        if (bytesRange != null) {
+            requestBuilder.addHeader("Range", bytesRange.toHttpRangeHeaderValue());
+        }
+
+
+        final Call call = this.mOkHttpClient.newCall(requestBuilder.build());
+        fetchState
+                .getContext()
+                .addCallbacks(new BaseProducerContextCallbacks() {
+                    @Override
+                    public void onCancellationRequested() {
+                        if (Looper.myLooper() != Looper.getMainLooper()) {
                             call.cancel();
+                        } else {
+                            CustomOkHttpNetworkFetcher.this.mCancellationExecutor.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    call.cancel();
+                                }
+                            });
                         }
-                    });
-                }
-            }
-        });
+                    }
+                });
         call.enqueue(new com.squareup.okhttp.Callback() {
             @Override
             public void onResponse(Response response) {
