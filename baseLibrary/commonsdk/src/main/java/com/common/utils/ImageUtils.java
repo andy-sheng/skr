@@ -16,7 +16,7 @@ public class ImageUtils {
      * @param url 图片地址
      * @return 宽，高
      */
-    public static Integer[] getImageWidthAndHeightFromNetwrok(String url) {
+    public Integer[] getImageWidthAndHeightFromNetwrok(String url) {
         Integer option[] = new Integer[2];
         try {
             URL m_url = new URL(url);
@@ -35,5 +35,64 @@ public class ImageUtils {
             e.printStackTrace();
         }
         return option;
+    }
+
+    /**
+     * 简化拼接方法
+     * 具体拼接规则
+     * http://wiki.n.miui.com/pages/viewpage.action?pageId=18998589
+     * 0 : 原始webp地址
+     * 160 : 160尺寸地址
+     * 320 : 320尺寸地址
+     * 480 : 480尺寸地址
+     */
+    public String getSizeSuffix(SIZE dimenSize) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("@style@");
+        switch (dimenSize){
+            case ORIGIN:
+                sb.append("original");
+                break;
+            case SIZE_160:
+                sb.append("160");
+                break;
+            case SIZE_320:
+                sb.append("320");
+                break;
+            case SIZE_480:
+                sb.append("480");
+                break;
+            case SIZE_640:
+                sb.append("640");
+                break;
+        }
+        return sb.toString();
+    }
+
+    public static String getSizeSuffixJpg(SIZE dimenSize) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("@style@");
+        switch (dimenSize){
+            case ORIGIN:
+                return "";
+            case SIZE_160:
+                sb.append("160");
+                break;
+            case SIZE_320:
+                sb.append("320");
+                break;
+            case SIZE_480:
+                sb.append("480");
+                break;
+            case SIZE_640:
+                sb.append("640");
+                break;
+        }
+        sb.append("jpg");
+        return sb.toString();
+    }
+
+    public  enum SIZE{
+        ORIGIN,SIZE_160,SIZE_320,SIZE_480,SIZE_640
     }
 }

@@ -18,13 +18,13 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
-import com.common.core.account.UserAccountManager;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wali.live.moduletest.R;
 
 import java.io.File;
@@ -48,6 +48,14 @@ public class TestSdkActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
         mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
+        View view = mTitlebar.getLeftCustomView();
+        BaseImageView baseImageView = view.findViewById(R.id.head_img);
+
+        AvatarUtils.loadAvatarByUrl(baseImageView,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                        .setTimestamp(MyUserInfoManager.getInstance().getAvatarTs())
+                        .build());
+
         mListRv = (RecyclerView) findViewById(R.id.list_rv);
 
         mListRv.setLayoutManager(new LinearLayoutManager(this));
@@ -186,13 +194,18 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("判断5s后app是否在前台", new Runnable() {
             @Override
             public void run() {
+                AvatarUtils.loadAvatarByUrl(baseImageView,
+                        AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                                .setTimestamp(MyUserInfoManager.getInstance().getAvatarTs())
+                                .build());
+
                 U.getAppInfoUtils().showDebugDBAddressLogToast();
                 mUiHanlder.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        U.getToastUtil().showToast("在前台 "+U.getActivityUtils().isAppForeground());
+                        U.getToastUtil().showToast("在前台 " + U.getActivityUtils().isAppForeground());
                     }
-                },5000);
+                }, 5000);
             }
         }));
     }
@@ -200,7 +213,7 @@ public class TestSdkActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!U.getPermissionUtils().checkExternalStorage(this)){
+        if (!U.getPermissionUtils().checkExternalStorage(this)) {
             U.getPermissionUtils().requestExternalStorage(new PermissionUtil.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {

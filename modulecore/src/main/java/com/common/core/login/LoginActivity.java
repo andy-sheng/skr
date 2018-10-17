@@ -80,7 +80,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String path = Environment.getExternalStorageDirectory() + File.separator + "test.jpg";
-                final UploadUtils.UploadParams uploadParams = new UploadUtils.UploadParams.Builder()
+                final UploadUtils.UploadParams uploadParams = UploadUtils.UploadParams.newBuilder()
                         .setLocalPath(path)
                         .setType(AuthType.HEAD)
                         .setMimeType("image/jpg")

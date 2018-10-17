@@ -21,14 +21,11 @@ public class UserAccount {
     private Long id;
     @NotNull
     private String uid;
+    private String nickName;
+    private String imgUrl;
     private String serviceToken;
     private String securityKey;
     private String passToken;
-    private String nickName;
-    private String imgUrl;
-    private Integer sex;
-    private String slogan;
-    private String userName;
     private String password;
     private String oldPwd;
     private String deviceId;
@@ -43,23 +40,20 @@ public class UserAccount {
     private Boolean needEditUserInfo;
     private String ext;
 
-    @Generated(hash = 786667836)
-    public UserAccount(Long id, @NotNull String uid, String serviceToken,
-                       String securityKey, String passToken, String nickName, String imgUrl,
-                       Integer sex, String slogan, String userName, String password,
-                       String oldPwd, String deviceId, String pSecurity, String sSecurity,
-                       Integer isReset, Integer isNew, Boolean isLogOff, String thirdId,
-                       @NotNull Integer channelId, Boolean needEditUserInfo, String ext) {
+    @Generated(hash = 249300457)
+    public UserAccount(Long id, @NotNull String uid, String nickName, String imgUrl,
+                       String serviceToken, String securityKey, String passToken,
+                       String password, String oldPwd, String deviceId, String pSecurity,
+                       String sSecurity, Integer isReset, Integer isNew, Boolean isLogOff,
+                       String thirdId, @NotNull Integer channelId, Boolean needEditUserInfo,
+                       String ext) {
         this.id = id;
         this.uid = uid;
+        this.nickName = nickName;
+        this.imgUrl = imgUrl;
         this.serviceToken = serviceToken;
         this.securityKey = securityKey;
         this.passToken = passToken;
-        this.nickName = nickName;
-        this.imgUrl = imgUrl;
-        this.sex = sex;
-        this.slogan = slogan;
-        this.userName = userName;
         this.password = password;
         this.oldPwd = oldPwd;
         this.deviceId = deviceId;
@@ -78,41 +72,6 @@ public class UserAccount {
     public UserAccount() {
     }
 
-    // KEEP FIELDS - put your custom fields here
-    // KEEP FIELDS END
-
-
-    // KEEP METHODS - put your custom methods here
-
-    @Override
-    public String toString() {
-        return "UserAccount{" +
-                "id=" + id +
-                ", uid='" + uid + '\'' +
-                ", serviceToken='" + serviceToken + '\'' +
-                ", securityKey='" + securityKey + '\'' +
-                ", passToken='" + passToken + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", imgUrl='" + imgUrl + '\'' +
-                ", sex=" + sex +
-                ", slogan='" + slogan + '\'' +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", oldPwd='" + oldPwd + '\'' +
-                ", deviceId='" + deviceId + '\'' +
-                ", pSecurity='" + pSecurity + '\'' +
-                ", sSecurity='" + sSecurity + '\'' +
-                ", isReset=" + isReset +
-                ", isNew=" + isNew +
-                ", isLogOff=" + isLogOff +
-                ", thirdId='" + thirdId + '\'' +
-                ", channelId=" + channelId +
-                ", needEditUserInfo=" + needEditUserInfo +
-                ", ext='" + ext + '\'' +
-                '}';
-    }
-
-    // KEEP METHODS END
     public Long getId() {
         return this.id;
     }
@@ -127,6 +86,22 @@ public class UserAccount {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getNickName() {
+        return this.nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getImgUrl() {
+        return this.imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public String getServiceToken() {
@@ -151,46 +126,6 @@ public class UserAccount {
 
     public void setPassToken(String passToken) {
         this.passToken = passToken;
-    }
-
-    public String getNickName() {
-        return this.nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getImgUrl() {
-        return this.imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public Integer getSex() {
-        return this.sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public String getSlogan() {
-        return this.slogan;
-    }
-
-    public void setSlogan(String slogan) {
-        this.slogan = slogan;
-    }
-
-    public String getUserName() {
-        return this.userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getPassword() {

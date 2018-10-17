@@ -2,6 +2,7 @@ package com.common.core.upload;
 
 import android.text.TextUtils;
 
+import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.ksyun.ks3.util.DateUtil;
@@ -12,6 +13,9 @@ import com.wali.live.proto.AuthUpload.FileInfo;
 
 import java.io.File;
 
+/**
+ * 上传的工具类，上传的入口
+ */
 public class UploadUtils {
 
     public final static String TAG = "UploadUtils";
@@ -177,8 +181,15 @@ public class UploadUtils {
             return U.getFileUtils().getSuffixFromFilePath(localPath);
         }
 
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
         public static class Builder {
             private UploadParams mUploadParams = new UploadParams();
+
+            Builder() {
+            }
 
             public UploadParams.Builder setLocalPath(String localPath) {
                 this.mUploadParams.setLocalPath(localPath);

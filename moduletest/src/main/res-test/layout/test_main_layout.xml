@@ -9,6 +9,8 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        titlebar:leftType="customView"
+        titlebar:leftCustomView="@layout/test_titlebar_left_img"
         titlebar:centerText="测试中心"
         titlebar:centerType="textView" />
 

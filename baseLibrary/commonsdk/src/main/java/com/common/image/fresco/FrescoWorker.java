@@ -109,6 +109,11 @@ public class FrescoWorker {
         return decodeOptions;
     }
 
+    /**
+     * 使用 fresco 加载图片
+     * @param draweeView
+     * @param baseImage 请使用 {@link com.common.image.model.ImageFactory 构造}
+     */
     public static void loadImage(final SimpleDraweeView draweeView, final BaseImage baseImage) {
         if (draweeView == null) {
             MyLog.d(TAG, "draweeView is null");

@@ -11,9 +11,10 @@ import java.io.File;
  */
 public class LocalImage extends BaseImage {
     private String mPath;
-    public LocalImage() {
 
-    }
+    /**
+     * 使用 ImageFactory来build
+     */
      LocalImage(String path) {
         mPath = path;
         generateUri();

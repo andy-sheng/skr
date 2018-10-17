@@ -19,7 +19,6 @@ public class MyUserInfoManager {
 
     public void init() {
         load();
-
     }
 
     private void load() {
@@ -59,6 +58,20 @@ public class MyUserInfoManager {
             return mUser.getNickName();
         }
         return "";
+    }
+
+    public long getUid() {
+        if (mUser != null) {
+            return mUser.getUid();
+        }
+        return 0;
+    }
+
+    public long getAvatarTs() {
+        if (mUser != null) {
+            return mUser.getAvatar();
+        }
+        return 0;
     }
 
     private static class MyUserInfoManagerHolder {

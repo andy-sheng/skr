@@ -13,6 +13,9 @@ public class HttpImage extends BaseImage {
     public String fullSizeUrl = "";
     public Bitmap.Config config;
 
+    /**
+     * 使用 ImageFactory来build
+     */
     HttpImage(String url) {
         mUrl = url;
         generateUri();

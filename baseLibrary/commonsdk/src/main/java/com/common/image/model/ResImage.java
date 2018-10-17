@@ -9,6 +9,9 @@ import android.net.Uri;
 public class ResImage extends BaseImage {
     private int mResId;
 
+    /**
+     * 使用 ImageFactory来build
+     */
     ResImage(int resId) {
         mResId = resId;
         generateUri();
