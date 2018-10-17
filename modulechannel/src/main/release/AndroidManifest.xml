@@ -10,6 +10,8 @@
             android:value="ConfigModule" />
         <activity android:name=".activity.ChannelSdkActivity"></activity>
 
+        <activity android:name=".activity.ChannelListSdkActivity"></activity>
+
     </application>
 
 </manifest>
