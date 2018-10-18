@@ -15,7 +15,6 @@ import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wali.live.modulechannel.R;
 
 import java.util.List;
@@ -84,8 +83,6 @@ public class ChannelSdkActivity extends BaseActivity {
                 });
             }
         });
-
-
     }
 
     @Override

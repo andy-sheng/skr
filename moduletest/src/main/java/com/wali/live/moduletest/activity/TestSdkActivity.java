@@ -211,6 +211,32 @@ public class TestSdkActivity extends BaseActivity {
                 }, 5000);
             }
         }));
+
+        mDataList.add(new H("频道测试", new Runnable() {
+            @Override
+            public void run() {
+                ARouter.getInstance().build("/channel/ChannelListSdkActivity").greenChannel().navigation(TestSdkActivity.this, new NavigationCallback() {
+                    @Override
+                    public void onFound(Postcard postcard) {
+
+                    }
+
+                    @Override
+                    public void onLost(Postcard postcard) {
+                    }
+
+                    @Override
+                    public void onArrival(Postcard postcard) {
+
+                    }
+
+                    @Override
+                    public void onInterrupt(Postcard postcard) {
+
+                    }
+                });
+            }
+        }));
     }
 
     @Override
