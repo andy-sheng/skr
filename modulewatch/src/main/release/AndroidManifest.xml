@@ -7,7 +7,13 @@
         <meta-data
             android:name="com.wali.live.modulewatch.WatchConfiguration"
             android:value="ConfigModule" />
-        <activity android:name="com.wali.live.modulewatch.activity.WatchSdkAcitivity" />
+        <activity
+            android:name="com.wali.live.modulewatch.activity.WatchSdkAcitivity"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

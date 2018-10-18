@@ -25,6 +25,7 @@
     <color name="public_black_trans_90">#e6000000</color>
     <color name="public_black_trans_95">#f3000000</color>
 
+    <color name="public_white">#ffffff</color>
     <color name="public_white_trans_5">#0cffffff</color>
     <color name="public_white_trans_10">#19ffffff</color>
     <color name="public_white_trans_15">#26ffffff</color>

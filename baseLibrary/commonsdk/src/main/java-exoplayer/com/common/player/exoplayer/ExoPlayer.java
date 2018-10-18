@@ -75,6 +75,7 @@ public class ExoPlayer implements IPlayer {
 
     private View mView;
 
+    private boolean mPreparedFlag = false;
 
     public ExoPlayer() {
         TAG += hashCode();
@@ -243,9 +244,10 @@ public class ExoPlayer implements IPlayer {
             @Override
             public void onRenderedFirstFrame(Surface surface) {
                 MyLog.d(TAG, "onRenderedFirstFrame" + " surface=" + surface);
-                EventBus.getDefault().postSticky(new OnPreparedEvent());
                 if (mCallback != null) {
                     mCallback.onPrepared();
+                } else {
+                    mPreparedFlag = true;
                 }
             }
 
@@ -279,7 +281,7 @@ public class ExoPlayer implements IPlayer {
                 return new HlsMediaSource(uri, mediaDataSourceFactory, sUiHanlder, new AdaptiveMediaSourceEventListener() {
                     @Override
                     public void onLoadStarted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs) {
-
+                        MyLog.d("ExoPlayer", "onLoadStarted" + " dataSpec=" + dataSpec + " dataType=" + dataType + " trackType=" + trackType + " trackFormat=" + trackFormat + " trackSelectionReason=" + trackSelectionReason + " trackSelectionData=" + trackSelectionData + " mediaStartTimeMs=" + mediaStartTimeMs + " mediaEndTimeMs=" + mediaEndTimeMs + " elapsedRealtimeMs=" + elapsedRealtimeMs);
                     }
 
                     @Override
@@ -324,6 +326,12 @@ public class ExoPlayer implements IPlayer {
     @Override
     public void setCallback(IPlayerCallback callback) {
         this.mCallback = callback;
+        if (callback != null) {
+            if (mPreparedFlag) {
+                callback.onPrepared();
+                mPreparedFlag = false;
+            }
+        }
     }
 
     @Override
@@ -381,6 +389,7 @@ public class ExoPlayer implements IPlayer {
 
     /**
      * 调整 video view 视图
+     *
      * @param from
      */
     private void adjustView(String from) {
@@ -393,7 +402,8 @@ public class ExoPlayer implements IPlayer {
             MyLog.d(TAG, "adjustView lp.width:" + lp.width + " lp.height:" + lp.height);
             MyLog.d(TAG, "adjustView view.width:" + mView.getWidth() + " view.height:" + mView.getHeight());
             View parent = (View) mView.getParent();
-            MyLog.d(TAG, "adjustView parent.width:" + parent.getWidth() + " parent.height:" + parent.getHeight());
+            MyLog.d(TAG,
+                    "adjustView parent.width:" + parent.getWidth() + " parent.height:" + parent.getHeight());
             if (videoHeight != 0 && videoWidth != 0 && parent.getWidth() != 0) {
                 //目的：将view弄成合适的宽度和高度
                 //判断流是横屏还是竖屏
@@ -473,6 +483,7 @@ public class ExoPlayer implements IPlayer {
     @Override
     public void prepare(boolean realTime) {
         if (mUrlChange) {
+            mUrlChange = false;
             mPlayer.prepare(mMediaSource, true, false);
             mPlayer.setPlayWhenReady(true);
         }
@@ -551,37 +562,5 @@ public class ExoPlayer implements IPlayer {
 
     }
 
-    public static final class OnPreparedEvent {
 
-    }
-
-    public static void preStartPlayer(String url) {
-
-        PreStartPlayerRunnable preStartPlayerRunnable = new PreStartPlayerRunnable(url);
-        preStartPlayerRunnable.run();
-    }
-
-    static class PreStartPlayerRunnable implements Runnable {
-        String url;
-
-        public PreStartPlayerRunnable(final String url) {
-            this.url = url;
-        }
-
-        @Override
-        public void run() {
-            if (sExoPlayer == null) {
-                sExoPlayer = genPlayer();
-            }
-            try {
-                mPreLoadUrl = url;
-                mPreLoadMediaSource = buildMediaSource(Uri.parse(url), null);
-                sExoPlayer.prepare(mPreLoadMediaSource, true, false);
-                sExoPlayer.setPlayWhenReady(true);
-                MyLog.w("ExoPlayer", "preStartPlayer end");
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
-    }
 }

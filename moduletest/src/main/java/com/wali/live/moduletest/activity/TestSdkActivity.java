@@ -22,6 +22,8 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.player.VideoPlayerAdapter;
+import com.common.player.exoplayer.ExoPlayer;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
@@ -85,6 +87,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("插件间跳转测试", new Runnable() {
             @Override
             public void run() {
+                VideoPlayerAdapter.preStartPlayer("http://playback.ks.zb.mi.com/record/live/101743_1531094545/hls/101743_1531094545.m3u8?playui=1");
                 //跳到LoginActivity,要用ARouter跳
                 ARouter.getInstance().build("/watch/WatchSdkAcitivity").navigation(TestSdkActivity.this, new NavigationCallback() {
                     @Override

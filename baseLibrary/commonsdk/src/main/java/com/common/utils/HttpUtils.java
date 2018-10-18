@@ -275,6 +275,13 @@ public class HttpUtils {
         }
     }
 
+    /**
+     * 唯一的下载接口
+     * @param urlStr
+     * @param outputFile
+     * @param progress
+     * @return
+     */
     public boolean downloadFile(String urlStr, final File outputFile,
                                 OnDownloadProgress progress) {
         if (!outputFile.exists()) {
@@ -358,7 +365,7 @@ public class HttpUtils {
         return false;
     }
 
-    static class DownloadParams {
+    private static class DownloadParams {
         public String url;
         public boolean hasCancel = false;
 
