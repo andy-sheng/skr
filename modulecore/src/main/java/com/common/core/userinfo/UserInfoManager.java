@@ -1,6 +1,5 @@
 package com.common.core.userinfo;
 
-import com.common.RequestCallBack;
 import com.common.log.MyLog;
 import com.wali.live.proto.Relation.BlockResponse;
 import com.wali.live.proto.Relation.BlockerListResponse;
@@ -20,10 +19,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class UserInfoManager {
 
@@ -343,8 +338,8 @@ public class UserInfoManager {
      * @param target
      * @param roomId 仅在房间关注主播时设置
      */
-    public void follow(final long uuid, final long target, final String roomId, final RequestCallBack callBack) {
-        Observable.create(new ObservableOnSubscribe<Integer>() {
+    public Observable<Integer> follow(final long uuid, final long target, final String roomId) {
+        return Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 FollowResponse followResponse = UserInfoServerApi.follow(uuid, target, roomId);
@@ -363,32 +358,7 @@ public class UserInfoManager {
                 emitter.onNext(retCode);
                 emitter.onComplete();
             }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer ret) {
-                        if (callBack != null) {
-                            callBack.onResult(ret);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        });
     }
 
     /**
@@ -397,8 +367,8 @@ public class UserInfoManager {
      * @param uuid
      * @param target
      */
-    public void unFollow(final long uuid, final long target, final RequestCallBack callBack) {
-        Observable.create(new ObservableOnSubscribe<Integer>() {
+    public Observable<Integer> unFollow(final long uuid, final long target) {
+        return Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 UnFollowResponse unFollowResponse = UserInfoServerApi.unFollow(uuid, target);
@@ -410,32 +380,7 @@ public class UserInfoManager {
                 emitter.onNext(retCode);
                 emitter.onComplete();
             }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer retCode) {
-                        if (callBack != null) {
-                            callBack.onResult(retCode);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        });
     }
 
     /**
@@ -444,8 +389,8 @@ public class UserInfoManager {
      * @param uuid
      * @param target
      */
-    public void block(final long uuid, final long target, final RequestCallBack callBack) {
-        Observable.create(new ObservableOnSubscribe<Integer>() {
+    public Observable<Integer> block(final long uuid, final long target) {
+        return Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 BlockResponse blockResponse = UserInfoServerApi.block(uuid, target);
@@ -460,32 +405,7 @@ public class UserInfoManager {
                 emitter.onNext(retCode);
                 emitter.onComplete();
             }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer retCode) {
-                        if (callBack != null) {
-                            callBack.onResult(retCode);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        });
     }
 
 
@@ -495,8 +415,8 @@ public class UserInfoManager {
      * @param uuid
      * @param target
      */
-    public void unBlock(final long uuid, final long target, final RequestCallBack callBack) {
-        Observable.create(new ObservableOnSubscribe<Integer>() {
+    public Observable<Integer> unBlock(final long uuid, final long target) {
+        return Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
                 UnBlockResponse unBlockResponse = UserInfoServerApi.unBlock(uuid, target);
@@ -511,31 +431,6 @@ public class UserInfoManager {
                 emitter.onNext(retCode);
                 emitter.onComplete();
             }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer retCode) {
-                        if (callBack != null) {
-                            callBack.onResult(retCode);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        });
     }
 }
