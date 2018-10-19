@@ -14,9 +14,9 @@
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/login_btn"
-        android:layout_width="@dimen/public_view_dimen_200"
-        android:layout_height="@dimen/public_view_dimen_200"
+        android:layout_width="@dimen/view_dimen_200"
+        android:layout_height="@dimen/view_dimen_200"
         android:layout_centerInParent="true"
-        android:background="@color/public_black" />
+        android:background="@color/black" />
 
 </RelativeLayout>

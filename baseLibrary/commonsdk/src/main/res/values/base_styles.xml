@@ -2,17 +2,17 @@
 
 
     <!-- Base application theme. -->
-    <style name="public_AppTheme_Main" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme_Main" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/public_colorPrimary</item>
-        <item name="colorPrimaryDark">@color/public_colorPrimaryDark</item>
-        <item name="colorAccent">@color/public_colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowAnimationStyle">@style/public_Activity_Animation</item>
+        <item name="android:windowAnimationStyle">@style/Activity_Animation</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="public_AppTheme_Swipe" parent="public_AppTheme_Main">
+    <style name="AppTheme_Swipe" parent="AppTheme_Main">
         <!--//if you don't set this the background will be black when you slide.-->
         <item name="android:windowIsTranslucent">true</item>
         <!--//set the right in/out animation of Activity,you can change this to yours-->
@@ -20,14 +20,11 @@
 
     </style>
 
-    <style name="public_Activity_Animation">
-        <item name="android:activityOpenEnterAnimation">@anim/public_translate_right_to_center
-        </item>
-        <item name="android:activityOpenExitAnimation">@anim/public_translate_center_to_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/public_translate_left_to_center
-        </item>
-        <item name="android:activityCloseExitAnimation">@anim/public_translate_center_to_right
-        </item>
+    <style name="Activity_Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/translate_right_to_center</item>
+        <item name="android:activityOpenExitAnimation">@anim/translate_center_to_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/translate_left_to_center</item>
+        <item name="android:activityCloseExitAnimation">@anim/translate_center_to_right</item>
     </style>
 
 

@@ -10,9 +10,9 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:paddingLeft="@dimen/public_view_dimen_64"
-        android:paddingRight="@dimen/public_view_dimen_64"
+        android:paddingLeft="@dimen/view_dimen_64"
+        android:paddingRight="@dimen/view_dimen_64"
         android:singleLine="true"
-        android:textSize="@dimen/public_view_dimen_40"/>
+        android:textSize="@dimen/view_dimen_40"/>
 
 </RelativeLayout>

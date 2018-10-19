@@ -23,17 +23,17 @@
         <com.common.view.viewpager.SlidingTabLayout
             android:id="@+id/title_tab"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/public_view_dimen_100"
+            android:layout_height="@dimen/view_dimen_100"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/public_view_dimen_188"
-            android:layout_marginRight="@dimen/public_view_dimen_188" />
+            android:layout_marginLeft="@dimen/view_dimen_188"
+            android:layout_marginRight="@dimen/view_dimen_188" />
 
         <View
             android:id="@+id/split_line"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/public_view_dimen_2"
-            android:background="@color/public_black_trans_10" />
+            android:layout_height="@dimen/view_dimen_2"
+            android:background="@color/black_trans_10" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/op_pager"

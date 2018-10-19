@@ -28,7 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-@Route(path = "/core/login")
+@Route(path = "/core/LoginActivity")
 public class LoginActivity extends BaseActivity {
 
     private TextView mMiBtn;

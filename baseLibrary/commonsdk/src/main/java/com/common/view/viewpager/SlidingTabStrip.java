@@ -90,7 +90,7 @@ class SlidingTabStrip extends LinearLayout {
         mBottomBorderPaint = new Paint();
         mBottomBorderPaint.setColor(mDefaultBottomBorderColor);
 
-        mIndicatorCornorRadius = getResources().getDimension(R.dimen.public_view_dimen_2);
+        mIndicatorCornorRadius = getResources().getDimension(R.dimen.view_dimen_2);
 
         mSelectedIndicatorThickness =  (SELECTED_INDICATOR_THICKNESS_DIPS * density);
         mSelectedIndicatorPaint = new Paint();

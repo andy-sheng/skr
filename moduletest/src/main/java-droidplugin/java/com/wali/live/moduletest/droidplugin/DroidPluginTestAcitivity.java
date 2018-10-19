@@ -41,7 +41,7 @@ public class DroidPluginTestAcitivity extends BaseActivity {
         mTitleTab = (SlidingTabLayout) this.findViewById(R.id.title_tab);
 
         mTitleTab.setCustomTabView(R.layout.test_droidplugin_tab_view, R.id.tab_tv);
-        mTitleTab.setSelectedIndicatorColors(getResources().getColor(R.color.public_black));
+        mTitleTab.setSelectedIndicatorColors(getResources().getColor(R.color.black));
         mTitleTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
         mTitleTab.setIndicatorWidth(U.getDisplayUtils().dip2px(12));
         mTitleTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(6));

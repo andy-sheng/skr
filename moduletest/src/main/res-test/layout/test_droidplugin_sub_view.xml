@@ -9,8 +9,8 @@
         android:id="@+id/refresh_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/public_view_dimen_30"
-        android:textColor="@color/public_black"
+        android:layout_marginLeft="@dimen/view_dimen_30"
+        android:textColor="@color/black"
         android:gravity="center"
         android:text="刷新" />
 

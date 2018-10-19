@@ -89,12 +89,12 @@ public class TestSdkActivity extends BaseActivity {
             }
         });
 
-        mDataList.add(new H("插件间跳转测试", new Runnable() {
+        mDataList.add(new H("视频播放调试", new Runnable() {
             @Override
             public void run() {
                 VideoPlayerAdapter.preStartPlayer("http://playback.ks.zb.mi.com/record/live/101743_1531094545/hls/101743_1531094545.m3u8?playui=1");
                 //跳到LoginActivity,要用ARouter跳
-                ARouter.getInstance().build("/core/login").navigation(TestSdkActivity.this, new NavigationCallback() {
+                ARouter.getInstance().build("/core/LoginActivity").navigation(TestSdkActivity.this, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
                         MyLog.d(TAG, "onFound" + " postcard=" + postcard);
@@ -243,7 +243,7 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("add fragment", new Runnable() {
+        mDataList.add(new H("上拉加载 下拉刷新 的RecyclerView 调试", new Runnable() {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils

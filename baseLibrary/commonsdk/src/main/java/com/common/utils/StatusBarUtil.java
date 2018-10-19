@@ -110,7 +110,7 @@ public class StatusBarUtil {
     public void setTransparentBar(Activity activity, boolean whiteStatus) {
         //白色状态栏,而且不支持黑色顶部字,直接设置成黑色状态栏
         if (whiteStatus && !supportStatusBarLightMode(activity)) {
-            setColorBar(activity, ContextCompat.getColor(activity, R.color.public_black));
+            setColorBar(activity, ContextCompat.getColor(activity, R.color.black));
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

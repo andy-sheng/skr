@@ -47,13 +47,13 @@ public class BaseImageView extends SimpleDraweeView {
 
     @Override
     public void setImageBitmap(Bitmap bm) {
-        setTag(R.id.public_fresco_view_tag, null);
+        setTag(R.id.fresco_view_tag, null);
         super.setImageBitmap(bm);
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
-        setTag(R.id.public_fresco_view_tag, null);
+        setTag(R.id.fresco_view_tag, null);
         super.setImageDrawable(drawable);
     }
 

@@ -26,18 +26,18 @@
             android:id="@+id/mi_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/public_view_dimen_10"
+            android:layout_margin="@dimen/view_dimen_10"
             android:text="小米登录"
-            android:textSize="@dimen/public_view_dimen_30" />
+            android:textSize="@dimen/view_dimen_30" />
 
         <TextView
             android:id="@+id/mi_test_server"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mi_btn"
-            android:layout_margin="@dimen/public_view_dimen_30"
+            android:layout_margin="@dimen/view_dimen_30"
             android:text="测试服务器"
-            android:textSize="@dimen/public_view_dimen_30" />
+            android:textSize="@dimen/view_dimen_30" />
 
 
         <TextView
@@ -45,18 +45,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mi_test_server"
-            android:layout_margin="@dimen/public_view_dimen_30"
+            android:layout_margin="@dimen/view_dimen_30"
             android:text="测试本地数据库"
-            android:textSize="@dimen/public_view_dimen_30" />
+            android:textSize="@dimen/view_dimen_30" />
 
         <TextView
             android:id="@+id/mi_test_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mi_test_local"
-            android:layout_margin="@dimen/public_view_dimen_30"
+            android:layout_margin="@dimen/view_dimen_30"
             android:text="测试关注"
-            android:textSize="@dimen/public_view_dimen_30" />
+            android:textSize="@dimen/view_dimen_30" />
     </RelativeLayout>
 
 

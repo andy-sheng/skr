@@ -62,6 +62,8 @@ ext {
             "retrofit-adapter-rxjava2" : "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitSdkVersion"]}",
             "okhttp3"                  : "com.squareup.okhttp3:okhttp:3.10.0",
             "okhttp-urlconnection"     : "com.squareup.okhttp:okhttp-urlconnection:2.0.0",
+
+            // 图片加载
             "glide"                    : "com.github.bumptech.glide:glide:${version["glideSdkVersion"]}",
             "glide-compiler"           : "com.github.bumptech.glide:compiler:${version["glideSdkVersion"]}",
             "glide-loader-okhttp3"     : "com.github.bumptech.glide:okhttp3-integration:${version["glideSdkVersion"]}",
@@ -79,13 +81,30 @@ ext {
             "autolayout"               : "com.zhy:autolayout:1.4.5",
             "butterknife"              : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
             "butterknife-compiler"     : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
+            /**
+             * 时间选择器，选项选择器，仿 ios PickerView控件。
+             */
             "pickerview"               : "com.contrarywind:Android-PickerView:3.2.5",
+            /**
+             * 大图浏览，缩放图片
+             */
             "photoview"                : "com.github.chrisbanes.photoview:library:1.2.3",
+
             "numberprogressbar"        : "com.daimajia.numberprogressbar:library:1.2@aar",
+            /**
+             * 为了在3.0以前的系统使用属性动画
+             */
             "nineoldandroids"          : "com.nineoldandroids:library:2.4.0",
+            /**
+             * 支持下拉加载的RecyclerView
+             */
             "paginate"                 : "com.github.markomilos:paginate:0.5.1",
             "vlayout"                  : "com.alibaba.android:vlayout:1.1.0@aar",
             "lottie"                   : "com.airbnb.android:lottie:2.5.4",
+
+            //exoplayer
+            "exoplayer-core"           : "com.google.android.exoplayer:exoplayer-core:r2.4.1",
+            "exoplayer-hls"            : "com.google.android.exoplayer:exoplayer-hls:r2.4.1",
 
             //rx1
             "rxandroid"                : "io.reactivex:rxandroid:1.2.1",
@@ -130,6 +149,7 @@ ext {
             // facebook 性能调试工具 国内被墙，不好用
             "stetho"                   : "com.facebook.stetho:stetho:1.5.0",
 
+            // 直接在浏览器查看数据库的工具
             "debug-db"                 : "com.amitshekhar.android:debug-db:1.0.3",
 
             // 左滑退出activity
@@ -141,10 +161,6 @@ ext {
 
             //pb
             "wire"                     : "com.squareup.wire:wire-runtime:2.3.0+",
-
-            //exoplayer
-            "exoplayer-core"           : "com.google.android.exoplayer:exoplayer-core:r2.4.1",
-            "exoplayer-hls"            : "com.google.android.exoplayer:exoplayer-hls:r2.4.1",
 
             //test
             "junit"                    : "junit:junit:4.12",

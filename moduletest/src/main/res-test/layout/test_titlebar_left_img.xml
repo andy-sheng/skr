@@ -8,9 +8,9 @@
     <com.common.image.fresco.BaseImageView
         android:id="@+id/head_img"
         android:background="#ff0000"
-        android:layout_marginLeft="@dimen/public_view_dimen_20"
+        android:layout_marginLeft="@dimen/view_dimen_20"
         android:layout_centerVertical="true"
-        android:layout_width="@dimen/public_view_dimen_100"
-        android:layout_height="@dimen/public_view_dimen_100" />
+        android:layout_width="@dimen/view_dimen_100"
+        android:layout_height="@dimen/view_dimen_100" />
 
 </RelativeLayout>
