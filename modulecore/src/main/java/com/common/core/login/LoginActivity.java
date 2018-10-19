@@ -16,12 +16,16 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.wali.live.proto.User.GetHomepageResp;
 import com.wali.live.proto.User.GetUserInfoByIdRsp;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @Route(path = "/core/login")
@@ -149,11 +153,35 @@ public class LoginActivity extends BaseActivity {
         mMiTestFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long uid = MyUserInfoManager.getInstance().getUid();
-                UserInfoManager.getInstance().unFollow(uid, 490020, null);
-                UserInfoManager.getInstance().follow(uid, 490021, null,null);
-                UserInfoManager.getInstance().unBlock(uid, 490014, null);
-                UserInfoManager.getInstance().block(uid, 490014, null);
+                final long uid = MyUserInfoManager.getInstance().getUid();
+//                UserInfoManager.getInstance().follow(uid, 490021, null)
+//                UserInfoManager.getInstance().unBlock(uid, 490014)
+//                UserInfoManager.getInstance().unFollow(uid, 490020)
+                UserInfoManager.getInstance().block(123, 490014)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(LoginActivity.this.<Integer>bindUntilEvent(ActivityEvent.DESTROY))
+                        .subscribe(new Observer<Integer>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(Integer integer) {
+                                MyLog.d(TAG, " integer " + integer);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
             }
         });
     }
