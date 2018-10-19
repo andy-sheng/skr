@@ -25,11 +25,14 @@ import com.common.log.MyLog;
 import com.common.player.VideoPlayerAdapter;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.utils.FragmentUtils;
+import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.fragment.TestFragment;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -275,9 +278,14 @@ public class TestSdkActivity extends BaseActivity {
         }
     }
 
+    @Subscribe
+    public void onEvent(NetworkUtils.NetworkChangeEvent event) {
+        U.getToastUtil().showToast("网络变化 now:" + event.type);
+    }
+
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     static class H {
