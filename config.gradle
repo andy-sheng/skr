@@ -99,6 +99,10 @@ ext {
              * 支持下拉加载的RecyclerView
              */
             "paginate"                 : "com.github.markomilos:paginate:0.5.1",
+            /**
+             * 适用于 recyclerview 的丰富的动画 在 remove add等 时会触发
+             */
+            "recyclerview-animators"   : "jp.wasabeef:recyclerview-animators:2.3.0",
             "vlayout"                  : "com.alibaba.android:vlayout:1.1.0@aar",
             "lottie"                   : "com.airbnb.android:lottie:2.5.4",
 

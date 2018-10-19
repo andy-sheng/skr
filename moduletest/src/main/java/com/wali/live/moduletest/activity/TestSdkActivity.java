@@ -23,14 +23,14 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.player.VideoPlayerAdapter;
-import com.common.player.exoplayer.ExoPlayer;
 import com.common.utils.FragmentUtils;
 import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.example.paginate.RecyclerViewExampleActivity;
 import com.wali.live.moduletest.R;
-import com.wali.live.moduletest.fragment.TestFragment;
+import com.example.paginate.PaginateFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -247,12 +247,20 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, TestFragment.class)
+                        .newParamsBuilder(TestSdkActivity.this, PaginateFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
             }
         }));
+
+        mDataList.add(new H("上拉加载 下拉刷新 的RecyclerView 调试", new Runnable() {
+            @Override
+            public void run() {
+                TestSdkActivity.this.startActivity(new Intent(TestSdkActivity.this,RecyclerViewExampleActivity.class));
+            }
+        }));
+
     }
 
     @Override
@@ -286,6 +294,11 @@ public class TestSdkActivity extends BaseActivity {
     @Override
     public boolean useEventBus() {
         return true;
+    }
+
+    @Override
+    public boolean canSlide() {
+        return false;
     }
 
     static class H {

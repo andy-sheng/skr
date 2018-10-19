@@ -13,6 +13,8 @@
         <activity android:name=".replugin.RepluginTestAcitivity"></activity>
 
         <activity android:name=".droidplugin.DroidPluginTestAcitivity"></activity>
+
+        <activity android:name="com.example.paginate.RecyclerViewExampleActivity"></activity>
     </application>
 
 </manifest>

@@ -3,15 +3,12 @@
     xmlns:titlebar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_dimen_100">
+    android:background="@color/white"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="钻石余额"
-        android:textColor="@color/black"
-        android:textSize="@dimen/view_dimen_40" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

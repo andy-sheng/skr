@@ -49,6 +49,7 @@ android {
 
             res.srcDirs = ['src/main/res']
             res.srcDirs += 'src/main/res-titlebar'
+            res.srcDirs += 'src/main/res-paginate'
 
             if(repluginHostEnable.toBoolean()){
                 java.srcDirs += 'src/main/java-replugin-host'
