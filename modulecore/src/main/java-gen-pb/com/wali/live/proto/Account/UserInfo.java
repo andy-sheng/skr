@@ -187,7 +187,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     if (level != null) builder.append(", level=").append(level);
     if (badge != null) builder.append(", badge=").append(badge);
     if (updateTime != null) builder.append(", updateTime=").append(updateTime);
-    return builder.replace(0, 2, "UserInfo{").append('}').toString();
+    return builder.replace(0, 2, "MyUserInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {

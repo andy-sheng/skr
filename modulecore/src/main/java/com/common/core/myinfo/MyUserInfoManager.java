@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MyUserInfoManager {
 
-    private UserInfo mUser;
+    private MyUserInfo mUser;
 
     public void init() {
         load();
@@ -26,16 +26,14 @@ public class MyUserInfoManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
-                    UserInfo userInfo = UserInfoLocalApi.getUserAccount(UserAccountManager.getInstance().getUuidAsLong());
+                    MyUserInfo userInfo = MyUserInfoLocalApi.getUserAccount(UserAccountManager.getInstance().getUuidAsLong());
                     setMyUserInfo(userInfo);
                     // 从服务器拉一次
-                    GetOwnInfoRsp rsp = UserInfoServerApi.getOwnInfoRsp(UserAccountManager.getInstance().getUuidAsLong());
-                    if (rsp != null) {
-                        userInfo = UserInfo.loadFrom(rsp);
-                        if (userInfo != null) {
-                            UserInfoLocalApi.insertOrReplace(userInfo);
-                            setMyUserInfo(userInfo);
-                        }
+                    GetOwnInfoRsp rsp = MyUserInfoServerApi.getOwnInfoRsp(UserAccountManager.getInstance().getUuidAsLong());
+                    userInfo = MyUserInfo.loadFrom(rsp);
+                    if (userInfo != null) {
+                        MyUserInfoLocalApi.insertOrReplace(userInfo);
+                        setMyUserInfo(userInfo);
                     }
                 }
                 emitter.onComplete();
@@ -48,7 +46,7 @@ public class MyUserInfoManager {
                 .subscribe();
     }
 
-    public void setMyUserInfo(UserInfo myUserInfo) {
+    public void setMyUserInfo(MyUserInfo myUserInfo) {
         if (myUserInfo != null) {
             mUser = myUserInfo;
             //user信息设定成功了，发出eventbus

@@ -1,8 +1,6 @@
 package com.common.core.login;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
@@ -11,14 +9,15 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.oauth.XiaoMiOAuth;
-import com.common.core.upload.UploadCallBack;
-import com.common.core.upload.UploadUtils;
-import com.common.view.titlebar.CommonTitleBar;
+import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoManager;
+import com.common.log.MyLog;
 import com.common.utils.U;
-import com.wali.live.proto.AuthUpload.AuthType;
-
-import java.io.File;
+import com.common.view.titlebar.CommonTitleBar;
+import com.wali.live.proto.User.GetHomepageResp;
+import com.wali.live.proto.User.GetUserInfoByIdRsp;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -30,7 +29,11 @@ public class LoginActivity extends BaseActivity {
 
     private TextView mMiBtn;
 
-    private TextView mUploadBtn;
+    private TextView mTestServerBtn;
+
+    private TextView mTestLocalBtn;
+
+    private TextView mMiTestFollow;
 
     CommonTitleBar mTitlebar;
 
@@ -54,7 +57,12 @@ public class LoginActivity extends BaseActivity {
 
         mMiBtn = (TextView) this.findViewById(R.id.mi_btn);
 
-        mUploadBtn = (TextView) this.findViewById(R.id.mi_upload);
+        mTestServerBtn = (TextView) this.findViewById(R.id.mi_test_server);
+
+        mTestLocalBtn = (TextView) this.findViewById(R.id.mi_test_local);
+
+        mMiTestFollow = (TextView) this.findViewById(R.id.mi_test_follow);
+
 
         mMiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,48 +84,76 @@ public class LoginActivity extends BaseActivity {
             U.getActivityUtils().showSnackbar("请先登录", true);
         }
 
-        mUploadBtn.setOnClickListener(new View.OnClickListener() {
+        mTestServerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String path = Environment.getExternalStorageDirectory() + File.separator + "test.jpg";
-                final UploadUtils.UploadParams uploadParams = UploadUtils.UploadParams.newBuilder()
-                        .setLocalPath(path)
-                        .setType(AuthType.HEAD)
-                        .setMimeType("image/jpg")
-                        .build();
+
                 Observable.create(new ObservableOnSubscribe<Object>() {
                     @Override
                     public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                        UploadUtils.upload(uploadParams, new UploadCallBack() {
+                        long uid = MyUserInfoManager.getInstance().getUid();
+                        UserInfoManager.getInstance().syncFollowerListFromServer(uid, 5, 0);
+                        UserInfoManager.getInstance().syncFollowingFromServer(uid, 5, 0, true, true);
+                        UserInfoManager.getInstance().syncBockerListFromServer(uid, 5, 0);
+                        UserInfoManager.getInstance().getHomepageByUuid(490020, true, new UserInfoManager.UserInfoPageCallBack() {
                             @Override
-                            public void onTaskStart() {
-//                                U.getToastUtil().showToast("onTaskStart");
+                            public boolean onGetLocalDB(UserInfo userInfo) {
+                                MyLog.d("onGetLocal" + userInfo.toString());
+                                return false;
                             }
 
                             @Override
-                            public void onTaskCancel() {
-//                                U.getToastUtil().showToast("onTaskCancel");
+                            public boolean onGetServer(GetHomepageResp rsp) {
+                                MyLog.d("onGetServer" + rsp.toString());
+                                return false;
+                            }
+                        });
+                        UserInfoManager.getInstance().getUserInfoByUuid(490021, new UserInfoManager.UserInfoCallBack() {
+                            @Override
+                            public boolean onGetLocalDB(UserInfo userInfo) {
+                                MyLog.d("onGetLocal" + userInfo.toString());
+                                return false;
                             }
 
                             @Override
-                            public void onTaskProgress(double progress) {
-//                                U.getToastUtil().showToast("onTaskProgress");
-                            }
-
-                            @Override
-                            public void onTaskFailure() {
-//                                U.getToastUtil().showToast("onTaskFailure");
-                            }
-
-                            @Override
-                            public void onTaskSuccess() {
-//                                U.getToastUtil().showToast("onTaskSuccess");
+                            public boolean onGetServer(GetUserInfoByIdRsp rsp) {
+                                MyLog.d("onGetServer" + rsp.toString());
+                                return false;
                             }
                         });
                         emitter.onComplete();
                     }
                 }).subscribeOn(Schedulers.io())
                         .subscribe();
+            }
+        });
+
+        mTestLocalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.create(new ObservableOnSubscribe<Object>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                        long uid = MyUserInfoManager.getInstance().getUid();
+                        UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.BOTH_FOLLOWED, true, false);
+                        UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWING, true, false);
+                        UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWING, false, false);
+                        UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWER, true, false);
+                        emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .subscribe();
+            }
+        });
+
+        mMiTestFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long uid = MyUserInfoManager.getInstance().getUid();
+                UserInfoManager.getInstance().unFollow(uid, 490020, null);
+                UserInfoManager.getInstance().follow(uid, 490021, null,null);
+                UserInfoManager.getInstance().unBlock(uid, 490014, null);
+                UserInfoManager.getInstance().block(uid, 490014, null);
             }
         });
     }

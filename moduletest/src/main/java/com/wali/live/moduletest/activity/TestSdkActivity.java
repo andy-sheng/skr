@@ -89,7 +89,7 @@ public class TestSdkActivity extends BaseActivity {
             public void run() {
                 VideoPlayerAdapter.preStartPlayer("http://playback.ks.zb.mi.com/record/live/101743_1531094545/hls/101743_1531094545.m3u8?playui=1");
                 //跳到LoginActivity,要用ARouter跳
-                ARouter.getInstance().build("/watch/WatchSdkAcitivity").navigation(TestSdkActivity.this, new NavigationCallback() {
+                ARouter.getInstance().build("/core/login").navigation(TestSdkActivity.this, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
                         MyLog.d(TAG, "onFound" + " postcard=" + postcard);

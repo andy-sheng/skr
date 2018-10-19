@@ -1,22 +1,17 @@
 package com.common.core.myinfo;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.wali.live.proto.User.GetOwnInfoRsp;
 import com.wali.live.proto.User.PersonalData;
 import com.wali.live.proto.User.PersonalInfo;
 import com.wali.live.proto.User.UserEcoAttr;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.greenrobot.greendao.annotation.Generated;
 
 import okio.ByteString;
 
@@ -25,7 +20,7 @@ import okio.ByteString;
                 @Index(value = "uid DESC", unique = true)
         }
 )
-public class UserInfo {
+public class MyUserInfo {
     @Id
     private Long id;
     @NotNull
@@ -85,20 +80,20 @@ public class UserInfo {
 
     private String ext;
 
-    @Generated(hash = 1588454180)
-    public UserInfo(Long id, @NotNull Long uid, Long avatar, String nickName,
-                    String sign, Integer gender, Integer level, Integer badge,
-                    Long updateTs, Integer certificationType, String certification,
-                    Boolean certificationChanged, Boolean isFocused, Boolean isBlock,
-                    Boolean isBothwayFollowing, Integer liveTicketNum, Integer fansNum,
-                    Integer followNum, Integer vodNum, Integer earnNum, Integer diamondNum,
-                    Integer goldCoinNum, Integer sendDiamondNum,
-                    Integer sentVirtualDiamondNum, Integer virtualDiamondNum,
-                    Boolean isLive, String viewUrl, String roomId, String tvRoomId,
-                    Integer roomType, Boolean online, Integer appType, Boolean redName,
-                    String norbleMedal, Integer vipLevel, Boolean isVipFrozen,
-                    Boolean isVipHide, Integer nobleLevel, Boolean isNeedBindPhone,
-                    String phoneNum, String ext) {
+    @Generated(hash = 2079621641)
+    public MyUserInfo(Long id, @NotNull Long uid, Long avatar, String nickName,
+                      String sign, Integer gender, Integer level, Integer badge,
+                      Long updateTs, Integer certificationType, String certification,
+                      Boolean certificationChanged, Boolean isFocused, Boolean isBlock,
+                      Boolean isBothwayFollowing, Integer liveTicketNum, Integer fansNum,
+                      Integer followNum, Integer vodNum, Integer earnNum, Integer diamondNum,
+                      Integer goldCoinNum, Integer sendDiamondNum,
+                      Integer sentVirtualDiamondNum, Integer virtualDiamondNum,
+                      Boolean isLive, String viewUrl, String roomId, String tvRoomId,
+                      Integer roomType, Boolean online, Integer appType, Boolean redName,
+                      String norbleMedal, Integer vipLevel, Boolean isVipFrozen,
+                      Boolean isVipHide, Integer nobleLevel, Boolean isNeedBindPhone,
+                      String phoneNum, String ext) {
         this.id = id;
         this.uid = uid;
         this.avatar = avatar;
@@ -142,8 +137,8 @@ public class UserInfo {
         this.ext = ext;
     }
 
-    @Generated(hash = 1279772520)
-    public UserInfo() {
+    @Generated(hash = 198622815)
+    public MyUserInfo() {
     }
 
     public Long getId() {
@@ -474,8 +469,8 @@ public class UserInfo {
         this.ext = ext;
     }
 
-    public static UserInfo loadFrom(GetOwnInfoRsp rsp) {
-        UserInfo user = new UserInfo();
+    public static MyUserInfo loadFrom(GetOwnInfoRsp rsp) {
+        MyUserInfo user = new MyUserInfo();
         if (rsp.getPersonalInfo() != null) {
             user.parse(rsp.getPersonalInfo());
         }
@@ -533,4 +528,6 @@ public class UserInfo {
             e.printStackTrace();
         }
     }
+
+
 }

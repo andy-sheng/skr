@@ -4,7 +4,7 @@ import android.support.annotation.Keep;
 import android.text.TextUtils;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.UserInfo;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
@@ -113,7 +113,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
         protected String mImgUrl;
         protected long mPublishTime;
 
-        protected UserInfo mUser;
+        protected MyUserInfo mUser;
         protected boolean mIsFocused;
 
         protected BaseItem() {
@@ -151,7 +151,7 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return mPublishTime;
         }
 
-        public UserInfo getUser() {
+        public MyUserInfo getUser() {
             return mUser;
         }
 
@@ -319,12 +319,12 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             }
         }
 
-        private UserInfo parseUserInfo(UserBrief protoUser) {
+        private MyUserInfo parseUserInfo(UserBrief protoUser) {
             if (protoUser == null) {
                 return null;
             }
 
-            UserInfo userInfo = new UserInfo();
+            MyUserInfo userInfo = new MyUserInfo();
             userInfo.setUid(protoUser.getUId());
             userInfo.setAvatar(protoUser.getAvatar());
             userInfo.setLevel(protoUser.getLevel());
@@ -428,12 +428,12 @@ public class ChannelLiveViewModel extends ChannelViewModel<ChannelItem> {
             return new BackItem();
         }
 
-        private UserInfo parseUserInfo(UserBrief protoUser) {
+        private MyUserInfo parseUserInfo(UserBrief protoUser) {
             if (protoUser == null) {
                 return null;
             }
 
-            UserInfo userInfo = new UserInfo();
+            MyUserInfo userInfo = new MyUserInfo();
             userInfo.setUid(protoUser.getUId());
             userInfo.setAvatar(protoUser.getAvatar());
             userInfo.setLevel(protoUser.getLevel());

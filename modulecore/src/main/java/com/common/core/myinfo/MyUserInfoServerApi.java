@@ -1,15 +1,11 @@
 package com.common.core.myinfo;
 
-import com.common.core.db.GreenDaoManager;
-import com.common.core.db.UserInfoDao;
 import com.common.milink.MiLinkClientAdapter;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.User.GetOwnInfoReq;
 import com.wali.live.proto.User.GetOwnInfoRsp;
 
-import java.util.List;
-
-public class UserInfoServerApi {
+public class MyUserInfoServerApi {
     public static GetOwnInfoRsp getOwnInfoRsp(long uid) {
         GetOwnInfoReq request = new GetOwnInfoReq.Builder()
                 .setZuid(uid)

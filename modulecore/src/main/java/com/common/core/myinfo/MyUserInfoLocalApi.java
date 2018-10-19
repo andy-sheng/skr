@@ -1,18 +1,18 @@
 package com.common.core.myinfo;
 
-import com.common.core.account.UserAccount;
 import com.common.core.db.GreenDaoManager;
+import com.common.core.db.MyUserInfoDao;
 import com.common.core.db.UserInfoDao;
 
 import java.util.List;
 
-public class UserInfoLocalApi {
+public class MyUserInfoLocalApi {
 
-    private static UserInfoDao getUserInfoDao() {
-        return GreenDaoManager.getDaoSession().getUserInfoDao();
+    private static MyUserInfoDao getUserInfoDao() {
+        return GreenDaoManager.getDaoSession().getMyUserInfoDao();
     }
 
-    public static boolean insertOrReplace(UserInfo userInfo) {
+    public static boolean insertOrReplace(MyUserInfo userInfo) {
         if (userInfo == null) {
             return false;
         }
@@ -20,9 +20,9 @@ public class UserInfoLocalApi {
         return true;
     }
 
-    public static UserInfo getUserAccount(long uid) {
-        List<UserInfo> userList = getUserInfoDao().queryBuilder()
-                .where(UserInfoDao.Properties.Uid.eq(uid))
+    public static MyUserInfo getUserAccount(long uid) {
+        List<MyUserInfo> userList = getUserInfoDao().queryBuilder()
+                .where(MyUserInfoDao.Properties.Uid.eq(uid))
                 .list();
         if (userList != null && !userList.isEmpty()) {
             return userList.get(0);

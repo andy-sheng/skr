@@ -203,7 +203,7 @@ public class LruCache<K, V> implements Cache<K, V> {
      *
      * @param size {@code size}
      */
-    protected synchronized void trimToSize(int size) {
+    public synchronized void trimToSize(int size) {
         Map.Entry<K, V> last;
         while (currentSize > size) {
             last = cache.entrySet().iterator().next();

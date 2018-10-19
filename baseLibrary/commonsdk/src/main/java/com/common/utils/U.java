@@ -48,6 +48,10 @@ public class U {
 
     private static ChannelUtils channelUtils;
 
+    private static Base64Utils base64Utils;
+
+    private static MD5Utils MD5Utils;
+
     public static void setApp(Application app) {
         application = app;
     }
@@ -180,6 +184,20 @@ public class U {
             videoUtils = new VideoUtils();
         }
         return videoUtils;
+    }
+
+    public static Base64Utils getBase64Utils() {
+        if (base64Utils == null) {
+            base64Utils = new Base64Utils();
+        }
+        return base64Utils;
+    }
+
+    public static MD5Utils getMD5Utils() {
+        if (MD5Utils == null) {
+            MD5Utils = new MD5Utils();
+        }
+        return MD5Utils;
     }
 
     public static void setCoreProcess(boolean coreProcess) {
