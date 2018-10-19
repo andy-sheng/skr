@@ -46,6 +46,8 @@ public class VideoPlayerAdapter {
 
     private IPlayer mPlayer;
 
+    private PlayerCallbackAdapter mOutPlayerCallback;
+
     private TextureView mTextureView;
 
     private SurfaceView mSurfaceView;
@@ -176,7 +178,7 @@ public class VideoPlayerAdapter {
     private void initPlayerIfNeed() {
         if (mPlayer == null) {
             if (mPlayerType == PLAY_TYPE_EXO) {
-                if(sPreStartPlayer!=null && sPreStartPlayer instanceof ExoPlayer){
+                if (sPreStartPlayer != null && sPreStartPlayer instanceof ExoPlayer) {
                     mPlayer = sPreStartPlayer;
                     mPlayer.setCallback(mIPlayerCallback);
                     sPreStartPlayer = null;
@@ -206,6 +208,9 @@ public class VideoPlayerAdapter {
         @Override
         public void onPrepared() {
             MyLog.d(TAG, "onPrepared");
+            if (mOutPlayerCallback != null) {
+                mOutPlayerCallback.onPrepared();
+            }
         }
 
         @Override
@@ -215,27 +220,42 @@ public class VideoPlayerAdapter {
                 mPlayer.seekTo(0);
                 play();
             }
+            if (mOutPlayerCallback != null) {
+                mOutPlayerCallback.onCompletion();
+            }
         }
 
         @Override
         public void onSeekComplete() {
             MyLog.d(TAG, "onSeekComplete");
+            if (mOutPlayerCallback != null) {
+                mOutPlayerCallback.onSeekComplete();
+            }
         }
 
         @Override
         public void onVideoSizeChanged(int width, int height) {
             MyLog.d(TAG, "onVideoSizeChanged" + " width=" + width + " height=" + height);
             onVideoChange(width, height);
+            if (mOutPlayerCallback != null) {
+                mOutPlayerCallback.onVideoSizeChanged(width, height);
+            }
         }
 
         @Override
         public void onError(int what, int extra) {
             MyLog.d(TAG, "onError" + " what=" + what + " extra=" + extra);
+            if (mOutPlayerCallback != null) {
+                mOutPlayerCallback.onError(what, extra);
+            }
         }
 
         @Override
         public void onInfo(int what, int extra) {
             MyLog.d(TAG, "onInfo" + " what=" + what + " extra=" + extra);
+            if (mOutPlayerCallback != null) {
+                mOutPlayerCallback.onInfo(what, extra);
+            }
         }
     };
 
@@ -306,6 +326,10 @@ public class VideoPlayerAdapter {
         } else {
             mPlayer.shiftUp(0, 0, 0, 0, 0);
         }
+    }
+
+    public void setOutCallback(PlayerCallbackAdapter outPlayerCallback) {
+        this.mOutPlayerCallback = outPlayerCallback;
     }
 
     /**
@@ -407,6 +431,13 @@ public class VideoPlayerAdapter {
         return mPlayer.getCurrentPosition();
     }
 
+    public void seekTo(long mSec) {
+        if (mPlayer == null) {
+            return;
+        }
+        mPlayer.seekTo(mSec);
+    }
+
     public static void preStartPlayer(String url) {
         preStartPlayer(url, PLAY_TYPE_EXO);
     }
@@ -416,6 +447,7 @@ public class VideoPlayerAdapter {
      * 为了提高视频秒开体验
      * 一般在启动某个观看Activity前先load url
      * 等到activity启动后再将 player 和 view 绑定
+     *
      * @param url
      * @param playerType
      */
@@ -431,4 +463,37 @@ public class VideoPlayerAdapter {
         sPreStartPlayer.start();
     }
 
+
+    public static class PlayerCallbackAdapter implements IPlayerCallback {
+
+        @Override
+        public void onPrepared() {
+
+        }
+
+        @Override
+        public void onCompletion() {
+
+        }
+
+        @Override
+        public void onSeekComplete() {
+
+        }
+
+        @Override
+        public void onVideoSizeChanged(int width, int height) {
+
+        }
+
+        @Override
+        public void onError(int what, int extra) {
+
+        }
+
+        @Override
+        public void onInfo(int what, int extra) {
+
+        }
+    }
 }
