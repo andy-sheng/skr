@@ -3,9 +3,7 @@ package com.common.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * 这里MD5_16取了MD5_32的中间16位
- */
+
 public class MD5Utils {
 
     MD5Utils() {
@@ -38,6 +36,9 @@ public class MD5Utils {
         return strbuf.toString();
     }
 
+    /**
+     * 这里MD5_16取了MD5_32的中间16位
+     */
     public String MD5_16(String passwd) {
         return MD5_32(passwd).subSequence(8, 24).toString();
     }

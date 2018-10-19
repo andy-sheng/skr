@@ -30,6 +30,7 @@ import com.common.integration.lifecycle.ActivityLifecycleForRxLifecycle;
 import com.common.integration.lifecycle.FragmentLifecycleable;
 import com.common.log.MyLog;
 import com.common.mvp.Presenter;
+import com.common.utils.U;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -64,8 +65,9 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     protected boolean fragmentOnCreated = false;
     protected boolean fragmentVisible = false;
 
-    View mRootView;
+    protected View mRootView;
 
+    protected int mRequestCode = 0;
 
     public void addPresent(Presenter presenter) {
         if (presenter != null) {
@@ -82,6 +84,13 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
 
     @NonNull
     @Override
+    public final Subject<FragmentEvent> provideLifecycleSubject() {
+        return mLifecycleSubject;
+    }
+
+
+    @NonNull
+    @Override
     public synchronized Cache<String, Object> provideCache() {
         if (mCache == null) {
             mCache = new IntelligentCache<Object>(50);
@@ -89,17 +98,10 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         return mCache;
     }
 
-    @NonNull
-    @Override
-    public final Subject<FragmentEvent> provideLifecycleSubject() {
-        return mLifecycleSubject;
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootView = initView(inflater, container, savedInstanceState);
+        mRootView = inflater.inflate(initView(),container,false);
         initData(savedInstanceState);
         return mRootView;
     }
@@ -184,7 +186,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      * 不要继承onDestroy 这个执行慢
      */
     @Override
-    public void onDestroy() {
+    public final void onDestroy() {
         super.onDestroy();
         if (!isDestroyed) {
             destroy();
@@ -232,6 +234,27 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         }
     }
 
+    @Override
+    public int getRequestCode() {
+        if (mRequestCode <= 0) {
+            mRequestCode = U.getRequestCode();
+        }
+        return mRequestCode;
+    }
+
+    /**
+     * 是否要消费掉返回键
+     * 返回true 代表要消费掉
+     */
+    protected boolean onBackPressed() {
+        return false;
+    }
+
+    @Override
+    public void setData(@Nullable Object data) {
+
+    }
+
     /**
      * 事件在 {@link ActivityLifecycleForRxLifecycle}发出
      * 绑定 Activity 的指定生命周期
@@ -243,4 +266,5 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     public <T> LifecycleTransformer<T> bindUntilEvent(final FragmentEvent event) {
         return RxLifecycle.bindUntilEvent(provideLifecycleSubject(), event);
     }
+
 }

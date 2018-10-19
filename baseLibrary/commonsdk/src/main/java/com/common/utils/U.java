@@ -1,7 +1,6 @@
 package com.common.utils;
 
 import android.app.Application;
-import android.inputmethodservice.Keyboard;
 
 /**
  * 每个工具类都必须由U引用来调用，以防止工具类混乱难以管理的问题，
@@ -51,6 +50,8 @@ public class U {
     private static Base64Utils base64Utils;
 
     private static MD5Utils MD5Utils;
+
+    private static FragmentUtils fragmentUtils;
 
     public static void setApp(Application app) {
         application = app;
@@ -198,6 +199,27 @@ public class U {
             MD5Utils = new MD5Utils();
         }
         return MD5Utils;
+    }
+
+    public static FragmentUtils getFragmentUtils() {
+        if (fragmentUtils == null) {
+            fragmentUtils = new FragmentUtils();
+        }
+        return fragmentUtils;
+    }
+
+    private static int REQUEST_CODE_FIRST = 100000;
+
+    private static Object sRequestCodeLock = new Object();
+
+    /**
+     * 返回一个 code 唯一标识 一个 实例 对象
+     * @return
+     */
+    public static int getRequestCode() {
+        synchronized (sRequestCodeLock) {
+            return REQUEST_CODE_FIRST++;
+        }
     }
 
     public static void setCoreProcess(boolean coreProcess) {

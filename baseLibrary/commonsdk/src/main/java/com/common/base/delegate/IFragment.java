@@ -52,13 +52,6 @@ public interface IFragment {
      */
     @NonNull
     Cache<String, Object> provideCache();
-//
-//    /**
-//     * 提供 AppComponent (提供所有的单例对象) 给实现类, 进行 Component 依赖
-//     *
-//     * @param appComponent
-//     */
-//    void setupFragmentComponent(@NonNull AppComponent appComponent);
 
     /**
      * 是否使用 {@link EventBus}
@@ -70,12 +63,9 @@ public interface IFragment {
     /**
      * 初始化 View
      *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * @return layout id
      */
-    View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
+    int initView();
 
     /**
      * 初始化数据
@@ -128,4 +118,11 @@ public interface IFragment {
      * @param data 当不需要参数时 {@code data} 可以为 {@code null}
      */
     void setData(@Nullable Object data);
+
+
+    /**
+     * 每个Fragment唯一的编号
+     */
+    int getRequestCode();
+
 }

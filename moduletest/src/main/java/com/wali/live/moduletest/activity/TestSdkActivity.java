@@ -24,10 +24,12 @@ import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.player.VideoPlayerAdapter;
 import com.common.player.exoplayer.ExoPlayer;
+import com.common.utils.FragmentUtils;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.wali.live.moduletest.R;
+import com.wali.live.moduletest.fragment.TestFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -235,6 +237,17 @@ public class TestSdkActivity extends BaseActivity {
 
                     }
                 });
+            }
+        }));
+
+        mDataList.add(new H("add fragment", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newParamsBuilder(TestSdkActivity.this, TestFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
             }
         }));
     }

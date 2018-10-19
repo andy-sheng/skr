@@ -21,11 +21,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.common.base.delegate.IActivity;
+import com.common.base.delegate.IFragment;
 import com.common.integration.cache.Cache;
 import com.common.integration.cache.IntelligentCache;
 import com.common.integration.lifecycle.ActivityLifecycleForRxLifecycle;
@@ -240,6 +244,38 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         if (mCache != null) {
             mCache.clear();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        /**
+         * 先看看有没有顶层的 fragment 要处理这个事件的
+         * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作
+         */
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            //退出栈弹出
+            String fName = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+            if (!TextUtils.isEmpty(fName)) {
+                Fragment fragment = fm.findFragmentByTag(fName);
+                MyLog.w(TAG, "fragment name=" + fName + ", fragment=" + fragment);
+
+                if (fragment instanceof BaseFragment) {
+                    BaseFragment baseFragment = (BaseFragment) fragment;
+                    if (baseFragment.onBackPressed()) {
+                        // 被fragment消费掉了
+                        return;
+                    }
+                }
+                // 可以判断下要不要弹出 fragment
+
+//                FragmentNaviUtils.popFragmentFromStack(this);
+            }
+        }
+        /**
+         * 如果 Fragment addToBackStack 会在这里被弹出
+         */
+        super.onBackPressed();
     }
 
     /**

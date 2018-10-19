@@ -34,67 +34,69 @@ import com.common.log.MyLog;
  */
 public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallbacks {
 
+    public final static String TAG = "FragmentLifecycle";
+    
     public FragmentLifecycle() {
     }
 
     @Override
     public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
-        MyLog.w(f.toString() + " - onFragmentAttached");
+        MyLog.w(TAG," - onFragmentAttached");
     }
 
     @Override
     public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-        MyLog.w(f.toString() + " - onFragmentCreated");
+        MyLog.w(TAG," - onFragmentCreated");
     }
 
     @Override
     public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
-        MyLog.w(f.toString() + " - onFragmentViewCreated");
+        MyLog.w(TAG," - onFragmentViewCreated");
     }
 
     @Override
     public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-        MyLog.w(f.toString() + " - onFragmentActivityCreated");
+        MyLog.w(TAG," - onFragmentActivityCreated");
     }
 
     @Override
     public void onFragmentStarted(FragmentManager fm, Fragment f) {
-        MyLog.w(f.toString() + " - onFragmentStarted");
+        MyLog.w(TAG," - onFragmentStarted");
     }
 
     @Override
     public void onFragmentResumed(FragmentManager fm, Fragment f) {
-        MyLog.w(f.toString() + " - onFragmentResumed");
+        MyLog.w(TAG," - onFragmentResumed");
     }
 
     @Override
     public void onFragmentPaused(FragmentManager fm, Fragment f) {
-        MyLog.w(f.toString() + " - onFragmentPaused");
+        MyLog.w(TAG," - onFragmentPaused");
     }
 
     @Override
     public void onFragmentStopped(FragmentManager fm, Fragment f) {
-        MyLog.w(f.toString() + " - onFragmentStopped");
+        MyLog.w(TAG," - onFragmentStopped");
     }
 
     @Override
     public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
-        MyLog.w(f.toString() + " - onFragmentSaveInstanceState");
+        MyLog.w(TAG," - onFragmentSaveInstanceState");
     }
 
     @Override
     public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
-        MyLog.w(f.toString() + " - onFragmentViewDestroyed");
+        MyLog.w(TAG," - onFragmentViewDestroyed");
     }
 
     @Override
     public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
-        MyLog.w(f.toString() + " - onFragmentDestroyed");
+        MyLog.w(TAG," - onFragmentDestroyed");
     }
 
     @Override
     public void onFragmentDetached(FragmentManager fm, Fragment f) {
-        MyLog.w(f.toString() + " - onFragmentDetached");
+        MyLog.w(TAG," - onFragmentDetached");
     }
 
 }
