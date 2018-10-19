@@ -53,8 +53,13 @@ public class U {
 
     private static FragmentUtils fragmentUtils;
 
+    private static NetworkUtils networkUtils;
+
     public static void setApp(Application app) {
         application = app;
+
+        // 初始化一些网络状态
+        getNetworkUtils().syncActiveNetworkType();
     }
 
     public static Application app() {
@@ -206,6 +211,13 @@ public class U {
             fragmentUtils = new FragmentUtils();
         }
         return fragmentUtils;
+    }
+
+    public static NetworkUtils getNetworkUtils() {
+        if (networkUtils == null) {
+            networkUtils = new NetworkUtils();
+        }
+        return networkUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;

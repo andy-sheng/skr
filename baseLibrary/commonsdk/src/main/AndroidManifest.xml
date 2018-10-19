@@ -14,6 +14,13 @@
         <meta-data
             android:name="com.common.base.CommonConfiguration"
             android:value="ConfigModule" />
+
+        <receiver android:name="com.common.utils.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

@@ -39,6 +39,11 @@ public class HttpUtils {
     }
 
 
+    /**
+     * 得到一批域名的ip地址
+     * @param host
+     * @return
+     */
     public static List<String> getAddressByHost(String host) {
         List<String> address = new ArrayList<>();
         if (!TextUtils.isEmpty(host)) {
@@ -75,6 +80,10 @@ public class HttpUtils {
         return address;
     }
 
+    /**
+     * http 头里带的一些信息
+     * @return
+     */
     public String buildUserAgent() {
         if (USER_AGENT == null) {
             StringBuilder sb = new StringBuilder();
@@ -185,6 +194,17 @@ public class HttpUtils {
         return params.toString();
     }
 
+    /**
+     * 进行一个 post 请求
+     * @param context
+     * @param url
+     * @param nameValuePairs
+     * @param headers
+     * @param userAgent
+     * @param cookie
+     * @return
+     * @throws IOException
+     */
     public String doHttpPost(Context context, String url,
                              List<Pair<String, String>> nameValuePairs,
                              Map<String, String> headers, String userAgent, String cookie) throws IOException {

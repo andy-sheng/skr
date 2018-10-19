@@ -104,6 +104,11 @@ public class DeviceUtils {
         return romName.equals(rom);
     }
 
+    /**
+     * 得到系统的属性值
+     * @param name
+     * @return
+     */
     public String getProp(String name) {
         String line = null;
         BufferedReader input = null;
