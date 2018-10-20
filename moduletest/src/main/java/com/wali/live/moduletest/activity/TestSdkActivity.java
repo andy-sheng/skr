@@ -28,9 +28,9 @@ import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.example.paginate.RecyclerViewExampleActivity;
-import com.wali.live.moduletest.R;
+import com.example.drawer.DrawerFragment;
 import com.example.paginate.PaginateFragment;
+import com.wali.live.moduletest.R;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -243,7 +243,7 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("上拉加载 下拉刷新 的RecyclerView 调试", new Runnable() {
+        mDataList.add(new H("上拉加载,下拉刷新的RecyclerView Panigate库调试 ", new Runnable() {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
@@ -254,10 +254,14 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("上拉加载 下拉刷新 的RecyclerView 调试", new Runnable() {
+        mDataList.add(new H("官方库 抽屉DrawerLayout 导航栏 NavigationView调试", new Runnable() {
             @Override
             public void run() {
-                TestSdkActivity.this.startActivity(new Intent(TestSdkActivity.this,RecyclerViewExampleActivity.class));
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newParamsBuilder(TestSdkActivity.this, DrawerFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
             }
         }));
 

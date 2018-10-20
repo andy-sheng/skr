@@ -76,8 +76,13 @@ android {
             if(repluginHostEnable.toBoolean()){
                 java.srcDirs += 'src/main/java-replugin'
             }
+            // 支持上拉加载
             java.srcDirs += 'src/main/java-paginate'
             res.srcDirs += 'src/main/res-paginate'
+
+            // 抽屉效果
+            java.srcDirs += 'src/main/java-drawer'
+            res.srcDirs += 'src/main/res-drawer'
         }
     }
 }
@@ -92,7 +97,7 @@ dependencies {
     } else {
         compileOnly rootProject.ext.dependencies["arouter-compiler"]
     }
-    implementation "com.github.castorflex.smoothprogressbar:library-circular:1.1.0"
+    implementation rootProject.ext.dependencies["circularprogressbar"]
     api rootProject.ext.dependencies["recyclerview-animators"]
     implementation "com.android.support:cardview-v7:27.1.0"
 }

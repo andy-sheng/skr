@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:openDrawer="start">
+
+    <!--
+     android:layout_gravity="start" // 子view设置这个属性说明 这个view 使用抽屉效果
+     android:fitsSystemWindows="true" // 跟 沉浸式 有关
+    -->
+
+    <TextView
+        android:id="@+id/desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_dimen_200"
+        android:text="点我或者侧滑会有侧边栏出来\n也可以不用NavigationView,使用自定义的布局"
+        android:textColor="@color/black"
+        android:textSize="@dimen/view_dimen_60" />
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/test_navigation_header_layout"
+        app:menu="@menu/test_navigate_menu">
+
+    </android.support.design.widget.NavigationView>
+
+    <TextView
+        android:id="@+id/desc_tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_dimen_500"
+        android:text="我无法在前面，虽然我布局在NavigationView下面"
+        android:textColor="@color/black"
+        android:textSize="@dimen/view_dimen_60" />
+</android.support.v4.widget.DrawerLayout>
+
+

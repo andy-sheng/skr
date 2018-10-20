@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import com.example.paginate.adapter.RecyclerPersonAdapter;
 import com.example.paginate.data.Person;
 import com.paginate.Paginate;
 import com.paginate.recycler.LoadingListItemCreator;
-import com.paginate.recycler.LoadingListItemSpanLookup;
 import com.wali.live.moduletest.R;
 
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ public class PaginateFragment extends BaseFragment {
 
     @Override
     public int initView() {
-        return R.layout.test_test_fragment_layout;
+        return R.layout.test_paginate_fragment_layout;
     }
 
     @Override
