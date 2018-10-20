@@ -30,6 +30,7 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
 import com.example.paginate.PaginateFragment;
+import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.R;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -265,6 +266,16 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
+        mDataList.add(new H("ARouter 依赖注入测试，访问其他Module 数据", new Runnable() {
+            @Override
+            public void run() {
+                IChannelService channelService = (IChannelService) ARouter.getInstance().build("/channel/service1").navigation();
+                if (channelService != null) {
+                    Object object = channelService.getDataFromChannel(100, null);
+                    U.getToastUtil().showToast("test module 收到数据 object:" + object);
+                }
+            }
+        }));
     }
 
     @Override
