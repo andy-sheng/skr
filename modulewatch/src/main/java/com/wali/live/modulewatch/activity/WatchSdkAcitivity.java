@@ -6,17 +6,16 @@ import android.support.annotation.Nullable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
-import android.view.View;
-import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.core.RouterConstants;
+import com.common.core.login.interceptor.JumpInterceptor;
 import com.common.log.MyLog;
 import com.common.player.VideoPlayerAdapter;
-import com.common.utils.U;
 import com.wali.live.modulewatch.R;
 
-@Route(path = "/watch/WatchSdkAcitivity")
+@Route(path = RouterConstants.ACTIVITY_LOGIN, extras = JumpInterceptor.NO_NEED_LOGIN)
 public class WatchSdkAcitivity extends BaseActivity {
 
     TextureView mTextureView;

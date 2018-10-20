@@ -21,4 +21,5 @@ public class ChannelUtils {
     public String getChannelNameFromBuildConfig() {
         return channelName;
     }
+
 }

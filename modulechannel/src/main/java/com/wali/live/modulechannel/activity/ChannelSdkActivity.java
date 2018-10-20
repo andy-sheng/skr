@@ -9,6 +9,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+import com.common.core.RouterConstants;
+import com.common.core.login.interceptor.JumpInterceptor;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
@@ -19,7 +21,7 @@ import com.wali.live.modulechannel.R;
 
 import java.util.List;
 
-@Route(path = "/channel/ChannelSdkActivity")
+@Route(path = RouterConstants.ACTIVITY_CHANNEL_SDK, extras = JumpInterceptor.NO_NEED_LOGIN)
 public class ChannelSdkActivity extends BaseActivity {
     private BaseImageView mLoginBtn;
 

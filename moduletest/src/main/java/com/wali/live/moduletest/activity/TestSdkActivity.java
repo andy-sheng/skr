@@ -18,6 +18,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+import com.common.core.RouterConstants;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
@@ -39,7 +40,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(path = "/test/TestSdkActivity")
+@Route(path = RouterConstants.ACTIVITY_TEST)
 public class TestSdkActivity extends BaseActivity {
     CommonTitleBar mTitlebar;
     RecyclerView mListRv;
@@ -59,10 +60,10 @@ public class TestSdkActivity extends BaseActivity {
         View view = mTitlebar.getLeftCustomView();
         BaseImageView baseImageView = view.findViewById(R.id.head_img);
 
-//        AvatarUtils.loadAvatarByUrl(baseImageView,
-//                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
-//                        .setTimestamp(MyUserInfoManager.getInstance().getAvatarTs())
-//                        .build());
+        AvatarUtils.loadAvatarByUrl(baseImageView,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                        .setTimestamp(MyUserInfoManager.getInstance().getAvatarTs())
+                        .build());
 
         mListRv = (RecyclerView) findViewById(R.id.list_rv);
 
@@ -90,12 +91,40 @@ public class TestSdkActivity extends BaseActivity {
             }
         });
 
-        mDataList.add(new H("视频播放调试", new Runnable() {
+        mDataList.add(new H("跳转到ChannelSdkActivity", new Runnable() {
+            @Override
+            public void run() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_CHANNEL_SDK)
+                        .greenChannel()
+                        .navigation(TestSdkActivity.this, new NavigationCallback() {
+                            @Override
+                            public void onFound(Postcard postcard) {
+
+                            }
+
+                            @Override
+                            public void onLost(Postcard postcard) {
+                            }
+
+                            @Override
+                            public void onArrival(Postcard postcard) {
+
+                            }
+
+                            @Override
+                            public void onInterrupt(Postcard postcard) {
+
+                            }
+                        });
+            }
+        }));
+
+        mDataList.add(new H("跳转到WatchSdkActivity", new Runnable() {
             @Override
             public void run() {
                 VideoPlayerAdapter.preStartPlayer("http://playback.ks.zb.mi.com/record/live/101743_1531094545/hls/101743_1531094545.m3u8?playui=1");
                 //跳到LoginActivity,要用ARouter跳
-                ARouter.getInstance().build("/core/LoginActivity").navigation(TestSdkActivity.this, new NavigationCallback() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WATCH).navigation(TestSdkActivity.this, new NavigationCallback() {
                     @Override
                     public void onFound(Postcard postcard) {
                         MyLog.d(TAG, "onFound" + " postcard=" + postcard);
@@ -218,31 +247,7 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("频道测试", new Runnable() {
-            @Override
-            public void run() {
-                ARouter.getInstance().build("/channel/ChannelListSdkActivity").greenChannel().navigation(TestSdkActivity.this, new NavigationCallback() {
-                    @Override
-                    public void onFound(Postcard postcard) {
 
-                    }
-
-                    @Override
-                    public void onLost(Postcard postcard) {
-                    }
-
-                    @Override
-                    public void onArrival(Postcard postcard) {
-
-                    }
-
-                    @Override
-                    public void onInterrupt(Postcard postcard) {
-
-                    }
-                });
-            }
-        }));
 
         mDataList.add(new H("上拉加载,下拉刷新的RecyclerView Panigate库调试 ", new Runnable() {
             @Override
@@ -269,10 +274,10 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("ARouter 依赖注入测试，访问其他Module 数据", new Runnable() {
             @Override
             public void run() {
-                IChannelService channelService = (IChannelService) ARouter.getInstance().build("/channel/service1").navigation();
+                IChannelService channelService = (IChannelService) ARouter.getInstance().build(RouterConstants.SERVICE_CHANNEL).navigation();
                 if (channelService != null) {
                     Object object = channelService.getDataFromChannel(100, null);
-                    U.getToastUtil().showToast("test module 收到数据 object:" + object);
+                    U.getToastUtil().showToast("test module 收到数据 object:" + object + " hash:" + channelService.hashCode());
                 }
             }
         }));

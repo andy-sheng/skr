@@ -30,10 +30,12 @@ public class MyUserInfoManager {
                     setMyUserInfo(userInfo);
                     // 从服务器拉一次
                     GetOwnInfoRsp rsp = MyUserInfoServerApi.getOwnInfoRsp(UserAccountManager.getInstance().getUuidAsLong());
-                    userInfo = MyUserInfo.loadFrom(rsp);
-                    if (userInfo != null) {
-                        MyUserInfoLocalApi.insertOrReplace(userInfo);
-                        setMyUserInfo(userInfo);
+                    if (rsp != null) {
+                        userInfo = MyUserInfo.loadFrom(rsp);
+                        if (userInfo != null) {
+                            MyUserInfoLocalApi.insertOrReplace(userInfo);
+                            setMyUserInfo(userInfo);
+                        }
                     }
                 }
                 emitter.onComplete();

@@ -3,11 +3,12 @@ package com.wali.live.modulechannel;
 import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.common.core.RouterConstants;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.wali.live.modulechannel.model.channellist.ChannelShowModel;
 
-@Route(path = "/channel/service1", name = "测试服务")
+@Route(path = RouterConstants.SERVICE_CHANNEL, name = "测试服务")
 public class ChannelServiceImpl implements IChannelService {
     public final static String TAG = "ChannelServiceImpl";
 

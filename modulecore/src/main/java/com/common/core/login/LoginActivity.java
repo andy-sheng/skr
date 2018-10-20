@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.core.R;
+import com.common.core.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.oauth.XiaoMiOAuth;
@@ -28,7 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-@Route(path = "/core/LoginActivity")
+@Route(path = RouterConstants.ACTIVITY_LOGIN)
 public class LoginActivity extends BaseActivity {
 
     private TextView mMiBtn;
