@@ -45,7 +45,15 @@ public class ToastUtil {
     }
 
     public void showToast(final String tips) {
-        Toast.makeText(U.app(), tips, Toast.LENGTH_SHORT).show();
+        if (U.getCommonUtils().isMainThread()) {
+            Toast.makeText(U.app(), tips, Toast.LENGTH_SHORT).show();
+        } else {
+            U.getCommonUtils().getUiHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(U.app(), tips, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
-
 }
