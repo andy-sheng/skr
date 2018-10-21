@@ -136,6 +136,10 @@ public class PermissionUtil {
         return checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
+    public boolean checkCamera(Activity activity) {
+        return checkPermission(activity, Manifest.permission.CAMERA);
+    }
+
     public boolean checkPermission(Activity activity, String permission) {
         if (activity == null) {
             activity = U.getActivityUtils().getTopActivity();
@@ -153,7 +157,7 @@ public class PermissionUtil {
     /**
      * 请求摄像头权限
      */
-    public void launchCamera(RequestPermission requestPermission, Activity activity) {
+    public void requestCamera(RequestPermission requestPermission, Activity activity) {
         requestPermission(requestPermission, activity, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
     }
 

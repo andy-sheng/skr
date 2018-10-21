@@ -16,6 +16,7 @@
 package com.common.utils;
 
 import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -132,6 +133,12 @@ public class DeviceUtils {
         return line;
     }
 
+    /**
+     * 判断SDCard是否可用
+     */
+    public boolean existSDCard() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
 }
 
 

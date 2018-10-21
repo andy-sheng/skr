@@ -5,8 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 
 import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
 import com.common.base.R;
 import com.common.log.MyLog;
 
@@ -25,17 +27,31 @@ public class FragmentUtils {
 
     }
 
+    public BaseFragment getTopFragment(FragmentActivity activity) {
+        FragmentManager fm = activity.getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            //退出栈弹出
+            String fName = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+            if (!TextUtils.isEmpty(fName)) {
+                Fragment fragment = fm.findFragmentByTag(fName);
+                if (fragment instanceof BaseFragment) {
+                    return (BaseFragment) fragment;
+                }
+            }
+        }
+        return null;
+    }
 
     /**
-     * @param activity
+     * 弹出activity 顶部的fragment
      */
-    public static void popFragment(FragmentActivity activity) {
+    public static boolean popFragment(FragmentActivity activity) {
         if (activity == null) {
-            return;
+            return false;
         }
         try {
 //            if (immediate) {
-            activity.getSupportFragmentManager().popBackStackImmediate();
+            return activity.getSupportFragmentManager().popBackStackImmediate();
 //            } else {
             // 这个方法会丢到主线程队列的末尾去执行
 //                activity.getSupportFragmentManager().popBackStack();
@@ -43,6 +59,34 @@ public class FragmentUtils {
         } catch (IllegalStateException e) {
             MyLog.e(e);
         }
+        return false;
+    }
+
+    /**
+     * 弹出activity fragment及其以上所有的fragment
+     */
+    public static boolean popFragment(BaseFragment fragment) {
+        if (fragment == null) {
+            return false;
+        }
+        if (fragment.getActivity() != null) {
+            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+            if (fragmentManager != null) {
+                for (Fragment f : fragmentManager.getFragments()) {
+                    if (f == fragment) {
+                        /**
+                         *  至于int flags有两个取值：0或FragmentManager.POP_BACK_STACK_INCLUSIVE；
+                         *  当取值0时，表示除了参数一指定这一层之上的所有层都退出栈，指定的这一层为栈顶层； 
+                         *  当取值POP_BACK_STACK_INCLUSIVE时，表示连着参数一指定的这一层一起退出栈
+                         *  另外第一个参数一般用 tag ，只有静态添加的 fragment 才用id
+                         */
+                        boolean b = fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        return  b;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -54,6 +98,7 @@ public class FragmentUtils {
      * @return
      */
     public BaseFragment addFragment(Params params) {
+        // 这里用 类名做TAG 保证了
         String tag = params.targetFragment.getName();
 
         FragmentManager fragmentManager = params.fragmentActivity.getSupportFragmentManager();
@@ -89,6 +134,7 @@ public class FragmentUtils {
         if (fragment == null) {
             return null;
         }
+        fragment.setFragmentDataListener(params.fragmentDataListener);
         if (params.bundle != null) {
             fragment.setArguments(params.bundle);
         }
@@ -161,12 +207,20 @@ public class FragmentUtils {
         Class<? extends Fragment> targetFragment;
         int containerViewId = android.R.id.content;
         Bundle bundle = null;
-        boolean addToBackStack = false;
+        boolean addToBackStack = true;
         boolean hasAnimation = false;
         boolean allowStateLoss = true;
         int enterAnim = R.anim.slide_right_in;
         int exitAnim = R.anim.slide_right_out;
         FragmentActivity fragmentActivity;
+        FragmentDataListener fragmentDataListener;
+
+        /**
+         * 默认根据类名确定唯一性
+         * 意思在同一个Activity 内 ，使用 addFragment 添加FragmentA
+         * 能保证FragmentA 只有一个实例
+         */
+        boolean uniqueByClassName = true;
 
         public void setFromFragment(BaseFragment fromFragment) {
             this.fromFragment = fromFragment;
@@ -206,6 +260,10 @@ public class FragmentUtils {
 
         public void setFragmentActivity(FragmentActivity fragmentActivity) {
             this.fragmentActivity = fragmentActivity;
+        }
+
+        public void setFragmentDataListener(FragmentDataListener l) {
+            this.fragmentDataListener = l;
         }
 
         public static class Builder {
@@ -261,6 +319,11 @@ public class FragmentUtils {
 
             public Builder setFragmentActivity(FragmentActivity fragmentActivity) {
                 mParams.setFragmentActivity(fragmentActivity);
+                return this;
+            }
+
+            public Builder setFragmentDataListener(FragmentDataListener l) {
+                mParams.setFragmentDataListener(l);
                 return this;
             }
 

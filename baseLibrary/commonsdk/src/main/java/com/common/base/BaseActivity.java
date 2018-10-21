@@ -17,6 +17,7 @@ package com.common.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -252,24 +253,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
          * 先看看有没有顶层的 fragment 要处理这个事件的
          * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作
          */
-        FragmentManager fm = getSupportFragmentManager();
-        if (fm.getBackStackEntryCount() > 0) {
-            //退出栈弹出
-            String fName = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
-            if (!TextUtils.isEmpty(fName)) {
-                Fragment fragment = fm.findFragmentByTag(fName);
-                MyLog.w(TAG, "fragment name=" + fName + ", fragment=" + fragment);
-
-                if (fragment instanceof BaseFragment) {
-                    BaseFragment baseFragment = (BaseFragment) fragment;
-                    if (baseFragment.onBackPressed()) {
-                        // 被fragment消费掉了
-                        return;
-                    }
-                }
-                // 可以判断下要不要弹出 fragment
-
-//                FragmentNaviUtils.popFragmentFromStack(this);
+        BaseFragment fragment = U.getFragmentUtils().getTopFragment(this);
+        if (fragment != null) {
+            if (fragment.onBackPressed()) {
+                return;
             }
         }
         /**
@@ -294,6 +281,22 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     public boolean isKeyboardResize() {
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /**
+         * 先看看有没有顶层的 fragment 要处理这个事件的
+         * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作
+         */
+        BaseFragment fragment = U.getFragmentUtils().getTopFragment(this);
+        if (fragment != null) {
+            if (fragment.onActivityResultReal(requestCode, resultCode, data)) {
+                return;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+        MyLog.d(TAG, "onActivityResult" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
     }
 
     /**

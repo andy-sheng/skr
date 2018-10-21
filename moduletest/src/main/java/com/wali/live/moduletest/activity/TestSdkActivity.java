@@ -31,6 +31,7 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
 import com.example.paginate.PaginateFragment;
+import com.imagepicker.fragment.ImagePickerFragment;
 import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.R;
 
@@ -248,7 +249,6 @@ public class TestSdkActivity extends BaseActivity {
         }));
 
 
-
         mDataList.add(new H("上拉加载,下拉刷新的RecyclerView Panigate库调试 ", new Runnable() {
             @Override
             public void run() {
@@ -279,6 +279,19 @@ public class TestSdkActivity extends BaseActivity {
                     Object object = channelService.getDataFromChannel(100, null);
                     U.getToastUtil().showToast("test module 收到数据 object:" + object + " hash:" + channelService.hashCode());
                 }
+            }
+        }));
+
+        mDataList.add(new H("ImagePicker调试", new Runnable() {
+            @Override
+            public void run() {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(ImagePickerFragment.EXTRAS_TAKE_PICKERS,true);
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePickerFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setBundle(bundle)
+                        .build());
             }
         }));
     }

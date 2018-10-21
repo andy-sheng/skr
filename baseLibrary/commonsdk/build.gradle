@@ -19,6 +19,8 @@ android {
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
 
         multiDexEnabled true
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -44,12 +46,16 @@ android {
             java.srcDirs = ['src/main/java', 'src/main/java-gen-db', 'src/main/java-gen-pb']
             // 可以通过开关随时取消依赖 exoplayer
             java.srcDirs +=  'src/main/java-exoplayer'
-            // 直接引入支持下拉加载 recyclerView
-            java.srcDirs +=  'src/main/java-paginate'
-
             res.srcDirs = ['src/main/res']
             res.srcDirs += 'src/main/res-titlebar'
+
+            // 直接引入支持下拉加载 recyclerView
+            java.srcDirs +=  'src/main/java-paginate'
             res.srcDirs += 'src/main/res-paginate'
+
+            // 直接引入支持下拉加载 recyclerView
+            java.srcDirs +=  'src/main/java-imagepicker'
+            res.srcDirs += 'src/main/res-imagepicker'
 
             if(repluginHostEnable.toBoolean()){
                 java.srcDirs += 'src/main/java-replugin-host'

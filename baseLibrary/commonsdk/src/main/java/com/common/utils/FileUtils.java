@@ -2,9 +2,13 @@ package com.common.utils;
 
 import android.text.TextUtils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by linjinbin on 15/2/10.
@@ -75,11 +79,11 @@ public class FileUtils {
 
     /**
      * 获得文件头信息
-     * 
+     *
      * @param filePath
      * @return
      */
-    private  String getFileHeader(String filePath) {
+    private String getFileHeader(String filePath) {
         FileInputStream is = null;
         String value = null;
         try {
@@ -113,6 +117,20 @@ public class FileUtils {
             builder.append(hv);
         }
         return builder.toString();
+    }
+
+
+    /**
+     * 根据系统时间、前缀、后缀产生一个文件
+     * 如 IMG_20180912_010233.jpg
+     */
+    public static File createFileByTs(File folder, String prefix, String suffix) {
+        if (!folder.exists() || !folder.isDirectory()) {
+            folder.mkdirs();
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
+        String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
+        return new File(folder, filename);
     }
 }
 

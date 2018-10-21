@@ -21,6 +21,8 @@ public class U {
 
     private static ImageUtils imageUtils;
 
+    private static BitmapUtils bitmapUtils;
+
     private static VideoUtils videoUtils;
 
     private static BlurUtils blurUtils;
@@ -99,6 +101,13 @@ public class U {
             imageUtils = new ImageUtils();
         }
         return imageUtils;
+    }
+
+    public static BitmapUtils getBitmapUtils() {
+        if (bitmapUtils == null) {
+            bitmapUtils = new BitmapUtils();
+        }
+        return bitmapUtils;
     }
 
     public static BlurUtils getBlurUtils() {

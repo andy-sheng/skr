@@ -15,6 +15,7 @@
  */
 package com.common.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -69,6 +70,12 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
 
     protected int mRequestCode = 0;
 
+    /**
+     * Fragment A 启动 Fragment B 处理业务后想拿到结果
+     * 会通过 B 的 mFragmentDataListener 返回结果
+     */
+    protected FragmentDataListener mFragmentDataListener;
+
     public void addPresent(Presenter presenter) {
         if (presenter != null) {
             mPresenterSet.add(presenter);
@@ -101,7 +108,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootView = inflater.inflate(initView(),container,false);
+        mRootView = inflater.inflate(initView(), container, false);
         initData(savedInstanceState);
         return mRootView;
     }
@@ -250,9 +257,40 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         return false;
     }
 
+
+    /**
+     * 由 Fragment 启动 Activity 并想拿到结果时，会通过这个回调
+     * 如果是 Fragment A 启动 Fragment B 并想拿到结果时，参考{@link #mFragmentDataListener}
+     * 在Fragment中使用startActivityForResult之后，
+     * onActivityResult的调用是从activity中开始的（即会先调用activity中的onActivityResult）
+     * 如果使用getActivity().startActivityForResult是不会响应 fragment 的 onActivityResult的
+     * 而是应该直接使startActivityForResult() 才会被执行
+     * 为了防止这种情况，不允许继承 onActivityResult。
+     * 统一使用使用 onActivityResultReal BaseActivity会对其做特殊处理。
+     */
+    public final void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 是否要消费掉onActivityResult
+     * 返回true 代表要消费掉
+     */
+    public boolean onActivityResultReal(int requestCode, int resultCode, Intent data) {
+        return false;
+    }
+
+    /**
+     * 在运行时 想与此Fragment通信，偷懒的话可以用这个方法
+     */
     @Override
     public void setData(@Nullable Object data) {
 
+    }
+
+    public void setFragmentDataListener(FragmentDataListener fragmentDataListener) {
+        mFragmentDataListener = fragmentDataListener;
     }
 
     /**

@@ -1,7 +1,10 @@
 package com.common.utils;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -94,5 +97,18 @@ public class ImageUtils {
 
     public  enum SIZE{
         ORIGIN,SIZE_160,SIZE_320,SIZE_480,SIZE_640
+    }
+
+    /**
+     * 通知系统相册有变化，触发相册表刷新
+     * @param file
+     */
+    public void notifyGalleryChangeByBroadcast(File file) {
+        if(file!=null){
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri contentUri = Uri.fromFile(file);
+            mediaScanIntent.setData(contentUri);
+            U.app().sendBroadcast(mediaScanIntent);
+        }
     }
 }

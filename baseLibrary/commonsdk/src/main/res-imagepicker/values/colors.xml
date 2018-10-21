@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app的主题色定义在这 -->
+    <color name="back_press_color">#323336</color>
+
+</resources>
