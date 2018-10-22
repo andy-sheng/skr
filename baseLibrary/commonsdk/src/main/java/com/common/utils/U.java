@@ -59,6 +59,9 @@ public class U {
 
     private static DateTimeUtils dateTimeUtils;
 
+    private static PreferenceUtils preferenceUtils;
+
+
     public static void setApp(Application app) {
         application = app;
 
@@ -238,6 +241,12 @@ public class U {
         return dateTimeUtils;
     }
 
+    public static PreferenceUtils getPreferenceUtils() {
+        if (preferenceUtils == null) {
+            preferenceUtils = new PreferenceUtils();
+        }
+        return preferenceUtils;
+    }
 
     private static int REQUEST_CODE_FIRST = 100000;
 
@@ -245,6 +254,7 @@ public class U {
 
     /**
      * 返回一个 code 唯一标识 一个 实例 对象
+     *
      * @return
      */
     public static int getRequestCode() {

@@ -270,20 +270,6 @@ message GetOwnSettingRsp {
     optional bool isVipHide = 6; //是否开启vip隐身
 }
 
-//查询别人房间信息,取道的是拉流地址
-//zhibo.live.hisroom
-message HisRoomReq {
-    required uint64 zuid = 1; //查询的主播id
-}
-
-message HisRoomRsp {
-    required uint32 retCode = 1; //0:表示成功
-    optional string liveId = 2; //房间号
-    optional string shareUrl = 3; //分享的url
-    optional string viewUrl = 4; //完整的观看url
-    optional uint32 type = 5; //类型，0公开，1私密
-}
-
 //批量获取用户信息及和请求方的关系
 //cmd:zhibo.user.mutigetuserinfo
 message MutiGetUserInfoReq {

@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.preference.PreferenceUtils;
+import com.common.utils.PreferenceUtils;
 import com.common.base.BaseActivity;
 import com.common.core.R;
 import com.common.core.RouterConstants;
@@ -171,7 +171,7 @@ public class SchemeSdkActivity extends BaseActivity {
      */
     public boolean isNeedShowCtaDialog() {
         if ("5005_1_android".equals(U.getChannelUtils().getChannel())) {
-            return PreferenceUtils.getSettingBoolean(CTANotifyFragment.PREF_KEY_NEED_SHOW_CTA, true);
+            return U.getPreferenceUtils().getSettingBoolean(CTANotifyFragment.PREF_KEY_NEED_SHOW_CTA, true);
         }
         return false;
     }

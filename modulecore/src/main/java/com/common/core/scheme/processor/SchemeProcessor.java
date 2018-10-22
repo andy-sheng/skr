@@ -7,13 +7,19 @@ import android.text.TextUtils;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.RouterConstants;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.roominfo.RoomInfoServerApi;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
-import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.wali.live.proto.User.HisRoomRsp;
+import com.wali.live.proto.RoomInfo.HisLive;
+import com.wali.live.proto.RoomInfo.HisRoomRsp;
+import com.wali.live.proto.RoomInfo.HistoryLiveRsp;
+import com.wali.live.proto.RoomInfo.RoomInfoRsp;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -123,42 +129,53 @@ public class SchemeProcessor extends CommonProcessor {
 
         if (!TextUtils.isEmpty(liveId)) {
             MyLog.w(TAG, "processHostRoom roomInfoRequest");
-//            Observable.just(0)
-//                    .map(new Func1<Integer, RoomInfoRsp>() {
-//                        @Override
-//                        public RoomInfoRsp call(Integer integer) {
-//                            return new RoomInfoRequest(playerId, liveId).syncRsp();
-//                        }
-//                    })
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .compose(activity.<RoomInfoRsp>bindUntilEvent())
-//                    .subscribe(new Action1<RoomInfoRsp>() {
-//                        @Override
-//                        public void call(RoomInfoRsp rsp) {
-//                            MyLog.w(TAG, "roomInfoRequest enter");
-//                            if (rsp != null) {
-//                                if (rsp.hasDownStreamUrl() && !TextUtils.isEmpty(rsp.getDownStreamUrl())) {
-//                                    MyLog.w(TAG, "roomInfoRequest enterWatch success");
-//                                    jumpToWatchActivity(playerId, liveId, rsp.getType(), rsp.getDownStreamUrl(), activity);
-//                                    activity.finish();
-//                                    return;
-//                                } else if (rsp.hasPlaybackUrl() && !TextUtils.isEmpty(rsp.getPlaybackUrl())) {
-//                                    MyLog.w(TAG, "roomInfoRequest enterVideoDetail success");
-//                                    jumpToVideoDetailActivity(playerId, liveId, rsp.getType(), rsp.getPlaybackUrl(), activity);
-//                                    activity.finish();
-//                                    return;
-//                                }
-//                            }
-//                            queryHistoryLive(playerId, activity);
-//                        }
-//                    }, new Action1<Throwable>() {
-//                        @Override
-//                        public void call(Throwable throwable) {
-//                            MyLog.e(TAG, "processHostRoom=" + throwable);
-//                            activity.finish();
-//                        }
-//                    });
+            Observable.just(0)
+                    .map(new Function<Integer, RoomInfoRsp>() {
+                        @Override
+                        public RoomInfoRsp apply(Integer integer) throws Exception {
+                            return RoomInfoServerApi.getRoomInfo(MyUserInfoManager.getInstance().getUid(),
+                                    playerId, liveId, null, false, false);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(activity.<RoomInfoRsp>bindUntilEvent(ActivityEvent.DESTROY))
+                    .subscribe(new Observer<RoomInfoRsp>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(RoomInfoRsp roomInfoRsp) {
+                            MyLog.w(TAG, "roomInfoRequest enter");
+                            if (roomInfoRsp != null && roomInfoRsp.getRetCode() == 0) {
+                                if (roomInfoRsp.hasDownStreamUrl() && !TextUtils.isEmpty(roomInfoRsp.getDownStreamUrl())) {
+                                    MyLog.w(TAG, "roomInfoRequest enterWatch success");
+                                    jumpToWatchActivity(playerId, liveId, roomInfoRsp.getType(), roomInfoRsp.getDownStreamUrl());
+                                    activity.finish();
+                                    return;
+                                } else if (roomInfoRsp.hasPlaybackUrl() && !TextUtils.isEmpty(roomInfoRsp.getPlaybackUrl())) {
+                                    MyLog.w(TAG, "roomInfoRequest enterVideoDetail success");
+                                    jumpToWatchActivity(playerId, liveId, roomInfoRsp.getType(), roomInfoRsp.getPlaybackUrl());
+                                    activity.finish();
+                                    return;
+                                }
+
+                            }
+                            queryHistoryLive(playerId, activity);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
         } else {
             queryRoomInfo(playerId, activity);
         }
@@ -170,7 +187,7 @@ public class SchemeProcessor extends CommonProcessor {
                 .map(new Function<Integer, HisRoomRsp>() {
                     @Override
                     public HisRoomRsp apply(Integer integer) throws Exception {
-                        return UserInfoServerApi.getLiveShowByUserId(playerId);
+                        return RoomInfoServerApi.getLiveShowByUserId(playerId);
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -190,6 +207,8 @@ public class SchemeProcessor extends CommonProcessor {
                             jumpToWatchActivity(playerId, hisRoomRsp.getLiveId(), hisRoomRsp.getType(), hisRoomRsp.getViewUrl());
                             activity.finish();
                             return;
+                        } else {
+                            MyLog.w(TAG, " queryRoomInfo err !!!");
                         }
 
                         queryHistoryLive(playerId, activity);
@@ -211,36 +230,49 @@ public class SchemeProcessor extends CommonProcessor {
 
     private static void queryHistoryLive(final long playerId, @NonNull final BaseActivity activity) {
         MyLog.w(TAG, "processHostRoom queryHistoryLive");
-//        Observable.just(0)
-//                .map(new Func1<Integer, HistoryLiveRsp>() {
-//                    @Override
-//                    public LiveProto.HistoryLiveRsp call(Integer i) {
-//                        return LiveManager.historyRsp(playerId);
-//                    }
-//                })
-//                .subscribeOn(Schedulers.io())
-//                .compose(activity.<LiveProto.HistoryLiveRsp>bindUntilEvent())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Action1<HistoryLiveRsp>() {
-//                    @Override
-//                    public void call(HistoryLiveRsp rsp) {
-//                        MyLog.w(TAG, "queryHistoryLive enter");
-//                        if (rsp != null && rsp.hasRetCode() && rsp.getRetCode() == ErrorCode.CODE_SUCCESS) {
-//                            if (rsp.getHisLiveCount() > 0) {
-//                                MyLog.w(TAG, "queryHistoryLive success");
-//                                Live2Proto.HisLive hisLive = rsp.getHisLive(0);
-//                                jumpToVideoDetailActivity(playerId, hisLive.getLiveId(), hisLive.getType(), hisLive.getUrl(), activity);
-//                            }
-//                        }
-//                        activity.finish();
-//                    }
-//                }, new Action1<Throwable>() {
-//                    @Override
-//                    public void call(Throwable throwable) {
-//                        MyLog.e(TAG, "queryHistoryLive failed=" + throwable);
-//                        activity.finish();
-//                    }
-//                });
+        Observable.just(0)
+                .map(new Function<Integer, HistoryLiveRsp>() {
+                    @Override
+                    public HistoryLiveRsp apply(Integer integer) throws Exception {
+                        return RoomInfoServerApi.getHistoryShowList(MyUserInfoManager.getInstance().getUid(), playerId);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .compose(activity.<HistoryLiveRsp>bindUntilEvent(ActivityEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HistoryLiveRsp>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HistoryLiveRsp historyLiveRsp) {
+                        MyLog.w(TAG, "queryHistoryLive enter");
+                        if (historyLiveRsp != null && historyLiveRsp.getRetCode() == 0) {
+                            List<HisLive> list = historyLiveRsp.getHisLiveList();
+                            if (list != null && list.size() > 0) {
+                                MyLog.w(TAG, "queryHistoryLive success");
+                                HisLive hisLive = list.get(0);
+                                jumpToVideoDetailActivity(playerId, hisLive.getLiveId(), hisLive.getType(), hisLive.getUrl());
+                            }
+                        } else {
+                            MyLog.w(TAG, " queryHistoryLive err !!!");
+                        }
+                        activity.finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e(TAG, "queryHistoryLive failed ");
+                        MyLog.e(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     private static void jumpToWatchActivity(long playerId, String liveId, int liveType, String videoUrl) {

@@ -2,11 +2,11 @@ package com.common.core.userinfo;
 
 import android.text.TextUtils;
 
-import com.common.preference.PreferenceUtils;
 import com.common.log.MyLog;
 import com.common.milink.MiLinkClientAdapter;
 import com.common.milink.command.MiLinkCommand;
 import com.common.milink.constant.MiLinkConstant;
+import com.common.utils.U;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.Relation.BlockRequest;
 import com.wali.live.proto.Relation.BlockResponse;
@@ -40,8 +40,6 @@ import com.wali.live.proto.User.GetHomepageReq;
 import com.wali.live.proto.User.GetHomepageResp;
 import com.wali.live.proto.User.GetUserInfoByIdReq;
 import com.wali.live.proto.User.GetUserInfoByIdRsp;
-import com.wali.live.proto.User.HisRoomReq;
-import com.wali.live.proto.User.HisRoomRsp;
 import com.wali.live.proto.User.MutiGetUserInfoReq;
 import com.wali.live.proto.User.MutiGetUserInfoRsp;
 
@@ -140,33 +138,6 @@ public class UserInfoServerApi {
             }
         }
 
-        return null;
-    }
-
-    /**
-     * 根据uuid获得用户正在直播的房间信息
-     *
-     * @param uuid
-     * @return 返回正在直播的liveShow, 如果房间不存在或者出错,　返回一个空值, 注意不是null.
-     */
-    public static HisRoomRsp getLiveShowByUserId(long uuid) {
-        if (uuid <= 0) {
-            return null;
-        }
-        HisRoomReq request = new HisRoomReq.Builder().setZuid(uuid).build();
-        PacketData packetData = new PacketData();
-        packetData.setCommand(MiLinkCommand.COMMAND_GET_LIVE_ROOM);
-        packetData.setData(request.toByteArray());
-        PacketData result = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-
-        if (result != null && result.getData() != null) {
-            try {
-                HisRoomRsp response = HisRoomRsp.parseFrom(result.getData());
-                return response;
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
         return null;
     }
 
@@ -453,7 +424,7 @@ public class UserInfoServerApi {
         long syncTime = 0;
         // todo 等引入Preference再补全
         if (loadByWater) {
-            syncTime = PreferenceUtils.getSettingLong(PRE_KEY_SIX_LOAD_BY_WATER, 0);
+            syncTime = U.getPreferenceUtils().getSettingLong(PRE_KEY_SIX_LOAD_BY_WATER, 0);
         }
         FollowingListRequest request = new FollowingListRequest.Builder()
                 .setUserId(uuid)
@@ -471,7 +442,7 @@ public class UserInfoServerApi {
             if (responseData != null) {
                 FollowingListResponse response = FollowingListResponse.parseFrom(responseData.getData());
                 if (response != null) {
-                    PreferenceUtils.setSettingLong(PRE_KEY_SIX_LOAD_BY_WATER, response.getSyncTime());
+                    U.getPreferenceUtils().setSettingLong(PRE_KEY_SIX_LOAD_BY_WATER, response.getSyncTime());
                 }
                 return response;
             }

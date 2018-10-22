@@ -1,0 +1,7 @@
+<resources>
+    <string name="user_protocal_title">声明与条款</string>
+    <string name="user_protocal_content">您将使用小米直播助手提供的视频直播服务，请阅读<a href="http://zhibo.mi.com/privacy/xieyi/xieyi.html">用户协议</a>和<a href="http://zhibo.mi.com/privacy/yinsi/yinsi.html">隐私条款</a>，在使用过程中需要连接网络，读取联系人并使用您的位置，您是否同意？</string>
+    <string name="never_show">不再显示</string>
+    <string name="cancel">取消</string>
+    <string name="agree">同意</string>
+</resources>

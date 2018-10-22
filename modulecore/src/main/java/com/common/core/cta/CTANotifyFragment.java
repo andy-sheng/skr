@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.common.preference.PreferenceUtils;
+import com.common.utils.PreferenceUtils;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.R;
@@ -58,7 +58,7 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
         } else if (i == R.id.agree_button) {
             //TODO: 为了适应 cta 弹窗策略，避免偷跑流量，调整数据初始化，待优化
             if (mButtonClickListener != null) {
-                PreferenceUtils.setSettingBoolean(PREF_KEY_NEED_SHOW_CTA, !mNeverShowCb.isChecked());
+                U.getPreferenceUtils().setSettingBoolean(PREF_KEY_NEED_SHOW_CTA, !mNeverShowCb.isChecked());
 //                InitManager.initForCoreProcess(GlobalData.app());
                 mButtonClickListener.onClickConfirmButton();
             }
@@ -90,6 +90,10 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
 
     /**
      * 按钮点击事件的回调
