@@ -5,6 +5,8 @@
     <color name="primaryDark">#37889F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="grey">#f8f8f8</color>
+
     <color name="black">#000000</color>
     <color name="black_trans_5">#0c000000</color>
     <color name="black_trans_10">#19000000</color>

@@ -94,6 +94,35 @@ public class TestSdkActivity extends BaseActivity {
             }
         });
 
+        mDataList.add(new H("跳转到LoginActivity", new Runnable() {
+
+            @Override
+            public void run() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
+                        .greenChannel()
+                        .navigation(TestSdkActivity.this, new NavigationCallback() {
+                            @Override
+                            public void onFound(Postcard postcard) {
+
+                            }
+
+                            @Override
+                            public void onLost(Postcard postcard) {
+
+                            }
+
+                            @Override
+                            public void onArrival(Postcard postcard) {
+
+                            }
+
+                            @Override
+                            public void onInterrupt(Postcard postcard) {
+
+                            }
+                        });
+            }
+        }));
         mDataList.add(new H("跳转到ChannelSdkActivity", new Runnable() {
             @Override
             public void run() {
@@ -249,7 +278,6 @@ public class TestSdkActivity extends BaseActivity {
                 }, 5000);
             }
         }));
-
 
         mDataList.add(new H("上拉加载,下拉刷新的RecyclerView Panigate库调试 ", new Runnable() {
             @Override

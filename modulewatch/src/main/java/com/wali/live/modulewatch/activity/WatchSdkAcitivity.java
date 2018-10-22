@@ -15,7 +15,7 @@ import com.common.log.MyLog;
 import com.common.player.VideoPlayerAdapter;
 import com.wali.live.modulewatch.R;
 
-@Route(path = RouterConstants.ACTIVITY_LOGIN, extras = JumpInterceptor.NO_NEED_LOGIN)
+@Route(path = RouterConstants.ACTIVITY_WATCH, extras = JumpInterceptor.NO_NEED_LOGIN)
 public class WatchSdkAcitivity extends BaseActivity {
 
     TextureView mTextureView;

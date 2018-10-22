@@ -43,7 +43,7 @@ public class JumpInterceptor implements IInterceptor {
                 callback.onContinue(postcard);
             } else {
                 callback.onInterrupt(new UnloginException());
-                ARouter.getInstance().build("/core/login")
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
                         .withBoolean("key_show_toast", true)
                         .greenChannel().navigation();
             }

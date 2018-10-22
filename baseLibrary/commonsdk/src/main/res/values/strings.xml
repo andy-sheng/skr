@@ -1,2 +1,22 @@
 <resources>
+    <string name="yesterday_time">昨天 %s</string>
+    <string name="date_yesterday">昨天</string>
+    <string name="date_tomorrow">明天</string>
+    <string name="date_today">今天</string>
+    <string name="justnow">刚刚</string>
+    <string name="times_mm_dd_format">MM月dd日</string>
+
+    <plurals name="minute_ago">
+        <item quantity="other">%d分钟前</item>
+    </plurals>
+    <plurals name="hour_ago">
+        <item quantity="other">%d小时前</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="other">%d天前</item>
+    </plurals>
+    <plurals name="months_ago">
+        <item quantity="other">%d个月前</item>
+    </plurals>
+    <string name="year_month_day">%1$d年%2$d月%3$d日</string>
 </resources>

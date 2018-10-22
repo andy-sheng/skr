@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.facade.callback.NavigationCallback;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
 import com.common.core.RouterConstants;
@@ -40,6 +42,8 @@ public class LoginActivity extends BaseActivity {
 
     private TextView mMiTestFollow;
 
+    private TextView mMiTestScheme;
+
     CommonTitleBar mTitlebar;
 
 
@@ -68,6 +72,7 @@ public class LoginActivity extends BaseActivity {
 
         mMiTestFollow = (TextView) this.findViewById(R.id.mi_test_follow);
 
+        mMiTestScheme = (TextView) this.findViewById(R.id.mi_test_scheme);
 
         mMiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +188,15 @@ public class LoginActivity extends BaseActivity {
 
                             }
                         });
+            }
+        });
+
+        mMiTestScheme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                        .withString("uri", "walilive://room/join?liveid=130214_1458310748&playerid=130214&videourl=encode")
+                        .greenChannel().navigation();
             }
         });
     }

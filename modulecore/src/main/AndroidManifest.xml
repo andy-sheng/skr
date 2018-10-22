@@ -42,6 +42,24 @@
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
 
+        <activity
+            android:name="com.common.core.scheme.SchemeSdkActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="livesdk" />
+            </intent-filter>
+        </activity>
+
         <!-- milinkservice -->
         <service
             android:name="com.mi.milink.sdk.service.MiLinkService"
