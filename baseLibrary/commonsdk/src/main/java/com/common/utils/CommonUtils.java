@@ -1,5 +1,8 @@
 package com.common.utils;
 
+import android.os.Handler;
+import android.os.Looper;
+
 /**
  * 通过U.getCommonUtils 获得
  * 一些实在不好分类的 util 方法 放在这。
@@ -8,6 +11,8 @@ public class CommonUtils {
     public final int FAST_DOUBLE_CLICK_INTERVAL = 500;
 
     private long sLastClickTime = 0;
+
+    private Handler sMainHandler;
 
     CommonUtils() {
     }
@@ -37,6 +42,17 @@ public class CommonUtils {
         }
         sLastClickTime = now;
         return false;
+    }
+
+    public boolean isMainThread() {
+        return Looper.getMainLooper() == Looper.myLooper();
+    }
+
+    public Handler getUiHandler() {
+        if (sMainHandler == null) {
+            sMainHandler = new Handler(Looper.getMainLooper());
+        }
+        return sMainHandler;
     }
 
 }
