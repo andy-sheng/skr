@@ -18,6 +18,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+import com.common.base.FragmentDataListener;
 import com.common.core.RouterConstants;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -31,6 +32,7 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
 import com.example.paginate.PaginateFragment;
+import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
 import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.R;
@@ -286,11 +288,17 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 Bundle bundle = new Bundle();
-                bundle.putBoolean(ImagePickerFragment.EXTRAS_TAKE_PICKERS,true);
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePickerFragment.class)
+//                bundle.putBoolean(ImagePickerFragment.EXTRAS_TAKE_PICKERS,true);
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder( TestSdkActivity.this, ImagePickerFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .setBundle(bundle)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                                U.getToastUtil().showToast("拿到数据 size:"+ImagePicker.getInstance().getSelectedImages().size());
+                            }
+                        })
                         .build());
             }
         }));
