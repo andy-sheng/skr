@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey"
+        android:orientation="vertical">
+
+        <!-- 声明与条款-->
+        <TextView
+            android:id="@+id/alertTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="2"
+            android:padding="20dip"
+            android:text="@string/user_protocal_title"
+            android:textColor="@color/black_trans_80"
+            android:textSize="14.67dip"/>
+
+        <!-- 具体内容-->
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16.67dip"
+            android:gravity="left"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:text="@string/user_protocal_content"
+            android:textColor="@color/black_trans_80"
+            android:textSize="13.33dip"/>
+
+        <!-- 不在提示　区域-->
+        <LinearLayout
+            android:id="@+id/never_show_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <CheckBox
+                android:id="@+id/never_show_cb"
+                style="@style/MyCheckBoxRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="18.33dip"
+                android:checked="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:paddingLeft="5dip"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/never_show"
+                android:textColor="@color/black_trans_80"
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <!-- 底部的按钮-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dip"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingBottom="0dip"
+            android:paddingTop="26.67dip">
+
+            <TextView
+                android:id="@+id/cancel_button"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_button_left"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/cancel"
+                android:textColor="@color/black_trans_70"/>
+
+            <TextView
+                android:id="@+id/agree_button"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_button_right"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/agree"
+                android:textColor="@color/black_trans_70"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -2,12 +2,11 @@ package com.common.core.userinfo;
 
 import android.text.TextUtils;
 
-import com.common.PreferenceUtils.PreferenceUtils;
+import com.common.preference.PreferenceUtils;
 import com.common.log.MyLog;
 import com.common.milink.MiLinkClientAdapter;
 import com.common.milink.command.MiLinkCommand;
 import com.common.milink.constant.MiLinkConstant;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.Relation.BlockRequest;
 import com.wali.live.proto.Relation.BlockResponse;
@@ -41,6 +40,8 @@ import com.wali.live.proto.User.GetHomepageReq;
 import com.wali.live.proto.User.GetHomepageResp;
 import com.wali.live.proto.User.GetUserInfoByIdReq;
 import com.wali.live.proto.User.GetUserInfoByIdRsp;
+import com.wali.live.proto.User.HisRoomReq;
+import com.wali.live.proto.User.HisRoomRsp;
 import com.wali.live.proto.User.MutiGetUserInfoReq;
 import com.wali.live.proto.User.MutiGetUserInfoRsp;
 
@@ -143,6 +144,33 @@ public class UserInfoServerApi {
     }
 
     /**
+     * 根据uuid获得用户正在直播的房间信息
+     *
+     * @param uuid
+     * @return 返回正在直播的liveShow, 如果房间不存在或者出错,　返回一个空值, 注意不是null.
+     */
+    public static HisRoomRsp getLiveShowByUserId(long uuid) {
+        if (uuid <= 0) {
+            return null;
+        }
+        HisRoomReq request = new HisRoomReq.Builder().setZuid(uuid).build();
+        PacketData packetData = new PacketData();
+        packetData.setCommand(MiLinkCommand.COMMAND_GET_LIVE_ROOM);
+        packetData.setData(request.toByteArray());
+        PacketData result = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
+
+        if (result != null && result.getData() != null) {
+            try {
+                HisRoomRsp response = HisRoomRsp.parseFrom(result.getData());
+                return response;
+            } catch (Exception e) {
+                MyLog.e(e);
+            }
+        }
+        return null;
+    }
+
+    /**
      * 获取在线的用户列表
      * "zhibo.relation.getmultionlineuser"
      *
@@ -182,7 +210,7 @@ public class UserInfoServerApi {
      * @return
      */
     public static GetSubscribeInfoResponse getSubscribeInfo(final long uid,
-                                                               final long targetId) {
+                                                            final long targetId) {
         if (uid <= 0 || targetId <= 0) {
             MyLog.w("getSubscribeInfo Illegal parameter");
             return null;
@@ -251,7 +279,7 @@ public class UserInfoServerApi {
      * @return
      */
     public static RoomKickViewerRsp kickViewer(String roomId, long anchorId, long operatorId,
-                                                  long kickedId) {
+                                               long kickedId) {
         if (TextUtils.isEmpty(roomId) || anchorId == 0 || operatorId == 0 || kickedId == 0) {
             MyLog.w("kickViewer Illegal parameter");
             return null;
@@ -349,7 +377,7 @@ public class UserInfoServerApi {
      * @return
      */
     public static BlockerListResponse getBlockerListResponse(long uuid, int count,
-                                                                int offset) {
+                                                             int offset) {
         if (uuid <= 0 || count <= 0) {
             MyLog.w("getBlockerListResponse Illegal parameter");
             return null;
@@ -384,7 +412,7 @@ public class UserInfoServerApi {
      * @return
      */
     public static FollowerListResponse getFollowerListResponse(long uuid, int count,
-                                                                  int offset) {
+                                                               int offset) {
         if (uuid <= 0 || count <= 0) {
             MyLog.w("getFollowerListResponse Illegal parameter");
             return null;
@@ -421,7 +449,7 @@ public class UserInfoServerApi {
      * @return
      */
     public static FollowingListResponse getFollowingListResponse(long uuid, int count,
-                                                                    int offset, boolean bothway, boolean loadByWater) {
+                                                                 int offset, boolean bothway, boolean loadByWater) {
         long syncTime = 0;
         // todo 等引入Preference再补全
         if (loadByWater) {

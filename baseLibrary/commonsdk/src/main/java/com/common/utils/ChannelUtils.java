@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 public class ChannelUtils {
     private String channelName = "DEFAULT";
 
-    ChannelUtils(){
+    ChannelUtils() {
         try {
-            Class ct = Class.forName(U.getAppInfoUtils().getPackageName()+".BuildConfig");
+            Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
             Field field = ct.getField("CHANNEL_NAME");
             channelName = (String) field.get(null);
         } catch (ClassNotFoundException e) {
@@ -20,6 +20,10 @@ public class ChannelUtils {
 
     public String getChannelNameFromBuildConfig() {
         return channelName;
+    }
+
+    public String getChannel() {
+        return "";
     }
 
 }
