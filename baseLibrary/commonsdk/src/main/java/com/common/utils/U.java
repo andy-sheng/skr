@@ -57,6 +57,8 @@ public class U {
 
     private static NetworkUtils networkUtils;
 
+    private static DateTimeUtils dateTimeUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -228,6 +230,14 @@ public class U {
         }
         return networkUtils;
     }
+
+    public static DateTimeUtils getDateTimeUtils() {
+        if (dateTimeUtils == null) {
+            dateTimeUtils = new DateTimeUtils();
+        }
+        return dateTimeUtils;
+    }
+
 
     private static int REQUEST_CODE_FIRST = 100000;
 

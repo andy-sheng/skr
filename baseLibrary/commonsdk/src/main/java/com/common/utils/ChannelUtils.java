@@ -22,8 +22,13 @@ public class ChannelUtils {
         return channelName;
     }
 
+    /**
+     * 这里以后会修改，返回真正渠道号。
+     * 原理： DEFAULT 为自升级渠道，不能覆盖原本的渠道号
+     * @return
+     */
     public String getChannel() {
-        return "";
+        return channelName;
     }
 
 }

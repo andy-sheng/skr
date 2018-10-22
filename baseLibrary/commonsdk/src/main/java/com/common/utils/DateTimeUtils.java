@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * 通过 U.getDateTimeUtils() 调用
+ */
 public class DateTimeUtils {
     public final static String TAG = "DateTimeUtils";
 
@@ -32,7 +35,10 @@ public class DateTimeUtils {
     public static final long MILLI_SECONDS_ONE_MONTH = 30 * MILLI_SECONDS_ONE_DAY;          //一月的的毫秒值. 先假设一个月30天, 有bug, 没有考虑31天或者闰年的情况! 没办法, SB产品要的急!
     public static final long MILLI_SECONDS_ONE_YEAR = 24 * MILLI_SECONDS_ONE_MONTH;             //一年的毫秒值
 
-    public static boolean isYesterday(long rowTime) {
+    DateTimeUtils() {
+    }
+
+    public  boolean isYesterday(long rowTime) {
         boolean bret = false;
         if (rowTime > 0) {
 
@@ -58,11 +64,11 @@ public class DateTimeUtils {
         return bret;
     }
 
-    public static boolean isThisWeek(final long time) {
+    public  boolean isThisWeek(final long time) {
         return (System.currentTimeMillis() - time) < MILLIS_IN_WEEK;
     }
 
-    public static boolean isThisYear(final long time) {
+    public  boolean isThisYear(final long time) {
         final Calendar today = Calendar.getInstance();
         today.setTime(new Date());
 
@@ -75,14 +81,14 @@ public class DateTimeUtils {
 
     /**
      * @param context
-     * @param rowTime
+     * @param rowTime 某个时间戳
      * @return
      * 1. 今天 HH:mm
      * 2. 明天 HH:mm
      * 3. 昨天 HH:mm
-     * 4. HH:mm
+     * 4. xx月xx日
      */
-    public static String formatTimeStringForNotice(final Context context, final long rowTime) {
+    public  String formatTimeStringForNotice(final Context context, final long rowTime) {
         long now = System.currentTimeMillis();
         long dayDiff = getDayDiff(now, rowTime);
         String time = formatTimeStringForDate(rowTime, "HH:mm");
@@ -100,7 +106,7 @@ public class DateTimeUtils {
         return result;
     }
 
-    public static String formatTimeStringForDate(final long rowTime, final String formatStr) {
+    public  String formatTimeStringForDate(final long rowTime, final String formatStr) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatStr);
         return simpleDateFormat.format(new Date(rowTime));
     }
@@ -108,10 +114,12 @@ public class DateTimeUtils {
     /**
      * 格式化时间
      *
-     * @param videoTime 默认是毫秒单位
-     * @return 返回结果：00:00 / 00:00:00
+     * @param videoTime 默认是毫秒单位，视频的时间
+     * @return 返回结果：
+     * 小于1小时的 00:00
+     * 大于1小时的 00:00:00
      */
-    public static String formatVideoTime(long videoTime) {
+    public  String formatVideoTime(long videoTime) {
         MyLog.d(TAG, "formatVideoTime, videoTime = " + videoTime);
 
         int seconds = 0;
@@ -153,7 +161,7 @@ public class DateTimeUtils {
      * @param timeToBase   　基准时间
      * @return
      */
-    public static String formatHumanableDate(final long timeToFormat, final long timeToBase) {
+    public  String formatHumanableDate(final long timeToFormat, final long timeToBase) {
         MyLog.v(TAG + " formatHumanableDate timeToFormat == " + timeToFormat + " timeToBase == " + timeToBase);
         if (timeToFormat < 0 || timeToBase < 0) {
             MyLog.e(TAG + " formatHumanableDate timeToFormat or timeToBase < 0, timeToFormat == " + timeToFormat + " timeToBase == " + timeToBase);
@@ -205,7 +213,7 @@ public class DateTimeUtils {
      * @param TSR
      * @return
      */
-    public static long getDayDiff(long TSL, long TSR) {
+    public  long getDayDiff(long TSL, long TSR) {
         return adjustTimeZoneMillis(TSR) / MILILIS_ONE_DAY - adjustTimeZoneMillis(TSL) / MILILIS_ONE_DAY;
     }
 
@@ -214,7 +222,7 @@ public class DateTimeUtils {
      *
      * @notice Date，Calender类已经添加时区，不需要调用此函数矫正，只提供给getDayDiff使用
      */
-    private static long adjustTimeZoneMillis(long millis) {
+    private  long adjustTimeZoneMillis(long millis) {
         Calendar cal = Calendar.getInstance();
         int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
         int dstOffset = cal.get(Calendar.DST_OFFSET);
