@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
-    android:background="@color/color_f8f8f8"
+    android:background="@color/channel_color_f8f8f8"
     android:gravity="center_horizontal"
     app:core_emptyIcon="@drawable/home_empty_icon"
     app:core_emptyTips="@string/core_empty_tips" />

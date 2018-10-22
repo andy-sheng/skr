@@ -56,7 +56,7 @@ public class CommonProcessor {
         if (channelId != 0) {
             String title = Uri.decode(uri.getQueryParameter(SchemeConstants.PARAM_LIST_TITLE));
             // todo 打开ChannelSdkActivity
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_CHANNEL_SDK)
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_CHANNEL_LIST_SDK)
                     .withLong("channelId", channelId)
                     .withString("title", title)
                     .greenChannel().navigation();

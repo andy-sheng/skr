@@ -52,6 +52,6 @@
         android:paddingTop="4dp"
         android:singleLine="true"
         android:text="北京"
-        android:textColor="@color/color_e5aa3b"
+        android:textColor="@color/channel_color_e5aa3b"
         android:textSize="12dp"/>
 </LinearLayout>

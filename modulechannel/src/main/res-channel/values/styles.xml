@@ -90,4 +90,27 @@
         <item name="android:textSize">@dimen/channel_size_normal</item>
     </style>
 
+    <style name="channel_count_bottom_big">
+        <item name="android:layout_marginRight">@dimen/view_dimen_24</item>
+        <item name="android:layout_marginBottom">@dimen/view_dimen_24</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/view_dimen_45</item>
+        <item name="android:shadowDx">0.5</item>
+        <item name="android:shadowDy">0.5</item>
+        <item name="android:shadowRadius">0.5</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxWidth">@dimen/view_dimen_240</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:shadowColor">@color/black_trans_80</item>
+    </style>
+
+    <style name="channel_name_bottom">
+        <item name="android:layout_marginLeft">@dimen/view_dimen_24</item>
+        <item name="android:layout_marginBottom">@dimen/view_dimen_18</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/view_dimen_42</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
 </resources>

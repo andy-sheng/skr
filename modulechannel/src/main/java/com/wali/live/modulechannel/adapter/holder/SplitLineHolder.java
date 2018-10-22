@@ -37,7 +37,7 @@ public class SplitLineHolder extends BaseHolder<ChannelSplitViewModel> {
         } else if (mViewModel.getColor() == 3) {
             mSplitArea.setBackgroundColor(itemView.getResources().getColor(R.color.white_trans_20));
         } else {
-            mSplitArea.setBackgroundColor(itemView.getResources().getColor(R.color.color_f2f2f2));
+            mSplitArea.setBackgroundColor(itemView.getResources().getColor(R.color.channel_color_f2f2f2));
         }
 
         mSplitArea.setVisibility(mViewModel.getHeight() == 3 ? View.GONE : View.VISIBLE);

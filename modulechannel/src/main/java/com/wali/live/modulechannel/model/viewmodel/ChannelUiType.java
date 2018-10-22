@@ -91,7 +91,7 @@ public class ChannelUiType {
                     TYPE_LARGE_CARD,
                     TYPE_NAVIGATE,
                     TYPE_THREE_NEW,
-                    TYPE_VIDEO_BANNER,
+//                    TYPE_VIDEO_BANNER,
                     // TYPE_NOTICE_SCROLL,
                     TYPE_THREE_CONCERN_CARD,
                     TYPE_EFFECT_CARD,

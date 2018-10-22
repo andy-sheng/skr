@@ -14,5 +14,17 @@
     <color name="channel_color_channel_second_primary_text">@color/black</color>
     <color name="channel_color_channel_normal_text">@color/black_trans_50</color>
     <color name="channel_color_depart">#f2f2f2</color>
+    <color name="channel_color_f2f2f2">#f2f2f2</color>
+    <color name="channel_color_e5e5e5">#e5e5e5</color>
+    <color name="channel_color_ff2966">#ff2966</color>
+    <color name="channel_color_fed533">#fed533</color>
+    <color name="channel_color_f5f5f5">#f5f5f5</color>
+    <color name="channel_color_d6b383">#d6b383</color>
+    <color name="channel_color_fb98aa">#fb98aa</color>
+    <color name="channel_color_ffbc21">#ffbc21</color>
+    <color name="channel_color_ffd439">#ffd439</color>
+    <color name="channel_color_e5aa1e">#e5aa1e</color>
+    <color name="channel_color_f8f8f8">#f8f8f8</color>
+    <color name="channel_color_e5aa3b">#e5aa3b</color>
 
 </resources>

@@ -123,31 +123,31 @@ public class TestSdkActivity extends BaseActivity {
                         });
             }
         }));
-        mDataList.add(new H("跳转到ChannelSdkActivity", new Runnable() {
+        
+        mDataList.add(new H("跳转到ChannelListSdkActivity", new Runnable() {
             @Override
             public void run() {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_CHANNEL_SDK)
-                        .greenChannel()
-                        .navigation(TestSdkActivity.this, new NavigationCallback() {
-                            @Override
-                            public void onFound(Postcard postcard) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_CHANNEL_LIST_SDK).greenChannel().navigation(TestSdkActivity.this, new NavigationCallback() {
+                    @Override
+                    public void onFound(Postcard postcard) {
 
-                            }
+                    }
 
-                            @Override
-                            public void onLost(Postcard postcard) {
-                            }
+                    @Override
+                    public void onLost(Postcard postcard) {
 
-                            @Override
-                            public void onArrival(Postcard postcard) {
+                    }
 
-                            }
+                    @Override
+                    public void onArrival(Postcard postcard) {
 
-                            @Override
-                            public void onInterrupt(Postcard postcard) {
+                    }
 
-                            }
-                        });
+                    @Override
+                    public void onInterrupt(Postcard postcard) {
+
+                    }
+                });
             }
         }));
 

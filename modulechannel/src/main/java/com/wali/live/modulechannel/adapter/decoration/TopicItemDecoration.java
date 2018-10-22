@@ -23,7 +23,7 @@ public class TopicItemDecoration extends BaseItemDecoration {
 
     @Override
     protected int getResColorId() {
-        return R.color.color_e5e5e5;
+        return R.color.channel_color_e5e5e5;
     }
 
     @Override

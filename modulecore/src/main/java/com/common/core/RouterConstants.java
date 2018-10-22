@@ -10,7 +10,6 @@ public interface RouterConstants {
     String ACTIVITY_TEST = "/test/TestSdkActivity";
 
     String ACTIVITY_CHANNEL_SDK = "/channel/ChannelSdkActivity";
-    String SERVICE_CHANNEL = "/channel/service1";
 
     String ACTIVITY_WATCH = "/watch/WatchSdkAcitivity";
 
@@ -26,4 +25,7 @@ public interface RouterConstants {
     String ACTIVITY_LONGTEXT= "LongTextActivity";
     //RechargeActivity
     String ACTIVITY_RECHARGE = "RechargeActivity";
+
+    String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
+    String SERVICE_CHANNEL = "/channel/service1";
 }

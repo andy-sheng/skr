@@ -71,7 +71,7 @@ public class FiveCircleWithStrokeHolder extends FiveCircleHolder {
                         avatarColor = "#" + avatarColor;
                     bindCircleBackgroundIv(mCircleIvs[i], Color.parseColor(avatarColor));
                 } else {
-                    bindCircleBackgroundIv(mCircleIvs[i], itemView.getResources().getColor(R.color.color_d6b383));
+                    bindCircleBackgroundIv(mCircleIvs[i], itemView.getResources().getColor(R.color.channel_color_d6b383));
                 }
 
                 if (!TextUtils.isEmpty(descColor)) {
@@ -79,12 +79,12 @@ public class FiveCircleWithStrokeHolder extends FiveCircleHolder {
                         descColor = "#" + descColor;
                     bindRoundBackgroundIv(mCircleRectangleTvs[i], Color.parseColor(descColor));
                 } else {
-                    bindRoundBackgroundIv(mCircleRectangleTvs[i], itemView.getResources().getColor(R.color.color_fb98aa));
+                    bindRoundBackgroundIv(mCircleRectangleTvs[i], itemView.getResources().getColor(R.color.channel_color_fb98aa));
                 }
             } catch (Exception e) {
                 MyLog.e(TAG, e);
-                bindRoundBackgroundIv(mCircleRectangleTvs[i], itemView.getResources().getColor(R.color.color_fb98aa));
-                bindCircleBackgroundIv(mCircleIvs[i], itemView.getResources().getColor(R.color.color_d6b383));
+                bindRoundBackgroundIv(mCircleRectangleTvs[i], itemView.getResources().getColor(R.color.channel_color_fb98aa));
+                bindCircleBackgroundIv(mCircleIvs[i], itemView.getResources().getColor(R.color.channel_color_d6b383));
             }
         }
     }

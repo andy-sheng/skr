@@ -10,6 +10,7 @@ import com.wali.live.modulechannel.R;
 import com.wali.live.modulechannel.adapter.holder.BannerHolder;
 import com.wali.live.modulechannel.adapter.holder.BannerNoSpaceHolder;
 import com.wali.live.modulechannel.adapter.holder.BaseHolder;
+import com.wali.live.modulechannel.adapter.holder.ChannelPlaceHolder;
 import com.wali.live.modulechannel.adapter.holder.CommunityRankHolder;
 import com.wali.live.modulechannel.adapter.holder.ConcernCardHolder;
 import com.wali.live.modulechannel.adapter.holder.DefaultCardHolder;
@@ -17,10 +18,12 @@ import com.wali.live.modulechannel.adapter.holder.EffectCardHolder;
 import com.wali.live.modulechannel.adapter.holder.FiveCircleHolder;
 import com.wali.live.modulechannel.adapter.holder.FiveCircleWithStrokeHolder;
 import com.wali.live.modulechannel.adapter.holder.GameCardHolder;
+import com.wali.live.modulechannel.adapter.holder.GameLiveSingleHolder;
 import com.wali.live.modulechannel.adapter.holder.JumpImpl;
 import com.wali.live.modulechannel.adapter.holder.LargeCardFloatHeaderHolder;
 import com.wali.live.modulechannel.adapter.holder.LargeCardHeadHolder;
 import com.wali.live.modulechannel.adapter.holder.LargeCardHolder;
+import com.wali.live.modulechannel.adapter.holder.LiveOrLiveGroupHolder;
 import com.wali.live.modulechannel.adapter.holder.LiveOrVideoCollectionHolder;
 import com.wali.live.modulechannel.adapter.holder.MaxFiveCircleHolder;
 import com.wali.live.modulechannel.adapter.holder.NavigateHolder;
@@ -29,6 +32,8 @@ import com.wali.live.modulechannel.adapter.holder.NoticeScrollHolder;
 import com.wali.live.modulechannel.adapter.holder.OneCardHolder;
 import com.wali.live.modulechannel.adapter.holder.OneListHolder;
 import com.wali.live.modulechannel.adapter.holder.OneLiveListHolder;
+import com.wali.live.modulechannel.adapter.holder.OneSquareHolder;
+import com.wali.live.modulechannel.adapter.holder.OneWideCardHolder;
 import com.wali.live.modulechannel.adapter.holder.RecommendCardHolder;
 import com.wali.live.modulechannel.adapter.holder.SixMakeupHolder;
 import com.wali.live.modulechannel.adapter.holder.SplitLineHolder;
@@ -285,26 +290,26 @@ public class ChannelRecyclerAdapter extends EmptyRecyclerAdapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_two_card_item, parent, false);
                 holder = new LiveOrVideoCollectionHolder(view);
                 break;
-//            case ChannelUiType.TYPE_ONE_SQUARE_CARD:
-//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_one_square_item, parent, false);
-//                holder = new OneSquareHolder(view);
-//                break;
-//            case ChannelUiType.TYPE_LIVE_OR_LIVE_GROUP:
-//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_two_card_item, parent, false);
-//                holder = new LiveOrLiveGroupHolder(view);
-//                break;
-//            case ChannelUiType.TYPE_ONE_WIDE_CARD:
-//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_one_wide_item, parent, false);
-//                holder = new OneWideCardHolder(view);
-//                break;
-//            case ChannelUiType.TYPE_GAME_WATCH_SINGLE_LIVE:
-//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_one_game_live_single_item, parent, false);
-//                holder = new GameLiveSingleHolder(view);
-//                break;
-//            case ChannelUiType.TYPE_PLACEHOLDER:
-//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.michannel_place_holder_item, parent, false);
-//                holder = new ChannelPlaceHolder(view);
-//                break;
+            case ChannelUiType.TYPE_ONE_SQUARE_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_one_square_item, parent, false);
+                holder = new OneSquareHolder(view);
+                break;
+            case ChannelUiType.TYPE_LIVE_OR_LIVE_GROUP:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_two_card_item, parent, false);
+                holder = new LiveOrLiveGroupHolder(view);
+                break;
+            case ChannelUiType.TYPE_ONE_WIDE_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_one_wide_item, parent, false);
+                holder = new OneWideCardHolder(view);
+                break;
+            case ChannelUiType.TYPE_GAME_WATCH_SINGLE_LIVE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_one_game_live_single_item, parent, false);
+                holder = new GameLiveSingleHolder(view);
+                break;
+            case ChannelUiType.TYPE_PLACEHOLDER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.channel_place_holder_item, parent, false);
+                holder = new ChannelPlaceHolder(view);
+                break;
             default:
                 MyLog.d(TAG, "viewType is : " + viewType);
                 break;

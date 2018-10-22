@@ -45,8 +45,8 @@ public class HolderUtils {
                         .setIsCircle(isCircle)
                         .setWidth(width).setHeight(height)
                         .setScaleType(scaleType)
-                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
-                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
+                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
+                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
                         .setCallBack(callBack)
                         .build());
     }
@@ -60,11 +60,11 @@ public class HolderUtils {
                         .setIsCircle(isCircle)
                         .setWidth(width).setHeight(height)
                         .setScaleType(scaleType)
-                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
-                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
+                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
+                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
                         .setCornerRadius(mImageCornerRadius)
                         .setBorderWidth(mImageBorderWidth)
-                        .setBorderColor(U.app().getResources().getColor(R.color.color_e5e5e5))
+                        .setBorderColor(U.app().getResources().getColor(R.color.channel_color_e5e5e5))
                         .build());
     }
 
@@ -78,8 +78,8 @@ public class HolderUtils {
                         .setIsCircle(isCircle)
                         .setWidth(width).setHeight(height)
                         .setScaleType(scaleType)
-                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
-                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
+                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
+                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
                         .setCornerRadius(8)
                         .setCallBack(callBack)
                         .build());

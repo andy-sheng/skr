@@ -33,7 +33,7 @@ import static com.wali.live.modulechannel.model.viewmodel.ChannelLiveViewModel.R
  */
 public abstract class RepeatHolder extends FixedHolder {
 
-    protected static final int[] LEFT_LABEL_TEXT_COLOR = {R.color.white, R.color.white, R.color.color_fed533};
+    protected static final int[] LEFT_LABEL_TEXT_COLOR = {R.color.white, R.color.white, R.color.channel_color_fed533};
 
     protected int mLeftLabelImageWidth = U.getDisplayUtils().dip2px(80); //左上角配角标的宽度
     protected int mLeftLabelImageHeight = U.getDisplayUtils().dip2px(40); //左上角配角标的高度

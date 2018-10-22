@@ -39,7 +39,7 @@ import java.util.List;
  * @description 固定样式的item，提供ShowViewModel，UserViewModel，LiveViewModel的抽象绑定方法
  */
 public abstract class FixedHolder extends HeadHolder {
-    public static final int LABEL_HIGHLIGHT_COLOR = R.color.color_ff2966;
+    public static final int LABEL_HIGHLIGHT_COLOR = R.color.channel_color_ff2966;
 
     public static final int IMAGE_CORNER_RADIUS = 8;
     protected static int mImageCornerRadius = IMAGE_CORNER_RADIUS;
@@ -155,8 +155,8 @@ public abstract class FixedHolder extends HeadHolder {
                         .setIsCircle(isCircle)
                         .setWidth(width).setHeight(height)
                         .setScaleType(scaleType)
-                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
-                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
+                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
+                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
                         .setCallBack(callBack)
                         .build());
     }
@@ -172,8 +172,8 @@ public abstract class FixedHolder extends HeadHolder {
                         .setIsCircle(isCircle)
                         .setWidth(width).setHeight(height)
                         .setScaleType(scaleType)
-                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
-                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
+                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
+                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
                         .setCornerRadius(10)
                         .setBorderWidth(mImageBorderWidth)
                         .setCallBack(callBack)
@@ -189,11 +189,11 @@ public abstract class FixedHolder extends HeadHolder {
                         .setIsCircle(isCircle)
                         .setWidth(width).setHeight(height)
                         .setScaleType(scaleType)
-                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
-                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.color_f2f2f2))
+                        .setLoadingDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
+                        .setFailureDrawable(U.app().getResources().getDrawable(R.color.channel_color_f2f2f2))
                         .setCornerRadius(mImageCornerRadius)
                         .setBorderWidth(mImageBorderWidth)
-                        .setBorderColor(U.app().getResources().getColor(R.color.color_e5e5e5))
+                        .setBorderColor(U.app().getResources().getColor(R.color.channel_color_e5e5e5))
                         .build());
     }
 

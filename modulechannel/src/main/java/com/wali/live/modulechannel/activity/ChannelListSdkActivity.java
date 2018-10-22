@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.commonview.EmptyView;
+import com.common.core.login.interceptor.JumpInterceptor;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
@@ -32,7 +33,7 @@ import java.util.List;
  * Created by zhujianning on 18-10-17.
  */
 
-@Route(path = "/channel/ChannelListSdkActivity")
+@Route(path = "/channel/ChannelListSdkActivity", extras = JumpInterceptor.NO_NEED_LOGIN)
 public class ChannelListSdkActivity extends BaseActivity implements IChannelListView {
 
     private SlidingTabLayout mSlidingTabLayout;
@@ -46,9 +47,13 @@ public class ChannelListSdkActivity extends BaseActivity implements IChannelList
     private CommonTitleBar mTitleBar;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.channel_activity_channel_list);
+    public int initView(@Nullable Bundle savedInstanceState) {
+        return R.layout.channel_activity_channel_list;
+    }
+
+    @Override
+    public void initData(@Nullable Bundle savedInstanceState) {
+
         bindViews();
         loadData();
     }
@@ -75,7 +80,7 @@ public class ChannelListSdkActivity extends BaseActivity implements IChannelList
         mEmptyView = findViewById(R.id.empty_view);
 
         mSlidingTabLayout.setCustomTabView(R.layout.channel_slide_tab_view, R.id.tab_tv);
-        mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.color_ff2966));
+        mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.channel_color_ff2966));
         mSlidingTabLayout.setIndicatorWidth(U.getDisplayUtils().dip2px(12));
         mSlidingTabLayout.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(10));
         mSlidingTabLayout.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_TAIL);
@@ -110,15 +115,6 @@ public class ChannelListSdkActivity extends BaseActivity implements IChannelList
 
             }
         });
-    }
-
-    @Override
-    public int initView(@Nullable Bundle savedInstanceState) {
-        return 0;
-    }
-
-    @Override
-    public void initData(@Nullable Bundle savedInstanceState) {
     }
 
     private void loadData() {
