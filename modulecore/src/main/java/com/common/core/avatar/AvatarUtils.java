@@ -51,7 +51,7 @@ public class AvatarUtils {
      */
     public static void loadAvatarByUrl(final SimpleDraweeView draweeView
             , LoadParams params) {
-        String url = getAvatarUrlByCustom(params.uid, params.sizeType, params.timestamp, params.isWebpFormat);
+        String url = !TextUtils.isEmpty(params.url) ? params.url : getAvatarUrlByCustom(params.uid, params.sizeType, params.timestamp, params.isWebpFormat);
         BaseImage avatarImg;
         if (TextUtils.isEmpty(url)) {
             avatarImg = ImageFactory.newResImage(params.loadingAvatarResId).build();
@@ -130,6 +130,7 @@ public class AvatarUtils {
 
     public static class LoadParams {
 
+        String url;
         long uid;
         ImageUtils.SIZE sizeType = ImageUtils.SIZE.SIZE_160;
         long timestamp = 0 ;
@@ -177,6 +178,10 @@ public class AvatarUtils {
 
         public void setHeight(int height) {
             this.height = height;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
         }
 
         public static class Builder {
@@ -227,6 +232,11 @@ public class AvatarUtils {
 
             public Builder setHeight(int height) {
                 mUploadParams.setHeight(height);
+                return this;
+            }
+
+            public Builder setUrl(String url) {
+                mUploadParams.setUrl(url);
                 return this;
             }
 

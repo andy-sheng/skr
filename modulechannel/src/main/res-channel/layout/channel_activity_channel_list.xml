@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlebar="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        titlebar:centerText="ChannelSdkListActivity"
+        titlebar:centerType="textView" />
+
+    <com.common.core.commonview.EmptyView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        app:core_emptyIcon="@drawable/home_empty_icon"
+        app:core_emptyTips="@string/core_empty_tips" />
+
+    <com.common.view.viewpager.SlidingTabLayout
+        android:id="@+id/channel_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dimen_150"
+        android:layout_below="@+id/title_bar"
+        android:overScrollMode="never" />
+
+    <com.common.view.viewpager.NestViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/channel_tab" />
+</RelativeLayout>

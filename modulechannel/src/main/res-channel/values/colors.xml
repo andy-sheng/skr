@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="channel_avatar_outer_bg_top1">#ffca02</color>
+    <color name="channel_avatar_outer_bg_top2">#d2d2dd</color>
+    <color name="channel_avatar_outer_bg_top3">#ebc69b</color>
+    <color name="channel_live_show_seeing_tips_tv_color">#80202020</color>
+    <color name="channel_lvl_txt_color">#FFFFFF</color>
+    <color name="channel_color_split_line">#CBCBCC</color>
+    <color name="channel_color_channel_tag_stroke_bg_1">#efbdbd</color>
+    <color name="channel_color_channel_tag_stroke_bg_2">#B8D079</color>
+    <color name="channel_color_channel_tag_stroke_bg_3">#97DADA</color>
+    <color name="channel_color_channel_primary_text">@color/black_trans_90</color>
+    <color name="channel_color_channel_second_primary_text">@color/black</color>
+    <color name="channel_color_channel_normal_text">@color/black_trans_50</color>
+    <color name="channel_color_depart">#f2f2f2</color>
+
+</resources>

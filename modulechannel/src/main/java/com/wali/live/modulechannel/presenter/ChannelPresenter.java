@@ -100,9 +100,9 @@ public class ChannelPresenter extends RxLifeCyclePresenter implements IChannelPr
 
         mDataStore.getHotChannelObservable(mChannelId)
                 .subscribeOn(Schedulers.io())
-                .map(new io.reactivex.functions.Function<GetRecommendListRsp, List<? extends BaseViewModel>>() {
+                .map(new io.reactivex.functions.Function<GetRecommendListRsp, List<ChannelViewModel>>() {
                     @Override
-                    public List<? extends BaseViewModel> apply(GetRecommendListRsp getRecommendListRsp) throws Exception {
+                    public List<ChannelViewModel> apply(GetRecommendListRsp getRecommendListRsp) throws Exception {
                         if(getRecommendListRsp != null) {
                             return processRsp(getRecommendListRsp);
                         }
@@ -111,17 +111,18 @@ public class ChannelPresenter extends RxLifeCyclePresenter implements IChannelPr
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindUntilEvent(PresenterEvent.DESTROY))
-                .subscribe(new Observer<List<? extends BaseViewModel>>() {
+                .subscribe(new Observer<List<ChannelViewModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mGetDataDisposable = d;
                     }
 
                     @Override
-                    public void onNext(List<? extends BaseViewModel> list) {
+                    public void onNext(List<ChannelViewModel> list) {
                         MyLog.d(TAG, formatLog("getChannelObservable onNext"));
                         if (list != null && list.size() != 0) {
-                            mView.updateView(list);
+                            MyLog.d(TAG, "mChannelId:" + mChannelId + ",list:" + list.toString());
+                            mView.updateView(list, mChannelId);
                         }
                     }
 
@@ -129,6 +130,7 @@ public class ChannelPresenter extends RxLifeCyclePresenter implements IChannelPr
                     public void onError(Throwable e) {
                         MyLog.d(TAG, e);
                         MyLog.d(TAG, formatLog("getChannelObservable onError=" + e.getMessage()));
+                        mView.onDataLoadFail();
                         mView.finishRefresh();
                     }
 
@@ -142,19 +144,32 @@ public class ChannelPresenter extends RxLifeCyclePresenter implements IChannelPr
                 });
     }
 
-    private List<? extends BaseViewModel> processRsp(@NonNull GetRecommendListRsp rsp) {
+    private List<ChannelViewModel> processRsp(@NonNull GetRecommendListRsp rsp) {
         MyLog.d(TAG, formatLog("processRsp"));
         List<ChannelViewModel> models = new ArrayList();
-
+        boolean splitFirst = true;
+        boolean splitDuplicate = false;
         for (ChannelItem protoItem : rsp.getItemsList()) {
             ChannelViewModel viewModel = ChannelModelFactory.getChannelViewModel(protoItem);
-            if (viewModel == null) {
+            if (viewModel == null || viewModel != null && viewModel.isNeedRemove()) {
+                MyLog.i(TAG, "viewModel need remove ");
                 continue;
             }
 
+            viewModel.setChannelId(mChannelId);
+
             int uiType = viewModel.getUiType();
-            if (uiType == ChannelUiType.TYPE_TWO_CARD || uiType == ChannelUiType.TYPE_THREE_CARD) {
-                models.add(viewModel);
+            if (ChannelUiType.ALL_CHANNEL_UI_TYPE.contains(uiType)) {
+                if (viewModel.getUiType() == ChannelUiType.TYPE_SPLIT_LINE) {
+                    if (!splitFirst && !splitDuplicate) {
+                        models.add(viewModel);
+                        splitDuplicate = true;
+                    }
+                } else {
+                    models.add(viewModel);
+                    splitFirst = false;
+                    splitDuplicate = false;
+                }
             }
         }
         return models;

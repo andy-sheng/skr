@@ -33,6 +33,7 @@ android {
         main {
             java.srcDirs += 'src/main/java-gen-db'
             java.srcDirs += 'src/main/java-gen-pb'
+            res.srcDirs += ['src/main/res']
             res.srcDirs += ['src/main/res-login']
         }
     }

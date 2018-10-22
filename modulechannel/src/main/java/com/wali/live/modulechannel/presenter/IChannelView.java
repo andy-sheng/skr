@@ -1,8 +1,6 @@
 package com.wali.live.modulechannel.presenter;
 
-import android.support.annotation.Keep;
-
-import com.wali.live.modulechannel.model.viewmodel.BaseViewModel;
+import com.wali.live.modulechannel.model.viewmodel.ChannelViewModel;
 
 import java.util.List;
 
@@ -12,9 +10,10 @@ import java.util.List;
  * @module 频道
  * @description 频道View的接口，提供刷新，滚动，生命周期的接口
  */
-@Keep
 public interface IChannelView {
-    void updateView(List<? extends BaseViewModel> models);
+    void updateView(List<ChannelViewModel> models, long channelId);
+
+    void onDataLoadFail();
 
     void finishRefresh();
 

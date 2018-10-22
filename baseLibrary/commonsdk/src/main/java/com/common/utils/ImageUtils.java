@@ -10,6 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ImageUtils {
+
+    public static final String IMG_URL_POSTFIX = "@style@"; //img  url 的后缀,如果有后缀,不再去拼接@style
+
     ImageUtils() {
     }
 

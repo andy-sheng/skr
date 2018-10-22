@@ -65,12 +65,12 @@ public class DaoSession extends AbstractDaoSession {
         return myUserInfoDao;
     }
 
-    public UserInfoDao getUserInfoDao() {
-        return userInfoDao;
-    }
 
     public UserAccountDao getUserAccountDao() {
         return userAccountDao;
     }
 
+    public UserInfoDao getUserInfoDao() {
+        return userInfoDao;
+    }
 }

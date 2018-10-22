@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/split_area"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/channel_color_depart"/>
+
+    <View
+        android:layout_marginLeft="@dimen/view_dimen_20"
+        android:layout_marginRight="@dimen/view_dimen_20"
+        android:id="@+id/margin_area"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <include
+        android:id="@+id/title_area"
+        layout="@layout/channel_head_item"
+        android:layout_width="match_parent"
+        android:layout_height="37.33dp"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/array_area"
+        android:layout_marginLeft="@dimen/view_dimen_10"
+        android:layout_marginRight="@dimen/view_dimen_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <include
+            android:id="@+id/single_card_1"
+            layout="@layout/channel_live_group_single_card_item"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <include
+            android:id="@+id/single_card_2"
+            layout="@layout/channel_live_group_single_card_item"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/channel_center_margin_two"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>

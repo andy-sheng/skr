@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <declare-styleable name="EmptyView" tools:ignore="ResourceName">
+        <attr name="core_emptyIcon" format="reference" />
+        <attr name="core_emptyTips" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="CoreTintableImageView">
+        <attr name="core_tintColor" format="reference|color"/>
+    </declare-styleable>
+</resources>
