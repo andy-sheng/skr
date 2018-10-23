@@ -120,7 +120,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
             @Override
             public void onClick(View v) {
                 // 返回结果
-                deliverResult(ImagePicker.RESULT_CODE_ITEMS,Activity.RESULT_OK,null);
+                deliverResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
         });
         mBtnPreview.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +128,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
             public void onClick(View v) {
                 // 跳到预览
                 U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImagePreviewFragment.class)
-                        .setDataBeforeAdd(1,new ArrayList<>(mImagePicker.getSelectedImages()))
+                        .setDataBeforeAdd(1, new ArrayList<>(mImagePicker.getSelectedImages()))
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
@@ -175,7 +175,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
                 U.getPermissionUtils().requestExternalStorage(new PermissionUtil.RequestPermission() {
                     @Override
                     public void onRequestPermissionSuccess() {
-                        mImageDataSource.load(null);
+                        mImageDataSource.load();
                     }
 
                     @Override
@@ -189,10 +189,10 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
                     }
                 }, getActivity());
             } else {
-                mImageDataSource.load(null);
+                mImageDataSource.load();
             }
         } else {
-            mImageDataSource.load(null);
+            mImageDataSource.load();
         }
     }
 
@@ -258,6 +258,9 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
     public void destroy() {
         super.destroy();
         mImagePicker.removeOnImageSelectedListener(this);
+        if (mImageDataSource != null) {
+            mImageDataSource.destroy();
+        }
     }
 
     @Override
