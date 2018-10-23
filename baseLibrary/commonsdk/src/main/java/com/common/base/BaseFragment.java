@@ -105,6 +105,46 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         return mCache;
     }
 
+    /**
+     * 可以在此恢复数据
+     *
+     * @param savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            boolean firstStart = savedInstanceState.getBoolean("firstStart", true);
+            if (!firstStart) {
+                // 需要恢复状态
+                onRestoreInstanceState(savedInstanceState);
+            }
+        }
+    }
+
+    /**
+     * 子类可以覆盖这个方法恢复一些值
+     *
+     * @param savedInstanceState
+     */
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+
+    }
+
+    /**
+     * 当系统认为你的fragment存在被销毁的可能时，onSaveInstanceState 就会被调用
+     * 不包括用户主动退出fragment导致其被销毁，比如按BACK键后fragment被主动销毁
+     *
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null) {
+            outState.putBoolean("firstStart", false);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -285,10 +325,14 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      * 在运行时 想与此Fragment通信，偷懒的话可以用这个方法
      */
     @Override
-    public void setData(int type,@Nullable Object data) {
+    public void setData(int type, @Nullable Object data) {
 
     }
 
+    /**
+     * Fragment A 启动 Fragment B 处理业务后想拿到结果
+     * 会通过 B 的 mFragmentDataListener 返回结果
+     */
     public void setFragmentDataListener(FragmentDataListener fragmentDataListener) {
         mFragmentDataListener = fragmentDataListener;
     }

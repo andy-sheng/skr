@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
  * 使用方法在  mImagePicker.addSelectedImageItem(0, imageItem); 设好参数后
  * 直接跳转
  */
-public class CropImageFragment extends BaseFragment {
+public class ImageCropFragment extends ImageBaseFragment {
     CommonTitleBar mTitleBar;
     TextView mBtnOk;
     CropImageView mCropImageView;
@@ -57,7 +56,7 @@ public class CropImageFragment extends BaseFragment {
         mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                U.getFragmentUtils().popFragment(CropImageFragment.this);
+                U.getFragmentUtils().popFragment(ImageCropFragment.this);
             }
         });
         mBtnOk = (TextView) mTitleBar.getRightCustomView();
@@ -66,9 +65,9 @@ public class CropImageFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 mCropImageView.saveBitmapToFile(mImagePicker.getCropCacheFolder()
-                        , mImagePicker.getOutPutX()
-                        , mImagePicker.getOutPutY()
-                        , mImagePicker.isSaveRectangle());
+                        , mImagePicker.getParams().getOutPutX()
+                        , mImagePicker.getParams().getOutPutY()
+                        , mImagePicker.getParams().isSaveRectangle());
             }
         });
 
@@ -95,9 +94,9 @@ public class CropImageFragment extends BaseFragment {
             }
         });
 
-        mCropImageView.setFocusStyle(mImagePicker.getCropStyle());
-        mCropImageView.setFocusWidth(mImagePicker.getFocusWidth());
-        mCropImageView.setFocusHeight(mImagePicker.getFocusHeight());
+        mCropImageView.setFocusStyle(mImagePicker.getParams().getCropStyle());
+        mCropImageView.setFocusWidth(mImagePicker.getParams().getFocusWidth());
+        mCropImageView.setFocusHeight(mImagePicker.getParams().getFocusHeight());
 
         mImageItems = mImagePicker.getSelectedImages();
         String imagePath = mImageItems.get(0).getPath();

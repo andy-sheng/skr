@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageView;
@@ -31,7 +32,7 @@ import com.imagepicker.view.SuperCheckBox;
 
 import java.util.ArrayList;
 
-public class ImagePreviewFragment extends BaseFragment implements ImagePicker.OnImageSelectedListener {
+public class ImagePreviewFragment extends ImageBaseFragment implements ImagePicker.OnImageSelectedListener {
 
     RelativeLayout mContent;
     NestViewPager mViewpager;
@@ -77,7 +78,7 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
             mCurrentPosition = bundle.getInt(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, 0);
 
         }
-        if(mImageItems==null) {
+        if (mImageItems == null) {
             mImageItems = mImagePicker.getCurrentImageFolderItems();
         }
         mSelectedImages = mImagePicker.getSelectedImages();
@@ -141,7 +142,7 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
             @Override
             public void onClick(View v) {
                 ImageItem imageItem = mImageItems.get(mCurrentPosition);
-                int selectLimit = mImagePicker.getSelectLimit();
+                int selectLimit = mImagePicker.getParams().getSelectLimit();
                 if (mCbCheck.isChecked() && mSelectedImages.size() >= selectLimit) {
                     U.getToastUtil().showToast(getString(R.string.ip_select_limit, selectLimit));
                     mCbCheck.setChecked(false);
@@ -169,6 +170,16 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
         });
         //初始化当前页面的状态
         onImageSelected(0, null, false);
+
+        // 防止在低内存重建时，一些数据都没了，这里直接结束这个fragment
+        if (mImageItems == null || mImageItems.isEmpty()) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    U.getFragmentUtils().popFragment(ImagePreviewFragment.this);
+                }
+            });
+        }
     }
 
     @Override
@@ -231,7 +242,7 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
     public void onImageSelected(int position, ImageItem item, boolean isAdd) {
         int selectedImageSize = mImagePicker.getSelectedImages().size();
         if (selectedImageSize > 0) {
-            mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getSelectLimit()));
+            mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getParams().getSelectLimit()));
         } else {
             mBtnOk.setText(getString(R.string.ip_complete));
         }

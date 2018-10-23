@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -24,7 +25,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.imagepicker.ImageDataSource;
+import com.imagepicker.loader.ImageDataSource;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.adapter.ImageFolderAdapter;
 import com.imagepicker.adapter.ImageRecyclerAdapter;
@@ -36,7 +37,7 @@ import com.imagepicker.view.GridSpacingItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnImageSelectedListener, ImageDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
+public class ImagePickerFragment extends ImageBaseFragment implements ImagePicker.OnImageSelectedListener, ImageDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
 
     public static final String EXTRAS_TAKE_PICKERS = "TAKE";
     public static final String EXTRAS_IMAGES = "IMAGES";
@@ -155,7 +156,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
                 }
             }
         });
-        if (mImagePicker.isMultiMode()) {
+        if (mImagePicker.getParams().isMultiMode()) {
             mBtnOk.setVisibility(View.VISIBLE);
             mBtnPreview.setVisibility(View.VISIBLE);
         } else {
@@ -165,6 +166,11 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
 
         mImageFolderAdapter = new ImageFolderAdapter(getActivity());
         mImageRecyclerAdapter = new ImageRecyclerAdapter(getActivity());
+
+        mImageRecyclerAdapter.setOnImageItemClickListener(this);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(3, U.getDisplayUtils().dip2px(2), false));
+        mRecyclerView.setAdapter(mImageRecyclerAdapter);
 
         onImageSelectedChange(0, null, false);
 
@@ -231,7 +237,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
     public void onImageSelectedChange(int position, ImageItem item, boolean isAdd) {
         int selectedImageSize = mImagePicker.getSelectedImages().size();
         if (selectedImageSize > 0) {
-            mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getSelectLimit()));
+            mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getParams().getSelectLimit()));
             mBtnOk.setEnabled(true);
             mBtnPreview.setEnabled(true);
             mBtnPreview.setText(getResources().getString(R.string.ip_preview_count, selectedImageSize));
@@ -245,7 +251,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
             mBtnPreview.setTextColor(ContextCompat.getColor(getContext(), R.color.ip_text_secondary_inverted));
             mBtnOk.setTextColor(ContextCompat.getColor(getContext(), R.color.ip_text_secondary_inverted));
         }
-        for (int i = mImagePicker.isShowCamera() ? 1 : 0; i < mImageRecyclerAdapter.getItemCount(); i++) {
+        for (int i = mImagePicker.getParams().isShowCamera() ? 1 : 0; i < mImageRecyclerAdapter.getItemCount(); i++) {
             String path = mImageRecyclerAdapter.getItem(i).getPath();
             if (path != null && path.equals(item.getPath())) {
                 mImageRecyclerAdapter.notifyItemChanged(i);
@@ -282,7 +288,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
             mImagePicker.clearSelectedImages();
             mImagePicker.addSelectedImageItem(0, imageItem);
 
-            if (mImagePicker.isCrop()) {
+            if (mImagePicker.getParams().isCrop()) {
                 gotoCrop();
             } else {
                 deliverResult(requestCode, resultCode, data.getExtras());
@@ -293,6 +299,11 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
 
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onImagesLoaded(List<ImageFolder> imageFolders) {
         mImagePicker.setImageFolders(imageFolders);
         if (imageFolders.size() == 0) {
@@ -300,18 +311,14 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
         } else {
             mImageRecyclerAdapter.refreshData(imageFolders.get(0).getImages());
         }
-        mImageRecyclerAdapter.setOnImageItemClickListener(this);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(3, U.getDisplayUtils().dip2px(2), false));
-        mRecyclerView.setAdapter(mImageRecyclerAdapter);
         mImageFolderAdapter.refreshData(imageFolders);
     }
 
     @Override
     public void onImageItemClick(View view, ImageItem imageItem, int position) {
         //根据是否有相机按钮确定位置
-        position = mImagePicker.isShowCamera() ? position - 1 : position;
-        if (mImagePicker.isMultiMode()) {
+        position = mImagePicker.getParams().isShowCamera() ? position - 1 : position;
+        if (mImagePicker.getParams().isMultiMode()) {
             // 多选就去大图浏览界面
             Bundle bundle = new Bundle();
             bundle.putInt(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
@@ -328,7 +335,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
             // 单选，要么跳裁剪，要么跳返回结果
             mImagePicker.clearSelectedImages();
             mImagePicker.addSelectedImageItem(position, mImagePicker.getCurrentImageFolderItems().get(position));
-            if (mImagePicker.isCrop()) {
+            if (mImagePicker.getParams().isCrop()) {
                 gotoCrop();
             } else {
                 deliverResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
@@ -340,7 +347,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
      * 跳转到裁剪页面
      */
     private void gotoCrop() {
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), CropImageFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImageCropFragment.class)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {

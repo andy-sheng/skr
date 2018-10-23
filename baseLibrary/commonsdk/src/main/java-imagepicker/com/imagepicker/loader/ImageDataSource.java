@@ -1,4 +1,4 @@
-package com.imagepicker;
+package com.imagepicker.loader;
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import com.common.base.BaseFragment;
 import com.common.base.R;
 import com.common.utils.U;
+import com.imagepicker.ImagePicker;
 import com.imagepicker.model.ImageFolder;
 import com.imagepicker.model.ImageItem;
 import com.trello.rxlifecycle2.android.FragmentEvent;

@@ -34,6 +34,7 @@ import com.example.drawer.DrawerFragment;
 import com.example.paginate.PaginateFragment;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
+import com.imagepicker.view.CropImageView;
 import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.R;
 
@@ -123,7 +124,7 @@ public class TestSdkActivity extends BaseActivity {
                         });
             }
         }));
-        
+
         mDataList.add(new H("跳转到ChannelListSdkActivity", new Runnable() {
             @Override
             public void run() {
@@ -316,15 +317,19 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 Bundle bundle = new Bundle();
-//                bundle.putBoolean(ImagePickerFragment.EXTRAS_TAKE_PICKERS,true);
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder( TestSdkActivity.this, ImagePickerFragment.class)
+                ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
+                        .setSelectLimit(8)
+                        .setCropStyle(CropImageView.Style.CIRCLE)
+                        .build()
+                );
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePickerFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .setBundle(bundle)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
-                                U.getToastUtil().showToast("拿到数据 size:"+ImagePicker.getInstance().getSelectedImages().size());
+                                U.getToastUtil().showToast("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
                             }
                         })
                         .build());

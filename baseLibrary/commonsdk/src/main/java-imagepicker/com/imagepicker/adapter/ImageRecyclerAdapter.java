@@ -64,7 +64,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         mImageSize = (screenWidth - columnSpace * (cols - 1)) / cols;
 
         mImagePicker = ImagePicker.getInstance();
-        isShowCamera = mImagePicker.isShowCamera();
+        isShowCamera = mImagePicker.getParams().isShowCamera();
         mSelectedImages = mImagePicker.getSelectedImages();
         mInflater = LayoutInflater.from(activity);
     }
@@ -158,7 +158,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     cbCheck.setChecked(!cbCheck.isChecked());
-                    int selectLimit = mImagePicker.getSelectLimit();
+                    int selectLimit = mImagePicker.getParams().getSelectLimit();
                     if (cbCheck.isChecked() && mSelectedImages.size() >= selectLimit) {
                         Toast.makeText(mActivity.getApplicationContext(), mActivity.getString(R.string.ip_select_limit, selectLimit), Toast.LENGTH_SHORT).show();
                         cbCheck.setChecked(false);
@@ -181,7 +181,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
             this.imageItem = getItem(position);
 
             //根据是否多选，显示或隐藏checkbox
-            if (mImagePicker.isMultiMode()) {
+            if (mImagePicker.getParams().isMultiMode()) {
                 cbCheck.setVisibility(View.VISIBLE);
                 boolean checked = mSelectedImages.contains(imageItem);
                 if (checked) {
