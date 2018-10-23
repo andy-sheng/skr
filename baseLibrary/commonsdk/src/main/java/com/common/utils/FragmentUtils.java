@@ -135,6 +135,9 @@ public class FragmentUtils {
             return null;
         }
         fragment.setFragmentDataListener(params.fragmentDataListener);
+        if(params.dataBeforeAdd!=null){
+            fragment.setData(params.dataType,params.dataBeforeAdd);
+        }
         if (params.bundle != null) {
             fragment.setArguments(params.bundle);
         }
@@ -214,6 +217,13 @@ public class FragmentUtils {
         int exitAnim = R.anim.slide_right_out;
         FragmentActivity fragmentActivity;
         FragmentDataListener fragmentDataListener;
+        /**
+         * 允许在Fragment 被add之前，给fragment 设置一些值。会调用 setData 方法。
+         * 虽然大部分值可以通过bundle传递，但有些值不适合bundle传递，比如一些很长的list
+         * 一个很特别的回到等等。
+         */
+        Object dataBeforeAdd;
+        int dataType; // 数据类型标识
 
         /**
          * 默认根据类名确定唯一性
@@ -264,6 +274,11 @@ public class FragmentUtils {
 
         public void setFragmentDataListener(FragmentDataListener l) {
             this.fragmentDataListener = l;
+        }
+
+        public void setDataBeforeAdd(int dataType,Object dataBeforeAdd) {
+            this.dataType = dataType;
+            this.dataBeforeAdd = dataBeforeAdd;
         }
 
         public static class Builder {
@@ -324,6 +339,11 @@ public class FragmentUtils {
 
             public Builder setFragmentDataListener(FragmentDataListener l) {
                 mParams.setFragmentDataListener(l);
+                return this;
+            }
+
+            public Builder setDataBeforeAdd(int dataType,Object dataBeforeAdd) {
+                mParams.setDataBeforeAdd(dataType,dataBeforeAdd);
                 return this;
             }
 

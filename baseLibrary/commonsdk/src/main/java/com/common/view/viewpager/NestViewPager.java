@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.log.MyLog;
+
 /**
  * Created by vera on 2018/5/28.
  * <p>
@@ -17,6 +19,8 @@ import android.view.ViewGroup;
  */
 
 public class NestViewPager extends ViewPager {
+    public final static String TAG = "NestViewPager";
+
     private boolean mCanScroll = true;
 
     public NestViewPager(@NonNull Context context) {
@@ -72,7 +76,12 @@ public class NestViewPager extends ViewPager {
         if (!mCanScroll) {
             return false;
         }
-        return super.onInterceptTouchEvent(ev);
+        try {
+            return super.onInterceptTouchEvent(ev);
+        }catch (Exception e){
+            MyLog.e(TAG,e);
+            return false;
+        }
     }
 
     @Override

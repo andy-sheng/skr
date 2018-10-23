@@ -15,6 +15,9 @@
  */
 package com.common.utils;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -138,6 +141,26 @@ public class DeviceUtils {
      */
     public boolean existSDCard() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+
+    /**
+     * 检测这部手机上某个app是否已经安装
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public boolean isAppInstalled(Context context, String packageName) {
+        if (packageName == null || "".equals(packageName)) {
+            return false;
+        }
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+        }
+        return packageInfo != null;
     }
 }
 

@@ -30,8 +30,10 @@ public class ImagePicker {
     public static final int REQUEST_CODE_CROP = 1002; // 裁剪
     public static final int RESULT_CODE_ITEMS = 1004;
 
-    public static final String EXTRA_RESULT_ITEMS = "extra_result_items";
-    public static final String EXTRA_IMAGE_ITEMS = "extra_image_items";
+    //    public static final String EXTRA_RESULT_ITEMS = "extra_result_items";
+//    public static final String EXTRA_IMAGE_ITEMS = "extra_image_items";
+    public static final String EXTRA_SELECTED_IMAGE_POSITION = "selected_image_position";
+//    public static final String EXTRA_FROM_ITEMS = "extra_from_items";
 
     private ImageLoader imageLoader;     //图片加载器
     private File takeImageFile; // 拍照保存路径
@@ -47,7 +49,8 @@ public class ImagePicker {
     private boolean isSaveRectangle = true;  //裁剪后的图片是否是矩形，否者跟随裁剪框的形状
     private CropImageView.Style cropStyle = CropImageView.Style.RECTANGLE; //裁剪框的形状
 
-    private List<ImageFolder> mImageFolders = new ArrayList<>();      //所有的图片文件夹
+    private boolean mIsOrigin = false; // 是否需要原图标记
+    private ArrayList<ImageFolder> mImageFolders = new ArrayList<>();      //所有的图片文件夹
     private ArrayList<ImageItem> mSelectedImages = new ArrayList<>();   //选中的图片集合
     private List<OnImageSelectedListener> mImageSelectedListeners = new ArrayList<>();          // 图片选中的监听回调
     private int mCurrentImageFolderPosition = 0;  //当前选中的文件夹位置 0表示所有图片
@@ -60,7 +63,7 @@ public class ImagePicker {
         imageLoader = new ImageLoader() {
             @Override
             public void displayImage(Activity activity, String path, BaseImageView imageView, int width, int height) {
-                FrescoWorker.loadImage(imageView,ImageFactory.newLocalImage(path)
+                FrescoWorker.loadImage(imageView, ImageFactory.newLocalImage(path)
                         .setWidth(width)
                         .setHeight(height)
                         .build());
@@ -68,7 +71,7 @@ public class ImagePicker {
 
             @Override
             public void displayImagePreview(Activity activity, String path, BaseImageView imageView, int width, int height) {
-                FrescoWorker.loadImage(imageView,ImageFactory.newLocalImage(path)
+                FrescoWorker.loadImage(imageView, ImageFactory.newLocalImage(path)
                         .setWidth(width)
                         .setHeight(height)
                         .build());
@@ -89,11 +92,8 @@ public class ImagePicker {
         return imageLoader;
     }
 
-    public void setSelectedImages(ArrayList<ImageItem> images) {
-        if (images != null) {
-            mSelectedImages.clear();
-            mSelectedImages.addAll(images);
-        }
+    public void setCurrentImageFolderPosition(int position) {
+        mCurrentImageFolderPosition = position;
     }
 
     public void setImageFolders(List<ImageFolder> imageFolders) {
@@ -158,7 +158,22 @@ public class ImagePicker {
         return selectLimit;
     }
 
+    public boolean isOrigin() {
+        return mIsOrigin;
+    }
+
+    public void setOrigin(boolean isOrigin) {
+        mIsOrigin = isOrigin;
+    }
+
+    public ArrayList<ImageFolder> getImageFolders() {
+        return mImageFolders;
+    }
+
     public ArrayList<ImageItem> getCurrentImageFolderItems() {
+        /**
+         * 内存回收时 这里会空指针
+         */
         return mImageFolders.get(mCurrentImageFolderPosition).getImages();
     }
 

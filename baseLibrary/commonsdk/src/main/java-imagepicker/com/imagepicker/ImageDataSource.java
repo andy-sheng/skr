@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 
 import com.common.base.BaseFragment;
 import com.common.base.R;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.imagepicker.model.ImageFolder;
 import com.imagepicker.model.ImageItem;
@@ -29,6 +30,8 @@ import java.util.List;
  */
 public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public final static String TAG = "ImageDataSource";
+
     public static final int LOADER_ALL = 0;         //加载所有图片
     public static final int LOADER_CATEGORY = 1;    //分类加载图片
     private final String[] IMAGE_PROJECTION = {     //查询图片需要的数据列
@@ -43,7 +46,7 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
     private BaseFragment mFragment;
     private OnImagesLoadedListener loadedListener;                     //图片加载完成的回调接口
     private ArrayList<ImageFolder> imageFolders = new ArrayList<>();   //所有的图片文件夹
-
+    int mLoaderId;
     /**
      * @param fragment       用于初始化LoaderManager，需要兼容到2.3
      * @param loadedListener 图片加载完成的监听
@@ -59,10 +62,14 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
     public void load(String path){
 
         LoaderManager loaderManager = mFragment.getLoaderManager();
+//        LoaderManager loaderManager = mFragment.getActivity().getSupportLoaderManager();
+
         if (path == null) {
+            mLoaderId = LOADER_ALL;
             loaderManager.initLoader(LOADER_ALL, null, this);//加载所有的图片
         } else {
             //加载指定目录的图片
+            mLoaderId = LOADER_CATEGORY;
             Bundle bundle = new Bundle();
             bundle.putString("path", path);
             loaderManager.initLoader(LOADER_CATEGORY, bundle, this);
@@ -71,6 +78,7 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        MyLog.d(TAG,"onCreateLoader" + " id=" + id + " args=" + args);
         CursorLoader cursorLoader = null;
         //扫描所有图片
         if (id == LOADER_ALL) {
@@ -86,6 +94,7 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        MyLog.d(TAG,"onLoadFinished" + " loader=" + loader + " data=" + data);
         imageFolders.clear();
         if (data != null) {
             ArrayList<ImageItem> allImages = new ArrayList<>();   //所有图片的集合,不分文件夹
@@ -146,11 +155,12 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
         //回调接口，通知图片数据准备完成
         ImagePicker.getInstance().setImageFolders(imageFolders);
         loadedListener.onImagesLoaded(imageFolders);
+        mFragment.getLoaderManager().destroyLoader(mLoaderId);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        System.out.println("--------");
+        MyLog.d(TAG,"onLoaderReset" + " loader=" + loader);
     }
 
     /**

@@ -10,7 +10,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +32,7 @@ import com.imagepicker.adapter.ImageFolderAdapter;
 import com.imagepicker.adapter.ImageRecyclerAdapter;
 import com.imagepicker.model.ImageFolder;
 import com.imagepicker.model.ImageItem;
+import com.imagepicker.view.FolderPopUpWindow;
 import com.imagepicker.view.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
@@ -45,17 +48,19 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
 
     LinearLayout mContent;
     RecyclerView mRecyclerView;
-    RelativeLayout mFooterBar;
-    RelativeLayout mLlDir;
-    TextView mTvDir;
-    TextView mBtnPreview;
-    ImageView mBtnBack;
-    TextView mTvDes;
-    Button mBtnOk;
+    RelativeLayout mFooterBar; //底部栏
+    RelativeLayout mLlDir; //目录按钮
+    TextView mTvDir; //
+    TextView mBtnPreview; // 预览按钮
+    ImageView mBtnBack; //返回按钮
+    TextView mTvDes; //
+    Button mBtnOk; //确定按钮
     AppCompatImageView mBtnDel;
 
-    ImageFolderAdapter mImageFolderAdapter;
-    ImageRecyclerAdapter mImageRecyclerAdapter;
+    FolderPopUpWindow mFolderPopupWindow;  //ImageSet的PopupWindow
+
+    ImageFolderAdapter mImageFolderAdapter; //图片文件夹的适配器
+    ImageRecyclerAdapter mImageRecyclerAdapter; //图片适配器
 
     ImageDataSource mImageDataSource;
 
@@ -107,24 +112,53 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
             }
             // 进选择器前已经选择的 image
             ArrayList<ImageItem> images = data.getParcelableArrayList(EXTRAS_IMAGES);
-            mImagePicker.setSelectedImages(images);
+            if (images != null) {
+                mImagePicker.getSelectedImages().addAll(images);
+            }
         }
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                U.getFragmentUtils().popFragment(ImagePickerFragment.this);
+            }
+        });
         mBtnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // 返回结果
+                deliverResult(ImagePicker.RESULT_CODE_ITEMS,Activity.RESULT_OK,null);
             }
         });
         mBtnPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // 跳到预览
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImagePreviewFragment.class)
+                        .setDataBeforeAdd(1,new ArrayList<>(mImagePicker.getSelectedImages()))
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                                deliverResult(requestCode, resultCode, bundle);
+                            }
+                        })
+                        .build());
             }
         });
         mLlDir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //点击文件夹按钮
+                createPopupFolderList();
+                mImageFolderAdapter.refreshData(mImagePicker.getImageFolders());  //刷新数据
+                if (mFolderPopupWindow.isShowing()) {
+                    mFolderPopupWindow.dismiss();
+                } else {
+                    mFolderPopupWindow.showAtLocation(mFooterBar, Gravity.NO_GRAVITY, 0, 0);
+                    //默认选择当前选择的上一个，当目录很多时，直接定位到已选中的条目
+                    int index = mImageFolderAdapter.getSelectIndex();
+                    index = index == 0 ? index : index - 1;
+                    mFolderPopupWindow.setSelection(index);
+                }
             }
         });
         if (mImagePicker.isMultiMode()) {
@@ -168,6 +202,28 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
         }
     }
 
+    /**
+     * 创建弹出的ListView
+     */
+    private void createPopupFolderList() {
+        mFolderPopupWindow = new FolderPopUpWindow(getContext(), mImageFolderAdapter);
+        mFolderPopupWindow.setOnItemClickListener(new FolderPopUpWindow.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                mImageFolderAdapter.setSelectIndex(position);
+                mImagePicker.setCurrentImageFolderPosition(position);
+                mFolderPopupWindow.dismiss();
+                ImageFolder imageFolder = (ImageFolder) adapterView.getAdapter().getItem(position);
+                if (null != imageFolder) {
+//                    mImageGridAdapter.refreshData(imageFolder.images);
+                    mImageRecyclerAdapter.refreshData(imageFolder.getImages());
+                    mTvDir.setText(imageFolder.getName());
+                }
+            }
+        });
+        mFolderPopupWindow.setMargin(mFooterBar.getHeight());
+    }
+
     @Override
     public void onImageSelectedAdd(int position, ImageItem item) {
         onImageSelectedChange(position, item, true);
@@ -205,6 +261,12 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
     }
 
     @Override
+    public void destroy() {
+        super.destroy();
+        mImagePicker.removeOnImageSelectedListener(this);
+    }
+
+    @Override
     public boolean useEventBus() {
         return false;
     }
@@ -213,6 +275,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
     public boolean onActivityResultReal(int requestCode, int resultCode, Intent data) {
         MyLog.d(TAG, "onActivityResult" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         if (resultCode == FragmentActivity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_TAKE) {
+            // 拍照结果返回
             U.getImageUtils().notifyGalleryChangeByBroadcast(mImagePicker.getTakeImageFile());
             String path = mImagePicker.getTakeImageFile().getAbsolutePath();
 
@@ -225,10 +288,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
             if (mImagePicker.isCrop()) {
                 gotoCrop();
             } else {
-                Intent intent = new Intent();
-                intent.putExtra(ImagePicker.EXTRA_RESULT_ITEMS, mImagePicker.getSelectedImages());
-//                setResult(ImagePicker.RESULT_CODE_ITEMS, intent);   //单选不需要裁剪，返回数据
-//                finish();
+                deliverResult(requestCode, resultCode, data.getExtras());
             }
         }
         return false;
@@ -256,24 +316,17 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
         position = mImagePicker.isShowCamera() ? position - 1 : position;
         if (mImagePicker.isMultiMode()) {
             // 多选就去大图浏览界面
-
-
-//            Intent intent = new Intent(ImageGridActivity.this, ImagePreviewActivity.class);
-//            intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
-//
-//            /**
-//             * 2017-03-20
-//             *
-//             * 依然采用弱引用进行解决，采用单例加锁方式处理
-//             */
-//
-//            // 据说这样会导致大量图片的时候崩溃
-////            intent.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, imagePicker.getCurrentImageFolderItems());
-//
-//            // 但采用弱引用会导致预览弱引用直接返回空指针
-//            DataHolder.getInstance().save(DataHolder.DH_CURRENT_IMAGE_FOLDER_ITEMS, imagePicker.getCurrentImageFolderItems());
-//            intent.putExtra(ImagePreviewActivity.ISORIGIN, isOrigin);
-//            startActivityForResult(intent, ImagePicker.REQUEST_CODE_PREVIEW);  //如果是多选，点击图片进入预览界面
+            Bundle bundle = new Bundle();
+            bundle.putInt(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
+            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImagePreviewFragment.class)
+                    .setFragmentDataListener(new FragmentDataListener() {
+                        @Override
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                            deliverResult(requestCode, resultCode, bundle);
+                        }
+                    })
+                    .setBundle(bundle)
+                    .build());
         } else {
             // 单选，要么跳裁剪，要么跳返回结果
             mImagePicker.clearSelectedImages();
@@ -281,29 +334,34 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
             if (mImagePicker.isCrop()) {
                 gotoCrop();
             } else {
-                if (mFragmentDataListener != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS, mImagePicker.getSelectedImages());
-                    mFragmentDataListener.onFragmentResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, bundle);
-                }
-                U.getFragmentUtils().popFragment(ImagePickerFragment.this);
+                deliverResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
         }
     }
 
-    void gotoCrop() {
+    /**
+     * 跳转到裁剪页面
+     */
+    private void gotoCrop() {
         U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), CropImageFragment.class)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
-                        //裁剪完成,直接返回数据，数据存在 mImagePicker 中
-                        if (mFragmentDataListener != null) {
-                            // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-                            mFragmentDataListener.onFragmentResult(requestCode, requestCode, bundle);
-                        }
-                        U.getFragmentUtils().popFragment(ImagePickerFragment.this);
+                        deliverResult(requestCode, resultCode, bundle);
                     }
                 })
                 .build());
+    }
+
+    /**
+     * 交付选择结果,返回结果给调用方式
+     */
+    private void deliverResult(int requestCode, int resultCode, Bundle bundle) {
+        //裁剪完成,直接返回数据，数据存在 mImagePicker 中
+        if (mFragmentDataListener != null) {
+            // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
+            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle);
+        }
+        U.getFragmentUtils().popFragment(ImagePickerFragment.this);
     }
 }

@@ -247,6 +247,7 @@ public class FrescoWorker {
                 });
 
         DraweeController draweeController = builder.build();
+        draweeController.setHierarchy(draweeView.getHierarchy());
         draweeView.setController(draweeController);
     }
 

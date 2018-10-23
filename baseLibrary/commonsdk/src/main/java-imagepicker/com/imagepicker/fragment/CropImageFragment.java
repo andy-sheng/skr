@@ -88,28 +88,7 @@ public class CropImageFragment extends BaseFragment {
                 /**
                  * 数据从这里返回
                  */
-                if (mFragmentDataListener != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS, mImageItems);
-                    mFragmentDataListener.onFragmentResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, bundle);
-
-                    U.getFragmentUtils().popFragment(CropImageFragment.this);
-                }
-// 其余的返回方式没必要支持
-// else{
-//                    // 如果没有设置回调
-//                    Intent intent = new Intent();
-//                    intent.putExtra(ImagePicker.EXTRA_RESULT_ITEMS, mImageItems);
-//                    if(getTargetFragment()!=null){
-//                        getTargetFragment().onActivityResult(ImagePicker.RESULT_CODE_ITEMS,Activity.RESULT_OK,intent);
-//                        U.getFragmentUtils().popFragment(CropImageFragment.this);
-//                    }else{
-//                        if(getActivity()!=null){
-//                            getActivity().setResult(ImagePicker.RESULT_CODE_ITEMS, intent);   //单选不需要裁剪，返回数据
-//                            getActivity().finish();
-//                        }
-//                    }
-//                }
+                deliverResult(ImagePicker.RESULT_CODE_ITEMS,Activity.RESULT_OK,null);
             }
 
             @Override
@@ -170,4 +149,15 @@ public class CropImageFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 交付选择结果,返回结果给调用方式
+     */
+    private void deliverResult(int requestCode, int resultCode, Bundle bundle) {
+        //裁剪完成,直接返回数据，数据存在 mImagePicker 中
+        if (mFragmentDataListener != null) {
+            // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
+            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle);
+        }
+        U.getFragmentUtils().popFragment(this);
+    }
 }

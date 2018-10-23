@@ -285,7 +285,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      * 在运行时 想与此Fragment通信，偷懒的话可以用这个方法
      */
     @Override
-    public void setData(@Nullable Object data) {
+    public void setData(int type,@Nullable Object data) {
 
     }
 
