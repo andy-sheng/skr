@@ -387,7 +387,10 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             if (viewCustomLeft.getId() == View.NO_ID) {
                 viewCustomLeft.setId(generateViewId());
             }
-            rlMain.addView(viewCustomLeft, leftInnerParams);
+            LayoutParams lp = (LayoutParams) viewCustomLeft.getLayoutParams();
+            lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            lp.addRule(RelativeLayout.CENTER_VERTICAL);
+            rlMain.addView(viewCustomLeft, lp);
         }
     }
 
@@ -426,12 +429,15 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             rlMain.addView(btnRight, rightInnerParams);
 
         } else if (rightType == TYPE_RIGHT_CUSTOM_VIEW) {
-            // 初始化自定义view
+            // 初始化自定义view 修改下把自定义布局的属性加上
             viewCustomRight = LayoutInflater.from(context).inflate(rightCustomViewRes, rlMain, false);
             if (viewCustomRight.getId() == View.NO_ID) {
                 viewCustomRight.setId(generateViewId());
             }
-            rlMain.addView(viewCustomRight, rightInnerParams);
+            LayoutParams lp = (LayoutParams) viewCustomRight.getLayoutParams();
+            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            lp.addRule(RelativeLayout.CENTER_VERTICAL);
+            rlMain.addView(viewCustomRight, lp);
         }
     }
 

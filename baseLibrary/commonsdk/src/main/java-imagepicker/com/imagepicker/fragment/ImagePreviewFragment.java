@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.common.base.BaseFragment;
 import com.common.base.R;
 import com.common.utils.U;
+import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.adapter.ImagePageAdapter;
@@ -38,12 +39,10 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
     SuperCheckBox mCbOrigin;
     SuperCheckBox mCbCheck;
     View mMarginBottom;
-    View mTopBar;
-    ImageView mBtnBack;
-    TextView mTvDes;
-    Button mBtnOk;
-    AppCompatImageView mBtnDel;
 
+    CommonTitleBar mTitleBar;
+    TextView mBtnOk;
+    TextView mTvDes;
 
     ImagePicker mImagePicker;
 
@@ -66,11 +65,10 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
         mCbOrigin = (SuperCheckBox) mRootView.findViewById(R.id.cb_origin);
         mCbCheck = (SuperCheckBox) mRootView.findViewById(R.id.cb_check);
         mMarginBottom = (View) mRootView.findViewById(R.id.margin_bottom);
-        mTopBar = mRootView.findViewById(R.id.top_bar);
-        mBtnBack = (ImageView) mRootView.findViewById(R.id.btn_back);
-        mTvDes = (TextView) mRootView.findViewById(R.id.tv_des);
-        mBtnOk = (Button) mRootView.findViewById(R.id.btn_ok);
-        mBtnDel = (AppCompatImageView) mRootView.findViewById(R.id.btn_del);
+
+        mTitleBar = mRootView.findViewById(R.id.titlebar);
+        mBtnOk = (TextView) mTitleBar.getRightCustomView();
+        mTvDes = mTitleBar.getCenterTextView();
 
         mImagePicker = ImagePicker.getInstance();
 
@@ -83,12 +81,6 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
             mImageItems = mImagePicker.getCurrentImageFolderItems();
         }
         mSelectedImages = mImagePicker.getSelectedImages();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mTopBar.getLayoutParams();
-            params.topMargin = U.getStatusBarUtil().getStatusBarHeight(getContext());
-            mTopBar.setLayoutParams(params);
-        }
 
         mBtnOk.setVisibility(View.VISIBLE);
         mBtnOk.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +95,7 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
                 deliverResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
         });
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
+        mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -189,16 +181,16 @@ public class ImagePreviewFragment extends BaseFragment implements ImagePicker.On
      * 单击时，隐藏头和尾
      */
     public void onImageSingleTap() {
-        if (mTopBar.getVisibility() == View.VISIBLE) {
-            mTopBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.top_out));
+        if (mTitleBar.getVisibility() == View.VISIBLE) {
+            mTitleBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.top_out));
             mBottomBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_out));
-            mTopBar.setVisibility(View.GONE);
+            mTitleBar.setVisibility(View.GONE);
             mBottomBar.setVisibility(View.GONE);
             U.getStatusBarUtil().setColorBar(getActivity(), Color.TRANSPARENT);
         } else {
-            mTopBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.top_in));
+            mTitleBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.top_in));
             mBottomBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
-            mTopBar.setVisibility(View.VISIBLE);
+            mTitleBar.setVisibility(View.VISIBLE);
             mBottomBar.setVisibility(View.VISIBLE);
             U.getStatusBarUtil().setColorBar(getActivity(), U.app().getResources().getColor(R.color.ip_color_primary_dark));
         }

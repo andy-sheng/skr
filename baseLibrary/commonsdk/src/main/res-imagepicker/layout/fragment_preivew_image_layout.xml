@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content"
     android:layout_width="match_parent"
@@ -11,9 +12,20 @@
         android:layout_height="match_parent"
         android:background="#000" />
 
-    <include
-        android:id="@+id/top_bar"
-        layout="@layout/include_top_bar" />
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        titlebar:centerTextColor="@color/white"
+        titlebar:centerTextSize="@dimen/view_dimen_50"
+        titlebar:centerType="textView"
+        titlebar:fillStatusBar="true"
+        titlebar:leftImageResource="@drawable/ic_arrow_back"
+        titlebar:leftType="imageButton"
+        titlebar:rightCustomView="@layout/picker_okbtn_layout"
+        titlebar:rightType="customView"
+        titlebar:statusBarColor="@color/primary"
+        titlebar:titleBarColor="@color/primary" />
 
     <LinearLayout
         android:id="@+id/bottom_bar"

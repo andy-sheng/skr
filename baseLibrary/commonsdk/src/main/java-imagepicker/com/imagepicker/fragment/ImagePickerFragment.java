@@ -7,14 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +23,7 @@ import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.PermissionUtil;
 import com.common.utils.U;
+import com.common.view.titlebar.CommonTitleBar;
 import com.imagepicker.ImageDataSource;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.adapter.ImageFolderAdapter;
@@ -52,10 +50,8 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
     RelativeLayout mLlDir; //目录按钮
     TextView mTvDir; //
     TextView mBtnPreview; // 预览按钮
-    ImageView mBtnBack; //返回按钮
-    TextView mTvDes; //
-    Button mBtnOk; //确定按钮
-    AppCompatImageView mBtnDel;
+    CommonTitleBar mTitlebar;
+    TextView mBtnOk;
 
     FolderPopUpWindow mFolderPopupWindow;  //ImageSet的PopupWindow
 
@@ -80,10 +76,8 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
         mLlDir = (RelativeLayout) mRootView.findViewById(R.id.ll_dir);
         mTvDir = (TextView) mRootView.findViewById(R.id.tv_dir);
         mBtnPreview = (TextView) mRootView.findViewById(R.id.btn_preview);
-        mBtnBack = (ImageView) mRootView.findViewById(R.id.btn_back);
-        mTvDes = (TextView) mRootView.findViewById(R.id.tv_des);
-        mBtnOk = (Button) mRootView.findViewById(R.id.btn_ok);
-        mBtnDel = (AppCompatImageView) mRootView.findViewById(R.id.btn_del);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mBtnOk = (TextView) mTitlebar.getRightCustomView();
 
         Bundle data = getArguments();
         if (data != null) {
@@ -116,7 +110,7 @@ public class ImagePickerFragment extends BaseFragment implements ImagePicker.OnI
                 mImagePicker.getSelectedImages().addAll(images);
             }
         }
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
+        mTitlebar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 U.getFragmentUtils().popFragment(ImagePickerFragment.this);

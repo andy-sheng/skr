@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.common.base.BaseFragment;
 import com.common.base.R;
 import com.common.utils.U;
+import com.common.view.titlebar.CommonTitleBar;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
@@ -25,9 +26,8 @@ import java.util.ArrayList;
  * 直接跳转
  */
 public class CropImageFragment extends BaseFragment {
-    View mBtnBack;
-    Button mBtnOk;
-    TextView mTvDes;
+    CommonTitleBar mTitleBar;
+    TextView mBtnOk;
     CropImageView mCropImageView;
     Bitmap mBitmap;
 
@@ -53,14 +53,14 @@ public class CropImageFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mImagePicker = ImagePicker.getInstance();
-        mBtnBack = mRootView.findViewById(R.id.btn_back);
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
+        mTitleBar = mRootView.findViewById(R.id.titlebar);
+        mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 U.getFragmentUtils().popFragment(CropImageFragment.this);
             }
         });
-        mBtnOk = mRootView.findViewById(R.id.btn_ok);
+        mBtnOk = (TextView) mTitleBar.getRightCustomView();
         mBtnOk.setText("完成");
         mBtnOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +72,6 @@ public class CropImageFragment extends BaseFragment {
             }
         });
 
-        mTvDes = (TextView) mRootView.findViewById(R.id.tv_des);
-        mTvDes.setText("图片裁剪");
 
         mCropImageView = mRootView.findViewById(R.id.cv_crop_image);
         mCropImageView.setOnBitmapSaveCompleteListener(new CropImageView.OnBitmapSaveCompleteListener() {
