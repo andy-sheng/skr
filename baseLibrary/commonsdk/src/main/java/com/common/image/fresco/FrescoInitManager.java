@@ -102,7 +102,9 @@ public class FrescoInitManager {
         okHttpClient.setConnectTimeout(15 * 1000, TimeUnit.MILLISECONDS);
 
         ImagePipelineConfig.Builder imagePipelineConfig = ImagePipelineConfig.newBuilder(context)
-                .setNetworkFetcher(new CustomOkHttpNetworkFetcher(okHttpClient))
+                //测试test时发现，自己实现成功率还没系统实现的成功率高，
+                // 什么域名预解析没什么用，可能对外部的图片地址没什么用
+//                .setNetworkFetcher(new CustomOkHttpNetworkFetcher(okHttpClient))
                 .setMainDiskCacheConfig(diskCacheConfig)
                 .setSmallImageDiskCacheConfig(smallDiskCacheConfig)
                 .setMemoryTrimmableRegistry(memoryTrimmableRegistry)
