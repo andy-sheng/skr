@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.facebook.imagepipeline.backends.okhttp.OkHttpNetworkFetcher;
 import com.facebook.imagepipeline.common.BytesRange;
 import com.facebook.imagepipeline.image.EncodedImage;
@@ -77,9 +78,10 @@ public class CustomOkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetwork
         }
         MyLog.d(TAG, "ThreadId=" + Thread.currentThread().getId() + ",ThreadNam:" + Thread.currentThread().getName()
                 + ",urlWithIp:" + urlWithIp);
-
-
+        
         final Builder requestBuilder = new Builder()
+                .header("host", host)
+                .header("User-Agent", U.getHttpUtils().buildUserAgent())
                 .url(urlWithIp)
                 .get();
 

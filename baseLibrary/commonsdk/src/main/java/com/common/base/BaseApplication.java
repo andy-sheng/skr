@@ -128,8 +128,8 @@ public class BaseApplication extends Application {
                 .setAppName("WALI_LIVE_SDK")
                 .setPackageName("com.mi.liveassistant")
                 .setReleaseChannel("DEBUG")
-                .setVersionName("4.2.01")
-                .setVersionCode(402001)
+                .setVersionName("4.51.1")
+                .setVersionCode(451001)
                 .setLanguageCode("ZH-CN")
                 .setServiceProcessName("com.mi.liveassistant:remote")
                 .build();
