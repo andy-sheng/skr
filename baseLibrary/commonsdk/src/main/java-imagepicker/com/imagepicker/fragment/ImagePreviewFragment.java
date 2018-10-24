@@ -218,6 +218,11 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
         return true;
     }
 
+    /**
+     * 可以从这里设置数据进去
+     * @param type
+     * @param data
+     */
     @Override
     public void setData(int type, @Nullable Object data) {
         if (type == 1) {

@@ -34,6 +34,8 @@ import com.example.drawer.DrawerFragment;
 import com.example.paginate.PaginateFragment;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
+import com.imagepicker.fragment.ImagePreviewFragment;
+import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.R;
@@ -326,6 +328,42 @@ public class TestSdkActivity extends BaseActivity {
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .setBundle(bundle)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                                U.getToastUtil().showToast("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
+                            }
+                        })
+                        .build());
+            }
+        }));
+
+
+        mDataList.add(new H("ImagePreview调试，大图", new Runnable() {
+            @Override
+            public void run() {
+                String ps[] = new String[]{
+                        "http://img.zcool.cn/community/01259e59798aa4a8012193a3c94637.gif"
+                        , "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540971147&di=bcc5a2a15cd48731be2b020c90b84414&imgtype=jpg&er=1&src=http%3A%2F%2Fa.vpimg2.com%2Fupload%2Fmerchandise%2Fpdc%2F736%2F961%2F9013468006181961736%2F1%2FRwhr254407-6.jpg"
+                        , "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540376427777&di=1ec1e64f7a022e0ce371bb2c0c142989&imgtype=0&src=http%3A%2F%2Fimg0.ph.126.net%2FbYB8CJTnruqbgKzEFuRXEg%3D%3D%2F6632030937887660874.jpg"
+                        , "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540376427776&di=6441e0f1b67858eae6560dc10de05bae&imgtype=0&src=http%3A%2F%2Fimg.alicdn.com%2Fimgextra%2Fi3%2F2337431051%2FTB2dBlOepXXXXXiXpXXXXXXXXXX_%2521%25212337431051.jpg"
+                        , "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1664883472,2674356486&fm=26&gp=0.jpg"
+                        , "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540391118854&di=4db867ada9dfa74ebc75b488f5129722&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F014d4458ca8c2ea801219c7787a209.gif"
+                        , "/sdcard/1.gif"
+                        , "/sdcard/1.jpeg"
+
+                };
+                List<ImageItem> list = new ArrayList<>();
+                for (String s : ps) {
+                    ImageItem imageItem = new ImageItem();
+                    imageItem.setPath(s);
+                    list.add(imageItem);
+                }
+
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePreviewFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setDataBeforeAdd(1, list)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {

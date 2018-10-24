@@ -14,6 +14,7 @@ import com.elvishew.xlog.printer.Printer;
 import com.elvishew.xlog.printer.file.FilePrinter;
 import com.elvishew.xlog.printer.file.backup.FileSizeBackupStrategy;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -31,9 +32,7 @@ public class MyLog {
             String logTag = U.getAppInfoUtils().getAppName();
 
             //存放的路径
-            String logDirRoot = String.format("/Xiaomi/%s/logs/%s/"
-                    , U.getAppInfoUtils().getAppName()
-                    , U.getAppInfoUtils().getPackageName());
+            String logDirRoot = new File(U.getAppInfoUtils().getMainDir(),"logs/").getAbsolutePath();
 
             if (BuildConfig.DEBUG) {
                 sCurrentLogLevel = LogLevel.ALL;

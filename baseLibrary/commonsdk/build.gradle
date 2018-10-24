@@ -57,6 +57,9 @@ android {
             java.srcDirs +=  'src/main/java-imagepicker'
             res.srcDirs += 'src/main/res-imagepicker'
 
+            // 提供图片缩放浏览能力，支持渐变式，支持loading页，支持超大图，超大Gif
+            java.srcDirs +=  'src/main/java-imagebrowse'
+
             if(repluginHostEnable.toBoolean()){
                 java.srcDirs += 'src/main/java-replugin-host'
             }else{
@@ -109,6 +112,10 @@ dependencies {
     api(rootProject.ext.dependencies["fresco-webpsupport"])
     api(rootProject.ext.dependencies["fresco-animated-webp"])
     api(rootProject.ext.dependencies["fresco-okhttp"])
+    // 流畅的gif
+    api(rootProject.ext.dependencies["android-gif-drawable"])
+    // 超大图加载
+    api(rootProject.ext.dependencies["scale-image-view"])
 
     //greendao
     api rootProject.ext.dependencies["greendao"]

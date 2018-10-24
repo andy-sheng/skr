@@ -10,6 +10,7 @@ import com.common.image.model.ImageFactory;
 import com.common.utils.U;
 import com.common.view.photodraweeview.OnPhotoTapListener;
 import com.common.view.photodraweeview.PhotoDraweeView;
+import com.imagebrowse.ImageBrowseView;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.model.ImageItem;
 
@@ -54,21 +55,21 @@ public class ImagePageAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        PhotoDraweeView photoView = new PhotoDraweeView(mActivity);
+        ImageBrowseView imageBrowseView = new ImageBrowseView(mActivity);
         ImageItem imageItem = images.get(position);
 
-//        imagePicker.getImageLoader().displayImagePreview(mActivity, imageItem.getPath(), photoView, screenWidth, screenHeight);
-        photoView.load(ImageFactory.newLocalImage(imageItem.getPath()).build());
-        photoView.setOnPhotoTapListener(new OnPhotoTapListener() {
-            @Override
-            public void onPhotoTap(View view, float x, float y) {
-                if (listener != null) {
-                    listener.OnPhotoTapListener(view, 0, 0);
-                }
-            }
-        });
-        container.addView(photoView);
-        return photoView;
+        imageBrowseView.load(imageItem.getPath());
+
+//        photoView.setOnPhotoTapListener(new OnPhotoTapListener() {
+//            @Override
+//            public void onPhotoTap(View view, float x, float y) {
+//                if (listener != null) {
+//                    listener.OnPhotoTapListener(view, 0, 0);
+//                }
+//            }
+//        });
+        container.addView(imageBrowseView);
+        return imageBrowseView;
     }
 
     @Override

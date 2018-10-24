@@ -3,6 +3,7 @@ package com.common.image.fresco;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
 
@@ -25,7 +26,11 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp.OkHttpNetworkFetcher;
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.decoder.ProgressiveJpegConfig;
+import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.image.ImmutableQualityInfo;
+import com.facebook.imagepipeline.image.QualityInfo;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.facebook.imagepipeline.producers.HttpUrlConnectionNetworkFetcher;
@@ -42,14 +47,13 @@ import java.util.concurrent.TimeUnit;
 public class FrescoInitManager {
     public final static String TAG = "FrescoInitManager";
 
-    public final static String FRESCO_DIR_PATH = String.format("/%s/fresco", U.getAppInfoUtils().getAppName());
-
 
     public static void initFresco(Context context) {
-        MyLog.d(TAG,"initFresco FRESCO_DIR_PATH=" + FRESCO_DIR_PATH);
+        File saveDir = new File(U.getAppInfoUtils().getMainDir(), "fresco/");
+        MyLog.d(TAG, "initFresco FRESCO_DIR_PATH=" + saveDir.getAbsolutePath());
         // 配置文件目录
         DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(context)
-                .setBaseDirectoryPath(new File(Environment.getExternalStorageDirectory(), FRESCO_DIR_PATH))
+                .setBaseDirectoryPath(saveDir)
                 .setBaseDirectoryName("photov2")
                 .setVersion(1)
                 .setMaxCacheSize(500 * ByteConstants.MB)
@@ -57,7 +61,7 @@ public class FrescoInitManager {
 
         // 小文件的目录
         DiskCacheConfig smallDiskCacheConfig = DiskCacheConfig.newBuilder(context)
-                .setBaseDirectoryPath(new File(Environment.getExternalStorageDirectory(), FRESCO_DIR_PATH))
+                .setBaseDirectoryPath(saveDir)
                 .setBaseDirectoryName("thumbnail")
                 .setVersion(1)
                 .setMaxCacheSize(500 * ByteConstants.MB)
@@ -103,6 +107,15 @@ public class FrescoInitManager {
                 .setSmallImageDiskCacheConfig(smallDiskCacheConfig)
                 .setMemoryTrimmableRegistry(memoryTrimmableRegistry)
                 .setRequestListeners(requestListeners)
+                // 在RGB_565的条件下过滤alpha通道，图片消耗内存量会降低，进一步降低OOM的风险
+                // 低端机型可以开启这个
+                .setBitmapsConfig(Bitmap.Config.RGB_565)
+                //在设置ImageRequest的时候允许其进行resize处理，减少内存消耗，也同样起到降低OOM的风险
+                .setResizeAndRotateEnabledForNetwork(true)
+                // fresco仅支持文件类型为JPEG的网络图片，因为本地图片均一次性解码完成，
+                // 所以本地图片不需要使用渐进式。在fresco中，你可以设置一个清晰度标准，使其在达到这个标准之前一直以占位图显示
+                .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
+                //必须和ImageRequest的ResizeOptions一起使用，也是起到降低OOM的风险
                 .setDownsampleEnabled(true);
         configureCaches(imagePipelineConfig, context);
         configureLoggingListeners(imagePipelineConfig);

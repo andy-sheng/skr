@@ -146,6 +146,11 @@ public class ImageFactory {
             return this;
         }
 
+        public ImageFactory.Builder setTapToRetryEnabled(boolean tapToRetryEnabled) {
+            mBaseImage.setTapToRetryEnabled(tapToRetryEnabled);
+            return this;
+        }
+
         public BaseImage build() {
             return mBaseImage;
         }

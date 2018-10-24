@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.common.base.BuildConfig;
 import com.common.log.MyLog;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
@@ -26,6 +28,23 @@ public class AppInfoUtils {
     String appName;
     int versionCode;
     String versionName;
+
+    File mainFile;
+    /**
+     * 存储的主目录,所有的存储请基于此目录
+     *
+     * @return
+     */
+    public File getMainDir() {
+        if(mainFile!=null){
+            return mainFile;
+        }
+       if(U.getDeviceUtils().existSDCard()){
+           return new File(Environment.getExternalStorageDirectory(),"NewLiveSdk");
+       }else{
+            return U.app().getFilesDir();
+       }
+    }
 
     /**
      * 获取应用程序名称

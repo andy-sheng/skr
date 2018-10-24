@@ -43,8 +43,8 @@ public abstract class BaseImage {
     protected ScaleType mLoadingScaleType = ScaleType.CENTER_INSIDE;
     // 圆形
     protected boolean mIsCircle = false;
-    // 自动播动画
-    protected boolean mIsAutoPlayAnimation = false;
+    // 自动播动画 针对 gif webp 一般设为 true
+    protected boolean mIsAutoPlayAnimation = true;
     // 后处理
     protected Postprocessor mPostprocessor;
     // fresco回调
@@ -63,8 +63,9 @@ public abstract class BaseImage {
     //加载的优先级
     protected Priority mRequestPriority = Priority.MEDIUM;
     //是否支持渐进式加载
-    protected boolean mProgressiveRenderingEnabled = false;
-
+    protected boolean mProgressiveRenderingEnabled = true;
+    //失败时点击重试
+    protected boolean mTapToRetryEnabled = false;
     // 生成uri
     protected abstract void generateUri();
 
@@ -238,5 +239,11 @@ public abstract class BaseImage {
         this.mProgressBarDrawable = progressBarDrawable;
     }
 
+    public boolean isTapToRetryEnabled() {
+        return mTapToRetryEnabled;
+    }
 
+    public void setTapToRetryEnabled(boolean tapToRetryEnabled) {
+        mTapToRetryEnabled = tapToRetryEnabled;
+    }
 }
