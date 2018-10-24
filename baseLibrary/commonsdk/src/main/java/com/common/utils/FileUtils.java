@@ -132,5 +132,20 @@ public class FileUtils {
         String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
         return new File(folder, filename);
     }
+
+//    /**
+//     * 重命名文件
+//     * 父目录不会改变
+//     * @param file
+//     * @param onlyFileName 只是文件名 不带路径 ，如 sss.jpg
+//     */
+//    public boolean renameFile(File file, String onlyFileName) {
+//        if (file.exists() && file.isFile()) {
+//            File file2 = new File(file.getParent(), onlyFileName);
+//            file.renameTo(file2);
+//            return true;
+//        }
+//        return false;
+//    }
 }
 

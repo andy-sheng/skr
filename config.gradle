@@ -76,7 +76,10 @@ ext {
             "fresco-animated-webp"     : "com.facebook.fresco:animated-webp:${version["frescoVersion"]}",
             "fresco-webpsupport"       : "com.facebook.fresco:webpsupport:${version["frescoVersion"]}",
             "fresco-okhttp"            : "com.facebook.fresco:imagepipeline-okhttp:${version["frescoVersion"]}",
-
+            // 加载大gif用，防止gif卡顿
+            "android-gif-drawable"     : "pl.droidsonroids.gif:android-gif-drawable:1.2.15",
+            // 加载超大图用的
+            "scale-image-view"         :"com.davemorrissey.labs:subsampling-scale-image-view:3.10.0",
             //view
             "autolayout"               : "com.zhy:autolayout:1.4.5",
             "butterknife"              : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",

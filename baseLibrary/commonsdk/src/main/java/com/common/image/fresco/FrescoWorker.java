@@ -98,16 +98,20 @@ public class FrescoWorker {
         /**
          * 支持图片渐进式加载 & 加载优先级
          */
-        imageRequestBuilder.setProgressiveRenderingEnabled(baseImage.isProgressiveRenderingEnabled())
-                .setRequestPriority(baseImage.getRequestPriority());
+        imageRequestBuilder
+                .setProgressiveRenderingEnabled(baseImage.isProgressiveRenderingEnabled())
+                .setRequestPriority(baseImage.getRequestPriority())
+                // 图片请求会在访问本地图片时先返回一个缩略图
+                .setLocalThumbnailPreviewsEnabled(true)
+        ;
         return imageRequestBuilder;
     }
 
     private static ImageDecodeOptions getImageDecodeOptions() {
         ImageDecodeOptions decodeOptions = ImageDecodeOptions.newBuilder()
 //              .setBackgroundColor(Color.TRANSPARENT) //图片的背景颜色
-              .setDecodeAllFrames(true)              //解码所有帧
-              .setDecodePreviewFrame(true)           //解码预览框
+                .setDecodeAllFrames(true)              //解码所有帧
+                .setDecodePreviewFrame(true)           //解码预览框
 //              .setForceOldAnimationCode(true)        //使用以前动画
 //              .setFrom(options)                      //使用已经存在的图像解码
 //              .setMinDecodeIntervalMs(intervalMs)    //最小解码间隔（分位单位）
@@ -118,8 +122,9 @@ public class FrescoWorker {
 
     /**
      * 使用 fresco 加载图片
+     *
      * @param draweeView
-     * @param baseImage 请使用 {@link com.common.image.model.ImageFactory 构造}
+     * @param baseImage  请使用 {@link com.common.image.model.ImageFactory 构造}
      */
     public static void loadImage(final SimpleDraweeView draweeView, final BaseImage baseImage) {
         if (draweeView == null) {
@@ -225,6 +230,8 @@ public class FrescoWorker {
                 .setLowResImageRequest(lowResRequest)
                 .setImageRequest(imageRequest)
                 .setOldController(draweeView.getController())
+                //只有设置tapToRetryEnabled为true，才会出现点击重试的图层，并且重试超过4次之后，就将显示失败的图层
+                .setTapToRetryEnabled(baseImage.isTapToRetryEnabled())
                 .setAutoPlayAnimations(baseImage.isAutoPlayAnimation())
                 .setControllerListener(new BaseControllerListener<ImageInfo>() {
                     public void onFailure(String id, Throwable throwable) {

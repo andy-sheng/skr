@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -41,6 +42,7 @@ public class HttpUtils {
 
     /**
      * 得到一批域名的ip地址
+     *
      * @param host
      * @return
      */
@@ -82,6 +84,7 @@ public class HttpUtils {
 
     /**
      * http 头里带的一些信息
+     *
      * @return
      */
     public String buildUserAgent() {
@@ -196,6 +199,7 @@ public class HttpUtils {
 
     /**
      * 进行一个 post 请求
+     *
      * @param context
      * @param url
      * @param nameValuePairs
@@ -297,6 +301,7 @@ public class HttpUtils {
 
     /**
      * 唯一的下载接口
+     *
      * @param urlStr
      * @param outputFile
      * @param progress
@@ -304,7 +309,14 @@ public class HttpUtils {
      */
     public boolean downloadFile(String urlStr, final File outputFile,
                                 OnDownloadProgress progress) {
+        if(Looper.getMainLooper()==Looper.myLooper()){
+            throw new IllegalThreadStateException("cannot downloadFile on mainthread");
+        }
         if (!outputFile.exists()) {
+            File parentFile = outputFile.getParentFile();
+            if (parentFile != null && !parentFile.exists()) {
+                parentFile.mkdirs();
+            }
             try {
                 outputFile.createNewFile();
             } catch (IOException e) {

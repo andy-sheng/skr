@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.base.R;
 import com.common.log.MyLog;
