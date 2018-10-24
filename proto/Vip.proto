@@ -1,0 +1,44 @@
+package com.wali.live.proto.Vip;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./modulewatch/src/main/java-gen-pb/ Vip.proto
+
+*/
+
+
+// 用户VIP等级相关
+// wiki地址： http://wiki.n.miui.com/pages/viewpage.action?pageId=37491545
+
+// cmd: zhibo.viplevel.home_page
+message VipHomePageReq {
+    required uint64 uuid = 1;
+}
+
+message VipHomePageRsp {
+    required int32 ret = 1; // 返回码
+    required int32 vip_level = 2; //vip等级
+    required int32 vip_exp = 3; //vip经验值
+    required int32 next_vip_level_exp = 4; //当前经验距离下一等需要级经验值. 满级时为0
+    optional int32 vip_level_interval = 5; //当前等级和下一等奖的经验值差. 满级时为0
+    optional string vip_level_name = 6; //当前vip等级名称
+    repeated VipPrivilege vip_privileges = 7; //vip特权
+    optional bool vip_disable = 8; //vip是否被冻结
+    optional int32 total_gem_cnt = 9; //送出金钻数
+    optional int32 need_gem_cnt = 10; //升级所需金钻数
+}
+
+message VipPrivilege {
+    optional string name = 1; //名称
+    optional int32 type = 2; //用数字唯一标识的特权类型. 1:徽章, 2:飘屏, 3:闪耀进场, 4:至尊进场, 5:终极进场, 6: 隐身, 7: 专享充值
+    optional int32 open_level = 3; //当前特权开启级别
+    required bool gained = 4; //当前用户是否得到该特权
+}
+
+//等级变化时发动的msg push，msg_ext 字段的内容
+// cmd: zhibo.push.sysmsg
+message VipLevelChangeMsg {
+    optional int32 new_vip_level = 1; //升级后的vip等级
+    optional int32 old_vip_level = 2; //升级前的vip等级
+}

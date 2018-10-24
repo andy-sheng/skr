@@ -1,0 +1,150 @@
+package com.wali.live.proto.RadioSignal;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./modulewatch/src/main/java-gen-pb/ RadioSignal.proto
+
+*/
+
+//信令相关命令字, pb协议通用
+//1. cmd: zhibo.diantai.apply   用户申请连麦
+//2. cmd: zhibo.diantai.invite  主播邀请用户连麦
+//3. cmd: zhibo.diantai.approve 主播批准用户连麦
+//4. cmd: zhibo.diantai.accept  用户接受主播邀请
+//5. cmd: zhibo.diantai.quit    用户结束连麦
+//6. cmd: zhibo.diantai.kick    踢出用户
+//7. cmd: zhibo.diantai.cancel_apply  用户取消申请连麦
+//8. cmd: zhibo.diantai.mute  禁言某个电台用户(嘉宾)
+//9. cmd: zhibo.diantai.un_mute  取消禁言某个电台用户(嘉宾)
+message DiantaiSignalReq
+{
+   required uint64 from_zuid = 1; //发起方用户id
+   optional uint32 diantai_id = 2; //电台id, 没有则不用带
+   repeated uint64 to_zuids = 3; //接收方用户id列表
+   optional string room_id = 4; //直播房间id
+}
+
+message DiantaiSignalRsp
+{
+    required uint32 ret = 1;    //错误码
+    optional uint32 diantai_id = 2; //电台id
+    repeated DiantaiUser members = 3;   //电台成员信息，包含自己
+}
+
+
+message DiantaiUser {
+    required uint64 zuid = 1;       //zuid, 如果为0,则表示当前位置为空
+    optional uint32 seat_index = 2; //座位号
+    optional uint32 status = 3;     // 1: 正常  2:静音
+    optional uint64 avatar = 4;     //头像
+    optional string nickname = 5;   //昵称
+    optional uint32 gender = 6;     //性别
+    optional bool is_mute = 7; //是否被禁言
+    optional uint32 onlineStatus = 8; //0:在线 1:离线
+    optional uint32 speak_status = 9; // 用户发言状态： 0:没有发言 1:发言中
+}
+
+
+message DiantaiAnchor {
+    required uint64 zuid = 1;
+    optional uint32 status = 2; // 1: 正常  2:静音
+    optional uint32 onlineStatus = 3; //0:在线 1:离线
+    optional uint32 speak_status = 4; // 用户发言状态： 0:没有发言 1:发言中
+}
+
+//cmd: zhibo.diantai.apply_list  获取申请连麦中的用户列表
+message DiantaiApplyListReq {
+    optional uint32 diantai_id = 1; //电台id
+    optional string room_id = 2; //直播房间id
+}
+
+message DiantaiApplyListRsp {
+    required uint32 ret = 1;  //错误码
+    repeated DiantaiUser apply_users = 2;
+}
+
+
+// cmd: zhibo.diantai.sync  获取最新的成员列表
+message DiantaiSyncReq {
+    required uint64 from_zuid = 1; //发起方用户id
+    optional uint32 diantai_id = 2; //电台id
+    optional string room_id = 3; //直播房间id
+}
+
+message DiantaiSyncRsp {
+    required uint32 ret = 1;  //错误码
+    repeated DiantaiUser members = 2; //电台成员信息，包含自己
+    optional uint32 sync_interval = 3; //定时调用的时间间隔，单位:秒
+    optional uint32 sync_ts = 4; //服务器时间, 单位:秒
+    optional DiantaiAnchor anchor = 5; //主播信息
+    optional uint64 sync_ts_ms = 6; //服务器时间, 单位:毫秒
+}
+
+// cmd: zhibo.diantai.update  更新当前用户的状态
+message DiantaiUpdateReq {
+    required uint64 from_zuid = 1; //发起方用户id
+    optional uint32 diantai_id = 2; //电台id
+    optional string room_id = 3; //直播房间id
+    optional uint32 mute_status = 4; // 用户自己静音状态：0:没有静音 1:静音
+    optional uint32 speak_status = 5; // 用户发言状态： 0:没有发言 1:发言中
+}
+
+message DiantaiUpdateRsp {
+    required uint32 ret = 1;  //错误码
+    repeated DiantaiUser members = 2; //电台成员信息，包含自己
+}
+
+// cmd: zhibo.diantai.hb  主播和嘉宾心跳
+message DiantaiHeartbeatReq {
+    required uint64 from_zuid = 1; //发起方用户id
+    optional uint32 diantai_id = 2; //电台id
+    optional string room_id = 3; //直播房间id
+}
+
+message DiantaiHeartbeatRsp {
+    required uint32 ret = 1;  //错误码
+    optional uint32 hb_interval = 2; //定时调用的时间间隔，单位:秒
+}
+
+// push协议，命令字: zhibo.diantai.signal_push【外层协议格式参照zhibo.push.roommsg msg_type=130】
+message DiantaiSignalPush {
+    optional uint32 action = 1; // 1:apply push, 2: invite push  3: approve push  4: accept push  5: quit push  6: kick push  7: status update 8: mute 9: unmute 10: cancel apply 11:online status
+        optional uint32 diantai_id = 2; //电台id
+        optional string room_id = 3; //直播房间id
+        optional uint64 from_zuid = 4;
+        optional uint64 to_zuid = 5;
+        repeated DiantaiUser members = 6;   //电台成员信息，包含自己
+        optional uint32 sync_ts = 7; //服务器时间, 单位:秒
+}
+
+//12: 房间内push msg_type=801【原房间内push】
+message RoomMsg {
+    optional uint32 inner_type = 1; //房间消息子类型 1.电台控制消息（DiantaiRoomMsg）
+    optional bytes ext_msg = 2; //消息具体内容
+}
+
+message DiantaiRoomMsg {
+    optional uint32 action = 1; // 1:apply push, 2: invite push  3: approve push  4: accept push  5: quit push  6: kick push 7: status update 8: mute 9: unmute 10: cancel apply 11:online status
+    optional uint32 diantai_id = 2; //电台id
+    optional string room_id = 3; //直播房间id
+    optional uint64 from_zuid = 4;
+    optional uint64 to_zuid = 5;
+    repeated DiantaiUser members = 6;   //电台成员信息，包含自己
+    optional uint32 sync_ts = 7; //服务器时间, 单位:秒
+}
+
+// 1:apply push, 2: invite push  3: approve push  4: accept push  5: quit push  6: kick push 7: status update 8: mute 9: unmute 10: cancel apply 11:online status
+enum SignalAction {
+    APPLY           = 1;
+    INVITE          = 2;
+    APPROVE         = 3;
+    ACCEPT          = 4;
+    QUIT            = 5;
+    KICK            = 6;
+    STATUS_UPDATE   = 7;
+    MUTE            = 8;
+    UNMUTE          = 9;
+    CANCEL_APPLY    = 10;
+    ONLINE_STATUS    = 11;
+}

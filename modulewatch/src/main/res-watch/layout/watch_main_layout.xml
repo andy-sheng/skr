@@ -6,45 +6,9 @@
     android:layout_height="match_parent"
     android:background="#00ff00">
 
-
-    <!--<com.common.view.titlebar.CommonTitleBar-->
-    <!--android:id="@+id/titlebar"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--titlebar:centerText="LoginActivity"-->
-    <!--titlebar:centerType="textView"-->
-    <!--titlebar:leftDrawable="@drawable/comm_titlebar_back_normal"-->
-    <!--titlebar:leftDrawablePadding="0dp"-->
-    <!--titlebar:leftText="返回"-->
-    <!--titlebar:leftType="textView" />-->
-
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:id="@+id/video_view_container1"
-            android:layout_width="match_parent"
-            android:layout_height="250dp">
-
-            <TextureView
-                android:id="@+id/video_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/video_view_container1">
-
-            <!-- 如果是用 exoplayer 想要黑边效果得包裹一个父布局-->
-            <SurfaceView
-                android:id="@+id/video_view2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-
-    </RelativeLayout>
+        android:layout_height="match_parent"></FrameLayout>
 
 </RelativeLayout>

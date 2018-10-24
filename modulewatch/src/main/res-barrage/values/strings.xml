@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_kick_viewer_barrage">%s被管理员踢出房间</string>
+    <string name="manager">管理员</string>
+    <string name="sys_msg">系统消息</string>
+    <string name="sys_manager">系统管理员</string>
+    <string name="top1">榜一</string>
+    <string name="ban_speaker_tips">%s已被禁言</string>
+    <string name="ban_speaker_tips2">%1$s已被%2$s禁言</string>
+    <string name="remove_ban_speaker_tips">%s被取消禁言</string>
+    <string name="remove_ban_speaker_tips2">%1$s被%2$s取消禁言</string>
+    <string name="top1_kick_viewer_barrage">%s被榜一踢出房间</string>
+    <string name="kick_viewer_brrage">%s被踢出房间</string>
+    <string name="barrage_nobel_nickname">小米直播贵族</string>
+
+    <string name="barrage_set_manager_body">主播设置你为管理员</string>
+    <string name="barrage_cancel_manager_body">主播取消了你的管理员</string>
+    <string name="barrage_focus_body">关注了主播</string>
+    <string name="barrage_leave_live_body">离开房间</string>
+    <string name="barrage_enter_live_body">进入房间</string>
+    <string name="barrage_enter_live_by_near_body">通过附近发现了主播~</string>
+    <string name="barrage_like_body">点亮了</string>
+    <string name="barrage_share_body">分享了直播</string>
+
+    <string name="barrage_message_too_large">您发送的弹幕太长，请分为两次发送，谢谢</string>
+</resources>

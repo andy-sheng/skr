@@ -1,0 +1,29 @@
+package com.wali.live.proto.Live;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./modulewatch/src/main/java-gen-pb/ Live.proto
+
+*/
+
+message ThirdPartyInfo
+{
+    optional uint64 uuid = 1; //第三方id
+    optional string downStreamUrl = 2; //第三方直播拉流地址
+    optional string logoUrl = 3; //logo url
+    optional uint32 source = 4; //第三方来源 0：虎牙
+}
+
+//房间人top
+//zhibo.live.viewertop
+message ViewerTopReq {
+    required uint64 uuid = 1; //操作人id
+    required uint64 zuid = 2; //直播人id
+    required string liveId = 3;
+}
+
+message ViewerTopRsp {
+    required uint32 retCode = 1; //0:表示成功
+    repeated Viewer viewer = 2; //观众
+}

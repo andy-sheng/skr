@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 弹幕的主题色定义在这 -->
+    <color name="primary_content">#FFFFFF</color>
+    <color name="primary_name">#ffd267</color>
+    <color name="game_barrage_name">#66000000</color>
+    <color name="game_barrage_content">#cc000000</color>
+    <color name="normal_barrage_name">#ffffff</color>
+    <color name="normal_barrage_content">#f0d388</color>
+    <color name="barrage_announcement">#2b2b2b</color>
+    <color name="game_barrage_name_vipjoin">#CCDF870B</color>
+    <color name="game_barrage_content_vipjoin">#CCDF870B</color>
+    <color name="barrage_name_join">#f0d388</color>
+    <color name="game_barrage_content_join">#CCDF870B</color>
+    <color name="barrage_like">#f0d388</color>
+    <color name="barrage_game_theme">#56A7FF</color>
+    <color name="barrage_normal_theme">#7eeeff</color>
+
+    <color name="background_gift">#CCDF870B</color>
+    <color name="light_up_gift">#f0d388</color>
+
+    <color name="barrage_game_text">#ff2966</color>
+    <color name="barrage_normal_text">#bef194</color>
+
+    <color name="barrage_noble_fourth">#FFEA4C</color>
+
+    <color name="barrage_name_default">#cccccc</color>
+</resources>

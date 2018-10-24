@@ -32,11 +32,14 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         public final static Property Gender = new Property(5, Integer.class, "gender", false, "GENDER");
         public final static Property Level = new Property(6, Integer.class, "level", false, "LEVEL");
         public final static Property Badge = new Property(7, Integer.class, "badge", false, "BADGE");
-        public final static Property MTicketNum = new Property(8, Integer.class, "mTicketNum", false, "M_TICKET_NUM");
-        public final static Property CertificationType = new Property(9, Integer.class, "certificationType", false, "CERTIFICATION_TYPE");
-        public final static Property Relative = new Property(10, Integer.class, "relative", false, "RELATIVE");
-        public final static Property Block = new Property(11, boolean.class, "block", false, "BLOCK");
-        public final static Property Ext = new Property(12, String.class, "ext", false, "EXT");
+        public final static Property CertificationType = new Property(8, Integer.class, "certificationType", false, "CERTIFICATION_TYPE");
+        public final static Property Relative = new Property(9, Integer.class, "relative", false, "RELATIVE");
+        public final static Property Block = new Property(10, Boolean.class, "block", false, "BLOCK");
+        public final static Property VipLevel = new Property(11, Integer.class, "vipLevel", false, "VIP_LEVEL");
+        public final static Property IsVipFrozen = new Property(12, Boolean.class, "isVipFrozen", false, "IS_VIP_FROZEN");
+        public final static Property IsVipHide = new Property(13, Boolean.class, "isVipHide", false, "IS_VIP_HIDE");
+        public final static Property NobleLevel = new Property(14, Integer.class, "nobleLevel", false, "NOBLE_LEVEL");
+        public final static Property Ext = new Property(15, String.class, "ext", false, "EXT");
     }
 
 
@@ -60,11 +63,14 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
                 "\"GENDER\" INTEGER," + // 5: gender
                 "\"LEVEL\" INTEGER," + // 6: level
                 "\"BADGE\" INTEGER," + // 7: badge
-                "\"M_TICKET_NUM\" INTEGER," + // 8: mTicketNum
-                "\"CERTIFICATION_TYPE\" INTEGER," + // 9: certificationType
-                "\"RELATIVE\" INTEGER," + // 10: relative
-                "\"BLOCK\" INTEGER NOT NULL ," + // 11: block
-                "\"EXT\" TEXT);"); // 12: ext
+                "\"CERTIFICATION_TYPE\" INTEGER," + // 8: certificationType
+                "\"RELATIVE\" INTEGER," + // 9: relative
+                "\"BLOCK\" INTEGER," + // 10: block
+                "\"VIP_LEVEL\" INTEGER," + // 11: vipLevel
+                "\"IS_VIP_FROZEN\" INTEGER," + // 12: isVipFrozen
+                "\"IS_VIP_HIDE\" INTEGER," + // 13: isVipHide
+                "\"NOBLE_LEVEL\" INTEGER," + // 14: nobleLevel
+                "\"EXT\" TEXT);"); // 15: ext
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_INFO_USER_ID_DESC ON USER_INFO" +
                 " (\"USER_ID\" DESC);");
@@ -116,25 +122,44 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             stmt.bindLong(8, badge);
         }
  
-        Integer mTicketNum = entity.getMTicketNum();
-        if (mTicketNum != null) {
-            stmt.bindLong(9, mTicketNum);
-        }
- 
         Integer certificationType = entity.getCertificationType();
         if (certificationType != null) {
-            stmt.bindLong(10, certificationType);
+            stmt.bindLong(9, certificationType);
         }
  
         Integer relative = entity.getRelative();
         if (relative != null) {
-            stmt.bindLong(11, relative);
+            stmt.bindLong(10, relative);
         }
-        stmt.bindLong(12, entity.getBlock() ? 1L: 0L);
+ 
+        Boolean block = entity.getBlock();
+        if (block != null) {
+            stmt.bindLong(11, block ? 1L: 0L);
+        }
+ 
+        Integer vipLevel = entity.getVipLevel();
+        if (vipLevel != null) {
+            stmt.bindLong(12, vipLevel);
+        }
+ 
+        Boolean isVipFrozen = entity.getIsVipFrozen();
+        if (isVipFrozen != null) {
+            stmt.bindLong(13, isVipFrozen ? 1L: 0L);
+        }
+ 
+        Boolean isVipHide = entity.getIsVipHide();
+        if (isVipHide != null) {
+            stmt.bindLong(14, isVipHide ? 1L: 0L);
+        }
+ 
+        Integer nobleLevel = entity.getNobleLevel();
+        if (nobleLevel != null) {
+            stmt.bindLong(15, nobleLevel);
+        }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(13, ext);
+            stmt.bindString(16, ext);
         }
     }
 
@@ -178,25 +203,44 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             stmt.bindLong(8, badge);
         }
  
-        Integer mTicketNum = entity.getMTicketNum();
-        if (mTicketNum != null) {
-            stmt.bindLong(9, mTicketNum);
-        }
- 
         Integer certificationType = entity.getCertificationType();
         if (certificationType != null) {
-            stmt.bindLong(10, certificationType);
+            stmt.bindLong(9, certificationType);
         }
  
         Integer relative = entity.getRelative();
         if (relative != null) {
-            stmt.bindLong(11, relative);
+            stmt.bindLong(10, relative);
         }
-        stmt.bindLong(12, entity.getBlock() ? 1L: 0L);
+ 
+        Boolean block = entity.getBlock();
+        if (block != null) {
+            stmt.bindLong(11, block ? 1L: 0L);
+        }
+ 
+        Integer vipLevel = entity.getVipLevel();
+        if (vipLevel != null) {
+            stmt.bindLong(12, vipLevel);
+        }
+ 
+        Boolean isVipFrozen = entity.getIsVipFrozen();
+        if (isVipFrozen != null) {
+            stmt.bindLong(13, isVipFrozen ? 1L: 0L);
+        }
+ 
+        Boolean isVipHide = entity.getIsVipHide();
+        if (isVipHide != null) {
+            stmt.bindLong(14, isVipHide ? 1L: 0L);
+        }
+ 
+        Integer nobleLevel = entity.getNobleLevel();
+        if (nobleLevel != null) {
+            stmt.bindLong(15, nobleLevel);
+        }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(13, ext);
+            stmt.bindString(16, ext);
         }
     }
 
@@ -216,11 +260,14 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // gender
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // level
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // badge
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // mTicketNum
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // certificationType
-            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // relative
-            cursor.getShort(offset + 11) != 0, // block
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // ext
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // certificationType
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // relative
+            cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0, // block
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // vipLevel
+            cursor.isNull(offset + 12) ? null : cursor.getShort(offset + 12) != 0, // isVipFrozen
+            cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0, // isVipHide
+            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // nobleLevel
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15) // ext
         );
         return entity;
     }
@@ -235,11 +282,14 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         entity.setGender(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
         entity.setLevel(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setBadge(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setMTicketNum(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setCertificationType(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setRelative(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
-        entity.setBlock(cursor.getShort(offset + 11) != 0);
-        entity.setExt(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setCertificationType(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setRelative(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setBlock(cursor.isNull(offset + 10) ? null : cursor.getShort(offset + 10) != 0);
+        entity.setVipLevel(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setIsVipFrozen(cursor.isNull(offset + 12) ? null : cursor.getShort(offset + 12) != 0);
+        entity.setIsVipHide(cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0);
+        entity.setNobleLevel(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
+        entity.setExt(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
      }
     
     @Override

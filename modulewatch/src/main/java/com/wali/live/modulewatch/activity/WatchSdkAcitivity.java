@@ -1,27 +1,23 @@
 package com.wali.live.modulewatch.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.TextureView;
+import android.support.v4.app.FragmentTransaction;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.base.BaseActivity;
 import com.common.core.RouterConstants;
 import com.common.core.login.interceptor.JumpInterceptor;
-import com.common.log.MyLog;
-import com.common.player.VideoPlayerAdapter;
 import com.wali.live.modulewatch.R;
+import com.wali.live.modulewatch.base.BaseSdkActivity;
+import com.wali.live.modulewatch.fragemnt.BaseWatchFragment;
+import com.wali.live.modulewatch.fragemnt.WatchGameFragment;
+import com.wali.live.modulewatch.fragemnt.WatchNormalFragment;
+import com.wali.live.modulewatch.live.LiveManager;
 
 @Route(path = RouterConstants.ACTIVITY_WATCH, extras = JumpInterceptor.NO_NEED_LOGIN)
-public class WatchSdkAcitivity extends BaseActivity {
+public class WatchSdkAcitivity extends BaseSdkActivity {
 
-    TextureView mTextureView;
-    SurfaceView mSurfaceView;
-
-    VideoPlayerAdapter mVideoPlayerAdapter = new VideoPlayerAdapter();
+    private BaseWatchFragment mBaseWatchFragment;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -30,45 +26,25 @@ public class WatchSdkAcitivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-//        mSurfaceView = new MySurfaceView(this);
-//        mVideoPlayerAdapter.setSurfaceView(mSurfaceView);
-//        setContentView(mSurfaceView);
 
-//        mTextureView = new TextureView(this);
-//        mVideoPlayerAdapter.setTextureView(mTextureView);
-//        setContentView(mTextureView);
+        String tag = null;
+        if (mMyRoomData.getLiveType() != LiveManager.TYPE_LIVE_GAME
+                && mMyRoomData.getLiveType() != LiveManager.TYPE_LIVE_HUYA) {
+            mBaseWatchFragment = new WatchNormalFragment();
+            tag = WatchNormalFragment.class.getSimpleName();
+        } else {
+            mBaseWatchFragment = new WatchGameFragment();
+            tag = WatchGameFragment.class.getSimpleName();
+        }
 
-//        mSurfaceView = findViewById(R.id.video_view2);
-//        mVideoPlayerAdapter.setSurfaceView(mSurfaceView);
-
-
-        mTextureView = findViewById(R.id.video_view);
-        mVideoPlayerAdapter.setTextureView(mTextureView);
-        mVideoPlayerAdapter.setOutCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
-            @Override
-            public void onPrepared() {
-                // 封面消失
-            }
-        });
-        mVideoPlayerAdapter.setVideoPath("http://playback.ks.zb.mi.com/record/live/101743_1531094545/hls/101743_1531094545.m3u8?playui=1");
-        mVideoPlayerAdapter.play();
-//
-//        mTextureView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                U.getToastUtil().showToast("sssss");
-//
-//                mVideoPlayerAdapter.setVideoPath("sss");
-//                mVideoPlayerAdapter.play();
-//            }
-//        });
-
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.container, mBaseWatchFragment, tag);
+        ft.commitAllowingStateLoss();
     }
 
     @Override
     protected void destroy() {
         super.destroy();
-        mVideoPlayerAdapter.destroy();
     }
 
     @Override
@@ -79,34 +55,6 @@ public class WatchSdkAcitivity extends BaseActivity {
     @Override
     public boolean canSlide() {
         return false;
-    }
-
-    class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-        private SurfaceHolder holder;
-
-        public MySurfaceView(Context context) {
-            super(context);
-            holder = this.getHolder(); //获取holder对象
-//            holder.addCallback(this); // 添加surface回调函数
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                                   int height) {
-            MyLog.d(TAG, "surfaceChanged" + " holder=" + holder + " format=" + format + " width=" + width + " height=" + height);
-        }
-
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-            MyLog.d(TAG, "surfaceCreated" + " holder=" + holder);
-
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            MyLog.d(TAG, "surfaceDestroyed" + " holder=" + holder);
-
-        }
     }
 
 }

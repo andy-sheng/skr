@@ -1,0 +1,78 @@
+package com.wali.live.proto.GameCenter;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./modulewatch/src/main/java-gen-pb/ GameCenter.proto
+
+*/
+message GetGameInfoReq {
+    optional uint64 gameId = 1;
+    optional uint64 uuid = 2;
+    optional string packageName = 3;
+}
+
+message GetGameInfoRsp {
+    optional uint32 ret = 1;
+    optional GameInfo gameInfo = 2;
+}
+
+
+message GameInfo {
+    optional GameBaseInfo gameBaseInfo = 1;
+    repeated GameVideo gameVideos = 2;
+    repeated ScreenShot screenShots = 3;
+    repeated GameTag gameTags = 4; //游戏标签
+    optional Developer developer = 5; //开发商
+}
+
+message GameBaseInfo {
+    optional uint64 gameId = 1;
+    optional string gameName = 2;
+    optional string iconUrl = 3;
+    optional uint64 fileSize = 4; //游戏大小
+    optional uint32 gameType = 5; //游戏类型
+    optional uint32 rank = 6; //游戏排名
+    optional double score = 7; //游戏评分
+    optional uint64 followNum = 8; //关注人数
+    optional bool isFollow = 9; //是否关注
+    optional string packageName = 10; //包名
+    optional string packageUrl = 11;
+    optional uint64 packageSize = 12;
+    optional string introTitle = 13; //游戏简介标题
+    optional string intro = 14; //游戏简介
+}
+
+message GameVideo {
+    repeated VideoBaseInfo videoBaseInfo = 1;
+    optional string screenUrl = 2; //封面
+    optional uint32 duration = 3; //时长
+    optional uint64 playCnt = 4; //播放数
+    optional string videoTitle = 5; //视频标题
+}
+
+message VideoBaseInfo {
+    optional uint32 width = 1;
+    optional uint32 height = 2;
+    optional string videoUrl = 3;
+    optional uint64 videoSize = 4;
+}
+
+message GameTag {
+    optional uint32 tagId = 1;
+    optional string tagName = 2;
+    optional uint32 tagType = 3; //扩展留用
+    optional string actUrl = 4;
+}
+
+message Developer {
+    optional uint32 developerId = 1;
+    optional string developerName = 2;
+    optional uint32 iconUrl = 3;
+}
+
+message ScreenShot {
+    optional string picId = 1;
+    optional string picUrl = 2;
+    optional uint32 picType = 3; //扩展留用
+}

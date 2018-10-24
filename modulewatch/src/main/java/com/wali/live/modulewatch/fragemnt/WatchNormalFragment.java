@@ -1,4 +1,16 @@
 package com.wali.live.modulewatch.fragemnt;
 
-public class WatchNormalFragment {
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
+public class WatchNormalFragment extends BaseWatchFragment{
+    @Override
+    public int initView() {
+        return 0;
+    }
+
+    @Override
+    public void initData(@Nullable Bundle savedInstanceState) {
+
+    }
 }

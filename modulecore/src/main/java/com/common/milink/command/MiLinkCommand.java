@@ -323,6 +323,8 @@ public class MiLinkCommand {
 
     public static final String COMMAND_PUSH_GLOBAL_MSG = "zhibo.push.globalmsg";
 
+    public static final String COMMAND_RADIO_SIGNAL_PUSH = "zhibo.diantai.signal_push";
+
     public static final String COMMAND_EFFECT_GET = "zhibo.effect.get";
 
     public static final String COMMAND_ZHIBO_OPEN_API_AUTH = "zhibo.openapi.auth";

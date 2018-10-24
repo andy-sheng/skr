@@ -67,7 +67,7 @@ public class UserInfoLocalApi {
 
         UserInfo userInfoDB = getUserInfoByUUid(userInfo.getUserId());
         if (userInfoDB != null) {
-            userInfo.fill(userInfoDB, relationChange, blockChange);
+            userInfo.fill(userInfoDB);
             EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_UPDATE, userInfo));
         } else {
             EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_INSERT, userInfo));

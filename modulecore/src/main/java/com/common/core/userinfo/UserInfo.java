@@ -19,7 +19,7 @@ import static com.common.core.userinfo.UserInfoManager.QUERY_FOLLOWED_LIST;
 import static com.common.core.userinfo.UserInfoManager.QUERY_FOLLOWER_LIST;
 
 /**
- * 个人信息
+ * 个人信息(基础类)
  */
 @Entity(
         indexes = {
@@ -31,24 +31,32 @@ public class UserInfo {
     private Long id;
     @NonNull
     private Long userId;
-    private Long avatar;
-    private String userNickname;
-    private String signature;
-    private Integer gender;
-    private Integer level;
-    private Integer badge;
-    private Integer mTicketNum;
+    private Long avatar;   // 头像时间戳
+    private String userNickname;    // 昵称
+    private String signature;       // 签名
+    private Integer gender;         // 性别
+    private Integer level;          // 等级
+    private Integer badge;          // 徽章
     private Integer certificationType;
     private Integer relative;  //0为双方未关注, 1为我关注该用户, 2为该用户关注我, 3为双方关注
-    private boolean block;  // 是否拉黑,默认为false
+    private Boolean block;  // 是否拉黑,默认为false
+
+    // vip相关
+    private Integer vipLevel;                                         //vip等级
+    private Boolean isVipFrozen;                                  //vip是否被冻结
+    private Boolean isVipHide;                                    //该vip用户最后一次的隐身状态
+
+    //贵族特权等级
+    private Integer nobleLevel;          //贵族特权
 
     private String ext; //待扩展
 
-    @Generated(hash = 1263741178)
+    @Generated(hash = 1053612797)
     public UserInfo(Long id, @NonNull Long userId, Long avatar, String userNickname,
                     String signature, Integer gender, Integer level, Integer badge,
-                    Integer mTicketNum, Integer certificationType, Integer relative,
-                    boolean block, String ext) {
+                    Integer certificationType, Integer relative, Boolean block,
+                    Integer vipLevel, Boolean isVipFrozen, Boolean isVipHide,
+                    Integer nobleLevel, String ext) {
         this.id = id;
         this.userId = userId;
         this.avatar = avatar;
@@ -57,10 +65,13 @@ public class UserInfo {
         this.gender = gender;
         this.level = level;
         this.badge = badge;
-        this.mTicketNum = mTicketNum;
         this.certificationType = certificationType;
         this.relative = relative;
         this.block = block;
+        this.vipLevel = vipLevel;
+        this.isVipFrozen = isVipFrozen;
+        this.isVipHide = isVipHide;
+        this.nobleLevel = nobleLevel;
         this.ext = ext;
     }
 
@@ -132,14 +143,6 @@ public class UserInfo {
         this.badge = badge;
     }
 
-    public Integer getMTicketNum() {
-        return this.mTicketNum;
-    }
-
-    public void setMTicketNum(Integer mTicketNum) {
-        this.mTicketNum = mTicketNum;
-    }
-
     public Integer getCertificationType() {
         return this.certificationType;
     }
@@ -156,12 +159,44 @@ public class UserInfo {
         this.relative = relative;
     }
 
-    public boolean getBlock() {
+    public Boolean getBlock() {
         return this.block;
     }
 
-    public void setBlock(boolean block) {
+    public void setBlock(Boolean block) {
         this.block = block;
+    }
+
+    public Integer getVipLevel() {
+        return this.vipLevel;
+    }
+
+    public void setVipLevel(Integer vipLevel) {
+        this.vipLevel = vipLevel;
+    }
+
+    public Boolean getIsVipFrozen() {
+        return this.isVipFrozen;
+    }
+
+    public void setIsVipFrozen(Boolean isVipFrozen) {
+        this.isVipFrozen = isVipFrozen;
+    }
+
+    public Boolean getIsVipHide() {
+        return this.isVipHide;
+    }
+
+    public void setIsVipHide(Boolean isVipHide) {
+        this.isVipHide = isVipHide;
+    }
+
+    public Integer getNobleLevel() {
+        return this.nobleLevel;
+    }
+
+    public void setNobleLevel(Integer nobleLevel) {
+        this.nobleLevel = nobleLevel;
     }
 
     public String getExt() {
@@ -179,13 +214,13 @@ public class UserInfo {
         }
 
         user.setUserId(userInfo.getUserId());
+        user.setAvatar(userInfo.getAvatar());
         user.setUserNickname(userInfo.getNickname());
         user.setSignature(userInfo.getSignature());
-        user.setAvatar(userInfo.getAvatar());
-        user.setCertificationType(userInfo.getCertificationType());
         user.setGender(userInfo.getGender());
         user.setLevel(userInfo.getLevel());
         user.setBadge(userInfo.getBadge());
+        user.setCertificationType(userInfo.getCertificationType());
 
         if (userInfo.getIsBothway()) {
             user.setRelative(BOTH_FOLLOWED);
@@ -240,10 +275,8 @@ public class UserInfo {
      * 对数据中更新数据进行校验
      *
      * @param userInfoDB     数据库存储
-     * @param relationChange 关注关系是否改变
-     * @param blockChange    拉黑状态是否改变
      */
-    public void fill(UserInfo userInfoDB, boolean relationChange, boolean blockChange) {
+    public void fill(UserInfo userInfoDB) {
         if (this.avatar == null) {
             setAvatar(userInfoDB.getAvatar());
         }
@@ -268,20 +301,33 @@ public class UserInfo {
             setBadge(userInfoDB.getBadge());
         }
 
-        if (this.mTicketNum == null) {
-            setMTicketNum(userInfoDB.getMTicketNum());
-        }
-
         if (this.certificationType == null) {
             setCertificationType(userInfoDB.getCertificationType());
         }
 
-        if (!relationChange) {
+        if (this.relative == null) {
             setRelative(userInfoDB.getRelative());
         }
 
-        if (!blockChange) {
+        if (this.block == null) {
             setBlock(userInfoDB.getBlock());
         }
+
+        if (this.vipLevel == null) {
+            setVipLevel(userInfoDB.getVipLevel());
+        }
+
+        if (this.isVipFrozen == null) {
+            setIsVipFrozen(userInfoDB.getIsVipFrozen());
+        }
+
+        if (this.isVipFrozen == null) {
+            setIsVipHide(userInfoDB.getIsVipHide());
+        }
+
+        if (this.nobleLevel == null) {
+            setNobleLevel(userInfoDB.getNobleLevel());
+        }
     }
+
 }

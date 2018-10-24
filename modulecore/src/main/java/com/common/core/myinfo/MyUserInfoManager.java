@@ -48,6 +48,10 @@ public class MyUserInfoManager {
                 .subscribe();
     }
 
+    public MyUserInfo getMyUserInfo() {
+        return mUser;
+    }
+
     public void setMyUserInfo(MyUserInfo myUserInfo) {
         if (myUserInfo != null) {
             mUser = myUserInfo;
