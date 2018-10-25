@@ -1,5 +1,6 @@
 package com.common.core.myinfo;
 
+import com.common.core.userinfo.UserInfo;
 import com.wali.live.proto.User.GetOwnInfoRsp;
 import com.wali.live.proto.User.PersonalData;
 import com.wali.live.proto.User.PersonalInfo;
@@ -15,45 +16,11 @@ import java.io.IOException;
 
 import okio.ByteString;
 
-@Entity(
-        indexes = {
-                @Index(value = "uid DESC", unique = true)
-        }
-)
+
 public class MyUserInfo {
-    @Id
-    private Long id;
-    @NotNull
-    private Long uid; // 用户id
-    private Long avatar;// 用户头像时间戳
-    private String nickName;// 用户昵称
-    private String sign;// 个性签名
-    private Integer gender;// 用户性别
-    private Integer level;// 用户等级
-    private Integer badge;// 用户勋章
+    private UserInfo mUserInfo;
 
-    private Long updateTs; // 上次更新的时间戳
-
-    private Integer certificationType = 0; // 认证类型
-    private String certification; // 认证信息
     private Boolean certificationChanged; // 认证改变
-
-    private Boolean isFocused;      // 是否被关注
-    private Boolean isBlock;        // 是否被拉黑
-    private Boolean isBothwayFollowing;  //是否双向关注
-
-    /*以下是用户的详细信息*/
-    private Integer liveTicketNum;      //星票数
-    private Integer fansNum;            //粉丝数
-    private Integer followNum;          //关注数
-    private Integer vodNum;             //点播数
-    private Integer earnNum;            //收益数
-    private Integer diamondNum;         //钻石数
-    private Integer goldCoinNum;         //金币数
-    private Integer sendDiamondNum;     //送出钻石数
-    private Integer sentVirtualDiamondNum;//送出虚拟钻石数
-    private Integer virtualDiamondNum;  //虚拟钻数
-    private Boolean isLive = false;
 
     private String viewUrl;                                       //直播地址
     private String roomId = null;                                 //正在直播的id, 房间号
@@ -66,167 +33,96 @@ public class MyUserInfo {
 
     private String norbleMedal = null;
 
-    // vip相关
-    private Integer vipLevel;                                         //vip等级
-    private Boolean isVipFrozen;                                  //vip是否被冻结
-    private Boolean isVipHide;                                    //该vip用户最后一次的隐身状态
-
-    //贵族特权等级
-    private Integer nobleLevel;          //贵族特权
-
     //实名：手机绑定
     private Boolean isNeedBindPhone;
     private String phoneNum;
 
     private String ext;
 
-    @Generated(hash = 2079621641)
-    public MyUserInfo(Long id, @NotNull Long uid, Long avatar, String nickName,
-                      String sign, Integer gender, Integer level, Integer badge,
-                      Long updateTs, Integer certificationType, String certification,
-                      Boolean certificationChanged, Boolean isFocused, Boolean isBlock,
-                      Boolean isBothwayFollowing, Integer liveTicketNum, Integer fansNum,
-                      Integer followNum, Integer vodNum, Integer earnNum, Integer diamondNum,
-                      Integer goldCoinNum, Integer sendDiamondNum,
-                      Integer sentVirtualDiamondNum, Integer virtualDiamondNum,
-                      Boolean isLive, String viewUrl, String roomId, String tvRoomId,
-                      Integer roomType, Boolean online, Integer appType, Boolean redName,
-                      String norbleMedal, Integer vipLevel, Boolean isVipFrozen,
-                      Boolean isVipHide, Integer nobleLevel, Boolean isNeedBindPhone,
-                      String phoneNum, String ext) {
-        this.id = id;
-        this.uid = uid;
-        this.avatar = avatar;
-        this.nickName = nickName;
-        this.sign = sign;
-        this.gender = gender;
-        this.level = level;
-        this.badge = badge;
-        this.updateTs = updateTs;
-        this.certificationType = certificationType;
-        this.certification = certification;
-        this.certificationChanged = certificationChanged;
-        this.isFocused = isFocused;
-        this.isBlock = isBlock;
-        this.isBothwayFollowing = isBothwayFollowing;
-        this.liveTicketNum = liveTicketNum;
-        this.fansNum = fansNum;
-        this.followNum = followNum;
-        this.vodNum = vodNum;
-        this.earnNum = earnNum;
-        this.diamondNum = diamondNum;
-        this.goldCoinNum = goldCoinNum;
-        this.sendDiamondNum = sendDiamondNum;
-        this.sentVirtualDiamondNum = sentVirtualDiamondNum;
-        this.virtualDiamondNum = virtualDiamondNum;
-        this.isLive = isLive;
-        this.viewUrl = viewUrl;
-        this.roomId = roomId;
-        this.tvRoomId = tvRoomId;
-        this.roomType = roomType;
-        this.online = online;
-        this.appType = appType;
-        this.redName = redName;
-        this.norbleMedal = norbleMedal;
-        this.vipLevel = vipLevel;
-        this.isVipFrozen = isVipFrozen;
-        this.isVipHide = isVipHide;
-        this.nobleLevel = nobleLevel;
-        this.isNeedBindPhone = isNeedBindPhone;
-        this.phoneNum = phoneNum;
-        this.ext = ext;
-    }
-
-    @Generated(hash = 198622815)
     public MyUserInfo() {
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        if (mUserInfo == null) {
+            mUserInfo = new UserInfo();
+        }
     }
 
     public Long getUid() {
-        return this.uid;
+        return this.mUserInfo.getUserId();
     }
 
     public void setUid(Long uid) {
-        this.uid = uid;
+        this.mUserInfo.setUserId(uid);
     }
 
     public Long getAvatar() {
-        return this.avatar;
+        return this.mUserInfo.getAvatar();
     }
 
     public void setAvatar(Long avatar) {
-        this.avatar = avatar;
+        this.mUserInfo.setAvatar(avatar);
     }
 
     public String getNickName() {
-        return this.nickName;
+        return this.mUserInfo.getUserNickname();
     }
 
     public void setNickName(String nickName) {
-        this.nickName = nickName;
+        this.mUserInfo.setUserNickname(nickName);
     }
 
     public String getSign() {
-        return this.sign;
+        return this.mUserInfo.getSignature();
     }
 
     public void setSign(String sign) {
-        this.sign = sign;
+        this.mUserInfo.setSignature(sign);
     }
 
     public Integer getGender() {
-        return this.gender;
+        return this.mUserInfo.getGender();
     }
 
     public void setGender(Integer gender) {
-        this.gender = gender;
+        this.mUserInfo.setGender(gender);
     }
 
     public Integer getLevel() {
-        return this.level;
+        return this.mUserInfo.getLevel();
     }
 
     public void setLevel(Integer level) {
-        this.level = level;
+        this.mUserInfo.setLevel(level);
     }
 
     public Integer getBadge() {
-        return this.badge;
+        return this.mUserInfo.getBadge();
     }
 
     public void setBadge(Integer badge) {
-        this.badge = badge;
+        this.mUserInfo.setBadge(badge);
     }
 
     public Long getUpdateTs() {
-        return this.updateTs;
+        return this.mUserInfo.getUpdateTime();
     }
 
     public void setUpdateTs(Long updateTs) {
-        this.updateTs = updateTs;
+        this.mUserInfo.setUpdateTime(updateTs);
     }
 
     public Integer getCertificationType() {
-        return this.certificationType;
+        return this.mUserInfo.getCertificationType();
     }
 
     public void setCertificationType(Integer certificationType) {
-        this.certificationType = certificationType;
+        this.mUserInfo.setCertificationType(certificationType);
     }
 
     public String getCertification() {
-        return this.certification;
+        return this.mUserInfo.getCertification();
     }
 
     public void setCertification(String certification) {
-        this.certification = certification;
+        this.mUserInfo.setCertification(certification);
     }
 
     public Boolean getCertificationChanged() {
@@ -237,116 +133,100 @@ public class MyUserInfo {
         this.certificationChanged = certificationChanged;
     }
 
-    public Boolean getIsFocused() {
-        return this.isFocused;
-    }
-
-    public void setIsFocused(Boolean isFocused) {
-        this.isFocused = isFocused;
-    }
-
     public Boolean getIsBlock() {
-        return this.isBlock;
+        return this.mUserInfo.getBlock();
     }
 
     public void setIsBlock(Boolean isBlock) {
-        this.isBlock = isBlock;
-    }
-
-    public Boolean getIsBothwayFollowing() {
-        return this.isBothwayFollowing;
-    }
-
-    public void setIsBothwayFollowing(Boolean isBothwayFollowing) {
-        this.isBothwayFollowing = isBothwayFollowing;
+        this.mUserInfo.setBlock(isBlock);
     }
 
     public Integer getLiveTicketNum() {
-        return this.liveTicketNum;
+        return this.mUserInfo.getLiveTicketNum();
     }
 
     public void setLiveTicketNum(Integer liveTicketNum) {
-        this.liveTicketNum = liveTicketNum;
+        this.mUserInfo.setLiveTicketNum(liveTicketNum);
     }
 
     public Integer getFansNum() {
-        return this.fansNum;
+        return this.mUserInfo.getFansNum();
     }
 
     public void setFansNum(Integer fansNum) {
-        this.fansNum = fansNum;
+        this.mUserInfo.setFansNum(fansNum);
     }
 
     public Integer getFollowNum() {
-        return this.followNum;
+        return this.mUserInfo.getFansNum();
     }
 
     public void setFollowNum(Integer followNum) {
-        this.followNum = followNum;
+        this.mUserInfo.setFollowNum(followNum);
     }
 
     public Integer getVodNum() {
-        return this.vodNum;
+        return this.mUserInfo.getVodNum();
     }
 
     public void setVodNum(Integer vodNum) {
-        this.vodNum = vodNum;
+        this.mUserInfo.setVodNum(vodNum);
     }
 
     public Integer getEarnNum() {
-        return this.earnNum;
+        return this.mUserInfo.getEarnNum();
     }
 
     public void setEarnNum(Integer earnNum) {
-        this.earnNum = earnNum;
+        this.mUserInfo.setEarnNum(earnNum);
     }
 
     public Integer getDiamondNum() {
-        return this.diamondNum;
+        return this.mUserInfo.getDiamondNum();
     }
 
     public void setDiamondNum(Integer diamondNum) {
-        this.diamondNum = diamondNum;
+        this.mUserInfo.setDiamondNum(diamondNum);
     }
 
     public Integer getGoldCoinNum() {
-        return this.goldCoinNum;
+        return this.mUserInfo.getGoldCoinNum();
     }
 
     public void setGoldCoinNum(Integer goldCoinNum) {
-        this.goldCoinNum = goldCoinNum;
+        this.setGoldCoinNum(goldCoinNum);
     }
 
     public Integer getSendDiamondNum() {
-        return this.sendDiamondNum;
+        return this.mUserInfo.getSendDiamondNum();
     }
 
     public void setSendDiamondNum(Integer sendDiamondNum) {
-        this.sendDiamondNum = sendDiamondNum;
+        this.mUserInfo.setSendDiamondNum(sendDiamondNum);
     }
 
     public Integer getSentVirtualDiamondNum() {
-        return this.sentVirtualDiamondNum;
+        return this.mUserInfo.getSentVirtualDiamondNum();
     }
 
     public void setSentVirtualDiamondNum(Integer sentVirtualDiamondNum) {
-        this.sentVirtualDiamondNum = sentVirtualDiamondNum;
+        this.mUserInfo.setSendDiamondNum(sentVirtualDiamondNum);
     }
 
     public Integer getVirtualDiamondNum() {
-        return this.virtualDiamondNum;
+        return this.mUserInfo.getVirtualDiamondNum();
     }
 
     public void setVirtualDiamondNum(Integer virtualDiamondNum) {
-        this.virtualDiamondNum = virtualDiamondNum;
+        this.mUserInfo.setVirtualDiamondNum(virtualDiamondNum);
     }
 
     public Boolean getIsLive() {
-        return this.isLive;
+        return this.mUserInfo.getIsLive();
     }
 
     public void setIsLive(Boolean isLive) {
-        this.isLive = isLive;
+        this.mUserInfo.setIsLive(isLive);
     }
 
     public String getViewUrl() {
@@ -414,35 +294,35 @@ public class MyUserInfo {
     }
 
     public Integer getVipLevel() {
-        return this.vipLevel;
+        return this.mUserInfo.getVipLevel();
     }
 
     public void setVipLevel(Integer vipLevel) {
-        this.vipLevel = vipLevel;
+        this.mUserInfo.setVipLevel(vipLevel);
     }
 
     public Boolean getIsVipFrozen() {
-        return this.isVipFrozen;
+        return this.mUserInfo.getIsVipFrozen();
     }
 
     public void setIsVipFrozen(Boolean isVipFrozen) {
-        this.isVipFrozen = isVipFrozen;
+        this.mUserInfo.setIsVipFrozen(isVipFrozen);
     }
 
     public Boolean getIsVipHide() {
-        return this.isVipHide;
+        return this.mUserInfo.getIsVipHide();
     }
 
     public void setIsVipHide(Boolean isVipHide) {
-        this.isVipHide = isVipHide;
+        this.mUserInfo.setIsVipHide(isVipHide);
     }
 
     public Integer getNobleLevel() {
-        return this.nobleLevel;
+        return this.mUserInfo.getNobleLevel();
     }
 
     public void setNobleLevel(Integer nobleLevel) {
-        this.nobleLevel = nobleLevel;
+        this.mUserInfo.setNobleLevel(nobleLevel);
     }
 
     public Boolean getIsNeedBindPhone() {
@@ -469,65 +349,18 @@ public class MyUserInfo {
         this.ext = ext;
     }
 
+    public UserInfo getUserInfo() {
+        return mUserInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        mUserInfo = userInfo;
+    }
+
     public static MyUserInfo loadFrom(GetOwnInfoRsp rsp) {
         MyUserInfo user = new MyUserInfo();
-        if (rsp.getPersonalInfo() != null) {
-            user.parse(rsp.getPersonalInfo());
-        }
-        if (rsp.getPersonalData() != null) {
-            user.parse(rsp.getPersonalData());
-        }
+        UserInfo userInfo = UserInfo.loadFrom(rsp.getPersonalInfo(), rsp.getPersonalData());
+        user.setUserInfo(userInfo);
         return user;
     }
-
-    private void parse(PersonalInfo protoUser) {
-        if (protoUser == null) {
-            return;
-        }
-        this.uid = protoUser.getZuid();
-        this.avatar = protoUser.getAvatar();
-        this.nickName = protoUser.getNickname();
-        this.sign = protoUser.getSign();
-        this.gender = protoUser.getGender();
-        this.level = protoUser.getLevel();
-        this.badge = protoUser.getBadge();
-        this.updateTs = protoUser.getUpdateTime();
-        this.certification = protoUser.getCertification();
-        this.isFocused = protoUser.getIsFocused();
-        this.isBlock = protoUser.getIsBlocked();
-        this.isBothwayFollowing = protoUser.getIsBothwayFollowing();
-        this.certificationType = protoUser.getCertificationType();
-        this.certificationChanged = false;
-        this.redName = protoUser.getIsRedname();
-
-        this.vipLevel = protoUser.getVipLevel();
-        this.isVipHide = protoUser.getVipHidden();
-        this.isVipFrozen = protoUser.getVipDisable();
-    }
-
-    public void parse(PersonalData protoData) {
-        if (protoData == null) {
-            return;
-        }
-        this.liveTicketNum = protoData.getMliveTicketNum();
-        this.fansNum = protoData.getFansNum();
-        this.followNum = protoData.getFollowNum();
-        this.sendDiamondNum = protoData.getSendDiamondNum();
-        this.vodNum = protoData.getVodNum();
-        this.earnNum = protoData.getEarnNum();
-        this.diamondNum = protoData.getDiamondNum();
-
-        ByteString bs = protoData.getUserEcoAttr();
-        try {
-            UserEcoAttr userEcoAttr = UserEcoAttr.parseFrom(bs.toByteArray());
-            if (userEcoAttr != null) {
-                this.virtualDiamondNum = userEcoAttr.getUsableVirtualGemCnt();
-                this.sentVirtualDiamondNum = userEcoAttr.getConsumVirtualGemCnt();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

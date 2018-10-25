@@ -1,6 +1,7 @@
 package com.wali.live.modulewatch.base;
 
 import com.common.base.BaseActivity;
+import com.wali.live.modulewatch.barrage.collection.InsertSortLinkedList;
 import com.wali.live.modulewatch.barrage.manager.LiveRoomChatMsgManager;
 import com.wali.live.modulewatch.model.roominfo.RoomBaseDataModel;
 
@@ -17,5 +18,5 @@ public abstract class BaseSdkActivity extends BaseActivity {
     /**
      * 房间弹幕管理
      */
-    protected LiveRoomChatMsgManager mRoomChatMsgManager = new LiveRoomChatMsgManager();
+    protected LiveRoomChatMsgManager mRoomChatMsgManager = new LiveRoomChatMsgManager(InsertSortLinkedList.DEFAULT_MAX_SIZE);
 }

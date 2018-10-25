@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.RouterConstants;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.roominfo.RoomInfoServerApi;
 import com.common.core.scheme.SchemeConstants;
@@ -133,7 +134,7 @@ public class SchemeProcessor extends CommonProcessor {
                     .map(new Function<Integer, RoomInfoRsp>() {
                         @Override
                         public RoomInfoRsp apply(Integer integer) throws Exception {
-                            return RoomInfoServerApi.getRoomInfo(MyUserInfoManager.getInstance().getUid(),
+                            return RoomInfoServerApi.getRoomInfo(MyUserInfoManager.getInstance().getMyUserInfo().getUserInfo().getUserId(),
                                     playerId, liveId, null, false, false);
                         }
                     })

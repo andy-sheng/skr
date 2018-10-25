@@ -8,11 +8,9 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.userinfo.UserInfo;
 import com.common.core.account.UserAccount;
 
-import com.common.core.db.MyUserInfoDao;
 import com.common.core.db.UserInfoDao;
 import com.common.core.db.UserAccountDao;
 
@@ -25,11 +23,9 @@ import com.common.core.db.UserAccountDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig myUserInfoDaoConfig;
     private final DaoConfig userInfoDaoConfig;
     private final DaoConfig userAccountDaoConfig;
 
-    private final MyUserInfoDao myUserInfoDao;
     private final UserInfoDao userInfoDao;
     private final UserAccountDao userAccountDao;
 
@@ -37,32 +33,22 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
-        myUserInfoDaoConfig = daoConfigMap.get(MyUserInfoDao.class).clone();
-        myUserInfoDaoConfig.initIdentityScope(type);
-
         userInfoDaoConfig = daoConfigMap.get(UserInfoDao.class).clone();
         userInfoDaoConfig.initIdentityScope(type);
 
         userAccountDaoConfig = daoConfigMap.get(UserAccountDao.class).clone();
         userAccountDaoConfig.initIdentityScope(type);
 
-        myUserInfoDao = new MyUserInfoDao(myUserInfoDaoConfig, this);
         userInfoDao = new UserInfoDao(userInfoDaoConfig, this);
         userAccountDao = new UserAccountDao(userAccountDaoConfig, this);
 
-        registerDao(MyUserInfo.class, myUserInfoDao);
         registerDao(UserInfo.class, userInfoDao);
         registerDao(UserAccount.class, userAccountDao);
     }
     
     public void clear() {
-        myUserInfoDaoConfig.clearIdentityScope();
         userInfoDaoConfig.clearIdentityScope();
         userAccountDaoConfig.clearIdentityScope();
-    }
-
-    public MyUserInfoDao getMyUserInfoDao() {
-        return myUserInfoDao;
     }
 
     public UserInfoDao getUserInfoDao() {

@@ -101,10 +101,11 @@ public class LoginActivity extends BaseActivity {
                 Observable.create(new ObservableOnSubscribe<Object>() {
                     @Override
                     public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                        long uid = MyUserInfoManager.getInstance().getUid();
+                        long uid = MyUserInfoManager.getInstance().getMyUserInfo().getUserInfo().getUserId();
                         UserInfoManager.getInstance().syncFollowerListFromServer(uid, 5, 0);
                         UserInfoManager.getInstance().syncFollowingFromServer(uid, 5, 0, true, true);
                         UserInfoManager.getInstance().syncBockerListFromServer(uid, 5, 0);
+                        MyUserInfoManager.getInstance().init();
                         UserInfoManager.getInstance().getHomepageByUuid(490020, true, new UserInfoManager.UserInfoPageCallBack() {
                             @Override
                             public boolean onGetLocalDB(UserInfo userInfo) {
@@ -144,11 +145,12 @@ public class LoginActivity extends BaseActivity {
                 Observable.create(new ObservableOnSubscribe<Object>() {
                     @Override
                     public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                        long uid = MyUserInfoManager.getInstance().getUid();
+                        long uid = MyUserInfoManager.getInstance().getMyUserInfo().getUserInfo().getUserId();
                         UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.BOTH_FOLLOWED, true, false);
                         UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWING, true, false);
                         UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWING, false, false);
                         UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWER, true, false);
+                        MyUserInfoManager.getInstance().getMyUserInfo();
                         emitter.onComplete();
                     }
                 }).subscribeOn(Schedulers.io())
@@ -159,7 +161,7 @@ public class LoginActivity extends BaseActivity {
         mMiTestFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final long uid = MyUserInfoManager.getInstance().getUid();
+                final long uid = MyUserInfoManager.getInstance().getMyUserInfo().getUserInfo().getUserId();
 //                UserInfoManager.getInstance().follow(uid, 490021, null)
 //                UserInfoManager.getInstance().unBlock(uid, 490014)
 //                UserInfoManager.getInstance().unFollow(uid, 490020)

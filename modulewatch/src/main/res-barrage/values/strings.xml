@@ -23,4 +23,7 @@
     <string name="barrage_share_body">分享了直播</string>
 
     <string name="barrage_message_too_large">您发送的弹幕太长，请分为两次发送，谢谢</string>
+    <string name="live_start_light">我点亮了</string>
+
+    <string name="brrage_level_upgrade" formatted="false">%s升至%s级,拥有更多特权</string>
 </resources>

@@ -7,38 +7,44 @@ import com.wali.live.proto.LiveCommon.Viewer;
 /**
  * Created by lan on 16-3-5.
  */
-public class ViewerModel extends UserInfo implements ViewerAction {
+public class ViewerModel {
 
+    private UserInfo mUserInfo;
     private boolean redName; //被社区红名
     private int currentLiveTicket;             //该观众本场贡献的星票数
     private String userNobelID;
 
     public ViewerModel(long uid) {
-
+        if (mUserInfo == null) {
+            mUserInfo = new UserInfo();
+        }
+        mUserInfo.setUserId(uid);
     }
 
     public ViewerModel(Viewer protoViewer) {
-
+        if (mUserInfo == null) {
+            mUserInfo = new UserInfo();
+        }
         parse(protoViewer);
     }
 
     public ViewerModel(long uid, int level, long avatar, int certificationType, boolean redName) {
-        setUserId(uid);
-        setLevel(level);
-        setAvatar(avatar);
-        setCertificationType(certificationType);
+        mUserInfo.setUserId(uid);
+        mUserInfo.setLevel(level);
+        mUserInfo.setAvatar(avatar);
+        mUserInfo.setCertificationType(certificationType);
         this.redName = redName;
     }
 
     public void parse(Viewer protoViewer) {
 
-        setUserId(protoViewer.getUuid());
-        setLevel(protoViewer.getLevel());
-        setAvatar(protoViewer.getAvatar());
-        setCertificationType(protoViewer.getCertificationType());
-        setVipLevel(protoViewer.getVipLevel());
-        setIsVipFrozen(protoViewer.getVipDisable());
-        setNobleLevel(protoViewer.getNobleLevel());
+        mUserInfo.setUserId(protoViewer.getUuid());
+        mUserInfo.setLevel(protoViewer.getLevel());
+        mUserInfo.setAvatar(protoViewer.getAvatar());
+        mUserInfo.setCertificationType(protoViewer.getCertificationType());
+        mUserInfo.setVipLevel(protoViewer.getVipLevel());
+        mUserInfo.setIsVipFrozen(protoViewer.getVipDisable());
+        mUserInfo.setNobleLevel(protoViewer.getNobleLevel());
 
 
         this.redName = protoViewer.getRedName();
@@ -48,8 +54,8 @@ public class ViewerModel extends UserInfo implements ViewerAction {
 
     public boolean isNoble() {
         int nobleLevel = 0;
-        if (getNobleLevel() != null) {
-            nobleLevel = getNobleLevel();
+        if (mUserInfo.getNobleLevel() != null) {
+            nobleLevel = mUserInfo.getNobleLevel();
         }
 
         return nobleLevel == UserInfoConstans.NOBLE_LEVEL_FIFTH || nobleLevel == UserInfoConstans.NOBLE_LEVEL_FOURTH
@@ -57,7 +63,7 @@ public class ViewerModel extends UserInfo implements ViewerAction {
                 || nobleLevel == UserInfoConstans.NOBLE_LEVEL_TOP;
     }
 
-    @Override
+
     public boolean equals(Object o) {
         if (o == null || !(o instanceof ViewerModel)) {
             return false;
@@ -65,50 +71,55 @@ public class ViewerModel extends UserInfo implements ViewerAction {
         if (this == o) {
             return true;
         }
-        return getUserId() == ((ViewerModel) o).getUserId();
+        return mUserInfo.getUserId() == ((ViewerModel) o).getUserInfo().getUserId();
     }
 
-    @Override
+
     public int hashCode() {
         int result = 17;
-        int elementHash = (int) (getUserId() ^ (getUserId() >>> 32));
+        int elementHash = (int) (mUserInfo.getUserId() ^ (mUserInfo.getUserId() >>> 32));
         result = 31 * result + elementHash;
         return result;
     }
 
-    @Override
+
     public String toString() {
         return "ViewerAction{" +
-                "uid=" + getUserId() +
+                "uid=" + mUserInfo.getUserId() +
                 '}';
     }
 
-    @Override
+    public UserInfo getUserInfo() {
+        return mUserInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.mUserInfo = userInfo;
+    }
+
     public boolean isRedName() {
         return redName;
     }
 
-    @Override
+
     public void setRedName(boolean redName) {
         this.redName = redName;
     }
 
-    @Override
+
     public int getCurrentLiveTicket() {
         return currentLiveTicket;
     }
 
-    @Override
+
     public void setCurrentLiveTicket(int currentLiveTicket) {
         this.currentLiveTicket = currentLiveTicket;
     }
 
-    @Override
     public String getUserNobelID() {
         return userNobelID;
     }
 
-    @Override
     public void setUserNobelID(String userNobelID) {
         this.userNobelID = userNobelID;
     }

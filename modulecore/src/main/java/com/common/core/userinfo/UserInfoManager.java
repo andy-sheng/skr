@@ -1,5 +1,7 @@
 package com.common.core.userinfo;
 
+import android.text.TextUtils;
+
 import com.common.log.MyLog;
 import com.wali.live.proto.Relation.BlockResponse;
 import com.wali.live.proto.Relation.BlockerListResponse;
@@ -77,7 +79,8 @@ public class UserInfoManager {
         if (local == null || !userInfoCallBack.onGetLocalDB(local)) {
             GetUserInfoByIdRsp response = UserInfoServerApi.getUserInfoByUuid(uuid);
             if (response != null && response.getErrorCode() == 0) {
-                UserInfo userInfo = UserInfo.loadFrom(response.getPersonalInfo());
+                UserInfo userInfo = new UserInfo();
+                userInfo.parse(response.getPersonalInfo());
                 MyLog.w(TAG, "getUserInfoByUuid userInfo = " + userInfo.toString());
                 UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
             }
@@ -116,7 +119,8 @@ public class UserInfoManager {
         if (local == null || !callBack.onGetLocalDB(local)) {
             GetHomepageResp response = UserInfoServerApi.getHomepageByUuid(uuid, needPullLiveInfo);
             if (response != null && response.getRetCode() == 0) {
-                UserInfo userInfo = UserInfo.loadFrom(response.getPersonalInfo());
+                UserInfo userInfo = new UserInfo();
+                userInfo.parse(response.getPersonalInfo());
                 MyLog.w(TAG, "getHomepageByUuid userInfo = " + userInfo.toString());
                 UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
             }
@@ -176,7 +180,9 @@ public class UserInfoManager {
             List<PersonalInfo> personalInfos = response.getPersonalInfoList();
             if (personalInfos != null && personalInfos.size() > 0) {
                 for (PersonalInfo personalInfo : personalInfos) {
-                    userInfoList.add(UserInfo.loadFrom(personalInfo));
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.parse(personalInfo);
+                    userInfoList.add(userInfo);
                 }
 
                 UserInfoLocalApi.insertOrUpdate(userInfoList);
@@ -433,4 +439,5 @@ public class UserInfoManager {
             }
         });
     }
+
 }

@@ -3,7 +3,9 @@ package com.wali.live.modulewatch.model.roominfo;
 import com.common.core.UserInfoConstans;
 import com.common.core.userinfo.UserInfo;
 
-public class AnchorModel extends UserInfo implements AnchorAction {
+public class AnchorModel {
+
+    private UserInfo mUserInfo;
 
     private String mViewUrl;            //直播地址
 
@@ -17,59 +19,59 @@ public class AnchorModel extends UserInfo implements AnchorAction {
     private int fansNum;            //粉丝数
 
     public AnchorModel() {
-
+        if (mUserInfo == null) {
+            mUserInfo = new UserInfo();
+        }
     }
 
-    @Override
+    public UserInfo getUserInfo() {
+        return mUserInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.mUserInfo = userInfo;
+    }
+
     public String getRoomId() {
         return mRoomId;
     }
 
-    @Override
     public void setRoomId(String mRoomId) {
         this.mRoomId = mRoomId;
     }
 
-    @Override
     public String getViewUrl() {
         return mViewUrl;
     }
 
-    @Override
     public void setViewUrl(String mViewUrl) {
         this.mViewUrl = mViewUrl;
     }
 
-
-    @Override
     public int getFansNum() {
         return fansNum;
     }
 
-    @Override
     public void setFansNum(int fansNum) {
         this.fansNum = fansNum;
     }
 
-    @Override
     public void setLiveTicketNum(int liveTicketNum) {
         this.liveTicketNum = liveTicketNum;
     }
 
-    @Override
     public int getLiveTicketNum() {
         return liveTicketNum;
     }
 
-    @Override
     public int getPayBarrageGiftId() {
         return payBarrageGiftId;
     }
 
     public boolean isNoble() {
         int nobleLevel = 0;
-        if (getNobleLevel() != null) {
-            nobleLevel = getNobleLevel();
+        if (mUserInfo.getNobleLevel() != null) {
+            nobleLevel = mUserInfo.getNobleLevel();
         }
 
         return nobleLevel == UserInfoConstans.NOBLE_LEVEL_FIFTH || nobleLevel == UserInfoConstans.NOBLE_LEVEL_FOURTH

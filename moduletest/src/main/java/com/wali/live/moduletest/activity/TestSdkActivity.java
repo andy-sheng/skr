@@ -21,6 +21,7 @@ import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.RouterConstants;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
@@ -62,13 +63,14 @@ public class TestSdkActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
+
         mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
         View view = mTitlebar.getLeftCustomView();
         BaseImageView baseImageView = view.findViewById(R.id.head_img);
 
         AvatarUtils.loadAvatarByUrl(baseImageView,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatarTs())
+                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
 
         mListRv = (RecyclerView) findViewById(R.id.list_rv);
@@ -269,7 +271,7 @@ public class TestSdkActivity extends BaseActivity {
             public void run() {
                 AvatarUtils.loadAvatarByUrl(baseImageView,
                         AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
-                                .setTimestamp(MyUserInfoManager.getInstance().getAvatarTs())
+                                .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                                 .build());
 
                 U.getAppInfoUtils().showDebugDBAddressLogToast();

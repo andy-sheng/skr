@@ -70,6 +70,7 @@ android {
             java.srcDirs += 'src/main/java-gen-pb'
             res.srcDirs += ['src/main/res-watch']
             res.srcDirs += ['src/main/res-barrage']
+            res.srcDirs += ['src/main/res-smiley']
         }
     }
 }

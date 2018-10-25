@@ -2,6 +2,9 @@ package com.common.core.myinfo;
 
 
 import com.common.core.account.UserAccountManager;
+import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoLocalApi;
+import com.common.core.userinfo.UserInfoManager;
 import com.wali.live.proto.User.GetOwnInfoRsp;
 
 import io.reactivex.Observable;
@@ -26,15 +29,19 @@ public class MyUserInfoManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
-                    MyUserInfo userInfo = MyUserInfoLocalApi.getUserAccount(UserAccountManager.getInstance().getUuidAsLong());
-                    setMyUserInfo(userInfo);
+                    MyUserInfo myUserInfo = new MyUserInfo();
+                    UserInfo userInfo = UserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
+                    if (userInfo != null) {
+                        myUserInfo.setUserInfo(userInfo);
+                        setMyUserInfo(myUserInfo);
+                    }
                     // 从服务器拉一次
                     GetOwnInfoRsp rsp = MyUserInfoServerApi.getOwnInfoRsp(UserAccountManager.getInstance().getUuidAsLong());
                     if (rsp != null) {
-                        userInfo = MyUserInfo.loadFrom(rsp);
-                        if (userInfo != null) {
-                            MyUserInfoLocalApi.insertOrReplace(userInfo);
-                            setMyUserInfo(userInfo);
+                        myUserInfo = MyUserInfo.loadFrom(rsp);
+                        if (myUserInfo != null) {
+                            UserInfoLocalApi.insertOrUpdate(myUserInfo.getUserInfo(), false, false);
+                            setMyUserInfo(myUserInfo);
                         }
                     }
                 }
@@ -59,25 +66,36 @@ public class MyUserInfoManager {
         }
     }
 
-    public String getNickName() {
-        if (mUser != null) {
-            return mUser.getNickName();
-        }
-        return "";
-    }
-
     public long getUid() {
-        if (mUser != null) {
-            return mUser.getUid();
-        }
-        return 0;
+        return mUser != null ? mUser.getUid() : 0;
     }
 
-    public long getAvatarTs() {
-        if (mUser != null) {
-            return mUser.getAvatar();
-        }
-        return 0;
+    public String getNickName() {
+        return mUser != null ? mUser.getNickName() : "";
+    }
+
+    public long getAvatar() {
+        return mUser != null ? mUser.getAvatar() : 0;
+    }
+
+    public int getLevel() {
+        return mUser != null ? mUser.getLevel() : 0;
+    }
+
+    public int getVipLevel() {
+        return mUser != null ? mUser.getVipLevel() : 0;
+    }
+
+    public boolean isRedName() {
+        return mUser != null ? mUser.getRedName() : false;
+    }
+
+    public boolean isVipFrozen() {
+        return mUser != null ? mUser.getIsVipFrozen() : false;
+    }
+
+    public synchronized int getNobleLevel() {
+        return mUser != null ? mUser.getNobleLevel() : 0;
     }
 
     private static class MyUserInfoManagerHolder {

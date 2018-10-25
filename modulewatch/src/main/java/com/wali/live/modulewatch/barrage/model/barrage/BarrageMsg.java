@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -142,10 +143,11 @@ public class BarrageMsg implements Comparable<BarrageMsg> {
     }
 
     public void appendCommonInfo() {
-        setVipLevel(MyUserInfoManager.getInstance().getMyUserInfo().getVipLevel());
-        setVipFrozen(MyUserInfoManager.getInstance().getMyUserInfo().getIsVipFrozen());
-        setVipHide(MyUserInfoManager.getInstance().getMyUserInfo().getIsVipHide());
-        setNobleLevel(MyUserInfoManager.getInstance().getMyUserInfo().getNobleLevel());
+        MyUserInfo myUserInfo = MyUserInfoManager.getInstance().getMyUserInfo();
+        setVipLevel(myUserInfo.getUserInfo().getVipLevel());
+        setVipFrozen(myUserInfo.getUserInfo().getIsVipFrozen());
+        setVipHide(myUserInfo.getUserInfo().getIsVipHide());
+        setNobleLevel(myUserInfo.getUserInfo().getNobleLevel());
     }
 
     @Override

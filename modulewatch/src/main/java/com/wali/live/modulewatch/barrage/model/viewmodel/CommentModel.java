@@ -9,12 +9,14 @@ import android.widget.TextView;
 import com.common.core.UserInfoConstans;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.utils.DisplayUtils;
 import com.common.utils.U;
 import com.wali.live.modulewatch.R;
 import com.wali.live.modulewatch.barrage.model.barrage.BarrageMsg;
 import com.wali.live.modulewatch.barrage.model.barrage.BarrageMsgExt;
 import com.wali.live.modulewatch.barrage.model.barrage.BarrageMsgType;
 import com.wali.live.modulewatch.model.fans.VfansPrivilegeModel;
+import com.wali.live.modulewatch.smiley.SmileyParser;
 import com.wali.live.modulewatch.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -193,14 +195,13 @@ public class CommentModel implements Comparable<CommentModel> {
     }
 
     public void setBody(String body, boolean parser) {
-        // todo 等加入表情符号
-//        if (parser) {
-//            String commentTrim = body == null ? "" : body.replaceAll("\n", " ");
-//            this.body = SmileyParser.getInstance().addSmileySpans(U.app(), commentTrim,
-//                    DisplayUtils.dip2px(13.33f), true, false, true);
-//        } else {
-//            this.body = body;
-//        }
+        if (parser) {
+            String commentTrim = body == null ? "" : body.replaceAll("\n", " ");
+            this.body = SmileyParser.getInstance().addSmileySpans(U.app(), commentTrim,
+                    U.getDisplayUtils().dip2px(13.33f), true, false, true);
+        } else {
+            this.body = body;
+        }
     }
 
     public void setLevel(int level) {

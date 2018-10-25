@@ -59,11 +59,11 @@ public class SpecificProcessor extends CommonProcessor {
 
         // todo 打开VideoDetailSdkActivity
         ARouter.getInstance().build(RouterConstants.ACTIVITY_VIDEO)
-                .withString("liveId", uri.toString())
-                .withLong("videoUrl", MyUserInfoManager.getInstance().getUid())
-                .withLong("liveType", MyUserInfoManager.getInstance().getAvatarTs())
+                .withString("url", uri.toString())
+                .withLong("uid", MyUserInfoManager.getInstance().getUid())
+                .withString("videoUrl", MyUserInfoManager.getInstance().getMyUserInfo().getViewUrl())
+                .withLong("avatar", MyUserInfoManager.getInstance().getAvatar())
                 .greenChannel().navigation();
-
 
     }
 

@@ -262,31 +262,31 @@ public class RoomBaseDataModel implements Serializable {
     }
 
     public void setUid(long id) {
-        mOwner.setUserId(id);
+        mOwner.getUserInfo().setUserId(id);
     }
 
     public long getUid() {
-        return mOwner.getUserId();
+        return mOwner.getUserInfo().getUserId();
     }
 
     public void setNickname(String nickName) {
-        mOwner.setUserNickname(nickName);
+        mOwner.getUserInfo().setUserNickname(nickName);
     }
 
     public String getNickName() {
-        return mOwner.getUserNickname();
+        return mOwner.getUserInfo().getUserNickname();
     }
 
     public String getSignature() {
-        return mOwner.getSignature();
+        return mOwner.getUserInfo().getSignature();
     }
 
     public void setAvatarTs(long ts) {
-        mOwner.setAvatar(ts);
+        mOwner.getUserInfo().setAvatar(ts);
     }
 
     public long getAvatarTs() {
-        return mOwner.getAvatar();
+        return mOwner.getUserInfo().getAvatar();
     }
 
     public void setRoomId(String roomId) {
@@ -350,11 +350,11 @@ public class RoomBaseDataModel implements Serializable {
     }
 
     public int getCertificationType() {
-        return mOwner.getCertificationType();
+        return mOwner.getUserInfo().getCertificationType();
     }
 
     public int getLevel() {
-        return mOwner.getLevel();
+        return mOwner.getUserInfo().getLevel();
     }
 
     public int getTicket() {
@@ -388,15 +388,15 @@ public class RoomBaseDataModel implements Serializable {
 
     public void setUser(AnchorModel newUser) {
         if (newUser != null) {
-            if (newUser.getUserId() == mOwner.getUserId()) {
+            if (newUser.getUserInfo().getUserId() == mOwner.getUserInfo().getUserId()) {
                 if (newUser.getLiveTicketNum() <= 0) {
                     newUser.setLiveTicketNum(mOwner.getLiveTicketNum());
                 }
-                if (TextUtils.isEmpty(newUser.getUserNickname())) {
-                    newUser.setUserNickname(mOwner.getUserNickname());
+                if (TextUtils.isEmpty(newUser.getUserInfo().getUserNickname())) {
+                    newUser.getUserInfo().setUserNickname(mOwner.getUserInfo().getUserNickname());
                 }
-                if (newUser.getAvatar() <= 0 && mOwner.getAvatar() > 0) {
-                    newUser.setAvatar(mOwner.getAvatar());
+                if (newUser.getUserInfo().getAvatar() <= 0 && mOwner.getUserInfo().getAvatar() > 0) {
+                    newUser.getUserInfo().setAvatar(mOwner.getUserInfo().getAvatar());
                 }
                 if (newUser.getFansNum() <= 0) {
                     newUser.setFansNum(mOwner.getFansNum());
@@ -420,7 +420,7 @@ public class RoomBaseDataModel implements Serializable {
     }
 
     public int getGender() {
-        return this.mOwner.getGender();
+        return this.mOwner.getUserInfo().getGender();
     }
 
 
@@ -436,11 +436,11 @@ public class RoomBaseDataModel implements Serializable {
 
     public boolean isFocused() {
 
-        return mOwner.getRelative() == UserInfoManager.BOTH_FOLLOWED || mOwner.getRelative() == UserInfoManager.MY_FOLLOWING;
+        return mOwner.getUserInfo().getRelative() == UserInfoManager.BOTH_FOLLOWED || mOwner.getUserInfo().getRelative() == UserInfoManager.MY_FOLLOWING;
     }
 
     public boolean isBothwayFollowing() {
-        return mOwner.getRelative() == UserInfoManager.BOTH_FOLLOWED;
+        return mOwner.getUserInfo().getRelative() == UserInfoManager.BOTH_FOLLOWED;
     }
 
 

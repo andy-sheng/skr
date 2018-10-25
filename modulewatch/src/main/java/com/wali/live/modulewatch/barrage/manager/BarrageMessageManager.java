@@ -160,7 +160,7 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
                     barrageMsgList.add(barrageMsg);
                 }
                 MyLog.d(TAG, "barrageMsgList.size():" + barrageMsgList.size());
-                if (msg.getFromUser() == MyUserInfoManager.getInstance().getUid()) {
+                if (msg.getFromUser() == MyUserInfoManager.getInstance().getMyUserInfo().getUid()) {
                     updateUserInfo(msg);
                 }
 
