@@ -144,10 +144,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             //'这个方法是Factory2里面定义的方法'
             @Override
             public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-                MyLog.e(TAG, "parent:" + parent + ",name = " + name);
+//                MyLog.e(TAG, "parent:" + parent + ",name = " + name);
                 int n = attrs.getAttributeCount();
                 for (int i = 0; i < n; i++) {
-                    MyLog.e(TAG, attrs.getAttributeName(i) + " , " + attrs.getAttributeValue(i));
+//                    MyLog.e(TAG, attrs.getAttributeName(i) + " , " + attrs.getAttributeValue(i));
                 }
                 //我们只是更换了参数，但最终实例化View的逻辑还是交给了AppCompatDelegateImpl
                 AppCompatDelegate delegate = getDelegate();

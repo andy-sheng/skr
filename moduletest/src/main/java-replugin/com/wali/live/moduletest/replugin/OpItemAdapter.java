@@ -70,10 +70,18 @@ public class OpItemAdapter extends RecyclerView.Adapter {
             @Override
             public void onInstallBtnClick(PackageData data) {
                 if (data.isFromInstallView()) {
-                    Intent repluginIntent = RePlugin.createIntent(data.getPackageName(), "com.wali.live.pldemo.activity.PDMainAcitivity");
-                    MyLog.d(TAG, "intent:" + repluginIntent);
-                    if (repluginIntent != null) {
-                        RePlugin.startActivity(mContext, repluginIntent);
+                    if(data.getPackageName().equals("com.duowan.mobile")){
+                        Intent repluginIntent = RePlugin.createIntent(data.getPackageName(), "com.yy.mobile.ui.splash.SplashActivity");
+                        MyLog.d(TAG, "intent:" + repluginIntent);
+                        if (repluginIntent != null) {
+                            RePlugin.startActivity(mContext, repluginIntent);
+                        }
+                    }else {
+                        Intent repluginIntent = RePlugin.createIntent(data.getPackageName(), "com.wali.live.pldemo.activity.PDMainAcitivity");
+                        MyLog.d(TAG, "intent:" + repluginIntent);
+                        if (repluginIntent != null) {
+                            RePlugin.startActivity(mContext, repluginIntent);
+                        }
                     }
                 } else {
                     if (data.getStatus() == PackageData.STATUS_UNINSTALL) {
