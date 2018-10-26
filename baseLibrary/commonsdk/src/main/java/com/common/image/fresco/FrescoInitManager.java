@@ -124,7 +124,7 @@ public class FrescoInitManager {
         Fresco.initialize(context, imagePipelineConfig.build());
 
         FLog.setLoggingDelegate(new FrescoLogDelegate("FrescoLogDelegate"));
-        FLog.setMinimumLoggingLevel(BuildConfig.DEBUG ? FLog.VERBOSE : FLog.ERROR);
+        FLog.setMinimumLoggingLevel(BuildConfig.DEBUG ? FLog.ERROR : FLog.ERROR);
     }
 
 

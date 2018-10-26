@@ -179,13 +179,9 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
 
     public CommonTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        MyLog.d(TAG,"1");
         loadAttributes(context, attrs);
-        MyLog.d(TAG,"2");
         initGlobalViews(context);
-        MyLog.d(TAG,"3");
         initMainViews(context);
-        MyLog.d(TAG,"4");
     }
 
     private void loadAttributes(Context context, AttributeSet attrs) {
@@ -259,10 +255,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
      * @param context
      */
     private void initGlobalViews(Context context) {
-        MyLog.d(TAG,"21");
         ViewGroup.LayoutParams globalParams = new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         setLayoutParams(globalParams);
-        MyLog.d(TAG,"22");
         // 构建标题栏填充视图
         boolean supportStatusBarLightMode = false;
         try {
@@ -270,7 +264,6 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
-        MyLog.d(TAG,"23");
         if (fillStatusBar && supportStatusBarLightMode) {
             int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(context);
             viewStatusBarFill = new View(context);
@@ -280,7 +273,6 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             statusBarParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             addView(viewStatusBarFill, statusBarParams);
         }
-        MyLog.d(TAG,"24");
         // 构建主视图
         rlMain = new RelativeLayout(context);
         rlMain.setId(generateViewId());
@@ -291,7 +283,6 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
         } else {
             mainParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         }
-        MyLog.d(TAG,"25");
         // 计算主布局高度
         if (showBottomLine) {
             mainParams.height = titleBarHeight - Math.max(1, U.getDisplayUtils().dip2px(context, 0.4f));
@@ -299,7 +290,6 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             mainParams.height = titleBarHeight;
         }
         addView(rlMain, mainParams);
-        MyLog.d(TAG,"26");
         // 构建分割线视图
         if (showBottomLine) {
             // 已设置显示标题栏分隔线,5.0以下机型,显示分隔线
@@ -317,7 +307,6 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
 
             addView(viewBottomShadow, bottomShadowParams);
         }
-        MyLog.d(TAG,"27");
     }
 
     /**
