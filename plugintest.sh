@@ -14,8 +14,7 @@ changePLuginBuildModule(){
 
 changePLuginBuildModule true
 
-exit
-./gradlew replugin-plugin-gradle:uploadArchives
+./gradlew :baseLibrary:replugin-plugin-gradle:uploadArchives
 echo 开始clean
 ./gradlew plugindemo:clean
 echo 开始编译
