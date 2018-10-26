@@ -1,3 +1,4 @@
+local_maven/
 build/
 .DS_Store
 .gradle
