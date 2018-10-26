@@ -18,6 +18,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.qihoo360.replugin.RePlugin;
 import com.qihoo360.replugin.model.PluginInfo;
+import com.wali.live.MsgUtils;
 import com.wali.live.moduletest.R;
 
 import java.io.File;
@@ -191,6 +192,7 @@ public class OpItemAdapter extends RecyclerView.Adapter {
         TextView mInfoTv;
         TextView mInstallTv;
         TextView mDeleteTv;
+        TextView mMsgTv;
         PackageData mData;
 
         ItemClickListener mItemClickListener;
@@ -200,6 +202,7 @@ public class OpItemAdapter extends RecyclerView.Adapter {
             mInfoTv = (TextView) itemView.findViewById(R.id.info_tv);
             mInstallTv = (TextView) itemView.findViewById(R.id.install_tv);
             mDeleteTv = (TextView) itemView.findViewById(R.id.delete_tv);
+            mMsgTv = itemView.findViewById(R.id.msg_tv);
             mDeleteTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -216,6 +219,12 @@ public class OpItemAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+            mMsgTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MsgUtils.getInstance().test(mData.getPackageName(),1,"宿主发送的消息");
+                }
+            });
         }
 
         public void setItemClickListener(ItemClickListener listener) {
@@ -225,9 +234,11 @@ public class OpItemAdapter extends RecyclerView.Adapter {
         public void bind(PackageData data) {
             mData = data;
             mInfoTv.setText(data.toString());
+            mMsgTv.setVisibility(View.GONE);
             if (data.isFromInstallView()) {
                 mDeleteTv.setText("卸载");
                 mInstallTv.setText("打开");
+                mMsgTv.setVisibility(View.VISIBLE);
             } else {
                 mDeleteTv.setVisibility(View.VISIBLE);
                 if (mData.getStatus() == PackageData.STATUS_UNINSTALL) {
@@ -244,7 +255,6 @@ public class OpItemAdapter extends RecyclerView.Adapter {
                         mInstallTv.setText("已安装");
                     }
                     mDeleteTv.setText("卸载");
-
                 }
             }
 
