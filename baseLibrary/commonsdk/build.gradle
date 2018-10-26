@@ -45,24 +45,28 @@ android {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen-db', 'src/main/java-gen-pb']
             // 可以通过开关随时取消依赖 exoplayer
-            java.srcDirs +=  'src/main/java-exoplayer'
+            java.srcDirs += 'src/main/java-exoplayer'
             res.srcDirs = ['src/main/res']
+            if (autoLayout.toBoolean()) {
+                res.srcDirs += 'src/main/res-adapter'
+            }
+            // commontitlebar
             res.srcDirs += 'src/main/res-titlebar'
 
             // 直接引入支持下拉加载 recyclerView
-            java.srcDirs +=  'src/main/java-paginate'
+            java.srcDirs += 'src/main/java-paginate'
             res.srcDirs += 'src/main/res-paginate'
 
             // 直接引入支持下拉加载 recyclerView
-            java.srcDirs +=  'src/main/java-imagepicker'
+            java.srcDirs += 'src/main/java-imagepicker'
             res.srcDirs += 'src/main/res-imagepicker'
 
             // 提供图片缩放浏览能力，支持渐变式，支持loading页，支持超大图，超大Gif
-            java.srcDirs +=  'src/main/java-imagebrowse'
+            java.srcDirs += 'src/main/java-imagebrowse'
 
-            if(repluginHostEnable.toBoolean()){
+            if (repluginHostEnable.toBoolean()) {
                 java.srcDirs += 'src/main/java-replugin-host'
-            }else{
+            } else {
                 java.srcDirs += 'src/main/java-replugin-plugin'
             }
         }

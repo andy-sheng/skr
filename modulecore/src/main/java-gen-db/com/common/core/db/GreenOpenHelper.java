@@ -35,5 +35,6 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
 //        }
 
         MigrationHelper.migrate(db,UserAccountDao.class);
+        MigrationHelper.migrate(db,UserInfoDao.class);
     }
 }

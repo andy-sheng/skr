@@ -24,9 +24,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.common.base.delegate.IActivity;
@@ -120,6 +123,39 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        /**
+         * 注意，这个方法的作用是可以接管 View 的实例化过程。在这里我可以对 View 或者 其属性都可以做替换。
+         * 可能的用途
+         * 1. 批量修改 View 的属性，但不建议使用
+         * 2. 用于我们代码无法控制的第三方库，替换他的 View 或者 属性,
+         *    可以用 javassist 字节码技术先往第三方的activity 搞一个代理，
+         *    其余的就随便我们操作了。
+         * 3. 动态换肤功能
+         *    这块动态换肤功能，网上的文章也很多，但是基本的原理都一样，也是用了我们本文的知识，和上面的更换字体类似，我们可以对做了标记的View进行识别，然后在onCreateView遍历到它的时候，更改它的一些属性，比如背景色等，然后再交给系统去生成View。
+         * 4. 无需编写shape、selector，直接在xml设置值
+         */
+        LayoutInflaterCompat.setFactory2(LayoutInflater.from(this), new LayoutInflater.Factory2() {
+            //'这个方法是Factory接口里面的，因为Factory2是继承Factory的'
+            @Override
+            public View onCreateView(String name, Context context, AttributeSet attrs) {
+                return null;
+            }
+
+            //'这个方法是Factory2里面定义的方法'
+            @Override
+            public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+                MyLog.e(TAG, "parent:" + parent + ",name = " + name);
+                int n = attrs.getAttributeCount();
+                for (int i = 0; i < n; i++) {
+                    MyLog.e(TAG, attrs.getAttributeName(i) + " , " + attrs.getAttributeValue(i));
+                }
+                //我们只是更换了参数，但最终实例化View的逻辑还是交给了AppCompatDelegateImpl
+                AppCompatDelegate delegate = getDelegate();
+                View view = delegate.createView(parent, name, context, attrs);
+                return view;
+            }
+        });
+
         super.onCreate(savedInstanceState);
         if (canSlide()) {
             SwipeBackHelper.onCreate(this);
@@ -130,16 +166,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                 EventBus.getDefault().register(this);
             }
         }
-
-//        try {
         int layoutResID = initView(savedInstanceState);
         //如果initView返回0,框架则不会调用setContentView(),当然也不会 Bind ButterKnife
         if (layoutResID != 0) {
             setContentView(layoutResID);
         }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         initData(savedInstanceState);
     }
 

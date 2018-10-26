@@ -2,10 +2,13 @@ package com.common.core.myinfo;
 
 
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfo;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.wali.live.proto.User.GetOwnInfoRsp;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -63,6 +66,7 @@ public class MyUserInfoManager {
         if (myUserInfo != null) {
             mUser = myUserInfo;
             //user信息设定成功了，发出eventbus
+            EventBus.getDefault().post(new MyUserInfoEvent.UserInfoChangeEvent());
         }
     }
 

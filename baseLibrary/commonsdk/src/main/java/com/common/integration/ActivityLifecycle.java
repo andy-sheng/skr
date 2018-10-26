@@ -17,12 +17,20 @@ package com.common.integration;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.LayoutInflaterCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.base.delegate.IActivity;
+import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 
@@ -41,6 +49,7 @@ import java.util.List;
  * ================================================
  */
 public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks {
+    public final static String TAG = "ActivityLifecycle";
 
     FragmentLifecycle mFragmentLifecycle;
 
@@ -69,6 +78,12 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     }
 
+    /**
+     *
+     * Activity super.onCreate 执行完再执行这个
+     * @param activity
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         //如果 intent 包含了此字段,并且为 true 说明不加入到 list 进行统一管理

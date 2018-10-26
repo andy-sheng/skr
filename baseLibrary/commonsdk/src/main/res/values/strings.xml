@@ -1,4 +1,5 @@
 <resources>
+    <string name="values_from">我来自default values</string>
     <string name="yesterday_time">昨天 %s</string>
     <string name="date_yesterday">昨天</string>
     <string name="date_tomorrow">明天</string>

@@ -23,6 +23,7 @@ import com.common.core.RouterConstants;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.player.VideoPlayerAdapter;
@@ -40,8 +41,10 @@ import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.R;
+import com.wali.live.moduletest.fragment.DeviceInfoFragment;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,10 +63,7 @@ public class TestSdkActivity extends BaseActivity {
         return R.layout.test_main_layout;
     }
 
-    @Override
-    public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
-
+    void loadAccountInfo() {
         mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
         View view = mTitlebar.getLeftCustomView();
         BaseImageView baseImageView = view.findViewById(R.id.head_img);
@@ -72,6 +72,19 @@ public class TestSdkActivity extends BaseActivity {
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
                         .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MyUserInfoEvent.UserInfoChangeEvent event) {
+        loadAccountInfo();
+    }
+
+
+    @Override
+    public void initData(@Nullable Bundle savedInstanceState) {
+        mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
+        loadAccountInfo();
 
         mListRv = (RecyclerView) findViewById(R.id.list_rv);
 
@@ -98,6 +111,17 @@ public class TestSdkActivity extends BaseActivity {
                 return mDataList.size();
             }
         });
+
+
+        mDataList.add(new H("显示当前设备信息", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newParamsBuilder(TestSdkActivity.this, DeviceInfoFragment.class).build()
+                );
+            }
+        }));
+
 
         mDataList.add(new H("跳转到LoginActivity", new Runnable() {
 
@@ -262,25 +286,6 @@ public class TestSdkActivity extends BaseActivity {
 
                     }
                 });
-            }
-        }));
-
-
-        mDataList.add(new H("判断5s后app是否在前台", new Runnable() {
-            @Override
-            public void run() {
-                AvatarUtils.loadAvatarByUrl(baseImageView,
-                        AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
-                                .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
-                                .build());
-
-                U.getAppInfoUtils().showDebugDBAddressLogToast();
-                mUiHanlder.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        U.getToastUtil().showToast("在前台 " + U.getActivityUtils().isAppForeground());
-                    }
-                }, 5000);
             }
         }));
 

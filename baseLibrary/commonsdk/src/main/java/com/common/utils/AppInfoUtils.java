@@ -122,17 +122,18 @@ public class AppInfoUtils {
         return Locale.getDefault().toString();
     }
 
-    public void showDebugDBAddressLogToast() {
+    public String  getDebugDBAddressLog() {
         if (BuildConfig.DEBUG) {
             try {
                 Class<?> debugDB = Class.forName("com.amitshekhar.DebugDB");
                 Method getAddressLog = debugDB.getMethod("getAddressLog");
                 Object value = getAddressLog.invoke(null);
-                Toast.makeText(U.app(), "debugdb:" + value, Toast.LENGTH_LONG).show();
+                return (String) value;
             } catch (Exception ignore) {
 
             }
         }
+        return "";
     }
 
 }

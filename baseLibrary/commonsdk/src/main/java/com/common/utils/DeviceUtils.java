@@ -53,6 +53,24 @@ public class DeviceUtils {
 
     }
 
+    /**
+     * 返回设备型号
+     * 如 MI NOTE LTE
+     * @return
+     */
+    public String getProductModel(){
+        return getProp("ro.product.model");
+    }
+
+    /**
+     * 返回手机厂商
+     * 如 Xiaomi
+     * @return
+     */
+    public String getProductBrand(){
+        return getProp("ro.product.brand");
+    }
+
     public boolean isEmui() {
         return check(ROM_EMUI);
     }
