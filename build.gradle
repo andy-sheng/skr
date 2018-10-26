@@ -53,6 +53,12 @@ allprojects {
             //远程maven路径
             url 'https://raw.githubusercontent.com/simonjava/maven_repo/master'
         }
+
+        // 为了同步component框架,后期改框架可去掉
+        maven {
+            url 'https://raw.githubusercontent.com/ModerateFish/mvn-repo/master/'
+        }
+
         maven { url local_maven }
         google()
         jcenter()

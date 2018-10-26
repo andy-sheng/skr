@@ -8,7 +8,7 @@
             android:name="com.wali.live.modulewatch.WatchConfiguration"
             android:value="ConfigModule" />
         <activity
-            android:name="com.wali.live.modulewatch.activity.WatchSdkAcitivity"
+            android:name="com.wali.live.modulewatch.watch.activity.WatchSdkAcitivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustPan|stateHidden"

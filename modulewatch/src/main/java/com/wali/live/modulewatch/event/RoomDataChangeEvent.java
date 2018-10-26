@@ -1,6 +1,6 @@
 package com.wali.live.modulewatch.event;
 
-import com.wali.live.modulewatch.model.roominfo.RoomBaseDataModel;
+import com.wali.live.modulewatch.watch.model.roominfo.RoomBaseDataModel;
 
 /**
  * Created by chengsimin on 16/4/1.

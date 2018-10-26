@@ -8,8 +8,13 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.view.View;
+
+import com.common.log.MyLog;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -97,5 +102,70 @@ public class BitmapUtils {
         }
     }
 
+    /**
+     * 根据路径生成Bitmap
+     *
+     * @param path
+     * @return
+     */
+    public Bitmap getLocalBitmap(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return null;
+        }
+
+        Bitmap bm = null;
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(path.replace("file://", ""));
+        } catch (Exception e) {
+            MyLog.e(e);
+        } finally {
+
+        }
+
+        if (inputStream == null) {
+            return null;
+        }
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        //options.inBitmap
+        //options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inInputShareable = true;
+        options.inPurgeable = true;
+        // 当inJustDecodeBounds设为false,加载图片到内存
+        //options.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeStream(inputStream, null, options);
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            MyLog.e(e);
+        }
+        return bm;
+    }
+
+    /**
+     * 根据视图生成Bitmap
+     * 
+     * @param view
+     * @return
+     */
+    public Bitmap convertViewToBitmap(View view) {
+        if (view == null) {
+            MyLog.d("convertViewToBitmap", "view == null");
+            return null;
+        }
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        if (bitmap == null) {
+            MyLog.d("convertViewToBitmap", "bitmap == null");
+        } else {
+            bitmap = Bitmap.createBitmap(bitmap);
+        }
+        view.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
 
 }

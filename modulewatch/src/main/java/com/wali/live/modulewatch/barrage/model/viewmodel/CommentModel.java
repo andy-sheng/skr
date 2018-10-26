@@ -1,21 +1,18 @@
 package com.wali.live.modulewatch.barrage.model.viewmodel;
 
-import android.graphics.Color;
 import android.support.annotation.ColorRes;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 
 import com.common.core.UserInfoConstans;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
-import com.common.utils.DisplayUtils;
 import com.common.utils.U;
 import com.wali.live.modulewatch.R;
 import com.wali.live.modulewatch.barrage.model.barrage.BarrageMsg;
 import com.wali.live.modulewatch.barrage.model.barrage.BarrageMsgExt;
 import com.wali.live.modulewatch.barrage.model.barrage.BarrageMsgType;
-import com.wali.live.modulewatch.model.fans.VfansPrivilegeModel;
+import com.wali.live.modulewatch.watch.model.fans.VfansPrivilegeModel;
 import com.wali.live.modulewatch.smiley.SmileyParser;
 import com.wali.live.modulewatch.utils.StringUtils;
 

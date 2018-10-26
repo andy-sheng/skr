@@ -15,7 +15,7 @@
             android:name="com.wali.live.modulewatch.WatchConfiguration"
             android:value="ConfigModule" />
 
-        <activity android:name="com.wali.live.modulewatch.activity.WatchSdkAcitivity">
+        <activity android:name="com.wali.live.modulewatch.watch.activity.WatchSdkAcitivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

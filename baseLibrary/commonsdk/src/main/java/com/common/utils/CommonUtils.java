@@ -1,8 +1,8 @@
 package com.common.utils;
 
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Build;
 import android.view.View;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -80,5 +80,4 @@ public class CommonUtils {
             return View.generateViewId();
         }
     }
-
 }

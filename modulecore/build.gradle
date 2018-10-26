@@ -36,6 +36,7 @@ android {
             res.srcDirs += ['src/main/res']
             res.srcDirs += ['src/main/res-login']
             res.srcDirs += ['src/main/res-cta']
+            res.srcDirs += ['src/main/res-config']
         }
     }
 

@@ -26,4 +26,11 @@
     <string name="live_start_light">我点亮了</string>
 
     <string name="brrage_level_upgrade" formatted="false">%s升至%s级,拥有更多特权</string>
+
+    <string name="copy_link">复制链接</string>
+    <string name="copied_to_clipboard">已复制到剪贴板</string>
+
+    <plurals name="more_comment_text">
+        <item quantity="other">%1$s条消息</item>
+    </plurals>
 </resources>

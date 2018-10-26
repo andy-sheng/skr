@@ -36,13 +36,7 @@ public class LoginActivity extends BaseActivity {
 
     private TextView mMiBtn;
 
-    private TextView mTestServerBtn;
-
-    private TextView mTestLocalBtn;
-
-    private TextView mMiTestFollow;
-
-    private TextView mMiTestScheme;
+    private TextView mTestBtn;
 
     CommonTitleBar mTitlebar;
 
@@ -66,13 +60,8 @@ public class LoginActivity extends BaseActivity {
 
         mMiBtn = (TextView) this.findViewById(R.id.mi_btn);
 
-        mTestServerBtn = (TextView) this.findViewById(R.id.mi_test_server);
+        mTestBtn = (TextView) this.findViewById(R.id.mi_test);
 
-        mTestLocalBtn = (TextView) this.findViewById(R.id.mi_test_local);
-
-        mMiTestFollow = (TextView) this.findViewById(R.id.mi_test_follow);
-
-        mMiTestScheme = (TextView) this.findViewById(R.id.mi_test_scheme);
 
         mMiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,10 +83,9 @@ public class LoginActivity extends BaseActivity {
             U.getActivityUtils().showSnackbar("请先登录", true);
         }
 
-        mTestServerBtn.setOnClickListener(new View.OnClickListener() {
+        mTestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Observable.create(new ObservableOnSubscribe<Object>() {
                     @Override
                     public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
@@ -139,69 +127,8 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        mTestLocalBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Observable.create(new ObservableOnSubscribe<Object>() {
-                    @Override
-                    public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                        long uid = MyUserInfoManager.getInstance().getMyUserInfo().getUserInfo().getUserId();
-                        UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.BOTH_FOLLOWED, true, false);
-                        UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWING, true, false);
-                        UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWING, false, false);
-                        UserInfoManager.getInstance().getFriendsUserInfoFromDB(UserInfoManager.MY_FOLLOWER, true, false);
-                        MyUserInfoManager.getInstance().getMyUserInfo();
-                        emitter.onComplete();
-                    }
-                }).subscribeOn(Schedulers.io())
-                        .subscribe();
-            }
-        });
-
-        mMiTestFollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final long uid = MyUserInfoManager.getInstance().getMyUserInfo().getUserInfo().getUserId();
-//                UserInfoManager.getInstance().follow(uid, 490021, null)
-//                UserInfoManager.getInstance().unBlock(uid, 490014)
-//                UserInfoManager.getInstance().unFollow(uid, 490020)
-                UserInfoManager.getInstance().block(123, 490014)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .compose(LoginActivity.this.<Integer>bindUntilEvent(ActivityEvent.DESTROY))
-                        .subscribe(new Observer<Integer>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(Integer integer) {
-                                MyLog.d(TAG, " integer " + integer);
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-            }
-        });
-
-        mMiTestScheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                        .withString("uri", "walilive://room/join?liveid=130214_1458310748&playerid=130214&videourl=encode")
-                        .greenChannel().navigation();
-            }
-        });
     }
+
 
     @Override
     protected void onStart() {

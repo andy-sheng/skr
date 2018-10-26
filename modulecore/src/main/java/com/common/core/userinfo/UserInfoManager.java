@@ -2,6 +2,7 @@ package com.common.core.userinfo;
 
 import android.text.TextUtils;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.wali.live.proto.Relation.BlockResponse;
 import com.wali.live.proto.Relation.BlockerListResponse;
@@ -21,6 +22,9 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class UserInfoManager {
 
@@ -439,5 +443,4 @@ public class UserInfoManager {
             }
         });
     }
-
 }

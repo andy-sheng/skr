@@ -25,4 +25,6 @@
     <color name="barrage_noble_fourth">#FFEA4C</color>
 
     <color name="barrage_name_default">#cccccc</color>
+
+    <color name="barrage_sell_comment">#f6b723</color>
 </resources>

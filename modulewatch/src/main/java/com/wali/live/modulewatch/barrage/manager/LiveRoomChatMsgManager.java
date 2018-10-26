@@ -16,8 +16,8 @@ import com.wali.live.modulewatch.barrage.event.RefreshGameLiveCommentEvent;
 import com.wali.live.modulewatch.barrage.model.barrage.BarrageMsg;
 import com.wali.live.modulewatch.barrage.model.barrage.BarrageMsgType;
 import com.wali.live.modulewatch.barrage.model.viewmodel.CommentModel;
-import com.wali.live.modulewatch.model.fans.GroupMemType;
-import com.wali.live.modulewatch.model.fans.VfansPrivilegeModel;
+import com.wali.live.modulewatch.watch.model.fans.GroupMemType;
+import com.wali.live.modulewatch.watch.model.fans.VfansPrivilegeModel;
 import com.wali.live.modulewatch.smiley.SmileyParser;
 import com.wali.live.proto.LiveMessage.HuyaSendMessageReq;
 

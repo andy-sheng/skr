@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+
+    xmlns:android= "http://schemas.android.com/apk/res/android"
+
+    android:shape= "oval"
+
+    android:useLevel= "false"
+
+    android:innerRadius="@dimen/view_dimen_40"
+
+    android:thickness="@dimen/view_dimen_4" >
+
+    <gradient android:angle="-180"
+
+              android:type="linear"
+
+              android:startColor="#FF7676"
+
+              android:endColor="#FD5980" />
+
+    <size android:width= "@dimen/view_dimen_88"
+
+        android:height= "@dimen/view_dimen_88" />
+
+</shape>

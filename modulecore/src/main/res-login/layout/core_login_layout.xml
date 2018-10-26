@@ -31,40 +31,12 @@
             android:textSize="@dimen/view_dimen_30" />
 
         <TextView
-            android:id="@+id/mi_test_server"
+            android:id="@+id/mi_test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mi_btn"
             android:layout_margin="@dimen/view_dimen_30"
-            android:text="测试服务器"
-            android:textSize="@dimen/view_dimen_30" />
-
-
-        <TextView
-            android:id="@+id/mi_test_local"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mi_test_server"
-            android:layout_margin="@dimen/view_dimen_30"
-            android:text="测试本地数据库"
-            android:textSize="@dimen/view_dimen_30" />
-
-        <TextView
-            android:id="@+id/mi_test_follow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mi_test_local"
-            android:layout_margin="@dimen/view_dimen_30"
-            android:text="测试关注"
-            android:textSize="@dimen/view_dimen_30" />
-
-        <TextView
-            android:id="@+id/mi_test_scheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mi_test_follow"
-            android:layout_margin="@dimen/view_dimen_30"
-            android:text="测试Scheme"
+            android:text="测试"
             android:textSize="@dimen/view_dimen_30" />
     </RelativeLayout>
 
