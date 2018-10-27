@@ -1,32 +1,37 @@
 package com.example.paginate.data;
 
-/** Example model class */
+
+import com.google.common.base.Objects;
+
+/**
+ * Example model class
+ */
 public class Person {
 
-    private String firstName;
-    private String lastName;
+    private int id;
+    private String name;
     private int age;
 
-    public Person(String firstName, String lastName, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Person(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
         this.age = age;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public int getId() {
+        return id;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getAge() {
@@ -37,4 +42,24 @@ public class Person {
         this.age = age;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return id == person.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return
+                "id=" + id +
+                        ", na='" + name +
+                        ", age=" + age;
+    }
 }

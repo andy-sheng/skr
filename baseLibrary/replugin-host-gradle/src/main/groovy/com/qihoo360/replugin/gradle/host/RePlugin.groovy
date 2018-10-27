@@ -74,7 +74,6 @@ public class Replugin implements Plugin<Project> {
                 def variantData = variant.variantData
                 def scope = variantData.scope
 
-
                 //host generate task
                 def generateHostConfigTaskName = scope.getTaskName(AppConstant.TASK_GENERATE, "HostConfig")
                 def generateHostConfigTask = project.task(generateHostConfigTaskName)
@@ -121,14 +120,19 @@ public class Replugin implements Plugin<Project> {
                 variant.outputs.each { output ->
                     output.processManifest.doLast {
                         output.processManifest.outputs.files.each { File file ->
+
+                            println "${TAG} fileName = ${file.name} filePath = ${file.path} "
                             def manifestFile = null;
                             //在gradle plugin 3.0.0之前，file是文件，且文件名为AndroidManifest.xml
                             //在gradle plugin 3.0.0之后，file是目录，且不包含AndroidManifest.xml，需要自己拼接
+                            //还有可能是 file 是 debug  。AndroidManifest.xml 在 debug/armeabi-v7a/AndroidManifest.xml
+
                             //除了目录和AndroidManifest.xml之外，还可能会包含manifest-merger-debug-report.txt等不相干的文件，过滤它
                             if ((file.name.equalsIgnoreCase("AndroidManifest.xml") && !file.isDirectory()) || file.isDirectory()) {
+                                println "${TAG} 找到AndroidManifest.xml可疑 fileName = ${file.name} filePath = ${file.path} "
                                 if (file.isDirectory()) {
                                     //3.0.0之后，自己拼接AndroidManifest.xml
-                                    manifestFile = new File(file, "AndroidManifest.xml")
+                                    manifestFile = findAndroidmanifest(file)
                                 } else {
                                     //3.0.0之前，直接使用
                                     manifestFile = file
@@ -143,11 +147,30 @@ public class Replugin implements Plugin<Project> {
                                     manifestFile.write(updatedContent, 'UTF-8')
                                 }
                             }
+
                         }
                     }
                 }
             }
         }
+    }
+
+    static File findAndroidmanifest(File dir) {
+        println("findAndroidmanifest dir${dir.path} ${dir.listFiles().length}")
+        for (File child : dir.listFiles()) {
+            println("findAndroidmanifest child${child.getPath()}")
+            if (child.isFile() && child.name.equals("AndroidManifest.xml")) {
+                return child
+            }
+            if (child.isDirectory()) {
+                File file = findAndroidmanifest(child)
+                if(file!=null){
+                    return file
+                }
+            }
+        }
+        println("not find")
+        return null
     }
 
     // 添加 【查看所有插件信息】 任务

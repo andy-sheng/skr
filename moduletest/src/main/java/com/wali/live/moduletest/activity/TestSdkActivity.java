@@ -40,7 +40,9 @@ import com.imagepicker.fragment.ImagePreviewFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.wali.live.modulechannel.IChannelService;
+import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
+import com.wali.live.moduletest.TestViewHolder;
 import com.wali.live.moduletest.fragment.DeviceInfoFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -94,14 +96,14 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_item_tv, parent, false);
-                TestHolder testHolder = new TestHolder(view);
+                TestViewHolder testHolder = new TestViewHolder(view);
                 return testHolder;
             }
 
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                if (holder instanceof TestHolder) {
-                    TestHolder testHolder = (TestHolder) holder;
+                if (holder instanceof TestViewHolder) {
+                    TestViewHolder testHolder = (TestViewHolder) holder;
                     testHolder.bindData(mDataList.get(position));
                 }
             }
@@ -420,38 +422,5 @@ public class TestSdkActivity extends BaseActivity {
         return false;
     }
 
-    static class H {
-        public String title;
-        public Runnable op;
 
-        public H(String title, Runnable op) {
-            this.title = title;
-            this.op = op;
-        }
-    }
-
-    static class TestHolder extends RecyclerView.ViewHolder {
-
-        TextView titleTv;
-        H data;
-
-        public TestHolder(View itemView) {
-            super(itemView);
-
-            titleTv = (TextView) itemView.findViewById(R.id.desc_tv);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (data != null) {
-                        data.op.run();
-                    }
-                }
-            });
-        }
-
-        public void bindData(H data) {
-            this.data = data;
-            titleTv.setText(data.title);
-        }
-    }
 }
