@@ -25,7 +25,6 @@ import android.util.Log;
 import com.common.base.delegate.AppDelegate;
 import com.common.base.delegate.AppLifecycles;
 import com.common.base.delegate.PluginAppDelegate;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.mi.milink.sdk.base.Global;
 import com.mi.milink.sdk.data.ClientAppInfo;
@@ -65,7 +64,7 @@ public class BaseApplication extends Application {
             mPluginAppDelegate.attachBaseContext(this);
         }
         /**
-         * 这里可以了解一下 duodex 安装的原理
+         * 这里可以了解一下 多dex 安装的原理
          */
         MultiDex.install(this);
         U.setApp(this);

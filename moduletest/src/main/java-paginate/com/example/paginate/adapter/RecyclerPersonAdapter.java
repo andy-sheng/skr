@@ -1,5 +1,6 @@
 package com.example.paginate.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.common.view.recyclerview.DiffAdapter;
 import com.example.paginate.data.Person;
 import com.wali.live.moduletest.R;
 
 import java.util.List;
 
-public class RecyclerPersonAdapter extends RecyclerView.Adapter<RecyclerPersonAdapter.PersonVH> implements RecyclerOnItemClickListener {
-
-    private final List<Person> data;
+public class RecyclerPersonAdapter extends DiffAdapter implements RecyclerOnItemClickListener {
 
     public RecyclerPersonAdapter(List<Person> data) {
-        this.data = data;
+        mDataList.addAll(data);
     }
 
     @Override
@@ -27,29 +27,27 @@ public class RecyclerPersonAdapter extends RecyclerView.Adapter<RecyclerPersonAd
     }
 
     @Override
-    public void onBindViewHolder(PersonVH holder, final int position) {
-        Person person = data.get(position);
-        holder.tvFullName.setText(String.format("%s %s, %d", person.getFirstName(), person.getLastName(), person.getAge()));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof PersonVH) {
+            PersonVH vh = (PersonVH) holder;
+            Person person = (Person) mDataList.get(position);
+            vh.tvFullName.setText(person.toString());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mDataList.size();
     }
 
     @Override
     public void onItemClicked(View view, int position) {
         Toast.makeText(view.getContext(), "Clicked position: " + position, Toast.LENGTH_SHORT).show();
-        this.data.remove(position);
-        notifyItemRemoved(position);
+        if (position >= 0 && position < mDataList.size()) {
+            this.mDataList.remove(position);
+            notifyItemRemoved(position);
+        }
     }
-
-    public void add(List<Person> items) {
-        int previousDataSize = this.data.size();
-        this.data.addAll(items);
-        notifyItemRangeInserted(previousDataSize, items.size());
-    }
-
     public static class PersonVH extends RecyclerView.ViewHolder {
         TextView tvFullName;
 
