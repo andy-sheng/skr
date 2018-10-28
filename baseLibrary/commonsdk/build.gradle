@@ -64,6 +64,10 @@ android {
             // 提供图片缩放浏览能力，支持渐变式，支持loading页，支持超大图，超大Gif
             java.srcDirs += 'src/main/java-imagebrowse'
 
+            // 带拼音索引的列表 类似微信联系人
+            java.srcDirs += 'src/main/java-indexrecyclerview'
+            res.srcDirs += 'src/main/res-indexrecyclerview'
+
             if (repluginHostEnable.toBoolean()) {
                 java.srcDirs += 'src/main/java-replugin-host'
             } else {
@@ -135,6 +139,8 @@ dependencies {
     api rootProject.ext.dependencies["exoplayer-core"]
     api rootProject.ext.dependencies["exoplayer-hls"]
 
+    // 拼音处理
+    api rootProject.ext.dependencies["tinypinyin"]
     // 封装了一个可以上拉刷新，下拉加载的recyclerview库。后续把这些库以源码的方式一一引入，
     // 或者以一个单独module的方式演示这些库的使用。
 //    implementation rootProject.ext.dependencies["paginate"]
