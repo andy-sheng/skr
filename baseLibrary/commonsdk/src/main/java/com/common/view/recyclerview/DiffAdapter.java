@@ -1,11 +1,8 @@
 package com.common.view.recyclerview;
 
-import android.support.annotation.NonNull;
-import android.support.v7.util.AdapterListUpdateCallback;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import com.common.log.MyLog;
 

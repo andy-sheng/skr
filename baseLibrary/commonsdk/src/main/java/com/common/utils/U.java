@@ -61,6 +61,7 @@ public class U {
 
     private static PreferenceUtils preferenceUtils;
 
+    private static PinyinUtils pinyinUtils;
 
     public static void setApp(Application app) {
         application = app;
@@ -246,6 +247,13 @@ public class U {
             preferenceUtils = new PreferenceUtils();
         }
         return preferenceUtils;
+    }
+
+    public static PinyinUtils getPinyinUtils() {
+        if (pinyinUtils == null) {
+            pinyinUtils = new PinyinUtils();
+        }
+        return pinyinUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;

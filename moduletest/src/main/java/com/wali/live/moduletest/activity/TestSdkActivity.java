@@ -34,6 +34,7 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
 import com.example.paginate.PaginateFragment;
+import com.example.wxcontact.PickContactFragment;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
 import com.imagepicker.fragment.ImagePreviewFragment;
@@ -379,6 +380,15 @@ public class TestSdkActivity extends BaseActivity {
                                 U.getToastUtil().showToast("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
                             }
                         })
+                        .build());
+            }
+        }));
+
+        mDataList.add(new H("类微信带拼音索引的联系人列表", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, PickContactFragment.class)
+                        .setHasAnimation(true)
                         .build());
             }
         }));
