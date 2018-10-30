@@ -34,6 +34,7 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
 import com.example.paginate.PaginateFragment;
+import com.example.qrcode.QrcodeTestFragment;
 import com.example.wxcontact.PickContactFragment;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
@@ -388,6 +389,15 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, PickContactFragment.class)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        }));
+
+        mDataList.add(new H("二维码实验", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, QrcodeTestFragment.class)
                         .setHasAnimation(true)
                         .build());
             }

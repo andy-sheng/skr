@@ -93,6 +93,7 @@ ext {
              */
             "photoview"                : "com.github.chrisbanes.photoview:library:1.2.3",
 
+            "bga-qrcode-zxing"         : 'cn.bingoogolapple:bga-qrcode-zxing:1.3.4',
             /**
              * 一些进度条效果
              */
