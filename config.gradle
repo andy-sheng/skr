@@ -175,7 +175,7 @@ ext {
             "greendao-upgrade"         : "com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.0.3",
 
             //pb
-            "wire"                     : "com.squareup.wire:wire-runtime:2.3.0+",
+            "wire"                     : "com.squareup.wire:wire-runtime:2.3.0-RC1",
 
             //test
             "junit"                    : "junit:junit:4.12",

@@ -5,7 +5,7 @@ package com.indexrecyclerview.model;
  */
 public class EntityWrapper<T> {
 
-    // 标题和内容
+    // 标题和内容 是每个分组的内容 还是 他的 title
     public static final int TYPE_TITLE = Integer.MAX_VALUE - 1;
     public static final int TYPE_CONTENT = Integer.MAX_VALUE;
 
@@ -13,12 +13,12 @@ public class EntityWrapper<T> {
     public static final int TYPE_HEADER = 1;
     public static final int TYPE_FOOTER = 2;
 
-    private String index;
-    private String indexTitle;
-    private String pinyin;
-    private String indexByField;
+    private String index; // 拼音的首字母 如 H  没命中拼音的话 就是 #
+    private String indexByField;// 韩梅梅
+    private String pinyin; // HANMEIMEI
+    private String indexTitle; // 目前和 index 一致 H
     private T data;
-    private int originalPosition = -1;
+    private int originalPosition = -1; //  该条在原始list中的position
     private int itemType = TYPE_CONTENT;
     private int headerFooterType;
 

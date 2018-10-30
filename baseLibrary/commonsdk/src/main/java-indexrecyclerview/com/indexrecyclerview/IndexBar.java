@@ -24,9 +24,12 @@ class IndexBar extends View {
     private int mTotalHeight;
     private float mTextSpace;
 
+    // 所有索引的list 如 # A B C D 有序的
     private List<String> mIndexList = new ArrayList<>();
-    // 首字母 到 mIndexList 的映射
+    // 首字母 到 mIndexList 的映射，存着 索引---> 满足该索引的第一个 实体类在mDatas中的position位置。
+    // 如 H--->9
     private HashMap<String, Integer> mMapping = new HashMap<>();
+    // mDatas 是排过序的 所有的参与索引的实体类
     private ArrayList<EntityWrapper> mDatas;
 
     private int mSelectionPosition;
@@ -98,6 +101,9 @@ class IndexBar extends View {
         }
     }
 
+    /**
+     * 返回 屏幕上 y 轴的坐标 对应 mIndexList 里哪个 position
+     */
     int getPositionForPointY(float y) {
         if (mIndexList.size() <= 0) {
             return -1;
@@ -124,6 +130,10 @@ class IndexBar extends View {
         invalidate();
     }
 
+    /**
+     * 例如，返回 索引 H，对应的在 rv 中 第一个 H item 的postion
+     * @return
+     */
     int getFirstRecyclerViewPositionBySelection() {
         String index = mIndexList.get(mSelectionPosition);
         if (mMapping.containsKey(index)) {
@@ -136,6 +146,11 @@ class IndexBar extends View {
         return mIndexList;
     }
 
+    /**
+     *
+     * @param showAllLetter 是否要显示 A B C 等字母索引
+     * @param datas 已经排过序的数据
+     */
     void setDatas(boolean showAllLetter, ArrayList<EntityWrapper> datas) {
         this.mDatas = datas;
         this.mIndexList.clear();
@@ -159,6 +174,7 @@ class IndexBar extends View {
                             mIndexList.add(IndexableLayout.INDEX_SIGN);
                         } else if (mIndexList.indexOf(index) < 0) {
                             if (wrapper.getHeaderFooterType() == EntityWrapper.TYPE_HEADER && tempHeaderList.indexOf(index) < 0) {
+                                // 加到头部
                                 tempHeaderList.add(index);
                             } else if (wrapper.getHeaderFooterType() == EntityWrapper.TYPE_FOOTER) {
                                 mIndexList.add(index);
@@ -178,8 +194,9 @@ class IndexBar extends View {
     }
 
     void setSelection(int firstVisibleItemPosition) {
-        if (mDatas == null || mDatas.size() <= firstVisibleItemPosition || firstVisibleItemPosition < 0)
+        if (mDatas == null || mDatas.size() <= firstVisibleItemPosition || firstVisibleItemPosition < 0) {
             return;
+        }
         EntityWrapper wrapper = mDatas.get(firstVisibleItemPosition);
         int position = mIndexList.indexOf(wrapper.getIndex());
 

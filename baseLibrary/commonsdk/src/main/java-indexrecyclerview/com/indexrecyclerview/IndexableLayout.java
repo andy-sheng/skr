@@ -210,6 +210,7 @@ public class IndexableLayout extends FrameLayout {
 
             @Override
             public void onInited() {
+                // 数据更新
                 onSetListener(IndexableAdapter.TYPE_ALL);
                 onDataChanged();
             }
@@ -374,7 +375,6 @@ public class IndexableLayout extends FrameLayout {
     }
 
 
-
     /**
      * {@link #setAdapter(IndexableAdapter)}
      *
@@ -450,17 +450,23 @@ public class IndexableLayout extends FrameLayout {
     }
 
     private void processScrollListener() {
-        if (!(mLayoutManager instanceof LinearLayoutManager)) return;
+        if (!(mLayoutManager instanceof LinearLayoutManager)) {
+            return;
+        }
 
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mLayoutManager;
 
         int firstItemPosition;
         firstItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
-        if (firstItemPosition == RecyclerView.NO_POSITION) return;
+        if (firstItemPosition == RecyclerView.NO_POSITION) {
+            return;
+        }
 
         mIndexBar.setSelection(firstItemPosition);
 
-        if (!mSticyEnable) return;
+        if (!mSticyEnable) {
+            return;
+        }
         ArrayList<EntityWrapper> list = mRealAdapter.getItems();
         if (mStickyViewHolder != null && list.size() > firstItemPosition) {
             EntityWrapper wrapper = list.get(firstItemPosition);
@@ -523,6 +529,9 @@ public class IndexableLayout extends FrameLayout {
         return;
     }
 
+    /**
+     * 换分组了，重新bind一下
+     */
     private void stickyNewViewHolder(String wrapperTitle) {
         if ((wrapperTitle != null && !wrapperTitle.equals(mStickyTitle))) {
 
@@ -535,6 +544,9 @@ public class IndexableLayout extends FrameLayout {
         }
     }
 
+    /**
+     * 滚动时粘在顶部的 titlebar
+     */
     private <T extends IndexableEntity> void initStickyView(final IndexableAdapter<T> adapter) {
         mStickyViewHolder = adapter.onCreateTitleViewHolder(mRecy);
         mStickyViewHolder.itemView.setOnClickListener(new OnClickListener() {
@@ -564,6 +576,7 @@ public class IndexableLayout extends FrameLayout {
                 return false;
             }
         });
+        // 如果还能找到 rv ，很谨慎
         for (int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) == mRecy) {
                 mStickyViewHolder.itemView.setVisibility(INVISIBLE);
@@ -574,6 +587,9 @@ public class IndexableLayout extends FrameLayout {
     }
 
 
+    /**
+     * 显示 索引 提示
+     */
     private void showOverlayView(float y, final int touchPos) {
         if (mIndexBar.getIndexList().size() <= touchPos) return;
 
@@ -617,6 +633,9 @@ public class IndexableLayout extends FrameLayout {
         }
     }
 
+    /**
+     * index 提示在屏幕中间
+     */
     private void initCenterOverlay() {
         mCenterOverlay = new TextView(mContext);
         mCenterOverlay.setBackgroundResource(R.drawable.indexable_bg_center_overlay);
@@ -632,6 +651,9 @@ public class IndexableLayout extends FrameLayout {
         addView(mCenterOverlay);
     }
 
+    /**
+     * index 提示在侧边栏
+     */
     private void initMDOverlay(int color) {
         mMDOverlay = new AppCompatTextView(mContext);
         mMDOverlay.setBackgroundResource(R.drawable.indexable_bg_md_overlay);
@@ -640,7 +662,7 @@ public class IndexableLayout extends FrameLayout {
         mMDOverlay.setTextColor(Color.WHITE);
         mMDOverlay.setTextSize(38);
         mMDOverlay.setGravity(Gravity.CENTER);
-        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 72, getResources().getDisplayMetrics());
+        int size = U.getDisplayUtils().dip2px(72);
         LayoutParams params = new LayoutParams(size, size);
         params.rightMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 33, getResources().getDisplayMetrics());
         params.gravity = Gravity.END;
@@ -657,6 +679,7 @@ public class IndexableLayout extends FrameLayout {
         mFuture = mExecutorService.submit(new Runnable() {
             @Override
             public void run() {
+                // 对 mIndexableAdapter.getItems() 中的数据进行适配转换
                 final ArrayList<EntityWrapper> datas = transform(mIndexableAdapter.getItems());
                 if (datas == null) return;
 
@@ -664,6 +687,7 @@ public class IndexableLayout extends FrameLayout {
                     @Override
                     public void run() {
                         mRealAdapter.setDatas(datas);
+                        // 重新生成索引
                         mIndexBar.setDatas(mShowAllLetter, mRealAdapter.getItems());
 
                         if (mIndexableAdapter.getIndexCallback() != null) {
@@ -680,8 +704,9 @@ public class IndexableLayout extends FrameLayout {
     /**
      * List<T> -> List<Indexable<T>
      */
-    private <T extends IndexableEntity> ArrayList<EntityWrapper<T>> transform(final List<T> datas) {
+    private <T extends IndexableEntity> ArrayList<EntityWrapper<T>>  transform(final List<T> datas) {
         try {
+            // 按首字母聚合并排序
             TreeMap<String, List<EntityWrapper<T>>> map = new TreeMap<>(new Comparator<String>() {
                 @Override
                 public int compare(String lhs, String rhs) {
@@ -719,6 +744,7 @@ public class IndexableLayout extends FrameLayout {
                 entity.setIndexTitle(entity.getIndex());
                 entity.setData(item);
                 entity.setOriginalPosition(i);
+                // 设置 HANMEIMEI
                 item.setFieldPinyinIndexBy(entity.getPinyin());
 
                 String inital = entity.getIndex();
@@ -726,6 +752,7 @@ public class IndexableLayout extends FrameLayout {
                 List<EntityWrapper<T>> list;
                 if (!map.containsKey(inital)) {
                     list = new ArrayList<>();
+                    // 往list 中添加一个类型 为 tiltle item。每个分组头部的字母
                     list.add(new EntityWrapper<T>(entity.getIndex(), EntityWrapper.TYPE_TITLE));
                     map.put(inital, list);
                 } else {
@@ -735,6 +762,10 @@ public class IndexableLayout extends FrameLayout {
                 list.add(entity);
             }
 
+            /**
+             * 对于每个分组内部，看看选择 哪种排序 规则
+             * 每个分组内排序后 在添加
+             */
             ArrayList<EntityWrapper<T>> list = new ArrayList<>();
             for (List<EntityWrapper<T>> indexableEntities : map.values()) {
                 if (mComparator != null) {

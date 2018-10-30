@@ -27,8 +27,10 @@ class RealAdapter<T extends IndexableEntity> extends RecyclerView.Adapter<Recycl
     private ArrayList<EntityWrapper<T>> mHeaderDatasList = new ArrayList<>();
     // 尾部数据
     private ArrayList<EntityWrapper<T>> mFooterDatasList = new ArrayList<>();
-    private IndexableAdapter<T> mAdapter;
 
+    // 核心 indexAdapter
+    private IndexableAdapter<T> mAdapter;
+    // 头部和尾部 一般一个 view type 对应一个 adapter
     private SparseArray<IndexableHeaderAdapter> mHeaderAdapterMap = new SparseArray<>();
     private SparseArray<IndexableFooterAdapter> mFooterAdapterMap = new SparseArray<>();
 
@@ -102,8 +104,10 @@ class RealAdapter<T extends IndexableEntity> extends RecyclerView.Adapter<Recycl
         final RecyclerView.ViewHolder holder;
 
         if (viewType == EntityWrapper.TYPE_TITLE) {
+            // 分组标题栏
             holder = mAdapter.onCreateTitleViewHolder(parent);
         } else if (viewType == EntityWrapper.TYPE_CONTENT) {
+            // 主内容区域
             holder = mAdapter.onCreateContentViewHolder(parent);
         } else {
             AbstractHeaderFooterAdapter adapter;

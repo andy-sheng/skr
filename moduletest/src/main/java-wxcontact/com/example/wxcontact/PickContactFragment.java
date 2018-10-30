@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.indexrecyclerview.IndexableLayout;
+import com.indexrecyclerview.adapter.IndexableAdapter;
 import com.indexrecyclerview.adapter.IndexableHeaderAdapter;
 import com.indexrecyclerview.adapter.SimpleFooterAdapter;
 import com.indexrecyclerview.adapter.SimpleHeaderAdapter;
@@ -22,6 +24,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 带索引的联系人
+ * 带索引的中国城市也有
+ */
 public class PickContactFragment extends BaseFragment {
 
     IndexableLayout mIndexableLayout;
@@ -49,7 +55,18 @@ public class PickContactFragment extends BaseFragment {
          * 明天跟着所有方法走一遍
          */
         mAdapter.setDatas(initDatas());
-
+        mAdapter.setOnItemTitleClickListener(new IndexableAdapter.OnItemTitleClickListener() {
+            @Override
+            public void onItemClick(View v, int currentPosition, String indexTitle) {
+                MyLog.d(TAG,"onItemClick" + " v=" + v + " currentPosition=" + currentPosition + " indexTitle=" + indexTitle);
+            }
+        });
+        mAdapter.setOnItemContentClickListener(new IndexableAdapter.OnItemContentClickListener<UserEntity>() {
+            @Override
+            public void onItemClick(View v, int originalPosition, int currentPosition, UserEntity entity) {
+                MyLog.d(TAG, "onItemClick" + " v=" + v + " originalPosition=" + originalPosition + " currentPosition=" + currentPosition + " entity=" + entity);
+            }
+        });
         mIndexableLayout.setOverlayStyle_MaterialDesign(Color.RED);
 
         // 全字母排序。  排序规则设置为：每个字母都会进行比较排序；速度较慢
@@ -60,6 +77,12 @@ public class PickContactFragment extends BaseFragment {
 
         // 构造函数里3个参数,分别对应 (IndexBar的字母索引, IndexTitle, 数据源), 不想显示哪个就传null, 数据源传null时,代表add一个普通的View
         mMenuHeaderAdapter = new MenuHeaderAdapter("↑", null, initMenuDatas());
+        mMenuHeaderAdapter.setOnItemHeaderClickListener(new IndexableHeaderAdapter.OnItemHeaderClickListener<MenuEntity>() {
+            @Override
+            public void onItemClick(View v, int currentPosition, MenuEntity entity) {
+                MyLog.d(TAG,"onItemClick" + " v=" + v + " currentPosition=" + currentPosition + " entity=" + entity);
+            }
+        });
         mIndexableLayout.addHeaderAdapter(mMenuHeaderAdapter);
 
         // FooterView
@@ -104,6 +127,9 @@ public class PickContactFragment extends BaseFragment {
             super(index, indexTitle, datas);
         }
 
+        /**
+         * 也是 dataList 真正的 type
+         */
         @Override
         public int getItemViewType() {
             return TYPE;
