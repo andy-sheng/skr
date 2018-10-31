@@ -84,9 +84,13 @@ android {
             java.srcDirs += 'src/main/java-drawer'
             res.srcDirs += 'src/main/res-drawer'
 
-            //
+            // 索引rv
             java.srcDirs += 'src/main/java-wxcontact'
             res.srcDirs += 'src/main/res-wxcontact'
+
+            // 二维码
+            java.srcDirs += 'src/main/java-qrcode'
+            res.srcDirs += 'src/main/res-qrcode'
         }
     }
 }

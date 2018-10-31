@@ -68,6 +68,10 @@ android {
             java.srcDirs += 'src/main/java-indexrecyclerview'
             res.srcDirs += 'src/main/res-indexrecyclerview'
 
+            // 二维码的库
+//            java.srcDirs += 'src/main/java-qrcode'
+//            res.srcDirs += 'src/main/res-qrcode'
+
             if (repluginHostEnable.toBoolean()) {
                 java.srcDirs += 'src/main/java-replugin-host'
             } else {
@@ -141,6 +145,10 @@ dependencies {
 
     // 拼音处理
     api rootProject.ext.dependencies["tinypinyin"]
+
+    // 二维码
+    api rootProject.ext.dependencies["bga-qrcode-zxing"]
+
     // 封装了一个可以上拉刷新，下拉加载的recyclerview库。后续把这些库以源码的方式一一引入，
     // 或者以一个单独module的方式演示这些库的使用。
 //    implementation rootProject.ext.dependencies["paginate"]
