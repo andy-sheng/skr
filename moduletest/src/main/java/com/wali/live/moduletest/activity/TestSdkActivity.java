@@ -411,7 +411,7 @@ public class TestSdkActivity extends BaseActivity {
                U.getLbsUtils().getLocation(true, new LbsUtils.Callback() {
                    @Override
                    public void onReceive(LbsUtils.Location location) {
-                       MyLog.d(TAG,"onReceive" + " location=" + location);
+                       U.getToastUtil().showToast(location.toString());
                    }
                });
             }

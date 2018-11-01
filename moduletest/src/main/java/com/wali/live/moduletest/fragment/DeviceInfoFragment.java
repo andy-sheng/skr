@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
+import com.common.base.BuildConfig;
 import com.common.utils.U;
 import com.wali.live.moduletest.R;
 
@@ -36,6 +37,7 @@ public class DeviceInfoFragment extends BaseFragment {
         sb.append("android.os.Build.VERSION.SDK_INT:").append(android.os.Build.VERSION.SDK_INT).append("\n");
         sb.append("手机型号:").append(U.getDeviceUtils().getProductModel()).append("\n");
         sb.append("手机厂商:").append(U.getDeviceUtils().getProductBrand()).append("\n");
+        sb.append("渠道号:").append(U.getChannelUtils().getChannel()).append(" debug:").append(BuildConfig.DEBUG).append("\n");
         mDescTv.setText(sb.toString());
     }
 

@@ -230,13 +230,29 @@
 -keep class org.json.** {*;}
 -keep class com.ali.auth.** {*;}
 
+#config不混淆
 -keep class * implements com.common.integration.ConfigModule
 
 #VirtualApk
-
 -keep class com.didi.virtualapk.internal.VAInstrumentation { *; }
 -keep class com.didi.virtualapk.internal.PluginContentResolver { *; }
 
 -dontwarn com.didi.virtualapk.**
 -dontwarn android.**
 -keep class android.** { *; }
+
+#百度地图混淆
+-keep class com.baidu.** {*;}
+-keep class mapsdkvi.com.** {*;}
+-dontwarn com.baidu.**
+
+#GreenDao混淆
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+
+# If you do not use SQLCipher:
+-dontwarn org.greenrobot.greendao.database.**
+# If you do not use Rx:
+-dontwarn rx.**

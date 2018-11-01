@@ -1,5 +1,6 @@
 package com.common.utils;
 
+import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -82,22 +83,30 @@ public class LbsUtils {
             @Override
             public void onReceiveLocation(BDLocation l2) {
                 mLocationClient.stop();
-                mLastSyncTs = System.currentTimeMillis();
                 //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
                 //以下只列举部分获取经纬度相关（常用）的结果信息
                 //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
-                if(true){
+                Address address = l2.getAddress();
+                if (address != null) {
+                    MyLog.w(TAG, "onReceiveLocation" + l2.getLocTypeDescription());
+                    mLastSyncTs = System.currentTimeMillis();
                     // 如果是有效的
                     Location l = new Location();
+                    l.setCoorType(l2.getCoorType());
                     l.setLatitude(l2.getLatitude());
                     l.setLongitude(l2.getLongitude());
-                    l.setCountry(l2.getCountry());
-                    l.setProvince(l2.getProvince());
-                    l.setCity(l2.getCity());
+                    l.setCountry(address.country);
+                    l.setProvince(address.province);
+                    l.setDistrict(address.district);
+                    l.setCity(address.city);
+                    l.setStreet(address.street);
+                    l.setAddressDesc(l2.getAddrStr());
+                    l.setLocationDesc(l2.getLocationDescribe());
+
                     mLocation = l;
-                    MyLog.d(TAG, "onReceiveLocation" + " location=" + l);
-                    U.getPreferenceUtils().setSettingString(PREF_KEY_LOCATION_INFO,mLocation.getJsonStr());
-                    U.getPreferenceUtils().setSettingLong(PREF_KEY_LOCATION_SYNC_TS,mLastSyncTs);
+                    MyLog.w(TAG, "onReceiveLocation mLocation:" + mLocation);
+                    U.getPreferenceUtils().setSettingLong(PREF_KEY_LOCATION_SYNC_TS, mLastSyncTs);
+                    U.getPreferenceUtils().setSettingString(PREF_KEY_LOCATION_INFO, mLocation.getJsonStr());
                 }
                 if (mOneTimeCallback != null) {
                     mOneTimeCallback.onReceive(mLocation);
@@ -105,8 +114,8 @@ public class LbsUtils {
                 }
             }
         });
-        mLastSyncTs = U.getPreferenceUtils().getSettingLong(PREF_KEY_LOCATION_INFO,0);
-        mLocation = Location.parseFromJsonStr(U.getPreferenceUtils().getSettingString(PREF_KEY_LOCATION_INFO,""));
+        mLastSyncTs = U.getPreferenceUtils().getSettingLong(PREF_KEY_LOCATION_SYNC_TS, 0);
+        mLocation = Location.parseFromJsonStr(U.getPreferenceUtils().getSettingString(PREF_KEY_LOCATION_INFO, ""));
     }
 
     public void getLocation(Callback callback) {
@@ -141,12 +150,24 @@ public class LbsUtils {
     }
 
     public static class Location {
+        String coorType;//获取经纬度坐标类型，以LocationClientOption中设置过的坐标类型为准
         double latitude;//纬度
         double longitude;//经度
-        String coorType;//获取经纬度坐标类型，以LocationClientOption中设置过的坐标类型为准
         String country;//国家
         String province;//省
         String city;//市
+        String district;//区
+        String street;//街道
+        String addressDesc;// 地址描述 如 中国北京海淀朱房路
+        String locationDesc;// 位置描述 如 五彩城附近
+
+        public String getCoorType() {
+            return coorType;
+        }
+
+        public void setCoorType(String coorType) {
+            this.coorType = coorType;
+        }
 
         public double getLatitude() {
             return latitude;
@@ -162,14 +183,6 @@ public class LbsUtils {
 
         public void setLongitude(double longitude) {
             this.longitude = longitude;
-        }
-
-        public String getCoorType() {
-            return coorType;
-        }
-
-        public void setCoorType(String coorType) {
-            this.coorType = coorType;
         }
 
         public String getCountry() {
@@ -196,43 +209,88 @@ public class LbsUtils {
             this.city = city;
         }
 
+        public String getDistrict() {
+            return district;
+        }
+
+        public void setDistrict(String district) {
+            this.district = district;
+        }
+
+        public String getStreet() {
+            return street;
+        }
+
+        public void setStreet(String street) {
+            this.street = street;
+        }
+
+        public String getAddressDesc() {
+            return addressDesc;
+        }
+
+        public void setAddressDesc(String addressDesc) {
+            this.addressDesc = addressDesc;
+        }
+
+        public String getLocationDesc() {
+            return locationDesc;
+        }
+
+        public void setLocationDesc(String locationDesc) {
+            this.locationDesc = locationDesc;
+        }
+
+
         @Override
         public String toString() {
             return "Location{" +
-                    "latitude=" + latitude +
+                    "coorType='" + coorType + '\'' +
+                    ", latitude=" + latitude +
                     ", longitude=" + longitude +
-                    ", coorType='" + coorType + '\'' +
                     ", country='" + country + '\'' +
                     ", province='" + province + '\'' +
                     ", city='" + city + '\'' +
+                    ", district='" + district + '\'' +
+                    ", street='" + street + '\'' +
+                    ", addressDesc='" + addressDesc + '\'' +
+                    ", locationDesc='" + locationDesc + '\'' +
                     '}';
         }
 
         public String getJsonStr() {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("latitude",latitude);
-                jsonObject.put("longitude",longitude);
-                jsonObject.put("coorType",coorType);
-                jsonObject.put("country",country);
-                jsonObject.put("province",province);
-                jsonObject.put("city",city);
+                jsonObject.put("coorType", coorType);
+                jsonObject.put("latitude", latitude);
+                jsonObject.put("longitude", longitude);
+                jsonObject.put("country", country);
+                jsonObject.put("province", province);
+                jsonObject.put("city", city);
+                jsonObject.put("district", district);
+                jsonObject.put("street", street);
+                jsonObject.put("addressDesc", addressDesc);
+                jsonObject.put("locationDesc", locationDesc);
             } catch (JSONException e) {
-                MyLog.d(TAG,e);
+                MyLog.d(TAG, e);
             }
             return jsonObject.toString();
         }
 
-        public static Location parseFromJsonStr(String str){
+        public static Location parseFromJsonStr(String str) {
 
             try {
                 JSONObject jsonObject = new JSONObject(str);
+                String coorType = jsonObject.optString("coorType");
                 double latitude = jsonObject.optDouble("latitude");
                 double longitude = jsonObject.optDouble("longitude");
-                String coorType = jsonObject.optString("coorType");
                 String country = jsonObject.optString("country");
                 String province = jsonObject.optString("province");
                 String city = jsonObject.optString("city");
+                String district = jsonObject.optString("district");
+                String street = jsonObject.optString("street");
+                String addressDesc = jsonObject.optString("addressDesc");
+                String locationDesc = jsonObject.optString("locationDesc");
 
                 Location location = new Location();
                 location.setLatitude(latitude);
@@ -240,13 +298,18 @@ public class LbsUtils {
                 location.setCoorType(coorType);
                 location.setCountry(country);
                 location.setProvince(province);
+                location.setDistrict(district);
                 location.setCity(city);
+                location.setStreet(street);
+                location.setAddressDesc(addressDesc);
+                location.setLocationDesc(locationDesc);
                 return location;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             return null;
         }
+
     }
 
     public interface Callback {
