@@ -21,7 +21,7 @@ import com.common.base.FragmentDataListener;
 import com.common.base.R;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
-import com.common.utils.PermissionUtil;
+import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.imagepicker.loader.ImageDataSource;
@@ -84,7 +84,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             mDirectPhoto = data.getBoolean(EXTRAS_TAKE_PICKERS, false); // 默认不是直接打开相机
             if (mDirectPhoto) {
                 if (!U.getPermissionUtils().checkCamera(getActivity())) {
-                    U.getPermissionUtils().requestCamera(new PermissionUtil.RequestPermission() {
+                    U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
                         @Override
                         public void onRequestPermissionSuccess() {
                             mImagePicker.takePicture(getActivity(), ImagePicker.REQUEST_CODE_TAKE);
@@ -177,7 +177,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             if (!U.getPermissionUtils().checkExternalStorage(getActivity())) {
-                U.getPermissionUtils().requestExternalStorage(new PermissionUtil.RequestPermission() {
+                U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
                     @Override
                     public void onRequestPermissionSuccess() {
                         mImageDataSource.load();

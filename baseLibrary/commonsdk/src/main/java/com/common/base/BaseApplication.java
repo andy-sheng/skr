@@ -59,14 +59,13 @@ public class BaseApplication extends Application {
         super.attachBaseContext(base);
         Log.d(TAG, "base.getPackageName:"+base.getPackageName() + " Application.getPackageName:"+BaseApplication.this.getPackageName());
         TAG += hashCode();
-
-        if (mPluginAppDelegate != null) {
-            mPluginAppDelegate.attachBaseContext(this);
-        }
         /**
          * 这里可以了解一下 多dex 安装的原理
          */
         MultiDex.install(this);
+        if (mPluginAppDelegate != null) {
+            mPluginAppDelegate.attachBaseContext(this);
+        }
         U.setApp(this);
         // 不能用MyLog 它还没初始化好
         Log.d(TAG, "attachBaseContext");

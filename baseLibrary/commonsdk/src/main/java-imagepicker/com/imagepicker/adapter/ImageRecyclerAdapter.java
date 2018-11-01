@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
-import com.common.utils.PermissionUtil;
+import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.model.ImageItem;
@@ -215,7 +214,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (!U.getPermissionUtils().checkCamera(mActivity)) {
-                        U.getPermissionUtils().requestCamera(new PermissionUtil.RequestPermission() {
+                        U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
                             @Override
                             public void onRequestPermissionSuccess() {
                                 mImagePicker.takePicture(mActivity, ImagePicker.REQUEST_CODE_TAKE);

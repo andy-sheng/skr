@@ -11,25 +11,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.RouterConstants;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.player.VideoPlayerAdapter;
 import com.common.utils.FragmentUtils;
+import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
-import com.common.utils.PermissionUtil;
+import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
@@ -402,13 +404,26 @@ public class TestSdkActivity extends BaseActivity {
                         .build());
             }
         }));
+
+        mDataList.add(new H("百度地图", new Runnable() {
+            @Override
+            public void run() {
+               U.getLbsUtils().getLocation(true, new LbsUtils.Callback() {
+                   @Override
+                   public void onReceive(LbsUtils.Location location) {
+                       MyLog.d(TAG,"onReceive" + " location=" + location);
+                   }
+               });
+            }
+        }));
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (!U.getPermissionUtils().checkExternalStorage(this)) {
-            U.getPermissionUtils().requestExternalStorage(new PermissionUtil.RequestPermission() {
+            U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {
                     MyLog.d(TAG, "onRequestPermissionSuccess");

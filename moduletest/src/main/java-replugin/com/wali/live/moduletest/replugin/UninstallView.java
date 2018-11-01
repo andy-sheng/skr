@@ -13,14 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.log.MyLog;
-import com.common.utils.PermissionUtil;
+import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.qihoo360.replugin.RePlugin;
 import com.qihoo360.replugin.model.PluginInfo;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wali.live.moduletest.R;
-import com.wali.live.moduletest.replugin.OpItemAdapter;
-import com.wali.live.moduletest.replugin.PackageData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -122,7 +119,7 @@ public class UninstallView extends RelativeLayout {
                     });
 
         } else {
-            U.getPermissionUtils().requestExternalStorage(new PermissionUtil.RequestPermission() {
+            U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {
                     MyLog.d(TAG, "onRequestPermissionSuccess");

@@ -39,11 +39,11 @@ import io.reactivex.disposables.Disposable;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public class PermissionUtil {
+public class PermissionUtils {
     public static final String TAG = "Permission";
 
 
-    PermissionUtil() {
+    PermissionUtils() {
     }
 
     public interface RequestPermission {

@@ -15,7 +15,7 @@ import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
-import com.common.utils.PermissionUtil;
+import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.wali.live.modulechannel.R;
 
@@ -42,7 +42,7 @@ public class ChannelSdkActivity extends BaseActivity {
             public void onClick(View v) {
 
                 if (!U.getPermissionUtils().checkExternalStorage(ChannelSdkActivity.this)) {
-                    U.getPermissionUtils().requestExternalStorage(new PermissionUtil.RequestPermission() {
+                    U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
                         @Override
                         public void onRequestPermissionSuccess() {
                             MyLog.d(TAG, "onRequestPermissionSuccess");

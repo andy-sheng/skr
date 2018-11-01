@@ -31,9 +31,9 @@ public class U {
 
     private static StringUtils stringUtils;
 
-    private static PermissionUtil permissionUtil;
+    private static PermissionUtils permissionUtil;
 
-    private static StatusBarUtil statusBarUtil;
+    private static StatusBarUtils statusBarUtil;
 
     private static CacheUtils cacheUtils;
 
@@ -43,7 +43,7 @@ public class U {
 
     private static FileUtils fileUtils;
 
-    private static ToastUtil toastUtil;
+    private static ToastUtils toastUtil;
 
     private static CommonUtils commonUtils;
 
@@ -62,6 +62,8 @@ public class U {
     private static PreferenceUtils preferenceUtils;
 
     private static PinyinUtils pinyinUtils;
+
+    private static LbsUtils lbsUtils;
 
     public static void setApp(Application app) {
         application = app;
@@ -137,16 +139,16 @@ public class U {
         return stringUtils;
     }
 
-    public static PermissionUtil getPermissionUtils() {
+    public static PermissionUtils getPermissionUtils() {
         if (permissionUtil == null) {
-            permissionUtil = new PermissionUtil();
+            permissionUtil = new PermissionUtils();
         }
         return permissionUtil;
     }
 
-    public static StatusBarUtil getStatusBarUtil() {
+    public static StatusBarUtils getStatusBarUtil() {
         if (statusBarUtil == null) {
-            statusBarUtil = new StatusBarUtil();
+            statusBarUtil = new StatusBarUtils();
         }
         return statusBarUtil;
     }
@@ -179,9 +181,9 @@ public class U {
         return fileUtils;
     }
 
-    public static ToastUtil getToastUtil() {
+    public static ToastUtils getToastUtil() {
         if (toastUtil == null) {
-            toastUtil = new ToastUtil();
+            toastUtil = new ToastUtils();
         }
         return toastUtil;
     }
@@ -254,6 +256,13 @@ public class U {
             pinyinUtils = new PinyinUtils();
         }
         return pinyinUtils;
+    }
+
+    public static LbsUtils getLbsUtils() {
+        if (lbsUtils == null) {
+            lbsUtils = new LbsUtils();
+        }
+        return lbsUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;

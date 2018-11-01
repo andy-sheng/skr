@@ -128,6 +128,9 @@ public class NetworkUtils {
         }
     }
 
+    /**
+     * 可以监听这个事件得到网络变化
+     */
     public static class NetworkChangeEvent {
         public int oldType;
         public int type;

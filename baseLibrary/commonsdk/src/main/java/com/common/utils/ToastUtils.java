@@ -23,9 +23,9 @@ import java.lang.reflect.Method;
 /**
  * 通过U.getToastUtils 获得
  */
-public class ToastUtil {
+public class ToastUtils {
 
-    ToastUtil() {
+    ToastUtils() {
     }
 
     public void showToast(int resId) {

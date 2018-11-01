@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
-import com.common.utils.PermissionUtil;
+import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.wali.live.moduletest.R;
 
@@ -38,7 +38,7 @@ public class QrcodeTestFragment extends BaseFragment {
                 if (U.getPermissionUtils().checkCamera(getActivity())) {
                     startActivity(new Intent(getContext(), TestScanActivity.class));
                 } else {
-                    U.getPermissionUtils().requestCamera(new PermissionUtil.RequestPermission() {
+                    U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
                         @Override
                         public void onRequestPermissionSuccess() {
 
