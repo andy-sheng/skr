@@ -1,0 +1,3 @@
+<resources>
+    <bool name="largeheap">true</bool>
+</resources>

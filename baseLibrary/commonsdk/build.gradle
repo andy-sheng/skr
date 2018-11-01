@@ -69,8 +69,8 @@ android {
             res.srcDirs += 'src/main/res-indexrecyclerview'
 
             // 二维码的库
-//            java.srcDirs += 'src/main/java-qrcode'
-//            res.srcDirs += 'src/main/res-qrcode'
+//            java.srcDirs += 'src/main/java-gif-drawable'
+//            res.srcDirs += 'src/main/res-'
 
             if (repluginHostEnable.toBoolean()) {
                 java.srcDirs += 'src/main/java-replugin-host'

@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.image.model.BaseImage;
 import com.common.image.model.ImageFactory;
 import com.common.utils.U;
 import com.common.view.photodraweeview.OnPhotoTapListener;
