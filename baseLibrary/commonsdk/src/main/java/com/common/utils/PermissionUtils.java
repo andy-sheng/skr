@@ -46,6 +46,34 @@ public class PermissionUtils {
     PermissionUtils() {
     }
 
+
+    public boolean checkRecordAudio(Activity activity) {
+        return checkPermission(activity, Manifest.permission.RECORD_AUDIO);
+    }
+
+    public boolean checkExternalStorage(Activity activity) {
+        return checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+    public boolean checkCamera(Activity activity) {
+        return checkPermission(activity, Manifest.permission.CAMERA);
+    }
+
+    public boolean checkPermission(Activity activity, String permission) {
+        if (activity == null) {
+            activity = U.getActivityUtils().getTopActivity();
+            if (activity == null) {
+                return false;
+            }
+        }
+        return new RxPermissions(activity).isGranted(permission);
+    }
+
+    public boolean checkPermission(RxPermissions rxPermissions, String permission) {
+        return rxPermissions.isGranted(permission);
+    }
+
+
     public interface RequestPermission {
         /**
          * 权限请求成功
@@ -132,26 +160,11 @@ public class PermissionUtils {
 
     }
 
-    public boolean checkExternalStorage(Activity activity) {
-        return checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-    }
-
-    public boolean checkCamera(Activity activity) {
-        return checkPermission(activity, Manifest.permission.CAMERA);
-    }
-
-    public boolean checkPermission(Activity activity, String permission) {
-        if (activity == null) {
-            activity = U.getActivityUtils().getTopActivity();
-            if (activity == null) {
-                return false;
-            }
-        }
-        return new RxPermissions(activity).isGranted(permission);
-    }
-
-    public boolean checkPermission(RxPermissions rxPermissions, String permission) {
-        return rxPermissions.isGranted(permission);
+    /**
+     * 请求录音权限
+     */
+    public void requestRecordAudio(RequestPermission requestPermission, Activity activity) {
+        requestPermission(requestPermission, activity, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO);
     }
 
     /**

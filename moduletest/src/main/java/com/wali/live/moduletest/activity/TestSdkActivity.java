@@ -1,6 +1,7 @@
 package com.wali.live.moduletest.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,12 @@ import com.imagepicker.fragment.ImagePickerFragment;
 import com.imagepicker.fragment.ImagePreviewFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
+import com.pgyersdk.crash.PgyCrashManager;
+import com.pgyersdk.feedback.PgyerFeedbackManager;
+import com.pgyersdk.update.DownloadFileListener;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
+import com.pgyersdk.update.javabean.AppBean;
 import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
@@ -71,9 +79,9 @@ public class TestSdkActivity extends BaseActivity {
     }
 
     void loadAccountInfo() {
-        if(UserAccountManager.getInstance().hasAccount()) {
+        if (UserAccountManager.getInstance().hasAccount()) {
             mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
-        }else{
+        } else {
             mTitlebar.getCenterTextView().setText("未登陆");
         }
         View view = mTitlebar.getLeftCustomView();
@@ -123,6 +131,62 @@ public class TestSdkActivity extends BaseActivity {
             }
         });
 
+
+        mDataList.add(new H("检查更新", new Runnable() {
+            @Override
+            public void run() {
+                new PgyUpdateManager.Builder()
+                        .setForced(true)                //设置是否强制更新,非自定义回调更新接口此方法有用
+                        .setUserCanRetry(false)         //失败后是否提示重新下载，非自定义下载 apk 回调此方法有用
+                        .setDeleteHistroyApk(false)     // 检查更新前是否删除本地历史 Apk
+                        .setUpdateManagerListener(new UpdateManagerListener() {
+                            @Override
+                            public void onNoUpdateAvailable() {
+                                //没有更新是回调此方法
+                                MyLog.d("pgyer", "there is no new version");
+                                U.getToastUtil().showToast("没有更新的了");
+                            }
+
+                            @Override
+                            public void onUpdateAvailable(AppBean appBean) {
+                                //没有更新是回调此方法
+                                MyLog.d("pgyer", "there is new version can update"
+                                        + "new versionCode is " + appBean.getVersionCode());
+
+                                //调用以下方法，DownloadFileListener 才有效；如果完全使用自己的下载方法，不需要设置DownloadFileListener
+                                PgyUpdateManager.downLoadApk(appBean.getDownloadURL());
+                            }
+
+                            @Override
+                            public void checkUpdateFailed(Exception e) {
+                                //更新检测失败回调
+                                MyLog.e("pgyer", "check update failed ", e);
+
+                            }
+                        })
+                        //注意 ：下载方法调用 PgyUpdateManager.downLoadApk(appBean.getDownloadURL()); 此回调才有效
+                        .setDownloadFileListener(new DownloadFileListener() {   // 使用蒲公英提供的下载方法，这个接口才有效。
+                            @Override
+                            public void downloadFailed() {
+                                //下载失败
+                                MyLog.e("pgyer", "download apk failed");
+                            }
+
+                            @Override
+                            public void downloadSuccessful(Uri uri) {
+                                MyLog.e("pgyer", "download apk failed");
+                                PgyUpdateManager.installApk(uri);  // 使用蒲公英提供的安装方法提示用户 安装apk
+                            }
+
+                            @Override
+                            public void onProgressUpdate(Integer... integers) {
+                                MyLog.e("pgyer", "update download apk progress : " + integers[0]);
+                            }
+                        })
+                        .register();
+
+            }
+        }));
 
         mDataList.add(new H("显示当前设备信息", new Runnable() {
             @Override
@@ -220,26 +284,41 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-
+        boolean virtualapkLoad = false;
         mDataList.add(new H("VirtualApk load 测试", new Runnable() {
             @Override
             public void run() {
                 String pluginPath = Environment.getExternalStorageDirectory().getAbsolutePath().concat("/Test.apk");
                 File plugin = new File(pluginPath);
-//                try {
+                Class cls = null;
+                try {
+                    cls = getClassLoader().loadClass("com.didi.virtualapk.PluginManager.PluginManager");
+                } catch (ClassNotFoundException e) {
+
+                }
+                if (cls == null) {
+                    U.getToastUtil().showToast("请确认 gradle.properties 中 virtualApkEnable 的开关是否打开");
+                } else {
+                    //                try {
 //                    // load 会导致 Applicaiton 加载两次，看原理
 //                    com.didi.virtualapk.PluginManager.PluginManager.getInstance(U.app()).loadPlugin(plugin);
+//                    virtualapkLoad = true;
 //                    U.getToastUtil().showToast("load 成功");
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                    U.getToastUtil().showToast("load 失败");
 //                }
+                }
             }
         }));
 
         mDataList.add(new H("VirtualApk 跳转 测试", new Runnable() {
             @Override
             public void run() {
+                if(!virtualapkLoad){
+                    U.getToastUtil().showToast("virtualapkLoad == false");
+                    return;
+                }
                 Intent intent = new Intent();
                 intent.setClassName("com.wali.live.pldemo", "com.wali.live.pldemo.activity.PDMainAcitivity");
                 startActivity(intent);
@@ -257,7 +336,7 @@ public class TestSdkActivity extends BaseActivity {
 
                     @Override
                     public void onLost(Postcard postcard) {
-                        U.getToastUtil().showToast("请确认 gradle.properties 中 droidpluginEnable 的开关是否打开");
+//                        U.getToastUtil().showToast("请确认 gradle.properties 中 droidpluginEnable 的开关是否打开");
                     }
 
                     @Override
@@ -413,12 +492,73 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("百度地图", new Runnable() {
             @Override
             public void run() {
-               U.getLbsUtils().getLocation(true, new LbsUtils.Callback() {
-                   @Override
-                   public void onReceive(LbsUtils.Location location) {
-                       U.getToastUtil().showToast(location.toString());
-                   }
-               });
+                U.getLbsUtils().getLocation(true, new LbsUtils.Callback() {
+                    @Override
+                    public void onReceive(LbsUtils.Location location) {
+                        U.getToastUtil().showToast(location.toString());
+                    }
+                });
+            }
+        }));
+
+        mDataList.add(new H("崩溃收集", new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    throw new IllegalStateException("测试，我是主动抛出的一个异常，使用 PgyCrashManager 上报");
+                } catch (Exception e) {
+                    PgyCrashManager.reportCaughtException(e);
+                    U.getToastUtil().showToast("已上报一个自定义崩溃");
+                }
+            }
+        }));
+
+        mDataList.add(new H("用户反馈(Activity)", new Runnable() {
+            @Override
+            public void run() {
+                new PgyerFeedbackManager.PgyerFeedbackBuilder()
+                        .setShakeInvoke(true)           //设置是否摇一摇的方式激活反馈，默认为 true
+                        .setBarBackgroundColor("")      // 设置顶部按钮和底部背景色，默认颜色为 #2E2D2D
+                        .setBarButtonPressedColor("")        //设置顶部按钮和底部按钮按下时的反馈色 默认颜色为 #383737
+                        .setColorPickerBackgroundColor("")   //设置颜色选择器的背景色,默认颜色为 #272828
+                        .setBarImmersive(true)              //设置activity 是否以沉浸式的方式打开，默认为 false
+                        .setDisplayType(PgyerFeedbackManager.TYPE.ACTIVITY_TYPE)   //设置以Dialog 的方式打开
+                        .setMoreParam("渠道号", U.getChannelUtils().getChannel())
+                        .setMoreParam("KEY2", "VALUE2")
+                        .builder()
+                        .invoke();                  //激活直接显示的方式
+
+            }
+        }));
+        mDataList.add(new H("用户反馈(Dialog)", new Runnable() {
+            @Override
+            public void run() {
+                new PgyerFeedbackManager.PgyerFeedbackBuilder()
+                        .setShakeInvoke(true)       //设置是否摇一摇的方式激活反馈，默认为 true
+//                        .setColorDialogTitle("")    //设置Dialog 标题栏的背景色，默认为颜色为#ffffff
+//                        .setColorTitleBg("")        //设置Dialog 标题的字体颜色，默认为颜色为#2E2D2D
+                        .setDisplayType(PgyerFeedbackManager.TYPE.DIALOG_TYPE)   //设置以Dialog 的方式打开
+                        .setMoreParam("渠道号", U.getChannelUtils().getChannel())
+                        .setMoreParam("KEY2", "VALUE2")
+                        .builder()
+                        .invoke();                  //激活直接显示的方式
+
+            }
+        }));
+        mDataList.add(new H("激活摇一摇用户反馈(Dialog)", new Runnable() {
+            @Override
+            public void run() {
+                new PgyerFeedbackManager.PgyerFeedbackBuilder()
+                        .setShakeInvoke(true)       //设置是否摇一摇的方式激活反馈，默认为 true
+//                        .setColorDialogTitle("")    //设置Dialog 标题栏的背景色，默认为颜色为#ffffff
+//                        .setColorTitleBg("")        //设置Dialog 标题的字体颜色，默认为颜色为#2E2D2D
+                        .setDisplayType(PgyerFeedbackManager.TYPE.DIALOG_TYPE)   //设置以Dialog 的方式打开
+                        .setMoreParam("渠道号", U.getChannelUtils().getChannel())
+                        .setMoreParam("KEY2", "VALUE2")
+                        .builder()
+                        .register();                //注册摇一摇的方式
+                U.getToastUtil().showToast("注册成功，晃动手机可弹出反馈页面");
+
             }
         }));
 
@@ -429,6 +569,24 @@ public class TestSdkActivity extends BaseActivity {
         super.onResume();
         if (!U.getPermissionUtils().checkExternalStorage(this)) {
             U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    MyLog.d(TAG, "onRequestPermissionSuccess");
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                    MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
+                }
+            }, this);
+        }
+        if (!U.getPermissionUtils().checkRecordAudio(this)) {
+            U.getPermissionUtils().requestRecordAudio(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {
                     MyLog.d(TAG, "onRequestPermissionSuccess");

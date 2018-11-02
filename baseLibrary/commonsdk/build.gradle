@@ -158,6 +158,9 @@ dependencies {
     // 使用矢量图来播动画的库
 //    implementation rootProject.ext.dependencies["lottie"]
 
+    // 蒲公英 用户反馈 与 崩溃收集
+    api files('libs/pgyer_sdk_3.0.2.jar')
+
     api files('libs/milinksdk-3.2.0.jar')
 
     api files('libs/BaiduLBS_Android.jar')

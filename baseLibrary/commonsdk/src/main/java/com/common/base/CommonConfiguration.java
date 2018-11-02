@@ -28,6 +28,7 @@ import com.common.image.fresco.FrescoInitManager;
 import com.common.integration.ConfigModule;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.pgyersdk.crash.PgyCrashManager;
 
 import java.util.List;
 
@@ -69,11 +70,12 @@ public class CommonConfiguration implements ConfigModule {
                 ARouter.init(application); // 尽可能早,推荐在Application中初始化
                 MyLog.init();
                 FrescoInitManager.initFresco(U.app());
+                PgyCrashManager.register();
             }
 
             @Override
             public void onTerminate(@NonNull Application application) {
-
+                PgyCrashManager.unregister();
             }
         });
     }
