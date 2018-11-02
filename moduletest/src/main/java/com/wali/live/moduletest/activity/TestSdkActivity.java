@@ -131,8 +131,18 @@ public class TestSdkActivity extends BaseActivity {
             }
         });
 
-
         mDataList.add(new H("检查更新", new Runnable() {
+            @Override
+            public void run() {
+                new PgyUpdateManager.Builder()
+                        .setForced(false)                //设置是否强制更新
+                        .setUserCanRetry(false)         //失败后是否提示重新下载
+                        .setDeleteHistroyApk(true)     // 检查更新前是否删除本地历史 Apk
+                        .register();
+            }
+        }));
+
+        mDataList.add(new H("检查更新(自定义过程)", new Runnable() {
             @Override
             public void run() {
                 new PgyUpdateManager.Builder()
@@ -154,6 +164,7 @@ public class TestSdkActivity extends BaseActivity {
                                         + "new versionCode is " + appBean.getVersionCode());
 
                                 //调用以下方法，DownloadFileListener 才有效；如果完全使用自己的下载方法，不需要设置DownloadFileListener
+                                U.getToastUtil().showToast("有更新开始下载");
                                 PgyUpdateManager.downLoadApk(appBean.getDownloadURL());
                             }
 
@@ -175,6 +186,8 @@ public class TestSdkActivity extends BaseActivity {
                             @Override
                             public void downloadSuccessful(Uri uri) {
                                 MyLog.e("pgyer", "download apk failed");
+                                // 默认存放的目录
+                                // /storage/emulated/0/Android/data/com.zq.live/files/pgySdk/downloadApk/apk-1600434156.apk
                                 PgyUpdateManager.installApk(uri);  // 使用蒲公英提供的安装方法提示用户 安装apk
                             }
 
