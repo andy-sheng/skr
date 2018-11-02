@@ -1,8 +1,19 @@
+time=$(date "+%Y%m%d-%H:%M:%S")
 apiKey=3dd7d2a8ab6591ca44fb8cbbe1333785
-#userKey=5b7c796c9534766eb5ea9570088f0487
-#echo $apiKey
+uploadFile=app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
+echo apiKey=$apiKey
+echo uploadFile=$uploadFile
+echo $time
 
-curl -F 'file=@app/build/outputs/apk/release/app-release.apk' \
+downloadUrl=$(curl -F 'file=@'$uploadFile'' \
  -F '_api_key='$apiKey'' \
- -F 'buildUpdateDescription=萨达介绍了肯德基阿斯科利简单' \
-  https://www.pgyer.com/apiv2/app/upload
+ -F 'buildUpdateDescription=更新时间'$time'
+ 1. bug修复
+ 2. 功能更新'\
+  https://www.pgyer.com/apiv2/app/upload | jq .data.buildQRCodeURL)
+
+echo $downloadUrl
+# 去除双引号
+downloadUrl=`echo $downloadUrl |sed 's/\"//g'`
+
+open $downloadUrl

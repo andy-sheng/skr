@@ -256,3 +256,10 @@ public static java.lang.String TABLENAME;
 -dontwarn org.greenrobot.greendao.database.**
 # If you do not use Rx:
 -dontwarn rx.**
+
+-keep class **.BuildConfig {*;}
+
+#蒲公英
+-libraryjars ../baseLibrary/commonsdk/libs/pgyer_sdk_3.0.2.jar
+-dontwarn com.pgyersdk.**
+-keep class com.pgyersdk.** { *; }

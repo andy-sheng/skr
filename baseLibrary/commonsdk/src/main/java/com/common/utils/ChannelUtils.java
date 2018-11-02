@@ -1,8 +1,12 @@
 package com.common.utils;
 
+import com.common.log.MyLog;
+import com.pgyersdk.crash.PgyCrashManager;
+
 import java.lang.reflect.Field;
 
 public class ChannelUtils {
+    public final static String TAG = "ChannelUtils";
     private String channelName = "DEFAULT";
 
     ChannelUtils() {
@@ -10,11 +14,8 @@ public class ChannelUtils {
             Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
             Field field = ct.getField("CHANNEL_NAME");
             channelName = (String) field.get(null);
-        } catch (ClassNotFoundException e) {
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            PgyCrashManager.reportCaughtException(e);
         }
     }
 
@@ -28,6 +29,14 @@ public class ChannelUtils {
      * @return
      */
     public String getChannel() {
+        try {
+            Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
+            Field field = ct.getField("CHANNEL_NAME");
+            channelName = (String) field.get(null);
+        } catch (Exception e) {
+            MyLog.e(TAG,e);
+//            PgyCrashManager.reportCaughtException(e);
+        }
         return channelName;
     }
 

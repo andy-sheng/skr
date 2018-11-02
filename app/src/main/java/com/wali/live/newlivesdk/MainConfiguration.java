@@ -24,6 +24,8 @@ import android.util.Log;
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.integration.ConfigModule;
+import com.common.log.MyLog;
+import com.zq.live.BuildConfig;
 
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class MainConfiguration implements ConfigModule {
 
             @Override
             public void attachBaseContext(@NonNull Context base) {
-
+                Log.w(TAG, "com.zq.live.BuildConfig.CHANNEL_NAME:" + com.zq.live.BuildConfig.class.getName());
             }
 
             @Override

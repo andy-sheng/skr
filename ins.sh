@@ -43,11 +43,11 @@ if [[ $1 = "app" ]]; then
 	if [[ $2 = "release" ]]; then
 		echo "编译app release"
 		./gradlew :app:assembleRelease
-		adb install -r app/build/outputs/apk/release/app-release.apk
+		adb install -r app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
 	else
 		echo "./gradlew :app:assembleDebug"
 		./gradlew :app:assembleDebug
-		adb install -r app/build/outputs/apk/debug/app-debug.apk
+		adb install -r app/build/outputs/apk/channel_mishop/debug/app-channel_mishop-debug.apk
 	fi
 else
 	if [[ $isBuildModule = false ]]; then
