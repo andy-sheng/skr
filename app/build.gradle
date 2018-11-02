@@ -11,6 +11,28 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
     }
 
+    flavorDimensions("channel")
+
+    productFlavors {
+        channel_default {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"DEFAULT\"')
+            resValue("string", "channel_desc", '这是default demo')
+        }
+
+        channel_mishop {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"MI_SHOP\"')
+            resValue("string", "channel_desc", '小米应用商店')
+        }
+
+        channel_yyb {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"YYB_SHOP\"')
+            resValue("string", "channel_desc", '应用宝')
+        }
+    }
+
     defaultConfig {
         applicationId "com.zq.live"
         minSdkVersion rootProject.ext.android["minSdkVersion"]
@@ -96,7 +118,7 @@ dependencies {
     api project(":commonservice")
     if (isBuildModule.toBoolean()) {
         // 要区分，否则 build 编译会提示不能implementation application 的project
-    }else{
+    } else {
 
         implementation project(":modulechannel")
         implementation project(":modulewatch")
