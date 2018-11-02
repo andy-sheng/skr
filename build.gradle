@@ -15,7 +15,7 @@ buildscript {
             url 'https://raw.githubusercontent.com/simonjava/maven_repo/master'
         }
         // 这里改成自己的本地路径
-        maven { url local_maven }
+        maven { url "${rootDir}${File.separator}local_maven" }
 
         google()
         jcenter()
@@ -59,7 +59,7 @@ allprojects {
             url 'https://raw.githubusercontent.com/ModerateFish/mvn-repo/master/'
         }
 
-        maven { url local_maven }
+        maven { url "${rootDir}${File.separator}local_maven" }
         google()
         jcenter()
     }

@@ -22,6 +22,7 @@ import com.baidu.location.LocationClient;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.RouterConstants;
+import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -70,7 +71,11 @@ public class TestSdkActivity extends BaseActivity {
     }
 
     void loadAccountInfo() {
-        mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
+        if(UserAccountManager.getInstance().hasAccount()) {
+            mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
+        }else{
+            mTitlebar.getCenterTextView().setText("未登陆");
+        }
         View view = mTitlebar.getLeftCustomView();
         BaseImageView baseImageView = view.findViewById(R.id.head_img);
 
