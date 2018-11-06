@@ -44,10 +44,14 @@ if [[ $1 = "app" ]]; then
 		echo "编译app release"
 		./gradlew :app:assembleRelease
 		adb install -r app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
+	elif [[ $2 = "test" ]]; then
+	   echo "./gradlew :app:assemblechannel_testDebug"
+       	./gradlew :app:assemblechannel_testDebug
+       	adb install -r app/build/outputs/apk/channel_test/debug/app-channel_test-debug.apk
 	else
-		echo "./gradlew :app:assembleDebug"
-		./gradlew :app:assembleDebug
-		adb install -r app/build/outputs/apk/channel_mishop/debug/app-channel_mishop-debug.apk
+		echo "./gradlew :app:assemblechannel_defaultDebug"
+		./gradlew :app:assemblechannel_defaultDebug
+		adb install -r app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk
 	fi
 else
 	if [[ $isBuildModule = false ]]; then

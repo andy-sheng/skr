@@ -71,7 +71,7 @@ public class TimeStatisticsProcessor extends BaseProcessor {
                 superCls = null;
             }
             if (superCls != null && !superCls.getName().endsWith("java.lang.Object")) {
-                U.print(5, "ctClass" + ctClass.getName() + " superCls:" + superCls.getName());
+                U.print(1, "ctClass" + ctClass.getName() + " superCls:" + superCls.getName());
                 needMonitor = needMonitor(superCls.getName());
             } else {
                 break;
@@ -85,7 +85,7 @@ public class TimeStatisticsProcessor extends BaseProcessor {
 
     void processInner(CtClass ctClass) {
         for (CtMethod ctMethod : ctClass.getDeclaredMethods()) {
-            U.print(5, "ctMethod:" + ctMethod.getName());
+            U.print(1, "ctMethod:" + ctMethod.getName());
             if (ctMethod.getName().endsWith("access$")) {
                 continue;
             }

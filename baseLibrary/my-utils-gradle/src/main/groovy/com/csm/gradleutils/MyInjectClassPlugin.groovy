@@ -3,6 +3,8 @@ package com.csm.gradleutils
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
 import com.csm.gradleutils.config.InjectConfig
+import com.csm.gradleutils.processor.InjectGifProcessor
+import com.csm.gradleutils.processor.TimeStatisticsProcessor
 import com.csm.gradleutils.transform.ReClassTransform
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -16,9 +18,10 @@ public class MyInjectClassPlugin implements Plugin<Project> {
 
         project.extensions.create("injectConfig", InjectConfig.class)
 
+        // 新建一个task
         project.task('readExtension') << {
             def injectConfig = project['injectConfig']
-            println "injectConfig: " + injectConfig
+            println "injectConfig.injectMethodStatictis: " + injectConfig.injectMethodStatictis
         }
 
 // 仅处理application合包
@@ -28,7 +31,7 @@ public class MyInjectClassPlugin implements Plugin<Project> {
              */
             def android = project.extensions.getByType(AppExtension.class)
             ReClassTransform reClassTransform = new ReClassTransform(project)
-            android.registerTransform(reClassTransform)
+                android.registerTransform(reClassTransform)
         }
     }
 }

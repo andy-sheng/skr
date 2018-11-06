@@ -31,6 +31,12 @@ android {
             buildConfigField("String", "CHANNEL_NAME", '\"YYB_SHOP\"')
             resValue("string", "channel_desc", '应用宝')
         }
+
+        channel_test {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"TEST\"')
+            resValue("string", "channel_desc", '测试环境')
+        }
     }
 
     defaultConfig {

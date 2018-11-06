@@ -40,20 +40,14 @@ public class ReClassTransform extends com.android.build.api.transform.Transform 
     HashSet<String> mIncludeJars = new HashSet<>();
     HashMap<String, String> mMap = new HashMap<>();
 
-    ArrayList<IProcessor> mProcessorList = new ArrayList<>();
-
+    HashSet<IProcessor> mProcessorList = new HashSet<>();
+    TimeStatisticsProcessor mTimeStatisticsProcessor = new TimeStatisticsProcessor();
+    InjectGifProcessor mInjectGifProcessor = new InjectGifProcessor();
 
     public ReClassTransform(org.gradle.api.Project project) {
         System.out.println("new ReClassTransform()");
         mProject = project;
         mGlobalScope = GroovyU.getGlobalScope(project);
-        InjectConfig injectConfig = (InjectConfig) mProject.getProperties().get("injectConfig");
-        if (injectConfig.isInjectMethodStatictis()) {
-            mProcessorList.add(new TimeStatisticsProcessor());
-        }
-        if (injectConfig.isInjectGIf()) {
-            mProcessorList.add(new InjectGifProcessor());
-        }
     }
 
     // 设置我们自定义的Transform对应的Task名称
@@ -82,6 +76,37 @@ public class ReClassTransform extends com.android.build.api.transform.Transform 
     }
 
 
+    void transformWhenNoInject(Context context, Collection<TransformInput> inputs,
+                               Collection<TransformInput> referencedInputs,
+                               TransformOutputProvider outputProvider, boolean isIncremental) throws IOException {
+        /***开始注入***/
+        for (TransformInput input : inputs) {
+            for (DirectoryInput directoryInput : input.getDirectoryInputs()) {
+
+                // 获取output目录
+                File dest = outputProvider.getContentLocation(directoryInput.getName(),
+                        directoryInput.getContentTypes(), directoryInput.getScopes(),
+                        Format.DIRECTORY);
+
+                // 将input的目录复制到output指定目录
+                FileUtils.copyDirectory(directoryInput.getFile(), dest);
+            }
+
+            for (JarInput jarInput : input.getJarInputs()) {
+                String jarName = jarInput.getName();
+                String md5Name = DigestUtils.md5Hex(jarInput.getFile().getAbsolutePath());
+                if (jarName.endsWith(".jar")) {
+                    jarName = jarName.substring(0, jarName.length() - 4);
+                }
+                //生成输出路径
+                File dest = outputProvider.getContentLocation(jarName + md5Name,
+                        jarInput.getContentTypes(), jarInput.getScopes(), Format.JAR);
+                //将输入内容复制到输出
+                FileUtils.copyFile(jarInput.getFile(), dest);
+            }
+        }
+    }
+
     /**
      * 会对每个 flavor 都来一遍啊
      */
@@ -89,13 +114,26 @@ public class ReClassTransform extends com.android.build.api.transform.Transform 
     public void transform(Context context, Collection<TransformInput> inputs,
                           Collection<TransformInput> referencedInputs,
                           TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
-        if (mProcessorList.size() == 0) {
-            U.print(100,"不需要 inject！！！");
-            // 完全依赖自己的
-            super.transform(context, inputs, referencedInputs, outputProvider, isIncremental);
+        U.print(100, ">>>>>ReClassTransform");
+
+        InjectConfig injectConfig = (InjectConfig) mProject.getProperties().get("injectConfig");
+        if (injectConfig.isInjectMethodStatictis()) {
+            mProcessorList.add(mTimeStatisticsProcessor);
+        } else {
+            mProcessorList.remove(mTimeStatisticsProcessor);
+        }
+        if (injectConfig.isInjectGIf()) {
+            mProcessorList.add(mInjectGifProcessor);
+        } else {
+            mProcessorList.remove(mInjectGifProcessor);
+        }
+
+
+        if (mProcessorList.isEmpty()) {
+            U.print(100, "不需要 inject！！！");
+            transformWhenNoInject(context, inputs, referencedInputs, outputProvider, isIncremental);
             return;
         }
-        U.print(100, ">>>>>ReClassTransform");
 
         /* 初始化 ClassPool */
         ClassPool pool = initClassPool(inputs);

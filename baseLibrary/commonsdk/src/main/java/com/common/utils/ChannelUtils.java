@@ -29,15 +29,11 @@ public class ChannelUtils {
      * @return
      */
     public String getChannel() {
-        try {
-            Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
-            Field field = ct.getField("CHANNEL_NAME");
-            channelName = (String) field.get(null);
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-//            PgyCrashManager.reportCaughtException(e);
-        }
         return channelName;
+    }
+
+    public boolean isTestChannel(){
+        return "TEST".equals(channelName);
     }
 
 }
