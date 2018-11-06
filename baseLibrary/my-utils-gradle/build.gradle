@@ -1,0 +1,28 @@
+apply plugin: 'groovy'
+
+dependencies {
+    compile gradleApi()//gradle sdk
+    compile localGroovy()//groovy sdk
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile 'javassist:javassist:3.12.1.GA'
+    compile 'com.android.tools.build:gradle:2.1.3'
+//    compile 'org.json:json:20160212'
+//    compile 'org.codehaus.groovy:groovy:2.4.7'
+//    compile 'com.squareup:javapoet:1.5.1'
+//
+//    compile 'com.google.gradle:osdetector-gradle-plugin:1.2.1'
+//    compile 'net.dongliu:apk-parser:2.2.0'
+}
+
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: local_maven)
+        pom.groupId = 'com.csm.gradleutils'
+        pom.artifactId = 'manyutils'
+        pom.version = '1.1'
+    }
+}

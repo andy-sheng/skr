@@ -1,13 +1,5 @@
 package com.wali.live;
 
-import android.text.TextUtils;
-
-import com.qihoo360.replugin.RePlugin;
-import com.qihoo360.replugin.utils.ReflectUtils;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 public class MsgUtils {
 
     private static class MsgUtilsHolder {
@@ -30,29 +22,29 @@ public class MsgUtils {
     }
 
     private Object sendDataToPlugin(String pluginName, int type, Object obj) {
-        if (TextUtils.isEmpty(pluginName)) {
-            return null;
-        }
-        try {
-            Class<?> pluginMsgClass = RePlugin.fetchClassLoader(pluginName).loadClass(pluginName + ".MsgUtils");
+//        if (TextUtils.isEmpty(pluginName)) {
+//            return null;
+//        }
+//        try {
+//            Class<?> pluginMsgClass = com.qihoo360.replugin.RePlugin.fetchClassLoader(pluginName).loadClass(pluginName + ".MsgUtils");
 //            for (Method m : pluginMsgClass.getDeclaredMethods()) {
 //                MyLog.d(TAG, m.getName());
 //            }
 //            for (Method m : pluginMsgClass.getMethods()) {
 //                MyLog.d(TAG, "x " + m.getName());
 //            }
-            Method instanceMethod = ReflectUtils.getMethod(pluginMsgClass,"getInstance");
-            Object pluginMsgInstance = instanceMethod.invoke(null);
-            Method recvDataFromHostMethod = ReflectUtils.getMethod(pluginMsgClass,"recvDataFromHost", int.class, Object.class);
-            Object returnData = recvDataFromHostMethod.invoke(pluginMsgInstance, type, obj);
-            return returnData;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+//            Method instanceMethod = com.qihoo360.replugin.utils.ReflectUtils.getMethod(pluginMsgClass,"getInstance");
+//            Object pluginMsgInstance = instanceMethod.invoke(null);
+//            Method recvDataFromHostMethod = com.qihoo360.replugin.utils.ReflectUtils.getMethod(pluginMsgClass,"recvDataFromHost", int.class, Object.class);
+//            Object returnData = recvDataFromHostMethod.invoke(pluginMsgInstance, type, obj);
+//            return returnData;
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        }
         return null;
     }
 

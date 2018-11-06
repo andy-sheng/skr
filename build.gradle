@@ -41,6 +41,7 @@ buildscript {
         if (arouterTableLoadOnBuild.toBoolean()) {
             classpath "com.alibaba:arouter-register:1.0.2"
         }
+        classpath "com.csm.gradleutils:manyutils:1.1"
     }
 }
 

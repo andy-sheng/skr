@@ -204,9 +204,9 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("显示当前设备信息", new Runnable() {
             @Override
             public void run() {
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newParamsBuilder(TestSdkActivity.this, DeviceInfoFragment.class).build()
-                );
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_DEVICE_INFO)
+                        .greenChannel()
+                        .navigation();
             }
         }));
 

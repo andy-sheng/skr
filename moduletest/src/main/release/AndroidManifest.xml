@@ -16,7 +16,7 @@
 
         <activity android:name="com.example.qrcode.TestGeneratectivity"/>
         <activity android:name="com.example.qrcode.TestScanActivity"/>
-
+        <activity android:name=".activity.DeviceInfoActivity"/>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.base.BuildConfig;
+import com.common.statistics.TimeStatistics;
 import com.common.utils.U;
 import com.wali.live.moduletest.R;
 
@@ -38,6 +39,8 @@ public class DeviceInfoFragment extends BaseFragment {
         sb.append("手机型号:").append(U.getDeviceUtils().getProductModel()).append("\n");
         sb.append("手机厂商:").append(U.getDeviceUtils().getProductBrand()).append("\n");
         sb.append("渠道号:").append(U.getChannelUtils().getChannel()).append(" debug:").append(BuildConfig.DEBUG).append("\n");
+        sb.append("是否开启了打印方法执行时间: switch:").append(TimeStatistics.getSwitch()).append(" dt:").append(TimeStatistics.sDt).append("\n");
+
         mDescTv.setText(sb.toString());
     }
 

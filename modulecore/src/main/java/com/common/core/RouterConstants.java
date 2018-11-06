@@ -6,7 +6,7 @@ package com.common.core;
 public interface RouterConstants {
     String ACTIVITY_LOGIN = "/core/LoginActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
-
+    String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_TEST = "/test/TestSdkActivity";
 
     String ACTIVITY_CHANNEL_SDK = "/channel/ChannelSdkActivity";
@@ -28,4 +28,5 @@ public interface RouterConstants {
 
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
     String SERVICE_CHANNEL = "/channel/service1";
+
 }

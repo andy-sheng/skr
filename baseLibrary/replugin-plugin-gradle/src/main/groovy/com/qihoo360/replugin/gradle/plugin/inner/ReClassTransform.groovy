@@ -221,17 +221,6 @@ public class ReClassTransform extends Transform {
         pool
     }
 
-    /**
-     * 处理 jar
-     */
-    def handleJar(ClassPool pool, JarInput input, IClassInjector injector, Object config) {
-        File jar = input.file
-        if (jar.absolutePath in includeJars) {
-            println ">>> Handle Jar: ${jar.absolutePath}"
-            String dirAfterUnzip = map.get(jar.getParent() + File.separatorChar + jar.getName()).replace('.jar', '')
-            injector.injectClass(pool, dirAfterUnzip, config)
-        }
-    }
 
     /**
      * 拷贝 Jar
@@ -258,6 +247,19 @@ public class ReClassTransform extends Transform {
         }
 */
     }
+
+    /**
+     * 处理 jar
+     */
+    def handleJar(ClassPool pool, JarInput input, IClassInjector injector, Object config) {
+        File jar = input.file
+        if (jar.absolutePath in includeJars) {
+            println ">>> Handle Jar: ${jar.absolutePath}"
+            String dirAfterUnzip = map.get(jar.getParent() + File.separatorChar + jar.getName()).replace('.jar', '')
+            injector.injectClass(pool, dirAfterUnzip, config)
+        }
+    }
+
 
     /**
      * 处理目录中的 class 文件

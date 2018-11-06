@@ -127,3 +127,13 @@ dependencies {
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     }
 }
+
+
+apply plugin: 'my-inject-class-gradle'
+
+injectConfig {
+    // 是否开启方法计时统计
+    injectMethodStatictis = false
+    // 是否开启gif ARGB_4444注入修改
+    injectGIf = false
+}

@@ -387,7 +387,9 @@ public class ExImageView extends RelativeLayout {
         }
         try {
             mGifFromFile = new GifDrawable(localFilePath);
-            mGifImageView.setImageDrawable(mGifFromFile);
+            if(!mGifFromFile.isRecycled()) {
+                mGifImageView.setImageDrawable(mGifFromFile);
+            }
         } catch (IOException e) {
             // 失败了
             loadLocalByFresco(mBaseImage);
