@@ -414,6 +414,12 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
+        mDataList.add(new H("浸入式 + CollapsingToolbarLayout 调试", new Runnable() {
+            @Override
+            public void run() {
+            }
+        }));
+
         mDataList.add(new H("ARouter 依赖注入测试，访问其他Module 数据", new Runnable() {
             @Override
             public void run() {

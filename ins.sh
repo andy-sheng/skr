@@ -22,6 +22,7 @@ getBuildModule(){
 	fi
 }
 
+echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module"
 if [ $# -le 0 ] ; then 
 	echo "输入需要编译的模块名" 
 	exit 1; 
@@ -41,16 +42,26 @@ if [[ $1 = "app" ]]; then
 		./gradlew clean
 	fi
 	if [[ $2 = "release" ]]; then
-		echo "编译app release"
-		./gradlew :app:assembleRelease
-		adb install -r app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
+		echo "编译app release  加 --profile 会输出耗时报表"
+		#./gradlew :app:assembleRelease --profile
+		if [[ $3 = "all" ]];then
+		    echo "编译release所有渠道"
+		    ./gradlew :app:assembleRelease
+		    adb install -r app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
+		else
+		    echo "只编译release default渠道"
+		    ./gradlew :app:assemblechannel_defaultRelease --stacktrace
+		    adb install -r app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
+		fi
 	elif [[ $2 = "test" ]]; then
 	   echo "./gradlew :app:assemblechannel_testDebug"
+	   echo "只编译test debug渠道"
        	./gradlew :app:assemblechannel_testDebug
        	adb install -r app/build/outputs/apk/channel_test/debug/app-channel_test-debug.apk
 	else
 		echo "./gradlew :app:assemblechannel_defaultDebug"
-		./gradlew :app:assemblechannel_defaultDebug
+		echo "只编译default debug渠道"
+		./gradlew :app:assemblechannel_defaultDebug --stacktrace
 		adb install -r app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk
 	fi
 else

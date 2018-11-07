@@ -30,7 +30,7 @@ public class MyInjectClassPlugin implements Plugin<Project> {
             println "injectConfig.injectMethodStatictis: " + injectConfig.injectMethodStatictis
         }
 
-// 仅处理application合包
+        // 仅处理application合包
         if (project.plugins.hasPlugin(AppPlugin.class)) {
             /**
              * android{}、compileSdkVersion、defaultConfig {}* 这些属性里面的值就是通过 Extension 被Android的Gradle插件读取到的。

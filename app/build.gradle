@@ -81,13 +81,19 @@ android {
         }
 
         release {
+            debuggable false
+            //签名
+            signingConfig signingConfigs.myConfig
+            //混淆 proguard 任务很耗时
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //启用代码压缩
             minifyEnabled true
             //Zipalign优化
             zipAlignEnabled true
-            debuggable false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.myConfig
+            //删减资源 特别有用，包能小不少
             shrinkResources true
+            //压缩png 有用，包确实能小一点
+            crunchPngs true
         }
     }
 
