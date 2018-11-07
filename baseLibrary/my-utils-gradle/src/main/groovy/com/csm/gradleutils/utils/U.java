@@ -10,6 +10,7 @@ import com.google.common.hash.Hashing;
 
 import org.apache.commons.io.FileUtils;
 import org.gradle.api.Project;
+import org.gradle.api.invocation.Gradle;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipFile;
 
 import groovy.util.AntBuilder;
@@ -43,7 +46,7 @@ public class U {
         // android.jar
         // 即 /Users/chengsimin/my_dev_utils/android-sdk-macosx-24.4/platforms/android-27/android.jar
         String androidJarPath = getAndroidJarPath(globalScope);
-        print(0,"androidJarPath:" + androidJarPath);
+        print(0, "androidJarPath:" + androidJarPath);
         classpathList.add(androidJarPath);
 
         // 原始项目中引用的 classpathList
@@ -69,7 +72,7 @@ public class U {
 
         // /Users/chengsimin/dev/livesdk/livesdk
         String projectDir = project.getRootDir().getAbsolutePath();
-        print(0,"project.getRootDirPath:" + projectDir);
+        print(0, "project.getRootDirPath:" + projectDir);
 
         for (TransformInput transformInput : inputs) {
             for (DirectoryInput directoryInput : transformInput.getDirectoryInputs()) {
@@ -86,12 +89,12 @@ public class U {
             for (JarInput jarInput : transformInput.getJarInputs()) {
                 File jar = jarInput.getFile();
                 String jarPath = jar.getAbsolutePath();
-                print(0,"jarPath:" + jarPath);
+                print(0, "jarPath:" + jarPath);
                 if (!jarPath.contains(projectDir)) {
                     String jarZipDir = project.getBuildDir().getPath() +
                             File.separator + FD_INTERMEDIATES + File.separator + "exploded-aar" +
                             File.separator + Hashing.sha1().hashString(jarPath, Charsets.UTF_16LE).toString() + File.separator + "class";
-                    print(0,"jarZipDir:" + jarZipDir);
+                    print(0, "jarZipDir:" + jarZipDir);
                     if (unzip(jarPath, jarZipDir)) {
                         String jarZip = jarZipDir + ".jar";
                         includeJars.add(jarPath);
@@ -178,7 +181,7 @@ public class U {
         HashMap<String, String> m = new HashMap();
         m.put("destfile", zipFilePath);
         m.put("basedir", dirPath);
-        new AntBuilder().invokeMethod("zip",m);
+        new AntBuilder().invokeMethod("zip", m);
     }
 
 
@@ -200,9 +203,9 @@ public class U {
     }
 
 
-    public static void print(int level,String log){
-        if(level>1){
-            System.out.println(U.TAG+" "+log);
+    public static void print(int level, String log) {
+        if (level > 1) {
+            System.out.println(U.TAG + " " + log);
         }
     }
 }

@@ -8,8 +8,14 @@ import com.csm.gradleutils.processor.TimeStatisticsProcessor
 import com.csm.gradleutils.transform.ReClassTransform
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.invocation.Gradle
+
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 public class MyInjectClassPlugin implements Plugin<Project> {
+
+
 
     void apply(Project project) {
         System.out.println("========================");
@@ -31,7 +37,8 @@ public class MyInjectClassPlugin implements Plugin<Project> {
              */
             def android = project.extensions.getByType(AppExtension.class)
             ReClassTransform reClassTransform = new ReClassTransform(project)
-                android.registerTransform(reClassTransform)
+            android.registerTransform(reClassTransform)
+
         }
     }
 }

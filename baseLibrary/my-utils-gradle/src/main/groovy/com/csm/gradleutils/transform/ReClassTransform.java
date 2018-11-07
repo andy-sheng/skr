@@ -9,6 +9,7 @@ import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformOutputProvider;
 import com.android.build.gradle.internal.pipeline.TransformManager;
+import com.android.build.gradle.internal.pipeline.TransformTask;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.csm.gradleutils.config.InjectConfig;
 import com.csm.gradleutils.processor.IProcessor;
@@ -29,6 +30,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javassist.ClassPool;
 import javassist.NotFoundException;
@@ -115,9 +118,33 @@ public class ReClassTransform extends com.android.build.api.transform.Transform 
                           Collection<TransformInput> referencedInputs,
                           TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
         U.print(100, ">>>>>ReClassTransform");
+        /**
+         * 得到的开始时你执行的 taskName 如
+         * clean assemblechannel_defaultDebug
+         */
+        String taskReqStr = mProject.getGradle().getStartParameter().getTaskRequests().toString();
+        U.print(100, "taskReqStr:" + taskReqStr);
+//        String taskNames = mProject.getGradle().getStartParameter().getTaskNames().toString();
+//        U.print(100,"taskNames:"+taskNames);
+        /**
+         * channel_defaultDebug
+         */
+        String variantName = ((TransformTask) context).getVariantName();
+        U.print(100, "variantName:" + variantName);
+        Pattern pattern = Pattern.compile("^(\\w+)(Release|Debug)");
+
+        Matcher matcher = pattern.matcher(variantName);
+        String flavor = "", buildType = "";
+        if (matcher.find()) {
+            flavor = matcher.group(1);
+            buildType = matcher.group(2);
+        }
+        U.print(100, "flavor:" + flavor + " buildType:" + buildType);
 
         InjectConfig injectConfig = (InjectConfig) mProject.getProperties().get("injectConfig");
-        if (injectConfig.isInjectMethodStatictis()) {
+        if (injectConfig.isInjectMethodStatictis()
+                && flavor.equalsIgnoreCase("channel_default")
+                && buildType.equalsIgnoreCase("debug")) {
             mProcessorList.add(mTimeStatisticsProcessor);
         } else {
             mProcessorList.remove(mTimeStatisticsProcessor);

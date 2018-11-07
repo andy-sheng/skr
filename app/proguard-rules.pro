@@ -259,7 +259,7 @@ public static java.lang.String TABLENAME;
 
 -keep class **.BuildConfig {*;}
 
--keep com.common.statistics.TimeStatistics{*;}
+-keep class com.common.statistics.TimeStatistics{*;}
 #蒲公英
 -libraryjars ../baseLibrary/commonsdk/libs/pgyer_sdk_3.0.2.jar
 -dontwarn com.pgyersdk.**

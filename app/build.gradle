@@ -36,6 +36,9 @@ android {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"TEST\"')
             resValue("string", "channel_desc", '测试环境')
+
+//            applicationId "com.littlejie.multichannel.release "
+//            manifestPlaceholders = [UMENG_CHANNEL: "release "]
         }
     }
 
