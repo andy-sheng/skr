@@ -2,6 +2,8 @@ include ':app', ':baseLibrary:commonsdk', ':commonservice', ':modulecore', ':mod
 
 include ':plugindemo'
 
+include ':baseLibrary:my-utils-gradle'
+
 if (droidPluginEnable.toBoolean()) {
     include ':baseLibrary:DroidPlugin'
 }
@@ -12,5 +14,5 @@ if (repluginHostEnable.toBoolean()) {
 if (repluginPluginEnable.toBoolean()) {
     include ':baseLibrary:replugin-plugin-gradle', ':baseLibrary:replugin-plugin-library'
 }
-    include ':baseLibrary:my-utils-gradle'
+
 
