@@ -37,8 +37,9 @@ android {
             buildConfigField("String", "CHANNEL_NAME", '\"TEST\"')
             resValue("string", "channel_desc", '测试环境')
 
-//            applicationId "com.littlejie.multichannel.release "
-//            manifestPlaceholders = [UMENG_CHANNEL: "release "]
+//          applicationId "com.littlejie.multichannel.release "
+//          可以替换androidmanifest文件中的标签，可作为快速渠道打包替换渠道名的一种方式，也可以自定义标签用来替换需要的文本
+//          manifestPlaceholders = [UMENG_CHANNEL: "release "]
         }
     }
 
