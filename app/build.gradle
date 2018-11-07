@@ -84,7 +84,9 @@ android {
             debuggable false
             //签名
             signingConfig signingConfigs.myConfig
-            //混淆 proguard 任务很耗时
+            //混淆!!! 注意，混淆会删除掉没有引用的类，除非加keep。
+            //没用引用的drawable资源，也会删除变成0字节，
+            // proguard 任务很耗时
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //启用代码压缩
             minifyEnabled true
