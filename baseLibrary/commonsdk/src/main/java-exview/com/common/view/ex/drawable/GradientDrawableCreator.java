@@ -45,7 +45,7 @@ public class GradientDrawableCreator implements ICreateDrawable {
         Rect padding = new Rect();
         for (int i = 0; i < typedArray.getIndexCount(); i++) {
             int attr = typedArray.getIndex(i);
-            if (attr == R.styleable.background_shape_type) {
+            if (attr == R.styleable.background_bl_shape) {
                 drawable.setShape(typedArray.getInt(attr, 0));
             } else if (attr == R.styleable.background_bl_solid_color) {
                 drawable.setColor(typedArray.getColor(attr, 0));

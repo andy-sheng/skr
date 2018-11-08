@@ -25,8 +25,8 @@
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/btn"
-                android:layout_width="130dp"
-                android:layout_height="36dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:padding="0dp"
@@ -37,49 +37,36 @@
                 app:bl_gradient_angle="0"
                 app:bl_gradient_endColor="#4F94CD"
                 app:bl_gradient_startColor="#63B8FF"
-                app:shape_type="rectangle" />
+                app:bl_shape="rectangle" />
 
 
             <com.common.view.ex.ExTextView
-                android:layout_width="130dp"
-                android:layout_height="36dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="TextView"
-                android:textColor="#8c6822"
-                android:textSize="20sp"
-                app:bl_corners_radius="4dp"
-                app:bl_solid_color="#E3B666"
-                app:bl_stroke_color="#8c6822"
-                app:bl_stroke_dashGap="5dp"
-                app:bl_stroke_dashWidth="10dp"
-                app:bl_stroke_width="2dp" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:padding="0dp"
-                android:text="有点击反馈的按钮"
+                android:text="点击时背景会变的按钮"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 app:bl_corners_radius="20dp"
                 app:bl_pressed_color="#7CCD7C"
-                app:shape_type="rectangle"
+                app:bl_shape="rectangle"
                 app:bl_unpressed_color="#7CFC00" />
 
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/btn1"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:padding="0dp"
-                android:text="有波纹触摸反馈的按钮(边框点击会变色)"
+                android:text="有波纹触摸反馈的按钮(边框和文字点击会变色)"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
+                app:bl_unPressed_textColor="@color/white"
+                app:bl_pressed_textColor="@color/blue"
                 app:bl_corners_radius="20dp"
                 app:bl_pressed_stroke_color="#000000"
                 app:bl_ripple_color="#71C671"
@@ -92,40 +79,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="selector 用法："
+                android:text="点赞按钮是用了属性设置selector的drawable"
                 android:textSize="15sp" />
 
-            <com.common.view.ex.ExTextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+            <com.common.view.ex.ExImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/view_dimen_10"
+                android:layout_marginLeft="@dimen/view_dimen_100"
                 android:layout_marginTop="5dp"
                 app:bl_pressed_drawable="@drawable/circle_like_pressed"
                 app:bl_unPressed_drawable="@drawable/circle_like_normal" />
 
             <com.common.view.ex.ExTextView
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="有波纹触摸反馈的按钮"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                app:bl_corners_radius="20dp"
-                app:bl_pressed_drawable="#71C671"
-                app:bl_ripple_color="#71C671"
-                app:bl_ripple_enable="true"
-                app:bl_stroke_color="#8c6822"
-                app:bl_stroke_width="2dp"
-                app:bl_unPressed_drawable="#7CFC00" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:padding="0dp"
                 android:text="点击文字变色"
+                app:bl_pressed_color="@color/red"
                 app:bl_pressed_textColor="#919DAF"
                 app:bl_unPressed_textColor="@android:color/holo_red_dark" />
 

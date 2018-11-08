@@ -39,7 +39,7 @@ import pl.droidsonroids.gif.GifOptions;
  * 这个view过于复杂，在使用viewpager时就别重复使用了吧
  * 职责：保证清晰流畅的显示出图片 不管多大
  */
-public class ExImageView extends RelativeLayout {
+public class EnhancedImageView extends RelativeLayout {
 
     public final static String TAG = "ImageBrowseView";
 
@@ -52,17 +52,17 @@ public class ExImageView extends RelativeLayout {
 
     protected BaseImage mBaseImage;
 
-    public ExImageView(Context context) {
+    public EnhancedImageView(Context context) {
         super(context);
         init();
     }
 
-    public ExImageView(Context context, AttributeSet attrs) {
+    public EnhancedImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ExImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EnhancedImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

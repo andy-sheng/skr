@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="background">
-        <attr name="shape_type" format="enum">
+        <!--形状类型 圆角矩形 椭圆 执行 圆环-->
+        <attr name="bl_shape" format="enum">
             <enum name="rectangle" value="0" />
             <enum name="oval" value="1" />
             <enum name="line" value="2" />
             <enum name="ring" value="3" />
         </attr>
 
+        <!--形状内填充的颜色-->
         <attr name="bl_solid_color" format="color" />
 
-        <!--shape半径相关-->
+        <!--shape半径相关 上下左右-->
         <attr name="bl_corners_radius" format="dimension" />
-        <attr name="bl_corners_bottomLeftRadius" format="dimension" />
-        <attr name="bl_corners_bottomRightRadius" format="dimension" />
         <attr name="bl_corners_topLeftRadius" format="dimension" />
         <attr name="bl_corners_topRightRadius" format="dimension" />
+        <attr name="bl_corners_bottomLeftRadius" format="dimension" />
+        <attr name="bl_corners_bottomRightRadius" format="dimension" />
 
+        <!--可以实现的渐变效果-->
         <attr name="bl_gradient_angle" format="integer" />
         <attr name="bl_gradient_centerX" format="float" />
         <attr name="bl_gradient_centerY" format="float" />
@@ -31,6 +34,7 @@
         </attr>
         <attr name="bl_gradient_useLevel" format="boolean" />
 
+        <!--drawable padding-->
         <attr name="bl_padding_left" format="dimension" />
         <attr name="bl_padding_top" format="dimension" />
         <attr name="bl_padding_right" format="dimension" />
@@ -45,16 +49,18 @@
             <enum name="match_parent" value="-1" />
         </attr>
 
+        <!--线条的宽度与颜色 分为实线 和 虚线-->
         <attr name="bl_stroke_width" format="dimension" />
         <attr name="bl_stroke_color" format="color" />
         <attr name="bl_stroke_dashWidth" format="dimension" />
         <attr name="bl_stroke_dashGap" format="dimension" />
 
         <!--以下是selector事件-->
+        <!-- 点击时的波纹效果 很酷炫 -->
         <attr name="bl_ripple_enable" format="boolean" />
         <attr name="bl_ripple_color" format="color" />
 
-
+        <!--定义各种 selector 状态时边框的颜色 前提是你得设置了个带边框的shape-->
         <attr name="bl_checkable_stroke_color" format="color" />
         <attr name="bl_checked_stroke_color" format="color" />
         <attr name="bl_enabled_stroke_color" format="color" />
@@ -70,13 +76,14 @@
         <attr name="bl_unFocused_stroke_color" format="color" />
     </declare-styleable>
 
+    <!-- 设置按下和未按下时的颜色-->
     <declare-styleable name="background_press">
         <attr name="bl_unpressed_color" format="color" />
         <attr name="bl_pressed_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="background_selector">
-
+        <!--设置各种selector 状态时 color 或者 drawable -->
         <attr name="bl_checkable_drawable" format="color|reference" />
         <attr name="bl_checked_drawable" format="color|reference" />
         <attr name="bl_enabled_drawable" format="color|reference" />
@@ -98,6 +105,7 @@
 
 
     <declare-styleable name="text_selector">
+        <!--设置各种selector 状态 文字的颜色-->
         <attr name="bl_checkable_textColor" format="color" />
         <attr name="bl_checked_textColor" format="color" />
         <attr name="bl_enabled_textColor" format="color" />

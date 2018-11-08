@@ -10,12 +10,11 @@ import android.widget.AbsListView;
 import android.widget.Toast;
 
 import com.common.base.R;
-import com.common.image.fresco.BaseImageView;
 import com.common.image.model.BaseImage;
 import com.common.image.model.ImageFactory;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
-import com.imagebrowse.ExImageView;
+import com.imagebrowse.EnhancedImageView;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.SuperCheckBox;
@@ -131,7 +130,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
     private class ImageViewHolder extends ViewHolder {
 
         View rootView;
-        ExImageView ivThumb;
+        EnhancedImageView ivThumb;
         View mask;
         View checkView;
         SuperCheckBox cbCheck;
@@ -141,7 +140,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         ImageViewHolder(View itemView) {
             super(itemView);
             rootView = itemView;
-            ivThumb = (ExImageView) itemView.findViewById(R.id.iv_thumb);
+            ivThumb = (EnhancedImageView) itemView.findViewById(R.id.iv_thumb);
             mask = itemView.findViewById(R.id.mask);
             checkView = itemView.findViewById(R.id.checkView);
             cbCheck = (SuperCheckBox) itemView.findViewById(R.id.cb_check);
