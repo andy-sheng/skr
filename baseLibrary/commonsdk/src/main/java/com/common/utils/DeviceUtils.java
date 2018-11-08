@@ -1,31 +1,23 @@
-/*
- * Copyright 2017 JessYan
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.common.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * 通过U.getDeviceUtils
@@ -49,6 +41,11 @@ public class DeviceUtils {
     private String romName;
     private String romVersion;
 
+    /**
+     * 唯一设备号，计算方法与miui相同
+     */
+    private String deviceID;
+
     DeviceUtils() {
 
     }
@@ -56,18 +53,20 @@ public class DeviceUtils {
     /**
      * 返回设备型号
      * 如 MI NOTE LTE
+     *
      * @return
      */
-    public String getProductModel(){
+    public String getProductModel() {
         return getProp("ro.product.model");
     }
 
     /**
      * 返回手机厂商
      * 如 Xiaomi
+     *
      * @return
      */
-    public String getProductBrand(){
+    public String getProductBrand() {
         return getProp("ro.product.brand");
     }
 
@@ -128,6 +127,7 @@ public class DeviceUtils {
 
     /**
      * 得到系统的属性值
+     *
      * @param name
      * @return
      */
@@ -179,6 +179,70 @@ public class DeviceUtils {
             packageInfo = null;
         }
         return packageInfo != null;
+    }
+
+
+    private String getImei() {
+        try {
+            TelephonyManager tm = (TelephonyManager) U.app().getSystemService(Context.TELEPHONY_SERVICE);
+            @SuppressLint("MissingPermission")
+            String imei = tm.getDeviceId();
+            return imei;
+        } catch (Throwable var6) {
+            return null;
+        }
+    }
+
+    private String getAndroidId() {
+        try {
+            String androidId = Settings.Secure.getString(U.app().getContentResolver(), "android_id");
+            return androidId;
+        } catch (Throwable var5) {
+
+        }
+        return null;
+    }
+
+    private byte[] utf8(String var0) {
+        try {
+            return var0.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException var2) {
+            return var0.getBytes();
+        }
+    }
+
+    private String sha1(String str) {
+        if (str != null) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA1");
+                md.update(utf8(str));
+                BigInteger r = new BigInteger(1, md.digest());
+                return String.format("%1$032X", r);
+            } catch (NoSuchAlgorithmException var3) {
+                return str;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 得到唯一设备ID,不只是imei
+     * 就用这个作标识
+     *
+     * @return
+     */
+    public String getDeviceID() {
+        if (TextUtils.isEmpty(deviceID)) {
+            String imei = getImei();
+            String androidId = getAndroidId();
+            String serial = null;
+            if (Build.VERSION.SDK_INT > 8) {
+                serial = Build.SERIAL;
+            }
+            deviceID = sha1(imei + androidId + serial);
+        }
+        return deviceID;
     }
 }
 

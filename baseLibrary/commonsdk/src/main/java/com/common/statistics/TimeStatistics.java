@@ -29,6 +29,7 @@ public class TimeStatistics {
     }
 
     public static void setBeginTime(String className, String methodName) {
+        AAA.aaaa();
         if (Looper.myLooper() != Looper.getMainLooper()) {
             return;
         }

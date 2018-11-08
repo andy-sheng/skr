@@ -86,6 +86,8 @@ android {
             //签名
             signingConfig signingConfigs.myConfig
             //混淆!!! 注意，混淆会删除掉没有引用的类，除非加keep。
+            //亲测，即使是循环依赖，混淆也能判断出来并移除,比如A依赖B,B依赖A,但没有其他依赖AB。
+            //亲测，A被引用了，但A中方法(不管是不是static的) test 没有地方使用，test 会被移除，很牛逼
             //没用引用的drawable资源，也会删除变成0字节，
             // proguard 任务很耗时
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
