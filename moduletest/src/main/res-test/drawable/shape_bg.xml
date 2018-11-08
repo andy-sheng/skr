@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <!-- 填充的颜色 -->
+            <solid android:color="@android:color/white"></solid>
+            <!-- android:radius 弧形的半径 -->
+            <corners android:radius="6px" />
+            <!-- 绘制边框-->
+            <stroke android:width="2px" android:color="#2c72ac" android:dashGap="0dp" />
+            <!-- 渐变色，angle 代表角度，0 上到下 ，45 左到右-->
+            <!--<gradient android:angle="45" android:endColor="#000" android:startColor="#FFF" />-->
+        </shape>
+    </item>
+
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/red" />
+            <corners android:radius="6px" />
+            <stroke android:width="2px" android:color="#3c99e5" android:dashGap="0dp" />
+        </shape>
+    </item>
+
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/green" />
+            <corners android:radius="6px" />
+            <stroke android:width="2px" android:color="#3c99e5" android:dashGap="0dp" />
+        </shape>
+    </item>
+
+
+    <!-- 默认时 -->
+    <item android:color="@color/red" />
+
+    <!-- 按压时 -->
+    <item android:color="@color/blue" android:state_pressed="true" />
+
+    <!--新状态改变时，新状态展示淡入时间ms-->
+    <android:enterFadeDuration>1000</android:enterFadeDuration>
+</selector>

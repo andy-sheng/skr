@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,10 +8,10 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        titlebar:leftType="customView"
-        titlebar:leftCustomView="@layout/test_titlebar_left_img"
-        titlebar:centerText="测试中心"
-        titlebar:centerType="textView" />
+        app:centerText="测试中心"
+        app:centerType="textView"
+        app:leftCustomView="@layout/test_titlebar_left_img"
+        app:leftType="customView" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_rv"

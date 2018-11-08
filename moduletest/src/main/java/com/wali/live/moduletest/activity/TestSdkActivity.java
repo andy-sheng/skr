@@ -57,6 +57,7 @@ import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
 import com.wali.live.moduletest.fragment.DeviceInfoFragment;
+import com.wali.live.moduletest.fragment.ShowTextViewFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -328,7 +329,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("VirtualApk 跳转 测试", new Runnable() {
             @Override
             public void run() {
-                if(!virtualapkLoad){
+                if (!virtualapkLoad) {
                     U.getToastUtil().showToast("virtualapkLoad == false");
                     return;
                 }
@@ -417,6 +418,17 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("浸入式 + CollapsingToolbarLayout 调试", new Runnable() {
             @Override
             public void run() {
+            }
+        }));
+
+        mDataList.add(new H("支持 shape的TextView", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newParamsBuilder(TestSdkActivity.this, ShowTextViewFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
             }
         }));
 

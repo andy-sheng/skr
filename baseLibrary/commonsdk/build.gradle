@@ -68,6 +68,9 @@ android {
             java.srcDirs += 'src/main/java-indexrecyclerview'
             res.srcDirs += 'src/main/res-indexrecyclerview'
 
+            // 扩展的一些view 可以自定义一些属性，方便使用
+            java.srcDirs += 'src/main/java-exview'
+            res.srcDirs += 'src/main/res-exview'
             // 二维码的库
 //            java.srcDirs += 'src/main/java-gif-drawable'
 //            res.srcDirs += 'src/main/res-'

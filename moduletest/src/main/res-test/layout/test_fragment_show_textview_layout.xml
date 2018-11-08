@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="TextView展示"
+        app:centerTextColor="@color/red"
+        app:centerType="textView" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/btn"
+                android:layout_width="130dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="背景是用属性定义的shape"
+                android:textColor="#4F94CD"
+                android:textSize="20sp"
+                app:bl_corners_radius="20dp"
+                app:bl_gradient_angle="0"
+                app:bl_gradient_endColor="#4F94CD"
+                app:bl_gradient_startColor="#63B8FF"
+                app:shape_type="rectangle" />
+
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="130dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="#8c6822"
+                android:textSize="20sp"
+                app:bl_corners_radius="4dp"
+                app:bl_solid_color="#E3B666"
+                app:bl_stroke_color="#8c6822"
+                app:bl_stroke_dashGap="5dp"
+                app:bl_stroke_dashWidth="10dp"
+                app:bl_stroke_width="2dp" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="有点击反馈的按钮"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                app:bl_corners_radius="20dp"
+                app:bl_pressed_color="#7CCD7C"
+                app:shape_type="rectangle"
+                app:bl_unpressed_color="#7CFC00" />
+
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/btn1"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="有波纹触摸反馈的按钮(边框点击会变色)"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                app:bl_corners_radius="20dp"
+                app:bl_pressed_stroke_color="#000000"
+                app:bl_ripple_color="#71C671"
+                app:bl_ripple_enable="true"
+                app:bl_solid_color="#7CFC00"
+                app:bl_stroke_width="2dp"
+                app:bl_unPressed_stroke_color="@android:color/holo_red_dark" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="selector 用法："
+                android:textSize="15sp" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="5dp"
+                app:bl_pressed_drawable="@drawable/circle_like_pressed"
+                app:bl_unPressed_drawable="@drawable/circle_like_normal" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="有波纹触摸反馈的按钮"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                app:bl_corners_radius="20dp"
+                app:bl_pressed_drawable="#71C671"
+                app:bl_ripple_color="#71C671"
+                app:bl_ripple_enable="true"
+                app:bl_stroke_color="#8c6822"
+                app:bl_stroke_width="2dp"
+                app:bl_unPressed_drawable="#7CFC00" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="点击文字变色"
+                app:bl_pressed_textColor="#919DAF"
+                app:bl_unPressed_textColor="@android:color/holo_red_dark" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下面是通过代码设置背景：" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tvTest1"
+                android:layout_width="130dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="点击文字变色"
+                android:textSize="20sp" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/btnTest2"
+                android:layout_width="130dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="背景"
+                android:textColor="#4F94CD"
+                android:textSize="20sp" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/btnTest3"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="确认"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tvTest4"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="5dp" />
+
+            <FrameLayout
+                android:id="@+id/fl_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
