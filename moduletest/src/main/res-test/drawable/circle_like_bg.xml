@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 默认时 -->
+    <item android:drawable="@drawable/circle_like_normal" android:state_pressed="false" />
+
+    <!-- 按压时 -->
+    <item android:drawable="@drawable/circle_like_pressed" android:state_pressed="true" />
+
+</selector>

@@ -23,14 +23,27 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <com.common.view.ex.ExButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_dimen_100"
+                android:layout_marginTop="5dp"
+                android:padding="@dimen/view_dimen_10"
+                android:text="button点击就有反馈，自带阴影, 自带波纹"
+                app:bl_corners_radius="20dp"
+                app:bl_pressed_color="#7CCD7C"
+                app:bl_shape="rectangle"
+                app:bl_ripple_color="@color/black"
+                app:bl_ripple_enable="true"
+                app:bl_unpressed_color="#7CFC00" />
+
             <com.common.view.ex.ExTextView
-                android:id="@+id/btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:padding="0dp"
-                android:text="背景是用属性定义的shape"
+                android:text="背景是用属性定义的shape,支持渐变"
                 android:textColor="#4F94CD"
                 android:textSize="20sp"
                 app:bl_corners_radius="20dp"
@@ -56,7 +69,6 @@
 
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/btn1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -65,15 +77,16 @@
                 android:text="有波纹触摸反馈的按钮(边框和文字点击会变色)"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                app:bl_unPressed_textColor="@color/white"
-                app:bl_pressed_textColor="@color/blue"
                 app:bl_corners_radius="20dp"
                 app:bl_pressed_stroke_color="#000000"
+                app:bl_pressed_textColor="@color/blue"
                 app:bl_ripple_color="#71C671"
                 app:bl_ripple_enable="true"
                 app:bl_solid_color="#7CFC00"
                 app:bl_stroke_width="2dp"
-                app:bl_unPressed_stroke_color="@android:color/holo_red_dark" />
+                app:bl_unPressed_stroke_color="@android:color/holo_red_dark"
+                app:bl_unPressed_textColor="@color/white" />
+
 
             <com.common.view.ex.ExTextView
                 android:layout_width="wrap_content"
@@ -82,75 +95,96 @@
                 android:text="点赞按钮是用了属性设置selector的drawable"
                 android:textSize="15sp" />
 
-            <com.common.view.ex.ExImageView
+            <com.common.view.ex.ExButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/view_dimen_10"
                 android:layout_marginLeft="@dimen/view_dimen_100"
                 android:layout_marginTop="5dp"
+                android:padding="@dimen/view_dimen_10"
                 app:bl_pressed_drawable="@drawable/circle_like_pressed"
+                app:bl_ripple_color="#71C671"
+                app:bl_ripple_enable="true"
                 app:bl_unPressed_drawable="@drawable/circle_like_normal" />
 
-            <com.common.view.ex.ExTextView
+            <ImageView
+                android:id="@+id/image_view_btn"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_like_bg"
+                android:scaleType="centerCrop"
+                android:src="@drawable/circle_like_bg" />
+
+            <ImageButton
+                android:id="@+id/image_button_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_like_bg"
+                android:scaleType="centerCrop"
+                android:src="@drawable/circle_like_bg" />
+            <!-- 通过代码实现上面一样的效果 -->
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="通过代码实现上面一样的效果，动态设置"
+                android:textColor="@color/blue"
+                android:textSize="15sp"
+                app:bl_shape="line"
+                app:bl_stroke_color="@color/red"
+                app:bl_stroke_width="@dimen/view_dimen_10" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_test1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:padding="0dp"
-                android:text="点击文字变色"
-                app:bl_pressed_color="@color/red"
-                app:bl_pressed_textColor="#919DAF"
-                app:bl_unPressed_textColor="@android:color/holo_red_dark" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="下面是通过代码设置背景：" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/tvTest1"
-                android:layout_width="130dp"
-                android:layout_height="36dp"
-                android:gravity="center"
-                android:text="点击文字变色"
-                android:textSize="20sp" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/btnTest2"
-                android:layout_width="130dp"
-                android:layout_height="36dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="背景"
+                android:text="背景是用代码生成的shape drawable"
                 android:textColor="#4F94CD"
                 android:textSize="20sp" />
 
+
             <com.common.view.ex.ExTextView
-                android:id="@+id/btnTest3"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:id="@+id/tv_test2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:padding="0dp"
-                android:text="确认"
+                android:text="点击时背景会变的按钮"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
 
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/tvTest4"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp" />
+                android:id="@+id/tv_test3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="有波纹触摸反馈的按钮(边框和文字点击会变色)"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
 
-            <FrameLayout
-                android:id="@+id/fl_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp">
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="点赞按钮是用了代码设置selector的drawable"
+                android:textSize="15sp" />
 
-            </FrameLayout>
+            <com.common.view.ex.ExButton
+                android:id="@+id/tv_test4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_dimen_100"
+                android:layout_marginTop="5dp"
+                android:padding="@dimen/view_dimen_10" />
 
         </LinearLayout>
 

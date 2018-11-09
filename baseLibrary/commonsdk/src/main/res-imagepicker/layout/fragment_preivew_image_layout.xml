@@ -24,8 +24,8 @@
         titlebar:leftType="imageButton"
         titlebar:rightCustomView="@layout/picker_okbtn_layout"
         titlebar:rightType="customView"
-        titlebar:statusBarColor="@color/primary"
-        titlebar:titleBarColor="@color/primary" />
+        titlebar:statusBarColor="@color/colorPrimary"
+        titlebar:titleBarColor="@color/colorPrimary" />
 
     <LinearLayout
         android:id="@+id/bottom_bar"

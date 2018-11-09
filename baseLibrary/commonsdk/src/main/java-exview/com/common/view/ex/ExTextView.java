@@ -30,7 +30,6 @@ public class ExTextView extends android.support.v7.widget.AppCompatTextView {
         loadAttributes(context, attrs);
     }
 
-
     private void loadAttributes(Context context, AttributeSet attrs) {
         BackgroundInject.inject(this, context, attrs);
     }

@@ -1,22 +1,33 @@
 <resources>
 
-
-    <!-- Base application theme. -->
-    <style name="AppTheme_Main" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- 支持 materrial的主题-->
+    <style name="AppTheme_Material" parent="android:Theme.Material">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primaryDark</item>
+    </style>
+
+    <!--基础的主题设置-->
+    <style name="AppTheme_Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowAnimationStyle">@style/Activity_Animation</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme_Swipe" parent="AppTheme_Main">
-        <!--//if you don't set this the background will be black when you slide.-->
+    <!--支持右滑推出的activity的设置-->
+    <style name="AppTheme_Swipe" parent="AppTheme_Base">
         <item name="android:windowIsTranslucent">true</item>
-        <!--//set the right in/out animation of Activity,you can change this to yours-->
         <item name="android:windowAnimationStyle">@style/SlideRightAnimation</item>
+    </style>
+
+    <!--application 默认的设置-->
+    <style name="AppTheme_All" parent="AppTheme_Swipe">
+
+    </style>
+    <!--首页Activity的设置-->
+    <style name="AppTheme_MainActivity" parent="AppTheme_Base">
 
     </style>
 

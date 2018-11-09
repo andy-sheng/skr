@@ -6,20 +6,21 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
+ * Button 比TextView 牛逼一些，自带一些点击反馈效果，按下态会有阴影
  * 属性的定义参考这 https://github.com/JavaNoober/BackgroundLibrary
  */
-public class ExImageView extends android.support.v7.widget.AppCompatImageView {
+public class ExButton extends android.support.v7.widget.AppCompatButton {
 
-    public ExImageView(Context context) {
+    public ExButton(Context context) {
         super(context);
     }
 
-    public ExImageView(Context context, @Nullable AttributeSet attrs) {
+    public ExButton(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         loadAttributes(context, attrs);
     }
 
-    public ExImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ExButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         loadAttributes(context, attrs);
     }

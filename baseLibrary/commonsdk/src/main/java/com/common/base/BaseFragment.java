@@ -153,6 +153,12 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
             mRootView = inflater.inflate(layoutId, container, false);
         }
         initData(savedInstanceState);
+        if(mRootView!=null){
+            /**
+             * 吃掉点击事件，防止穿透
+             */
+            mRootView.setClickable(true);
+        }
         return mRootView;
     }
 
