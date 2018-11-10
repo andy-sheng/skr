@@ -32,9 +32,9 @@
                 android:text="button点击就有反馈，自带阴影, 自带波纹"
                 app:bl_corners_radius="20dp"
                 app:bl_pressed_color="#7CCD7C"
-                app:bl_shape="rectangle"
                 app:bl_ripple_color="@color/black"
                 app:bl_ripple_enable="true"
+                app:bl_shape="rectangle"
                 app:bl_unpressed_color="#7CFC00" />
 
             <com.common.view.ex.ExTextView
@@ -100,9 +100,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:bl_pressed_drawable="@color/blue"
+                app:bl_unEnabled_drawable="@drawable/circle_like_normal"
                 app:bl_unPressed_drawable="@color/black"
-                app:src_unPressed_drawable="@drawable/circle_like_normal"
-                app:src_pressed_drawable="@drawable/circle_like_pressed"/>
+                app:src_pressed_drawable="@drawable/circle_like_pressed"
+                app:src_unPressed_drawable="@drawable/circle_like_normal" />
 
             <com.common.view.ex.ExButton
                 android:layout_width="wrap_content"

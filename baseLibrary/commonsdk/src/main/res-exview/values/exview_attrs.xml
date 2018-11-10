@@ -82,12 +82,6 @@
         <attr name="bl_pressed_color" format="color" />
     </declare-styleable>
 
-    <!--ImageView专用 -->
-    <declare-styleable name="src_press">
-        <attr name="src_unpressed_color" format="color" />
-        <attr name="src_pressed_color" format="color" />
-    </declare-styleable>
-
     <declare-styleable name="background_selector">
         <!--设置各种selector 状态时 color 或者 drawable -->
         <attr name="bl_checkable_drawable" format="color|reference" />

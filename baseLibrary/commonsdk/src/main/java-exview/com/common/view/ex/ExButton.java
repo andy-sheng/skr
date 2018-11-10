@@ -26,7 +26,7 @@ public class ExButton extends android.support.v7.widget.AppCompatButton {
 
 
     private void loadAttributes(Context context, AttributeSet attrs) {
-        BackgroundInject.injectBackground(this, context, attrs);
+        AttributeInject.injectBackground(this, context, attrs);
     }
 
 }

@@ -31,8 +31,8 @@ public class ExImageView extends android.support.v7.widget.AppCompatImageView {
     }
 
     private void loadAttributes(Context context, AttributeSet attrs) {
-        BackgroundInject.injectBackground(this, context, attrs);
-        BackgroundInject.injectSrc(this, context, attrs);
+        AttributeInject.injectBackground(this, context, attrs);
+        AttributeInject.injectSrc(this, context, attrs);
     }
 
 }
