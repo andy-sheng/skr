@@ -104,6 +104,7 @@
                 app:bl_pressed_drawable="@drawable/circle_like_pressed"
                 app:bl_ripple_color="#71C671"
                 app:bl_ripple_enable="true"
+
                 app:bl_unPressed_drawable="@drawable/circle_like_normal" />
 
             <ImageView

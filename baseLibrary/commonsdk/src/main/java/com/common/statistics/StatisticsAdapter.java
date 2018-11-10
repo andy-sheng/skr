@@ -15,8 +15,9 @@ import java.util.HashMap;
  * 强烈建议使用前仔细阅读api文档
  */
 public class StatisticsAdapter {
-    static final String MI_STAT_APP_ID = "";
-    static final String MI_STAT_APP_KEY = "";
+
+    static final String MI_STAT_APP_ID = "2882303761517890001";
+    static final String MI_STAT_APP_KEY = "5671789084001";
 
     public static void init() {
         MiStatInterface.initialize(U.app(), MI_STAT_APP_ID, MI_STAT_APP_KEY, U.getChannelUtils().getChannel());

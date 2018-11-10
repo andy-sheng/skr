@@ -61,6 +61,9 @@ android {
         ndk {
             abiFilters 'armeabi-v7a'
         }
+
+        // 只支持中文，对减包有一定作用
+        resConfigs "zh"
     }
 
     signingConfigs {
