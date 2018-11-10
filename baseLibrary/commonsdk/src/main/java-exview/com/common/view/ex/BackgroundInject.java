@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import com.common.view.ex.drawable.DrawableFactory;
 
 public class BackgroundInject {
 
-    public static void inject(View view, Context context, AttributeSet attrs) {
+    public static void injectBackground(View view, Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.background);
         TypedArray pressTa = context.obtainStyledAttributes(attrs, R.styleable.background_press);
         TypedArray selectorTa = context.obtainStyledAttributes(attrs, R.styleable.background_selector);
@@ -85,6 +86,40 @@ public class BackgroundInject {
         }
 
         return;
+    }
+
+    public static void injectSrc(ImageView view, Context context, AttributeSet attrs){
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.background);
+        TypedArray src_selector = context.obtainStyledAttributes(attrs, R.styleable.src_selector);
+        TypedArray src_press = context.obtainStyledAttributes(attrs, R.styleable.src_press);
+
+        if (src_selector.getIndexCount() == 0) {
+            return;
+        }
+
+        try {
+            GradientDrawable drawable = null;
+            StateListDrawable stateListDrawable = null;
+            if (src_selector.getIndexCount() > 0) {
+                stateListDrawable = DrawableFactory.getSRCSelectorDrawable(typedArray, src_selector);
+                view.setClickable(true);
+                view.setImageDrawable(stateListDrawable);
+
+            }else if (src_press.getIndexCount() > 0) {
+                drawable = DrawableFactory.getDrawable(typedArray);
+                stateListDrawable = DrawableFactory.getSRCPressDrawable(drawable, typedArray, src_press);
+                view.setClickable(true);
+                view.setImageDrawable(stateListDrawable);
+            } else {
+                drawable = DrawableFactory.getDrawable(typedArray);
+                view.setImageDrawable(drawable);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            typedArray.recycle();
+            src_selector.recycle();
+        }
     }
 
 }

@@ -95,6 +95,15 @@
                 android:text="点赞按钮是用了属性设置selector的drawable"
                 android:textSize="15sp" />
 
+            <com.common.view.ex.ExImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:bl_pressed_drawable="@color/blue"
+                app:bl_unPressed_drawable="@color/black"
+                app:src_unPressed_drawable="@drawable/circle_like_normal"
+                app:src_pressed_drawable="@drawable/circle_like_pressed"/>
+
             <com.common.view.ex.ExButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

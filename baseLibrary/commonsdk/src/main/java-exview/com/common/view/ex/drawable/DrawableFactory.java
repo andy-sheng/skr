@@ -22,6 +22,16 @@ public class DrawableFactory {
         return (StateListDrawable) new SelectorDrawableCreator(typedArray, selectorTa).create();
     }
 
+    //获取SRC selector属性的drawable
+    public static StateListDrawable getSRCSelectorDrawable(TypedArray typedArray, TypedArray selectorTa) throws Exception {
+        return (StateListDrawable) new SRCSlecterDrawableCreater(typedArray, selectorTa).create();
+    }
+
+    public static StateListDrawable getSRCPressDrawable(GradientDrawable drawable, TypedArray typedArray, TypedArray pressTa)
+            throws Exception {
+        return (StateListDrawable) new SRCPressDrawableCreator(drawable, typedArray, pressTa).create();
+    }
+
     //获取selector属性关于text的color
     public static ColorStateList getTextSelectorColor(TypedArray textTa) {
         return new ColorStateCreator(textTa).create();

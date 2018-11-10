@@ -82,6 +82,12 @@
         <attr name="bl_pressed_color" format="color" />
     </declare-styleable>
 
+    <!--ImageView专用 -->
+    <declare-styleable name="src_press">
+        <attr name="src_unpressed_color" format="color" />
+        <attr name="src_pressed_color" format="color" />
+    </declare-styleable>
+
     <declare-styleable name="background_selector">
         <!--设置各种selector 状态时 color 或者 drawable -->
         <attr name="bl_checkable_drawable" format="color|reference" />
@@ -103,9 +109,31 @@
         <attr name="bl_unFocused_activated" format="color|reference" />
     </declare-styleable>
 
+    <!--ImageView专用 -->
+    <declare-styleable name="src_selector">
+        <!--设置各种selector 状态时 color 或者 drawable -->
+        <attr name="src_checkable_drawable" format="color|reference" />
+        <attr name="src_checked_drawable" format="color|reference" />
+        <attr name="src_enabled_drawable" format="color|reference" />
+        <attr name="src_selected_drawable" format="color|reference" />
+        <attr name="src_pressed_drawable" format="color|reference" />
+        <attr name="src_focused_drawable" format="color|reference" />
+        <attr name="src_focused_hovered" format="color|reference" />
+        <attr name="src_focused_activated" format="color|reference" />
+
+        <attr name="src_unCheckable_drawable" format="color|reference" />
+        <attr name="src_unChecked_drawable" format="color|reference" />
+        <attr name="src_unEnabled_drawable" format="color|reference" />
+        <attr name="src_unSelected_drawable" format="color|reference" />
+        <attr name="src_unPressed_drawable" format="color|reference" />
+        <attr name="src_unFocused_drawable" format="color|reference" />
+        <attr name="src_unFocused_hovered" format="color|reference" />
+        <attr name="src_unFocused_activated" format="color|reference" />
+    </declare-styleable>
+
 
     <declare-styleable name="text_selector">
-        <!--设置各种selector 状态 文字的颜色-->
+        <!--设置各种selector 对src的selector-->
         <attr name="bl_checkable_textColor" format="color" />
         <attr name="bl_checked_textColor" format="color" />
         <attr name="bl_enabled_textColor" format="color" />

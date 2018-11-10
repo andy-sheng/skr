@@ -3,7 +3,6 @@ package com.common.view.ex;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /**
  * Button 比TextView 牛逼一些，自带一些点击反馈效果，按下态会有阴影
@@ -27,7 +26,7 @@ public class ExButton extends android.support.v7.widget.AppCompatButton {
 
 
     private void loadAttributes(Context context, AttributeSet attrs) {
-        BackgroundInject.inject(this, context, attrs);
+        BackgroundInject.injectBackground(this, context, attrs);
     }
 
 }
