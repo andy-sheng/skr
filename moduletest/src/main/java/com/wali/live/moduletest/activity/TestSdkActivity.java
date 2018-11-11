@@ -31,6 +31,8 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.player.VideoPlayerAdapter;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
@@ -528,6 +530,8 @@ public class TestSdkActivity extends BaseActivity {
                     @Override
                     public void onReceive(LbsUtils.Location location) {
                         U.getToastUtil().showToast(location.toString());
+                        StatisticsAdapter.recordPropertyEvent(StatConstants.CATEGORY_USER_INFO, StatConstants.KEY_CITY, location.getCity());
+                        StatisticsAdapter.recordPropertyEvent(StatConstants.CATEGORY_USER_INFO, StatConstants.KEY_DISTRICT, location.getDistrict());
                     }
                 });
             }
@@ -596,7 +600,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("手动触发小米统计上报", new Runnable() {
             @Override
             public void run() {
-                MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_DEVELOPMENT,0);
+                MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_DEVELOPMENT, 0);
                 MiStatInterface.triggerUploadManually();
             }
         }));
