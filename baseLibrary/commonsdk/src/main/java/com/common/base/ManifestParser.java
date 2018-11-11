@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.common.integration;
+package com.common.base;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-import com.common.log.MyLog;
+import com.common.base.ConfigModule;
 
 import java.util.ArrayList;
 import java.util.List;

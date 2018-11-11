@@ -58,6 +58,7 @@ import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
 import com.wali.live.moduletest.fragment.DeviceInfoFragment;
 import com.wali.live.moduletest.fragment.ShowTextViewFragment;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -592,7 +593,13 @@ public class TestSdkActivity extends BaseActivity {
 
             }
         }));
-
+        mDataList.add(new H("手动触发小米统计上报", new Runnable() {
+            @Override
+            public void run() {
+                MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_DEVELOPMENT,0);
+                MiStatInterface.triggerUploadManually();
+            }
+        }));
     }
 
     @Override

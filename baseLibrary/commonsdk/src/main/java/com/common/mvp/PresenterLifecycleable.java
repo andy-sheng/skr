@@ -17,9 +17,8 @@ package com.common.mvp;
 
 import android.support.v4.app.Fragment;
 
-import com.common.integration.lifecycle.Lifecycleable;
+import com.common.lifecycle.Lifecycleable;
 import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 
 /**
  * ================================================

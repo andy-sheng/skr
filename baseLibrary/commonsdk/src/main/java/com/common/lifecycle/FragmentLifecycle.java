@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.common.integration;
+package com.common.lifecycle;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -41,62 +41,62 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
 
     @Override
     public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
-        MyLog.w(TAG," - onFragmentAttached");
+//        MyLog.w(TAG," - onFragmentAttached");
     }
 
     @Override
     public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-        MyLog.w(TAG," - onFragmentCreated");
+//        MyLog.w(TAG," - onFragmentCreated");
     }
 
     @Override
     public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
-        MyLog.w(TAG," - onFragmentViewCreated");
+//        MyLog.w(TAG," - onFragmentViewCreated");
     }
 
     @Override
     public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
-        MyLog.w(TAG," - onFragmentActivityCreated");
+//        MyLog.w(TAG," - onFragmentActivityCreated");
     }
 
     @Override
     public void onFragmentStarted(FragmentManager fm, Fragment f) {
-        MyLog.w(TAG," - onFragmentStarted");
+//        MyLog.w(TAG," - onFragmentStarted");
     }
 
     @Override
     public void onFragmentResumed(FragmentManager fm, Fragment f) {
-        MyLog.w(TAG," - onFragmentResumed");
+//        MyLog.w(TAG," - onFragmentResumed");
     }
 
     @Override
     public void onFragmentPaused(FragmentManager fm, Fragment f) {
-        MyLog.w(TAG," - onFragmentPaused");
+//        MyLog.w(TAG," - onFragmentPaused");
     }
 
     @Override
     public void onFragmentStopped(FragmentManager fm, Fragment f) {
-        MyLog.w(TAG," - onFragmentStopped");
+//        MyLog.w(TAG," - onFragmentStopped");
     }
 
     @Override
     public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
-        MyLog.w(TAG," - onFragmentSaveInstanceState");
+//        MyLog.w(TAG," - onFragmentSaveInstanceState");
     }
 
     @Override
     public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
-        MyLog.w(TAG," - onFragmentViewDestroyed");
+//        MyLog.w(TAG," - onFragmentViewDestroyed");
     }
 
     @Override
     public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
-        MyLog.w(TAG," - onFragmentDestroyed");
+//        MyLog.w(TAG," - onFragmentDestroyed");
     }
 
     @Override
     public void onFragmentDetached(FragmentManager fm, Fragment f) {
-        MyLog.w(TAG," - onFragmentDetached");
+//        MyLog.w(TAG," - onFragmentDetached");
     }
 
 }

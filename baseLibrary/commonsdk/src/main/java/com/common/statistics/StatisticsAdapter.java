@@ -2,6 +2,7 @@ package com.common.statistics;
 
 import android.content.Context;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 import com.xiaomi.mistatistic.sdk.URLStatsRecorder;
@@ -16,41 +17,58 @@ import java.util.HashMap;
  */
 public class StatisticsAdapter {
 
+    public final static String TAG = "StatisticsAdapter";
+
     static final String MI_STAT_APP_ID = "2882303761517890001";
     static final String MI_STAT_APP_KEY = "5671789084001";
 
-    public static void init() {
-        MiStatInterface.initialize(U.app(), MI_STAT_APP_ID, MI_STAT_APP_KEY, U.getChannelUtils().getChannel());
-        /**
-         * UPLOAD_POLICY_REALTIME 实时上报。每当有一条新的记录，就会激发一次上报。
-         * UPLOAD_POLICY_WIFI_ONLY 只在WIFI下上报。当设备处于WIFI连接时实时上报，否则不上报记录。
-         * UPLOAD_POLICY_BATCH 批量上报。当记录在本地累积超过一个固定值时（50条），会触发一次上报。
-         * UPLOAD_POLICY_WHILE_INITIALIZE 启动时候上报。每次应用启动（调用initialize方法）时候，会将上一次应用使用产生的数据记录打包上报。
-         * UPLOAD_POLICY_INTERVAL 指定时间间隔上报。开发者可以指定从1分钟-1天之间的任意时间间隔上报数据记录。需要注意，由于SDK并没有使用安卓的实时唤醒机制，因此采用此策略上报，SDK做不到严格的遵守开发者设定的间隔，而会根据应用数据采集的频率和设备休眠策略，会有一定的偏差。
-         * UPLOAD_POLICY_DEVELOPMENT 调试模式。使用此策略，只有开发者手动调用一个接口才会触发上报，否则在任何情况下都不上报。SDK中提供了一个triggerUploadManually方法用于手动触发。
-         */
-        MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_INTERVAL, 5 * 60 * 1000);
-        /**
-         * 开启实时网络监控功能
-         */
-        URLStatsRecorder.enableAutoRecord();
+    static boolean hasInited = false;
+
+    private static void init() {
+        if (hasInited) {
+            return;
+        }
+        synchronized (StatisticsAdapter.class) {
+            MyLog.d(TAG, "init");
+            MiStatInterface.initialize(U.app(), MI_STAT_APP_ID, MI_STAT_APP_KEY, U.getChannelUtils().getChannel());
+            /**
+             * UPLOAD_POLICY_REALTIME 实时上报。每当有一条新的记录，就会激发一次上报。
+             * UPLOAD_POLICY_WIFI_ONLY 只在WIFI下上报。当设备处于WIFI连接时实时上报，否则不上报记录。
+             * UPLOAD_POLICY_BATCH 批量上报。当记录在本地累积超过一个固定值时（50条），会触发一次上报。
+             * UPLOAD_POLICY_WHILE_INITIALIZE 启动时候上报。每次应用启动（调用initialize方法）时候，会将上一次应用使用产生的数据记录打包上报。
+             * UPLOAD_POLICY_INTERVAL 指定时间间隔上报。开发者可以指定从1分钟-1天之间的任意时间间隔上报数据记录。需要注意，由于SDK并没有使用安卓的实时唤醒机制，因此采用此策略上报，SDK做不到严格的遵守开发者设定的间隔，而会根据应用数据采集的频率和设备休眠策略，会有一定的偏差。
+             * UPLOAD_POLICY_DEVELOPMENT 调试模式。使用此策略，只有开发者手动调用一个接口才会触发上报，否则在任何情况下都不上报。SDK中提供了一个triggerUploadManually方法用于手动触发。
+             */
+            MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_INTERVAL, 5 * 60 * 1000);
+            /**
+             * 开启实时网络监控功能
+             */
+            URLStatsRecorder.enableAutoRecord();
+            hasInited = true;
+        }
     }
 
     /**
      * 记录某个页面被打开，并在sdk内部会创建一个session
+     *
      * @param context 必填
      * @param key
      */
     public static void recordPageStart(Context context, String key) {
+        MyLog.d(TAG, "recordPageStart" + " key=" + key);
+        init();
         MiStatInterface.recordPageStart(context, key);
     }
 
     /**
      * 记录某个页面被关闭
+     *
      * @param context
      * @param key     必填，确保与recordActivityPageStart的一致
      */
     public static void recordPageEnd(Context context, String key) {
+        MyLog.d(TAG, "recordPageEnd" + " key=" + key);
+        init();
         MiStatInterface.recordPageEnd(context, key);
     }
 
@@ -67,6 +85,7 @@ public class StatisticsAdapter {
      * @param desc
      */
     public static void recordPropertyEvent(String category, String key, String desc) {
+        init();
         MiStatInterface.recordStringPropertyEvent(category, key, desc);
     }
 
@@ -81,6 +100,7 @@ public class StatisticsAdapter {
      * @param value
      */
     public static void recordPropertyEvent(String category, String key, long value) {
+        init();
         MiStatInterface.recordNumericPropertyEvent(category, key, value);
     }
 
@@ -96,6 +116,7 @@ public class StatisticsAdapter {
      * @param params   参数 可为null
      */
     public static void recordCountEvent(String category, String key, HashMap params) {
+        init();
         MiStatInterface.recordCountEvent(category, key, params);
     }
 
@@ -111,6 +132,7 @@ public class StatisticsAdapter {
      * @param params
      */
     public static void recordCalculateEvent(String category, String key, long value, HashMap params) {
+        init();
         MiStatInterface.recordCalculateEvent(category, key, value, params);
     }
 

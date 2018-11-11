@@ -30,10 +30,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.common.base.delegate.IActivity;
-import com.common.integration.cache.Cache;
-import com.common.integration.cache.IntelligentCache;
-import com.common.integration.lifecycle.ActivityLifecycleForRxLifecycle;
-import com.common.integration.lifecycle.ActivityLifecycleable;
+import com.common.cache.Cache;
+import com.common.cache.IntelligentCache;
+import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
+import com.common.lifecycle.ActivityLifecycleable;
 import com.common.log.MyLog;
 import com.common.mvp.Presenter;
 import com.common.utils.AndroidBug5497WorkaroundSupportingTranslucentStatus;
@@ -91,9 +91,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        MyLog.d(TAG, "before getBaseContext " + getBaseContext() + " " + super.getClass());
+//        MyLog.d(TAG, "before getBaseContext " + getBaseContext() + " " + super.getClass());
         super.attachBaseContext(newBase);
-        MyLog.d(TAG, "after getBaseContext " + getBaseContext() + " " + super.getClass());
+//        MyLog.d(TAG, "after getBaseContext " + getBaseContext() + " " + super.getClass());
     }
 
     @NonNull
@@ -114,6 +114,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         return super.onCreateView(name, context, attrs);
+    }
+
+    @NonNull
+    @Override
+    public AppCompatDelegate getDelegate() {
+        return super.getDelegate();
     }
 
     @Override
@@ -191,7 +197,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      */
     public boolean isProfileMode() {
         boolean r = mIsProfileMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        MyLog.d(TAG, "isProfileMode r=" + r);
+//        MyLog.d(TAG, "isProfileMode r=" + r);
         return r;
     }
 
@@ -199,8 +205,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      * 设置名片沉浸式样式
      */
     protected void setProfileMode() {
-        MyLog.d(TAG, "setProfileMode");
-
+//        MyLog.d(TAG, "setProfileMode");
         /**
          * 跟白色状态有关么
          */

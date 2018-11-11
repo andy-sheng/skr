@@ -2,12 +2,10 @@ package com.common.mvp;
 
 import android.support.annotation.CallSuper;
 
-import com.common.integration.lifecycle.Lifecycleable;
+import com.common.lifecycle.Lifecycleable;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
-import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 

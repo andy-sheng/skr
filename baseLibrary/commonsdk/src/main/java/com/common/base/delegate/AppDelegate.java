@@ -28,11 +28,10 @@ import android.util.Log;
 
 import com.common.base.BaseApplication;
 import com.common.base.GlobalParams;
-import com.common.integration.ActivityLifecycle;
-import com.common.integration.ConfigModule;
-import com.common.integration.ManifestParser;
-import com.common.integration.lifecycle.ActivityLifecycleForRxLifecycle;
-import com.common.log.MyLog;
+import com.common.base.ConfigModule;
+import com.common.base.ManifestParser;
+import com.common.lifecycle.ActivityLifecycle;
+import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
 import com.common.utils.U;
 
 import java.util.ArrayList;

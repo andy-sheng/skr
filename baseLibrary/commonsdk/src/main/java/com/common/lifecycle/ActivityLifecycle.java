@@ -13,24 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.common.integration;
+package com.common.lifecycle;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.LayoutInflaterCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.common.base.BaseFragment;
+import com.common.base.ConfigModule;
 import com.common.base.delegate.IActivity;
-import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 
@@ -56,15 +50,15 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     // 存一些别的module fragment callback
     List<FragmentManager.FragmentLifecycleCallbacks> mFragmentLifecycles;
 
-    FragmentLifecycle getFragmentLifecycle(){
+    FragmentLifecycle getFragmentLifecycle() {
         if (mFragmentLifecycle == null) {
             mFragmentLifecycle = new FragmentLifecycle();
         }
         return mFragmentLifecycle;
     }
 
-    List<FragmentManager.FragmentLifecycleCallbacks> getExtraFragmentLifecycles(){
-        if(mFragmentLifecycles == null){
+    List<FragmentManager.FragmentLifecycleCallbacks> getExtraFragmentLifecycles() {
+        if (mFragmentLifecycles == null) {
             mFragmentLifecycles = new ArrayList<>();
         }
         return mFragmentLifecycles;
@@ -79,8 +73,8 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     }
 
     /**
-     *
      * Activity super.onCreate 执行完再执行这个
+     *
      * @param activity
      * @param savedInstanceState
      */
@@ -105,18 +99,19 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     public void onActivityResumed(Activity activity) {
         U.getActivityUtils().setCurrentActivity(activity);
         resumeNum++;
-        if(resumeNum>pauseNum){
+        if (resumeNum > pauseNum) {
             U.getActivityUtils().setAppForeground(true);
         }
+        StatisticsAdapter.recordPageStart(activity, activity.getClass().getSimpleName());
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
         pauseNum++;
-        if(resumeNum<=pauseNum){
+        if (resumeNum <= pauseNum) {
             U.getActivityUtils().setAppForeground(false);
         }
-
+        StatisticsAdapter.recordPageEnd(activity, activity.getClass().getSimpleName());
     }
 
     @Override
@@ -124,7 +119,6 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
         if (U.getActivityUtils().getCurrentActivity() == activity) {
             U.getActivityUtils().setCurrentActivity(null);
         }
-
     }
 
     @Override

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.common.integration.cache;
+package com.common.cache;
 
 import android.app.Application;
 import android.support.annotation.Nullable;

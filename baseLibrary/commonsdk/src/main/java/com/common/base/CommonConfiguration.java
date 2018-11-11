@@ -22,11 +22,10 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.baidu.location.LocationClient;
 import com.common.base.delegate.AppLifecycles;
 import com.common.image.fresco.FrescoInitManager;
-import com.common.integration.ConfigModule;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.pgyersdk.crash.PgyCrashManager;
 

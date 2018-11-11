@@ -1,6 +1,6 @@
 package com.common.utils;
 
-import com.common.integration.cache.IntelligentCache;
+import com.common.cache.IntelligentCache;
 
 //将 ConfigModule 的实现类的集合存放到缓存 Cache, 可以随时获取
 //使用 IntelligentCache.KEY_KEEP 作为 key 的前缀, 可以使储存的数据永久存储在内存中

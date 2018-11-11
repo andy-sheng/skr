@@ -231,7 +231,7 @@
 -keep class com.ali.auth.** {*;}
 
 #config不混淆
--keep class * implements com.common.integration.ConfigModule
+-keep class * implements com.common.base.ConfigModule
 
 #VirtualApk
 -keep class com.didi.virtualapk.internal.VAInstrumentation { *; }
@@ -264,3 +264,6 @@ public static java.lang.String TABLENAME;
 -libraryjars ../baseLibrary/commonsdk/libs/pgyer_sdk_3.0.2.jar
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }
+
+#保持fragment类名不变，以方便打点
+-keep class * extends com.common.base.BaseFragment

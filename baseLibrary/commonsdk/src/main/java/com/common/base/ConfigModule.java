@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.common.integration;
+package com.common.base;
 
 import android.app.Application;
 import android.support.v4.app.FragmentManager;
 
 import com.common.base.delegate.AppLifecycles;
-import com.common.base.GlobalParams;
 
 import java.util.List;
 

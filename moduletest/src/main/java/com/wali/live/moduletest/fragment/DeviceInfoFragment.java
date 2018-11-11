@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.base.BuildConfig;
+import com.common.log.MyLog;
 import com.common.statistics.TimeStatistics;
 import com.common.utils.U;
 import com.wali.live.moduletest.R;
@@ -44,6 +45,7 @@ public class DeviceInfoFragment extends BaseFragment {
         sb.append("deviceId(参考miui唯一设备号的方法):").append(U.getDeviceUtils().getDeviceID()).append("\n");
         sb.append("是否开启了打印方法执行时间: switch:").append(TimeStatistics.getSwitch()).append(" dt:").append(TimeStatistics.sDt).append("\n");
 
+        MyLog.w(TAG, "deviceId:" + U.getDeviceUtils().getDeviceID());
         mDescTv.setText(sb.toString());
     }
 

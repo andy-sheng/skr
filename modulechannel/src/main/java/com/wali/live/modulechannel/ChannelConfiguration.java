@@ -23,8 +23,7 @@ import android.util.Log;
 
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
-import com.common.integration.ConfigModule;
-import com.common.log.MyLog;
+import com.common.base.ConfigModule;
 
 import java.util.List;
 

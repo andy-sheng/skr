@@ -13,27 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.common.integration.lifecycle;
+package com.common.lifecycle;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 
 import com.trello.rxlifecycle2.RxLifecycle;
-
-import io.reactivex.subjects.Subject;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 /**
  * ================================================
- * 让 {@link Activity}/{@link Fragment} 实现此接口,即可正常使用 {@link RxLifecycle}
- * 无需再继承 {@link RxLifecycle} 提供的 Activity/Fragment ,扩展性极强
+ * 让 {@link Activity} 实现此接口,即可正常使用 {@link RxLifecycle}
  *
- * Created by JessYan on 25/08/2017 18:39
+ * Created by JessYan on 26/08/2017 17:14
  * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public interface Lifecycleable<E> {
-    @NonNull
-    Subject<E> provideLifecycleSubject();
+public interface ActivityLifecycleable extends Lifecycleable<ActivityEvent> {
 }

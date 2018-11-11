@@ -25,16 +25,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.base.delegate.IFragment;
-import com.common.integration.cache.Cache;
-import com.common.integration.cache.IntelligentCache;
-import com.common.integration.lifecycle.ActivityLifecycleForRxLifecycle;
-import com.common.integration.lifecycle.FragmentLifecycleable;
+import com.common.cache.Cache;
+import com.common.cache.IntelligentCache;
+import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
+import com.common.lifecycle.FragmentLifecycleable;
 import com.common.log.MyLog;
 import com.common.mvp.Presenter;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,7 +64,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     boolean isDestroyed = false;
 
     protected boolean fragmentOnCreated = false;
-    protected boolean fragmentVisible = false;
+    protected boolean fragmentVisible = true;
 
     protected View mRootView;
 
@@ -153,7 +153,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
             mRootView = inflater.inflate(layoutId, container, false);
         }
         initData(savedInstanceState);
-        if(mRootView!=null){
+        if (mRootView != null) {
             /**
              * 吃掉点击事件，防止穿透
              */
@@ -185,14 +185,16 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
 
     @Override
     public void onResume() {
-        MyLog.d(TAG, "onResume");
+        MyLog.d(TAG, "onResume fragmentVisible=" + fragmentVisible + " isHidden()" + isHidden());
         super.onResume();
         for (Presenter presenter : mPresenterSet) {
             presenter.resume();
         }
+
         if (fragmentVisible) {
             onFragmentVisible();
         }
+
     }
 
     @Override
@@ -255,6 +257,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     protected void onFragmentVisible() {
         MyLog.d(TAG, "onFragmentVisible");
+        StatisticsAdapter.recordPageStart(getContext(), this.getClass().getSimpleName());
     }
 
     /**
@@ -262,6 +265,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     protected void onFragmentInvisible() {
         MyLog.d(TAG, "onFragmentInvisible");
+        StatisticsAdapter.recordPageEnd(getContext(), this.getClass().getSimpleName());
     }
 
     /**
@@ -276,16 +280,15 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
 
     @Override
     public void setUserVisibleHint(boolean visible) {
+        MyLog.d(TAG, "setUserVisibleHint" + " visible=" + visible);
         super.setUserVisibleHint(visible);
+        fragmentVisible = visible;
         if (visible && isResumed()) {   // only at fragment screen is resumed
-            fragmentVisible = true;
             fragmentOnCreated = true;
             onFragmentVisible();
         } else if (visible) {        // only at fragment onCreated
-            fragmentVisible = true;
             fragmentOnCreated = true;
         } else if (!visible && fragmentOnCreated) {// only when you go out of fragment screen
-            fragmentVisible = false;
             onFragmentInvisible();
         }
     }

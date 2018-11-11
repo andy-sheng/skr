@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.common.integration.lifecycle;
+package com.common.lifecycle;
 
 import android.content.Context;
 import android.os.Bundle;
