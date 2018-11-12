@@ -1,31 +1,30 @@
-package com.base.utils.rx;
+package com.common.rx;
 
 import android.text.TextUtils;
 
-import com.base.common.R;
-import com.base.global.GlobalData;
-import com.base.log.MyLog;
+import com.common.log.MyLog;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.Func2;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function;
 
 /**
  * rxjava retryWhen 封装类，方便重新订阅数据流
  * 会在onError时做出重试
  * Created by chengsimin on 16/2/27.
  */
-public class RxRetryAssist implements Func1<Observable<? extends Throwable>, Observable<?>> {
+public class RxRetryAssist implements Function<Observable<? extends Throwable>, Observable<?>> {
 
     private int mRetryCount = 1; // 重试次数
 
-    private int mRetryInterval = 5; // 重试间隔
+    private int mRetryInterval = 5; // 重试间隔 5秒后
 
     private boolean mAutoIncrement = true; // 是否允许重试间隔倍数增长
 
-    private String mExceedMaxRetryTip = GlobalData.app().getResources().getString(R.string.exceed_max_retry_tip);
+    private String mExceedMaxRetryTip = "超过最大重试";
 
     public RxRetryAssist() {
 
@@ -42,12 +41,13 @@ public class RxRetryAssist implements Func1<Observable<? extends Throwable>, Obs
         this.mAutoIncrement = mAutoIncrement;
     }
 
+
     @Override
-    public Observable<?> call(Observable<? extends Throwable> observable) {
+    public Observable<?> apply(Observable<? extends Throwable> observable) throws Exception {
         return observable
-                .zipWith(Observable.range(0, mRetryCount + 1), new Func2<Throwable, Integer, Object>() {
+                .zipWith(Observable.range(0, mRetryCount + 1), new BiFunction<Throwable, Integer, Object>() {
                     @Override
-                    public Object call(Throwable throwable, Integer integer) {
+                    public Object apply(Throwable throwable, Integer integer) throws Exception {
                         if (throwable instanceof RefuseRetryExeption) {
                             return throwable;
                         }
@@ -61,9 +61,9 @@ public class RxRetryAssist implements Func1<Observable<? extends Throwable>, Obs
                         return integer;
                     }
                 })
-                .flatMap(new Func1<Object, Observable<?>>() {
+                .flatMap(new Function<Object, ObservableSource<?>>() {
                     @Override
-                    public Observable<?> call(Object i) {
+                    public ObservableSource<?> apply(Object i) throws Exception {
                         if (i instanceof RefuseRetryExeption) {
                             return Observable.error((RefuseRetryExeption) i);
                         }
@@ -86,6 +86,4 @@ public class RxRetryAssist implements Func1<Observable<? extends Throwable>, Obs
                     }
                 });
     }
-
-
 }

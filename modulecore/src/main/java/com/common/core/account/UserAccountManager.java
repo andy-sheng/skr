@@ -7,6 +7,7 @@ import com.common.core.login.LoginType;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.milink.MiLinkClientAdapter;
+import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
 import com.wali.live.proto.Account.LoginRsp;
 import com.wali.live.proto.Account.MiSsoLoginRsp;
@@ -16,9 +17,11 @@ import org.greenrobot.eventbus.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -185,6 +188,7 @@ public class UserAccountManager {
 
             }
         }).subscribeOn(Schedulers.io())
+                .retryWhen(new RxRetryAssist())
                 .subscribe(new Observer<Object>() {
                     @Override
                     public void onSubscribe(Disposable d) {
