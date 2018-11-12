@@ -17,6 +17,8 @@
         <activity android:name="com.example.qrcode.TestGeneratectivity"/>
         <activity android:name="com.example.qrcode.TestScanActivity"/>
         <activity android:name=".activity.DeviceInfoActivity"/>
+
+        <activity android:name="com.example.emoji.EmojiActivity"></activity>
     </application>
 
 </manifest>

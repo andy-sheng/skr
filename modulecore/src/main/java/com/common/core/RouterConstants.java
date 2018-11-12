@@ -7,6 +7,7 @@ public interface RouterConstants {
     String ACTIVITY_LOGIN = "/core/LoginActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
+    String ACTIVITY_EMOJI = "/test/EmojiActivity";
     String ACTIVITY_TEST = "/test/TestSdkActivity";
 
     String ACTIVITY_CHANNEL_SDK = "/channel/ChannelSdkActivity";

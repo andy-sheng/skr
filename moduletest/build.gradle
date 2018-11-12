@@ -91,6 +91,10 @@ android {
             // 二维码
             java.srcDirs += 'src/main/java-qrcode'
             res.srcDirs += 'src/main/res-qrcode'
+
+            // emoji
+            java.srcDirs += 'src/main/java-emoji'
+            res.srcDirs += 'src/main/res-emoji'
         }
     }
 }

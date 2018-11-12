@@ -40,6 +40,8 @@ import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
+import com.example.emoji.EmojiActivity;
+import com.example.emoji.EmojiFragment;
 import com.example.paginate.PaginateFragment;
 import com.example.qrcode.QrcodeTestFragment;
 import com.example.wxcontact.PickContactFragment;
@@ -421,6 +423,34 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("浸入式 + CollapsingToolbarLayout 调试", new Runnable() {
             @Override
             public void run() {
+            }
+        }));
+
+
+        mDataList.add(new H(" emoji表情面板 调试", new Runnable() {
+            @Override
+            public void run() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_EMOJI).greenChannel().navigation();
+            }
+        }));
+
+        mDataList.add(new H(" emoji表情面板 调试 fragment", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newParamsBuilder(TestSdkActivity.this, EmojiFragment.class)
+                        .setAddToBackStack(false)
+                        .build());
+            }
+        }));
+
+        mDataList.add(new H(" emoji表情面板 调试 fragment2", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newParamsBuilder(TestSdkActivity.this, EmojiFragment.class)
+                        .setAddToBackStack(true)
+                        .build());
             }
         }));
 
