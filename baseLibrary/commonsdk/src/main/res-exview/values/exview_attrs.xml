@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="background">
+    <declare-styleable name="View">
         <!--形状类型 圆角矩形 椭圆 执行 圆环-->
         <attr name="bl_shape" format="enum">
             <enum name="rectangle" value="0" />
@@ -74,15 +74,11 @@
         <attr name="bl_unSelected_stroke_color" format="color" />
         <attr name="bl_unPressed_stroke_color" format="color" />
         <attr name="bl_unFocused_stroke_color" format="color" />
-    </declare-styleable>
 
-    <!-- 设置按下和未按下时的颜色-->
-    <declare-styleable name="background_press">
+        <!-- 设置按下和未按下时的颜色-->
         <attr name="bl_unpressed_color" format="color" />
         <attr name="bl_pressed_color" format="color" />
-    </declare-styleable>
 
-    <declare-styleable name="background_selector">
         <!--设置各种selector 状态时 color 或者 drawable -->
         <attr name="bl_checkable_drawable" format="color|reference" />
         <attr name="bl_checked_drawable" format="color|reference" />
@@ -103,8 +99,25 @@
         <attr name="bl_unFocused_activated" format="color|reference" />
     </declare-styleable>
 
+    <declare-styleable name="TextView">
+        <!--设置各种selector 对src的selector-->
+        <attr name="bl_checkable_textColor" format="color" />
+        <attr name="bl_checked_textColor" format="color" />
+        <attr name="bl_enabled_textColor" format="color" />
+        <attr name="bl_selected_textColor" format="color" />
+        <attr name="bl_pressed_textColor" format="color" />
+        <attr name="bl_focused_textColor" format="color" />
+
+        <attr name="bl_unCheckable_textColor" format="color" />
+        <attr name="bl_unChecked_textColor" format="color" />
+        <attr name="bl_unEnabled_textColor" format="color" />
+        <attr name="bl_unSelected_textColor" format="color" />
+        <attr name="bl_unPressed_textColor" format="color" />
+        <attr name="bl_unFocused_textColor" format="color" />
+    </declare-styleable>
+
     <!--ImageView专用 -->
-    <declare-styleable name="src_selector">
+    <declare-styleable name="ImageView">
         <!--设置各种selector 状态时 color 或者 drawable -->
         <attr name="src_checkable_drawable" format="color|reference" />
         <attr name="src_checked_drawable" format="color|reference" />
@@ -125,21 +138,4 @@
         <attr name="src_unFocused_activated" format="color|reference" />
     </declare-styleable>
 
-
-    <declare-styleable name="text_selector">
-        <!--设置各种selector 对src的selector-->
-        <attr name="bl_checkable_textColor" format="color" />
-        <attr name="bl_checked_textColor" format="color" />
-        <attr name="bl_enabled_textColor" format="color" />
-        <attr name="bl_selected_textColor" format="color" />
-        <attr name="bl_pressed_textColor" format="color" />
-        <attr name="bl_focused_textColor" format="color" />
-
-        <attr name="bl_unCheckable_textColor" format="color" />
-        <attr name="bl_unChecked_textColor" format="color" />
-        <attr name="bl_unEnabled_textColor" format="color" />
-        <attr name="bl_unSelected_textColor" format="color" />
-        <attr name="bl_unPressed_textColor" format="color" />
-        <attr name="bl_unFocused_textColor" format="color" />
-    </declare-styleable>
 </resources>

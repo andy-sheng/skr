@@ -22,20 +22,19 @@ import com.common.view.ex.drawable.DrawableFactory;
 public class AttributeInject {
 
     public static void injectBackground(View view, Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.background);
-        TypedArray pressTa = context.obtainStyledAttributes(attrs, R.styleable.background_press);
-        TypedArray selectorTa = context.obtainStyledAttributes(attrs, R.styleable.background_selector);
-        TypedArray textTa = context.obtainStyledAttributes(attrs, R.styleable.text_selector);
-        if (typedArray.getIndexCount() == 0 && selectorTa.getIndexCount() == 0
-                && pressTa.getIndexCount() == 0 && textTa.getIndexCount() == 0) {
+        TypedArray bgArray = context.obtainStyledAttributes(attrs, R.styleable.View);
+        TypedArray textTa = context.obtainStyledAttributes(attrs, R.styleable.TextView);
+
+        if (bgArray.getIndexCount() == 0 && textTa.getIndexCount() == 0) {
             return;
         }
 
         try {
+            Drawable stateListDrawable = null;
             GradientDrawable drawable = null;
-            StateListDrawable stateListDrawable = null;
-            if (selectorTa.getIndexCount() > 0) {
-                stateListDrawable = DrawableFactory.getSelectorDrawable(typedArray, selectorTa);
+
+            stateListDrawable = DrawableFactory.getSelectorDrawable(bgArray);
+            if (stateListDrawable != null) {
                 view.setClickable(true);
                 if (view instanceof RadioButton) {
                     ((RadioButton) view).setButtonDrawable(stateListDrawable);
@@ -44,23 +43,24 @@ public class AttributeInject {
                 } else {
                     view.setBackground(stateListDrawable);
                 }
-            } else if (pressTa.getIndexCount() > 0) {
-                drawable = DrawableFactory.getDrawable(typedArray);
-                stateListDrawable = DrawableFactory.getPressDrawable(drawable, typedArray, pressTa);
-                view.setClickable(true);
-                view.setBackground(stateListDrawable);
             } else {
-                drawable = DrawableFactory.getDrawable(typedArray);
-                view.setBackground(drawable);
+                drawable = DrawableFactory.getDrawable(bgArray);
+                stateListDrawable = DrawableFactory.getPressDrawable(drawable, bgArray);
+                if (stateListDrawable != null) {
+                    view.setClickable(true);
+                    view.setBackground(stateListDrawable);
+                } else {
+                    view.setBackground(drawable);
+                }
             }
 
             if (view instanceof TextView && textTa.getIndexCount() > 0) {
                 ((TextView) view).setTextColor(DrawableFactory.getTextSelectorColor(textTa));
             }
 
-            if (typedArray.getBoolean(R.styleable.background_bl_ripple_enable, false) &&
-                    typedArray.hasValue(R.styleable.background_bl_ripple_color)) {
-                int color = typedArray.getColor(R.styleable.background_bl_ripple_color, 0);
+            if (bgArray.getBoolean(R.styleable.View_bl_ripple_enable, false) &&
+                    bgArray.hasValue(R.styleable.View_bl_ripple_color)) {
+                int color = bgArray.getColor(R.styleable.View_bl_ripple_color, 0);
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Drawable contentDrawable = (stateListDrawable == null ? drawable : stateListDrawable);
                     RippleDrawable rippleDrawable = new RippleDrawable(ColorStateList.valueOf(color), contentDrawable, contentDrawable);
@@ -68,7 +68,7 @@ public class AttributeInject {
                     view.setBackground(rippleDrawable);
                 } else {
                     StateListDrawable tmpDrawable = new StateListDrawable();
-                    GradientDrawable unPressDrawable = DrawableFactory.getDrawable(typedArray);
+                    GradientDrawable unPressDrawable = DrawableFactory.getDrawable(bgArray);
                     unPressDrawable.setColor(color);
                     tmpDrawable.addState(new int[]{-android.R.attr.state_pressed}, drawable);
                     tmpDrawable.addState(new int[]{android.R.attr.state_pressed}, unPressDrawable);
@@ -79,9 +79,7 @@ public class AttributeInject {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            typedArray.recycle();
-            pressTa.recycle();
-            selectorTa.recycle();
+            bgArray.recycle();
             textTa.recycle();
         }
 
@@ -89,7 +87,7 @@ public class AttributeInject {
     }
 
     public static void injectSrc(ImageView view, Context context, AttributeSet attrs) {
-        TypedArray srcSelector = context.obtainStyledAttributes(attrs, R.styleable.src_selector);
+        TypedArray srcSelector = context.obtainStyledAttributes(attrs, R.styleable.ImageView);
 
         if (srcSelector.getIndexCount() == 0) {
             return;

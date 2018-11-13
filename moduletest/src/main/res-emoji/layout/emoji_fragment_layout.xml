@@ -6,6 +6,16 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <com.common.view.titlebar.CommonTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="软键盘测试"
+        app:centerType="textView" />
+
+    <com.common.view.ex.NoLeakEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <!--内容区-->
     <RelativeLayout
         android:id="@+id/llContent"
@@ -30,6 +40,7 @@
             android:layout_centerInParent="true"
             android:text="键盘出现时，自动处理布局"
             app:bl_pressed_color="@color/green"
+            app:bl_shape="rectangle"
             app:bl_unpressed_color="@color/yellow" />
 
         <LinearLayout
