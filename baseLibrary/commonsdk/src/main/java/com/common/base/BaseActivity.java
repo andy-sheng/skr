@@ -169,9 +169,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         }
         int layoutResID = initView(savedInstanceState);
         //如果initView返回0,框架则不会调用setContentView(),当然也不会 Bind ButterKnife
-        if (layoutResID != 0) {
-            setContentView(layoutResID);
+//        if (layoutResID != 0) {
+//            /**
+//             * 这里会导致 AndroidBug5497WorkaroundSupportingTranslucentStatus 没法注册
+//             * 当然这里也不需要注册，注册逻辑应该是Fragment自己控制。
+//             */
+//            setContentView(layoutResID);
+//        }
+        if (layoutResID == 0) {
+            layoutResID = R.layout.empty_activity_layout;
         }
+        setContentView(layoutResID);
         initData(savedInstanceState);
     }
 
@@ -310,8 +318,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         return true;
     }
 
-    public boolean isKeyboardResize() {
-        return true;
+    /**
+     * 当键盘出现时，自己管理布局
+     * 如果为true，则会接受到 android5497 传出的 keyborad事件，自行调整布局
+     * 如果为false，则会自动上滑调整布局
+     *
+     * @return
+     */
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return false;
     }
 
     @Override

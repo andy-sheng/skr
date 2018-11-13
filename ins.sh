@@ -61,6 +61,10 @@ if [[ $1 = "app" ]]; then
 	else
 		echo "./gradlew :app:assemblechannel_defaultDebug"
 		echo "只编译default debug渠道"
+		if [[ $2 = "clean" ]]; then
+		    echo "clean一下"
+		    ./gradlew :app:clean
+		fi
 		./gradlew :app:assemblechannel_defaultDebug --stacktrace
 		adb install -r app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk
 	fi

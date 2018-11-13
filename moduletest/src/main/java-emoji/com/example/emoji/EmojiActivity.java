@@ -22,6 +22,7 @@ import com.wali.live.moduletest.fragment.DeviceInfoFragment;
 @Route(path = RouterConstants.ACTIVITY_EMOJI)
 public class EmojiActivity extends BaseActivity {
 
+
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return 0;
@@ -43,5 +44,12 @@ public class EmojiActivity extends BaseActivity {
     @Override
     public boolean canSlide() {
         return false;
+    }
+
+    boolean resizeLayoutSelfWhenKeybordShow = false;
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return resizeLayoutSelfWhenKeybordShow;
     }
 }

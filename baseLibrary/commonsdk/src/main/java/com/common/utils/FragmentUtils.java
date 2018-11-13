@@ -81,7 +81,7 @@ public class FragmentUtils {
                          *  另外第一个参数一般用 tag ，只有静态添加的 fragment 才用id
                          */
                         boolean b = fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        return  b;
+                        return b;
                     }
                 }
             }
@@ -107,11 +107,10 @@ public class FragmentUtils {
 
         if (fragmentObject != null
                 && (fragmentObject instanceof BaseFragment)) {
-            BaseFragment oldFragment = null;
-            oldFragment = (BaseFragment) fragmentManager.findFragmentByTag(tag);
+            BaseFragment oldFragment = (BaseFragment) fragmentObject;
             if (oldFragment != null) {
                 MyLog.d(TAG, "addFragment" + " oldFragment!=null");
-                if (params.bundle == null) {
+                if (params.useOldFragmentIfExist) {
                     if (!oldFragment.isAdded()) {
                         ft.add(params.containerViewId, oldFragment, tag);
                     }
@@ -135,8 +134,8 @@ public class FragmentUtils {
             return null;
         }
         fragment.setFragmentDataListener(params.fragmentDataListener);
-        if(params.dataBeforeAdd!=null){
-            fragment.setData(params.dataType,params.dataBeforeAdd);
+        if (params.dataBeforeAdd != null) {
+            fragment.setData(params.dataType, params.dataBeforeAdd);
         }
         if (params.bundle != null) {
             fragment.setArguments(params.bundle);
@@ -208,7 +207,9 @@ public class FragmentUtils {
          */
         BaseFragment fromFragment;
         Class<? extends Fragment> targetFragment;
-        int containerViewId = android.R.id.content;
+        //  不用 content 做container，因为android4957等等都是基于actvity的根布局做逻辑的
+        // int containerViewId = android.R.id.content;
+        int containerViewId = R.id.main_act_container;
         Bundle bundle = null;
         boolean addToBackStack = true;
         boolean hasAnimation = false;
@@ -226,11 +227,11 @@ public class FragmentUtils {
         int dataType; // 数据类型标识
 
         /**
-         * 默认根据类名确定唯一性
-         * 意思在同一个Activity 内 ，使用 addFragment 添加FragmentA
-         * 能保证FragmentA 只有一个实例
+         * 用tag的一定要确保只有一个实例被添加
+         * useOldFragmentIfExist = true
+         * 低内存回收时，是否要用原内存中的fragment重建个fragment
          */
-        boolean uniqueByClassName = true;
+        boolean useOldFragmentIfExist = false;
 
         public void setFromFragment(BaseFragment fromFragment) {
             this.fromFragment = fromFragment;
@@ -276,9 +277,13 @@ public class FragmentUtils {
             this.fragmentDataListener = l;
         }
 
-        public void setDataBeforeAdd(int dataType,Object dataBeforeAdd) {
+        public void setDataBeforeAdd(int dataType, Object dataBeforeAdd) {
             this.dataType = dataType;
             this.dataBeforeAdd = dataBeforeAdd;
+        }
+
+        public void setUseOldFragmentIfExist(boolean enable) {
+            this.useOldFragmentIfExist = enable;
         }
 
         public static class Builder {
@@ -342,8 +347,13 @@ public class FragmentUtils {
                 return this;
             }
 
-            public Builder setDataBeforeAdd(int dataType,Object dataBeforeAdd) {
-                mParams.setDataBeforeAdd(dataType,dataBeforeAdd);
+            public Builder setDataBeforeAdd(int dataType, Object dataBeforeAdd) {
+                mParams.setDataBeforeAdd(dataType, dataBeforeAdd);
+                return this;
+            }
+
+            public Builder setUseOldFragmentIfExist(boolean enable) {
+                mParams.setUseOldFragmentIfExist(enable);
                 return this;
             }
 

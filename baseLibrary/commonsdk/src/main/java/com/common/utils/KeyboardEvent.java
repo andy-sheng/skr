@@ -7,25 +7,22 @@ package com.common.utils;
 public class KeyboardEvent {
     public static final int EVENT_TYPE_KEYBOARD_VISIBLE = 0;
     public static final int EVENT_TYPE_KEYBOARD_HIDDEN = 1;
-    public static final int EVENT_TYPE_KEYBOARD_VISIBLE_ALWAYS_SEND = 2;// 无论任何softmode都发送
     public int eventType;
-    public Object obj1;
+    public int keybordHeight;
     public String from;
 
-    public KeyboardEvent(int type) {
-        this.eventType = type;
-    }
 
-    public KeyboardEvent(int type, Object obj1) {
+    public KeyboardEvent(String from, int type, int keybordHeight) {
+        this.from = from;
         this.eventType = type;
-        this.obj1 = obj1;
+        this.keybordHeight = keybordHeight;
     }
 
     @Override
     public String toString() {
         return "KeyboardEvent{" +
                 "eventType=" + eventType +
-                ", obj1=" + obj1 +
+                ", keybordHeight=" + keybordHeight +
                 ", from='" + from + '\'' +
                 '}';
     }

@@ -14,6 +14,13 @@
         <item name="android:windowAnimationStyle">@style/Activity_Animation</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <!--
+        adjustUnspecified :当软键盘弹出时，系统自动指定窗口的调整模式，根据不同的情况会选择adjustResize或者adjustPan的一种。
+        adjustPan :当软键盘弹出时，会将主窗口的平移（translateY），来适应软键盘的显示。
+        adjustResize :当软键盘弹出时，会让布局重新绘制，这种一般适应于带有滑动性质的控制，让其向下滚动，然后适应软键盘的显示。
+        adjustNoting: 软键盘弹出时，主窗口不会做出任何反应。
+        -->
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <!--支持右滑推出的activity的设置-->

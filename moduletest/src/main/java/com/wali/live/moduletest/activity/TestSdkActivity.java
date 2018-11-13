@@ -433,18 +433,7 @@ public class TestSdkActivity extends BaseActivity {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_EMOJI).greenChannel().navigation();
             }
         }));
-
-        mDataList.add(new H(" emoji表情面板 调试 fragment", new Runnable() {
-            @Override
-            public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, EmojiFragment.class)
-                        .setAddToBackStack(false)
-                        .build());
-            }
-        }));
-
-        mDataList.add(new H(" emoji表情面板 调试 fragment2", new Runnable() {
+        mDataList.add(new H(" emoji表情面板 调试2", new Runnable() {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
