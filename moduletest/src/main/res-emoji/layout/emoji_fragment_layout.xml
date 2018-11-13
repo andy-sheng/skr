@@ -31,7 +31,9 @@
             android:text="主要内容"
             android:textSize="@dimen/view_dimen_200"
             app:bl_gradient_endColor="@color/red"
-            app:bl_gradient_startColor="@color/blue" />
+            app:bl_gradient_startColor="@color/blue"
+            app:bl_corners_radius="@dimen/view_dimen_10"
+            app:bl_shape="rectangle" />
 
         <com.common.view.ex.ExButton
             android:id="@+id/change_btn"

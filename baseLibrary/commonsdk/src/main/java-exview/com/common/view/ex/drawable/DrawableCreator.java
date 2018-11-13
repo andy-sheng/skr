@@ -437,7 +437,7 @@ public class DrawableCreator {
                 drawable = getGradientDrawable();
             }
             if(rippleEnable){
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Drawable contentDrawable = (stateListDrawable == null ? drawable : stateListDrawable);
                     return new RippleDrawable(ColorStateList.valueOf(rippleColor), contentDrawable, contentDrawable);
                 } else {
