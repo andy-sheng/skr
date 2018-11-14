@@ -43,15 +43,21 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
     private LinearLayout mLlPageNumber;
     private LinearLayout mLlTabContainer;
     private RelativeLayout mRlEmotionAdd;
+    private View mBottomSplitLine;
+    private LinearLayout mBottomContainer;
 
     private int mTabCount;
     private SparseArray<View> mTabViewArray = new SparseArray<>();
     private EmotionViewPagerAdapter mEmotionViewPagerAdapter;
     private EmotionTab mSettingTab;
+
+    private boolean mShowSticker = true;
+    private EditText mMessageEditText;
     private IEmotionSelectedListener mEmotionSelectedListener;
     private IEmotionExtClickListener mEmotionExtClickListener;
     private boolean mEmotionAddVisiable = false;
     private boolean mEmotionSettingVisiable = false;
+
 
     public EmotionLayout(Context context) {
         this(context, null);
@@ -81,9 +87,21 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         mLlPageNumber = (LinearLayout) findViewById(R.id.llPageNumber);
         mLlTabContainer = (LinearLayout) findViewById(R.id.llTabContainer);
         mRlEmotionAdd = (RelativeLayout) findViewById(R.id.rlEmotionAdd);
-        setEmotionAddVisiable(mEmotionAddVisiable);
-
-        initTabs();
+        mBottomSplitLine = (View) findViewById(R.id.bottom_split_line);
+        mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
+        if (mShowSticker) {
+            setEmotionAddVisiable(mEmotionAddVisiable);
+        } else {
+            mBottomContainer.setVisibility(GONE);
+            mBottomSplitLine.setVisibility(GONE);
+        }
+        if (mShowSticker) {
+            initTabs();
+        }
+        mEmotionViewPagerAdapter = new EmotionViewPagerAdapter(mMeasuredWidth, mMeasuredHeight, mEmotionSelectedListener, mShowSticker);
+        mVpEmotioin.setAdapter(mEmotionViewPagerAdapter);
+        mEmotionViewPagerAdapter.attachEditText(mMessageEditText);
+        setSelectTab(0);
     }
 
     //表情面板底部类别栏
@@ -113,11 +131,6 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         mLlTabContainer.addView(mSettingTab);
         mTabViewArray.put(mTabViewArray.size(), mSettingTab);
         setEmotionSettingVisiable(mEmotionSettingVisiable);
-
-        mEmotionViewPagerAdapter = new EmotionViewPagerAdapter(mMeasuredWidth, mMeasuredHeight, mEmotionSelectedListener);
-        mVpEmotioin.setAdapter(mEmotionViewPagerAdapter);
-        mEmotionViewPagerAdapter.attachEditText(mMessageEditText);
-        setSelectTab(0);
     }
 
     private void initListener() {
@@ -146,24 +159,27 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
 
             }
         });
-
-        mRlEmotionAdd.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mEmotionExtClickListener != null) {
-                    mEmotionExtClickListener.onEmotionAddClick(v);
+        if (mRlEmotionAdd != null) {
+            mRlEmotionAdd.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mEmotionExtClickListener != null) {
+                        mEmotionExtClickListener.onEmotionAddClick(v);
+                    }
                 }
-            }
-        });
-
-        mSettingTab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mEmotionExtClickListener != null) {
-                    mEmotionExtClickListener.onEmotionSettingClick(v);
+            });
+        }
+        if (mSettingTab != null) {
+            mSettingTab.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mEmotionExtClickListener != null) {
+                        mEmotionExtClickListener.onEmotionSettingClick(v);
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
 
     public void setEmotionSelectedListener(IEmotionSelectedListener emotionSelectedListener) {
@@ -256,7 +272,7 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
             setCurPage(vpPostion, mEmotionViewPagerAdapter.getEmojiPageCount());
         } else {
             EmotionViewPagerAdapter.IndexInfo indexInfo = mEmotionViewPagerAdapter.getIndexInfoByPostion(vpPostion);
-            if(indexInfo!=null) {
+            if (indexInfo != null) {
                 setSelectTab(indexInfo.mTabPostion);
                 setCurPage(indexInfo.mIndexInGroup, indexInfo.mStickerGroup.mStickerItemPageList.size());
             }
@@ -269,17 +285,19 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         //显示表情内容
         mLlPageNumber.removeAllViews();
         int vpPostion = mEmotionViewPagerAdapter.findFirstVpPostionByTabPostion(tabPosi);
-        mVpEmotioin.setCurrentItem(vpPostion,false);
+        mVpEmotioin.setCurrentItem(vpPostion, false);
 
         setCurPageCommon(vpPostion);
     }
 
     private void setSelectTab(int tabPosi) {
-        for (int i = 0; i < mTabCount; i++) {
-            View tab = mTabViewArray.get(i);
-            tab.setBackgroundResource(R.drawable.shape_tab_normal);
+        if (mBottomContainer.getVisibility() == VISIBLE) {
+            for (int i = 0; i < mTabCount; i++) {
+                View tab = mTabViewArray.get(i);
+                tab.setBackgroundResource(R.drawable.shape_tab_normal);
+            }
+            mTabViewArray.get(tabPosi).setBackgroundResource(R.drawable.shape_tab_press);
         }
-        mTabViewArray.get(tabPosi).setBackgroundResource(R.drawable.shape_tab_press);
     }
 
     /**
@@ -320,10 +338,11 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         }
     }
 
-    EditText mMessageEditText;
-
     public void attachEditText(EditText messageEditText) {
         mMessageEditText = messageEditText;
     }
 
+    public void setShowSticker(boolean showSticker) {
+        this.mShowSticker = showSticker;
+    }
 }

@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * CSDN_LQR
  * 表情控件的ViewPager适配器(emoji + 贴图)
- *
+ * <p>
  * 这里涉及到两个属性
  * tabposition 在底部表情分类栏tab索引
  * vppostion 在viewpager的索引
@@ -49,33 +49,36 @@ public class EmotionViewPagerAdapter extends PagerAdapter {
         mMessageEditText = messageEditText;
     }
 
-    public EmotionViewPagerAdapter(int emotionLayoutWidth, int emotionLayoutHeight, IEmotionSelectedListener listener) {
+    public EmotionViewPagerAdapter(int emotionLayoutWidth, int emotionLayoutHeight, IEmotionSelectedListener listener, boolean loadSticker) {
         mEmotionLayoutWidth = emotionLayoutWidth;
         mEmotionLayoutHeight = emotionLayoutHeight;
         mEmojiPageNum = (int) Math.ceil(EmojiManager.getDisplayCount() / (float) EmotionLayout.EMOJI_PER_PAGE);
         mPageCount += mEmojiPageNum;
-        List<StickerCategory> stickerCategoryList = StickerManager.getInstance().getStickerCategories();
-        for (int i = 0; i < stickerCategoryList.size(); i++) {
-            StickerCategory stickerCategory = stickerCategoryList.get(i);
-            StickerGroup stickerGroup = new StickerGroup();
-            stickerGroup.mStickerCategory = stickerCategory;
 
-            ArrayList<StickerItem> oneGroup = new ArrayList<>();
-            for (int j = 0; j < stickerCategory.getCount(); j++) {
-                StickerItem sticker = stickerCategory.getStickers().get(j);
-                if (sticker != null) {
-                    oneGroup.add(sticker);
-                    if (oneGroup.size() == EmotionLayout.STICKER_PER_PAGE) {
-                        stickerGroup.mStickerItemPageList.add(oneGroup);
-                        oneGroup = new ArrayList<>();
+        if (loadSticker) {
+            List<StickerCategory> stickerCategoryList = StickerManager.getInstance().getStickerCategories();
+            for (int i = 0; i < stickerCategoryList.size(); i++) {
+                StickerCategory stickerCategory = stickerCategoryList.get(i);
+                StickerGroup stickerGroup = new StickerGroup();
+                stickerGroup.mStickerCategory = stickerCategory;
+
+                ArrayList<StickerItem> oneGroup = new ArrayList<>();
+                for (int j = 0; j < stickerCategory.getCount(); j++) {
+                    StickerItem sticker = stickerCategory.getStickers().get(j);
+                    if (sticker != null) {
+                        oneGroup.add(sticker);
+                        if (oneGroup.size() == EmotionLayout.STICKER_PER_PAGE) {
+                            stickerGroup.mStickerItemPageList.add(oneGroup);
+                            oneGroup = new ArrayList<>();
+                        }
                     }
                 }
+                if (!oneGroup.isEmpty()) {
+                    stickerGroup.mStickerItemPageList.add(oneGroup);
+                }
+                mPageCount += stickerGroup.mStickerItemPageList.size();
+                mStickerGroupList.add(stickerGroup);
             }
-            if (!oneGroup.isEmpty()) {
-                stickerGroup.mStickerItemPageList.add(oneGroup);
-            }
-            mPageCount += stickerGroup.mStickerItemPageList.size();
-            mStickerGroupList.add(stickerGroup);
         }
         this.listener = listener;
     }

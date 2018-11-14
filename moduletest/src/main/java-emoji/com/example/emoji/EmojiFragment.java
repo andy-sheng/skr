@@ -70,9 +70,14 @@ public class EmojiFragment extends BaseFragment {
 
         initEmotionKeyboard();
 
+        /**
+         * 点击小表情自动添加到该 mEtContent 中
+         */
         mElEmotion.attachEditText(mEtContent);
-        mElEmotion.setEmotionAddVisiable(true);
-        mElEmotion.setEmotionSettingVisiable(true);
+        mElEmotion.setEmotionAddVisiable(false);
+        mElEmotion.setEmotionSettingVisiable(false);
+        mElEmotion.setShowSticker(false);
+
         mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
             @Override
             public void onEmotionAddClick(View view) {
