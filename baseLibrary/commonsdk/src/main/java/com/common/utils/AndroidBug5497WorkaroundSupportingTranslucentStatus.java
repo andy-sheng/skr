@@ -16,6 +16,8 @@ import java.lang.ref.WeakReference;
 
 /**
  * 这个类我一定好好改改，flag
+ *
+ * 完美解决键盘 虚拟按键 沉浸式 等一系列涉及到布局的问题
  */
 public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
     public final static String TAG = "AndroidBug5497WorkaroundSupportingTranslucentStatus";
