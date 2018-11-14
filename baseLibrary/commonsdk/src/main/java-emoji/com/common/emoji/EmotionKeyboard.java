@@ -15,6 +15,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.common.utils.U;
+
 /**
  * CSDN_LQR
  * 表情键盘协调工具
@@ -26,7 +28,6 @@ public class EmotionKeyboard {
     private static final String SHARE_PREFERENCE_SOFT_INPUT_HEIGHT = "sofe_input_height";
     private Activity mActivity;
     private InputMethodManager mInputManager;//软键盘管理类
-    private SharedPreferences mSp;
     private View mEmotionLayout;//表情布局
     private EditText mEditText;
     private View mContentView;//内容布局view,即除了表情布局或者软键盘布局以外的布局，用于固定bar的高度，防止跳闪
@@ -38,7 +39,6 @@ public class EmotionKeyboard {
         EmotionKeyboard emotionInputDetector = new EmotionKeyboard();
         emotionInputDetector.mActivity = activity;
         emotionInputDetector.mInputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        emotionInputDetector.mSp = activity.getSharedPreferences(SHARE_PREFERENCE_NAME, Context.MODE_PRIVATE);
         return emotionInputDetector;
     }
 
@@ -171,7 +171,7 @@ public class EmotionKeyboard {
     private void showEmotionLayout() {
         int softInputHeight = getSupportSoftInputHeight();
         if (softInputHeight == 0) {
-            softInputHeight = mSp.getInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, dip2Px(270));
+            softInputHeight = U.getPreferenceUtils().getSettingInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, dip2Px(270));
         }
         hideSoftInput();
         mEmotionLayout.getLayoutParams().height = softInputHeight;
@@ -278,7 +278,7 @@ public class EmotionKeyboard {
         }
         //存一份到本地
         if (softInputHeight > 0) {
-            mSp.edit().putInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, softInputHeight).apply();
+            U.getPreferenceUtils().setSettingInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, softInputHeight);
         }
         return softInputHeight;
     }
@@ -310,6 +310,6 @@ public class EmotionKeyboard {
      * @return
      */
     public int getKeyBoardHeight() {
-        return mSp.getInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, 400);
+        return U.getPreferenceUtils().getSettingInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, 400);
     }
 }

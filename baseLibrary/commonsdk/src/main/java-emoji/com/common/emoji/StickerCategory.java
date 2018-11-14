@@ -79,7 +79,7 @@ public class StickerCategory {
     public String getCoverImgPath() {
         for (File file : new File(LQREmotionKit.getStickerPath()).listFiles()) {
             if (file.isFile() && file.getName().startsWith(name)) {
-                return "file://" + file.getAbsolutePath();
+                return file.getAbsolutePath();
             }
         }
         return null;

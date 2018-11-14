@@ -20,41 +20,18 @@ public class LQREmotionKit {
 
     private static String STICKER_NAME_IN_ASSETS = "sticker";
     private static Context mContext;
-    private static float density;
-    private static float scaleDensity;
     private static String STICKER_PATH;//默认路径在 /data/data/包名/files/sticker 下
-    private static IImageLoader imageLoader;
 
-    private static void getAndSaveParameter(Context context) {
+    public static void init(Context context) {
         mContext = context.getApplicationContext();
-
-        DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
-        density = dm.density;
-        scaleDensity = dm.scaledDensity;
-    }
-
-    public static void init(Context context, String stickerPath) {
-        getAndSaveParameter(context);
-        STICKER_PATH = stickerPath;
-
-        //将asset/sticker目录下默认的贴图复制到STICKER_PATH下
+        STICKER_PATH = new File(context.getFilesDir(), STICKER_NAME_IN_ASSETS).getAbsolutePath();
         copyStickerToStickerPath(STICKER_NAME_IN_ASSETS);
     }
 
-    public static void init(Context context) {
-        init(context, new File(context.getFilesDir(), STICKER_NAME_IN_ASSETS).getAbsolutePath());
-    }
 
-    public static void init(Context context, IImageLoader imageLoader) {
-        init(context);
-        setImageLoader(imageLoader);
-    }
-
-    public static void init(Context context, String stickerPath, IImageLoader imageLoader) {
-        init(context, stickerPath);
-        setImageLoader(imageLoader);
-    }
-
+    /**
+     * 从 assests 拷贝到 app/files/，只会有一次
+     */
     private static void copyStickerToStickerPath(String assetsFolderPath) {
         AssetManager assetManager = mContext.getResources().getAssets();
         List<String> srcFile = new ArrayList<>();
@@ -133,38 +110,8 @@ public class LQREmotionKit {
         }).start();
     }
 
-    public static Context getContext() {
-        return mContext;
-    }
-
     public static String getStickerPath() {
         return STICKER_PATH;
     }
 
-    public static IImageLoader getImageLoader() {
-        if (imageLoader == null) {
-            throw new RuntimeException("you should use setImageLoader() in your App onCreate()");
-        }
-        return imageLoader;
-    }
-
-    public static void setImageLoader(IImageLoader imageLoader) {
-        LQREmotionKit.imageLoader = imageLoader;
-    }
-
-//    public static void setStickerPath(String stickerPath) {
-//        STICKER_PATH = stickerPath;
-//    }
-
-    public static int dip2px(float dipValue) {
-        return (int) (dipValue * density + 0.5f);
-    }
-
-    public static int px2dip(float pxValue) {
-        return (int) (pxValue / density + 0.5f);
-    }
-
-    public static int sp2px(float spValue) {
-        return (int) (spValue * scaleDensity + 0.5f);
-    }
 }

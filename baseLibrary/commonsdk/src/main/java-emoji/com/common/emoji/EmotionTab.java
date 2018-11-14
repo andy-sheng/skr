@@ -7,6 +7,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.base.R;
+import com.common.image.fresco.BaseImageView;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
 
 /**
  * CSDN_LQR
@@ -14,7 +17,7 @@ import com.common.base.R;
  */
 public class EmotionTab extends RelativeLayout {
 
-    private ImageView mIvIcon;
+    private BaseImageView mIvIcon;
     private String mStickerCoverImgPath;
     private int mIconSrc = R.drawable.ic_tab_add;
 
@@ -35,12 +38,12 @@ public class EmotionTab extends RelativeLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.emotion_tab, this);
 
-        mIvIcon = (ImageView) findViewById(R.id.ivIcon);
+        mIvIcon = (BaseImageView) findViewById(R.id.ivIcon);
 
         if (TextUtils.isEmpty(mStickerCoverImgPath)) {
             mIvIcon.setImageResource(mIconSrc);
         } else {
-            LQREmotionKit.getImageLoader().displayImage(context, mStickerCoverImgPath, mIvIcon);
+            FrescoWorker.loadImage(mIvIcon,ImageFactory.newLocalImage(mStickerCoverImgPath).build());
         }
     }
 

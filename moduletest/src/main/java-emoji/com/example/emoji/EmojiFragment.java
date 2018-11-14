@@ -60,6 +60,8 @@ public class EmojiFragment extends BaseFragment {
             });
         }
 
+
+
         LQREmotionKit.init(U.app());
         mLlContent =  mRootView.findViewById(R.id.llContent);
         mEtContent =  mRootView.findViewById(R.id.etContent);

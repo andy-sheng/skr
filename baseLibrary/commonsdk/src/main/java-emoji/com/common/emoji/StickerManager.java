@@ -35,10 +35,12 @@ public class StickerManager {
     }
 
     public StickerManager() {
-//        initStickerOrder();
         loadStickerCategory();
     }
 
+    /**
+     * 加载所有大表情到内存中
+     */
     private void loadStickerCategory() {
         File stickerDir = new File(LQREmotionKit.getStickerPath());
         if (stickerDir.exists()) {
@@ -70,11 +72,6 @@ public class StickerManager {
 
     public synchronized StickerCategory getCategory(String name) {
         return stickerCategoryMap.get(name);
-    }
-
-    public String getStickerBitmapUri(String categoryName, String stickerName) {
-        String path = getStickerBitmapPath(categoryName, stickerName);
-        return "file://" + path;
     }
 
     @Nullable

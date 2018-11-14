@@ -5,10 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.common.base.R;
+import com.common.image.fresco.BaseImageView;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
+import com.common.utils.U;
+
+import java.util.List;
 
 /**
  * CSDN_LQR
@@ -18,22 +22,19 @@ import com.common.base.R;
 public class StickerAdapter extends BaseAdapter {
 
     private Context mContext;
-    private StickerCategory mCategory;
-    private int startIndex;
-
+    List<StickerItem> mDataList;
     private int mEmotionLayoutWidth;
     private int mEmotionLayoutHeight;
     private float mPerWidth;
     private float mPerHeight;
     private float mIvSize;
 
-    public StickerAdapter(Context context, StickerCategory category, int emotionLayoutWidth, int emotionLayoutHeight, int startIndex) {
+    public StickerAdapter(Context context, List<StickerItem> dataList, int emotionLayoutWidth, int emotionLayoutHeight) {
         mContext = context;
-        mCategory = category;
-        this.startIndex = startIndex;
+        this.mDataList = dataList;
 
         mEmotionLayoutWidth = emotionLayoutWidth;
-        mEmotionLayoutHeight = emotionLayoutHeight - LQREmotionKit.dip2px(35 + 26 + 50);//减去底部的tab高度、小圆点的高度才是viewpager的高度，再减少30dp是让表情整体的顶部和底部有个外间距
+        mEmotionLayoutHeight = emotionLayoutHeight - U.getDisplayUtils().dip2px(35 + 26 + 50);//减去底部的tab高度、小圆点的高度才是viewpager的高度，再减少30dp是让表情整体的顶部和底部有个外间距
         mPerWidth = mEmotionLayoutWidth * 1f / EmotionLayout.STICKER_COLUMNS;
         mPerHeight = mEmotionLayoutHeight * 1f / EmotionLayout.STICKER_ROWS;
 
@@ -45,19 +46,18 @@ public class StickerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        int count = mCategory.getStickers().size() - startIndex;
-        count = Math.min(count, EmotionLayout.STICKER_PER_PAGE);
+        int count = mDataList.size();
         return count;
     }
 
     @Override
     public Object getItem(int position) {
-        return mCategory.getStickers().get(startIndex + position);
+        return mDataList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return startIndex + position;
+        return position;
     }
 
     @Override
@@ -67,8 +67,8 @@ public class StickerAdapter extends BaseAdapter {
             RelativeLayout rl = new RelativeLayout(mContext);
             rl.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, (int) mPerHeight));
 
-            ImageView imageView = new ImageView(mContext);
-            imageView.setImageResource(R.drawable.ic_tab_emoji);
+            BaseImageView imageView = new BaseImageView(mContext);
+//            imageView.setImageResource(R.drawable.ic_tab_emoji);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.width = (int) mIvSize;
             params.height = (int) mIvSize;
@@ -86,23 +86,13 @@ public class StickerAdapter extends BaseAdapter {
             viewHolder = (StickerViewHolder) convertView.getTag();
         }
 
-        int index = startIndex + position;
-        if (index >= mCategory.getStickers().size()) {
-            return convertView;
-        }
-
-        StickerItem sticker = mCategory.getStickers().get(index);
-        if (sticker == null) {
-            return convertView;
-        }
-
-        String stickerBitmapUri = StickerManager.getInstance().getStickerBitmapUri(sticker.getCategory(), sticker.getName());
-        LQREmotionKit.getImageLoader().displayImage(mContext, stickerBitmapUri, viewHolder.mImageView);
-
+        StickerItem sticker = mDataList.get(position);
+        String stickerBitmapPath = StickerManager.getInstance().getStickerBitmapPath(sticker.getCategory(), sticker.getName());
+        FrescoWorker.loadImage(viewHolder.mImageView,ImageFactory.newLocalImage(stickerBitmapPath).build());
         return convertView;
     }
 
-    class StickerViewHolder {
-        public ImageView mImageView;
+    static class StickerViewHolder {
+        public BaseImageView mImageView;
     }
 }

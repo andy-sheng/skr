@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.base.R;
+import com.common.utils.U;
 
 public class EmojiAdapter extends BaseAdapter {
 
@@ -26,7 +27,7 @@ public class EmojiAdapter extends BaseAdapter {
         mContext = context;
         mStartIndex = startIndex;
         mEmotionLayoutWidth = emotionLayoutWidth;
-        mEmotionLayoutHeight = emotionLayoutHeight - LQREmotionKit.dip2px(35 + 26 + 50);//减去底部的tab高度、小圆点的高度才是viewpager的高度，再减少30dp是让表情整体的顶部和底部有个外间距
+        mEmotionLayoutHeight = emotionLayoutHeight - U.getDisplayUtils().dip2px(35 + 26 + 50);//减去底部的tab高度、小圆点的高度才是viewpager的高度，再减少30dp是让表情整体的顶部和底部有个外间距
 
         mPerWidth = mEmotionLayoutWidth * 1f / EmotionLayout.EMOJI_COLUMNS;
         mPerHeight = mEmotionLayoutHeight * 1f / EmotionLayout.EMOJI_ROWS;

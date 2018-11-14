@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.base.R;
+import com.common.utils.U;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
     private int mMeasuredWidth;
     private int mMeasuredHeight;
 
-    private int mTabPosi = 0;
+    //    private int mTabPosi = 0;
     private Context mContext;
     private ViewPager mVpEmotioin;
     private LinearLayout mLlPageNumber;
@@ -45,6 +46,7 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
 
     private int mTabCount;
     private SparseArray<View> mTabViewArray = new SparseArray<>();
+    private EmotionViewPagerAdapter mEmotionViewPagerAdapter;
     private EmotionTab mSettingTab;
     private IEmotionSelectedListener mEmotionSelectedListener;
     private IEmotionExtClickListener mEmotionExtClickListener;
@@ -64,48 +66,6 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         mContext = context;
     }
 
-    public void setEmotionSelectedListener(IEmotionSelectedListener emotionSelectedListener) {
-        if (emotionSelectedListener != null) {
-            this.mEmotionSelectedListener = emotionSelectedListener;
-        } else {
-            Log.i("CSDN_LQR", "IEmotionSelectedListener is null");
-        }
-    }
-
-
-    public void setEmotionExtClickListener(IEmotionExtClickListener emotionExtClickListener) {
-        if (emotionExtClickListener != null) {
-            this.mEmotionExtClickListener = emotionExtClickListener;
-        } else {
-            Log.i("CSDN_LQR", "IEmotionSettingTabClickListener is null");
-        }
-    }
-
-
-    /**
-     * 设置表情添加按钮的显隐
-     *
-     * @param visiable
-     */
-    public void setEmotionAddVisiable(boolean visiable) {
-        mEmotionAddVisiable = visiable;
-        if (mRlEmotionAdd != null) {
-            mRlEmotionAdd.setVisibility(mEmotionAddVisiable ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    /**
-     * 设置表情设置按钮的显隐
-     *
-     * @param visiable
-     */
-    public void setEmotionSettingVisiable(boolean visiable) {
-        mEmotionSettingVisiable = visiable;
-        if (mSettingTab != null) {
-            mSettingTab.setVisibility(mEmotionSettingVisiable ? View.VISIBLE : View.GONE);
-        }
-    }
-
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -113,51 +73,9 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         initListener();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mMeasuredWidth = measureWidth(widthMeasureSpec);
-        mMeasuredHeight = measureHeight(heightMeasureSpec);
-        setMeasuredDimension(mMeasuredWidth, mMeasuredHeight);
-    }
-
-
-    private int measureWidth(int measureSpec) {
-        int result = 0;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = LQREmotionKit.dip2px(200);
-            if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-        return result;
-    }
-
-    private int measureHeight(int measureSpec) {
-        int result = 0;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = LQREmotionKit.dip2px(200);
-            if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-        return result;
-    }
-
     private void init() {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.emotion_layout, this);
-//        View.inflate(mContext, R.layout.emotion_layout, this);
 
         mVpEmotioin = (ViewPager) findViewById(R.id.vpEmotioin);
         mLlPageNumber = (LinearLayout) findViewById(R.id.llPageNumber);
@@ -166,9 +84,9 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         setEmotionAddVisiable(mEmotionAddVisiable);
 
         initTabs();
-
     }
 
+    //表情面板底部类别栏
     private void initTabs() {
         //默认添加一个表情tab
         EmotionTab emojiTab = new EmotionTab(mContext, R.drawable.ic_tab_emoji);
@@ -196,7 +114,10 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         mTabViewArray.put(mTabViewArray.size(), mSettingTab);
         setEmotionSettingVisiable(mEmotionSettingVisiable);
 
-        selectTab(0);
+        mEmotionViewPagerAdapter = new EmotionViewPagerAdapter(mMeasuredWidth, mMeasuredHeight, mEmotionSelectedListener);
+        mVpEmotioin.setAdapter(mEmotionViewPagerAdapter);
+        mEmotionViewPagerAdapter.attachEditText(mMessageEditText);
+        setSelectTab(0);
     }
 
     private void initListener() {
@@ -245,46 +166,128 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         });
     }
 
-    private void setCurPageCommon(int position) {
-        if (mTabPosi == 0)
-            setCurPage(position, (int) Math.ceil(EmojiManager.getDisplayCount() / (float) EmotionLayout.EMOJI_PER_PAGE));
-        else {
-            StickerCategory category = StickerManager.getInstance().getStickerCategories().get(mTabPosi - 1);
-            setCurPage(position, (int) Math.ceil(category.getStickers().size() / (float) EmotionLayout.STICKER_PER_PAGE));
+    public void setEmotionSelectedListener(IEmotionSelectedListener emotionSelectedListener) {
+        if (emotionSelectedListener != null) {
+            this.mEmotionSelectedListener = emotionSelectedListener;
+        } else {
+            Log.i("CSDN_LQR", "IEmotionSelectedListener is null");
+        }
+    }
+
+
+    public void setEmotionExtClickListener(IEmotionExtClickListener emotionExtClickListener) {
+        if (emotionExtClickListener != null) {
+            this.mEmotionExtClickListener = emotionExtClickListener;
+        } else {
+            Log.i("CSDN_LQR", "IEmotionSettingTabClickListener is null");
+        }
+    }
+
+
+    /**
+     * 设置表情添加按钮的显隐
+     *
+     * @param visiable
+     */
+    public void setEmotionAddVisiable(boolean visiable) {
+        mEmotionAddVisiable = visiable;
+        if (mRlEmotionAdd != null) {
+            mRlEmotionAdd.setVisibility(mEmotionAddVisiable ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    /**
+     * 设置表情设置按钮的显隐
+     *
+     * @param visiable
+     */
+    public void setEmotionSettingVisiable(boolean visiable) {
+        mEmotionSettingVisiable = visiable;
+        if (mSettingTab != null) {
+            mSettingTab.setVisibility(mEmotionSettingVisiable ? View.VISIBLE : View.GONE);
         }
     }
 
 
     @Override
-    public void onClick(View v) {
-        mTabPosi = (int) v.getTag();
-        selectTab(mTabPosi);
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mMeasuredWidth = measureWidth(widthMeasureSpec);
+        mMeasuredHeight = measureHeight(heightMeasureSpec);
+        setMeasuredDimension(mMeasuredWidth, mMeasuredHeight);
     }
 
-    private void selectTab(int tabPosi) {
-        if (tabPosi == mTabViewArray.size() - 1)
-            return;
 
+    private int measureWidth(int measureSpec) {
+        int result = 0;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else {
+            result = U.getDisplayUtils().dip2px(200);
+            if (specMode == MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize);
+            }
+        }
+        return result;
+    }
+
+    private int measureHeight(int measureSpec) {
+        int result = 0;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else {
+            result = U.getDisplayUtils().dip2px(200);
+            if (specMode == MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize);
+            }
+        }
+        return result;
+    }
+
+    private void setCurPageCommon(int vpPostion) {
+        if (vpPostion < mEmotionViewPagerAdapter.getEmojiPageCount()) {
+            setSelectTab(0);
+            setCurPage(vpPostion, mEmotionViewPagerAdapter.getEmojiPageCount());
+        } else {
+            EmotionViewPagerAdapter.IndexInfo indexInfo = mEmotionViewPagerAdapter.getIndexInfoByPostion(vpPostion);
+            if(indexInfo!=null) {
+                setSelectTab(indexInfo.mTabPostion);
+                setCurPage(indexInfo.mIndexInGroup, indexInfo.mStickerGroup.mStickerItemPageList.size());
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int tabPosi = (int) v.getTag();
+        //显示表情内容
+        mLlPageNumber.removeAllViews();
+        int vpPostion = mEmotionViewPagerAdapter.findFirstVpPostionByTabPostion(tabPosi);
+        mVpEmotioin.setCurrentItem(vpPostion,false);
+
+        setCurPageCommon(vpPostion);
+    }
+
+    private void setSelectTab(int tabPosi) {
         for (int i = 0; i < mTabCount; i++) {
             View tab = mTabViewArray.get(i);
             tab.setBackgroundResource(R.drawable.shape_tab_normal);
         }
         mTabViewArray.get(tabPosi).setBackgroundResource(R.drawable.shape_tab_press);
-
-        //显示表情内容
-        fillVpEmotioin(tabPosi);
     }
 
-    private void fillVpEmotioin(int tabPosi) {
-        EmotionViewPagerAdapter adapter = new EmotionViewPagerAdapter(mMeasuredWidth, mMeasuredHeight, tabPosi, mEmotionSelectedListener);
-        mVpEmotioin.setAdapter(adapter);
-        mLlPageNumber.removeAllViews();
-        setCurPageCommon(0);
-        if (tabPosi == 0) {
-            adapter.attachEditText(mMessageEditText);
-        }
-    }
-
+    /**
+     * 选表情时的页面索引小点点
+     *
+     * @param page      当前在哪个点
+     * @param pageCount 一共几个点
+     */
     private void setCurPage(int page, int pageCount) {
         int hasCount = mLlPageNumber.getChildCount();
         int forMax = Math.max(hasCount, pageCount);
@@ -304,14 +307,13 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
                 } else {
                     ivCur = new ImageView(mContext);
                     ivCur.setBackgroundResource(R.drawable.selector_view_pager_indicator);
-                    LayoutParams params = new LayoutParams(LQREmotionKit.dip2px(8), LQREmotionKit.dip2px(8));
+                    LayoutParams params = new LayoutParams(U.getDisplayUtils().dip2px(8), U.getDisplayUtils().dip2px(8));
                     ivCur.setLayoutParams(params);
-                    params.leftMargin = LQREmotionKit.dip2px(3);
-                    params.rightMargin = LQREmotionKit.dip2px(3);
+                    params.leftMargin = U.getDisplayUtils().dip2px(3);
+                    params.rightMargin = U.getDisplayUtils().dip2px(3);
                     mLlPageNumber.addView(ivCur);
                 }
             }
-
             ivCur.setId(i);
             ivCur.setSelected(i == page);
             ivCur.setVisibility(View.VISIBLE);

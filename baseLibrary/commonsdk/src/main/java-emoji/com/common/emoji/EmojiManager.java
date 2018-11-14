@@ -12,6 +12,8 @@ import android.util.DisplayMetrics;
 import android.util.LruCache;
 import android.util.Xml;
 
+import com.common.utils.U;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -40,9 +42,8 @@ public class EmojiManager {
     private static LruCache<String, Bitmap> mDrawableCache;
 
     static {
-        Context context = LQREmotionKit.getContext();
 
-        load(context, EMOT_DIR + "emoji.xml");
+        load(U.app(), EMOT_DIR + "emoji.xml");
 
         mPattern = makePattern();
 
