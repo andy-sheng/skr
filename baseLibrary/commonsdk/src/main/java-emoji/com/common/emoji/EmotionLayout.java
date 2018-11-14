@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.base.R;
+import com.common.emoji.sticker.StickerCategory;
+import com.common.emoji.sticker.StickerManager;
 import com.common.utils.U;
 
 import java.util.List;

@@ -53,7 +53,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
          * 3. 兼容activity一开始没setContentView，后面又addFragment这种情况
          */
         // 拿到页面根布局
-        FrameLayout content = (FrameLayout) activity.findViewById(android.R.id.content);
+        FrameLayout content = activity.findViewById(android.R.id.content);
         // 拿到activity页面的 rootView
         mChildOfContent = content.getChildAt(0);
         /**
@@ -63,6 +63,9 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
         frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
     }
 
+    /**
+     * 以下数据，以米8手机，虚拟按键开启为例子，让情况尽可能复杂
+     */
     private void possiblyResizeChildOfContent() {
         MyLog.d(TAG, "possiblyResizeChildOfContent mFrom:" + mFrom);
         Activity curActivity = U.getActivityUtils().getCurrentActivity();
@@ -73,19 +76,39 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
              */
             return;
         }
+
         /**
-         * 键盘弹出时
-         * usableHeightNow = 1117-55 = 1062
+         * 米8手机为例，弹出键盘时
+         * r.left=0
+         * r.right=1080
+         * r.top=110
+         * r.bottom=1280
+         *
+         * 未弹出键盘时
+         *  r.top=110
+         *  r.bottom=2118
          */
-        int usableHeightNow = computeUsableHeight();
-        MyLog.d(TAG, "possiblyResizeChildOfContent usableHeightNow:" + usableHeightNow);
+        Rect r = new Rect();
+        mChildOfContent.getWindowVisibleDisplayFrame(r);
+
+        int usableHeightNow = r.bottom;
+        MyLog.d(TAG, "possiblyResizeChildOfContent r.top:" + r.top + " r.bottom:" + r.bottom
+                + " usableHeightNow:" + usableHeightNow
+                + " screenHeight:" + U.getDisplayUtils().getScreenHeight()
+                + " phoneHeight:" + U.getDisplayUtils().getPhoneHeight()
+        );
         if (usableHeightNow != usableHeightPrevious) {
             /**
-             * usableHeightSansKeyboard 这里为 1920 手机高度
+             * usableHeightSansKeyboard 这里为 2248 手机高度。
+             * getSoftButtonsBarHeight = 130。 这里会算上虚拟按键的高度
              */
-            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
+            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight() - U.getKeyBoardUtils().getSoftButtonsBarHeight();
             /**
-             * heightDifference = 1920-1062 = 858 可以认为是键盘高度
+             * heightDifference = 2188-1280 = 908 可以认为是键盘高度
+             * heightDifference 并不一定就是软键盘的高度，在有虚拟按键的手机上，还加上了虚拟按键的高度
+             * 想拿键盘高度，参考{@link KeyBoardUtils}
+             *
+             * 已经减去了虚拟按键的高度，已经就是键盘高度了
              */
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
             /**
@@ -123,28 +146,6 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
             mChildOfContent.requestLayout();
             usableHeightPrevious = usableHeightNow;
         }
-    }
-
-    /**
-     * 返回我们视图view的高度
-     *
-     * @return
-     */
-    private int computeUsableHeight() {
-        /**
-         * 1080x1920手机，弹出键盘时
-         * r.left=0
-         * r.right=1080
-         * r.top=55
-         * r.bottom=1117
-         *
-         * 未弹出键盘时
-         *  r.top=55
-         *  r.bottom=1920
-         */
-        Rect r = new Rect();
-        mChildOfContent.getWindowVisibleDisplayFrame(r);
-        return (r.bottom - r.top);
     }
 
     public void destroy() {

@@ -1,6 +1,8 @@
-package com.common.emoji;
+package com.common.emoji.sticker;
 
 import android.support.annotation.Nullable;
+
+import com.common.emoji.LQREmotionKit;
 
 import java.io.File;
 import java.util.ArrayList;

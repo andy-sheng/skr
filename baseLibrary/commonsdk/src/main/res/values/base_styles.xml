@@ -21,6 +21,7 @@
         adjustNoting: 软键盘弹出时，主窗口不会做出任何反应。
         -->
         <item name="android:windowSoftInputMode">adjustResize</item>
+
     </style>
 
     <!--支持右滑推出的activity的设置-->

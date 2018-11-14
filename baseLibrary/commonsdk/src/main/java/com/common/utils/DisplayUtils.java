@@ -2,8 +2,11 @@ package com.common.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Pair;
+import android.view.Display;
+import android.view.WindowManager;
 
 
 /**
@@ -12,6 +15,8 @@ import android.util.Pair;
 public class DisplayUtils {
     private DisplayMetrics sMetrics = null;
 
+    private DisplayMetrics sRealMetrics = null;
+
     DisplayUtils() {
     }
 
@@ -19,6 +24,16 @@ public class DisplayUtils {
         if (sMetrics == null) {
             if (U.app() != null && U.app().getResources() != null) {
                 sMetrics = U.app().getResources().getDisplayMetrics();
+            }
+        }
+        if(sRealMetrics==null){
+            WindowManager windowManager = (WindowManager) U.app().getSystemService(Context.WINDOW_SERVICE);
+            Display display = windowManager.getDefaultDisplay();
+            sRealMetrics = new DisplayMetrics();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                display.getRealMetrics(sRealMetrics);
+            } else {
+                display.getMetrics(sRealMetrics);
             }
         }
     }
@@ -71,24 +86,30 @@ public class DisplayUtils {
         return sMetrics.widthPixels;
     }
 
+    /**
+     * 不会计算虚拟按键的高度
+     *
+     * @return
+     */
     public int getScreenHeight() {
         initialize();
 //        MyLog.v("PicViewFragment" + " getScreenHeight sMetrics == " + sMetrics.hashCode());
         return sMetrics.heightPixels;
     }
 
+
+    /**
+     * 会算上虚拟按键的高度
+     * @return
+     */
     public int getPhoneWidth() {
-//        MyLog.v("PicViewFragment" + " getScreenWidth sMetrics == " + sMetrics.hashCode());
-        int width = getScreenWidth();
-        int height = getScreenHeight();
-        return width < height ? width : height;
+        initialize();
+        return sRealMetrics.widthPixels;
     }
 
     public int getPhoneHeight() {
-//        MyLog.v("PicViewFragment" + " getScreenHeight sMetrics == " + sMetrics.hashCode());
-        int width = getScreenWidth();
-        int height = getScreenHeight();
-        return width > height ? width : height;
+        initialize();
+        return sRealMetrics.heightPixels;
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.common.emoji;
+package com.common.emoji.sticker;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 
+import com.common.emoji.EmotionLayout;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;

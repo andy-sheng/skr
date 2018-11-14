@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.base.R;
+import com.common.emoji.EmojiManager;
+import com.common.emoji.EmotionLayout;
 import com.common.utils.U;
 
 public class EmojiAdapter extends BaseAdapter {

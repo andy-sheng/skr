@@ -1,5 +1,8 @@
-package com.common.emoji;
+package com.common.emoji.sticker;
 
+
+import com.common.emoji.EmotionLayout;
+import com.common.emoji.LQREmotionKit;
 
 import java.io.File;
 import java.util.ArrayList;

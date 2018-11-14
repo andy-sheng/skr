@@ -1,4 +1,4 @@
-package com.common.emoji;
+package com.common.emoji.sticker;
 
 
 public class StickerItem {

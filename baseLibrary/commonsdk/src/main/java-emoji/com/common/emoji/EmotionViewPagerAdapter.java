@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,6 +13,10 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 
+import com.common.emoji.sticker.StickerAdapter;
+import com.common.emoji.sticker.StickerCategory;
+import com.common.emoji.sticker.StickerItem;
+import com.common.emoji.sticker.StickerManager;
 import com.common.utils.U;
 
 import java.util.ArrayList;

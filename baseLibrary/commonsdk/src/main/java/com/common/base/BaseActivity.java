@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.common.base.delegate.IActivity;
 import com.common.cache.Cache;
@@ -124,6 +125,19 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        /**
+         * 解决虚拟按键遮挡布局问题
+         * 只会让虚拟按键变透明，布局没有动
+         */
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        } else {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
         /**
          * 注意，这个方法的作用是可以接管 View 的实例化过程。在这里我可以对 View 或者 其属性都可以做替换。
          * 可能的用途
