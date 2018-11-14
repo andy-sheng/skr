@@ -70,18 +70,23 @@ public class KeyBoardUtils {
          * 这是因为高度是包括了虚拟按键栏的(例如华为系列)，所以在API Level高于20时，
          * 我们需要减去底部虚拟按键栏的高度（如果有的话）
          */
-        if (Build.VERSION.SDK_INT >= 20) {
+        if (Build.VERSION.SDK_INT >= 20 && hasNavigationBar()) {
             // When SDK Level >= 20 (Android L), the softInputHeight will contain the height of softButtonsBar (if has)
             softInputHeight = softInputHeight - getSoftButtonsBarHeight();
         }
         if (softInputHeight < 0) {
             Log.w("LQR", "EmotionKeyboard--Warning: value of softInputHeight is below zero!");
+            return 0;
         }
         //存一份到本地
         if (softInputHeight > 0) {
             U.getKeyBoardUtils().setKeyBoardHeight(softInputHeight);
         }
         return softInputHeight;
+    }
+
+    public boolean hasNavigationBar() {
+        return U.getDeviceUtils().hasNavigationBar();
     }
 
     /**

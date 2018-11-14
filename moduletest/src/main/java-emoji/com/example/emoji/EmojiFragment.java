@@ -72,9 +72,9 @@ public class EmojiFragment extends BaseFragment {
          * 点击小表情自动添加到该 mEtContent 中
          */
         mElEmotion.attachEditText(mEtContent);
-        mElEmotion.setEmotionAddVisiable(false);
-        mElEmotion.setEmotionSettingVisiable(false);
-        mElEmotion.setShowSticker(false);
+        mElEmotion.setEmotionAddVisiable(true);
+        mElEmotion.setEmotionSettingVisiable(true);
+        mElEmotion.setShowSticker(true);
 
         mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
             @Override

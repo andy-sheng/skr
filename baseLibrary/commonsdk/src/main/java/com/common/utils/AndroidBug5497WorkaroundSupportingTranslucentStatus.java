@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference;
 
 /**
  * 这个类我一定好好改改，flag
- *
+ * <p>
  * 完美解决键盘 虚拟按键 沉浸式 等一系列涉及到布局的问题
  */
 public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
@@ -104,7 +104,10 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
              * usableHeightSansKeyboard 这里为 2248 手机高度。
              * getSoftButtonsBarHeight = 130。 这里会算上虚拟按键的高度
              */
-            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight() - U.getKeyBoardUtils().getSoftButtonsBarHeight();
+            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
+            if (U.getKeyBoardUtils().hasNavigationBar()) {
+                usableHeightSansKeyboard -= U.getKeyBoardUtils().getSoftButtonsBarHeight();
+            }
             /**
              * heightDifference = 2188-1280 = 908 可以认为是键盘高度
              * heightDifference 并不一定就是软键盘的高度，在有虚拟按键的手机上，还加上了虚拟按键的高度

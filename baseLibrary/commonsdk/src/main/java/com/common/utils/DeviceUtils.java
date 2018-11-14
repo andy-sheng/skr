@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
@@ -15,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -243,6 +245,49 @@ public class DeviceUtils {
             deviceID = sha1(imei + androidId + serial);
         }
         return deviceID;
+    }
+
+
+    private int mDeviceHasNavigationBar = -1;
+
+    /**
+     * 判断是否有虚拟按键
+     * 小米手机跟别的手机不一样，古怪一些
+     *
+     * @return
+     */
+    public boolean hasNavigationBar() {
+        if (mDeviceHasNavigationBar == -1) {
+            boolean hasNavigationBar = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                    && U.getDeviceUtils().isMiui()) {
+                hasNavigationBar = Settings.Global.getInt(U.app().getContentResolver(), "force_fsg_nav_bar", 0) == 0;
+            } else {
+                Resources rs = U.app().getResources();
+                int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+                if (id > 0) {
+                    hasNavigationBar = rs.getBoolean(id);
+                }
+                try {
+                    Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+                    Method m = systemPropertiesClass.getMethod("get", String.class);
+                    String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+                    if ("1".equals(navBarOverride)) {
+                        hasNavigationBar = false;
+                    } else if ("0".equals(navBarOverride)) {
+                        hasNavigationBar = true;
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+            if (hasNavigationBar) {
+                mDeviceHasNavigationBar = 1;
+            } else {
+                mDeviceHasNavigationBar = 0;
+            }
+        }
+        return mDeviceHasNavigationBar == 1;
     }
 }
 
