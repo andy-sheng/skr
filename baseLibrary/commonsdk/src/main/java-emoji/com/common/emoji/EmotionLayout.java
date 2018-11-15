@@ -296,9 +296,14 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         if (mBottomContainer.getVisibility() == VISIBLE) {
             for (int i = 0; i < mTabCount; i++) {
                 View tab = mTabViewArray.get(i);
-                tab.setBackgroundResource(R.drawable.shape_tab_normal);
+                if (tab != null) {
+                    tab.setBackgroundResource(R.drawable.shape_tab_normal);
+                }
             }
-            mTabViewArray.get(tabPosi).setBackgroundResource(R.drawable.shape_tab_press);
+            View v = mTabViewArray.get(tabPosi);
+            if (v != null) {
+                v.setBackgroundResource(R.drawable.shape_tab_press);
+            }
         }
     }
 
