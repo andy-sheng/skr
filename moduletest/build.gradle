@@ -77,9 +77,10 @@ android {
                 java.srcDirs += 'src/main/java-replugin'
             }
             // 支持上拉加载
-            java.srcDirs += 'src/main/java-paginate'
-            res.srcDirs += 'src/main/res-paginate'
-
+//            java.srcDirs += 'src/main/java-paginate'
+//            res.srcDirs += 'src/main/res-paginate'
+            java.srcDirs += 'src/main/java-smartrefresh'
+            res.srcDirs += 'src/main/res-smartrefresh'
             // 抽屉效果
             java.srcDirs += 'src/main/java-drawer'
             res.srcDirs += 'src/main/res-drawer'

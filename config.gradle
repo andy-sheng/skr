@@ -79,7 +79,7 @@ ext {
             // 加载大gif用，防止gif卡顿
             "android-gif-drawable"     : "pl.droidsonroids.gif:android-gif-drawable:1.2.15",
             // 加载超大图用的
-            "scale-image-view"         :"com.davemorrissey.labs:subsampling-scale-image-view:3.10.0",
+            "scale-image-view"         : "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0",
             //view
             "autolayout"               : "com.zhy:autolayout:1.4.5",
             "butterknife"              : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
@@ -107,6 +107,7 @@ ext {
             /**
              * 支持下拉加载的RecyclerView
              */
+            "SmartRefreshLayout"       : "com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14",
             "paginate"                 : "com.github.markomilos:paginate:0.5.1",
             /**
              * 适用于 recyclerview 的丰富的动画 在 remove add等 时会触发
@@ -120,7 +121,7 @@ ext {
             "exoplayer-hls"            : "com.google.android.exoplayer:exoplayer-hls:r2.4.1",
 
             //拼音处理TinyPinyin核心包，约80KB
-            "tinypinyin": "com.github.promeg:tinypinyin:2.0.3" ,
+            "tinypinyin"               : "com.github.promeg:tinypinyin:2.0.3",
 
             //rx1
             "rxandroid"                : "io.reactivex:rxandroid:1.2.1",

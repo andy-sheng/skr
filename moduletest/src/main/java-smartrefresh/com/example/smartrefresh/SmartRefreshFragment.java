@@ -12,12 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.example.smartrefresh.adapter.RecyclerPersonAdapter;
 import com.example.smartrefresh.data.Person;
-import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemCreator;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
@@ -27,22 +26,20 @@ import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.LandingAnimator;
 
-public class PaginateFragment extends BaseFragment {
+public class SmartRefreshFragment extends BaseFragment {
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerPersonAdapter mRecyclerPersonAdapter;
 
-    private Paginate mPaginate;
-
     Handler mUiHanlder = new Handler();
 
     int mIndex = 0;
-
+    RefreshLayout mRefreshLayout;
 
     @Override
     public int initView() {
-        return R.layout.test_paginate_fragment_layout;
+        return R.layout.smart_refresh_fragment_layout;
     }
 
     @Override
@@ -58,8 +55,42 @@ public class PaginateFragment extends BaseFragment {
 
         // 自定义的 rv 动画
         mRecyclerView.setItemAnimator(new LandingAnimator());
-        setupPanigate();
 
+        mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
+        /**
+         * 具体的api去项目官网上看，很丰富
+         * {@link https://github.com/scwang90/SmartRefreshLayout}
+         */
+        mRefreshLayout.setEnableLoadMore(true);
+        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
+        mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<Person> personList = new ArrayList<>();
+                        personList.addAll(genData(0, 20));
+                        mRecyclerPersonAdapter.insertListLast(personList);
+                        if (mIndex > 80) {
+                            mRefreshLayout.finishLoadMoreWithNoMoreData();
+                        } else {
+                            mRefreshLayout.finishLoadMore();
+                        }
+                    }
+                }, 1500);
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.finishRefresh();
+                    }
+                }, 1500);
+            }
+        });
 
         RecyclerView opListView = mRootView.findViewById(R.id.op_list_view);
         List<H> opDataList = new ArrayList<>();
@@ -70,7 +101,7 @@ public class PaginateFragment extends BaseFragment {
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 TextView tv = new TextView(parent.getContext());
                 tv.setGravity(Gravity.CENTER);
-                tv.setPadding(10,10,10,10);
+                tv.setPadding(10, 10, 10, 10);
                 TestViewHolder testHolder = new TestViewHolder(tv);
                 return testHolder;
             }
@@ -96,7 +127,7 @@ public class PaginateFragment extends BaseFragment {
                 l.addAll(mRecyclerPersonAdapter.getDataList());
 //                l.remove(0);
                 Person a = l.remove(0);
-                l.add(3,a);
+                l.add(3, a);
                 mRecyclerPersonAdapter.setDataList(l);
             }
         }));
@@ -117,7 +148,7 @@ public class PaginateFragment extends BaseFragment {
             public void run() {
                 List<Person> l = new ArrayList<>();
                 l.addAll(mRecyclerPersonAdapter.getDataList());
-                l.addAll(1,genData(0,2));
+                l.addAll(1, genData(0, 2));
                 mRecyclerPersonAdapter.setDataList(l);
             }
         }));
@@ -139,66 +170,6 @@ public class PaginateFragment extends BaseFragment {
             list.add(new Person(i, "fistName" + mIndex, mIndex));
         }
         return list;
-    }
-
-    private void setupPanigate() {
-        if (mPaginate != null) {
-            mPaginate.unbind();
-        }
-
-        mPaginate = Paginate.with(mRecyclerView, new Paginate.Callbacks() {
-            boolean loading = false;
-
-            @Override
-            public void onLoadMore() {
-                loading = true;
-                mUiHanlder.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        List<Person> personList = new ArrayList<>();
-                        personList.addAll(genData(0, 20));
-                        mRecyclerPersonAdapter.insertListLast(personList);
-                        loading = false;
-                    }
-                }, 2000);
-            }
-
-            @Override
-            public boolean isLoading() {
-                return loading;
-            }
-
-            @Override
-            public boolean hasLoadedAllItems() {
-                return mIndex >= 80;
-            }
-        })
-                .setLoadingTriggerThreshold(2)
-                .addLoadingListItem(true)
-                .setLoadingListItemCreator(new LoadingListItemCreator() {
-                    @Override
-                    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                        TextView textView = new TextView(parent.getContext());
-                        return new VH(textView);
-                    }
-
-                    @Override
-                    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-                        MyLog.d(TAG, "onBindViewHolder" + " holder=" + holder + " position=" + position);
-                        if (holder instanceof VH) {
-                            VH vh = (VH) holder;
-                            ((TextView) vh.itemView).setText("加载中");
-                        }
-                    }
-                })
-//                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-//                    @Override
-//                    public int getSpanSize() {
-//                        return GRID_SPAN;
-//                    }
-//                })
-                .build();
-
     }
 
     @Override

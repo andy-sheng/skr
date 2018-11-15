@@ -53,9 +53,9 @@ android {
             // commontitlebar
             res.srcDirs += 'src/main/res-titlebar'
 
-            // 直接引入支持下拉加载 recyclerView
-            java.srcDirs += 'src/main/java-paginate'
-            res.srcDirs += 'src/main/res-paginate'
+            // 直接引入支持下拉加载 recyclerView,放弃 paginate，使用SmartRefreshLayout
+//            java.srcDirs += 'src/main/java-paginate'
+//            res.srcDirs += 'src/main/res-paginate'
 
             // 直接引入支持下拉加载 recyclerView
             java.srcDirs += 'src/main/java-imagepicker'
@@ -160,7 +160,8 @@ dependencies {
     // 封装了一个可以上拉刷新，下拉加载的recyclerview库。后续把这些库以源码的方式一一引入，
     // 或者以一个单独module的方式演示这些库的使用。
 //    implementation rootProject.ext.dependencies["paginate"]
-
+    // 强大上下拉刷新库
+    api rootProject.ext.dependencies["SmartRefreshLayout"]
 //    debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库

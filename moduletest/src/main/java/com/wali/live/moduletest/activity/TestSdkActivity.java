@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,6 @@ import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
-import com.baidu.location.LocationClient;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.RouterConstants;
@@ -40,9 +36,8 @@ import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
-import com.example.emoji.EmojiActivity;
 import com.example.emoji.EmojiFragment;
-import com.example.paginate.PaginateFragment;
+import com.example.smartrefresh.SmartRefreshFragment;
 import com.example.qrcode.QrcodeTestFragment;
 import com.example.wxcontact.PickContactFragment;
 import com.imagepicker.ImagePicker;
@@ -60,7 +55,6 @@ import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
-import com.wali.live.moduletest.fragment.DeviceInfoFragment;
 import com.wali.live.moduletest.fragment.ShowTextViewFragment;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
@@ -398,11 +392,22 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("上拉加载,下拉刷新的RecyclerView Panigate库调试 ", new Runnable() {
+//        mDataList.add(new H("上拉加载,下拉刷新的RecyclerView Panigate库调试 ", new Runnable() {
+//            @Override
+//            public void run() {
+//                U.getFragmentUtils().addFragment(FragmentUtils
+//                        .newParamsBuilder(TestSdkActivity.this, PaginateFragment.class)
+//                        .setAddToBackStack(true)
+//                        .setHasAnimation(true)
+//                        .build());
+//            }
+//        }));
+
+        mDataList.add(new H("强大的SmartRefreshLayout", new Runnable() {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, PaginateFragment.class)
+                        .newParamsBuilder(TestSdkActivity.this, SmartRefreshFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
