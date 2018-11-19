@@ -79,12 +79,12 @@ public class EmojiFragment extends BaseFragment {
         mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
             @Override
             public void onEmotionAddClick(View view) {
-                U.getToastUtil().showToast("add");
+                U.getToastUtil().showShort("add");
             }
 
             @Override
             public void onEmotionSettingClick(View view) {
-                U.getToastUtil().showToast("setting");
+                U.getToastUtil().showShort("setting");
             }
         });
 
@@ -97,7 +97,7 @@ public class EmojiFragment extends BaseFragment {
             @Override
             public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
                 String stickerPath = stickerBitmapPath;
-                U.getToastUtil().showToast("stickerPath:" + stickerPath);
+                U.getToastUtil().showShort("stickerPath:" + stickerPath);
             }
         });
 
@@ -119,7 +119,7 @@ public class EmojiFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(KeyboardEvent event) {
         if (event.from.equals(getActivity().getClass().getName())) {
-            U.getToastUtil().showToast(event.toString());
+            U.getToastUtil().showShort(event.toString());
         }
     }
 }

@@ -83,6 +83,6 @@ public class SingleBannerView extends AbsSingleBannerView {
     }
 
     private void onClickAction() {
-        U.getToastUtil().showToast("action click");
+        U.getToastUtil().showShort("action click");
     }
 }

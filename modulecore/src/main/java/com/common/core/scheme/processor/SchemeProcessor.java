@@ -73,7 +73,7 @@ public class SchemeProcessor extends CommonProcessor {
                 processHostLivesdk(uri, activity);
                 break;
             case SchemeConstants.HOST_CONTEST:
-                U.getToastUtil().showToast("冲顶大会入口隐藏了");
+                U.getToastUtil().showShort("冲顶大会入口隐藏了");
                 break;
             default:
                 return false;
@@ -124,7 +124,7 @@ public class SchemeProcessor extends CommonProcessor {
         boolean isContest = uri.getBooleanQueryParameter(SchemeConstants.PARAM_IS_CONTEST, false);
         if (isContest) {
             //TODO-冲顶大会入口隐藏了
-            U.getToastUtil().showToast("冲顶大会入口隐藏了");
+            U.getToastUtil().showShort("冲顶大会入口隐藏了");
             return;
         }
 
@@ -302,6 +302,6 @@ public class SchemeProcessor extends CommonProcessor {
         }
         long zuid = SchemeUtils.getLong(uri, SchemeConstants.PARAM_ZUID, 0);
         //TODO-冲顶大会入口隐藏了
-        U.getToastUtil().showToast("冲顶大会入口隐藏了");
+        U.getToastUtil().showShort("冲顶大会入口隐藏了");
     }
 }

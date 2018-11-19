@@ -181,19 +181,19 @@ public class OpItemAdapter extends RecyclerView.Adapter {
                     public void onNext(Integer re) {
                         switch (re) {
                             case PluginManager.INSTALL_FAILED_NO_REQUESTEDPERMISSION:
-                                U.getToastUtil().showToast("安装失败，文件请求的权限太多");
+                                U.getToastUtil().showShort("安装失败，文件请求的权限太多");
                                 data.setStatus(PackageData.STATUS_UNINSTALL);
                                 break;
                             case INSTALL_FAILED_NOT_SUPPORT_ABI:
-                                U.getToastUtil().showToast("宿主不支持插件的abi环境，可能宿主运行时为64位，但插件只支持32位");
+                                U.getToastUtil().showShort("宿主不支持插件的abi环境，可能宿主运行时为64位，但插件只支持32位");
                                 data.setStatus(PackageData.STATUS_UNINSTALL);
                                 break;
                             case INSTALL_SUCCEEDED:
-                                U.getToastUtil().showToast("安装完成");
+                                U.getToastUtil().showShort("安装完成");
                                 data.setStatus(PackageData.STATUS_INSTALLED);
                                 break;
                             case -99:
-                                U.getToastUtil().showToast("binder异常");
+                                U.getToastUtil().showShort("binder异常");
                                 data.setStatus(PackageData.STATUS_UNINSTALL);
                                 break;
                         }

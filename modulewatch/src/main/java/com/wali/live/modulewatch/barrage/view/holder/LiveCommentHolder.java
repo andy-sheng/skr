@@ -78,7 +78,7 @@ public class LiveCommentHolder extends RecyclerView.ViewHolder {
         ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText(context.getString(R.string.copy_link), barrageText);
         cm.setPrimaryClip(clipData);
-        U.getToastUtil().showToast(R.string.copied_to_clipboard);
+        U.getToastUtil().showShort(R.string.copied_to_clipboard);
     }
 
     public void reset() {

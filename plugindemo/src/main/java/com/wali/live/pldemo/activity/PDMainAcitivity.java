@@ -77,7 +77,7 @@ public class PDMainAcitivity extends BaseActivity {
 
                 String channelName = U.getChannelUtils().getChannelNameFromBuildConfig();
                 int versionCode = U.getAppInfoUtils().getVersionCode();
-                U.getToastUtil().showToast(channelName + " " + versionCode + "\n"
+                U.getToastUtil().showShort(channelName + " " + versionCode + "\n"
                         + U.app().getPackageName() + "\n"
                         + PDMainAcitivity.this.getPackageName());
             }

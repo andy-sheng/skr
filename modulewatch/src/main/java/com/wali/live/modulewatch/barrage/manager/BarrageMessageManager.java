@@ -114,7 +114,7 @@ public class BarrageMessageManager implements MiLinkPacketDispatcher.PacketDataH
             RoomMessageResponse response = RoomMessageResponse.parseFrom(data.getData());
             if (response != null && (response.getRet() == MiLinkConstant.ERROR_CODE_SUCCESS || response.getRet() == MiLinkConstant.ERROR_CODE_BAN_SPEAKER)) {
             } else if (response != null && response.getRet() == MiLinkConstant.ERROR_CODE_MSG_TOO_LARGE) {
-                U.getToastUtil().showToast(U.app().getResources().getString(R.string.barrage_message_too_large));
+                U.getToastUtil().showShort(U.app().getResources().getString(R.string.barrage_message_too_large));
             }
             if (response != null) {
                 MyLog.w(TAG, "BarrageMsg recv:" + response.getCid() + " result:" + response.getRet());

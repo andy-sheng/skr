@@ -138,7 +138,7 @@ public class OpItemAdapter extends RecyclerView.Adapter {
     void tryInstall(PackageData data) {
         // 未安装
         if (!new File(data.getSdcardPath()).exists()) {
-            U.getToastUtil().showToast("文件不存在");
+            U.getToastUtil().showShort("文件不存在");
             return;
         }
         data.setStatus(PackageData.STATUS_INSTALLING);
@@ -168,9 +168,9 @@ public class OpItemAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onNext(PluginInfo re) {
                         if (re != null) {
-                            U.getToastUtil().showToast("安装完成");
+                            U.getToastUtil().showShort("安装完成");
                         } else {
-                            U.getToastUtil().showToast("安装失败");
+                            U.getToastUtil().showShort("安装失败");
                         }
                         notifyDataSetChanged();
                     }

@@ -44,7 +44,7 @@ public class WatchSdkAcitivity extends BaseComponentSdkActivity implements Watch
 
         Intent data = getIntent();
         if (data == null){
-            U.getToastUtil().showToast("missing Intent");
+            U.getToastUtil().showShort("missing Intent");
             MyLog.e(TAG, "Intent is null");
             return;
         }
@@ -57,7 +57,7 @@ public class WatchSdkAcitivity extends BaseComponentSdkActivity implements Watch
             mRoomInfo = mRoomInfoList.get(mRoomInfoPosition);
         }
         if (mRoomInfo == null) {
-            U.getToastUtil().showToast("missing RoomInfo");
+            U.getToastUtil().showShort("missing RoomInfo");
             MyLog.e(TAG, "mRoomInfo is null");
             return;
         }

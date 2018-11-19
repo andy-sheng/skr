@@ -103,7 +103,7 @@ public abstract class BaseLiveChannelView extends RelativeLayout implements ICha
     @Override
     public void onRefresh() {
         if (!U.getNetworkUtils().hasNetwork()) {
-            U.getToastUtil().showToast(R.string.channel_network_disable);
+            U.getToastUtil().showShort(R.string.channel_network_disable);
             if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
             }

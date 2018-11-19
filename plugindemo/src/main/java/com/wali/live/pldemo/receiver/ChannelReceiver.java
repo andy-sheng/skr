@@ -16,7 +16,7 @@ public class ChannelReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals(ACTION)){
             // 数据通道 receiver
-            U.getToastUtil().showToast(intent.getStringExtra(DATA_KEY));
+            U.getToastUtil().showShort(intent.getStringExtra(DATA_KEY));
         }
     }
 }

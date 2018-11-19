@@ -21,7 +21,7 @@ public class ChannelServiceImpl implements IChannelService {
     @Override
     public Object getDataFromChannel(int type, Object object) {
         MyLog.d(TAG,"getDataFromChannel" + " type=" + type + " object=" + object);
-        U.getToastUtil().showToast("我是 channle module 收到 数据 type:"+type+" object:"+object);
+        U.getToastUtil().showShort("我是 channle module 收到 数据 type:"+type+" object:"+object);
         if(type==1){
             return new ChannelShowModel();
         }

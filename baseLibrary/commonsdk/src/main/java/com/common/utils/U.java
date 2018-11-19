@@ -65,6 +65,10 @@ public class U {
 
     private static LbsUtils lbsUtils;
 
+    private static ZipUtils zipUtils;
+
+    private static UriUtils uriUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -263,6 +267,20 @@ public class U {
             lbsUtils = new LbsUtils();
         }
         return lbsUtils;
+    }
+
+    public static ZipUtils getZipUtils(){
+        if(zipUtils==null){
+            zipUtils = new ZipUtils();
+        }
+        return zipUtils;
+    }
+
+    public static UriUtils getUriUtils(){
+        if(uriUtils==null){
+            uriUtils = new UriUtils();
+        }
+        return uriUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;

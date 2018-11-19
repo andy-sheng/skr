@@ -72,11 +72,11 @@ public class WaliliveProcessor extends CommonProcessor {
                 break;
             case SchemeConstants.HOST_CONTEST:
                 //TODO-冲顶大会入口隐藏了
-                U.getToastUtil().showToast("冲顶大会入口隐藏了");
+                U.getToastUtil().showShort("冲顶大会入口隐藏了");
                 break;
             default:
                 String tips = String.format("无法识别的host:%s,下载小米直播体验完整功能", host);
-                U.getToastUtil().showToast(tips);
+                U.getToastUtil().showShort(tips);
                 return false;
         }
         if (finishActivity) {
@@ -134,7 +134,7 @@ public class WaliliveProcessor extends CommonProcessor {
         boolean isContest = uri.getBooleanQueryParameter(SchemeConstants.PARAM_IS_CONTEST, false);
         if (isContest) {
             //TODO-冲顶大会入口隐藏了
-            U.getToastUtil().showToast("冲顶大会入口隐藏了");
+            U.getToastUtil().showShort("冲顶大会入口隐藏了");
             return;
         }
 
@@ -143,7 +143,7 @@ public class WaliliveProcessor extends CommonProcessor {
             if (liveEndType == SchemeConstants.TYPE_PERSON_INFO) { //跳转个人资料页
                 //因為沒有个人资料页，所以这里做了拦截
                 String tips = String.format("更多精彩内容，请下载小米直播体验");
-                U.getToastUtil().showToast(tips);
+                U.getToastUtil().showShort(tips);
                 return;
             }
         }
@@ -171,7 +171,7 @@ public class WaliliveProcessor extends CommonProcessor {
             return;
         }
         long zuid = SchemeUtils.getLong(uri, SchemeConstants.PARAM_ZUID, 0);
-        U.getToastUtil().showToast("冲顶大会入口隐藏了");
+        U.getToastUtil().showShort("冲顶大会入口隐藏了");
     }
 
     private static void processRechargeDirectPay(Uri uri, @NonNull Activity activity) {

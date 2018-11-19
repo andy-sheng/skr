@@ -1,6 +1,7 @@
 package com.wali.live.moduletest.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
@@ -102,6 +105,7 @@ public class TestSdkActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        U.getToastUtil().setBgColor(getResources().getColor(R.color.blue));
         mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
         loadAccountInfo();
 
@@ -154,7 +158,7 @@ public class TestSdkActivity extends BaseActivity {
                             public void onNoUpdateAvailable() {
                                 //没有更新是回调此方法
                                 MyLog.d("pgyer", "there is no new version");
-                                U.getToastUtil().showToast("没有更新的了");
+                                U.getToastUtil().showShort("没有更新的了");
                             }
 
                             @Override
@@ -164,7 +168,7 @@ public class TestSdkActivity extends BaseActivity {
                                         + "new versionCode is " + appBean.getVersionCode());
 
                                 //调用以下方法，DownloadFileListener 才有效；如果完全使用自己的下载方法，不需要设置DownloadFileListener
-                                U.getToastUtil().showToast("有更新开始下载");
+                                U.getToastUtil().showShort("有更新开始下载");
                                 PgyUpdateManager.downLoadApk(appBean.getDownloadURL());
                             }
 
@@ -310,16 +314,16 @@ public class TestSdkActivity extends BaseActivity {
 
                 }
                 if (cls == null) {
-                    U.getToastUtil().showToast("请确认 gradle.properties 中 virtualApkEnable 的开关是否打开");
+                    U.getToastUtil().showShort("请确认 gradle.properties 中 virtualApkEnable 的开关是否打开");
                 } else {
                     //                try {
 //                    // load 会导致 Applicaiton 加载两次，看原理
 //                    com.didi.virtualapk.PluginManager.PluginManager.getInstance(U.app()).loadPlugin(plugin);
 //                    virtualapkLoad = true;
-//                    U.getToastUtil().showToast("load 成功");
+//                    U.getToastUtil().showShort("load 成功");
 //                } catch (Exception e) {
 //                    e.printStackTrace();
-//                    U.getToastUtil().showToast("load 失败");
+//                    U.getToastUtil().showShort("load 失败");
 //                }
                 }
             }
@@ -329,7 +333,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 if (!virtualapkLoad) {
-                    U.getToastUtil().showToast("virtualapkLoad == false");
+                    U.getToastUtil().showShort("virtualapkLoad == false");
                     return;
                 }
                 Intent intent = new Intent();
@@ -349,7 +353,7 @@ public class TestSdkActivity extends BaseActivity {
 
                     @Override
                     public void onLost(Postcard postcard) {
-//                        U.getToastUtil().showToast("请确认 gradle.properties 中 droidpluginEnable 的开关是否打开");
+//                        U.getToastUtil().showShort("请确认 gradle.properties 中 droidpluginEnable 的开关是否打开");
                     }
 
                     @Override
@@ -376,7 +380,7 @@ public class TestSdkActivity extends BaseActivity {
 
                     @Override
                     public void onLost(Postcard postcard) {
-                        U.getToastUtil().showToast("请确认 gradle.properties 中 repluginEnable 的开关是否打开");
+                        U.getToastUtil().showShort("请确认 gradle.properties 中 repluginEnable 的开关是否打开");
                     }
 
                     @Override
@@ -391,17 +395,6 @@ public class TestSdkActivity extends BaseActivity {
                 });
             }
         }));
-
-//        mDataList.add(new H("上拉加载,下拉刷新的RecyclerView Panigate库调试 ", new Runnable() {
-//            @Override
-//            public void run() {
-//                U.getFragmentUtils().addFragment(FragmentUtils
-//                        .newParamsBuilder(TestSdkActivity.this, PaginateFragment.class)
-//                        .setAddToBackStack(true)
-//                        .setHasAnimation(true)
-//                        .build());
-//            }
-//        }));
 
         mDataList.add(new H("强大的SmartRefreshLayout", new Runnable() {
             @Override
@@ -448,7 +441,7 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("支持 shape的TextView", new Runnable() {
+        mDataList.add(new H("支持 shape的TextView & Span测试", new Runnable() {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
@@ -465,7 +458,7 @@ public class TestSdkActivity extends BaseActivity {
                 IChannelService channelService = (IChannelService) ARouter.getInstance().build(RouterConstants.SERVICE_CHANNEL).navigation();
                 if (channelService != null) {
                     Object object = channelService.getDataFromChannel(100, null);
-                    U.getToastUtil().showToast("test module 收到数据 object:" + object + " hash:" + channelService.hashCode());
+                    U.getToastUtil().showShort("test module 收到数据 object:" + object + " hash:" + channelService.hashCode());
                 }
             }
         }));
@@ -486,7 +479,7 @@ public class TestSdkActivity extends BaseActivity {
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
-                                U.getToastUtil().showToast("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
+                                U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
                             }
                         })
                         .build());
@@ -522,7 +515,7 @@ public class TestSdkActivity extends BaseActivity {
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
-                                U.getToastUtil().showToast("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
+                                U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
                             }
                         })
                         .build());
@@ -553,7 +546,7 @@ public class TestSdkActivity extends BaseActivity {
                 U.getLbsUtils().getLocation(true, new LbsUtils.Callback() {
                     @Override
                     public void onReceive(LbsUtils.Location location) {
-                        U.getToastUtil().showToast(location.toString());
+                        U.getToastUtil().showShort(location.toString());
                         StatisticsAdapter.recordPropertyEvent(StatConstants.CATEGORY_USER_INFO, StatConstants.KEY_CITY, location.getCity());
                         StatisticsAdapter.recordPropertyEvent(StatConstants.CATEGORY_USER_INFO, StatConstants.KEY_DISTRICT, location.getDistrict());
                     }
@@ -568,7 +561,7 @@ public class TestSdkActivity extends BaseActivity {
                     throw new IllegalStateException("测试，我是主动抛出的一个异常，使用 PgyCrashManager 上报");
                 } catch (Exception e) {
                     PgyCrashManager.reportCaughtException(e);
-                    U.getToastUtil().showToast("已上报一个自定义崩溃");
+                    U.getToastUtil().showShort("已上报一个自定义崩溃");
                 }
             }
         }));
@@ -617,10 +610,20 @@ public class TestSdkActivity extends BaseActivity {
                         .setMoreParam("KEY2", "VALUE2")
                         .builder()
                         .register();                //注册摇一摇的方式
-                U.getToastUtil().showToast("注册成功，晃动手机可弹出反馈页面");
+                U.getToastUtil().showShort("注册成功，晃动手机可弹出反馈页面");
 
             }
         }));
+
+//        mDataList.add(new H("Span 测试", new Runnable() {
+//            @Override
+//            public void run() {
+//                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, QrcodeTestFragment.class)
+//                        .setHasAnimation(true)
+//                        .build());
+//            }
+//        }));
+
         mDataList.add(new H("手动触发小米统计上报", new Runnable() {
             @Override
             public void run() {
@@ -628,6 +631,8 @@ public class TestSdkActivity extends BaseActivity {
                 MiStatInterface.triggerUploadManually();
             }
         }));
+
+
     }
 
     @Override
@@ -673,7 +678,7 @@ public class TestSdkActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(NetworkUtils.NetworkChangeEvent event) {
-        U.getToastUtil().showToast("网络变化 now:" + event.type);
+        U.getToastUtil().showShort("网络变化 now:" + event.type);
     }
 
     @Override

@@ -54,7 +54,7 @@ public class DrawerFragment extends BaseFragment {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                U.getToastUtil().showToast(item.getItemId() + " " + item.getIcon() + " click");
+                U.getToastUtil().showShort(item.getItemId() + " " + item.getIcon() + " click");
                 return false;
             }
         });

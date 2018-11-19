@@ -144,7 +144,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
                 ImageItem imageItem = mImageItems.get(mCurrentPosition);
                 int selectLimit = mImagePicker.getParams().getSelectLimit();
                 if (mCbCheck.isChecked() && mSelectedImages.size() >= selectLimit) {
-                    U.getToastUtil().showToast(getString(R.string.ip_select_limit, selectLimit));
+                    U.getToastUtil().showShort(getString(R.string.ip_select_limit, selectLimit));
                     mCbCheck.setChecked(false);
                 } else {
                     if (mCbCheck.isChecked()) {

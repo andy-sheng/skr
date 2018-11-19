@@ -23,6 +23,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <com.common.view.ex.ExTextView
+                android:id="@+id/span_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/view_dimen_10" />
+
             <com.common.view.ex.ExButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

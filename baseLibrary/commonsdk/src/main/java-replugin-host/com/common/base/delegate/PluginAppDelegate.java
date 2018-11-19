@@ -97,7 +97,7 @@ public class PluginAppDelegate {
                 // FIXME 当插件安装失败时触发此逻辑。您可以在此处做“打点统计”，也可以针对安装失败情况做“特殊处理”
                 // 大部分可以通过RePlugin.install的返回值来判断是否成功
                 if (BuildConfig.DEBUG) {
-                    U.getToastUtil().showToast("onInstallPluginFailed: Failed! path=" + path + "; r=" + code);
+                    U.getToastUtil().showShort("onInstallPluginFailed: Failed! path=" + path + "; r=" + code);
                 }
                 super.onInstallPluginFailed(path, code);
             }
@@ -121,7 +121,7 @@ public class PluginAppDelegate {
                 // FIXME 当插件"没有安装"时触发此逻辑，可打开您的"下载对话框"并开始下载。
                 // FIXME 其中"intent"需传递到"对话框"内，这样可在下载完成后，打开这个插件的Activity
                 if (BuildConfig.DEBUG) {
-                    U.getToastUtil().showToast("onPluginNotExistsForActivity: Start download... p=" + plugin + "; i=" + intent);
+                    U.getToastUtil().showShort("onPluginNotExistsForActivity: Start download... p=" + plugin + "; i=" + intent);
                 }
                 return super.onPluginNotExistsForActivity(context, plugin, intent, process);
             }

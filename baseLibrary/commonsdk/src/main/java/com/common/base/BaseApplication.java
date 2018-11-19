@@ -70,7 +70,7 @@ public class BaseApplication extends Application {
         // 不能用MyLog 它还没初始化好
         Log.d(TAG, "attachBaseContext");
 
-//        U.getToastUtil().showToast(TAG + " attachBaseContext");
+//        U.getToastUtil().showShort(TAG + " attachBaseContext");
         // 判断是不是主进程，主进程才需要后续逻辑
         ActivityManager activityManager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
         if (activityManager == null) {
@@ -111,7 +111,7 @@ public class BaseApplication extends Application {
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onCreate(this);
         }
-//        U.getToastUtil().showToast(TAG + " onCreate");
+//        U.getToastUtil().showShort(TAG + " onCreate");
         // 为了 milink 的初始化
         Global.init(this, getClientAppInfo());
         if (U.isCoreProcess()) {

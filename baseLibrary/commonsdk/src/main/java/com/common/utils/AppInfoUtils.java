@@ -1,9 +1,13 @@
 package com.common.utils;
 
+import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -13,10 +17,14 @@ import com.common.log.MyLog;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 /**
  * 通过U.getAppInfoUtils去用
+ * 获得本app的一些信息，手机上别的app用{@link DeviceUtils}
  */
 public class AppInfoUtils {
     public final static String TAG = "AppInfoUtils";
@@ -30,25 +38,27 @@ public class AppInfoUtils {
     String versionName;
 
     File mainFile;
+
     /**
      * 存储的主目录,所有的存储请基于此目录
      *
      * @return
      */
     public File getMainDir() {
-        if(mainFile!=null){
+        if (mainFile != null) {
             return mainFile;
         }
-       if(U.getDeviceUtils().existSDCard()){
-           return new File(Environment.getExternalStorageDirectory(),"NewLiveSdk");
-       }else{
+        if (U.getDeviceUtils().existSDCard()) {
+            return new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE");
+        } else {
             return U.app().getFilesDir();
-       }
+        }
     }
 
     /**
      * 获取应用程序名称
      * 如 直播助手
+     *
      * @return
      */
     public String getAppName() {
@@ -61,6 +71,25 @@ public class AppInfoUtils {
                     U.app().getPackageName(), 0);
             int labelRes = packageInfo.applicationInfo.labelRes;
             return U.app().getResources().getString(labelRes);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取应用程序桌面图标
+     * 如 直播助手
+     *
+     * @return
+     */
+    public Drawable getAppIcon() {
+        PackageManager pm = U.app().getPackageManager();
+        try {
+            PackageInfo pi = pm.getPackageInfo(U.app().getPackageName(), 0);
+            ApplicationInfo ai = pi.applicationInfo;
+            Drawable icon = ai.loadIcon(pm);
+            return icon;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -122,7 +151,7 @@ public class AppInfoUtils {
         return Locale.getDefault().toString();
     }
 
-    public String  getDebugDBAddressLog() {
+    public String getDebugDBAddressLog() {
         if (BuildConfig.DEBUG) {
             try {
                 Class<?> debugDB = Class.forName("com.amitshekhar.DebugDB");
@@ -132,6 +161,43 @@ public class AppInfoUtils {
             } catch (Exception ignore) {
 
             }
+        }
+        return "";
+    }
+
+    public Signature[] getAppSignature() {
+        try {
+            PackageManager pm = U.app().getPackageManager();
+            @SuppressLint("PackageManagerGetSignatures")
+            PackageInfo pi = pm.getPackageInfo(U.app().getPackageName(), PackageManager.GET_SIGNATURES);
+            return pi == null ? null : pi.signatures;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getAppSignatureSha1() {
+        try {
+            Signature signatures[] = getAppSignature();
+            if (signatures != null && signatures.length > 0) {
+                byte[] cert = signatures[0].toByteArray();
+                MessageDigest md = MessageDigest.getInstance("SHA1");
+                byte[] publicKey = md.digest(cert);
+                StringBuffer hexString = new StringBuffer();
+                for (int i = 0; i < publicKey.length; i++) {
+                    String appendString = Integer.toHexString(0xFF & publicKey[i])
+                            .toUpperCase(Locale.US);
+                    if (appendString.length() == 1)
+                        hexString.append("0");
+                    hexString.append(appendString);
+                    hexString.append(":");
+                }
+                String result = hexString.toString();
+                return result.substring(0, result.length() - 1);
+            }
+
+        } catch (NoSuchAlgorithmException var3) {
         }
         return "";
     }

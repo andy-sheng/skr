@@ -9,7 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 通过U.getCommonUtils 获得
- * 一些实在不好分类的 util 方法 放在这。
+ *
+ * 一些实在不好分类的 utils 方法,放在这。
  */
 public class CommonUtils {
     public final int FAST_DOUBLE_CLICK_INTERVAL = 500;
