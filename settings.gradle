@@ -1,5 +1,4 @@
 include ':app', ':baseLibrary:commonsdk', ':commonservice', ':modulecore', ':modulewatch', ':modulechannel', ':moduletest'
-
 include ':plugindemo'
 
 include ':baseLibrary:my-utils-gradle'

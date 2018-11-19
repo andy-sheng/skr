@@ -267,3 +267,6 @@ public static java.lang.String TABLENAME;
 
 #保持fragment类名不变，以方便打点
 -keep class * extends com.common.base.BaseFragment
+
+#声网引擎
+-keep class io.agora.**{*;}

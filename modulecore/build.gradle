@@ -33,6 +33,10 @@ android {
         main {
             java.srcDirs += 'src/main/java-gen-db'
             java.srcDirs += 'src/main/java-gen-pb'
+
+            java.srcDirs += 'src/main/java-engine'
+            res.srcDirs += ['src/main/res-engine']
+
             res.srcDirs += ['src/main/res']
             res.srcDirs += ['src/main/res-login']
             res.srcDirs += ['src/main/res-cta']
@@ -54,6 +58,7 @@ dependencies {
     // 小米oauth登录用
     api files('libs/oauth.jar')
     api files('libs/ks3-android-sdk-v-1.4.6.jar')
+    api files('libs/agora-rtc-sdk.jar')
 
 }
 

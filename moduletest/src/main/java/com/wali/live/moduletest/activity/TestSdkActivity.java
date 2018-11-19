@@ -632,7 +632,12 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
+        mDataList.add(new H("agora测试", new Runnable() {
+            @Override
+            public void run() {
 
+            }
+        }));
     }
 
     @Override
