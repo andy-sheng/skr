@@ -80,6 +80,10 @@ android {
 //            java.srcDirs += 'src/main/java-gif-drawable'
 //            res.srcDirs += 'src/main/res-'
 
+            // dialog库
+            java.srcDirs += 'src/main/java-dialog'
+            res.srcDirs += 'src/main/res-dialog'
+
             if (repluginHostEnable.toBoolean()) {
                 java.srcDirs += 'src/main/java-replugin-host'
             } else {
