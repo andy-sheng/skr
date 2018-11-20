@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 
 import com.common.base.R;
+import com.common.utils.U;
 
 public class DialogPlus {
 
@@ -214,7 +215,7 @@ public class DialogPlus {
 
   private void initExpandAnimator(Activity activity, int defaultHeight, int gravity) {
     Display display = activity.getWindowManager().getDefaultDisplay();
-    int displayHeight = display.getHeight() - Utils.getStatusBarHeight(activity);
+    int displayHeight = display.getHeight() - U.getStatusBarUtil().getStatusBarHeight(activity);
     if (defaultHeight == 0) {
       defaultHeight = (displayHeight * 2) / 5;
     }

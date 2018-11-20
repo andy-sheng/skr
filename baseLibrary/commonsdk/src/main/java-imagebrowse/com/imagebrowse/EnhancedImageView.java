@@ -118,6 +118,7 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     public void load(BaseImage baseImage) {
+        mBaseImage = baseImage;
         String path = baseImage.getUri().toString();
         if (path.startsWith("http://") || path.startsWith("https://")) {
             if (path.endsWith(".gif")) {

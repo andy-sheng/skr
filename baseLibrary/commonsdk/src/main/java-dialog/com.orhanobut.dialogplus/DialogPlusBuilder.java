@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 
 import com.common.base.R;
+import com.common.utils.U;
 
 import java.util.Arrays;
 
@@ -391,7 +392,7 @@ public class DialogPlusBuilder {
   public int getDefaultContentHeight() {
     Activity activity = (Activity) context;
     Display display = activity.getWindowManager().getDefaultDisplay();
-    int displayHeight = display.getHeight() - Utils.getStatusBarHeight(activity);
+    int displayHeight = display.getHeight() - U.getStatusBarUtil().getStatusBarHeight(activity);
     if (defaultContentHeight == 0) {
       defaultContentHeight = (displayHeight * 2) / 5;
     }
