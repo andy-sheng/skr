@@ -29,17 +29,11 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField "boolean", "LOG_DEBUG", "true"
-            buildConfigField "boolean", "USE_CANARY", "true"
-            buildConfigField "boolean", "IS_BUILD_MODULE", "${isBuildModule}"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-            buildConfigField "boolean", "USE_CANARY", "false"
-            buildConfigField "boolean", "IS_BUILD_MODULE", "${isBuildModule}"
             minifyEnabled false
             shrinkResources false
             zipAlignEnabled true
@@ -47,7 +41,7 @@ android {
         }
     }
 
-//    resourcePrefix "test_" //给 Module 内的资源名增加前缀, 避免资源名冲突
+//    resourcePrefix "channel_" //给 Module 内的资源名增加前缀, 避免资源名冲突
 
     lintOptions {
         disable 'InvalidPackage'
@@ -69,44 +63,16 @@ android {
             java.srcDirs += 'src/main/java-gen-db'
             java.srcDirs += 'src/main/java-gen-pb'
 
-            res.srcDirs += 'src/main/res-test'
-            if(droidPluginEnable.toBoolean()){
-                java.srcDirs += 'src/main/java-droidplugin'
-            }
-            if(repluginHostEnable.toBoolean()){
-                java.srcDirs += 'src/main/java-replugin'
-            }
-            // 支持上拉加载
-//            java.srcDirs += 'src/main/java-paginate'
-//            res.srcDirs += 'src/main/res-paginate'
-            java.srcDirs += 'src/main/java-smartrefresh'
-            res.srcDirs += 'src/main/res-smartrefresh'
-            // 抽屉效果
-            java.srcDirs += 'src/main/java-drawer'
-            res.srcDirs += 'src/main/res-drawer'
+            java.srcDirs += 'src/main/java'
+            res.srcDirs += ['src/main/res']
 
-            // 索引rv
-            java.srcDirs += 'src/main/java-wxcontact'
-            res.srcDirs += 'src/main/res-wxcontact'
-
-            // 二维码
-            java.srcDirs += 'src/main/java-qrcode'
-            res.srcDirs += 'src/main/res-qrcode'
-
-            // emoji
-            java.srcDirs += 'src/main/java-emoji'
-            res.srcDirs += 'src/main/res-emoji'
-
-            // dialog
-            java.srcDirs += 'src/main/java-dialog'
-            res.srcDirs += 'src/main/res-dialog'
         }
     }
 }
 
 dependencies {
     //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
-    api project(':commoncore')
+    api project(":commoncore")
     api project(":commonservice")
     if (isBuildModule.toBoolean()) {
 //        tools
@@ -114,8 +80,4 @@ dependencies {
     } else {
         compileOnly rootProject.ext.dependencies["arouter-compiler"]
     }
-    implementation rootProject.ext.dependencies["circularprogressbar"]
-    api rootProject.ext.dependencies["recyclerview-animators"]
-    implementation "com.android.support:cardview-v7:27.1.0"
-    implementation "com.google.android:flexbox:0.3.2"
 }
