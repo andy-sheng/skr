@@ -139,7 +139,7 @@ public class DialogsFragment extends BaseFragment {
             @Override
             public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
                 if (view instanceof TextView){
-                    U.getToastUtil().showToast(((TextView)view).getText().toString());
+                    U.getToastUtil().showShort(((TextView)view).getText().toString());
                 }
                 dialogPlus.dismiss();
             }
@@ -148,14 +148,14 @@ public class DialogsFragment extends BaseFragment {
             @Override
             public void onItemClick(@NonNull DialogPlus dialog, @NonNull Object item, @NonNull View view, int position) {
                 TextView textView = view.findViewById(R.id.text_view);
-                U.getToastUtil().showToast(((TextView)textView).getText().toString());
+                U.getToastUtil().showShort(((TextView)textView).getText().toString());
                 dialogPlus.dismiss();
             }
         });
         builder.setOnCancelListener(new OnCancelListener() {
             @Override
             public void onCancel(@NonNull DialogPlus dialog) {
-                U.getToastUtil().showToast("取消");
+                U.getToastUtil().showShort("取消");
             }
         });
         builder.setOverlayBackgroundResource(R.color.transparent);
