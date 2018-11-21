@@ -35,6 +35,7 @@ import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.example.dialog.DialogsFragment;
 import com.example.drawer.DrawerFragment;
 import com.example.emoji.EmojiFragment;
 import com.example.qrcode.QrcodeTestFragment;
@@ -465,6 +466,17 @@ public class TestSdkActivity extends BaseActivity {
                     Object object = channelService.getData(100, null);
                     U.getToastUtil().showShort("test module 收到数据 object:" + object + " hash:" + channelService.hashCode());
                 }
+            }
+        }));
+
+        mDataList.add(new H("DialogPlus 库调试", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newParamsBuilder(TestSdkActivity.this, DialogsFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
             }
         }));
 
