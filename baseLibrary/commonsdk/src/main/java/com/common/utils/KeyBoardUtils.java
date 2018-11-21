@@ -72,7 +72,7 @@ public class KeyBoardUtils {
          */
         if (Build.VERSION.SDK_INT >= 20 && hasNavigationBar()) {
             // When SDK Level >= 20 (Android L), the softInputHeight will contain the height of softButtonsBar (if has)
-            softInputHeight = softInputHeight - getSoftButtonsBarHeight();
+            softInputHeight = softInputHeight - getVirtualNavBarHeight();
         }
         if (softInputHeight < 0) {
             Log.w("LQR", "EmotionKeyboard--Warning: value of softInputHeight is below zero!");
@@ -99,7 +99,7 @@ public class KeyBoardUtils {
      *
      * @return
      */
-    public int getSoftButtonsBarHeight() {
+    public int getVirtualNavBarHeight() {
         return U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().getScreenHeight();
     }
 

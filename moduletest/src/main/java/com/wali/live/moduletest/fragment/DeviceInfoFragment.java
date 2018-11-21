@@ -12,8 +12,6 @@ import com.common.utils.U;
 import com.wali.live.moduletest.R;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
-import java.util.zip.Inflater;
-
 public class DeviceInfoFragment extends BaseFragment {
 
 
@@ -32,8 +30,12 @@ public class DeviceInfoFragment extends BaseFragment {
         sb.append("数据库调试地址:").append(U.getAppInfoUtils().getDebugDBAddressLog()).append("\n");
         sb.append("屏宽:").append(U.getDisplayUtils().getScreenWidth())
                 .append(" 屏高:").append(U.getDisplayUtils().getScreenHeight())
+                .append(" 手机高:").append(U.getDisplayUtils().getPhoneHeight())
                 .append(" density:").append(U.getDisplayUtils().getDensity())
                 .append(" densityDpi:").append(U.getDisplayUtils().getDensityDpi())
+                .append("\n");
+        sb.append("是否开启了虚拟导航键：").append(U.getDeviceUtils().hasNavigationBar()).append(" 虚拟导航键高度:")
+                .append(U.getKeyBoardUtils().getVirtualNavBarHeight())
                 .append("\n");
         sb.append("最小宽度为 px/(dpi/160)=").append((U.getDisplayUtils().getPhoneWidth() / (U.getDisplayUtils().getDensityDpi() / 160))).append("dp").append("\n");
         sb.append("当前手机适用的资源文件夹是").append(U.app().getResources().getString(R.string.values_from)).append("\n");

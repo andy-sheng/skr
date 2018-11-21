@@ -24,8 +24,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.0'
         classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.0'
+
         if (virtualApkEnable.toBoolean()) {
             //VirtualApk
             classpath 'com.didi.virtualapk:gradle:0.9.8.6'

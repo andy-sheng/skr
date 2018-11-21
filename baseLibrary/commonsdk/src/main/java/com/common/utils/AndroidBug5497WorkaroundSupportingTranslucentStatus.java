@@ -28,7 +28,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
     private FrameLayout.LayoutParams frameLayoutParams;
 
     // 我们视图view先前的高度
-    private int usableHeightPrevious;
+    private int usableHeightPrevious = 0;
 
 
     ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -92,7 +92,6 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
          */
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);
-
         int usableHeightNow = r.bottom;
         MyLog.d(TAG, "possiblyResizeChildOfContent r.top:" + r.top + " r.bottom:" + r.bottom
                 + " usableHeightNow:" + usableHeightNow
@@ -105,8 +104,11 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
              * getSoftButtonsBarHeight = 130。 这里会算上虚拟按键的高度
              */
             int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
+
             if (U.getKeyBoardUtils().hasNavigationBar()) {
-                usableHeightSansKeyboard -= U.getKeyBoardUtils().getSoftButtonsBarHeight();
+                int navBarHeight = U.getKeyBoardUtils().getVirtualNavBarHeight();
+                MyLog.d(TAG, "possiblyResizeChildOfContent navBarHeight=" + navBarHeight);
+                usableHeightSansKeyboard -= navBarHeight;
             }
             /**
              * heightDifference = 2188-1280 = 908 可以认为是键盘高度
@@ -116,6 +118,9 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
              * 已经减去了虚拟按键的高度，已经就是键盘高度了
              */
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
+            if(heightDifference<0){
+                heightDifference = 0;
+            }
             /**
              * 是否自己控制布局，当有键盘事件时
              */
