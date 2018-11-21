@@ -1,12 +1,14 @@
 package com.engine;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
 
-import com.common.log.MethodCallLogProxy;
 import com.common.log.MyLog;
 import com.common.utils.U;
+
+import java.util.HashSet;
 
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandlerEx;
@@ -24,9 +26,12 @@ public class AgoraEngineAdapter {
     }
 
     RtcEngine mRtcEngine;
+    HashSet<Integer> mOhtersUserIds = new HashSet<>();
+    Handler mUiHandler = new Handler();
 
     /**
      * 所有的回调都在这
+     * 注意回调的运行线程，一般都不会在主线程
      */
     IRtcEngineEventHandlerEx mCallback = new AgoraEngineCallbackWithLog(TAG) {
 
@@ -36,38 +41,88 @@ public class AgoraEngineAdapter {
          * @param elapsed
          */
         @Override
-        public void onUserJoined(int uid, int elapsed) {
+        public void onUserJoined(final int uid, int elapsed) {
             super.onUserJoined(uid, elapsed);
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mOhtersUserIds.add(uid);
+                }
+            });
 
+        }
+
+        @Override
+        public void onUserOffline(final int uid, int reason) {
+            super.onUserOffline(uid, reason);
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mOhtersUserIds.remove(uid);
+                }
+            });
+        }
+
+        @Override
+        public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    //绑定相应的view
+                    tryBindRemoteVideoView(uid);
+                }
+            });
+        }
+
+        @Override
+        public void onUserMuteVideo(final int uid, final boolean muted) { // Tutorial Step 10
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // 将相应的view处理下
+                }
+            });
         }
     };
 
     private AgoraEngineAdapter() {
-        init();
     }
 
     public static final AgoraEngineAdapter getInstance() {
         return AgoraEngineAdapterHolder.INSTANCE;
     }
 
-    void init() {
+    void tryInit() {
         if (mRtcEngine == null) {
-            try {
+            synchronized (AgoraEngineAdapter.getInstance()) {
+                try {
+                    if (mRtcEngine == null) {
+                        mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
+                    }
+                } catch (Exception e) {
+                    MyLog.e(TAG, Log.getStackTraceString(e));
 
-//                IRtcEngineEventHandlerEx proxy = MethodCallLogProxy.attach(mCallback, TAG);
-                mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
-            } catch (Exception e) {
-                MyLog.e(TAG, Log.getStackTraceString(e));
-
-                throw new RuntimeException("NEED TO check rtc sdk init fatal error\n" + Log.getStackTraceString(e));
+                    throw new RuntimeException("NEED TO check rtc sdk init fatal error\n" + Log.getStackTraceString(e));
+                }
             }
         }
+    }
+
+    /**
+     * 销毁
+     */
+    public void destroy() {
+        mRtcEngine.leaveChannel();
+        mUiHandler.removeCallbacksAndMessages(null);
+        mRtcEngine = null;
+        mOtherVideoContainer = null;
     }
 
     /**
      * 设置频道模式为通信
      */
     public void setCommunicationMode() {
+        tryInit();
         mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION);
     }
 
@@ -80,6 +135,7 @@ public class AgoraEngineAdapter {
      * 如果已在频道中，用户必须调用 leaveChannel 方法退出当前频道，才能进入下一个频道。
      */
     public void joinChannel(String token, String channelId, String extra, int uid) {
+        tryInit();
         mRtcEngine.joinChannel(token, channelId, extra, uid);
     }
 
@@ -91,6 +147,7 @@ public class AgoraEngineAdapter {
      * 如果在通话或直播过程中打开，则由纯音频切换为视频通话或直播。
      */
     public void enableVideo() {
+        tryInit();
         mRtcEngine.enableVideo();
     }
 
@@ -103,7 +160,7 @@ public class AgoraEngineAdapter {
      * 该行为对视频编码没有影响，编码时 SDK 仍沿用该方法中定义的分辨率。
      */
     public void setVideoEncoderConfiguration() {
-
+        tryInit();
         VideoEncoderConfiguration.VideoDimensions dimensions = new VideoEncoderConfiguration.VideoDimensions(360, 640);
         VideoEncoderConfiguration.FRAME_RATE frameRate = VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_24;
         int bitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
@@ -120,27 +177,51 @@ public class AgoraEngineAdapter {
      * @param container 容器
      */
     public void bindLocalVideoView(ViewGroup container) {
+        tryInit();
         SurfaceView surfaceView = RtcEngine.CreateRendererView(U.app());
         surfaceView.setZOrderMediaOverlay(true);
         container.addView(surfaceView);
         mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, 0));
     }
 
+    private ViewGroup mOtherVideoContainer;
+
     /**
      * 绑定远端视图
+     * 如果uid传的是非法值，则会缓存view
+     * 自动等第一个合法的uid出现时（onJoinUser时）
+     * 再bind视图
+     * <p>
+     * 如果uid是用我们自己的账号体系，那这里是可以提前分配view吧
      *
      * @param container
      * @param uid
      */
-    private void setupRemoteVideo(ViewGroup container, int uid) {
+    public void bindRemoteVideo(ViewGroup container, int uid) {
+        MyLog.d(TAG, "bindRemoteVideo" + " container=" + container + " uid=" + uid);
+        tryInit();
         if (container.getChildCount() >= 1) {
+            // 只绑定一个
             return;
         }
+        if (uid <= 0) {
+            mOtherVideoContainer = container;
+            return;
+        }
+        MyLog.d(TAG, "setupRemoteVideo");
 
         SurfaceView surfaceView = RtcEngine.CreateRendererView(U.app());
+        surfaceView.setZOrderMediaOverlay(true);
         container.addView(surfaceView);
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, uid));
         surfaceView.setTag(uid);
     }
 
+    private void tryBindRemoteVideoView(int uid) {
+        MyLog.d(TAG, "tryBindRemoteVideoView" + " uid=" + uid);
+        tryInit();
+        if (mOtherVideoContainer != null) {
+            bindRemoteVideo(mOtherVideoContainer, uid);
+        }
+    }
 }
