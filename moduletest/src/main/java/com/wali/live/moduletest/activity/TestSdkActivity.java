@@ -1,7 +1,6 @@
 package com.wali.live.moduletest.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,26 +33,25 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
-import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.example.drawer.DrawerFragment;
 import com.example.emoji.EmojiFragment;
-import com.example.smartrefresh.SmartRefreshFragment;
 import com.example.qrcode.QrcodeTestFragment;
+import com.example.smartrefresh.SmartRefreshFragment;
 import com.example.wxcontact.PickContactFragment;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
 import com.imagepicker.fragment.ImagePreviewFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
+import com.module.home.IHomeService;
 import com.pgyersdk.crash.PgyCrashManager;
 import com.pgyersdk.feedback.PgyerFeedbackManager;
 import com.pgyersdk.update.DownloadFileListener;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 import com.pgyersdk.update.javabean.AppBean;
-import com.wali.live.modulechannel.IChannelService;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
@@ -134,6 +131,14 @@ public class TestSdkActivity extends BaseActivity {
                 return mDataList.size();
             }
         });
+
+        mDataList.add(new H("进入首页", new Runnable() {
+            @Override
+            public void run() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
+                        .navigation();
+            }
+        }));
 
         mDataList.add(new H("检查更新", new Runnable() {
             @Override
@@ -455,9 +460,9 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("ARouter 依赖注入测试，访问其他Module 数据", new Runnable() {
             @Override
             public void run() {
-                IChannelService channelService = (IChannelService) ARouter.getInstance().build(RouterConstants.SERVICE_CHANNEL).navigation();
+                IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
                 if (channelService != null) {
-                    Object object = channelService.getDataFromChannel(100, null);
+                    Object object = channelService.getData(100, null);
                     U.getToastUtil().showShort("test module 收到数据 object:" + object + " hash:" + channelService.hashCode());
                 }
             }

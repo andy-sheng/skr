@@ -133,14 +133,16 @@ android {
 
 dependencies {
     //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
-    api project(":modulecore")
+    api project(':commoncore')
     api project(":commonservice")
     if (isBuildModule.toBoolean()) {
         // 要区分，否则 build 编译会提示不能implementation application 的project
     } else {
 
-        implementation project(":modulechannel")
-        implementation project(":modulewatch")
+//        implementation project(":modulechannel")
+  //      implementation project(":modulewatch")
+        implementation project(":Module:Home")
+        implementation project(":Module:RankingMode")
         implementation project(":moduletest")
         //  tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
