@@ -29,6 +29,9 @@ public class StatisticsAdapter {
             return;
         }
         synchronized (StatisticsAdapter.class) {
+            if (hasInited) {
+                return;
+            }
             MyLog.d(TAG, "init");
             MiStatInterface.initialize(U.app(), MI_STAT_APP_ID, MI_STAT_APP_KEY, U.getChannelUtils().getChannel());
             /**

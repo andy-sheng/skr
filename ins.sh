@@ -22,6 +22,25 @@ getBuildModule(){
 	fi
 }
 
+#获得设备id并保存到数组
+getDeviceId(){
+	adb devices
+    devstr=`adb devices`
+    #字符串截取
+    devstr=${devstr#*"List of devices attached"}
+    #device 替换为空格
+    devices=(${devstr//"device"/ })
+}
+
+#将apk安装到所有设备上
+installApkForAllDevices(){
+	for data in ${devices[@]}  
+	do  
+    	echo "安装 $1 到 ${data}"
+    	adb -s ${data} install -r $1
+	done  
+}
+
 echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module"
 if [ $# -le 0 ] ; then 
 	echo "输入需要编译的模块名" 
@@ -31,6 +50,10 @@ fi
 getBuildModule
 
 echo 当前isBuildModule=$isBuildModule
+
+getDeviceId
+
+echo ${devices[@]}
 
 if [[ $1 = "app" ]]; then
 	if [[ $isBuildModule = false ]]; then
@@ -66,7 +89,7 @@ if [[ $1 = "app" ]]; then
 		    ./gradlew :app:clean
 		fi
 		./gradlew :app:assemblechannel_defaultDebug --stacktrace
-		adb install -r app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk
+		installApkForAllDevices app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk
 	fi
 else
 	if [[ $isBuildModule = false ]]; then
