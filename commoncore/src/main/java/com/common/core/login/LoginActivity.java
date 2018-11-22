@@ -42,7 +42,7 @@ import okhttp3.ResponseBody;
 @Route(path = RouterConstants.ACTIVITY_LOGIN)
 public class LoginActivity extends BaseActivity {
 
-
+    public static final String KEY_SHOW_TOAST = "key_show_toast";
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     RelativeLayout mMainContainer;
@@ -59,33 +59,36 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout)findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar)findViewById(R.id.titlebar);
-        mMainContainer = (RelativeLayout)findViewById(R.id.main_container);
-        mInputPhoneEt = (NoLeakEditText)findViewById(R.id.input_phone_et);
-        mSendMsgBtn = (ExButton)findViewById(R.id.send_msg_btn);
-        mVerifyCodeEt = (NoLeakEditText)findViewById(R.id.verify_code_et);
-        mLoginBtn = (ExButton)findViewById(R.id.login_btn);
+        if (getIntent() != null && getIntent().getBooleanExtra(KEY_SHOW_TOAST, false)) {
+            U.getToastUtil().showShort("请先登录");
+        }
+        mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
+        mMainContainer = (RelativeLayout) findViewById(R.id.main_container);
+        mInputPhoneEt = (NoLeakEditText) findViewById(R.id.input_phone_et);
+        mSendMsgBtn = (ExButton) findViewById(R.id.send_msg_btn);
+        mVerifyCodeEt = (NoLeakEditText) findViewById(R.id.verify_code_et);
+        mLoginBtn = (ExButton) findViewById(R.id.login_btn);
         mSendMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(U.getCommonUtils().isFastDoubleClick()){
+                if (U.getCommonUtils().isFastDoubleClick()) {
                     return;
                 }
                 UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
                 Observable<ResponseBody> observer = userAccountServerApi.sendSmsVerifyCode(mInputPhoneEt.getText().toString());
-                ApiMethods.subscribe(observer,null);
+                ApiMethods.subscribe(observer, null);
             }
         });
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(U.getCommonUtils().isFastDoubleClick()){
+                if (U.getCommonUtils().isFastDoubleClick()) {
                     return;
                 }
                 String phoneNum = mInputPhoneEt.getText().toString();
                 String verifyCode = mVerifyCodeEt.getText().toString();
-                UserAccountManager.getInstance().loginByPhoneNum(phoneNum,verifyCode);
+                UserAccountManager.getInstance().loginByPhoneNum(phoneNum, verifyCode);
             }
         });
 

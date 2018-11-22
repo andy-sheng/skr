@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.core.RouterConstants;
-import com.common.core.login.interceptor.JumpInterceptor;
 import com.common.log.MyLog;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
@@ -17,7 +16,7 @@ import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.MessageFragment;
 import com.module.home.fragment.PersonFragment;
 
-@Route(path = RouterConstants.ACTIVITY_HOME, extras = JumpInterceptor.NO_NEED_LOGIN)
+@Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity {
 
     LinearLayout mBottomContainer;

@@ -9,12 +9,13 @@ import com.alibaba.android.arouter.facade.template.IInterceptor;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.RouterConstants;
 import com.common.core.account.UserAccountManager;
+import com.common.core.login.LoginActivity;
 import com.common.core.login.execption.UnloginException;
 import com.common.log.MyLog;
 
 @Interceptor(priority = 1)
-public class JumpInterceptor implements IInterceptor {
-    public final static String TAG = "JumpInterceptor";
+public class JudgeLoginInterceptor implements IInterceptor {
+    public final static String TAG = "JudgeLoginInterceptor";
 
     /**
      * 我们经常需要在目标页面中配置一些属性，比方说"是否需要登陆"之类的
@@ -44,7 +45,7 @@ public class JumpInterceptor implements IInterceptor {
             } else {
                 callback.onInterrupt(new UnloginException());
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
-                        .withBoolean("key_show_toast", true)
+                        .withBoolean(LoginActivity.KEY_SHOW_TOAST, true)
                         .greenChannel().navigation();
             }
         }

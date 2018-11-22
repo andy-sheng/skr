@@ -20,7 +20,13 @@ public class ApiMethods {
         }
         ob1.observeOn(AndroidSchedulers.mainThread());
         if (apiObserver == null) {
-            ob1.subscribe();
+            // 给个默认的实现，防止崩溃
+            ob1.subscribe(new ApiObserver<T>() {
+                @Override
+                public void onNext(T obj) {
+
+                }
+            });
         } else {
             ob1.subscribe(apiObserver);
         }
