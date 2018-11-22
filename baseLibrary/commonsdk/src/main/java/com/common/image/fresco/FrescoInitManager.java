@@ -1,15 +1,11 @@
 package com.common.image.fresco;
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.os.Environment;
 
 import com.common.base.BuildConfig;
-import com.common.http.CustomOkHttpNetworkFetcher;
-import com.common.http.UserAgentInterceptor;
 import com.common.image.fresco.cache.MLCacheKeyFactory;
 import com.common.image.fresco.log.FrescoLogDelegate;
 import com.common.log.MyLog;
@@ -23,23 +19,15 @@ import com.facebook.common.memory.MemoryTrimmableRegistry;
 import com.facebook.common.memory.NoOpMemoryTrimmableRegistry;
 import com.facebook.common.util.ByteConstants;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.backends.okhttp.OkHttpNetworkFetcher;
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.decoder.ProgressiveJpegConfig;
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
-import com.facebook.imagepipeline.image.ImageInfo;
-import com.facebook.imagepipeline.image.ImmutableQualityInfo;
-import com.facebook.imagepipeline.image.QualityInfo;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
-import com.facebook.imagepipeline.producers.HttpUrlConnectionNetworkFetcher;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by lan on 16-1-11.
@@ -84,22 +72,23 @@ public class FrescoInitManager {
                 }
             }
         });
-        // 配置自定义的网络请求处理
-        OkHttpClient okHttpClient = new OkHttpClient();
         Set<RequestListener> requestListeners = new HashSet<>();
         requestListeners.add(new RequestLoggingListener());
 
-        //自定义一个拦截器
-        okHttpClient.networkInterceptors().add(new UserAgentInterceptor(U.getHttpUtils().buildUserAgent()));
-
-        final File baseDir = context.getCacheDir();
-        if (baseDir != null) {
-            final File cacheDir = new File(baseDir, "HttpResponseCache");
-            okHttpClient.setCache(new com.squareup.okhttp.Cache(cacheDir, 10 * ByteConstants.MB));
-        }
-
-        okHttpClient.setReadTimeout(20 * 1000, TimeUnit.MILLISECONDS);
-        okHttpClient.setConnectTimeout(15 * 1000, TimeUnit.MILLISECONDS);
+//        // 配置自定义的网络请求处理
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//
+//        //自定义一个拦截器
+//        okHttpClient.networkInterceptors().add(new UserAgentInterceptor(U.getHttpUtils().buildUserAgent()));
+//
+//        final File baseDir = context.getCacheDir();
+//        if (baseDir != null) {
+//            final File cacheDir = new File(baseDir, "HttpResponseCache");
+//            okHttpClient.setCache(new com.squareup.okhttp.Cache(cacheDir, 10 * ByteConstants.MB));
+//        }
+//
+//        okHttpClient.setReadTimeout(20 * 1000, TimeUnit.MILLISECONDS);
+//        okHttpClient.setConnectTimeout(15 * 1000, TimeUnit.MILLISECONDS);
 
         ImagePipelineConfig.Builder imagePipelineConfig = ImagePipelineConfig.newBuilder(context)
                 //测试test时发现，自己实现成功率还没系统实现的成功率高，

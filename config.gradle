@@ -11,7 +11,7 @@ ext {
 
     version = [
             androidSupportSdkVersion: "27.1.0",
-            retrofitSdkVersion      : "2.4.0",
+            retrofitSdkVersion      : "2.5.0",
             dagger2SdkVersion       : "2.15",
             glideSdkVersion         : "4.6.1",
             butterknifeSdkVersion   : "8.8.1",
@@ -60,7 +60,7 @@ ext {
             "retrofit-converter-gson"  : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
             "retrofit-adapter-rxjava"  : "com.squareup.retrofit2:adapter-rxjava:${version["retrofitSdkVersion"]}",
             "retrofit-adapter-rxjava2" : "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitSdkVersion"]}",
-            "okhttp3"                  : "com.squareup.okhttp3:okhttp:3.10.0",
+            "okhttp3"                  : "com.squareup.okhttp3:okhttp:3.12.0",
             "okhttp-urlconnection"     : "com.squareup.okhttp:okhttp-urlconnection:2.0.0",
 
             // 图片加载
@@ -75,7 +75,7 @@ ext {
             // For WebP support, including animated WebP
             "fresco-animated-webp"     : "com.facebook.fresco:animated-webp:${version["frescoVersion"]}",
             "fresco-webpsupport"       : "com.facebook.fresco:webpsupport:${version["frescoVersion"]}",
-            "fresco-okhttp"            : "com.facebook.fresco:imagepipeline-okhttp:${version["frescoVersion"]}",
+            "fresco-okhttp"            : "com.facebook.fresco:imagepipeline-okhttp3:${version["frescoVersion"]}",
             // 加载大gif用，防止gif卡顿
             "android-gif-drawable"     : "pl.droidsonroids.gif:android-gif-drawable:1.2.15",
             // 加载超大图用的

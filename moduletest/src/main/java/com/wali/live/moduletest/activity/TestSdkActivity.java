@@ -57,14 +57,22 @@ import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
 import com.wali.live.moduletest.fragment.ShowTextViewFragment;
+import com.wali.live.moduletest.retrofit.ReqInterface;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 @Route(path = RouterConstants.ACTIVITY_TEST)
 public class TestSdkActivity extends BaseActivity {
@@ -138,6 +146,35 @@ public class TestSdkActivity extends BaseActivity {
             public void run() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
                         .navigation();
+            }
+        }));
+
+        mDataList.add(new H("retrofit测试", new Runnable() {
+            @Override
+            public void run() {
+                // 第2部分：在创建Retrofit实例时通过.baseUrl()设置
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://suggest.taobao.com/") //设置网络请求的Url地址
+//                        .addConverterFactory(GsonConverterFactory.create()) //设置数据解析器
+                        .build();
+                ReqInterface reqInterface = retrofit.create(ReqInterface.class);
+                Call<ResponseBody> r = reqInterface.getCall();
+                r.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        MyLog.d(TAG, "onResponse" + " call=" + call + " response=" + response.toString());
+                        try {
+                            U.getToastUtil().showShort(response.body().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        MyLog.d(TAG, "onFailure" + " call=" + call + " t=" + t);
+                    }
+                });
             }
         }));
 

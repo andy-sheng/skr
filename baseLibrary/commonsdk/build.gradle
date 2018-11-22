@@ -125,6 +125,10 @@ dependencies {
     api(rootProject.ext.dependencies["rxlifecycle2"])
     api(rootProject.ext.dependencies["rxlifecycle2-android"])
 
+    // http
+    api rootProject.ext.dependencies["okhttp3"]
+    api rootProject.ext.dependencies["retrofit"]
+
     // 权限检查
     api(rootProject.ext.dependencies["rxpermissions2"])
     // 日志
@@ -135,7 +139,7 @@ dependencies {
     api(rootProject.ext.dependencies["fresco-gif"])
     api(rootProject.ext.dependencies["fresco-webpsupport"])
     api(rootProject.ext.dependencies["fresco-animated-webp"])
-    api(rootProject.ext.dependencies["fresco-okhttp"])
+    //api(rootProject.ext.dependencies["fresco-okhttp"])
     // 流畅的gif
     api(rootProject.ext.dependencies["android-gif-drawable"])
     // 超大图加载
