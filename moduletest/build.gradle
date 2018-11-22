@@ -100,6 +100,10 @@ android {
             // dialog
             java.srcDirs += 'src/main/java-dialog'
             res.srcDirs += 'src/main/res-dialog'
+
+            // rxretrofit
+            java.srcDirs += 'src/main/java-rxretrofit'
+            res.srcDirs += 'src/main/res-rxretrofit'
         }
     }
 }

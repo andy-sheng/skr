@@ -39,6 +39,7 @@ import com.example.dialog.DialogsFragment;
 import com.example.drawer.DrawerFragment;
 import com.example.emoji.EmojiFragment;
 import com.example.qrcode.QrcodeTestFragment;
+import com.example.rxretrofit.fragment.RxRetrofitFragment;
 import com.example.smartrefresh.SmartRefreshFragment;
 import com.example.wxcontact.PickContactFragment;
 import com.imagepicker.ImagePicker;
@@ -605,6 +606,15 @@ public class TestSdkActivity extends BaseActivity {
                         StatisticsAdapter.recordPropertyEvent(StatConstants.CATEGORY_USER_INFO, StatConstants.KEY_DISTRICT, location.getDistrict());
                     }
                 });
+            }
+        }));
+
+        mDataList.add(new H("Rxretrofit实验", new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, RxRetrofitFragment.class)
+                        .setHasAnimation(true)
+                        .build());
             }
         }));
 
