@@ -20,13 +20,14 @@ ext {
             espressoSdkVersion      : "3.0.1",
             canarySdkVersion        : "1.5.4",
             frescoVersion           : "1.11.0",
-            greenDaoVersion         : "3.2.2"
+            greenDaoVersion         : "3.2.2",
+            okhttp3         : "3.12.0"
     ]
 
     dependencies = [
             //support
             //此库包含对 Material Design 用户界面实现的支持，依赖v4 。
-            /**
+            /*
              * ActionBar - 提供操作栏用户界面模式的实现。如需了解有关使用操作栏的详细信息，请参阅操作栏开发者指南。
              * AppCompatActivity - 添加一个应用 Activity 类，此类可作为使用支持库操作栏实现的 Activity 的基础类。
              * AppCompatDialog - 添加一个对话框类，此类可作为 AppCompat 主题对话框的基础类。
@@ -34,7 +35,7 @@ ext {
              */
             "appcompat-v7"             : "com.android.support:appcompat-v7:${version["androidSupportSdkVersion"]}",
 
-            /**
+            /*
              * 包括
              * AppBarLayout 配合下面这个layout用
              * CollapsingToolbarLayout 配合下面这个layout用
@@ -60,8 +61,14 @@ ext {
             "retrofit-converter-gson"  : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
             "retrofit-adapter-rxjava"  : "com.squareup.retrofit2:adapter-rxjava:${version["retrofitSdkVersion"]}",
             "retrofit-adapter-rxjava2" : "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitSdkVersion"]}",
-            "okhttp3"                  : "com.squareup.okhttp3:okhttp:3.12.0",
+            "okhttp3"                  : "com.squareup.okhttp3:okhttp:${version["okhttp3"]}",
             "okhttp-urlconnection"     : "com.squareup.okhttp:okhttp-urlconnection:2.0.0",
+            "logging-interceptor"      : "com.squareup.okhttp3:logging-interceptor:${version["okhttp3"]}",
+
+            // fastjson-android
+            "fastjson-android"         : "com.alibaba:fastjson:1.1.70.android",
+            // fastjson在retrofit中的使用
+            "retrofit-fastjson-android-convert" : 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0',
 
             // 图片加载
             "glide"                    : "com.github.bumptech.glide:glide:${version["glideSdkVersion"]}",
@@ -84,34 +91,22 @@ ext {
             "autolayout"               : "com.zhy:autolayout:1.4.5",
             "butterknife"              : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
             "butterknife-compiler"     : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
-            /**
-             * 时间选择器，选项选择器，仿 ios PickerView控件。
-             */
+             // 时间选择器，选项选择器，仿 ios PickerView控件。
             "pickerview"               : "com.contrarywind:Android-PickerView:3.2.5",
-            /**
-             * 大图浏览，缩放图片
-             */
+             // 大图浏览，缩放图片
             "photoview"                : "com.github.chrisbanes.photoview:library:1.2.3",
 
             "bga-qrcode-zxing"         : 'cn.bingoogolapple:bga-qrcode-zxing:1.3.4',
-            /**
-             * 一些进度条效果
-             */
+             // 一些进度条效果
             "numberprogressbar"        : "com.daimajia.numberprogressbar:library:1.2@aar",
             "circularprogressbar"      : "com.github.castorflex.smoothprogressbar:library-circular:1.3.0",
             "smoothprogressbar"        : "com.github.castorflex.smoothprogressbar:library:1.1.0",
-            /**
-             * 为了在3.0以前的系统使用属性动画
-             */
+             // 为了在3.0以前的系统使用属性动画
             "nineoldandroids"          : "com.nineoldandroids:library:2.4.0",
-            /**
-             * 支持下拉加载的RecyclerView
-             */
+             // 支持下拉加载的RecyclerView
             "SmartRefreshLayout"       : "com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14",
             "paginate"                 : "com.github.markomilos:paginate:0.5.1",
-            /**
-             * 适用于 recyclerview 的丰富的动画 在 remove add等 时会触发
-             */
+             // 适用于 recyclerview 的丰富的动画 在 remove add等 时会触发
             "recyclerview-animators"   : "jp.wasabeef:recyclerview-animators:2.3.0",
             "vlayout"                  : "com.alibaba.android:vlayout:1.1.0@aar",
             "lottie"                   : "com.airbnb.android:lottie:2.5.4",

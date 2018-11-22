@@ -659,10 +659,10 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("agora测试", new Runnable() {
+        mDataList.add(new H("日志全开", new Runnable() {
             @Override
             public void run() {
-
+                MyLog.setLogcatTraceLevel(0);
             }
         }));
     }

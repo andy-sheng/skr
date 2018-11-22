@@ -28,7 +28,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.fastjson.FastJsonConverterFactory;
 
 /**
  * http下载处理类
@@ -100,7 +100,7 @@ public class HttpDownManager {
 
             Retrofit retrofit = new Retrofit.Builder()
                     .client(builder.build())
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(FastJsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .baseUrl(BaseUriUtil.getBasUrl(info.getUrl()))
                     .build();

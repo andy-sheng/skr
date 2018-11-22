@@ -23,7 +23,7 @@ public class ApiMethods {
             // 给个默认的实现，防止崩溃
             ob1.subscribe(new ApiObserver<T>() {
                 @Override
-                public void onNext(T obj) {
+                public void process(T obj) {
 
                 }
             });

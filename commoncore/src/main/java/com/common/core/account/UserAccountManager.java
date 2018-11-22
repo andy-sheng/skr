@@ -7,6 +7,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 
 import org.greenrobot.eventbus.EventBus;
@@ -228,9 +229,9 @@ public class UserAccountManager {
         // 1 为手机登录
         userAccountServerApi.login(1,phoneNum,verifyCode)
                 .subscribeOn(Schedulers.io())
-                .subscribe(new ApiObserver<ResponseBody>() {
+                .subscribe(new ApiObserver<ApiResult>() {
                     @Override
-                    public void onNext(ResponseBody obj) {
+                    public void process(ApiResult obj) {
 
                     }
                 });

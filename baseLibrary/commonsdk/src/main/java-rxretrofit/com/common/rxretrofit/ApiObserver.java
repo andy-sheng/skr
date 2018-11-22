@@ -3,6 +3,7 @@ package com.common.rxretrofit;
 import android.util.Log;
 
 import com.common.base.BuildConfig;
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import io.reactivex.Observer;
@@ -15,12 +16,26 @@ import io.reactivex.disposables.Disposable;
  * @param <T>
  */
 public abstract class ApiObserver<T> implements Observer<T> {
+    public final static String TAG = "ApiObserver";
+
     @Override
     public void onSubscribe(Disposable d) {
 
     }
 
-    public abstract void onNext(T obj);
+    public void onNext(T obj) {
+        if (BuildConfig.DEBUG || U.getChannelUtils().isTestChannel()) {
+            if (obj instanceof ApiResult) {
+                ApiResult result = (ApiResult) obj;
+                if (result.errno != 0) {
+                    U.getToastUtil().showShort("errno:" + result.errno + " errmsg:" + result.errmsg);
+                }
+            }
+        }
+        process(obj);
+    }
+
+    public abstract void process(T obj);
 
     @Override
     public void onError(Throwable e) {
@@ -28,6 +43,7 @@ public abstract class ApiObserver<T> implements Observer<T> {
             String log = Log.getStackTraceString(e);
             U.getToastUtil().showShort(log);
         }
+        MyLog.w(TAG,e);
     }
 
     @Override

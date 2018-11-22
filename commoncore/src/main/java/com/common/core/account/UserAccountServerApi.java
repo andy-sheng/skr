@@ -1,5 +1,7 @@
 package com.common.core.account;
 
+import com.common.rxretrofit.ApiResult;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
@@ -15,10 +17,10 @@ public interface UserAccountServerApi {
      * @return
      */
     @GET("v1/passport/login-sms-code")
-    Observable<ResponseBody> sendSmsVerifyCode(@Query("phoneNum") String phoneNum);
+    Observable<ApiResult> sendSmsVerifyCode(@Query("phoneNum") String phoneNum);
 
     @GET("v1/passport/login")
-    Observable<ResponseBody> login(@Query("mode") int loginType,
-                                   @Query("sign") String phoneNum,
-                                   @Query("code") String verifyCode);
+    Observable<ApiResult> login(@Query("mode") int loginType,
+                                @Query("sign") String phoneNum,
+                                @Query("code") String verifyCode);
 }

@@ -21,6 +21,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.CommonUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExButton;
@@ -76,7 +77,7 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-                Observable<ResponseBody> observer = userAccountServerApi.sendSmsVerifyCode(mInputPhoneEt.getText().toString());
+                Observable<ApiResult> observer = userAccountServerApi.sendSmsVerifyCode(mInputPhoneEt.getText().toString());
                 ApiMethods.subscribe(observer, null);
             }
         });
