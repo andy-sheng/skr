@@ -2,7 +2,7 @@ package com.example.rxretrofit.entity.api;
 
 import com.common.rxretrofit.Api.BaseApi;
 import com.common.rxretrofit.Api.BaseResultEntity;
-import com.common.rxretrofit.http.HttpManager;
+import com.common.rxretrofit.ApiManager;
 import com.example.rxretrofit.HttpPostService;
 import com.example.rxretrofit.entity.resulte.SubjectResulte;
 
@@ -32,7 +32,7 @@ public class SubjectPostApi extends BaseApi {
     }
 
     public Observable<BaseResultEntity<List<SubjectResulte>>> getAllVedioBys(boolean isAll) {
-        HttpPostService service = HttpManager.getInstance().doHttpRequest(this).create(HttpPostService.class);
+        HttpPostService service = ApiManager.getInstance().newClient(this).create(HttpPostService.class);
         return service.getAllVedioBys(isAll);
     }
 

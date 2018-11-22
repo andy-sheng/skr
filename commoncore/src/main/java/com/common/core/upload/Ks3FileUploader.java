@@ -445,12 +445,12 @@ public class Ks3FileUploader {
                                 MyLog.e(e);
                             }
 
-                            String multipartKs3AuthToken = UploadServerApi.getMultipartKs3AuthToken(mUploadParams.getRid(), Resource == null ? "" : Resource, date == null ? "" : date
-                                    , httpMethod == null ? "" : httpMethod, contentMD5 == null ? "" : contentMD5, contentType == null ? "" : contentType, aclData, mUploadParams.getBucketName());
-                            if (!TextUtils.isEmpty(multipartKs3AuthToken)) {
-                                mToken = multipartKs3AuthToken;
-                                authDate = date;
-                            }
+//                            String multipartKs3AuthToken = UploadServerApi.getMultipartKs3AuthToken(mUploadParams.getRid(), Resource == null ? "" : Resource, date == null ? "" : date
+//                                    , httpMethod == null ? "" : httpMethod, contentMD5 == null ? "" : contentMD5, contentType == null ? "" : contentType, aclData, mUploadParams.getBucketName());
+//                            if (!TextUtils.isEmpty(multipartKs3AuthToken)) {
+//                                mToken = multipartKs3AuthToken;
+//                                authDate = date;
+//                            }
                         }
                         AuthResult result;
                         result = new AuthResult(mToken, authDate);

@@ -4,13 +4,9 @@ import android.text.TextUtils;
 
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
-import com.common.milink.MiLinkClientAdapter;
-import com.mi.milink.sdk.aidl.PacketData;
 import com.wali.live.proto.AuthUpload.AuthRequest;
 import com.wali.live.proto.AuthUpload.AuthResponse;
 import com.wali.live.proto.AuthUpload.AuthType;
-import com.wali.live.proto.AuthUpload.MultipartAuthRequest;
-import com.wali.live.proto.AuthUpload.MultipartAuthResponse;
 
 public class UploadServerApi {
     public final static String TAG = "UploadServerApi";
@@ -50,74 +46,75 @@ public class UploadServerApi {
         final AuthRequest authRequest = authRequestBuilder.build();
         try {
             //向业务服务器获取K3 request token
-            PacketData data = new PacketData();
-            data.setCommand("zhibo.mfas.auth");
-            data.setData(authRequest.toByteArray());
-            PacketData authPacketData = MiLinkClientAdapter.getInstance().sendSync(data, 10*1000);
-            return processPacketData(authPacketData);
+//            PacketData data = new PacketData();
+//            data.setCommand("zhibo.mfas.auth");
+//            data.setData(authRequest.toByteArray());
+//            PacketData authPacketData = MiLinkClientAdapter.getInstance().sendSync(data, 10*1000);
+//            return processPacketData(authPacketData);
         } catch (Exception e) {
             MyLog.v(TAG, e);
-            return null;
-        }
-    }
 
-    private static AuthResponse processPacketData(PacketData data) {
-        if (data == null) {
-            return null;
-        }
-        MyLog.v(TAG, "processPacketData command=" + data.getCommand());
-        String command = data.getCommand();
-        if (TextUtils.isEmpty(command)) {
-            return null;
-        }
-        if (command.equals("zhibo.mfas.auth")) {
-            try {
-
-                AuthResponse response = AuthResponse.parseFrom(data.getData());
-                if (response.getErrorCode() == 0) {
-                    return response;
-                } else {
-                    return null;
-                }
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
         }
         return null;
     }
 
-    /**
-     * 分片上传认证
-     * todo 等服务器支持
-     * @param attId
-     * @param resource
-     * @param date
-     * @param httpVerb
-     * @param contentMd5
-     * @param contentType
-     * @param acl
-     * @param bucketName
-     * @return
-     */
-    public static String getMultipartKs3AuthToken(long attId, String resource, String date, String httpVerb, String contentMd5, String contentType, String acl, String bucketName) {
-        MultipartAuthRequest multipartAuthRequest = new MultipartAuthRequest.Builder()
-                .setRid(attId).setResource(resource).setDate(date).setHttpVerb(httpVerb).setContentMd5(contentMd5).setContentType(contentType)
-                .setAcl(acl).build();
-
-        PacketData packetData = new PacketData();
-        packetData.setCommand("zhibo.mfas.multipartauth");
-        packetData.setData(multipartAuthRequest.toByteArray());
-        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, 10*1000);
-        if (responseData != null) {
-            try {
-                MultipartAuthResponse response = MultipartAuthResponse.parseFrom(responseData.getData());
-                if (response != null && response.getErrorCode() == 0) {
-                    return response.getMultipartAuthorization();
-                }
-            } catch (Exception e) {
-                MyLog.e(e);
-            }
-        }
-        return null;
-    }
+//    private static AuthResponse processPacketData(PacketData data) {
+//        if (data == null) {
+//            return null;
+//        }
+//        MyLog.v(TAG, "processPacketData command=" + data.getCommand());
+//        String command = data.getCommand();
+//        if (TextUtils.isEmpty(command)) {
+//            return null;
+//        }
+//        if (command.equals("zhibo.mfas.auth")) {
+//            try {
+//
+//                AuthResponse response = AuthResponse.parseFrom(data.getData());
+//                if (response.getErrorCode() == 0) {
+//                    return response;
+//                } else {
+//                    return null;
+//                }
+//            } catch (Exception e) {
+//                MyLog.e(e);
+//            }
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * 分片上传认证
+//     * todo 等服务器支持
+//     * @param attId
+//     * @param resource
+//     * @param date
+//     * @param httpVerb
+//     * @param contentMd5
+//     * @param contentType
+//     * @param acl
+//     * @param bucketName
+//     * @return
+//     */
+//    public static String getMultipartKs3AuthToken(long attId, String resource, String date, String httpVerb, String contentMd5, String contentType, String acl, String bucketName) {
+//        MultipartAuthRequest multipartAuthRequest = new MultipartAuthRequest.Builder()
+//                .setRid(attId).setResource(resource).setDate(date).setHttpVerb(httpVerb).setContentMd5(contentMd5).setContentType(contentType)
+//                .setAcl(acl).build();
+//
+//        PacketData packetData = new PacketData();
+//        packetData.setCommand("zhibo.mfas.multipartauth");
+//        packetData.setData(multipartAuthRequest.toByteArray());
+//        PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, 10*1000);
+//        if (responseData != null) {
+//            try {
+//                MultipartAuthResponse response = MultipartAuthResponse.parseFrom(responseData.getData());
+//                if (response != null && response.getErrorCode() == 0) {
+//                    return response.getMultipartAuthorization();
+//                }
+//            } catch (Exception e) {
+//                MyLog.e(e);
+//            }
+//        }
+//        return null;
+//    }
 }

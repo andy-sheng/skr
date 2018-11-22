@@ -131,7 +131,8 @@ dependencies {
     // http
     api rootProject.ext.dependencies["okhttp3"]
     api rootProject.ext.dependencies["retrofit"]
-
+    api rootProject.ext.dependencies["retrofit-converter-gson"]
+    api rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
     // 权限检查
     api(rootProject.ext.dependencies["rxpermissions2"])
     // 日志
@@ -175,10 +176,6 @@ dependencies {
     api rootProject.ext.dependencies["SmartRefreshLayout"]
 //    debugApi rootProject.ext.dependencies["stetho"]
 
-    api rootProject.ext.dependencies["retrofit"]
-    api rootProject.ext.dependencies["retrofit-converter-gson"]
-    api rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
-
     // 使用矢量图来播动画的库
 //    implementation rootProject.ext.dependencies["lottie"]
 
@@ -187,7 +184,7 @@ dependencies {
     // 蒲公英 用户反馈 与 崩溃收集
     api files('libs/pgyer_sdk_3.0.2.jar')
 
-    api files('libs/milinksdk-3.2.0.jar')
+    //api files('libs/milinksdk-3.2.0.jar')
 
     api files('libs/BaiduLBS_Android.jar')
     if (virtualApkEnable.toBoolean()) {

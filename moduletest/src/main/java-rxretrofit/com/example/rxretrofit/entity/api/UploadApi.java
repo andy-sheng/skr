@@ -2,7 +2,7 @@ package com.example.rxretrofit.entity.api;
 
 import com.common.rxretrofit.Api.BaseApi;
 import com.common.rxretrofit.Api.BaseResultEntity;
-import com.common.rxretrofit.http.HttpManager;
+import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.upload.ProgressRequestBody;
 import com.common.rxretrofit.upload.UploadProgressListener;
 import com.example.rxretrofit.HttpUploadService;
@@ -39,7 +39,7 @@ public class UploadApi extends BaseApi {
             }
         }));
 
-        HttpUploadService service = HttpManager.getInstance().doHttpRequest(this).create(HttpUploadService.class);
+        HttpUploadService service = ApiManager.getInstance().newClient(this).create(HttpUploadService.class);
         RequestBody uidBody = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(uid));
         RequestBody keyBody = RequestBody.create(MediaType.parse("text/plain"), key);
         return service.uploadImage(uidBody, keyBody, part1);

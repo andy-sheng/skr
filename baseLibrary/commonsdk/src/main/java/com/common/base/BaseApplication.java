@@ -26,8 +26,6 @@ import com.common.base.delegate.AppDelegate;
 import com.common.base.delegate.AppLifecycles;
 import com.common.base.delegate.PluginAppDelegate;
 import com.common.utils.U;
-import com.mi.milink.sdk.base.Global;
-import com.mi.milink.sdk.data.ClientAppInfo;
 
 import java.util.List;
 
@@ -111,9 +109,8 @@ public class BaseApplication extends Application {
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onCreate(this);
         }
-//        U.getToastUtil().showShort(TAG + " onCreate");
         // 为了 milink 的初始化
-        Global.init(this, getClientAppInfo());
+//        Global.init(this, getClientAppInfo());
         if (U.isCoreProcess()) {
             if (mAppDelegate != null) {
                 this.mAppDelegate.onCreate(this);
@@ -121,17 +118,17 @@ public class BaseApplication extends Application {
         }
     }
 
-    private ClientAppInfo getClientAppInfo() {
-        return new ClientAppInfo.Builder(10008)
-                .setAppName("WALI_LIVE_SDK")
-                .setPackageName("com.mi.liveassistant")
-                .setReleaseChannel("DEBUG")
-                .setVersionName("4.51.1")
-                .setVersionCode(451001)
-                .setLanguageCode("ZH-CN")
-                .setServiceProcessName("com.mi.liveassistant:remote")
-                .build();
-    }
+//    private ClientAppInfo getClientAppInfo() {
+//        return new ClientAppInfo.Builder(10008)
+//                .setAppName("WALI_LIVE_SDK")
+//                .setPackageName("com.mi.liveassistant")
+//                .setReleaseChannel("DEBUG")
+//                .setVersionName("4.51.1")
+//                .setVersionCode(451001)
+//                .setLanguageCode("ZH-CN")
+//                .setServiceProcessName("com.mi.liveassistant:remote")
+//                .build();
+//    }
 
     /**
      * 在模拟环境中程序终止时会被调用

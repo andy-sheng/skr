@@ -11,7 +11,7 @@ import com.common.milink.callback.MiLinkPacketDispatcher;
 import com.common.milink.callback.MiLinkStatusObserver;
 import com.common.milink.command.MiLinkCommand;
 import com.common.milink.handler.ExtraDataHandler;
-import com.common.utils.U;
+
 import com.mi.milink.sdk.aidl.PacketData;
 import com.mi.milink.sdk.client.MiLinkChannelClient;
 import com.mi.milink.sdk.client.SendPacketListener;

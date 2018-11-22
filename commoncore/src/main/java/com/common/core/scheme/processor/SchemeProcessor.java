@@ -130,53 +130,53 @@ public class SchemeProcessor extends CommonProcessor {
 
         if (!TextUtils.isEmpty(liveId)) {
             MyLog.w(TAG, "processHostRoom roomInfoRequest");
-            Observable.just(0)
-                    .map(new Function<Integer, RoomInfoRsp>() {
-                        @Override
-                        public RoomInfoRsp apply(Integer integer) throws Exception {
-                            return RoomInfoServerApi.getRoomInfo(MyUserInfoManager.getInstance().getMyUserInfo().getUserInfo().getUserId(),
-                                    playerId, liveId, null, false, false);
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .compose(activity.<RoomInfoRsp>bindUntilEvent(ActivityEvent.DESTROY))
-                    .subscribe(new Observer<RoomInfoRsp>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(RoomInfoRsp roomInfoRsp) {
-                            MyLog.w(TAG, "roomInfoRequest enter");
-                            if (roomInfoRsp != null && roomInfoRsp.getRetCode() == 0) {
-                                if (roomInfoRsp.hasDownStreamUrl() && !TextUtils.isEmpty(roomInfoRsp.getDownStreamUrl())) {
-                                    MyLog.w(TAG, "roomInfoRequest enterWatch success");
-                                    jumpToWatchActivity(playerId, liveId, roomInfoRsp.getType(), roomInfoRsp.getDownStreamUrl());
-                                    activity.finish();
-                                    return;
-                                } else if (roomInfoRsp.hasPlaybackUrl() && !TextUtils.isEmpty(roomInfoRsp.getPlaybackUrl())) {
-                                    MyLog.w(TAG, "roomInfoRequest enterVideoDetail success");
-                                    jumpToWatchActivity(playerId, liveId, roomInfoRsp.getType(), roomInfoRsp.getPlaybackUrl());
-                                    activity.finish();
-                                    return;
-                                }
-
-                            }
-                            queryHistoryLive(playerId, activity);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
+//            Observable.just(0)
+//                    .map(new Function<Integer, RoomInfoRsp>() {
+//                        @Override
+//                        public RoomInfoRsp apply(Integer integer) throws Exception {
+//                            return RoomInfoServerApi.getRoomInfo(MyUserInfoManager.getInstance().getMyUserInfo().getUserInfo().getUserId(),
+//                                    playerId, liveId, null, false, false);
+//                        }
+//                    })
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .compose(activity.<RoomInfoRsp>bindUntilEvent(ActivityEvent.DESTROY))
+//                    .subscribe(new Observer<RoomInfoRsp>() {
+//                        @Override
+//                        public void onSubscribe(Disposable d) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onNext(RoomInfoRsp roomInfoRsp) {
+//                            MyLog.w(TAG, "roomInfoRequest enter");
+//                            if (roomInfoRsp != null && roomInfoRsp.getRetCode() == 0) {
+//                                if (roomInfoRsp.hasDownStreamUrl() && !TextUtils.isEmpty(roomInfoRsp.getDownStreamUrl())) {
+//                                    MyLog.w(TAG, "roomInfoRequest enterWatch success");
+//                                    jumpToWatchActivity(playerId, liveId, roomInfoRsp.getType(), roomInfoRsp.getDownStreamUrl());
+//                                    activity.finish();
+//                                    return;
+//                                } else if (roomInfoRsp.hasPlaybackUrl() && !TextUtils.isEmpty(roomInfoRsp.getPlaybackUrl())) {
+//                                    MyLog.w(TAG, "roomInfoRequest enterVideoDetail success");
+//                                    jumpToWatchActivity(playerId, liveId, roomInfoRsp.getType(), roomInfoRsp.getPlaybackUrl());
+//                                    activity.finish();
+//                                    return;
+//                                }
+//
+//                            }
+//                            queryHistoryLive(playerId, activity);
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onComplete() {
+//
+//                        }
+//                    });
         } else {
             queryRoomInfo(playerId, activity);
         }
@@ -184,96 +184,96 @@ public class SchemeProcessor extends CommonProcessor {
 
     private static void queryRoomInfo(final long playerId, @NonNull final BaseActivity activity) {
         MyLog.w(TAG, "processHostRoom queryRoomInfo");
-        Observable.just(0)
-                .map(new Function<Integer, HisRoomRsp>() {
-                    @Override
-                    public HisRoomRsp apply(Integer integer) throws Exception {
-                        return RoomInfoServerApi.getLiveShowByUserId(playerId);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .compose(activity.<HisRoomRsp>bindUntilEvent(ActivityEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HisRoomRsp>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(HisRoomRsp hisRoomRsp) {
-                        MyLog.w(TAG, "queryRoomInfo enter");
-                        if (hisRoomRsp != null && hisRoomRsp.getRetCode() == 0) {
-                            MyLog.w(TAG, "queryRoomInfo success");
-                            jumpToWatchActivity(playerId, hisRoomRsp.getLiveId(), hisRoomRsp.getType(), hisRoomRsp.getViewUrl());
-                            activity.finish();
-                            return;
-                        } else {
-                            MyLog.w(TAG, " queryRoomInfo err !!!");
-                        }
-
-                        queryHistoryLive(playerId, activity);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, "queryRoomInfo failed ");
-                        MyLog.e(e);
-                        activity.finish();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+//        Observable.just(0)
+//                .map(new Function<Integer, HisRoomRsp>() {
+//                    @Override
+//                    public HisRoomRsp apply(Integer integer) throws Exception {
+//                        return RoomInfoServerApi.getLiveShowByUserId(playerId);
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .compose(activity.<HisRoomRsp>bindUntilEvent(ActivityEvent.DESTROY))
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<HisRoomRsp>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(HisRoomRsp hisRoomRsp) {
+//                        MyLog.w(TAG, "queryRoomInfo enter");
+//                        if (hisRoomRsp != null && hisRoomRsp.getRetCode() == 0) {
+//                            MyLog.w(TAG, "queryRoomInfo success");
+//                            jumpToWatchActivity(playerId, hisRoomRsp.getLiveId(), hisRoomRsp.getType(), hisRoomRsp.getViewUrl());
+//                            activity.finish();
+//                            return;
+//                        } else {
+//                            MyLog.w(TAG, " queryRoomInfo err !!!");
+//                        }
+//
+//                        queryHistoryLive(playerId, activity);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        MyLog.e(TAG, "queryRoomInfo failed ");
+//                        MyLog.e(e);
+//                        activity.finish();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 
     private static void queryHistoryLive(final long playerId, @NonNull final BaseActivity activity) {
         MyLog.w(TAG, "processHostRoom queryHistoryLive");
-        Observable.just(0)
-                .map(new Function<Integer, HistoryLiveRsp>() {
-                    @Override
-                    public HistoryLiveRsp apply(Integer integer) throws Exception {
-                        return RoomInfoServerApi.getHistoryShowList(MyUserInfoManager.getInstance().getUid(), playerId);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .compose(activity.<HistoryLiveRsp>bindUntilEvent(ActivityEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HistoryLiveRsp>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(HistoryLiveRsp historyLiveRsp) {
-                        MyLog.w(TAG, "queryHistoryLive enter");
-                        if (historyLiveRsp != null && historyLiveRsp.getRetCode() == 0) {
-                            List<HisLive> list = historyLiveRsp.getHisLiveList();
-                            if (list != null && list.size() > 0) {
-                                MyLog.w(TAG, "queryHistoryLive success");
-                                HisLive hisLive = list.get(0);
-                                jumpToVideoDetailActivity(playerId, hisLive.getLiveId(), hisLive.getType(), hisLive.getUrl());
-                            }
-                        } else {
-                            MyLog.w(TAG, " queryHistoryLive err !!!");
-                        }
-                        activity.finish();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, "queryHistoryLive failed ");
-                        MyLog.e(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+//        Observable.just(0)
+//                .map(new Function<Integer, HistoryLiveRsp>() {
+//                    @Override
+//                    public HistoryLiveRsp apply(Integer integer) throws Exception {
+//                        return RoomInfoServerApi.getHistoryShowList(MyUserInfoManager.getInstance().getUid(), playerId);
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .compose(activity.<HistoryLiveRsp>bindUntilEvent(ActivityEvent.DESTROY))
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<HistoryLiveRsp>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(HistoryLiveRsp historyLiveRsp) {
+//                        MyLog.w(TAG, "queryHistoryLive enter");
+//                        if (historyLiveRsp != null && historyLiveRsp.getRetCode() == 0) {
+//                            List<HisLive> list = historyLiveRsp.getHisLiveList();
+//                            if (list != null && list.size() > 0) {
+//                                MyLog.w(TAG, "queryHistoryLive success");
+//                                HisLive hisLive = list.get(0);
+//                                jumpToVideoDetailActivity(playerId, hisLive.getLiveId(), hisLive.getType(), hisLive.getUrl());
+//                            }
+//                        } else {
+//                            MyLog.w(TAG, " queryHistoryLive err !!!");
+//                        }
+//                        activity.finish();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        MyLog.e(TAG, "queryHistoryLive failed ");
+//                        MyLog.e(e);
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 
     private static void jumpToWatchActivity(long playerId, String liveId, int liveType, String videoUrl) {

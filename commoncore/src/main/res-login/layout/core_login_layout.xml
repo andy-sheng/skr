@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:titlebar="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,24 +20,37 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titlebar">
+        android:layout_below="@+id/titlebar"
+        android:layout_marginLeft="@dimen/view_dimen_100">
 
-        <TextView
-            android:id="@+id/mi_btn"
+        <com.common.view.ex.NoLeakEditText
+            android:id="@+id/input_phone_et"
+            android:layout_width="@dimen/view_dimen_500"
+            android:layout_height="wrap_content"
+            android:hint="请输入手机号" />
+
+        <com.common.view.ex.ExButton
+            android:id="@+id/send_msg_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/view_dimen_10"
-            android:text="小米登录"
-            android:textSize="@dimen/view_dimen_30" />
+            android:layout_toRightOf="@id/input_phone_et"
+            android:text="发送" />
 
-        <TextView
-            android:id="@+id/mi_test"
+        <com.common.view.ex.NoLeakEditText
+            android:id="@+id/verify_code_et"
+            android:layout_width="@dimen/view_dimen_300"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_phone_et"
+            android:layout_marginTop="@dimen/view_dimen_20"
+            android:hint="请输入验证码" />
+
+        <com.common.view.ex.ExButton
+            android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mi_btn"
-            android:layout_margin="@dimen/view_dimen_30"
-            android:text="测试"
-            android:textSize="@dimen/view_dimen_30" />
+            android:layout_below="@+id/verify_code_et"
+            android:layout_marginTop="@dimen/view_dimen_20"
+            android:text="登录" />
     </RelativeLayout>
 
 

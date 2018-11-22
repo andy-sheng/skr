@@ -1,30 +1,12 @@
 package com.common.core.userinfo;
 
-import android.text.TextUtils;
-
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.wali.live.proto.Relation.BlockResponse;
-import com.wali.live.proto.Relation.BlockerListResponse;
-import com.wali.live.proto.Relation.FollowResponse;
-import com.wali.live.proto.Relation.FollowerListResponse;
-import com.wali.live.proto.Relation.FollowingListResponse;
-import com.wali.live.proto.Relation.UnBlockResponse;
-import com.wali.live.proto.Relation.UnFollowResponse;
 import com.wali.live.proto.User.GetHomepageResp;
 import com.wali.live.proto.User.GetUserInfoByIdRsp;
 import com.wali.live.proto.User.MutiGetUserInfoRsp;
-import com.wali.live.proto.User.PersonalInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class UserInfoManager {
 
@@ -81,14 +63,14 @@ public class UserInfoManager {
 
         UserInfo local = UserInfoLocalApi.getUserInfoByUUid(uuid);
         if (local == null || !userInfoCallBack.onGetLocalDB(local)) {
-            GetUserInfoByIdRsp response = UserInfoServerApi.getUserInfoByUuid(uuid);
-            if (response != null && response.getErrorCode() == 0) {
-                UserInfo userInfo = new UserInfo();
-                userInfo.parse(response.getPersonalInfo());
-                MyLog.w(TAG, "getUserInfoByUuid userInfo = " + userInfo.toString());
-                UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
-            }
-            userInfoCallBack.onGetServer(response);
+//            GetUserInfoByIdRsp response = UserInfoServerApi.getUserInfoByUuid(uuid);
+//            if (response != null && response.getErrorCode() == 0) {
+//                UserInfo userInfo = new UserInfo();
+//                userInfo.parse(response.getPersonalInfo());
+//                MyLog.w(TAG, "getUserInfoByUuid userInfo = " + userInfo.toString());
+//                UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
+//            }
+//            userInfoCallBack.onGetServer(response);
         }
     }
 
@@ -121,14 +103,14 @@ public class UserInfoManager {
 
         UserInfo local = UserInfoLocalApi.getUserInfoByUUid(uuid);
         if (local == null || !callBack.onGetLocalDB(local)) {
-            GetHomepageResp response = UserInfoServerApi.getHomepageByUuid(uuid, needPullLiveInfo);
-            if (response != null && response.getRetCode() == 0) {
-                UserInfo userInfo = new UserInfo();
-                userInfo.parse(response.getPersonalInfo());
-                MyLog.w(TAG, "getHomepageByUuid userInfo = " + userInfo.toString());
-                UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
-            }
-            callBack.onGetServer(response);
+//            GetHomepageResp response = UserInfoServerApi.getHomepageByUuid(uuid, needPullLiveInfo);
+//            if (response != null && response.getRetCode() == 0) {
+//                UserInfo userInfo = new UserInfo();
+//                userInfo.parse(response.getPersonalInfo());
+//                MyLog.w(TAG, "getHomepageByUuid userInfo = " + userInfo.toString());
+//                UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
+//            }
+//            callBack.onGetServer(response);
         }
     }
 
@@ -178,21 +160,21 @@ public class UserInfoManager {
             MyLog.w(TAG, "getHomepageListById Illegal parameter");
             return null;
         }
-        MutiGetUserInfoRsp response = UserInfoServerApi.getHomepageListById(uuidList);
-        if (response != null && response.getRetCode() == 0) {
-            List<UserInfo> userInfoList = new ArrayList<>();
-            List<PersonalInfo> personalInfos = response.getPersonalInfoList();
-            if (personalInfos != null && personalInfos.size() > 0) {
-                for (PersonalInfo personalInfo : personalInfos) {
-                    UserInfo userInfo = new UserInfo();
-                    userInfo.parse(personalInfo);
-                    userInfoList.add(userInfo);
-                }
-
-                UserInfoLocalApi.insertOrUpdate(userInfoList);
-            }
-            return response;
-        }
+//        MutiGetUserInfoRsp response = UserInfoServerApi.getHomepageListById(uuidList);
+//        if (response != null && response.getRetCode() == 0) {
+//            List<UserInfo> userInfoList = new ArrayList<>();
+//            List<PersonalInfo> personalInfos = response.getPersonalInfoList();
+//            if (personalInfos != null && personalInfos.size() > 0) {
+//                for (PersonalInfo personalInfo : personalInfos) {
+//                    UserInfo userInfo = new UserInfo();
+//                    userInfo.parse(personalInfo);
+//                    userInfoList.add(userInfo);
+//                }
+//
+//                UserInfoLocalApi.insertOrUpdate(userInfoList);
+//            }
+//            return response;
+//        }
 
         return null;
     }
@@ -246,23 +228,23 @@ public class UserInfoManager {
      */
     private List<UserInfo> getFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
         List<UserInfo> userInfoList = new ArrayList<>();
-        FollowingListResponse response = UserInfoServerApi.getFollowingListResponse(uuid, count, offset, bothway, loadByWater);
-        if (response != null && response.getCode() == 0) {
-            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
-            for (com.wali.live.proto.Relation.UserInfo userInfo : userInfos) {
-                userInfoList.add(UserInfo.loadFrom(userInfo, QUERY_FOLLOWED_LIST));
-            }
-
-            int total = response.getTotal();
-            if (userInfoList != null && userInfoList.size() > 0) {
-                if (total > 0 && offset < total) {
-                    offset += count;
-                    List<UserInfo> list = getFollowingFromServer(uuid, count, offset, bothway, loadByWater);
-                    userInfoList.addAll(list);
-                }
-            }
-        }
-        MyLog.w(TAG, "getFollowingFromServer userInfoList.size() = " + userInfoList.size());
+//        FollowingListResponse response = UserInfoServerApi.getFollowingListResponse(uuid, count, offset, bothway, loadByWater);
+//        if (response != null && response.getCode() == 0) {
+//            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
+//            for (com.wali.live.proto.Relation.UserInfo userInfo : userInfos) {
+//                userInfoList.add(UserInfo.loadFrom(userInfo, QUERY_FOLLOWED_LIST));
+//            }
+//
+//            int total = response.getTotal();
+//            if (userInfoList != null && userInfoList.size() > 0) {
+//                if (total > 0 && offset < total) {
+//                    offset += count;
+//                    List<UserInfo> list = getFollowingFromServer(uuid, count, offset, bothway, loadByWater);
+//                    userInfoList.addAll(list);
+//                }
+//            }
+//        }
+//        MyLog.w(TAG, "getFollowingFromServer userInfoList.size() = " + userInfoList.size());
         return userInfoList;
     }
 
@@ -284,23 +266,23 @@ public class UserInfoManager {
 
     private List<UserInfo> getFollowerListFromServer(long uuid, int count, int offset) {
         List<UserInfo> userInfoList = new ArrayList<>();
-        FollowerListResponse response = UserInfoServerApi.getFollowerListResponse(uuid, count, offset);
-        if (response != null && response.getCode() == 0) {
-            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
-            for (com.wali.live.proto.Relation.UserInfo userInfo : userInfos) {
-                userInfoList.add(UserInfo.loadFrom(userInfo, QUERY_FOLLOWER_LIST));
-            }
-
-            int total = response.getTotal();
-            if (userInfoList != null && userInfoList.size() > 0) {
-                if (total > 0 && offset < total) {
-                    offset += count;
-                    List<UserInfo> list = getFollowerListFromServer(uuid, count, offset);
-                    userInfoList.addAll(list);
-                }
-            }
-        }
-        MyLog.w(TAG, "getFollowerListFromServer userInfoList.size() = " + userInfoList.size());
+//        FollowerListResponse response = UserInfoServerApi.getFollowerListResponse(uuid, count, offset);
+//        if (response != null && response.getCode() == 0) {
+//            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
+//            for (com.wali.live.proto.Relation.UserInfo userInfo : userInfos) {
+//                userInfoList.add(UserInfo.loadFrom(userInfo, QUERY_FOLLOWER_LIST));
+//            }
+//
+//            int total = response.getTotal();
+//            if (userInfoList != null && userInfoList.size() > 0) {
+//                if (total > 0 && offset < total) {
+//                    offset += count;
+//                    List<UserInfo> list = getFollowerListFromServer(uuid, count, offset);
+//                    userInfoList.addAll(list);
+//                }
+//            }
+//        }
+//        MyLog.w(TAG, "getFollowerListFromServer userInfoList.size() = " + userInfoList.size());
         return userInfoList;
     }
 
@@ -321,126 +303,126 @@ public class UserInfoManager {
 
     private List<UserInfo> getBockerListFromServer(long uuid, int count, int offset) {
         List<UserInfo> userInfoList = new ArrayList<>();
-        BlockerListResponse response = UserInfoServerApi.getBlockerListResponse(uuid, count, offset);
-        if (response != null && response.getCode() == 0) {
-            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
-            for (com.wali.live.proto.Relation.UserInfo userInfo : userInfos) {
-                userInfoList.add(UserInfo.loadFrom(userInfo, QUERY_BLOCKER_LIST));
-            }
-            int total = response.getTotal();
-            if (userInfoList != null && userInfoList.size() > 0) {
-                if (total > 0 && offset < total) {
-                    offset += count;
-                    List<UserInfo> list = getBockerListFromServer(uuid, count, offset);
-                    userInfoList.addAll(list);
-                }
-            }
-        }
-
-        MyLog.w(TAG, "getBockerListFromServer userInfoList.size() = " + userInfoList.size());
+//        BlockerListResponse response = UserInfoServerApi.getBlockerListResponse(uuid, count, offset);
+//        if (response != null && response.getCode() == 0) {
+//            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
+//            for (com.wali.live.proto.Relation.UserInfo userInfo : userInfos) {
+//                userInfoList.add(UserInfo.loadFrom(userInfo, QUERY_BLOCKER_LIST));
+//            }
+//            int total = response.getTotal();
+//            if (userInfoList != null && userInfoList.size() > 0) {
+//                if (total > 0 && offset < total) {
+//                    offset += count;
+//                    List<UserInfo> list = getBockerListFromServer(uuid, count, offset);
+//                    userInfoList.addAll(list);
+//                }
+//            }
+//        }
+//
+//        MyLog.w(TAG, "getBockerListFromServer userInfoList.size() = " + userInfoList.size());
         return userInfoList;
     }
 
-    /**
-     * 关注
-     *
-     * @param uuid
-     * @param target
-     * @param roomId 仅在房间关注主播时设置
-     */
-    public Observable<Integer> follow(final long uuid, final long target, final String roomId) {
-        return Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                FollowResponse followResponse = UserInfoServerApi.follow(uuid, target, roomId);
-                int retCode = -1;
-                if (followResponse != null && (retCode = followResponse.getCode()) == 0) {
-                    // todo 插入到本地数据库
-                    UserInfo userInfo = new UserInfo();
-                    userInfo.setUserId(target);
-                    if (followResponse.getIsBothway()) {
-                        userInfo.setRelative(UserInfoManager.BOTH_FOLLOWED);
-                    } else {
-                        userInfo.setRelative(UserInfoManager.MY_FOLLOWING);
-                    }
-                    UserInfoLocalApi.insertOrUpdate(userInfo, true, false);
-                }
-                emitter.onNext(retCode);
-                emitter.onComplete();
-            }
-        });
-    }
+//    /**
+//     * 关注
+//     *
+//     * @param uuid
+//     * @param target
+//     * @param roomId 仅在房间关注主播时设置
+//     */
+//    public Observable<Integer> follow(final long uuid, final long target, final String roomId) {
+//        return Observable.create(new ObservableOnSubscribe<Integer>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+//                FollowResponse followResponse = UserInfoServerApi.follow(uuid, target, roomId);
+//                int retCode = -1;
+//                if (followResponse != null && (retCode = followResponse.getCode()) == 0) {
+//                    // todo 插入到本地数据库
+//                    UserInfo userInfo = new UserInfo();
+//                    userInfo.setUserId(target);
+//                    if (followResponse.getIsBothway()) {
+//                        userInfo.setRelative(UserInfoManager.BOTH_FOLLOWED);
+//                    } else {
+//                        userInfo.setRelative(UserInfoManager.MY_FOLLOWING);
+//                    }
+//                    UserInfoLocalApi.insertOrUpdate(userInfo, true, false);
+//                }
+//                emitter.onNext(retCode);
+//                emitter.onComplete();
+//            }
+//        });
+//    }
 
-    /**
-     * 取消关注
-     *
-     * @param uuid
-     * @param target
-     */
-    public Observable<Integer> unFollow(final long uuid, final long target) {
-        return Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                UnFollowResponse unFollowResponse = UserInfoServerApi.unFollow(uuid, target);
-                int retCode = -1;
-                if (unFollowResponse != null && (retCode = unFollowResponse.getCode()) == 0) {
-                    // todo 更新本地数据库,未关注,直接删除
-                    UserInfoLocalApi.deleUserInfoByUUid(target);
-                }
-                emitter.onNext(retCode);
-                emitter.onComplete();
-            }
-        });
-    }
+//    /**
+//     * 取消关注
+//     *
+//     * @param uuid
+//     * @param target
+//     */
+//    public Observable<Integer> unFollow(final long uuid, final long target) {
+//        return Observable.create(new ObservableOnSubscribe<Integer>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+//                UnFollowResponse unFollowResponse = UserInfoServerApi.unFollow(uuid, target);
+//                int retCode = -1;
+//                if (unFollowResponse != null && (retCode = unFollowResponse.getCode()) == 0) {
+//                    // todo 更新本地数据库,未关注,直接删除
+//                    UserInfoLocalApi.deleUserInfoByUUid(target);
+//                }
+//                emitter.onNext(retCode);
+//                emitter.onComplete();
+//            }
+//        });
+//    }
 
-    /**
-     * 拉黑
-     *
-     * @param uuid
-     * @param target
-     */
-    public Observable<Integer> block(final long uuid, final long target) {
-        return Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                BlockResponse blockResponse = UserInfoServerApi.block(uuid, target);
-                int retCode = -1;
-                if (blockResponse != null && (retCode = blockResponse.getCode()) == 0) {
-                    // todo 插入到本地数据库
-                    UserInfo relation = new UserInfo();
-                    relation.setUserId(target);
-                    relation.setBlock(true);
-                    UserInfoLocalApi.insertOrUpdate(relation, false, true);
-                }
-                emitter.onNext(retCode);
-                emitter.onComplete();
-            }
-        });
-    }
+//    /**
+//     * 拉黑
+//     *
+//     * @param uuid
+//     * @param target
+//     */
+//    public Observable<Integer> block(final long uuid, final long target) {
+//        return Observable.create(new ObservableOnSubscribe<Integer>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+//                BlockResponse blockResponse = UserInfoServerApi.block(uuid, target);
+//                int retCode = -1;
+//                if (blockResponse != null && (retCode = blockResponse.getCode()) == 0) {
+//                    // todo 插入到本地数据库
+//                    UserInfo relation = new UserInfo();
+//                    relation.setUserId(target);
+//                    relation.setBlock(true);
+//                    UserInfoLocalApi.insertOrUpdate(relation, false, true);
+//                }
+//                emitter.onNext(retCode);
+//                emitter.onComplete();
+//            }
+//        });
+//    }
 
 
-    /**
-     * 取消拉黑
-     *
-     * @param uuid
-     * @param target
-     */
-    public Observable<Integer> unBlock(final long uuid, final long target) {
-        return Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                UnBlockResponse unBlockResponse = UserInfoServerApi.unBlock(uuid, target);
-                int retCode = -1;
-                if (unBlockResponse != null && (retCode = unBlockResponse.getCode()) == 0) {
-                    UserInfo relation = new UserInfo();
-                    relation.setUserId(target);
-                    relation.setBlock(false);
-
-                    UserInfoLocalApi.insertOrUpdate(relation, false, true);
-                }
-                emitter.onNext(retCode);
-                emitter.onComplete();
-            }
-        });
-    }
+//    /**
+//     * 取消拉黑
+//     *
+//     * @param uuid
+//     * @param target
+//     */
+//    public Observable<Integer> unBlock(final long uuid, final long target) {
+//        return Observable.create(new ObservableOnSubscribe<Integer>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+//                UnBlockResponse unBlockResponse = UserInfoServerApi.unBlock(uuid, target);
+//                int retCode = -1;
+//                if (unBlockResponse != null && (retCode = unBlockResponse.getCode()) == 0) {
+//                    UserInfo relation = new UserInfo();
+//                    relation.setUserId(target);
+//                    relation.setBlock(false);
+//
+//                    UserInfoLocalApi.insertOrUpdate(relation, false, true);
+//                }
+//                emitter.onNext(retCode);
+//                emitter.onComplete();
+//            }
+//        });
+//    }
 }

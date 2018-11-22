@@ -11,11 +11,6 @@
         app:centerType="textView" />
 
     <TextView
-        android:id="@+id/test_rxretrofit_simple"
-        style="@style/MatchWrapTv"
-        android:text="rx+retrofit不封装" />
-
-    <TextView
         android:id="@+id/test_rxretrofit_encap"
         style="@style/MatchWrapTv"
         android:text="rx+retrofit封装" />

@@ -2,7 +2,7 @@ package com.common.milink.callback;
 
 import com.common.log.MyLog;
 import com.common.milink.event.MiLinkEvent;
-import com.common.utils.U;
+
 import com.mi.milink.sdk.client.IEventListener;
 
 import org.greenrobot.eventbus.EventBus;

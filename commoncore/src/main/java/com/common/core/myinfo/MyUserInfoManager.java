@@ -39,14 +39,14 @@ public class MyUserInfoManager {
                         setMyUserInfo(myUserInfo);
                     }
                     // 从服务器拉一次
-                    GetOwnInfoRsp rsp = MyUserInfoServerApi.getOwnInfoRsp(UserAccountManager.getInstance().getUuidAsLong());
-                    if (rsp != null) {
-                        myUserInfo = MyUserInfo.loadFrom(rsp);
-                        if (myUserInfo != null) {
-                            UserInfoLocalApi.insertOrUpdate(myUserInfo.getUserInfo(), false, false);
-                            setMyUserInfo(myUserInfo);
-                        }
-                    }
+//                    GetOwnInfoRsp rsp = MyUserInfoServerApi.getOwnInfoRsp(UserAccountManager.getInstance().getUuidAsLong());
+//                    if (rsp != null) {
+//                        myUserInfo = MyUserInfo.loadFrom(rsp);
+//                        if (myUserInfo != null) {
+//                            UserInfoLocalApi.insertOrUpdate(myUserInfo.getUserInfo(), false, false);
+//                            setMyUserInfo(myUserInfo);
+//                        }
+//                    }
                 }
                 emitter.onComplete();
             }

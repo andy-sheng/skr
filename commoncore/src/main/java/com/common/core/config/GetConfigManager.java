@@ -21,12 +21,7 @@ import com.common.core.config.event.DomainListUpdateEvent;
 import com.common.core.config.event.SixinWhiteListUpdateEvent;
 import com.common.core.view.RoundRectDradable;
 import com.common.log.MyLog;
-import com.common.milink.MiLinkClientAdapter;
-import com.common.milink.command.MiLinkCommand;
-import com.common.milink.constant.MiLinkConstant;
 import com.common.utils.U;
-import com.mi.milink.sdk.aidl.PacketData;
-import com.mi.milink.sdk.proto.SystemPacketProto;
 import com.wali.live.proto.Config.MiLinkGetConfigReq;
 
 import org.greenrobot.eventbus.EventBus;
@@ -51,7 +46,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -399,59 +393,59 @@ public class GetConfigManager {
             return;
         }
 
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                MiLinkGetConfigReq request = new MiLinkGetConfigReq.Builder().setTimeStamp(0L).build();
-                PacketData packetData = new PacketData();
-                packetData.setCommand(MiLinkCommand.COMMAND_GET_CONFIG);
-                packetData.setData(request.toByteArray());
-                PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
-                MyLog.v(TAG + "getConfig:" + responseData);
-                try {
-                    if (responseData != null) {
-                        SystemPacketProto.MiLinkGetConfigRsp response = SystemPacketProto.MiLinkGetConfigRsp.parseFrom(responseData.getData());
-                        MyLog.w(TAG + "getConfig result:" + response.getTimeStamp() + " " + response.getJsonConfig());
-                        if (response.getTimeStamp() != 0 && !TextUtils.isEmpty(response.getJsonConfig())) {
-                            sInstance.timestamp = System.currentTimeMillis();
-                            U.getPreferenceUtils().setSettingLong(ConfigPreferenKey.PREFERENCE_KEY_CONFIG_TIMESTAMP, sInstance.timestamp);
-                            if (U.getPreferenceUtils().hasKey(ConfigPreferenKey.PREFERENCE_KEY_CONFIG_JSON) && !response.getJsonConfig().equals(U.getPreferenceUtils().getSettingString(ConfigPreferenKey.PREFERENCE_KEY_CONFIG_JSON, ""))) {
-                                clearFile();
-                            }
-                            parseJsonConfig(response.getJsonConfig());
-                            U.getPreferenceUtils().setSettingString(ConfigPreferenKey.PREFERENCE_KEY_CONFIG_JSON, response.getJsonConfig());
-                        }
-                    }
-                } catch (Exception e) {
-                    MyLog.e(e);
-                }
-                emitter.onNext(null);
-                emitter.onComplete();
-            }
-        }).subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Object>() {
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        mGetConfigDisposable = d;
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        mGetConfigDisposable.dispose();
-                        mGetConfigDisposable = null;
-                    }
-                });
+//        Observable.create(new ObservableOnSubscribe<Object>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+//                MiLinkGetConfigReq request = new MiLinkGetConfigReq.Builder().setTimeStamp(0L).build();
+//                PacketData packetData = new PacketData();
+//                packetData.setCommand(MiLinkCommand.COMMAND_GET_CONFIG);
+//                packetData.setData(request.toByteArray());
+//                PacketData responseData = MiLinkClientAdapter.getInstance().sendSync(packetData, MiLinkConstant.TIME_OUT);
+//                MyLog.v(TAG + "getConfig:" + responseData);
+//                try {
+//                    if (responseData != null) {
+//                        SystemPacketProto.MiLinkGetConfigRsp response = SystemPacketProto.MiLinkGetConfigRsp.parseFrom(responseData.getData());
+//                        MyLog.w(TAG + "getConfig result:" + response.getTimeStamp() + " " + response.getJsonConfig());
+//                        if (response.getTimeStamp() != 0 && !TextUtils.isEmpty(response.getJsonConfig())) {
+//                            sInstance.timestamp = System.currentTimeMillis();
+//                            U.getPreferenceUtils().setSettingLong(ConfigPreferenKey.PREFERENCE_KEY_CONFIG_TIMESTAMP, sInstance.timestamp);
+//                            if (U.getPreferenceUtils().hasKey(ConfigPreferenKey.PREFERENCE_KEY_CONFIG_JSON) && !response.getJsonConfig().equals(U.getPreferenceUtils().getSettingString(ConfigPreferenKey.PREFERENCE_KEY_CONFIG_JSON, ""))) {
+//                                clearFile();
+//                            }
+//                            parseJsonConfig(response.getJsonConfig());
+//                            U.getPreferenceUtils().setSettingString(ConfigPreferenKey.PREFERENCE_KEY_CONFIG_JSON, response.getJsonConfig());
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    MyLog.e(e);
+//                }
+//                emitter.onNext(null);
+//                emitter.onComplete();
+//            }
+//        }).subscribeOn(Schedulers.io())
+//                .subscribe(new Observer<Object>() {
+//
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        mGetConfigDisposable = d;
+//                    }
+//
+//                    @Override
+//                    public void onNext(Object o) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        mGetConfigDisposable.dispose();
+//                        mGetConfigDisposable = null;
+//                    }
+//                });
     }
 
     private Disposable mParseJsonConfigDisposable;
