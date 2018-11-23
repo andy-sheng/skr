@@ -3,8 +3,12 @@ package com.common.rxretrofit;
 import com.common.base.BuildConfig;
 import com.common.log.MyLog;
 import com.common.rxretrofit.Api.BaseApi;
-import com.common.rxretrofit.http.cookie.CookieInterceptor;
+import com.common.rxretrofit.cookie.ClearableCookieJar;
+import com.common.rxretrofit.cookie.PersistentCookieJar;
+import com.common.rxretrofit.cookie.cache.SetCookieCache;
+import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.rxretrofit.interceptor.UserAgentInterceptor;
+import com.common.utils.U;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +29,13 @@ public class ApiManager {
 
     private Retrofit mDefalutRetrofit;
 
+    /**
+     * cookie持久化，cookie相关应该在http层面做，不属于业务
+     * http 的response 让 set-cookie 就 set-cookie
+     */
+    private ClearableCookieJar mCookieJar;
+
+
     private static class HttpManagerHolder {
         private static final ApiManager INSTANCE = new ApiManager();
     }
@@ -34,8 +45,10 @@ public class ApiManager {
         OkHttpClient.Builder defaultClient = new OkHttpClient.Builder()
                 .connectTimeout(10 * 1000, TimeUnit.MILLISECONDS);
 
-        defaultClient.addInterceptor(new UserAgentInterceptor());
+        mCookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(U.app()));
+        defaultClient.cookieJar(mCookieJar);
 
+        defaultClient.addInterceptor(new UserAgentInterceptor());
         if (BuildConfig.DEBUG) {
             // 确保这个拦截器最后添加,以便打印更多的日志
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -77,13 +90,13 @@ public class ApiManager {
      */
     public Retrofit newClient(BaseApi baseParm) {
         //手动创建一个OkHttpClient并设置超时时间缓存等设置
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(baseParm.getConnectionTime(), TimeUnit.SECONDS);
-        builder.addInterceptor(new CookieInterceptor(baseParm.isCache(), baseParm.getUrl()));
+        OkHttpClient.Builder defaultClient = new OkHttpClient.Builder();
+        defaultClient.connectTimeout(baseParm.getConnectionTime(), TimeUnit.SECONDS);
+        defaultClient.cookieJar(mCookieJar);
 
         /*创建retrofit对象*/
         Retrofit retrofit = new Retrofit.Builder()
-                .client(builder.build())
+                .client(defaultClient.build())
                 .addConverterFactory(FastJsonConverterFactory.create())
 //                .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

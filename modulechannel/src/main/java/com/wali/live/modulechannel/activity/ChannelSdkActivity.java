@@ -21,7 +21,7 @@ import com.wali.live.modulechannel.R;
 
 import java.util.List;
 
-@Route(path = RouterConstants.ACTIVITY_CHANNEL_SDK, extras = JumpInterceptor.NO_NEED_LOGIN)
+@Route(path = RouterConstants.ACTIVITY_CHANNEL_SDK, extras = JudgeLoginInterceptor.NO_NEED_LOGIN)
 public class ChannelSdkActivity extends BaseActivity {
     private BaseImageView mLoginBtn;
 

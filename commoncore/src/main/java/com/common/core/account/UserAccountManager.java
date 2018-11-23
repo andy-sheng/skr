@@ -6,16 +6,20 @@ import com.common.core.channel.HostChannelManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 
@@ -122,14 +126,14 @@ public class UserAccountManager {
         return "";
     }
 
-    public void logoff(final boolean deleteAccount){
-        if(mAccount!=null){
+    public void logoff(final boolean deleteAccount) {
+        if (mAccount != null) {
             Observable.create(new ObservableOnSubscribe<Object>() {
                 @Override
                 public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                    if(deleteAccount){
+                    if (deleteAccount) {
                         UserAccountLocalApi.delete(mAccount);
-                    }else {
+                    } else {
                         mAccount.setIsLogOff(true);
                         UserAccountLocalApi.insertOrReplace(mAccount);
                     }
@@ -227,15 +231,49 @@ public class UserAccountManager {
     public void loginByPhoneNum(String phoneNum, String verifyCode) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 1 为手机登录
-        userAccountServerApi.login(1,phoneNum,verifyCode)
+        userAccountServerApi.login(1, phoneNum, verifyCode)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult obj) {
+                        if (obj.getErrno() == 0) {
+                            String passToken = obj.getData().getJSONObject("token").getString("T");
+                            String serviceToken = obj.getData().getJSONObject("token").getString("S");
 
+                            com.alibaba.fastjson.JSONObject profileJO = obj.getData().getJSONObject("profile");
+                            long userID = profileJO.getLong("userID");
+                            String nickName = profileJO.getString("nickname");
+                            int sex = profileJO.getInteger("sex");
+                            String birthday = profileJO.getString("birthday");
+
+                            boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
+
+                            UserAccount userAccount = new UserAccount();
+                            userAccount.setPassToken(passToken);
+                            userAccount.setServiceToken(serviceToken);
+                            userAccount.setUid(String.valueOf(userID));
+                            userAccount.setNickName(nickName);
+                            setAccount(userAccount);
+                        }
                     }
                 });
 
     }
 
+    /**
+     * 更新用户信息
+     * @param nickName
+     * @param sex
+     * @param birthday
+     */
+    public void updateInfo(String nickName, int sex, String birthday) {
+        com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
+        jsonObject.put("nickname", nickName);
+        jsonObject.put("sex", sex);
+        jsonObject.put("birthday", birthday);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), jsonObject.toJSONString());
+        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
+        Observable<ApiResult> apiResultObservable = userAccountServerApi.updateInfo(body);
+        ApiMethods.subscribe(apiResultObservable, null);
+    }
 }

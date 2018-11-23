@@ -279,3 +279,8 @@ public static java.lang.String TABLENAME;
 
 # 为了 fastjson 反序列化
 -keep class * implements java.io.Serializable{*;}
+
+#cookie相关
+
+-dontwarn com.common.rxretrofit.cookie.**
+-keep class com.common.rxretrofit.cookie.**

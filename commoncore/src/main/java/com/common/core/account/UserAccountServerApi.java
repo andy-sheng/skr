@@ -3,8 +3,11 @@ package com.common.core.account;
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 /**
@@ -23,4 +26,10 @@ public interface UserAccountServerApi {
     Observable<ApiResult> login(@Query("mode") int loginType,
                                 @Query("sign") String phoneNum,
                                 @Query("code") String verifyCode);
+
+
+    @Headers("Content-Type : application/json")
+    @PUT("v1/uprofile/information")
+    Observable<ApiResult> updateInfo(@Body RequestBody body);
+
 }
