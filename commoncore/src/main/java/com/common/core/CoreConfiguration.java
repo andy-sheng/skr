@@ -25,6 +25,8 @@ import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
 import com.common.base.ConfigModule;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.interceptor.AddDeviceInfoInterceptor;
 
 import java.util.List;
 
@@ -59,6 +61,7 @@ public class CoreConfiguration implements ConfigModule {
             @Override
             public void onCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
+                ApiManager.getInstance().addInterceptor(new AddDeviceInfoInterceptor());
                 UserAccountManager.getInstance().init();
             }
 

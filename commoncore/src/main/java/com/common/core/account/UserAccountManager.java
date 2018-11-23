@@ -1,6 +1,7 @@
 package com.common.core.account;
 
 
+import com.alibaba.fastjson.JSON;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.channel.HostChannelManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -13,6 +14,8 @@ import com.common.utils.U;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -133,9 +136,11 @@ public class UserAccountManager {
                 public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                     if (deleteAccount) {
                         UserAccountLocalApi.delete(mAccount);
+                        ApiManager.getInstance().clearCookies();
                     } else {
                         mAccount.setIsLogOff(true);
                         UserAccountLocalApi.insertOrReplace(mAccount);
+                        ApiManager.getInstance().clearCookies();
                     }
                     mAccount = null;
                     emitter.onComplete();
@@ -267,11 +272,12 @@ public class UserAccountManager {
      * @param birthday
      */
     public void updateInfo(String nickName, int sex, String birthday) {
-        com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
-        jsonObject.put("nickname", nickName);
-        jsonObject.put("sex", sex);
-        jsonObject.put("birthday", birthday);
-        RequestBody body = RequestBody.create(MediaType.parse("application/json"), jsonObject.toJSONString());
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("nickname", nickName);
+        map.put("sex", sex);
+        map.put("birthday", birthday);
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),  JSON.toJSONString(map));
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         Observable<ApiResult> apiResultObservable = userAccountServerApi.updateInfo(body);
         ApiMethods.subscribe(apiResultObservable, null);
