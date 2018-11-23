@@ -1,8 +1,0 @@
-本模块提供自动创建component结构代码的python命令
-
-创建具有Presenter和View的组件
-create_presenter_with_view.py
-
-创建只有Presenter的组件
-create_presenter_with_view.py
-

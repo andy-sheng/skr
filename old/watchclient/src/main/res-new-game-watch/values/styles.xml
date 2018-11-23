@@ -1,8 +1,0 @@
-<resources>
-
-    <style name="popwin_anim_style">
-        <item name="android:windowEnterAnimation">@anim/watch_game_menu_dialog_enter</item>
-        <item name="android:windowExitAnimation">@anim/watch_game_menu_dialog_exit</item>
-    </style>
-
-</resources>

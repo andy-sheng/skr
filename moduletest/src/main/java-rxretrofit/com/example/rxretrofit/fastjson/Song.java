@@ -1,6 +1,11 @@
 package com.example.rxretrofit.fastjson;
 
-public class Song {
+import java.io.Serializable;
+
+/**
+ * 确保
+ */
+public class Song implements Serializable {
     String xqusic_mid;
     String xqusic_id;
 

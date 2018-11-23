@@ -142,8 +142,6 @@
 ##---------------Begin: proguard configuration for Gson  ----------
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # removes such information by default, so configure it to keep all of it.
--keepattributes Signature
-
 # For using GSON @Expose annotation
 -keepattributes *Annotation*
 
@@ -201,7 +199,6 @@
 -dontwarn com.google.appengine.api.urlfetch.**
 -dontwarn rx.**
 -dontwarn retrofit.**
--keepattributes Signature
 -keepattributes *Annotation*
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
@@ -211,7 +208,6 @@
 }
 
 #阿里百川sdk
--keepattributes Signature
 -keep class sun.misc.Unsafe {*;}
 -keep class com.taobao.* {*;}
 -keep class com.alibaba.** {*;}
@@ -280,3 +276,6 @@ public static java.lang.String TABLENAME;
 
 # 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现
 # -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+
+# 为了 fastjson 反序列化
+-keep class * implements java.io.Serializable{*;}
