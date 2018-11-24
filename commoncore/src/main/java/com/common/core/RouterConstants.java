@@ -9,6 +9,8 @@ public interface RouterConstants {
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
     String ACTIVITY_RANKINGMODE = "/rankingmode/RankingModeActivity";
 
+    String ACTIVITY_MESSAGE = "/imkit/MessageActivity";
+
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";
     String ACTIVITY_TEST = "/test/TestSdkActivity";

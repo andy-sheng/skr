@@ -145,6 +145,9 @@ dependencies {
         implementation project(":Module:Home")
         implementation project(":Module:RankingMode")
         implementation project(":moduletest")
+
+        implementation project(":Module:IMKit")
+        implementation project(":Module:IMLib")
         //  tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     }

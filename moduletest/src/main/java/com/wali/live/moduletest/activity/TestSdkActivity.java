@@ -142,6 +142,15 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
+        mDataList.add(new H("打开消息", new Runnable() {
+
+            @Override
+            public void run() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_MESSAGE)
+                        .navigation();
+            }
+        }));
+
         mDataList.add(new H("检查更新", new Runnable() {
             @Override
             public void run() {

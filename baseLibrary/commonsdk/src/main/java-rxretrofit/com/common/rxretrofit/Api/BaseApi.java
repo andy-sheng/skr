@@ -7,7 +7,7 @@ import io.reactivex.functions.Function;
 import retrofit2.Retrofit;
 
 /**
- * 请求数据统一封装类
+ * 请求数据统一封装类(配置请求的一些类型)
  * Created by WZG on 2016/7/16.
  */
 public abstract class BaseApi<T> {

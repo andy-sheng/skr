@@ -1,6 +1,7 @@
 package com.example.rxretrofit.fragment;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +25,8 @@ import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.wali.live.moduletest.R;
 import com.example.rxretrofit.TestService;
 
+import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 import io.reactivex.Observer;

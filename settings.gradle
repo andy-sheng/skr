@@ -1,11 +1,10 @@
-include ':app', ':baseLibrary:commonsdk', ':commonservice', ':commoncore',  ':moduletest'
+include ':app', ':baseLibrary:commonsdk', ':commonservice', ':commoncore', ':moduletest'
 //include ':modulewatch', ':modulechannel'
-include ':Module:Home', ':Module:RankingMode'
+include ':Module:Home', ':Module:RankingMode',':Module:IMKit', ':Module:IMLib'
 
 include ':plugindemo'
 
 include ':baseLibrary:my-utils-gradle'
-
 
 if (droidPluginEnable.toBoolean()) {
     include ':baseLibrary:DroidPlugin'
