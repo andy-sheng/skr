@@ -17,19 +17,20 @@ import io.rong.imlib.RongIMClient;
 /**
  * 仅用来测试直接用从融云获取token
  */
-public class GetTokenManager {
+public class RCTokenManager {
 
     public final static String TAG = "GetTokenManager";
 
-    private GetTokenManager(){
-    }
-
     private static class GetTokenManagerHolder {
-        private static final GetTokenManager INSTANCE = new GetTokenManager();
+        private static final RCTokenManager INSTANCE = new RCTokenManager();
     }
 
-    public static final GetTokenManager getInstance() {
-        return GetTokenManager.GetTokenManagerHolder.INSTANCE;
+    private RCTokenManager() {
+
+    }
+
+    public static final RCTokenManager getInstance() {
+        return GetTokenManagerHolder.INSTANCE;
     }
 
     /**
@@ -45,7 +46,7 @@ public class GetTokenManager {
             return;
         }
 
-        GetTokenServerApi getTokenServerApi = RongIMAPIManager.getInstance().createService(GetTokenServerApi.class);
+        RCTokenServerApi getTokenServerApi = RongIMAPIManager.getInstance().createService(RCTokenServerApi.class);
         getTokenServerApi.getToken(userId, name, portraitUri)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<JSONObject>() {
@@ -80,7 +81,7 @@ public class GetTokenManager {
     /**
      * 重新拿token
      */
-    public void reGetToken() {
+    public void getToken() {
         String useId = String.valueOf(MyUserInfoManager.getInstance().getUid());
         String name = MyUserInfoManager.getInstance().getNickName();
         // todo 后期优化头像部分
@@ -117,7 +118,7 @@ public class GetTokenManager {
             public void onTokenIncorrect() {
                 MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
                 // 重新拿token
-                reGetToken();
+                getToken();
             }
         });
     }

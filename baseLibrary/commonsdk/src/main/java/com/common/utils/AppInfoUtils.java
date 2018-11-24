@@ -112,7 +112,7 @@ public class AppInfoUtils {
                             PackageManager.GET_META_DATA);
             return appInfo.metaData.getString(params);
         } catch (Exception e) {
-            System.out.println("获取渠道失败:" + e);
+            System.out.println("getMetaInfo:" + e);
             e.printStackTrace();
         }
         return null;

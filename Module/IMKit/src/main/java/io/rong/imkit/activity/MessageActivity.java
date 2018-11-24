@@ -1,4 +1,4 @@
-package io.rong.imkit;
+package io.rong.imkit.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,8 +16,10 @@ import com.common.view.titlebar.CommonTitleBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imkit.R;
+import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
-import io.rong.imkit.token.GetTokenManager;
+import io.rong.imkit.token.RCTokenManager;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
@@ -92,7 +94,7 @@ public class MessageActivity extends BaseActivity implements RongIM.UserInfoProv
 //        }
 //        URI uri = file.toURI();
 
-        GetTokenManager.getInstance().getToken("1001","帅哥",testUri.toString());
+        RCTokenManager.getInstance().getToken("1001","帅哥",testUri.toString());
 //        RongIMAPIManager.getInstance().getToken("1002","美女",testUri.toString());
     }
 

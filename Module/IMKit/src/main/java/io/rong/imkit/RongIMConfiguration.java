@@ -15,7 +15,7 @@ import com.common.utils.U;
 
 import java.util.List;
 
-import io.rong.imkit.token.GetTokenManager;
+import io.rong.imkit.token.RCTokenManager;
 import io.rong.imlib.RongIMClient;
 
 public class RongIMConfiguration implements ConfigModule {
@@ -63,7 +63,7 @@ public class RongIMConfiguration implements ConfigModule {
 
     }
 
-    void rcInit(Application application){
+    private void rcInit(Application application){
         // 初始化融云SDK
         RongIM.init(application);
 
@@ -101,7 +101,7 @@ public class RongIMConfiguration implements ConfigModule {
                             public void onTokenIncorrect() {
                                 MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
                                 // 重新拿token
-                                GetTokenManager.getInstance().reGetToken();
+                                RCTokenManager.getInstance().getToken();
                             }
                         });
                     } else {

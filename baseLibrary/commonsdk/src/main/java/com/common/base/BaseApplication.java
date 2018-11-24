@@ -86,7 +86,6 @@ public class BaseApplication extends Application {
             if (getPackageName().equals(info.processName)) {
                 U.setCoreProcess(true);
             } else {
-                //TODO: 非主线程需要初始化的代码
                 U.setCoreProcess(false);
             }
             break;

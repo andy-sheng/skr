@@ -92,20 +92,7 @@ public class RongIMAPIManager {
      * @return
      */
     public String getAppKey() {
-        String appKey = null;
-        try {
-            ApplicationInfo applicationInfo = U.app().getPackageManager().getApplicationInfo(U.app().getPackageName(), PackageManager.GET_META_DATA);
-            if (applicationInfo != null) {
-                appKey = applicationInfo.metaData.getString("RONG_CLOUD_APP_KEY");
-            }
-            if (TextUtils.isEmpty(appKey)) {
-                throw new IllegalArgumentException("can't find RONG_CLOUD_APP_KEY in AndroidManifest.xml.");
-            }
-
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            throw new ExceptionInInitializerError("can't find packageName!");
-        }
+        String appKey = U.getAppInfoUtils().getMetaInfo("RONG_CLOUD_APP_KEY");
         return appKey;
     }
 
