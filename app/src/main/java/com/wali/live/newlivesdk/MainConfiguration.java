@@ -57,8 +57,13 @@ public class MainConfiguration implements ConfigModule {
             }
 
             @Override
-            public void onCreate(@NonNull Application application) {
+            public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
+
+            }
+
+            @Override
+            public void onOtherProcessCreate(@NonNull Application application) {
 
             }
 

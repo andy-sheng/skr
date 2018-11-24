@@ -92,6 +92,9 @@ public class BaseApplication extends Application {
             break;
         }
 
+        /**
+         * 只有主进程才走
+         */
         if (U.isCoreProcess()) {
             if (mAppDelegate == null) {
                 this.mAppDelegate = new AppDelegate(base);
@@ -113,7 +116,11 @@ public class BaseApplication extends Application {
 //        Global.init(this, getClientAppInfo());
         if (U.isCoreProcess()) {
             if (mAppDelegate != null) {
-                this.mAppDelegate.onCreate(this);
+                this.mAppDelegate.onMainProcessCreate(this);
+            }
+        }else{
+            if(mAppDelegate!=null){
+                this.mAppDelegate.onOtherProcessCreate(this);
             }
         }
     }

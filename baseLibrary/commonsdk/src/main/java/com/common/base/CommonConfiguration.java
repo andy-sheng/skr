@@ -60,7 +60,7 @@ public class CommonConfiguration implements ConfigModule {
             }
 
             @Override
-            public void onCreate(@NonNull Application application) {
+            public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
                 if (BuildConfig.DEBUG) {
                     ARouter.openLog();
@@ -70,6 +70,11 @@ public class CommonConfiguration implements ConfigModule {
                 MyLog.init();
                 FrescoInitManager.initFresco(U.app());
                 PgyCrashManager.register();
+            }
+
+            @Override
+            public void onOtherProcessCreate(@NonNull Application application) {
+
             }
 
             @Override

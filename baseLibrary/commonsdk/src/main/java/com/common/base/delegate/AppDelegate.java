@@ -86,7 +86,7 @@ public class AppDelegate implements AppLifecycles {
     }
 
     @Override
-    public void onCreate(@NonNull Application application) {
+    public void onMainProcessCreate(@NonNull Application application) {
         U.getCacheUtils().putToKeep(ConfigModule.class.getName(),mModules);
 //        AC.inst().init(getGlobalConfigModule(mModules));
 
@@ -113,11 +113,17 @@ public class AppDelegate implements AppLifecycles {
 
         //执行框架外部, 开发者扩展的 App onCreate 逻辑
         for (AppLifecycles lifecycle : mAppLifecycles) {
-            lifecycle.onCreate(U.app());
+            lifecycle.onMainProcessCreate(U.app());
         }
-
     }
 
+    @Override
+    public void onOtherProcessCreate(@NonNull Application application) {
+        //执行框架外部, 开发者扩展的 App onCreate 逻辑
+        for (AppLifecycles lifecycle : mAppLifecycles) {
+            lifecycle.onOtherProcessCreate(U.app());
+        }
+    }
 
     @Override
     public void onTerminate(@NonNull Application application) {
