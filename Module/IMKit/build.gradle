@@ -69,7 +69,7 @@ dependencies {
     } else {
         compileOnly rootProject.ext.dependencies["arouter-compiler"]
     }
-    implementation fileTree(dir: 'src/main/libs', include: ['*.jar'])
-    api project(':Module:IMLib')
+    api files("libs/Rong_IMKit.jar")
+    api project(':Component:IMLib')
 }
 

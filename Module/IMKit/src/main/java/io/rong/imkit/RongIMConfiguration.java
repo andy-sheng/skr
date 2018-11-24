@@ -36,55 +36,15 @@ public class RongIMConfiguration implements ConfigModule {
             }
 
             @Override
-            public void onCreate(@NonNull Application application) {
-                // 初始化融云SDK
-                RongIM.init(application);
+            public void onMainProcessCreate(@NonNull Application application) {
+                rcInit(application);
+            }
 
-                RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
-                    @Override
-                    public void onChanged(ConnectionStatus status) {
-                        if (status == ConnectionStatus.TOKEN_INCORRECT) {
-                            final String cacheToken = U.getPreferenceUtils().getSettingString("token", "");
-                            if (!TextUtils.isEmpty(cacheToken)) {
-                                RongIM.connect(cacheToken, new RongIMClient.ConnectCallback() {
-                                    /**
-                                     * 连接融云成功
-                                     * @param userid 当前 token 对应的用户 id
-                                     */
-                                    @Override
-                                    public void onSuccess(String userid) {
-                                        MyLog.d(TAG, "ConnectCallback connect Success");
-                                    }
-
-                                    /**
-                                     * 连接融云失败
-                                     * @param errorCode 错误码，可到官网 查看错误码对应的注释
-                                     *                  https://www.rongcloud.cn/docs/status_code.html#android_ios_code
-                                     */
-                                    @Override
-                                    public void onError(RongIMClient.ErrorCode errorCode) {
-                                        MyLog.d(TAG, "ConnectCallback " + "onError" + " errorCode=" + errorCode);
-                                    }
-
-                                    /**Token 错误。可以从下面两点检查
-                                     * 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
-                                     * 2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
-                                     */
-                                    @Override
-                                    public void onTokenIncorrect() {
-                                        MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
-                                        // 重新拿token
-                                        GetTokenManager.getInstance().reGetToken();
-                                    }
-                                });
-                            } else {
-                                Log.e("seal", "token is empty, can not reconnect");
-                            }
-                        }
-                    }
-                });
+            @Override
+            public void onOtherProcessCreate(@NonNull Application application) {
 
             }
+
 
             @Override
             public void onTerminate(@NonNull Application application) {
@@ -101,5 +61,54 @@ public class RongIMConfiguration implements ConfigModule {
     @Override
     public void injectFragmentLifecycle(List<FragmentManager.FragmentLifecycleCallbacks> lifecycles) {
 
+    }
+
+    void rcInit(Application application){
+        // 初始化融云SDK
+        RongIM.init(application);
+
+        RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
+            @Override
+            public void onChanged(ConnectionStatus status) {
+                if (status == ConnectionStatus.TOKEN_INCORRECT) {
+                    final String cacheToken = U.getPreferenceUtils().getSettingString("token", "");
+                    if (!TextUtils.isEmpty(cacheToken)) {
+                        RongIM.connect(cacheToken, new RongIMClient.ConnectCallback() {
+                            /**
+                             * 连接融云成功
+                             * @param userid 当前 token 对应的用户 id
+                             */
+                            @Override
+                            public void onSuccess(String userid) {
+                                MyLog.d(TAG, "ConnectCallback connect Success");
+                            }
+
+                            /**
+                             * 连接融云失败
+                             * @param errorCode 错误码，可到官网 查看错误码对应的注释
+                             *                  https://www.rongcloud.cn/docs/status_code.html#android_ios_code
+                             */
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                MyLog.d(TAG, "ConnectCallback " + "onError" + " errorCode=" + errorCode);
+                            }
+
+                            /**Token 错误。可以从下面两点检查
+                             * 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
+                             * 2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
+                             */
+                            @Override
+                            public void onTokenIncorrect() {
+                                MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
+                                // 重新拿token
+                                GetTokenManager.getInstance().reGetToken();
+                            }
+                        });
+                    } else {
+                        Log.e("seal", "token is empty, can not reconnect");
+                    }
+                }
+            }
+        });
     }
 }

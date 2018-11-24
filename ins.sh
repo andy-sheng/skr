@@ -34,6 +34,8 @@ getDeviceId(){
 
 #将apk安装到所有设备上
 installApkForAllDevices(){
+    echo "注意包大小优化"
+    ls -al $1
 	for data in ${devices[@]}  
 	do  
     	echo "安装 $1 到 ${data}"

@@ -147,7 +147,7 @@ dependencies {
         implementation project(":moduletest")
 
         implementation project(":Module:IMKit")
-        implementation project(":Module:IMLib")
+//        implementation project(":Module:IMLib")
         //  tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     }

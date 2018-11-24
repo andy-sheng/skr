@@ -1,7 +1,8 @@
 include ':app', ':baseLibrary:commonsdk', ':commonservice', ':commoncore', ':moduletest'
 //include ':modulewatch', ':modulechannel'
-include ':Module:Home', ':Module:RankingMode',':Module:IMKit', ':Module:IMLib'
+include ':Module:Home', ':Module:RankingMode',':Module:IMKit'
 
+include ':Component:IMLib'
 include ':plugindemo'
 
 include ':baseLibrary:my-utils-gradle'
