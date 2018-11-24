@@ -21,10 +21,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
-import com.common.base.ConfigModule;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.AddDeviceInfoInterceptor;
 

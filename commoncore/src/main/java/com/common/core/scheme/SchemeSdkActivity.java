@@ -8,15 +8,15 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.utils.PreferenceUtils;
 import com.common.base.BaseActivity;
 import com.common.core.R;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.core.cta.CTANotifyFragment;
 import com.common.core.scheme.processor.WaliliveProcessor;
 import com.common.core.scheme.specific.SpecificProcessor;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.RouterConstants;
 
 @Route(path = RouterConstants.ACTIVITY_SCHEME)
 public class SchemeSdkActivity extends BaseActivity {

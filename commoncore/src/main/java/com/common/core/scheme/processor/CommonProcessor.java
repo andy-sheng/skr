@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
 import com.common.log.MyLog;

@@ -6,28 +6,11 @@ import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
-import com.common.core.RouterConstants;
-import com.common.core.myinfo.MyUserInfo;
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.roominfo.RoomInfoServerApi;
+import com.module.RouterConstants;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.wali.live.proto.RoomInfo.HisLive;
-import com.wali.live.proto.RoomInfo.HisRoomRsp;
-import com.wali.live.proto.RoomInfo.HistoryLiveRsp;
-import com.wali.live.proto.RoomInfo.RoomInfoRsp;
-
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 
 /**

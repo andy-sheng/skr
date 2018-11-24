@@ -1,4 +1,4 @@
-package com.common.core;
+package com.module;
 
 /**
  * 保存所有ARouter_Path
@@ -31,10 +31,11 @@ public interface RouterConstants {
     String ACTIVITY_RECHARGE = "RechargeActivity";
 
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
-    String ACTIVITY_CHANNEL_SDK = "/channel/ChannelSdkActivity";
 
-    String SERVICE_CHANNEL = "/channel/service1";
     String SERVICE_HOME = "/home/service1";
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
+    String SERVICE_MSG = "/rongmsg/service1";
+
+
 
 }

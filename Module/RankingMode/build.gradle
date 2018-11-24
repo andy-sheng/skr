@@ -73,7 +73,6 @@ android {
 dependencies {
     //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
     api project(":commoncore")
-    api project(":commonservice")
     if (isBuildModule.toBoolean()) {
 //        tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]

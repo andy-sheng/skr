@@ -1,13 +1,12 @@
 package com.common.core.scheme.specific;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;

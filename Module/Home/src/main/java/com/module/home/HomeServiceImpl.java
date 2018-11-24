@@ -3,7 +3,7 @@ package com.module.home;
 import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 
 @Route(path = RouterConstants.SERVICE_HOME, name = "测试服务")
 public class HomeServiceImpl implements IHomeService {

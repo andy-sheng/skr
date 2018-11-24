@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.log.MyLog;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;

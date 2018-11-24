@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.core.channel.HostChannelManager;
 import com.common.core.login.interceptor.JumpInterceptor;
 import com.common.log.MyLog;

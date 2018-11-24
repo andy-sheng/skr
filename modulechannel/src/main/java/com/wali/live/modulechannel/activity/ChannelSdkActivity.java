@@ -9,7 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.core.login.interceptor.JumpInterceptor;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;

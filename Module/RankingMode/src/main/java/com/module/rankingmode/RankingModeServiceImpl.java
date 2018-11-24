@@ -3,9 +3,7 @@ package com.module.rankingmode;
 import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.core.RouterConstants;
-import com.module.home.IHomeService;
-import com.module.rankingmode.IRankingModeService;
+import com.module.RouterConstants;
 
 @Route(path = RouterConstants.SERVICE_RANKINGMODE, name = "测试服务")
 public class RankingModeServiceImpl implements IRankingModeService {

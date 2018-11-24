@@ -7,10 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.log.MyLog;
-import com.common.utils.FragmentUtils;
-import com.common.utils.U;
 import com.common.view.viewpager.NestViewPager;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.fragment.AFragment;

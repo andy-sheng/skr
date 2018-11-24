@@ -4,41 +4,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.oauth.XiaoMiOAuth;
-import com.common.core.userinfo.UserInfo;
-import com.common.core.userinfo.UserInfoManager;
-import com.common.log.MyLog;
+import com.common.core.account.event.AccountEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.CommonUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExButton;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.wali.live.proto.User.GetHomepageResp;
-import com.wali.live.proto.User.GetUserInfoByIdRsp;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 @Route(path = RouterConstants.ACTIVITY_LOGIN)
 public class LoginActivity extends BaseActivity {
@@ -92,9 +78,20 @@ public class LoginActivity extends BaseActivity {
                 UserAccountManager.getInstance().loginByPhoneNum(phoneNum, verifyCode);
             }
         });
-
+        findViewById(R.id.green_channel_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME).greenChannel().navigation();
+            }
+        });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AccountEvent.SetAccountEvent setAccountEvent) {
+        //登陆成功
+        finish();
+        U.getToastUtil().showShort("登录成功");
+    }
 
     @Override
     protected void onStart() {
@@ -103,6 +100,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 }

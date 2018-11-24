@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.facade.annotation.Interceptor;
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback;
 import com.alibaba.android.arouter.facade.template.IInterceptor;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.LoginActivity;
 import com.common.core.login.execption.UnloginException;

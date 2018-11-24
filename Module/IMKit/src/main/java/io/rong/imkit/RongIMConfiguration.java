@@ -12,6 +12,7 @@ import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.msg.RongMsgAdapter;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class RongIMConfiguration implements ConfigModule {
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
                 rcInit(application);
+                RongMsgAdapter.getInstance().init();
             }
 
             @Override

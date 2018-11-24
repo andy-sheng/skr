@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.core.login.interceptor.JudgeLoginInterceptor;
 import com.common.view.ex.ExButton;
 import com.common.view.titlebar.CommonTitleBar;

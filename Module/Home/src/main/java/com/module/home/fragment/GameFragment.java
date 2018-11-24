@@ -6,11 +6,10 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.module.home.R;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 public class GameFragment extends BaseFragment {
 

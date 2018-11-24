@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
-import com.common.core.RouterConstants;
+import com.module.RouterConstants;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.rankingmode.fragment.RoomFragment;
