@@ -2,7 +2,6 @@ package com.common.rxretrofit;
 
 import android.util.Log;
 
-import com.common.base.BuildConfig;
 import com.common.log.MyLog;
 import com.common.utils.U;
 
@@ -24,7 +23,7 @@ public abstract class ApiObserver<T> implements Observer<T> {
     }
 
     public void onNext(T obj) {
-        if (BuildConfig.DEBUG || U.getChannelUtils().isTestChannel()) {
+        if (MyLog.isDebugLogOpen()) {
             if (obj instanceof ApiResult) {
                 ApiResult result = (ApiResult) obj;
                 if (result.errno != 0) {
@@ -39,7 +38,7 @@ public abstract class ApiObserver<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        if (BuildConfig.DEBUG || U.getChannelUtils().isTestChannel()) {
+        if (MyLog.isDebugLogOpen()) {
             String log = Log.getStackTraceString(e);
             U.getToastUtil().showShort(log);
         }

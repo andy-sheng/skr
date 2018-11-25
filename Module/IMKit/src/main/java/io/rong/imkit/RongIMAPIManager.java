@@ -1,10 +1,5 @@
 package io.rong.imkit;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.text.TextUtils;
-
-import com.common.base.BuildConfig;
 import com.common.log.MyLog;
 import com.common.rxretrofit.interceptor.UserAgentInterceptor;
 import com.common.utils.U;
@@ -51,7 +46,7 @@ public class RongIMAPIManager {
 
         defaultClient.addInterceptor(new UserAgentInterceptor());
 
-        if (BuildConfig.DEBUG) {
+        if (MyLog.isDebugLogOpen()) {
             // 确保这个拦截器最后添加,以便打印更多的日志
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override

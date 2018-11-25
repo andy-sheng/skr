@@ -1,6 +1,5 @@
 package com.common.rxretrofit;
 
-import com.common.base.BuildConfig;
 import com.common.log.MyLog;
 import com.common.rxretrofit.Api.BaseApi;
 import com.common.rxretrofit.cookie.ClearableCookieJar;
@@ -15,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -90,7 +87,7 @@ public class ApiManager {
                     mOutInterceptors.clear();
 
 
-                    if (BuildConfig.DEBUG) {
+                    if (MyLog.isDebugLogOpen()) {
                         // 确保这个拦截器最后添加,以便打印更多的日志
                         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                             @Override

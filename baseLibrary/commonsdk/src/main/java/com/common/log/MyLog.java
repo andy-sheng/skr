@@ -1,6 +1,7 @@
 package com.common.log;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.common.base.BuildConfig;
 import com.common.utils.U;
@@ -26,13 +27,19 @@ public class MyLog {
 
     private static int sCurrentLogLevel = LogLevel.ALL;             //当前的日志级别
     static boolean sHasInit = false;
+    static boolean forceOpenFlag = false;
+
+    static {
+        forceOpenFlag = U.getPreferenceUtils().getSettingBoolean("key_forceOpenFlag", false);
+        Log.e("MyLog", "forceOpenFlag:" + forceOpenFlag);
+    }
 
     public static void init() {
         if (!sHasInit) {
             String logTag = U.getAppInfoUtils().getAppName();
 
             //存放的路径
-            String logDirRoot = new File(U.getAppInfoUtils().getMainDir(),"logs/").getAbsolutePath();
+            String logDirRoot = new File(U.getAppInfoUtils().getMainDir(), "logs/").getAbsolutePath();
 
             if (BuildConfig.DEBUG) {
                 sCurrentLogLevel = LogLevel.ALL;
@@ -64,7 +71,7 @@ public class MyLog {
             Printer filePrinter = new FilePrinter                      // 打印日志到文件的打印器
                     .Builder(Environment.getExternalStorageDirectory() + logDirRoot)                              // 指定保存日志文件的路径
                     .fileNameGenerator(new MyFileNameGenerator())        // 指定日志文件名生成器，默认为 ChangelessFileNameGenerator("log")
-                    .backupStrategy(new FileSizeBackupStrategy(50 * 1024*1024))          // 指定日志文件备份策略，默认为 FileSizeBackupStrategy(1024 * 1024)
+                    .backupStrategy(new FileSizeBackupStrategy(50 * 1024 * 1024))          // 指定日志文件备份策略，默认为 FileSizeBackupStrategy(1024 * 1024)
                     .logFlattener(new MyFlattener())                       // 指定日志平铺器，默认为 DefaultFlattener
                     .build();
             XLog.init(                                                 // 初始化 XLog
@@ -240,7 +247,7 @@ public class MyLog {
             level = LogLevel.ALL;
         }
 
-        if(level!=sCurrentLogLevel){
+        if (level != sCurrentLogLevel) {
             sCurrentLogLevel = level;
             // 好像只能这么动态改了
             sHasInit = false;
@@ -278,5 +285,14 @@ public class MyLog {
         long time = System.currentTimeMillis() - startTime;
         w(action + " ends in " + time + " ms");
         return time;
+    }
+
+    public static void setForceOpenFlag(boolean flag) {
+        forceOpenFlag = flag;
+        U.getPreferenceUtils().setSettingBoolean("key_forceOpenFlag", flag);
+    }
+
+    public static boolean isDebugLogOpen() {
+        return BuildConfig.DEBUG || U.getChannelUtils().isTestChannel() || forceOpenFlag;
     }
 }

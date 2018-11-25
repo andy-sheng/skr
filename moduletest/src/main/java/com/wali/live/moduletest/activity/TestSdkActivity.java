@@ -671,6 +671,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("日志全开", new Runnable() {
             @Override
             public void run() {
+                MyLog.setForceOpenFlag(true);
                 MyLog.setLogcatTraceLevel(0);
             }
         }));
