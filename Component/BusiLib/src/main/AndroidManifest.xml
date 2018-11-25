@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.component.busilib">
+
+    <application>
+        <meta-data
+            android:name="com.component.busilib.BusiLibConfiguration"
+            android:value="ConfigModule" />
+    </application>
+
+</manifest>

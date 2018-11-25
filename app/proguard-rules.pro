@@ -281,6 +281,21 @@ public static java.lang.String TABLENAME;
 -keep class * implements java.io.Serializable{*;}
 
 #cookie相关
-
 -dontwarn com.common.rxretrofit.cookie.**
 -keep class com.common.rxretrofit.cookie.**
+
+#融云相关
+-keepattributes Exceptions,InnerClasses
+
+-keepattributes Signature
+
+# RongCloud SDK 相关
+-keep class io.rong.** {*;}
+-keep class cn.rongcloud.** {*;}
+-keep class * implements io.rong.imlib.model.MessageContent {*;}
+-dontwarn io.rong.push.**
+-dontnote com.xiaomi.**
+-dontnote com.google.android.gms.gcm.**
+-dontnote io.rong.**
+
+-ignorewarnings

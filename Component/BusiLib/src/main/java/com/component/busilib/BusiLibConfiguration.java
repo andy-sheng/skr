@@ -1,4 +1,4 @@
-package com.module.rankingmode;/*
+package com.component.busilib;/*
  * Copyright 2018 JessYan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,9 +20,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
-import com.common.base.ConfigModule;
+import com.component.room.msg.push.BasicMsgProcessor;
 import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
 
@@ -39,7 +40,7 @@ import java.util.List;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public class RankingModeConfiguration implements ConfigModule {
+public class BusiLibConfiguration implements ConfigModule {
     public final static String TAG = "ChannelConfiguration";
 
     @Override
@@ -59,6 +60,10 @@ public class RankingModeConfiguration implements ConfigModule {
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
+                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                if (msgService != null) {
+                    msgService.addMsgProcessor(new BasicMsgProcessor());
+                }
             }
 
             @Override

@@ -1,6 +1,7 @@
 package com.module.common;
 
 public interface ICallback {
-    void onSucess();
-    void onFailed(int errcode,String message);
+    void onSucess(Object obj);
+
+    void onFailed(Object obj, int errcode, String message);
 }

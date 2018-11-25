@@ -4,7 +4,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/view_dimen_1000"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -33,6 +34,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="加入房间" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/send_msg_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="发送弹幕消息" />
     </LinearLayout>
 
 </RelativeLayout>

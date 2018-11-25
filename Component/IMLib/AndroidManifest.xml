@@ -54,12 +54,12 @@
             android:name="io.rong.push.PushService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process="io.rong.push" />
+            android:process=":rongpush" />
 
         <!-- push 相关事件接收器 -->
         <receiver
             android:name="io.rong.push.PushReceiver"
-            android:process="io.rong.push">   <!-- 此处进程可以改名，名称需要和PushService所在进程统一 -->
+            android:process=":rongpush">   <!-- 此处进程可以改名，名称需要和PushService所在进程统一 -->
             <!-- 心跳事件和网络切换事件监听,必须 -->
             <intent-filter>
                 <action android:name="io.rong.push.intent.action.HEART_BEAT" />

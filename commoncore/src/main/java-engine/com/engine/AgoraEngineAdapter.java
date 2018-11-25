@@ -211,7 +211,6 @@ public class AgoraEngineAdapter {
         MyLog.d(TAG, "setupRemoteVideo");
 
         SurfaceView surfaceView = RtcEngine.CreateRendererView(U.app());
-        surfaceView.setZOrderMediaOverlay(true);
         container.addView(surfaceView);
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, uid));
         surfaceView.setTag(uid);

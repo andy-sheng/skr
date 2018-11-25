@@ -36,6 +36,4 @@ public interface RouterConstants {
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
     String SERVICE_MSG = "/rongmsg/service1";
 
-
-
 }
