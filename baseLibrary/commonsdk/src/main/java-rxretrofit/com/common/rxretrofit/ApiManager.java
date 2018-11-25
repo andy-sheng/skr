@@ -1,7 +1,6 @@
 package com.common.rxretrofit;
 
 import com.common.log.MyLog;
-import com.common.rxretrofit.Api.BaseApi;
 import com.common.rxretrofit.cookie.ClearableCookieJar;
 import com.common.rxretrofit.cookie.PersistentCookieJar;
 import com.common.rxretrofit.cookie.cache.SetCookieCache;
@@ -116,31 +115,6 @@ public class ApiManager {
     public <T> T createService(Class<T> cls) {
         tryInit();
         return mDefalutRetrofit.create(cls);
-    }
-
-
-    /**
-     * 新建一个 http 客户端
-     * 自定义参数
-     *
-     * @param baseParm
-     * @return
-     */
-    public Retrofit newClient(BaseApi baseParm) {
-        //手动创建一个OkHttpClient并设置超时时间缓存等设置
-        OkHttpClient.Builder defaultClient = new OkHttpClient.Builder();
-        defaultClient.connectTimeout(baseParm.getConnectionTime(), TimeUnit.SECONDS);
-        defaultClient.cookieJar(mCookieJar);
-
-        /*创建retrofit对象*/
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(defaultClient.build())
-                .addConverterFactory(FastJsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(baseParm.getBaseUrl())
-                .build();
-
-        return retrofit;
     }
 
     public void clearCookies() {

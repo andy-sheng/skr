@@ -1,7 +1,6 @@
 package com.example.rxretrofit.fragment;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,34 +11,20 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
-import com.common.rxretrofit.Api.BaseResultEntity;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.example.rxretrofit.entity.api.UploadApi;
-import com.example.rxretrofit.entity.resulte.UploadResulte;
-import com.example.rxretrofit.fastjson.Song;
-import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.wali.live.moduletest.R;
 import com.example.rxretrofit.TestService;
+import com.example.rxretrofit.fastjson.Song;
+import com.wali.live.moduletest.R;
 
-import java.io.File;
-import java.net.URI;
 import java.util.List;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class RxRetrofitFragment extends BaseFragment {
 
     TextView mTestRxretrofitEncap1;
     TextView mTestRxretrofitEncap2;
-    TextView mTestRxretrofitDown;
-    TextView mTestRxretrofitUpload;
 
     TextView mTestMsg;
     ImageView mTestImg;
@@ -58,8 +43,6 @@ public class RxRetrofitFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mTestRxretrofitEncap1 = (TextView) mRootView.findViewById(R.id.test_rxretrofit_encap1);
         mTestRxretrofitEncap2 = (TextView) mRootView.findViewById(R.id.test_rxretrofit_encap2);
-        mTestRxretrofitDown = (TextView) mRootView.findViewById(R.id.test_rxretrofit_down);
-        mTestRxretrofitUpload = (TextView) mRootView.findViewById(R.id.test_rxretrofit_upload);
 
         mTestMsg = (TextView) mRootView.findViewById(R.id.test_msg);
         mTestImg = (ImageView) mRootView.findViewById(R.id.test_img);
@@ -79,53 +62,9 @@ public class RxRetrofitFragment extends BaseFragment {
         });
 
 
-        mTestRxretrofitDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDownFragment();
-            }
-        });
 
-        mTestRxretrofitUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                upload();
-            }
-        });
     }
 
-    /**
-     * 上传
-     */
-    private void upload() {
-        UploadApi uploadApi = new UploadApi();
-        uploadApi.uploadImage(4811420, "cfed6cc8caad0d79ea56d917376dc4df", "/storage/emulated/0/Download/11.jpg", "image/jpeg")
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(new Observer<BaseResultEntity<UploadResulte>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BaseResultEntity<UploadResulte> uploadResulteBaseResultEntity) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
 
     /**********************************************************封装使用**********************************/
 
@@ -169,13 +108,4 @@ public class RxRetrofitFragment extends BaseFragment {
         }, this);
     }
 
-
-    /**
-     * 打开下载
-     */
-    private void openDownFragment() {
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), RxRetrDownFragment.class)
-                .setHasAnimation(true)
-                .build());
-    }
 }
