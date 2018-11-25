@@ -11,8 +11,8 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.RongIMAPIManager;
 import io.rong.imlib.RongIMClient;
+import io.rong.test.RongIMAPIManager;
 
 /**
  * 仅用来测试直接用从融云获取token

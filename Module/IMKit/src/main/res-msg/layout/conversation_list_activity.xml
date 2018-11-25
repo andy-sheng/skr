@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:titlebar="http://schemas.android.com/apk/res-auto"
@@ -12,22 +13,45 @@
         titlebar:centerText="消息"
         titlebar:centerType="textView" />
 
-    <com.common.view.ex.ExButton
-        android:id="@+id/test_token"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="测试token" />
-
-    <com.common.view.ex.ExButton
-        android:id="@+id/text_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="测试消息"/>
-
-    <fragment
-        android:id="@+id/conversationlist"
-        android:name="io.rong.imkit.fragment.ConversationListFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.common.view.ex.ExButton
+            android:id="@+id/test_connect1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="连接用户1001"/>
+
+        <com.common.view.ex.ExButton
+            android:id="@+id/test_connect2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="连接用户1002"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExButton
+            android:id="@+id/test_msg1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="向用户1发消息"/>
+
+        <com.common.view.ex.ExButton
+            android:id="@+id/test_msg2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="向用户2发消息"/>
+
+    </LinearLayout>
+
+
+
+
+
 
 </LinearLayout>

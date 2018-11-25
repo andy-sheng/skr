@@ -70,6 +70,5 @@ dependencies {
     } else {
         compileOnly rootProject.ext.dependencies["arouter-compiler"]
     }
-    api files("libs/Rong_IMKit.jar")
 }
 
