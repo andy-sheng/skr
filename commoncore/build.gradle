@@ -52,7 +52,7 @@ dependencies {
     // commonsdk 也能远程 maven 依赖
 //    api "com.mi.live:common-sdk:2.0"
     api project(":baseLibrary:commonsdk")
-//    api project(":baseLibrary:enginesdk")
+    api project(":baseLibrary:enginesdk")
     api project(":commonservice")
     // arouter 解析注解代码，需要在 defaultConfig 中注明 moduleName
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]

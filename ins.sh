@@ -92,6 +92,7 @@ if [[ $1 = "app" ]]; then
 		fi
 		./gradlew :app:assemblechannel_defaultDebug --stacktrace
 		installApkForAllDevices app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk
+		myandroidlog.sh  com.zq.live
 	fi
 else
 	if [[ $isBuildModule = false ]]; then

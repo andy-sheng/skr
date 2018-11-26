@@ -3,13 +3,17 @@ package com.module.rankingmode.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSONObject;
+import com.changba.songstudio.recording.camera.preview.ChangbaRecordingPreviewView;
 import com.common.base.BaseFragment;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.engine.EngineManager;
+import com.engine.agora.AgoraEngineAdapter;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -69,7 +73,7 @@ public class RoomFragment extends BaseFragment {
                 IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
                 if (msgService != null) {
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("text","当前时间"+System.currentTimeMillis());
+                    jsonObject.put("text", "当前时间" + System.currentTimeMillis());
                     msgService.sendChatRoomMessage(ROOM_ID, CustomMsgType.MSG_TYPE_TEXT, jsonObject, new ICallback() {
                         @Override
                         public void onSucess(Object obj) {
@@ -84,6 +88,12 @@ public class RoomFragment extends BaseFragment {
                 }
             }
         });
+
+        RelativeLayout container = (RelativeLayout) mRootView;
+        ChangbaRecordingPreviewView changbaRecordingPreviewView = new ChangbaRecordingPreviewView(getContext());
+        container.addView(changbaRecordingPreviewView, 0
+                , new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        EngineManager.getInstance().startPreview(changbaRecordingPreviewView);
     }
 
     void joinRoom() {
@@ -104,6 +114,9 @@ public class RoomFragment extends BaseFragment {
 //        AgoraEngineAdapter.getInstance().setVideoEncoderConfiguration();
 //        AgoraEngineAdapter.getInstance().joinChannel(null, ROOM_ID, null, 0);
 //        AgoraEngineAdapter.getInstance().bindLocalVideoView(mOtherContainer);
+        AgoraEngineAdapter.getInstance().setVideoEncoderConfiguration();
+        AgoraEngineAdapter.getInstance().joinChannel(null, ROOM_ID, null, 0);
+        AgoraEngineAdapter.getInstance().bindLocalVideoView(mOtherContainer);
 //        AgoraEngineAdapter.getInstance().bindRemoteVideo(mSelfContainer, 0);
     }
 

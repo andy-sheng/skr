@@ -1,0 +1,3 @@
+/Users/chengsimin/dev/livesdk/livesdk/baseLibrary/enginesdk/.externalNativeBuild/cmake/release/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/chengsimin/dev/livesdk/livesdk/baseLibrary/enginesdk/.externalNativeBuild/cmake/release/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/chengsimin/dev/livesdk/livesdk/baseLibrary/enginesdk/.externalNativeBuild/cmake/release/arm64-v8a/CMakeFiles/native-lib.dir
