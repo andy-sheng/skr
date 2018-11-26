@@ -18,32 +18,32 @@ import io.rong.imkit.widget.adapter.SubConversationListAdapter;
 import io.rong.imlib.model.Conversation.ConversationType;
 
 public class SubConversationListFragment extends ConversationListFragment {
-  private static final String TAG = "SubConversationListFragment";
-  private ListView mList;
-  private SubConversationListAdapter mAdapter;
+    private static final String TAG = "SubConversationListFragment";
+    private ListView mList;
+    private SubConversationListAdapter mAdapter;
 
-  public SubConversationListFragment() {
-  }
-
-  public void setAdapter(SubConversationListAdapter adapter) {
-    this.mAdapter = adapter;
-  }
-
-  public ConversationListAdapter onResolveAdapter(Context context) {
-    if (this.mAdapter == null) {
-      this.mAdapter = new SubConversationListAdapter(context);
+    public SubConversationListFragment() {
     }
 
-    return this.mAdapter;
-  }
+    public void setAdapter(SubConversationListAdapter adapter) {
+        this.mAdapter = adapter;
+    }
 
-  public boolean getGatherState(ConversationType conversationType) {
-    return false;
-  }
+    public ConversationListAdapter onResolveAdapter(Context context) {
+        if (this.mAdapter == null) {
+            this.mAdapter = new SubConversationListAdapter(context);
+        }
 
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = super.onCreateView(inflater, container, savedInstanceState);
-    this.mList = (ListView)this.findViewById(view, R.id.rc_list);
-    return view;
-  }
+        return this.mAdapter;
+    }
+
+    public boolean getGatherState(ConversationType conversationType) {
+        return false;
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        this.mList = (ListView) this.findViewById(view, R.id.rc_list);
+        return view;
+    }
 }

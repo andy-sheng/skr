@@ -19,21 +19,21 @@ import io.rong.imkit.widget.provider.IContainerItemProvider.ConversationProvider
         portraitPosition = 1
 )
 public class DiscussionConversationProvider extends PrivateConversationProvider implements ConversationProvider<UIConversation> {
-  public DiscussionConversationProvider() {
-  }
-
-  public String getTitle(String id) {
-    String name;
-    if (RongUserInfoManager.getInstance().getDiscussionInfo(id) == null) {
-      name = RongContext.getInstance().getResources().getString(R.string.rc_conversation_list_default_discussion_name);
-    } else {
-      name = RongUserInfoManager.getInstance().getDiscussionInfo(id).getName();
+    public DiscussionConversationProvider() {
     }
 
-    return name;
-  }
+    public String getTitle(String id) {
+        String name;
+        if (RongUserInfoManager.getInstance().getDiscussionInfo(id) == null) {
+            name = RongContext.getInstance().getResources().getString(R.string.rc_conversation_list_default_discussion_name);
+        } else {
+            name = RongUserInfoManager.getInstance().getDiscussionInfo(id).getName();
+        }
 
-  public Uri getPortraitUri(String id) {
-    return null;
-  }
+        return name;
+    }
+
+    public Uri getPortraitUri(String id) {
+        return null;
+    }
 }

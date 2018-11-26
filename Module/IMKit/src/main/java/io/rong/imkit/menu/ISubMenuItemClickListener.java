@@ -6,5 +6,5 @@
 package io.rong.imkit.menu;
 
 public interface ISubMenuItemClickListener {
-  void onClick(int var1);
+    void onClick(int var1);
 }

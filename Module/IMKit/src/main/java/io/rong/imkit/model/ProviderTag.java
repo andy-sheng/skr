@@ -15,19 +15,19 @@ import io.rong.imlib.model.MessageContent;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ProviderTag {
-  boolean showPortrait() default true;
+    boolean showPortrait() default true;
 
-  boolean centerInHorizontal() default false;
+    boolean centerInHorizontal() default false;
 
-  boolean hide() default false;
+    boolean hide() default false;
 
-  boolean showWarning() default true;
+    boolean showWarning() default true;
 
-  boolean showProgress() default true;
+    boolean showProgress() default true;
 
-  boolean showSummaryWithName() default true;
+    boolean showSummaryWithName() default true;
 
-  boolean showReadState() default false;
+    boolean showReadState() default false;
 
-  Class<? extends MessageContent> messageContent();
+    Class<? extends MessageContent> messageContent();
 }

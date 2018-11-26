@@ -9,5 +9,5 @@ import io.rong.imlib.model.Conversation.ConversationType;
 import io.rong.imlib.model.PublicServiceMenuItem;
 
 public interface IPublicServiceMenuClickListener {
-  boolean onClick(ConversationType var1, String var2, PublicServiceMenuItem var3);
+    boolean onClick(ConversationType var1, String var2, PublicServiceMenuItem var3);
 }

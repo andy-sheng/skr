@@ -22,38 +22,38 @@ import io.rong.imlib.model.PublicServiceProfile;
         portraitPosition = 1
 )
 public class PublicServiceConversationProvider extends PrivateConversationProvider implements ConversationProvider<UIConversation> {
-  private ConversationKey mKey;
+    private ConversationKey mKey;
 
-  public PublicServiceConversationProvider() {
-  }
-
-  public String getTitle(String id) {
-    this.mKey = ConversationKey.obtain(id, ConversationType.PUBLIC_SERVICE);
-    PublicServiceProfile info = RongContext.getInstance().getPublicServiceInfoFromCache(this.mKey.getKey());
-    String name;
-    if (info != null) {
-      name = info.getName();
-    } else {
-      name = "";
+    public PublicServiceConversationProvider() {
     }
 
-    return name;
-  }
+    public String getTitle(String id) {
+        this.mKey = ConversationKey.obtain(id, ConversationType.PUBLIC_SERVICE);
+        PublicServiceProfile info = RongContext.getInstance().getPublicServiceInfoFromCache(this.mKey.getKey());
+        String name;
+        if (info != null) {
+            name = info.getName();
+        } else {
+            name = "";
+        }
 
-  public Uri getPortraitUri(String id) {
-    this.mKey = ConversationKey.obtain(id, ConversationType.PUBLIC_SERVICE);
-    PublicServiceProfile info = RongContext.getInstance().getPublicServiceInfoFromCache(this.mKey.getKey());
-    Uri uri;
-    if (info != null) {
-      uri = info.getPortraitUri();
-    } else {
-      uri = null;
+        return name;
     }
 
-    return uri;
-  }
+    public Uri getPortraitUri(String id) {
+        this.mKey = ConversationKey.obtain(id, ConversationType.PUBLIC_SERVICE);
+        PublicServiceProfile info = RongContext.getInstance().getPublicServiceInfoFromCache(this.mKey.getKey());
+        Uri uri;
+        if (info != null) {
+            uri = info.getPortraitUri();
+        } else {
+            uri = null;
+        }
 
-  public void bindView(View view, int position, UIConversation data) {
-    super.bindView(view, position, data);
-  }
+        return uri;
+    }
+
+    public void bindView(View view, int position, UIConversation data) {
+        super.bindView(view, position, data);
+    }
 }

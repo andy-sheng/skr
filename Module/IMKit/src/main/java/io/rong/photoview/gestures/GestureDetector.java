@@ -10,11 +10,11 @@ import android.view.MotionEvent;
 import io.rong.photoview.gestures.OnGestureListener;
 
 public interface GestureDetector {
-  boolean onTouchEvent(MotionEvent var1);
+    boolean onTouchEvent(MotionEvent var1);
 
-  boolean isScaling();
+    boolean isScaling();
 
-  boolean isDragging();
+    boolean isDragging();
 
-  void setOnGestureListener(OnGestureListener var1);
+    void setOnGestureListener(OnGestureListener var1);
 }

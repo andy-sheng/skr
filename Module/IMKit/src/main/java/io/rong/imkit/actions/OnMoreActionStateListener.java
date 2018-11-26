@@ -6,7 +6,7 @@
 package io.rong.imkit.actions;
 
 public interface OnMoreActionStateListener {
-  void onShownMoreActionLayout();
+    void onShownMoreActionLayout();
 
-  void onHiddenMoreActionLayout();
+    void onHiddenMoreActionLayout();
 }

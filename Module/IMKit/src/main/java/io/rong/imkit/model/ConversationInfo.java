@@ -8,24 +8,24 @@ package io.rong.imkit.model;
 import io.rong.imlib.model.Conversation.ConversationType;
 
 public class ConversationInfo {
-  ConversationType conversationType;
-  String targetId;
+    ConversationType conversationType;
+    String targetId;
 
-  ConversationInfo() {
-  }
+    ConversationInfo() {
+    }
 
-  public static io.rong.imkit.model.ConversationInfo obtain(ConversationType type, String id) {
-    io.rong.imkit.model.ConversationInfo info = new io.rong.imkit.model.ConversationInfo();
-    info.conversationType = type;
-    info.targetId = id;
-    return info;
-  }
+    public static io.rong.imkit.model.ConversationInfo obtain(ConversationType type, String id) {
+        io.rong.imkit.model.ConversationInfo info = new io.rong.imkit.model.ConversationInfo();
+        info.conversationType = type;
+        info.targetId = id;
+        return info;
+    }
 
-  public ConversationType getConversationType() {
-    return this.conversationType;
-  }
+    public ConversationType getConversationType() {
+        return this.conversationType;
+    }
 
-  public String getTargetId() {
-    return this.targetId;
-  }
+    public String getTargetId() {
+        return this.targetId;
+    }
 }

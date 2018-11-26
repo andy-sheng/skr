@@ -6,7 +6,7 @@
 package io.rong.imkit.emoticon;
 
 public interface IEmojiItemClickListener {
-  void onEmojiClick(String var1);
+    void onEmojiClick(String var1);
 
-  void onDeleteClick();
+    void onDeleteClick();
 }

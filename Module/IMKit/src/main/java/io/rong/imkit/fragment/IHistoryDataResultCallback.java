@@ -6,7 +6,7 @@
 package io.rong.imkit.fragment;
 
 public interface IHistoryDataResultCallback<T> {
-  void onResult(T var1);
+    void onResult(T var1);
 
-  void onError();
+    void onError();
 }

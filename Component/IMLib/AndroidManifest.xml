@@ -22,16 +22,16 @@
             android:value="mgb7ka1nm4k2g" />
 
         <service
-            android:name="io.io.rong.imlib.ipc.RongService"
+            android:name="io.rong.imlib.ipc.RongService"
             android:exported="true"
             android:process=":ipc" />
 
         <receiver
-            android:name="io.io.rong.imlib.ConnectChangeReceiver"
+            android:name="io.rong.imlib.ConnectChangeReceiver"
             android:exported="true" />
 
         <receiver
-            android:name="io.io.rong.imlib.HeartbeatReceiver"
+            android:name="io.rong.imlib.HeartbeatReceiver"
             android:process=":ipc" />
         <!-- imlib config end -->
 
@@ -40,18 +40,18 @@
         <!--第三方相关,向第三方推送服务请求 token 的服务 -->
         <!-- 处理 push 消息相关的服务 -->
         <service
-            android:name="io.io.rong.push.core.PushRegistrationService"
+            android:name="io.rong.push.core.PushRegistrationService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service
-            android:name="io.io.rong.push.core.MessageHandleService"
+            android:name="io.rong.push.core.MessageHandleService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <!-- push服务 -->
 
         <service
-            android:name="io.io.rong.push.PushService"
+            android:name="io.rong.push.PushService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:process=":rongpush" />

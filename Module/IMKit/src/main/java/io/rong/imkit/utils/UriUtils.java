@@ -11,16 +11,16 @@ import android.net.Uri;
 import io.rong.imlib.model.Message;
 
 public class UriUtils {
-  public UriUtils() {
-  }
+    public UriUtils() {
+    }
 
-  public static Uri obtainThumImageUri(Context context, Message message) {
-    Uri uri = Uri.parse("io.rong://" + context.getPackageName()).buildUpon().appendPath("image").appendPath("thum").appendPath(String.valueOf(message.getMessageId())).build();
-    return uri;
-  }
+    public static Uri obtainThumImageUri(Context context, Message message) {
+        Uri uri = Uri.parse("io.rong://" + context.getPackageName()).buildUpon().appendPath("image").appendPath("thum").appendPath(String.valueOf(message.getMessageId())).build();
+        return uri;
+    }
 
-  public static Uri obtainVoiceUri(Context context, Message message) {
-    Uri uri = Uri.parse("io.rong://" + context.getPackageName()).buildUpon().appendPath("voice").appendPath(String.valueOf(message.getMessageId())).build();
-    return uri;
-  }
+    public static Uri obtainVoiceUri(Context context, Message message) {
+        Uri uri = Uri.parse("io.rong://" + context.getPackageName()).buildUpon().appendPath("voice").appendPath(String.valueOf(message.getMessageId())).build();
+        return uri;
+    }
 }

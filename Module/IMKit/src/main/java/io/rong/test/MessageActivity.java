@@ -21,9 +21,9 @@ import java.util.List;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
-import io.rong.test.token.GetTokenManager;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
+import io.rong.test.token.RCTokenManager;
 
 /**
  * 消息列表会话页面
@@ -69,14 +69,14 @@ public class MessageActivity extends BaseActivity implements RongIM.UserInfoProv
         mTestConnect1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GetTokenManager.getInstance().getToken("1001","帅哥",testUri.toString());
+                RCTokenManager.getInstance().getToken("1001","帅哥",testUri.toString());
             }
         });
 
         mTestConnect2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GetTokenManager.getInstance().getToken("1002","美女",testUri.toString());
+                RCTokenManager.getInstance().getToken("1002","美女",testUri.toString());
             }
         });
 

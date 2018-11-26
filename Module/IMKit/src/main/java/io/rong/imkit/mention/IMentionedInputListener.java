@@ -8,5 +8,5 @@ package io.rong.imkit.mention;
 import io.rong.imlib.model.Conversation.ConversationType;
 
 public interface IMentionedInputListener {
-  boolean onMentionedInput(ConversationType var1, String var2);
+    boolean onMentionedInput(ConversationType var1, String var2);
 }

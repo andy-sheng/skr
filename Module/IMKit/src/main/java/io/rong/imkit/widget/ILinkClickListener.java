@@ -6,5 +6,5 @@
 package io.rong.imkit.widget;
 
 public interface ILinkClickListener {
-  boolean onLinkClick(String var1);
+    boolean onLinkClick(String var1);
 }

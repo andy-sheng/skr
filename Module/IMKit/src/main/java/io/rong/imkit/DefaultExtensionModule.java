@@ -29,79 +29,79 @@ import io.rong.imlib.model.Conversation.ConversationType;
 import io.rong.imlib.model.Message;
 
 public class DefaultExtensionModule implements IExtensionModule {
-  private static final String TAG = io.rong.imkit.DefaultExtensionModule.class.getSimpleName();
-  private EditText mEditText;
-  private Stack<EditText> stack;
-  String[] types = null;
+    private static final String TAG = io.rong.imkit.DefaultExtensionModule.class.getSimpleName();
+    private EditText mEditText;
+    private Stack<EditText> stack;
+    String[] types = null;
 
-  public DefaultExtensionModule() {
-  }
-
-  public void onInit(String appKey) {
-    this.stack = new Stack();
-  }
-
-  public void onConnect(String token) {
-  }
-
-  public void onAttachedToExtension(RongExtension extension) {
-    this.mEditText = extension.getInputEditText();
-    Context context = extension.getContext();
-    RLog.i(TAG, "attach " + this.stack.size());
-    this.stack.push(this.mEditText);
-    Resources resources = context.getResources();
-
-    try {
-      this.types = resources.getStringArray(resources.getIdentifier("rc_realtime_support_conversation_types", "array", context.getPackageName()));
-    } catch (NotFoundException var5) {
-      RLog.i(TAG, "not config rc_realtime_support_conversation_types in rc_config.xml");
+    public DefaultExtensionModule() {
     }
 
-  }
-
-  public void onDetachedFromExtension() {
-    RLog.i(TAG, "detach " + this.stack.size());
-    if (this.stack.size() > 0) {
-      this.stack.pop();
-      this.mEditText = this.stack.size() > 0 ? (EditText)this.stack.peek() : null;
+    public void onInit(String appKey) {
+        this.stack = new Stack();
     }
 
-  }
-
-  public void onReceivedMessage(Message message) {
-  }
-
-  public List<IPluginModule> getPluginModules(ConversationType conversationType) {
-    List<IPluginModule> pluginModuleList = new ArrayList();
-    IPluginModule image = new ImagePlugin();
-    IPluginModule file = new FilePlugin();
-    pluginModuleList.add(image);
-
-    if (conversationType.equals(ConversationType.GROUP) || conversationType.equals(ConversationType.DISCUSSION) || conversationType.equals(ConversationType.PRIVATE)) {
-      pluginModuleList.addAll(InternalModuleManager.getInstance().getExternalPlugins(conversationType));
+    public void onConnect(String token) {
     }
 
-    pluginModuleList.add(file);
-    return pluginModuleList;
-  }
+    public void onAttachedToExtension(RongExtension extension) {
+        this.mEditText = extension.getInputEditText();
+        Context context = extension.getContext();
+        RLog.i(TAG, "attach " + this.stack.size());
+        this.stack.push(this.mEditText);
+        Resources resources = context.getResources();
 
-  public List<IEmoticonTab> getEmoticonTabs() {
-    EmojiTab emojiTab = new EmojiTab();
-    emojiTab.setOnItemClickListener(new IEmojiItemClickListener() {
-      public void onEmojiClick(String emoji) {
-        int start = io.rong.imkit.DefaultExtensionModule.this.mEditText.getSelectionStart();
-        io.rong.imkit.DefaultExtensionModule.this.mEditText.getText().insert(start, emoji);
-      }
+        try {
+            this.types = resources.getStringArray(resources.getIdentifier("rc_realtime_support_conversation_types", "array", context.getPackageName()));
+        } catch (NotFoundException var5) {
+            RLog.i(TAG, "not config rc_realtime_support_conversation_types in rc_config.xml");
+        }
 
-      public void onDeleteClick() {
-        io.rong.imkit.DefaultExtensionModule.this.mEditText.dispatchKeyEvent(new KeyEvent(0, 67));
-      }
-    });
-    List<IEmoticonTab> list = new ArrayList();
-    list.add(emojiTab);
-    return list;
-  }
+    }
 
-  public void onDisconnect() {
-  }
+    public void onDetachedFromExtension() {
+        RLog.i(TAG, "detach " + this.stack.size());
+        if (this.stack.size() > 0) {
+            this.stack.pop();
+            this.mEditText = this.stack.size() > 0 ? (EditText) this.stack.peek() : null;
+        }
+
+    }
+
+    public void onReceivedMessage(Message message) {
+    }
+
+    public List<IPluginModule> getPluginModules(ConversationType conversationType) {
+        List<IPluginModule> pluginModuleList = new ArrayList();
+        IPluginModule image = new ImagePlugin();
+        IPluginModule file = new FilePlugin();
+        pluginModuleList.add(image);
+
+        if (conversationType.equals(ConversationType.GROUP) || conversationType.equals(ConversationType.DISCUSSION) || conversationType.equals(ConversationType.PRIVATE)) {
+            pluginModuleList.addAll(InternalModuleManager.getInstance().getExternalPlugins(conversationType));
+        }
+
+        pluginModuleList.add(file);
+        return pluginModuleList;
+    }
+
+    public List<IEmoticonTab> getEmoticonTabs() {
+        EmojiTab emojiTab = new EmojiTab();
+        emojiTab.setOnItemClickListener(new IEmojiItemClickListener() {
+            public void onEmojiClick(String emoji) {
+                int start = io.rong.imkit.DefaultExtensionModule.this.mEditText.getSelectionStart();
+                io.rong.imkit.DefaultExtensionModule.this.mEditText.getText().insert(start, emoji);
+            }
+
+            public void onDeleteClick() {
+                io.rong.imkit.DefaultExtensionModule.this.mEditText.dispatchKeyEvent(new KeyEvent(0, 67));
+            }
+        });
+        List<IEmoticonTab> list = new ArrayList();
+        list.add(emojiTab);
+        return list;
+    }
+
+    public void onDisconnect() {
+    }
 }

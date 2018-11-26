@@ -6,5 +6,5 @@
 package io.rong.imkit.manager;
 
 public interface IUnReadMessageObserver {
-  void onCountChanged(int var1);
+    void onCountChanged(int var1);
 }

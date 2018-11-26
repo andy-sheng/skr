@@ -6,9 +6,9 @@
 package io.rong.photoview.gestures;
 
 public interface OnGestureListener {
-  void onDrag(float var1, float var2);
+    void onDrag(float var1, float var2);
 
-  void onFling(float var1, float var2, float var3, float var4);
+    void onFling(float var1, float var2, float var3, float var4);
 
-  void onScale(float var1, float var2, float var3);
+    void onScale(float var1, float var2, float var3);
 }

@@ -12,11 +12,11 @@ import android.graphics.Rect;
 import android.net.Uri;
 
 public interface ImageRegionDecoder {
-  Point init(Context var1, Uri var2) throws Exception;
+    Point init(Context var1, Uri var2) throws Exception;
 
-  Bitmap decodeRegion(Rect var1, int var2);
+    Bitmap decodeRegion(Rect var1, int var2);
 
-  boolean isReady();
+    boolean isReady();
 
-  void recycle();
+    void recycle();
 }

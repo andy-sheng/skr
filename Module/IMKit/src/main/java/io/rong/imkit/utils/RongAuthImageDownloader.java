@@ -33,118 +33,118 @@ import io.rong.imageloader.core.download.BaseImageDownloader;
 import io.rong.imageloader.utils.IoUtils;
 
 public class RongAuthImageDownloader extends BaseImageDownloader {
-  private SSLSocketFactory mSSLSocketFactory;
-  final HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-    public boolean verify(String hostname, SSLSession session) {
-      return true;
-    }
-  };
+    private SSLSocketFactory mSSLSocketFactory;
+    final HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
+    };
 
-  public RongAuthImageDownloader(Context context) {
-    super(context);
-    SSLContext sslContext = this.sslContextForTrustedCertificates();
-    this.mSSLSocketFactory = sslContext.getSocketFactory();
-  }
-
-  public RongAuthImageDownloader(Context context, int connectTimeout, int readTimeout) {
-    super(context, connectTimeout, readTimeout);
-    SSLContext sslContext = this.sslContextForTrustedCertificates();
-    this.mSSLSocketFactory = sslContext.getSocketFactory();
-  }
-
-  protected InputStream getStreamFromNetwork(String imageUri, Object extra) throws IOException {
-    URL url = null;
-
-    try {
-      url = new URL(imageUri);
-    } catch (MalformedURLException var7) {
-      var7.printStackTrace();
+    public RongAuthImageDownloader(Context context) {
+        super(context);
+        SSLContext sslContext = this.sslContextForTrustedCertificates();
+        this.mSSLSocketFactory = sslContext.getSocketFactory();
     }
 
-    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-    conn.setConnectTimeout(this.connectTimeout);
-    conn.setReadTimeout(this.readTimeout);
-    if (conn instanceof HttpsURLConnection) {
-      ((HttpsURLConnection)conn).setSSLSocketFactory(this.mSSLSocketFactory);
-      ((HttpsURLConnection)conn).setHostnameVerifier(this.DO_NOT_VERIFY);
+    public RongAuthImageDownloader(Context context, int connectTimeout, int readTimeout) {
+        super(context, connectTimeout, readTimeout);
+        SSLContext sslContext = this.sslContextForTrustedCertificates();
+        this.mSSLSocketFactory = sslContext.getSocketFactory();
     }
 
-    conn.connect();
+    protected InputStream getStreamFromNetwork(String imageUri, Object extra) throws IOException {
+        URL url = null;
 
-    InputStream imageStream;
-    try {
-      if (conn.getResponseCode() >= 300 && conn.getResponseCode() < 400) {
-        String redirectUrl = conn.getHeaderField("Location");
-        conn = (HttpURLConnection)(new URL(redirectUrl)).openConnection();
+        try {
+            url = new URL(imageUri);
+        } catch (MalformedURLException var7) {
+            var7.printStackTrace();
+        }
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(this.connectTimeout);
         conn.setReadTimeout(this.readTimeout);
         if (conn instanceof HttpsURLConnection) {
-          ((HttpsURLConnection)conn).setSSLSocketFactory(this.mSSLSocketFactory);
-          ((HttpsURLConnection)conn).setHostnameVerifier(this.DO_NOT_VERIFY);
+            ((HttpsURLConnection) conn).setSSLSocketFactory(this.mSSLSocketFactory);
+            ((HttpsURLConnection) conn).setHostnameVerifier(this.DO_NOT_VERIFY);
         }
 
         conn.connect();
-      }
 
-      imageStream = conn.getInputStream();
-    } catch (IOException var8) {
-      if (conn.getContentLength() <= 0 || !conn.getContentType().contains("image/")) {
-        IoUtils.readAndCloseStream(conn.getErrorStream());
-        throw var8;
-      }
+        InputStream imageStream;
+        try {
+            if (conn.getResponseCode() >= 300 && conn.getResponseCode() < 400) {
+                String redirectUrl = conn.getHeaderField("Location");
+                conn = (HttpURLConnection) (new URL(redirectUrl)).openConnection();
+                conn.setConnectTimeout(this.connectTimeout);
+                conn.setReadTimeout(this.readTimeout);
+                if (conn instanceof HttpsURLConnection) {
+                    ((HttpsURLConnection) conn).setSSLSocketFactory(this.mSSLSocketFactory);
+                    ((HttpsURLConnection) conn).setHostnameVerifier(this.DO_NOT_VERIFY);
+                }
 
-      imageStream = conn.getErrorStream();
+                conn.connect();
+            }
+
+            imageStream = conn.getInputStream();
+        } catch (IOException var8) {
+            if (conn.getContentLength() <= 0 || !conn.getContentType().contains("image/")) {
+                IoUtils.readAndCloseStream(conn.getErrorStream());
+                throw var8;
+            }
+
+            imageStream = conn.getErrorStream();
+        }
+
+        if (!this.shouldBeProcessed(conn)) {
+            IoUtils.closeSilently(imageStream);
+            throw new IOException("Image request failed with response code " + conn.getResponseCode());
+        } else {
+            return new ContentLengthInputStream(new BufferedInputStream(imageStream, 32768), conn.getContentLength());
+        }
     }
 
-    if (!this.shouldBeProcessed(conn)) {
-      IoUtils.closeSilently(imageStream);
-      throw new IOException("Image request failed with response code " + conn.getResponseCode());
-    } else {
-      return new ContentLengthInputStream(new BufferedInputStream(imageStream, 32768), conn.getContentLength());
-    }
-  }
+    private SSLContext sslContextForTrustedCertificates() {
+        TrustManager[] trustAllCerts = new TrustManager[1];
+        TrustManager tm = new io.rong.imkit.utils.RongAuthImageDownloader.miTM();
+        trustAllCerts[0] = tm;
+        SSLContext sc = null;
 
-  private SSLContext sslContextForTrustedCertificates() {
-    TrustManager[] trustAllCerts = new TrustManager[1];
-    TrustManager tm = new io.rong.imkit.utils.RongAuthImageDownloader.miTM();
-    trustAllCerts[0] = tm;
-    SSLContext sc = null;
-
-    try {
-      sc = SSLContext.getInstance("SSL");
-      sc.init((KeyManager[])null, trustAllCerts, (SecureRandom)null);
-      return sc;
-    } catch (NoSuchAlgorithmException var9) {
-      var9.printStackTrace();
-      return sc;
-    } catch (KeyManagementException var10) {
-      var10.printStackTrace();
-      return sc;
-    } finally {
-      ;
-    }
-  }
-
-  class miTM implements TrustManager, X509TrustManager {
-    miTM() {
+        try {
+            sc = SSLContext.getInstance("SSL");
+            sc.init((KeyManager[]) null, trustAllCerts, (SecureRandom) null);
+            return sc;
+        } catch (NoSuchAlgorithmException var9) {
+            var9.printStackTrace();
+            return sc;
+        } catch (KeyManagementException var10) {
+            var10.printStackTrace();
+            return sc;
+        } finally {
+            ;
+        }
     }
 
-    public X509Certificate[] getAcceptedIssuers() {
-      return null;
-    }
+    class miTM implements TrustManager, X509TrustManager {
+        miTM() {
+        }
 
-    public boolean isServerTrusted(X509Certificate[] certs) {
-      return true;
-    }
+        public X509Certificate[] getAcceptedIssuers() {
+            return null;
+        }
 
-    public boolean isClientTrusted(X509Certificate[] certs) {
-      return true;
-    }
+        public boolean isServerTrusted(X509Certificate[] certs) {
+            return true;
+        }
 
-    public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
-    }
+        public boolean isClientTrusted(X509Certificate[] certs) {
+            return true;
+        }
 
-    public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+        public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+        }
+
+        public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+        }
     }
-  }
 }

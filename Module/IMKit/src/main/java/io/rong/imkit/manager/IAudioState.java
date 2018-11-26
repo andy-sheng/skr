@@ -8,11 +8,9 @@ package io.rong.imkit.manager;
 import io.rong.imkit.manager.AudioStateMessage;
 
 public abstract class IAudioState {
-  public IAudioState() {
-  }
+    public IAudioState() {}
 
-  void enter() {
-  }
+    void enter() {}
 
-  abstract void handleMessage(AudioStateMessage var1);
+    abstract void handleMessage(AudioStateMessage var1);
 }

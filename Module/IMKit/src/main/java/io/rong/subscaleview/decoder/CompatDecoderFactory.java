@@ -14,24 +14,24 @@ import java.lang.reflect.InvocationTargetException;
 import io.rong.subscaleview.decoder.DecoderFactory;
 
 public class CompatDecoderFactory<T> implements DecoderFactory<T> {
-  private final Class<? extends T> clazz;
-  private final Config bitmapConfig;
+    private final Class<? extends T> clazz;
+    private final Config bitmapConfig;
 
-  public CompatDecoderFactory(@NonNull Class<? extends T> clazz) {
-    this(clazz, (Config)null);
-  }
-
-  public CompatDecoderFactory(@NonNull Class<? extends T> clazz, Config bitmapConfig) {
-    this.clazz = clazz;
-    this.bitmapConfig = bitmapConfig;
-  }
-
-  public T make() throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-    if (this.bitmapConfig == null) {
-      return this.clazz.newInstance();
-    } else {
-      Constructor<? extends T> ctor = this.clazz.getConstructor(Config.class);
-      return ctor.newInstance(this.bitmapConfig);
+    public CompatDecoderFactory(@NonNull Class<? extends T> clazz) {
+        this(clazz, (Config) null);
     }
-  }
+
+    public CompatDecoderFactory(@NonNull Class<? extends T> clazz, Config bitmapConfig) {
+        this.clazz = clazz;
+        this.bitmapConfig = bitmapConfig;
+    }
+
+    public T make() throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        if (this.bitmapConfig == null) {
+            return this.clazz.newInstance();
+        } else {
+            Constructor<? extends T> ctor = this.clazz.getConstructor(Config.class);
+            return ctor.newInstance(this.bitmapConfig);
+        }
+    }
 }

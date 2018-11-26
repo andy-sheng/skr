@@ -8,7 +8,7 @@ package io.rong.imkit.widget;
 import android.net.Uri;
 
 public interface IImageLoadingListener {
-  void onLoadingComplete(Uri var1);
+    void onLoadingComplete(Uri var1);
 
-  void onLoadingFail();
+    void onLoadingFail();
 }

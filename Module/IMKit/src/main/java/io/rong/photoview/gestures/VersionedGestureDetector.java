@@ -15,21 +15,21 @@ import io.rong.photoview.gestures.GestureDetector;
 import io.rong.photoview.gestures.OnGestureListener;
 
 public final class VersionedGestureDetector {
-  public VersionedGestureDetector() {
-  }
-
-  public static GestureDetector newInstance(Context context, OnGestureListener listener) {
-    int sdkVersion = VERSION.SDK_INT;
-    Object detector;
-    if (sdkVersion < 5) {
-      detector = new CupcakeGestureDetector(context);
-    } else if (sdkVersion < 8) {
-      detector = new EclairGestureDetector(context);
-    } else {
-      detector = new FroyoGestureDetector(context);
+    public VersionedGestureDetector() {
     }
 
-    ((GestureDetector)detector).setOnGestureListener(listener);
-    return (GestureDetector)detector;
-  }
+    public static GestureDetector newInstance(Context context, OnGestureListener listener) {
+        int sdkVersion = VERSION.SDK_INT;
+        Object detector;
+        if (sdkVersion < 5) {
+            detector = new CupcakeGestureDetector(context);
+        } else if (sdkVersion < 8) {
+            detector = new EclairGestureDetector(context);
+        } else {
+            detector = new FroyoGestureDetector(context);
+        }
+
+        ((GestureDetector) detector).setOnGestureListener(listener);
+        return (GestureDetector) detector;
+    }
 }

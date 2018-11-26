@@ -11,9 +11,9 @@ import io.rong.imlib.model.Conversation.ConversationType;
 import io.rong.imlib.model.MentionedInfo;
 
 public interface ITextInputListener {
-  void onTextEdit(ConversationType var1, String var2, int var3, int var4, String var5);
+    void onTextEdit(ConversationType var1, String var2, int var3, int var4, String var5);
 
-  MentionedInfo onSendButtonClick();
+    MentionedInfo onSendButtonClick();
 
-  void onDeleteClick(ConversationType var1, String var2, EditText var3, int var4);
+    void onDeleteClick(ConversationType var1, String var2, EditText var3, int var4);
 }

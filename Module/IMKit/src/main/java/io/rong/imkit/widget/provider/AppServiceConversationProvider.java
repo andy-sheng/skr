@@ -21,32 +21,32 @@ import io.rong.imlib.model.PublicServiceProfile;
         portraitPosition = 1
 )
 public class AppServiceConversationProvider extends PrivateConversationProvider implements ConversationProvider<UIConversation> {
-  public AppServiceConversationProvider() {
-  }
-
-  public String getTitle(String id) {
-    ConversationKey mKey = ConversationKey.obtain(id, ConversationType.APP_PUBLIC_SERVICE);
-    PublicServiceProfile info = RongContext.getInstance().getPublicServiceInfoFromCache(mKey.getKey());
-    String name;
-    if (info != null) {
-      name = info.getName();
-    } else {
-      name = "";
+    public AppServiceConversationProvider() {
     }
 
-    return name;
-  }
+    public String getTitle(String id) {
+        ConversationKey mKey = ConversationKey.obtain(id, ConversationType.APP_PUBLIC_SERVICE);
+        PublicServiceProfile info = RongContext.getInstance().getPublicServiceInfoFromCache(mKey.getKey());
+        String name;
+        if (info != null) {
+            name = info.getName();
+        } else {
+            name = "";
+        }
 
-  public Uri getPortraitUri(String id) {
-    ConversationKey mKey = ConversationKey.obtain(id, ConversationType.APP_PUBLIC_SERVICE);
-    PublicServiceProfile info = RongContext.getInstance().getPublicServiceInfoFromCache(mKey.getKey());
-    Uri uri;
-    if (info != null) {
-      uri = info.getPortraitUri();
-    } else {
-      uri = null;
+        return name;
     }
 
-    return uri;
-  }
+    public Uri getPortraitUri(String id) {
+        ConversationKey mKey = ConversationKey.obtain(id, ConversationType.APP_PUBLIC_SERVICE);
+        PublicServiceProfile info = RongContext.getInstance().getPublicServiceInfoFromCache(mKey.getKey());
+        Uri uri;
+        if (info != null) {
+            uri = info.getPortraitUri();
+        } else {
+            uri = null;
+        }
+
+        return uri;
+    }
 }

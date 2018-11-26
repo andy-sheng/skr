@@ -14,27 +14,27 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import java.io.File;
 
 public class RongDatabaseContext extends ContextWrapper {
-  private String mDirPath;
+    private String mDirPath;
 
-  public RongDatabaseContext(Context context, String dirPath) {
-    super(context);
-    this.mDirPath = dirPath;
-  }
-
-  public File getDatabasePath(String name) {
-    File result = new File(this.mDirPath + File.separator + name);
-    if (!result.getParentFile().exists()) {
-      result.getParentFile().mkdirs();
+    public RongDatabaseContext(Context context, String dirPath) {
+        super(context);
+        this.mDirPath = dirPath;
     }
 
-    return result;
-  }
+    public File getDatabasePath(String name) {
+        File result = new File(this.mDirPath + File.separator + name);
+        if (!result.getParentFile().exists()) {
+            result.getParentFile().mkdirs();
+        }
 
-  public SQLiteDatabase openOrCreateDatabase(String name, int mode, CursorFactory factory) {
-    return SQLiteDatabase.openOrCreateDatabase(this.getDatabasePath(name), factory);
-  }
+        return result;
+    }
 
-  public SQLiteDatabase openOrCreateDatabase(String name, int mode, CursorFactory factory, DatabaseErrorHandler errorHandler) {
-    return SQLiteDatabase.openOrCreateDatabase(this.getDatabasePath(name).getAbsolutePath(), factory, errorHandler);
-  }
+    public SQLiteDatabase openOrCreateDatabase(String name, int mode, CursorFactory factory) {
+        return SQLiteDatabase.openOrCreateDatabase(this.getDatabasePath(name), factory);
+    }
+
+    public SQLiteDatabase openOrCreateDatabase(String name, int mode, CursorFactory factory, DatabaseErrorHandler errorHandler) {
+        return SQLiteDatabase.openOrCreateDatabase(this.getDatabasePath(name).getAbsolutePath(), factory, errorHandler);
+    }
 }

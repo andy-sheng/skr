@@ -8,5 +8,5 @@ package io.rong.imkit.plugin;
 import io.rong.imkit.plugin.IPluginModule;
 
 public interface IPluginClickListener {
-  void onClick(IPluginModule var1, int var2);
+    void onClick(IPluginModule var1, int var2);
 }

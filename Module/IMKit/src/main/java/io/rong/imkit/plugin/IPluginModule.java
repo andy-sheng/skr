@@ -13,11 +13,11 @@ import android.support.v4.app.Fragment;
 import io.rong.imkit.RongExtension;
 
 public interface IPluginModule {
-  Drawable obtainDrawable(Context var1);
+    Drawable obtainDrawable(Context var1);
 
-  String obtainTitle(Context var1);
+    String obtainTitle(Context var1);
 
-  void onClick(Fragment var1, RongExtension var2);
+    void onClick(Fragment var1, RongExtension var2);
 
-  void onActivityResult(int var1, int var2, Intent var3);
+    void onActivityResult(int var1, int var2, Intent var3);
 }

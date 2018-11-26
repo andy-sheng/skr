@@ -77,7 +77,7 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
             this.mWholeView.setSystemUiVisibility(1024);
             result = getSmartBarHeight(this);
             if (result > 0) {
-                LayoutParams lp = (LayoutParams)this.mToolbarBottom.getLayoutParams();
+                LayoutParams lp = (LayoutParams) this.mToolbarBottom.getLayoutParams();
                 lp.setMargins(0, 0, 0, result);
                 this.mToolbarBottom.setLayoutParams(lp);
             }
@@ -109,8 +109,8 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
                 if (io.rong.imkit.plugin.image.PicturePreviewActivity.this.mItemSelectedList != null) {
                     var4 = io.rong.imkit.plugin.image.PicturePreviewActivity.this.mItemSelectedList.iterator();
 
-                    while(var4.hasNext()) {
-                        item = (PicItem)var4.next();
+                    while (var4.hasNext()) {
+                        item = (PicItem) var4.next();
                         if (item.selected) {
                             list.add(Uri.parse("file://" + item.uri));
                         }
@@ -119,8 +119,8 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
 
                 var4 = io.rong.imkit.plugin.image.PicturePreviewActivity.this.mItemList.iterator();
 
-                while(var4.hasNext()) {
-                    item = (PicItem)var4.next();
+                while (var4.hasNext()) {
+                    item = (PicItem) var4.next();
                     if (item.selected) {
                         list.add(Uri.parse("file://" + item.uri));
                     }
@@ -145,7 +145,7 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
             }
         });
         this.mSelectBox.setText(R.string.rc_picprev_select);
-        this.mSelectBox.setChecked(((PicItem)this.mItemList.get(this.mCurrentIndex)).selected);
+        this.mSelectBox.setChecked(((PicItem) this.mItemList.get(this.mCurrentIndex)).selected);
         this.mSelectBox.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (!io.rong.imkit.plugin.image.PicturePreviewActivity.this.mSelectBox.getChecked() && io.rong.imkit.plugin.image.PicturePreviewActivity.this.getTotalSelectedNum() == 9) {
@@ -178,11 +178,11 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
 
     private void initView() {
         this.mToolbarTop = this.findViewById(R.id.toolbar_top);
-        this.mIndexTotal = (TextView)this.findViewById(R.id.index_total);
-        this.mBtnBack = (ImageButton)this.findViewById(R.id.back);
-        this.mBtnSend = (Button)this.findViewById(R.id.send);
+        this.mIndexTotal = (TextView) this.findViewById(R.id.index_total);
+        this.mBtnBack = (ImageButton) this.findViewById(R.id.back);
+        this.mBtnSend = (Button) this.findViewById(R.id.send);
         this.mWholeView = this.findViewById(R.id.whole_layout);
-        this.mViewPager = (HackyViewPager)this.findViewById(R.id.viewpager);
+        this.mViewPager = (HackyViewPager) this.findViewById(R.id.viewpager);
         this.mToolbarBottom = this.findViewById(R.id.toolbar_bottom);
         this.mUseOrigin = new io.rong.imkit.plugin.image.PicturePreviewActivity.CheckButton(this.findViewById(R.id.origin_check), R.drawable.rc_origin_check_nor, R.drawable.rc_origin_check_sel);
         this.mSelectBox = new io.rong.imkit.plugin.image.PicturePreviewActivity.CheckButton(this.findViewById(R.id.select_check), R.drawable.rc_select_check_nor, R.drawable.rc_select_check_sel);
@@ -205,8 +205,8 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
     private int getTotalSelectedNum() {
         int sum = 0;
 
-        for(int i = 0; i < this.mItemList.size(); ++i) {
-            if (((PicItem)this.mItemList.get(i)).selected) {
+        for (int i = 0; i < this.mItemList.size(); ++i) {
+            if (((PicItem) this.mItemList.get(i)).selected) {
                 ++sum;
             }
         }
@@ -223,18 +223,18 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
 
         int i;
         File file;
-        for(i = 0; i < this.mItemList.size(); ++i) {
-            if (((PicItem)this.mItemList.get(i)).selected) {
-                file = new File(((PicItem)this.mItemList.get(i)).uri);
-                size += (float)(file.length() / 1024L);
+        for (i = 0; i < this.mItemList.size(); ++i) {
+            if (((PicItem) this.mItemList.get(i)).selected) {
+                file = new File(((PicItem) this.mItemList.get(i)).uri);
+                size += (float) (file.length() / 1024L);
             }
         }
 
         if (this.mItemSelectedList != null) {
-            for(i = 0; i < this.mItemSelectedList.size(); ++i) {
-                if (((PicItem)this.mItemSelectedList.get(i)).selected) {
-                    file = new File(((PicItem)this.mItemSelectedList.get(i)).uri);
-                    size += (float)(file.length() / 1024L);
+            for (i = 0; i < this.mItemSelectedList.size(); ++i) {
+                if (((PicItem) this.mItemSelectedList.get(i)).selected) {
+                    file = new File(((PicItem) this.mItemSelectedList.get(i)).uri);
+                    size += (float) (file.length() / 1024L);
                 }
             }
         }
@@ -297,8 +297,8 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
 
         public CheckButton(View root, @DrawableRes int norId, @DrawableRes int selId) {
             this.rootView = root;
-            this.image = (ImageView)root.findViewById(R.id.image);
-            this.text = (TextView)root.findViewById(R.id.text);
+            this.image = (ImageView) root.findViewById(R.id.image);
+            this.text = (TextView) root.findViewById(R.id.text);
             this.nor_resId = norId;
             this.sel_resId = selId;
             this.image.setImageResource(this.nor_resId);
@@ -392,7 +392,7 @@ public class PicturePreviewActivity extends RongBaseNoActionbarActivity {
         }
 
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View)object);
+            container.removeView((View) object);
         }
     }
 }

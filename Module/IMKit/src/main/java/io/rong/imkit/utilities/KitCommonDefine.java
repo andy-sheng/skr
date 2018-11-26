@@ -6,8 +6,8 @@
 package io.rong.imkit.utilities;
 
 public class KitCommonDefine {
-  public static final String RONG_KIT_SP_CONFIG = "RongKitConfig";
+    public static final String RONG_KIT_SP_CONFIG = "RongKitConfig";
 
-  public KitCommonDefine() {
-  }
+    public KitCommonDefine() {
+    }
 }

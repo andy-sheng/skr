@@ -15,6 +15,6 @@ import io.rong.imkit.widget.provider.PrivateConversationProvider;
         portraitPosition = 1
 )
 public class CustomerServiceConversationProvider extends PrivateConversationProvider implements ConversationProvider<UIConversation> {
-  public CustomerServiceConversationProvider() {
-  }
+    public CustomerServiceConversationProvider() {
+    }
 }

@@ -16,7 +16,7 @@ import com.common.utils.U;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.token.RCTokenManager;
+import io.rong.test.token.RCTokenManager;
 import io.rong.imlib.RongIMClient;
 
 public class RongIMConfiguration implements ConfigModule {

@@ -12,19 +12,19 @@ import io.rong.imlib.model.PublicServiceProfile;
 import io.rong.imlib.model.UserInfo;
 
 public interface IRongCacheListener {
-  void onUserInfoUpdated(UserInfo var1);
+    void onUserInfoUpdated(UserInfo var1);
 
-  void onGroupUserInfoUpdated(GroupUserInfo var1);
+    void onGroupUserInfoUpdated(GroupUserInfo var1);
 
-  void onGroupUpdated(Group var1);
+    void onGroupUpdated(Group var1);
 
-  void onDiscussionUpdated(Discussion var1);
+    void onDiscussionUpdated(Discussion var1);
 
-  void onPublicServiceProfileUpdated(PublicServiceProfile var1);
+    void onPublicServiceProfileUpdated(PublicServiceProfile var1);
 
-  UserInfo getUserInfo(String var1);
+    UserInfo getUserInfo(String var1);
 
-  GroupUserInfo getGroupUserInfo(String var1, String var2);
+    GroupUserInfo getGroupUserInfo(String var1, String var2);
 
-  Group getGroupInfo(String var1);
+    Group getGroupInfo(String var1);
 }

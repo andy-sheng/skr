@@ -10,9 +10,9 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 
 public interface IEmoticonTab {
-  Drawable obtainTabDrawable(Context var1);
+    Drawable obtainTabDrawable(Context var1);
 
-  View obtainTabPager(Context var1);
+    View obtainTabPager(Context var1);
 
-  void onTableSelected(int var1);
+    void onTableSelected(int var1);
 }

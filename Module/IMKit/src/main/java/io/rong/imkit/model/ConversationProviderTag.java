@@ -13,9 +13,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ConversationProviderTag {
-  int portraitPosition() default 1;
+    int portraitPosition() default 1;
 
-  boolean centerInHorizontal() default false;
+    boolean centerInHorizontal() default false;
 
-  String conversationType() default "private";
+    String conversationType() default "private";
 }

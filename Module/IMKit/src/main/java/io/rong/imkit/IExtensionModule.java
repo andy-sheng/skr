@@ -14,19 +14,19 @@ import io.rong.imlib.model.Conversation.ConversationType;
 import io.rong.imlib.model.Message;
 
 public interface IExtensionModule {
-  void onInit(String var1);
+    void onInit(String var1);
 
-  void onConnect(String var1);
+    void onConnect(String var1);
 
-  void onAttachedToExtension(RongExtension var1);
+    void onAttachedToExtension(RongExtension var1);
 
-  void onDetachedFromExtension();
+    void onDetachedFromExtension();
 
-  void onReceivedMessage(Message var1);
+    void onReceivedMessage(Message var1);
 
-  List<IPluginModule> getPluginModules(ConversationType var1);
+    List<IPluginModule> getPluginModules(ConversationType var1);
 
-  List<IEmoticonTab> getEmoticonTabs();
+    List<IEmoticonTab> getEmoticonTabs();
 
-  void onDisconnect();
+    void onDisconnect();
 }

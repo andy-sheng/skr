@@ -22,98 +22,98 @@ import io.rong.imkit.RongContext;
 import io.rong.imlib.model.Conversation.ConversationType;
 
 public abstract class BaseSettingFragment extends BaseFragment implements OnClickListener {
-  TextView mTextView;
-  CheckBox mCheckBox;
-  RelativeLayout mSettingItem;
-  String mTargetId;
-  ConversationType mConversationType;
+    TextView mTextView;
+    CheckBox mCheckBox;
+    RelativeLayout mSettingItem;
+    String mTargetId;
+    ConversationType mConversationType;
 
-  public BaseSettingFragment() {
-  }
-
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    Intent intent = null;
-    if (this.getActivity() != null) {
-      intent = this.getActivity().getIntent();
-      if (intent.getData() != null) {
-        this.mConversationType = ConversationType.valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.US));
-        this.mTargetId = intent.getData().getQueryParameter("targetId");
-      }
+    public BaseSettingFragment() {
     }
 
-  }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = null;
+        if (this.getActivity() != null) {
+            intent = this.getActivity().getIntent();
+            if (intent.getData() != null) {
+                this.mConversationType = ConversationType.valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.US));
+                this.mTargetId = intent.getData().getQueryParameter("targetId");
+            }
+        }
 
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.rc_fragment_base_setting, container, false);
-    this.mTextView = (TextView)view.findViewById(R.id.rc_title);
-    this.mCheckBox = (CheckBox)view.findViewById(R.id.rc_checkbox);
-    this.mSettingItem = (RelativeLayout)view.findViewById(R.id.rc_setting_item);
-    return view;
-  }
-
-  public void onActivityCreated(Bundle savedInstanceState) {
-    this.mTextView.setText(this.setTitle());
-    this.mCheckBox.setEnabled(this.setSwitchButtonEnabled());
-    if (View.GONE == this.setSwitchBtnVisibility()) {
-      this.mCheckBox.setVisibility(View.GONE);
-    } else if (View.VISIBLE == this.setSwitchBtnVisibility()) {
-      this.mCheckBox.setVisibility(View.VISIBLE);
     }
 
-    this.mCheckBox.setOnClickListener(this);
-    this.mSettingItem.setOnClickListener(this);
-    this.initData();
-    super.onActivityCreated(savedInstanceState);
-  }
-
-  public void onClick(View v) {
-    if (v == this.mSettingItem) {
-      this.onSettingItemClick(v);
-    } else if (v == this.mCheckBox) {
-      this.toggleSwitch(this.mCheckBox.isChecked());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.rc_fragment_base_setting, container, false);
+        this.mTextView = (TextView) view.findViewById(R.id.rc_title);
+        this.mCheckBox = (CheckBox) view.findViewById(R.id.rc_checkbox);
+        this.mSettingItem = (RelativeLayout) view.findViewById(R.id.rc_setting_item);
+        return view;
     }
 
-  }
+    public void onActivityCreated(Bundle savedInstanceState) {
+        this.mTextView.setText(this.setTitle());
+        this.mCheckBox.setEnabled(this.setSwitchButtonEnabled());
+        if (View.GONE == this.setSwitchBtnVisibility()) {
+            this.mCheckBox.setVisibility(View.GONE);
+        } else if (View.VISIBLE == this.setSwitchBtnVisibility()) {
+            this.mCheckBox.setVisibility(View.VISIBLE);
+        }
 
-  public void onDestroy() {
-    super.onDestroy();
-    RongContext.getInstance().getEventBus().unregister(this);
-  }
+        this.mCheckBox.setOnClickListener(this);
+        this.mSettingItem.setOnClickListener(this);
+        this.initData();
+        super.onActivityCreated(savedInstanceState);
+    }
 
-  protected ConversationType getConversationType() {
-    return this.mConversationType;
-  }
+    public void onClick(View v) {
+        if (v == this.mSettingItem) {
+            this.onSettingItemClick(v);
+        } else if (v == this.mCheckBox) {
+            this.toggleSwitch(this.mCheckBox.isChecked());
+        }
 
-  protected String getTargetId() {
-    return this.mTargetId;
-  }
+    }
 
-  protected abstract String setTitle();
+    public void onDestroy() {
+        super.onDestroy();
+        RongContext.getInstance().getEventBus().unregister(this);
+    }
 
-  protected abstract boolean setSwitchButtonEnabled();
+    protected ConversationType getConversationType() {
+        return this.mConversationType;
+    }
 
-  protected abstract int setSwitchBtnVisibility();
+    protected String getTargetId() {
+        return this.mTargetId;
+    }
 
-  protected abstract void onSettingItemClick(View var1);
+    protected abstract String setTitle();
 
-  protected abstract void toggleSwitch(boolean var1);
+    protected abstract boolean setSwitchButtonEnabled();
 
-  protected abstract void initData();
+    protected abstract int setSwitchBtnVisibility();
 
-  protected void setSwitchBtnStatus(boolean status) {
-    this.mCheckBox.setChecked(status);
-  }
+    protected abstract void onSettingItemClick(View var1);
 
-  protected boolean getSwitchBtnStatus() {
-    return this.mCheckBox.isChecked();
-  }
+    protected abstract void toggleSwitch(boolean var1);
 
-  public boolean onBackPressed() {
-    return false;
-  }
+    protected abstract void initData();
 
-  public void onRestoreUI() {
-    this.initData();
-  }
+    protected void setSwitchBtnStatus(boolean status) {
+        this.mCheckBox.setChecked(status);
+    }
+
+    protected boolean getSwitchBtnStatus() {
+        return this.mCheckBox.isChecked();
+    }
+
+    public boolean onBackPressed() {
+        return false;
+    }
+
+    public void onRestoreUI() {
+        this.initData();
+    }
 }

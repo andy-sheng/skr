@@ -24,24 +24,24 @@ import io.rong.message.HandshakeMessage;
         hide = true
 )
 public class HandshakeMessageItemProvider extends MessageProvider<HandshakeMessage> {
-  public HandshakeMessageItemProvider() {
-  }
+    public HandshakeMessageItemProvider() {
+    }
 
-  public View newView(Context context, ViewGroup group) {
-    return null;
-  }
+    public View newView(Context context, ViewGroup group) {
+        return null;
+    }
 
-  public Spannable getContentSummary(HandshakeMessage data) {
-    return null;
-  }
+    public Spannable getContentSummary(HandshakeMessage data) {
+        return null;
+    }
 
-  public Spannable getContentSummary(Context context, HandshakeMessage data) {
-    return data != null && data.getContent() != null ? new SpannableString(AndroidEmoji.ensure(data.getContent())) : null;
-  }
+    public Spannable getContentSummary(Context context, HandshakeMessage data) {
+        return data != null && data.getContent() != null ? new SpannableString(AndroidEmoji.ensure(data.getContent())) : null;
+    }
 
-  public void onItemClick(View view, int position, HandshakeMessage content, UIMessage message) {
-  }
+    public void onItemClick(View view, int position, HandshakeMessage content, UIMessage message) {
+    }
 
-  public void bindView(View v, int position, HandshakeMessage content, UIMessage data) {
-  }
+    public void bindView(View v, int position, HandshakeMessage content, UIMessage data) {
+    }
 }

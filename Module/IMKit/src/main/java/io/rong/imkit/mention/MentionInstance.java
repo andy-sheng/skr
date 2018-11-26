@@ -12,10 +12,10 @@ import java.util.List;
 import io.rong.imkit.mention.MentionBlock;
 
 public class MentionInstance {
-  public String key;
-  public EditText inputEditText;
-  public List<MentionBlock> mentionBlocks;
+    public String key;
+    public EditText inputEditText;
+    public List<MentionBlock> mentionBlocks;
 
-  public MentionInstance() {
-  }
+    public MentionInstance() {
+    }
 }

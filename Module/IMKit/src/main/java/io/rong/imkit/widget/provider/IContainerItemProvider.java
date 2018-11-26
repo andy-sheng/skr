@@ -28,79 +28,81 @@ import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 
 public interface IContainerItemProvider<T> {
-  View newView(Context var1, ViewGroup var2);
+    View newView(Context var1, ViewGroup var2);
 
-  void bindView(View var1, int var2, T var3);
+    void bindView(View var1, int var2, T var3);
 
-  public interface ConversationProvider<T extends Parcelable> extends io.rong.imkit.widget.provider.IContainerItemProvider<T> {
-    String getTitle(String var1);
+    public interface ConversationProvider<T extends Parcelable> extends io.rong.imkit.widget.provider.IContainerItemProvider<T> {
+        String getTitle(String var1);
 
-    Uri getPortraitUri(String var1);
-  }
-
-  public abstract static class MessageProvider<K extends MessageContent> implements io.rong.imkit.widget.provider.IContainerItemProvider<UIMessage>, Cloneable {
-    public MessageProvider() {
+        Uri getPortraitUri(String var1);
     }
 
-    public final void bindView(View v, int position, UIMessage data) {
-      this.bindView(v, position, (K)(data.getContent()), data);
-    }
-
-    public abstract void bindView(View var1, int var2, K var3, UIMessage var4);
-
-    public Spannable getContentSummary(Context context, K data) {
-      return this.getContentSummary(data);
-    }
-
-    public Spannable getSummary(UIMessage data) {
-      return this.getContentSummary((K)data.getContent());
-    }
-
-    /** @deprecated */
-    public abstract Spannable getContentSummary(K var1);
-
-    public abstract void onItemClick(View var1, int var2, K var3, UIMessage var4);
-
-    public void onItemLongClick(final View view, final int position, K content, final UIMessage message) {
-      final List<MessageItemLongClickAction> messageItemLongClickActions = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions(message);
-      Collections.sort(messageItemLongClickActions, new Comparator<MessageItemLongClickAction>() {
-        public int compare(MessageItemLongClickAction lhs, MessageItemLongClickAction rhs) {
-          return rhs.priority - lhs.priority;
+    public abstract static class MessageProvider<K extends MessageContent> implements io.rong.imkit.widget.provider.IContainerItemProvider<UIMessage>, Cloneable {
+        public MessageProvider() {
         }
-      });
-      List<String> titles = new ArrayList();
-      Iterator var7 = messageItemLongClickActions.iterator();
 
-      while(var7.hasNext()) {
-        MessageItemLongClickAction action = (MessageItemLongClickAction)var7.next();
-        titles.add(action.getTitle(view.getContext()));
-      }
-
-      OptionsPopupDialog.newInstance(view.getContext(), (String[])titles.toArray(new String[titles.size()])).setOptionsPopupDialogListener(new OnOptionsItemClickedListener() {
-        public void onOptionsItemClicked(int which) {
-          if (!((MessageItemLongClickAction)messageItemLongClickActions.get(which)).listener.onMessageItemLongClick(view.getContext(), message)) {
-            MessageProvider.this.onItemLongClickAction(view, position, message);
-          }
-
+        public final void bindView(View v, int position, UIMessage data) {
+            this.bindView(v, position, (K) (data.getContent()), data);
         }
-      }).show();
-    }
 
-    public void onItemLongClickAction(View view, int position, UIMessage message) {
-    }
+        public abstract void bindView(View var1, int var2, K var3, UIMessage var4);
 
-    public Object clone() throws CloneNotSupportedException {
-      return super.clone();
-    }
+        public Spannable getContentSummary(Context context, K data) {
+            return this.getContentSummary(data);
+        }
 
-    public String getPushContent(Context context, UIMessage message) {
-      String userName = "";
-      UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
-      if (userInfo != null) {
-        userName = userInfo.getName();
-      }
+        public Spannable getSummary(UIMessage data) {
+            return this.getContentSummary((K) data.getContent());
+        }
 
-      return context.getString(R.string.rc_user_recalled_message, new Object[]{userName});
+        /**
+         * @deprecated
+         */
+        public abstract Spannable getContentSummary(K var1);
+
+        public abstract void onItemClick(View var1, int var2, K var3, UIMessage var4);
+
+        public void onItemLongClick(final View view, final int position, K content, final UIMessage message) {
+            final List<MessageItemLongClickAction> messageItemLongClickActions = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions(message);
+            Collections.sort(messageItemLongClickActions, new Comparator<MessageItemLongClickAction>() {
+                public int compare(MessageItemLongClickAction lhs, MessageItemLongClickAction rhs) {
+                    return rhs.priority - lhs.priority;
+                }
+            });
+            List<String> titles = new ArrayList();
+            Iterator var7 = messageItemLongClickActions.iterator();
+
+            while (var7.hasNext()) {
+                MessageItemLongClickAction action = (MessageItemLongClickAction) var7.next();
+                titles.add(action.getTitle(view.getContext()));
+            }
+
+            OptionsPopupDialog.newInstance(view.getContext(), (String[]) titles.toArray(new String[titles.size()])).setOptionsPopupDialogListener(new OnOptionsItemClickedListener() {
+                public void onOptionsItemClicked(int which) {
+                    if (!((MessageItemLongClickAction) messageItemLongClickActions.get(which)).listener.onMessageItemLongClick(view.getContext(), message)) {
+                        MessageProvider.this.onItemLongClickAction(view, position, message);
+                    }
+
+                }
+            }).show();
+        }
+
+        public void onItemLongClickAction(View view, int position, UIMessage message) {
+        }
+
+        public Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
+
+        public String getPushContent(Context context, UIMessage message) {
+            String userName = "";
+            UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
+            if (userInfo != null) {
+                userName = userInfo.getName();
+            }
+
+            return context.getString(R.string.rc_user_recalled_message, new Object[]{userName});
+        }
     }
-  }
 }

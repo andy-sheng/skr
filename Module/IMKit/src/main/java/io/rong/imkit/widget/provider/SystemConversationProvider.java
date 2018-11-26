@@ -16,17 +16,17 @@ import io.rong.imkit.widget.provider.PrivateConversationProvider;
         portraitPosition = 1
 )
 public class SystemConversationProvider extends PrivateConversationProvider implements ConversationProvider<UIConversation> {
-  public SystemConversationProvider() {
-  }
-
-  public String getTitle(String id) {
-    String name;
-    if (RongUserInfoManager.getInstance().getUserInfo(id) == null) {
-      name = id;
-    } else {
-      name = RongUserInfoManager.getInstance().getUserInfo(id).getName();
+    public SystemConversationProvider() {
     }
 
-    return name;
-  }
+    public String getTitle(String id) {
+        String name;
+        if (RongUserInfoManager.getInstance().getUserInfo(id) == null) {
+            name = id;
+        } else {
+            name = RongUserInfoManager.getInstance().getUserInfo(id).getName();
+        }
+
+        return name;
+    }
 }

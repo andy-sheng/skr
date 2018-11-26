@@ -8,5 +8,5 @@ package io.rong.subscaleview.decoder;
 import java.lang.reflect.InvocationTargetException;
 
 public interface DecoderFactory<T> {
-  T make() throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
+    T make() throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
 }

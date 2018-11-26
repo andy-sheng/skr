@@ -13,15 +13,15 @@ import io.rong.imkit.plugin.IPluginModule;
 import io.rong.imlib.model.Conversation.ConversationType;
 
 public interface IExternalModule {
-  void onCreate(Context var1);
+    void onCreate(Context var1);
 
-  void onInitialized(String var1);
+    void onInitialized(String var1);
 
-  void onConnected(String var1);
+    void onConnected(String var1);
 
-  void onViewCreated();
+    void onViewCreated();
 
-  List<IPluginModule> getPlugins(ConversationType var1);
+    List<IPluginModule> getPlugins(ConversationType var1);
 
-  void onDisconnected();
+    void onDisconnected();
 }

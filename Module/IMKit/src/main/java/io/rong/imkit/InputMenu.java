@@ -8,13 +8,13 @@ package io.rong.imkit;
 import java.util.List;
 
 public class InputMenu {
-  public String title;
-  public List<String> subMenuList;
+    public String title;
+    public List<String> subMenuList;
 
-  public InputMenu() {
-  }
+    public InputMenu() {
+    }
 
-  public static io.rong.imkit.InputMenu obtain() {
-    return new io.rong.imkit.InputMenu();
-  }
+    public static io.rong.imkit.InputMenu obtain() {
+        return new io.rong.imkit.InputMenu();
+    }
 }

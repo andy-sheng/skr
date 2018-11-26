@@ -10,7 +10,6 @@ import com.common.base.BaseFragment;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
-import com.engine.agora.AgoraEngineAdapter;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -99,18 +98,19 @@ public class RoomFragment extends BaseFragment {
 
             }
         });
-        AgoraEngineAdapter.getInstance().setCommunicationMode();
-        AgoraEngineAdapter.getInstance().enableVideo();
-        AgoraEngineAdapter.getInstance().setVideoEncoderConfiguration();
-        AgoraEngineAdapter.getInstance().joinChannel(null, ROOM_ID, null, 0);
-        AgoraEngineAdapter.getInstance().bindLocalVideoView(mOtherContainer);
-        AgoraEngineAdapter.getInstance().bindRemoteVideo(mSelfContainer, 0);
+        // todo 暂时屏蔽
+//        AgoraEngineAdapter.getInstance().setCommunicationMode();
+//        AgoraEngineAdapter.getInstance().enableVideo();
+//        AgoraEngineAdapter.getInstance().setVideoEncoderConfiguration();
+//        AgoraEngineAdapter.getInstance().joinChannel(null, ROOM_ID, null, 0);
+//        AgoraEngineAdapter.getInstance().bindLocalVideoView(mOtherContainer);
+//        AgoraEngineAdapter.getInstance().bindRemoteVideo(mSelfContainer, 0);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        AgoraEngineAdapter.getInstance().destroy();
+//        AgoraEngineAdapter.getInstance().destroy();
         ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(ROOM_ID);
     }
 

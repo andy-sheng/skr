@@ -32,97 +32,97 @@ import io.rong.message.TextMessage;
         showReadState = true
 )
 public class TextMessageItemProvider extends MessageProvider<TextMessage> {
-  private static final String TAG = "TextMessageItemProvider";
+    private static final String TAG = "TextMessageItemProvider";
 
-  public TextMessageItemProvider() {
-  }
+    public TextMessageItemProvider() {
+    }
 
-  public View newView(Context context, ViewGroup group) {
-    View view = LayoutInflater.from(context).inflate(R.layout.rc_item_text_message, (ViewGroup)null);
-    io.rong.imkit.widget.provider.TextMessageItemProvider.ViewHolder holder = new io.rong.imkit.widget.provider.TextMessageItemProvider.ViewHolder();
-    holder.message = (AutoLinkTextView)view.findViewById(16908308);
-    view.setTag(holder);
-    return view;
-  }
+    public View newView(Context context, ViewGroup group) {
+        View view = LayoutInflater.from(context).inflate(R.layout.rc_item_text_message, (ViewGroup) null);
+        io.rong.imkit.widget.provider.TextMessageItemProvider.ViewHolder holder = new io.rong.imkit.widget.provider.TextMessageItemProvider.ViewHolder();
+        holder.message = (AutoLinkTextView) view.findViewById(16908308);
+        view.setTag(holder);
+        return view;
+    }
 
-  public Spannable getContentSummary(TextMessage data) {
-    return null;
-  }
-
-  public Spannable getContentSummary(Context context, TextMessage data) {
-    if (data == null) {
-      return null;
-    } else {
-      String content = data.getContent();
-      if (content != null) {
-        if (content.length() > 100) {
-          content = content.substring(0, 100);
-        }
-
-        return new SpannableString(AndroidEmoji.ensure(content));
-      } else {
+    public Spannable getContentSummary(TextMessage data) {
         return null;
-      }
-    }
-  }
-
-  public void onItemClick(View view, int position, TextMessage content, UIMessage message) {
-  }
-
-  public void bindView(final View v, int position, TextMessage content, final UIMessage data) {
-    io.rong.imkit.widget.provider.TextMessageItemProvider.ViewHolder holder = (io.rong.imkit.widget.provider.TextMessageItemProvider.ViewHolder)v.getTag();
-    if (data.getMessageDirection() == MessageDirection.SEND) {
-      holder.message.setBackgroundResource(R.drawable.rc_ic_bubble_right);
-    } else {
-      holder.message.setBackgroundResource(R.drawable.rc_ic_bubble_left);
     }
 
-    final AutoLinkTextView textView = holder.message;
-    if (data.getTextMessageContent() != null) {
-      int len = data.getTextMessageContent().length();
-      if (v.getHandler() != null && len > 500) {
-        v.getHandler().postDelayed(new Runnable() {
-          public void run() {
-            textView.setText(data.getTextMessageContent());
-          }
-        }, 50L);
-      } else {
-        textView.setText(data.getTextMessageContent());
-      }
+    public Spannable getContentSummary(Context context, TextMessage data) {
+        if (data == null) {
+            return null;
+        } else {
+            String content = data.getContent();
+            if (content != null) {
+                if (content.length() > 100) {
+                    content = content.substring(0, 100);
+                }
+
+                return new SpannableString(AndroidEmoji.ensure(content));
+            } else {
+                return null;
+            }
+        }
     }
 
-    holder.message.setMovementMethod(new LinkTextViewMovementMethod(new ILinkClickListener() {
-      public boolean onLinkClick(String link) {
-        ConversationBehaviorListener listener = RongContext.getInstance().getConversationBehaviorListener();
-        ConversationClickListener clickListener = RongContext.getInstance().getConversationClickListener();
-        boolean result = false;
-        if (listener != null) {
-          result = listener.onMessageLinkClick(v.getContext(), link);
-        } else if (clickListener != null) {
-          result = clickListener.onMessageLinkClick(v.getContext(), link, data.getMessage());
+    public void onItemClick(View view, int position, TextMessage content, UIMessage message) {
+    }
+
+    public void bindView(final View v, int position, TextMessage content, final UIMessage data) {
+        io.rong.imkit.widget.provider.TextMessageItemProvider.ViewHolder holder = (io.rong.imkit.widget.provider.TextMessageItemProvider.ViewHolder) v.getTag();
+        if (data.getMessageDirection() == MessageDirection.SEND) {
+            holder.message.setBackgroundResource(R.drawable.rc_ic_bubble_right);
+        } else {
+            holder.message.setBackgroundResource(R.drawable.rc_ic_bubble_left);
         }
 
-        if (listener == null && clickListener == null || !result) {
-          String str = link.toLowerCase();
-          if (str.startsWith("http") || str.startsWith("https")) {
-            Intent intent = new Intent("io.io.rong.imkit.intent.action.webview");
-            intent.setPackage(v.getContext().getPackageName());
-            intent.putExtra("url", link);
-            v.getContext().startActivity(intent);
-            result = true;
-          }
+        final AutoLinkTextView textView = holder.message;
+        if (data.getTextMessageContent() != null) {
+            int len = data.getTextMessageContent().length();
+            if (v.getHandler() != null && len > 500) {
+                v.getHandler().postDelayed(new Runnable() {
+                    public void run() {
+                        textView.setText(data.getTextMessageContent());
+                    }
+                }, 50L);
+            } else {
+                textView.setText(data.getTextMessageContent());
+            }
         }
 
-        return result;
-      }
-    }));
-  }
+        holder.message.setMovementMethod(new LinkTextViewMovementMethod(new ILinkClickListener() {
+            public boolean onLinkClick(String link) {
+                ConversationBehaviorListener listener = RongContext.getInstance().getConversationBehaviorListener();
+                ConversationClickListener clickListener = RongContext.getInstance().getConversationClickListener();
+                boolean result = false;
+                if (listener != null) {
+                    result = listener.onMessageLinkClick(v.getContext(), link);
+                } else if (clickListener != null) {
+                    result = clickListener.onMessageLinkClick(v.getContext(), link, data.getMessage());
+                }
 
-  private static class ViewHolder {
-    AutoLinkTextView message;
-    boolean longClick;
+                if (listener == null && clickListener == null || !result) {
+                    String str = link.toLowerCase();
+                    if (str.startsWith("http") || str.startsWith("https")) {
+                        Intent intent = new Intent("io.io.rong.imkit.intent.action.webview");
+                        intent.setPackage(v.getContext().getPackageName());
+                        intent.putExtra("url", link);
+                        v.getContext().startActivity(intent);
+                        result = true;
+                    }
+                }
 
-    private ViewHolder() {
+                return result;
+            }
+        }));
     }
-  }
+
+    private static class ViewHolder {
+        AutoLinkTextView message;
+        boolean longClick;
+
+        private ViewHolder() {
+        }
+    }
 }

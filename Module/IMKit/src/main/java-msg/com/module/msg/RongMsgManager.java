@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.token.RCTokenManager;
+import io.rong.test.token.RCTokenManager;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;

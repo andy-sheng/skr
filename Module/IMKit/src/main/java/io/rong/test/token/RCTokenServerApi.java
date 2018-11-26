@@ -8,7 +8,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface GetTokenServerApi {
+public interface RCTokenServerApi {
 
     /**
      * 从融云服务器获取token(返回格式json）

@@ -8,5 +8,5 @@ package io.rong.imkit.emoticon;
 import android.view.View;
 
 public interface IEmoticonSettingClickListener {
-  void onSettingClick(View var1);
+    void onSettingClick(View var1);
 }

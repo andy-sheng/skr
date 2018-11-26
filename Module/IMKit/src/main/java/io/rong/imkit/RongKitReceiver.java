@@ -13,14 +13,14 @@ import io.rong.imkit.manager.AudioPlayManager;
 import io.rong.imkit.manager.AudioRecordManager;
 
 public class RongKitReceiver extends BroadcastReceiver {
-  public RongKitReceiver() {
-  }
-
-  public void onReceive(Context context, Intent intent) {
-    if (intent != null && intent.getAction() != null && !intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
-      AudioPlayManager.getInstance().stopPlay();
-      AudioRecordManager.getInstance().destroyRecord();
+    public RongKitReceiver() {
     }
 
-  }
+    public void onReceive(Context context, Intent intent) {
+        if (intent != null && intent.getAction() != null && !intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
+            AudioPlayManager.getInstance().stopPlay();
+            AudioRecordManager.getInstance().destroyRecord();
+        }
+
+    }
 }

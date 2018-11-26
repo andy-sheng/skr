@@ -6,13 +6,13 @@
 package io.rong.imkit.manager;
 
 public class AudioStateMessage {
-  public int what;
-  public Object obj;
+    public int what;
+    public Object obj;
 
-  public AudioStateMessage() {
-  }
+    public AudioStateMessage() {
+    }
 
-  public static io.rong.imkit.manager.AudioStateMessage obtain() {
-    return new io.rong.imkit.manager.AudioStateMessage();
-  }
+    public static io.rong.imkit.manager.AudioStateMessage obtain() {
+        return new io.rong.imkit.manager.AudioStateMessage();
+    }
 }

@@ -18,28 +18,28 @@ import io.rong.imkit.widget.provider.PrivateConversationProvider;
         portraitPosition = 1
 )
 public class GroupConversationProvider extends PrivateConversationProvider implements ConversationProvider<UIConversation> {
-  public GroupConversationProvider() {
-  }
-
-  public String getTitle(String groupId) {
-    String name;
-    if (RongUserInfoManager.getInstance().getGroupInfo(groupId) == null) {
-      name = "";
-    } else {
-      name = RongUserInfoManager.getInstance().getGroupInfo(groupId).getName();
+    public GroupConversationProvider() {
     }
 
-    return name;
-  }
+    public String getTitle(String groupId) {
+        String name;
+        if (RongUserInfoManager.getInstance().getGroupInfo(groupId) == null) {
+            name = "";
+        } else {
+            name = RongUserInfoManager.getInstance().getGroupInfo(groupId).getName();
+        }
 
-  public Uri getPortraitUri(String id) {
-    Uri uri;
-    if (RongUserInfoManager.getInstance().getGroupInfo(id) == null) {
-      uri = null;
-    } else {
-      uri = RongUserInfoManager.getInstance().getGroupInfo(id).getPortraitUri();
+        return name;
     }
 
-    return uri;
-  }
+    public Uri getPortraitUri(String id) {
+        Uri uri;
+        if (RongUserInfoManager.getInstance().getGroupInfo(id) == null) {
+            uri = null;
+        } else {
+            uri = RongUserInfoManager.getInstance().getGroupInfo(id).getPortraitUri();
+        }
+
+        return uri;
+    }
 }
