@@ -1,0 +1,3 @@
+/Users/chengsimin/dev/android_github/cb_agora_adap/engine/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/chengsimin/dev/android_github/cb_agora_adap/engine/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/chengsimin/dev/android_github/cb_agora_adap/engine/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/native-lib.dir

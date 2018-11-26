@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += 'src/main/java-agora'
+            res.srcDirs += ['src/main/res-agora']
+
+            res.srcDirs += ['src/main/res']
+        }
+    }
+
+}
+
+dependencies {
+    compileOnly project(":baseLibrary:commonsdk")
+    api files('libs/agora-rtc-sdk.jar')
+}
+

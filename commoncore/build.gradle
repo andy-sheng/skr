@@ -52,6 +52,7 @@ dependencies {
     // commonsdk 也能远程 maven 依赖
 //    api "com.mi.live:common-sdk:2.0"
     api project(":baseLibrary:commonsdk")
+    api project(":baseLibrary:enginesdk")
     api project(":commonservice")
     // arouter 解析注解代码，需要在 defaultConfig 中注明 moduleName
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
@@ -60,7 +61,6 @@ dependencies {
     // 小米oauth登录用
     api files('libs/oauth.jar')
     api files('libs/ks3-android-sdk-v-1.4.6.jar')
-    api files('libs/agora-rtc-sdk.jar')
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录

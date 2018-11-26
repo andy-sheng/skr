@@ -10,7 +10,7 @@ import com.common.base.BaseFragment;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
-import com.engine.AgoraEngineAdapter;
+import com.engine.agora.AgoraEngineAdapter;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;

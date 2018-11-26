@@ -1,4 +1,5 @@
-include ':app', ':baseLibrary:commonsdk', ':commonservice', ':commoncore', ':moduletest'
+include ':app',  ':commonservice', ':commoncore', ':moduletest'
+include ':baseLibrary:commonsdk','baseLibrary:enginesdk'
 //include ':modulewatch', ':modulechannel'
 include ':Module:Home', ':Module:RankingMode',':Module:IMKit'
 
