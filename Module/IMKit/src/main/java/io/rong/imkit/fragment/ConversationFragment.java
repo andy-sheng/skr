@@ -46,6 +46,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -53,7 +57,6 @@ import java.util.Locale;
 
 import io.rong.common.RLog;
 import io.rong.common.SystemUtils;
-import io.rong.eventbus.EventBus;
 import io.rong.imkit.DeleteClickActions;
 import io.rong.imkit.IExtensionClickListener;
 import io.rong.imkit.IPublicServiceMenuClickListener;
@@ -1480,6 +1483,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         return info == null ? targetId : info.getName();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadReceiptRequestEvent event) {
         RLog.d("ConversationFragment", "ReadReceiptRequestEvent");
         if ((this.mConversationType.equals(ConversationType.GROUP) || this.mConversationType.equals(ConversationType.DISCUSSION)) && RongContext.getInstance().isReadReceiptConversationType(event.getConversationType()) && event.getConversationType().equals(this.mConversationType) && event.getTargetId().equals(this.mTargetId)) {
@@ -1516,6 +1520,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadReceiptResponseEvent event) {
         RLog.d("ConversationFragment", "ReadReceiptResponseEvent");
         if ((this.mConversationType.equals(ConversationType.GROUP) || this.mConversationType.equals(ConversationType.DISCUSSION)) && RongContext.getInstance().isReadReceiptConversationType(event.getConversationType()) && event.getConversationType().equals(this.mConversationType) && event.getTargetId().equals(this.mTargetId)) {
@@ -1543,6 +1548,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageDeleteEvent deleteEvent) {
         RLog.d("ConversationFragment", "MessageDeleteEvent");
         if (deleteEvent.getMessageIds() != null) {
@@ -1561,6 +1567,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PublicServiceFollowableEvent event) {
         RLog.d("ConversationFragment", "PublicServiceFollowableEvent");
         if (event != null && !event.isFollow()) {
@@ -1569,6 +1576,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessagesClearEvent clearEvent) {
         RLog.d("ConversationFragment", "MessagesClearEvent");
         if (clearEvent.getTargetId().equals(this.mTargetId) && clearEvent.getType().equals(this.mConversationType)) {
@@ -1578,6 +1586,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageRecallEvent event) {
         RLog.d("ConversationFragment", "MessageRecallEvent");
         if (event.isRecallSuccess()) {
@@ -1607,6 +1616,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(RemoteMessageRecallEvent event) {
         RLog.d("ConversationFragment", "RemoteMessageRecallEvent");
         int position = this.mListAdapter.findPosition((long) event.getMessageId());
@@ -1631,6 +1641,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Message msg) {
         RLog.d("ConversationFragment", "Event message : " + msg.getMessageId() + ", " + msg.getObjectName() + ", " + msg.getSentStatus());
         if (this.mTargetId.equals(msg.getTargetId()) && this.mConversationType.equals(msg.getConversationType()) && msg.getMessageId() > 0) {
@@ -1681,6 +1692,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageSentStatusUpdateEvent event) {
         Message message = event.getMessage();
         if (message != null && !message.getMessageDirection().equals(MessageDirection.RECEIVE)) {
@@ -1696,6 +1708,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FileMessageEvent event) {
         Message msg = event.getMessage();
         RLog.d("ConversationFragment", "FileMessageEvent message : " + msg.getMessageId() + ", " + msg.getObjectName() + ", " + msg.getSentStatus());
@@ -1715,6 +1728,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(GroupUserInfo groupUserInfo) {
         RLog.d("ConversationFragment", "GroupUserInfoEvent " + groupUserInfo.getGroupId() + " " + groupUserInfo.getUserId() + " " + groupUserInfo.getNickname());
         if (groupUserInfo.getNickname() != null && groupUserInfo.getGroupId() != null) {
@@ -1773,10 +1787,12 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OnMessageSendErrorEvent event) {
         this.onEventMainThread(event.getMessage());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OnReceiveMessageEvent event) {
         Message message = event.getMessage();
         RLog.i("ConversationFragment", "OnReceiveMessageEvent, " + message.getMessageId() + ", " + message.getObjectName() + ", " + message.getReceivedStatus().toString());
@@ -1822,6 +1838,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventBackgroundThread(final PlayAudioEvent event) {
         this.getHandler().post(new Runnable() {
             public void run() {
@@ -1850,6 +1867,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OnReceiveMessageProgressEvent event) {
         if (this.mList != null) {
             int first = this.mList.getFirstVisiblePosition();
@@ -1869,6 +1887,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectEvent event) {
         RLog.i("ConversationFragment", "ConnectEvent : " + event.getConnectStatus());
         if (this.mListAdapter.getCount() == 0) {
@@ -1879,6 +1898,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(UserInfo userInfo) {
         RLog.i("ConversationFragment", "userInfo " + userInfo.getUserId());
         int first = this.mList.getFirstVisiblePosition();
@@ -1902,6 +1922,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PublicServiceProfile publicServiceProfile) {
         RLog.i("ConversationFragment", "publicServiceProfile");
         if (publicServiceProfile != null && this.mConversationType.equals(publicServiceProfile.getConversationType()) && this.mTargetId.equals(publicServiceProfile.getTargetId())) {
@@ -1920,6 +1941,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadReceiptEvent event) {
         RLog.i("ConversationFragment", "ReadReceiptEvent");
         if (RongContext.getInstance().isReadReceiptConversationType(event.getMessage().getConversationType()) && this.mTargetId.equals(event.getMessage().getTargetId()) && this.mConversationType.equals(event.getMessage().getConversationType()) && event.getMessage().getMessageDirection().equals(MessageDirection.RECEIVE)) {

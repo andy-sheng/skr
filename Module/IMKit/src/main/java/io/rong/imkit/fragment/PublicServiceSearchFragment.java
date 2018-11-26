@@ -21,6 +21,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.rong.common.RLog;
 import io.rong.imkit.R;
 import io.rong.imkit.RongContext;
@@ -105,6 +108,7 @@ public class PublicServiceSearchFragment extends DispatchResultFragment {
         super.onDestroy();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PublicServiceFollowableEvent event) {
         RLog.d("PublicServiceSearchFragment", "onEventMainThread PublicAccountIsFollowEvent, follow=" + event.isFollow());
         if (event != null) {

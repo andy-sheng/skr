@@ -20,12 +20,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import io.rong.common.RLog;
-import io.rong.eventbus.EventBus;
 import io.rong.imkit.R;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
@@ -359,6 +362,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         return this.mAdapter;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SyncReadStatusEvent event) {
         ConversationType conversationType = event.getConversationType();
         String targetId = event.getTargetId();
@@ -383,6 +387,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         this.onUnreadCountChanged();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadReceiptEvent event) {
         ConversationType conversationType = event.getMessage().getConversationType();
         String targetId = event.getMessage().getTargetId();
@@ -443,6 +448,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(AudioListenedEvent event) {
         Message message = event.getMessage();
         ConversationType conversationType = message.getConversationType();
@@ -487,6 +493,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OnReceiveMessageEvent event) {
         this.leftOfflineMsg = event.getLeft();
         Message message = event.getMessage();
@@ -540,6 +547,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageLeftEvent event) {
         if (event.left == 0) {
             this.syncUnreadCount();
@@ -593,6 +601,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageRecallEvent event) {
         RLog.d(this.TAG, "MessageRecallEvent");
         int count = this.mAdapter.getCount();
@@ -655,6 +664,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(RemoteMessageRecallEvent event) {
         RLog.d(this.TAG, "RemoteMessageRecallEvent");
         int count = this.mAdapter.getCount();
@@ -719,6 +729,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Message message) {
         ConversationType conversationType = message.getConversationType();
         String targetId = message.getTargetId();
@@ -758,6 +769,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageSentStatusUpdateEvent event) {
         Message message = event.getMessage();
         if (message != null && !message.getMessageDirection().equals(MessageDirection.RECEIVE)) {
@@ -788,11 +800,13 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectionStatus status) {
         RLog.d(this.TAG, "ConnectionStatus, " + status.toString());
         this.setNotificationBarVisibility(status);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectEvent event) {
         RLog.d(this.TAG, "ConnectEvent :" + RongIMClient.getInstance().getCurrentConnectionStatus());
         if (this.isShowWithoutConnected) {
@@ -802,6 +816,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(final CreateDiscussionEvent createDiscussionEvent) {
         RLog.d(this.TAG, "createDiscussionEvent");
         final String targetId = createDiscussionEvent.getDiscussionId();
@@ -840,6 +855,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(final DraftEvent draft) {
         ConversationType conversationType = draft.getConversationType();
         String targetId = draft.getTargetId();
@@ -877,6 +893,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Group groupInfo) {
         RLog.d(this.TAG, "Group: " + groupInfo.getName() + " " + groupInfo.getId());
         int count = this.mAdapter.getCount();
@@ -895,6 +912,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Discussion discussion) {
         RLog.d(this.TAG, "Discussion: " + discussion.getName() + " " + discussion.getId());
         if (this.isConfigured(ConversationType.DISCUSSION)) {
@@ -920,6 +938,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(GroupUserInfo groupUserInfo) {
         RLog.d(this.TAG, "GroupUserInfo " + groupUserInfo.getGroupId() + " " + groupUserInfo.getUserId() + " " + groupUserInfo.getNickname());
         if (groupUserInfo.getNickname() != null && groupUserInfo.getGroupId() != null) {
@@ -940,6 +959,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(UserInfo userInfo) {
         RLog.i(this.TAG, "UserInfo " + userInfo.getUserId() + " " + userInfo.getName());
         int count = this.mAdapter.getCount();
@@ -960,6 +980,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PublicServiceProfile profile) {
         RLog.d(this.TAG, "PublicServiceProfile");
         int count = this.mAdapter.getCount();
@@ -977,6 +998,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PublicServiceFollowableEvent event) {
         RLog.d(this.TAG, "PublicServiceFollowableEvent");
         if (!event.isFollow()) {
@@ -989,6 +1011,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConversationUnreadEvent unreadEvent) {
         RLog.d(this.TAG, "ConversationUnreadEvent");
         ConversationType conversationType = unreadEvent.getType();
@@ -1007,6 +1030,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         this.onUnreadCountChanged();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConversationTopEvent setTopEvent) {
         RLog.d(this.TAG, "ConversationTopEvent");
         ConversationType conversationType = setTopEvent.getConversationType();
@@ -1029,12 +1053,14 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConversationRemoveEvent removeEvent) {
         RLog.d(this.TAG, "ConversationRemoveEvent");
         ConversationType conversationType = removeEvent.getType();
         this.removeConversation(conversationType, removeEvent.getTargetId());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ClearConversationEvent clearConversationEvent) {
         RLog.d(this.TAG, "ClearConversationEvent");
         List<ConversationType> typeList = clearConversationEvent.getTypes();
@@ -1049,6 +1075,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         this.onUnreadCountChanged();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageDeleteEvent event) {
         RLog.d(this.TAG, "MessageDeleteEvent");
         int count = this.mAdapter.getCount();
@@ -1110,6 +1137,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConversationNotificationEvent notificationEvent) {
         int originalIndex = this.mAdapter.findPosition(notificationEvent.getConversationType(), notificationEvent.getTargetId());
         if (originalIndex >= 0) {
@@ -1124,6 +1152,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessagesClearEvent clearMessagesEvent) {
         RLog.d(this.TAG, "MessagesClearEvent");
         ConversationType conversationType = clearMessagesEvent.getType();
@@ -1137,6 +1166,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OnMessageSendErrorEvent sendErrorEvent) {
         Message message = sendErrorEvent.getMessage();
         ConversationType conversationType = message.getConversationType();
@@ -1158,16 +1188,19 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(QuitDiscussionEvent event) {
         RLog.d(this.TAG, "QuitDiscussionEvent");
         this.removeConversation(ConversationType.DISCUSSION, event.getDiscussionId());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(QuitGroupEvent event) {
         RLog.d(this.TAG, "QuitGroupEvent");
         this.removeConversation(ConversationType.GROUP, event.getGroupId());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     private void removeConversation(final ConversationType conversationType, String targetId) {
         boolean gathered = this.getGatherState(conversationType);
         int index;

@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +25,6 @@ import java.util.concurrent.Executors;
 
 import io.rong.common.FileUtils;
 import io.rong.common.RLog;
-import io.rong.eventbus.EventBus;
 import io.rong.imageloader.cache.disc.impl.ext.LruDiskCache;
 import io.rong.imageloader.cache.disc.naming.Md5FileNameGenerator;
 import io.rong.imageloader.core.DisplayImageOptions;

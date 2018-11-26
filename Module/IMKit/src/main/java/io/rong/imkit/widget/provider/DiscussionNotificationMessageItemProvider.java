@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.rong.common.RLog;
 import io.rong.imkit.R;
 import io.rong.imkit.R.id;
@@ -257,6 +260,7 @@ public class DiscussionNotificationMessageItemProvider extends MessageProvider<D
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(UserInfo userInfo) {
         if (userInfo.getName() != null) {
             if (MessageProviderUserInfoHelper.getInstance().isCacheUserId(userInfo.getUserId())) {

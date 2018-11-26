@@ -22,6 +22,10 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,7 +34,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.rong.common.RLog;
-import io.rong.eventbus.EventBus;
 import io.rong.imkit.R;
 import io.rong.imkit.RongBaseNoActionbarActivity;
 import io.rong.imkit.RongIM;
@@ -237,6 +240,7 @@ public class CSLeaveMessageActivity extends RongBaseNoActionbarActivity {
         return m.matches();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public final void onEventMainThread(final CSTerminateEvent event) {
         Builder builder = new Builder(this);
         builder.setCancelable(false);

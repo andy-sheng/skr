@@ -9,6 +9,9 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.rong.common.RLog;
 import io.rong.imkit.R;
 import io.rong.imkit.RongContext;
@@ -91,6 +94,7 @@ public class SetConversationNotificationFragment extends BaseSettingFragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConversationNotificationEvent event) {
         if (event != null && event.getTargetId().equals(this.getTargetId()) && event.getConversationType().getValue() == this.getConversationType().getValue()) {
             this.setSwitchBtnStatus(event.getStatus() == ConversationNotificationStatus.NOTIFY);

@@ -23,8 +23,9 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import io.rong.common.RLog;
-import io.rong.eventbus.EventBus;
 import io.rong.imkit.R;
 import io.rong.imkit.manager.AudioPlayManager;
 import io.rong.imkit.manager.AudioRecordManager;

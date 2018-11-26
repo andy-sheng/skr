@@ -8,6 +8,9 @@ package io.rong.imkit;
 import android.text.Spannable;
 import android.text.TextUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 import io.rong.common.RLog;
@@ -198,6 +201,7 @@ public class RongNotificationManager {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(UserInfo userInfo) {
         ConversationType[] types = new ConversationType[]{ConversationType.PRIVATE, ConversationType.GROUP, ConversationType.DISCUSSION, ConversationType.CUSTOMER_SERVICE, ConversationType.CHATROOM, ConversationType.SYSTEM};
         RLog.i("RongNotificationManager", "onEventMainThread. userInfo" + userInfo);
@@ -261,6 +265,7 @@ public class RongNotificationManager {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Group groupInfo) {
         String key = ConversationKey.obtain(groupInfo.getId(), ConversationType.GROUP).getKey();
         RLog.i("RongNotificationManager", "onEventMainThread. groupInfo" + groupInfo);
@@ -288,6 +293,7 @@ public class RongNotificationManager {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Discussion discussion) {
         String key = ConversationKey.obtain(discussion.getId(), ConversationType.DISCUSSION).getKey();
         if (this.messageMap.containsKey(key)) {
@@ -310,6 +316,7 @@ public class RongNotificationManager {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PublicServiceProfile info) {
         String key = ConversationKey.obtain(info.getTargetId(), info.getConversationType()).getKey();
         if (this.messageMap.containsKey(key)) {

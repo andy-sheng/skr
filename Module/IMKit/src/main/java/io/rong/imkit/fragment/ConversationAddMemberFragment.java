@@ -18,6 +18,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -123,6 +126,7 @@ public class ConversationAddMemberFragment extends BaseFragment implements OnIte
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(UserInfo userInfo) {
         int count = this.mAdapter.getCount();
 

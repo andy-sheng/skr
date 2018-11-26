@@ -21,6 +21,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +32,6 @@ import java.util.Set;
 
 import io.rong.common.RLog;
 import io.rong.common.SystemUtils;
-import io.rong.eventbus.EventBus;
 import io.rong.imageloader.core.DisplayImageOptions;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imageloader.core.assist.FailReason;

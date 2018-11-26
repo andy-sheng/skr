@@ -22,6 +22,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +35,6 @@ import java.util.List;
 
 import io.rong.common.FileUtils;
 import io.rong.common.RLog;
-import io.rong.eventbus.EventBus;
 import io.rong.imkit.R;
 import io.rong.imkit.RongBaseActivity;
 import io.rong.imkit.RongContext;
@@ -532,6 +534,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FileMessageEvent event) {
         if (this.mMessage.getMessageId() == event.getMessage().getMessageId()) {
             switch (event.getCallBackType()) {

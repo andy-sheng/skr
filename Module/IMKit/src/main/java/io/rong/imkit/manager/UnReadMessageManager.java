@@ -5,13 +5,13 @@
 
 package io.rong.imkit.manager;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import io.rong.common.RLog;
-import io.rong.eventbus.EventBus;
-import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imkit.model.Event.ConnectEvent;
 import io.rong.imkit.model.Event.ConversationRemoveEvent;
 import io.rong.imkit.model.Event.ConversationUnreadEvent;
