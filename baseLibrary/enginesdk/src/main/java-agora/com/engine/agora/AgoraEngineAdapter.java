@@ -90,6 +90,14 @@ public class AgoraEngineAdapter {
                 mOutCallback.onUserMuteVideo(uid,muted);
             }
         }
+
+        @Override
+        public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+            super.onJoinChannelSuccess(channel, uid, elapsed);
+            if(mOutCallback!=null){
+                mOutCallback.onJoinChannelSuccess(channel,uid,elapsed);
+            }
+        }
     };
 
     public void setOutCallback(AgoraOutCallback outCallback) {
@@ -142,7 +150,6 @@ public class AgoraEngineAdapter {
         }
         mUiHandler.removeCallbacksAndMessages(null);
         mRtcEngine = null;
-        mOutCallback = null;
     }
 
     /**
@@ -186,6 +193,9 @@ public class AgoraEngineAdapter {
      */
     public void joinChannel(String token, String channelId, String extra, int uid) {
         tryInit();
+        MyLog.d(TAG,"joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
+        // 一定要设置一个角色
+        mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
         mRtcEngine.joinChannel(token, channelId, extra, uid);
     }
 

@@ -5,7 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.module.common.ICallback;
 
 public interface IMsgService extends IProvider {
+    /**
+     * 加入融云聊天室
+     * @param roomId
+     * @param callback
+     */
     void joinChatRoom(String roomId, ICallback callback);
+
     void leaveChatRoom(String roomId);
 
     /**

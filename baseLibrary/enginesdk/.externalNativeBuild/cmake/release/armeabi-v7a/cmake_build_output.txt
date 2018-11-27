@@ -1,3 +1,4 @@
+-- jnipath为/Users/chengsimin/dev/livesdk/livesdk/baseLibrary/enginesdk/src/main/jni
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /Users/chengsimin/dev/livesdk/livesdk/baseLibrary/enginesdk/.externalNativeBuild/cmake/release/armeabi-v7a

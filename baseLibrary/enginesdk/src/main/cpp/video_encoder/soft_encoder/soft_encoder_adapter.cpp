@@ -33,6 +33,31 @@ void SoftEncoderAdapter::createEncoder(EGLCore *eglCore, int inputTexId) {
     startTime = -1;
     fpsChangeTime = -1;
 
+//    JNIEnv *env;
+//    int status = 0;
+//    bool needAttach = false;
+//    status = g_jvm->GetEnv((void **) (&env), JNI_VERSION_1_4);
+//    if (status < 0) {
+//        if (g_jvm->AttachCurrentThread(&env, NULL) != JNI_OK) {
+//            LOGE("%s: AttachCurrentThread() failed", __FUNCTION__);
+//            return;
+//        }
+//        needAttach = true;
+//    }
+//
+//    jclass jcls = env->GetObjectClass(obj);
+//    jmethodID createMediaCodecSurfaceEncoderFunc = env->GetMethodID(jcls,
+//                                                                    "createMediaCodecSurfaceEncoderFromNative",
+//                                                                    "(IIII)V");
+//    env->CallVoidMethod(obj, createMediaCodecSurfaceEncoderFunc, videoWidth, videoHeight,
+//                        videoBitRate, (int) frameRate);
+//    jmethodID getEncodeSurfaceFromNativeFunc = env->GetMethodID(jcls,
+//                                                                "getEncodeSurfaceFromNative",
+//                                                                "()Landroid/view/Surface;");
+//    jobject surface = env->CallObjectMethod(obj,
+//                                            getEncodeSurfaceFromNativeFunc);
+
+
     encoder = new VideoX264Encoder(strategy);
     encoder->init(videoWidth, videoHeight, videoBitRate, frameRate, packetPool);
     yuy2PacketPool = LiveYUY2PacketPool::GetInstance();

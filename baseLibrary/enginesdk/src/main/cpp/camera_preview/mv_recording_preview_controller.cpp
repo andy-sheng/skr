@@ -115,14 +115,18 @@ void MVRecordingPreviewController::destroyEGLContext() {
         handler->postMessage(new Message(MSG_EGL_THREAD_EXIT));
         handler->postMessage(new Message(MESSAGE_QUEUE_LOOP_QUIT_FLAG));
     }
+    LOGI("MVRecordingPreviewController 1");
     pthread_join(_threadId, 0);
+    LOGI("MVRecordingPreviewController 2");
     if (queue) {
         queue->abort();
         delete queue;
         queue = NULL;
     }
+    LOGI("MVRecordingPreviewController 3");
     delete handler;
     handler = NULL;
+    LOGI("MVRecordingPreviewController 4");
     LOGI("MVRecordingPreviewController thread stopped");
 }
 

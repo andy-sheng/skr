@@ -17,8 +17,16 @@ public class ChangbaRecordingPreviewScheduler
     private ChangbaRecordingPreviewView mPreviewView;
     private ChangbaVideoCamera mCamera;
 
+    private int defaultCameraFacingId = CameraInfo.CAMERA_FACING_FRONT;
+
+    // 是否是首次，确定是否创建 EGLContext
+    private boolean mIsFirst = true;
+
+    // 是否在 stop状态
+    private boolean mIsStopped = false;
+
+
     public ChangbaRecordingPreviewScheduler(ChangbaRecordingPreviewView previewView, ChangbaVideoCamera camera) {
-        isStopped = false;
         this.mPreviewView = previewView;
         this.mCamera = camera;
         this.mPreviewView.setCallback(this);
@@ -26,7 +34,7 @@ public class ChangbaRecordingPreviewScheduler
     }
 
     public void resetStopState() {
-        isStopped = false;
+        mIsStopped = false;
     }
 
     public int getNumberOfCameras() {
@@ -54,68 +62,40 @@ public class ChangbaRecordingPreviewScheduler
         }
     }
 
-    private boolean isFirst = true;
-    private boolean isSurfaceExsist = false;
-    private boolean isStopped = false;
-    private int defaultCameraFacingId = CameraInfo.CAMERA_FACING_FRONT;
-
     @Override
     public void createSurface(Surface surface, int width, int height) {
+        MyLog.d(TAG, "createSurface" + " surface=" + surface + " width=" + width + " height=" + height);
+        // width height 为 SurfaceView 的宽高
         startPreview(surface, width, height, defaultCameraFacingId);
     }
 
     private void startPreview(Surface surface, int width, int height, final int cameraFacingId) {
-        if (isFirst) {
+        if (mIsFirst) {
             prepareEGLContext(surface, width, height, cameraFacingId);
-            isFirst = false;
+            mIsFirst = false;
         } else {
             createWindowSurface(surface);
         }
-        isSurfaceExsist = true;
     }
 
-    public void startPreview(final int cameraFacingId) {
-        MyLog.d(TAG,"startPreview" + " cameraFacingId=" + cameraFacingId);
-        try {
-            if (null != mPreviewView) {
-                SurfaceHolder holder = mPreviewView.getHolder();
-                if (null != holder) {
-                    Surface surface = holder.getSurface();
-                    if (null != surface) {
-                        startPreview(surface, mPreviewView.getWidth(), mPreviewView.getHeight(), cameraFacingId);
-                    }
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+    public void startPreview() {
+
+    }
+
+    /**
+     * 仅仅是停止预览
+     */
+    public void stop() {
+        this.stopEncoding();
+        mIsStopped = true;
     }
 
     @Override
     public void destroySurface() {
-        if (isStopped) {
-            this.stopPreview();
-        } else {
-            this.destroyWindowSurface();
-        }
-        isSurfaceExsist = false;
+        this.destroyWindowSurface();
     }
 
-    public void stop() {
-        this.stopEncoding();
-        isStopped = true;
-        if (!isSurfaceExsist) {
-            this.stopPreview();
-        }
-    }
-
-    private void stopPreview() {
-        this.destroyEGLContext();
-        isFirst = true;
-        isSurfaceExsist = false;
-        isStopped = false;
-    }
-
+    @Override
     public void onPermissionDismiss(String tip) {
         Log.i("problem", "onPermissionDismiss : " + tip);
     }
@@ -161,6 +141,7 @@ public class ChangbaRecordingPreviewScheduler
     Surface surface = null;
 
     public void createMediaCodecSurfaceEncoderFromNative(int width, int height, int bitRate, int frameRate) {
+        MyLog.d(TAG,"createMediaCodecSurfaceEncoderFromNative" + " width=" + width + " height=" + height + " bitRate=" + bitRate + " frameRate=" + frameRate);
         try {
             surfaceEncoder = new MediaCodecSurfaceEncoder(width, height, bitRate, frameRate);
             surface = surfaceEncoder.getInputSurface();
@@ -186,6 +167,7 @@ public class ChangbaRecordingPreviewScheduler
 
     /**
      * 方法名都不能改，jni会通过反射调这个方法
+     *
      * @param textureId
      */
     public void pushToRTCService(int textureId) {
@@ -214,6 +196,19 @@ public class ChangbaRecordingPreviewScheduler
         }
     }
 
+    @Override
+    public native void resetRenderSize(int width, int height);
+
+    @Override
+    public native void updateTexMatrix(float texMatrix[]);
+
+    /**
+     * 当Camera捕捉到了新的一帧图像的时候会调用这个方法,因为更新纹理必须要在EGLThread中,
+     * 所以配合下updateTexImageFromNative使用
+     **/
+    @Override
+    public native void notifyFrameAvailable();
+
     public native void prepareEGLContext(Surface surface, int width, int height, int cameraFacingId);
 
     public native void createWindowSurface(Surface surface);
@@ -222,22 +217,10 @@ public class ChangbaRecordingPreviewScheduler
 
     public native void hotConfigQuality(int maxBitrate, int avgBitrate, int fps);
 
-    @Override
-    public native void resetRenderSize(int width, int height);
-
-    @Override
-    public native void updateTexMatrix(float texMatrix[]);
 
     public native void destroyWindowSurface();
 
     public native void destroyEGLContext();
-
-    /**
-     * 当Camera捕捉到了新的一帧图像的时候会调用这个方法,因为更新纹理必须要在EGLThread中,
-     * 所以配合下updateTexImageFromNative使用
-     **/
-    @Override
-    public native void notifyFrameAvailable();
 
     public native void startEncoding(int width, int height, int videoBitRate, int frameRate, boolean useHardWareEncoding, int strategy);
 
@@ -256,6 +239,8 @@ public class ChangbaRecordingPreviewScheduler
      * 切换摄像头, 底层会在返回来调用configCamera, 之后在启动预览
      **/
     public native void switchCameraFacing();
+
     public native void hotConfig(int bitRate, int fps, int gopSize);
+
     public native void setBeautifyParam(int key, float value);
 }

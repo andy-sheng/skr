@@ -103,7 +103,10 @@ public class RongMsgManager {
 
     public void joinChatRoom(String roomId, ICallback callback) {
         mJoinroomCallback = callback;
-        RongIM.getInstance().joinChatRoom(roomId, 10, mOperationCallback);
+        /**
+         * 不拉之前的消息
+         */
+        RongIM.getInstance().joinChatRoom(roomId, 0, mOperationCallback);
     }
 
 

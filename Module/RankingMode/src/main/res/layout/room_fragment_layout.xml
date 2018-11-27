@@ -25,22 +25,37 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/view_dimen_100"
+        android:layout_margin="@dimen/view_dimen_50"
         android:orientation="vertical">
 
-        <com.common.view.ex.ExTextView
+        <com.common.view.ex.ExButton
             android:id="@+id/join_room_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="加入房间" />
+            android:text="加入引擎和融云房间" />
 
-        <com.common.view.ex.ExTextView
+        <com.common.view.ex.ExButton
             android:id="@+id/send_msg_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_dimen_50"
             android:gravity="center"
             android:text="发送弹幕消息" />
-    </LinearLayout>
 
+        <com.common.view.ex.ExButton
+            android:id="@+id/capture_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/view_dimen_50"
+            android:text="开始采集编码" />
+    </LinearLayout>
+    <com.common.view.ex.ExTextView
+        android:id="@+id/info_text"
+        android:layout_margin="@dimen/view_dimen_50"
+        android:layout_alignParentBottom="true"
+        android:text="消息:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

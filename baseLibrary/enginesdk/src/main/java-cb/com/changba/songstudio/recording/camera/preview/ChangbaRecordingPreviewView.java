@@ -6,45 +6,72 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
-public class ChangbaRecordingPreviewView extends SurfaceView implements Callback {
-	private static final String TAG = "ChangbaRecordingPreviewView";
-	
-	public ChangbaRecordingPreviewView(Context context) {
-		super(context);
-		SurfaceHolder surfaceHolder = getHolder();
-		surfaceHolder.addCallback(this);
-		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-	}
+import com.common.log.MyLog;
 
-	public void surfaceCreated(SurfaceHolder holder) {
-		Surface surface = holder.getSurface();
-		int width = getWidth();
-		int height = getHeight();
-		if(null != mCallback){
-			mCallback.createSurface(surface, width, height);
-		}
-	}
+public class ChangbaRecordingPreviewView implements Callback {
+    private static final String TAG = "ChangbaRecordingPreviewView";
 
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-		if(null != mCallback){
-			mCallback.resetRenderSize(width, height);
-		}
-	}
+    private SurfaceView mSurfaceView;
 
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		if(null != mCallback){
-			mCallback.destroySurface();
-		}
-	}
-	
-	private ChangbaRecordingPreviewViewCallback mCallback;
-	public void setCallback(ChangbaRecordingPreviewViewCallback callback){
-		this.mCallback = callback;
-	}
-	public interface ChangbaRecordingPreviewViewCallback{
-		public void createSurface(Surface surface, int width, int height);
-		public void resetRenderSize(int width, int height);
-		public void destroySurface();
-	}
+    public ChangbaRecordingPreviewView(SurfaceView surfaceView) {
+        mSurfaceView = surfaceView;
+        SurfaceHolder surfaceHolder = mSurfaceView.getHolder();
+        surfaceHolder.addCallback(this);
+        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        MyLog.d(TAG,"surfaceCreated" + " holder=" + holder);
+
+        Surface surface = holder.getSurface();
+        int width = mSurfaceView.getWidth();
+        int height = mSurfaceView.getHeight();
+        if (null != mCallback) {
+            mCallback.createSurface(surface, width, height);
+        }
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width,
+                               int height) {
+        MyLog.d(TAG,"surfaceChanged" + " holder=" + holder + " format=" + format + " width=" + width + " height=" + height);
+        if (null != mCallback) {
+            mCallback.resetRenderSize(width, height);
+        }
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        MyLog.d(TAG,"surfaceDestroyed" + " holder=" + holder);
+        if (null != mCallback) {
+            mCallback.destroySurface();
+        }
+    }
+
+    private ChangbaRecordingPreviewViewCallback mCallback;
+
+    public void setCallback(ChangbaRecordingPreviewViewCallback callback) {
+        this.mCallback = callback;
+    }
+
+    public SurfaceHolder getHolder() {
+        return mSurfaceView.getHolder();
+    }
+
+    public int getWidth() {
+        return mSurfaceView.getWidth();
+    }
+
+    public int getHeight() {
+        return mSurfaceView.getHeight();
+    }
+
+    public interface ChangbaRecordingPreviewViewCallback {
+        void createSurface(Surface surface, int width, int height);
+
+        void resetRenderSize(int width, int height);
+
+        void destroySurface();
+    }
 }

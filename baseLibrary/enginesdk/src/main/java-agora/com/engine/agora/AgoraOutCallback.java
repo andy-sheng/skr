@@ -12,4 +12,6 @@ public interface AgoraOutCallback {
     void onUserMuteVideo(int uid, boolean muted);
 
     void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapsed);
+
+    void onJoinChannelSuccess(String channel, int uid, int elapsed);
 }

@@ -43,7 +43,7 @@ public class CbEngineAdapter {
 
     private CommonVideoRecordingStudio recordingStudio;
     private ChangbaVideoCamera mChangbaVideoCamera;
-    private ChangbaRecordingPreviewScheduler previewScheduler;
+    private ChangbaRecordingPreviewScheduler mPreviewScheduler;
 
     private Handler mUiHandler = new Handler();
 
@@ -172,14 +172,14 @@ public class CbEngineAdapter {
                         }
                     });
                 }
-                previewScheduler.adaptiveVideoQuality(bitrateLimits, bitrate, fps);
+                mPreviewScheduler.adaptiveVideoQuality(bitrateLimits, bitrate, fps);
             }
         }
 
         @Override
         public void hotAdaptiveVideoQuality(int maxBitrate, int avgBitrate, int fps) {
             MyLog.d(TAG, "hotAdaptiveVideoQuality" + " maxBitrate=" + maxBitrate + " avgBitrate=" + avgBitrate + " fps=" + fps);
-            previewScheduler.hotConfigQuality(maxBitrate * 1000, avgBitrate * 1000, fps);
+            mPreviewScheduler.hotConfigQuality(maxBitrate * 1000, avgBitrate * 1000, fps);
         }
 
         @Override
@@ -189,20 +189,27 @@ public class CbEngineAdapter {
     };
 
 
-    private void initRecordingStudio(ChangbaRecordingPreviewView surfaceView) {
-        mChangbaVideoCamera = new ChangbaVideoCamera(surfaceView.getContext());
-        previewScheduler = new ChangbaRecordingPreviewScheduler(surfaceView, mChangbaVideoCamera) {
-            public void onPermissionDismiss(final String tip) {
-                U.getToastUtil().showShort(tip);
+    private void tryInitPreview(SurfaceView surfaceView) {
+        if (mPreviewScheduler == null) {
+            synchronized (this) {
+                if (mPreviewScheduler == null) {
+                    mChangbaVideoCamera = new ChangbaVideoCamera(surfaceView.getContext());
+                    ChangbaRecordingPreviewView previewView = new ChangbaRecordingPreviewView(surfaceView);
+                    mPreviewScheduler = new ChangbaRecordingPreviewScheduler(previewView, mChangbaVideoCamera) {
+                        public void onPermissionDismiss(final String tip) {
+                            U.getToastUtil().showShort(tip);
+                        }
+                    };
+                }
             }
-        };
-        recordingStudio = new CommonVideoRecordingStudio(RecordingImplType.ANDROID_PLATFORM,
-                mTimeHandler, onComletionListener, recordingStudioStateCallback);
+        }
     }
 
-    private void initRecordingResource() {
+    private void tryInitRecording() {
+        recordingStudio = new CommonVideoRecordingStudio(RecordingImplType.ANDROID_PLATFORM,
+                mTimeHandler, onComletionListener, recordingStudioStateCallback);
         try {
-            recordingStudio.initRecordingResource(previewScheduler);
+            recordingStudio.initRecordingResource(mPreviewScheduler);
         } catch (RecordingStudioException e) {
             recordingStudio.destroyRecordingResource();
             e.printStackTrace();
@@ -215,13 +222,28 @@ public class CbEngineAdapter {
      * @param surfaceView
      */
     public void startPreview(SurfaceView surfaceView) {
-        initRecordingStudio((ChangbaRecordingPreviewView) surfaceView);
+        tryInitPreview(surfaceView);
+        mPreviewScheduler.startPreview();
+    }
+
+
+    /**
+     * 关闭预览
+     */
+    public void stopPreview() {
+        if (mPreviewScheduler != null) {
+            mPreviewScheduler.stop();
+        }
     }
 
     /**
      * 开始采集视频流
      */
     public void startRecord() {
+        if(mPreviewScheduler==null){
+            throw new IllegalStateException("必须设置一个视频输入源");
+        }
+        tryInitRecording();
         int adaptiveBitrateWindowSizeInSecs = 3;
         int adaptiveBitrateEncoderReconfigInterval = 15 * 1000;
         int adaptiveBitrateWarCntThreshold = 10;
@@ -230,8 +252,10 @@ public class CbEngineAdapter {
         int height = 640;
         int bitRateKbs = 900;
         int audioSampleRate = recordingStudio.getRecordSampleRate();
-        boolean isUseHWEncoder = false;
+        // 必须先使用硬编码
+        boolean isUseHWEncoder = true;
         File outFilePath = new File(Environment.getExternalStorageDirectory(), "changba.mp4");
+
         recordingStudio.startVideoRecording(outFilePath.getPath(), bitRateKbs, width, height,
                 audioSampleRate, 0, adaptiveBitrateWindowSizeInSecs, adaptiveBitrateEncoderReconfigInterval,
                 adaptiveBitrateWarCntThreshold, 300, 800, isUseHWEncoder);
@@ -243,4 +267,20 @@ public class CbEngineAdapter {
     public void stopRecord() {
         recordingStudio.stopRecording();
     }
+
+    public void destroy() {
+        if (mChangbaVideoCamera != null) {
+            mChangbaVideoCamera.releaseCamera();
+        }
+        mChangbaVideoCamera = null;
+        if (mPreviewScheduler != null) {
+            mPreviewScheduler.destroySurface();
+        }
+        mPreviewScheduler = null;
+        if (recordingStudio != null) {
+            recordingStudio.stopRecording();
+        }
+        recordingStudio = null;
+    }
+
 }

@@ -2,23 +2,27 @@ package com.module.rankingmode.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSONObject;
-import com.changba.songstudio.recording.camera.preview.ChangbaRecordingPreviewView;
 import com.common.base.BaseFragment;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExButton;
 import com.common.view.ex.ExTextView;
+import com.engine.EngineEvent;
 import com.engine.EngineManager;
-import com.engine.agora.AgoraEngineAdapter;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.rankingmode.R;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -27,7 +31,9 @@ public class RoomFragment extends BaseFragment {
 
     RelativeLayout mSelfContainer;
     RelativeLayout mOtherContainer;
-    ExTextView mJoinRoomBtn;
+    ExButton mJoinRoomBtn;
+    SurfaceView mCameraSurfaceView;
+    ExTextView mInfoTextView;
 
     String ROOM_ID = "chengsimin";
 
@@ -89,18 +95,27 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
+        mInfoTextView = mRootView.findViewById(R.id.info_text);
         RelativeLayout container = (RelativeLayout) mRootView;
-        ChangbaRecordingPreviewView changbaRecordingPreviewView = new ChangbaRecordingPreviewView(getContext());
-        container.addView(changbaRecordingPreviewView, 0
+        mCameraSurfaceView = new SurfaceView(getContext());
+        container.addView(mCameraSurfaceView, 0
                 , new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        EngineManager.getInstance().startPreview(changbaRecordingPreviewView);
+        EngineManager.getInstance().startPreview(mCameraSurfaceView);
+
+        mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EngineManager.getInstance().startRecord();
+            }
+        });
     }
 
     void joinRoom() {
+        // 加入融云房间
         ModuleServiceManager.getInstance().getMsgService().joinChatRoom(ROOM_ID, new ICallback() {
             @Override
             public void onSucess(Object obj) {
-                U.getToastUtil().showShort("加入房间成功");
+                U.getToastUtil().showShort("加入弹幕房间成功");
             }
 
             @Override
@@ -108,27 +123,45 @@ public class RoomFragment extends BaseFragment {
 
             }
         });
-        // todo 暂时屏蔽
-//        AgoraEngineAdapter.getInstance().setCommunicationMode();
-//        AgoraEngineAdapter.getInstance().enableVideo();
-//        AgoraEngineAdapter.getInstance().setVideoEncoderConfiguration();
-//        AgoraEngineAdapter.getInstance().joinChannel(null, ROOM_ID, null, 0);
-//        AgoraEngineAdapter.getInstance().bindLocalVideoView(mOtherContainer);
-        AgoraEngineAdapter.getInstance().setVideoEncoderConfiguration();
-        AgoraEngineAdapter.getInstance().joinChannel(null, ROOM_ID, null, 0);
-        AgoraEngineAdapter.getInstance().bindLocalVideoView(mOtherContainer);
-//        AgoraEngineAdapter.getInstance().bindRemoteVideo(mSelfContainer, 0);
+        // 加入引擎房间
+        EngineManager.getInstance().joinRoom(ROOM_ID, 0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EngineManager.getInstance().startPreview(mCameraSurfaceView);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EngineManager.getInstance().stopPreview();
     }
 
     @Override
     public void destroy() {
         super.destroy();
-//        AgoraEngineAdapter.getInstance().destroy();
         ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(ROOM_ID);
+        EngineManager.getInstance().destroy();
     }
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EngineEvent event) {
+        if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
+            addInfo(event.getUserId()+"加入引擎房间");
+        } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
+            addInfo(event.getUserId()+"离开引擎房间");
+        }
+    }
+
+    void addInfo(String info) {
+        String aa = mInfoTextView.getText().toString();
+        mInfoTextView.setText(aa + "\n" + info);
     }
 }
