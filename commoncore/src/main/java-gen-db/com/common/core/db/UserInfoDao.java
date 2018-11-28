@@ -28,45 +28,47 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         public final static Property UserId = new Property(1, Long.class, "userId", false, "USER_ID");
         public final static Property Avatar = new Property(2, Long.class, "avatar", false, "AVATAR");
         public final static Property UserNickname = new Property(3, String.class, "userNickname", false, "USER_NICKNAME");
-        public final static Property Signature = new Property(4, String.class, "signature", false, "SIGNATURE");
-        public final static Property Gender = new Property(5, Integer.class, "gender", false, "GENDER");
-        public final static Property Level = new Property(6, Integer.class, "level", false, "LEVEL");
-        public final static Property Badge = new Property(7, Integer.class, "badge", false, "BADGE");
-        public final static Property UpdateTime = new Property(8, Long.class, "updateTime", false, "UPDATE_TIME");
-        public final static Property CertificationType = new Property(9, Integer.class, "certificationType", false, "CERTIFICATION_TYPE");
-        public final static Property Certification = new Property(10, String.class, "certification", false, "CERTIFICATION");
-        public final static Property WaitingCertificationType = new Property(11, Integer.class, "waitingCertificationType", false, "WAITING_CERTIFICATION_TYPE");
-        public final static Property CertificationId = new Property(12, String.class, "certificationId", false, "CERTIFICATION_ID");
-        public final static Property RealNameCertificationStatus = new Property(13, Integer.class, "realNameCertificationStatus", false, "REAL_NAME_CERTIFICATION_STATUS");
-        public final static Property Relative = new Property(14, Integer.class, "relative", false, "RELATIVE");
-        public final static Property Block = new Property(15, Boolean.class, "block", false, "BLOCK");
-        public final static Property IsInspector = new Property(16, Boolean.class, "isInspector", false, "IS_INSPECTOR");
-        public final static Property AdminList = new Property(17, String.class, "adminList", false, "ADMIN_LIST");
-        public final static Property IsUnionAdmin = new Property(18, Boolean.class, "isUnionAdmin", false, "IS_UNION_ADMIN");
-        public final static Property VipLevel = new Property(19, Integer.class, "vipLevel", false, "VIP_LEVEL");
-        public final static Property IsVipFrozen = new Property(20, Boolean.class, "isVipFrozen", false, "IS_VIP_FROZEN");
-        public final static Property IsVipHide = new Property(21, Boolean.class, "isVipHide", false, "IS_VIP_HIDE");
-        public final static Property NobleLevel = new Property(22, Integer.class, "nobleLevel", false, "NOBLE_LEVEL");
-        public final static Property CoverPhotoJson = new Property(23, String.class, "coverPhotoJson", false, "COVER_PHOTO_JSON");
-        public final static Property UserType = new Property(24, Integer.class, "userType", false, "USER_TYPE");
-        public final static Property BusinessInfo = new Property(25, String.class, "businessInfo", false, "BUSINESS_INFO");
-        public final static Property SellerStatus = new Property(26, Integer.class, "sellerStatus", false, "SELLER_STATUS");
-        public final static Property IsRedName = new Property(27, Boolean.class, "isRedName", false, "IS_RED_NAME");
-        public final static Property IsLive = new Property(28, Boolean.class, "isLive", false, "IS_LIVE");
-        public final static Property IsFirstAudit = new Property(29, Boolean.class, "isFirstAudit", false, "IS_FIRST_AUDIT");
-        public final static Property PayBarrageGiftId = new Property(30, Integer.class, "payBarrageGiftId", false, "PAY_BARRAGE_GIFT_ID");
-        public final static Property Regions = new Property(31, String.class, "regions", false, "REGIONS");
-        public final static Property LiveTicketNum = new Property(32, Integer.class, "liveTicketNum", false, "LIVE_TICKET_NUM");
-        public final static Property FansNum = new Property(33, Integer.class, "fansNum", false, "FANS_NUM");
-        public final static Property FollowNum = new Property(34, Integer.class, "followNum", false, "FOLLOW_NUM");
-        public final static Property VodNum = new Property(35, Integer.class, "vodNum", false, "VOD_NUM");
-        public final static Property EarnNum = new Property(36, Integer.class, "earnNum", false, "EARN_NUM");
-        public final static Property DiamondNum = new Property(37, Integer.class, "diamondNum", false, "DIAMOND_NUM");
-        public final static Property GoldCoinNum = new Property(38, Integer.class, "goldCoinNum", false, "GOLD_COIN_NUM");
-        public final static Property SendDiamondNum = new Property(39, Integer.class, "sendDiamondNum", false, "SEND_DIAMOND_NUM");
-        public final static Property SentVirtualDiamondNum = new Property(40, Integer.class, "sentVirtualDiamondNum", false, "SENT_VIRTUAL_DIAMOND_NUM");
-        public final static Property VirtualDiamondNum = new Property(41, Integer.class, "virtualDiamondNum", false, "VIRTUAL_DIAMOND_NUM");
-        public final static Property Ext = new Property(42, String.class, "ext", false, "EXT");
+        public final static Property UserDisplayname = new Property(4, String.class, "userDisplayname", false, "USER_DISPLAYNAME");
+        public final static Property Letter = new Property(5, String.class, "letter", false, "LETTER");
+        public final static Property Signature = new Property(6, String.class, "signature", false, "SIGNATURE");
+        public final static Property Gender = new Property(7, Integer.class, "gender", false, "GENDER");
+        public final static Property Level = new Property(8, Integer.class, "level", false, "LEVEL");
+        public final static Property Badge = new Property(9, Integer.class, "badge", false, "BADGE");
+        public final static Property UpdateTime = new Property(10, Long.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property CertificationType = new Property(11, Integer.class, "certificationType", false, "CERTIFICATION_TYPE");
+        public final static Property Certification = new Property(12, String.class, "certification", false, "CERTIFICATION");
+        public final static Property WaitingCertificationType = new Property(13, Integer.class, "waitingCertificationType", false, "WAITING_CERTIFICATION_TYPE");
+        public final static Property CertificationId = new Property(14, String.class, "certificationId", false, "CERTIFICATION_ID");
+        public final static Property RealNameCertificationStatus = new Property(15, Integer.class, "realNameCertificationStatus", false, "REAL_NAME_CERTIFICATION_STATUS");
+        public final static Property Relative = new Property(16, Integer.class, "relative", false, "RELATIVE");
+        public final static Property Block = new Property(17, Boolean.class, "block", false, "BLOCK");
+        public final static Property IsInspector = new Property(18, Boolean.class, "isInspector", false, "IS_INSPECTOR");
+        public final static Property AdminList = new Property(19, String.class, "adminList", false, "ADMIN_LIST");
+        public final static Property IsUnionAdmin = new Property(20, Boolean.class, "isUnionAdmin", false, "IS_UNION_ADMIN");
+        public final static Property VipLevel = new Property(21, Integer.class, "vipLevel", false, "VIP_LEVEL");
+        public final static Property IsVipFrozen = new Property(22, Boolean.class, "isVipFrozen", false, "IS_VIP_FROZEN");
+        public final static Property IsVipHide = new Property(23, Boolean.class, "isVipHide", false, "IS_VIP_HIDE");
+        public final static Property NobleLevel = new Property(24, Integer.class, "nobleLevel", false, "NOBLE_LEVEL");
+        public final static Property CoverPhotoJson = new Property(25, String.class, "coverPhotoJson", false, "COVER_PHOTO_JSON");
+        public final static Property UserType = new Property(26, Integer.class, "userType", false, "USER_TYPE");
+        public final static Property BusinessInfo = new Property(27, String.class, "businessInfo", false, "BUSINESS_INFO");
+        public final static Property SellerStatus = new Property(28, Integer.class, "sellerStatus", false, "SELLER_STATUS");
+        public final static Property IsRedName = new Property(29, Boolean.class, "isRedName", false, "IS_RED_NAME");
+        public final static Property IsLive = new Property(30, Boolean.class, "isLive", false, "IS_LIVE");
+        public final static Property IsFirstAudit = new Property(31, Boolean.class, "isFirstAudit", false, "IS_FIRST_AUDIT");
+        public final static Property PayBarrageGiftId = new Property(32, Integer.class, "payBarrageGiftId", false, "PAY_BARRAGE_GIFT_ID");
+        public final static Property Regions = new Property(33, String.class, "regions", false, "REGIONS");
+        public final static Property LiveTicketNum = new Property(34, Integer.class, "liveTicketNum", false, "LIVE_TICKET_NUM");
+        public final static Property FansNum = new Property(35, Integer.class, "fansNum", false, "FANS_NUM");
+        public final static Property FollowNum = new Property(36, Integer.class, "followNum", false, "FOLLOW_NUM");
+        public final static Property VodNum = new Property(37, Integer.class, "vodNum", false, "VOD_NUM");
+        public final static Property EarnNum = new Property(38, Integer.class, "earnNum", false, "EARN_NUM");
+        public final static Property DiamondNum = new Property(39, Integer.class, "diamondNum", false, "DIAMOND_NUM");
+        public final static Property GoldCoinNum = new Property(40, Integer.class, "goldCoinNum", false, "GOLD_COIN_NUM");
+        public final static Property SendDiamondNum = new Property(41, Integer.class, "sendDiamondNum", false, "SEND_DIAMOND_NUM");
+        public final static Property SentVirtualDiamondNum = new Property(42, Integer.class, "sentVirtualDiamondNum", false, "SENT_VIRTUAL_DIAMOND_NUM");
+        public final static Property VirtualDiamondNum = new Property(43, Integer.class, "virtualDiamondNum", false, "VIRTUAL_DIAMOND_NUM");
+        public final static Property Ext = new Property(44, String.class, "ext", false, "EXT");
     }
 
 
@@ -86,45 +88,47 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
                 "\"USER_ID\" INTEGER NOT NULL ," + // 1: userId
                 "\"AVATAR\" INTEGER," + // 2: avatar
                 "\"USER_NICKNAME\" TEXT," + // 3: userNickname
-                "\"SIGNATURE\" TEXT," + // 4: signature
-                "\"GENDER\" INTEGER," + // 5: gender
-                "\"LEVEL\" INTEGER," + // 6: level
-                "\"BADGE\" INTEGER," + // 7: badge
-                "\"UPDATE_TIME\" INTEGER," + // 8: updateTime
-                "\"CERTIFICATION_TYPE\" INTEGER," + // 9: certificationType
-                "\"CERTIFICATION\" TEXT," + // 10: certification
-                "\"WAITING_CERTIFICATION_TYPE\" INTEGER," + // 11: waitingCertificationType
-                "\"CERTIFICATION_ID\" TEXT," + // 12: certificationId
-                "\"REAL_NAME_CERTIFICATION_STATUS\" INTEGER," + // 13: realNameCertificationStatus
-                "\"RELATIVE\" INTEGER," + // 14: relative
-                "\"BLOCK\" INTEGER," + // 15: block
-                "\"IS_INSPECTOR\" INTEGER," + // 16: isInspector
-                "\"ADMIN_LIST\" TEXT," + // 17: adminList
-                "\"IS_UNION_ADMIN\" INTEGER," + // 18: isUnionAdmin
-                "\"VIP_LEVEL\" INTEGER," + // 19: vipLevel
-                "\"IS_VIP_FROZEN\" INTEGER," + // 20: isVipFrozen
-                "\"IS_VIP_HIDE\" INTEGER," + // 21: isVipHide
-                "\"NOBLE_LEVEL\" INTEGER," + // 22: nobleLevel
-                "\"COVER_PHOTO_JSON\" TEXT," + // 23: coverPhotoJson
-                "\"USER_TYPE\" INTEGER," + // 24: userType
-                "\"BUSINESS_INFO\" TEXT," + // 25: businessInfo
-                "\"SELLER_STATUS\" INTEGER," + // 26: sellerStatus
-                "\"IS_RED_NAME\" INTEGER," + // 27: isRedName
-                "\"IS_LIVE\" INTEGER," + // 28: isLive
-                "\"IS_FIRST_AUDIT\" INTEGER," + // 29: isFirstAudit
-                "\"PAY_BARRAGE_GIFT_ID\" INTEGER," + // 30: payBarrageGiftId
-                "\"REGIONS\" TEXT," + // 31: regions
-                "\"LIVE_TICKET_NUM\" INTEGER," + // 32: liveTicketNum
-                "\"FANS_NUM\" INTEGER," + // 33: fansNum
-                "\"FOLLOW_NUM\" INTEGER," + // 34: followNum
-                "\"VOD_NUM\" INTEGER," + // 35: vodNum
-                "\"EARN_NUM\" INTEGER," + // 36: earnNum
-                "\"DIAMOND_NUM\" INTEGER," + // 37: diamondNum
-                "\"GOLD_COIN_NUM\" INTEGER," + // 38: goldCoinNum
-                "\"SEND_DIAMOND_NUM\" INTEGER," + // 39: sendDiamondNum
-                "\"SENT_VIRTUAL_DIAMOND_NUM\" INTEGER," + // 40: sentVirtualDiamondNum
-                "\"VIRTUAL_DIAMOND_NUM\" INTEGER," + // 41: virtualDiamondNum
-                "\"EXT\" TEXT);"); // 42: ext
+                "\"USER_DISPLAYNAME\" TEXT," + // 4: userDisplayname
+                "\"LETTER\" TEXT," + // 5: letter
+                "\"SIGNATURE\" TEXT," + // 6: signature
+                "\"GENDER\" INTEGER," + // 7: gender
+                "\"LEVEL\" INTEGER," + // 8: level
+                "\"BADGE\" INTEGER," + // 9: badge
+                "\"UPDATE_TIME\" INTEGER," + // 10: updateTime
+                "\"CERTIFICATION_TYPE\" INTEGER," + // 11: certificationType
+                "\"CERTIFICATION\" TEXT," + // 12: certification
+                "\"WAITING_CERTIFICATION_TYPE\" INTEGER," + // 13: waitingCertificationType
+                "\"CERTIFICATION_ID\" TEXT," + // 14: certificationId
+                "\"REAL_NAME_CERTIFICATION_STATUS\" INTEGER," + // 15: realNameCertificationStatus
+                "\"RELATIVE\" INTEGER," + // 16: relative
+                "\"BLOCK\" INTEGER," + // 17: block
+                "\"IS_INSPECTOR\" INTEGER," + // 18: isInspector
+                "\"ADMIN_LIST\" TEXT," + // 19: adminList
+                "\"IS_UNION_ADMIN\" INTEGER," + // 20: isUnionAdmin
+                "\"VIP_LEVEL\" INTEGER," + // 21: vipLevel
+                "\"IS_VIP_FROZEN\" INTEGER," + // 22: isVipFrozen
+                "\"IS_VIP_HIDE\" INTEGER," + // 23: isVipHide
+                "\"NOBLE_LEVEL\" INTEGER," + // 24: nobleLevel
+                "\"COVER_PHOTO_JSON\" TEXT," + // 25: coverPhotoJson
+                "\"USER_TYPE\" INTEGER," + // 26: userType
+                "\"BUSINESS_INFO\" TEXT," + // 27: businessInfo
+                "\"SELLER_STATUS\" INTEGER," + // 28: sellerStatus
+                "\"IS_RED_NAME\" INTEGER," + // 29: isRedName
+                "\"IS_LIVE\" INTEGER," + // 30: isLive
+                "\"IS_FIRST_AUDIT\" INTEGER," + // 31: isFirstAudit
+                "\"PAY_BARRAGE_GIFT_ID\" INTEGER," + // 32: payBarrageGiftId
+                "\"REGIONS\" TEXT," + // 33: regions
+                "\"LIVE_TICKET_NUM\" INTEGER," + // 34: liveTicketNum
+                "\"FANS_NUM\" INTEGER," + // 35: fansNum
+                "\"FOLLOW_NUM\" INTEGER," + // 36: followNum
+                "\"VOD_NUM\" INTEGER," + // 37: vodNum
+                "\"EARN_NUM\" INTEGER," + // 38: earnNum
+                "\"DIAMOND_NUM\" INTEGER," + // 39: diamondNum
+                "\"GOLD_COIN_NUM\" INTEGER," + // 40: goldCoinNum
+                "\"SEND_DIAMOND_NUM\" INTEGER," + // 41: sendDiamondNum
+                "\"SENT_VIRTUAL_DIAMOND_NUM\" INTEGER," + // 42: sentVirtualDiamondNum
+                "\"VIRTUAL_DIAMOND_NUM\" INTEGER," + // 43: virtualDiamondNum
+                "\"EXT\" TEXT);"); // 44: ext
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_INFO_USER_ID_DESC ON USER_INFO" +
                 " (\"USER_ID\" DESC);");
@@ -156,199 +160,209 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             stmt.bindString(4, userNickname);
         }
  
+        String userDisplayname = entity.getUserDisplayname();
+        if (userDisplayname != null) {
+            stmt.bindString(5, userDisplayname);
+        }
+ 
+        String letter = entity.getLetter();
+        if (letter != null) {
+            stmt.bindString(6, letter);
+        }
+ 
         String signature = entity.getSignature();
         if (signature != null) {
-            stmt.bindString(5, signature);
+            stmt.bindString(7, signature);
         }
  
         Integer gender = entity.getGender();
         if (gender != null) {
-            stmt.bindLong(6, gender);
+            stmt.bindLong(8, gender);
         }
  
         Integer level = entity.getLevel();
         if (level != null) {
-            stmt.bindLong(7, level);
+            stmt.bindLong(9, level);
         }
  
         Integer badge = entity.getBadge();
         if (badge != null) {
-            stmt.bindLong(8, badge);
+            stmt.bindLong(10, badge);
         }
  
         Long updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindLong(9, updateTime);
+            stmt.bindLong(11, updateTime);
         }
  
         Integer certificationType = entity.getCertificationType();
         if (certificationType != null) {
-            stmt.bindLong(10, certificationType);
+            stmt.bindLong(12, certificationType);
         }
  
         String certification = entity.getCertification();
         if (certification != null) {
-            stmt.bindString(11, certification);
+            stmt.bindString(13, certification);
         }
  
         Integer waitingCertificationType = entity.getWaitingCertificationType();
         if (waitingCertificationType != null) {
-            stmt.bindLong(12, waitingCertificationType);
+            stmt.bindLong(14, waitingCertificationType);
         }
  
         String certificationId = entity.getCertificationId();
         if (certificationId != null) {
-            stmt.bindString(13, certificationId);
+            stmt.bindString(15, certificationId);
         }
  
         Integer realNameCertificationStatus = entity.getRealNameCertificationStatus();
         if (realNameCertificationStatus != null) {
-            stmt.bindLong(14, realNameCertificationStatus);
+            stmt.bindLong(16, realNameCertificationStatus);
         }
  
         Integer relative = entity.getRelative();
         if (relative != null) {
-            stmt.bindLong(15, relative);
+            stmt.bindLong(17, relative);
         }
  
         Boolean block = entity.getBlock();
         if (block != null) {
-            stmt.bindLong(16, block ? 1L: 0L);
+            stmt.bindLong(18, block ? 1L: 0L);
         }
  
         Boolean isInspector = entity.getIsInspector();
         if (isInspector != null) {
-            stmt.bindLong(17, isInspector ? 1L: 0L);
+            stmt.bindLong(19, isInspector ? 1L: 0L);
         }
  
         String adminList = entity.getAdminList();
         if (adminList != null) {
-            stmt.bindString(18, adminList);
+            stmt.bindString(20, adminList);
         }
  
         Boolean isUnionAdmin = entity.getIsUnionAdmin();
         if (isUnionAdmin != null) {
-            stmt.bindLong(19, isUnionAdmin ? 1L: 0L);
+            stmt.bindLong(21, isUnionAdmin ? 1L: 0L);
         }
  
         Integer vipLevel = entity.getVipLevel();
         if (vipLevel != null) {
-            stmt.bindLong(20, vipLevel);
+            stmt.bindLong(22, vipLevel);
         }
  
         Boolean isVipFrozen = entity.getIsVipFrozen();
         if (isVipFrozen != null) {
-            stmt.bindLong(21, isVipFrozen ? 1L: 0L);
+            stmt.bindLong(23, isVipFrozen ? 1L: 0L);
         }
  
         Boolean isVipHide = entity.getIsVipHide();
         if (isVipHide != null) {
-            stmt.bindLong(22, isVipHide ? 1L: 0L);
+            stmt.bindLong(24, isVipHide ? 1L: 0L);
         }
  
         Integer nobleLevel = entity.getNobleLevel();
         if (nobleLevel != null) {
-            stmt.bindLong(23, nobleLevel);
+            stmt.bindLong(25, nobleLevel);
         }
  
         String coverPhotoJson = entity.getCoverPhotoJson();
         if (coverPhotoJson != null) {
-            stmt.bindString(24, coverPhotoJson);
+            stmt.bindString(26, coverPhotoJson);
         }
  
         Integer userType = entity.getUserType();
         if (userType != null) {
-            stmt.bindLong(25, userType);
+            stmt.bindLong(27, userType);
         }
  
         String businessInfo = entity.getBusinessInfo();
         if (businessInfo != null) {
-            stmt.bindString(26, businessInfo);
+            stmt.bindString(28, businessInfo);
         }
  
         Integer sellerStatus = entity.getSellerStatus();
         if (sellerStatus != null) {
-            stmt.bindLong(27, sellerStatus);
+            stmt.bindLong(29, sellerStatus);
         }
  
         Boolean isRedName = entity.getIsRedName();
         if (isRedName != null) {
-            stmt.bindLong(28, isRedName ? 1L: 0L);
+            stmt.bindLong(30, isRedName ? 1L: 0L);
         }
  
         Boolean isLive = entity.getIsLive();
         if (isLive != null) {
-            stmt.bindLong(29, isLive ? 1L: 0L);
+            stmt.bindLong(31, isLive ? 1L: 0L);
         }
  
         Boolean isFirstAudit = entity.getIsFirstAudit();
         if (isFirstAudit != null) {
-            stmt.bindLong(30, isFirstAudit ? 1L: 0L);
+            stmt.bindLong(32, isFirstAudit ? 1L: 0L);
         }
  
         Integer payBarrageGiftId = entity.getPayBarrageGiftId();
         if (payBarrageGiftId != null) {
-            stmt.bindLong(31, payBarrageGiftId);
+            stmt.bindLong(33, payBarrageGiftId);
         }
  
         String regions = entity.getRegions();
         if (regions != null) {
-            stmt.bindString(32, regions);
+            stmt.bindString(34, regions);
         }
  
         Integer liveTicketNum = entity.getLiveTicketNum();
         if (liveTicketNum != null) {
-            stmt.bindLong(33, liveTicketNum);
+            stmt.bindLong(35, liveTicketNum);
         }
  
         Integer fansNum = entity.getFansNum();
         if (fansNum != null) {
-            stmt.bindLong(34, fansNum);
+            stmt.bindLong(36, fansNum);
         }
  
         Integer followNum = entity.getFollowNum();
         if (followNum != null) {
-            stmt.bindLong(35, followNum);
+            stmt.bindLong(37, followNum);
         }
  
         Integer vodNum = entity.getVodNum();
         if (vodNum != null) {
-            stmt.bindLong(36, vodNum);
+            stmt.bindLong(38, vodNum);
         }
  
         Integer earnNum = entity.getEarnNum();
         if (earnNum != null) {
-            stmt.bindLong(37, earnNum);
+            stmt.bindLong(39, earnNum);
         }
  
         Integer diamondNum = entity.getDiamondNum();
         if (diamondNum != null) {
-            stmt.bindLong(38, diamondNum);
+            stmt.bindLong(40, diamondNum);
         }
  
         Integer goldCoinNum = entity.getGoldCoinNum();
         if (goldCoinNum != null) {
-            stmt.bindLong(39, goldCoinNum);
+            stmt.bindLong(41, goldCoinNum);
         }
  
         Integer sendDiamondNum = entity.getSendDiamondNum();
         if (sendDiamondNum != null) {
-            stmt.bindLong(40, sendDiamondNum);
+            stmt.bindLong(42, sendDiamondNum);
         }
  
         Integer sentVirtualDiamondNum = entity.getSentVirtualDiamondNum();
         if (sentVirtualDiamondNum != null) {
-            stmt.bindLong(41, sentVirtualDiamondNum);
+            stmt.bindLong(43, sentVirtualDiamondNum);
         }
  
         Integer virtualDiamondNum = entity.getVirtualDiamondNum();
         if (virtualDiamondNum != null) {
-            stmt.bindLong(42, virtualDiamondNum);
+            stmt.bindLong(44, virtualDiamondNum);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(43, ext);
+            stmt.bindString(45, ext);
         }
     }
 
@@ -372,199 +386,209 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             stmt.bindString(4, userNickname);
         }
  
+        String userDisplayname = entity.getUserDisplayname();
+        if (userDisplayname != null) {
+            stmt.bindString(5, userDisplayname);
+        }
+ 
+        String letter = entity.getLetter();
+        if (letter != null) {
+            stmt.bindString(6, letter);
+        }
+ 
         String signature = entity.getSignature();
         if (signature != null) {
-            stmt.bindString(5, signature);
+            stmt.bindString(7, signature);
         }
  
         Integer gender = entity.getGender();
         if (gender != null) {
-            stmt.bindLong(6, gender);
+            stmt.bindLong(8, gender);
         }
  
         Integer level = entity.getLevel();
         if (level != null) {
-            stmt.bindLong(7, level);
+            stmt.bindLong(9, level);
         }
  
         Integer badge = entity.getBadge();
         if (badge != null) {
-            stmt.bindLong(8, badge);
+            stmt.bindLong(10, badge);
         }
  
         Long updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindLong(9, updateTime);
+            stmt.bindLong(11, updateTime);
         }
  
         Integer certificationType = entity.getCertificationType();
         if (certificationType != null) {
-            stmt.bindLong(10, certificationType);
+            stmt.bindLong(12, certificationType);
         }
  
         String certification = entity.getCertification();
         if (certification != null) {
-            stmt.bindString(11, certification);
+            stmt.bindString(13, certification);
         }
  
         Integer waitingCertificationType = entity.getWaitingCertificationType();
         if (waitingCertificationType != null) {
-            stmt.bindLong(12, waitingCertificationType);
+            stmt.bindLong(14, waitingCertificationType);
         }
  
         String certificationId = entity.getCertificationId();
         if (certificationId != null) {
-            stmt.bindString(13, certificationId);
+            stmt.bindString(15, certificationId);
         }
  
         Integer realNameCertificationStatus = entity.getRealNameCertificationStatus();
         if (realNameCertificationStatus != null) {
-            stmt.bindLong(14, realNameCertificationStatus);
+            stmt.bindLong(16, realNameCertificationStatus);
         }
  
         Integer relative = entity.getRelative();
         if (relative != null) {
-            stmt.bindLong(15, relative);
+            stmt.bindLong(17, relative);
         }
  
         Boolean block = entity.getBlock();
         if (block != null) {
-            stmt.bindLong(16, block ? 1L: 0L);
+            stmt.bindLong(18, block ? 1L: 0L);
         }
  
         Boolean isInspector = entity.getIsInspector();
         if (isInspector != null) {
-            stmt.bindLong(17, isInspector ? 1L: 0L);
+            stmt.bindLong(19, isInspector ? 1L: 0L);
         }
  
         String adminList = entity.getAdminList();
         if (adminList != null) {
-            stmt.bindString(18, adminList);
+            stmt.bindString(20, adminList);
         }
  
         Boolean isUnionAdmin = entity.getIsUnionAdmin();
         if (isUnionAdmin != null) {
-            stmt.bindLong(19, isUnionAdmin ? 1L: 0L);
+            stmt.bindLong(21, isUnionAdmin ? 1L: 0L);
         }
  
         Integer vipLevel = entity.getVipLevel();
         if (vipLevel != null) {
-            stmt.bindLong(20, vipLevel);
+            stmt.bindLong(22, vipLevel);
         }
  
         Boolean isVipFrozen = entity.getIsVipFrozen();
         if (isVipFrozen != null) {
-            stmt.bindLong(21, isVipFrozen ? 1L: 0L);
+            stmt.bindLong(23, isVipFrozen ? 1L: 0L);
         }
  
         Boolean isVipHide = entity.getIsVipHide();
         if (isVipHide != null) {
-            stmt.bindLong(22, isVipHide ? 1L: 0L);
+            stmt.bindLong(24, isVipHide ? 1L: 0L);
         }
  
         Integer nobleLevel = entity.getNobleLevel();
         if (nobleLevel != null) {
-            stmt.bindLong(23, nobleLevel);
+            stmt.bindLong(25, nobleLevel);
         }
  
         String coverPhotoJson = entity.getCoverPhotoJson();
         if (coverPhotoJson != null) {
-            stmt.bindString(24, coverPhotoJson);
+            stmt.bindString(26, coverPhotoJson);
         }
  
         Integer userType = entity.getUserType();
         if (userType != null) {
-            stmt.bindLong(25, userType);
+            stmt.bindLong(27, userType);
         }
  
         String businessInfo = entity.getBusinessInfo();
         if (businessInfo != null) {
-            stmt.bindString(26, businessInfo);
+            stmt.bindString(28, businessInfo);
         }
  
         Integer sellerStatus = entity.getSellerStatus();
         if (sellerStatus != null) {
-            stmt.bindLong(27, sellerStatus);
+            stmt.bindLong(29, sellerStatus);
         }
  
         Boolean isRedName = entity.getIsRedName();
         if (isRedName != null) {
-            stmt.bindLong(28, isRedName ? 1L: 0L);
+            stmt.bindLong(30, isRedName ? 1L: 0L);
         }
  
         Boolean isLive = entity.getIsLive();
         if (isLive != null) {
-            stmt.bindLong(29, isLive ? 1L: 0L);
+            stmt.bindLong(31, isLive ? 1L: 0L);
         }
  
         Boolean isFirstAudit = entity.getIsFirstAudit();
         if (isFirstAudit != null) {
-            stmt.bindLong(30, isFirstAudit ? 1L: 0L);
+            stmt.bindLong(32, isFirstAudit ? 1L: 0L);
         }
  
         Integer payBarrageGiftId = entity.getPayBarrageGiftId();
         if (payBarrageGiftId != null) {
-            stmt.bindLong(31, payBarrageGiftId);
+            stmt.bindLong(33, payBarrageGiftId);
         }
  
         String regions = entity.getRegions();
         if (regions != null) {
-            stmt.bindString(32, regions);
+            stmt.bindString(34, regions);
         }
  
         Integer liveTicketNum = entity.getLiveTicketNum();
         if (liveTicketNum != null) {
-            stmt.bindLong(33, liveTicketNum);
+            stmt.bindLong(35, liveTicketNum);
         }
  
         Integer fansNum = entity.getFansNum();
         if (fansNum != null) {
-            stmt.bindLong(34, fansNum);
+            stmt.bindLong(36, fansNum);
         }
  
         Integer followNum = entity.getFollowNum();
         if (followNum != null) {
-            stmt.bindLong(35, followNum);
+            stmt.bindLong(37, followNum);
         }
  
         Integer vodNum = entity.getVodNum();
         if (vodNum != null) {
-            stmt.bindLong(36, vodNum);
+            stmt.bindLong(38, vodNum);
         }
  
         Integer earnNum = entity.getEarnNum();
         if (earnNum != null) {
-            stmt.bindLong(37, earnNum);
+            stmt.bindLong(39, earnNum);
         }
  
         Integer diamondNum = entity.getDiamondNum();
         if (diamondNum != null) {
-            stmt.bindLong(38, diamondNum);
+            stmt.bindLong(40, diamondNum);
         }
  
         Integer goldCoinNum = entity.getGoldCoinNum();
         if (goldCoinNum != null) {
-            stmt.bindLong(39, goldCoinNum);
+            stmt.bindLong(41, goldCoinNum);
         }
  
         Integer sendDiamondNum = entity.getSendDiamondNum();
         if (sendDiamondNum != null) {
-            stmt.bindLong(40, sendDiamondNum);
+            stmt.bindLong(42, sendDiamondNum);
         }
  
         Integer sentVirtualDiamondNum = entity.getSentVirtualDiamondNum();
         if (sentVirtualDiamondNum != null) {
-            stmt.bindLong(41, sentVirtualDiamondNum);
+            stmt.bindLong(43, sentVirtualDiamondNum);
         }
  
         Integer virtualDiamondNum = entity.getVirtualDiamondNum();
         if (virtualDiamondNum != null) {
-            stmt.bindLong(42, virtualDiamondNum);
+            stmt.bindLong(44, virtualDiamondNum);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(43, ext);
+            stmt.bindString(45, ext);
         }
     }
 
@@ -580,45 +604,47 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             cursor.getLong(offset + 1), // userId
             cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // avatar
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userNickname
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // signature
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // gender
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // level
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // badge
-            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // updateTime
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // certificationType
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // certification
-            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // waitingCertificationType
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // certificationId
-            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // realNameCertificationStatus
-            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // relative
-            cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0, // block
-            cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0, // isInspector
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // adminList
-            cursor.isNull(offset + 18) ? null : cursor.getShort(offset + 18) != 0, // isUnionAdmin
-            cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19), // vipLevel
-            cursor.isNull(offset + 20) ? null : cursor.getShort(offset + 20) != 0, // isVipFrozen
-            cursor.isNull(offset + 21) ? null : cursor.getShort(offset + 21) != 0, // isVipHide
-            cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22), // nobleLevel
-            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // coverPhotoJson
-            cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24), // userType
-            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // businessInfo
-            cursor.isNull(offset + 26) ? null : cursor.getInt(offset + 26), // sellerStatus
-            cursor.isNull(offset + 27) ? null : cursor.getShort(offset + 27) != 0, // isRedName
-            cursor.isNull(offset + 28) ? null : cursor.getShort(offset + 28) != 0, // isLive
-            cursor.isNull(offset + 29) ? null : cursor.getShort(offset + 29) != 0, // isFirstAudit
-            cursor.isNull(offset + 30) ? null : cursor.getInt(offset + 30), // payBarrageGiftId
-            cursor.isNull(offset + 31) ? null : cursor.getString(offset + 31), // regions
-            cursor.isNull(offset + 32) ? null : cursor.getInt(offset + 32), // liveTicketNum
-            cursor.isNull(offset + 33) ? null : cursor.getInt(offset + 33), // fansNum
-            cursor.isNull(offset + 34) ? null : cursor.getInt(offset + 34), // followNum
-            cursor.isNull(offset + 35) ? null : cursor.getInt(offset + 35), // vodNum
-            cursor.isNull(offset + 36) ? null : cursor.getInt(offset + 36), // earnNum
-            cursor.isNull(offset + 37) ? null : cursor.getInt(offset + 37), // diamondNum
-            cursor.isNull(offset + 38) ? null : cursor.getInt(offset + 38), // goldCoinNum
-            cursor.isNull(offset + 39) ? null : cursor.getInt(offset + 39), // sendDiamondNum
-            cursor.isNull(offset + 40) ? null : cursor.getInt(offset + 40), // sentVirtualDiamondNum
-            cursor.isNull(offset + 41) ? null : cursor.getInt(offset + 41), // virtualDiamondNum
-            cursor.isNull(offset + 42) ? null : cursor.getString(offset + 42) // ext
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userDisplayname
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // letter
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // signature
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // gender
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // level
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // badge
+            cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10), // updateTime
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // certificationType
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // certification
+            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // waitingCertificationType
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // certificationId
+            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // realNameCertificationStatus
+            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // relative
+            cursor.isNull(offset + 17) ? null : cursor.getShort(offset + 17) != 0, // block
+            cursor.isNull(offset + 18) ? null : cursor.getShort(offset + 18) != 0, // isInspector
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // adminList
+            cursor.isNull(offset + 20) ? null : cursor.getShort(offset + 20) != 0, // isUnionAdmin
+            cursor.isNull(offset + 21) ? null : cursor.getInt(offset + 21), // vipLevel
+            cursor.isNull(offset + 22) ? null : cursor.getShort(offset + 22) != 0, // isVipFrozen
+            cursor.isNull(offset + 23) ? null : cursor.getShort(offset + 23) != 0, // isVipHide
+            cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24), // nobleLevel
+            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // coverPhotoJson
+            cursor.isNull(offset + 26) ? null : cursor.getInt(offset + 26), // userType
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // businessInfo
+            cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28), // sellerStatus
+            cursor.isNull(offset + 29) ? null : cursor.getShort(offset + 29) != 0, // isRedName
+            cursor.isNull(offset + 30) ? null : cursor.getShort(offset + 30) != 0, // isLive
+            cursor.isNull(offset + 31) ? null : cursor.getShort(offset + 31) != 0, // isFirstAudit
+            cursor.isNull(offset + 32) ? null : cursor.getInt(offset + 32), // payBarrageGiftId
+            cursor.isNull(offset + 33) ? null : cursor.getString(offset + 33), // regions
+            cursor.isNull(offset + 34) ? null : cursor.getInt(offset + 34), // liveTicketNum
+            cursor.isNull(offset + 35) ? null : cursor.getInt(offset + 35), // fansNum
+            cursor.isNull(offset + 36) ? null : cursor.getInt(offset + 36), // followNum
+            cursor.isNull(offset + 37) ? null : cursor.getInt(offset + 37), // vodNum
+            cursor.isNull(offset + 38) ? null : cursor.getInt(offset + 38), // earnNum
+            cursor.isNull(offset + 39) ? null : cursor.getInt(offset + 39), // diamondNum
+            cursor.isNull(offset + 40) ? null : cursor.getInt(offset + 40), // goldCoinNum
+            cursor.isNull(offset + 41) ? null : cursor.getInt(offset + 41), // sendDiamondNum
+            cursor.isNull(offset + 42) ? null : cursor.getInt(offset + 42), // sentVirtualDiamondNum
+            cursor.isNull(offset + 43) ? null : cursor.getInt(offset + 43), // virtualDiamondNum
+            cursor.isNull(offset + 44) ? null : cursor.getString(offset + 44) // ext
         );
         return entity;
     }
@@ -629,45 +655,47 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         entity.setUserId(cursor.getLong(offset + 1));
         entity.setAvatar(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setUserNickname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setSignature(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setGender(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setLevel(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setBadge(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setUpdateTime(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
-        entity.setCertificationType(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setCertification(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setWaitingCertificationType(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
-        entity.setCertificationId(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setRealNameCertificationStatus(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
-        entity.setRelative(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
-        entity.setBlock(cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0);
-        entity.setIsInspector(cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0);
-        entity.setAdminList(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setIsUnionAdmin(cursor.isNull(offset + 18) ? null : cursor.getShort(offset + 18) != 0);
-        entity.setVipLevel(cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19));
-        entity.setIsVipFrozen(cursor.isNull(offset + 20) ? null : cursor.getShort(offset + 20) != 0);
-        entity.setIsVipHide(cursor.isNull(offset + 21) ? null : cursor.getShort(offset + 21) != 0);
-        entity.setNobleLevel(cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22));
-        entity.setCoverPhotoJson(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
-        entity.setUserType(cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24));
-        entity.setBusinessInfo(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
-        entity.setSellerStatus(cursor.isNull(offset + 26) ? null : cursor.getInt(offset + 26));
-        entity.setIsRedName(cursor.isNull(offset + 27) ? null : cursor.getShort(offset + 27) != 0);
-        entity.setIsLive(cursor.isNull(offset + 28) ? null : cursor.getShort(offset + 28) != 0);
-        entity.setIsFirstAudit(cursor.isNull(offset + 29) ? null : cursor.getShort(offset + 29) != 0);
-        entity.setPayBarrageGiftId(cursor.isNull(offset + 30) ? null : cursor.getInt(offset + 30));
-        entity.setRegions(cursor.isNull(offset + 31) ? null : cursor.getString(offset + 31));
-        entity.setLiveTicketNum(cursor.isNull(offset + 32) ? null : cursor.getInt(offset + 32));
-        entity.setFansNum(cursor.isNull(offset + 33) ? null : cursor.getInt(offset + 33));
-        entity.setFollowNum(cursor.isNull(offset + 34) ? null : cursor.getInt(offset + 34));
-        entity.setVodNum(cursor.isNull(offset + 35) ? null : cursor.getInt(offset + 35));
-        entity.setEarnNum(cursor.isNull(offset + 36) ? null : cursor.getInt(offset + 36));
-        entity.setDiamondNum(cursor.isNull(offset + 37) ? null : cursor.getInt(offset + 37));
-        entity.setGoldCoinNum(cursor.isNull(offset + 38) ? null : cursor.getInt(offset + 38));
-        entity.setSendDiamondNum(cursor.isNull(offset + 39) ? null : cursor.getInt(offset + 39));
-        entity.setSentVirtualDiamondNum(cursor.isNull(offset + 40) ? null : cursor.getInt(offset + 40));
-        entity.setVirtualDiamondNum(cursor.isNull(offset + 41) ? null : cursor.getInt(offset + 41));
-        entity.setExt(cursor.isNull(offset + 42) ? null : cursor.getString(offset + 42));
+        entity.setUserDisplayname(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setLetter(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setSignature(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setGender(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setLevel(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setBadge(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setUpdateTime(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
+        entity.setCertificationType(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setCertification(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setWaitingCertificationType(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
+        entity.setCertificationId(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setRealNameCertificationStatus(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
+        entity.setRelative(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
+        entity.setBlock(cursor.isNull(offset + 17) ? null : cursor.getShort(offset + 17) != 0);
+        entity.setIsInspector(cursor.isNull(offset + 18) ? null : cursor.getShort(offset + 18) != 0);
+        entity.setAdminList(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setIsUnionAdmin(cursor.isNull(offset + 20) ? null : cursor.getShort(offset + 20) != 0);
+        entity.setVipLevel(cursor.isNull(offset + 21) ? null : cursor.getInt(offset + 21));
+        entity.setIsVipFrozen(cursor.isNull(offset + 22) ? null : cursor.getShort(offset + 22) != 0);
+        entity.setIsVipHide(cursor.isNull(offset + 23) ? null : cursor.getShort(offset + 23) != 0);
+        entity.setNobleLevel(cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24));
+        entity.setCoverPhotoJson(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
+        entity.setUserType(cursor.isNull(offset + 26) ? null : cursor.getInt(offset + 26));
+        entity.setBusinessInfo(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setSellerStatus(cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28));
+        entity.setIsRedName(cursor.isNull(offset + 29) ? null : cursor.getShort(offset + 29) != 0);
+        entity.setIsLive(cursor.isNull(offset + 30) ? null : cursor.getShort(offset + 30) != 0);
+        entity.setIsFirstAudit(cursor.isNull(offset + 31) ? null : cursor.getShort(offset + 31) != 0);
+        entity.setPayBarrageGiftId(cursor.isNull(offset + 32) ? null : cursor.getInt(offset + 32));
+        entity.setRegions(cursor.isNull(offset + 33) ? null : cursor.getString(offset + 33));
+        entity.setLiveTicketNum(cursor.isNull(offset + 34) ? null : cursor.getInt(offset + 34));
+        entity.setFansNum(cursor.isNull(offset + 35) ? null : cursor.getInt(offset + 35));
+        entity.setFollowNum(cursor.isNull(offset + 36) ? null : cursor.getInt(offset + 36));
+        entity.setVodNum(cursor.isNull(offset + 37) ? null : cursor.getInt(offset + 37));
+        entity.setEarnNum(cursor.isNull(offset + 38) ? null : cursor.getInt(offset + 38));
+        entity.setDiamondNum(cursor.isNull(offset + 39) ? null : cursor.getInt(offset + 39));
+        entity.setGoldCoinNum(cursor.isNull(offset + 40) ? null : cursor.getInt(offset + 40));
+        entity.setSendDiamondNum(cursor.isNull(offset + 41) ? null : cursor.getInt(offset + 41));
+        entity.setSentVirtualDiamondNum(cursor.isNull(offset + 42) ? null : cursor.getInt(offset + 42));
+        entity.setVirtualDiamondNum(cursor.isNull(offset + 43) ? null : cursor.getInt(offset + 43));
+        entity.setExt(cursor.isNull(offset + 44) ? null : cursor.getString(offset + 44));
      }
     
     @Override

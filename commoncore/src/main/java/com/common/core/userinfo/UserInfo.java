@@ -46,6 +46,8 @@ public class UserInfo {
     private Long userId;
     private Long avatar;   // 头像时间戳
     private String userNickname;    // 昵称
+    private String userDisplayname; // 备注
+    private String letter;          // 昵称或备注的首字母
     private String signature;       // 签名
     private Integer gender;         // 性别
     private Integer level;          // 等级
@@ -107,13 +109,13 @@ public class UserInfo {
 
     private String ext; //待扩展
 
-    @Generated(hash = 448137004)
-    public UserInfo(Long id, @NonNull Long userId, Long avatar, String userNickname, String signature,
-                    Integer gender, Integer level, Integer badge, Long updateTime, Integer certificationType,
-                    String certification, Integer waitingCertificationType, String certificationId,
-                    Integer realNameCertificationStatus, Integer relative, Boolean block, Boolean isInspector,
-                    String adminList, Boolean isUnionAdmin, Integer vipLevel, Boolean isVipFrozen, Boolean isVipHide,
-                    Integer nobleLevel, String coverPhotoJson, Integer userType, String businessInfo,
+    @Generated(hash = 703274252)
+    public UserInfo(Long id, @NonNull Long userId, Long avatar, String userNickname, String userDisplayname,
+                    String letter, String signature, Integer gender, Integer level, Integer badge, Long updateTime,
+                    Integer certificationType, String certification, Integer waitingCertificationType,
+                    String certificationId, Integer realNameCertificationStatus, Integer relative, Boolean block,
+                    Boolean isInspector, String adminList, Boolean isUnionAdmin, Integer vipLevel, Boolean isVipFrozen,
+                    Boolean isVipHide, Integer nobleLevel, String coverPhotoJson, Integer userType, String businessInfo,
                     Integer sellerStatus, Boolean isRedName, Boolean isLive, Boolean isFirstAudit,
                     Integer payBarrageGiftId, String regions, Integer liveTicketNum, Integer fansNum, Integer followNum,
                     Integer vodNum, Integer earnNum, Integer diamondNum, Integer goldCoinNum, Integer sendDiamondNum,
@@ -122,6 +124,8 @@ public class UserInfo {
         this.userId = userId;
         this.avatar = avatar;
         this.userNickname = userNickname;
+        this.userDisplayname = userDisplayname;
+        this.letter = letter;
         this.signature = signature;
         this.gender = gender;
         this.level = level;
@@ -197,6 +201,22 @@ public class UserInfo {
 
     public void setUserNickname(String userNickname) {
         this.userNickname = userNickname;
+    }
+
+    public String getUserDisplayname() {
+        return this.userDisplayname;
+    }
+
+    public void setUserDisplayname(String userDisplayname) {
+        this.userDisplayname = userDisplayname;
+    }
+
+    public String getLetter() {
+        return this.letter;
+    }
+
+    public void setLetter(String letter) {
+        this.letter = letter;
     }
 
     public String getSignature() {
@@ -511,6 +531,12 @@ public class UserInfo {
         this.ext = ext;
     }
 
+    public UserInfo(long userId, String userNickname, long avatar) {
+        this.userId = userId;
+        this.userNickname = userNickname;
+        this.avatar = avatar;
+    }
+
     public static UserInfo loadFrom(com.wali.live.proto.Relation.UserInfo userInfo, int type) {
         UserInfo user = new UserInfo();
         if (userInfo == null) {
@@ -657,6 +683,14 @@ public class UserInfo {
 
         if (TextUtils.isEmpty(this.userNickname)) {
             setUserNickname(userInfoDB.getUserNickname());
+        }
+
+        if (TextUtils.isEmpty(this.userDisplayname)){
+            setUserDisplayname(userInfoDB.getUserDisplayname());
+        }
+
+        if (TextUtils.isEmpty(this.letter)){
+            setLetter(userInfoDB.letter);
         }
 
         if (TextUtils.isEmpty(this.signature)) {

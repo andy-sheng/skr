@@ -11,6 +11,8 @@ import android.view.View;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.core.login.interceptor.JudgeLoginInterceptor;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.common.view.ex.ExButton;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
@@ -18,6 +20,7 @@ import com.module.RouterConstants;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.contacts.fragment.ContactsFragment;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
@@ -63,7 +66,7 @@ public class MessageActivity extends BaseActivity implements RongIM.UserInfoProv
         mConversationListFragment = initConversationList();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_act_container,mConversationListFragment);
+        transaction.replace(R.id.content,mConversationListFragment);
         transaction.commit();
 
         mTestConnect1.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +99,29 @@ public class MessageActivity extends BaseActivity implements RongIM.UserInfoProv
                 if (RongIM.getInstance() != null) {
                     RongIM.getInstance().startPrivateChat(view.getContext(), "1002", "私人聊天");
                 }
+            }
+        });
+
+        commonTitleBar.getRightTextView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newParamsBuilder(MessageActivity.this, ContactsFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+            }
+        });
+
+        commonTitleBar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // todo 搜索再加
+//                U.getFragmentUtils().addFragment(
+//                        FragmentUtils.newParamsBuilder(MessageActivity.this, SearchFragment.class)
+//                                .setAddToBackStack(true)
+//                                .setHasAnimation(true)
+//                                .build());
             }
         });
     }

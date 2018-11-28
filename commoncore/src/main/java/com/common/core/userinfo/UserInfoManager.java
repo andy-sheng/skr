@@ -1,5 +1,7 @@
 package com.common.core.userinfo;
 
+import android.net.Uri;
+
 import com.common.log.MyLog;
 import com.wali.live.proto.User.GetHomepageResp;
 import com.wali.live.proto.User.GetUserInfoByIdRsp;
@@ -425,4 +427,50 @@ public class UserInfoManager {
 //            }
 //        });
 //    }
+
+    /**
+     * 泛型类，主要用于 API 中功能的回调处理。
+     *
+     * @param <T> 声明一个泛型 T。
+     */
+    public static abstract class ResultCallback<T> {
+
+        public static class Result<T> {
+            public T t;
+        }
+
+        public ResultCallback() {
+
+        }
+
+        /**
+         * 本地数据库，成功时回调。
+         *
+         * @param t 已声明的类型。
+         */
+        public abstract boolean onGetLocalDB(T t);
+
+        /**
+         * 服务器，成功时回调。
+         *
+         * @param t 已声明的类型。
+         */
+        public abstract boolean onGetServer(T t);
+
+    }
+
+    public void getFriends(ResultCallback resultCallback) {
+        // 拿到本地存储所有好友关系
+        // 根据返回值判断是否去服务器查询
+        // todo 仅测试
+        Uri testUri = Uri.parse("http://cms-bucket.nosdn.127.net/a2482c0b2b984dc88a479e6b7438da6020161219074944.jpeg");
+        UserInfo friend1 = new UserInfo(1001, "帅哥", 0);
+        UserInfo friend2 = new UserInfo(1002, "美女", 0);
+        List<UserInfo> list = new ArrayList<>();
+        list.add(friend1);
+        list.add(friend2);
+        if (resultCallback != null) {
+            resultCallback.onGetLocalDB(list);
+        }
+    }
 }

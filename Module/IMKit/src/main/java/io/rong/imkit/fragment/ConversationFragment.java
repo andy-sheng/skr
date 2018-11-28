@@ -1643,7 +1643,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Message msg) {
-        RLog.d("ConversationFragment", "Event message : " + msg.getMessageId() + ", " + msg.getObjectName() + ", " + msg.getSentStatus());
+        RLog.d("ConversationFragment", "ContactsEvent message : " + msg.getMessageId() + ", " + msg.getObjectName() + ", " + msg.getSentStatus());
         if (this.mTargetId.equals(msg.getTargetId()) && this.mConversationType.equals(msg.getConversationType()) && msg.getMessageId() > 0) {
             int position = this.mListAdapter.findPosition((long) msg.getMessageId());
             if (position >= 0) {

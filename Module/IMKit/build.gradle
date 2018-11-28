@@ -56,6 +56,9 @@ android {
 
             java.srcDirs += 'src/main/java-msg'
             res.srcDirs += 'src/main/res-msg'
+
+            java.srcDirs += 'src/main/java-contacts'
+            res.srcDirs += 'src/main/res-contacts'
         }
     }
 }
