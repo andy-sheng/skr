@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="6dp">
 
-        <io.rong.imkit.widget.AsyncImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/rc_left"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -62,7 +62,7 @@
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent">
 
-        <io.rong.imkit.widget.AsyncImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@id/rc_right"
             android:layout_width="48dp"
             android:layout_height="48dp"

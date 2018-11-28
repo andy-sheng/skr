@@ -32,7 +32,7 @@
 
     </FrameLayout>
 
-    <io.rong.imkit.widget.AsyncImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@id/rc_img"
         android:layout_width="56dp"
         android:layout_height="56dp"

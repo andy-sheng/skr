@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import com.common.image.model.BaseImage;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -25,15 +27,6 @@ import java.util.concurrent.Executors;
 
 import io.rong.common.FileUtils;
 import io.rong.common.RLog;
-import io.rong.imageloader.cache.disc.impl.ext.LruDiskCache;
-import io.rong.imageloader.cache.disc.naming.Md5FileNameGenerator;
-import io.rong.imageloader.core.DisplayImageOptions;
-import io.rong.imageloader.core.ImageLoader;
-import io.rong.imageloader.core.ImageLoaderConfiguration;
-import io.rong.imageloader.core.ImageLoaderConfiguration.Builder;
-import io.rong.imageloader.core.download.ImageDownloader;
-import io.rong.imageloader.utils.L;
-import io.rong.imageloader.utils.StorageUtils;
 import io.rong.imkit.RongIM.ConversationBehaviorListener;
 import io.rong.imkit.RongIM.ConversationClickListener;
 import io.rong.imkit.RongIM.ConversationListBehaviorListener;
@@ -54,7 +47,6 @@ import io.rong.imkit.model.Event.ConversationNotificationEvent;
 import io.rong.imkit.model.GroupUserInfo;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
-import io.rong.imkit.utils.RongAuthImageDownloader;
 import io.rong.imkit.utils.StringUtils;
 import io.rong.imkit.widget.provider.AppServiceConversationProvider;
 import io.rong.imkit.widget.provider.CustomerServiceConversationProvider;
@@ -113,7 +105,7 @@ public class RongContext extends ContextWrapper {
     private boolean isShowNewMessageState;
     private EvaluateTextMessageItemProvider evaluateTextMessageItemProvider;
     private Uri notificationSound;
-    private static ImageDownloader imageDownloader;
+    private BaseImage imageDownloader;
 
     public static void init(Context context) {
         if (sContext == null) {
@@ -123,7 +115,7 @@ public class RongContext extends ContextWrapper {
 
     }
 
-    public static void setImageLoaderDownloader(ImageDownloader imageLoaderDownloader) {
+    public void setImageLoaderDownloader(BaseImage imageLoaderDownloader) {
         imageDownloader = imageLoaderDownloader;
     }
 
@@ -137,35 +129,6 @@ public class RongContext extends ContextWrapper {
         this.initCache();
         this.executorService = Executors.newSingleThreadExecutor();
         RongNotificationManager.getInstance().init(this);
-        ImageLoader.getInstance().init(this.getDefaultConfig(this.getApplicationContext()));
-    }
-
-    private ImageLoaderConfiguration getDefaultConfig(Context context) {
-        String path = FileUtils.getInternalCachePath(context, "image");
-        File cacheDir;
-        if (TextUtils.isEmpty(path)) {
-            cacheDir = StorageUtils.getOwnCacheDirectory(context, context.getPackageName() + "/cache/image/");
-        } else {
-            cacheDir = new File(path);
-        }
-
-        ImageLoaderConfiguration config;
-        try {
-            Builder builder = (new Builder(context)).threadPoolSize(3).threadPriority(3).denyCacheImageMultipleSizesInMemory().diskCache(new LruDiskCache(cacheDir, new Md5FileNameGenerator(), 0L)).defaultDisplayImageOptions(DisplayImageOptions.createSimple());
-            if (imageDownloader != null) {
-                builder.imageDownloader(imageDownloader);
-            } else {
-                builder.imageDownloader(new RongAuthImageDownloader(this));
-            }
-
-            config = builder.build();
-            L.writeLogs(false);
-            return config;
-        } catch (IOException var6) {
-            RLog.i("RongContext", "Use default ImageLoader config.");
-            config = ImageLoaderConfiguration.createDefault(context);
-            return config;
-        }
     }
 
     private void initRegister() {

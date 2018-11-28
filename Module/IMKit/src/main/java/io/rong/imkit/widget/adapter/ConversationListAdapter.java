@@ -15,13 +15,15 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.common.core.avatar.AvatarUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import io.rong.common.RLog;
 import io.rong.imkit.R;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.model.ConversationProviderTag;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imkit.model.UIConversation.UnreadRemindType;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.ProviderContainerView;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Conversation.ConversationType;
@@ -79,8 +81,8 @@ public class ConversationListAdapter extends BaseAdapter<UIConversation> {
         holder.rightImageLayout = this.findViewById(result, R.id.rc_item2);
         holder.leftUnReadView = this.findViewById(result, R.id.rc_unread_view_left);
         holder.rightUnReadView = this.findViewById(result, R.id.rc_unread_view_right);
-        holder.leftImageView = (AsyncImageView) this.findViewById(result, R.id.rc_left);
-        holder.rightImageView = (AsyncImageView) this.findViewById(result, R.id.rc_right);
+        holder.leftImageView = (SimpleDraweeView) this.findViewById(result, R.id.rc_left);
+        holder.rightImageView = (SimpleDraweeView) this.findViewById(result, R.id.rc_right);
         holder.contentView = (ProviderContainerView) this.findViewById(result, R.id.rc_content);
         holder.unReadMsgCount = (TextView) this.findViewById(result, R.id.rc_unread_message);
         holder.unReadMsgCountRight = (TextView) this.findViewById(result, R.id.rc_unread_message_right);
@@ -135,11 +137,15 @@ public class ConversationListAdapter extends BaseAdapter<UIConversation> {
                         }
                     });
                     if (data.getConversationGatherState()) {
-                        holder.leftImageView.setAvatar((String) null, defaultId);
+                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
+                                .setLoadingAvatarResId(defaultId).build());
                     } else if (data.getIconUrl() != null) {
-                        holder.leftImageView.setAvatar(data.getIconUrl().toString(), defaultId);
+                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
+                                .setUrl(data.getIconUrl().toString())
+                                .setLoadingAvatarResId(defaultId).build());
                     } else {
-                        holder.leftImageView.setAvatar((String) null, defaultId);
+                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
+                                .setLoadingAvatarResId(defaultId).build());
                     }
 
                     if (data.getUnReadMessageCount() > 0) {
@@ -184,11 +190,15 @@ public class ConversationListAdapter extends BaseAdapter<UIConversation> {
                         }
                     });
                     if (data.getConversationGatherState()) {
-                        holder.rightImageView.setAvatar((String) null, defaultId);
+                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
+                                .setLoadingAvatarResId(defaultId).build());
                     } else if (data.getIconUrl() != null) {
-                        holder.rightImageView.setAvatar(data.getIconUrl().toString(), defaultId);
+                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
+                                .setUrl(data.getIconUrl().toString())
+                                .setLoadingAvatarResId(defaultId).build());
                     } else {
-                        holder.rightImageView.setAvatar((String) null, defaultId);
+                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
+                                .setLoadingAvatarResId(defaultId).build());
                     }
 
                     if (data.getUnReadMessageCount() > 0) {
@@ -260,10 +270,10 @@ public class ConversationListAdapter extends BaseAdapter<UIConversation> {
         public View rightImageLayout;
         public View leftUnReadView;
         public View rightUnReadView;
-        public AsyncImageView leftImageView;
+        public SimpleDraweeView leftImageView;
         public TextView unReadMsgCount;
         public ImageView unReadMsgCountIcon;
-        public AsyncImageView rightImageView;
+        public SimpleDraweeView rightImageView;
         public TextView unReadMsgCountRight;
         public ImageView unReadMsgCountRightIcon;
         public ProviderContainerView contentView;

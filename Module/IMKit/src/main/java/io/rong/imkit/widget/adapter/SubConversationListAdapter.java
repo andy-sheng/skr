@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.common.core.avatar.AvatarUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import io.rong.imkit.R;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.model.ConversationProviderTag;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imkit.model.UIConversation.UnreadRemindType;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.ProviderContainerView;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Conversation.ConversationType;
@@ -45,8 +47,8 @@ public class SubConversationListAdapter extends ConversationListAdapter {
         holder.rightImageLayout = this.findViewById(result, R.id.rc_item2);
         holder.leftUnReadView = this.findViewById(result, R.id.rc_unread_view_left);
         holder.rightUnReadView = this.findViewById(result, R.id.rc_unread_view_right);
-        holder.leftImageView = (AsyncImageView) this.findViewById(result, R.id.rc_left);
-        holder.rightImageView = (AsyncImageView) this.findViewById(result, R.id.rc_right);
+        holder.leftImageView = (SimpleDraweeView) this.findViewById(result, R.id.rc_left);
+        holder.rightImageView = (SimpleDraweeView) this.findViewById(result, R.id.rc_right);
         holder.contentView = (ProviderContainerView) this.findViewById(result, R.id.rc_content);
         holder.unReadMsgCount = (TextView) this.findViewById(result, R.id.rc_unread_message);
         holder.unReadMsgCountRight = (TextView) this.findViewById(result, R.id.rc_unread_message_right);
@@ -80,9 +82,11 @@ public class SubConversationListAdapter extends ConversationListAdapter {
         if (tag.portraitPosition() == 1) {
             holder.leftImageLayout.setVisibility(View.VISIBLE);
             if (data.getIconUrl() != null) {
-                holder.leftImageView.setAvatar(data.getIconUrl().toString(), defaultId);
+                AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
+                        .setUrl(data.getIconUrl().toString()).setLoadingAvatarResId(defaultId).build());
             } else {
-                holder.leftImageView.setAvatar((String) null, defaultId);
+                AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
+                        .setLoadingAvatarResId(defaultId).build());
             }
 
             if (data.getUnReadMessageCount() > 0) {
@@ -110,9 +114,11 @@ public class SubConversationListAdapter extends ConversationListAdapter {
         } else if (tag.portraitPosition() == 2) {
             holder.rightImageLayout.setVisibility(View.VISIBLE);
             if (data.getIconUrl() != null) {
-                holder.rightImageView.setAvatar(data.getIconUrl().toString(), defaultId);
+                AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
+                        .setUrl(data.getIconUrl().toString()).setLoadingAvatarResId(defaultId).build());
             } else {
-                holder.rightImageView.setAvatar((String) null, defaultId);
+                AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
+                        .setLoadingAvatarResId(defaultId).build());
             }
 
             if (data.getUnReadMessageCount() > 0) {
@@ -150,8 +156,8 @@ public class SubConversationListAdapter extends ConversationListAdapter {
         View rightImageLayout;
         View leftUnReadView;
         View rightUnReadView;
-        AsyncImageView leftImageView;
-        AsyncImageView rightImageView;
+        SimpleDraweeView leftImageView;
+        SimpleDraweeView rightImageView;
         ProviderContainerView contentView;
         TextView unReadMsgCount;
         TextView unReadMsgCountRight;

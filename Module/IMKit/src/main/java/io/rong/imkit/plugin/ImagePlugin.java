@@ -14,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 
 import io.rong.imkit.R;
 import io.rong.imkit.RongExtension;
-import io.rong.imkit.plugin.image.PictureSelectorActivity;
 import io.rong.imkit.utilities.PermissionCheckUtil;
 import io.rong.imlib.model.Conversation.ConversationType;
 
@@ -38,8 +37,8 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
         this.targetId = extension.getTargetId();
         String[] permissions = new String[]{"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
         if (PermissionCheckUtil.checkPermissions(currentFragment.getContext(), permissions)) {
-            Intent intent = new Intent(currentFragment.getActivity(), PictureSelectorActivity.class);
-            extension.startActivityForPluginResult(intent, 23, this);
+//            Intent intent = new Intent(currentFragment.getActivity(), PictureSelectorActivity.class);
+//            extension.startActivityForPluginResult(intent, 23, this);
         } else {
             extension.requestPermissionForPluginResult(permissions, 255, this);
         }
@@ -51,8 +50,8 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
 
     public boolean onRequestPermissionResult(Fragment fragment, RongExtension extension, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (PermissionCheckUtil.checkPermissions(fragment.getActivity(), permissions)) {
-            Intent intent = new Intent(fragment.getActivity(), PictureSelectorActivity.class);
-            extension.startActivityForPluginResult(intent, 23, this);
+//            Intent intent = new Intent(fragment.getActivity(), PictureSelectorActivity.class);
+//            extension.startActivityForPluginResult(intent, 23, this);
         } else {
             extension.showRequestPermissionFailedAlter(PermissionCheckUtil.getNotGrantedPermissionMsg(fragment.getActivity(), permissions, grantResults));
         }

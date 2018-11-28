@@ -25,7 +25,7 @@
         android:paddingBottom="6dp"
         android:id="@id/rc_time"/>
 
-    <io.rong.imkit.widget.AsyncImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="fill_parent"
         android:layout_height="160dp"
         android:background="@android:color/white"

@@ -22,6 +22,9 @@ import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.common.core.avatar.AvatarUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,7 +38,6 @@ import io.rong.imkit.RongIM.IGroupMembersProvider;
 import io.rong.imkit.mention.SideBar.OnTouchingLetterChangedListener;
 import io.rong.imkit.tools.CharacterParser;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.RongIMClient.ErrorCode;
 import io.rong.imlib.RongIMClient.ResultCallback;
@@ -246,7 +248,7 @@ public class MemberMentionedActivity extends RongBaseNoActionbarActivity {
     }
 
     class ViewHolder {
-        AsyncImageView portrait;
+        SimpleDraweeView portrait;
         TextView name;
         TextView letter;
 
@@ -282,7 +284,7 @@ public class MemberMentionedActivity extends RongBaseNoActionbarActivity {
                 viewHolder = io.rong.imkit.mention.MemberMentionedActivity.this.new ViewHolder();
                 convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rc_mention_list_item, (ViewGroup) null);
                 viewHolder.name = (TextView) convertView.findViewById(R.id.rc_user_name);
-                viewHolder.portrait = (AsyncImageView) convertView.findViewById(R.id.rc_user_portrait);
+                viewHolder.portrait = (SimpleDraweeView) convertView.findViewById(R.id.rc_user_portrait);
                 viewHolder.letter = (TextView) convertView.findViewById(R.id.letter);
                 convertView.setTag(viewHolder);
             } else {
@@ -292,7 +294,8 @@ public class MemberMentionedActivity extends RongBaseNoActionbarActivity {
             UserInfo userInfo = ((io.rong.imkit.mention.MemberMentionedActivity.MemberInfo) this.mList.get(position)).userInfo;
             if (userInfo != null) {
                 viewHolder.name.setText(userInfo.getName());
-                viewHolder.portrait.setAvatar(userInfo.getPortraitUri());
+                AvatarUtils.loadAvatarByUrl(viewHolder.portrait, AvatarUtils.newParamsBuilder(0)
+                        .setUrl(userInfo.getPortraitUri().toString()).build());
             }
 
             int section = this.getSectionForPosition(position);

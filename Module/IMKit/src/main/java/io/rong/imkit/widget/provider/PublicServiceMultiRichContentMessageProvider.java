@@ -20,6 +20,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.common.image.fresco.FrescoWorker;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +30,6 @@ import io.rong.imkit.R;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.utilities.RongUtils;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.provider.IContainerItemProvider.MessageProvider;
 import io.rong.message.PublicServiceMultiRichContentMessage;
 import io.rong.message.RichContentItem;
@@ -47,7 +49,7 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
         final ArrayList<RichContentItem> msgList = content.getMessages();
         if (msgList.size() > 0) {
             vh.tv.setText(((RichContentItem) msgList.get(0)).getTitle());
-            vh.iv.setResource(((RichContentItem) msgList.get(0)).getImageUrl(), 0);
+            FrescoWorker.preLoadImg(vh.iv, ((RichContentItem) msgList.get(0)).getImageUrl(),0);
         }
 
         LayoutParams params = v.getLayoutParams();
@@ -108,7 +110,7 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
         io.rong.imkit.widget.provider.PublicServiceMultiRichContentMessageProvider.ViewHolder holder = new io.rong.imkit.widget.provider.PublicServiceMultiRichContentMessageProvider.ViewHolder();
         View view = LayoutInflater.from(context).inflate(R.layout.rc_item_public_service_multi_rich_content_message, (ViewGroup) null);
         holder.lv = (ListView) view.findViewById(R.id.rc_list);
-        holder.iv = (AsyncImageView) view.findViewById(R.id.rc_img);
+        holder.iv = (SimpleDraweeView) view.findViewById(R.id.rc_img);
         holder.tv = (TextView) view.findViewById(R.id.rc_txt);
         view.measure(0, 0);
         holder.height = view.getMeasuredHeight();
@@ -142,7 +144,7 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
 
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = this.inflater.inflate(R.layout.rc_item_public_service_message, parent, false);
-            AsyncImageView iv = (AsyncImageView) convertView.findViewById(R.id.rc_img);
+            SimpleDraweeView iv = (SimpleDraweeView) convertView.findViewById(R.id.rc_img);
             TextView tv = (TextView) convertView.findViewById(R.id.rc_txt);
             View divider = convertView.findViewById(R.id.rc_divider);
             if (this.itemList.size() == 0) {
@@ -153,7 +155,7 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
                     tv.setText(title);
                 }
 
-                iv.setResource(((RichContentItem) this.itemList.get(position + 1)).getImageUrl(), 0);
+                FrescoWorker.preLoadImg(iv, ((RichContentItem) this.itemList.get(position + 1)).getImageUrl(),0);
                 if (position == this.getCount() - 1) {
                     divider.setVisibility(View.GONE);
                 } else {
@@ -168,7 +170,7 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
     protected static class ViewHolder {
         public int height;
         public TextView tv;
-        public AsyncImageView iv;
+        public SimpleDraweeView iv;
         public View divider;
         public ListView lv;
 

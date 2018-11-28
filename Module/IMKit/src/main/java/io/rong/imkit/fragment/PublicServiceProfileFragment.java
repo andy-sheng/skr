@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.common.image.fresco.FrescoWorker;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.Locale;
 
 import io.rong.common.RLog;
@@ -26,7 +29,6 @@ import io.rong.imkit.RongIM;
 import io.rong.imkit.RongIM.PublicServiceBehaviorListener;
 import io.rong.imkit.model.Event.PublicServiceFollowableEvent;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.LoadingDialogFragment;
 import io.rong.imlib.RongIMClient.ErrorCode;
 import io.rong.imlib.RongIMClient.OperationCallback;
@@ -38,7 +40,7 @@ import io.rong.imlib.model.PublicServiceProfile;
 public class PublicServiceProfileFragment extends DispatchResultFragment {
     public static final String AGS_PUBLIC_ACCOUNT_INFO = "arg_public_account_info";
     PublicServiceProfile mPublicAccountInfo;
-    private AsyncImageView mPortraitIV;
+    private SimpleDraweeView mPortraitIV;
     private TextView mNameTV;
     private TextView mAccountTV;
     private TextView mDescriptionTV;
@@ -75,7 +77,7 @@ public class PublicServiceProfileFragment extends DispatchResultFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.rc_fr_public_service_inf, container, false);
-        this.mPortraitIV = (AsyncImageView) view.findViewById(R.id.portrait);
+        this.mPortraitIV = (SimpleDraweeView) view.findViewById(R.id.portrait);
         this.mNameTV = (TextView) view.findViewById(R.id.name);
         this.mAccountTV = (TextView) view.findViewById(R.id.account);
         this.mDescriptionTV = (TextView) view.findViewById(R.id.description);
@@ -119,7 +121,7 @@ public class PublicServiceProfileFragment extends DispatchResultFragment {
 
     private void initData(final PublicServiceProfile info) {
         if (info != null) {
-            this.mPortraitIV.setResource(info.getPortraitUri());
+            FrescoWorker.preLoadImg(this.mPortraitIV, info.getPortraitUri().toString(), 0);
             this.mNameTV.setText(info.getName());
             this.mAccountTV.setText(String.format(this.getResources().getString(R.string.rc_pub_service_info_account), info.getTargetId()));
             this.mDescriptionTV.setText(info.getIntroduction());

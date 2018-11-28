@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.common.image.fresco.FrescoWorker;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import io.rong.imkit.R;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imlib.model.UserInfo;
 
 public class ConversationAddMemberAdapter extends BaseAdapter<UserInfo> {
@@ -31,7 +33,7 @@ public class ConversationAddMemberAdapter extends BaseAdapter<UserInfo> {
     protected View newView(Context context, int position, ViewGroup group) {
         View result = this.mInflater.inflate(R.layout.rc_item_conversation_member, (ViewGroup) null);
         io.rong.imkit.widget.adapter.ConversationAddMemberAdapter.ViewHolder holder = new io.rong.imkit.widget.adapter.ConversationAddMemberAdapter.ViewHolder();
-        holder.mMemberIcon = (AsyncImageView) this.findViewById(result, R.id.icon);
+        holder.mMemberIcon = (SimpleDraweeView) this.findViewById(result, R.id.icon);
         holder.mMemberName = (TextView) this.findViewById(result, 16908308);
         holder.mDeleteIcon = (ImageView) this.findViewById(result, 16908295);
         holder.mMemberDeIcon = (ImageView) this.findViewById(result, 16908296);
@@ -42,10 +44,10 @@ public class ConversationAddMemberAdapter extends BaseAdapter<UserInfo> {
     protected void bindView(View v, final int position, UserInfo data) {
         io.rong.imkit.widget.adapter.ConversationAddMemberAdapter.ViewHolder holder = (io.rong.imkit.widget.adapter.ConversationAddMemberAdapter.ViewHolder) v.getTag();
         if (!data.getUserId().equals("RongAddBtn") && !data.getUserId().equals("RongDelBtn")) {
-            holder.mMemberIcon.setVisibility(0);
-            holder.mMemberDeIcon.setVisibility(8);
+            holder.mMemberIcon.setVisibility(View.VISIBLE);
+            holder.mMemberDeIcon.setVisibility(View.GONE);
             if (data.getPortraitUri() != null) {
-                holder.mMemberIcon.setResource(data.getPortraitUri().toString(), R.drawable.rc_default_portrait);
+                FrescoWorker.preLoadImg(holder.mMemberIcon, data.getPortraitUri().toString(),R.drawable.rc_default_portrait);
             }
 
             if (data.getName() != null) {
@@ -112,7 +114,7 @@ public class ConversationAddMemberAdapter extends BaseAdapter<UserInfo> {
     }
 
     class ViewHolder {
-        AsyncImageView mMemberIcon;
+        SimpleDraweeView mMemberIcon;
         TextView mMemberName;
         ImageView mDeleteIcon;
         ImageView mMemberDeIcon;

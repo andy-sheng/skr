@@ -4,10 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
+import com.common.base.R;
 import com.common.image.fresco.cache.MLCacheKeyFactory;
+import com.common.image.fresco.processor.BlurPostprocessor;
 import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
+import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.facebook.binaryresource.BinaryResource;
@@ -20,6 +24,7 @@ import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -300,6 +305,35 @@ public class FrescoWorker {
         }
     }
 
+    /**
+     * 加载 图片
+     * @param draweeView  图片加载的view
+     * @param uri         图片远程uri
+     * @param resDefault  默认图片
+     */
+    public static void preLoadImg(SimpleDraweeView draweeView, String uri, int resDefault) {
+        if (draweeView == null) {
+            return;
+        }
+
+        BaseImage avatarImg;
+        if (TextUtils.isEmpty(uri)) {
+            if (resDefault != 0) {
+                avatarImg = ImageFactory.newResImage(resDefault).build();
+            } else {
+                avatarImg = ImageFactory.newResImage(R.drawable.ic_default_image).build();
+            }
+        } else {
+            avatarImg = ImageFactory.newHttpImage(uri)
+                    .setWidth(draweeView.getWidth())
+                    .setHeight(draweeView.getHeight())
+                    .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                    .setAutoPlayAnimation(true)
+                    .build();
+        }
+
+        FrescoWorker.loadImage(draweeView, avatarImg);
+    }
 
     /**
      * 预加载图片

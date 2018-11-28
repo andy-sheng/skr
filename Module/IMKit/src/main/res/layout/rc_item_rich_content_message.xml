@@ -23,7 +23,7 @@
         tools:text="Title" />
 
 
-    <io.rong.imkit.widget.AsyncImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/rc_img"
         android:layout_width="46dp"
         android:layout_height="46dp"

@@ -40,7 +40,7 @@
             android:button="@null" />
     </LinearLayout>
 
-    <io.rong.imkit.widget.AsyncImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@id/rc_left"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -51,7 +51,7 @@
         app:RCCornerRadius="3dp"
         app:RCDefDrawable="@drawable/rc_ic_def_msg_portrait" />
 
-    <io.rong.imkit.widget.AsyncImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@id/rc_right"
         android:layout_width="40dp"
         android:layout_height="40dp"

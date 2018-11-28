@@ -26,7 +26,7 @@
         android:background="@drawable/rc_bg_mentionlist_item"
         android:orientation="horizontal">
 
-        <io.rong.imkit.widget.AsyncImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:layout_gravity="center_vertical"
             android:id="@+id/rc_user_portrait"
             android:layout_width="36dp"

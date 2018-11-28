@@ -18,6 +18,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.common.image.fresco.FrescoWorker;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.Iterator;
 
 import io.rong.imkit.R;
@@ -27,7 +30,6 @@ import io.rong.imkit.model.Event.PublicServiceFollowableEvent;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.utilities.OptionsPopupDialog;
 import io.rong.imkit.utilities.OptionsPopupDialog.OnOptionsItemClickedListener;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.adapter.BaseAdapter;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.RongIMClient.ErrorCode;
@@ -146,7 +148,7 @@ public class PublicServiceSubscribeListFragment extends DispatchResultFragment {
         protected View newView(Context context, int position, ViewGroup group) {
             View view = this.mInflater.inflate(R.layout.rc_item_public_service_list, (ViewGroup) null);
             io.rong.imkit.fragment.PublicServiceSubscribeListFragment.PublicServiceListAdapter.ViewHolder viewHolder = new io.rong.imkit.fragment.PublicServiceSubscribeListFragment.PublicServiceListAdapter.ViewHolder();
-            viewHolder.portrait = (AsyncImageView) view.findViewById(R.id.portrait);
+            viewHolder.portrait = (SimpleDraweeView) view.findViewById(R.id.portrait);
             viewHolder.name = (TextView) view.findViewById(R.id.name);
             viewHolder.introduction = (TextView) view.findViewById(R.id.introduction);
             view.setTag(viewHolder);
@@ -156,7 +158,7 @@ public class PublicServiceSubscribeListFragment extends DispatchResultFragment {
         protected void bindView(View v, int position, PublicServiceProfile data) {
             io.rong.imkit.fragment.PublicServiceSubscribeListFragment.PublicServiceListAdapter.ViewHolder viewHolder = (io.rong.imkit.fragment.PublicServiceSubscribeListFragment.PublicServiceListAdapter.ViewHolder) v.getTag();
             if (data != null) {
-                viewHolder.portrait.setResource(data.getPortraitUri());
+                FrescoWorker.preLoadImg(viewHolder.portrait, data.getPortraitUri().toString(), 0);
                 viewHolder.name.setText(data.getName());
                 viewHolder.introduction.setText(data.getIntroduction());
             }
@@ -176,7 +178,7 @@ public class PublicServiceSubscribeListFragment extends DispatchResultFragment {
         }
 
         class ViewHolder {
-            AsyncImageView portrait;
+            SimpleDraweeView portrait;
             TextView name;
             TextView introduction;
 

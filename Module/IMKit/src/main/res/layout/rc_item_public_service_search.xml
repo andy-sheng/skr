@@ -6,7 +6,7 @@
     android:padding="10dp">
 
 
-    <io.rong.imkit.widget.AsyncImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@id/rc_portrait"
         android:layout_width="45dp"
         android:layout_height="45dp"

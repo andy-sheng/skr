@@ -15,10 +15,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.image.fresco.FrescoWorker;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import io.rong.imkit.R;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.provider.IContainerItemProvider.MessageProvider;
 import io.rong.imlib.model.Message.MessageDirection;
 import io.rong.message.RichContentMessage;
@@ -38,7 +40,7 @@ public class RichContentMessageItemProvider extends MessageProvider<RichContentM
         io.rong.imkit.widget.provider.RichContentMessageItemProvider.ViewHolder holder = new io.rong.imkit.widget.provider.RichContentMessageItemProvider.ViewHolder();
         holder.title = (TextView) view.findViewById(R.id.rc_title);
         holder.content = (TextView) view.findViewById(R.id.rc_content);
-        holder.img = (AsyncImageView) view.findViewById(R.id.rc_img);
+        holder.img = (SimpleDraweeView) view.findViewById(R.id.rc_img);
         holder.mLayout = (RelativeLayout) view.findViewById(R.id.rc_layout);
         view.setTag(holder);
         return view;
@@ -58,7 +60,7 @@ public class RichContentMessageItemProvider extends MessageProvider<RichContentM
         holder.title.setText(content.getTitle());
         holder.content.setText(content.getContent());
         if (content.getImgUrl() != null) {
-            holder.img.setResource(content.getImgUrl(), 0);
+            FrescoWorker.preLoadImg(holder.img, content.getImgUrl(),0);
         }
 
         if (message.getMessageDirection() == MessageDirection.SEND) {
@@ -79,7 +81,7 @@ public class RichContentMessageItemProvider extends MessageProvider<RichContentM
     }
 
     private static class ViewHolder {
-        AsyncImageView img;
+        SimpleDraweeView img;
         TextView title;
         TextView content;
         RelativeLayout mLayout;

@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
+import com.common.image.fresco.FrescoWorker;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,7 +26,6 @@ import io.rong.imkit.R;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.utilities.RongUtils;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.provider.IContainerItemProvider.MessageProvider;
 import io.rong.message.PublicServiceRichContentMessage;
 
@@ -45,7 +47,7 @@ public class PublicServiceRichContentMessageProvider extends MessageProvider<Pub
         holder.title = (TextView) view.findViewById(R.id.rc_title);
         holder.time = (TextView) view.findViewById(R.id.rc_time);
         holder.description = (TextView) view.findViewById(R.id.rc_content);
-        holder.imageView = (AsyncImageView) view.findViewById(R.id.rc_img);
+        holder.imageView = (SimpleDraweeView) view.findViewById(R.id.rc_img);
         int w = RongUtils.getScreenWidth() - RongUtils.dip2px(32.0F);
         view.setLayoutParams(new LayoutParams(w, -2));
         view.setTag(holder);
@@ -58,7 +60,7 @@ public class PublicServiceRichContentMessageProvider extends MessageProvider<Pub
         if (msg.getMessage() != null) {
             holder.title.setText(msg.getMessage().getTitle());
             holder.description.setText(msg.getMessage().getDigest());
-            holder.imageView.setResource(msg.getMessage().getImageUrl(), 0);
+            FrescoWorker.preLoadImg(holder.imageView, msg.getMessage().getImageUrl(),0);
         }
 
         String time = this.formatDate(message.getReceivedTime(), "MM月dd日 HH:mm");
@@ -94,7 +96,7 @@ public class PublicServiceRichContentMessageProvider extends MessageProvider<Pub
 
     public static class ViewHolder {
         public TextView title;
-        public AsyncImageView imageView;
+        public SimpleDraweeView imageView;
         public TextView time;
         public TextView description;
 

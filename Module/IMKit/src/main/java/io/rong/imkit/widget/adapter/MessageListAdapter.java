@@ -24,6 +24,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.core.avatar.AvatarUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,7 +44,6 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.utilities.RongUtils;
 import io.rong.imkit.utils.RongDateUtils;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.DebouncedOnClickListener;
 import io.rong.imkit.widget.ProviderContainerView;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
@@ -144,8 +146,8 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
     protected View newView(Context context, int position, ViewGroup group) {
         View result = this.mInflater.inflate(R.layout.rc_item_message, (ViewGroup) null);
         io.rong.imkit.widget.adapter.MessageListAdapter.ViewHolder holder = new io.rong.imkit.widget.adapter.MessageListAdapter.ViewHolder();
-        holder.leftIconView = (AsyncImageView) this.findViewById(result, R.id.rc_left);
-        holder.rightIconView = (AsyncImageView) this.findViewById(result, R.id.rc_right);
+        holder.leftIconView = (SimpleDraweeView) this.findViewById(result, R.id.rc_left);
+        holder.rightIconView = (SimpleDraweeView) this.findViewById(result, R.id.rc_right);
         holder.nameView = (TextView) this.findViewById(result, R.id.rc_title);
         holder.contentView = (ProviderContainerView) this.findViewById(result, R.id.rc_content);
         holder.layout = (ViewGroup) this.findViewById(result, R.id.rc_layout);
@@ -663,16 +665,19 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                                 portrait = userInfo.getPortraitUri();
                             }
 
-                            holder.rightIconView.setAvatar(portrait != null ? portrait.toString() : null, 0);
+                            AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0)
+                                    .setUrl(portrait.toString()).build());
                         } else if ((data.getConversationType().equals(ConversationType.PUBLIC_SERVICE) || data.getConversationType().equals(ConversationType.APP_PUBLIC_SERVICE)) && data.getMessageDirection().equals(MessageDirection.RECEIVE)) {
                             if (userInfo != null) {
                                 portrait = userInfo.getPortraitUri();
-                                holder.rightIconView.setAvatar(portrait != null ? portrait.toString() : null, 0);
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0)
+                                        .setUrl(portrait.toString()).build());
                             } else {
                                 mKey = ConversationKey.obtain(data.getTargetId(), data.getConversationType());
                                 publicServiceProfile = RongContext.getInstance().getPublicServiceInfoFromCache(mKey.getKey());
                                 portrait = publicServiceProfile.getPortraitUri();
-                                holder.rightIconView.setAvatar(portrait != null ? portrait.toString() : null, 0);
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0)
+                                        .setUrl(portrait.toString()).build());
                             }
                         } else if (!TextUtils.isEmpty(data.getSenderUserId())) {
                             if (userInfo == null) {
@@ -680,9 +685,10 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                             }
 
                             if (userInfo != null && userInfo.getPortraitUri() != null) {
-                                holder.rightIconView.setAvatar(userInfo.getPortraitUri().toString(), 0);
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0)
+                                        .setUrl(userInfo.getPortraitUri().toString()).build());
                             } else {
-                                holder.rightIconView.setAvatar((String) null, 0);
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0).build());
                             }
                         }
                     } else if (holder.leftIconView.getVisibility() == View.VISIBLE) {
@@ -695,19 +701,20 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
 
                             if (userInfo != null) {
                                 portrait = userInfo.getPortraitUri();
-                                holder.leftIconView.setAvatar(portrait != null ? portrait.toString() : null, R.drawable.rc_cs_default_portrait);
+                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).setUrl(portrait.toString())
+                                        .setLoadingAvatarResId(R.drawable.rc_cs_default_portrait).build());
                             }
                         } else if ((data.getConversationType().equals(ConversationType.PUBLIC_SERVICE) || data.getConversationType().equals(ConversationType.APP_PUBLIC_SERVICE)) && data.getMessageDirection().equals(MessageDirection.RECEIVE)) {
                             if (userInfo != null) {
                                 portrait = userInfo.getPortraitUri();
-                                holder.leftIconView.setAvatar(portrait != null ? portrait.toString() : null, 0);
+                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).setUrl(portrait.toString()).build());
                             } else {
                                 mKey = ConversationKey.obtain(data.getTargetId(), data.getConversationType());
                                 publicServiceProfile = RongContext.getInstance().getPublicServiceInfoFromCache(mKey.getKey());
                                 if (publicServiceProfile != null && publicServiceProfile.getPortraitUri() != null) {
-                                    holder.leftIconView.setAvatar(publicServiceProfile.getPortraitUri().toString(), 0);
+                                    AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).setUrl(publicServiceProfile.getPortraitUri().toString()).build());
                                 } else {
-                                    holder.leftIconView.setAvatar((String) null, 0);
+                                    AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).build());
                                 }
                             }
                         } else if (!TextUtils.isEmpty(data.getSenderUserId())) {
@@ -716,9 +723,10 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                             }
 
                             if (userInfo != null && userInfo.getPortraitUri() != null) {
-                                holder.leftIconView.setAvatar(userInfo.getPortraitUri().toString(), 0);
+                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0)
+                                        .setUrl(userInfo.getPortraitUri().toString()).build());
                             } else {
-                                holder.leftIconView.setAvatar((String) null, 0);
+                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).build());
                             }
                         }
                     }
@@ -809,8 +817,8 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
     }
 
     protected class ViewHolder {
-        public AsyncImageView leftIconView;
-        public AsyncImageView rightIconView;
+        public SimpleDraweeView leftIconView;
+        public SimpleDraweeView rightIconView;
         public TextView nameView;
         public ProviderContainerView contentView;
         public ProgressBar progressBar;

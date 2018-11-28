@@ -21,6 +21,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.common.image.fresco.FrescoWorker;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -29,7 +32,6 @@ import io.rong.imkit.R;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.Event.PublicServiceFollowableEvent;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.LoadingDialogFragment;
 import io.rong.imkit.widget.adapter.BaseAdapter;
 import io.rong.imlib.RongIMClient.ErrorCode;
@@ -127,7 +129,7 @@ public class PublicServiceSearchFragment extends DispatchResultFragment {
         protected View newView(Context context, int position, ViewGroup group) {
             View view = this.mInflater.inflate(R.layout.rc_item_public_service_search, (ViewGroup) null);
             io.rong.imkit.fragment.PublicServiceSearchFragment.PublicServiceListAdapter.ViewHolder viewHolder = new io.rong.imkit.fragment.PublicServiceSearchFragment.PublicServiceListAdapter.ViewHolder();
-            viewHolder.portrait = (AsyncImageView) view.findViewById(R.id.rc_portrait);
+            viewHolder.portrait = (SimpleDraweeView) view.findViewById(R.id.rc_portrait);
             viewHolder.title = (TextView) view.findViewById(R.id.rc_title);
             viewHolder.description = (TextView) view.findViewById(R.id.rc_description);
             view.setTag(viewHolder);
@@ -137,7 +139,7 @@ public class PublicServiceSearchFragment extends DispatchResultFragment {
         protected void bindView(View v, int position, PublicServiceProfile data) {
             io.rong.imkit.fragment.PublicServiceSearchFragment.PublicServiceListAdapter.ViewHolder viewHolder = (io.rong.imkit.fragment.PublicServiceSearchFragment.PublicServiceListAdapter.ViewHolder) v.getTag();
             if (data != null) {
-                viewHolder.portrait.setResource(data.getPortraitUri());
+                FrescoWorker.preLoadImg(viewHolder.portrait, data.getPortraitUri().toString(),0);
                 viewHolder.title.setText(data.getName());
                 viewHolder.description.setText(data.getIntroduction());
             }
@@ -157,7 +159,7 @@ public class PublicServiceSearchFragment extends DispatchResultFragment {
         }
 
         class ViewHolder {
-            AsyncImageView portrait;
+            SimpleDraweeView portrait;
             TextView title;
             TextView description;
 

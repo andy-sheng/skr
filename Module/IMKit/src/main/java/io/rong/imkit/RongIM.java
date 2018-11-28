@@ -21,6 +21,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
+import com.common.image.model.HttpImage;
+import com.common.image.model.ImageFactory;
+import com.common.utils.U;
+import com.facebook.drawee.drawable.ScalingUtils;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
@@ -32,12 +39,6 @@ import java.util.Set;
 
 import io.rong.common.RLog;
 import io.rong.common.SystemUtils;
-import io.rong.imageloader.core.DisplayImageOptions;
-import io.rong.imageloader.core.ImageLoader;
-import io.rong.imageloader.core.assist.FailReason;
-import io.rong.imageloader.core.assist.ImageSize;
-import io.rong.imageloader.core.listener.ImageLoadingListener;
-import io.rong.imageloader.core.listener.ImageLoadingProgressListener;
 import io.rong.imkit.manager.AudioRecordManager;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imkit.manager.InternalModuleManager;
@@ -2113,34 +2114,32 @@ public class RongIM {
     }
 
     public void downloadMedia(String imageUrl, final DownloadMediaCallback callback) {
-        ImageLoader.getInstance().loadImage(imageUrl, (ImageSize) null, (DisplayImageOptions) null, new ImageLoadingListener() {
-            public void onLoadingStarted(String imageUri, View view) {
+        BaseImage image =  ImageFactory.newHttpImage(imageUrl)
+                .build();
+        FrescoWorker.preLoadImg((HttpImage) image, new FrescoWorker.ImageLoadCallBack(){
+
+            @Override
+            public void loadSuccess(Bitmap bitmap) {
+                if (callback != null) {
+                    callback.onSuccess(imageUrl);
+                }
             }
 
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            @Override
+            public void onProgressUpdate(float progress) {
+                if (callback != null) {
+                    callback.onProgress((int) progress);
+                }
+            }
+
+            @Override
+            public void loadFail() {
                 if (callback != null) {
                     callback.onError(ErrorCode.RC_NET_UNAVAILABLE);
                 }
 
             }
-
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                if (callback != null) {
-                    callback.onSuccess(imageUri);
-                }
-
-            }
-
-            public void onLoadingCancelled(String imageUri, View view) {
-            }
-        }, new ImageLoadingProgressListener() {
-            public void onProgressUpdate(String imageUri, View view, int current, int total) {
-                if (callback != null) {
-                    callback.onProgress(current * 100 / total);
-                }
-
-            }
-        });
+        },true);
     }
 
     public void getConversationNotificationStatus(final ConversationType conversationType, final String targetId, final ResultCallback<ConversationNotificationStatus> callback) {

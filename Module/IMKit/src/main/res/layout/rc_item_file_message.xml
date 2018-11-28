@@ -32,7 +32,7 @@
             android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
-            <io.rong.imkit.widget.AsyncImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/rc_msg_iv_file_type_image"
                 android:layout_width="52dp"
                 android:layout_height="52dp"

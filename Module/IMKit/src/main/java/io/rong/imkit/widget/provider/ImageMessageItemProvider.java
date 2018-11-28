@@ -7,6 +7,7 @@ package io.rong.imkit.widget.provider;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -14,10 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.common.core.avatar.AvatarUtils;
+import com.common.image.fresco.FrescoWorker;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import io.rong.imkit.R;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
-import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imkit.widget.provider.IContainerItemProvider.MessageProvider;
 import io.rong.imlib.model.Message.MessageDirection;
 import io.rong.imlib.model.Message.SentStatus;
@@ -38,7 +42,7 @@ public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
         View view = LayoutInflater.from(context).inflate(R.layout.rc_item_image_message, (ViewGroup) null);
         io.rong.imkit.widget.provider.ImageMessageItemProvider.ViewHolder holder = new io.rong.imkit.widget.provider.ImageMessageItemProvider.ViewHolder();
         holder.message = (TextView) view.findViewById(R.id.rc_msg);
-        holder.img = (AsyncImageView) view.findViewById(R.id.rc_img);
+        holder.img = (SimpleDraweeView) view.findViewById(R.id.rc_img);
         view.setTag(holder);
         return view;
     }
@@ -61,7 +65,7 @@ public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
             v.setBackgroundResource(R.drawable.rc_ic_bubble_no_left);
         }
 
-        holder.img.setResource(content.getThumUri());
+        AvatarUtils.loadAvatarByUrl(holder.img, AvatarUtils.newParamsBuilder(0).setUrl(content.getThumUri().toString()).build());
         int progress = message.getProgress();
         SentStatus status = message.getSentStatus();
         if (status.equals(SentStatus.SENDING) && progress < 100) {
@@ -82,7 +86,7 @@ public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
     }
 
     private static class ViewHolder {
-        AsyncImageView img;
+        SimpleDraweeView img;
         TextView message;
 
         private ViewHolder() {
