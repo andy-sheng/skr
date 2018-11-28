@@ -52,7 +52,7 @@ public class CbEngineAdapter {
             // 计算当前时间
             int currentTimeMs = Math.max(msg.arg1, 0);
             int accompanyTimeMs = Math.max(msg.arg2, 0);
-            MyLog.d(TAG, "mTimeHandler handleMessage currentTimeMs=" + currentTimeMs + " accompanyTimeMs:" + accompanyTimeMs);
+//            MyLog.d(TAG, "mTimeHandler handleMessage currentTimeMs=" + currentTimeMs + " accompanyTimeMs:" + accompanyTimeMs);
 
         }
     };
@@ -274,7 +274,7 @@ public class CbEngineAdapter {
         }
         mChangbaVideoCamera = null;
         if (mPreviewScheduler != null) {
-            mPreviewScheduler.destroySurface();
+            mPreviewScheduler.stop();
         }
         mPreviewScheduler = null;
         if (recordingStudio != null) {

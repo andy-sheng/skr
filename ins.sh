@@ -39,6 +39,7 @@ installApkForAllDevices(){
 	for data in ${devices[@]}  
 	do  
     	echo "安装 $1 到 ${data}"
+    	echo "adb -s ${data} install -r $1"
     	adb -s ${data} install -r $1
 	done  
 }

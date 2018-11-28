@@ -2,14 +2,16 @@ package com.engine;
 
 public class EngineEvent {
     public static final int TYPE_USER_JOIN = 1;
-    public static final int TYPE_USER_LEAVE = 1;
+    public static final int TYPE_USER_LEAVE = 2;
+    public static final int TYPE_FIRST_VIDEO_DECODED = 3;
+
     int type;
-    int userId;
+    UserStatus userStatus;
     Object obj;
 
-    public EngineEvent(int type, int userId) {
+    public EngineEvent(int type, UserStatus userStatus) {
         this.type = type;
-        this.userId = userId;
+        this.userStatus = userStatus;
     }
 
     public int getType() {
@@ -20,12 +22,12 @@ public class EngineEvent {
         this.type = type;
     }
 
-    public int getUserId() {
-        return userId;
+    public UserStatus getUserStatus() {
+        return userStatus;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
     }
 
     public Object getObj() {

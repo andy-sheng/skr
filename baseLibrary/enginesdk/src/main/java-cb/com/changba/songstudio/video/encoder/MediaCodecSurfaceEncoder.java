@@ -262,7 +262,7 @@ public class MediaCodecSurfaceEncoder {
     }
 
     public long pullH264StreamFromDrainEncoderFromNative(byte[] returnedData) {
-        Log.d(TAG ,"pullH264StreamFromDrainEncoderFromNative");
+//        Log.d(TAG ,"pullH264StreamFromDrainEncoderFromNative");
         long val = 0;
 
         try {

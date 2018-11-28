@@ -69,6 +69,8 @@ public class U {
 
     private static UriUtils uriUtils;
 
+    private static ReflectUtils reflectUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -281,6 +283,13 @@ public class U {
             uriUtils = new UriUtils();
         }
         return uriUtils;
+    }
+
+    public static ReflectUtils getReflectUtils(){
+        if(reflectUtils==null){
+            reflectUtils = new ReflectUtils();
+        }
+        return reflectUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;

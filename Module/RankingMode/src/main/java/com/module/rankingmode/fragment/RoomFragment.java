@@ -1,10 +1,13 @@
 package com.module.rankingmode.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSONObject;
@@ -15,6 +18,7 @@ import com.common.view.ex.ExButton;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
+import com.engine.Params;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -29,13 +33,14 @@ import java.util.List;
 public class RoomFragment extends BaseFragment {
     public final static String TAG = "RoomFragment";
 
-    RelativeLayout mSelfContainer;
-    RelativeLayout mOtherContainer;
+    LinearLayout mOthersContainer;
     ExButton mJoinRoomBtn;
+    ExButton mModeSwitchBtn;
     SurfaceView mCameraSurfaceView;
     ExTextView mInfoTextView;
 
     String ROOM_ID = "chengsimin";
+    boolean useChangbaEngine = true;
 
     @Override
     public int initView() {
@@ -44,8 +49,8 @@ public class RoomFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mSelfContainer = (RelativeLayout) mRootView.findViewById(R.id.self_container);
-        mOtherContainer = (RelativeLayout) mRootView.findViewById(R.id.other_container);
+        mOthersContainer = mRootView.findViewById(R.id.others_container);
+        mModeSwitchBtn = mRootView.findViewById(R.id.mode_switch_btn);
         mJoinRoomBtn = mRootView.findViewById(R.id.join_room_btn);
         mJoinRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,13 +104,37 @@ public class RoomFragment extends BaseFragment {
         RelativeLayout container = (RelativeLayout) mRootView;
         mCameraSurfaceView = new SurfaceView(getContext());
         container.addView(mCameraSurfaceView, 0
-                , new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                , new RelativeLayout.LayoutParams(360,640));
+
+
+        EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
+                .setUseCbEngine(true)
+                .setEnableVideo(true)
+                .build());
+
         EngineManager.getInstance().startPreview(mCameraSurfaceView);
 
         mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EngineManager.getInstance().startRecord();
+            }
+        });
+
+        mModeSwitchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                useChangbaEngine = !useChangbaEngine;
+                if(useChangbaEngine){
+                    mModeSwitchBtn.setText("使用唱吧引擎：已开启");
+                }else{
+                    mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
+                }
+                EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
+                        .setUseCbEngine(false)
+                        .setEnableVideo(true)
+                        .build());
+                EngineManager.getInstance().startPreview(mCameraSurfaceView);
             }
         });
     }
@@ -124,7 +153,7 @@ public class RoomFragment extends BaseFragment {
             }
         });
         // 加入引擎房间
-        EngineManager.getInstance().joinRoom(ROOM_ID, 0);
+        EngineManager.getInstance().joinRoom(ROOM_ID, 0, true);
     }
 
     @Override
@@ -154,9 +183,21 @@ public class RoomFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EngineEvent event) {
         if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
-            addInfo(event.getUserId()+"加入引擎房间");
+            addInfo(event.getUserStatus().getUserId() + "加入引擎房间");
         } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
-            addInfo(event.getUserId()+"离开引擎房间");
+            addInfo(event.getUserStatus().getUserId() + "离开引擎房间");
+            if (event.getUserStatus().hasBindView()) {
+                mOthersContainer.removeView(event.getUserStatus().getView());
+            }
+        } else if(event.getType() == EngineEvent.TYPE_FIRST_VIDEO_DECODED){
+            addInfo(event.getUserStatus().getUserId() + "首帧decode");
+            if (!event.getUserStatus().isSelf()
+                    && !event.getUserStatus().hasBindView()) {
+                SurfaceView textureView = new SurfaceView(getContext());
+                textureView.setBackgroundColor(Color.BLUE);
+                mOthersContainer.addView(textureView, 360, 640);
+                EngineManager.getInstance().bindRemoteView(0, textureView);
+            }
         }
     }
 

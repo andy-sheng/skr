@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.engine.EngineManager;
+import com.engine.Params;
 import com.engine.agora.source.PrivateTextureHelper;
-
-import java.util.HashSet;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLContext;
@@ -20,10 +18,9 @@ import javax.microedition.khronos.egl.EGLContext;
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandlerEx;
 import io.agora.rtc.RtcEngine;
-import io.agora.rtc.mediaio.AgoraSurfaceView;
-import io.agora.rtc.mediaio.AgoraTextureView;
 import io.agora.rtc.mediaio.MediaIO;
 import io.agora.rtc.video.AgoraVideoFrame;
+import io.agora.rtc.video.ViEAndroidGLES20;
 import io.agora.rtc.video.VideoCanvas;
 import io.agora.rtc.video.VideoEncoderConfiguration;
 
@@ -44,7 +41,7 @@ public class AgoraEngineAdapter {
         return AgoraEngineAdapterHolder.INSTANCE;
     }
 
-
+    private Params mConfig;
     private RtcEngine mRtcEngine;
     private Handler mUiHandler = new Handler();
     private HandlerThread mWorkHandler = new HandlerThread("AgoraAdapterWorkThread");
@@ -103,34 +100,44 @@ public class AgoraEngineAdapter {
     public void setOutCallback(AgoraOutCallback outCallback) {
         this.mOutCallback = outCallback;
     }
+
+    public void init(Params config) {
+        mConfig = config;
+    }
+
     /**
      * 初始化引擎
      */
-    void tryInit() {
+    void tryInitRtcEngine() {
         if (mRtcEngine == null) {
             synchronized (this) {
                 try {
                     if (mRtcEngine == null) {
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
                         // 模式为广播
-                        mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
-                        // 开启视频
-                        mRtcEngine.enableVideo();
+                        mRtcEngine.setChannelProfile(mConfig.getChannelProfile());
+
+                        if(mConfig.isEnableVideo()) {
+                            // 开启视频
+                            mRtcEngine.enableVideo();
+                        }
+
                         // 开关视频双流模式。
                         mRtcEngine.enableDualStreamMode(true);
+                        if(mConfig.isUseCbEngine()) {
+                            // 音视频自采集
+                            mRtcEngine.setExternalAudioSource(
+                                    true,      // 开启外部音频源
+                                    44100,     // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
+                                    1          // 外部音源的通道数，最多2个
+                            );
 
-                        // 音视频自采集
-                        mRtcEngine.setExternalAudioSource(
-                                true,      // 开启外部音频源
-                                44100,     // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
-                                1          // 外部音源的通道数，最多2个
-                        );
-
-                        mRtcEngine.setExternalVideoSource(
-                                true,      // 是否使用外部视频源
-                                false,      // 是否使用texture作为输出
-                                true        // true为使用推送模式；false为拉取模式，但目前不支持
-                        );
+                            mRtcEngine.setExternalVideoSource(
+                                    true,      // 是否使用外部视频源
+                                    false,      // 是否使用texture作为输出
+                                    true        // true为使用推送模式；false为拉取模式，但目前不支持
+                            );
+                        }
                     }
                 } catch (Exception e) {
                     MyLog.e(TAG, Log.getStackTraceString(e));
@@ -148,6 +155,7 @@ public class AgoraEngineAdapter {
         if (mRtcEngine != null) {
             mRtcEngine.leaveChannel();
         }
+        RtcEngine.destroy();
         mUiHandler.removeCallbacksAndMessages(null);
         mRtcEngine = null;
     }
@@ -179,8 +187,17 @@ public class AgoraEngineAdapter {
      * 设置频道模式为通信
      */
     public void setCommunicationMode() {
-        tryInit();
+        tryInitRtcEngine();
         mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION);
+    }
+
+    public void setClientRole(boolean isAnchor) {
+        tryInitRtcEngine();
+        if(isAnchor) {
+            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
+        }else{
+            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
+        }
     }
 
     /**
@@ -192,7 +209,7 @@ public class AgoraEngineAdapter {
      * 如果已在频道中，用户必须调用 leaveChannel 方法退出当前频道，才能进入下一个频道。
      */
     public void joinChannel(String token, String channelId, String extra, int uid) {
-        tryInit();
+        tryInitRtcEngine();
         MyLog.d(TAG,"joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
         mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
@@ -207,7 +224,7 @@ public class AgoraEngineAdapter {
      * 如果在通话或直播过程中打开，则由纯音频切换为视频通话或直播。
      */
     public void enableVideo() {
-        tryInit();
+        tryInitRtcEngine();
         mRtcEngine.enableVideo();
     }
 
@@ -220,7 +237,7 @@ public class AgoraEngineAdapter {
      * 该行为对视频编码没有影响，编码时 SDK 仍沿用该方法中定义的分辨率。
      */
     public void setVideoEncoderConfiguration() {
-        tryInit();
+        tryInitRtcEngine();
         VideoEncoderConfiguration.VideoDimensions dimensions = new VideoEncoderConfiguration.VideoDimensions(360, 640);
         VideoEncoderConfiguration.FRAME_RATE frameRate = VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_24;
         int bitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
@@ -237,13 +254,40 @@ public class AgoraEngineAdapter {
      * @param container 容器
      */
     public void bindLocalVideoView(ViewGroup container) {
-        tryInit();
         SurfaceView surfaceView = RtcEngine.CreateRendererView(U.app());
         surfaceView.setZOrderMediaOverlay(true);
         container.addView(surfaceView);
+
+    }
+
+    public void setLocalVideoRenderer(SurfaceView surfaceView) {
+        tryInitRtcEngine();
+        surfaceView = tryReplcaceSurfaceView(surfaceView);
         mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, 0));
     }
 
+    private SurfaceView tryReplcaceSurfaceView(SurfaceView surfaceView){
+        if (ViEAndroidGLES20.IsSupported(surfaceView.getContext())) {
+            MyLog.w(TAG,"ViEAndroidGLES20.IsSupported=true,Replcace SurfaceView Now");
+            // 如果支持，尝试替换掉现有的Surfaceview，因为这个性能更好
+            ViewGroup parentView = (ViewGroup) surfaceView.getParent();
+            if(parentView!=null){
+                ViEAndroidGLES20 newSurfaceView = new ViEAndroidGLES20(surfaceView.getContext());
+                int index = parentView.indexOfChild(surfaceView);
+                ViewGroup.LayoutParams layoutParams = surfaceView.getLayoutParams();
+                try {
+                    int mSubLayer = (int) U.getReflectUtils().readField(surfaceView,"mSubLayer");
+                    U.getReflectUtils().writeField(newSurfaceView,"mSubLayer",mSubLayer);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                parentView.removeView(surfaceView);
+                parentView.addView(newSurfaceView,index,layoutParams);
+                return newSurfaceView;
+            }
+        }
+        return surfaceView;
+    }
     /**
      * 绑定远端视图
      * 如果uid传的是非法值，则会缓存view
@@ -252,23 +296,13 @@ public class AgoraEngineAdapter {
      * <p>
      * 如果uid是用我们自己的账号体系，那这里是可以提前分配view吧
      *
-     * @param container
      * @param uid
      */
-    public void bindRemoteVideo(int uid, ViewGroup container) {
-        MyLog.d(TAG, "bindRemoteVideo" + " container=" + container + " uid=" + uid);
-        tryInit();
-        if (container.getChildCount() >= 1) {
-            // 只绑定一个
-            return;
-        }
-        if (uid <= 0) {
-            return;
-        }
-        MyLog.d(TAG, "setupRemoteVideo");
+    public void setRemoteVideoRenderer(int uid, SurfaceView surfaceView) {
+        MyLog.d(TAG,"setRemoteVideoRenderer" + " uid=" + uid + " surfaceView=" + surfaceView);
+        tryInitRtcEngine();
 
-        SurfaceView surfaceView = RtcEngine.CreateRendererView(U.app());
-        container.addView(surfaceView);
+        surfaceView = tryReplcaceSurfaceView(surfaceView);
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, uid));
         surfaceView.setTag(uid);
     }
@@ -296,7 +330,7 @@ public class AgoraEngineAdapter {
      * @return
      */
     public int pushExternalAudioFrame(byte[] data, long ts) {
-        tryInit();
+        tryInitRtcEngine();
         if (mRtcEngine != null) {
             int pushState = mRtcEngine.pushExternalAudioFrame(data, ts);
             return pushState;
@@ -310,7 +344,7 @@ public class AgoraEngineAdapter {
      * @param textureId
      */
     public final void pushExternalVideoFrame(int textureId) {
-        tryInit();
+        tryInitRtcEngine();
         if (mRtcEngine != null) {
             EGLContext context = ((EGL10) EGLContext.getEGL()).eglGetCurrentContext();
             // 转换矩阵 4x4
@@ -330,7 +364,7 @@ public class AgoraEngineAdapter {
             vf.eglContext11 = context;
             vf.transform = UNIQUE_MAT;
             boolean pushState = mRtcEngine.pushExternalVideoFrame(vf);
-            Log.d(TAG, "pushExternalVideoFrame pushState " + pushState);
+            MyLog.d(TAG,"pushExternalVideoFrame" + " textureId=" + textureId+" pushState:"+pushState);
         }
     }
 

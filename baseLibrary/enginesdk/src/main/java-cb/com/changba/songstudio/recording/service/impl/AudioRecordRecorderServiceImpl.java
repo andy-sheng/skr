@@ -206,7 +206,7 @@ public class AudioRecordRecorderServiceImpl implements RecorderService {
 
 					AgoraEngineAdapter.getInstance().pushExternalAudioFrame(audioSamples ,System.currentTimeMillis());
 
-					Log.d(TAG ,"pushAudioBufferToQueue");
+//					Log.d(TAG ,"pushAudioBufferToQueue");
 
 				}
 			}
