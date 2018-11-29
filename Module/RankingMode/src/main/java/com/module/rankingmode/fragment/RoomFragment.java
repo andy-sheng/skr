@@ -20,6 +20,7 @@ import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.engine.agora.effect.EffectModel;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -88,20 +89,28 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
+        mRootView.findViewById(R.id.play_effect_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EffectModel effectModel = EngineManager.getInstance().getAllEffects().get(0);
+                EngineManager.getInstance().playEffects(effectModel);
+            }
+        });
+
         mModeSwitchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 useChangbaEngine = !useChangbaEngine;
-                if(useChangbaEngine){
+                if (useChangbaEngine) {
                     mModeSwitchBtn.setText("使用唱吧引擎：已开启");
-                }else{
+                } else {
                     mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
                 }
                 EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                         .setUseCbEngine(useChangbaEngine)
                         .setEnableVideo(true)
                         .build());
-                if(useChangbaEngine){
+                if (useChangbaEngine) {
                     recreateCameraView();
                     // 确保view已经真正add进去了
                     mUiHandler.post(new Runnable() {
@@ -111,7 +120,7 @@ public class RoomFragment extends BaseFragment {
                         }
                     });
 
-                }else{
+                } else {
                     recreateCameraView();
                     mUiHandler.post(new Runnable() {
                         @Override
@@ -145,7 +154,7 @@ public class RoomFragment extends BaseFragment {
                 }
             }, getActivity());
         }
-        if(useChangbaEngine){
+        if (useChangbaEngine) {
             recreateCameraView();
             // 确保view已经真正add进去了
             mUiHandler.post(new Runnable() {
@@ -176,14 +185,14 @@ public class RoomFragment extends BaseFragment {
 
     }
 
-    private void recreateCameraView(){
+    private void recreateCameraView() {
         RelativeLayout container = (RelativeLayout) mRootView;
-        if(mCameraSurfaceView!=null){
+        if (mCameraSurfaceView != null) {
             ((RelativeLayout) mRootView).removeView(mCameraSurfaceView);
         }
         mCameraSurfaceView = new SurfaceView(getContext());
         container.addView(mCameraSurfaceView, 0
-                , new RelativeLayout.LayoutParams(360,640));
+                , new RelativeLayout.LayoutParams(360, 640));
     }
 
     @Override
@@ -217,14 +226,14 @@ public class RoomFragment extends BaseFragment {
             if (event.getUserStatus().hasBindView()) {
                 mOthersContainer.removeView(event.getUserStatus().getView());
             }
-        } else if(event.getType() == EngineEvent.TYPE_FIRST_VIDEO_DECODED){
+        } else if (event.getType() == EngineEvent.TYPE_FIRST_VIDEO_DECODED) {
             addInfo(event.getUserStatus().getUserId() + "首帧decode");
             if (!event.getUserStatus().isSelf()
                     && !event.getUserStatus().hasBindView()) {
                 SurfaceView textureView = new SurfaceView(getContext());
                 textureView.setBackgroundColor(Color.BLUE);
                 mOthersContainer.addView(textureView, 360, 640);
-                EngineManager.getInstance().bindRemoteView(0, textureView);
+                EngineManager.getInstance().bindRemoteView(event.getUserStatus().getUserId(), textureView);
             }
         }
     }

@@ -298,4 +298,10 @@ public static java.lang.String TABLENAME;
 -dontnote com.google.android.gms.gcm.**
 -dontnote io.rong.**
 
+
+#唱吧引擎
+-keep class com.changba.songstudio.recording.camera.preview.ChangbaRecordingPreviewScheduler{*;}
+-keep class com.changba.songstudio.recording.camera.preview.CameraConfigInfo{*;}
+-keep class com.changba.songstudio.Videostudio{*;}
+
 -ignorewarnings

@@ -1,12 +1,15 @@
 package com.common.utils;
 
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.common.log.MyLog;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -139,6 +142,7 @@ public class FileUtils {
 
     /**
      * 得到一个文件的sha1签名摘要
+     *
      * @param fileName
      * @return
      * @throws NoSuchAlgorithmException
@@ -166,5 +170,50 @@ public class FileUtils {
 
         return md.digest();
     }
+
+
+    /**
+     * 拷贝assets中的文件到sdcard
+     *
+     * @param srcPath  文件或者文件夹 如 effect
+     * @param dstPath  目录
+     * @param override 是否覆盖
+     */
+    public void copyAssetsToSdcard(String srcPath, String dstPath, boolean override) {
+        try {
+            String fileNames[] = U.app().getAssets().list(srcPath);
+            if (fileNames.length > 0) {
+                File file = new File(dstPath);
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+                for (String fileName : fileNames) {
+                    if (!srcPath.equals("")) { // assets 文件夹下的目录
+                        copyAssetsToSdcard(srcPath + File.separator + fileName, dstPath + File.separator + fileName, override);
+                    } else { // assets 文件夹
+                        copyAssetsToSdcard(fileName, dstPath + File.separator + fileName, override);
+                    }
+                }
+            } else {
+                File outFile = new File(dstPath);
+                if (!override && outFile.exists()) {
+                    MyLog.w("FileUtils", outFile.getAbsolutePath() + " exist,override is false,cancel");
+                    return;
+                }
+                InputStream is = U.app().getAssets().open(srcPath);
+                FileOutputStream fos = new FileOutputStream(outFile);
+                byte[] buffer = new byte[1024];
+                int byteCount;
+                while ((byteCount = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, byteCount);
+                }
+                fos.flush();
+                is.close();
+                fos.close();
+            }
+        } catch (Exception e) {
+        }
+    }
+
 }
 

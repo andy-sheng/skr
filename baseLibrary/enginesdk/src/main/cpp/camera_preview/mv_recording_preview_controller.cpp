@@ -235,13 +235,17 @@ void MVRecordingPreviewController::renderFrame() {
             startTime = getCurrentTime();
         }
         float position = ((float) (getCurrentTime() - startTime)) / 1000.0f;
+        // buffer做处理
         this->processVideoFrame(position);
         if (previewSurface != EGL_NO_SURFACE) {
+            // 回到surfaceview
             this->draw();
         }
 //			LOGI("process Frame waste TimeMills 【%d】", (int)(getCurrentTime() - startTimeMills));
         if (isEncoding) {
+            // 编码
             encoder->encode();
+            // 推出去
             this->pushToRTCService();
         }
     }
@@ -273,7 +277,9 @@ void MVRecordingPreviewController::pushToRTCService() {
 
 void MVRecordingPreviewController::draw() {
     eglCore->makeCurrent(previewSurface);
+
     renderer->drawToViewWithAutofit(screenWidth, screenHeight, textureWidth, textureHeight);
+    // 拿下一个buffer
     if (!eglCore->swapBuffers(previewSurface)) {
         LOGE("eglSwapBuffers(previewSurface) returned error %d", eglGetError());
     }

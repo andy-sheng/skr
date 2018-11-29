@@ -1,5 +1,6 @@
 package com.engine.agora;
 
+import android.content.res.AssetManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -10,12 +11,21 @@ import android.view.ViewGroup;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.Params;
+import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLContext;
 
 import io.agora.rtc.Constants;
+import io.agora.rtc.IAudioEffectManager;
 import io.agora.rtc.IRtcEngineEventHandlerEx;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.mediaio.MediaIO;
@@ -23,6 +33,10 @@ import io.agora.rtc.video.AgoraVideoFrame;
 import io.agora.rtc.video.ViEAndroidGLES20;
 import io.agora.rtc.video.VideoCanvas;
 import io.agora.rtc.video.VideoEncoderConfiguration;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 
 public class AgoraEngineAdapter {
     public final static String TAG = "AgoraEngineAdapter";
@@ -34,7 +48,7 @@ public class AgoraEngineAdapter {
     }
 
     private AgoraEngineAdapter() {
-
+        tryCopyAssetsEffect2Sdcard();
     }
 
     public static final AgoraEngineAdapter getInstance() {
@@ -46,7 +60,7 @@ public class AgoraEngineAdapter {
     private Handler mUiHandler = new Handler();
     private HandlerThread mWorkHandler = new HandlerThread("AgoraAdapterWorkThread");
     private AgoraOutCallback mOutCallback;
-
+    private List<EffectModel> mEffectModels = new ArrayList<>();
     /**
      * 所有的回调都在这
      * 注意回调的运行线程，一般都不会在主线程
@@ -93,7 +107,7 @@ public class AgoraEngineAdapter {
         public void onUserEnableVideo(int uid, boolean enabled) {
             super.onUserEnableVideo(uid, enabled);
             if (mOutCallback != null) {
-                mOutCallback.onUserEnableVideo(uid,enabled);
+                mOutCallback.onUserEnableVideo(uid, enabled);
             }
         }
 
@@ -171,6 +185,7 @@ public class AgoraEngineAdapter {
                         if (mConfig.isEnableVideo()) {
                             // 开启视频
                             mRtcEngine.enableVideo();
+                            setVideoEncoderConfiguration();
                         }
 
                         // 开关视频双流模式。
@@ -290,8 +305,7 @@ public class AgoraEngineAdapter {
      * 该行为对视频编码没有影响，编码时 SDK 仍沿用该方法中定义的分辨率。
      */
     public void setVideoEncoderConfiguration() {
-        tryInitRtcEngine();
-        VideoEncoderConfiguration.VideoDimensions dimensions = new VideoEncoderConfiguration.VideoDimensions(360, 640);
+        VideoEncoderConfiguration.VideoDimensions dimensions = new VideoEncoderConfiguration.VideoDimensions(mConfig.getLocalVideoWidth(), mConfig.getLocalVideoHeight());
         VideoEncoderConfiguration.FRAME_RATE frameRate = VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_24;
         int bitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
         VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
@@ -301,22 +315,10 @@ public class AgoraEngineAdapter {
         mRtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
     }
 
-    /**
-     * 绑定本地视图view
-     *
-     * @param container 容器
-     */
-    public void bindLocalVideoView(ViewGroup container) {
-        SurfaceView surfaceView = RtcEngine.CreateRendererView(U.app());
-        surfaceView.setZOrderMediaOverlay(true);
-        container.addView(surfaceView);
-
-    }
-
     public void setLocalVideoRenderer(SurfaceView surfaceView) {
         tryInitRtcEngine();
         surfaceView = tryReplcaceSurfaceView(surfaceView);
-        mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, 0));
+        mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
     }
 
     private SurfaceView tryReplcaceSurfaceView(SurfaceView surfaceView) {
@@ -357,7 +359,7 @@ public class AgoraEngineAdapter {
         tryInitRtcEngine();
 
         surfaceView = tryReplcaceSurfaceView(surfaceView);
-        mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, uid));
+        mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
         surfaceView.setTag(uid);
     }
 
@@ -376,6 +378,52 @@ public class AgoraEngineAdapter {
         mRtcEngine.setRemoteVideoRenderer(userId, privateTextureHelper);
     }
 
+    public List<EffectModel> getAllEffects() {
+        return mEffectModels;
+    }
+
+    private void tryCopyAssetsEffect2Sdcard() {
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                File file = new File(U.getAppInfoUtils().getMainDir(), "effects");
+                U.getFileUtils().copyAssetsToSdcard("effects", file.getPath(), false);
+                int id = 0;
+                for (File effectFile : file.listFiles()) {
+                    EffectModel effectModel = new EffectModel();
+                    effectModel.setId(id++);
+                    effectModel.setName(effectFile.getName());
+                    effectModel.setPath(effectFile.getAbsolutePath());
+                    if (!mEffectModels.contains(effectModel)) {
+                        mEffectModels.add(effectModel);
+                    }
+                }
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
+    /**
+     * 播放音效
+     */
+    public void playEffects(EffectModel effectModel) {
+        if (mRtcEngine != null) {
+            IAudioEffectManager manager = mRtcEngine.getAudioEffectManager();
+            manager.preloadEffect(effectModel.getId(), effectModel.getPath());
+            // 播放一个音效
+            manager.playEffect(
+                    effectModel.getId(),                         // 要播放的音效 id
+                    effectModel.getPath(),         // 播放文件的路径
+                    -1,                        // 播放次数，-1 代表无限循环
+                    1, // 音调 0.5-2
+                    0.0,                       // 改变音效的空间位置，0表示正前方
+                    100,                       // 音量，取值 0 ~ 100， 100 代表原始音量
+                    true                       // 是否令远端也能听到音效的声音
+            );
+        }
+    }
+
     /**
      * 外部推送音频帧
      *
@@ -384,7 +432,7 @@ public class AgoraEngineAdapter {
      * @return
      */
     public int pushExternalAudioFrame(byte[] data, long ts) {
-        if(!mConfig.isUseCbEngine()){
+        if (!mConfig.isUseCbEngine()) {
             throw new IllegalStateException("usecbengine flag is false");
         }
         tryInitRtcEngine();
@@ -401,7 +449,7 @@ public class AgoraEngineAdapter {
      * @param textureId
      */
     public final void pushExternalVideoFrame(int textureId) {
-        if(!mConfig.isUseCbEngine()){
+        if (!mConfig.isUseCbEngine()) {
             throw new IllegalStateException("usecbengine flag is false");
         }
         tryInitRtcEngine();
@@ -414,15 +462,17 @@ public class AgoraEngineAdapter {
                     0.0f, 0.0f, 1.0f, 0.0f,
                     0.0f, 0.0f, 0.0f, 1.0f
             };
+
             AgoraVideoFrame vf = new AgoraVideoFrame();
             vf.format = AgoraVideoFrame.FORMAT_TEXTURE_2D;
             vf.timeStamp = System.currentTimeMillis();
-            vf.stride = 1080;
-            vf.height = 1920;
+            vf.stride = 100;
+            vf.height = 200;
             vf.textureID = textureId;
             vf.syncMode = true;
             vf.eglContext11 = context;
             vf.transform = UNIQUE_MAT;
+            vf.rotation = 0;
             boolean pushState = mRtcEngine.pushExternalVideoFrame(vf);
             MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + textureId + " pushState:" + pushState);
         }

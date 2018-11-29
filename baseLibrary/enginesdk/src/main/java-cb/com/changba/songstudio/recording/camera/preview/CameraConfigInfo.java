@@ -28,4 +28,14 @@ public class CameraConfigInfo {
 	public int getCameraFacingId() {
 		return cameraFacingId;
 	}
+
+	@Override
+	public String toString() {
+		return "CameraConfigInfo{" +
+				"cameraFacingId=" + cameraFacingId +
+				", degress=" + degress +
+				", textureWidth=" + textureWidth +
+				", textureHeight=" + textureHeight +
+				'}';
+	}
 }

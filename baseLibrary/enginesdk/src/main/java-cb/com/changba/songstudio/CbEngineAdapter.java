@@ -18,11 +18,13 @@ import com.changba.songstudio.recording.video.CommonVideoRecordingStudio;
 import com.changba.songstudio.recording.video.VideoRecordingStudio;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.engine.Params;
 
 import java.io.File;
 
 public class CbEngineAdapter {
     public final static String TAG = "CbEngineAdapter";
+
 
     private static class CbEngineAdapterHolder {
         private static final CbEngineAdapter INSTANCE = new CbEngineAdapter();
@@ -42,6 +44,7 @@ public class CbEngineAdapter {
         return CbEngineAdapterHolder.INSTANCE;
     }
 
+    private Params mParams;
     private CommonVideoRecordingStudio recordingStudio;
     private ChangbaVideoCamera mChangbaVideoCamera;
     private ChangbaRecordingPreviewScheduler mPreviewScheduler;
@@ -189,6 +192,9 @@ public class CbEngineAdapter {
         }
     };
 
+    public void init(Params config) {
+        mParams = config;
+    }
 
     private void tryInitPreview(SurfaceView surfaceView) {
         if (mPreviewScheduler == null) {
@@ -224,18 +230,6 @@ public class CbEngineAdapter {
      */
     public void startPreview(final SurfaceView surfaceView) {
         tryInitPreview(surfaceView);
-        surfaceView.post(new Runnable() {
-            @Override
-            public void run() {
-                surfaceView.setVisibility(View.GONE);
-            }
-        });
-        surfaceView.post(new Runnable() {
-            @Override
-            public void run() {
-                surfaceView.setVisibility(View.VISIBLE);
-            }
-        });
         mPreviewScheduler.startPreview("CbEngineAdapter");
     }
 
@@ -261,8 +255,9 @@ public class CbEngineAdapter {
         int adaptiveBitrateEncoderReconfigInterval = 15 * 1000;
         int adaptiveBitrateWarCntThreshold = 10;
 
-        int width = 360;
-        int height = 640;
+        //  width 和 height 一定要是 2 的倍数，不然MediaCodec会崩溃
+        int width = mParams.getLocalVideoWidth();
+        int height = mParams.getLocalVideoHeight();
         int bitRateKbs = 900;
         int audioSampleRate = recordingStudio.getRecordSampleRate();
         // 必须先使用硬编码

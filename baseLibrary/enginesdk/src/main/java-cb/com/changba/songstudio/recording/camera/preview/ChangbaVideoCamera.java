@@ -3,6 +3,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import com.changba.songstudio.recording.camera.exception.CameraParamSettingException;
+import com.common.log.MyLog;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -50,6 +51,7 @@ public class ChangbaVideoCamera {
 	}
 
 	public CameraConfigInfo configCameraFromNative(int cameraFacingId) {
+		MyLog.d(TAG,"configCameraFromNative" + " cameraFacingId=" + cameraFacingId);
 		if (null != mCamera) {
 			releaseCamera();
 		}
@@ -123,6 +125,7 @@ public class ChangbaVideoCamera {
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public void releaseCamera() {
+		MyLog.d(TAG,"releaseCamera" );
 		try {
 			if (mCameraSurfaceTexture != null) {
 				// this causes a bunch of warnings that appear harmless but might
@@ -205,7 +208,9 @@ public class ChangbaVideoCamera {
 
 			int degress = getCameraDisplayOrientation((Activity) mContext, id);
 			int cameraFacing = getCameraFacing(id);
-			return new CameraConfigInfo(degress, previewWidth, previewHeight, cameraFacing);
+			CameraConfigInfo cameraConfigInfo = new CameraConfigInfo(degress, previewWidth, previewHeight, cameraFacing);
+			MyLog.d(TAG,"setUpCamera" + " 这里的参数会影响预览效果 cameraConfigInfo=" + cameraConfigInfo);
+			return cameraConfigInfo;
 		} catch (Exception e) {
 			throw new CameraParamSettingException(e.getMessage());
 		}
@@ -230,6 +235,7 @@ public class ChangbaVideoCamera {
 	}
 
 	private boolean isSupportPreviewSize(List<Size> supportedPreviewSizes, int previewWidth, int previewHeight) {
+		MyLog.d(TAG,"isSupportPreviewSize" + " supportedPreviewSizes=" + supportedPreviewSizes + " previewWidth=" + previewWidth + " previewHeight=" + previewHeight);
 		boolean isSupportPreviewSize = false;
 		for (Size size : supportedPreviewSizes) {
 			if (previewWidth == size.width && previewHeight == size.height) {
@@ -242,6 +248,7 @@ public class ChangbaVideoCamera {
 
 	/** A safe way to get an instance of the Camera object. */
 	private Camera getCameraInstance(final int id) throws CameraParamSettingException {
+		MyLog.d(TAG,"getCameraInstance" + " id=" + id);
 		Log.i("problem", "getCameraInstance id is" + id);
 		Camera c = null;
 		try {
@@ -253,6 +260,7 @@ public class ChangbaVideoCamera {
 	}
 
 	public static int getCameraFacing(final int cameraId) {
+		MyLog.d(TAG,"getCameraFacing" + " cameraId=" + cameraId);
 		int result;
 		CameraInfo info = new CameraInfo();
 		Camera.getCameraInfo(cameraId, info);
@@ -264,6 +272,7 @@ public class ChangbaVideoCamera {
 		return result;
 	}
 	public static int getCameraDisplayOrientation(final Activity activity, final int cameraId) {
+		MyLog.d(TAG,"getCameraDisplayOrientation" + " activity=" + activity + " cameraId=" + cameraId);
 		int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
 		int degrees = 0;
 		switch (rotation) {

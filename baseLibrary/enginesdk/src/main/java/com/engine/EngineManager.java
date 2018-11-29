@@ -12,6 +12,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
+import com.engine.agora.effect.EffectModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -79,7 +80,7 @@ public class EngineManager implements AgoraOutCallback {
         status.setFirstVideoDecoded(true);
         status.setFirstVideoWidth(width);
         status.setFirstVideoHeight(height);
-        tryBindRemoteViewAutoOnMainThread();
+        tryBindRemoteViewAutoOnMainThread("onFirstRemoteVideoDecoded");
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_VIDEO_DECODED, status));
     }
 
@@ -139,6 +140,7 @@ public class EngineManager implements AgoraOutCallback {
         destroy();
         mConfig = params;
         AgoraEngineAdapter.getInstance().init(mConfig);
+        CbEngineAdapter.getInstance().init(mConfig);
     }
 
     /**
@@ -149,6 +151,7 @@ public class EngineManager implements AgoraOutCallback {
         CbEngineAdapter.getInstance().destroy();
         mUserStatusMap.clear();
         mRemoteViewCache.clear();
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     /**
@@ -214,33 +217,61 @@ public class EngineManager implements AgoraOutCallback {
      * @param uid
      * @param view
      */
-    public void bindRemoteView(int uid, TextureView view) {
+    public void bindRemoteView(final int uid, final TextureView view) {
         MyLog.d(TAG, "bindRemoteView" + " uid=" + uid + " view=" + view);
         if (uid != 0) {
-            AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(uid, view);
-        } else {
-            mRemoteViewCache.add(view);
-            tryBindRemoteViewAutoOnMainThread();
-        }
-    }
-
-    public void bindRemoteView(int uid, SurfaceView view) {
-        if (uid != 0) {
-            UserStatus userStatus = mUserStatusMap.get(uid);
+            final UserStatus userStatus = mUserStatusMap.get(uid);
             if (userStatus != null) {
                 adjustViewWH2VideoWH(view, userStatus.getFirstVideoWidth(), userStatus.getFirstVideoHeight());
             }
-            AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(uid, view);
+            if (Looper.getMainLooper() == Looper.myLooper()) {
+                userStatus.setView(view);
+                AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(uid, view);
+            } else {
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        userStatus.setView(view);
+                        AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(uid, view);
+                    }
+                });
+            }
         } else {
             mRemoteViewCache.add(view);
-            tryBindRemoteViewAutoOnMainThread();
+            tryBindRemoteViewAutoOnMainThread("bindRemoteView");
+        }
+    }
+
+    public void bindRemoteView(final int uid, final SurfaceView view) {
+        MyLog.d(TAG, "bindRemoteView" + " uid=" + uid + " view=" + view);
+        if (uid != 0) {
+            final UserStatus userStatus = mUserStatusMap.get(uid);
+            if (userStatus != null) {
+                adjustViewWH2VideoWH(view, userStatus.getFirstVideoWidth(), userStatus.getFirstVideoHeight());
+            }
+            if (Looper.getMainLooper() == Looper.myLooper()) {
+                userStatus.setView(view);
+                AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(uid, view);
+            } else {
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        userStatus.setView(view);
+                        AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(uid, view);
+                    }
+                });
+            }
+        } else {
+            mRemoteViewCache.add(view);
+            tryBindRemoteViewAutoOnMainThread("bindRemoteView");
         }
     }
 
     /**
      * 尝试自动绑定视图
      */
-    private void tryBindRemoteViewAutoOnMainThread() {
+    private void tryBindRemoteViewAutoOnMainThread(String from) {
+        MyLog.d(TAG, "tryBindRemoteViewAutoOnMainThread" + " from=" + from);
         if (Looper.myLooper() == Looper.getMainLooper()) {
             tryBindRemoteViewAuto();
         } else {
@@ -296,11 +327,23 @@ public class EngineManager implements AgoraOutCallback {
      * @param height
      */
     private void adjustViewWH2VideoWH(View view, int width, int height) {
+        MyLog.d(TAG,"adjustViewWH2VideoWH" + " view=" + view + " width=" + width + " height=" + height);
         if (width != 0 && height != 0) {
             // 适应一下视频流的宽和高
             ViewGroup.LayoutParams lp = view.getLayoutParams();
             lp.width = width;
             lp.height = height;
         }
+    }
+
+    /**
+     * 播放音效
+     */
+    public void playEffects(EffectModel effectModel){
+        AgoraEngineAdapter.getInstance().playEffects(effectModel);
+    }
+
+    public List<EffectModel> getAllEffects() {
+        return AgoraEngineAdapter.getInstance().getAllEffects();
     }
 }

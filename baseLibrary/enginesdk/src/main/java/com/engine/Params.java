@@ -14,6 +14,8 @@ public class Params {
     // 是否使用唱吧的引擎
     private boolean useCbEngine = true;
     private boolean enableVideo = false;
+    private int localVideoWidth = 360; //本地视频的分辨率，会影响对端获取的流大小，确保是2的倍数
+    private int localVideoHeight = 640;
 
     public int getChannelProfile() {
         return channelProfile;
@@ -37,6 +39,22 @@ public class Params {
 
     public void setEnableVideo(boolean enableVideo) {
         this.enableVideo = enableVideo;
+    }
+
+    public int getLocalVideoWidth() {
+        return localVideoWidth;
+    }
+
+    public void setLocalVideoWidth(int localVideoWidth) {
+        this.localVideoWidth = localVideoWidth;
+    }
+
+    public int getLocalVideoHeight() {
+        return localVideoHeight;
+    }
+
+    public void setLocalVideoHeight(int localVideoHeight) {
+        this.localVideoHeight = localVideoHeight;
     }
 
     public static Params.Builder newBuilder(int channelProfile) {
@@ -63,6 +81,16 @@ public class Params {
             mParams.setEnableVideo(enableVideo);
             return this;
         }
+        public Builder setLocalVideoWidth(int localVideoWidth) {
+            mParams.setLocalVideoWidth(localVideoWidth);
+            return this;
+        }
+
+        public Builder setLocalVideoHeight(int localVideoHeight) {
+            mParams.setLocalVideoHeight(localVideoHeight);
+            return this;
+        }
+
 
         public Params build() {
             return mParams;

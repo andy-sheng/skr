@@ -74,11 +74,13 @@ if [[ $1 = "app" ]]; then
 		if [[ $3 = "all" ]];then
 		    echo "编译release所有渠道"
 		    ./gradlew :app:assembleRelease
-		    adb install -r app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
+		    	installApkForAllDevices app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
+                myandroidlog.sh  com.zq.live
 		else
 		    echo "只编译release default渠道"
 		    ./gradlew :app:assemblechannel_defaultRelease --stacktrace
-		    adb install -r app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
+		    	installApkForAllDevices app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
+                myandroidlog.sh  com.zq.live
 		fi
 	elif [[ $2 = "test" ]]; then
 	   echo "./gradlew :app:assemblechannel_testDebug"

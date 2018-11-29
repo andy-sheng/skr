@@ -48,7 +48,16 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/view_dimen_50"
-            android:text="开始采集编码" />
+            android:text="开始采集编码(针对唱吧引擎)" />
+
+        <com.common.view.ex.ExButton
+            android:id="@+id/play_effect_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/view_dimen_50"
+            android:text="播放音效" />
+
     </LinearLayout>
     <com.common.view.ex.ExTextView
         android:id="@+id/info_text"
