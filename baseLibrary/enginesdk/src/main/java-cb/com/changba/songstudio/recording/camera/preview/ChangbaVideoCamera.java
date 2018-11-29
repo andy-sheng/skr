@@ -78,7 +78,7 @@ public class ChangbaVideoCamera {
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void setCameraPreviewTexture(int textureId) {
-		Log.i(TAG, "setCameraPreviewTexture...");
+		Log.i(TAG, "setCameraPreviewTexture textureId="+textureId);
 		mCameraSurfaceTexture = new SurfaceTexture(textureId);
 		try {
 			mCamera.setPreviewTexture(mCameraSurfaceTexture);

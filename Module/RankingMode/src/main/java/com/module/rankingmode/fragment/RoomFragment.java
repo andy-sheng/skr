@@ -2,6 +2,7 @@ package com.module.rankingmode.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -34,13 +35,13 @@ public class RoomFragment extends BaseFragment {
     public final static String TAG = "RoomFragment";
 
     LinearLayout mOthersContainer;
-    ExButton mJoinRoomBtn;
     ExButton mModeSwitchBtn;
     SurfaceView mCameraSurfaceView;
     ExTextView mInfoTextView;
 
     String ROOM_ID = "chengsimin";
     boolean useChangbaEngine = true;
+    Handler mUiHandler = new Handler();
 
     @Override
     public int initView() {
@@ -51,33 +52,6 @@ public class RoomFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mOthersContainer = mRootView.findViewById(R.id.others_container);
         mModeSwitchBtn = mRootView.findViewById(R.id.mode_switch_btn);
-        mJoinRoomBtn = mRootView.findViewById(R.id.join_room_btn);
-        mJoinRoomBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (U.getPermissionUtils().checkCamera(getActivity())) {
-                    joinRoom();
-                } else {
-                    U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
-                        @Override
-                        public void onRequestPermissionSuccess() {
-                            joinRoom();
-                        }
-
-                        @Override
-                        public void onRequestPermissionFailure(List<String> permissions) {
-
-                        }
-
-                        @Override
-                        public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-
-                        }
-                    }, getActivity());
-                }
-            }
-        });
-
         mRootView.findViewById(R.id.send_msg_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,18 +75,11 @@ public class RoomFragment extends BaseFragment {
         });
 
         mInfoTextView = mRootView.findViewById(R.id.info_text);
-        RelativeLayout container = (RelativeLayout) mRootView;
-        mCameraSurfaceView = new SurfaceView(getContext());
-        container.addView(mCameraSurfaceView, 0
-                , new RelativeLayout.LayoutParams(360,640));
-
 
         EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                 .setUseCbEngine(true)
                 .setEnableVideo(true)
                 .build());
-
-        EngineManager.getInstance().startPreview(mCameraSurfaceView);
 
         mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,12 +98,64 @@ public class RoomFragment extends BaseFragment {
                     mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
                 }
                 EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
-                        .setUseCbEngine(false)
+                        .setUseCbEngine(useChangbaEngine)
                         .setEnableVideo(true)
                         .build());
-                EngineManager.getInstance().startPreview(mCameraSurfaceView);
+                if(useChangbaEngine){
+                    recreateCameraView();
+                    // 确保view已经真正add进去了
+                    mUiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            EngineManager.getInstance().startPreview(mCameraSurfaceView);
+                        }
+                    });
+
+                }else{
+                    recreateCameraView();
+                    mUiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            EngineManager.getInstance().startPreview(mCameraSurfaceView);
+                            // 不再次调用 join Agora 的preview 不生效
+                            EngineManager.getInstance().joinRoom(ROOM_ID, 0, true);
+                        }
+                    });
+                }
             }
         });
+
+        if (U.getPermissionUtils().checkCamera(getActivity())) {
+            joinRoom();
+        } else {
+            U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    joinRoom();
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+
+                }
+            }, getActivity());
+        }
+        if(useChangbaEngine){
+            recreateCameraView();
+            // 确保view已经真正add进去了
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    EngineManager.getInstance().startPreview(mCameraSurfaceView);
+                }
+            });
+        }
+
     }
 
     void joinRoom() {
@@ -154,18 +173,27 @@ public class RoomFragment extends BaseFragment {
         });
         // 加入引擎房间
         EngineManager.getInstance().joinRoom(ROOM_ID, 0, true);
+
+    }
+
+    private void recreateCameraView(){
+        RelativeLayout container = (RelativeLayout) mRootView;
+        if(mCameraSurfaceView!=null){
+            ((RelativeLayout) mRootView).removeView(mCameraSurfaceView);
+        }
+        mCameraSurfaceView = new SurfaceView(getContext());
+        container.addView(mCameraSurfaceView, 0
+                , new RelativeLayout.LayoutParams(360,640));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        EngineManager.getInstance().startPreview(mCameraSurfaceView);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        EngineManager.getInstance().stopPreview();
     }
 
     @Override

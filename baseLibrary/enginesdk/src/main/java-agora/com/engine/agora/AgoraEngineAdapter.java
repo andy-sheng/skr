@@ -61,7 +61,15 @@ public class AgoraEngineAdapter {
         public void onUserJoined(final int uid, int elapsed) {
             super.onUserJoined(uid, elapsed);
             if (mOutCallback != null) {
-                mOutCallback.onUserJoined(uid,elapsed);
+                mOutCallback.onUserJoined(uid, elapsed);
+            }
+        }
+
+        @Override
+        public void onUserMuteAudio(int uid, boolean muted) {
+            super.onUserMuteAudio(uid, muted);
+            if (mOutCallback != null) {
+                mOutCallback.onUserMuteAudio(uid, muted);
             }
         }
 
@@ -69,32 +77,75 @@ public class AgoraEngineAdapter {
         public void onUserOffline(final int uid, int reason) {
             super.onUserOffline(uid, reason);
             if (mOutCallback != null) {
-                mOutCallback.onUserOffline(uid,reason);
-            }
-        }
-
-        @Override
-        public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
-            // 一般可以在这里绑定视图
-            if (mOutCallback != null) {
-                mOutCallback.onFirstRemoteVideoDecoded(uid,width,height,elapsed);
+                mOutCallback.onUserOffline(uid, reason);
             }
         }
 
         @Override
         public void onUserMuteVideo(final int uid, final boolean muted) { // Tutorial Step 10
+            super.onUserMuteVideo(uid, muted);
             if (mOutCallback != null) {
-                mOutCallback.onUserMuteVideo(uid,muted);
+                mOutCallback.onUserMuteVideo(uid, muted);
+            }
+        }
+
+        @Override
+        public void onUserEnableVideo(int uid, boolean enabled) {
+            super.onUserEnableVideo(uid, enabled);
+            if (mOutCallback != null) {
+                mOutCallback.onUserEnableVideo(uid,enabled);
+            }
+        }
+
+        @Override
+        public void onVideoSizeChanged(int uid, int width, int height, int rotation) {
+            super.onVideoSizeChanged(uid, width, height, rotation);
+            if (mOutCallback != null) {
+                mOutCallback.onVideoSizeChanged(uid, width, height, rotation);
+            }
+        }
+
+        @Override
+        public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
+            super.onRejoinChannelSuccess(channel, uid, elapsed);
+            if (mOutCallback != null) {
+                mOutCallback.onRejoinChannelSuccess(channel, uid, elapsed);
             }
         }
 
         @Override
         public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
             super.onJoinChannelSuccess(channel, uid, elapsed);
-            if(mOutCallback!=null){
-                mOutCallback.onJoinChannelSuccess(channel,uid,elapsed);
+            if (mOutCallback != null) {
+                mOutCallback.onJoinChannelSuccess(channel, uid, elapsed);
             }
         }
+
+        @Override
+        public void onLeaveChannel(RtcStats stats) {
+            super.onLeaveChannel(stats);
+            if (mOutCallback != null) {
+                mOutCallback.onLeaveChannel(stats);
+            }
+        }
+
+        @Override
+        public void onClientRoleChanged(int oldRole, int newRole) {
+            super.onClientRoleChanged(oldRole, newRole);
+            if (mOutCallback != null) {
+                mOutCallback.onClientRoleChanged(oldRole, newRole);
+            }
+        }
+
+        @Override
+        public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
+            super.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
+            // 一般可以在这里绑定视图
+            if (mOutCallback != null) {
+                mOutCallback.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
+            }
+        }
+
     };
 
     public void setOutCallback(AgoraOutCallback outCallback) {
@@ -117,14 +168,14 @@ public class AgoraEngineAdapter {
                         // 模式为广播
                         mRtcEngine.setChannelProfile(mConfig.getChannelProfile());
 
-                        if(mConfig.isEnableVideo()) {
+                        if (mConfig.isEnableVideo()) {
                             // 开启视频
                             mRtcEngine.enableVideo();
                         }
 
                         // 开关视频双流模式。
                         mRtcEngine.enableDualStreamMode(true);
-                        if(mConfig.isUseCbEngine()) {
+                        if (mConfig.isUseCbEngine()) {
                             // 音视频自采集
                             mRtcEngine.setExternalAudioSource(
                                     true,      // 开启外部音频源
@@ -152,6 +203,9 @@ public class AgoraEngineAdapter {
      * 销毁
      */
     public void destroy() {
+        if (mRtcEngine != null) {
+            mRtcEngine.stopPreview();
+        }
         if (mRtcEngine != null) {
             mRtcEngine.leaveChannel();
         }
@@ -193,9 +247,9 @@ public class AgoraEngineAdapter {
 
     public void setClientRole(boolean isAnchor) {
         tryInitRtcEngine();
-        if(isAnchor) {
+        if (isAnchor) {
             mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
-        }else{
+        } else {
             mRtcEngine.setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
         }
     }
@@ -210,9 +264,8 @@ public class AgoraEngineAdapter {
      */
     public void joinChannel(String token, String channelId, String extra, int uid) {
         tryInitRtcEngine();
-        MyLog.d(TAG,"joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
+        MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
-        mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
         mRtcEngine.joinChannel(token, channelId, extra, uid);
     }
 
@@ -266,28 +319,29 @@ public class AgoraEngineAdapter {
         mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, 0));
     }
 
-    private SurfaceView tryReplcaceSurfaceView(SurfaceView surfaceView){
+    private SurfaceView tryReplcaceSurfaceView(SurfaceView surfaceView) {
         if (ViEAndroidGLES20.IsSupported(surfaceView.getContext())) {
-            MyLog.w(TAG,"ViEAndroidGLES20.IsSupported=true,Replcace SurfaceView Now");
+            MyLog.w(TAG, "ViEAndroidGLES20.IsSupported=true,Replcace SurfaceView Now");
             // 如果支持，尝试替换掉现有的Surfaceview，因为这个性能更好
             ViewGroup parentView = (ViewGroup) surfaceView.getParent();
-            if(parentView!=null){
+            if (parentView != null) {
                 ViEAndroidGLES20 newSurfaceView = new ViEAndroidGLES20(surfaceView.getContext());
                 int index = parentView.indexOfChild(surfaceView);
                 ViewGroup.LayoutParams layoutParams = surfaceView.getLayoutParams();
                 try {
-                    int mSubLayer = (int) U.getReflectUtils().readField(surfaceView,"mSubLayer");
-                    U.getReflectUtils().writeField(newSurfaceView,"mSubLayer",mSubLayer);
+                    int mSubLayer = (int) U.getReflectUtils().readField(surfaceView, "mSubLayer");
+                    U.getReflectUtils().writeField(newSurfaceView, "mSubLayer", mSubLayer);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 parentView.removeView(surfaceView);
-                parentView.addView(newSurfaceView,index,layoutParams);
+                parentView.addView(newSurfaceView, index, layoutParams);
                 return newSurfaceView;
             }
         }
         return surfaceView;
     }
+
     /**
      * 绑定远端视图
      * 如果uid传的是非法值，则会缓存view
@@ -299,7 +353,7 @@ public class AgoraEngineAdapter {
      * @param uid
      */
     public void setRemoteVideoRenderer(int uid, SurfaceView surfaceView) {
-        MyLog.d(TAG,"setRemoteVideoRenderer" + " uid=" + uid + " surfaceView=" + surfaceView);
+        MyLog.d(TAG, "setRemoteVideoRenderer" + " uid=" + uid + " surfaceView=" + surfaceView);
         tryInitRtcEngine();
 
         surfaceView = tryReplcaceSurfaceView(surfaceView);
@@ -330,6 +384,9 @@ public class AgoraEngineAdapter {
      * @return
      */
     public int pushExternalAudioFrame(byte[] data, long ts) {
+        if(!mConfig.isUseCbEngine()){
+            throw new IllegalStateException("usecbengine flag is false");
+        }
         tryInitRtcEngine();
         if (mRtcEngine != null) {
             int pushState = mRtcEngine.pushExternalAudioFrame(data, ts);
@@ -344,6 +401,9 @@ public class AgoraEngineAdapter {
      * @param textureId
      */
     public final void pushExternalVideoFrame(int textureId) {
+        if(!mConfig.isUseCbEngine()){
+            throw new IllegalStateException("usecbengine flag is false");
+        }
         tryInitRtcEngine();
         if (mRtcEngine != null) {
             EGLContext context = ((EGL10) EGLContext.getEGL()).eglGetCurrentContext();
@@ -364,7 +424,7 @@ public class AgoraEngineAdapter {
             vf.eglContext11 = context;
             vf.transform = UNIQUE_MAT;
             boolean pushState = mRtcEngine.pushExternalVideoFrame(vf);
-            MyLog.d(TAG,"pushExternalVideoFrame" + " textureId=" + textureId+" pushState:"+pushState);
+            MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + textureId + " pushState:" + pushState);
         }
     }
 

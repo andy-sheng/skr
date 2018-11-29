@@ -1,6 +1,5 @@
 package com.changba.songstudio.recording.camera.preview;
 
-import android.content.Context;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -12,17 +11,18 @@ public class ChangbaRecordingPreviewView implements Callback {
     private static final String TAG = "ChangbaRecordingPreviewView";
 
     private SurfaceView mSurfaceView;
+    private SurfaceHolder mSurfaceHolder;
 
     public ChangbaRecordingPreviewView(SurfaceView surfaceView) {
         mSurfaceView = surfaceView;
-        SurfaceHolder surfaceHolder = mSurfaceView.getHolder();
-        surfaceHolder.addCallback(this);
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        mSurfaceHolder = mSurfaceView.getHolder();
+        mSurfaceHolder.addCallback(this);
+        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        MyLog.d(TAG,"surfaceCreated" + " holder=" + holder);
+        MyLog.d(TAG, "surfaceCreated" + " holder=" + holder);
 
         Surface surface = holder.getSurface();
         int width = mSurfaceView.getWidth();
@@ -35,7 +35,7 @@ public class ChangbaRecordingPreviewView implements Callback {
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
-        MyLog.d(TAG,"surfaceChanged" + " holder=" + holder + " format=" + format + " width=" + width + " height=" + height);
+        MyLog.d(TAG, "surfaceChanged" + " holder=" + holder + " format=" + format + " width=" + width + " height=" + height);
         if (null != mCallback) {
             mCallback.resetRenderSize(width, height);
         }
@@ -43,7 +43,7 @@ public class ChangbaRecordingPreviewView implements Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        MyLog.d(TAG,"surfaceDestroyed" + " holder=" + holder);
+        MyLog.d(TAG, "surfaceDestroyed" + " holder=" + holder);
         if (null != mCallback) {
             mCallback.destroySurface();
         }

@@ -4,7 +4,6 @@ import android.content.res.AssetManager;
 import android.hardware.Camera.CameraInfo;
 import android.util.Log;
 import android.view.Surface;
-import android.view.SurfaceHolder;
 
 import com.changba.songstudio.recording.camera.preview.ChangbaRecordingPreviewView.ChangbaRecordingPreviewViewCallback;
 import com.changba.songstudio.recording.camera.preview.ChangbaVideoCamera.ChangbaVideoCameraCallback;
@@ -16,14 +15,17 @@ public class ChangbaRecordingPreviewScheduler
     private static final String TAG = "ChangbaRecordingPreviewScheduler";
     private ChangbaRecordingPreviewView mPreviewView;
     private ChangbaVideoCamera mCamera;
-
     private int defaultCameraFacingId = CameraInfo.CAMERA_FACING_FRONT;
-
     // 是否是首次，确定是否创建 EGLContext
-    private boolean mIsFirst = true;
+    private boolean hasPrepareEglFlag = false;
+    private boolean hasCreateSurfaceWindow = false;
 
+    // encoder
+    protected MediaCodecSurfaceEncoder mSurfaceEncoder;
+    private Surface mNativeSurface = null;
     // 是否在 stop状态
-    private boolean mIsStopped = false;
+    private Surface mJavaSurface;
+    private int width, height;
 
 
     public ChangbaRecordingPreviewScheduler(ChangbaRecordingPreviewView previewView, ChangbaVideoCamera camera) {
@@ -34,7 +36,6 @@ public class ChangbaRecordingPreviewScheduler
     }
 
     public void resetStopState() {
-        mIsStopped = false;
     }
 
     public int getNumberOfCameras() {
@@ -64,35 +65,44 @@ public class ChangbaRecordingPreviewScheduler
 
     @Override
     public void createSurface(Surface surface, int width, int height) {
-        MyLog.d(TAG, "createSurface" + " surface=" + surface + " width=" + width + " height=" + height);
         // width height 为 SurfaceView 的宽高
-        startPreview(surface, width, height, defaultCameraFacingId);
+        this.mJavaSurface = surface;
+        this.width = width;
+        this.height = height;
+        startPreview("createSurface");
     }
 
-    private void startPreview(Surface surface, int width, int height, final int cameraFacingId) {
-        if (mIsFirst) {
-            prepareEGLContext(surface, width, height, cameraFacingId);
-            mIsFirst = false;
-        } else {
-            createWindowSurface(surface);
+    public void startPreview(String from) {
+        MyLog.d(TAG, "startPreview from:" + from + " mJavaSurface:" + mJavaSurface +" hasPrepareEglFlag:"+hasPrepareEglFlag);
+        if (mJavaSurface != null) {
+            if (!hasPrepareEglFlag) {
+                prepareEGLContext(mJavaSurface, width, height, defaultCameraFacingId);
+                hasPrepareEglFlag = true;
+            } else {
+                createWindowSurface(mJavaSurface);
+                hasCreateSurfaceWindow = true;
+            }
         }
-    }
-
-    public void startPreview() {
-
-    }
-
-    /**
-     * 仅仅是停止预览
-     */
-    public void stop() {
-        this.stopEncoding();
-        mIsStopped = true;
     }
 
     @Override
     public void destroySurface() {
-        this.destroyWindowSurface();
+        MyLog.d(TAG,"destroySurface" );
+        if (hasPrepareEglFlag) {
+            this.destroyEGLContext();
+            hasPrepareEglFlag = false;
+        }
+        if (hasCreateSurfaceWindow) {
+            this.destroyWindowSurface();
+            hasCreateSurfaceWindow = false;
+        }
+        mJavaSurface = null;
+    }
+
+    public void stop() {
+        MyLog.d(TAG,"stop" );
+        // 会触发 destroySurface 回调
+        this.stopEncoding();
     }
 
     @Override
@@ -136,15 +146,10 @@ public class ChangbaRecordingPreviewScheduler
         Log.d("problem", "onMemoryWarning called");
     }
 
-    // encoder
-    protected MediaCodecSurfaceEncoder surfaceEncoder;
-    Surface surface = null;
-
     public void createMediaCodecSurfaceEncoderFromNative(int width, int height, int bitRate, int frameRate) {
-        MyLog.d(TAG,"createMediaCodecSurfaceEncoderFromNative" + " width=" + width + " height=" + height + " bitRate=" + bitRate + " frameRate=" + frameRate);
         try {
-            surfaceEncoder = new MediaCodecSurfaceEncoder(width, height, bitRate, frameRate);
-            surface = surfaceEncoder.getInputSurface();
+            mSurfaceEncoder = new MediaCodecSurfaceEncoder(width, height, bitRate, frameRate);
+            mNativeSurface = mSurfaceEncoder.getInputSurface();
         } catch (Exception e) {
             Log.e("problem", "createMediaCodecSurfaceEncoder failed");
         }
@@ -152,9 +157,9 @@ public class ChangbaRecordingPreviewScheduler
 
     public void hotConfigEncoderFromNative(int width, int height, int bitRate, int fps) {
         try {
-            if (surfaceEncoder != null) {
-                surfaceEncoder.hotConfig(width, height, bitRate, fps);
-                surface = surfaceEncoder.getInputSurface();
+            if (mSurfaceEncoder != null) {
+                mSurfaceEncoder.hotConfig(width, height, bitRate, fps);
+                mNativeSurface = mSurfaceEncoder.getInputSurface();
             }
         } catch (Exception e) {
             Log.e("problem", "hotConfigMediaCodecSurfaceEncoder failed");
@@ -162,7 +167,7 @@ public class ChangbaRecordingPreviewScheduler
     }
 
     public long pullH264StreamFromDrainEncoderFromNative(byte[] returnedData) {
-        return surfaceEncoder.pullH264StreamFromDrainEncoderFromNative(returnedData);
+        return mSurfaceEncoder.pullH264StreamFromDrainEncoderFromNative(returnedData);
     }
 
     /**
@@ -173,26 +178,26 @@ public class ChangbaRecordingPreviewScheduler
     public void pushToRTCService(int textureId) {
         //DO Something
 //        Log.e(TAG, "pushToRTCService " + textureId);
-        surfaceEncoder.pushToRTCService(textureId);
+        mSurfaceEncoder.pushToRTCService(textureId);
     }
 
     public long getLastPresentationTimeUsFromNative() {
-        return surfaceEncoder.getLastPresentationTimeUs();
+        return mSurfaceEncoder.getLastPresentationTimeUs();
     }
 
     public Surface getEncodeSurfaceFromNative() {
-        return surface;
+        return mNativeSurface;
     }
 
     public void reConfigureFromNative(int targetBitrate) {
-        if (null != surfaceEncoder) {
-            surfaceEncoder.reConfigureFromNative(targetBitrate);
+        if (null != mSurfaceEncoder) {
+            mSurfaceEncoder.reConfigureFromNative(targetBitrate);
         }
     }
 
     public void closeMediaCodecCalledFromNative() {
-        if (null != surfaceEncoder) {
-            surfaceEncoder.shutdown();
+        if (null != mSurfaceEncoder) {
+            mSurfaceEncoder.shutdown();
         }
     }
 
@@ -243,4 +248,5 @@ public class ChangbaRecordingPreviewScheduler
     public native void hotConfig(int bitRate, int fps, int gopSize);
 
     public native void setBeautifyParam(int key, float value);
+
 }

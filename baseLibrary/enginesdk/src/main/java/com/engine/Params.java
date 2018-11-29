@@ -8,7 +8,7 @@ import io.agora.rtc.Constants;
  */
 public class Params {
     public static final int CHANNEL_TYPE_COMMUNICATION = Constants.CHANNEL_PROFILE_COMMUNICATION;
-    public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_COMMUNICATION;
+    public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
     private int channelProfile = CHANNEL_TYPE_LIVE_BROADCASTING;
     // 是否使用唱吧的引擎

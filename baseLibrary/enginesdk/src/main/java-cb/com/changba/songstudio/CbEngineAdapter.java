@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.changba.songstudio.recording.RecordingImplType;
 import com.changba.songstudio.recording.camera.preview.ChangbaRecordingPreviewScheduler;
@@ -221,9 +222,21 @@ public class CbEngineAdapter {
      *
      * @param surfaceView
      */
-    public void startPreview(SurfaceView surfaceView) {
+    public void startPreview(final SurfaceView surfaceView) {
         tryInitPreview(surfaceView);
-        mPreviewScheduler.startPreview();
+        surfaceView.post(new Runnable() {
+            @Override
+            public void run() {
+                surfaceView.setVisibility(View.GONE);
+            }
+        });
+        surfaceView.post(new Runnable() {
+            @Override
+            public void run() {
+                surfaceView.setVisibility(View.VISIBLE);
+            }
+        });
+        mPreviewScheduler.startPreview("CbEngineAdapter");
     }
 
 
@@ -240,7 +253,7 @@ public class CbEngineAdapter {
      * 开始采集视频流
      */
     public void startRecord() {
-        if(mPreviewScheduler==null){
+        if (mPreviewScheduler == null) {
             throw new IllegalStateException("必须设置一个视频输入源");
         }
         tryInitRecording();

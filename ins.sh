@@ -41,6 +41,7 @@ installApkForAllDevices(){
     	echo "安装 $1 到 ${data}"
     	echo "adb -s ${data} install -r $1"
     	adb -s ${data} install -r $1
+    	adb -s ${data} shell am start -n com.zq.live/com.wali.live.moduletest.activity.TestSdkActivity
 	done  
 }
 

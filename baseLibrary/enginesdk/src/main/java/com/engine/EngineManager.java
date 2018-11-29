@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.changba.songstudio.CbEngineAdapter;
 import com.common.log.MyLog;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import io.agora.rtc.IRtcEngineEventHandler;
 
 /**
  * 关于音视频引擎的都放在这个类里
@@ -53,12 +56,29 @@ public class EngineManager implements AgoraOutCallback {
     public void onUserMuteVideo(int uid, boolean muted) {
         UserStatus status = ensureJoin(uid);
         status.setVideoMute(muted);
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_VIDEO, status));
+    }
+
+    @Override
+    public void onUserMuteAudio(int uid, boolean muted) {
+        UserStatus status = ensureJoin(uid);
+        status.setAudioMute(muted);
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
+    }
+
+    @Override
+    public void onUserEnableVideo(int uid, boolean enabled) {
+        UserStatus status = ensureJoin(uid);
+        status.setEnableVideo(enabled);
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_VIDEO_ENABLE, status));
     }
 
     @Override
     public void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapsed) {
         UserStatus status = ensureJoin(uid);
         status.setFirstVideoDecoded(true);
+        status.setFirstVideoWidth(width);
+        status.setFirstVideoHeight(height);
         tryBindRemoteViewAutoOnMainThread();
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_FIRST_VIDEO_DECODED, status));
     }
@@ -68,6 +88,28 @@ public class EngineManager implements AgoraOutCallback {
         UserStatus userStatus = ensureJoin(uid);
         userStatus.setIsSelf(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
+    }
+
+    @Override
+    public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
+        UserStatus userStatus = ensureJoin(uid);
+        userStatus.setIsSelf(true);
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_REJOIN, userStatus));
+    }
+
+    @Override
+    public void onLeaveChannel(IRtcEngineEventHandler.RtcStats stats) {
+
+    }
+
+    @Override
+    public void onClientRoleChanged(int oldRole, int newRole) {
+        // 只有切换时才会触发
+    }
+
+    @Override
+    public void onVideoSizeChanged(int uid, int width, int height, int rotation) {
+
     }
 
     private UserStatus ensureJoin(int uid) {
@@ -116,7 +158,8 @@ public class EngineManager implements AgoraOutCallback {
     public void startPreview(SurfaceView surfaceView) {
         if (mConfig.isUseCbEngine()) {
             CbEngineAdapter.getInstance().startPreview(surfaceView);
-        }else{
+        } else {
+            // agora引擎好像加入房间后，预览才有效果
             AgoraEngineAdapter.getInstance().setLocalVideoRenderer(surfaceView);
             AgoraEngineAdapter.getInstance().startPreview();
         }
@@ -128,7 +171,7 @@ public class EngineManager implements AgoraOutCallback {
     public void stopPreview() {
         if (mConfig.isUseCbEngine()) {
             CbEngineAdapter.getInstance().stopPreview();
-        }else{
+        } else {
             AgoraEngineAdapter.getInstance().stopPreview();
         }
     }
@@ -136,8 +179,8 @@ public class EngineManager implements AgoraOutCallback {
     public void startRecord() {
         if (mConfig.isUseCbEngine()) {
             CbEngineAdapter.getInstance().startRecord();
-        }else{
-
+        } else {
+            U.getToastUtil().showShort("mConfig.isUseCbEngine is false ，cancel");
         }
     }
 
@@ -172,7 +215,7 @@ public class EngineManager implements AgoraOutCallback {
      * @param view
      */
     public void bindRemoteView(int uid, TextureView view) {
-        MyLog.d(TAG,"bindRemoteView" + " uid=" + uid + " view=" + view);
+        MyLog.d(TAG, "bindRemoteView" + " uid=" + uid + " view=" + view);
         if (uid != 0) {
             AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(uid, view);
         } else {
@@ -183,6 +226,10 @@ public class EngineManager implements AgoraOutCallback {
 
     public void bindRemoteView(int uid, SurfaceView view) {
         if (uid != 0) {
+            UserStatus userStatus = mUserStatusMap.get(uid);
+            if (userStatus != null) {
+                adjustViewWH2VideoWH(view, userStatus.getFirstVideoWidth(), userStatus.getFirstVideoHeight());
+            }
             AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(uid, view);
         } else {
             mRemoteViewCache.add(view);
@@ -194,9 +241,9 @@ public class EngineManager implements AgoraOutCallback {
      * 尝试自动绑定视图
      */
     private void tryBindRemoteViewAutoOnMainThread() {
-        if(Looper.myLooper() == Looper.getMainLooper()){
+        if (Looper.myLooper() == Looper.getMainLooper()) {
             tryBindRemoteViewAuto();
-        }else{
+        } else {
             mUiHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -208,7 +255,7 @@ public class EngineManager implements AgoraOutCallback {
         return;
     }
 
-    private void tryBindRemoteViewAuto(){
+    private void tryBindRemoteViewAuto() {
         // 判断当前有没有未绑定的
         List<View> canRemoveViews = new ArrayList<>();
         for (View view : mRemoteViewCache) {
@@ -223,11 +270,13 @@ public class EngineManager implements AgoraOutCallback {
                     if (view instanceof TextureView) {
                         canRemoveViews.add(view);
                         userStatus.setView(view);
+                        adjustViewWH2VideoWH(view, userStatus.getFirstVideoWidth(), userStatus.getFirstVideoHeight());
                         AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(userStatus.getUserId(), (TextureView) view);
                         break;
                     } else if (view instanceof SurfaceView) {
-                        userStatus.setView(view);
                         canRemoveViews.add(view);
+                        userStatus.setView(view);
+                        adjustViewWH2VideoWH(view, userStatus.getFirstVideoWidth(), userStatus.getFirstVideoHeight());
                         AgoraEngineAdapter.getInstance().setRemoteVideoRenderer(userStatus.getUserId(), (SurfaceView) view);
                         break;
                     }
@@ -236,6 +285,22 @@ public class EngineManager implements AgoraOutCallback {
         }
         for (View view : canRemoveViews) {
             mRemoteViewCache.remove(view);
+        }
+    }
+
+    /**
+     * 矫正view的宽高和视频一致
+     *
+     * @param view
+     * @param width
+     * @param height
+     */
+    private void adjustViewWH2VideoWH(View view, int width, int height) {
+        if (width != 0 && height != 0) {
+            // 适应一下视频流的宽和高
+            ViewGroup.LayoutParams lp = view.getLayoutParams();
+            lp.width = width;
+            lp.height = height;
         }
     }
 }
