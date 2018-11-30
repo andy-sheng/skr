@@ -49,12 +49,21 @@ public class AppInfoUtils {
             return mainFile;
         }
         if (U.getDeviceUtils().existSDCard()) {
-            return new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE");
+            mainFile = new File(Environment.getExternalStorageDirectory(), "ZQ_LIVE");
+            return mainFile;
         } else {
             return U.app().getFilesDir();
         }
     }
 
+    /**
+     * 返回 类似 /ZQ_Live/logs/
+     * @param dirName
+     * @return
+     */
+    public String getSubDirPath(String dirName){
+        return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator;
+    }
     /**
      * 获取应用程序名称
      * 如 直播助手

@@ -190,6 +190,7 @@ public class AgoraEngineAdapter {
                 try {
                     if (mRtcEngine == null) {
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
+                        mRtcEngine.setLogFile(U.getAppInfoUtils().getSubDirPath("logs")+"agorasdk.log");
                         // 模式为广播,必须在加入频道前调用
                         // 如果想要切换模式，则需要先调用 destroy 销毁当前引擎，然后使用 create 创建一个新的引擎后，再调用该方法设置新的频道模式
                         mRtcEngine.setChannelProfile(mConfig.getChannelProfile());
@@ -203,6 +204,9 @@ public class AgoraEngineAdapter {
         }
     }
 
+    /**
+     * 初始化参数
+     */
     private void initRtcEngineInner() {
         if (mConfig.isEnableAudio()) {
             //该方法需要在 joinChannel 之前设置好，joinChannel 后设置不生效。
@@ -334,18 +338,32 @@ public class AgoraEngineAdapter {
      * 调用 setupLocalVideo 设置预览窗口及属性。
      */
     public void startPreview() {
-        if (mRtcEngine != null) {
             mRtcEngine.startPreview();
-        }
     }
 
     /**
      * 关闭预览
      */
     public void stopPreview() {
-        if (mRtcEngine != null) {
             mRtcEngine.stopPreview();
-        }
+    }
+
+    /**
+     * 该方法设置本地视频镜像，须在开启本地预览前设置。如果在开启预览后设置，需要重新开启预览才能生效
+     *
+     * @param mode 0：默认镜像模式，即由 SDK 决定镜像模式
+     *             1：启用镜像模式
+     *             2：关闭镜像模式
+     */
+    public void setLocalVideoMirrorMode(int mode) {
+        mRtcEngine.setLocalVideoMirrorMode(mode);
+    }
+
+    /**
+     * 切换前/后摄像头
+     */
+    public void switchCamera(){
+        mRtcEngine.switchCamera();
     }
 
     /**
@@ -481,7 +499,8 @@ public class AgoraEngineAdapter {
     }
 
     /**
-     * 你不想看其他人的了，其他人还想互相看
+     * 你不想看其他人的了，但其他人还能互相看
+     *
      * @param muted
      */
     public void muteAllRemoteVideoStreams(boolean muted) {
@@ -578,7 +597,165 @@ public class AgoraEngineAdapter {
         mRtcEngine.enableAudioVolumeIndication(interval, smooth);
     }
 
+    /**
+     * 启用/关闭扬声器播放。 该方法设置是否将语音路由设到扬声器（外放）。 你可以在 setDefaultAudioRouteToSpeakerphone 方法中查看默认的语音路由。
+     * <p>
+     * 参数
+     * enabled	是否将音频路由到外放：
+     * true：切换到外放
+     * false：切换到听筒
+     * 注解
+     * 请确保在调用此方法前已调用过 joinChannel 方法。
+     * 调用该方法后，SDK 将返回 onAudioRouteChanged 回调提示状态已更改。
+     * 使用耳机的时候调用该方法不会生效。
+     * 直播模式下默认是外放
+     *
+     * @param fromSpeaker
+     */
+    public void setEnableSpeakerphone(boolean fromSpeaker) {
+        mRtcEngine.setEnableSpeakerphone(fromSpeaker);
+    }
+
+    /**
+     * 是否是扬声器播放
+     *
+     * @return
+     */
+    public boolean isSpeakerphoneEnabled() {
+        return mRtcEngine.isSpeakerphoneEnabled();
+    }
+
+    /**
+     * 开启或者关闭🎧耳返
+     * 默认关闭
+     */
+    public void enableInEarMonitoring(boolean enable) {
+        mRtcEngine.enableInEarMonitoring(enable);
+    }
+
+    /**
+     * 设定耳返音量
+     *
+     * @param volume 默认100
+     */
+    public void setInEarMonitoringVolume(int volume) {
+        mRtcEngine.setInEarMonitoringVolume(volume);
+    }
+
     /*音频基础结束*/
+
+    /*音频高级扩展开始*/
+
+    /**
+     * 设置本地语音音调。
+     * <p>
+     * 该方法改变本地说话人声音的音调。
+     * 可以在 [0.5, 2.0] 范围内设置。取值越小，则音调越低。默认值为 1.0，表示不需要修改音调。
+     *
+     * @param pitch
+     */
+    public void setLocalVoicePitch(double pitch) {
+        mRtcEngine.setLocalVoicePitch(pitch);
+    }
+
+    /**
+     * 设置本地语音音效均衡
+     *
+     * @param bandFrequency 频谱子带索引，取值范围是 [0-9]，分别代表 10 个频带，对应的中心频率是 [31，62，125，250，500，1k，2k，4k，8k，16k] Hz
+     * @param bandGain      每个 band 的增益，单位是 dB，每一个值的范围是 [-15，15]，默认值为 0
+     */
+    public void setLocalVoiceEqualization(int bandFrequency, int bandGain) {
+        mRtcEngine.setLocalVoiceEqualization(bandFrequency, bandGain);
+    }
+
+    /**
+     * 设置本地音效混响。
+     *
+     * @param reverbKey 混响音效 Key。该方法共有 5 个混响音效 Key，分别如 value 栏列出。
+     * @param value     AUDIO_REVERB_DRY_LEVEL(0)：原始声音强度，即所谓的 dry signal，取值范围 [-20, 10]，单位为 dB
+     *                  AUDIO_REVERB_WET_LEVEL(1)：早期反射信号强度，即所谓的 wet signal，取值范围 [-20, 10]，单位为 dB
+     *                  AUDIO_REVERB_ROOM_SIZE(2)：所需混响效果的房间尺寸，一般房间越大，混响越强，取值范围 [0, 100]，单位为 dB
+     *                  AUDIO_REVERB_WET_DELAY(3)：Wet signal 的初始延迟长度，取值范围 [0, 200]，单位为毫秒
+     *                  AUDIO_REVERB_STRENGTH(4)：混响持续的强度，取值范围为 [0, 100]
+     */
+    public void setLocalVoiceReverb(int reverbKey, int value) {
+        mRtcEngine.setLocalVoiceReverb(reverbKey, value);
+    }
+
+    /**
+     * 开始播放音乐文件及混音。
+     * 播放伴奏结束后，会收到 onAudioMixingFinished 回调
+     *
+     * @param filePath 指定需要混音的本地或在线音频文件的绝对路径。支持d的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv、wav 及 flac。详见 Supported Media Formats。
+     *                 如果用户提供的目录以 /assets/ 开头，则去 assets 里面查找该文件
+     *                 如果用户提供的目录不是以 /assets/ 开头，一律认为是在绝对路径里查找该文件
+     * @param loopback true：只有本地可以听到混音或替换后的音频流
+     *                 false：本地和对方都可以听到混音或替换后的音频流
+     * @param replace  true：只推动设置的本地音频文件或者线上音频文件，不传输麦克风收录的音频
+     *                 false：音频文件内容将会和麦克风采集的音频流进行混音
+     * @param cycle    指定音频文件循环播放的次数：
+     *                 正整数：循环的次数
+     *                 -1：无限循环
+     */
+    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
+        mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
+    }
+
+    /**
+     * 停止播放音乐文件及混音。
+     * 请在频道内调用该方法。
+     */
+    public void stopAudioMixing() {
+        mRtcEngine.stopAudioMixing();
+    }
+
+    /**
+     * 暂停播放音乐文件及混音
+     */
+    public void pauseAudioMixing() {
+        mRtcEngine.pauseAudioMixing();
+    }
+
+    /**
+     * 继续播放混音
+     */
+    public void resumeAudioMixing() {
+        mRtcEngine.resumeAudioMixing();
+    }
+
+    /**
+     * 调节混音音量大小
+     *
+     * @param volume 1-100 默认100
+     */
+    public void adjustAudioMixingVolume(int volume) {
+        mRtcEngine.adjustAudioMixingVolume(volume);
+    }
+
+    /**
+     * @return 获取伴奏时长，单位ms
+     */
+    public int getAudioMixingDuration() {
+        return mRtcEngine.getAudioMixingDuration();
+    }
+
+    /**
+     * @return 获取混音当前播放位置 ms
+     */
+    public int getAudioMixingCurrentPosition() {
+        return mRtcEngine.getAudioMixingCurrentPosition();
+    }
+
+    /**
+     * 拖动混音进度条
+     *
+     * @param posMs
+     */
+    public void setAudioMixingPosition(int posMs) {
+        mRtcEngine.setAudioMixingPosition(posMs);
+    }
+
+    /*音频高级扩展结束*/
 
     /*音频特效相关开始*/
     public List<EffectModel> getAllEffects() {
@@ -690,4 +867,50 @@ public class AgoraEngineAdapter {
         }
     }
     /*自定义推流流相关结束*/
+
+    /*其他高级选项开始*/
+
+    /**
+     * 添加水印
+     * 发布或者订阅的音视频流回退选项的设定
+     * 设置接受大流还是小流
+     * 导入在线流媒体流
+     */
+
+    /**
+     * 该方法每次只能增加一路旁路推流地址。若需推送多路流，则需多次调用该方法。
+     *
+     * @param url                推流地址，格式为 RTMP
+     * @param transcodingEnabled 是否转码
+     *                           true：转码。转码是指在旁路推流时对音视频流进行转码处理后，再推送到其他 RTMP 服务器。
+     *                           多适用于频道内有多个主播，需要进行混流、合图的场景
+     *                           false：不转码
+     */
+    public void addPublishStreamUrl(String url, boolean transcodingEnabled) {
+        mRtcEngine.addPublishStreamUrl(url, transcodingEnabled);
+    }
+
+    public void removePublishStreamUrl(String url) {
+        mRtcEngine.removePublishStreamUrl(url);
+    }
+
+    /**
+     * 设置视频优化选项（仅适用于直播）
+     *
+     * @param preferFrameRateOverImageQuality true：画质和流畅度里，优先保证流畅度
+     *                                        false：画质和流畅度里，优先保证画质 (默认)
+     */
+    public void setVideoQualityParameters(boolean preferFrameRateOverImageQuality) {
+        mRtcEngine.setVideoQualityParameters(preferFrameRateOverImageQuality);
+    }
+
+    public void setLogFilter(boolean debug){
+        if(debug){
+            mRtcEngine.setLogFilter(Constants.LOG_FILTER_DEBUG);
+        }else{
+            mRtcEngine.setLogFilter(Constants.LOG_FILTER_WARNING);
+        }
+    }
+
+    /*其他高级选项结束*/
 }

@@ -37,10 +37,7 @@ public class MyLog {
     public static void init() {
         if (!sHasInit) {
             String logTag = U.getAppInfoUtils().getAppName();
-
             //存放的路径
-            String logDirRoot = new File(U.getAppInfoUtils().getMainDir(), "logs/").getAbsolutePath();
-
             if (BuildConfig.DEBUG) {
                 sCurrentLogLevel = LogLevel.ALL;
             } else {
@@ -69,7 +66,7 @@ public class MyLog {
             Printer androidPrinter = new AndroidPrinter();             // 通过 android.util.Log 打印日志的打印器
             Printer consolePrinter = new ConsolePrinter();             // 通过 System.out 打印日志到控制台的打印器
             Printer filePrinter = new FilePrinter                      // 打印日志到文件的打印器
-                    .Builder(Environment.getExternalStorageDirectory() + logDirRoot)                              // 指定保存日志文件的路径
+                    .Builder(U.getAppInfoUtils().getSubDirPath("logs"))                              // 指定保存日志文件的路径
                     .fileNameGenerator(new MyFileNameGenerator())        // 指定日志文件名生成器，默认为 ChangelessFileNameGenerator("log")
                     .backupStrategy(new FileSizeBackupStrategy(50 * 1024 * 1024))          // 指定日志文件备份策略，默认为 FileSizeBackupStrategy(1024 * 1024)
                     .logFlattener(new MyFlattener())                       // 指定日志平铺器，默认为 DefaultFlattener
