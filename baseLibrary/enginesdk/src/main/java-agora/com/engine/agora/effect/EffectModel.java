@@ -5,6 +5,7 @@ public class EffectModel {
     String name;
     String path;
     int drawableIdForIcon;
+    boolean hasPreload;
 
     public int getId() {
         return id;
@@ -36,6 +37,14 @@ public class EffectModel {
 
     public void setDrawableIdForIcon(int drawableIdForIcon) {
         this.drawableIdForIcon = drawableIdForIcon;
+    }
+
+    public boolean hasPreload() {
+        return hasPreload;
+    }
+
+    public void setHasPreload(boolean hasPreload) {
+        this.hasPreload = hasPreload;
     }
 
     @Override

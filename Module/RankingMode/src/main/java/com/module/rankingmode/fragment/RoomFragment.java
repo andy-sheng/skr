@@ -230,7 +230,7 @@ public class RoomFragment extends BaseFragment {
             addInfo(event.getUserStatus().getUserId() + "首帧decode");
             if (!event.getUserStatus().isSelf()
                     && !event.getUserStatus().hasBindView()) {
-                SurfaceView textureView = new SurfaceView(getContext());
+                TextureView textureView = new TextureView(getContext());
                 textureView.setBackgroundColor(Color.BLUE);
                 mOthersContainer.addView(textureView, 360, 640);
                 EngineManager.getInstance().bindRemoteView(event.getUserStatus().getUserId(), textureView);

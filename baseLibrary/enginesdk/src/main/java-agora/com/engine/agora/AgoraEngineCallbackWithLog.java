@@ -123,11 +123,11 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
         super.onRequestToken();
     }
 
-//    @Override
-//    public void onMicrophoneEnabled(boolean enabled) {
-//        MyLog.d(TAG, "onMicrophoneEnabled" + " enabled=" + enabled);
-//        super.onMicrophoneEnabled(enabled);
-//    }
+    @Override
+    public void onMicrophoneEnabled(boolean enabled) {
+        MyLog.d(TAG, "onMicrophoneEnabled" + " enabled=" + enabled);
+        super.onMicrophoneEnabled(enabled);
+    }
 
     @Override
     public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume) {

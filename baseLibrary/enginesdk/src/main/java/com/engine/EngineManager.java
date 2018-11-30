@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 
 /**
@@ -143,11 +144,15 @@ public class EngineManager implements AgoraOutCallback {
         CbEngineAdapter.getInstance().init(mConfig);
     }
 
+    public Params getParams() {
+        return mConfig;
+    }
+
     /**
      * 销毁所有
      */
     public void destroy() {
-        AgoraEngineAdapter.getInstance().destroy();
+        AgoraEngineAdapter.getInstance().destroy(false);
         CbEngineAdapter.getInstance().destroy();
         mUserStatusMap.clear();
         mRemoteViewCache.clear();
@@ -207,6 +212,10 @@ public class EngineManager implements AgoraOutCallback {
             }
         }
         AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
+    }
+
+    public void setClientRole(boolean isAnchor) {
+        AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
     }
 
     /**
@@ -327,7 +336,7 @@ public class EngineManager implements AgoraOutCallback {
      * @param height
      */
     private void adjustViewWH2VideoWH(View view, int width, int height) {
-        MyLog.d(TAG,"adjustViewWH2VideoWH" + " view=" + view + " width=" + width + " height=" + height);
+        MyLog.d(TAG, "adjustViewWH2VideoWH" + " view=" + view + " width=" + width + " height=" + height);
         if (width != 0 && height != 0) {
             // 适应一下视频流的宽和高
             ViewGroup.LayoutParams lp = view.getLayoutParams();
@@ -339,7 +348,7 @@ public class EngineManager implements AgoraOutCallback {
     /**
      * 播放音效
      */
-    public void playEffects(EffectModel effectModel){
+    public void playEffects(EffectModel effectModel) {
         AgoraEngineAdapter.getInstance().playEffects(effectModel);
     }
 

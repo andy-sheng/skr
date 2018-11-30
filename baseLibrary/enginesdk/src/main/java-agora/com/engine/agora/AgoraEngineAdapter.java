@@ -167,66 +167,162 @@ public class AgoraEngineAdapter {
     }
 
     public void init(Params config) {
+        Params oldConfig = mConfig;
         mConfig = config;
+        if (oldConfig != null && mRtcEngine != null) {
+            if (mConfig.getChannelProfile() != oldConfig.getChannelProfile()) {
+                // 模式不一样了，必须销毁
+                RtcEngine.destroy();
+                destroy(true);
+            } else {
+                // 可以继续使用
+                initRtcEngineInner();
+            }
+        }
     }
 
     /**
      * 初始化引擎
      */
-    void tryInitRtcEngine() {
+    private void tryInitRtcEngine() {
         if (mRtcEngine == null) {
             synchronized (this) {
                 try {
                     if (mRtcEngine == null) {
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
-                        // 模式为广播
+                        // 模式为广播,必须在加入频道前调用
+                        // 如果想要切换模式，则需要先调用 destroy 销毁当前引擎，然后使用 create 创建一个新的引擎后，再调用该方法设置新的频道模式
                         mRtcEngine.setChannelProfile(mConfig.getChannelProfile());
-
-                        if (mConfig.isEnableVideo()) {
-                            // 开启视频
-                            mRtcEngine.enableVideo();
-                            setVideoEncoderConfiguration();
-                        }
-
-                        // 开关视频双流模式。
-                        mRtcEngine.enableDualStreamMode(true);
-                        if (mConfig.isUseCbEngine()) {
-                            // 音视频自采集
-                            mRtcEngine.setExternalAudioSource(
-                                    true,      // 开启外部音频源
-                                    44100,     // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
-                                    1          // 外部音源的通道数，最多2个
-                            );
-
-                            mRtcEngine.setExternalVideoSource(
-                                    true,      // 是否使用外部视频源
-                                    false,      // 是否使用texture作为输出
-                                    true        // true为使用推送模式；false为拉取模式，但目前不支持
-                            );
-                        }
+                        initRtcEngineInner();
                     }
                 } catch (Exception e) {
                     MyLog.e(TAG, Log.getStackTraceString(e));
-
                     throw new RuntimeException("NEED TO check rtc sdk init fatal error\n" + Log.getStackTraceString(e));
                 }
             }
         }
     }
 
+    private void initRtcEngineInner() {
+        if (mConfig.isEnableAudio()) {
+            //该方法需要在 joinChannel 之前设置好，joinChannel 后设置不生效。
+            mRtcEngine.enableAudio();
+            mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(mConfig.getAudioProfile())
+                    , Constants.AudioScenario.getValue(mConfig.getAudioScenario()));
+
+            enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
+            enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
+        } else {
+            mRtcEngine.disableAudio();
+        }
+        /**
+         * 调用 enableVideo 方法打开视频模式。在 Agora SDK 中，
+         * 音频功能是默认打开的，因此在加入频道前，或加入频道后，你都可以调用该方法开启视频。
+         * <p>
+         * 如果在加入频道前打开，则进入频道后直接加入视频通话或直播。
+         * 如果在通话或直播过程中打开，则由纯音频切换为视频通话或直播。
+         * <p>
+         * 是一个比较大的涵盖，是否启动视频功能，不启用连对端的流都收不到，与 enableLocalVideo() 等要区分
+         */
+        if (mConfig.isEnableVideo()) {
+            // 开启视频
+            mRtcEngine.enableVideo();
+            // Agora 建议在 enableVideo 前调用该方法，可以加快首帧出图的时间。
+            //  所有设置的参数均为理想情况下的最大值
+            setVideoEncoderConfiguration();
+        } else {
+            mRtcEngine.disableVideo();
+        }
+
+        // 开关视频双流模式。对端能选择接收大流还是小流
+        mRtcEngine.enableDualStreamMode(true);
+        if (mConfig.isUseCbEngine()) {
+            // 音视频自采集
+            mRtcEngine.setExternalAudioSource(
+                    true,      // 开启外部音频源
+                    44100,     // 采样率，可以有8k，16k，32k，44.1k和48kHz等模式
+                    1          // 外部音源的通道数，最多2个
+            );
+
+            mRtcEngine.setExternalVideoSource(
+                    true,      // 是否使用外部视频源
+                    false,      // 是否使用texture作为输出
+                    true        // true为使用推送模式；false为拉取模式，但目前不支持
+            );
+        }
+    }
+
     /**
-     * 销毁
+     * 不是做模式切换一般不用销毁所有
      */
-    public void destroy() {
+    public void destroy(boolean destroyAll) {
         if (mRtcEngine != null) {
             mRtcEngine.stopPreview();
         }
         if (mRtcEngine != null) {
             mRtcEngine.leaveChannel();
         }
-        RtcEngine.destroy();
+        if (mRtcEngine != null) {
+            mRtcEngine.getAudioEffectManager().stopAllEffects();
+        }
+
         mUiHandler.removeCallbacksAndMessages(null);
-        mRtcEngine = null;
+        if (destroyAll) {
+            //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
+            RtcEngine.destroy();
+            mRtcEngine = null;
+        }
+    }
+
+    /**
+     * 设置直播场景下的用户角色。
+     * 在加入频道前，用户需要通过本方法设置观众（默认）或主播模式。在加入频道后，用户可以通过本方法切换用户模式。
+     *
+     * @param isAnchor
+     */
+    public void setClientRole(boolean isAnchor) {
+        tryInitRtcEngine();
+        if (isAnchor) {
+            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
+        } else {
+            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
+        }
+    }
+
+    /**
+     * 传入能标识用户角色和权限的 Token。如果安全要求不高，也可以将值设为 null。
+     * Token 需要在应用程序的服务器端生成。
+     * 传入能标识频道的频道 ID。输入相同频道 ID 的用户会进入同一个频道。
+     * <p>
+     * 频道内每个用户的 UID 必须是唯一的。如果将 UID 设为 0，系统将自动分配一个 UID。
+     * 如果已在频道中，用户必须调用 leaveChannel 方法退出当前频道，才能进入下一个频道。
+     */
+    public void joinChannel(String token, String channelId, String extra, int uid) {
+        tryInitRtcEngine();
+        MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
+        // 一定要设置一个角色
+        mRtcEngine.joinChannel(token, channelId, extra, uid);
+    }
+
+    /*视频渲染相关开始*/
+
+    /**
+     * 在该方法中，指定你想要的视频编码的分辨率、帧率、码率以及视频编码的方向模式。
+     * 详细的视频编码参数定义，参考 setVideoEncoderConfiguration 中的描述。
+     * <p>
+     * 该方法设置的参数为理想情况下的最大值。当视频引擎因网络等原因无法达到设置的分辨率、帧率或码率值时，会取最接近设置值的最大值。
+     * 如果设备的摄像头无法支持定义的视频属性，SDK 会为摄像头自动选择一个合理的分辨率。
+     * 该行为对视频编码没有影响，编码时 SDK 仍沿用该方法中定义的分辨率。
+     * 如果用户加入频道后不需要重新设置视频编码属性，则 Agora 建议在 enableVideo 前调用该方法，可以加快首帧出图的时间。
+     */
+    public void setVideoEncoderConfiguration() {
+        // 想在房间内动态改变VideoEncoderConfiguration ，直接修改属性，然后set
+        VideoEncoderConfiguration.VideoDimensions dimensions = new VideoEncoderConfiguration.VideoDimensions(mConfig.getLocalVideoWidth(), mConfig.getLocalVideoHeight());
+        VideoEncoderConfiguration.FRAME_RATE frameRate = mConfig.getRateFps();
+        int bitrate = mConfig.getBitrate();
+        VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = mConfig.getOrientationMode();
+        VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(dimensions, frameRate, bitrate, orientationMode);
+        mRtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
     }
 
     /**
@@ -253,72 +349,77 @@ public class AgoraEngineAdapter {
     }
 
     /**
-     * 设置频道模式为通信
+     * 设置本地视频显示模式
+     *
+     * @param mode
      */
-    public void setCommunicationMode() {
-        tryInitRtcEngine();
-        mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION);
-    }
-
-    public void setClientRole(boolean isAnchor) {
-        tryInitRtcEngine();
-        if (isAnchor) {
-            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
-        } else {
-            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_AUDIENCE);
+    public void setLocalRenderMode(int mode) {
+        if (mRtcEngine != null) {
+            /**
+             * RENDER_MODE_HIDDEN(1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉
+             * RENDER_MODE_FIT(2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑
+             */
+            mRtcEngine.setLocalRenderMode(mode);
         }
     }
 
-    /**
-     * 传入能标识用户角色和权限的 Token。如果安全要求不高，也可以将值设为 null。
-     * Token 需要在应用程序的服务器端生成。
-     * 传入能标识频道的频道 ID。输入相同频道 ID 的用户会进入同一个频道。
-     * <p>
-     * 频道内每个用户的 UID 必须是唯一的。如果将 UID 设为 0，系统将自动分配一个 UID。
-     * 如果已在频道中，用户必须调用 leaveChannel 方法退出当前频道，才能进入下一个频道。
-     */
-    public void joinChannel(String token, String channelId, String extra, int uid) {
-        tryInitRtcEngine();
-        MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
-        // 一定要设置一个角色
-        mRtcEngine.joinChannel(token, channelId, extra, uid);
-    }
-
-    /**
-     * 调用 enableVideo 方法打开视频模式。在 Agora SDK 中，
-     * 音频功能是默认打开的，因此在加入频道前，或加入频道后，你都可以调用该方法开启视频。
-     * <p>
-     * 如果在加入频道前打开，则进入频道后直接加入视频通话或直播。
-     * 如果在通话或直播过程中打开，则由纯音频切换为视频通话或直播。
-     */
-    public void enableVideo() {
-        tryInitRtcEngine();
-        mRtcEngine.enableVideo();
-    }
-
-    /**
-     * 在该方法中，指定你想要的视频编码的分辨率、帧率、码率以及视频编码的方向模式。
-     * 详细的视频编码参数定义，参考 setVideoEncoderConfiguration 中的描述。
-     * <p>
-     * 该方法设置的参数为理想情况下的最大值。当视频引擎因网络等原因无法达到设置的分辨率、帧率或码率值时，会取最接近设置值的最大值。
-     * 如果设备的摄像头无法支持定义的视频属性，SDK 会为摄像头自动选择一个合理的分辨率。
-     * 该行为对视频编码没有影响，编码时 SDK 仍沿用该方法中定义的分辨率。
-     */
-    public void setVideoEncoderConfiguration() {
-        VideoEncoderConfiguration.VideoDimensions dimensions = new VideoEncoderConfiguration.VideoDimensions(mConfig.getLocalVideoWidth(), mConfig.getLocalVideoHeight());
-        VideoEncoderConfiguration.FRAME_RATE frameRate = VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_24;
-        int bitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
-        VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
-
-        VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(dimensions, frameRate, bitrate, orientationMode);
-
-        mRtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+    public void setRemoteRenderMode(int uid, int mode) {
+        if (mRtcEngine != null) {
+            /**
+             * RENDER_MODE_HIDDEN(1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉
+             * RENDER_MODE_FIT(2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑
+             */
+            mRtcEngine.setRemoteRenderMode(uid, mode);
+        }
     }
 
     public void setLocalVideoRenderer(SurfaceView surfaceView) {
         tryInitRtcEngine();
         surfaceView = tryReplcaceSurfaceView(surfaceView);
         mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
+    }
+
+    public void setLocalVideoRenderer(TextureView textureView) {
+        PrivateTextureHelper privateTextureHelper = new PrivateTextureHelper(textureView.getContext(), textureView);
+        privateTextureHelper.init(null);
+        privateTextureHelper.setBufferType(MediaIO.BufferType.BYTE_ARRAY);
+        privateTextureHelper.setPixelFormat(MediaIO.PixelFormat.I420);
+        mRtcEngine.setLocalVideoRenderer(privateTextureHelper);
+    }
+
+    /**
+     * 绑定远端视图
+     * 如果uid传的是非法值，则会缓存view
+     * 自动等第一个合法的uid出现时（onJoinUser时）
+     * 再bind视图
+     * <p>
+     * 如果uid是用我们自己的账号体系，那这里是可以提前分配view吧
+     *
+     * @param uid
+     */
+    public void setRemoteVideoRenderer(int uid, SurfaceView surfaceView) {
+        MyLog.d(TAG, "setRemoteVideoRenderer" + " uid=" + uid + " surfaceView=" + surfaceView);
+        tryInitRtcEngine();
+
+        surfaceView = tryReplcaceSurfaceView(surfaceView);
+        //退出频道后，SDK 会把远程用户的绑定关系清除掉。
+        mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
+        surfaceView.setTag(uid);
+    }
+
+    /**
+     * 方法设置远端视频渲染器。实时通讯过程中，Agora SDK 通常会启动默认的视频渲染器进行视频渲染。
+     * 当需要自定义视频渲染设备时，App 可以先通过 IVideoSink 自定义渲染器，然后调用该方法将视频渲染器加入到 SDK 中
+     *
+     * @param userId
+     */
+    public void setRemoteVideoRenderer(int userId, TextureView textureView) {
+        PrivateTextureHelper privateTextureHelper = new PrivateTextureHelper(textureView.getContext(), textureView);
+        privateTextureHelper.init(null);
+        privateTextureHelper.setBufferType(MediaIO.BufferType.BYTE_ARRAY);
+        privateTextureHelper.setPixelFormat(MediaIO.PixelFormat.I420);
+
+        mRtcEngine.setRemoteVideoRenderer(userId, privateTextureHelper);
     }
 
     private SurfaceView tryReplcaceSurfaceView(SurfaceView surfaceView) {
@@ -345,43 +446,148 @@ public class AgoraEngineAdapter {
     }
 
     /**
-     * 绑定远端视图
-     * 如果uid传的是非法值，则会缓存view
-     * 自动等第一个合法的uid出现时（onJoinUser时）
-     * 再bind视图
-     * <p>
-     * 如果uid是用我们自己的账号体系，那这里是可以提前分配view吧
+     * 该方法禁用/启用本地视频功能。该方法用于只看不发的视频场景。
+     * 请在 enableVideo 后调用该方法，否则该方法可能无法正常使用。
+     * 调用 enableVideo 后，本地视频默认开启。使用该方法可以开启或关闭本地视频，且不影响接收远端视频。
      *
-     * @param uid
+     * @param enable
      */
-    public void setRemoteVideoRenderer(int uid, SurfaceView surfaceView) {
-        MyLog.d(TAG, "setRemoteVideoRenderer" + " uid=" + uid + " surfaceView=" + surfaceView);
-        tryInitRtcEngine();
-
-        surfaceView = tryReplcaceSurfaceView(surfaceView);
-        mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
-        surfaceView.setTag(uid);
+    public void enableLocalVideo(boolean enable) {
+        mRtcEngine.enableLocalVideo(enable);
     }
 
     /**
-     * 方法设置远端视频渲染器。实时通讯过程中，Agora SDK 通常会启动默认的视频渲染器进行视频渲染。
-     * 当需要自定义视频渲染设备时，App 可以先通过 IVideoSink 自定义渲染器，然后调用该方法将视频渲染器加入到 SDK 中
+     * 调用该方法时，SDK 不再发送本地视频流，但摄像头仍然处于工作状态。
+     * 相比于 enableLocalVideo (false) 用于控制本地视频流发送的方法，该方法响应速度更快。
+     * 该方法不影响本地视频流获取，没有禁用摄像头
      *
-     * @param userId
+     * @param muted
      */
-    public void setRemoteVideoRenderer(int userId, TextureView textureView) {
-        PrivateTextureHelper privateTextureHelper = new PrivateTextureHelper(textureView.getContext(), textureView);
-        privateTextureHelper.init(null);
-        privateTextureHelper.setBufferType(MediaIO.BufferType.BYTE_ARRAY);
-        privateTextureHelper.setPixelFormat(MediaIO.PixelFormat.I420);
-
-        mRtcEngine.setRemoteVideoRenderer(userId, privateTextureHelper);
+    public void muteLocalVideoStream(boolean muted) {
+        mRtcEngine.muteLocalVideoStream(muted);
     }
 
+    /**
+     * 接收/停止接收指定视频流
+     * 如果之前有调用过 muteAllRemoteVideoStreams (true) 停止接收所有远端视频流，
+     * 在调用本 API 之前请确保你已调用 muteAllRemoteVideoStreams (false)。 muteAllRemoteVideoStreams 是全局控制，
+     * muteRemoteVideoStream 是精细控制。
+     *
+     * @param uid
+     * @param muted
+     */
+    public void muteRemoteVideoStream(int uid, boolean muted) {
+        mRtcEngine.muteRemoteVideoStream(uid, muted);
+    }
+
+    /**
+     * 你不想看其他人的了，其他人还想互相看
+     * @param muted
+     */
+    public void muteAllRemoteVideoStreams(boolean muted) {
+        mRtcEngine.muteAllRemoteVideoStreams(muted);
+    }
+
+    /*视频渲染相关结束*/
+
+    /*音频基础相关开始*/
+
+    /**
+     * 加入频道后
+     * 它的语音功能默认是开启的。该方法可以关闭或重新开启本地语音功能，停止或重新开始本地音频采集及处理。
+     * 该方法不影响接收或播放远端音频流，适用于只听不发的用户场景。
+     * 回调 onMicrophoneEnabled
+     */
+    public void enableLocalAudio(boolean enable) {
+        mRtcEngine.enableLocalAudio(enable);
+    }
+
+    /**
+     * 两个方法的区别是
+     * enableLocalAudio：开启或关闭本地语音采集及处理
+     * muteLocalAudioStream：停止或继续发送本地音频流
+     *
+     * @param muted
+     */
+    public void muteLocalAudioStream(boolean muted) {
+        mRtcEngine.muteLocalAudioStream(muted);
+    }
+
+    /**
+     * 接收/停止接收指定音频流。
+     *
+     * @param muted
+     */
+    public void muteRemoteAudioStream(int uid, boolean muted) {
+        mRtcEngine.muteRemoteAudioStream(uid, muted);
+    }
+
+    /**
+     * 接收/停止接收所有音频流。
+     * 适用于 A 在唱歌，B C 能互相聊天，但不能打扰到 A 的场景
+     */
+    public void muteAllRemoteAudioStreams(boolean muted) {
+        mRtcEngine.muteAllRemoteAudioStreams(muted);
+    }
+
+    /**
+     * 录音音量，可在 0~400 范围内进行调节
+     *
+     * @param volume
+     */
+    public void adjustRecordingSignalVolume(int volume) {
+        if (volume < 0) {
+            volume = 0;
+        }
+        if (volume > 400) {
+            volume = 400;
+        }
+        mRtcEngine.adjustRecordingSignalVolume(volume);
+    }
+
+    /**
+     * 播放音量，可在 0~400 范围内进行调节
+     *
+     * @param volume
+     */
+    public void adjustPlaybackSignalVolume(int volume) {
+        if (volume < 0) {
+            volume = 0;
+        }
+        if (volume > 400) {
+            volume = 400;
+        }
+        mRtcEngine.adjustPlaybackSignalVolume(volume);
+    }
+
+    /**
+     * 启用音量回调提示
+     * 一旦启用，onAudioQuality 将被定期触发
+     */
+    public void enableAudioQualityIndication(boolean enable) {
+        mRtcEngine.enableAudioQualityIndication(enable);
+    }
+
+    /**
+     * 启用说话者音量提示
+     *
+     * @param interval 建议大于 200ms
+     * @param smooth   [0,10] 建议3
+     */
+    public void enableAudioVolumeIndication(int interval, int smooth) {
+        mRtcEngine.enableAudioVolumeIndication(interval, smooth);
+    }
+
+    /*音频基础结束*/
+
+    /*音频特效相关开始*/
     public List<EffectModel> getAllEffects() {
         return mEffectModels;
     }
 
+    /**
+     * 尝试拷贝assets到sdcard中
+     */
     private void tryCopyAssetsEffect2Sdcard() {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
@@ -410,7 +616,10 @@ public class AgoraEngineAdapter {
     public void playEffects(EffectModel effectModel) {
         if (mRtcEngine != null) {
             IAudioEffectManager manager = mRtcEngine.getAudioEffectManager();
-            manager.preloadEffect(effectModel.getId(), effectModel.getPath());
+            if (!effectModel.hasPreload()) {
+                manager.preloadEffect(effectModel.getId(), effectModel.getPath());
+                effectModel.setHasPreload(true);
+            }
             // 播放一个音效
             manager.playEffect(
                     effectModel.getId(),                         // 要播放的音效 id
@@ -423,6 +632,9 @@ public class AgoraEngineAdapter {
             );
         }
     }
+    /*音频特效相关结束*/
+
+    /*自定义推流流相关开始*/
 
     /**
      * 外部推送音频帧
@@ -477,5 +689,5 @@ public class AgoraEngineAdapter {
             MyLog.d(TAG, "pushExternalVideoFrame" + " textureId=" + textureId + " pushState:" + pushState);
         }
     }
-
+    /*自定义推流流相关结束*/
 }
