@@ -6,6 +6,7 @@ import io.agora.rtc.video.VideoEncoderConfiguration;
 /**
  * 引擎一些参数配置，在初始化时传入
  * 会影响引擎初始化的一些属性
+ * 对于含义不清楚的参数，要看这个参数在哪里使用的
  */
 public class Params {
     public static final int CHANNEL_TYPE_COMMUNICATION = Constants.CHANNEL_PROFILE_COMMUNICATION;
@@ -41,8 +42,10 @@ public class Params {
      * <p>
      * 如果采集的视频是横屏模式，则输出的视频也是横屏模式
      * 如果采集的视频是竖屏模式，则输出的视频也是竖屏模式
+     * <p>
+     * 注意注意，会影响FistDDecode的 width height 以及 rotation
      */
-    private VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE;
+    private VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
 
     private Constants.AudioProfile audioProfile = Constants.AudioProfile.MUSIC_HIGH_QUALITY_STEREO; // 默认 最牛逼的 音乐编码 双声道 192kbps
 
@@ -50,11 +53,13 @@ public class Params {
 
     private boolean enableAudioQualityIndication = true;
 
-    private int volumeIndicationInterval = 300;
+    private int volumeIndicationInterval = 300; // 是谁在说话提示最小间隔
 
     private int volumeIndicationSmooth = 3;
 
-    private boolean cameraAutoFocusFaceModeEnabled = true;
+    private boolean cameraAutoFocusFaceModeEnabled = true;// 相机自动对焦开启
+
+    private double localVoicePitch = 1.0;
 
     public int getChannelProfile() {
         return channelProfile;
@@ -176,6 +181,14 @@ public class Params {
         this.cameraAutoFocusFaceModeEnabled = cameraAutoFocusFaceModeEnabled;
     }
 
+    public double getLocalVoicePitch() {
+        return localVoicePitch;
+    }
+
+    public void setLocalVoicePitch(double localVoicePitch) {
+        this.localVoicePitch = localVoicePitch;
+    }
+
     public static Params.Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
     }
@@ -258,6 +271,11 @@ public class Params {
 
         public Builder setCameraAutoFocusFaceModeEnabled(boolean cameraAutoFocusFaceModeEnabled) {
             mParams.setCameraAutoFocusFaceModeEnabled(cameraAutoFocusFaceModeEnabled);
+            return this;
+        }
+
+        public Builder setLocalVoicePitch(double localVoicePitch) {
+            mParams.setLocalVoicePitch(localVoicePitch);
             return this;
         }
 

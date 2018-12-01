@@ -4,10 +4,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -26,6 +26,9 @@ import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.rankingmode.R;
+import com.module.rankingmode.view.MixControlPanelView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,7 +44,7 @@ public class RoomFragment extends BaseFragment {
     ExTextView mInfoTextView;
 
     String ROOM_ID = "chengsimin";
-    boolean useChangbaEngine = false;
+    boolean useChangbaEngine = true;
     Handler mUiHandler = new Handler();
 
     @Override
@@ -91,9 +94,15 @@ public class RoomFragment extends BaseFragment {
                 EngineManager.getInstance().playEffects(effectModel);
             }
         });
-        mRootView.findViewById(R.id.show_control_panel_btn).setOnClickListener(new View.OnClickListener() {
+        mRootView.findViewById(R.id.show_mix_control_panel_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DialogPlus.newDialog(getContext())
+//                        .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
+                        .setContentHolder(new ViewHolder(new MixControlPanelView(getContext())))
+                        .setGravity(Gravity.BOTTOM)
+                        .setCancelable(true)
+                        .create().show();
 
             }
         });
@@ -101,52 +110,17 @@ public class RoomFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 useChangbaEngine = !useChangbaEngine;
-                if (useChangbaEngine) {
-                    mModeSwitchBtn.setText("使用唱吧引擎：已开启");
-                } else {
-                    mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
-                }
-                EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
-                        .setUseCbEngine(useChangbaEngine)
-                        .setEnableVideo(true)
-                        .build());
-                if (useChangbaEngine) {
-                    recreateCameraView();
-                    // 确保view已经真正add进去了
-                    mUiHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            EngineManager.getInstance().startPreview(mCameraSurfaceView);
-                        }
-                    });
-
-                } else {
-                    recreateCameraView();
-                    mUiHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            EngineManager.getInstance().startPreview(mCameraSurfaceView);
-                            // 不再次调用 join Agora 的preview 不生效
-                            EngineManager.getInstance().joinRoom(ROOM_ID, 0, true);
-                        }
-                    });
-                }
+                joinEngineRoom();
             }
         });
 
-
-        EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
-                .setUseCbEngine(useChangbaEngine)
-                .setEnableVideo(true)
-                .build());
-
         if (U.getPermissionUtils().checkCamera(getActivity())) {
-            joinRoom();
+            joinRongRoom();
         } else {
             U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {
-                    joinRoom();
+                    joinRongRoom();
                 }
 
                 @Override
@@ -160,24 +134,10 @@ public class RoomFragment extends BaseFragment {
                 }
             }, getActivity());
         }
-
-        if (useChangbaEngine) {
-            mModeSwitchBtn.setText("使用唱吧引擎：已开启");
-            recreateCameraView();
-            // 确保view已经真正add进去了
-            mUiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    EngineManager.getInstance().startPreview(mCameraSurfaceView);
-                }
-            });
-        } else {
-            mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
-        }
-
+        joinEngineRoom();
     }
 
-    void joinRoom() {
+    void joinRongRoom() {
         // 加入融云房间
         ModuleServiceManager.getInstance().getMsgService().joinChatRoom(ROOM_ID, new ICallback() {
             @Override
@@ -190,9 +150,30 @@ public class RoomFragment extends BaseFragment {
 
             }
         });
-        // 加入引擎房间
+    }
+
+    void joinEngineRoom() {
+        if (useChangbaEngine) {
+            mModeSwitchBtn.setText("使用唱吧引擎：已开启");
+        } else {
+            mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
+        }
+        EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
+                .setUseCbEngine(useChangbaEngine)
+                .setEnableVideo(true)
+                .setEnableAudio(true)
+                .build());
+        // 不再次调用 join Agora 的preview 不生效,因为init时已经离开房间了
         EngineManager.getInstance().joinRoom(ROOM_ID, 0, true);
 
+        if (useChangbaEngine) {
+            recreateCameraView();
+            // 确保view已经真正add进去了
+            EngineManager.getInstance().startPreview(mCameraSurfaceView);
+        } else {
+            recreateCameraView();
+            EngineManager.getInstance().startPreview(mCameraSurfaceView);
+        }
     }
 
     private void recreateCameraView() {
@@ -218,6 +199,7 @@ public class RoomFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        mUiHandler.removeCallbacksAndMessages(null);
         ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(ROOM_ID);
         EngineManager.getInstance().destroy();
     }
@@ -241,10 +223,12 @@ public class RoomFragment extends BaseFragment {
             if (!event.getUserStatus().isSelf()
                     && !event.getUserStatus().hasBindView()) {
                 TextureView textureView = new TextureView(getContext());
-                textureView.setBackgroundColor(Color.BLUE);
                 mOthersContainer.addView(textureView, 360, 640);
                 EngineManager.getInstance().bindRemoteView(event.getUserStatus().getUserId(), textureView);
             }
+        }else if(event.getType() == EngineEvent.TYPE_ENGINE_DESTROY){
+            addInfo("reset引擎");
+            mOthersContainer.removeAllViews();
         }
     }
 

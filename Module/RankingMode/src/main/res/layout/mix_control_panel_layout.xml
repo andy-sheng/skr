@@ -1,0 +1,45 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/view_dimen_50"
+    tools:orientation="horizontal"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="音调[0.5-2]:" />
+
+
+        <com.common.view.seekbar.RotatedSeekBar
+            android:id="@+id/voice_pitch_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_dimen_50"
+            android:layout_marginRight="@dimen/view_dimen_50"
+            android:visibility="visible"
+            app:appPercent="1"
+            app:appPercentMax="2"
+            app:appPercentMin="0.5"
+            app:appSeekBarLeftPadding="10dp"
+            app:appSeekBarRightPadding="10dp"
+            app:appShapeBkAlpha="127"
+            app:appShapeColorBK="#FFFFFF"
+            app:appShapeColorFT="#E9AD1F"
+            app:appShapeSize="1.33dp"
+            app:appThumbDrawable="@drawable/progress_bar_circle_icon_white"
+            app:appThumbDrawablePress="@drawable/progress_bar_circle_icon_red"
+            app:appThumbSize="15.33dp"
+            app:appThumbSizePress="10.67dp" />
+    </LinearLayout>
+</merge>

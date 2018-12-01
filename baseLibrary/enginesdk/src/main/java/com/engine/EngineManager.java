@@ -152,11 +152,12 @@ public class EngineManager implements AgoraOutCallback {
      * 销毁所有
      */
     public void destroy() {
-        AgoraEngineAdapter.getInstance().destroy(false);
+        AgoraEngineAdapter.getInstance().destroy(true);
         CbEngineAdapter.getInstance().destroy();
         mUserStatusMap.clear();
         mRemoteViewCache.clear();
         mUiHandler.removeCallbacksAndMessages(null);
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY,null));
     }
 
     /**
@@ -355,4 +356,120 @@ public class EngineManager implements AgoraOutCallback {
     public List<EffectModel> getAllEffects() {
         return AgoraEngineAdapter.getInstance().getAllEffects();
     }
+
+
+    /*音频高级扩展开始*/
+
+    /**
+     * 设置本地语音音调。
+     * <p>
+     * 该方法改变本地说话人声音的音调。
+     * 可以在 [0.5, 2.0] 范围内设置。取值越小，则音调越低。默认值为 1.0，表示不需要修改音调。
+     *
+     * @param pitch
+     */
+    public void setLocalVoicePitch(double pitch) {
+        MyLog.d(TAG,"setLocalVoicePitch" + " pitch=" + pitch);
+        mConfig.setLocalVoicePitch(pitch);
+        AgoraEngineAdapter.getInstance().setLocalVoicePitch(pitch);
+    }
+
+    /**
+     * 设置本地语音音效均衡
+     *
+     * @param bandFrequency 频谱子带索引，取值范围是 [0-9]，分别代表 10 个频带，对应的中心频率是 [31，62，125，250，500，1k，2k，4k，8k，16k] Hz
+     * @param bandGain      每个 band 的增益，单位是 dB，每一个值的范围是 [-15，15]，默认值为 0
+     */
+    public void setLocalVoiceEqualization(int bandFrequency, int bandGain) {
+        AgoraEngineAdapter.getInstance().setLocalVoiceEqualization(bandFrequency, bandGain);
+    }
+
+    /**
+     * 设置本地音效混响。
+     *
+     * @param reverbKey 混响音效 Key。该方法共有 5 个混响音效 Key，分别如 value 栏列出。
+     * @param value     AUDIO_REVERB_DRY_LEVEL(0)：原始声音强度，即所谓的 dry signal，取值范围 [-20, 10]，单位为 dB
+     *                  AUDIO_REVERB_WET_LEVEL(1)：早期反射信号强度，即所谓的 wet signal，取值范围 [-20, 10]，单位为 dB
+     *                  AUDIO_REVERB_ROOM_SIZE(2)：所需混响效果的房间尺寸，一般房间越大，混响越强，取值范围 [0, 100]，单位为 dB
+     *                  AUDIO_REVERB_WET_DELAY(3)：Wet signal 的初始延迟长度，取值范围 [0, 200]，单位为毫秒
+     *                  AUDIO_REVERB_STRENGTH(4)：混响持续的强度，取值范围为 [0, 100]
+     */
+    public void setLocalVoiceReverb(int reverbKey, int value) {
+        AgoraEngineAdapter.getInstance().setLocalVoiceReverb(reverbKey, value);
+    }
+
+    /**
+     * 开始播放音乐文件及混音。
+     * 播放伴奏结束后，会收到 onAudioMixingFinished 回调
+     *
+     * @param filePath 指定需要混音的本地或在线音频文件的绝对路径。支持d的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv、wav 及 flac。详见 Supported Media Formats。
+     *                 如果用户提供的目录以 /assets/ 开头，则去 assets 里面查找该文件
+     *                 如果用户提供的目录不是以 /assets/ 开头，一律认为是在绝对路径里查找该文件
+     * @param loopback true：只有本地可以听到混音或替换后的音频流
+     *                 false：本地和对方都可以听到混音或替换后的音频流
+     * @param replace  true：只推动设置的本地音频文件或者线上音频文件，不传输麦克风收录的音频
+     *                 false：音频文件内容将会和麦克风采集的音频流进行混音
+     * @param cycle    指定音频文件循环播放的次数：
+     *                 正整数：循环的次数
+     *                 -1：无限循环
+     */
+    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
+        AgoraEngineAdapter.getInstance().startAudioMixing(filePath, loopback, replace, cycle);
+    }
+
+    /**
+     * 停止播放音乐文件及混音。
+     * 请在频道内调用该方法。
+     */
+    public void stopAudioMixing() {
+        AgoraEngineAdapter.getInstance().stopAudioMixing();
+    }
+
+    /**
+     * 暂停播放音乐文件及混音
+     */
+    public void pauseAudioMixing() {
+        AgoraEngineAdapter.getInstance().pauseAudioMixing();
+    }
+
+    /**
+     * 继续播放混音
+     */
+    public void resumeAudioMixing() {
+        AgoraEngineAdapter.getInstance().resumeAudioMixing();
+    }
+
+    /**
+     * 调节混音音量大小
+     *
+     * @param volume 1-100 默认100
+     */
+    public void adjustAudioMixingVolume(int volume) {
+        AgoraEngineAdapter.getInstance().adjustAudioMixingVolume(volume);
+    }
+
+    /**
+     * @return 获取伴奏时长，单位ms
+     */
+    public int getAudioMixingDuration() {
+        return AgoraEngineAdapter.getInstance().getAudioMixingDuration();
+    }
+
+    /**
+     * @return 获取混音当前播放位置 ms
+     */
+    public int getAudioMixingCurrentPosition() {
+        return AgoraEngineAdapter.getInstance().getAudioMixingCurrentPosition();
+    }
+
+    /**
+     * 拖动混音进度条
+     *
+     * @param posMs
+     */
+    public void setAudioMixingPosition(int posMs) {
+        AgoraEngineAdapter.getInstance().setAudioMixingPosition(posMs);
+    }
+
+    /*音频高级扩展结束*/
 }

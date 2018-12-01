@@ -49,7 +49,7 @@ public class DialogPlusBuilder {
   private int outAnimation = INVALID;
   private boolean expanded;
   private int defaultContentHeight;
-  private int overlayBackgroundResource = R.color.blue;
+  private int overlayBackgroundResource = R.color.transparent;
 
   private DialogPlusBuilder() {
   }

@@ -17,6 +17,7 @@ import android.view.View;
 
 import com.common.base.R;
 import com.common.log.MyLog;
+import com.common.utils.U;
 
 /**
  * 可拖动进度条
@@ -75,25 +76,31 @@ public class RotatedSeekBar extends View implements View.OnTouchListener {
         mBitmapBK = drawable2Bitmap(drawable);
 
         mThumbDrawable = typedArray.getDrawable(R.styleable.RotatedSeekBar_appThumbDrawable);
+        if(mThumbDrawable == null){
+            mThumbDrawable = U.app().getResources().getDrawable(R.drawable.progress_bar_circle_icon_white);
+        }
         mThumb = drawable2Bitmap(mThumbDrawable);
         mThumbPressDrawable = typedArray.getDrawable(R.styleable.RotatedSeekBar_appThumbDrawablePress);
+        if(mThumbPressDrawable == null){
+            mThumbPressDrawable = U.app().getResources().getDrawable(R.drawable.progress_bar_circle_icon_red);
+        }
         mThumbPress = drawable2Bitmap(mThumbPressDrawable);
 
         drawable = null;
         mSeekBarPaddingLeft = typedArray.getDimension(R.styleable.RotatedSeekBar_appSeekBarLeftPadding, 0);
         mSeekBarPaddingRight = typedArray.getDimension(R.styleable.RotatedSeekBar_appSeekBarRightPadding, 0);
-        mThumbSize = typedArray.getDimension(R.styleable.RotatedSeekBar_appThumbSize, 0);
-        mThumbSizePress = typedArray.getDimension(R.styleable.RotatedSeekBar_appThumbSizePress, mThumbSize);
+        mThumbSize = typedArray.getDimension(R.styleable.RotatedSeekBar_appThumbSize, U.getDisplayUtils().px2dip(15.33f));
+        mThumbSizePress = typedArray.getDimension(R.styleable.RotatedSeekBar_appThumbSizePress, U.getDisplayUtils().px2dip(10.67f));
         mDegree = typedArray.getFloat(R.styleable.RotatedSeekBar_appRotatedAngle, 0);
 
         mPercentMin = typedArray.getFloat(R.styleable.RotatedSeekBar_appPercentMin, 0);
         mPercentMax = typedArray.getFloat(R.styleable.RotatedSeekBar_appPercentMax, 1);
         mPercent = typedArray.getFloat(R.styleable.RotatedSeekBar_appPercent, mPercentMin);
 
-        mShapeColorFT = typedArray.getColor(R.styleable.RotatedSeekBar_appShapeColorFT, 0x000000);
-        mShapeColorBK = typedArray.getColor(R.styleable.RotatedSeekBar_appShapeColorBK, 0x000000);
-        mShapeSize = typedArray.getDimension(R.styleable.RotatedSeekBar_appShapeSize, -1f);
-        mBkAlpha = typedArray.getFloat(R.styleable.RotatedSeekBar_appShapeBkAlpha, 255);
+        mShapeColorFT = typedArray.getColor(R.styleable.RotatedSeekBar_appShapeColorFT, 0xE9AD1F);
+        mShapeColorBK = typedArray.getColor(R.styleable.RotatedSeekBar_appShapeColorBK, 0xFFFFFF);
+        mShapeSize = typedArray.getDimension(R.styleable.RotatedSeekBar_appShapeSize, U.getDisplayUtils().dip2px(1.33f));
+        mBkAlpha = typedArray.getFloat(R.styleable.RotatedSeekBar_appShapeBkAlpha, 127);
         typedArray.recycle();
     }
 

@@ -10,6 +10,8 @@ public class EngineEvent {
     public static final int TYPE_USER_ROLE_CHANGE = 7;
     public static final int TYPE_USER_VIDEO_ENABLE = 8;
 
+    public static final int TYPE_ENGINE_DESTROY= 9;
+
     int type;
     UserStatus userStatus;
     Object obj;

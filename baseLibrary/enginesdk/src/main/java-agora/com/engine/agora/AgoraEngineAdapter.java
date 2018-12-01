@@ -226,13 +226,12 @@ public class AgoraEngineAdapter {
          * 是一个比较大的涵盖，是否启动视频功能，不启用连对端的流都收不到，与 enableLocalVideo() 等要区分
          */
         if (mConfig.isEnableVideo()) {
-            // 开启视频
-            mRtcEngine.enableVideo();
-            // Agora 建议在 enableVideo 前调用该方法，可以加快首帧出图的时间。
+            // 注意！！！！Agora 建议在 enableVideo 前调用该方法，可以加快首帧出图的时间。
             //  所有设置的参数均为理想情况下的最大值
             setVideoEncoderConfiguration();
             mRtcEngine.setCameraAutoFocusFaceModeEnabled(mConfig.isCameraAutoFocusFaceModeEnabled());
-
+            // 开启视频
+            mRtcEngine.enableVideo();
         } else {
             mRtcEngine.disableVideo();
         }
