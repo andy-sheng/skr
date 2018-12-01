@@ -6,6 +6,8 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -67,9 +69,30 @@ public class MixControlPanelView extends ScrollView {
         init();
     }
 
+    private ViewTreeObserver.OnScrollChangedListener scrollListener = new ViewTreeObserver.OnScrollChangedListener() {
+        @Override
+        public void onScrollChanged() {
+            correct(MixControlPanelView.this);
+        }
+    };
+
+    void correct(View view) {
+        // 矫正气泡
+        if (view instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) view;
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                View child = getChildAt(i);
+                correct(child);
+            }
+        } else if (view instanceof BubbleSeekBar) {
+            ((BubbleSeekBar) view).correctOffsetWhenContainerOnScrolling();
+        }
+    }
+
     void init() {
         inflate(getContext(), R.layout.mix_control_panel_layout, this);
 
+        this.getViewTreeObserver().addOnScrollChangedListener(scrollListener);
         mPlayMusicBtn = (ExButton) this.findViewById(R.id.play_music_btn);
         mMusicSeekbar = (BubbleSeekBar) this.findViewById(R.id.music_seekbar);
 
@@ -231,5 +254,6 @@ public class MixControlPanelView extends ScrollView {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mUiHandler.removeCallbacksAndMessages(null);
+        this.getViewTreeObserver().removeOnScrollChangedListener(scrollListener);
     }
 }
