@@ -80,6 +80,10 @@ android {
             java.srcDirs += 'src/main/java-dialog'
             res.srcDirs += 'src/main/res-dialog'
 
+            // bubbleSeekbar
+            java.srcDirs += 'src/main/java-seekbar'
+            res.srcDirs += 'src/main/res-seekbar'
+
             // okhttp和retrofit封装
             java.srcDirs += 'src/main/java-rxretrofit'
 
@@ -176,6 +180,7 @@ dependencies {
 //    implementation rootProject.ext.dependencies["paginate"]
     // 强大上下拉刷新库
     api rootProject.ext.dependencies["SmartRefreshLayout"]
+
 //    debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库

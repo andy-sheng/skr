@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_dimen_50"
         android:orientation="vertical">
 
         <com.common.view.ex.ExButton
