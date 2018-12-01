@@ -81,7 +81,7 @@ public class MixControlPanelView extends ScrollView {
         if (view instanceof ViewGroup) {
             ViewGroup vg = (ViewGroup) view;
             for (int i = 0; i < vg.getChildCount(); i++) {
-                View child = getChildAt(i);
+                View child = vg.getChildAt(i);
                 correct(child);
             }
         } else if (view instanceof BubbleSeekBar) {
