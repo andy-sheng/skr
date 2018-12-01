@@ -44,7 +44,7 @@ public class RoomFragment extends BaseFragment {
     ExTextView mInfoTextView;
 
     String ROOM_ID = "chengsimin";
-    boolean useChangbaEngine = true;
+    boolean useChangbaEngine = false;
     Handler mUiHandler = new Handler();
 
     @Override
@@ -98,7 +98,7 @@ public class RoomFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 DialogPlus.newDialog(getContext())
-//                        .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
+                        .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
                         .setContentHolder(new ViewHolder(new MixControlPanelView(getContext())))
                         .setGravity(Gravity.BOTTOM)
                         .setCancelable(true)

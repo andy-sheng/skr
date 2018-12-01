@@ -157,6 +157,13 @@ public class AgoraEngineAdapter {
             }
         }
 
+        @Override
+        public void onAudioMixingFinished() {
+            super.onAudioMixingFinished();
+            if (mOutCallback != null) {
+                mOutCallback.onAudioMixingFinished();
+            }
+        }
     };
 
     public void setOutCallback(AgoraOutCallback outCallback) {

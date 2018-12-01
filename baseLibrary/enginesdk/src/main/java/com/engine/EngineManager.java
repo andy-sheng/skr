@@ -114,6 +114,11 @@ public class EngineManager implements AgoraOutCallback {
 
     }
 
+    @Override
+    public void onAudioMixingFinished() {
+        mConfig.setMixMusicPlaying(false);
+    }
+
     private UserStatus ensureJoin(int uid) {
         if (!mUserStatusMap.containsKey(uid)) {
             UserStatus userStatus = new UserStatus(uid);
@@ -157,7 +162,7 @@ public class EngineManager implements AgoraOutCallback {
         mUserStatusMap.clear();
         mRemoteViewCache.clear();
         mUiHandler.removeCallbacksAndMessages(null);
-        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY,null));
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
     }
 
     /**
@@ -357,6 +362,26 @@ public class EngineManager implements AgoraOutCallback {
         return AgoraEngineAdapter.getInstance().getAllEffects();
     }
 
+    /*音频基础开始*/
+    /**
+     * 开启或者关闭🎧耳返
+     * 默认关闭
+     */
+    public void enableInEarMonitoring(boolean enable) {
+        mConfig.setEnableInEarMonitoring(enable);
+        AgoraEngineAdapter.getInstance().enableInEarMonitoring(enable);
+    }
+
+    /**
+     * 设定耳返音量
+     *
+     * @param volume 默认100
+     */
+    public void setInEarMonitoringVolume(int volume) {
+        mConfig.setInEarMonitoringVolume(volume);
+        AgoraEngineAdapter.getInstance().setInEarMonitoringVolume(volume);
+    }
+    /*音频基础结束*/
 
     /*音频高级扩展开始*/
 
@@ -369,19 +394,16 @@ public class EngineManager implements AgoraOutCallback {
      * @param pitch
      */
     public void setLocalVoicePitch(double pitch) {
-        MyLog.d(TAG,"setLocalVoicePitch" + " pitch=" + pitch);
+        MyLog.d(TAG, "setLocalVoicePitch" + " pitch=" + pitch);
         mConfig.setLocalVoicePitch(pitch);
         AgoraEngineAdapter.getInstance().setLocalVoicePitch(pitch);
     }
 
     /**
      * 设置本地语音音效均衡
-     *
-     * @param bandFrequency 频谱子带索引，取值范围是 [0-9]，分别代表 10 个频带，对应的中心频率是 [31，62，125，250，500，1k，2k，4k，8k，16k] Hz
-     * @param bandGain      每个 band 的增益，单位是 dB，每一个值的范围是 [-15，15]，默认值为 0
      */
-    public void setLocalVoiceEqualization(int bandFrequency, int bandGain) {
-        AgoraEngineAdapter.getInstance().setLocalVoiceEqualization(bandFrequency, bandGain);
+    public void setLocalVoiceEqualization() {
+        AgoraEngineAdapter.getInstance().setLocalVoiceEqualization(mConfig.getBandFrequency(), mConfig.getBandGain());
     }
 
     /**
@@ -414,6 +436,7 @@ public class EngineManager implements AgoraOutCallback {
      *                 -1：无限循环
      */
     public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
+        mConfig.setMixMusicPlaying(true);
         AgoraEngineAdapter.getInstance().startAudioMixing(filePath, loopback, replace, cycle);
     }
 
@@ -422,6 +445,7 @@ public class EngineManager implements AgoraOutCallback {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
+        mConfig.setMixMusicPlaying(false);
         AgoraEngineAdapter.getInstance().stopAudioMixing();
     }
 
@@ -429,6 +453,7 @@ public class EngineManager implements AgoraOutCallback {
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
+        mConfig.setMixMusicPlaying(false);
         AgoraEngineAdapter.getInstance().pauseAudioMixing();
     }
 
@@ -436,6 +461,7 @@ public class EngineManager implements AgoraOutCallback {
      * 继续播放混音
      */
     public void resumeAudioMixing() {
+        mConfig.setMixMusicPlaying(true);
         AgoraEngineAdapter.getInstance().resumeAudioMixing();
     }
 
@@ -445,6 +471,7 @@ public class EngineManager implements AgoraOutCallback {
      * @param volume 1-100 默认100
      */
     public void adjustAudioMixingVolume(int volume) {
+        mConfig.setAudioMixingVolume(volume);
         AgoraEngineAdapter.getInstance().adjustAudioMixingVolume(volume);
     }
 

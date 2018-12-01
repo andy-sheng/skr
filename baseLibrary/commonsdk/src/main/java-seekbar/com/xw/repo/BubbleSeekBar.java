@@ -680,7 +680,11 @@ public class BubbleSeekBar extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getActionMasked()) {
+        int action = event.getActionMasked();
+        if (mProgressListener != null) {
+            mProgressListener.onTouchEvent(this,action);
+        }
+        switch (action) {
             case MotionEvent.ACTION_DOWN:
                 performClick();
                 getParent().requestDisallowInterceptTouchEvent(true);
@@ -1354,6 +1358,8 @@ public class BubbleSeekBar extends View {
         void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat);
 
         void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser);
+
+        void onTouchEvent(BubbleSeekBar bubbleSeekBar, int action);
     }
 
     /**
@@ -1374,6 +1380,7 @@ public class BubbleSeekBar extends View {
         @Override
         public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
         }
+        public void onTouchEvent(BubbleSeekBar bubbleSeekBar, int action){}
     }
 
     /**

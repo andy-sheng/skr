@@ -55,11 +55,24 @@ public class Params {
 
     private int volumeIndicationInterval = 300; // 是谁在说话提示最小间隔
 
-    private int volumeIndicationSmooth = 3;
+    private int volumeIndicationSmooth = 3; // 平滑程度
 
     private boolean cameraAutoFocusFaceModeEnabled = true;// 相机自动对焦开启
 
-    private double localVoicePitch = 1.0;
+    private double localVoicePitch = 1.0; // 音调
+
+    private int bandFrequency = 0; // 子带频率
+
+    private int bandGain = 0;// 子带增益
+
+    private boolean mixMusicPlaying = false; // 混音在播放中
+    private int mAudioMixingVolume = 100;
+    private boolean mEnableInEarMonitoring = false;
+    private int mInEarMonitoringVolume = 100;
+
+    public static Builder newBuilder(int channelProfile) {
+        return new Builder().setChannelProfile(channelProfile);
+    }
 
     public int getChannelProfile() {
         return channelProfile;
@@ -189,9 +202,54 @@ public class Params {
         this.localVoicePitch = localVoicePitch;
     }
 
-    public static Params.Builder newBuilder(int channelProfile) {
-        return new Builder().setChannelProfile(channelProfile);
+    public int getBandFrequency() {
+        return bandFrequency;
     }
+
+    public void setBandFrequency(int bandFrequency) {
+        this.bandFrequency = bandFrequency;
+    }
+
+    public int getBandGain() {
+        return bandGain;
+    }
+
+    public void setBandGain(int bandGain) {
+        this.bandGain = bandGain;
+    }
+
+    public boolean isMixMusicPlaying() {
+        return mixMusicPlaying;
+    }
+
+    public void setMixMusicPlaying(boolean mixMusicPlaying) {
+        this.mixMusicPlaying = mixMusicPlaying;
+    }
+
+    public int getAudioMixingVolume() {
+        return mAudioMixingVolume;
+    }
+
+    public void setAudioMixingVolume(int audioMixingVolume) {
+        mAudioMixingVolume = audioMixingVolume;
+    }
+
+    public void setEnableInEarMonitoring(boolean enableInEarMonitoring) {
+        mEnableInEarMonitoring = enableInEarMonitoring;
+    }
+
+    public boolean getEnableInEarMonitoring() {
+        return mEnableInEarMonitoring;
+    }
+
+    public void setInEarMonitoringVolume(int inEarMonitoringVolume) {
+        mInEarMonitoringVolume = inEarMonitoringVolume;
+    }
+
+    public int getInEarMonitoringVolume() {
+        return mInEarMonitoringVolume;
+    }
+
 
     public static class Builder {
         Params mParams = new Params();
@@ -276,6 +334,32 @@ public class Params {
 
         public Builder setLocalVoicePitch(double localVoicePitch) {
             mParams.setLocalVoicePitch(localVoicePitch);
+            return this;
+        }
+
+
+        public Builder setBandFrequency(int bandFrequency) {
+            mParams.setBandFrequency(bandFrequency);
+            return this;
+        }
+
+        public Builder setBandGain(int bandGain) {
+            mParams.setBandGain(bandGain);
+            return this;
+        }
+
+        public Builder setAudioMixingVolume(int audioMixingVolume) {
+            mParams.setAudioMixingVolume(audioMixingVolume);
+            return this;
+        }
+
+        public Builder setEnableInEarMonitoring(boolean enableInEarMonitoring) {
+            mParams.setEnableInEarMonitoring(enableInEarMonitoring);
+            return this;
+        }
+
+        public Builder setInEarMonitoringVolume(int inEarMonitoringVolume) {
+            mParams.setInEarMonitoringVolume(inEarMonitoringVolume);
             return this;
         }
 

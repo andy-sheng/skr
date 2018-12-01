@@ -29,4 +29,7 @@ public interface AgoraOutCallback {
     void onUserEnableVideo(int uid, boolean enabled);
 
     void onVideoSizeChanged(int uid, int width, int height, int rotation);
+
+    void onAudioMixingFinished();
+    
 }
