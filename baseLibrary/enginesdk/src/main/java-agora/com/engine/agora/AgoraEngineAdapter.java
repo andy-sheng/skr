@@ -15,10 +15,7 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -190,7 +187,7 @@ public class AgoraEngineAdapter {
                 try {
                     if (mRtcEngine == null) {
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
-                        mRtcEngine.setLogFile(U.getAppInfoUtils().getSubDirPath("logs")+"agorasdk.log");
+                        mRtcEngine.setLogFile(U.getAppInfoUtils().getSubDirPath("logs") + "agorasdk.log");
                         // 模式为广播,必须在加入频道前调用
                         // 如果想要切换模式，则需要先调用 destroy 销毁当前引擎，然后使用 create 创建一个新的引擎后，再调用该方法设置新的频道模式
                         mRtcEngine.setChannelProfile(mConfig.getChannelProfile());
@@ -234,6 +231,8 @@ public class AgoraEngineAdapter {
             // Agora 建议在 enableVideo 前调用该方法，可以加快首帧出图的时间。
             //  所有设置的参数均为理想情况下的最大值
             setVideoEncoderConfiguration();
+            mRtcEngine.setCameraAutoFocusFaceModeEnabled(mConfig.isCameraAutoFocusFaceModeEnabled());
+
         } else {
             mRtcEngine.disableVideo();
         }
@@ -338,14 +337,14 @@ public class AgoraEngineAdapter {
      * 调用 setupLocalVideo 设置预览窗口及属性。
      */
     public void startPreview() {
-            mRtcEngine.startPreview();
+        mRtcEngine.startPreview();
     }
 
     /**
      * 关闭预览
      */
     public void stopPreview() {
-            mRtcEngine.stopPreview();
+        mRtcEngine.stopPreview();
     }
 
     /**
@@ -362,8 +361,40 @@ public class AgoraEngineAdapter {
     /**
      * 切换前/后摄像头
      */
-    public void switchCamera(){
+    public void switchCamera() {
         mRtcEngine.switchCamera();
+    }
+
+    /**
+     * 是否支持闪光灯常亮
+     *
+     * @return
+     */
+    public boolean isCameraTorchSupported() {
+        return mRtcEngine.isCameraTorchSupported();
+    }
+
+    /**
+     * 是否打开闪光灯
+     *
+     * @param on true：打开
+     *           false：关闭
+     */
+    public void setCameraTorchOn(boolean on) {
+        mRtcEngine.setCameraTorchOn(on);
+    }
+
+    /**
+     * 还有两个方法
+     * isCameraFocusSupported 是否支持对焦
+     * isCameraAutoFocusFaceModeSupported 是否支持手动对焦
+     * 手动对焦
+     *
+     * @param x
+     * @param y
+     */
+    public void setCameraFocusPositionInPreview(float x, float y) {
+        mRtcEngine.setCameraFocusPositionInPreview(x, y);
     }
 
     /**
@@ -801,7 +832,7 @@ public class AgoraEngineAdapter {
             manager.playEffect(
                     effectModel.getId(),                         // 要播放的音效 id
                     effectModel.getPath(),         // 播放文件的路径
-                    -1,                        // 播放次数，-1 代表无限循环
+                    0,                        // 播放次数，-1 代表无限循环 ，0代表1次
                     1, // 音调 0.5-2
                     0.0,                       // 改变音效的空间位置，0表示正前方
                     100,                       // 音量，取值 0 ~ 100， 100 代表原始音量
@@ -871,13 +902,6 @@ public class AgoraEngineAdapter {
     /*其他高级选项开始*/
 
     /**
-     * 添加水印
-     * 发布或者订阅的音视频流回退选项的设定
-     * 设置接受大流还是小流
-     * 导入在线流媒体流
-     */
-
-    /**
      * 该方法每次只能增加一路旁路推流地址。若需推送多路流，则需多次调用该方法。
      *
      * @param url                推流地址，格式为 RTMP
@@ -904,13 +928,20 @@ public class AgoraEngineAdapter {
         mRtcEngine.setVideoQualityParameters(preferFrameRateOverImageQuality);
     }
 
-    public void setLogFilter(boolean debug){
-        if(debug){
+    public void setLogFilter(boolean debug) {
+        if (debug) {
             mRtcEngine.setLogFilter(Constants.LOG_FILTER_DEBUG);
-        }else{
+        } else {
             mRtcEngine.setLogFilter(Constants.LOG_FILTER_WARNING);
         }
     }
 
+    /**
+     * 添加水印
+     * 发布或者订阅的音视频流回退选项的设定
+     * 设置接受大流还是小流
+     * 导入在线流媒体流
+     * 给通话评分
+     */
     /*其他高级选项结束*/
 }

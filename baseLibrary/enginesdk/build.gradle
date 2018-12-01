@@ -28,13 +28,13 @@ android {
 
     sourceSets {
         main {
+            res.srcDirs += ['src/main/res']
+
             java.srcDirs += 'src/main/java-cb'
             res.srcDirs += ['src/main/res-cb']
 
             java.srcDirs += 'src/main/java-agora'
             res.srcDirs += ['src/main/res-agora']
-
-            res.srcDirs += ['src/main/res']
         }
     }
     externalNativeBuild {

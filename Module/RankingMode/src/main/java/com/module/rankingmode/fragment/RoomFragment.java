@@ -41,7 +41,7 @@ public class RoomFragment extends BaseFragment {
     ExTextView mInfoTextView;
 
     String ROOM_ID = "chengsimin";
-    boolean useChangbaEngine = true;
+    boolean useChangbaEngine = false;
     Handler mUiHandler = new Handler();
 
     @Override
@@ -77,11 +77,6 @@ public class RoomFragment extends BaseFragment {
 
         mInfoTextView = mRootView.findViewById(R.id.info_text);
 
-        EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
-                .setUseCbEngine(true)
-                .setEnableVideo(true)
-                .build());
-
         mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +91,12 @@ public class RoomFragment extends BaseFragment {
                 EngineManager.getInstance().playEffects(effectModel);
             }
         });
+        mRootView.findViewById(R.id.show_control_panel_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
         mModeSwitchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +134,12 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
+
+        EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
+                .setUseCbEngine(useChangbaEngine)
+                .setEnableVideo(true)
+                .build());
+
         if (U.getPermissionUtils().checkCamera(getActivity())) {
             joinRoom();
         } else {
@@ -154,7 +160,9 @@ public class RoomFragment extends BaseFragment {
                 }
             }, getActivity());
         }
+
         if (useChangbaEngine) {
+            mModeSwitchBtn.setText("使用唱吧引擎：已开启");
             recreateCameraView();
             // 确保view已经真正add进去了
             mUiHandler.post(new Runnable() {
@@ -163,6 +171,8 @@ public class RoomFragment extends BaseFragment {
                     EngineManager.getInstance().startPreview(mCameraSurfaceView);
                 }
             });
+        } else {
+            mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
         }
 
     }

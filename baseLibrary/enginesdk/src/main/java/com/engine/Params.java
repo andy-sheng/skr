@@ -54,6 +54,8 @@ public class Params {
 
     private int volumeIndicationSmooth = 3;
 
+    private boolean cameraAutoFocusFaceModeEnabled = true;
+
     public int getChannelProfile() {
         return channelProfile;
     }
@@ -166,6 +168,14 @@ public class Params {
         this.volumeIndicationSmooth = volumeIndicationSmooth;
     }
 
+    public boolean isCameraAutoFocusFaceModeEnabled() {
+        return cameraAutoFocusFaceModeEnabled;
+    }
+
+    public void setCameraAutoFocusFaceModeEnabled(boolean cameraAutoFocusFaceModeEnabled) {
+        this.cameraAutoFocusFaceModeEnabled = cameraAutoFocusFaceModeEnabled;
+    }
+
     public static Params.Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
     }
@@ -231,21 +241,23 @@ public class Params {
             return this;
         }
 
-
         public Builder setEnableAudioQualityIndication(boolean enableAudioQualityIndication) {
             mParams.setEnableAudioQualityIndication(enableAudioQualityIndication);
             return this;
         }
 
-
         public Builder setVolumeIndicationInterval(int volumeIndicationInterval) {
-            this.setVolumeIndicationInterval(volumeIndicationInterval);
+            mParams.setVolumeIndicationInterval(volumeIndicationInterval);
             return this;
         }
 
-
         public Builder setVolumeIndicationSmooth(int volumeIndicationSmooth) {
-            this.setVolumeIndicationSmooth(volumeIndicationSmooth);
+            mParams.setVolumeIndicationSmooth(volumeIndicationSmooth);
+            return this;
+        }
+
+        public Builder setCameraAutoFocusFaceModeEnabled(boolean cameraAutoFocusFaceModeEnabled) {
+            mParams.setCameraAutoFocusFaceModeEnabled(cameraAutoFocusFaceModeEnabled);
             return this;
         }
 
