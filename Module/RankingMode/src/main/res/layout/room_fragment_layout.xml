@@ -20,6 +20,12 @@
         android:layout_margin="@dimen/view_dimen_50"
         android:text="消息:" />
 
+    <com.zq.lyrics.widget.ManyLyricsView
+        android:layout_alignParentTop="true"
+        android:id="@+id/many_lyrics_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

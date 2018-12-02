@@ -29,6 +29,7 @@ import com.module.rankingmode.view.AudioControlPanelView;
 import com.module.rankingmode.view.VideoControlPanelView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.lyrics.widget.ManyLyricsView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -42,6 +43,7 @@ public class RoomFragment extends BaseFragment {
     ExButton mModeSwitchBtn;
     SurfaceView mCameraSurfaceView;
     ExTextView mInfoTextView;
+    ManyLyricsView mManyLyricsView;
 
     String ROOM_ID = "chengsimin";
     boolean useChangbaEngine = false;
@@ -79,7 +81,7 @@ public class RoomFragment extends BaseFragment {
         });
 
         mInfoTextView = mRootView.findViewById(R.id.info_text);
-
+        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
         mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

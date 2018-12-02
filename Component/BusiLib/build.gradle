@@ -15,11 +15,15 @@ android {
         main {
             manifest.srcFile 'src/main/AndroidManifest.xml'
             java.srcDirs += 'src/main/java-room-msg'
+            java.srcDirs += 'src/main/java-lyrics'
+            res.srcDirs += 'src/main/res-lyrics'
         }
     }
 }
 
 dependencies {
     compileOnly project(":commoncore")
+//    implementation 'com.github.zhangliangming:Register:v1.1'
 }
+
 
