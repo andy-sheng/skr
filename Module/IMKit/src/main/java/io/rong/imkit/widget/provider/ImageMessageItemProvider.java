@@ -54,8 +54,14 @@ public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
     }
 
     public void onItemClick(View view, int position, ImageMessage content, UIMessage message) {
+//        if (content != null) {
+//            EventBus.getDefault().post(new Event.ShowImagePreviewFragment(message.getMessage()));
+//        }
         if (content != null) {
-            EventBus.getDefault().post(new Event.ShowImagePreviewFragment(message.getMessage()));
+            Intent intent = new Intent("io.rong.imkit.intent.action.picturepagerview");
+            intent.setPackage(view.getContext().getPackageName());
+            intent.putExtra("message", message.getMessage());
+            view.getContext().startActivity(intent);
         }
     }
 

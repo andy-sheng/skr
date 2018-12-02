@@ -84,6 +84,15 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="io.rong.imkit.activity.PicturePagerActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="io.rong.imkit.intent.action.picturepagerview" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="io.rong.imkit.mention.MemberMentionedActivity"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="adjustPan|stateHidden" />

@@ -46,10 +46,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.common.utils.FragmentUtils;
-import com.common.utils.U;
-import com.imagepicker.fragment.ImagePreviewFragment;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -80,7 +76,6 @@ import io.rong.imkit.manager.SendImageManager;
 import io.rong.imkit.manager.UnReadMessageManager;
 import io.rong.imkit.mention.RongMentionManager;
 import io.rong.imkit.model.ConversationInfo;
-import io.rong.imkit.model.Event;
 import io.rong.imkit.model.Event.CSTerminateEvent;
 import io.rong.imkit.model.Event.ConnectEvent;
 import io.rong.imkit.model.Event.DraftEvent;
@@ -1486,15 +1481,6 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     private String getNameFromCache(String targetId) {
         UserInfo info = RongContext.getInstance().getUserInfoFromCache(targetId);
         return info == null ? targetId : info.getName();
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(Event.ShowImagePreviewFragment event) {
-        if (event != null && event.message != null) {
-            // todo 预览图像 : 原来的逻辑会去查会话找到更多的图片历史记录
-
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

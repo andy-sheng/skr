@@ -1,6 +1,7 @@
 package com.imagebrowse;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.common.image.model.BaseImage;
@@ -39,5 +40,4 @@ public class ImageBrowseView extends EnhancedImageView {
     protected void realLoadByFresco(BaseImage baseImage){
         ((PhotoDraweeView)mPhotoDraweeView).load(baseImage);
     }
-
 }

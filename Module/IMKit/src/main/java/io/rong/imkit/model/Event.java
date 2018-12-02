@@ -1103,15 +1103,4 @@ public class Event {
             this.errorCode = errorCode;
         }
     }
-
-    // 显示预览图片
-    public static class ShowImagePreviewFragment {
-
-        public Message message;
-
-        public ShowImagePreviewFragment(Message message){
-            this.message = message;
-        }
-
-    }
 }

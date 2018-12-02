@@ -48,6 +48,8 @@ public class EnhancedImageView extends RelativeLayout {
     protected GifDrawable mGifFromFile;
     protected SubsamplingScaleImageView mSubsamplingScaleImageView;
 
+    protected OnLongClickListener longClickListener; //长按事件的监听
+
     protected Handler mUiHandler = new Handler();
 
     protected BaseImage mBaseImage;
@@ -70,6 +72,11 @@ public class EnhancedImageView extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+    }
+
+    // 设置图片长按事件的监听
+    public void setViewLongClickListener(OnLongClickListener longClickListener) {
+        this.longClickListener = longClickListener;
     }
 
     @Override
@@ -152,6 +159,7 @@ public class EnhancedImageView extends RelativeLayout {
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(mPhotoDraweeView, 0, lp);
         }
+        mPhotoDraweeView.setOnLongClickListener(this.longClickListener);
         mPhotoDraweeView.setVisibility(VISIBLE);
     }
 
@@ -164,6 +172,7 @@ public class EnhancedImageView extends RelativeLayout {
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(mGifImageView, 0, lp);
         }
+
         mGifImageView.setVisibility(VISIBLE);
     }
 
@@ -176,6 +185,8 @@ public class EnhancedImageView extends RelativeLayout {
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(mSubsamplingScaleImageView, 0, lp);
         }
+
+        mSubsamplingScaleImageView.setOnLongClickListener(this.longClickListener);
         mSubsamplingScaleImageView.setVisibility(VISIBLE);
     }
 
