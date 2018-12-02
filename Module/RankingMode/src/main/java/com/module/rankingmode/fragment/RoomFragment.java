@@ -1,5 +1,6 @@
 package com.module.rankingmode.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -29,12 +30,20 @@ import com.module.rankingmode.view.AudioControlPanelView;
 import com.module.rankingmode.view.VideoControlPanelView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.utils.LyricsUtils;
 import com.zq.lyrics.widget.ManyLyricsView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.functions.Consumer;
 
 public class RoomFragment extends BaseFragment {
     public final static String TAG = "RoomFragment";
@@ -44,6 +53,8 @@ public class RoomFragment extends BaseFragment {
     SurfaceView mCameraSurfaceView;
     ExTextView mInfoTextView;
     ManyLyricsView mManyLyricsView;
+
+//    public static final String PATH_LYRIC
 
     String ROOM_ID = "chengsimin";
     boolean useChangbaEngine = false;
@@ -81,7 +92,25 @@ public class RoomFragment extends BaseFragment {
         });
 
         mInfoTextView = mRootView.findViewById(R.id.info_text);
+
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
+        mManyLyricsView.setSize(30, 30, false);
+        mManyLyricsView.setPaintHLColor(new int[]{});
+        mManyLyricsView.setPaintColor(new int[]{Color.WHITE, Color.WHITE});
+        mManyLyricsView.play(0);
+
+//        Observable.create(new ObservableOnSubscribe<LyricsReader>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<LyricsReader> emitter) {
+//                File lrcFile = LyricsUtils.getLrcFile("", )
+//            }
+//        }).subscribe(new Consumer<LyricsReader>() {
+//            @Override
+//            public void accept(LyricsReader lyricsReader) throws Exception {
+//
+//            }
+//        }, throwable -> {});
+
         mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
