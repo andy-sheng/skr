@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
+import com.common.utils.U;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -49,7 +50,8 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
         final ArrayList<RichContentItem> msgList = content.getMessages();
         if (msgList.size() > 0) {
             vh.tv.setText(((RichContentItem) msgList.get(0)).getTitle());
-            FrescoWorker.preLoadImg(vh.iv, ((RichContentItem) msgList.get(0)).getImageUrl(),0);
+
+            FrescoWorker.preLoadImg(vh.iv, U.getDisplayUtils().getScreenWidth(), vh.iv.getHeight(), ((RichContentItem) msgList.get(0)).getImageUrl(), 0);
         }
 
         LayoutParams params = v.getLayoutParams();
@@ -155,7 +157,7 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
                     tv.setText(title);
                 }
 
-                FrescoWorker.preLoadImg(iv, ((RichContentItem) this.itemList.get(position + 1)).getImageUrl(),0);
+                FrescoWorker.preLoadImg(iv, iv.getWidth(), iv.getHeight(), ((RichContentItem) this.itemList.get(position + 1)).getImageUrl(), 0);
                 if (position == this.getCount() - 1) {
                     divider.setVisibility(View.GONE);
                 } else {

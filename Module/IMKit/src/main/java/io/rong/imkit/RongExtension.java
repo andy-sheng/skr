@@ -496,6 +496,10 @@ public class RongExtension extends LinearLayout {
         this.mExtensionClickListener = clickListener;
     }
 
+    public IExtensionClickListener getExtensionClickListener(){
+        return this.mExtensionClickListener;
+    }
+
     public void onActivityPluginResult(int requestCode, int resultCode, Intent data) {
         int position = (requestCode >> 8) - 1;
         int reqCode = requestCode & 255;

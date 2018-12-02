@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -471,13 +472,13 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                         }
 
                         if (!tag.centerInHorizontal()) {
-                            this.setGravity(holder.layout, 5);
+                            this.setGravity(holder.layout, Gravity.RIGHT);
                             holder.contentView.containerViewRight();
-                            holder.nameView.setGravity(5);
+                            holder.nameView.setGravity(Gravity.RIGHT);
                         } else {
-                            this.setGravity(holder.layout, 17);
+                            this.setGravity(holder.layout, Gravity.CENTER);
                             holder.contentView.containerViewCenter();
-                            holder.nameView.setGravity(1);
+                            holder.nameView.setGravity(Gravity.CENTER_HORIZONTAL);
                             holder.contentView.setBackgroundColor(0);
                         }
 

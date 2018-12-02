@@ -1,10 +1,15 @@
 package com.common.image.fresco;
 
+import android.app.ActionBar;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 
 import com.common.base.R;
 import com.common.image.fresco.cache.MLCacheKeyFactory;
@@ -307,11 +312,12 @@ public class FrescoWorker {
 
     /**
      * 加载 图片
-     * @param draweeView  图片加载的view
-     * @param uri         图片远程uri
-     * @param resDefault  默认图片
+     *
+     * @param draweeView 图片加载的view
+     * @param uri        图片远程uri
+     * @param resDefault 默认图片
      */
-    public static void preLoadImg(SimpleDraweeView draweeView, String uri, int resDefault) {
+    public static void preLoadImg(SimpleDraweeView draweeView, int width, int height, String uri, int resDefault) {
         if (draweeView == null) {
             return;
         }
@@ -325,14 +331,53 @@ public class FrescoWorker {
             }
         } else {
             avatarImg = ImageFactory.newHttpImage(uri)
-                    .setWidth(draweeView.getWidth())
-                    .setHeight(draweeView.getHeight())
+                    .setWidth(width)
+                    .setHeight(height)
                     .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
-                    .setAutoPlayAnimation(true)
                     .build();
+
         }
 
+        ViewGroup.LayoutParams layoutParams = draweeView.getLayoutParams();
+        layoutParams.height = width;
+        layoutParams.width = height;
+        draweeView.setLayoutParams(layoutParams);
         FrescoWorker.loadImage(draweeView, avatarImg);
+    }
+
+    /**
+     * 从URI获取本地路径
+     *
+     * @return
+     */
+    public static String getAbsoluteImagePath(String contentUri) {
+
+        //如果是对媒体文件，在android开机的时候回去扫描，然后把路径添加到数据库中。
+        //由打印的contentUri可以看到：2种结构。正常的是：content://那么这种就要去数据库读取path。
+        //另外一种是Uri是 file:///那么这种是 Uri.fromFile(File file);得到的
+        String[] projection = {MediaStore.Images.Media.DATA};
+        String urlpath;
+        CursorLoader loader = new CursorLoader(U.app(), Uri.parse(contentUri), projection, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        try {
+            int column_index = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            urlpath = cursor.getString(column_index);
+            //如果是正常的查询到数据库。然后返回结构
+            return urlpath;
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            // TODO: handle exception
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        //如果是文件。Uri.fromFile(File file)生成的uri。那么下面这个方法可以得到结果
+        urlpath = Uri.parse(contentUri).getPath();
+        return urlpath;
     }
 
     /**

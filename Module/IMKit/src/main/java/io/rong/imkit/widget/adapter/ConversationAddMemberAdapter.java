@@ -47,7 +47,7 @@ public class ConversationAddMemberAdapter extends BaseAdapter<UserInfo> {
             holder.mMemberIcon.setVisibility(View.VISIBLE);
             holder.mMemberDeIcon.setVisibility(View.GONE);
             if (data.getPortraitUri() != null) {
-                FrescoWorker.preLoadImg(holder.mMemberIcon, data.getPortraitUri().toString(),R.drawable.rc_default_portrait);
+                FrescoWorker.preLoadImg(holder.mMemberIcon, holder.mMemberDeIcon.getWidth(), holder.mMemberDeIcon.getHeight(), data.getPortraitUri().toString(), R.drawable.rc_default_portrait);
             }
 
             if (data.getName() != null) {

@@ -139,7 +139,7 @@ public class PublicServiceSearchFragment extends DispatchResultFragment {
         protected void bindView(View v, int position, PublicServiceProfile data) {
             io.rong.imkit.fragment.PublicServiceSearchFragment.PublicServiceListAdapter.ViewHolder viewHolder = (io.rong.imkit.fragment.PublicServiceSearchFragment.PublicServiceListAdapter.ViewHolder) v.getTag();
             if (data != null) {
-                FrescoWorker.preLoadImg(viewHolder.portrait, data.getPortraitUri().toString(),0);
+                FrescoWorker.preLoadImg(viewHolder.portrait, viewHolder.portrait.getWidth(), viewHolder.portrait.getHeight(), data.getPortraitUri().toString(), 0);
                 viewHolder.title.setText(data.getName());
                 viewHolder.description.setText(data.getIntroduction());
             }

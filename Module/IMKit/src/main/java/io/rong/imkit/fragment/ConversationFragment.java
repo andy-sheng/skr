@@ -46,6 +46,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
+import com.imagepicker.fragment.ImagePreviewFragment;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -76,6 +80,7 @@ import io.rong.imkit.manager.SendImageManager;
 import io.rong.imkit.manager.UnReadMessageManager;
 import io.rong.imkit.mention.RongMentionManager;
 import io.rong.imkit.model.ConversationInfo;
+import io.rong.imkit.model.Event;
 import io.rong.imkit.model.Event.CSTerminateEvent;
 import io.rong.imkit.model.Event.ConnectEvent;
 import io.rong.imkit.model.Event.DraftEvent;
@@ -1483,6 +1488,14 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         return info == null ? targetId : info.getName();
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.ShowImagePreviewFragment event) {
+        if (event != null && event.message != null) {
+            // todo 预览图像
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadReceiptRequestEvent event) {
         RLog.d("ConversationFragment", "ReadReceiptRequestEvent");
@@ -1638,8 +1651,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 this.mListAdapter.getView(position, this.getListViewChildAt(position), this.mList);
             }
         }
-
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Message msg) {

@@ -60,7 +60,7 @@ public class RichContentMessageItemProvider extends MessageProvider<RichContentM
         holder.title.setText(content.getTitle());
         holder.content.setText(content.getContent());
         if (content.getImgUrl() != null) {
-            FrescoWorker.preLoadImg(holder.img, content.getImgUrl(),0);
+            FrescoWorker.preLoadImg(holder.img, holder.img.getWidth(), holder.img.getHeight(), content.getImgUrl(), 0);
         }
 
         if (message.getMessageDirection() == MessageDirection.SEND) {

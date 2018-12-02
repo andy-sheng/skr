@@ -60,7 +60,7 @@ public class SendImageManager {
                     if (listener != null) {
                         Message message = listener.onSend(Message.obtain(targetId, conversationType, content));
                         if (message != null) {
-                            RongIMClient.getInstance().insertMessage(conversationType, targetId, (String) null, message.getContent(), new ResultCallback<Message>() {
+                            RongIMClient.getInstance().insertMessage(conversationType, targetId,null, message.getContent(), new ResultCallback<Message>() {
                                 public void onSuccess(Message message) {
                                     message.setSentStatus(SentStatus.SENDING);
                                     RongIMClient.getInstance().setMessageSentStatus(message.getMessageId(), SentStatus.SENDING, (ResultCallback) null);
@@ -73,7 +73,7 @@ public class SendImageManager {
                             });
                         }
                     } else {
-                        RongIMClient.getInstance().insertMessage(conversationType, targetId, (String) null, content, new ResultCallback<Message>() {
+                        RongIMClient.getInstance().insertMessage(conversationType, targetId,null, content, new ResultCallback<Message>() {
                             public void onSuccess(Message message) {
                                 message.setSentStatus(SentStatus.SENDING);
                                 RongIMClient.getInstance().setMessageSentStatus(message.getMessageId(), SentStatus.SENDING, (ResultCallback) null);

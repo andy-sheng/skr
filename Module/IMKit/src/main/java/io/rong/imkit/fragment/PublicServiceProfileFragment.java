@@ -121,7 +121,7 @@ public class PublicServiceProfileFragment extends DispatchResultFragment {
 
     private void initData(final PublicServiceProfile info) {
         if (info != null) {
-            FrescoWorker.preLoadImg(this.mPortraitIV, info.getPortraitUri().toString(), 0);
+            FrescoWorker.preLoadImg(this.mPortraitIV, this.mPortraitIV.getWidth(), this.mPortraitIV.getHeight(), info.getPortraitUri().toString(), 0);
             this.mNameTV.setText(info.getName());
             this.mAccountTV.setText(String.format(this.getResources().getString(R.string.rc_pub_service_info_account), info.getTargetId()));
             this.mDescriptionTV.setText(info.getIntroduction());

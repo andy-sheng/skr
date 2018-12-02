@@ -40,7 +40,7 @@ public class ProviderContainerView extends FrameLayout {
     public <T extends IContainerItemProvider> View inflate(T t) {
         View result = null;
         if (this.mInflateView != null) {
-            this.mInflateView.setVisibility(8);
+            this.mInflateView.setVisibility(GONE);
         }
 
         if (this.mContentViewMap.containsKey(t.getClass())) {
@@ -50,8 +50,8 @@ public class ProviderContainerView extends FrameLayout {
         }
 
         if (result != null) {
-            if (result.getVisibility() == 8) {
-                result.setVisibility(0);
+            if (result.getVisibility() == GONE) {
+                result.setVisibility(VISIBLE);
             }
 
             return result;

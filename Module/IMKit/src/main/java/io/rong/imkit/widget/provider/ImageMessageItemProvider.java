@@ -19,7 +19,10 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.FrescoWorker;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import io.rong.imkit.R;
+import io.rong.imkit.model.Event;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider.MessageProvider;
@@ -35,6 +38,9 @@ import io.rong.message.ImageMessage;
 public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
     private static final String TAG = "ImageMessageItemProvider";
 
+    private static final int IMAGE_DEFAULT_WIDTH = 200;
+    private static final int IMAGE_DEFAULT_HEIGHT = 200;
+
     public ImageMessageItemProvider() {
     }
 
@@ -49,12 +55,8 @@ public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
 
     public void onItemClick(View view, int position, ImageMessage content, UIMessage message) {
         if (content != null) {
-            Intent intent = new Intent("io.io.rong.imkit.intent.action.picturepagerview");
-            intent.setPackage(view.getContext().getPackageName());
-            intent.putExtra("message", message.getMessage());
-            view.getContext().startActivity(intent);
+            EventBus.getDefault().post(new Event.ShowImagePreviewFragment(content));
         }
-
     }
 
     public void bindView(View v, int position, ImageMessage content, UIMessage message) {
@@ -65,7 +67,7 @@ public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
             v.setBackgroundResource(R.drawable.rc_ic_bubble_no_left);
         }
 
-        AvatarUtils.loadAvatarByUrl(holder.img, AvatarUtils.newParamsBuilder(0).setUrl(content.getThumUri().toString()).build());
+        FrescoWorker.preLoadImg(holder.img, IMAGE_DEFAULT_WIDTH, IMAGE_DEFAULT_HEIGHT, content.getThumUri().toString(), 0);
         int progress = message.getProgress();
         SentStatus status = message.getSentStatus();
         if (status.equals(SentStatus.SENDING) && progress < 100) {

@@ -19,6 +19,7 @@ import io.rong.imlib.model.Conversation.ConversationType;
 import io.rong.imlib.model.Group;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.Message.SentStatus;
+import io.rong.message.ImageMessage;
 import io.rong.message.RecallNotificationMessage;
 
 public class Event {
@@ -1101,5 +1102,15 @@ public class Event {
         public void setErrorCode(ErrorCode errorCode) {
             this.errorCode = errorCode;
         }
+    }
+
+    public static class ShowImagePreviewFragment {
+
+        public ImageMessage message;
+
+        public ShowImagePreviewFragment(ImageMessage message){
+            this.message = message;
+        }
+
     }
 }
