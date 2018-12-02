@@ -1104,11 +1104,12 @@ public class Event {
         }
     }
 
+    // 显示预览图片
     public static class ShowImagePreviewFragment {
 
-        public ImageMessage message;
+        public Message message;
 
-        public ShowImagePreviewFragment(ImageMessage message){
+        public ShowImagePreviewFragment(Message message){
             this.message = message;
         }
 

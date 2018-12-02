@@ -1492,7 +1492,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.ShowImagePreviewFragment event) {
         if (event != null && event.message != null) {
-            // todo 预览图像
+            // todo 预览图像 : 原来的逻辑会去查会话找到更多的图片历史记录
+
         }
     }
 

@@ -51,8 +51,6 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
         String[] permissions = new String[]{"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
         if (PermissionCheckUtil.checkPermissions(currentFragment.getContext(), permissions)) {
             // todo 打开图片选择器选择图片
-//            Intent intent = new Intent(currentFragment.getActivity(), PictureSelectorActivity.class);
-//            extension.startActivityForPluginResult(intent, 23, this);
             openSelectPictureFragment(currentFragment, extension);
         } else {
             extension.requestPermissionForPluginResult(permissions, 255, this);
@@ -78,7 +76,8 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
                             ArrayList<ImageItem> imageItems = ImagePicker.getInstance().getSelectedImages();
                             ArrayList<Uri> list = new ArrayList<>();
                             for (ImageItem imageItem : imageItems) {
-                                list.add(Uri.fromFile(new File(imageItem.getPath())));
+                                // todo 原来PictureSelectorActivity中uri 是这样生成的
+                                list.add(Uri.parse("file://" + imageItem.getPath()));
                             }
                             extension.getExtensionClickListener().onImageResult(list, false);
                         }
@@ -93,8 +92,6 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
     public boolean onRequestPermissionResult(Fragment fragment, RongExtension extension, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (PermissionCheckUtil.checkPermissions(fragment.getActivity(), permissions)) {
             // todo 打开图片选择器选择图片
-//            Intent intent = new Intent(fragment.getActivity(), PictureSelectorActivity.class);
-//            extension.startActivityForPluginResult(intent, 23, this);
             openSelectPictureFragment(fragment, extension);
         } else {
             extension.showRequestPermissionFailedAlter(PermissionCheckUtil.getNotGrantedPermissionMsg(fragment.getActivity(), permissions, grantResults));

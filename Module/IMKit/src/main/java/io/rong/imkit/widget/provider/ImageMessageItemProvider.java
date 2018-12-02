@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
+import com.common.image.model.ImageFactory;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,9 +41,6 @@ import io.rong.message.ImageMessage;
 public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
     private static final String TAG = "ImageMessageItemProvider";
 
-    private static final int IMAGE_DEFAULT_WIDTH = 200;
-    private static final int IMAGE_DEFAULT_HEIGHT = 200;
-
     public ImageMessageItemProvider() {
     }
 
@@ -55,7 +55,7 @@ public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
 
     public void onItemClick(View view, int position, ImageMessage content, UIMessage message) {
         if (content != null) {
-            EventBus.getDefault().post(new Event.ShowImagePreviewFragment(content));
+            EventBus.getDefault().post(new Event.ShowImagePreviewFragment(message.getMessage()));
         }
     }
 
@@ -67,7 +67,10 @@ public class ImageMessageItemProvider extends MessageProvider<ImageMessage> {
             v.setBackgroundResource(R.drawable.rc_ic_bubble_no_left);
         }
 
-        FrescoWorker.preLoadImg(holder.img, IMAGE_DEFAULT_WIDTH, IMAGE_DEFAULT_HEIGHT, content.getThumUri().toString(), 0);
+        BaseImage baseImage = ImageFactory.newHttpImage(content.getThumUri().toString())
+                .setScaleType(ScalingUtils.ScaleType.FIT_END)
+                .build();
+        FrescoWorker.loadImage(holder.img, baseImage);
         int progress = message.getProgress();
         SentStatus status = message.getSentStatus();
         if (status.equals(SentStatus.SENDING) && progress < 100) {

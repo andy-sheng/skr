@@ -16,7 +16,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
+import com.common.image.model.ImageFactory;
 import com.common.utils.U;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.SimpleDateFormat;
@@ -61,7 +64,10 @@ public class PublicServiceRichContentMessageProvider extends MessageProvider<Pub
         if (msg.getMessage() != null) {
             holder.title.setText(msg.getMessage().getTitle());
             holder.description.setText(msg.getMessage().getDigest());
-            FrescoWorker.preLoadImg(holder.imageView, U.getDisplayUtils().getScreenWidth(), holder.imageView.getHeight(), msg.getMessage().getImageUrl(), 0);
+            BaseImage baseImage = ImageFactory.newHttpImage(msg.getMessage().getImageUrl())
+                    .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                    .build();
+            FrescoWorker.loadImage(holder.imageView, baseImage);
         }
 
         String time = this.formatDate(message.getReceivedTime(), "MM月dd日 HH:mm");

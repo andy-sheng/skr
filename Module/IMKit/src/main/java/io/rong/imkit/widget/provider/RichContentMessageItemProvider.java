@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import io.rong.imkit.R;
@@ -60,7 +62,8 @@ public class RichContentMessageItemProvider extends MessageProvider<RichContentM
         holder.title.setText(content.getTitle());
         holder.content.setText(content.getContent());
         if (content.getImgUrl() != null) {
-            FrescoWorker.preLoadImg(holder.img, holder.img.getWidth(), holder.img.getHeight(), content.getImgUrl(), 0);
+            FrescoWorker.loadImage(holder.img, ImageFactory.newHttpImage(content.getImgUrl())
+                    .setScaleType(ScalingUtils.ScaleType.FIT_XY).build());
         }
 
         if (message.getMessageDirection() == MessageDirection.SEND) {

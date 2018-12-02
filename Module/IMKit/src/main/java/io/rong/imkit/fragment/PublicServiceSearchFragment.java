@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +23,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
+import com.common.image.model.ImageFactory;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -139,7 +143,11 @@ public class PublicServiceSearchFragment extends DispatchResultFragment {
         protected void bindView(View v, int position, PublicServiceProfile data) {
             io.rong.imkit.fragment.PublicServiceSearchFragment.PublicServiceListAdapter.ViewHolder viewHolder = (io.rong.imkit.fragment.PublicServiceSearchFragment.PublicServiceListAdapter.ViewHolder) v.getTag();
             if (data != null) {
-                FrescoWorker.preLoadImg(viewHolder.portrait, viewHolder.portrait.getWidth(), viewHolder.portrait.getHeight(), data.getPortraitUri().toString(), 0);
+                BaseImage baseImage = ImageFactory.newHttpImage(data.getPortraitUri().toString())
+                        .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                        .build();
+                FrescoWorker.loadImage(viewHolder.portrait, baseImage);
+
                 viewHolder.title.setText(data.getName());
                 viewHolder.description.setText(data.getIntroduction());
             }

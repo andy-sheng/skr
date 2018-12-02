@@ -21,7 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
+import com.common.image.model.ImageFactory;
 import com.common.utils.U;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -50,8 +53,10 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
         final ArrayList<RichContentItem> msgList = content.getMessages();
         if (msgList.size() > 0) {
             vh.tv.setText(((RichContentItem) msgList.get(0)).getTitle());
-
-            FrescoWorker.preLoadImg(vh.iv, U.getDisplayUtils().getScreenWidth(), vh.iv.getHeight(), ((RichContentItem) msgList.get(0)).getImageUrl(), 0);
+            BaseImage baseImage = ImageFactory.newHttpImage(((RichContentItem) msgList.get(0)).getImageUrl())
+                    .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                    .build();
+            FrescoWorker.loadImage(vh.iv, baseImage);
         }
 
         LayoutParams params = v.getLayoutParams();
@@ -157,7 +162,11 @@ public class PublicServiceMultiRichContentMessageProvider extends MessageProvide
                     tv.setText(title);
                 }
 
-                FrescoWorker.preLoadImg(iv, iv.getWidth(), iv.getHeight(), ((RichContentItem) this.itemList.get(position + 1)).getImageUrl(), 0);
+                BaseImage baseImage = ImageFactory.newHttpImage(((RichContentItem) this.itemList.get(position + 1)).getImageUrl())
+                        .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .build();
+                FrescoWorker.loadImage(iv, baseImage);
+
                 if (position == this.getCount() - 1) {
                     divider.setVisibility(View.GONE);
                 } else {

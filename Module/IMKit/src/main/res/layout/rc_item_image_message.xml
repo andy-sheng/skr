@@ -6,8 +6,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@id/rc_img"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/view_dimen_240"
+        android:layout_height="@dimen/view_dimen_330"
         app:placeholderImage="@color/black_trans_40"/>
 
     <TextView

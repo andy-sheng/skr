@@ -14,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
+import com.common.image.model.ImageFactory;
+import com.common.utils.U;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import io.rong.imkit.R;
@@ -47,7 +51,11 @@ public class ConversationAddMemberAdapter extends BaseAdapter<UserInfo> {
             holder.mMemberIcon.setVisibility(View.VISIBLE);
             holder.mMemberDeIcon.setVisibility(View.GONE);
             if (data.getPortraitUri() != null) {
-                FrescoWorker.preLoadImg(holder.mMemberIcon, holder.mMemberDeIcon.getWidth(), holder.mMemberDeIcon.getHeight(), data.getPortraitUri().toString(), R.drawable.rc_default_portrait);
+                BaseImage image = ImageFactory.newHttpImage(data.getPortraitUri().toString())
+                        .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                        .setFailureDrawable(U.app().getResources().getDrawable(R.drawable.rc_default_portrait))
+                        .build();
+                FrescoWorker.loadImage(holder.mMemberIcon, image);
             }
 
             if (data.getName() != null) {
@@ -57,7 +65,7 @@ public class ConversationAddMemberAdapter extends BaseAdapter<UserInfo> {
             }
 
             if (this.isDeleteState() && !data.getUserId().equals(this.getCreatorId())) {
-                holder.mDeleteIcon.setVisibility(0);
+                holder.mDeleteIcon.setVisibility(View.VISIBLE);
                 holder.mDeleteIcon.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
                         if (io.rong.imkit.widget.adapter.ConversationAddMemberAdapter.this.mDeleteIconListener != null) {
@@ -67,19 +75,19 @@ public class ConversationAddMemberAdapter extends BaseAdapter<UserInfo> {
                     }
                 });
             } else {
-                holder.mDeleteIcon.setVisibility(4);
+                holder.mDeleteIcon.setVisibility(View.INVISIBLE);
             }
         } else {
-            holder.mMemberIcon.setVisibility(4);
-            holder.mMemberDeIcon.setVisibility(0);
+            holder.mMemberIcon.setVisibility(View.INVISIBLE);
+            holder.mMemberDeIcon.setVisibility(View.VISIBLE);
             if (data.getUserId().equals("RongAddBtn")) {
                 holder.mMemberDeIcon.setImageResource(R.drawable.rc_ic_setting_friends_add);
             } else {
                 holder.mMemberDeIcon.setImageResource(R.drawable.rc_ic_setting_friends_delete);
             }
 
-            holder.mMemberName.setVisibility(4);
-            holder.mDeleteIcon.setVisibility(8);
+            holder.mMemberName.setVisibility(View.INVISIBLE);
+            holder.mDeleteIcon.setVisibility(View.GONE);
         }
 
     }

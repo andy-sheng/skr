@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
+import com.common.image.model.ImageFactory;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Locale;
@@ -121,7 +124,10 @@ public class PublicServiceProfileFragment extends DispatchResultFragment {
 
     private void initData(final PublicServiceProfile info) {
         if (info != null) {
-            FrescoWorker.preLoadImg(this.mPortraitIV, this.mPortraitIV.getWidth(), this.mPortraitIV.getHeight(), info.getPortraitUri().toString(), 0);
+            BaseImage baseImage = ImageFactory.newHttpImage(info.getPortraitUri().toString())
+                    .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                    .build();
+            FrescoWorker.loadImage(this.mPortraitIV, baseImage);
             this.mNameTV.setText(info.getName());
             this.mAccountTV.setText(String.format(this.getResources().getString(R.string.rc_pub_service_info_account), info.getTargetId()));
             this.mDescriptionTV.setText(info.getIntroduction());

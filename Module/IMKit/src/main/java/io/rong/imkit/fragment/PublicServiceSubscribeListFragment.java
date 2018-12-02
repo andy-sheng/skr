@@ -19,6 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.BaseImage;
+import com.common.image.model.ImageFactory;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Iterator;
@@ -158,7 +161,9 @@ public class PublicServiceSubscribeListFragment extends DispatchResultFragment {
         protected void bindView(View v, int position, PublicServiceProfile data) {
             io.rong.imkit.fragment.PublicServiceSubscribeListFragment.PublicServiceListAdapter.ViewHolder viewHolder = (io.rong.imkit.fragment.PublicServiceSubscribeListFragment.PublicServiceListAdapter.ViewHolder) v.getTag();
             if (data != null) {
-                FrescoWorker.preLoadImg(viewHolder.portrait, viewHolder.portrait.getWidth(), viewHolder.portrait.getHeight(), data.getPortraitUri().toString(), 0);
+                FrescoWorker.loadImage(viewHolder.portrait, ImageFactory.newHttpImage(data.getPortraitUri().toString())
+                        .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                        .build());
                 viewHolder.name.setText(data.getName());
                 viewHolder.introduction.setText(data.getIntroduction());
             }
