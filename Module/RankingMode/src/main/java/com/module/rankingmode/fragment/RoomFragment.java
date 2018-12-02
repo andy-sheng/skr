@@ -1,6 +1,5 @@
 package com.module.rankingmode.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -26,7 +25,8 @@ import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.rankingmode.R;
-import com.module.rankingmode.view.MixControlPanelView;
+import com.module.rankingmode.view.AudioControlPanelView;
+import com.module.rankingmode.view.VideoControlPanelView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
@@ -87,25 +87,31 @@ public class RoomFragment extends BaseFragment {
             }
         });
 
-        mRootView.findViewById(R.id.play_effect_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EffectModel effectModel = EngineManager.getInstance().getAllEffects().get(0);
-                EngineManager.getInstance().playEffects(effectModel);
-            }
-        });
-        mRootView.findViewById(R.id.show_mix_control_panel_btn).setOnClickListener(new View.OnClickListener() {
+        mRootView.findViewById(R.id.show_audio_control_panel_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogPlus.newDialog(getContext())
                         .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
-                        .setContentHolder(new ViewHolder(new MixControlPanelView(getContext())))
+                        .setContentHolder(new ViewHolder(new AudioControlPanelView(getContext())))
                         .setGravity(Gravity.BOTTOM)
                         .setCancelable(true)
                         .create().show();
 
             }
         });
+        mRootView.findViewById(R.id.show_video_control_panel_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogPlus.newDialog(getContext())
+                        .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
+                        .setContentHolder(new ViewHolder(new VideoControlPanelView(getContext())))
+                        .setGravity(Gravity.BOTTOM)
+                        .setCancelable(true)
+                        .create().show();
+
+            }
+        });
+
         mModeSwitchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

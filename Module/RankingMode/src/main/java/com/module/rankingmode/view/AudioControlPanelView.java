@@ -18,10 +18,11 @@ import com.common.log.MyLog;
 import com.common.view.ex.ExButton;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineManager;
+import com.engine.agora.effect.EffectModel;
 import com.module.rankingmode.R;
 import com.xw.repo.BubbleSeekBar;
 
-public class MixControlPanelView extends ScrollView {
+public class AudioControlPanelView extends ScrollView {
     public final static String TAG = "MixControlPanelView";
     public final static int UPDATE_MUSIC_PROGRESS = 100;
 
@@ -39,6 +40,9 @@ public class MixControlPanelView extends ScrollView {
     CheckBox mEarOpenCb;
     BubbleSeekBar mEarVolumeSeekbar;
 
+    CheckBox mMuteAllRemoteAudio;
+    CheckBox mMuteSelfAudio;
+
     private int mSelectKey = 0;
 
     private Handler mUiHandler = new Handler() {
@@ -50,7 +54,7 @@ public class MixControlPanelView extends ScrollView {
                     int now = EngineManager.getInstance().getAudioMixingCurrentPosition();
                     int total = EngineManager.getInstance().getAudioMixingDuration();
                     MyLog.d(TAG, "now:" + now + " totoal:" + total);
-                    float p = now / (total * 1.0f);
+                    float p = now*100 / total;
                     mMusicSeekbar.setProgress(p);
                     mUiHandler.sendEmptyMessageDelayed(UPDATE_MUSIC_PROGRESS, 1000);
                 }
@@ -59,12 +63,12 @@ public class MixControlPanelView extends ScrollView {
         }
     };
 
-    public MixControlPanelView(Context context) {
+    public AudioControlPanelView(Context context) {
         super(context);
         init();
     }
 
-    public MixControlPanelView(Context context, AttributeSet attrs) {
+    public AudioControlPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -72,7 +76,7 @@ public class MixControlPanelView extends ScrollView {
     private ViewTreeObserver.OnScrollChangedListener scrollListener = new ViewTreeObserver.OnScrollChangedListener() {
         @Override
         public void onScrollChanged() {
-            correct(MixControlPanelView.this);
+            correct(AudioControlPanelView.this);
         }
     };
 
@@ -90,7 +94,7 @@ public class MixControlPanelView extends ScrollView {
     }
 
     void init() {
-        inflate(getContext(), R.layout.mix_control_panel_layout, this);
+        inflate(getContext(), R.layout.audio_control_panel_layout, this);
 
         this.getViewTreeObserver().addOnScrollChangedListener(scrollListener);
         mPlayMusicBtn = (ExButton) this.findViewById(R.id.play_music_btn);
@@ -98,6 +102,8 @@ public class MixControlPanelView extends ScrollView {
 
         if (EngineManager.getInstance().getParams().isMixMusicPlaying()) {
             mPlayMusicBtn.setText("暂停伴奏");
+            mUiHandler.removeMessages(UPDATE_MUSIC_PROGRESS);
+            mUiHandler.sendEmptyMessage(UPDATE_MUSIC_PROGRESS);
         } else {
             mPlayMusicBtn.setText("播放伴奏");
         }
@@ -148,6 +154,14 @@ public class MixControlPanelView extends ScrollView {
             }
         });
 
+        findViewById(R.id.play_effect_btn).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EffectModel effectModel = EngineManager.getInstance().getAllEffects().get(0);
+                EngineManager.getInstance().playEffects(effectModel);
+            }
+        });
+
         mVoicePitchSeekbar = (BubbleSeekBar) this.findViewById(R.id.voice_pitch_seekbar);
         mBandFeqSeekbar = (BubbleSeekBar) this.findViewById(R.id.band_feq_seekbar);
         mBandGainSeekbar = (BubbleSeekBar) this.findViewById(R.id.band_gain_seekbar);
@@ -169,6 +183,7 @@ public class MixControlPanelView extends ScrollView {
             @Override
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 EngineManager.getInstance().getParams().setBandFrequency(progress);
+                EngineManager.getInstance().setLocalVoiceEqualization();
             }
 
         });
@@ -177,6 +192,7 @@ public class MixControlPanelView extends ScrollView {
             @Override
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 EngineManager.getInstance().getParams().setBandGain(progress);
+                EngineManager.getInstance().setLocalVoiceEqualization();
             }
 
         });
@@ -184,7 +200,7 @@ public class MixControlPanelView extends ScrollView {
         mPositionRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton button = MixControlPanelView.this.findViewById(checkedId);
+                RadioButton button = AudioControlPanelView.this.findViewById(checkedId);
                 mShowKeyTv.setText(button.getText());
                 if (checkedId == R.id.mix_key1_btn) {
                     mSelectKey = 0;
@@ -192,30 +208,35 @@ public class MixControlPanelView extends ScrollView {
                             .max(10)
                             .min(-20)
                             .build();
+                    mValueSeekbar.setProgress(EngineManager.getInstance().getParams().getLocalVoiceReverb(0));
                 } else if (checkedId == R.id.mix_key2_btn) {
                     mSelectKey = 1;
                     mValueSeekbar.getConfigBuilder()
                             .max(10)
                             .min(-20)
                             .build();
+                    mValueSeekbar.setProgress(EngineManager.getInstance().getParams().getLocalVoiceReverb(1));
                 } else if (checkedId == R.id.mix_key3_btn) {
                     mSelectKey = 2;
                     mValueSeekbar.getConfigBuilder()
                             .max(100)
                             .min(0)
                             .build();
+                    mValueSeekbar.setProgress(EngineManager.getInstance().getParams().getLocalVoiceReverb(2));
                 } else if (checkedId == R.id.mix_key4_btn) {
                     mSelectKey = 3;
                     mValueSeekbar.getConfigBuilder()
                             .max(200)
                             .min(0)
                             .build();
+                    mValueSeekbar.setProgress(EngineManager.getInstance().getParams().getLocalVoiceReverb(3));
                 } else if (checkedId == R.id.mix_key5_btn) {
                     mSelectKey = 4;
                     mValueSeekbar.getConfigBuilder()
                             .max(100)
                             .min(0)
                             .build();
+                    mValueSeekbar.setProgress(EngineManager.getInstance().getParams().getLocalVoiceReverb(4));
                 }
             }
         });
@@ -229,7 +250,7 @@ public class MixControlPanelView extends ScrollView {
 
         mEarOpenCb = (CheckBox) this.findViewById(R.id.ear_open_cb);
         mEarVolumeSeekbar = (BubbleSeekBar) this.findViewById(R.id.ear_volume_seekbar);
-        if (EngineManager.getInstance().getParams().getEnableInEarMonitoring()) {
+        if (EngineManager.getInstance().getParams().isEnableInEarMonitoring()) {
             mEarOpenCb.setChecked(true);
         } else {
             mEarOpenCb.setChecked(false);
@@ -245,6 +266,24 @@ public class MixControlPanelView extends ScrollView {
             @Override
             public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
                 EngineManager.getInstance().setInEarMonitoringVolume(progress);
+            }
+        });
+
+        mMuteAllRemoteAudio = this.findViewById(R.id.mute_all_remote_audio);
+        mMuteAllRemoteAudio.setChecked(EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute());
+        mMuteAllRemoteAudio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                EngineManager.getInstance().muteAllRemoteAudioStreams(b);
+            }
+        });
+
+        mMuteSelfAudio = this.findViewById(R.id.mute_self_audio);
+        mMuteSelfAudio.setChecked(EngineManager.getInstance().getParams().isLocalAudioStreamMute());
+        mMuteSelfAudio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                EngineManager.getInstance().muteLocalAudioStream(b);
             }
         });
     }

@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExButton
@@ -36,10 +36,17 @@
 
     </LinearLayout>
 
+    <com.common.view.ex.ExButton
+        android:id="@+id/play_effect_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="播放音效"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
@@ -65,7 +72,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
@@ -97,7 +104,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
@@ -124,7 +131,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
@@ -210,7 +217,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
@@ -238,7 +245,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <CheckBox
@@ -265,6 +272,28 @@
             app:bsb_show_section_mark="true"
             app:bsb_show_section_text="true"
             app:bsb_show_thumb_text="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/mute_all_remote_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="拒接其他人音频流" />
+
+        <CheckBox
+            android:id="@+id/mute_self_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="不发自己的音频流" />
 
     </LinearLayout>
 </LinearLayout>

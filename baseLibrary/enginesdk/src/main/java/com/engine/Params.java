@@ -1,5 +1,7 @@
 package com.engine;
 
+import java.util.HashMap;
+
 import io.agora.rtc.Constants;
 import io.agora.rtc.video.VideoEncoderConfiguration;
 
@@ -66,9 +68,16 @@ public class Params {
     private int bandGain = 0;// 子带增益
 
     private boolean mixMusicPlaying = false; // 混音在播放中
-    private int mAudioMixingVolume = 100;
-    private boolean mEnableInEarMonitoring = false;
-    private int mInEarMonitoringVolume = 100;
+    private int audioMixingVolume = 100;
+    private boolean enableInEarMonitoring = false;// 耳返
+    private int earMonitoringVolume = 100;
+    private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流
+
+    private HashMap<Integer, Integer> localVoiceReverb = new HashMap<>(); // 存混响参数
+    private boolean localAudioStreamMute = false;
+    private boolean cameraTorchOn = false;
+    private boolean localVideoStreamMute = false;
+    private boolean allRemoteVideoStreamsMute = false;
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -227,29 +236,80 @@ public class Params {
     }
 
     public int getAudioMixingVolume() {
-        return mAudioMixingVolume;
+        return audioMixingVolume;
     }
 
     public void setAudioMixingVolume(int audioMixingVolume) {
-        mAudioMixingVolume = audioMixingVolume;
+        this.audioMixingVolume = audioMixingVolume;
     }
 
     public void setEnableInEarMonitoring(boolean enableInEarMonitoring) {
-        mEnableInEarMonitoring = enableInEarMonitoring;
+        this.enableInEarMonitoring = enableInEarMonitoring;
     }
 
-    public boolean getEnableInEarMonitoring() {
-        return mEnableInEarMonitoring;
+    public boolean isEnableInEarMonitoring() {
+        return enableInEarMonitoring;
     }
 
     public void setInEarMonitoringVolume(int inEarMonitoringVolume) {
-        mInEarMonitoringVolume = inEarMonitoringVolume;
+        earMonitoringVolume = inEarMonitoringVolume;
     }
 
     public int getInEarMonitoringVolume() {
-        return mInEarMonitoringVolume;
+        return earMonitoringVolume;
     }
 
+    public void setLocalVoiceReverb(int reverbKey, int value) {
+        localVoiceReverb.put(reverbKey, value);
+    }
+
+    public int getLocalVoiceReverb(int reverbKey) {
+        Integer v = localVoiceReverb.get(reverbKey);
+        if (v == null) {
+            return 0;
+        }
+        return v;
+    }
+
+    public void setAllRemoteAudioStreamsMute(boolean allRemoteAudioStreamsMute) {
+        this.allRemoteAudioStreamsMute = allRemoteAudioStreamsMute;
+    }
+
+    public boolean isAllRemoteAudioStreamsMute() {
+        return allRemoteAudioStreamsMute;
+    }
+
+    public void setLocalAudioStreamMute(boolean localAudioStreamMute) {
+        this.localAudioStreamMute = localAudioStreamMute;
+    }
+
+    public boolean isLocalAudioStreamMute() {
+        return localAudioStreamMute;
+    }
+
+    public void setCameraTorchOn(boolean cameraTorchOn) {
+        this.cameraTorchOn = cameraTorchOn;
+    }
+
+    public boolean getCameraTorchOn() {
+        return cameraTorchOn;
+    }
+
+    public void setLocalVideoStreamMute(boolean localVideoStreamMute) {
+        this.localVideoStreamMute = localVideoStreamMute;
+    }
+
+    public boolean getLocalVideoStreamMute() {
+        return localVideoStreamMute;
+    }
+
+    public void setAllRemoteVideoStreamsMute(boolean allRemoteVideoStreamsMute) {
+        this.allRemoteVideoStreamsMute = allRemoteVideoStreamsMute;
+    }
+
+    public boolean getAllRemoteVideoStreamsMute() {
+        return allRemoteVideoStreamsMute;
+    }
 
     public static class Builder {
         Params mParams = new Params();
@@ -360,6 +420,21 @@ public class Params {
 
         public Builder setInEarMonitoringVolume(int inEarMonitoringVolume) {
             mParams.setInEarMonitoringVolume(inEarMonitoringVolume);
+            return this;
+        }
+
+        public Builder setAllRemoteAudioStreamsMute(boolean allRemoteAudioStreamsMute) {
+            mParams.setAllRemoteAudioStreamsMute(allRemoteAudioStreamsMute);
+            return this;
+        }
+
+        public Builder setLocalVoiceReverb(int reverbKey, int value) {
+            mParams.setLocalVoiceReverb(reverbKey, value);
+            return this;
+        }
+
+        public Builder setLocalAudioStreamMute(boolean localAudioStreamMute) {
+            mParams.setLocalAudioStreamMute(localAudioStreamMute);
             return this;
         }
 

@@ -165,31 +165,6 @@ public class EngineManager implements AgoraOutCallback {
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
     }
 
-    /**
-     * 开启唱吧引擎的自采集视频预览
-     * 这个view也是之后的本地view
-     */
-    public void startPreview(SurfaceView surfaceView) {
-        if (mConfig.isUseCbEngine()) {
-            CbEngineAdapter.getInstance().startPreview(surfaceView);
-        } else {
-            // agora引擎好像加入房间后，预览才有效果
-            AgoraEngineAdapter.getInstance().setLocalVideoRenderer(surfaceView);
-            AgoraEngineAdapter.getInstance().startPreview();
-        }
-    }
-
-    /**
-     * 开启唱吧引擎的自采集视频预览
-     */
-    public void stopPreview() {
-        if (mConfig.isUseCbEngine()) {
-            CbEngineAdapter.getInstance().stopPreview();
-        } else {
-            AgoraEngineAdapter.getInstance().stopPreview();
-        }
-    }
-
     public void startRecord() {
         if (mConfig.isUseCbEngine()) {
             CbEngineAdapter.getInstance().startRecord();
@@ -222,6 +197,33 @@ public class EngineManager implements AgoraOutCallback {
 
     public void setClientRole(boolean isAnchor) {
         AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
+    }
+
+
+    /* 视频基础开始 */
+    /**
+     * 开启唱吧引擎的自采集视频预览
+     * 这个view也是之后的本地view
+     */
+    public void startPreview(SurfaceView surfaceView) {
+        if (mConfig.isUseCbEngine()) {
+            CbEngineAdapter.getInstance().startPreview(surfaceView);
+        } else {
+            // agora引擎好像加入房间后，预览才有效果
+            AgoraEngineAdapter.getInstance().setLocalVideoRenderer(surfaceView);
+            AgoraEngineAdapter.getInstance().startPreview();
+        }
+    }
+
+    /**
+     * 开启唱吧引擎的自采集视频预览
+     */
+    public void stopPreview() {
+        if (mConfig.isUseCbEngine()) {
+            CbEngineAdapter.getInstance().stopPreview();
+        } else {
+            AgoraEngineAdapter.getInstance().stopPreview();
+        }
     }
 
     /**
@@ -352,17 +354,108 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     /**
-     * 播放音效
+     * 切换前/后摄像头
      */
-    public void playEffects(EffectModel effectModel) {
-        AgoraEngineAdapter.getInstance().playEffects(effectModel);
+    public void switchCamera() {
+        AgoraEngineAdapter.getInstance().switchCamera();
     }
 
-    public List<EffectModel> getAllEffects() {
-        return AgoraEngineAdapter.getInstance().getAllEffects();
+    /**
+     * 是否打开闪光灯
+     *
+     * @param on true：打开
+     *           false：关闭
+     */
+    public void setCameraTorchOn(boolean on) {
+        mConfig.setCameraTorchOn(on);
+        AgoraEngineAdapter.getInstance().setCameraTorchOn(on);
     }
+
+
+    /**
+     * 还有两个方法
+     * isCameraFocusSupported 是否支持对焦
+     * isCameraAutoFocusFaceModeSupported 是否支持手动对焦
+     * 手动对焦
+     *
+     * @param x
+     * @param y
+     */
+    public void setCameraFocusPositionInPreview(float x, float y) {
+        AgoraEngineAdapter.getInstance().setCameraFocusPositionInPreview(x, y);
+    }
+
+    /**
+     * 该方法设置本地视频镜像，须在开启本地预览前设置。如果在开启预览后设置，需要重新开启预览才能生效
+     *
+     * @param mode 0：默认镜像模式，即由 SDK 决定镜像模式
+     *             1：启用镜像模式
+     *             2：关闭镜像模式
+     */
+    public void setLocalVideoMirrorMode(int mode) {
+        AgoraEngineAdapter.getInstance().setLocalVideoMirrorMode(mode);
+    }
+
+
+    /**
+     * 调用该方法时，SDK 不再发送本地视频流，但摄像头仍然处于工作状态。
+     * 相比于 enableLocalVideo (false) 用于控制本地视频流发送的方法，该方法响应速度更快。
+     * 该方法不影响本地视频流获取，没有禁用摄像头
+     *
+     * @param muted
+     */
+    public void muteLocalVideoStream(boolean muted) {
+        mConfig.setLocalVideoStreamMute(muted);
+        AgoraEngineAdapter.getInstance().muteLocalVideoStream(muted);
+    }
+
+    /**
+     * 接收/停止接收指定视频流
+     * 如果之前有调用过 muteAllRemoteVideoStreams (true) 停止接收所有远端视频流，
+     * 在调用本 API 之前请确保你已调用 muteAllRemoteVideoStreams (false)。 muteAllRemoteVideoStreams 是全局控制，
+     * muteRemoteVideoStream 是精细控制。
+     *
+     * @param uid
+     * @param muted
+     */
+    public void muteRemoteVideoStream(int uid, boolean muted) {
+        AgoraEngineAdapter.getInstance().muteRemoteVideoStream(uid, muted);
+    }
+
+    /**
+     * 你不想看其他人的了，但其他人还能互相看
+     *
+     * @param muted
+     */
+    public void muteAllRemoteVideoStreams(boolean muted) {
+        mConfig.setAllRemoteVideoStreamsMute(muted);
+        AgoraEngineAdapter.getInstance().muteAllRemoteVideoStreams(muted);
+    }
+    /*视频基础结束*/
 
     /*音频基础开始*/
+
+    /**
+     * 两个方法的区别是
+     * enableLocalAudio：开启或关闭本地语音采集及处理
+     * muteLocalAudioStream：停止或继续发送本地音频流
+     *
+     * @param muted
+     */
+    public void muteLocalAudioStream(boolean muted) {
+        mConfig.setLocalAudioStreamMute(muted);
+        AgoraEngineAdapter.getInstance().muteLocalAudioStream(muted);
+    }
+
+    /**
+     * 接收/停止接收所有音频流。
+     * 适用于 A 在唱歌，B C 能互相聊天，但不能打扰到 A 的场景
+     */
+    public void muteAllRemoteAudioStreams(boolean muted) {
+        mConfig.setAllRemoteAudioStreamsMute(muted);
+        AgoraEngineAdapter.getInstance().muteAllRemoteAudioStreams(muted);
+    }
+
     /**
      * 开启或者关闭🎧耳返
      * 默认关闭
@@ -384,6 +477,17 @@ public class EngineManager implements AgoraOutCallback {
     /*音频基础结束*/
 
     /*音频高级扩展开始*/
+
+    /**
+     * 播放音效
+     */
+    public void playEffects(EffectModel effectModel) {
+        AgoraEngineAdapter.getInstance().playEffects(effectModel);
+    }
+
+    public List<EffectModel> getAllEffects() {
+        return AgoraEngineAdapter.getInstance().getAllEffects();
+    }
 
     /**
      * 设置本地语音音调。
@@ -417,6 +521,7 @@ public class EngineManager implements AgoraOutCallback {
      *                  AUDIO_REVERB_STRENGTH(4)：混响持续的强度，取值范围为 [0, 100]
      */
     public void setLocalVoiceReverb(int reverbKey, int value) {
+        mConfig.setLocalVoiceReverb(reverbKey,value);
         AgoraEngineAdapter.getInstance().setLocalVoiceReverb(reverbKey, value);
     }
 

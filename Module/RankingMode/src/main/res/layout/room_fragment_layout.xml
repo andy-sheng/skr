@@ -52,21 +52,20 @@
             android:text="开始采集编码(只针对唱吧引擎)" />
 
         <com.common.view.ex.ExButton
-            android:id="@+id/play_effect_btn"
+            android:id="@+id/show_audio_control_panel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/view_dimen_50"
             android:gravity="center"
-            android:text="播放音效" />
+            android:text="音频控制面板" />
 
         <com.common.view.ex.ExButton
-            android:id="@+id/show_mix_control_panel_btn"
+            android:id="@+id/show_video_control_panel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/view_dimen_50"
             android:gravity="center"
-            android:text="混音控制面板" />
-
+            android:text="视频控制面板" />
     </LinearLayout>
 
 </RelativeLayout>
