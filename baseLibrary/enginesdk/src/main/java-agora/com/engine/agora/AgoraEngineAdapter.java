@@ -245,6 +245,15 @@ public class AgoraEngineAdapter {
 
         // 开关视频双流模式。对端能选择接收大流还是小流
         mRtcEngine.enableDualStreamMode(true);
+
+        // 发送方设置
+        // 网络较差时，只发送音频流
+        mRtcEngine.setLocalPublishFallbackOption(Constants.STREAM_FALLBACK_OPTION_AUDIO_ONLY);
+
+        // 接收远端视频的配置
+        // 弱网环境下先尝试接收小流；若当前网络环境无法显示视频，则只接受音频
+        mRtcEngine.setRemoteSubscribeFallbackOption(Constants.STREAM_FALLBACK_OPTION_AUDIO_ONLY);
+
         if (mConfig.isUseCbEngine()) {
             // 音视频自采集
             mRtcEngine.setExternalAudioSource(

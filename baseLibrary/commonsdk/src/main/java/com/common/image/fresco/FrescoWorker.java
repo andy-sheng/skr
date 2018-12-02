@@ -317,6 +317,7 @@ public class FrescoWorker {
      * @param uri        图片远程uri
      * @param resDefault 默认图片
      */
+    @Deprecated
     public static void preLoadImg(SimpleDraweeView draweeView, int width, int height, String uri, int resDefault) {
         if (draweeView == null) {
             return;

@@ -68,16 +68,16 @@ public class Params {
     private int bandGain = 0;// 子带增益
 
     private boolean mixMusicPlaying = false; // 混音在播放中
-    private int audioMixingVolume = 100;
+    private int audioMixingVolume = 100; // 混音音量
     private boolean enableInEarMonitoring = false;// 耳返
-    private int earMonitoringVolume = 100;
+    private int earMonitoringVolume = 100; // 耳返音量
     private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流
 
     private HashMap<Integer, Integer> localVoiceReverb = new HashMap<>(); // 存混响参数
-    private boolean localAudioStreamMute = false;
-    private boolean cameraTorchOn = false;
-    private boolean localVideoStreamMute = false;
-    private boolean allRemoteVideoStreamsMute = false;
+    private boolean localAudioStreamMute = false; // 本地音频流禁止
+    private boolean cameraTorchOn = false; // 闪光灯常亮
+    private boolean localVideoStreamMute = false;// 本地视频流禁止
+    private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -396,7 +396,6 @@ public class Params {
             mParams.setLocalVoicePitch(localVoicePitch);
             return this;
         }
-
 
         public Builder setBandFrequency(int bandFrequency) {
             mParams.setBandFrequency(bandFrequency);
