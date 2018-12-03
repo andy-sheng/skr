@@ -43,6 +43,7 @@ import com.jude.swipbackhelper.SwipeBackHelper;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -246,6 +247,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         for (Presenter presenter : mPresenterSet) {
             presenter.resume();
         }
@@ -254,6 +256,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
         for (Presenter presenter : mPresenterSet) {
             presenter.pause();
         }

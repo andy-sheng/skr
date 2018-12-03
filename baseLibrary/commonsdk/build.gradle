@@ -191,6 +191,8 @@ dependencies {
     // 蒲公英 用户反馈 与 崩溃收集
     api files('libs/pgyer_sdk_3.0.2.jar')
 
+    implementation 'com.umeng.umsdk:analytics:7.5.4'
+
     //api files('libs/milinksdk-3.2.0.jar')
 
     api files('libs/BaiduLBS_Android.jar')

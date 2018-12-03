@@ -42,6 +42,7 @@ android {
             res.srcDirs += ['src/main/res-login']
             res.srcDirs += ['src/main/res-cta']
             res.srcDirs += ['src/main/res-config']
+            res.srcDirs += ['src/main/res-umeng']
         }
     }
 
@@ -51,6 +52,7 @@ android {
 dependencies {
     // commonsdk 也能远程 maven 依赖
 //    api "com.mi.live:common-sdk:2.0"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(":baseLibrary:commonsdk")
     api project(":baseLibrary:enginesdk")
     api project(":commonservice")
@@ -61,6 +63,8 @@ dependencies {
     // 小米oauth登录用
     api files('libs/oauth.jar')
     api files('libs/ks3-android-sdk-v-1.4.6.jar')
+    implementation 'com.umeng.umsdk:analytics:7.5.4'
+    implementation  'com.umeng.umsdk:common:1.5.4'
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
