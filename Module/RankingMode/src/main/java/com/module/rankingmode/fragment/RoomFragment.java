@@ -36,7 +36,6 @@ import com.zq.lyrics.event.EventClass;
 import com.zq.lyrics.inter.IlyricController;
 import com.zq.lyrics.utils.ColorUtils;
 import com.zq.lyrics.widget.AbstractLrcView;
-import com.zq.lyrics.widget.ManyLyricsView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -50,7 +49,7 @@ public class RoomFragment extends BaseFragment {
     ExButton mModeSwitchBtn;
     SurfaceView mCameraSurfaceView;
     ExTextView mInfoTextView;
-    ManyLyricsView mManyLineLyricsView;
+    AbstractLrcView mManyLineLyricsView;
 
     String ROOM_ID = "chengsimin";
     boolean useChangbaEngine = false;

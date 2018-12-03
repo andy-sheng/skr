@@ -20,7 +20,7 @@
         android:layout_margin="@dimen/view_dimen_50"
         android:text="消息:" />
 
-    <com.zq.lyrics.widget.ManyLyricsView
+    <com.zq.lyrics.widget.FloatLyricsView
         android:background="@color/black_trans_50"
         android:layout_alignParentTop="true"
         android:id="@+id/many_lyrics_view"
