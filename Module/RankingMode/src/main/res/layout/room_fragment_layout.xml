@@ -21,6 +21,7 @@
         android:text="消息:" />
 
     <com.zq.lyrics.widget.ManyLyricsView
+        android:background="@color/black_trans_50"
         android:layout_alignParentTop="true"
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"

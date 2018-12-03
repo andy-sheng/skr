@@ -1,5 +1,214 @@
 package com.zq.lyrics;
 
-public class LyricsManager {
+import android.content.Context;
+import android.util.Log;
 
+import com.common.log.MyLog;
+import com.zq.lyrics.event.EventClass;
+import com.zq.lyrics.model.LyricsInfo;
+import com.zq.lyrics.utils.LyricsIOUtils;
+import com.zq.lyrics.utils.LyricsUtils;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+public class LyricsManager {
+    public static final String TAG = "LyricsManager";
+    /**
+     *
+     */
+    private static Context mContext;
+    /**
+     *
+     */
+    private static Map<String, LyricsReader> mLyricsUtils = new HashMap<String, LyricsReader>();
+
+    private static LyricsManager _LyricsManager;
+
+    public LyricsManager(Context context) {
+
+
+        mContext = context;
+    }
+
+    public static LyricsManager getLyricsManager(Context context) {
+        if (_LyricsManager == null) {
+            _LyricsManager = new LyricsManager(context);
+        }
+        return _LyricsManager;
+    }
+
+    /**
+     * @param fileName
+     * @param keyword
+     * @param duration
+     * @param hash
+     * @return
+     */
+    public void loadLyricsUtil(final String fileName, final String keyword, final String duration, final String hash) {
+
+        Observable.create(new ObservableOnSubscribe<Object>() {
+
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) {
+                MyLog.d(TAG, "loadLyricsUtil 1");
+                if (mLyricsUtils.containsKey(hash)) {
+                    emitter.onNext(null);
+                }
+                MyLog.d(TAG, "loadLyricsUtil 2");
+                File lrcFile = LyricsUtils.getLrcFile(fileName, ResourceFileUtil.getFilePath(mContext, ResourceConstants.PATH_LYRICS, null));
+                MyLog.d(TAG, "loadLyricsUtil 3 " + lrcFile);
+                if (lrcFile != null) {
+                    LyricsReader lyricsUtil = new LyricsReader();
+                    try {
+
+                        lyricsUtil.loadLrc(lrcFile);
+                    } catch (Exception e) {
+                        Log.e("LyricsManager", "" + e.toString());
+                    }
+                    mLyricsUtils.put(hash, lyricsUtil);
+                }
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        EventBus.getDefault().post(new EventClass.FinishLoadLrcEvent(hash));
+                    }
+                });
+
+
+        //1.从缓存中获取
+        //2.从本地文件中获取
+        //3.从网络中获取
+//        new AsyncTaskUtil() {
+//
+//            @Override
+//            protected void onPostExecute(Void aVoid) {
+//                super.onPostExecute(aVoid);
+//
+//                AudioMessage audioMessage = new AudioMessage();
+//                audioMessage.setHash(hash);
+//                //发送加载完成广播
+//                Intent loadedIntent = new Intent(AudioBroadcastReceiver.ACTION_LRCLOADED);
+//                loadedIntent.putExtra(AudioMessage.KEY, audioMessage);
+//                loadedIntent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+//                mContext.sendBroadcast(loadedIntent);
+//            }
+//
+//            @Override
+//            protected Void doInBackground(String... strings) {
+//
+//                AudioMessage audioMessage = new AudioMessage();
+//                audioMessage.setHash(hash);
+//                //发送搜索中广播
+//                Intent searchingIntent = new Intent(AudioBroadcastReceiver.ACTION_LRCSEARCHING);
+//                searchingIntent.putExtra(AudioMessage.KEY, audioMessage);
+//                searchingIntent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+//                mContext.sendBroadcast(searchingIntent);
+//
+//                if (mLyricsUtils.containsKey(hash)) {
+//                    return null;
+//                }
+//                //
+//                File lrcFile = LyricsUtils.getLrcFile(fileName, ResourceFileUtil.getFilePath(mContext, ResourceConstants.PATH_LYRICS, null));
+//                if (lrcFile != null) {
+//                    LyricsReader lyricsUtil = new LyricsReader();
+//                    try {
+//
+//                        lyricsUtil.loadLrc(lrcFile);
+//                    } catch (Exception e) {
+//                        Log.e("LyricsManager", "" + e.toString());
+//                    }
+//                    mLyricsUtils.put(hash, lyricsUtil);
+//                } else {
+//
+//                    //发送下载中广播
+//                    Intent downloadingIntent = new Intent(AudioBroadcastReceiver.ACTION_LRCDOWNLOADING);
+//                    downloadingIntent.putExtra(AudioMessage.KEY, audioMessage);
+//                    downloadingIntent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+//                    mContext.sendBroadcast(downloadingIntent);
+//
+//                    //下载歌词
+//                    File saveLrcFile = new File(ResourceFileUtil.getFilePath(mContext, ResourceConstants.PATH_LYRICS, fileName + ".krc"));
+//                    byte[] base64ByteArray = DownloadLyricsUtil.downloadLyric(mHPApplication, mContext, keyword, duration, hash);
+//                    if (base64ByteArray != null && base64ByteArray.length > 1024) {
+//                        LyricsReader lyricsUtil = new LyricsReader();
+//
+//                        try {
+//                            lyricsUtil.loadLrc(base64ByteArray, saveLrcFile, saveLrcFile.getName());
+//                        } catch (Exception e) {
+//                            Log.e("LyricsManager", "" + e.toString());
+//                        }
+//                        mLyricsUtils.put(hash, lyricsUtil);
+//                    } else {
+//                        LyricsReader lyricsUtil = new LyricsReader();
+//                        mLyricsUtils.put(hash, lyricsUtil);
+//                    }
+//                }
+//
+//                return super.doInBackground(strings);
+//            }
+//        }.execute("");
+    }
+
+    public LyricsReader getLyricsUtil(String hash) {
+        return mLyricsUtils.get(hash);
+    }
+
+
+
+    /**
+     * 保存歌词文件
+     *
+     * @param lrcFilePath lrc歌词路径
+     * @param lyricsInfo  lrc歌词数据
+     */
+    private void saveLrcFile(final String lrcFilePath, final LyricsInfo lyricsInfo) {
+        new Thread() {
+
+            @Override
+            public void run() {
+
+                //保存修改的歌词文件
+                try {
+                    LyricsIOUtils.getLyricsFileWriter(lrcFilePath).writer(lyricsInfo, lrcFilePath);
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+            }
+
+        }.start();
+    }
 }

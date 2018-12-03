@@ -20,7 +20,6 @@ import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
-import com.engine.agora.effect.EffectModel;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -30,20 +29,19 @@ import com.module.rankingmode.view.AudioControlPanelView;
 import com.module.rankingmode.view.VideoControlPanelView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.utils.LyricsUtils;
+import com.zq.lyrics.ResourceConstants;
+import com.zq.lyrics.event.EventClass;
+import com.zq.lyrics.inter.IlyricController;
+import com.zq.lyrics.utils.ColorUtils;
+import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.functions.Consumer;
 
 public class RoomFragment extends BaseFragment {
     public final static String TAG = "RoomFragment";
@@ -52,9 +50,7 @@ public class RoomFragment extends BaseFragment {
     ExButton mModeSwitchBtn;
     SurfaceView mCameraSurfaceView;
     ExTextView mInfoTextView;
-    ManyLyricsView mManyLyricsView;
-
-//    public static final String PATH_LYRIC
+    ManyLyricsView mManyLineLyricsView;
 
     String ROOM_ID = "chengsimin";
     boolean useChangbaEngine = false;
@@ -92,24 +88,19 @@ public class RoomFragment extends BaseFragment {
         });
 
         mInfoTextView = mRootView.findViewById(R.id.info_text);
+        mManyLineLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
+//        mManyLineLyricsView.initLrcData();
+        //加载中
+        mManyLineLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
+        //设置字体大小和歌词颜色
+        mManyLineLyricsView.setSize(30, 30, false);
+        int lrcColor = ColorUtils.parserColor(ResourceConstants.lrcColorStr[3]);
+        mManyLineLyricsView.setPaintHLColor(new int[]{lrcColor, lrcColor}, false);
+        mManyLineLyricsView.setPaintColor(new int[]{Color.WHITE, Color.WHITE}, false);
+        String fileName = "shamoluotuo";
+        LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", "5000", fileName.hashCode() + "");
 
-        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
-        mManyLyricsView.setSize(30, 30, false);
-        mManyLyricsView.setPaintHLColor(new int[]{});
-        mManyLyricsView.setPaintColor(new int[]{Color.WHITE, Color.WHITE});
-        mManyLyricsView.play(0);
 
-//        Observable.create(new ObservableOnSubscribe<LyricsReader>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<LyricsReader> emitter) {
-//                File lrcFile = LyricsUtils.getLrcFile("", )
-//            }
-//        }).subscribe(new Consumer<LyricsReader>() {
-//            @Override
-//            public void accept(LyricsReader lyricsReader) throws Exception {
-//
-//            }
-//        }, throwable -> {});
 
         mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,9 +112,33 @@ public class RoomFragment extends BaseFragment {
         mRootView.findViewById(R.id.show_audio_control_panel_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AudioControlPanelView audioControlPanelView = new AudioControlPanelView(getContext());
+                audioControlPanelView.setLyricController(new IlyricController() {
+                    @Override
+                    public void seekTo(int progress) {
+                        if(mManyLineLyricsView != null){
+                            mManyLineLyricsView.seekto(progress);
+                        }
+                    }
+
+                    @Override
+                    public void pause() {
+                        if(mManyLineLyricsView != null){
+                            mManyLineLyricsView.pause();
+                        }
+                    }
+
+                    @Override
+                    public void resume() {
+                        if(mManyLineLyricsView != null && mManyLineLyricsView.getLyricsReader() != null){
+                            mManyLineLyricsView.resume();
+                        }
+                    }
+                });
+
                 DialogPlus.newDialog(getContext())
                         .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
-                        .setContentHolder(new ViewHolder(new AudioControlPanelView(getContext())))
+                        .setContentHolder(new ViewHolder(audioControlPanelView))
                         .setGravity(Gravity.BOTTOM)
                         .setCancelable(true)
                         .create().show();
@@ -172,6 +187,18 @@ public class RoomFragment extends BaseFragment {
             }, getActivity());
         }
         joinEngineRoom();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventClass.FinishLoadLrcEvent finishLoadLrcEvent) {
+        LyricsReader lyricsReader = LyricsManager.getLyricsManager(getActivity()).getLyricsUtil(finishLoadLrcEvent.hash);
+        if (lyricsReader != null) {
+            lyricsReader.setHash(finishLoadLrcEvent.hash);
+            mManyLineLyricsView.initLrcData();
+            mManyLineLyricsView.setLyricsReader(lyricsReader);
+//            if (mManyLineLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLineLyricsView.getLrcPlayerStatus() != AbstractLrcView.LRCPLAYERSTATUS_PLAY)
+//                mManyLineLyricsView.play(0);
+        }
     }
 
     void joinRongRoom() {

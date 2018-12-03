@@ -21,6 +21,7 @@ import com.engine.EngineManager;
 import com.engine.agora.effect.EffectModel;
 import com.module.rankingmode.R;
 import com.xw.repo.BubbleSeekBar;
+import com.zq.lyrics.inter.IlyricController;
 
 public class AudioControlPanelView extends ScrollView {
     public final static String TAG = "MixControlPanelView";
@@ -36,6 +37,8 @@ public class AudioControlPanelView extends ScrollView {
     RadioGroup mPositionRadioGroup;
     ExTextView mShowKeyTv;
     BubbleSeekBar mValueSeekbar;
+
+    IlyricController ilyricController;
 
     CheckBox mEarOpenCb;
     BubbleSeekBar mEarVolumeSeekbar;
@@ -71,6 +74,10 @@ public class AudioControlPanelView extends ScrollView {
     public AudioControlPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+    }
+
+    public void setLyricController(IlyricController ilyricController){
+        this.ilyricController = ilyricController;
     }
 
     private ViewTreeObserver.OnScrollChangedListener scrollListener = new ViewTreeObserver.OnScrollChangedListener() {
@@ -112,6 +119,9 @@ public class AudioControlPanelView extends ScrollView {
             public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
                 int total = EngineManager.getInstance().getAudioMixingDuration();
                 EngineManager.getInstance().setAudioMixingPosition((int) (progressFloat * total / 100));
+                if(ilyricController != null){
+                    ilyricController.seekTo((int) (progressFloat * total / 100));
+                }
             }
 
             @Override
@@ -133,11 +143,17 @@ public class AudioControlPanelView extends ScrollView {
             public void onClick(View v) {
                 if (EngineManager.getInstance().getParams().isMixMusicPlaying()) {
                     EngineManager.getInstance().stopAudioMixing();
+                    if(ilyricController != null){
+                        ilyricController.pause();
+                    }
                     mUiHandler.removeMessages(UPDATE_MUSIC_PROGRESS);
                     mPlayMusicBtn.setText("播放伴奏");
                 } else {
                     // 不再播放
                     EngineManager.getInstance().startAudioMixing("/assets/test.mp3", false, false, 1);
+                    if(ilyricController != null){
+                        ilyricController.resume();
+                    }
                     mUiHandler.removeMessages(UPDATE_MUSIC_PROGRESS);
                     mUiHandler.sendEmptyMessage(UPDATE_MUSIC_PROGRESS);
                     mPlayMusicBtn.setText("暂停伴奏");
