@@ -74,14 +74,15 @@ public class DefaultExtensionModule implements IExtensionModule {
     public List<IPluginModule> getPluginModules(ConversationType conversationType) {
         List<IPluginModule> pluginModuleList = new ArrayList();
         IPluginModule image = new ImagePlugin();
-        IPluginModule file = new FilePlugin();
         pluginModuleList.add(image);
 
         if (conversationType.equals(ConversationType.GROUP) || conversationType.equals(ConversationType.DISCUSSION) || conversationType.equals(ConversationType.PRIVATE)) {
             pluginModuleList.addAll(InternalModuleManager.getInstance().getExternalPlugins(conversationType));
         }
 
-        pluginModuleList.add(file);
+        // todo 屏蔽文件发送的入口
+//        IPluginModule file = new FilePlugin();
+//        pluginModuleList.add(file);
         return pluginModuleList;
     }
 

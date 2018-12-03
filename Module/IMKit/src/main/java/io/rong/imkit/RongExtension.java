@@ -941,7 +941,7 @@ public class RongExtension extends LinearLayout {
 
     private void setSCE() {
         this.mSwitchLayout.setVisibility(VISIBLE);
-        if (this.mSendToggle.getVisibility() == 0) {
+        if (this.mSendToggle.getVisibility() == VISIBLE) {
             this.mPluginLayout.setVisibility(GONE);
         } else {
             this.mPluginLayout.setVisibility(VISIBLE);

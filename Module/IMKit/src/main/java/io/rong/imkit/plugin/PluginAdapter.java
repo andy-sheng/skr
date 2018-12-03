@@ -36,7 +36,7 @@ public class PluginAdapter {
     private IPluginClickListener mPluginClickListener;
     private View mCustomPager;
     private ViewPager mViewPager;
-    private io.rong.imkit.plugin.PluginAdapter.PluginPagerAdapter mPagerAdapter;
+    private PluginAdapter.PluginPagerAdapter mPagerAdapter;
     private int mPluginCountPerPage;
 
     public PluginAdapter() {
@@ -132,8 +132,8 @@ public class PluginAdapter {
             }
 
             public void onPageSelected(int position) {
-                io.rong.imkit.plugin.PluginAdapter.this.onIndicatorChanged(io.rong.imkit.plugin.PluginAdapter.this.currentPage, position);
-                io.rong.imkit.plugin.PluginAdapter.this.currentPage = position;
+                PluginAdapter.this.onIndicatorChanged(io.rong.imkit.plugin.PluginAdapter.this.currentPage, position);
+                PluginAdapter.this.currentPage = position;
             }
 
             public void onPageScrollStateChanged(int state) {
@@ -150,7 +150,7 @@ public class PluginAdapter {
             pages = count / this.mPluginCountPerPage + rem;
         }
 
-        this.mPagerAdapter = new io.rong.imkit.plugin.PluginAdapter.PluginPagerAdapter(pages, count);
+        this.mPagerAdapter = new PluginAdapter.PluginPagerAdapter(pages, count);
         this.mViewPager.setAdapter(this.mPagerAdapter);
         this.mViewPager.setOffscreenPageLimit(1);
         this.initIndicator(pages, this.mIndicator);
@@ -238,7 +238,7 @@ public class PluginAdapter {
         int index;
 
         public PluginItemAdapter(int index, int count) {
-            this.count = Math.min(io.rong.imkit.plugin.PluginAdapter.this.mPluginCountPerPage, count - index);
+            this.count = Math.min(PluginAdapter.this.mPluginCountPerPage, count - index);
             this.index = index;
         }
 
@@ -256,10 +256,10 @@ public class PluginAdapter {
 
         public View getView(final int position, View convertView, ViewGroup parent) {
             Context context = parent.getContext();
-            io.rong.imkit.plugin.PluginAdapter.PluginItemAdapter.ViewHolder holder;
+            PluginItemAdapter.ViewHolder holder;
             if (convertView == null) {
-                holder = new io.rong.imkit.plugin.PluginAdapter.PluginItemAdapter.ViewHolder();
-                convertView = io.rong.imkit.plugin.PluginAdapter.this.mLayoutInflater.inflate(R.layout.rc_ext_plugin_item, (ViewGroup) null);
+                holder = new PluginItemAdapter.ViewHolder();
+                convertView = PluginAdapter.this.mLayoutInflater.inflate(R.layout.rc_ext_plugin_item, (ViewGroup) null);
                 holder.imageView = (ImageView) convertView.findViewById(R.id.rc_ext_plugin_icon);
                 holder.textView = (TextView) convertView.findViewById(R.id.rc_ext_plugin_title);
                 convertView.setTag(holder);
@@ -267,12 +267,12 @@ public class PluginAdapter {
 
             convertView.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    IPluginModule plugin = (IPluginModule) io.rong.imkit.plugin.PluginAdapter.this.mPluginModules.get(io.rong.imkit.plugin.PluginAdapter.this.currentPage * io.rong.imkit.plugin.PluginAdapter.this.mPluginCountPerPage + position);
-                    io.rong.imkit.plugin.PluginAdapter.this.mPluginClickListener.onClick(plugin, io.rong.imkit.plugin.PluginAdapter.this.currentPage * io.rong.imkit.plugin.PluginAdapter.this.mPluginCountPerPage + position);
+                    IPluginModule plugin = (IPluginModule) PluginAdapter.this.mPluginModules.get(PluginAdapter.this.currentPage * PluginAdapter.this.mPluginCountPerPage + position);
+                    PluginAdapter.this.mPluginClickListener.onClick(plugin, PluginAdapter.this.currentPage * PluginAdapter.this.mPluginCountPerPage + position);
                 }
             });
-            holder = (io.rong.imkit.plugin.PluginAdapter.PluginItemAdapter.ViewHolder) convertView.getTag();
-            IPluginModule plugin = (IPluginModule) io.rong.imkit.plugin.PluginAdapter.this.mPluginModules.get(position + this.index);
+            holder = (PluginItemAdapter.ViewHolder) convertView.getTag();
+            IPluginModule plugin = (IPluginModule) PluginAdapter.this.mPluginModules.get(position + this.index);
             holder.imageView.setImageDrawable(plugin.obtainDrawable(context));
             holder.textView.setText(plugin.obtainTitle(context));
             return convertView;
@@ -297,8 +297,8 @@ public class PluginAdapter {
         }
 
         public Object instantiateItem(ViewGroup container, int position) {
-            GridView gridView = (GridView) io.rong.imkit.plugin.PluginAdapter.this.mLayoutInflater.inflate(R.layout.rc_ext_plugin_grid_view, (ViewGroup) null);
-            gridView.setAdapter(io.rong.imkit.plugin.PluginAdapter.this.new PluginItemAdapter(position * io.rong.imkit.plugin.PluginAdapter.this.mPluginCountPerPage, this.items));
+            GridView gridView = (GridView) PluginAdapter.this.mLayoutInflater.inflate(R.layout.rc_ext_plugin_grid_view, null);
+            gridView.setAdapter(new PluginItemAdapter(position * PluginAdapter.this.mPluginCountPerPage, this.items));
             container.addView(gridView);
             return gridView;
         }

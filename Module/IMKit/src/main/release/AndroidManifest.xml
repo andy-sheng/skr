@@ -35,7 +35,7 @@
 
         <!--会话列表-->
         <activity
-            android:name="io.rong.test.MessageActivity"
+            android:name="io.rong.test.activity.MessageActivity"
             android:launchMode="singleTop">
 
             <intent-filter>

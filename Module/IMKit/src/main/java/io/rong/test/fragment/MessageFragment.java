@@ -1,4 +1,4 @@
-package io.rong.test;
+package io.rong.test.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,14 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.base.BaseActivity;
-import com.common.core.login.interceptor.JudgeLoginInterceptor;
+import com.common.base.BaseFragment;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExButton;
 import com.common.view.titlebar.CommonTitleBar;
-import com.module.RouterConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +25,9 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import io.rong.test.token.RCTokenManager;
 
-/**
- * 消息列表会话页面
- */
-@Route(path = RouterConstants.ACTIVITY_MESSAGE, extras = JudgeLoginInterceptor.NO_NEED_LOGIN)
-public class MessageActivity extends BaseActivity implements RongIM.UserInfoProvider {
+public class MessageFragment extends BaseFragment implements  RongIM.UserInfoProvider{
 
+    // todo 目前给两个账号用来测试通信，待账号完善接入
     CommonTitleBar commonTitleBar;
 
     ExButton mTestConnect1;
@@ -47,24 +41,29 @@ public class MessageActivity extends BaseActivity implements RongIM.UserInfoProv
     Fragment mConversationListFragment; //获取融云的会话列表对象
 
     @Override
-    public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.conversation_list_activity;
+    public int initView() {
+        return R.layout.conversation_list_fragment;
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        commonTitleBar = (CommonTitleBar) findViewById(R.id.titlebar);
+        commonTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
-        mTestConnect1 = (ExButton) findViewById(R.id.test_connect1);
-        mTestConnect2 = (ExButton) findViewById(R.id.test_connect2);
+        mTestConnect1 = (ExButton) mRootView.findViewById(R.id.test_connect1);
+        mTestConnect2 = (ExButton) mRootView.findViewById(R.id.test_connect2);
 
-        mTestMsg1 = (ExButton) findViewById(R.id.test_msg1);
-        mTestMsg2 = (ExButton) findViewById(R.id.test_msg2);
+        mTestMsg1 = (ExButton) mRootView.findViewById(R.id.test_msg1);
+        mTestMsg2 = (ExButton) mRootView.findViewById(R.id.test_msg2);
 
         initUserInfo();
 
         mConversationListFragment = initConversationList();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content,mConversationListFragment);
         transaction.commit();
@@ -106,7 +105,7 @@ public class MessageActivity extends BaseActivity implements RongIM.UserInfoProv
             @Override
             public void onClick(View view) {
                 U.getFragmentUtils().addFragment(
-                        FragmentUtils.newParamsBuilder(MessageActivity.this, ContactsFragment.class)
+                        FragmentUtils.newParamsBuilder(getActivity(), ContactsFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
@@ -133,16 +132,12 @@ public class MessageActivity extends BaseActivity implements RongIM.UserInfoProv
         RongIM.setUserInfoProvider(this,true);
     }
 
-    @Override
-    public boolean useEventBus() {
-        return false;
-    }
 
     // 会话列表的Fragment
     private Fragment initConversationList() {
         if (mConversationListFragment == null) {
             ConversationListFragment listFragment = new ConversationListFragment();
-            Uri uri = Uri.parse("io.rong://" + getApplicationInfo().packageName).buildUpon()
+            Uri uri = Uri.parse("io.rong://" + U.getAppInfoUtils().getPackageName()).buildUpon()
                     .appendPath("conversation_list_activity")
                     .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
                     .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "true")
@@ -157,9 +152,9 @@ public class MessageActivity extends BaseActivity implements RongIM.UserInfoProv
     }
 
     @Override
-    public UserInfo getUserInfo(String s) {
+    public UserInfo getUserInfo(String useId) {
         for(UserInfo userInfo : list){
-            if (userInfo.getUserId().equals(s)){
+            if (userInfo.getUserId().equals(useId)){
                 return userInfo;
             }
         }
