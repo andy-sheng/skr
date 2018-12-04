@@ -2,6 +2,7 @@ package com.zq.lyrics.widget;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -22,6 +23,7 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
+import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
@@ -195,13 +197,13 @@ public class ManyLyricsView extends AbstractLrcView {
 
     public ManyLyricsView(Context context) {
         super(context);
-        init(context);
+        init(context, null);
     }
 
     public ManyLyricsView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        init(context);
+        init(context, attrs);
     }
 
     /**
@@ -212,8 +214,12 @@ public class ManyLyricsView extends AbstractLrcView {
      * @author: zhangliangming
      * @date: 2018-04-21 9:08
      */
-    private void init(Context context) {
-
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.many_line_lrc_view);
+        if(typedArray.hasValue(R.styleable.many_line_lrc_view_ly_eable_scroll)){
+            mTouchAble = typedArray.getBoolean(R.styleable.many_line_lrc_view_ly_eable_scroll, true);
+        }
+        typedArray.recycle();
         //初始化
         mScroller = new Scroller(context, new LinearInterpolator());
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();

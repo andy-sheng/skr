@@ -230,7 +230,11 @@ public class FloatLyricsView extends AbstractLrcView {
         }
         //画歌词
         LyricsUtils.drawOutline(canvas, paintOutline, curLyrics, textX, textY);
-        LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColors, paintHLColors, curLyrics, lineLyricsHLWidth, textX, textY);
+        if (mEnableVerbatim) {
+            LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColors, paintHLColors, curLyrics, lineLyricsHLWidth, textX, textY);
+        }else {
+            LyricsUtils.drawText(canvas, paintHL, paintHLColors, curLyrics, textX, textY);
+        }
     }
 
 

@@ -1,6 +1,5 @@
 package com.module.rankingmode.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -31,10 +30,8 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.ResourceConstants;
 import com.zq.lyrics.event.EventClass;
 import com.zq.lyrics.inter.IlyricController;
-import com.zq.lyrics.utils.ColorUtils;
 import com.zq.lyrics.widget.AbstractLrcView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -91,11 +88,7 @@ public class RoomFragment extends BaseFragment {
 //        mManyLineLyricsView.initLrcData();
         //加载中
         mManyLineLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
-        //设置字体大小和歌词颜色
-        mManyLineLyricsView.setSize(30, 30, false);
-        int lrcColor = ColorUtils.parserColor(ResourceConstants.lrcColorStr[3]);
-        mManyLineLyricsView.setPaintHLColor(new int[]{lrcColor, lrcColor}, false);
-        mManyLineLyricsView.setPaintColor(new int[]{Color.WHITE, Color.WHITE}, false);
+
         String fileName = "shamoluotuo";
         LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", "5000", fileName.hashCode() + "");
 

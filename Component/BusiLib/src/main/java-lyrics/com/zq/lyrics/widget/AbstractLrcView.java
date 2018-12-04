@@ -1,6 +1,7 @@
 package com.zq.lyrics.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,6 +15,7 @@ import android.os.Process;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.common.utils.U;
 import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsInfo;
@@ -350,6 +352,12 @@ public abstract class AbstractLrcView extends View {
     private Handler mWorkerHandler;
     //创建异步HandlerThread
     private HandlerThread mHandlerThread;
+
+    /**
+     * 要不要用逐字画
+     */
+    protected boolean mEnableVerbatim = true;
+
     /**
      * 处理ui任务
      */
@@ -377,12 +385,12 @@ public abstract class AbstractLrcView extends View {
 
     public AbstractLrcView(Context context) {
         super(context);
-        init(context);
+        init(context, null);
     }
 
     public AbstractLrcView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(context, attrs);
     }
 
     /**
@@ -393,8 +401,8 @@ public abstract class AbstractLrcView extends View {
      * @author: zhangliangming
      * @date: 2018-04-21 9:08
      */
-    private void init(Context context) {
-
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.lrc_view);
 //        RegisterHelper.verify();
 
         //初始默认数据
@@ -404,10 +412,22 @@ public abstract class AbstractLrcView extends View {
         mNonsupportText = context.getString(R.string.nonsupport_text);
         mGotoSearchText = context.getString(R.string.goto_search_text);
 
+        if(typedArray.hasValue(R.styleable.lrc_view_ly_paint_color_from) && typedArray.hasValue(R.styleable.lrc_view_ly_paint_color_to)){
+            mPaintColors = new int[]{typedArray.getColor(R.styleable.lrc_view_ly_paint_color_from, Color.BLUE), typedArray.getColor(R.styleable.lrc_view_ly_paint_color_to, Color.BLUE)};
+        }
+
+        if(typedArray.hasValue(R.styleable.lrc_view_ly_high_light_paint_color_from) && typedArray.hasValue(R.styleable.lrc_view_ly_high_light_paint_color_to)){
+            mPaintHLColors = new int[]{typedArray.getColor(R.styleable.lrc_view_ly_high_light_paint_color_from, Color.BLUE), typedArray.getColor(R.styleable.lrc_view_ly_high_light_paint_color_to, Color.BLUE)};
+        }
+
+        if(typedArray.hasValue(R.styleable.lrc_view_ly_eable_verbatim)){
+            mEnableVerbatim = typedArray.getBoolean(R.styleable.lrc_view_ly_eable_verbatim, true);
+        }
         //默认画笔
         mPaint = new Paint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
+        mFontSize = U.getDisplayUtils().dip2px(typedArray.getDimension(R.styleable.lrc_view_ly_paint_text_size, 10));
         mPaint.setTextSize(mFontSize);
 
         //高亮画笔
@@ -420,9 +440,10 @@ public abstract class AbstractLrcView extends View {
         mPaintOutline = new Paint();
         mPaintOutline.setDither(true);
         mPaintOutline.setAntiAlias(true);
-        mPaintOutline.setColor(Color.BLACK);
+        int color = typedArray.getColor(R.styleable.lrc_view_ly_outline_paint_color, Color.BLACK);
+        mPaintOutline.setColor(color);
         mPaintOutline.setTextSize(mFontSize);
-
+        typedArray.recycle();
         //额外歌词画笔
         mExtraLrcPaint = new Paint();
         mExtraLrcPaint.setDither(true);
