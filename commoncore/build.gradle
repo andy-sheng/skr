@@ -52,19 +52,25 @@ android {
 dependencies {
     // commonsdk 也能远程 maven 依赖
 //    api "com.mi.live:common-sdk:2.0"
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // arouter 解析注解代码，需要在 defaultConfig 中注明 moduleName
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+
     api project(":baseLibrary:commonsdk")
     api project(":baseLibrary:enginesdk")
     api project(":commonservice")
-    // arouter 解析注解代码，需要在 defaultConfig 中注明 moduleName
-    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+
 
     api files('libs/protobuf-java-2.6.0.jar')
     // 小米oauth登录用
     api files('libs/oauth.jar')
     api files('libs/ks3-android-sdk-v-1.4.6.jar')
-    implementation 'com.umeng.umsdk:analytics:7.5.4'
-    implementation  'com.umeng.umsdk:common:1.5.4'
+
+    api files('libs/umeng-share-core-6.9.3.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.3.jar')
+    api files('libs/umeng-share-sina-simplify-6.9.3.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.3.jar')
+    api files('libs/umeng-shareboard-widget-6.9.3.jar')
+    api files('libs/umeng-sharetool-6.9.3.jar')
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录

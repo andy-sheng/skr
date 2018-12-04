@@ -10,6 +10,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.UmengStatistics;
 import com.common.utils.U;
 
 import org.greenrobot.eventbus.EventBus;
@@ -143,6 +144,7 @@ public class UserAccountManager {
                         ApiManager.getInstance().clearCookies();
                     }
                     mAccount = null;
+                    UmengStatistics.onProfileSignOff();
                     emitter.onComplete();
                 }
             })
@@ -259,6 +261,7 @@ public class UserAccountManager {
                             userAccount.setUid(String.valueOf(userID));
                             userAccount.setNickName(nickName);
                             setAccount(userAccount);
+                            UmengStatistics.onProfileSignIn("phone",userAccount.getUid());
                         }
                     }
                 });

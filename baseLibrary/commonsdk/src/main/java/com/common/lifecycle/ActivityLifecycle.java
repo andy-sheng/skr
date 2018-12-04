@@ -102,7 +102,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
         if (resumeNum > pauseNum) {
             U.getActivityUtils().setAppForeground(true);
         }
-        StatisticsAdapter.recordPageStart(activity, activity.getClass().getSimpleName());
+        StatisticsAdapter.recordSessionStart(activity, activity.getClass().getSimpleName());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
         if (resumeNum <= pauseNum) {
             U.getActivityUtils().setAppForeground(false);
         }
-        StatisticsAdapter.recordPageEnd(activity, activity.getClass().getSimpleName());
+        StatisticsAdapter.recordSessionEnd(activity, activity.getClass().getSimpleName());
     }
 
     @Override

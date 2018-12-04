@@ -70,6 +70,7 @@ public class CommonConfiguration implements ConfigModule {
                 MyLog.init();
                 FrescoInitManager.initFresco(U.app());
                 PgyCrashManager.register();
+
             }
 
             @Override

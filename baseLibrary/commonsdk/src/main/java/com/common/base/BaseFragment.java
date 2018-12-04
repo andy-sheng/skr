@@ -257,7 +257,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     protected void onFragmentVisible() {
         MyLog.d(TAG, "onFragmentVisible");
-        StatisticsAdapter.recordPageStart(getContext(), this.getClass().getSimpleName());
+        StatisticsAdapter.recordPageStart(getActivity(), this.getClass().getSimpleName());
     }
 
     /**
@@ -265,7 +265,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     protected void onFragmentInvisible() {
         MyLog.d(TAG, "onFragmentInvisible");
-        StatisticsAdapter.recordPageEnd(getContext(), this.getClass().getSimpleName());
+        StatisticsAdapter.recordPageEnd(getActivity(), this.getClass().getSimpleName());
     }
 
     /**

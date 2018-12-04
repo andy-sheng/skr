@@ -19,6 +19,7 @@ import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
+import com.common.core.share.ShareManager;
 import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
@@ -54,6 +55,8 @@ import com.pgyersdk.update.DownloadFileListener;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 import com.pgyersdk.update.javabean.AppBean;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
@@ -148,6 +151,34 @@ public class TestSdkActivity extends BaseActivity {
             public void run() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_MESSAGE)
                         .navigation();
+            }
+        }));
+
+        mDataList.add(new H("分享面板", new Runnable() {
+
+            @Override
+            public void run() {
+                ShareManager.openSharePanel(TestSdkActivity.this, new UMShareListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+                        U.getToastUtil().showShort(share_media.toString());
+                    }
+
+                    @Override
+                    public void onResult(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media) {
+
+                    }
+                });
             }
         }));
 

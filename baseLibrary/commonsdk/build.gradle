@@ -181,6 +181,9 @@ dependencies {
     // 强大上下拉刷新库
     api rootProject.ext.dependencies["SmartRefreshLayout"]
 
+    // 友盟
+    api rootProject.ext.dependencies['umeng-common']
+    api rootProject.ext.dependencies['umeng-analytics']
 //    debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库
@@ -190,8 +193,6 @@ dependencies {
     api files('libs/MiStats_SDK_Client_1_4_0.jar')
     // 蒲公英 用户反馈 与 崩溃收集
     api files('libs/pgyer_sdk_3.0.2.jar')
-
-    implementation 'com.umeng.umsdk:analytics:7.5.4'
 
     //api files('libs/milinksdk-3.2.0.jar')
 
