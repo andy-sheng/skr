@@ -28,4 +28,6 @@ public interface IMsgService extends IProvider {
      * @param processor
      */
     void addMsgProcessor(IPushMsgProcess processor);
+
+    IMessageFragment getMessageFragment();
 }

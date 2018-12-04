@@ -8,13 +8,14 @@ import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.common.log.MyLog;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.module.home.fragment.GameFragment;
-import com.module.home.fragment.MessageFragment;
 import com.module.home.fragment.PersonFragment;
+import com.module.msg.IMsgService;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity {
@@ -24,6 +25,7 @@ public class HomeActivity extends BaseActivity {
     ExTextView mMessageBtn;
     ExTextView mPersonInfoBtn;
     NestViewPager mMainVp;
+    IMsgService mMsgService;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class HomeActivity extends BaseActivity {
         mMessageBtn = (ExTextView) findViewById(R.id.message_btn);
         mPersonInfoBtn = (ExTextView) findViewById(R.id.person_info_btn);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
-
+        mMsgService = ModuleServiceManager.getInstance().getMsgService();
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -45,7 +47,11 @@ public class HomeActivity extends BaseActivity {
                 if (position == 0) {
                     return new GameFragment();
                 } else if (position == 1) {
-                    return new MessageFragment();
+                    if(mMsgService==null){
+                        return new PersonFragment();
+                    }else{
+                        return (Fragment) mMsgService.getMessageFragment();
+                    }
                 } else if (position == 2) {
                     return new PersonFragment();
                 }
@@ -54,7 +60,11 @@ public class HomeActivity extends BaseActivity {
 
             @Override
             public int getCount() {
-                return 3;
+                if(mMsgService==null){
+                    return 2;
+                }else{
+                    return 3;
+                }
             }
         };
 

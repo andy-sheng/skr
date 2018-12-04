@@ -13,6 +13,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExButton;
 import com.common.view.titlebar.CommonTitleBar;
+import com.module.msg.IMessageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import io.rong.test.token.RCTokenManager;
 
-public class MessageFragment extends BaseFragment implements  RongIM.UserInfoProvider{
+public class MessageFragment extends BaseFragment implements  RongIM.UserInfoProvider,IMessageFragment {
 
     // todo 目前给两个账号用来测试通信，待账号完善接入
     CommonTitleBar commonTitleBar;
