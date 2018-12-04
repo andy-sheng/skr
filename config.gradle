@@ -192,6 +192,8 @@ ext {
             "logger"                   : "com.orhanobut:logger:2.2.0",
             "canary-debug"             : "com.squareup.leakcanary:leakcanary-android:${version["canarySdkVersion"]}",
             "canary-release"           : "com.squareup.leakcanary:leakcanary-android-no-op:${version["canarySdkVersion"]}",
+            "umeng-analytics"          : "com.umeng.umsdk:analytics:7.5.4",
+            "umeng-common"             : "com.umeng.umsdk:common:1.5.4"
     ]
 
 }

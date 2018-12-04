@@ -54,7 +54,6 @@ dependencies {
 //    api "com.mi.live:common-sdk:2.0"
     // arouter 解析注解代码，需要在 defaultConfig 中注明 moduleName
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
-
     api project(":baseLibrary:commonsdk")
     api project(":baseLibrary:enginesdk")
     api project(":commonservice")
@@ -71,6 +70,9 @@ dependencies {
     api files('libs/umeng-share-wechat-simplify-6.9.3.jar')
     api files('libs/umeng-shareboard-widget-6.9.3.jar')
     api files('libs/umeng-sharetool-6.9.3.jar')
+
+    implementation rootProject.ext.dependencies["umeng-analytics"]
+    implementation rootProject.ext.dependencies["umeng-common"]
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
