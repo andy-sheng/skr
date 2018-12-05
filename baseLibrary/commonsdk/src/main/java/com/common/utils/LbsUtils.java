@@ -167,12 +167,18 @@ public class LbsUtils {
 
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
-
+                    mOneTimeCallback.onReceive(null);
+                    if (MyLog.isDebugLogOpen()) {
+                        U.getToastUtil().showShort("定位权限请求失败");
+                    }
                 }
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-
+                    mOneTimeCallback.onReceive(null);
+                    if (MyLog.isDebugLogOpen()) {
+                        U.getToastUtil().showShort("定位权限请求失败,不再询问");
+                    }
                 }
             }, U.getActivityUtils().getTopActivity());
         } else {
