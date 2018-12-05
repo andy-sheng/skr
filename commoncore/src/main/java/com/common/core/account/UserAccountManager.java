@@ -3,6 +3,7 @@ package com.common.core.account;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.event.AccountEvent;
+import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
@@ -261,7 +262,9 @@ public class UserAccountManager {
                             userAccount.setUid(String.valueOf(userID));
                             userAccount.setNickName(nickName);
                             setAccount(userAccount);
-                            UmengStatistics.onProfileSignIn("phone",userAccount.getUid());
+                            UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
+                        } else {
+                            EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
                         }
                     }
                 });
@@ -270,17 +273,18 @@ public class UserAccountManager {
 
     /**
      * 更新用户信息
+     *
      * @param nickName
      * @param sex
      * @param birthday
      */
     public void updateInfo(String nickName, int sex, String birthday) {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("nickname", nickName);
         map.put("sex", sex);
         map.put("birthday", birthday);
 
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),  JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         Observable<ApiResult> apiResultObservable = userAccountServerApi.updateInfo(body);
         ApiMethods.subscribe(apiResultObservable, null);

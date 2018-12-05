@@ -2,6 +2,7 @@ package com.common.core.login;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -9,6 +10,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
+import com.common.core.login.fragment.VerifyCodeFragment;
+import com.common.utils.FragmentUtils;
+import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
@@ -33,11 +37,10 @@ public class LoginActivity extends BaseActivity {
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     RelativeLayout mMainContainer;
+    ExTextView mLogoTv;
     NoLeakEditText mInputPhoneEt;
-    ExButton mSendMsgBtn;
-    NoLeakEditText mVerifyCodeEt;
-    ExButton mLoginBtn;
-
+    ExTextView mPhoneHintTv;
+    ExButton mNextBtn;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -52,38 +55,53 @@ public class LoginActivity extends BaseActivity {
         mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
         mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
         mMainContainer = (RelativeLayout) findViewById(R.id.main_container);
+        mLogoTv = (ExTextView) findViewById(R.id.logo_tv);
         mInputPhoneEt = (NoLeakEditText) findViewById(R.id.input_phone_et);
-        mSendMsgBtn = (ExButton) findViewById(R.id.send_msg_btn);
-        mVerifyCodeEt = (NoLeakEditText) findViewById(R.id.verify_code_et);
-        mLoginBtn = (ExButton) findViewById(R.id.login_btn);
-        mSendMsgBtn.setOnClickListener(new View.OnClickListener() {
+        mPhoneHintTv = (ExTextView) findViewById(R.id.phone_hint_tv);
+        mNextBtn = (ExButton) findViewById(R.id.next_btn);
+
+        mNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 if (U.getCommonUtils().isFastDoubleClick()) {
                     return;
                 }
-                UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-                Observable<ApiResult> observer = userAccountServerApi.sendSmsVerifyCode(mInputPhoneEt.getText().toString());
-                ApiMethods.subscribe(observer, null);
-            }
-        });
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
+                String phoneNumber = mInputPhoneEt.getText().toString().trim();
+                if (checkPhoneNumber(phoneNumber)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(VerifyCodeFragment.EXTRA_PHONE_NUMBER, phoneNumber);
+                    U.getFragmentUtils().addFragment(FragmentUtils
+                            .newParamsBuilder(LoginActivity.this, VerifyCodeFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .setBundle(bundle)
+                            .build());
                 }
-                String phoneNum = mInputPhoneEt.getText().toString();
-                String verifyCode = mVerifyCodeEt.getText().toString();
-                UserAccountManager.getInstance().loginByPhoneNum(phoneNum, verifyCode);
             }
         });
+
         findViewById(R.id.green_channel_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME).greenChannel().navigation();
             }
         });
+    }
+
+    /**
+     * 检查手机号是否正确
+     *
+     * @return
+     */
+    private boolean checkPhoneNumber(String phoneNumber) {
+        if (!TextUtils.isEmpty(phoneNumber) && TextUtils.isDigitsOnly(phoneNumber)
+                && phoneNumber.length() == 11 && phoneNumber.startsWith("1")) {
+            return true;
+        }
+
+        mPhoneHintTv.setVisibility(View.VISIBLE);
+        mPhoneHintTv.setText("请输入正确的手机号");
+        return false;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        titlebar:centerText="LoginActivity"
+        titlebar:centerType="textView"
+        titlebar:leftDrawable="@drawable/comm_titlebar_back_normal"
+        titlebar:leftDrawablePadding="0dp"
+        titlebar:leftText="返回"
+        titlebar:leftType="textView" />
+
+    <RelativeLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlebar">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/logo_tv"
+            android:layout_width="@dimen/view_dimen_500"
+            android:layout_height="@dimen/view_dimen_500"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_dimen_150"
+            android:gravity="center"
+            android:text="logo"
+            android:textSize="@dimen/textsize_dimen_240" />
+
+        <com.common.core.login.view.SeparatedEditText
+            android:id="@+id/verify_code_spet"
+            android:layout_width="@dimen/view_dimen_800"
+            android:layout_height="@dimen/view_dimen_120"
+            android:layout_below="@+id/logo_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/view_n_dimen_10"
+            android:inputType="number"
+            app:blockColor="@color/gray"
+            app:blockSpacing="@dimen/view_dimen_10"
+            app:corner="@dimen/view_dimen_10"
+            app:cursorColor="@color/green"
+            app:cursorDuration="1000"
+            app:cursorWidth="@dimen/view_dimen_10"
+            app:maxLength="6"
+            app:separateType="@integer/type_solid"
+            app:textColor="@color/red" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/count_down_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_dimen_120"
+            android:layout_alignBottom="@+id/verify_code_spet"
+            android:layout_toRightOf="@+id/verify_code_spet"
+            android:gravity="center_vertical"
+            android:clickable="false"
+            android:text="60s"
+            android:textColor="@color/red" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/verify_hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/verify_code_spet"
+            android:layout_alignLeft="@+id/verify_code_spet"
+            android:layout_marginBottom="@dimen/view_dimen_30"
+            android:text="验证码已发送至1234567890" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/verify_hint_tv"
+            android:layout_alignLeft="@+id/verify_code_spet"
+            android:layout_marginBottom="@dimen/view_dimen_10"
+            android:text="输入验证码"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_dimen_60" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/verify_error_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/verify_code_spet"
+            android:layout_alignLeft="@+id/verify_code_spet"
+            android:layout_marginTop="@dimen/view_dimen_50"
+            android:text="验证码输错了，再确认一下吧~"
+            android:textColor="@color/red"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
