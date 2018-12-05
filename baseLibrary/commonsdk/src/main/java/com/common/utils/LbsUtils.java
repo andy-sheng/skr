@@ -10,6 +10,8 @@ import com.common.log.MyLog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Location Base Service
  * 地理位置相关服务
@@ -131,8 +133,7 @@ public class LbsUtils {
      */
     public void getLocation(boolean strict, Callback callback) {
         if (strict) {
-            mLocationClient.start();
-            mOneTimeCallback = callback;
+            getLocationInner(callback);
         } else {
             /**
              * 5分钟内 可以拿来用
@@ -144,8 +145,39 @@ public class LbsUtils {
                 }
             }
             // 还是同步查
-            mLocationClient.start();
+            getLocationInner(callback);
+        }
+    }
+
+    /**
+     * 返回可用的地理位置
+     * strict  true 为严格模式，每次必定实时去查
+     * false 时 如果 间隔5分钟内就不会同步了，用上一次的结果
+     *
+     * @return
+     */
+    public void getLocationInner(Callback callback) {
+        if (!U.getPermissionUtils().checkLocation(U.getActivityUtils().getTopActivity())) {
+            U.getPermissionUtils().requestLocation(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    mOneTimeCallback = callback;
+                    mLocationClient.start();
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+
+                }
+            }, U.getActivityUtils().getTopActivity());
+        } else {
             mOneTimeCallback = callback;
+            mLocationClient.start();
         }
     }
 

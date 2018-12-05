@@ -59,6 +59,10 @@ public class PermissionUtils {
         return checkPermission(activity, Manifest.permission.CAMERA);
     }
 
+    public boolean checkLocation(Activity activity) {
+        return checkPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
     public boolean checkPermission(Activity activity, String permission) {
         if (activity == null) {
             activity = U.getActivityUtils().getTopActivity();
@@ -158,6 +162,13 @@ public class PermissionUtils {
                     });
         }
 
+    }
+
+    /**
+     * 请求Location
+     */
+    public void requestLocation(RequestPermission requestPermission, Activity activity) {
+        requestPermission(requestPermission, activity, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
     /**
