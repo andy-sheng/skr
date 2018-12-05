@@ -1,9 +1,10 @@
 package com.common.core.login.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.TimeUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -15,6 +16,7 @@ import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.login.view.SeparatedEditText;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
@@ -33,7 +35,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 public class VerifyCodeFragment extends BaseFragment {
 
@@ -51,7 +52,8 @@ public class VerifyCodeFragment extends BaseFragment {
     ExTextView mVerifyHintTv;  //验证码发送提示
     ExTextView mVerifyErrorTv;  //验证码验证出错提示
 
-    String phoneNumber; //发送验证码的电话号码
+    String mPhoneNumber; //发送验证码的电话号码
+    private Disposable mDisposable;
 
     @Override
     public int initView() {
@@ -71,8 +73,8 @@ public class VerifyCodeFragment extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            phoneNumber = bundle.getString(EXTRA_PHONE_NUMBER, "");
-            sendSmsVerifyCode(phoneNumber);
+            mPhoneNumber = bundle.getString(EXTRA_PHONE_NUMBER, "");
+            sendSmsVerifyCode(mPhoneNumber);
         }
 
         mVerifyCodeSpet.setTextChangedListener(new SeparatedEditText.TextChangedListener() {
@@ -83,9 +85,9 @@ public class VerifyCodeFragment extends BaseFragment {
 
             @Override
             public void textCompleted(CharSequence text) {
-                if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(text)) {
+                if (!TextUtils.isEmpty(mPhoneNumber) && !TextUtils.isEmpty(text)) {
                     stopCountDown();
-                    UserAccountManager.getInstance().loginByPhoneNum(phoneNumber, text.toString());
+                    UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, text.toString());
                 }
             }
         });
@@ -98,20 +100,23 @@ public class VerifyCodeFragment extends BaseFragment {
                 }
                 // 重新发送验证码
                 mVerifyCodeSpet.clearText();
-                sendSmsVerifyCode(phoneNumber);
+                sendSmsVerifyCode(mPhoneNumber);
             }
         });
         mCountDownTv.setClickable(false);
     }
 
-    private Disposable disposable;
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
 
     /**
      * 初始化倒计时
      */
     private void initCounDown(final int count) {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
 
         mCountDownTv.setClickable(false);
@@ -128,10 +133,11 @@ public class VerifyCodeFragment extends BaseFragment {
 
             }
         }).observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Long>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        disposable = d;
+                        mDisposable = d;
                     }
 
                     @Override
@@ -157,8 +163,8 @@ public class VerifyCodeFragment extends BaseFragment {
      * 停止倒计时
      */
     private void stopCountDown() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
         mCountDownTv.setClickable(true);
         mCountDownTv.setText("重新发送");
@@ -173,19 +179,15 @@ public class VerifyCodeFragment extends BaseFragment {
         }
         initCounDown(COUNT_DOWN_DEAFAULT);
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        userAccountServerApi.sendSmsVerifyCode(phoneNumber)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<ApiResult>bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(new ApiObserver<ApiResult>() {
-                    @Override
-                    public void process(ApiResult result) {
-                        if (result.getErrno() == 0) {
-                            mVerifyHintTv.setVisibility(View.VISIBLE);
-                            mVerifyHintTv.setText(String.format("验证码已发送至%s", phoneNumber));
-                        }
-                    }
-                });
+        ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode(phoneNumber), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    mVerifyHintTv.setVisibility(View.VISIBLE);
+                    mVerifyHintTv.setText(String.format("验证码已发送至%s", phoneNumber));
+                }
+            }
+        }, this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
