@@ -185,7 +185,7 @@ dependencies {
     // 强大上下拉刷新库
     api rootProject.ext.dependencies["SmartRefreshLayout"]
     // loadsir 处理各种异常页面空页面 无法改变现有layout
-    api rootProject.ext.dependencies["loadsir"]
+    //api rootProject.ext.dependencies["loadsir"]
 
     // 友盟
     api rootProject.ext.dependencies['umeng-common']

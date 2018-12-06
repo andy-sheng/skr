@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.loadsir.LoadSirManager;
 import com.common.rxretrofit.ApiObserver;
 import com.common.utils.FragmentUtils;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -65,7 +66,7 @@ public class SongSelectFragment extends BaseFragment {
 
         mSongSelectAdapter.setDataList(mSongList);
 
-        mLoadService = LoadSir.getDefault().register(mSongRefreshLayout, new Callback.OnReloadListener() {
+        mLoadService = LoadSirManager.getDefault().register(mSongRefreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
 
