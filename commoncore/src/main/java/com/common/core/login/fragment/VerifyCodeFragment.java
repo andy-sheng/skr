@@ -1,8 +1,6 @@
 package com.common.core.login.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -35,7 +33,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 验证码验证界面
+ */
 public class VerifyCodeFragment extends BaseFragment {
 
     public final static String TAG = "VerifyCodeFragment";
@@ -179,15 +181,19 @@ public class VerifyCodeFragment extends BaseFragment {
         }
         initCounDown(COUNT_DOWN_DEAFAULT);
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode(phoneNumber), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mVerifyHintTv.setVisibility(View.VISIBLE);
-                    mVerifyHintTv.setText(String.format("验证码已发送至%s", phoneNumber));
-                }
-            }
-        }, this);
+        userAccountServerApi.sendSmsVerifyCode(phoneNumber)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<ApiResult>bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(new Consumer<ApiResult>() {
+                    @Override
+                    public void accept(ApiResult result) throws Exception {
+                        if (result.getErrno() == 0) {
+                            mVerifyHintTv.setVisibility(View.VISIBLE);
+                            mVerifyHintTv.setText(String.format("验证码已发送至%s", phoneNumber));
+                        }
+                    }
+                });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

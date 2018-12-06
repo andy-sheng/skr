@@ -65,7 +65,8 @@ public class CoreConfiguration implements ConfigModule {
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
-                ApiManager.getInstance().addInterceptor(new AddDeviceInfoInterceptor());
+                // todo 服务器暂时无人对接，先屏蔽
+//                ApiManager.getInstance().addInterceptor(new AddDeviceInfoInterceptor());
                 UserAccountManager.getInstance().init();
             }
 
