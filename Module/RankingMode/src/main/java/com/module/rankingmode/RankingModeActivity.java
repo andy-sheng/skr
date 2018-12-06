@@ -8,7 +8,7 @@ import com.common.base.BaseActivity;
 import com.module.RouterConstants;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.module.rankingmode.fragment.RoomFragment;
+import com.module.rankingmode.fragment.PkRoomFragment;
 
 @Route(path = RouterConstants.ACTIVITY_RANKINGMODE)
 public class RankingModeActivity extends BaseActivity {
@@ -19,7 +19,7 @@ public class RankingModeActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, RoomFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, PkRoomFragment.class)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .build());

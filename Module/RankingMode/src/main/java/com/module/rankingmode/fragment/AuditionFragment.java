@@ -39,8 +39,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class RoomFragment extends BaseFragment {
-    public final static String TAG = "RoomFragment";
+/**
+ * 试唱界面
+ */
+public class AuditionFragment extends BaseFragment {
+    public final static String TAG = "PkRoomFragment";
 
     LinearLayout mOthersContainer;
     ExButton mModeSwitchBtn;
