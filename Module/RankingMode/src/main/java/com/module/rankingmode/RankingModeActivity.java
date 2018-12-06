@@ -22,20 +22,20 @@ public class RankingModeActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
-        if (selectSong) {
-            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, SongSelectFragment.class)
-                    .setAddToBackStack(false)
-                    .setHasAnimation(false)
-                    .setFragmentDataListener(new FragmentDataListener() {
-                        @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object obj) {
-                            showRoomFragment();
-                        }
-                    })
-                    .build());
-        } else {
+//        if (selectSong) {
+//            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, SongSelectFragment.class)
+//                    .setAddToBackStack(false)
+//                    .setHasAnimation(false)
+//                    .setFragmentDataListener(new FragmentDataListener() {
+//                        @Override
+//                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object obj) {
+//                            showRoomFragment();
+//                        }
+//                    })
+//                    .build());
+//        } else {
             showRoomFragment();
-        }
+//        }
     }
 
     void showRoomFragment() {
