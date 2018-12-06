@@ -1,44 +1,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-        <android.support.v4.widget.NestedScrollView
-            android:layout_marginTop="@dimen/view_dimen_100"
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_dimen_100">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-                <LinearLayout
-                    android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_100"
+                android:gravity="center"
+                android:text="这里是title" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_pk"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_300"
+                android:layout_marginTop="@dimen/view_dimen_30"
+                android:background="@color/black_trans_5">
+
+                <TextView
+                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                        <com.common.view.ex.ExTextView
-                            android:gravity="center"
-                            android:text="这里是title"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_dimen_100"/>
+                    android:layout_height="match_parent"
+                    android:text="pk模式" />
+            </android.support.v7.widget.CardView>
 
-                        <android.support.v7.widget.CardView
-                            android:layout_marginTop="@dimen/view_dimen_30"
-                            android:id="@+id/card_pk"
-                            android:background="@color/black_trans_5"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_dimen_300"/>
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_happy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_dimen_300"
+                android:layout_marginTop="@dimen/view_dimen_30"
+                android:background="@color/blue">
 
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_happy"
-                            android:layout_marginTop="@dimen/view_dimen_30"
-                            android:background="@color/blue"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_dimen_300"/>
-                </LinearLayout>
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="娱乐模式" />
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
-        <com.common.view.ex.ExTextView
-            android:layout_alignParentBottom="true"
-            android:id="@+id/test_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="进入房间" />
+    <com.common.view.ex.ExTextView
+        android:id="@+id/test_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="进入房间" />
 
 
 </RelativeLayout>
