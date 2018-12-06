@@ -93,4 +93,8 @@ public class SongSelectFragment extends BaseFragment {
                 });
     }
 
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
 }
