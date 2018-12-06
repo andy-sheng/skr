@@ -217,7 +217,7 @@ public class TestScanActivity extends BaseActivity implements QRCodeView.Delegat
             U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, ImagePickerFragment.class)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
                             ArrayList<ImageItem> list = ImagePicker.getInstance().getSelectedImages();
                             mZXingView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                             mZXingView.decodeQRCode(list.get(0).getPath());

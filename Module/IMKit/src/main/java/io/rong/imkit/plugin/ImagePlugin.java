@@ -71,7 +71,7 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
                 .setBundle(bundle)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
-                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
                         if (extension != null && extension.getExtensionClickListener() != null) {
                             ArrayList<ImageItem> imageItems = ImagePicker.getInstance().getSelectedImages();
                             ArrayList<Uri> list = new ArrayList<>();

@@ -33,7 +33,7 @@
             android:layout_marginBottom="@dimen/view_dimen_150"
             android:gravity="center"
             android:text="logo"
-            android:textSize="@dimen/textsize_dimen_240" />
+            android:textSize="80dp" />
 
         <com.common.core.login.view.SeparatedEditText
             android:id="@+id/verify_code_spet"
@@ -41,7 +41,7 @@
             android:layout_height="@dimen/view_dimen_120"
             android:layout_below="@+id/logo_tv"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/view_n_dimen_10"
+            android:layout_marginLeft="@dimen/view_dimen_10"
             android:inputType="number"
             app:blockColor="@color/gray"
             app:blockSpacing="@dimen/view_dimen_10"

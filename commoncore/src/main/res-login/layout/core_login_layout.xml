@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="logo"
-        android:textSize="@dimen/textsize_dimen_240" />
+        android:textSize="80dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         <com.common.view.ex.ExTextView
             android:id="@+id/weixin_login_tv"
             android:layout_width="0dp"
-            android:layout_height="@dimen/view_n_dimen_200"
+            android:layout_height="@dimen/view_66_67_dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="微信"
@@ -33,7 +33,7 @@
         <com.common.view.ex.ExTextView
             android:id="@+id/phone_login_tv"
             android:layout_width="0dp"
-            android:layout_height="@dimen/view_n_dimen_200"
+            android:layout_height="@dimen/view_66_67_dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="手机"
@@ -42,7 +42,7 @@
         <com.common.view.ex.ExTextView
             android:id="@+id/weibo_login_tv"
             android:layout_width="0dp"
-            android:layout_height="@dimen/view_n_dimen_200"
+            android:layout_height="@dimen/view_66_67_dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="微博"

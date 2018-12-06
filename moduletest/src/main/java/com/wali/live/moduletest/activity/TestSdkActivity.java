@@ -536,7 +536,7 @@ public class TestSdkActivity extends BaseActivity {
                         .setBundle(bundle)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
                                 U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
                             }
                         })
@@ -572,7 +572,7 @@ public class TestSdkActivity extends BaseActivity {
                         .setDataBeforeAdd(1, list)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
                                 U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
                             }
                         })

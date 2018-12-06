@@ -131,7 +131,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
                         .setDataBeforeAdd(1, new ArrayList<>(mImagePicker.getSelectedImages()))
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
                                 deliverResult(requestCode, resultCode, bundle);
                             }
                         })
@@ -324,9 +324,10 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImagePreviewFragment.class)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
                             deliverResult(requestCode, resultCode, bundle);
                         }
+
                     })
                     .setBundle(bundle)
                     .build());
@@ -349,7 +350,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
         U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImageCropFragment.class)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
-                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
                         deliverResult(requestCode, resultCode, bundle);
                     }
                 })
@@ -363,7 +364,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
         if (mFragmentDataListener != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle);
+            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle,null);
         }
         U.getFragmentUtils().popFragment(ImagePickerFragment.this);
     }

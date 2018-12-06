@@ -153,7 +153,7 @@ public class ImageCropFragment extends ImageBaseFragment {
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
         if (mFragmentDataListener != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle);
+            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle,null);
         }
         U.getFragmentUtils().popFragment(this);
     }

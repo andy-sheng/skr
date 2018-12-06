@@ -28,7 +28,7 @@ public class RankingModeActivity extends BaseActivity {
                     .setHasAnimation(false)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle) {
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object obj) {
                             showRoomFragment();
                         }
                     })

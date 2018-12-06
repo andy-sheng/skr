@@ -30,19 +30,19 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="logo"
-            android:textSize="@dimen/textsize_dimen_240"/>
+            android:textSize="@dimen/textsize_dimen_80"/>
 
         <com.common.view.ex.NoLeakEditText
             android:id="@+id/input_phone_et"
             android:layout_below="@id/logo_tv"
             android:layout_width="@dimen/view_dimen_800"
-            android:layout_height="@dimen/view_n_dimen_200"
+            android:layout_height="@dimen/view_66_67_dp"
             android:layout_centerHorizontal="true"
             android:hint="请输入手机号" />
 
         <com.common.view.ex.ExTextView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_n_dimen_200"
+            android:layout_height="@dimen/view_dimen_200"
             android:layout_toLeftOf="@+id/input_phone_et"
             android:layout_alignBottom="@+id/input_phone_et"
             android:layout_marginBottom="@dimen/view_dimen_40"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_dimen_40"
             android:layout_below="@+id/input_phone_et"
-            android:layout_marginTop="@dimen/view_n_dimen_20"
+            android:layout_marginTop="@dimen/view_dimen_20"
             android:layout_alignLeft="@+id/input_phone_et"
             android:text="输入手机号码的提示"
             android:textSize="@dimen/textsize_dimen_30"
