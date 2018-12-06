@@ -11,11 +11,25 @@
         app:centerText="选择歌曲"
         app:centerType="textView" />
 
+    <com.module.rankingmode.song.view.SongSelecterTabView
+        android:id="@+id/song_select_tab_view"
+        android:layout_below="@+id/titlebar"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.common.view.ex.ExTextView
+        android:layout_marginTop="@dimen/view_dimen_200"
+        android:id="@+id/tv_go_pk"
+        android:text="测试，选完歌曲了，现在去pk吧"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/song_refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titlebar">
+        android:layout_below="@+id/song_select_tab_view">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/song_list_view"

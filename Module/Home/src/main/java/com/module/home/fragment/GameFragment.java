@@ -53,7 +53,9 @@ public class GameFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE).greenChannel().navigation();
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE)
+                                .withBoolean("selectSong", true)
+                                .greenChannel().navigation();
                     }
                 });
 

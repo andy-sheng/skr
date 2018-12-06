@@ -14,6 +14,7 @@ import com.common.loadsir.callback.LoadingCallback;
 import com.common.loadsir.callback.LottieEmptyCallback;
 import com.common.rxretrofit.ApiObserver;
 import com.common.utils.FragmentUtils;
+import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.kingja.loadsir.callback.Callback;
@@ -71,6 +72,14 @@ public class SongSelectFragment extends BaseFragment {
             @Override
             public void onReload(View v) {
                 loadData(false);
+            }
+        });
+
+        ExTextView tvGoPk = (ExTextView)mRootView.findViewById(R.id.tv_go_pk);
+        tvGoPk.setOnClickListener(view -> {
+            if (mFragmentDataListener != null) {
+                mFragmentDataListener.onFragmentResult(0,0,null,null);
+                FragmentUtils.popFragment(SongSelectFragment.this);
             }
         });
 

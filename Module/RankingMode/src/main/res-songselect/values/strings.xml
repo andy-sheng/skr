@@ -1,0 +1,4 @@
+<resources>
+    <string name="select_song_recommend">推荐</string>
+    <string name="select_song_history">历史</string>
+</resources>
