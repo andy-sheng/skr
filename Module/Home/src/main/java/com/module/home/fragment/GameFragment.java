@@ -42,7 +42,9 @@ public class GameFragment extends BaseFragment {
                 if(U.getCommonUtils().isFastDoubleClick()){
                     return;
                 }
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE).greenChannel().navigation();
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE).greenChannel()
+                        .withBoolean("selectSong",true)
+                        .navigation();
             }
         });
 

@@ -3,19 +3,19 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        titlebar:centerText="消息"
-        titlebar:centerType="textView"
-        titlebar:rightType="textView"
-        titlebar:rightText="好友"
-        titlebar:leftType="textView"
-        titlebar:leftText="搜索"/>
+        app:centerText="消息"
+        app:centerType="textView"
+        app:rightType="textView"
+        app:rightText="好友"
+        app:leftType="textView"
+        app:leftText="搜索"/>
 
     <LinearLayout
         android:id="@+id/test_1"

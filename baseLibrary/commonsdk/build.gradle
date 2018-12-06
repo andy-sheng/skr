@@ -84,6 +84,10 @@ android {
             java.srcDirs += 'src/main/java-seekbar'
             res.srcDirs += 'src/main/res-seekbar'
 
+            // loadsir
+            java.srcDirs += 'src/main/java-loadsir'
+            res.srcDirs += 'src/main/res-loadsir'
+
             // okhttp和retrofit封装
             java.srcDirs += 'src/main/java-rxretrofit'
 
@@ -180,6 +184,8 @@ dependencies {
 //    implementation rootProject.ext.dependencies["paginate"]
     // 强大上下拉刷新库
     api rootProject.ext.dependencies["SmartRefreshLayout"]
+    // loadsir 处理各种异常页面空页面 无法改变现有layout
+    api rootProject.ext.dependencies["loadsir"]
 
     // 友盟
     api rootProject.ext.dependencies['umeng-common']
