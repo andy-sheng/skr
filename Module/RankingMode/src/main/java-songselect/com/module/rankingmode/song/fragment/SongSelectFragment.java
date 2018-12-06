@@ -10,15 +10,15 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.loadsir.LoadSirManager;
+import com.common.loadsir.callback.ErrorCallback;
+import com.common.loadsir.callback.LoadingCallback;
 import com.common.rxretrofit.ApiObserver;
 import com.common.utils.FragmentUtils;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.kingja.loadsir.callback.Callback;
-import com.kingja.loadsir.callback.ProgressCallback;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadService;
-import com.kingja.loadsir.core.LoadSir;
 import com.module.rankingmode.R;
 import com.module.rankingmode.song.adapter.SongSelectAdapter;
 import com.module.rankingmode.song.model.SongModel;
@@ -76,22 +76,31 @@ public class SongSelectFragment extends BaseFragment {
     }
 
     private void loadData() {
-        mLoadService.showCallback(ProgressCallback.class);
-        io.reactivex.Observable.timer(2, java.util.concurrent.TimeUnit.SECONDS)
+        mLoadService.showCallback(LoadingCallback.class);
+        io.reactivex.Observable.timer(1, java.util.concurrent.TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ApiObserver<Long>() {
                     @Override
                     public void process(Long obj) {
-                        List<SongModel> songModels = new ArrayList<>();
-                        for(int i=0;i<5;i++){
-                            SongModel songModel = new SongModel();
-                            songModel.setSongName("歌曲"+i);
-                            songModels.add(songModel);
-                        }
-                        mSongSelectAdapter.setDataList(songModels);
-                        mLoadService.showCallback(SuccessCallback.class);
+                        mLoadService.showCallback(ErrorCallback.class);
                     }
                 });
+//        io.reactivex.Observable.timer(2, java.util.concurrent.TimeUnit.SECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new ApiObserver<Long>() {
+//                    @Override
+//                    public void process(Long obj) {
+//                        mLoadService.showCallback(ErrorCallback.class);
+//                        List<SongModel> songModels = new ArrayList<>();
+//                        for(int i=0;i<5;i++){
+//                            SongModel songModel = new SongModel();
+//                            songModel.setSongName("歌曲"+i);
+//                            songModels.add(songModel);
+//                        }
+//                        mSongSelectAdapter.setDataList(songModels);
+//                        mLoadService.showCallback(SuccessCallback.class);
+//                    }
+//                });
     }
 
     @Override

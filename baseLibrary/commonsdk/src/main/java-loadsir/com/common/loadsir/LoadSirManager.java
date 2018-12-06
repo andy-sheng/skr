@@ -1,5 +1,7 @@
 package com.common.loadsir;
 
+import com.common.loadsir.callback.ErrorCallback;
+import com.common.loadsir.callback.LoadingCallback;
 import com.kingja.loadsir.core.LoadSir;
 
 public class LoadSirManager {
@@ -7,7 +9,11 @@ public class LoadSirManager {
 
     private static void tryInitDefault() {
         if (!hasInit) {
-            LoadSir.beginBuilder();
+            LoadSir.beginBuilder()
+                    .addCallback(new LoadingCallback())
+                    .addCallback(new ErrorCallback())
+            .commit();
+            ;
             hasInit = true;
         }
     }
