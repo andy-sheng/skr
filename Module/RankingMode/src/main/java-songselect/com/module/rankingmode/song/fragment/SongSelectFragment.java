@@ -1,6 +1,5 @@
 package com.module.rankingmode.song.fragment;
 
-import android.icu.util.TimeUnit;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +11,7 @@ import com.common.base.BaseFragment;
 import com.common.loadsir.LoadSirManager;
 import com.common.loadsir.callback.ErrorCallback;
 import com.common.loadsir.callback.LoadingCallback;
+import com.common.loadsir.callback.LottieEmptyCallback;
 import com.common.rxretrofit.ApiObserver;
 import com.common.utils.FragmentUtils;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -40,6 +40,7 @@ public class SongSelectFragment extends BaseFragment {
     List<SongModel> mSongList = new ArrayList<>();
 
     LoadService mLoadService;
+
     @Override
     public int initView() {
         return R.layout.song_select_fragment_layout;
@@ -47,17 +48,17 @@ public class SongSelectFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
-        mSongRefreshLayout = (SmartRefreshLayout)mRootView.findViewById(R.id.song_refreshLayout);
-        mSongListView = (RecyclerView)mRootView.findViewById(R.id.song_list_view);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mSongRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.song_refreshLayout);
+        mSongListView = (RecyclerView) mRootView.findViewById(R.id.song_list_view);
 
-        mSongListView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        mSongListView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener<SongModel>() {
             @Override
             public void onItemClicked(View view, int position, SongModel model) {
                 if (mFragmentDataListener != null) {
-                    mFragmentDataListener.onFragmentResult(0,0,null,model);
+                    mFragmentDataListener.onFragmentResult(0, 0, null, model);
                     FragmentUtils.popFragment(SongSelectFragment.this);
                 }
             }
@@ -69,38 +70,52 @@ public class SongSelectFragment extends BaseFragment {
         mLoadService = LoadSirManager.getDefault().register(mSongRefreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-
+                loadData(false);
             }
         });
-        loadData();
-    }
 
-    private void loadData() {
-        mLoadService.showCallback(LoadingCallback.class);
-        io.reactivex.Observable.timer(1, java.util.concurrent.TimeUnit.SECONDS)
+        // 显示空页面
+        mLoadService.showCallback(LottieEmptyCallback.class);
+        io.reactivex.Observable.timer(3, java.util.concurrent.TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ApiObserver<Long>() {
                     @Override
                     public void process(Long obj) {
-                        mLoadService.showCallback(ErrorCallback.class);
+                        loadData(true);
                     }
                 });
-//        io.reactivex.Observable.timer(2, java.util.concurrent.TimeUnit.SECONDS)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new ApiObserver<Long>() {
-//                    @Override
-//                    public void process(Long obj) {
-//                        mLoadService.showCallback(ErrorCallback.class);
-//                        List<SongModel> songModels = new ArrayList<>();
-//                        for(int i=0;i<5;i++){
-//                            SongModel songModel = new SongModel();
-//                            songModel.setSongName("歌曲"+i);
-//                            songModels.add(songModel);
-//                        }
-//                        mSongSelectAdapter.setDataList(songModels);
-//                        mLoadService.showCallback(SuccessCallback.class);
-//                    }
-//                });
+    }
+
+    private void loadData(boolean test) {
+
+        mLoadService.showCallback(LoadingCallback.class);
+        if (test) {
+            // 显示错误页
+            io.reactivex.Observable.timer(1, java.util.concurrent.TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ApiObserver<Long>() {
+                        @Override
+                        public void process(Long obj) {
+                            mLoadService.showCallback(ErrorCallback.class);
+                        }
+                    });
+        } else {
+            io.reactivex.Observable.timer(2, java.util.concurrent.TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ApiObserver<Long>() {
+                        @Override
+                        public void process(Long obj) {
+                            List<SongModel> songModels = new ArrayList<>();
+                            for (int i = 0; i < 5; i++) {
+                                SongModel songModel = new SongModel();
+                                songModel.setSongName("点击歌曲" + i);
+                                songModels.add(songModel);
+                            }
+                            mSongSelectAdapter.setDataList(songModels);
+                            mLoadService.showCallback(SuccessCallback.class);
+                        }
+                    });
+        }
     }
 
     @Override

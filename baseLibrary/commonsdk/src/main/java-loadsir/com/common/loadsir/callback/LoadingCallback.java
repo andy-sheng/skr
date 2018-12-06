@@ -26,6 +26,12 @@ public class LoadingCallback extends Callback {
         return super.getSuccessVisible();
     }
 
+    /**
+     * 会吃掉 ReloadEvent的点击事件
+     * @param context
+     * @param view
+     * @return
+     */
     @Override
     protected boolean onReloadEvent(Context context, View view) {
         return true;

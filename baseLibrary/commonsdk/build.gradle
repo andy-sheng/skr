@@ -193,7 +193,7 @@ dependencies {
 //    debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库
-//    implementation rootProject.ext.dependencies["lottie"]
+    api rootProject.ext.dependencies["lottie"]
 
     // 小米统计sdk
     api files('libs/MiStats_SDK_Client_1_4_0.jar')
