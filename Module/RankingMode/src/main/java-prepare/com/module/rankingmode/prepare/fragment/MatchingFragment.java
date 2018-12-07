@@ -1,4 +1,4 @@
-package com.module.rankingmode.fragment;
+package com.module.rankingmode.prepare.fragment;
 
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.event.MatchStatusChangeEvent;
+import com.module.rankingmode.fragment.AuditionFragment;
 import com.module.rankingmode.view.VoiceLineView;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 

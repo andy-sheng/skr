@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/black_trans_20">
 
+
     <com.common.view.ex.ExImageView
         android:id="@+id/back_iv"
         android:layout_width="wrap_content"
@@ -114,15 +115,32 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_500_dp"
         android:layout_alignParentBottom="true"
+        voiceView:fineness="three"
+        voiceView:lineSpeed="200"
         voiceView:maxVolume="200"
         voiceView:middleLine="@color/transparent"
         voiceView:middleLineHeight="1dp"
-        voiceView:fineness="three"
         voiceView:rectSpace="2dp"
         voiceView:rectWidth="5dp"
         voiceView:sensibility="four"
         voiceView:viewMode="line"
-        voiceView:lineSpeed="200"
         voiceView:voiceLine="@color/green" />
 
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerSubText="准备竞演 00:00 / 02:23"
+        app:centerSubTextColor="@color/white_trans_50"
+        app:centerSubTextSize="@dimen/textsize_12_dp"
+        app:centerText="成都"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftImageResource="@drawable/comm_titlebar_back_normal"
+        app:leftType="imageButton"
+        app:statusBarColor="@color/black_trans_50"
+        app:titleBarColor="@color/black_trans_50">
+
+    </com.common.view.titlebar.CommonTitleBar>
 </RelativeLayout>

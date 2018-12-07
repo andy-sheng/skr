@@ -9,9 +9,8 @@ import com.common.base.FragmentDataListener;
 import com.module.RouterConstants;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.module.rankingmode.fragment.MatchingFragment;
+import com.module.rankingmode.prepare.fragment.MatchingFragment;
 import com.module.rankingmode.fragment.PkRoomFragment;
-import com.module.rankingmode.song.fragment.SongSelectFragment;
 
 @Route(path = RouterConstants.ACTIVITY_RANKINGMODE)
 public class RankingModeActivity extends BaseActivity {
