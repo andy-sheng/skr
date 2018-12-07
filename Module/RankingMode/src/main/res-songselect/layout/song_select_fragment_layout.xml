@@ -1,41 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.common.view.titlebar.CommonTitleBar
-        android:id="@+id/titlebar"
+    <com.common.view.viewpager.SlidingTabLayout
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:id="@+id/select_song_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:centerText="选择歌曲"
-        app:centerType="textView" />
+        android:layout_height="@dimen/view_80_dp"/>
 
-    <com.module.rankingmode.song.view.SongSelecterTabView
-        android:id="@+id/song_select_tab_view"
-        android:layout_below="@+id/titlebar"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <com.common.view.ex.ExTextView
-        android:layout_marginTop="@dimen/view_dimen_200"
-        android:id="@+id/tv_go_pk"
-        android:text="测试，选完歌曲了，现在去pk吧"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/song_refreshLayout"
+    <com.common.view.viewpager.NestViewPager
+        android:id="@+id/songlist_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/song_select_tab_view">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/song_list_view"
-            android:layout_width="@dimen/view_dimen_740"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true" />
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-</RelativeLayout>
+        android:layout_height="match_parent"/>
+</LinearLayout>

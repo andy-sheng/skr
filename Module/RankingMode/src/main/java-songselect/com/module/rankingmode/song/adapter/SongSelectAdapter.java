@@ -31,15 +31,15 @@ public class SongSelectAdapter extends DiffAdapter<SongModel,RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof SongInfoHolder){
-            SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
-            SongModel songModel = mDataList.get(position);
-            songInfoHolder.bind(position,songModel);
+//            SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
+//            SongModel songModel = mDataList.get(position);
+//            songInfoHolder.bind(position,songModel);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return 10;
     }
 
 }

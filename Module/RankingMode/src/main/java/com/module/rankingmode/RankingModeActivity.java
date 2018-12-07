@@ -6,11 +6,11 @@ import android.support.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
-import com.module.RouterConstants;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.module.rankingmode.prepare.fragment.MatchingFragment;
+import com.module.RouterConstants;
 import com.module.rankingmode.fragment.PkRoomFragment;
+import com.module.rankingmode.song.fragment.SongSelectFragment;
 
 @Route(path = RouterConstants.ACTIVITY_RANKINGMODE)
 public class RankingModeActivity extends BaseActivity {
@@ -23,8 +23,8 @@ public class RankingModeActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
         if (selectSong) {
-            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, MatchingFragment.class)
-                    .setAddToBackStack(false)
+            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, SongSelectFragment.class)
+                    .setAddToBackStack(true)
                     .setHasAnimation(false)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
