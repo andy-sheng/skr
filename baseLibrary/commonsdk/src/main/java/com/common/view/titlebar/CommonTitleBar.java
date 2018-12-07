@@ -238,7 +238,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             centerSubTextColor = array.getColor(R.styleable.CommonTitleBar_centerSubTextColor, Color.parseColor("#666666"));
             centerSubTextSize = array.getDimension(R.styleable.CommonTitleBar_centerSubTextSize, U.getDisplayUtils().dip2px(context, 11));
             centerSubTextLeftDrawable = array.getResourceId(R.styleable.CommonTitleBar_centerSubTextLeftDrawable,0);
-            centerSubTextLeftDrawablePadding = array.getResourceId(R.styleable.CommonTitleBar_centerSubTextLeftDrawablePadding,0);
+            centerSubTextLeftDrawablePadding = array.getDimension(R.styleable.CommonTitleBar_centerSubTextLeftDrawablePadding,2);
 
         } else if (centerType == TYPE_CENTER_SEARCHVIEW) {
             centerSearchEdiable = array.getBoolean(R.styleable.CommonTitleBar_centerSearchEditable, true);
