@@ -4,6 +4,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -20,7 +21,12 @@ import com.module.rankingmode.prepare.presenter.MatchPresenter;
 import com.module.rankingmode.prepare.view.MatchStartView;
 import com.module.rankingmode.prepare.view.MatchSucessView;
 import com.module.rankingmode.prepare.view.MatchingView;
+import com.module.rankingmode.prepare.view.VoiceControlPanelView;
 import com.module.rankingmode.prepare.view.VoiceLineView;
+import com.module.rankingmode.view.AudioControlPanelView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.lyrics.inter.IlyricController;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -130,11 +136,15 @@ public class MatchingFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) throws Exception {
                         // todo 试唱调音
-                        U.getFragmentUtils().addFragment(FragmentUtils
-                                .newParamsBuilder(getActivity(), AuditionFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
+                        VoiceControlPanelView view = new VoiceControlPanelView(getContext());
+
+                        DialogPlus.newDialog(getContext())
+                                .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
+                                .setContentHolder(new ViewHolder(view))
+                                .setGravity(Gravity.BOTTOM)
+                                .setCancelable(true)
+                                .create().show();
+
                     }
                 });
 

@@ -1,0 +1,102 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_233_dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="人声" />
+
+        <SeekBar
+            android:id="@+id/people_voice_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="伴奏" />
+
+        <SeekBar
+            android:id="@+id/music_voice_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/scenes_btn_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.module.rankingmode.prepare.view.ScenesSelectBtn
+            android:id="@+id/default_sbtn"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_56_dp"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="默认" />
+
+        <com.module.rankingmode.prepare.view.ScenesSelectBtn
+            android:id="@+id/ktv_sbtn"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_56_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="KTV" />
+
+        <com.module.rankingmode.prepare.view.ScenesSelectBtn
+            android:id="@+id/rock_sbtn"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_56_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="摇滚" />
+
+        <com.module.rankingmode.prepare.view.ScenesSelectBtn
+            android:id="@+id/dianxin_sbtn"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_56_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="电音" />
+
+        <com.module.rankingmode.prepare.view.ScenesSelectBtn
+            android:id="@+id/kongling_sbtn"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_56_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="空灵" />
+    </RadioGroup>
+</LinearLayout>

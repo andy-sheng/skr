@@ -38,4 +38,11 @@
             <enum name="three" value="3" />
         </attr>
     </declare-styleable>
+
+
+    <declare-styleable name="ScenesSelectBtn">
+        <attr name="strokeColor" format="color" />
+        <attr name="fillColor" format="color" />
+    </declare-styleable>
+
 </resources>
