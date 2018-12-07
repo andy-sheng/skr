@@ -1,266 +1,213 @@
 package com.module.rankingmode.fragment;
 
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
-import android.view.SurfaceView;
-import android.view.TextureView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseFragment;
-import com.common.utils.PermissionUtils;
+import com.common.log.MyLog;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExButton;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.engine.EngineEvent;
-import com.engine.EngineManager;
-import com.engine.Params;
-import com.module.ModuleServiceManager;
-import com.module.common.ICallback;
-import com.module.msg.CustomMsgType;
-import com.module.msg.IMsgService;
 import com.module.rankingmode.R;
-import com.module.rankingmode.view.AudioControlPanelView;
-import com.module.rankingmode.view.VideoControlPanelView;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.EventClass;
-import com.zq.lyrics.inter.IlyricController;
-import com.zq.lyrics.widget.AbstractLrcView;
+import com.module.rankingmode.event.MatchStatusChangeEvent;
+import com.module.rankingmode.view.VoiceLineView;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 匹配界面
  */
 public class MatchingFragment extends BaseFragment {
-    public final static String TAG = "PkRoomFragment";
 
-    LinearLayout mOthersContainer;
-    ExButton mModeSwitchBtn;
-    SurfaceView mCameraSurfaceView;
-    ExTextView mInfoTextView;
-    AbstractLrcView mManyLineLyricsView;
+    public final static String TAG = "MatchingFragment";
 
-    String ROOM_ID = "chengsimin";
-    boolean useChangbaEngine = false;
-    Handler mUiHandler = new Handler();
+    public static final String KEY_SONG_NAME = "key_song_name"; //歌曲名
+    public static final String KEY_SONG_TIME = "key_song_time"; //歌曲时长
+
+    RelativeLayout mMainActContainer;
+    ExImageView mBackIv;
+    ExTextView mSongNameTv;
+    ExTextView mSongHintTv;
+    RelativeLayout mStartMatchArea;
+    ExImageView mSongImageTv;
+    ExTextView mToneTuningTv;
+    RelativeLayout mMatchingArea;
+    RelativeLayout mMatchSucessArea;
+    ExTextView mCountDownHint;
+    ExTextView mMatchStatusTv;
+
+    VoiceLineView mVoiceLineView;
+    MediaRecorder mMediaRecorder;
+
+    String songName;
+    String songTime;
+
+    private Handler voiceHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (mMediaRecorder == null) return;
+            double ratio = (double) mMediaRecorder.getMaxAmplitude() / 100;
+            double db = 0;// 分贝
+            //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
+            //你可以传自定义的数字进去，但需要在一定的范围内，比如0-200，就需要在xml文件中配置maxVolume
+            //同时，也可以配置灵敏度sensibility
+            if (ratio > 1)
+                db = 20 * Math.log10(ratio);
+            //只要有一个线程，不断调用这个方法，就可以使波形变化
+            //主要，这个方法必须在ui线程中调用
+            mVoiceLineView.setVolume((int) (db));
+        }
+    };
 
     @Override
     public int initView() {
-        return R.layout.room_fragment_layout;
+        return R.layout.matching_fragment_layout;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mOthersContainer = mRootView.findViewById(R.id.others_container);
-        mModeSwitchBtn = mRootView.findViewById(R.id.mode_switch_btn);
-        mRootView.findViewById(R.id.send_msg_btn).setOnClickListener(new View.OnClickListener() {
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mBackIv = (ExImageView) mRootView.findViewById(R.id.back_iv);
+        mSongNameTv = (ExTextView) mRootView.findViewById(R.id.song_name_tv);
+        mSongHintTv = (ExTextView) mRootView.findViewById(R.id.song_hint_tv);
+
+        mStartMatchArea = (RelativeLayout) mRootView.findViewById(R.id.start_match_area);
+        mMatchingArea = (RelativeLayout) mRootView.findViewById(R.id.matching_area);
+        mMatchSucessArea = (RelativeLayout) mRootView.findViewById(R.id.match_sucess_area);
+
+        mSongImageTv = (ExImageView) mRootView.findViewById(R.id.song_image_tv);
+        mToneTuningTv = (ExTextView) mRootView.findViewById(R.id.tone_tuning_tv);
+
+        mCountDownHint = (ExTextView) mRootView.findViewById(R.id.count_down_hint);
+
+        mMatchStatusTv = (ExTextView) mRootView.findViewById(R.id.match_status_tv);
+        mMatchStatusTv.setTag(MatchStatusChangeEvent.MATCH_STATUS_START);
+
+        mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voicLine);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            songName = bundle.getString(KEY_SONG_NAME);
+            songTime = bundle.getString(KEY_SONG_TIME);
+            mSongNameTv.setText(songName);
+            mSongHintTv.setText(songTime);
+        }
+
+        mMatchStatusTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-                if (msgService != null) {
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("text", "当前时间" + System.currentTimeMillis());
-                    msgService.sendChatRoomMessage(ROOM_ID, CustomMsgType.MSG_TYPE_TEXT, jsonObject, new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            U.getToastUtil().showShort("聊天室弹幕发送成功");
-                        }
+                if (U.getCommonUtils().isFastDoubleClick()) {
+                    return;
+                }
 
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-
-                        }
-                    });
+                switch ((int) mMatchStatusTv.getTag()) {
+                    case MatchStatusChangeEvent.MATCH_STATUS_START:
+                        break;
+                    case MatchStatusChangeEvent.MATCH_STATUS_MATCHING:
+                        break;
+                    case MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS:
+                        break;
+                    default:
+                        break;
                 }
             }
         });
 
-        mInfoTextView = mRootView.findViewById(R.id.info_text);
-        mManyLineLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
-//        mManyLineLyricsView.initLrcData();
-        //加载中
-        mManyLineLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
-
-        String fileName = "shamoluotuo";
-        LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", "5000", fileName.hashCode() + "");
-
-
-
-        mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
+        mToneTuningTv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                EngineManager.getInstance().startRecord();
+            public void onClick(View view) {
+                if (U.getCommonUtils().isFastDoubleClick()) {
+                    return;
+                }
+                // todo 试唱调音
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newParamsBuilder(getActivity(), AuditionFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
             }
         });
 
-        mRootView.findViewById(R.id.show_audio_control_panel_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AudioControlPanelView audioControlPanelView = new AudioControlPanelView(getContext());
-                audioControlPanelView.setLyricController(new IlyricController() {
+        initMediaRecoder();
+    }
+
+    private void initMediaRecoder() {
+        if (mMediaRecorder == null)
+            mMediaRecorder = new MediaRecorder();
+
+        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+        File file = new File(Environment.getExternalStorageDirectory().getPath(), "hello.log");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        mMediaRecorder.setOutputFile(file.getAbsolutePath());
+        mMediaRecorder.setMaxDuration(1000 * 60 * 10);
+        try {
+            mMediaRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mMediaRecorder.start();
+
+        Observable.interval(0, 1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .compose(this.<Long>bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(new Observer<Long>() {
                     @Override
-                    public void seekTo(int progress) {
-                        if(mManyLineLyricsView != null){
-                            mManyLineLyricsView.seekto(progress);
-                        }
+                    public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
-                    public void pause() {
-                        if(mManyLineLyricsView != null){
-                            mManyLineLyricsView.pause();
-                        }
+                    public void onNext(Long aLong) {
+                        voiceHandler.sendEmptyMessage(0);
                     }
 
                     @Override
-                    public void resume() {
-                        if(mManyLineLyricsView != null && mManyLineLyricsView.getLyricsReader() != null){
-                            mManyLineLyricsView.resume();
-                        }
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
 
-                DialogPlus.newDialog(getContext())
-                        .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
-                        .setContentHolder(new ViewHolder(audioControlPanelView))
-                        .setGravity(Gravity.BOTTOM)
-                        .setCancelable(true)
-                        .create().show();
-
-            }
-        });
-        mRootView.findViewById(R.id.show_video_control_panel_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogPlus.newDialog(getContext())
-                        .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
-                        .setContentHolder(new ViewHolder(new VideoControlPanelView(getContext())))
-                        .setGravity(Gravity.BOTTOM)
-                        .setCancelable(true)
-                        .create().show();
-
-            }
-        });
-
-        mModeSwitchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                useChangbaEngine = !useChangbaEngine;
-                joinEngineRoom();
-            }
-        });
-
-        if (U.getPermissionUtils().checkCamera(getActivity())) {
-            joinRongRoom();
-        } else {
-            U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
-                @Override
-                public void onRequestPermissionSuccess() {
-                    joinRongRoom();
-                }
-
-                @Override
-                public void onRequestPermissionFailure(List<String> permissions) {
-
-                }
-
-                @Override
-                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-
-                }
-            }, getActivity());
-        }
-        joinEngineRoom();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.FinishLoadLrcEvent finishLoadLrcEvent) {
-        LyricsReader lyricsReader = LyricsManager.getLyricsManager(getActivity()).getLyricsUtil(finishLoadLrcEvent.hash);
-        if (lyricsReader != null) {
-            lyricsReader.setHash(finishLoadLrcEvent.hash);
-            mManyLineLyricsView.initLrcData();
-            mManyLineLyricsView.setLyricsReader(lyricsReader);
-//            if (mManyLineLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLineLyricsView.getLrcPlayerStatus() != AbstractLrcView.LRCPLAYERSTATUS_PLAY)
-//                mManyLineLyricsView.play(0);
-        }
-    }
-
-    void joinRongRoom() {
-        // 加入融云房间
-        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(ROOM_ID, new ICallback() {
-            @Override
-            public void onSucess(Object obj) {
-                U.getToastUtil().showShort("加入弹幕房间成功");
-            }
-
-            @Override
-            public void onFailed(Object obj, int errcode, String message) {
-
-            }
-        });
-    }
-
-    void joinEngineRoom() {
-        if (useChangbaEngine) {
-            mModeSwitchBtn.setText("使用唱吧引擎：已开启");
-        } else {
-            mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
-        }
-        EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
-                .setUseCbEngine(useChangbaEngine)
-                .setEnableVideo(true)
-                .setEnableAudio(true)
-                .build());
-        // 不再次调用 join Agora 的preview 不生效,因为init时已经离开房间了
-        EngineManager.getInstance().joinRoom(ROOM_ID, 0, true);
-
-        if (useChangbaEngine) {
-            recreateCameraView();
-            // 确保view已经真正add进去了
-            EngineManager.getInstance().startPreview(mCameraSurfaceView);
-        } else {
-            recreateCameraView();
-            EngineManager.getInstance().startPreview(mCameraSurfaceView);
-        }
-    }
-
-    private void recreateCameraView() {
-        RelativeLayout container = (RelativeLayout) mRootView;
-        if (mCameraSurfaceView != null) {
-            ((RelativeLayout) mRootView).removeView(mCameraSurfaceView);
-        }
-        mCameraSurfaceView = new SurfaceView(getContext());
-        container.addView(mCameraSurfaceView, 0
-                , new RelativeLayout.LayoutParams(360, 640));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        mUiHandler.removeCallbacksAndMessages(null);
-        ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(ROOM_ID);
-        EngineManager.getInstance().destroy();
     }
 
     @Override
@@ -269,30 +216,27 @@ public class MatchingFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EngineEvent event) {
-        if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
-            addInfo(event.getUserStatus().getUserId() + "加入引擎房间");
-        } else if (event.getType() == EngineEvent.TYPE_USER_LEAVE) {
-            addInfo(event.getUserStatus().getUserId() + "离开引擎房间");
-            if (event.getUserStatus().hasBindView()) {
-                mOthersContainer.removeView(event.getUserStatus().getView());
+    public void onEventMainThread(MatchStatusChangeEvent event) {
+        if (event != null) {
+            if (event.status == MatchStatusChangeEvent.MATCH_STATUS_MATCHING) {
+                mStartMatchArea.setVisibility(View.GONE);
+                mMatchSucessArea.setVisibility(View.GONE);
+                mMatchingArea.setVisibility(View.VISIBLE);
+                mMatchStatusTv.setTag(event.status);
+                mMatchStatusTv.setText("匹配中");
+            } else if (event.status == MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS) {
+                mStartMatchArea.setVisibility(View.GONE);
+                mMatchingArea.setVisibility(View.GONE);
+                mMatchSucessArea.setVisibility(View.VISIBLE);
+                mMatchStatusTv.setTag(event.status);
+                mMatchStatusTv.setText("准备");
+            } else if (event.status == MatchStatusChangeEvent.MATCH_STATUS_START) {
+                mStartMatchArea.setVisibility(View.VISIBLE);
+                mMatchSucessArea.setVisibility(View.GONE);
+                mMatchingArea.setVisibility(View.GONE);
+                mMatchStatusTv.setTag(event.status);
+                mMatchStatusTv.setTag("开始匹配");
             }
-        } else if (event.getType() == EngineEvent.TYPE_FIRST_VIDEO_DECODED) {
-            addInfo(event.getUserStatus().getUserId() + "首帧decode");
-            if (!event.getUserStatus().isSelf()
-                    && !event.getUserStatus().hasBindView()) {
-                TextureView textureView = new TextureView(getContext());
-                mOthersContainer.addView(textureView, 360, 640);
-                EngineManager.getInstance().bindRemoteView(event.getUserStatus().getUserId(), textureView);
-            }
-        }else if(event.getType() == EngineEvent.TYPE_ENGINE_DESTROY){
-            addInfo("reset引擎");
-            mOthersContainer.removeAllViews();
         }
-    }
-
-    void addInfo(String info) {
-        String aa = mInfoTextView.getText().toString();
-        mInfoTextView.setText(aa + "\n" + info);
     }
 }
