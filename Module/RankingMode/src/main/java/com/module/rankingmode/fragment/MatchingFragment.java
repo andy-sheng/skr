@@ -184,8 +184,8 @@ public class MatchingFragment extends BaseFragment {
         mMediaRecorder.start();
 
         Observable.interval(0, 1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Observer<Long>() {
                     @Override
