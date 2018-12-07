@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         app:centerSubText="准备竞演 00:00 / 02:23"
         app:centerSubTextColor="@color/white_trans_50"
+        app:centerSubTextLeftDrawable="@drawable/matching_prepare_titlebar_center_dot"
+        app:centerSubTextLeftDrawablePadding="5dp"
         app:centerSubTextSize="@dimen/textsize_12_dp"
         app:centerText="成都"
         app:centerTextColor="@color/white"

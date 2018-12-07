@@ -79,11 +79,16 @@
         <attr name="centerSubTextColor" format="color" />
         <!-- 子标题TextView 字体大小, 对应centerType_TextView -->
         <attr name="centerSubTextSize" format="dimension" />
+        <!-- 子标题TextView 左边图片, 对应centerType_TextView -->
+        <attr name="centerSubTextLeftDrawable" format="reference" />
+        <!-- 子标题TextView 左边padding, 对应centerType_TextView -->
+        <attr name="centerSubTextLeftDrawablePadding" format="dimension" />
         <!-- 搜索输入框是否可输入 -->
         <attr name="centerSearchEditable" format="boolean" />
         <!-- 搜索框背景 -->
         <attr name="centerSearchBg" format="reference" />
         <!-- 中间自定义布局, 对应centerType_CustomView -->
         <attr name="centerCustomView" format="reference" />
+
     </declare-styleable>
 </resources>

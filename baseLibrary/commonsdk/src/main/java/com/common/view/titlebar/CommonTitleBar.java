@@ -150,6 +150,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private String centerSubText;                       // 中间subTextView文字
     private int centerSubTextColor;                     // 中间subTextView字体颜色
     private float centerSubTextSize;                    // 中间subTextView字体大小
+    private int centerSubTextLeftDrawable;              // 中间subTextView drawableLeft资源
+    private float centerSubTextLeftDrawablePadding;     // 中间subTextView drawablePadding
     private boolean centerSearchEdiable;                // 搜索框是否可输入
     private int centerSearchBgResource;                 // 搜索框背景图片
     private int centerSearchRightType;                  // 搜索框右边按钮类型  0: voice 1: delete
@@ -235,6 +237,9 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             centerSubText = array.getString(R.styleable.CommonTitleBar_centerSubText);
             centerSubTextColor = array.getColor(R.styleable.CommonTitleBar_centerSubTextColor, Color.parseColor("#666666"));
             centerSubTextSize = array.getDimension(R.styleable.CommonTitleBar_centerSubTextSize, U.getDisplayUtils().dip2px(context, 11));
+            centerSubTextLeftDrawable = array.getResourceId(R.styleable.CommonTitleBar_centerSubTextLeftDrawable,0);
+            centerSubTextLeftDrawablePadding = array.getResourceId(R.styleable.CommonTitleBar_centerSubTextLeftDrawablePadding,0);
+
         } else if (centerType == TYPE_CENTER_SEARCHVIEW) {
             centerSearchEdiable = array.getBoolean(R.styleable.CommonTitleBar_centerSearchEditable, true);
             centerSearchBgResource = array.getResourceId(R.styleable.CommonTitleBar_centerSearchBg, R.drawable.comm_titlebar_search_gray_shape);
@@ -486,6 +491,15 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             tvCenterSub.setTextSize(TypedValue.COMPLEX_UNIT_PX, centerSubTextSize);
             tvCenterSub.setGravity(Gravity.CENTER);
             tvCenterSub.setSingleLine(true);
+            // 设置DrawableLeft及DrawablePadding
+            if (centerSubTextLeftDrawable != 0) {
+                tvCenterSub.setCompoundDrawablePadding((int) centerSubTextLeftDrawablePadding);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    tvCenterSub.setCompoundDrawablesRelativeWithIntrinsicBounds(centerSubTextLeftDrawable, 0, 0, 0);
+                } else {
+                    tvCenterSub.setCompoundDrawablesWithIntrinsicBounds(centerSubTextLeftDrawable, 0, 0, 0);
+                }
+            }
             if (TextUtils.isEmpty(centerSubText)) {
                 tvCenterSub.setVisibility(View.GONE);
             }
