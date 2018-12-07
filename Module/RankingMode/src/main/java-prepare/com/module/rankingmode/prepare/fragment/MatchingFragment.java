@@ -3,15 +3,13 @@ package com.module.rankingmode.prepare.fragment;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -23,7 +21,6 @@ import com.module.rankingmode.prepare.view.MatchStartView;
 import com.module.rankingmode.prepare.view.MatchSucessView;
 import com.module.rankingmode.prepare.view.MatchingView;
 import com.module.rankingmode.prepare.view.VoiceLineView;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -32,12 +29,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 匹配界面
@@ -62,7 +56,6 @@ public class MatchingFragment extends BaseFragment {
 
     VoiceLineView mVoiceLineView;
     MediaRecorder mMediaRecorder;
-    boolean isAlive = false;
 
     MatchStartView startMatchView;
     MatchingView matchingView;
@@ -73,28 +66,7 @@ public class MatchingFragment extends BaseFragment {
     String songName;
     String songTime;
 
-    private final static int UPLOAD_VOICE_VOLUME = 1;
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            if (msg.what == UPLOAD_VOICE_VOLUME) {
-                if (mMediaRecorder == null) return;
-                double ratio = (double) mMediaRecorder.getMaxAmplitude() / 100;
-                double db = 0;// 分贝
-                //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
-                //你可以传自定义的数字进去，但需要在一定的范围内，比如0-200，就需要在xml文件中配置maxVolume
-                //同时，也可以配置灵敏度sensibility
-                if (ratio > 1)
-                    db = 20 * Math.log10(ratio);
-                //只要有一个线程，不断调用这个方法，就可以使波形变化
-                //主要，这个方法必须在ui线程中调用
-                mVoiceLineView.setVolume((int) (db));
-            }
-        }
-    };
+    HandlerTaskTimer mHandlerTaskTimer;
 
     @Override
     public int initView() {
@@ -123,7 +95,6 @@ public class MatchingFragment extends BaseFragment {
         mMatchStatusTv.setTag(MatchStatusChangeEvent.MATCH_STATUS_START);
         mMatchContent.addView(startMatchView);
 
-        isAlive = true;
         matchPresenter = new MatchPresenter();
 
         Bundle bundle = getArguments();
@@ -195,28 +166,31 @@ public class MatchingFragment extends BaseFragment {
         }
         mMediaRecorder.start();
 
-
-        Observable.interval(0, 50, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Long>bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(new Observer<Long>() {
+        mHandlerTaskTimer = HandlerTaskTimer.newBuilder().interval(50)
+                .start(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Long aLong) {
-                        if (isAlive) {
-                            handler.sendEmptyMessage(UPLOAD_VOICE_VOLUME);
-                        }
+                    public void onNext(Integer integer) {
+                        if (mMediaRecorder == null) return;
+                        double ratio = (double) mMediaRecorder.getMaxAmplitude() / 100;
+                        double db = 0;// 分贝
+                        //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
+                        //你可以传自定义的数字进去，但需要在一定的范围内，比如0-200，就需要在xml文件中配置maxVolume
+                        //同时，也可以配置灵敏度sensibility
+                        if (ratio > 1)
+                            db = 20 * Math.log10(ratio);
+                        //只要有一个线程，不断调用这个方法，就可以使波形变化
+                        //主要，这个方法必须在ui线程中调用
+                        mVoiceLineView.setVolume((int) (db));
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.e(e);
+
                     }
 
                     @Override
@@ -230,14 +204,12 @@ public class MatchingFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        isAlive = false;
         if (mMediaRecorder != null) {
             mMediaRecorder.release();
             mMediaRecorder = null;
         }
-        if (handler != null) {
-            handler.removeMessages(UPLOAD_VOICE_VOLUME);
-            handler = null;
+        if (mHandlerTaskTimer != null) {
+            mHandlerTaskTimer.dispose();
         }
         if (mMatchContent != null) {
             mMatchContent.removeAllViews();
