@@ -17,6 +17,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
@@ -55,8 +56,7 @@ public class VerifyCodeFragment extends BaseFragment {
     ExTextView mVerifyErrorTv;  //验证码验证出错提示
 
     String mPhoneNumber; //发送验证码的电话号码
-    private Disposable mDisposable;
-
+    HandlerTaskTimer mDisposable;
     @Override
     public int initView() {
         return R.layout.core_verify_code_layout;
@@ -111,40 +111,31 @@ public class VerifyCodeFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
     }
 
     /**
      * 初始化倒计时
      */
     private void initCounDown(final int count) {
-        if (mDisposable != null && !mDisposable.isDisposed()) {
+        if (mDisposable != null) {
             mDisposable.dispose();
         }
 
         mCountDownTv.setClickable(false);
-        Observable.interval(0, 1, TimeUnit.SECONDS)
-                .take(count + 1)
-                .map(new Function<Long, Long>() {
-                    @Override
-                    public Long apply(Long aLong) throws Exception {
-                        return count - aLong;
-                    }
-                }).doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(Disposable disposable) throws Exception {
-
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Long>bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(new Observer<Long>() {
+        mDisposable = HandlerTaskTimer.newBuilder().interval(1000)
+                .take(count)
+                .start(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        mDisposable = d;
+
                     }
 
                     @Override
-                    public void onNext(Long aLong) {
-                        mCountDownTv.setText(String.format("%ds", aLong));
+                    public void onNext(Integer aLong) {
+                        mCountDownTv.setText(String.format("%ds", count-aLong));
                     }
 
                     @Override
@@ -165,7 +156,7 @@ public class VerifyCodeFragment extends BaseFragment {
      * 停止倒计时
      */
     private void stopCountDown() {
-        if (mDisposable != null && !mDisposable.isDisposed()) {
+        if (mDisposable != null) {
             mDisposable.dispose();
         }
         mCountDownTv.setClickable(true);
