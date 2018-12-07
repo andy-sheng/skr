@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--VoiceLineView的属性-->
     <declare-styleable name="voiceView">
         <!--中间线的颜色，就是波形的时候，大家可以看到，中间有一条直线，就是那个-->
         <attr name="middleLine" format="color|reference" />
@@ -40,9 +41,21 @@
     </declare-styleable>
 
 
+
     <declare-styleable name="ScenesSelectBtn">
         <attr name="strokeColor" format="color" />
         <attr name="fillColor" format="color" />
+    </declare-styleable>
+
+
+    <!--RingCircle环形旋转头像的属性-->
+    <declare-styleable name="RingCircleView">
+        <!--环中间线的颜色-->
+        <attr name="midLine_Color" format="color|reference" />
+        <!--环中心线的宽度-->
+        <attr name="midLine_Width" format="dimension" />
+        <!--环的半径-->
+        <attr name="ring_Radius" format="dimension" />
     </declare-styleable>
 
 </resources>

@@ -13,6 +13,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.fragment.AuditionFragment;
@@ -51,6 +52,7 @@ public class MatchingFragment extends BaseFragment {
 
     RelativeLayout mMainActContainer;
 
+    CommonTitleBar mTitleBar;
     RelativeLayout mMatchContent; // 匹配中间的容器
 
     ExTextView mToneTuningTv;   //试音调音
@@ -83,6 +85,7 @@ public class MatchingFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
 
+        mTitleBar = (CommonTitleBar)mRootView.findViewById(R.id.title_bar);
         mMatchContent = (RelativeLayout) mRootView.findViewById(R.id.match_content);
 
         mToneTuningTv = (ExTextView) mRootView.findViewById(R.id.tone_tuning_tv);
@@ -242,6 +245,8 @@ public class MatchingFragment extends BaseFragment {
                 mMatchContent.addView(matchingView);
                 mMatchStatusTv.setTag(event.status);
                 mMatchStatusTv.setText("取消匹配");
+                mTitleBar.getCenterTextView().setText("匹配中");
+                mTitleBar.getCenterSubTextView().setText("一大波skrer在来的路上啦...");
                 setMatchStatus(MatchStatusChangeEvent.MATCH_STATUS_MATCHING);
             } else if (event.status == MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS) {
                 mMatchContent.removeAllViews();
@@ -257,6 +262,8 @@ public class MatchingFragment extends BaseFragment {
                 mMatchContent.addView(startMatchView);
                 mMatchStatusTv.setTag(event.status);
                 mMatchStatusTv.setText("开始匹配");
+                mTitleBar.getCenterTextView().setText("匹配中");
+                mTitleBar.getCenterSubTextView().setText("一大波skrer在来的路上啦...");
                 setMatchStatus(MatchStatusChangeEvent.MATCH_STATUS_START);
             }
 
