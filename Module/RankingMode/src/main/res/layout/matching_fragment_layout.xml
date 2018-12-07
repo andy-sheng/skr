@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:voiceView="http://schemas.android.com/tools"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:voiceView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -116,7 +115,7 @@
         android:layout_height="@dimen/view_500_dp"
         android:layout_alignParentBottom="true"
         voiceView:maxVolume="200"
-        voiceView:middleLine="@color/black"
+        voiceView:middleLine="@color/transparent"
         voiceView:middleLineHeight="1dp"
         voiceView:fineness="three"
         voiceView:rectSpace="2dp"

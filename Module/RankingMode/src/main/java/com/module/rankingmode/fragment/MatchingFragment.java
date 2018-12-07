@@ -31,8 +31,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -59,25 +57,31 @@ public class MatchingFragment extends BaseFragment {
 
     VoiceLineView mVoiceLineView;
     MediaRecorder mMediaRecorder;
+    boolean isAlive = false;
 
     String songName;
     String songTime;
 
-    private Handler voiceHandler = new Handler() {
+    private final static int UPLOAD_VOICE_VOLUME = 1;
+
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (mMediaRecorder == null) return;
-            double ratio = (double) mMediaRecorder.getMaxAmplitude() / 100;
-            double db = 0;// 分贝
-            //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
-            //你可以传自定义的数字进去，但需要在一定的范围内，比如0-200，就需要在xml文件中配置maxVolume
-            //同时，也可以配置灵敏度sensibility
-            if (ratio > 1)
-                db = 20 * Math.log10(ratio);
-            //只要有一个线程，不断调用这个方法，就可以使波形变化
-            //主要，这个方法必须在ui线程中调用
-            mVoiceLineView.setVolume((int) (db));
+
+            if (msg.what == UPLOAD_VOICE_VOLUME){
+                if (mMediaRecorder == null) return;
+                double ratio = (double) mMediaRecorder.getMaxAmplitude() / 100;
+                double db = 0;// 分贝
+                //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
+                //你可以传自定义的数字进去，但需要在一定的范围内，比如0-200，就需要在xml文件中配置maxVolume
+                //同时，也可以配置灵敏度sensibility
+                if (ratio > 1)
+                    db = 20 * Math.log10(ratio);
+                //只要有一个线程，不断调用这个方法，就可以使波形变化
+                //主要，这个方法必须在ui线程中调用
+                mVoiceLineView.setVolume((int) (db));
+            }
         }
     };
 
@@ -106,6 +110,8 @@ public class MatchingFragment extends BaseFragment {
         mMatchStatusTv.setTag(MatchStatusChangeEvent.MATCH_STATUS_START);
 
         mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voicLine);
+
+        isAlive = true;
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -189,12 +195,14 @@ public class MatchingFragment extends BaseFragment {
 
                     @Override
                     public void onNext(Long aLong) {
-                        voiceHandler.sendEmptyMessage(0);
+                        if(isAlive){
+                            handler.sendEmptyMessage(UPLOAD_VOICE_VOLUME);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        MyLog.e(e);
                     }
 
                     @Override
@@ -208,6 +216,15 @@ public class MatchingFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        isAlive = false;
+        if (mMediaRecorder != null) {
+            mMediaRecorder.release();
+            mMediaRecorder = null;
+        }
+        if (handler != null) {
+            handler.removeMessages(UPLOAD_VOICE_VOLUME);
+            handler = null;
+        }
     }
 
     @Override
