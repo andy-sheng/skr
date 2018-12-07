@@ -1,4 +1,4 @@
-package com.module.rankingmode.view;
+package com.module.rankingmode.prepare.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

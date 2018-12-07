@@ -1,4 +1,4 @@
-package com.module.rankingmode.utils;
+package com.module.rankingmode.prepare.utils;
 
 import java.math.BigDecimal;
 

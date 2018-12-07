@@ -5,126 +5,7 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_trans_20">
-
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/back_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:src="@drawable/avatar_default_b" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/song_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:text="成都"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_33_dp" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/song_hint_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/song_name_tv"
-        android:layout_centerHorizontal="true"
-        android:text="准备竞演"
-        android:textColor="@color/white_trans_50" />
-
-    <RelativeLayout
-        android:id="@+id/start_match_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/song_hint_tv"
-        android:layout_marginTop="@dimen/view_60_dp">
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/song_image_tv"
-            android:layout_width="@dimen/view_100_dp"
-            android:layout_height="@dimen/view_100_dp"
-            android:layout_centerHorizontal="true" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/tone_tuning_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/song_image_tv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_50_dp"
-            android:text="试唱调音"
-            android:textColor="@color/white" />
-
-    </RelativeLayout>
-
-
-    <!--匹配中-->
-    <RelativeLayout
-        android:id="@+id/matching_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/song_hint_tv"
-        android:layout_marginTop="@dimen/view_60_dp"
-        android:visibility="gone">
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/match_sucess_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/song_hint_tv"
-        android:layout_marginTop="@dimen/view_60_dp"
-        android:visibility="gone">
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/count_down_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_180_dp"
-            android:text="已为您匹配到队伍，请准备\n05s后对局开始"
-            android:textColor="@color/red" />
-
-    </RelativeLayout>
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/match_status_tv"
-        android:layout_width="@dimen/view_120_dp"
-        android:layout_height="@dimen/view_34_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_100_dp"
-        android:gravity="center"
-        android:text="开始匹配"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textsize_20_dp"
-        app:bl_corners_radius="@dimen/view_17_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/yellow" />
-
-    <com.module.rankingmode.view.VoiceLineView
-        android:id="@+id/voicLine"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_500_dp"
-        android:layout_alignParentBottom="true"
-        voiceView:fineness="three"
-        voiceView:lineSpeed="200"
-        voiceView:maxVolume="200"
-        voiceView:middleLine="@color/transparent"
-        voiceView:middleLineHeight="1dp"
-        voiceView:rectSpace="2dp"
-        voiceView:rectWidth="5dp"
-        voiceView:sensibility="four"
-        voiceView:viewMode="line"
-        voiceView:voiceLine="@color/green" />
+    android:background="@color/black_trans_50">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title_bar"
@@ -143,4 +24,91 @@
         app:titleBarColor="@color/black_trans_50">
 
     </com.common.view.titlebar.CommonTitleBar>
+
+    <RelativeLayout
+        android:id="@+id/match_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_318_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_below="@+id/title_bar"
+        android:background="@color/transparent">
+
+    </RelativeLayout>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tone_tuning_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/match_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_27_dp"
+        android:drawableRight="@drawable/match_tone_tuning_dot"
+        android:text="试唱调音"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/match_status_tv"
+        android:layout_width="@dimen/view_192_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_105_dp"
+        android:gravity="center"
+        android:text="开始匹配"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#F8D91C" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/prepare_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/match_status_tv"
+        android:layout_marginBottom="@dimen/view_22_dp"
+        android:layout_centerHorizontal="true"
+        android:text="请准备05s后对局开始"
+        android:textColor="@color/black_trans_50"
+        android:visibility="gone"/>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/predict_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/match_status_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:text="预计时间 02：20"
+        android:textColor="@color/black_trans_50"
+        android:visibility="gone"/>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/wait_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/predict_time_tv"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_centerHorizontal="true"
+        android:text="已经等待 00：00"
+        android:textColor="@color/black_trans_50"
+        android:visibility="gone"/>
+
+    <com.module.rankingmode.prepare.view.VoiceLineView
+        android:id="@+id/voice_line_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_500_dp"
+        android:layout_alignParentBottom="true"
+        voiceView:fineness="three"
+        voiceView:lineSpeed="200"
+        voiceView:maxVolume="200"
+        voiceView:middleLine="@color/transparent"
+        voiceView:middleLineHeight="1dp"
+        voiceView:rectSpace="2dp"
+        voiceView:rectWidth="5dp"
+        voiceView:sensibility="four"
+        voiceView:viewMode="line"
+        voiceView:voiceLine="@color/green" />
+
 </RelativeLayout>
