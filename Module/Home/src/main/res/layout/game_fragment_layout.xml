@@ -2,60 +2,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.module.home.widget.UserInfoTitleView
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:id="@+id/user_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_96_dp" />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/view_dimen_100">
+        android:layout_below="@+id/user_title_view">
 
         <LinearLayout
+            android:layout_marginLeft="@dimen/view_6_dp"
+            android:layout_marginRight="@dimen/view_6_dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.common.view.ex.ExTextView
+            <com.common.view.ex.ExImageView
+                android:src="@drawable/pk_stadium"
+                android:adjustViewBounds="true"
+                android:id="@+id/iv_athletics_pk"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_dimen_100"
-                android:gravity="center"
-                android:text="这里是title" />
+                android:layout_height="wrap_content" />
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_pk"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_dimen_300"
-                android:layout_marginTop="@dimen/view_dimen_30"
-                android:background="@color/black_trans_5">
+                android:layout_height="wrap_content">
+                
+                <com.common.view.ex.ExImageView
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/iv_normal_pk"
+                    android:src="@drawable/snatch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="pk模式" />
-            </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_happy"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_dimen_300"
-                android:layout_marginTop="@dimen/view_dimen_30"
-                android:background="@color/blue">
+                <com.common.view.ex.ExImageView
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/snatch"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-                <TextView
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="娱乐模式" />
-            </android.support.v7.widget.CardView>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/test_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:text="进入房间" />
-
-
 </RelativeLayout>

@@ -2,13 +2,11 @@ package com.module.home.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
-import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.utils.U;
-import com.common.view.ex.ExTextView;
+import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -19,11 +17,6 @@ import io.reactivex.functions.Consumer;
 
 public class GameFragment extends BaseFragment {
 
-    CardView mCardPk;
-
-    CardView mCardHappy;
-
-    ExTextView mTestBtn;
 
     @Override
     public int initView() {
@@ -32,23 +25,10 @@ public class GameFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mCardPk = (CardView)mRootView.findViewById(R.id.card_pk);
-        mCardHappy = (CardView)mRootView.findViewById(R.id.card_happy);
-        mTestBtn = (ExTextView)mRootView.findViewById(R.id.test_btn);
+        ExImageView ivAthleticsPk = (ExImageView)mRootView.findViewById(R.id.iv_athletics_pk);
+        ExImageView ivNormalPk = (ExImageView)mRootView.findViewById(R.id.iv_normal_pk);
 
-        mTestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(U.getCommonUtils().isFastDoubleClick()){
-                    return;
-                }
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE).greenChannel()
-                        .withBoolean("selectSong",true)
-                        .navigation();
-            }
-        });
-
-        RxView.clicks(mCardPk)
+        RxView.clicks(ivAthleticsPk)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
@@ -59,7 +39,7 @@ public class GameFragment extends BaseFragment {
                     }
                 });
 
-        RxView.clicks(mCardHappy)
+        RxView.clicks(ivNormalPk)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override

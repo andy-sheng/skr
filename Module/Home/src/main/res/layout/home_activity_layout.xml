@@ -2,36 +2,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_above="@+id/bottom_container"
+        android:background="#ffdadada"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
     <LinearLayout
+        android:background="#ffefefef"
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_56_dp"
         android:layout_alignParentBottom="true"
         android:padding="@dimen/view_dimen_10">
 
-        <com.common.view.ex.ExTextView
+        <com.common.view.ex.ExImageView
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/bottom_navegation_k"
             android:id="@+id/game_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="游戏" />
+             />
 
-        <com.common.view.ex.ExTextView
+        <com.common.view.ex.ExImageView
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/bottom_navegation_message"
             android:id="@+id/message_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="消息" />
+             />
 
-        <com.common.view.ex.ExTextView
+        <com.common.view.ex.ExImageView
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/bottom_navegation_message"
             android:id="@+id/person_info_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="个人" />
+             />
     </LinearLayout>
 
     <com.common.view.viewpager.NestViewPager

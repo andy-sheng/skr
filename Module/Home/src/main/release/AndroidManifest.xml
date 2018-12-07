@@ -10,6 +10,9 @@
             android:value="ConfigModule" />
 
         <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".HomeActivity"
             android:launchMode="singleTask">
 

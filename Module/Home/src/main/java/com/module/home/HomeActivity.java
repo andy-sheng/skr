@@ -8,11 +8,11 @@ import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.log.MyLog;
+import com.common.view.ex.ExImageView;
+import com.common.view.viewpager.NestViewPager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
-import com.common.log.MyLog;
-import com.common.view.ex.ExTextView;
-import com.common.view.viewpager.NestViewPager;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.msg.IMsgService;
@@ -21,11 +21,16 @@ import com.module.msg.IMsgService;
 public class HomeActivity extends BaseActivity {
 
     LinearLayout mBottomContainer;
-    ExTextView mGameBtn;
-    ExTextView mMessageBtn;
-    ExTextView mPersonInfoBtn;
+    ExImageView mGameBtn;
+    ExImageView mMessageBtn;
+    ExImageView mPersonInfoBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -35,9 +40,9 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
-        mGameBtn = (ExTextView) findViewById(R.id.game_btn);
-        mMessageBtn = (ExTextView) findViewById(R.id.message_btn);
-        mPersonInfoBtn = (ExTextView) findViewById(R.id.person_info_btn);
+        mGameBtn = (ExImageView) findViewById(R.id.game_btn);
+        mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
+        mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
