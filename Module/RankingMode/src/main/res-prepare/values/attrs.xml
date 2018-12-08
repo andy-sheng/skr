@@ -40,11 +40,13 @@
         </attr>
     </declare-styleable>
 
-
-
     <declare-styleable name="ScenesSelectBtn">
         <attr name="strokeColor" format="color" />
         <attr name="fillColor" format="color" />
+        <attr name="strokeColor_checked" format="color" />
+        <attr name="fillColor_checked" format="color" />
+        <attr name="textColor_normal" format="color" />
+        <attr name="textColor_checked" format="color" />
     </declare-styleable>
 
 

@@ -1,45 +1,64 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_233_dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="人声" />
+            android:text="人声"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/view_14_dp" />
 
         <SeekBar
             android:id="@+id/people_voice_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:maxHeight="@dimen/view_2_dp"
+            android:minHeight="@dimen/view_2_dp"
+            android:paddingLeft="@dimen/view_10_dp"
+            android:paddingRight="@dimen/view_10_dp"
+            android:progressDrawable="@drawable/voice_control_panel_seekbar_bg" />
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_6_dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="伴奏" />
+            android:text="伴奏"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/view_14_dp" />
 
         <SeekBar
             android:id="@+id/music_voice_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:maxHeight="@dimen/view_2_dp"
+            android:minHeight="@dimen/view_2_dp"
+            android:paddingLeft="@dimen/view_10_dp"
+            android:paddingRight="@dimen/view_10_dp"
+            android:progressDrawable="@drawable/voice_control_panel_seekbar_bg" />
     </LinearLayout>
 
     <RadioGroup
@@ -57,7 +76,12 @@
             android:button="@null"
             android:checked="true"
             android:gravity="center"
-            android:text="默认" />
+            android:text="默认"
+            app:fillColor="@color/transparent"
+            app:fillColor_checked="#f2978b"
+            app:strokeColor="@color/white"
+            app:textColor_checked="@color/black"
+            app:textColor_normal="#808080" />
 
         <com.module.rankingmode.prepare.view.ScenesSelectBtn
             android:id="@+id/ktv_sbtn"
@@ -67,7 +91,12 @@
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="KTV" />
+            android:text="KTV"
+            app:fillColor="@color/transparent"
+            app:fillColor_checked="#f2978b"
+            app:strokeColor="#dfab73"
+            app:textColor_checked="@color/black"
+            app:textColor_normal="#808080" />
 
         <com.module.rankingmode.prepare.view.ScenesSelectBtn
             android:id="@+id/rock_sbtn"
@@ -77,7 +106,12 @@
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="摇滚" />
+            android:text="摇滚"
+            app:fillColor="@color/transparent"
+            app:fillColor_checked="#f2978b"
+            app:strokeColor="#b0e8ba"
+            app:textColor_checked="@color/black"
+            app:textColor_normal="#808080" />
 
         <com.module.rankingmode.prepare.view.ScenesSelectBtn
             android:id="@+id/dianxin_sbtn"
@@ -87,7 +121,12 @@
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="电音" />
+            android:text="电音"
+            app:fillColor="@color/transparent"
+            app:fillColor_checked="#f2978b"
+            app:strokeColor="#b0d5ec"
+            app:textColor_checked="@color/black"
+            app:textColor_normal="#808080" />
 
         <com.module.rankingmode.prepare.view.ScenesSelectBtn
             android:id="@+id/kongling_sbtn"
@@ -97,6 +136,11 @@
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="空灵" />
+            android:text="空灵"
+            app:fillColor="@color/transparent"
+            app:fillColor_checked="#f2978b"
+            app:strokeColor="#e0adeb"
+            app:textColor_checked="@color/black"
+            app:textColor_normal="#808080" />
     </RadioGroup>
 </LinearLayout>

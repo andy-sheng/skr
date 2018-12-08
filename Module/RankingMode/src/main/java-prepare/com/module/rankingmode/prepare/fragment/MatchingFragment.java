@@ -1,5 +1,6 @@
 package com.module.rankingmode.prepare.fragment;
 
+import android.graphics.Color;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -85,7 +86,7 @@ public class MatchingFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
 
-        mTitleBar = (CommonTitleBar)mRootView.findViewById(R.id.title_bar);
+        mTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.title_bar);
         mMatchContent = (RelativeLayout) mRootView.findViewById(R.id.match_content);
 
         mToneTuningTv = (ExTextView) mRootView.findViewById(R.id.tone_tuning_tv);
@@ -140,9 +141,9 @@ public class MatchingFragment extends BaseFragment {
                     public void accept(Object o) throws Exception {
                         // todo 试唱调音
                         VoiceControlPanelView view = new VoiceControlPanelView(getContext());
-
                         DialogPlus.newDialog(getContext())
-                                .setExpanded(true, U.getDisplayUtils().getScreenHeight() / 2)
+                                .setExpanded(true, U.getDisplayUtils().dip2px(233))
+                                .setContentBackgroundResource(R.drawable.voice_control_panel_bg)
                                 .setContentHolder(new ViewHolder(view))
                                 .setGravity(Gravity.BOTTOM)
                                 .setCancelable(true)

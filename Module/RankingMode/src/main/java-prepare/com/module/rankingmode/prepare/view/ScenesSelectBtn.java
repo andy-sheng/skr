@@ -1,6 +1,7 @@
 package com.module.rankingmode.prepare.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -22,15 +23,13 @@ public class ScenesSelectBtn extends android.support.v7.widget.AppCompatRadioBut
     }
 
     private void init(AttributeSet attrs) {
-
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.ScenesSelectBtn);
-
-        int strokeWidth = 5; // 3px not dp
-        int roundRadius = 15; // 8px not dp
-
 
         int strokeColor = array.getColor(R.styleable.ScenesSelectBtn_strokeColor, Color.parseColor("#ffffff"));
         int fillColor = array.getColor(R.styleable.ScenesSelectBtn_fillColor, Color.parseColor("#ffffff"));
+
+        int strokeWidth = 5; // 3px not dp
+        int roundRadius = 15; // 8px not dp
 
         GradientDrawable uncheckDrawable = new GradientDrawable();
         uncheckDrawable.setShape(GradientDrawable.OVAL);
@@ -38,8 +37,8 @@ public class ScenesSelectBtn extends android.support.v7.widget.AppCompatRadioBut
         uncheckDrawable.setCornerRadius(roundRadius);
         uncheckDrawable.setStroke(strokeWidth, strokeColor);
 
-        strokeColor = Color.parseColor("#00ffff");
-        fillColor = Color.parseColor("#ff00ff");
+        strokeColor = array.getColor(R.styleable.ScenesSelectBtn_strokeColor_checked, strokeColor);
+        fillColor = array.getColor(R.styleable.ScenesSelectBtn_fillColor_checked, fillColor);
 
         GradientDrawable checkDrawable = new GradientDrawable();
         checkDrawable.setShape(GradientDrawable.OVAL);
@@ -57,6 +56,17 @@ public class ScenesSelectBtn extends android.support.v7.widget.AppCompatRadioBut
                 checkDrawable);
 
         setBackground(drawable);
+
+        int textColorNormal = array.getColor(R.styleable.ScenesSelectBtn_textColor_normal, Color.parseColor("#60ffffff"));
+        int textColorChecked = array.getColor(R.styleable.ScenesSelectBtn_textColor_checked, Color.parseColor("#ffffff"));
+
+        int[] colors = new int[]{textColorNormal, textColorChecked,textColorNormal};
+        int[][] states = new int[3][];
+        states[0] = new int[]{-android.R.attr.state_checked};
+        states[1] = new int[]{android.R.attr.state_checked};
+        states[2] = new int[]{};
+        ColorStateList colorStateList = new ColorStateList(states, colors);
+        setTextColor(colorStateList);
 
     }
 }

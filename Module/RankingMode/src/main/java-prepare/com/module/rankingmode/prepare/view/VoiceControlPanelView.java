@@ -1,6 +1,8 @@
 package com.module.rankingmode.prepare.view;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
@@ -36,6 +38,9 @@ public class VoiceControlPanelView extends ScrollView {
 
         mPeopleVoiceSeekbar = (SeekBar)this.findViewById(R.id.people_voice_seekbar);
         mMusicVoiceSeekbar = (SeekBar)this.findViewById(R.id.music_voice_seekbar);
+
+        mPeopleVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
+        mMusicVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
         mScenesBtnGroup = (RadioGroup)this.findViewById(R.id.scenes_btn_group);
         mScenesBtnGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
