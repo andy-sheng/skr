@@ -1,6 +1,5 @@
 package com.module.rankingmode.prepare.fragment;
 
-import android.graphics.Color;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,14 +9,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
-import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.engine.EngineManager;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
-import com.module.rankingmode.fragment.AuditionFragment;
 import com.module.rankingmode.prepare.event.MatchStatusChangeEvent;
 import com.module.rankingmode.prepare.presenter.MatchPresenter;
 import com.module.rankingmode.prepare.view.MatchStartView;
@@ -25,10 +23,8 @@ import com.module.rankingmode.prepare.view.MatchSucessView;
 import com.module.rankingmode.prepare.view.MatchingView;
 import com.module.rankingmode.prepare.view.VoiceControlPanelView;
 import com.module.rankingmode.prepare.view.VoiceLineView;
-import com.module.rankingmode.view.AudioControlPanelView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.lyrics.inter.IlyricController;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -228,6 +224,8 @@ public class MatchingFragment extends BaseFragment {
         if (mMatchContent != null) {
             mMatchContent.removeAllViews();
         }
+        // 退出了匹配页面，销毁引擎
+        EngineManager.getInstance().destroy();
     }
 
     @Override

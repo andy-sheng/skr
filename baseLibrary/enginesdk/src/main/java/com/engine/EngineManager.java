@@ -31,7 +31,8 @@ public class EngineManager implements AgoraOutCallback {
 
     public final static String TAG = "EngineManager";
 
-    private Params mConfig;
+    private Params mConfig = null;
+    private boolean mIsInit = false;
     /**
      * 存储该房间所有用户在引擎中的状态的，
      * key为在引擎中的用户 id
@@ -147,6 +148,11 @@ public class EngineManager implements AgoraOutCallback {
         mConfig = params;
         AgoraEngineAdapter.getInstance().init(mConfig);
         CbEngineAdapter.getInstance().init(mConfig);
+        mIsInit = true;
+    }
+
+    public boolean isInit() {
+        return mIsInit;
     }
 
     public Params getParams() {
@@ -157,11 +163,13 @@ public class EngineManager implements AgoraOutCallback {
      * 销毁所有
      */
     public void destroy() {
+        mIsInit = false;
         AgoraEngineAdapter.getInstance().destroy(true);
         CbEngineAdapter.getInstance().destroy();
         mUserStatusMap.clear();
         mRemoteViewCache.clear();
         mUiHandler.removeCallbacksAndMessages(null);
+        mConfig = null;
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
     }
 
@@ -201,6 +209,7 @@ public class EngineManager implements AgoraOutCallback {
 
 
     /* 视频基础开始 */
+
     /**
      * 开启唱吧引擎的自采集视频预览
      * 这个view也是之后的本地view
@@ -521,7 +530,7 @@ public class EngineManager implements AgoraOutCallback {
      *                  AUDIO_REVERB_STRENGTH(4)：混响持续的强度，取值范围为 [0, 100]
      */
     public void setLocalVoiceReverb(int reverbKey, int value) {
-        mConfig.setLocalVoiceReverb(reverbKey,value);
+        mConfig.setLocalVoiceReverb(reverbKey, value);
         AgoraEngineAdapter.getInstance().setLocalVoiceReverb(reverbKey, value);
     }
 

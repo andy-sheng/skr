@@ -16,7 +16,7 @@ public class Params {
 
     private int channelProfile = CHANNEL_TYPE_LIVE_BROADCASTING;
     // 是否使用唱吧的引擎
-    private boolean useCbEngine = true;
+    private boolean useCbEngine = false;
     private boolean enableVideo = true;
     private boolean enableAudio = true;
     private int localVideoWidth = 360; //本地视频的分辨率，会影响对端获取的流大小，确保是2的倍数
