@@ -20,6 +20,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashSet;
+
 /**
  * CSDN_LQR
  * 表情键盘协调工具
@@ -35,6 +37,9 @@ public class EmotionKeyboard {
     private View mContentView;//内容布局view,即除了表情布局或者软键盘布局以外的布局，用于固定bar的高度，防止跳闪
     private View mPlaceHolderView;//也可以用这个防止空白站位的view来实现。当自己要求控制键盘布局时
 
+    private OnEmotionButtonOnClickListener mOnEmotionButtonOnClickListener;
+    private BoardStatusListener mBoardStatusListener;
+
     public EmotionKeyboard() {
     }
 
@@ -42,6 +47,8 @@ public class EmotionKeyboard {
         EmotionKeyboard emotionInputDetector = new EmotionKeyboard();
         emotionInputDetector.mActivity = activity;
         emotionInputDetector.mInputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        //隐藏软件盘
+//        emotionInputDetector.hideSoftInput();
         return emotionInputDetector;
     }
 
@@ -70,7 +77,6 @@ public class EmotionKeyboard {
      */
     public EmotionKeyboard bindToEditText(EditText editText) {
         mEditText = editText;
-        mEditText.requestFocus();
         mEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -135,10 +141,12 @@ public class EmotionKeyboard {
         boolean onEmotionButtonOnClickListener(View view);
     }
 
-    OnEmotionButtonOnClickListener mOnEmotionButtonOnClickListener;
-
     public void setOnEmotionButtonOnClickListener(OnEmotionButtonOnClickListener onEmotionButtonOnClickListener) {
         mOnEmotionButtonOnClickListener = onEmotionButtonOnClickListener;
+    }
+
+    public void setBoardStatusListener(BoardStatusListener boardStatusListener){
+        mBoardStatusListener = boardStatusListener;
     }
     /*================== 表情按钮点击事件回调 end ==================*/
 
@@ -150,16 +158,6 @@ public class EmotionKeyboard {
      */
     public EmotionKeyboard setEmotionLayout(View emotionLayout) {
         mEmotionLayout = emotionLayout;
-        return this;
-    }
-
-    public EmotionKeyboard build() {
-        //设置软件盘的模式：SOFT_INPUT_ADJUST_RESIZE  这个属性表示Activity的主窗口总是会被调整大小，从而保证软键盘显示空间。
-        //从而方便我们计算软件盘的高度
-        mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        //隐藏软件盘
-        hideSoftInput();
         return this;
     }
 
@@ -176,7 +174,7 @@ public class EmotionKeyboard {
         return false;
     }
 
-    private void showEmotionLayout() {
+    public void showEmotionLayout() {
         int softInputHeight = U.getKeyBoardUtils().getKeyBoardHeightNow(mActivity);
         if (softInputHeight == 0) {
             softInputHeight = U.getKeyBoardUtils().getKeyBoardHeight();
@@ -190,6 +188,9 @@ public class EmotionKeyboard {
 
         mPlaceHolderView.getLayoutParams().height = softInputHeight;
         mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+        if (mBoardStatusListener != null) {
+            mBoardStatusListener.onBoradShow();
+        }
     }
 
     /**
@@ -197,11 +198,18 @@ public class EmotionKeyboard {
      *
      * @param showSoftInput 是否显示软件盘
      */
-    private void hideEmotionLayout(boolean showSoftInput) {
+    public void hideEmotionLayout(boolean showSoftInput) {
         if (mEmotionLayout.isShown()) {
             mEmotionLayout.setVisibility(View.GONE);
             if (showSoftInput) {
                 showSoftInput();
+            }else{
+                // 隐藏表情面板且不显示软键盘
+                mPlaceHolderView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+                if (mBoardStatusListener != null) {
+                    mBoardStatusListener.onBoradHide();
+                }
             }
         }
     }
@@ -258,6 +266,9 @@ public class EmotionKeyboard {
      * 编辑框获取焦点，并显示软件盘
      */
     public void showSoftInput() {
+        if (mBoardStatusListener != null) {
+            mBoardStatusListener.onBoradShow();
+        }
         mEditText.requestFocus();
         mEditText.post(new Runnable() {
             @Override
@@ -289,13 +300,6 @@ public class EmotionKeyboard {
         return mEmotionLayout.getVisibility() == View.VISIBLE;
     }
 
-    public void hideEmotion() {
-        // 调用到这肯定是软键盘已经没了
-        hideEmotionLayout(false);
-        mPlaceHolderView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
-    }
-
     public void destroy() {
         EventBus.getDefault().unregister(this);
     }
@@ -311,6 +315,11 @@ public class EmotionKeyboard {
                 if (!isEmotionShown()) {
                     mPlaceHolderView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+
+                    // 隐藏键盘且不显示表情面板
+                    if (mBoardStatusListener != null) {
+                        mBoardStatusListener.onBoradHide();
+                    }
                 } else {
                     // 表情面板仍然需要显示， 延迟修改布局，防止闪一下
 //                    HandlerTaskTimer.newBuilder().delay(200).start(new HandlerTaskTimer.ObserverW() {
@@ -327,5 +336,10 @@ public class EmotionKeyboard {
                 mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
                 break;
         }
+    }
+
+    public interface BoardStatusListener{
+        void onBoradShow();
+        void onBoradHide();
     }
 }

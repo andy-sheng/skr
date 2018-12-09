@@ -3,7 +3,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:layout_above="@+id/bottom_container"
+        android:layout_above="@+id/et_container"
         android:background="#ffdadada"
         android:layout_width="match_parent"
         android:layout_height="1px"/>
@@ -51,6 +51,6 @@
         android:id="@+id/main_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_container" />
+        android:layout_above="@+id/et_container" />
 
 </RelativeLayout>

@@ -54,6 +54,9 @@ public class FragmentUtils {
          */
         FragmentManager fm = activity.getSupportFragmentManager();
         List<Fragment> l = fm.getFragments();
+        if(l.isEmpty()){
+            return null;
+        }
         return (BaseFragment) l.get(l.size()-1);
     }
 

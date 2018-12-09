@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.emoji.EmotionKeyboard;
@@ -14,6 +15,8 @@ import com.common.emoji.IEmotionExtClickListener;
 import com.common.emoji.IEmotionSelectedListener;
 import com.common.emoji.LQREmotionKit;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.module.rankingmode.R;
 
@@ -21,11 +24,18 @@ public class RankingRoomFragment extends BaseFragment {
 
     EmotionKeyboard mEmotionKeyboard;
 
-    LinearLayout mBottomContainer;
+    LinearLayout mInputContainer;
     NoLeakEditText mEtContent;
     ImageView mIvEmo;
     EmotionLayout mElEmotion;
     ViewGroup mPlaceHolderView;
+
+    RelativeLayout mBottomContainer;
+    ExImageView mEmoji1Btn;
+    ExTextView mShowInputContainerBtn;
+    ExImageView mEmoji4Btn;
+    ExImageView mEmoji3Btn;
+    ExImageView mEmoji2Btn;
 
     @Override
     public int initView() {
@@ -35,6 +45,7 @@ public class RankingRoomFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         initInputView();
+        initBottomView();
     }
 
     /**
@@ -42,7 +53,7 @@ public class RankingRoomFragment extends BaseFragment {
      */
     private void initInputView() {
         LQREmotionKit.tryInit(U.app());
-        mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
+        mInputContainer = (LinearLayout) mRootView.findViewById(R.id.et_container);
         mEtContent = (NoLeakEditText) mRootView.findViewById(R.id.etContent);
         mIvEmo = (ImageView) mRootView.findViewById(R.id.ivEmo);
         mElEmotion = (EmotionLayout) mRootView.findViewById(R.id.elEmotion);
@@ -90,6 +101,38 @@ public class RankingRoomFragment extends BaseFragment {
         mEmotionKeyboard.bindToEmotionButton(mIvEmo);
         mEmotionKeyboard.bindToEditText(mEtContent);
         mEmotionKeyboard.setEmotionLayout(mElEmotion);
+
+        mEmotionKeyboard.setBoardStatusListener(new EmotionKeyboard.BoardStatusListener() {
+            @Override
+            public void onBoradShow() {
+                mBottomContainer.setVisibility(View.GONE);
+                mInputContainer.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onBoradHide() {
+                mBottomContainer.setVisibility(View.VISIBLE);
+                mInputContainer.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void initBottomView() {
+        mBottomContainer = (RelativeLayout)mRootView.findViewById(R.id.bottom_container);
+        mEmoji1Btn = (ExImageView)mRootView.findViewById(R.id.emoji1_btn);
+        mShowInputContainerBtn = (ExTextView)mRootView.findViewById(R.id.show_input_container_btn);
+        mEmoji4Btn = (ExImageView)mRootView.findViewById(R.id.emoji4_btn);
+        mEmoji3Btn = (ExImageView)mRootView.findViewById(R.id.emoji3_btn);
+        mEmoji2Btn = (ExImageView)mRootView.findViewById(R.id.emoji2_btn);
+        mShowInputContainerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(U.getCommonUtils().isFastDoubleClick()){
+                    return;
+                }
+                mEmotionKeyboard.showSoftInput();
+            }
+        });
     }
 
     @Override
@@ -101,7 +144,7 @@ public class RankingRoomFragment extends BaseFragment {
     @Override
     protected boolean onBackPressed() {
         if (mEmotionKeyboard.isEmotionShown()) {
-            mEmotionKeyboard.hideEmotion();
+            mEmotionKeyboard.hideEmotionLayout(false);
             return true;
         }
         return super.onBackPressed();

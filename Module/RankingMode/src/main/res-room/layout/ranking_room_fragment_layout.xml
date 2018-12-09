@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_trans_50"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <FrameLayout
@@ -21,21 +22,25 @@
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <LinearLayout
-        android:id="@+id/bottom_container"
+        android:id="@+id/et_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/place_holder_view"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:visibility="gone">
 
         <com.common.view.ex.NoLeakEditText
             android:id="@+id/etContent"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/view_32_dp"
             android:layout_weight="1"
-            android:background="@null"
-            android:drawableBottom="@drawable/room_input_et_bg"
+            android:background="@drawable/room_input_et_bg"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/view_15_dp"
+            android:paddingRight="@dimen/view_15_dp"
             android:visibility="visible" />
 
         <ImageView
@@ -46,5 +51,66 @@
             android:src="@drawable/emoji_btn" />
 
     </LinearLayout>
+
+    <!--这里面是软键盘弹出时 需要上移的布局-->
+    <RelativeLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/place_holder_view"
+        android:layout_marginBottom="@dimen/view_19_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/emoji1_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/emoji_btn" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/show_input_container_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_32_dp"
+            android:layout_marginLeft="@dimen/view_5_dp"
+            android:layout_marginRight="@dimen/view_5_dp"
+            android:layout_toLeftOf="@+id/emoji2_btn"
+            android:layout_toRightOf="@+id/emoji1_btn"
+            android:background="@drawable/room_input_et_bg"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/view_15_dp"
+            android:paddingRight="@dimen/view_10_dp"
+            android:text="打个招呼吧"
+            android:textColor="#898989"
+            android:textSize="@dimen/view_14_dp" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/emoji4_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/emoji_btn" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/emoji3_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:layout_toLeftOf="@+id/emoji4_btn"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/emoji_btn" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/emoji2_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:layout_toLeftOf="@+id/emoji3_btn"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/emoji_btn" />
+    </RelativeLayout>
 
 </RelativeLayout>
