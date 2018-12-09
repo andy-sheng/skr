@@ -19,9 +19,9 @@ public class ApiMethods {
         Observable<T> ob1 = observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io());
         if (transformer != null) {
-            ob1.compose(transformer);
+            ob1 = ob1.compose(transformer);
         }
-        ob1.observeOn(AndroidSchedulers.mainThread());
+        ob1 = ob1.observeOn(AndroidSchedulers.mainThread());
         if (apiObserver == null) {
             // 给个默认的实现，防止崩溃
             ob1.subscribe(new ApiObserver<T>() {
