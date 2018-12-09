@@ -87,7 +87,6 @@ public class LoginActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent setAccountEvent) {
         //登陆成功
-        finish();
         U.getToastUtil().showShort("登录成功");
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -97,6 +96,7 @@ public class LoginActivity extends BaseActivity {
                 ARouter.getInstance().build(path).with(bundle).navigation();
             }
         }
+        finish();
     }
 
     @Override
