@@ -51,6 +51,7 @@ public class UserAccountManager {
     }
 
     public void init() {
+        MyLog.d(TAG,"init" );
         long channelId = HostChannelManager.getInstance().getChannelId();
         UserAccount userAccount = UserAccountLocalApi.getUserAccount(channelId);
         setAccount(userAccount);
@@ -69,6 +70,7 @@ public class UserAccountManager {
     }
 
     private void setAccount(UserAccount account) {
+        MyLog.d(TAG,"setAccount" + " account=" + account);
         mAccount = account;
         if (account != null) {
             // 取消匿名模式
@@ -263,6 +265,7 @@ public class UserAccountManager {
                             userAccount.setSex(sex);
                             userAccount.setBirthday(birthday);
                             userAccount.setNeedEditUserInfo(isFirstLogin);
+                            userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
                             onLoginResult(userAccount);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
