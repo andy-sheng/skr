@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.module.rankingmode.prepare.view.MatchingLayerView
+        app:midLine_Color="@color/black_trans_75"
+        app:one_circle_time="18000"
+        app:around_orientation="true"
+        app:rotation_degree="45"
+        app:random_interval="5"
+        app:midLine_width="0.3dp"
+        app:user_icon_width="30dp"
+        app:icon_count="4"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/view_300_dp"
+        android:layout_height="@dimen/view_300_dp"/>
+
+    <com.module.rankingmode.prepare.view.MatchingLayerView
+        app:midLine_Color="@color/black_trans_75"
+        app:one_circle_time="10000"
+        app:around_orientation="false"
+        app:rotation_degree="5"
+        app:random_interval="2"
+        app:midLine_width="0.3dp"
+        app:user_icon_width="30dp"
+        app:icon_count="3"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/view_200_dp"
+        android:layout_height="@dimen/view_200_dp"/>
+</FrameLayout>

@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_below="@+id/title_bar"
         android:background="@color/transparent">
-
+        <include layout="@layout/maching_circle_container"/>
     </RelativeLayout>
 
     <com.common.view.ex.ExTextView

@@ -20,9 +20,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.event.MatchStatusChangeEvent;
 import com.module.rankingmode.prepare.presenter.MatchPresenter;
-import com.module.rankingmode.prepare.view.MatchStartView;
-import com.module.rankingmode.prepare.view.MatchSucessView;
-import com.module.rankingmode.prepare.view.MatchingView;
 import com.module.rankingmode.prepare.view.VoiceControlPanelView;
 import com.module.rankingmode.prepare.view.VoiceLineView;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -60,10 +57,6 @@ public class MatchingFragment extends BaseFragment {
 
     VoiceLineView mVoiceLineView;
 
-    MatchStartView startMatchView;
-    MatchingView matchingView;
-    MatchSucessView matchSucessView;
-
     MatchPresenter matchPresenter;
 
     String songName;
@@ -92,12 +85,7 @@ public class MatchingFragment extends BaseFragment {
         mPrepareTipsTv = (ExTextView) mRootView.findViewById(R.id.prepare_tips_tv);
 
         mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voice_line_view);
-
-        if (startMatchView == null) {
-            startMatchView = new MatchStartView(getContext());
-        }
         mMatchStatusTv.setTag(MatchStatusChangeEvent.MATCH_STATUS_START);
-        mMatchContent.addView(startMatchView);
 
         matchPresenter = new MatchPresenter();
 
@@ -190,10 +178,6 @@ public class MatchingFragment extends BaseFragment {
         if (event != null) {
             if (event.status == MatchStatusChangeEvent.MATCH_STATUS_MATCHING) {
                 mMatchContent.removeAllViews();
-                if (matchingView == null) {
-                    matchingView = new MatchingView(getContext());
-                }
-                mMatchContent.addView(matchingView);
                 mMatchStatusTv.setTag(event.status);
                 mMatchStatusTv.setText("取消匹配");
                 mTitleBar.getCenterTextView().setText("匹配中");
@@ -201,16 +185,11 @@ public class MatchingFragment extends BaseFragment {
                 setMatchStatus(MatchStatusChangeEvent.MATCH_STATUS_MATCHING);
             } else if (event.status == MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS) {
                 mMatchContent.removeAllViews();
-                if (matchSucessView == null) {
-                    matchSucessView = new MatchSucessView(getContext());
-                }
-                mMatchContent.addView(matchSucessView);
                 mMatchStatusTv.setTag(event.status);
                 mMatchStatusTv.setText("准备");
                 setMatchStatus(MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS);
             } else if (event.status == MatchStatusChangeEvent.MATCH_STATUS_START) {
                 mMatchContent.removeAllViews();
-                mMatchContent.addView(startMatchView);
                 mMatchStatusTv.setTag(event.status);
                 mMatchStatusTv.setText("开始匹配");
                 mTitleBar.getCenterTextView().setText("匹配中");

@@ -51,13 +51,24 @@
 
 
     <!--RingCircle环形旋转头像的属性-->
-    <declare-styleable name="RingCircleView">
+    <declare-styleable name="MatchingLayerView">
         <!--环中间线的颜色-->
         <attr name="midLine_Color" format="color|reference" />
-        <!--环中心线的宽度-->
-        <attr name="midLine_Width" format="dimension" />
-        <!--环的半径-->
-        <attr name="ring_Radius" format="dimension" />
+        <!--环的大小-->
+        <attr name="midLine_width" format="dimension" />
+        <!--环的大小-->
+        <attr name="user_icon_width" format="dimension" />
+        <!--转一圈的时间-->
+        <attr name="one_circle_time" format="integer" />
+        <!--转圈的方向 true为顺时针-->
+        <attr name="around_orientation" format="boolean" />
+        <!--每个view偏移的角度-->
+        <attr name="rotation_degree" format="integer" />
+        <!--随机角度的大小-->
+        <attr name="random_interval" format="integer" />
+
+        <attr name="icon_count" format="integer" />
+         />
     </declare-styleable>
 
 </resources>
