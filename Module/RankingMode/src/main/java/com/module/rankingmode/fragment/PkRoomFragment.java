@@ -29,7 +29,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.EventClass;
+import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.inter.IlyricController;
 import com.zq.lyrics.widget.AbstractLrcView;
 import org.greenrobot.eventbus.Subscribe;
@@ -182,7 +182,7 @@ public class PkRoomFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventClass.FinishLoadLrcEvent finishLoadLrcEvent) {
+    public void onEventMainThread(LrcEvent.FinishLoadLrcEvent finishLoadLrcEvent) {
         LyricsReader lyricsReader = LyricsManager.getLyricsManager(getActivity()).getLyricsUtil(finishLoadLrcEvent.hash);
         if (lyricsReader != null) {
             lyricsReader.setHash(finishLoadLrcEvent.hash);

@@ -1,6 +1,5 @@
 package com.engine.agora;
 
-import android.content.res.AssetManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;

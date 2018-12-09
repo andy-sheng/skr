@@ -1,6 +1,6 @@
 package com.zq.lyrics.event;
 
-public class EventClass {
+public class LrcEvent {
     public static class FinishLoadLrcEvent{
         public  String hash = "";
         public FinishLoadLrcEvent(String hash){

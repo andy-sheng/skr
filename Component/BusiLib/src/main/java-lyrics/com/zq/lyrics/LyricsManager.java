@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.common.log.MyLog;
-import com.zq.lyrics.event.EventClass;
+import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.utils.LyricsIOUtils;
 import com.zq.lyrics.utils.LyricsUtils;
@@ -103,7 +103,7 @@ public class LyricsManager {
 
                     @Override
                     public void onComplete() {
-                        EventBus.getDefault().post(new EventClass.FinishLoadLrcEvent(hash));
+                        EventBus.getDefault().post(new LrcEvent.FinishLoadLrcEvent(hash));
                     }
                 });
 
