@@ -2,6 +2,9 @@ package com.common.rxretrofit;
 
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
+import com.common.mvp.Presenter;
+import com.common.mvp.PresenterEvent;
+import com.common.mvp.RxLifeCyclePresenter;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
@@ -65,5 +68,17 @@ public class ApiMethods {
      */
     public static <T> void subscribe(Observable<T> observable, ApiObserver<T> apiObserver, BaseActivity baseActivity) {
         innerSubscribe(observable, apiObserver, baseActivity.bindUntilEvent(ActivityEvent.DESTROY));
+    }
+
+    /**
+     * 订阅数据，并绑定RxLifeCyclePresenter的声明周期
+     *
+     * @param observable
+     * @param apiObserver
+     * @param presenter
+     * @param <T>
+     */
+    public static <T> void subscribe(Observable<T> observable, ApiObserver<T> apiObserver, RxLifeCyclePresenter presenter) {
+        innerSubscribe(observable, apiObserver, presenter.bindUntilEvent(PresenterEvent.DESTROY));
     }
 }

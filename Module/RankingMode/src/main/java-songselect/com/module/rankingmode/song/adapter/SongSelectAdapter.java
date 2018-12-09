@@ -12,8 +12,12 @@ import com.module.rankingmode.R;
 import com.module.rankingmode.song.holder.SongInfoHolder;
 import com.module.rankingmode.song.model.SongModel;
 
-public class SongSelectAdapter extends DiffAdapter<SongModel,RecyclerView.ViewHolder> {
+import java.util.List;
+
+public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
+
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
+    List<SongModel> dataList;
 
     public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener) {
         mRecyclerOnItemClickListener = onItemClickListener;
@@ -22,7 +26,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel,RecyclerView.ViewHo
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);
         SongInfoHolder viewHolder = new SongInfoHolder(view);
         viewHolder.setListener(mRecyclerOnItemClickListener);
         return viewHolder;
@@ -30,16 +34,24 @@ public class SongSelectAdapter extends DiffAdapter<SongModel,RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof SongInfoHolder){
-//            SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
-//            SongModel songModel = mDataList.get(position);
-//            songInfoHolder.bind(position,songModel);
+        if (holder instanceof SongInfoHolder) {
+            SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
+            SongModel songModel = dataList.get(position);
+            songInfoHolder.bind(position,songModel);
         }
+    }
+
+    public void setDataList(List<SongModel> dataList) {
+        this.dataList = dataList;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        if (dataList == null) {
+            return 0;
+        }
+        return dataList.size();
     }
 
 }
