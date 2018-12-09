@@ -59,6 +59,7 @@ public class UserAccountManager {
     public void onLoginResult(UserAccount account) {
         MyLog.w(TAG, "login" + " account=" + account);
         if (account != null) {
+            account.setIsLogOff(false);
             // 登出所有其他账号
             UserAccountLocalApi.loginAccount(account);
             // 用户登录成功，这里应该是要发出通知的
@@ -126,7 +127,7 @@ public class UserAccountManager {
 
     public String getSSecurity() {
         if (mAccount != null) {
-            return mAccount.getSSecurity();
+            return mAccount.getSecretToken();
         }
         return "";
     }
@@ -245,23 +246,24 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            String passToken = obj.getData().getJSONObject("token").getString("T");
+                            String secretToken = obj.getData().getJSONObject("token").getString("T");
                             String serviceToken = obj.getData().getJSONObject("token").getString("S");
-
                             com.alibaba.fastjson.JSONObject profileJO = obj.getData().getJSONObject("profile");
                             long userID = profileJO.getLong("userID");
                             String nickName = profileJO.getString("nickname");
                             int sex = profileJO.getInteger("sex");
                             String birthday = profileJO.getString("birthday");
-
                             boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
 
                             UserAccount userAccount = new UserAccount();
-                            userAccount.setPassToken(passToken);
                             userAccount.setServiceToken(serviceToken);
+                            userAccount.setSecretToken(secretToken);
                             userAccount.setUid(String.valueOf(userID));
                             userAccount.setNickName(nickName);
-                            setAccount(userAccount);
+                            userAccount.setSex(sex);
+                            userAccount.setBirthday(birthday);
+                            userAccount.setNeedEditUserInfo(isFirstLogin);
+                            onLoginResult(userAccount);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));

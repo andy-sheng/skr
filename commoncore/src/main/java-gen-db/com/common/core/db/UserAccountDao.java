@@ -24,25 +24,20 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Id = new Property(0, long.class, "id", true, "_id");
         public final static Property Uid = new Property(1, String.class, "uid", false, "UID");
         public final static Property NickName = new Property(2, String.class, "nickName", false, "NICK_NAME");
-        public final static Property ImgUrl = new Property(3, String.class, "imgUrl", false, "IMG_URL");
-        public final static Property ServiceToken = new Property(4, String.class, "serviceToken", false, "SERVICE_TOKEN");
-        public final static Property SecurityKey = new Property(5, String.class, "securityKey", false, "SECURITY_KEY");
-        public final static Property PassToken = new Property(6, String.class, "passToken", false, "PASS_TOKEN");
-        public final static Property Password = new Property(7, String.class, "password", false, "PASSWORD");
-        public final static Property OldPwd = new Property(8, String.class, "oldPwd", false, "OLD_PWD");
-        public final static Property DeviceId = new Property(9, String.class, "deviceId", false, "DEVICE_ID");
-        public final static Property PSecurity = new Property(10, String.class, "pSecurity", false, "P_SECURITY");
-        public final static Property SSecurity = new Property(11, String.class, "sSecurity", false, "S_SECURITY");
-        public final static Property IsReset = new Property(12, Integer.class, "isReset", false, "IS_RESET");
-        public final static Property IsNew = new Property(13, Integer.class, "isNew", false, "IS_NEW");
-        public final static Property IsLogOff = new Property(14, Boolean.class, "isLogOff", false, "IS_LOG_OFF");
-        public final static Property ThirdId = new Property(15, String.class, "thirdId", false, "THIRD_ID");
-        public final static Property ChannelId = new Property(16, Integer.class, "channelId", false, "CHANNEL_ID");
-        public final static Property NeedEditUserInfo = new Property(17, Boolean.class, "needEditUserInfo", false, "NEED_EDIT_USER_INFO");
-        public final static Property Ext = new Property(18, String.class, "ext", false, "EXT");
+        public final static Property Avatar = new Property(3, String.class, "avatar", false, "AVATAR");
+        public final static Property Password = new Property(4, String.class, "password", false, "PASSWORD");
+        public final static Property IsLogOff = new Property(5, boolean.class, "isLogOff", false, "IS_LOG_OFF");
+        public final static Property ThirdId = new Property(6, String.class, "thirdId", false, "THIRD_ID");
+        public final static Property ChannelId = new Property(7, int.class, "channelId", false, "CHANNEL_ID");
+        public final static Property NeedEditUserInfo = new Property(8, boolean.class, "needEditUserInfo", false, "NEED_EDIT_USER_INFO");
+        public final static Property ServiceToken = new Property(9, String.class, "serviceToken", false, "SERVICE_TOKEN");
+        public final static Property SecretToken = new Property(10, String.class, "secretToken", false, "SECRET_TOKEN");
+        public final static Property Sex = new Property(11, int.class, "sex", false, "SEX");
+        public final static Property Birthday = new Property(12, String.class, "birthday", false, "BIRTHDAY");
+        public final static Property Ext = new Property(13, String.class, "ext", false, "EXT");
     }
 
 
@@ -58,25 +53,20 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER_ACCOUNT\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: id
                 "\"UID\" TEXT NOT NULL ," + // 1: uid
                 "\"NICK_NAME\" TEXT," + // 2: nickName
-                "\"IMG_URL\" TEXT," + // 3: imgUrl
-                "\"SERVICE_TOKEN\" TEXT," + // 4: serviceToken
-                "\"SECURITY_KEY\" TEXT," + // 5: securityKey
-                "\"PASS_TOKEN\" TEXT," + // 6: passToken
-                "\"PASSWORD\" TEXT," + // 7: password
-                "\"OLD_PWD\" TEXT," + // 8: oldPwd
-                "\"DEVICE_ID\" TEXT," + // 9: deviceId
-                "\"P_SECURITY\" TEXT," + // 10: pSecurity
-                "\"S_SECURITY\" TEXT," + // 11: sSecurity
-                "\"IS_RESET\" INTEGER," + // 12: isReset
-                "\"IS_NEW\" INTEGER," + // 13: isNew
-                "\"IS_LOG_OFF\" INTEGER," + // 14: isLogOff
-                "\"THIRD_ID\" TEXT," + // 15: thirdId
-                "\"CHANNEL_ID\" INTEGER NOT NULL ," + // 16: channelId
-                "\"NEED_EDIT_USER_INFO\" INTEGER," + // 17: needEditUserInfo
-                "\"EXT\" TEXT);"); // 18: ext
+                "\"AVATAR\" TEXT," + // 3: avatar
+                "\"PASSWORD\" TEXT," + // 4: password
+                "\"IS_LOG_OFF\" INTEGER NOT NULL ," + // 5: isLogOff
+                "\"THIRD_ID\" TEXT," + // 6: thirdId
+                "\"CHANNEL_ID\" INTEGER NOT NULL ," + // 7: channelId
+                "\"NEED_EDIT_USER_INFO\" INTEGER NOT NULL ," + // 8: needEditUserInfo
+                "\"SERVICE_TOKEN\" TEXT," + // 9: serviceToken
+                "\"SECRET_TOKEN\" TEXT," + // 10: secretToken
+                "\"SEX\" INTEGER NOT NULL ," + // 11: sex
+                "\"BIRTHDAY\" TEXT," + // 12: birthday
+                "\"EXT\" TEXT);"); // 13: ext
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_ACCOUNT_UID_DESC ON USER_ACCOUNT" +
                 " (\"UID\" DESC);");
@@ -91,11 +81,7 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, UserAccount entity) {
         stmt.clearBindings();
- 
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
-        }
+        stmt.bindLong(1, entity.getId());
         stmt.bindString(2, entity.getUid());
  
         String nickName = entity.getNickName();
@@ -103,91 +89,50 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
             stmt.bindString(3, nickName);
         }
  
-        String imgUrl = entity.getImgUrl();
-        if (imgUrl != null) {
-            stmt.bindString(4, imgUrl);
-        }
- 
-        String serviceToken = entity.getServiceToken();
-        if (serviceToken != null) {
-            stmt.bindString(5, serviceToken);
-        }
- 
-        String securityKey = entity.getSecurityKey();
-        if (securityKey != null) {
-            stmt.bindString(6, securityKey);
-        }
- 
-        String passToken = entity.getPassToken();
-        if (passToken != null) {
-            stmt.bindString(7, passToken);
+        String avatar = entity.getAvatar();
+        if (avatar != null) {
+            stmt.bindString(4, avatar);
         }
  
         String password = entity.getPassword();
         if (password != null) {
-            stmt.bindString(8, password);
+            stmt.bindString(5, password);
         }
- 
-        String oldPwd = entity.getOldPwd();
-        if (oldPwd != null) {
-            stmt.bindString(9, oldPwd);
-        }
- 
-        String deviceId = entity.getDeviceId();
-        if (deviceId != null) {
-            stmt.bindString(10, deviceId);
-        }
- 
-        String pSecurity = entity.getPSecurity();
-        if (pSecurity != null) {
-            stmt.bindString(11, pSecurity);
-        }
- 
-        String sSecurity = entity.getSSecurity();
-        if (sSecurity != null) {
-            stmt.bindString(12, sSecurity);
-        }
- 
-        Integer isReset = entity.getIsReset();
-        if (isReset != null) {
-            stmt.bindLong(13, isReset);
-        }
- 
-        Integer isNew = entity.getIsNew();
-        if (isNew != null) {
-            stmt.bindLong(14, isNew);
-        }
- 
-        Boolean isLogOff = entity.getIsLogOff();
-        if (isLogOff != null) {
-            stmt.bindLong(15, isLogOff ? 1L: 0L);
-        }
+        stmt.bindLong(6, entity.getIsLogOff() ? 1L: 0L);
  
         String thirdId = entity.getThirdId();
         if (thirdId != null) {
-            stmt.bindString(16, thirdId);
+            stmt.bindString(7, thirdId);
         }
-        stmt.bindLong(17, entity.getChannelId());
+        stmt.bindLong(8, entity.getChannelId());
+        stmt.bindLong(9, entity.getNeedEditUserInfo() ? 1L: 0L);
  
-        Boolean needEditUserInfo = entity.getNeedEditUserInfo();
-        if (needEditUserInfo != null) {
-            stmt.bindLong(18, needEditUserInfo ? 1L: 0L);
+        String serviceToken = entity.getServiceToken();
+        if (serviceToken != null) {
+            stmt.bindString(10, serviceToken);
+        }
+ 
+        String secretToken = entity.getSecretToken();
+        if (secretToken != null) {
+            stmt.bindString(11, secretToken);
+        }
+        stmt.bindLong(12, entity.getSex());
+ 
+        String birthday = entity.getBirthday();
+        if (birthday != null) {
+            stmt.bindString(13, birthday);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(19, ext);
+            stmt.bindString(14, ext);
         }
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, UserAccount entity) {
         stmt.clearBindings();
- 
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
-        }
+        stmt.bindLong(1, entity.getId());
         stmt.bindString(2, entity.getUid());
  
         String nickName = entity.getNickName();
@@ -195,135 +140,88 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
             stmt.bindString(3, nickName);
         }
  
-        String imgUrl = entity.getImgUrl();
-        if (imgUrl != null) {
-            stmt.bindString(4, imgUrl);
-        }
- 
-        String serviceToken = entity.getServiceToken();
-        if (serviceToken != null) {
-            stmt.bindString(5, serviceToken);
-        }
- 
-        String securityKey = entity.getSecurityKey();
-        if (securityKey != null) {
-            stmt.bindString(6, securityKey);
-        }
- 
-        String passToken = entity.getPassToken();
-        if (passToken != null) {
-            stmt.bindString(7, passToken);
+        String avatar = entity.getAvatar();
+        if (avatar != null) {
+            stmt.bindString(4, avatar);
         }
  
         String password = entity.getPassword();
         if (password != null) {
-            stmt.bindString(8, password);
+            stmt.bindString(5, password);
         }
- 
-        String oldPwd = entity.getOldPwd();
-        if (oldPwd != null) {
-            stmt.bindString(9, oldPwd);
-        }
- 
-        String deviceId = entity.getDeviceId();
-        if (deviceId != null) {
-            stmt.bindString(10, deviceId);
-        }
- 
-        String pSecurity = entity.getPSecurity();
-        if (pSecurity != null) {
-            stmt.bindString(11, pSecurity);
-        }
- 
-        String sSecurity = entity.getSSecurity();
-        if (sSecurity != null) {
-            stmt.bindString(12, sSecurity);
-        }
- 
-        Integer isReset = entity.getIsReset();
-        if (isReset != null) {
-            stmt.bindLong(13, isReset);
-        }
- 
-        Integer isNew = entity.getIsNew();
-        if (isNew != null) {
-            stmt.bindLong(14, isNew);
-        }
- 
-        Boolean isLogOff = entity.getIsLogOff();
-        if (isLogOff != null) {
-            stmt.bindLong(15, isLogOff ? 1L: 0L);
-        }
+        stmt.bindLong(6, entity.getIsLogOff() ? 1L: 0L);
  
         String thirdId = entity.getThirdId();
         if (thirdId != null) {
-            stmt.bindString(16, thirdId);
+            stmt.bindString(7, thirdId);
         }
-        stmt.bindLong(17, entity.getChannelId());
+        stmt.bindLong(8, entity.getChannelId());
+        stmt.bindLong(9, entity.getNeedEditUserInfo() ? 1L: 0L);
  
-        Boolean needEditUserInfo = entity.getNeedEditUserInfo();
-        if (needEditUserInfo != null) {
-            stmt.bindLong(18, needEditUserInfo ? 1L: 0L);
+        String serviceToken = entity.getServiceToken();
+        if (serviceToken != null) {
+            stmt.bindString(10, serviceToken);
+        }
+ 
+        String secretToken = entity.getSecretToken();
+        if (secretToken != null) {
+            stmt.bindString(11, secretToken);
+        }
+        stmt.bindLong(12, entity.getSex());
+ 
+        String birthday = entity.getBirthday();
+        if (birthday != null) {
+            stmt.bindString(13, birthday);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(19, ext);
+            stmt.bindString(14, ext);
         }
     }
 
     @Override
     public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
+        return cursor.getLong(offset + 0);
     }    
 
     @Override
     public UserAccount readEntity(Cursor cursor, int offset) {
         UserAccount entity = new UserAccount( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // uid
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // nickName
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // imgUrl
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // serviceToken
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // securityKey
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // passToken
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // password
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // oldPwd
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // deviceId
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // pSecurity
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // sSecurity
-            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // isReset
-            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // isNew
-            cursor.isNull(offset + 14) ? null : cursor.getShort(offset + 14) != 0, // isLogOff
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // thirdId
-            cursor.getInt(offset + 16), // channelId
-            cursor.isNull(offset + 17) ? null : cursor.getShort(offset + 17) != 0, // needEditUserInfo
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18) // ext
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // avatar
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // password
+            cursor.getShort(offset + 5) != 0, // isLogOff
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // thirdId
+            cursor.getInt(offset + 7), // channelId
+            cursor.getShort(offset + 8) != 0, // needEditUserInfo
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // serviceToken
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // secretToken
+            cursor.getInt(offset + 11), // sex
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // birthday
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // ext
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, UserAccount entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setId(cursor.getLong(offset + 0));
         entity.setUid(cursor.getString(offset + 1));
         entity.setNickName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setImgUrl(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setServiceToken(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setSecurityKey(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setPassToken(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setPassword(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setOldPwd(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setDeviceId(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setPSecurity(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setSSecurity(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setIsReset(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
-        entity.setIsNew(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
-        entity.setIsLogOff(cursor.isNull(offset + 14) ? null : cursor.getShort(offset + 14) != 0);
-        entity.setThirdId(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setChannelId(cursor.getInt(offset + 16));
-        entity.setNeedEditUserInfo(cursor.isNull(offset + 17) ? null : cursor.getShort(offset + 17) != 0);
-        entity.setExt(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setAvatar(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setPassword(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setIsLogOff(cursor.getShort(offset + 5) != 0);
+        entity.setThirdId(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setChannelId(cursor.getInt(offset + 7));
+        entity.setNeedEditUserInfo(cursor.getShort(offset + 8) != 0);
+        entity.setServiceToken(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setSecretToken(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setSex(cursor.getInt(offset + 11));
+        entity.setBirthday(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setExt(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     @Override
@@ -343,7 +241,7 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
 
     @Override
     public boolean hasKey(UserAccount entity) {
-        return entity.getId() != null;
+        throw new UnsupportedOperationException("Unsupported for entities with a non-null key");
     }
 
     @Override

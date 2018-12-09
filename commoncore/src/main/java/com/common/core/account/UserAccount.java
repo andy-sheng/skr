@@ -18,53 +18,41 @@ import org.greenrobot.greendao.annotation.Unique;
 )
 public class UserAccount {
     @Id
-    private Long id;
+    private long id;
     @NotNull
     private String uid;
     private String nickName;
-    private String imgUrl;
-    private String serviceToken;
-    private String securityKey;
-    private String passToken;
+    private String avatar;
     private String password;
-    private String oldPwd;
-    private String deviceId;
-    private String pSecurity;
-    private String sSecurity;
-    private Integer isReset;
-    private Integer isNew;
-    private Boolean isLogOff;
+    private boolean isLogOff;
     private String thirdId;
     @NotNull
-    private Integer channelId;
-    private Boolean needEditUserInfo;
+    private int channelId;
+    private boolean needEditUserInfo;
+    private String serviceToken;
+    private String secretToken;
+    private int sex;
+    private String birthday;
     private String ext;
 
-    @Generated(hash = 249300457)
-    public UserAccount(Long id, @NotNull String uid, String nickName, String imgUrl,
-                       String serviceToken, String securityKey, String passToken,
-                       String password, String oldPwd, String deviceId, String pSecurity,
-                       String sSecurity, Integer isReset, Integer isNew, Boolean isLogOff,
-                       String thirdId, @NotNull Integer channelId, Boolean needEditUserInfo,
-                       String ext) {
+    @Generated(hash = 575886058)
+    public UserAccount(long id, @NotNull String uid, String nickName, String avatar,
+            String password, boolean isLogOff, String thirdId, int channelId,
+            boolean needEditUserInfo, String serviceToken, String secretToken, int sex,
+            String birthday, String ext) {
         this.id = id;
         this.uid = uid;
         this.nickName = nickName;
-        this.imgUrl = imgUrl;
-        this.serviceToken = serviceToken;
-        this.securityKey = securityKey;
-        this.passToken = passToken;
+        this.avatar = avatar;
         this.password = password;
-        this.oldPwd = oldPwd;
-        this.deviceId = deviceId;
-        this.pSecurity = pSecurity;
-        this.sSecurity = sSecurity;
-        this.isReset = isReset;
-        this.isNew = isNew;
         this.isLogOff = isLogOff;
         this.thirdId = thirdId;
         this.channelId = channelId;
         this.needEditUserInfo = needEditUserInfo;
+        this.serviceToken = serviceToken;
+        this.secretToken = secretToken;
+        this.sex = sex;
+        this.birthday = birthday;
         this.ext = ext;
     }
 
@@ -96,36 +84,12 @@ public class UserAccount {
         this.nickName = nickName;
     }
 
-    public String getImgUrl() {
-        return this.imgUrl;
+    public String getAvatar() {
+        return this.avatar;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public String getServiceToken() {
-        return this.serviceToken;
-    }
-
-    public void setServiceToken(String serviceToken) {
-        this.serviceToken = serviceToken;
-    }
-
-    public String getSecurityKey() {
-        return this.securityKey;
-    }
-
-    public void setSecurityKey(String securityKey) {
-        this.securityKey = securityKey;
-    }
-
-    public String getPassToken() {
-        return this.passToken;
-    }
-
-    public void setPassToken(String passToken) {
-        this.passToken = passToken;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getPassword() {
@@ -134,54 +98,6 @@ public class UserAccount {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getOldPwd() {
-        return this.oldPwd;
-    }
-
-    public void setOldPwd(String oldPwd) {
-        this.oldPwd = oldPwd;
-    }
-
-    public String getDeviceId() {
-        return this.deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getPSecurity() {
-        return this.pSecurity;
-    }
-
-    public void setPSecurity(String pSecurity) {
-        this.pSecurity = pSecurity;
-    }
-
-    public String getSSecurity() {
-        return this.sSecurity;
-    }
-
-    public void setSSecurity(String sSecurity) {
-        this.sSecurity = sSecurity;
-    }
-
-    public Integer getIsReset() {
-        return this.isReset;
-    }
-
-    public void setIsReset(Integer isReset) {
-        this.isReset = isReset;
-    }
-
-    public Integer getIsNew() {
-        return this.isNew;
-    }
-
-    public void setIsNew(Integer isNew) {
-        this.isNew = isNew;
     }
 
     public Boolean getIsLogOff() {
@@ -216,6 +132,22 @@ public class UserAccount {
         this.needEditUserInfo = needEditUserInfo;
     }
 
+    public String getServiceToken() {
+        return this.serviceToken;
+    }
+
+    public void setServiceToken(String serviceToken) {
+        this.serviceToken = serviceToken;
+    }
+
+    public String getSecretToken() {
+        return this.secretToken;
+    }
+
+    public void setSecretToken(String secretToken) {
+        this.secretToken = secretToken;
+    }
+
     public String getExt() {
         return this.ext;
     }
@@ -224,5 +156,40 @@ public class UserAccount {
         this.ext = ext;
     }
 
+    public Integer getSex() {
+        return this.sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public String getBirthday() {
+        return this.birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setIsLogOff(boolean isLogOff) {
+        this.isLogOff = isLogOff;
+    }
+
+    public void setNeedEditUserInfo(boolean needEditUserInfo) {
+        this.needEditUserInfo = needEditUserInfo;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
 
 }
