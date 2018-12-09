@@ -80,6 +80,7 @@ public class Params {
     private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
     private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
     private int recordingSignalVolume = 100;// 0-400 默认100，最多放大4倍
+    private int selfUid; // 本人在引擎中的id
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -327,6 +328,14 @@ public class Params {
 
     public int getRecordingSignalVolume() {
         return recordingSignalVolume;
+    }
+
+    public void setSelfUid(int selfUid) {
+        this.selfUid = selfUid;
+    }
+
+    public int getSelfUid() {
+        return selfUid;
     }
 
     public static class Builder {

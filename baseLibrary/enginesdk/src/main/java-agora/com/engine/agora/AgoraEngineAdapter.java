@@ -23,6 +23,7 @@ import javax.microedition.khronos.egl.EGLContext;
 
 import io.agora.rtc.Constants;
 import io.agora.rtc.IAudioEffectManager;
+import io.agora.rtc.IAudioFrameObserver;
 import io.agora.rtc.IRtcEngineEventHandlerEx;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.mediaio.MediaIO;
@@ -164,6 +165,15 @@ public class AgoraEngineAdapter {
                 mOutCallback.onAudioMixingFinished();
             }
         }
+
+        // 说话者音量提示
+        @Override
+        public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume) {
+            super.onAudioVolumeIndication(speakers, totalVolume);
+            if (mOutCallback != null) {
+                mOutCallback.onAudioVolumeIndication(speakers,totalVolume);
+            }
+        }
     };
 
     public void setOutCallback(AgoraOutCallback outCallback) {
@@ -218,8 +228,25 @@ public class AgoraEngineAdapter {
             mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(mConfig.getAudioProfile())
                     , Constants.AudioScenario.getValue(mConfig.getAudioScenario()));
 
+            // 初始化各个音量
+            adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume());
+            adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
+            adjustAudioMixingVolume(mConfig.getAudioMixingVolume());
+
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
+
+            mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
+                @Override
+                public boolean onRecordFrame(byte[] bytes, int i, int i1, int i2, int i3) {
+                    return false;
+                }
+
+                @Override
+                public boolean onPlaybackFrame(byte[] bytes, int i, int i1, int i2, int i3) {
+                    return false;
+                }
+            });
         } else {
             mRtcEngine.disableAudio();
         }

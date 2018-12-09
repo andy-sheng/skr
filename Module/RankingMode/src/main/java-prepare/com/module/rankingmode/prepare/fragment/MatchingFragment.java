@@ -1,19 +1,21 @@
 package com.module.rankingmode.prepare.fragment;
 
-import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.engine.EngineEvent;
 import com.engine.EngineManager;
+import com.engine.Params;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.event.MatchStatusChangeEvent;
@@ -29,12 +31,9 @@ import com.orhanobut.dialogplus.ViewHolder;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -60,7 +59,6 @@ public class MatchingFragment extends BaseFragment {
     ExTextView mPrepareTipsTv;  //准备提示信息
 
     VoiceLineView mVoiceLineView;
-    MediaRecorder mMediaRecorder;
 
     MatchStartView startMatchView;
     MatchingView matchingView;
@@ -148,76 +146,30 @@ public class MatchingFragment extends BaseFragment {
                     }
                 });
 
-        initMediaRecoder();
+        initMediaEngine();
     }
 
     // todo 后面会用我们自己的去采集声音拿到音高
-    private void initMediaRecoder() {
-        if (mMediaRecorder == null)
-            mMediaRecorder = new MediaRecorder();
+    private void initMediaEngine() {
+        if (!EngineManager.getInstance().isInit()) {
+            // 不能每次都初始化,播放伴奏
+            EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_COMMUNICATION)
+                    .setEnableVideo(false)
+                    .build());
+            EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            EngineManager.getInstance().startAudioMixing("/assets/test.mp3", true, false, -1);
+            EngineManager.getInstance().pauseAudioMixing();
 
-        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        File file = new File(Environment.getExternalStorageDirectory().getPath(), "hello.log");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String c = U.getDateTimeUtils().formatVideoTime(0);
+            String d = U.getDateTimeUtils().formatVideoTime(EngineManager.getInstance().getAudioMixingDuration());
+            String info = String.format(getString(R.string.song_time_info), c, d);
+            mTitleBar.getCenterSubTextView().setText(info);
         }
-        mMediaRecorder.setOutputFile(file.getAbsolutePath());
-        mMediaRecorder.setMaxDuration(1000 * 60 * 10);
-        try {
-            mMediaRecorder.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mMediaRecorder.start();
-
-        mHandlerTaskTimer = HandlerTaskTimer.newBuilder().interval(50)
-                .start(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        if (mMediaRecorder == null) return;
-                        double ratio = (double) mMediaRecorder.getMaxAmplitude() / 100;
-                        double db = 0;// 分贝
-                        //默认的最大音量是100,可以修改，但其实默认的，在测试过程中就有不错的表现
-                        //你可以传自定义的数字进去，但需要在一定的范围内，比如0-200，就需要在xml文件中配置maxVolume
-                        //同时，也可以配置灵敏度sensibility
-                        if (ratio > 1)
-                            db = 20 * Math.log10(ratio);
-                        //只要有一个线程，不断调用这个方法，就可以使波形变化
-                        //主要，这个方法必须在ui线程中调用
-                        mVoiceLineView.setVolume((int) (db));
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        if (mMediaRecorder != null) {
-            mMediaRecorder.release();
-            mMediaRecorder = null;
-        }
         if (mHandlerTaskTimer != null) {
             mHandlerTaskTimer.dispose();
         }
@@ -265,8 +217,6 @@ public class MatchingFragment extends BaseFragment {
                 mTitleBar.getCenterSubTextView().setText("一大波skrer在来的路上啦...");
                 setMatchStatus(MatchStatusChangeEvent.MATCH_STATUS_START);
             }
-
-
         }
     }
 
@@ -278,4 +228,37 @@ public class MatchingFragment extends BaseFragment {
         mPrepareTipsTv.setVisibility(matchStatus == MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS ? View.VISIBLE : View.GONE);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EngineEvent engineEvent) {
+        switch (engineEvent.getType()) {
+            case EngineEvent.TYPE_MUSIC_PLAY_START:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    mTitleBar.getCenterSubTextView().setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.matching_prepare_titlebar_center_dot_red, 0, 0, 0);
+                } else {
+                    mTitleBar.getCenterSubTextView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.matching_prepare_titlebar_center_dot_red, 0, 0, 0);
+                }
+                break;
+            case EngineEvent.TYPE_MUSIC_PLAY_STOP:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    mTitleBar.getCenterSubTextView().setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.matching_prepare_titlebar_center_dot_yellow, 0, 0, 0);
+                } else {
+                    mTitleBar.getCenterSubTextView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.matching_prepare_titlebar_center_dot_yellow, 0, 0, 0);
+                }
+                break;
+
+            case EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER:
+                EngineEvent.MixMusicTimeInfo musicTimeInfo = (EngineEvent.MixMusicTimeInfo) engineEvent.getObj();
+                String c = U.getDateTimeUtils().formatVideoTime(musicTimeInfo.getCurrent());
+                String d = U.getDateTimeUtils().formatVideoTime(musicTimeInfo.getDuration());
+                String info = String.format(getString(R.string.song_time_info), c, d);
+                mTitleBar.getCenterSubTextView().setText(info);
+                break;
+            case EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION:
+                List<EngineEvent.UserVolumeInfo> userVolumeInfoList = (List<EngineEvent.UserVolumeInfo>) engineEvent.getObj();
+                for (EngineEvent.UserVolumeInfo userVolumeInfo : userVolumeInfoList) {
+                    mVoiceLineView.setVolume(userVolumeInfo.getVolume());
+                }
+                break;
+        }
+    }
 }

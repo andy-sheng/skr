@@ -83,7 +83,9 @@ public final class HandlerTaskTimer {
 
     public void dispose() {
         hasCancel = true;
-        mHandler.removeCallbacksAndMessages(null);
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
         mHandler = null;
         consumer = null;
     }

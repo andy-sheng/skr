@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.changba.songstudio.CbEngineAdapter;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiObserver;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
@@ -23,6 +25,8 @@ import java.util.List;
 
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * 关于音视频引擎的都放在这个类里
@@ -40,6 +44,7 @@ public class EngineManager implements AgoraOutCallback {
     private HashMap<Integer, UserStatus> mUserStatusMap = new HashMap<>();
     private HashSet<View> mRemoteViewCache = new HashSet<>();
     private Handler mUiHandler = new Handler();
+    private HandlerTaskTimer mMusicTimePlayTimeListener;
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -90,6 +95,7 @@ public class EngineManager implements AgoraOutCallback {
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
         UserStatus userStatus = ensureJoin(uid);
         userStatus.setIsSelf(true);
+        mConfig.setSelfUid(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
     }
 
@@ -118,6 +124,18 @@ public class EngineManager implements AgoraOutCallback {
     @Override
     public void onAudioMixingFinished() {
         mConfig.setMixMusicPlaying(false);
+    }
+
+    @Override
+    public void onAudioVolumeIndication(IRtcEngineEventHandler.AudioVolumeInfo[] speakers, int totalVolume) {
+        List<EngineEvent.UserVolumeInfo> l = new ArrayList<>();
+        for (IRtcEngineEventHandler.AudioVolumeInfo info : speakers) {
+            EngineEvent.UserVolumeInfo userVolumeInfo = new EngineEvent.UserVolumeInfo(info.uid, info.volume);
+            l.add(userVolumeInfo);
+        }
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION, null);
+        engineEvent.obj = l;
+        EventBus.getDefault().post(engineEvent);
     }
 
     private UserStatus ensureJoin(int uid) {
@@ -164,6 +182,9 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void destroy() {
         mIsInit = false;
+        if (mMusicTimePlayTimeListener != null) {
+            mMusicTimePlayTimeListener.dispose();
+        }
         AgoraEngineAdapter.getInstance().destroy(true);
         CbEngineAdapter.getInstance().destroy();
         mUserStatusMap.clear();
@@ -572,6 +593,9 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
         mConfig.setMixMusicPlaying(true);
+        startMusicPlayTimeListener();
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
+        EventBus.getDefault().post(engineEvent);
         AgoraEngineAdapter.getInstance().startAudioMixing(filePath, loopback, replace, cycle);
     }
 
@@ -581,15 +605,10 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void stopAudioMixing() {
         mConfig.setMixMusicPlaying(false);
+        stopMusicPlayTimeListener();
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
+        EventBus.getDefault().post(engineEvent);
         AgoraEngineAdapter.getInstance().stopAudioMixing();
-    }
-
-    /**
-     * 暂停播放音乐文件及混音
-     */
-    public void pauseAudioMixing() {
-        mConfig.setMixMusicPlaying(false);
-        AgoraEngineAdapter.getInstance().pauseAudioMixing();
     }
 
     /**
@@ -597,7 +616,63 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void resumeAudioMixing() {
         mConfig.setMixMusicPlaying(true);
+        startMusicPlayTimeListener();
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
+        EventBus.getDefault().post(engineEvent);
         AgoraEngineAdapter.getInstance().resumeAudioMixing();
+    }
+
+    /**
+     * 暂停播放音乐文件及混音
+     */
+    public void pauseAudioMixing() {
+        mConfig.setMixMusicPlaying(false);
+        stopMusicPlayTimeListener();
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
+        EventBus.getDefault().post(engineEvent);
+        AgoraEngineAdapter.getInstance().pauseAudioMixing();
+    }
+
+    private void startMusicPlayTimeListener() {
+        if (mMusicTimePlayTimeListener != null) {
+            mMusicTimePlayTimeListener.dispose();
+        }
+        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder().interval(1000)
+                .start(new Observer<Integer>() {
+                    int duration = -1;
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        int currentPostion = getAudioMixingCurrentPosition();
+                        if (duration < 0) {
+                            duration = getAudioMixingDuration();
+                        }
+                        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER);
+                        engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPostion, duration);
+                        EventBus.getDefault().post(engineEvent);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void stopMusicPlayTimeListener() {
+        if (mMusicTimePlayTimeListener != null) {
+            mMusicTimePlayTimeListener.dispose();
+        }
     }
 
     /**

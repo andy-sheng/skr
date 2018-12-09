@@ -31,5 +31,6 @@ public interface AgoraOutCallback {
     void onVideoSizeChanged(int uid, int width, int height, int rotation);
 
     void onAudioMixingFinished();
-    
+
+    void onAudioVolumeIndication(IRtcEngineEventHandler.AudioVolumeInfo[] speakers, int totalVolume);
 }

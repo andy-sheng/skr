@@ -99,8 +99,8 @@ public class VoiceControlPanelView extends ScrollView {
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
+        mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
         mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getAudioMixingVolume());
-        mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
     }
 
     @Override
