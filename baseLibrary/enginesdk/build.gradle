@@ -15,13 +15,11 @@ android {
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_PLATFORM=android-16', '-DANDROID_TOOLCHAIN=clang',
-                        '-DANDROID_ARM_NEON=TRUE', '-DANDROID_STL=gnustl_static',
-                        '-DCMAKE_BUILD_TYPE=RelWithDebInfo'
+                        '-DANDROID_ARM_NEON=TRUE', '-DANDROID_STL=gnustl_static'
                 cFlags '-O3', '-DGL_GLEXT_PROTOTYPES', '-DEGL_EGLEXT_PROTOTYPES', '-fsigned-char', '-Wformat','-mfpu=neon', '-mfloat-abi=softfp -frtti' // full optimization, char data type is signed
                 // 编译优化，设置函式是否能被 inline 的伪指令长度
                 cppFlags '-O3', '-fexceptions', '-fsigned-char',
                         "-frtti -std=c++11", '-Wformat'
-
             }
         }
     }

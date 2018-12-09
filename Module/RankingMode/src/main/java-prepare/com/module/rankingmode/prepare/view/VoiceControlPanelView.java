@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 
+import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.engine.EngineManager;
@@ -84,7 +85,17 @@ public class VoiceControlPanelView extends ScrollView {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 MyLog.d(TAG, "onCheckedChanged" + " group=" + group + " checkedId=" + checkedId);
-
+                if (checkedId == R.id.default_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(null);
+                } else if (checkedId == R.id.dianxin_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.LIVE_MAGIC);
+                } else if (checkedId == R.id.kongling_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.NEW_CENT);
+                } else if (checkedId == R.id.ktv_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.DANCE);
+                } else if (checkedId == R.id.rock_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ROCK);
+                }
             }
         });
         mScenesBtnGroup.check(R.id.default_sbtn);

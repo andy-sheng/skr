@@ -1,5 +1,7 @@
 package com.engine;
 
+import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
+
 import java.util.HashMap;
 
 import io.agora.rtc.Constants;
@@ -81,6 +83,8 @@ public class Params {
     private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
     private int recordingSignalVolume = 100;// 0-400 默认100，最多放大4倍
     private int selfUid; // 本人在引擎中的id
+    private AudioEffectStyleEnum styleEnum = null;// 混响style
+    private boolean enableSpeakerphone = true;// 开启扬声器
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -338,6 +342,22 @@ public class Params {
         return selfUid;
     }
 
+    public AudioEffectStyleEnum getStyleEnum() {
+        return styleEnum;
+    }
+
+    public void setStyleEnum(AudioEffectStyleEnum styleEnum) {
+        this.styleEnum = styleEnum;
+    }
+
+    public boolean isEnableSpeakerphone() {
+        return enableSpeakerphone;
+    }
+
+    public void setEnableSpeakerphone(boolean enableSpeakerphone) {
+        this.enableSpeakerphone = enableSpeakerphone;
+    }
+
     public static class Builder {
         Params mParams = new Params();
 
@@ -471,6 +491,11 @@ public class Params {
 
         public Builder setRecordingSignalVolume(int recordingSignalVolume) {
             mParams.setRecordingSignalVolume(recordingSignalVolume);
+            return this;
+        }
+
+        public Builder setEnableSpeakerphone(boolean enableSpeakerphone) {
+            mParams.setEnableSpeakerphone(enableSpeakerphone);
             return this;
         }
 

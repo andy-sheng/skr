@@ -20,6 +20,9 @@ typedef unsigned char byte;
 #define AUDIO_PCM_OUTPUT_CHANNEL 2
 #define ACCOMPANY_PCM_OUTPUT_CHANNEL 2
 
+typedef signed short SInt16;
+typedef unsigned char byte;
+
 static inline char* intToStr(int paramIntValue) {
 //	int radix = 10;
 //	unsigned char table[] = "0123456789";
@@ -273,6 +276,47 @@ inline int strindex(char *s1, char *s2) {
 	if (res)
 		nPos = res - s1;
 	return nPos;
+}
+
+//取大值
+#ifndef GLOBAL_MAX
+#define GLOBAL_MAX(a, b)	(((a) > (b)) ? (a) : (b))
+#endif
+
+//取小值
+#ifndef GLOBAL_MIN
+#define GLOBAL_MIN(a,b)		(((a) < (b)) ? (a) : (b))
+#endif
+
+//取中间
+#ifndef GLOBAL_MID
+#define GLOBAL_MID(a, b, c)	(GLOBAL_MAX(a, GLOBAL_MIN(b, c)))
+#endif
+
+//取绝对值
+#ifndef GLOBAL_ABS
+#define GLOBAL_ABS(a)       ((a) < 0 ? (-(a)) : (a))
+#endif
+
+
+#ifndef CHECK_FLOAT_EQUAL
+#define CHECK_FLOAT_EQUAL(a, b)  (fabs(a - b) < 0.001f)
+#endif
+
+inline void float_to_short(float * in, short * out, int num)
+{
+	for(int i = 0; i < num; i++)
+	{
+		out[i] = (short)GLOBAL_MID(-32768, in[i] * 32767, 32767);
+	}
+}
+
+inline void short_to_float(short * in, float * out, int num)
+{
+	for(int i = 0; i < num; i++)
+	{
+		out[i] = in[i] / 32768.0f;
+	}
 }
 
 #endif //SONG_STUDIO_COMMON

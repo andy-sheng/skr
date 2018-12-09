@@ -303,5 +303,6 @@ public static java.lang.String TABLENAME;
 -keep class com.changba.songstudio.recording.camera.preview.ChangbaRecordingPreviewScheduler{*;}
 -keep class com.changba.songstudio.recording.camera.preview.CameraConfigInfo{*;}
 -keep class com.changba.songstudio.Videostudio{*;}
+-keep class com.changba.songstudio.audioeffect.** {*;}
 
 -ignorewarnings

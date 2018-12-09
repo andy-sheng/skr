@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.changba.songstudio.CbEngineAdapter;
+import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
-import com.common.rxretrofit.ApiObserver;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -196,7 +195,7 @@ public class EngineManager implements AgoraOutCallback {
 
     public void startRecord() {
         if (mConfig.isUseCbEngine()) {
-            CbEngineAdapter.getInstance().startRecord();
+//            CbEngineAdapter.getInstance().startRecord();
         } else {
             U.getToastUtil().showShort("mConfig.isUseCbEngine is false ，cancel");
         }
@@ -222,6 +221,7 @@ public class EngineManager implements AgoraOutCallback {
             }
         }
         AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
+        AgoraEngineAdapter.getInstance().setEnableSpeakerphone(mConfig.isEnableSpeakerphone());
     }
 
     public void setClientRole(boolean isAnchor) {
@@ -237,7 +237,7 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void startPreview(SurfaceView surfaceView) {
         if (mConfig.isUseCbEngine()) {
-            CbEngineAdapter.getInstance().startPreview(surfaceView);
+//            CbEngineAdapter.getInstance().startPreview(surfaceView);
         } else {
             // agora引擎好像加入房间后，预览才有效果
             AgoraEngineAdapter.getInstance().setLocalVideoRenderer(surfaceView);
@@ -250,7 +250,7 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void stopPreview() {
         if (mConfig.isUseCbEngine()) {
-            CbEngineAdapter.getInstance().stopPreview();
+//            CbEngineAdapter.getInstance().stopPreview();
         } else {
             AgoraEngineAdapter.getInstance().stopPreview();
         }
@@ -461,6 +461,12 @@ public class EngineManager implements AgoraOutCallback {
         mConfig.setAllRemoteVideoStreamsMute(muted);
         AgoraEngineAdapter.getInstance().muteAllRemoteVideoStreams(muted);
     }
+
+    public void setEnableSpeakerphone(boolean enableSpeakerphone) {
+        mConfig.setEnableSpeakerphone(enableSpeakerphone);
+        AgoraEngineAdapter.getInstance().setEnableSpeakerphone(enableSpeakerphone);
+    }
+
     /*视频基础结束*/
 
     /*音频基础开始*/
@@ -528,6 +534,11 @@ public class EngineManager implements AgoraOutCallback {
     /*音频基础结束*/
 
     /*音频高级扩展开始*/
+
+    public void setAudioEffectStyle(AudioEffectStyleEnum styleEnum) {
+        mConfig.setStyleEnum(styleEnum);
+        CbEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
+    }
 
     /**
      * 播放音效

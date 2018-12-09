@@ -7,6 +7,7 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.ViewGroup;
 
+import com.changba.songstudio.CbEngineAdapter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.Params;
@@ -170,7 +171,7 @@ public class AgoraEngineAdapter {
         public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume) {
             super.onAudioVolumeIndication(speakers, totalVolume);
             if (mOutCallback != null) {
-                mOutCallback.onAudioVolumeIndication(speakers,totalVolume);
+                mOutCallback.onAudioVolumeIndication(speakers, totalVolume);
             }
         }
     };
@@ -237,12 +238,24 @@ public class AgoraEngineAdapter {
 
             mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
                 @Override
-                public boolean onRecordFrame(byte[] bytes, int i, int i1, int i2, int i3) {
-                    return false;
+                public boolean onRecordFrame(byte[] samples,
+                                             int numOfSamples,
+                                             int bytesPerSample,
+                                             int channels,
+                                             int samplesPerSec) {
+                    return CbEngineAdapter.getInstance().processAudioFrames(samples,
+                            numOfSamples,
+                            bytesPerSample,
+                            channels,
+                            samplesPerSec);
                 }
 
                 @Override
-                public boolean onPlaybackFrame(byte[] bytes, int i, int i1, int i2, int i3) {
+                public boolean onPlaybackFrame(byte [] 	samples,
+                                               int 	numOfSamples,
+                                               int 	bytesPerSample,
+                                               int 	channels,
+                                               int 	samplesPerSec) {
                     return false;
                 }
             });
