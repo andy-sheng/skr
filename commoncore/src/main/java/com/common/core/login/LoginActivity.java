@@ -35,6 +35,7 @@ import io.reactivex.Observable;
 public class LoginActivity extends BaseActivity {
 
     public static final String KEY_SHOW_TOAST = "key_show_toast";
+    public static final String KEY_ORIGIN_PATH = "key_origin_path";
     RelativeLayout mMainActContainer;
     ExTextView mLogoTv;
     ExTextView mWeixinLoginTv;
@@ -53,11 +54,11 @@ public class LoginActivity extends BaseActivity {
             U.getToastUtil().showShort("请先登录");
         }
 
-        mMainActContainer = (RelativeLayout)findViewById(R.id.main_act_container);
-        mLogoTv = (ExTextView)findViewById(R.id.logo_tv);
-        mWeixinLoginTv = (ExTextView)findViewById(R.id.weixin_login_tv);
-        mPhoneLoginTv = (ExTextView)findViewById(R.id.phone_login_tv);
-        mWeiboLoginTv = (ExTextView)findViewById(R.id.weibo_login_tv);
+        mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
+        mLogoTv = (ExTextView) findViewById(R.id.logo_tv);
+        mWeixinLoginTv = (ExTextView) findViewById(R.id.weixin_login_tv);
+        mPhoneLoginTv = (ExTextView) findViewById(R.id.phone_login_tv);
+        mWeiboLoginTv = (ExTextView) findViewById(R.id.weibo_login_tv);
 
 
         mPhoneLoginTv.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +89,14 @@ public class LoginActivity extends BaseActivity {
         //登陆成功
         finish();
         U.getToastUtil().showShort("登录成功");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String path = bundle.getString(KEY_ORIGIN_PATH);
+            if (!TextUtils.isEmpty(path)) {
+                // 跳转到原页面，并带上参数
+                ARouter.getInstance().build(path).with(bundle).navigation();
+            }
+        }
     }
 
     @Override

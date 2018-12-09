@@ -1,6 +1,7 @@
 package com.common.core.login.interceptor;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Interceptor;
@@ -44,7 +45,14 @@ public class JudgeLoginInterceptor implements IInterceptor {
                 callback.onContinue(postcard);
             } else {
                 callback.onInterrupt(new UnloginException());
+
+                String path = postcard.getPath();
+                Bundle bundle = postcard.getExtras();
+
+                // 登录成功后，应该继续处理这个 callback 才最好啊
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
+                        .with(bundle)
+                        .withString(LoginActivity.KEY_ORIGIN_PATH, path)
                         .withBoolean(LoginActivity.KEY_SHOW_TOAST, true)
                         .greenChannel().navigation();
             }
