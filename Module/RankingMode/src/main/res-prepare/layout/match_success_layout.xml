@@ -3,9 +3,32 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:gravity="center"
-        android:text="这里是匹配成功界面"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/iv_a_area"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/view_106_dp"
+        android:layout_height="@dimen/view_106_dp" />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/view_25_dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_below="@+id/iv_a_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/iv_b_area"
+            android:layout_below="@+id/iv_a_area"
+            android:layout_width="@dimen/view_106_dp"
+            android:layout_height="@dimen/view_106_dp" />
+
+        <com.common.image.fresco.BaseImageView
+            android:layout_marginLeft="@dimen/view_44_dp"
+            android:layout_height="@dimen/view_106_dp"
+            android:id="@+id/iv_c_area"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/view_106_dp"/>
+    </LinearLayout>
+
 </RelativeLayout>

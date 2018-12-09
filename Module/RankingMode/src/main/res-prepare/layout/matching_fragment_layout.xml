@@ -43,12 +43,13 @@
     </com.module.rankingmode.prepare.sence.controller.MatchSenceContainer>
 
     <com.common.view.ex.ExTextView
+        android:layout_above="@+id/match_status_tv"
+        android:visibility="visible"
         android:id="@+id/tone_tuning_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/match_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_27_dp"
+        android:layout_marginTop="@dimen/view_89_dp"
         android:drawableRight="@drawable/match_tone_tuning_dot"
         android:text="试唱调音"
         android:textColor="@color/white"

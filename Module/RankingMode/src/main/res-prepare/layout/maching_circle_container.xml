@@ -16,8 +16,8 @@
         app:user_icon_width="30dp"
         app:icon_count="4"
         android:layout_gravity="center"
-        android:layout_width="@dimen/view_300_dp"
-        android:layout_height="@dimen/view_300_dp"/>
+        android:layout_width="@dimen/view_320_dp"
+        android:layout_height="@dimen/view_320_dp"/>
 
     <com.module.rankingmode.prepare.view.MatchingLayerView
         app:midLine_Color="@color/black_trans_75"
@@ -29,6 +29,12 @@
         app:user_icon_width="30dp"
         app:icon_count="3"
         android:layout_gravity="center"
-        android:layout_width="@dimen/view_200_dp"
-        android:layout_height="@dimen/view_200_dp"/>
+        android:layout_width="@dimen/view_218_dp"
+        android:layout_height="@dimen/view_218_dp"/>
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/owner_icon"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_60_dp" />
 </FrameLayout>

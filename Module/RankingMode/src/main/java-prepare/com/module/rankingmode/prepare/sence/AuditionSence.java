@@ -8,9 +8,20 @@ import android.widget.RelativeLayout;
 
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
+import com.zq.lyrics.LyricsManager;
+import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.event.LrcEvent;
+import com.zq.lyrics.widget.AbstractLrcView;
+import com.zq.lyrics.widget.ManyLyricsView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class AuditionSence extends RelativeLayout implements ISence {
     MatchSenceController matchSenceController;
+
+    ManyLyricsView mManyLyricsView;
     public AuditionSence(Context context) {
         this(context, null);
     }
@@ -26,6 +37,7 @@ public class AuditionSence extends RelativeLayout implements ISence {
 
     private void init(){
         inflate(getContext(), R.layout.audition_sence_layout, this);
+        mManyLyricsView = findViewById(R.id.many_lyrics_view);
     }
 
     @Override
@@ -33,6 +45,25 @@ public class AuditionSence extends RelativeLayout implements ISence {
         //这里可能有动画啥的
         setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         parentViewGroup.addView(this);
+
+        //从bundle里面拿音乐相关数据，然后开始试唱
+        String fileName = "shamoluotuo";
+        LyricsManager.getLyricsManager(getContext()).loadLyricsUtil(fileName, "沙漠骆驼", "5000", fileName.hashCode() + "");
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LrcEvent.FinishLoadLrcEvent finishLoadLrcEvent) {
+        LyricsReader lyricsReader = LyricsManager.getLyricsManager(getContext()).getLyricsUtil(finishLoadLrcEvent.hash);
+        if (lyricsReader != null) {
+            lyricsReader.setHash(finishLoadLrcEvent.hash);
+            mManyLyricsView.initLrcData();
+            mManyLyricsView.setLyricsReader(lyricsReader);
+            if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != AbstractLrcView.LRCPLAYERSTATUS_PLAY)
+                mManyLyricsView.play(0);
+        }
     }
 
     @Override
@@ -44,6 +75,7 @@ public class AuditionSence extends RelativeLayout implements ISence {
     @Override
     public void toRemoveFromStack(RelativeLayout parentViewGroup) {
         parentViewGroup.removeView(this);
+        EventBus.getDefault().unregister(this);
     }
 
     //每个场景有一个是不是可以往下跳的判断

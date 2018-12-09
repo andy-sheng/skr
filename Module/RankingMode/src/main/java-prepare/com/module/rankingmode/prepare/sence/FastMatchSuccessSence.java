@@ -6,11 +6,18 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.image.fresco.BaseImageView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 
 public class FastMatchSuccessSence extends RelativeLayout implements ISence {
     MatchSenceController matchSenceController;
+
+    BaseImageView mIvAArea;
+    BaseImageView mIvBArea;
+    BaseImageView mIvCArea;
 
     public FastMatchSuccessSence(Context context) {
         this(context, null);
@@ -27,6 +34,29 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence {
 
     private void init() {
         inflate(getContext(), R.layout.match_success_layout, this);
+
+
+        mIvAArea = findViewById(R.id.iv_a_area);
+        mIvBArea = findViewById(R.id.iv_b_area);
+        mIvCArea = findViewById(R.id.iv_c_area);
+
+        AvatarUtils.loadAvatarByUrl(mIvAArea,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                        .setCircle(true)
+                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
+                        .build());
+
+        AvatarUtils.loadAvatarByUrl(mIvBArea,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                        .setCircle(true)
+                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
+                        .build());
+
+        AvatarUtils.loadAvatarByUrl(mIvCArea,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                        .setCircle(true)
+                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
+                        .build());
     }
 
     @Override
