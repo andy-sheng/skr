@@ -59,7 +59,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/place_holder_view"
         android:layout_marginBottom="@dimen/view_19_dp"
-        android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
@@ -67,6 +66,7 @@
             android:id="@+id/emoji1_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:scaleType="centerInside"
             app:src_unPressed_drawable="@drawable/emoji_btn" />
 
@@ -91,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:scaleType="centerInside"
             app:src_unPressed_drawable="@drawable/emoji_btn" />
 
@@ -98,6 +99,7 @@
             android:id="@+id/emoji3_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_15_dp"
             android:layout_toLeftOf="@+id/emoji4_btn"
             android:scaleType="centerInside"
@@ -107,10 +109,40 @@
             android:id="@+id/emoji2_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_15_dp"
             android:layout_toLeftOf="@+id/emoji3_btn"
             android:scaleType="centerInside"
             app:src_unPressed_drawable="@drawable/emoji_btn" />
     </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/top_container"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/viewer_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginRight="@dimen/view_5_dp"
+            android:layout_toLeftOf="@+id/close_btn" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/close_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_24_dp"
+            android:scaleType="centerInside"
+            app:src_unPressed_drawable="@drawable/emoji_btn" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

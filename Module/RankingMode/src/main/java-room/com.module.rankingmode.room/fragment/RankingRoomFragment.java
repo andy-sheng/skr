@@ -2,8 +2,11 @@ package com.module.rankingmode.room.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,7 +21,13 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
+import com.module.rankingmode.room.adapter.RoomViewerRvAdapter;
+import com.module.rankingmode.room.model.RoomViewerModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RankingRoomFragment extends BaseFragment {
 
@@ -37,6 +46,13 @@ public class RankingRoomFragment extends BaseFragment {
     ExImageView mEmoji3Btn;
     ExImageView mEmoji2Btn;
 
+    RelativeLayout mTopContainer;
+    RecyclerView mViewerRv;
+    ExImageView mCloseBtn;
+    LinearLayoutManager mLinearLayoutManger;
+    RoomViewerRvAdapter mRoomViewerRvAdapter;
+
+
     @Override
     public int initView() {
         return R.layout.ranking_room_fragment_layout;
@@ -46,6 +62,7 @@ public class RankingRoomFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         initInputView();
         initBottomView();
+        initTopView();
     }
 
     /**
@@ -118,21 +135,56 @@ public class RankingRoomFragment extends BaseFragment {
     }
 
     private void initBottomView() {
-        mBottomContainer = (RelativeLayout)mRootView.findViewById(R.id.bottom_container);
-        mEmoji1Btn = (ExImageView)mRootView.findViewById(R.id.emoji1_btn);
-        mShowInputContainerBtn = (ExTextView)mRootView.findViewById(R.id.show_input_container_btn);
-        mEmoji4Btn = (ExImageView)mRootView.findViewById(R.id.emoji4_btn);
-        mEmoji3Btn = (ExImageView)mRootView.findViewById(R.id.emoji3_btn);
-        mEmoji2Btn = (ExImageView)mRootView.findViewById(R.id.emoji2_btn);
+        mBottomContainer = (RelativeLayout) mRootView.findViewById(R.id.bottom_container);
+        mEmoji1Btn = (ExImageView) mRootView.findViewById(R.id.emoji1_btn);
+        mShowInputContainerBtn = (ExTextView) mRootView.findViewById(R.id.show_input_container_btn);
+        mEmoji4Btn = (ExImageView) mRootView.findViewById(R.id.emoji4_btn);
+        mEmoji3Btn = (ExImageView) mRootView.findViewById(R.id.emoji3_btn);
+        mEmoji2Btn = (ExImageView) mRootView.findViewById(R.id.emoji2_btn);
         mShowInputContainerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(U.getCommonUtils().isFastDoubleClick()){
+                if (U.getCommonUtils().isFastDoubleClick()) {
                     return;
                 }
                 mEmotionKeyboard.showSoftInput();
             }
         });
+    }
+
+    private void initTopView() {
+        mTopContainer = (RelativeLayout) mRootView.findViewById(R.id.top_container);
+        mViewerRv = (RecyclerView) mRootView.findViewById(R.id.viewer_rv);
+        mCloseBtn = (ExImageView) mRootView.findViewById(R.id.close_btn);
+        mLinearLayoutManger = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mViewerRv.setLayoutManager(mLinearLayoutManger);
+        mRoomViewerRvAdapter = new RoomViewerRvAdapter(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, int position, Object model) {
+
+            }
+        });
+        mViewerRv.setAdapter(mRoomViewerRvAdapter);
+
+        mCloseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+        // 加上状态栏的高度
+        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
+        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainer.getLayoutParams();
+        topLayoutParams.topMargin = statusBarHeight+topLayoutParams.topMargin;
+
+        //TODO TEST
+        List<RoomViewerModel> l = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            RoomViewerModel viewerModel = new RoomViewerModel("" + i, "");
+            l.add(viewerModel);
+        }
+        mRoomViewerRvAdapter.setDataList(l);
+
     }
 
     @Override
