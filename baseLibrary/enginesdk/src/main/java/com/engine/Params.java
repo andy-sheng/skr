@@ -78,6 +78,8 @@ public class Params {
     private boolean cameraTorchOn = false; // 闪光灯常亮
     private boolean localVideoStreamMute = false;// 本地视频流禁止
     private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
+    private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
+    private int recordingSignalVolume = 100;// 0-400 默认100，最多放大4倍
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -311,6 +313,22 @@ public class Params {
         return allRemoteVideoStreamsMute;
     }
 
+    public void setPlaybackSignalVolume(int playbackSignalVolume) {
+        this.playbackSignalVolume = playbackSignalVolume;
+    }
+
+    public int getPlaybackSignalVolume() {
+        return playbackSignalVolume;
+    }
+
+    public void setRecordingSignalVolume(int recordingSignalVolume) {
+        this.recordingSignalVolume = recordingSignalVolume;
+    }
+
+    public int getRecordingSignalVolume() {
+        return recordingSignalVolume;
+    }
+
     public static class Builder {
         Params mParams = new Params();
 
@@ -434,6 +452,16 @@ public class Params {
 
         public Builder setLocalAudioStreamMute(boolean localAudioStreamMute) {
             mParams.setLocalAudioStreamMute(localAudioStreamMute);
+            return this;
+        }
+
+        public Builder setPlaybackSignalVolume(int playbackSignalVolume) {
+            mParams.setPlaybackSignalVolume(playbackSignalVolume);
+            return this;
+        }
+
+        public Builder setRecordingSignalVolume(int recordingSignalVolume) {
+            mParams.setRecordingSignalVolume(recordingSignalVolume);
             return this;
         }
 

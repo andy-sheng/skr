@@ -596,7 +596,7 @@ public class AgoraEngineAdapter {
     }
 
     /**
-     * 录音音量，可在 0~400 范围内进行调节
+     * 录音音量，可在 0~400 范围内进行调节 默认100
      *
      * @param volume
      */
@@ -611,7 +611,7 @@ public class AgoraEngineAdapter {
     }
 
     /**
-     * 播放音量，可在 0~400 范围内进行调节
+     * 播放音量，可在 0~400 范围内进行调节 默认100
      *
      * @param volume
      */

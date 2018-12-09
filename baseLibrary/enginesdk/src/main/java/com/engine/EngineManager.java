@@ -483,6 +483,27 @@ public class EngineManager implements AgoraOutCallback {
         mConfig.setInEarMonitoringVolume(volume);
         AgoraEngineAdapter.getInstance().setInEarMonitoringVolume(volume);
     }
+
+    /**
+     * 录音音量，可在 0~400 范围内进行调节 默认100
+     *
+     * @param volume
+     */
+    public void adjustRecordingSignalVolume(int volume) {
+        mConfig.setRecordingSignalVolume(volume);
+        AgoraEngineAdapter.getInstance().adjustRecordingSignalVolume(volume);
+    }
+
+    /**
+     * 播放音量，可在 0~400 范围内进行调节 默认100
+     *
+     * @param volume
+     */
+    public void adjustPlaybackSignalVolume(int volume) {
+        mConfig.setPlaybackSignalVolume(volume);
+        AgoraEngineAdapter.getInstance().adjustPlaybackSignalVolume(volume);
+    }
+
     /*音频基础结束*/
 
     /*音频高级扩展开始*/
