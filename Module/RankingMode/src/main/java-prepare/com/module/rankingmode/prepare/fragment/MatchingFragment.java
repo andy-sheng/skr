@@ -3,7 +3,6 @@ package com.module.rankingmode.prepare.fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -20,10 +19,8 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.event.MatchStatusChangeEvent;
 import com.module.rankingmode.prepare.presenter.MatchPresenter;
-import com.module.rankingmode.prepare.view.VoiceControlPanelView;
+import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.view.VoiceLineView;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -46,7 +43,7 @@ public class MatchingFragment extends BaseFragment {
     RelativeLayout mMainActContainer;
 
     CommonTitleBar mTitleBar;
-    RelativeLayout mMatchContent; // 匹配中间的容器
+    MatchSenceContainer mMatchContent; // 匹配中间的容器
 
     ExTextView mToneTuningTv;   //试音调音
     ExTextView mMatchStatusTv;
@@ -74,7 +71,7 @@ public class MatchingFragment extends BaseFragment {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
 
         mTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.title_bar);
-        mMatchContent = (RelativeLayout) mRootView.findViewById(R.id.match_content);
+        mMatchContent = (MatchSenceContainer) mRootView.findViewById(R.id.match_content);
 
         mToneTuningTv = (ExTextView) mRootView.findViewById(R.id.tone_tuning_tv);
         mMatchStatusTv = (ExTextView) mRootView.findViewById(R.id.match_status_tv);
@@ -95,24 +92,27 @@ public class MatchingFragment extends BaseFragment {
             songTime = bundle.getString(KEY_SONG_TIME);
         }
 
+        mMatchContent.toNextSence(null);
 
         RxView.clicks(mMatchStatusTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        switch ((int) mMatchStatusTv.getTag()) {
-                            case MatchStatusChangeEvent.MATCH_STATUS_START:
-                                matchPresenter.startMatch();
-                                break;
-                            case MatchStatusChangeEvent.MATCH_STATUS_MATCHING:
-                                matchPresenter.cancelMatch();
-                                break;
-                            case MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS:
-                                break;
-                            default:
-                                break;
-                        }
+//                        switch ((int) mMatchStatusTv.getTag()) {
+//                            case MatchStatusChangeEvent.MATCH_STATUS_START:
+//                                matchPresenter.startMatch();
+//                                break;
+//                            case MatchStatusChangeEvent.MATCH_STATUS_MATCHING:
+//                                matchPresenter.cancelMatch();
+//                                break;
+//                            case MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS:
+//                                break;
+//                            default:
+//                                break;
+//                        }
+
+                        mMatchContent.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
                     }
                 });
 
@@ -122,14 +122,15 @@ public class MatchingFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) throws Exception {
                         // todo 试唱调音
-                        VoiceControlPanelView view = new VoiceControlPanelView(getContext());
-                        DialogPlus.newDialog(getContext())
-                                .setExpanded(true, U.getDisplayUtils().dip2px(233))
-                                .setContentBackgroundResource(R.drawable.voice_control_panel_bg)
-                                .setContentHolder(new ViewHolder(view))
-                                .setGravity(Gravity.BOTTOM)
-                                .setCancelable(true)
-                                .create().show();
+//                        VoiceControlPanelView view = new VoiceControlPanelView(getContext());
+//                        DialogPlus.newDialog(getContext())
+//                                .setExpanded(true, U.getDisplayUtils().dip2px(233))
+//                                .setContentBackgroundResource(R.drawable.voice_control_panel_bg)
+//                                .setContentHolder(new ViewHolder(view))
+//                                .setGravity(Gravity.BOTTOM)
+//                                .setCancelable(true)
+//                                .create().show();
+                        mMatchContent.toNextSence(null);
 
                     }
                 });
@@ -156,6 +157,18 @@ public class MatchingFragment extends BaseFragment {
     }
 
     @Override
+    protected boolean onBackPressed() {
+        if(mMatchContent.interceptBackPressed()){
+            if(mMatchContent.getSenceSize() == 0){
+                return super.onBackPressed();
+            }
+            return true;
+        }
+
+        return super.onBackPressed();
+    }
+
+    @Override
     public void destroy() {
         super.destroy();
         if (mHandlerTaskTimer != null) {
@@ -175,28 +188,7 @@ public class MatchingFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MatchStatusChangeEvent event) {
-        if (event != null) {
-            if (event.status == MatchStatusChangeEvent.MATCH_STATUS_MATCHING) {
-                mMatchContent.removeAllViews();
-                mMatchStatusTv.setTag(event.status);
-                mMatchStatusTv.setText("取消匹配");
-                mTitleBar.getCenterTextView().setText("匹配中");
-                mTitleBar.getCenterSubTextView().setText("一大波skrer在来的路上啦...");
-                setMatchStatus(MatchStatusChangeEvent.MATCH_STATUS_MATCHING);
-            } else if (event.status == MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS) {
-                mMatchContent.removeAllViews();
-                mMatchStatusTv.setTag(event.status);
-                mMatchStatusTv.setText("准备");
-                setMatchStatus(MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS);
-            } else if (event.status == MatchStatusChangeEvent.MATCH_STATUS_START) {
-                mMatchContent.removeAllViews();
-                mMatchStatusTv.setTag(event.status);
-                mMatchStatusTv.setText("开始匹配");
-                mTitleBar.getCenterTextView().setText("匹配中");
-                mTitleBar.getCenterSubTextView().setText("一大波skrer在来的路上啦...");
-                setMatchStatus(MatchStatusChangeEvent.MATCH_STATUS_START);
-            }
-        }
+
     }
 
     private void setMatchStatus(int matchStatus) {

@@ -32,15 +32,15 @@
 
     </com.common.view.titlebar.CommonTitleBar>
 
-    <RelativeLayout
+    <com.module.rankingmode.prepare.sence.controller.MatchSenceContainer
         android:id="@+id/match_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_318_dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_below="@+id/title_bar"
         android:background="@color/transparent">
-        <include layout="@layout/maching_circle_container"/>
-    </RelativeLayout>
+
+    </com.module.rankingmode.prepare.sence.controller.MatchSenceContainer>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tone_tuning_tv"
