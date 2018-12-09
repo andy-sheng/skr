@@ -3,7 +3,9 @@ package com.common.utils;
 import android.os.Handler;
 import android.os.Message;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Handler 定时器 用于倒计时 、延迟执行、循环执行 任务
@@ -120,6 +122,24 @@ public final class HandlerTaskTimer {
         public HandlerTaskTimer start(Observer<Integer> consumer) {
             mHandlerTaskTimer.subscribe(consumer);
             return mHandlerTaskTimer;
+        }
+    }
+
+    public static abstract class ObserverW implements Observer<Integer> {
+
+        @Override
+        public void onSubscribe(Disposable d) {
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
+
         }
     }
 }

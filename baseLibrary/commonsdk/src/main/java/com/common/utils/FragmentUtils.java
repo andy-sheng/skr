@@ -13,6 +13,7 @@ import com.common.base.R;
 import com.common.log.MyLog;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * 支持 v4 fragment 的一些工具方法
@@ -27,7 +28,11 @@ public class FragmentUtils {
 
     }
 
-    public BaseFragment getTopFragment(FragmentActivity activity) {
+    public BaseFragment getTopFragmentFromBackStack(FragmentActivity activity) {
+        /**
+         * 如果没有setAddToBackStack
+         * 这里返回的是null啊
+         */
         FragmentManager fm = activity.getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             //退出栈弹出
@@ -41,6 +46,17 @@ public class FragmentUtils {
         }
         return null;
     }
+
+    public BaseFragment getTopFragment(FragmentActivity activity) {
+        /**
+         * 如果没有setAddToBackStack
+         * 这里返回的是null啊
+         */
+        FragmentManager fm = activity.getSupportFragmentManager();
+        List<Fragment> l = fm.getFragments();
+        return (BaseFragment) l.get(l.size()-1);
+    }
+
 
     /**
      * 弹出activity 顶部的fragment

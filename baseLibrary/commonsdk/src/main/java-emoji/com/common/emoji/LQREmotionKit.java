@@ -22,10 +22,15 @@ public class LQREmotionKit {
     private static Context mContext;
     private static String STICKER_PATH;//默认路径在 /data/data/包名/files/sticker 下
 
-    public static void init(Context context) {
-        mContext = context.getApplicationContext();
-        STICKER_PATH = new File(context.getFilesDir(), STICKER_NAME_IN_ASSETS).getAbsolutePath();
-        copyStickerToStickerPath(STICKER_NAME_IN_ASSETS);
+    static boolean mHasInit = false;
+
+    public static void tryInit(Context context) {
+        if (!mHasInit) {
+            mContext = context.getApplicationContext();
+            STICKER_PATH = new File(context.getFilesDir(), STICKER_NAME_IN_ASSETS).getAbsolutePath();
+            copyStickerToStickerPath(STICKER_NAME_IN_ASSETS);
+            mHasInit = true;
+        }
     }
 
 

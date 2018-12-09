@@ -39,6 +39,7 @@ import java.util.List;
 /**
  * pk界面
  */
+@Deprecated
 public class PkRoomFragment extends BaseFragment {
     public final static String TAG = "PkRoomFragment";
 

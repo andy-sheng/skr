@@ -15,6 +15,12 @@
 
         </activity>
 
+        <activity
+            android:name=".room.activity.RankingRoomActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
     </application>
 
 </manifest>

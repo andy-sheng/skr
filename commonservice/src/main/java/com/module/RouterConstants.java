@@ -8,7 +8,7 @@ public interface RouterConstants {
     String ACTIVITY_LOGIN = "/core/LoginActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
     String ACTIVITY_RANKINGMODE = "/rankingmode/RankingModeActivity";
-
+    String ACTIVITY_RANKING_ROOM = "/rankingmode/RankingRoomActivity";
     String ACTIVITY_MESSAGE = "/imkit/MessageActivity";
 
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
@@ -35,5 +35,6 @@ public interface RouterConstants {
     String SERVICE_HOME = "/home/service1";
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
     String SERVICE_MSG = "/rongmsg/service1";
+
 
 }

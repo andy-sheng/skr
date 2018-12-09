@@ -44,7 +44,9 @@ public class GameFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getToastUtil().showShort("娱乐pk");
+                        //TODO  test
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
+                                .greenChannel().navigation();
                     }
                 });
     }

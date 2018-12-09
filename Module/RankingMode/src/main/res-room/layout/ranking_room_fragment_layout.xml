@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_trans_50"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/place_holder_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/yellow">
+        <!--表情区-->
+        <com.common.emoji.EmotionLayout
+            android:id="@+id/elEmotion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <!--这里面是软键盘弹出时 需要上移的布局-->
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/place_holder_view"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <com.common.view.ex.NoLeakEditText
+            android:id="@+id/etContent"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableBottom="@drawable/room_input_et_bg"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/ivEmo"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/emoji_btn" />
+
+    </LinearLayout>
+
+</RelativeLayout>
