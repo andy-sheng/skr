@@ -25,6 +25,7 @@ import com.common.base.delegate.AppLifecycles;
 import com.common.base.ConfigModule;
 import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
+import com.module.rankingmode.msg.process.ChatRoomMsgProcess;
 
 import java.util.List;
 
@@ -59,6 +60,11 @@ public class RankingModeConfiguration implements ConfigModule {
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
+                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                if (msgService != null) {
+                    msgService.addMsgProcessor(new ChatRoomMsgProcess());
+                }
+
             }
 
             @Override

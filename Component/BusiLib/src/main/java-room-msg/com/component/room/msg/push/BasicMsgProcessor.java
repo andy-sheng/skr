@@ -17,11 +17,17 @@ public class BasicMsgProcessor implements IPushMsgProcess {
     }
 
     @Override
+    public void process(int messageType, byte[] data) {
+        U.getToastUtil().showShort(TAG + "在处理 process pb" + " messageType=" + messageType );
+    }
+
+    @Override
     public int[] acceptType() {
         return new int[]{
                 CustomMsgType.MSG_TYPE_TEXT,
                 CustomMsgType.MSG_TYPE_ENTER,
                 CustomMsgType.MSG_TYPE_QUIT,
+
         };
     }
 }
