@@ -10,6 +10,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.presenter.MatchPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
 
@@ -22,6 +23,8 @@ import io.reactivex.functions.Consumer;
 
 public class FastMatchingSence extends RelativeLayout implements ISence {
     MatchSenceController matchSenceController;
+
+    MatchPresenter matchPresenter;
 
     Disposable disposable;
 
@@ -45,6 +48,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
         inflate(getContext(), R.layout.matching_sence_layout, this);
         BaseImageView ownerIcon = findViewById(R.id.owner_icon);
 
+        matchPresenter = new MatchPresenter();
 
         mLargeMatchingLayerView = findViewById(R.id.large_matching_layer_view);
         mSmallMatchingLayerView = findViewById(R.id.small_matching_layer_view);
@@ -57,6 +61,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
     }
     @Override
     public void toShow(RelativeLayout parentViewGroup, Bundle bundle) {
+        matchPresenter.startMatch();
         //这里可能有动画啥的
         setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         parentViewGroup.addView(this);
@@ -83,6 +88,9 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
 
     @Override
     public void toRemoveFromStack(RelativeLayout parentViewGroup) {
+        // todo 仅做test
+        matchPresenter.cancelMatch(1);
+
         parentViewGroup.removeView(this);
         mSmallMatchingLayerView.release();
         mLargeMatchingLayerView.release();

@@ -99,7 +99,6 @@ public class MatchingFragment extends BaseFragment {
                     public void accept(Object o) {
                         if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.PrepareSongRes) {
                             mMatchContent.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
-
                         } else if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.Matching) {
                             mMatchContent.popSence();
                         } else if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.MatchingSucess){
@@ -205,6 +204,7 @@ public class MatchingFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MatchStatusChangeEvent event) {
+
 
     }
 

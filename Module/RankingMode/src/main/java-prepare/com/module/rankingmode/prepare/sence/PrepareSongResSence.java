@@ -10,7 +10,9 @@ import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 
 public class PrepareSongResSence extends RelativeLayout implements ISence {
+
     MatchSenceController matchSenceController;
+
     public PrepareSongResSence(Context context) {
         this(context, null);
     }
