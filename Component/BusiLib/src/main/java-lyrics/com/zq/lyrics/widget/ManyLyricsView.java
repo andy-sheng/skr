@@ -16,6 +16,7 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
@@ -195,6 +196,8 @@ public class ManyLyricsView extends AbstractLrcView {
      */
     private OnLrcClickListener mOnLrcClickListener;
 
+    GestureDetector mGestureDetector;
+
     public ManyLyricsView(Context context) {
         super(context);
         init(context, null);
@@ -265,6 +268,26 @@ public class ManyLyricsView extends AbstractLrcView {
         mPaintIndicator.setTextSize(mPlayRectSize);
         mPaintLine.setTextSize(mPlayRectSize);
         mPaintPlay.setTextSize(mPlayRectSize);
+
+        mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                if(onLyricViewTapListener != null){
+                    onLyricViewTapListener.onDoubleTap();
+                }
+                return super.onDoubleTap(e);
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                if(onLyricViewTapListener != null){
+                    onLyricViewTapListener.onSigleTap();
+                }
+                return super.onSingleTapConfirmed(e);
+            }
+        });
+        // 控件双击事件响应，这里的控件是上一篇的移动的圆
+
     }
 
     @Override
@@ -696,8 +719,11 @@ public class ManyLyricsView extends AbstractLrcView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int lrcStatus = getLrcStatus();
-        if (!mTouchAble || lrcStatus != AbstractLrcView.LRCSTATUS_LRC)
+        if (!mTouchAble || lrcStatus != AbstractLrcView.LRCSTATUS_LRC){
             return true;
+        }
+
+        mGestureDetector.onTouchEvent(event);
         obtainVelocityTracker(event);
         int actionId = event.getAction();
         switch (actionId) {
@@ -1292,6 +1318,12 @@ public class ManyLyricsView extends AbstractLrcView {
         this.mOnLrcClickListener = onLrcClickListener;
     }
 
+    OnLyricViewTapListener onLyricViewTapListener;
+
+    public void setOnLyricViewTapListener(OnLyricViewTapListener onLyricViewTapListener){
+        this.onLyricViewTapListener = onLyricViewTapListener;
+    }
+
 
     /**
      * 歌词事件
@@ -1303,6 +1335,12 @@ public class ManyLyricsView extends AbstractLrcView {
          * @param progress
          */
         void onLrcPlayClicked(int progress);
+    }
+
+    public interface OnLyricViewTapListener{
+        void onDoubleTap();
+
+        void onSigleTap();
     }
 
 }

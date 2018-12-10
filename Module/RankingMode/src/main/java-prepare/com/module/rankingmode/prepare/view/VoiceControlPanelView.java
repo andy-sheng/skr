@@ -4,9 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -106,10 +103,12 @@ public class VoiceControlPanelView extends ScrollView {
                     .setEnableVideo(false)
                     .build());
             EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-            EngineManager.getInstance().startAudioMixing("/assets/test.mp3", true, false, -1);
+
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
+
+        EngineManager.getInstance().startAudioMixing("/assets/test.mp3", true, false, -1);
         mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
         mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getAudioMixingVolume());
     }

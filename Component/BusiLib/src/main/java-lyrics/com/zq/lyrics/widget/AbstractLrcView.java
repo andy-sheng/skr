@@ -15,6 +15,7 @@ import android.os.Process;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
@@ -950,6 +951,7 @@ public abstract class AbstractLrcView extends View {
      * 唤醒
      */
     public void resume() {
+        MyLog.d("lycview", "resume " + mLrcPlayerStatus);
         synchronized (lock) {
             mLrcPlayerStatus = LRCPLAYERSTATUS_PLAY;
             mPlayerStartTime = System.currentTimeMillis();
