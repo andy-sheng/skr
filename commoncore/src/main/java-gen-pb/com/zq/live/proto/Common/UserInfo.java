@@ -20,7 +20,7 @@ import java.lang.StringBuilder;
 import okio.ByteString;
 
 /**
- * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+ * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
  * --proto_path=./pb --java_out=./commoncore/src/main/java-gen-pb/ Common.proto
  * 用户信息
  */

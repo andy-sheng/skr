@@ -20,7 +20,7 @@ import java.lang.StringBuilder;
 import okio.ByteString;
 
 /**
- * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+ * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
  * --proto_path=./pb --java_out=./Module/RankingMode/src/main/java-gen-pb/ Room.proto
  * 房间消息：此结构会通过pb编码后，通过聊天室通道到达客户端
  */
