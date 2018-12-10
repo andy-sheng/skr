@@ -159,9 +159,24 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
              */
             mRootView.setClickable(true);
         }
-        return mRootView;
+        View loadSirInjectView = loadSirReplaceRootView();
+        if (loadSirInjectView == null) {
+            return mRootView;
+        } else {
+            return loadSirInjectView;
+        }
     }
 
+    /**
+     * 只有LoadSir想要register mRootView 时才需要覆盖这个方法
+     *
+     * 其他的不需要
+     * @return
+     */
+    protected View loadSirReplaceRootView() {
+
+        return null;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

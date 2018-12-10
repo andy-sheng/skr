@@ -18,6 +18,10 @@ public class LoadSir {
     private static volatile LoadSir loadSir;
     private Builder builder;
 
+    /**
+     * 请使用{@link com.common.loadsir.LoadSirManager} 来操作
+     */
+    @Deprecated
     public static LoadSir getDefault() {
         if (loadSir == null) {
             synchronized (LoadSir.class) {

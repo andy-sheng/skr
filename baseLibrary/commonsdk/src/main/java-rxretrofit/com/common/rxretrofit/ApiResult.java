@@ -1,13 +1,18 @@
 package com.common.rxretrofit;
 
+import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-public class ApiResult {
+import java.io.Serializable;
+
+public class ApiResult implements Serializable {
 
     int errno;
     String errmsg;
     String traceId;
-    JSONObject data;
+    String data;
 
     public int getErrno() {
         return errno;
@@ -34,10 +39,14 @@ public class ApiResult {
     }
 
     public JSONObject getData() {
-        return data;
+        if (TextUtils.isEmpty(data)) {
+            return null;
+        }
+        JSONObject jsonObject = JSON.parseObject(data);
+        return jsonObject;
     }
 
-    public void setData(JSONObject data) {
+    public void setData(String data) {
         this.data = data;
     }
 }

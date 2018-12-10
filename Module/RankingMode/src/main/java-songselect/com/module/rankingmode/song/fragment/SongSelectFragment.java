@@ -8,8 +8,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.common.base.BaseFragment;
+import com.common.loadsir.LoadSirManager;
+import com.common.loadsir.callback.ErrorCallback;
+import com.common.loadsir.callback.LoadingCallback;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.rankingmode.R;
 import com.module.rankingmode.song.model.TagModel;
 import com.module.rankingmode.song.presenter.SongSelectPresenter;
@@ -27,6 +33,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagView {
     SongSelectPresenter songSelectPresenter;
     TagPagerAdapter adapter;
 
+    LoadService mLoadService;
+
     @Override
     public int initView() {
         return R.layout.song_select_fragment_layout;
@@ -41,8 +49,20 @@ public class SongSelectFragment extends BaseFragment implements ISongTagView {
         songSelectPresenter = new SongSelectPresenter(this);
         addPresent(songSelectPresenter);
 
+        mLoadService = LoadSirManager.getDefault().register(mMainActContainer, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                songSelectPresenter.getSongsListTags(1, 0, 100);
+            }
+        });
+        mLoadService.showCallback(LoadingCallback.class);
         // todo 仅做test
         songSelectPresenter.getSongsListTags(1, 0, 100);
+    }
+
+    @Override
+    protected View loadSirReplaceRootView() {
+        return mLoadService.getLoadLayout();
     }
 
     @Override
@@ -68,11 +88,13 @@ public class SongSelectFragment extends BaseFragment implements ISongTagView {
         adapter.setData(list);
         mSonglistViewPager.setAdapter(adapter);
         mSelectSongTabLayout.setViewPager(mSonglistViewPager);
+        mLoadService.showSuccess();
     }
 
     @Override
     public void loadSongsTagsFail() {
         // 加载失败
+        mLoadService.showCallback(ErrorCallback.class);
     }
 
     class TagPagerAdapter extends PagerAdapter {

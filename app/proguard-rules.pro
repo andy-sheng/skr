@@ -305,4 +305,8 @@ public static java.lang.String TABLENAME;
 -keep class com.changba.songstudio.Videostudio{*;}
 -keep class com.changba.songstudio.audioeffect.** {*;}
 
+#loadsir
+-dontwarn com.kingja.loadsir.**
+-keep class com.kingja.loadsir.** {*;}
+
 -ignorewarnings
