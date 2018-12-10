@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.common.view.titlebar.CommonTitleBar;
 import com.module.rankingmode.prepare.sence.AuditionSence;
 import com.module.rankingmode.prepare.sence.FastMatchSuccessSence;
 import com.module.rankingmode.prepare.sence.FastMatchingSence;
@@ -19,6 +20,10 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
 
     MatchSenceState currentMatchSenceState = MatchSenceState.empty;
 
+    CommonTitleBar commonTitleBar;
+
+    OnSenceStateChangeListener onStateChangeListener;
+
     public MatchSenceContainer(Context context) {
         this(context, null);
     }
@@ -29,12 +34,15 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
 
     public MatchSenceContainer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
 
+    public void setOnStateChangeListener(OnSenceStateChangeListener onStateChangeListener) {
+        this.onStateChangeListener = onStateChangeListener;
     }
 
     @Override
     public boolean interceptBackPressed() {
-        if(senceQueue.size() != 0){
+        if (senceQueue.size() != 0) {
             popSence();
             return true;
         }
@@ -49,17 +57,17 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
 
     @Override
     public void toAssignSence(MatchSenceState matchSenceState, Bundle bundle) {
-        if(senceQueue.size() != 0){
+        if (senceQueue.size() != 0) {
             ISence iSence = senceQueue.peek();
-            if(!iSence.isPrepareToNextSence()){
+            if (!iSence.isPrepareToNextSence()) {
                 MyLog.e("sense is not prepared");
                 return;
             }
 
             ISence preISence = senceQueue.peek();
-            if(preISence != null){
+            if (preISence != null) {
                 preISence.toHide(this);
-                if(preISence.removeWhenPush()){
+                if (preISence.removeWhenPush()) {
                     senceQueue.pop();
                     preISence.toRemoveFromStack(this);
                 }
@@ -68,7 +76,7 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
 
         ISence iSence = createSence(matchSenceState, getContext(), this);
         iSence.toShow(this, bundle);
-        currentMatchSenceState = matchSenceState;
+        updateMatchSenceState(iSence);
         senceQueue.push(iSence);
     }
 
@@ -79,24 +87,52 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
 
     @Override
     public void popSence() {
-        if(senceQueue.size() > 0){
+        if (senceQueue.size() > 0) {
             ISence iSence = senceQueue.pop();
             iSence.toRemoveFromStack(this);
 
-            if(senceQueue.size() > 0){
+            if (senceQueue.size() > 0) {
                 ISence preISence = senceQueue.peek();
-                if(preISence != null){
+                if (preISence != null) {
                     preISence.onResumeSence(this);
+                    updateMatchSenceState(preISence);
                 }
+            } else {
+                updateMatchSenceState(null);
             }
         }
     }
 
-    public MatchSenceState getCurrentMatchState(){
+    private void updateMatchSenceState(ISence currentSence) {
+        if (currentSence == null) {
+            currentMatchSenceState = MatchSenceState.empty;
+        } else if (currentSence instanceof PrepareSongResSence) {
+            currentMatchSenceState = MatchSenceState.PrepareSongRes;
+        } else if (currentSence instanceof AuditionSence) {
+            currentMatchSenceState = MatchSenceState.Audition;
+        } else if (currentSence instanceof FastMatchingSence) {
+            currentMatchSenceState = MatchSenceState.Matching;
+        } else if (currentSence instanceof FastMatchSuccessSence) {
+            currentMatchSenceState = MatchSenceState.MatchingSucess;
+        }
+
+        onStateChangeListener.onChange(currentMatchSenceState);
+    }
+
+    @Override
+    public void setCommonTitleBar(CommonTitleBar commonTitleBar) {
+        this.commonTitleBar = commonTitleBar;
+    }
+
+    public MatchSenceState getCurrentMatchState() {
         return currentMatchSenceState;
     }
 
-    public enum MatchSenceState{
+    public interface OnSenceStateChangeListener {
+        void onChange(MatchSenceState matchSenceState);
+    }
+
+    public enum MatchSenceState {
         empty(0), PrepareSongRes(1), Audition(2), Matching(3), MatchingSucess(4);
 
         private int value;
@@ -110,9 +146,9 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
         }
     }
 
-    public static ISence createSence(MatchSenceState matchSenceState, Context context, MatchSenceController matchSenceController){
+    public static ISence createSence(MatchSenceState matchSenceState, Context context, MatchSenceController matchSenceController) {
         ISence iSence = null;
-        switch (matchSenceState){
+        switch (matchSenceState) {
             case empty:
                 break;
             case PrepareSongRes:
@@ -129,7 +165,7 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
                 break;
         }
 
-        if(iSence != null){
+        if (iSence != null) {
             iSence.setSenceController(matchSenceController);
         }
 

@@ -2,6 +2,7 @@ package com.module.rankingmode.prepare.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
+import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -52,10 +54,6 @@ public class MatchingFragment extends BaseFragment {
     ExTextView mToneTuningTv;   //试音调音
     ExTextView mMatchStatusTv;
 
-    ExTextView mPredictTimeTv;  //预计等待时间
-    ExTextView mWaitTimeTv;     //已经等待时间
-    ExTextView mPrepareTipsTv;  //准备提示信息
-
     VoiceLineView mVoiceLineView;
 
     MatchPresenter matchPresenter;
@@ -64,6 +62,8 @@ public class MatchingFragment extends BaseFragment {
     String songTime;
 
     HandlerTaskTimer mHandlerTaskTimer;
+
+    Handler mHandler = new Handler();
 
     @Override
     public int initView() {
@@ -80,11 +80,6 @@ public class MatchingFragment extends BaseFragment {
         mToneTuningTv = (ExTextView) mRootView.findViewById(R.id.tone_tuning_tv);
         mMatchStatusTv = (ExTextView) mRootView.findViewById(R.id.match_status_tv);
 
-        mPredictTimeTv = (ExTextView) mRootView.findViewById(R.id.predict_time_tv);
-        mWaitTimeTv = (ExTextView) mRootView.findViewById(R.id.wait_time_tv);
-
-        mPrepareTipsTv = (ExTextView) mRootView.findViewById(R.id.prepare_tips_tv);
-
         mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voice_line_view);
         mMatchStatusTv.setTag(MatchStatusChangeEvent.MATCH_STATUS_START);
 
@@ -96,6 +91,9 @@ public class MatchingFragment extends BaseFragment {
             songTime = bundle.getString(KEY_SONG_TIME);
         }
 
+        mMatchContent.setOnStateChangeListener(onSenceStateChangeListener);
+        mMatchContent.setCommonTitleBar(mTitleBar);
+
         mMatchContent.toNextSence(null);
 
         RxView.clicks(mMatchStatusTv)
@@ -103,20 +101,14 @@ public class MatchingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-//                        switch ((int) mMatchStatusTv.getTag()) {
-//                            case MatchStatusChangeEvent.MATCH_STATUS_START:
-//                                matchPresenter.startMatch();
-//                                break;
-//                            case MatchStatusChangeEvent.MATCH_STATUS_MATCHING:
-//                                matchPresenter.cancelMatch();
-//                                break;
-//                            case MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS:
-//                                break;
-//                            default:
-//                                break;
-//                        }
+                        if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.PrepareSongRes) {
+                            mMatchContent.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
 
-                        mMatchContent.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
+                        } else if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.Matching) {
+                            mMatchContent.popSence();
+                        } else if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.MatchingSucess){
+                            //这里就是开始准备了
+                        }
                     }
                 });
 
@@ -140,7 +132,41 @@ public class MatchingFragment extends BaseFragment {
                 });
 
         initMediaEngine();
+
+        mMatchStatusTv.setText("加载歌曲中");
+        mToneTuningTv.setText("加载歌曲中");
+        mMatchStatusTv.setEnabled(false);
+        mToneTuningTv.setEnabled(false);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMatchStatusTv.setText("开始匹配");
+                mToneTuningTv.setText("试唱调音");
+                mMatchStatusTv.setEnabled(true);
+                mToneTuningTv.setEnabled(true);
+            }
+        }, 3000);
     }
+
+    private MatchSenceContainer.OnSenceStateChangeListener onSenceStateChangeListener = new MatchSenceContainer.OnSenceStateChangeListener() {
+        @Override
+        public void onChange(MatchSenceContainer.MatchSenceState matchSenceState) {
+            MyLog.d(TAG, "matchSenceState " + matchSenceState);
+            if (matchSenceState == MatchSenceContainer.MatchSenceState.PrepareSongRes) {
+                mMatchStatusTv.setText("开始匹配");
+                mToneTuningTv.setVisibility(View.VISIBLE);
+                mMatchStatusTv.setVisibility(View.VISIBLE);
+            } else if (matchSenceState == MatchSenceContainer.MatchSenceState.Audition) {
+                mMatchStatusTv.setVisibility(View.GONE);
+            } else if (matchSenceState == MatchSenceContainer.MatchSenceState.Matching) {
+                mToneTuningTv.setVisibility(View.GONE);
+                mMatchStatusTv.setText("取消匹配");
+            } else if (matchSenceState == MatchSenceContainer.MatchSenceState.MatchingSucess) {
+                mToneTuningTv.setVisibility(View.GONE);
+                mMatchStatusTv.setText("准备");
+            }
+        }
+    };
 
     // todo 后面会用我们自己的去采集声音拿到音高
     private void initMediaEngine() {
@@ -198,9 +224,6 @@ public class MatchingFragment extends BaseFragment {
     private void setMatchStatus(int matchStatus) {
         mToneTuningTv.setVisibility(matchStatus == MatchStatusChangeEvent.MATCH_STATUS_START ? View.VISIBLE : View.GONE);
         mVoiceLineView.setVisibility(matchStatus == MatchStatusChangeEvent.MATCH_STATUS_START ? View.VISIBLE : View.GONE);
-        mWaitTimeTv.setVisibility(matchStatus == MatchStatusChangeEvent.MATCH_STATUS_MATCHING ? View.VISIBLE : View.GONE);
-        mPredictTimeTv.setVisibility(matchStatus == MatchStatusChangeEvent.MATCH_STATUS_MATCHING ? View.VISIBLE : View.GONE);
-        mPrepareTipsTv.setVisibility(matchStatus == MatchStatusChangeEvent.MATCH_STATUS_MATCH_SUCESS ? View.VISIBLE : View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -62,9 +62,7 @@ public class AuditionSence extends RelativeLayout implements ISence {
             mManyLyricsView.initLrcData();
             mManyLyricsView.setLyricsReader(lyricsReader);
             if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != AbstractLrcView.LRCPLAYERSTATUS_PLAY){
-
                 mManyLyricsView.play(0);
-                mManyLyricsView.seekto(30000);
             }
         }
     }

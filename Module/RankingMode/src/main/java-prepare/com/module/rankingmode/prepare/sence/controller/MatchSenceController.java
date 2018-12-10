@@ -2,6 +2,8 @@ package com.module.rankingmode.prepare.sence.controller;
 
 import android.os.Bundle;
 
+import com.common.view.titlebar.CommonTitleBar;
+
 public interface MatchSenceController {
     void toNextSence(Bundle bundle);
 
@@ -12,4 +14,6 @@ public interface MatchSenceController {
     boolean interceptBackPressed();
 
     int getSenceSize();
+
+    void setCommonTitleBar(CommonTitleBar commonTitleBar);
 }

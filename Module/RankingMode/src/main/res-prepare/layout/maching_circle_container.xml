@@ -7,6 +7,7 @@
     android:layout_height="wrap_content">
 
     <com.module.rankingmode.prepare.view.MatchingLayerView
+        android:id="@+id/large_matching_layer_view"
         app:midLine_Color="@color/black_trans_75"
         app:one_circle_time="18000"
         app:around_orientation="true"
@@ -20,6 +21,7 @@
         android:layout_height="@dimen/view_320_dp"/>
 
     <com.module.rankingmode.prepare.view.MatchingLayerView
+        android:id="@+id/small_matching_layer_view"
         app:midLine_Color="@color/black_trans_75"
         app:one_circle_time="10000"
         app:around_orientation="false"

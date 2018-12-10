@@ -51,6 +51,8 @@ public class MatchingLayerView extends Layer {
 
     int[] rotateLocationList;
 
+    ObjectAnimator anim;
+
     public MatchingLayerView(Context context) {
         this(context, null);
     }
@@ -64,36 +66,36 @@ public class MatchingLayerView extends Layer {
 
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.MatchingLayerView);
 
-        if(attributes.hasValue(R.styleable.MatchingLayerView_midLine_Color)){
+        if (attributes.hasValue(R.styleable.MatchingLayerView_midLine_Color)) {
             midLineColor = attributes.getColor(R.styleable.MatchingLayerView_midLine_Color, 0);
         }
 
-        if(attributes.hasValue(R.styleable.MatchingLayerView_one_circle_time)){
+        if (attributes.hasValue(R.styleable.MatchingLayerView_one_circle_time)) {
             oneCircleTiem = attributes.getInteger(R.styleable.MatchingLayerView_one_circle_time, 10000);
         }
 
-        if(attributes.hasValue(R.styleable.MatchingLayerView_around_orientation)){
+        if (attributes.hasValue(R.styleable.MatchingLayerView_around_orientation)) {
             aroundOrientation = attributes.getBoolean(R.styleable.MatchingLayerView_around_orientation, true);
         }
 
-        if(attributes.hasValue(R.styleable.MatchingLayerView_rotation_degree)){
+        if (attributes.hasValue(R.styleable.MatchingLayerView_rotation_degree)) {
             rotationDegree = attributes.getInteger(R.styleable.MatchingLayerView_rotation_degree, 0);
         }
 
-        if(attributes.hasValue(R.styleable.MatchingLayerView_random_interval)){
+        if (attributes.hasValue(R.styleable.MatchingLayerView_random_interval)) {
             randomInterval = attributes.getInteger(R.styleable.MatchingLayerView_random_interval, 0);
         }
 
-        if(attributes.hasValue(R.styleable.MatchingLayerView_midLine_width)){
+        if (attributes.hasValue(R.styleable.MatchingLayerView_midLine_width)) {
             midLineWidth = 2;
         }
 
-        if(attributes.hasValue(R.styleable.MatchingLayerView_user_icon_width)){
+        if (attributes.hasValue(R.styleable.MatchingLayerView_user_icon_width)) {
             float ssss = attributes.getDimension(R.styleable.MatchingLayerView_user_icon_width, 0);
             iconWidth = (int) ssss;
         }
 
-        if(attributes.hasValue(R.styleable.MatchingLayerView_icon_count)){
+        if (attributes.hasValue(R.styleable.MatchingLayerView_icon_count)) {
             iconCount = attributes.getInteger(R.styleable.MatchingLayerView_icon_count, 4);
         }
 
@@ -149,7 +151,9 @@ public class MatchingLayerView extends Layer {
     }
 
     public void startCircleAnimation() {
-        ObjectAnimator anim = ObjectAnimator.ofFloat(this, "rotation", 0f, aroundOrientation ? 360f : -360f);
+        cancelAnim();
+
+        anim = ObjectAnimator.ofFloat(this, "rotation", 0f, aroundOrientation ? 360f : -360f);
 
         // 动画的持续时间，执行多久？
         anim.setDuration(oneCircleTiem);
@@ -175,7 +179,7 @@ public class MatchingLayerView extends Layer {
         MatchingUserIconView matchingUserIconView = new MatchingUserIconView(getContext());
         matchingUserIconView.setUserInfo(userInfo);
         //这里传的角度是加上偏移量和一个随机的角度
-        matchingUserIconView.setIconLocation(rotateLocationList[index] + randomRotation + rotationDegree, circleLineRadio , layerViewWidth / 2);
+        matchingUserIconView.setIconLocation(rotateLocationList[index] + randomRotation + rotationDegree, circleLineRadio, layerViewWidth / 2);
         addSprite(matchingUserIconView);
         matchingUserIconViewArrayList.add(matchingUserIconView);
     }
@@ -217,5 +221,15 @@ public class MatchingLayerView extends Layer {
      */
     public void toCenter() {
 
+    }
+
+    private void cancelAnim() {
+        if (anim != null) {
+            anim.cancel();
+        }
+    }
+
+    public void release() {
+        cancelAnim();
     }
 }
