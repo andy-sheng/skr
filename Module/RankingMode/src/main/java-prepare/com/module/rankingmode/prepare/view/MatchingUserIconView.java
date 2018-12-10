@@ -20,7 +20,7 @@ public class MatchingUserIconView extends Sprite {
     //这个位置是addView的时候用的位置
     int[] viewLocation;
 
-    int[] centerLocation;
+    int[] size;
 
     public MatchingUserIconView(Context context) {
         this(context, null);
@@ -40,8 +40,10 @@ public class MatchingUserIconView extends Sprite {
         mIvUserIcon = findViewById(R.id.iv_user_icon);
     }
 
-    public void setIconLocation(int rotation, int radio){
-        viewLocation = getAreaInCircle(rotation, radio, radio + getSize()[0]);
+    public void setIconLocation(int rotation, int radio, int layerRadio){
+        size = new int[]{(layerRadio - radio) * 2, (layerRadio - radio) * 2};
+        viewLocation = getAreaInCircle(rotation, radio, layerRadio);
+        viewLocation = new int[]{viewLocation[0] - size[0] / 2, viewLocation[1] - size[1] / 2};
     }
 
     private int[] getAreaInCircle(int rotation, int radio, int layerRadio){
@@ -49,20 +51,20 @@ public class MatchingUserIconView extends Sprite {
         rotation = rotation % 360;
 
         if(0 <= rotation && rotation < 90){
-            location[0] = layerRadio - (int) (Math.cos(rotation) * radio);
-            location[1] = layerRadio - (int) (Math.sin(rotation) * radio);
+            location[0] = layerRadio - (int) (Math.cos(Math.toRadians(rotation)) * radio);
+            location[1] = layerRadio - (int) (Math.sin(Math.toRadians(rotation)) * radio);
         }else if(90 <= rotation && rotation < 180){
             rotation = rotation - 90;
-            location[0] = layerRadio + (int) (Math.sin(rotation) * radio);
-            location[1] = layerRadio - (int) (Math.cos(rotation) * radio);
+            location[0] = layerRadio + (int) (Math.sin(Math.toRadians(rotation)) * radio);
+            location[1] = layerRadio - (int) (Math.cos(Math.toRadians(rotation)) * radio);
         }else if(180 <= rotation && rotation < 270){
             rotation = rotation - 180;
-            location[0] = layerRadio + (int) (Math.cos(rotation) * radio);
-            location[1] = layerRadio + (int) (Math.sin(rotation) * radio);
+            location[0] = layerRadio + (int) (Math.cos(Math.toRadians(rotation)) * radio);
+            location[1] = layerRadio + (int) (Math.sin(Math.toRadians(rotation)) * radio);
         }else if(270 <= rotation && rotation < 360){
             rotation = rotation - 270;
-            location[0] = layerRadio - (int) (Math.sin(rotation) * radio);
-            location[1] = layerRadio + (int) (Math.cos(rotation) * radio);
+            location[0] = layerRadio - (int) (Math.sin(Math.toRadians(rotation)) * radio);
+            location[1] = layerRadio + (int) (Math.cos(Math.toRadians(rotation)) * radio);
         }
 
         return location;
@@ -133,6 +135,6 @@ public class MatchingUserIconView extends Sprite {
      */
     @Override
     public int[] getSize() {
-        return new int[]{90, 90};
+        return size;
     }
 }

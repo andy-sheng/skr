@@ -434,7 +434,9 @@ public abstract class AbstractLrcView extends View {
         mPaintHL = new Paint();
         mPaintHL.setDither(true);
         mPaintHL.setAntiAlias(true);
-        mPaintHL.setTextSize(mFontSize);
+        float hlSize = U.getDisplayUtils().dip2px(typedArray.getDimension(R.styleable.lrc_view_ly_high_light_paint_text_size, 10));
+        mPaintHL.setFakeBoldText(true);
+        mPaintHL.setTextSize(hlSize);
 
         //轮廓画笔
         mPaintOutline = new Paint();

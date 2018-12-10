@@ -336,7 +336,7 @@ public class ManyLyricsView extends AbstractLrcView {
                     .get(i);
             //获取分割后的歌词列表
             List<LyricsLineInfo> lyricsLineInfos = upLyricsLineInfo.getSplitLyricsLineInfos();
-            lineTopY = drawUpExtraLyrics(canvas, extraLrcPaint, lyricsLineInfos, i, extraLrcSpaceLineHeight, lineTopY);
+            lineTopY = drawUpExtraLyrics(canvas, paint, lyricsLineInfos, i, extraLrcSpaceLineHeight, lineTopY);
         }
 
         //绘画时间、播放按钮等
@@ -404,19 +404,25 @@ public class ManyLyricsView extends AbstractLrcView {
             paint.setAlpha(alpha);
             paintHL.setAlpha(alpha);
 
-            float textWidth = LyricsUtils.getTextWidth(paint, text);
-            float textX = (getWidth() - textWidth) * 0.5f;
+//            float textWidth = LyricsUtils.getTextWidth(paint, text);
+//            float textX = (getWidth() - textWidth) * 0.5f;
             //
             if (i < curLyricsLineNum) {
+                float textWidth = LyricsUtils.getTextWidth(paint, text);
+                float textX = (getWidth() - textWidth) * 0.5f;
                 LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineBottomY);
                 LyricsUtils.drawText(canvas, paintHL, paintHLColors, text, textX, lineBottomY);
 
             } else if (i == curLyricsLineNum) {
+                float textWidth = LyricsUtils.getTextWidth(paintHL, text);
+                float textX = (getWidth() - textWidth) * 0.5f;
                 //绘画动感歌词
-                float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paint, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
+                float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
                 LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColors, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY);
 
             } else if (i > curLyricsLineNum) {
+                float textWidth = LyricsUtils.getTextWidth(paint, text);
+                float textX = (getWidth() - textWidth) * 0.5f;
                 LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineBottomY);
             }
 

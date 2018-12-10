@@ -35,9 +35,9 @@ public class MatchingLayerView extends Layer {
 
     int randomInterval = 0;
 
-    float iconWidth = U.getDisplayUtils().dip2px(30);
+    int iconWidth = U.getDisplayUtils().dip2px(30);
 
-    float midLineWidth = U.getDisplayUtils().dip2px(2);
+    int midLineWidth = U.getDisplayUtils().dip2px(2);
 
     int iconCount = 4;
 
@@ -85,11 +85,12 @@ public class MatchingLayerView extends Layer {
         }
 
         if(attributes.hasValue(R.styleable.MatchingLayerView_midLine_width)){
-            midLineWidth = attributes.getDimension(R.styleable.MatchingLayerView_midLine_width, 0);
+            midLineWidth = 2;
         }
 
         if(attributes.hasValue(R.styleable.MatchingLayerView_user_icon_width)){
-            iconWidth = attributes.getDimension(R.styleable.MatchingLayerView_user_icon_width, 0);
+            float ssss = attributes.getDimension(R.styleable.MatchingLayerView_user_icon_width, 0);
+            iconWidth = (int) ssss;
         }
 
         if(attributes.hasValue(R.styleable.MatchingLayerView_icon_count)){
@@ -114,7 +115,7 @@ public class MatchingLayerView extends Layer {
                     public boolean onPreDraw() {
                         getViewTreeObserver().removeOnPreDrawListener(this);
                         layerViewWidth = getWidth(); // 获取宽度
-                        circleLineRadio = layerViewWidth / 2 - U.getDisplayUtils().dip2px(iconWidth) / 2;
+                        circleLineRadio = layerViewWidth / 2 - iconWidth / 2;
                         for (int i = 0; i < iconCount; i++) {
                             addMatchingUserIcon(null, i);
                         }
@@ -170,16 +171,11 @@ public class MatchingLayerView extends Layer {
     }
 
     public void addMatchingUserIcon(UserInfo userInfo, int index) {
-
         int randomRotation = (int) ((Math.random()) * randomInterval);
         MatchingUserIconView matchingUserIconView = new MatchingUserIconView(getContext());
         matchingUserIconView.setUserInfo(userInfo);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(iconWidth), U.getDisplayUtils().dip2px(iconWidth));
         //这里传的角度是加上偏移量和一个随机的角度
-        matchingUserIconView.setIconLocation(rotateLocationList[index] + randomRotation + rotationDegree, circleLineRadio);
-        layoutParams.setMargins(matchingUserIconView.getIconLocation()[0] - U.getDisplayUtils().dip2px(iconWidth) /2
-                , matchingUserIconView.getIconLocation()[1] - U.getDisplayUtils().dip2px(iconWidth)/2, 0, 0);
-        matchingUserIconView.setLayoutParams(layoutParams);
+        matchingUserIconView.setIconLocation(rotateLocationList[index] + randomRotation + rotationDegree, circleLineRadio , layerViewWidth / 2);
         addSprite(matchingUserIconView);
         matchingUserIconViewArrayList.add(matchingUserIconView);
     }

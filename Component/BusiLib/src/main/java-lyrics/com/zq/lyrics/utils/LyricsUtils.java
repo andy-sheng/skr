@@ -430,7 +430,9 @@ public class LyricsUtils {
      */
     public static void drawDynamicText(Canvas canvas, Paint paint, Paint paintHL, int[] paintColor, int[] paintHLColor, String text, float hlWidth, float x, float y) {
         canvas.save();
-
+        float originalTextSize = paint.getTextSize();
+        paint.setFakeBoldText(true);
+        paint.setTextSize(paintHL.getTextSize());
         //设置为上下渐变
         LinearGradient linearGradient = new LinearGradient(x, y - getTextHeight(paint), x, y, paintColor, null, Shader.TileMode.CLAMP);
         paint.setShader(linearGradient);
@@ -438,6 +440,8 @@ public class LyricsUtils {
         //设置动感歌词过渡效果
         canvas.clipRect(x, y - getRealTextHeight(paint), x + hlWidth,
                 y + getRealTextHeight(paint));
+        paint.setTextSize(originalTextSize);
+        paint.setFakeBoldText(false);
 
         //设置为上下渐变
         LinearGradient linearGradientHL = new LinearGradient(x, y - getTextHeight(paint), x, y, paintHLColor, null, Shader.TileMode.CLAMP);

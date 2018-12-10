@@ -17,6 +17,7 @@
         <attr name="ly_paint_color_from" />
         <attr name="ly_paint_color_to" />
         <attr name="ly_paint_text_size" />
+        <attr name="ly_paint_dynamic_text_size" />
         <attr name="ly_outline_paint_color" />
         <attr name="ly_eable_verbatim" />
     </declare-styleable>
