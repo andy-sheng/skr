@@ -17,7 +17,6 @@ import java.util.List;
 public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
 
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
-    List<SongModel> dataList;
 
     public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener) {
         mRecyclerOnItemClickListener = onItemClickListener;
@@ -36,23 +35,18 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof SongInfoHolder) {
             SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
-            SongModel songModel = dataList.get(position);
+            SongModel songModel = mDataList.get(position);
             songInfoHolder.bind(position,songModel);
         }
     }
 
 
-    public void setDataList(List<SongModel> dataList) {
-        this.dataList = dataList;
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemCount() {
-        if (dataList == null) {
+        if (mDataList == null) {
             return 0;
         }
-        return dataList.size();
+        return mDataList.size();
     }
 
 }

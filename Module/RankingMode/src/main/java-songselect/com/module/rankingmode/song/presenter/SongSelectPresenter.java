@@ -1,5 +1,6 @@
 package com.module.rankingmode.song.presenter;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
@@ -37,15 +38,7 @@ public class SongSelectPresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    List<TagModel> list = new ArrayList<>();
-                    JSONArray jsonArray = (JSONArray) result.getData().get("tags");
-                    for (int i = 0; i < jsonArray.size(); i++) {
-                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                        String tagId = jsonObject.getString("tagID");
-                        String name = jsonObject.getString("name");
-                        TagModel tagModel = new TagModel(tagId, name);
-                        list.add(tagModel);
-                    }
+                    List<TagModel> list = JSON.parseArray(result.getData().getString("tags"), TagModel.class);
                     if (view != null) {
                         view.loadSongsTags(list);
                     }

@@ -104,7 +104,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagView {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return listData.get(position).getName();
+            return listData.get(position).getTagName();
         }
 
         public void setData(List<TagModel> listData) {

@@ -1,36 +1,40 @@
 package com.module.rankingmode.song.model;
 
 public class SongModel {
-    String mediaID;
-    String coverUrl;
-    String songName;
+    String itemID;
+    String itemName;
+    String cover;
     String owner;
-    String lyricUrl;
-    String mediaUrl;
+    String lyric;
+    String ori;
+    String acc;
+    String midi;
+    long totalMs;
+    long beginMs;
+    long endMs;
 
-    public SongModel(String mediaID, String coverUrl, String songName, String owner, String lyricUrl, String mediaUrl) {
-        this.mediaID = mediaID;
-        this.coverUrl = coverUrl;
-        this.songName = songName;
-        this.owner = owner;
-        this.lyricUrl = lyricUrl;
-        this.mediaUrl = mediaUrl;
+    public String getItemID() {
+        return itemID;
     }
 
-    public String getMediaID() {
-        return mediaID;
+    public void setItemID(String itemID) {
+        this.itemID = itemID;
     }
 
-    public void setMediaID(String mediaID) {
-        this.mediaID = mediaID;
+    public String getItemName() {
+        return itemName;
     }
 
-    public String getCoverUrl() {
-        return coverUrl;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     public String getOwner() {
@@ -41,27 +45,59 @@ public class SongModel {
         this.owner = owner;
     }
 
-    public String getLyricUrl() {
-        return lyricUrl;
+    public String getLyric() {
+        return lyric;
     }
 
-    public void setLyricUrl(String lyricUrl) {
-        this.lyricUrl = lyricUrl;
+    public void setLyric(String lyric) {
+        this.lyric = lyric;
     }
 
-    public String getMediaUrl() {
-        return mediaUrl;
+    public String getOri() {
+        return ori;
     }
 
-    public void setMediaUrl(String mediaUrl) {
-        this.mediaUrl = mediaUrl;
+    public void setOri(String ori) {
+        this.ori = ori;
     }
 
-    public String getSongName() {
-        return songName;
+    public String getAcc() {
+        return acc;
     }
 
-    public void setSongName(String songName) {
-        this.songName = songName;
+    public void setAcc(String acc) {
+        this.acc = acc;
+    }
+
+    public String getMidi() {
+        return midi;
+    }
+
+    public void setMidi(String midi) {
+        this.midi = midi;
+    }
+
+    public long getTotalMs() {
+        return totalMs;
+    }
+
+    public void setTotalMs(long totalMs) {
+        this.totalMs = totalMs;
+    }
+
+    public long getBeginMs() {
+        return beginMs;
+    }
+
+    public void setBeginMs(long beginMs) {
+        this.beginMs = beginMs;
+    }
+
+    public long getEndMs() {
+        return endMs;
+    }
+
+    public void setEndMs(long endMs) {
+        this.endMs = endMs;
     }
 }

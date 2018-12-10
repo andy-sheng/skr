@@ -29,7 +29,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
 
     public void bind(int position, SongModel songModel) {
         mSongModel = songModel;
-        mSongNameTv.setText(mSongModel.getSongName());
+        mSongNameTv.setText(mSongModel.getItemName());
     }
 
     public void setListener(RecyclerOnItemClickListener recyclerOnItemClickListener) {

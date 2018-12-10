@@ -1,28 +1,24 @@
 package com.module.rankingmode.song.model;
 
 public class TagModel {
-    String tagId; //标签id
-    String name; //标签名称
+    String tagID; //标签id
+    String tagName; //标签名称
 
-    public TagModel(String tagId, String name){
-        this.tagId = tagId;
-        this.name = name;
+    public String getTagID() {
+        return tagID;
     }
 
-    public String getTagId() {
-        return tagId;
+    public void setTagID(String tagID) {
+        this.tagID = tagID;
     }
 
-    public void setTagId(String tagId) {
-        this.tagId = tagId;
+    public String getTagName() {
+        return tagName;
     }
 
-    public String getName() {
-        return name;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
 }
