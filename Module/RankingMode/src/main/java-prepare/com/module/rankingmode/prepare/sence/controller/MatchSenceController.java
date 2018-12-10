@@ -15,5 +15,7 @@ public interface MatchSenceController {
 
     int getSenceSize();
 
+    CommonTitleBar getCommonTitleBar();
+
     void setCommonTitleBar(CommonTitleBar commonTitleBar);
 }

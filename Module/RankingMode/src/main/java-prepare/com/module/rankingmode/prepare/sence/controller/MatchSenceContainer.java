@@ -120,6 +120,11 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
     }
 
     @Override
+    public CommonTitleBar getCommonTitleBar() {
+        return commonTitleBar;
+    }
+
+    @Override
     public void setCommonTitleBar(CommonTitleBar commonTitleBar) {
         this.commonTitleBar = commonTitleBar;
     }

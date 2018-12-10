@@ -1,5 +1,7 @@
 package com.zq.lyrics;
 
+import com.common.utils.U;
+
 import java.io.File;
 
 public class ResourceConstants {
@@ -17,7 +19,7 @@ public class ResourceConstants {
     /**
      * 临时目录
      */
-    public final static String PATH_TEMP = "haplayer";
+    public final static String PATH_TEMP = U.getAppInfoUtils().getMainDir().getAbsolutePath();
 
     /**
      * 全局异常日志目录

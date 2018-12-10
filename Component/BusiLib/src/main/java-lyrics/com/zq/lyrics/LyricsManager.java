@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.utils.LyricsIOUtils;
@@ -12,16 +13,22 @@ import com.zq.lyrics.utils.LyricsUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.Okio;
+
+import static okhttp3.internal.Util.closeQuietly;
 
 public class LyricsManager {
     public static final String TAG = "LyricsManager";
@@ -45,8 +52,49 @@ public class LyricsManager {
     public static LyricsManager getLyricsManager(Context context) {
         if (_LyricsManager == null) {
             _LyricsManager = new LyricsManager(context);
+            copyLrcFileInfo();
+
         }
         return _LyricsManager;
+    }
+
+    private static void copyLrcFileInfo(){
+        Observable.create(new ObservableOnSubscribe<Object>() {
+
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) {
+                BufferedSource bufferedSource = null;
+                BufferedSink sink = null;
+                try {
+                    String originalName = "shamoluotuo.zrce";
+
+                    File dirFile = new File(ResourceConstants.PATH_LYRICS);
+                    if(!dirFile.exists()){
+                        dirFile.mkdirs();
+                    }
+
+                    File file = new File(ResourceConstants.PATH_LYRICS + File.separator + originalName);
+
+                    if(!file.exists()){
+                        InputStream is = U.app().getAssets().open(originalName);
+                        bufferedSource = Okio.buffer(Okio.source(is));
+                        file.createNewFile();
+                        sink = Okio.buffer(Okio.sink(file));
+                        sink.writeAll(bufferedSource);
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    closeQuietly(bufferedSource);
+                    closeQuietly(sink);
+                    emitter.onComplete();
+                }
+            }
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     /**
@@ -63,49 +111,28 @@ public class LyricsManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) {
                 MyLog.d(TAG, "loadLyricsUtil 1");
-                if (mLyricsUtils.containsKey(hash)) {
-                    emitter.onNext(null);
-                }
-                MyLog.d(TAG, "loadLyricsUtil 2");
-                File lrcFile = LyricsUtils.getLrcFile(fileName, ResourceFileUtil.getFilePath(mContext, ResourceConstants.PATH_LYRICS, null));
-                MyLog.d(TAG, "loadLyricsUtil 3 " + lrcFile);
-                if (lrcFile != null) {
-                    LyricsReader lyricsUtil = new LyricsReader();
-                    try {
+                if (!mLyricsUtils.containsKey(hash)) {
+                    MyLog.d(TAG, "loadLyricsUtil 2");
+                    File lrcFile = LyricsUtils.getLrcFile(fileName, ResourceFileUtil.getFilePath(mContext, ResourceConstants.PATH_LYRICS, null));
+                    MyLog.d(TAG, "loadLyricsUtil 3 " + lrcFile);
+                    if (lrcFile != null) {
+                        LyricsReader lyricsUtil = new LyricsReader();
+                        try {
 
-                        lyricsUtil.loadLrc(lrcFile);
-                    } catch (Exception e) {
-                        Log.e("LyricsManager", "" + e.toString());
+                            lyricsUtil.loadLrc(lrcFile);
+                        } catch (Exception e) {
+                            Log.e("LyricsManager", "" + e.toString());
+                        }
+                        mLyricsUtils.put(hash, lyricsUtil);
                     }
-                    mLyricsUtils.put(hash, lyricsUtil);
                 }
+
+                EventBus.getDefault().post(new LrcEvent.FinishLoadLrcEvent(hash));
                 emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Object>() {
-
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        EventBus.getDefault().post(new LrcEvent.FinishLoadLrcEvent(hash));
-                    }
-                });
+                .subscribe();
 
 
         //1.从缓存中获取

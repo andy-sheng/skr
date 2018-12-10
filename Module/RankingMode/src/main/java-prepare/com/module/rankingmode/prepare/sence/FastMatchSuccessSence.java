@@ -64,6 +64,8 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence {
         //这里可能有动画啥的
         setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         parentViewGroup.addView(this);
+        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("已为你匹配到队伍");
+        matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配成功");
     }
 
     @Override
@@ -85,6 +87,8 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence {
 
     @Override
     public void onResumeSence(RelativeLayout parentViewGroup) {
+        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("已为你匹配到队伍");
+        matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配成功");
         setVisibility(VISIBLE);
     }
 

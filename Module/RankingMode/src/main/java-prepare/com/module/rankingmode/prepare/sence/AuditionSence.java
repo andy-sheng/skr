@@ -22,6 +22,7 @@ public class AuditionSence extends RelativeLayout implements ISence {
     MatchSenceController matchSenceController;
 
     ManyLyricsView mManyLyricsView;
+
     public AuditionSence(Context context) {
         this(context, null);
     }
@@ -48,10 +49,12 @@ public class AuditionSence extends RelativeLayout implements ISence {
 
         //从bundle里面拿音乐相关数据，然后开始试唱
         String fileName = "shamoluotuo";
-        LyricsManager.getLyricsManager(getContext()).loadLyricsUtil(fileName, "沙漠骆驼", "5000", fileName.hashCode() + "");
         if(!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
         }
+        LyricsManager.getLyricsManager(getContext()).loadLyricsUtil(fileName, "沙漠骆驼", "5000", fileName.hashCode() + "");
+
+        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("试唱调音");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -87,6 +90,7 @@ public class AuditionSence extends RelativeLayout implements ISence {
 
     @Override
     public void onResumeSence(RelativeLayout parentViewGroup) {
+        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("试唱调音");
         setVisibility(VISIBLE);
     }
 

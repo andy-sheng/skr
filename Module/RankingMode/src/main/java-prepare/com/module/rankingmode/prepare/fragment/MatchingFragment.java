@@ -3,6 +3,7 @@ package com.module.rankingmode.prepare.fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.view.VoiceControlPanelView;
 import com.module.rankingmode.prepare.view.VoiceLineView;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -125,6 +127,14 @@ public class MatchingFragment extends BaseFragment {
                                 .setContentHolder(new ViewHolder(view))
                                 .setGravity(Gravity.BOTTOM)
                                 .setCancelable(true)
+                                .setOnDismissListener(new OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(@NonNull DialogPlus dialog) {
+                                        if(mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.Audition){
+                                            mMatchContent.popSence();
+                                        }
+                                    }
+                                })
                                 .create().show();
                         mMatchContent.toNextSence(null);
 

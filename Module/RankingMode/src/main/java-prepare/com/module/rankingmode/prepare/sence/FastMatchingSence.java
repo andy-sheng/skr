@@ -69,6 +69,9 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
                 matchSenceController.toNextSence(null);
             }
         });
+
+        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("一大波skrer在来的路上...");
+        matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配中...");
     }
 
     @Override
@@ -94,6 +97,8 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
 
     @Override
     public void onResumeSence(RelativeLayout parentViewGroup) {
+        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("一大波skrer在来的路上...");
+        matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配中...");
         setVisibility(VISIBLE);
     }
 
