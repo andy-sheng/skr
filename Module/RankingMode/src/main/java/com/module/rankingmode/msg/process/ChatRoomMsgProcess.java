@@ -45,7 +45,7 @@ public class ChatRoomMsgProcess implements IPushMsgProcess {
                 return;
             }
 
-            ChatRoomMsgManager.getInstance().process(msg.getMsgType(), msg);
+            ChatRoomMsgManager.getInstance().processRoomMsg(msg);
         } catch (IOException e) {
             MyLog.e(e);
         }

@@ -3,6 +3,7 @@ package com.module.rankingmode.msg.process;
 import android.text.TextUtils;
 
 import com.common.log.MyLog;
+import com.module.rankingmode.msg.BasePushInfo;
 import com.module.rankingmode.msg.event.CommentMsgEvent;
 import com.module.rankingmode.msg.event.DynamicEmojiMsgEvent;
 import com.module.rankingmode.msg.event.SpecialEmojiMsgEvent;
@@ -14,18 +15,20 @@ import com.zq.live.proto.Room.SpecialEmojiMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess{
+public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess {
 
     public final static String TAG = "ChatRoomChatMsgProcess";
 
     @Override
     public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
-        if(messageType == ERoomMsgType.RM_COMMENT){
-            processRMComment(msg.getCommentMsg());
-        }else if (messageType == ERoomMsgType.RM_SPECIAL_EMOJI){
-            processRMSpecialEmoji(msg.getSpecialEmojiMsg());
-        }else if (messageType == ERoomMsgType.RM_DYNAMIC_EMOJI){
-            processRMDynamicEmoji(msg.getDynamicemojiMsg());
+        BasePushInfo info = BasePushInfo.parse(msg);
+
+        if (messageType == ERoomMsgType.RM_COMMENT) {
+            processRMComment(info, msg.getCommentMsg());
+        } else if (messageType == ERoomMsgType.RM_SPECIAL_EMOJI) {
+            processRMSpecialEmoji(info, msg.getSpecialEmojiMsg());
+        } else if (messageType == ERoomMsgType.RM_DYNAMIC_EMOJI) {
+            processRMDynamicEmoji(info, msg.getDynamicemojiMsg());
         }
     }
 
@@ -39,7 +42,7 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess{
     }
 
     // 评论消息
-    public void processRMComment(CommentMsg commentMsg) {
+    public void processRMComment(BasePushInfo info, CommentMsg commentMsg) {
         if (commentMsg == null) {
             MyLog.e(TAG, "processRMComment" + " commentMsg == null");
             return;
@@ -47,29 +50,29 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess{
 
         String text = commentMsg.getText();
         if (!TextUtils.isEmpty(text)) {
-            EventBus.getDefault().post(new CommentMsgEvent(CommentMsgEvent.MSG_TYPE_RECE, text));
+            EventBus.getDefault().post(new CommentMsgEvent(info, CommentMsgEvent.MSG_TYPE_RECE, text));
         }
     }
 
     // 特殊表情消息
-    public void processRMSpecialEmoji(SpecialEmojiMsg specialEmojiMsg) {
+    public void processRMSpecialEmoji(BasePushInfo info, SpecialEmojiMsg specialEmojiMsg) {
         if (specialEmojiMsg == null) {
             MyLog.e(TAG, "processRMSpecialEmoji" + " specialEmojiMsg == null");
             return;
         }
 
         int emojiId = specialEmojiMsg.getId();
-        EventBus.getDefault().post(new SpecialEmojiMsgEvent(SpecialEmojiMsgEvent.MSG_TYPE_RECE, emojiId));
+        EventBus.getDefault().post(new SpecialEmojiMsgEvent(info, SpecialEmojiMsgEvent.MSG_TYPE_RECE, emojiId));
     }
 
     // 动态表情消息
-    public void processRMDynamicEmoji(DynamicEmojiMsg dynamicEmojiMsg) {
+    public void processRMDynamicEmoji(BasePushInfo info, DynamicEmojiMsg dynamicEmojiMsg) {
         if (dynamicEmojiMsg == null) {
             MyLog.e(TAG, "processRMDynamicEmoji" + " dynamicEmojiMsg == null");
             return;
         }
 
         int emojiId = dynamicEmojiMsg.getId();
-        EventBus.getDefault().post(new DynamicEmojiMsgEvent(DynamicEmojiMsgEvent.MSG_TYPE_RECE, emojiId));
+        EventBus.getDefault().post(new DynamicEmojiMsgEvent(info, DynamicEmojiMsgEvent.MSG_TYPE_RECE, emojiId));
     }
 }

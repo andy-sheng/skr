@@ -1,5 +1,7 @@
 package com.module.rankingmode.msg.event;
 
+import com.module.rankingmode.msg.BasePushInfo;
+
 public class CommentMsgEvent {
 
     public final static int MSG_TYPE_SEND = 0;
@@ -7,9 +9,10 @@ public class CommentMsgEvent {
 
     int type = MSG_TYPE_RECE;
     String text;
+    BasePushInfo info;
 
-
-    public CommentMsgEvent(int type, String text){
+    public CommentMsgEvent(BasePushInfo info, int type, String text) {
+        this.info = info;
         this.type = type;
         this.text = text;
     }

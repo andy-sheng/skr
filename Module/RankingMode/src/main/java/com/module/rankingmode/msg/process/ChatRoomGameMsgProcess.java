@@ -1,6 +1,7 @@
 package com.module.rankingmode.msg.process;
 
 import com.common.log.MyLog;
+import com.module.rankingmode.msg.BasePushInfo;
 import com.module.rankingmode.msg.event.AppSwapEvent;
 import com.module.rankingmode.msg.event.JoinActionEvent;
 import com.module.rankingmode.msg.event.JoinNoticeEvent;
@@ -10,6 +11,7 @@ import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.msg.event.RoomInOutEvent;
 import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
+import com.module.rankingmode.msg.event.SyncStatusEvent;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
@@ -34,26 +36,28 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     @Override
     public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
 
+        BasePushInfo basePushInfo = BasePushInfo.parse(msg);
+
         if (msg.getMsgType() == ERoomMsgType.RM_JOIN_ACTION) {
-            processJoinActionMsg(msg.getJoinActionMsg());
+            processJoinActionMsg(basePushInfo, msg.getJoinActionMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_JOIN_NOTICE) {
-            processJoinNoticeMsg(msg.getJoinNoticeMsg());
+            processJoinNoticeMsg(basePushInfo, msg.getJoinNoticeMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_READY_NOTICE) {
-            processReadyNoticeMsg(msg.getReadyNoticeMsg());
+            processReadyNoticeMsg(basePushInfo, msg.getReadyNoticeMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_READY_AND_START_NOTICE) {
-            processReadyAndStartNoticeMsg(msg.getReadyAndStartNoticeMsg());
+            processReadyAndStartNoticeMsg(basePushInfo, msg.getReadyAndStartNoticeMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_OVER) {
-            processRoundOverMsg(msg.getRoundOverMsg());
+            processRoundOverMsg(basePushInfo, msg.getRoundOverMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_AND_GAME_OVER) {
-            processRoundAndGameOverMsg(msg.getRoundAndGameOverMsg());
+            processRoundAndGameOverMsg(basePushInfo, msg.getRoundAndGameOverMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_QUIT_GAME) {
-            processQuitGameMsg(msg.getQuitGameMsg());
+            processQuitGameMsg(basePushInfo, msg.getQuitGameMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_APP_SWAP) {
-            processAppSwapMsg(msg.getAppSwapMsg());
+            processAppSwapMsg(basePushInfo, msg.getAppSwapMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_SYNC_STATUS) {
-            processSyncStatusMsg(msg.getSyncStatusMsg());
+            processSyncStatusMsg(basePushInfo, msg.getSyncStatusMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROOM_IN_OUT) {
-            processRoomInOutMsg(msg.getRoomInOutMsg());
+            processRoomInOutMsg(basePushInfo, msg.getRoomInOutMsg());
         }
     }
 
@@ -69,7 +73,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     }
 
     //加入游戏指令消息
-    private void processJoinActionMsg(JoinActionMsg joinActionMsg) {
+    private void processJoinActionMsg(BasePushInfo info, JoinActionMsg joinActionMsg) {
         if (joinActionMsg == null) {
             MyLog.d(TAG, "processJoinActionMsg" + " joinActionMsg == null");
             return;
@@ -78,11 +82,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         int gameId = joinActionMsg.getGameID();
         long gameCreateMs = joinActionMsg.getGameCreateMS();
 
-        EventBus.getDefault().post(new JoinActionEvent(gameId, gameCreateMs));
+        EventBus.getDefault().post(new JoinActionEvent(info, gameId, gameCreateMs));
     }
 
     //加入游戏通知消息
-    private void processJoinNoticeMsg(JoinNoticeMsg joinNoticeMsg) {
+    private void processJoinNoticeMsg(BasePushInfo info, JoinNoticeMsg joinNoticeMsg) {
         if (joinNoticeMsg == null) {
             MyLog.d(TAG, "processJoinNoticeMsg" + " joinNoticeMsg == null");
             return;
@@ -92,11 +96,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         UserInfo userInfo = joinNoticeMsg.getUserInfo();
         MusicInfo musicInfo = joinNoticeMsg.getMusicInfo();
 
-        EventBus.getDefault().post(new JoinNoticeEvent(joinTimeMs, userInfo, musicInfo));
+        EventBus.getDefault().post(new JoinNoticeEvent(info, joinTimeMs, userInfo, musicInfo));
     }
 
     //准备游戏通知消息
-    private void processReadyNoticeMsg(ReadyNoticeMsg readyNoticeMsg) {
+    private void processReadyNoticeMsg(BasePushInfo info, ReadyNoticeMsg readyNoticeMsg) {
         if (readyNoticeMsg == null) {
             MyLog.d(TAG, "processReadyNoticeMsg" + " readyNoticeMsg == null");
             return;
@@ -105,11 +109,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         long readyTimeMs = readyNoticeMsg.getReadyTimeMs();
         int readyUserID = readyNoticeMsg.getReadyUserID();
 
-        EventBus.getDefault().post(new ReadyNoticeEvent(readyTimeMs, readyUserID));
+        EventBus.getDefault().post(new ReadyNoticeEvent(info, readyTimeMs, readyUserID));
     }
 
     //准备并开始游戏通知消息
-    private void processReadyAndStartNoticeMsg(ReadyAndStartNoticeMsg readyAndStartNoticeMsg) {
+    private void processReadyAndStartNoticeMsg(BasePushInfo info, ReadyAndStartNoticeMsg readyAndStartNoticeMsg) {
         if (readyAndStartNoticeMsg == null) {
             MyLog.d(TAG, "processReadyAndStartNoticeMsg" + " readyAndStartNoticeMsg == null");
             return;
@@ -121,12 +125,12 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         int firstUserID = readyAndStartNoticeMsg.getFirstUserID();   //第一个用户ID
         int firstMusicID = readyAndStartNoticeMsg.getFirstMusicID(); //第一首歌曲ID
 
-        EventBus.getDefault().post(new ReadyAndStartNoticeEvent(readyUserID, readyTimeMs, startTimeMS, firstUserID, firstMusicID));
+        EventBus.getDefault().post(new ReadyAndStartNoticeEvent(info, readyUserID, readyTimeMs, startTimeMS, firstUserID, firstMusicID));
 
     }
 
     //游戏轮次结束通知消息
-    private void processRoundOverMsg(RoundOverMsg roundOverMsgr) {
+    private void processRoundOverMsg(BasePushInfo info, RoundOverMsg roundOverMsgr) {
         if (roundOverMsgr == null) {
             MyLog.d(TAG, "processRoundOverMsg" + " roundOverMsgr == null");
             return;
@@ -137,11 +141,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         int nextUserId = roundOverMsgr.getNextUserID();
         int nextMusicId = roundOverMsgr.getNextMusicID();
 
-        EventBus.getDefault().post(new RoundOverEvent(roundOverTimeMs, nextRoundSeq, nextUserId, nextMusicId));
+        EventBus.getDefault().post(new RoundOverEvent(info, roundOverTimeMs, nextRoundSeq, nextUserId, nextMusicId));
     }
 
     //轮次和游戏结束通知消息
-    private void processRoundAndGameOverMsg(RoundAndGameOverMsg roundAndGameOverMsg) {
+    private void processRoundAndGameOverMsg(BasePushInfo info, RoundAndGameOverMsg roundAndGameOverMsg) {
         if (roundAndGameOverMsg == null) {
             MyLog.d(TAG, "processRoundAndGameOverMsg" + " roundOverMsgr == null");
             return;
@@ -149,11 +153,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         long roundOverTimeMs = roundAndGameOverMsg.getRoundOverTimeMs();
 
-        EventBus.getDefault().post(new RoundAndGameOverEvent(roundOverTimeMs));
+        EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs));
     }
 
     //退出游戏通知
-    private void processQuitGameMsg(QuitGameMsg quitGameMsg) {
+    private void processQuitGameMsg(BasePushInfo info, QuitGameMsg quitGameMsg) {
         if (quitGameMsg == null) {
             MyLog.d(TAG, "processQuitGameMsg" + " quitGameMsg == null");
             return;
@@ -162,11 +166,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         int quitUserId = quitGameMsg.getQuitUserID();
         long quitTimeMs = quitGameMsg.getQuitTimeMs();
 
-        EventBus.getDefault().post(new QuitGameEvent(quitUserId, quitTimeMs));
+        EventBus.getDefault().post(new QuitGameEvent(info, quitUserId, quitTimeMs));
     }
 
     //app进程后台通知
-    private void processAppSwapMsg(AppSwapMsg appSwapMsg) {
+    private void processAppSwapMsg(BasePushInfo info, AppSwapMsg appSwapMsg) {
         if (appSwapMsg == null) {
             MyLog.d(TAG, "processAppSwapMsg" + " appSwapMsg == null");
             return;
@@ -177,26 +181,27 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         boolean swapOut = appSwapMsg.getSwapOut();
         boolean swapIn = appSwapMsg.getSwapIn();
 
-        EventBus.getDefault().post(new AppSwapEvent(swapUserId, swapTimeMs, swapOut, swapIn));
+        EventBus.getDefault().post(new AppSwapEvent(info, swapUserId, swapTimeMs, swapOut, swapIn));
     }
 
     //状态同步信令
-    private void processSyncStatusMsg(SyncStatusMsg syncStatusMsg) {
+    private void processSyncStatusMsg(BasePushInfo info, SyncStatusMsg syncStatusMsg) {
         if (syncStatusMsg == null) {
             MyLog.d(TAG, "processSyncStatusMsg" + " syncStatusMsg == null");
             return;
         }
 
+        EventBus.getDefault().post(new SyncStatusEvent(info));
     }
 
     // 进出消息
-    private void processRoomInOutMsg(RoomInOutMsg roomInOutMsg) {
+    private void processRoomInOutMsg(BasePushInfo info, RoomInOutMsg roomInOutMsg) {
         if (roomInOutMsg == null) {
             MyLog.d(TAG, "processRoomInOutMsg" + " roomInOutMsg == null");
             return;
         }
 
         boolean isEnter = roomInOutMsg.getIsEnter();
-        EventBus.getDefault().post(new RoomInOutEvent(isEnter));
+        EventBus.getDefault().post(new RoomInOutEvent(info, isEnter));
     }
 }

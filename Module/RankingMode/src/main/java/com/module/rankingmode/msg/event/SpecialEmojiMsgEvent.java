@@ -1,5 +1,7 @@
 package com.module.rankingmode.msg.event;
 
+import com.module.rankingmode.msg.BasePushInfo;
+
 public class SpecialEmojiMsgEvent {
     public final static int MSG_TYPE_SEND = 0;
     public final static int MSG_TYPE_RECE = 1;
@@ -7,9 +9,12 @@ public class SpecialEmojiMsgEvent {
     int type = MSG_TYPE_RECE;
     int emojiId;
 
-    public SpecialEmojiMsgEvent(int type, int emojiId){
+    BasePushInfo info;
+
+    public SpecialEmojiMsgEvent(BasePushInfo info, int type, int emojiId) {
         this.type = type;
         this.emojiId = emojiId;
+        this.info = info;
     }
 
 }

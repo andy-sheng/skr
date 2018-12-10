@@ -2,13 +2,12 @@ package com.module.rankingmode.msg.event;
 
 import com.module.rankingmode.msg.BasePushInfo;
 
-public class RoomInOutEvent {
+public class SyncStatusEvent {
 
-    boolean isEnter;
     BasePushInfo info;
 
-    public RoomInOutEvent(BasePushInfo info, boolean isEnter){
+    public SyncStatusEvent(BasePushInfo info){
         this.info = info;
-        this.isEnter = isEnter;
     }
+
 }
