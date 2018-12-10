@@ -91,6 +91,8 @@ android {
             // okhttp和retrofit封装
             java.srcDirs += 'src/main/java-rxretrofit'
 
+            java.srcDirs += 'src/main/java-oss'
+
             if (repluginHostEnable.toBoolean()) {
                 java.srcDirs += 'src/main/java-replugin-host'
             } else {
