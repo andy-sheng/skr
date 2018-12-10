@@ -41,6 +41,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         }
     }
 
+
     public void setDataList(List<SongModel> dataList) {
         this.dataList = dataList;
         notifyDataSetChanged();

@@ -8,12 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.common.base.BaseFragment;
-import com.common.loadsir.callback.ErrorCallback;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
-import com.kingja.loadsir.callback.Callback;
-import com.kingja.loadsir.core.LoadService;
-import com.kingja.loadsir.core.LoadSir;
 import com.module.rankingmode.R;
 import com.module.rankingmode.song.model.TagModel;
 import com.module.rankingmode.song.presenter.SongSelectPresenter;
@@ -115,7 +111,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagView {
             this.listData = listData;
             for (TagModel tagModel : listData) {
                 SongListView songListView = new SongListView(getContext());
-                songListView.setTagModel(SongSelectFragment.this, tagModel);
+                songListView.setTagModel(tagModel);
                 layouts.add(songListView);
             }
             notifyDataSetChanged();

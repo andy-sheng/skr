@@ -31,14 +31,14 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
     /**
      * 获取曲库剧本的详细条目
      *
-     * @param tag
-     * @param offset
-     * @param cnt
+     * @param tag 曲库的剧本标签id
+     * @param offset 偏移量
+     * @param cnt 一页的数量
      * @return
      */
     public void getSongDetailListItems(int tag, int offset, int cnt) {
         SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-        ApiMethods.subscribe(songSelectServerApi.getSongDetailListItems(tag, offset, cnt).observeOn(AndroidSchedulers.mainThread()), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(songSelectServerApi.getSongDetailListItems(tag, offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

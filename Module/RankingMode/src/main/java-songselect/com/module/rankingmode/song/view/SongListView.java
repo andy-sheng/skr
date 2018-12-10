@@ -81,10 +81,15 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
         mSongListView.setAdapter(mSongSelectAdapter);
     }
 
-    public void setTagModel(BaseFragment fragment,TagModel tagModel) {
-        if (fragment != null){
-            fragment.addPresent(presenter);
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (presenter != null){
+            presenter.destroy();
         }
+    }
+
+    public void setTagModel(TagModel tagModel) {
         this.tagModel = tagModel;
         if (this.tagModel != null) {
             // todo 假数据，后期再改
