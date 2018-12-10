@@ -18,7 +18,17 @@ public class BasicMsgProcessor implements IPushMsgProcess {
 
     @Override
     public void process(int messageType, byte[] data) {
-        U.getToastUtil().showShort(TAG + "在处理 process pb" + " messageType=" + messageType );
+        U.getToastUtil().showShort(TAG + "在处理 process pb" + " messageType=" + messageType);
+        switch (messageType) {
+            case CustomMsgType.MSG_TYPE_TEXT:
+                break;
+            case CustomMsgType.MSG_TYPE_ENTER:
+                break;
+            case CustomMsgType.MSG_TYPE_QUIT:
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

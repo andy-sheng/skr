@@ -1,4 +1,4 @@
-package com.module.rankingmode.msg.manager;
+package com.module.rankingmode.msg.process;
 
 import com.common.log.MyLog;
 import com.module.rankingmode.msg.event.AppSwapEvent;
@@ -13,27 +13,63 @@ import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
+import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinNoticeMsg;
 import com.zq.live.proto.Room.QuitGameMsg;
 import com.zq.live.proto.Room.ReadyAndStartNoticeMsg;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomInOutMsg;
+import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
 import com.zq.live.proto.Room.RoundOverMsg;
 import com.zq.live.proto.Room.SyncStatusMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
-/**
- * 处理聊天室房间内通过融云服务器的通知请求
- */
-// todo 仅加入接受通过融云服务器的请求，发送请求需要与服务器对再加上
-public class ChatRoomGameMsgManager {
-    public final static String TAG = "ChatRoomGameMsgManager";
+public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
+
+    public final static String TAG = "ChatRoomGameMsgProcess";
+
+    @Override
+    public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
+
+        if (msg.getMsgType() == ERoomMsgType.RM_JOIN_ACTION) {
+            processJoinActionMsg(msg.getJoinActionMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_JOIN_NOTICE) {
+            processJoinNoticeMsg(msg.getJoinNoticeMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_READY_NOTICE) {
+            processReadyNoticeMsg(msg.getReadyNoticeMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_READY_AND_START_NOTICE) {
+            processReadyAndStartNoticeMsg(msg.getReadyAndStartNoticeMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_OVER) {
+            processRoundOverMsg(msg.getRoundOverMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_AND_GAME_OVER) {
+            processRoundAndGameOverMsg(msg.getRoundAndGameOverMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_QUIT_GAME) {
+            processQuitGameMsg(msg.getQuitGameMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_APP_SWAP) {
+            processAppSwapMsg(msg.getAppSwapMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_SYNC_STATUS) {
+            processSyncStatusMsg(msg.getSyncStatusMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_ROOM_IN_OUT) {
+            processRoomInOutMsg(msg.getRoomInOutMsg());
+        }
+    }
+
+    @Override
+    public ERoomMsgType[] acceptType() {
+        return new ERoomMsgType[]{
+                ERoomMsgType.RM_JOIN_ACTION, ERoomMsgType.RM_JOIN_NOTICE,
+                ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_READY_AND_START_NOTICE,
+                ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
+                ERoomMsgType.RM_QUIT_GAME, ERoomMsgType.RM_APP_SWAP,
+                ERoomMsgType.RM_SYNC_STATUS, ERoomMsgType.RM_ROOM_IN_OUT
+        };
+    }
 
     //加入游戏指令消息
-    public static void processJoinActionMsg(JoinActionMsg joinActionMsg) {
+    private void processJoinActionMsg(JoinActionMsg joinActionMsg) {
         if (joinActionMsg == null) {
             MyLog.d(TAG, "processJoinActionMsg" + " joinActionMsg == null");
             return;
@@ -46,7 +82,7 @@ public class ChatRoomGameMsgManager {
     }
 
     //加入游戏通知消息
-    public static void processJoinNoticeMsg(JoinNoticeMsg joinNoticeMsg) {
+    private void processJoinNoticeMsg(JoinNoticeMsg joinNoticeMsg) {
         if (joinNoticeMsg == null) {
             MyLog.d(TAG, "processJoinNoticeMsg" + " joinNoticeMsg == null");
             return;
@@ -60,7 +96,7 @@ public class ChatRoomGameMsgManager {
     }
 
     //准备游戏通知消息
-    public static void processReadyNoticeMsg(ReadyNoticeMsg readyNoticeMsg) {
+    private void processReadyNoticeMsg(ReadyNoticeMsg readyNoticeMsg) {
         if (readyNoticeMsg == null) {
             MyLog.d(TAG, "processReadyNoticeMsg" + " readyNoticeMsg == null");
             return;
@@ -73,7 +109,7 @@ public class ChatRoomGameMsgManager {
     }
 
     //准备并开始游戏通知消息
-    public static void processReadyAndStartNoticeMsg(ReadyAndStartNoticeMsg readyAndStartNoticeMsg) {
+    private void processReadyAndStartNoticeMsg(ReadyAndStartNoticeMsg readyAndStartNoticeMsg) {
         if (readyAndStartNoticeMsg == null) {
             MyLog.d(TAG, "processReadyAndStartNoticeMsg" + " readyAndStartNoticeMsg == null");
             return;
@@ -90,7 +126,7 @@ public class ChatRoomGameMsgManager {
     }
 
     //游戏轮次结束通知消息
-    public static void processRoundOverMsg(RoundOverMsg roundOverMsgr) {
+    private void processRoundOverMsg(RoundOverMsg roundOverMsgr) {
         if (roundOverMsgr == null) {
             MyLog.d(TAG, "processRoundOverMsg" + " roundOverMsgr == null");
             return;
@@ -105,7 +141,7 @@ public class ChatRoomGameMsgManager {
     }
 
     //轮次和游戏结束通知消息
-    public static void processRoundAndGameOverMsg(RoundAndGameOverMsg roundAndGameOverMsg) {
+    private void processRoundAndGameOverMsg(RoundAndGameOverMsg roundAndGameOverMsg) {
         if (roundAndGameOverMsg == null) {
             MyLog.d(TAG, "processRoundAndGameOverMsg" + " roundOverMsgr == null");
             return;
@@ -117,7 +153,7 @@ public class ChatRoomGameMsgManager {
     }
 
     //退出游戏通知
-    public static void processQuitGameMsg(QuitGameMsg quitGameMsg) {
+    private void processQuitGameMsg(QuitGameMsg quitGameMsg) {
         if (quitGameMsg == null) {
             MyLog.d(TAG, "processQuitGameMsg" + " quitGameMsg == null");
             return;
@@ -130,7 +166,7 @@ public class ChatRoomGameMsgManager {
     }
 
     //app进程后台通知
-    public static void processAppSwapMsg(AppSwapMsg appSwapMsg) {
+    private void processAppSwapMsg(AppSwapMsg appSwapMsg) {
         if (appSwapMsg == null) {
             MyLog.d(TAG, "processAppSwapMsg" + " appSwapMsg == null");
             return;
@@ -145,7 +181,7 @@ public class ChatRoomGameMsgManager {
     }
 
     //状态同步信令
-    public static void processSyncStatusMsg(SyncStatusMsg syncStatusMsg) {
+    private void processSyncStatusMsg(SyncStatusMsg syncStatusMsg) {
         if (syncStatusMsg == null) {
             MyLog.d(TAG, "processSyncStatusMsg" + " syncStatusMsg == null");
             return;
@@ -154,7 +190,7 @@ public class ChatRoomGameMsgManager {
     }
 
     // 进出消息
-    public static void processRoomInOutMsg(RoomInOutMsg roomInOutMsg) {
+    private void processRoomInOutMsg(RoomInOutMsg roomInOutMsg) {
         if (roomInOutMsg == null) {
             MyLog.d(TAG, "processRoomInOutMsg" + " roomInOutMsg == null");
             return;
@@ -163,5 +199,4 @@ public class ChatRoomGameMsgManager {
         boolean isEnter = roomInOutMsg.getIsEnter();
         EventBus.getDefault().post(new RoomInOutEvent(isEnter));
     }
-
 }

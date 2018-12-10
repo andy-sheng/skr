@@ -1,7 +1,6 @@
-package com.module.rankingmode.msg.manager;
+package com.module.rankingmode.msg.process;
 
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.common.log.MyLog;
 import com.module.rankingmode.msg.event.CommentMsgEvent;
@@ -9,19 +8,38 @@ import com.module.rankingmode.msg.event.DynamicEmojiMsgEvent;
 import com.module.rankingmode.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.CommentMsg;
 import com.zq.live.proto.Room.DynamicEmojiMsg;
+import com.zq.live.proto.Room.ERoomMsgType;
+import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
-/**
- * 处理聊天室内弹幕信息，包括文本，动态表情和特殊表情
- */
-// todo 仅加入接受通过融云服务器的请求，发送请求需要与服务器对再加上
-public class ChatRoomChatMsgManager {
-    public final static String TAG = "ChatRoomChatMsgManager";
+public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess{
+
+    public final static String TAG = "ChatRoomChatMsgProcess";
+
+    @Override
+    public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
+        if(messageType == ERoomMsgType.RM_COMMENT){
+            processRMComment(msg.getCommentMsg());
+        }else if (messageType == ERoomMsgType.RM_SPECIAL_EMOJI){
+            processRMSpecialEmoji(msg.getSpecialEmojiMsg());
+        }else if (messageType == ERoomMsgType.RM_DYNAMIC_EMOJI){
+            processRMDynamicEmoji(msg.getDynamicemojiMsg());
+        }
+    }
+
+    @Override
+    public ERoomMsgType[] acceptType() {
+        return new ERoomMsgType[]{
+                ERoomMsgType.RM_COMMENT,
+                ERoomMsgType.RM_SPECIAL_EMOJI,
+                ERoomMsgType.RM_DYNAMIC_EMOJI
+        };
+    }
 
     // 评论消息
-    public static void processRMComment(CommentMsg commentMsg) {
+    public void processRMComment(CommentMsg commentMsg) {
         if (commentMsg == null) {
             MyLog.e(TAG, "processRMComment" + " commentMsg == null");
             return;
@@ -34,7 +52,7 @@ public class ChatRoomChatMsgManager {
     }
 
     // 特殊表情消息
-    public static void processRMSpecialEmoji(SpecialEmojiMsg specialEmojiMsg) {
+    public void processRMSpecialEmoji(SpecialEmojiMsg specialEmojiMsg) {
         if (specialEmojiMsg == null) {
             MyLog.e(TAG, "processRMSpecialEmoji" + " specialEmojiMsg == null");
             return;
@@ -45,7 +63,7 @@ public class ChatRoomChatMsgManager {
     }
 
     // 动态表情消息
-    public static void processRMDynamicEmoji(DynamicEmojiMsg dynamicEmojiMsg) {
+    public void processRMDynamicEmoji(DynamicEmojiMsg dynamicEmojiMsg) {
         if (dynamicEmojiMsg == null) {
             MyLog.e(TAG, "processRMDynamicEmoji" + " dynamicEmojiMsg == null");
             return;
