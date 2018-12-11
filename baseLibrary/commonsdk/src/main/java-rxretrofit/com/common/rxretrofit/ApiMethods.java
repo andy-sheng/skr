@@ -63,11 +63,35 @@ public class ApiMethods {
      *
      * @param observable
      * @param apiObserver
+     * @param baseFragment
+     * @param <T>
+     */
+    public static <T> Disposable subscribeWith(Observable<T> observable, ApiObserver<T> apiObserver, BaseFragment baseFragment) {
+        return innerSubscribeWith(observable, apiObserver, baseFragment.bindUntilEvent(FragmentEvent.DESTROY));
+    }
+
+    /**
+     * 订阅数据，并绑定BaseFragment的生命周期
+     *
+     * @param observable
+     * @param apiObserver
      * @param baseActivity
      * @param <T>
      */
     public static <T> void subscribe(Observable<T> observable, ApiObserver<T> apiObserver, BaseActivity baseActivity) {
         innerSubscribe(observable, apiObserver, baseActivity.bindUntilEvent(ActivityEvent.DESTROY));
+    }
+
+    /**
+     * 订阅数据，并绑定BaseFragment的生命周期
+     *
+     * @param observable
+     * @param apiObserver
+     * @param baseActivity
+     * @param <T>
+     */
+    public static <T> Disposable subscribeWith(Observable<T> observable, ApiObserver<T> apiObserver, BaseActivity baseActivity) {
+        return innerSubscribeWith(observable, apiObserver, baseActivity.bindUntilEvent(ActivityEvent.DESTROY));
     }
 
     /**
