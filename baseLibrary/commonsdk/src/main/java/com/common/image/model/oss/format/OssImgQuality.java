@@ -2,16 +2,22 @@ package com.common.image.model.oss.format;
 
 
 import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssPsFactory;
 
 /**
  * 图片质量压缩
  * 对于 jpg和webp 支持质量压缩
+ * 通过{@link OssPsFactory 使用}
  */
 public class OssImgQuality implements IOssParam {
 
     int aq = -1;//决定图片的绝对质量，把原图质量压到rq%，如果原图质量小于指定数字，则不压缩。1-100
 
     int rq = -1;//决定图片的相对质量，对原图按照 aq% 进行质量压缩。 1-100
+
+    OssImgQuality(){
+
+    }
 
     @Override
     public String getOpDesc() {
@@ -45,7 +51,7 @@ public class OssImgQuality implements IOssParam {
     public static class Builder {
         OssImgQuality mParams = new OssImgQuality();
 
-        Builder() {
+        public Builder() {
         }
 
         public Builder setAq(int aq) {

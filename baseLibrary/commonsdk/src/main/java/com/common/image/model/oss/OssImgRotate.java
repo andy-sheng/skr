@@ -3,10 +3,15 @@ package com.common.image.model.oss;
 
 /**
  * 旋转
+ * 通过{@link OssPsFactory 使用}
  */
 public class OssImgRotate implements IOssParam {
 
     int r = -1;//旋转的角度 0-360
+
+    OssImgRotate(){
+
+    }
 
     @Override
     public String getOpDesc() {

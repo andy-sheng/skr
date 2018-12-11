@@ -2,13 +2,19 @@ package com.common.image.model.oss.effect;
 
 
 import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssPsFactory;
 
 /**
  * 图片锐化
+ * 通过{@link OssPsFactory 使用}
  */
 public class OssImgSharpen implements IOssParam {
 
     int sharpen = -1;//value	表示进行锐化处理。取值为锐化参数，参数越大，越清晰。	[50, 399] 为达到较优效果，推荐取值为 100。
+
+    OssImgSharpen(){
+
+    }
 
     @Override
     public String getOpDesc() {

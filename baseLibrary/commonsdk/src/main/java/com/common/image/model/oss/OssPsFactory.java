@@ -7,6 +7,8 @@ import com.common.image.model.oss.effect.OssImgBlur;
 import com.common.image.model.oss.effect.OssImgBright;
 import com.common.image.model.oss.effect.OssImgContrast;
 import com.common.image.model.oss.effect.OssImgSharpen;
+import com.common.image.model.oss.format.OssImgFormat;
+import com.common.image.model.oss.format.OssImgQuality;
 
 /**
  * 使用强大的阿里oss系统的图片处理
@@ -43,10 +45,22 @@ public class OssPsFactory {
         return new OssImgSharpen.Builder();
     }
 
+    /* 图片格式化 */
+
+    public static OssImgFormat.Builder newFormatBuilder() {
+        return new OssImgFormat.Builder();
+    }
+
+    public static OssImgQuality.Builder newQualityBuilder() {
+        return new OssImgQuality.Builder();
+    }
+
+
     /**
      * 生成阿里oss 图片处理的get url
      * 如
      * http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/1111.jpg?x-oss-process=image/resize,w_480,h_1080/circle,r_500/blur,r_30,s_20
+     *
      * @param url
      * @param ossProcessors
      * @return
@@ -64,12 +78,12 @@ public class OssPsFactory {
 //            替换掉原有的,后来想象也不能覆盖，先注释掉
 //                url = url.replace("x-oss-process=" + origin, paramsSb.toString());
 //            } else {
-                String query = uri.getQuery();
-                if (TextUtils.isEmpty(query)) {
-                    url = url + "?" + paramsSb.toString();
-                } else {
-                    url = url + "&" + paramsSb.toString();
-                }
+            String query = uri.getQuery();
+            if (TextUtils.isEmpty(query)) {
+                url = url + "?" + paramsSb.toString();
+            } else {
+                url = url + "&" + paramsSb.toString();
+            }
 //            }
             return url;
         } else {

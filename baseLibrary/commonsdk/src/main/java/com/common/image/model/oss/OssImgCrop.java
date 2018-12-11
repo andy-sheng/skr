@@ -3,6 +3,7 @@ package com.common.image.model.oss;
 
 /**
  * 裁剪
+ * 通过{@link OssPsFactory 使用}
  */
 public class OssImgCrop implements IOssParam {
 
@@ -20,6 +21,10 @@ public class OssImgCrop implements IOssParam {
      * [nw, north, ne, west, center, east, sw, south, se]
      */
     String g;
+
+    OssImgCrop(){
+
+    }
 
     @Override
     public String getOpDesc() {

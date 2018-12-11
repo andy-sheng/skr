@@ -3,6 +3,7 @@ package com.common.image.model.oss;
 
 /**
  * 缩放
+ * 通过{@link OssPsFactory 使用}
  */
 public class OssImgResize implements IOssParam {
 
@@ -18,6 +19,10 @@ public class OssImgResize implements IOssParam {
      * 采用 16 进制颜色码表示，如 00FF00（绿色）。
      */
     int color = -1;
+
+    OssImgResize(){
+
+    }
 
     @Override
     public String getOpDesc() {

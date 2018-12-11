@@ -2,13 +2,19 @@ package com.common.image.model.oss.format;
 
 
 import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssPsFactory;
 
 /**
  * 图片格式转换
+ * 通过{@link OssPsFactory 使用}
  */
 public class OssImgFormat implements IOssParam {
 
     ImgF format = null;// 模式
+
+    OssImgFormat(){
+
+    }
 
     @Override
     public String getOpDesc() {
@@ -31,7 +37,7 @@ public class OssImgFormat implements IOssParam {
     public static class Builder {
         OssImgFormat mParams = new OssImgFormat();
 
-        Builder() {
+        public Builder() {
         }
 
         public Builder setFormat(ImgF format) {

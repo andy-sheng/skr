@@ -2,14 +2,20 @@ package com.common.image.model.oss.effect;
 
 
 import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssPsFactory;
 
 /**
  * 高斯模糊效果
+ * 通过{@link OssPsFactory 使用}
  */
 public class OssImgBlur implements IOssParam {
 
     int r = -1;//模糊半径	[1,50]r 越大图片越模糊。
     int s = -1;//正态分布的标准差	[1,50]r 越大图片越模糊。
+
+    OssImgBlur() {
+
+    }
 
     @Override
     public String getOpDesc() {

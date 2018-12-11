@@ -2,13 +2,19 @@ package com.common.image.model.oss.effect;
 
 
 import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssPsFactory;
 
 /**
  * 图片对比度
+ * 通过{@link OssPsFactory 使用}
  */
 public class OssImgContrast implements IOssParam {
 
     int contrast = -101;//对比度调整。0 表示原图对比度，小于 0 表示低于原图对比度，大于 0 表示高于原图对比度。	[-100, 100]
+
+    OssImgContrast(){
+
+    }
 
     @Override
     public String getOpDesc() {
