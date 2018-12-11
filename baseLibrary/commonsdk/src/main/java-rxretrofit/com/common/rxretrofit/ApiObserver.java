@@ -15,7 +15,7 @@ import io.reactivex.disposables.Disposable;
  * @param <T>
  */
 public abstract class ApiObserver<T> implements Observer<T> {
-    public final static String TAG = "ApiObserver";
+    public final static String API_TAG = "ApiObserver";
 
     @Override
     public void onSubscribe(Disposable d) {
@@ -42,7 +42,7 @@ public abstract class ApiObserver<T> implements Observer<T> {
             String log = Log.getStackTraceString(e);
             U.getToastUtil().showShort(log);
         }
-        MyLog.w(TAG,e);
+        MyLog.w(API_TAG, e);
     }
 
     @Override

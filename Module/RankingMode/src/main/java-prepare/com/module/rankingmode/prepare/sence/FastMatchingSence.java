@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
-import com.common.mvp.PresenterEvent;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
@@ -19,10 +18,6 @@ import com.module.rankingmode.prepare.view.IMatchingView;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
 
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_ID;
@@ -77,16 +72,6 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
                 .subscribe(o -> {
                     matchingPresenter.cancelMatch(1);
                     matchSenceController.popSence();
-        });
-
-        Observable.timer(5, TimeUnit.SECONDS)
-                .compose(matchingPresenter.bindUntilEvent(PresenterEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-            @Override
-            public void accept(Long aLong) throws Exception {
-                matchSenceController.toNextSence(null);
-            }
         });
     }
 
