@@ -35,6 +35,7 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
         //这里可能有动画啥的
         setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         parentViewGroup.addView(this);
+        matchSenceController.getCommonTitleBar().getCenterTextView().setText("成都");
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("准备竞演");
     }
 
@@ -56,6 +57,7 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
 
     @Override
     public void onResumeSence(RelativeLayout parentViewGroup) {
+        matchSenceController.getCommonTitleBar().getCenterTextView().setText("成都");
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("准备竞演");
         setVisibility(VISIBLE);
     }

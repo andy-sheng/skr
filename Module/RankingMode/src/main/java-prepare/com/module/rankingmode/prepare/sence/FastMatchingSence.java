@@ -10,18 +10,10 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.module.rankingmode.R;
-
 import com.module.rankingmode.prepare.presenter.MatchingPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchingView;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_ID;
@@ -31,8 +23,6 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
     MatchSenceController matchSenceController;
 
     MatchingPresenter matchingPresenter;
-
-    Disposable disposable;
 
     MatchingLayerView mLargeMatchingLayerView;
     MatchingLayerView mSmallMatchingLayerView;
@@ -66,23 +56,16 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
                         .setCircle(true)
                         .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
+
+        matchingPresenter.getLoadingUserListIcon();
     }
 
     @Override
     public void toShow(RelativeLayout parentViewGroup, Bundle bundle) {
-        matchingPresenter.startMatch();
+        matchingPresenter.startLoopMatchTask();
         //这里可能有动画啥的
         setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         parentViewGroup.addView(this);
-
-        disposable = Observable.timer(10, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        matchSenceController.toNextSence(nextBundle);
-                    }
-                });
 
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("一大波skrer在来的路上...");
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配中...");
@@ -92,7 +75,6 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
     public void toHide(RelativeLayout parentViewGroup) {
         //可能有动画
         setVisibility(GONE);
-        disposable.dispose();
     }
 
     @Override
@@ -103,7 +85,6 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         parentViewGroup.removeView(this);
         mSmallMatchingLayerView.release();
         mLargeMatchingLayerView.release();
-        disposable.dispose();
 
         if (matchingPresenter != null) {
             matchingPresenter.destroy();
@@ -138,5 +119,12 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         // 匹配成功
         nextBundle.putInt(BUNDLE_KEY_GAME_ID, gameId);
         nextBundle.putLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreatMs);
+
+        matchSenceController.toNextSence(nextBundle);
+    }
+
+    @Override
+    public void showUserIconList() {
+
     }
 }
