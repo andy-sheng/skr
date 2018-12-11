@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssPsFactory;
+
 /**
  * Created by lan on 15-12-14.
  * 网络图片
@@ -39,4 +42,7 @@ public class HttpImage extends BaseImage {
         }
     }
 
+    public void setOssProcessors(IOssParam[] ossProcessors) {
+        OssPsFactory.fillOssParams(mUrl,ossProcessors);
+    }
 }

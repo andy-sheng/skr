@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.common.image.fresco.IFrescoCallBack;
+import com.common.image.model.oss.IOssParam;
+import com.common.log.MyLog;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.facebook.imagepipeline.common.Priority;
@@ -148,6 +150,18 @@ public class ImageFactory {
 
         public ImageFactory.Builder setTapToRetryEnabled(boolean tapToRetryEnabled) {
             mBaseImage.setTapToRetryEnabled(tapToRetryEnabled);
+            return this;
+        }
+
+        public ImageFactory.Builder setOssProcessors(IOssParam...ossProcessors) {
+            if(mBaseImage instanceof HttpImage){
+                HttpImage httpImage = (HttpImage) mBaseImage;
+                httpImage.setOssProcessors(ossProcessors);
+            }else{
+                if(MyLog.isDebugLogOpen()){
+                    throw new IllegalStateException("setOssProcessors only can be set In HttpImage");
+                }
+            }
             return this;
         }
 
