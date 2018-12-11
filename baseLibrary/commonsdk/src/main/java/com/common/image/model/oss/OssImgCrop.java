@@ -1,6 +1,9 @@
 package com.common.image.model.oss;
 
 
+/**
+ * 裁剪
+ */
 public class OssImgCrop implements IOssParam {
 
     int x = -1;//指定裁剪起点横坐标（默认左上角为原点）

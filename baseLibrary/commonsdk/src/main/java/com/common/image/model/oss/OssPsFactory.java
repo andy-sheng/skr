@@ -3,6 +3,11 @@ package com.common.image.model.oss;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.common.image.model.oss.effect.OssImgBlur;
+import com.common.image.model.oss.effect.OssImgBright;
+import com.common.image.model.oss.effect.OssImgContrast;
+import com.common.image.model.oss.effect.OssImgSharpen;
+
 /**
  * 使用强大的阿里oss系统的图片处理
  * https://help.aliyun.com/document_detail/44686.html?spm=a2c4g.11186623.6.1157.49f753b3esuUNU
@@ -15,6 +20,27 @@ public class OssPsFactory {
 
     public static OssImgCrop.Builder newCropBuilder() {
         return new OssImgCrop.Builder();
+    }
+
+    public static OssImgRounded.Builder newRoundBuilder() {
+        return new OssImgRounded.Builder();
+    }
+
+    /* 图片效果 */
+    public static OssImgBlur.Builder newBlurBuilder() {
+        return new OssImgBlur.Builder();
+    }
+
+    public static OssImgBright.Builder newBrightBuilder() {
+        return new OssImgBright.Builder();
+    }
+
+    public static OssImgContrast.Builder newContrastBuilder() {
+        return new OssImgContrast.Builder();
+    }
+
+    public static OssImgSharpen.Builder newSharpenBuilder() {
+        return new OssImgSharpen.Builder();
     }
 
     /**
@@ -33,17 +59,18 @@ public class OssPsFactory {
                 paramsSb.append(oss.getOpDesc());
             }
             paramsSb.insert(0, "x-oss-process=image");
-            String origin = uri.getQueryParameter("x-oss-process");
-            if (!TextUtils.isEmpty(origin)) {
-                url = url.replace("x-oss-process=" + origin, paramsSb.toString());
-            } else {
+//            String origin = uri.getQueryParameter("x-oss-process");
+//            if (!TextUtils.isEmpty(origin)) {
+//            替换掉原有的,后来想象也不能覆盖，先注释掉
+//                url = url.replace("x-oss-process=" + origin, paramsSb.toString());
+//            } else {
                 String query = uri.getQuery();
                 if (TextUtils.isEmpty(query)) {
                     url = url + "?" + paramsSb.toString();
                 } else {
                     url = url + "&" + paramsSb.toString();
                 }
-            }
+//            }
             return url;
         } else {
             return url;

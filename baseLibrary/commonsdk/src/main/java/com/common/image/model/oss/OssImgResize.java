@@ -1,6 +1,9 @@
 package com.common.image.model.oss;
 
 
+/**
+ * 缩放
+ */
 public class OssImgResize implements IOssParam {
 
     ResizeMode m = null;// 模式
