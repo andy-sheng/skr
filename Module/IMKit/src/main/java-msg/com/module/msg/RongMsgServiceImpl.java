@@ -33,11 +33,6 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void sendChatRoomMessage(String roomId, int messageType, byte[] data, ICallback callback) {
-        RongMsgManager.getInstance().sendChatRoomMessage(roomId, messageType, data, callback);
-    }
-
-    @Override
     public void addMsgProcessor(IPushMsgProcess processor) {
         RongMsgManager.getInstance().addMsgProcessor(processor);
     }

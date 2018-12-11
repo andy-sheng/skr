@@ -1,6 +1,5 @@
 package com.module.rankingmode.msg.process;
 
-import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IPushMsgProcess;
@@ -11,11 +10,6 @@ import java.io.IOException;
 
 public class ChatRoomMsgProcess implements IPushMsgProcess {
     public final static String TAG = "ChatRoomMsgProcess";
-
-    @Override
-    public void process(int messageType, JSONObject jsonObject) {
-
-    }
 
     @Override
     public void process(int messageType, byte[] data) {

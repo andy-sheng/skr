@@ -67,6 +67,19 @@ public class ApiManager {
         }
     }
 
+    /**
+     * todo 仅做测试调用，一定会删除掉
+     * @param interceptor
+     */
+    public void testInterceptor(Interceptor interceptor){
+        // todo 测试使用自己打开
+//        if (mDefalutRetrofit != null){
+//            mDefalutRetrofit = null;
+//        }
+//
+//        mOutInterceptors.add(interceptor);
+    }
+
     private void tryInit() {
         if (mDefalutRetrofit == null) {
             synchronized (this) {

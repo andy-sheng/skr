@@ -37,6 +37,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
 
     public MatchingPresenter(@NonNull IMatchingView view) {
         this.view = view;
+        ApiManager.getInstance().testInterceptor(new TestInterceptor());
         matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
     }

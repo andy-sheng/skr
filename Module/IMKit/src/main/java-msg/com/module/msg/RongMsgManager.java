@@ -17,6 +17,8 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 
+import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
+
 public class RongMsgManager {
 
     public final static String TAG = "RongMsgAdapter";
@@ -73,20 +75,14 @@ public class RongMsgManager {
             public boolean onReceived(Message message, int left) {
                 MyLog.d(TAG, "onReceived" + " message=" + message + " left=" + left);
                 if (message.getContent() instanceof CustomChatRoomMsg) {
-                    // 是自定义消息
+                    // 是自定义消息 其content即整个RoomMsg
                     CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) message.getContent();
-                    HashSet<IPushMsgProcess> processors = mProcessorMap.get(customChatRoomMsg.getMessageType());
-                    if (processors != null) {
-                        // todo json形式（不用可删除）
-                        JSONObject jsonObject = JSON.parseObject(customChatRoomMsg.getContentJsonStr());
-                        for (IPushMsgProcess processor : processors) {
-                            processor.process(customChatRoomMsg.getMessageType(), jsonObject);
-                        }
+                    byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
 
-                        // todo pb形式
-                        byte[] data = customChatRoomMsg.getData();
+                    HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
+                    if (processors != null) {
                         for (IPushMsgProcess process : processors) {
-                            process.process(customChatRoomMsg.getMessageType(), data);
+                            process.process(MSG_TYPE_ROOM, data);
                         }
                     }
                     return true;
@@ -168,34 +164,6 @@ public class RongMsgManager {
         CustomChatRoomMsg customChatRoomMsg = new CustomChatRoomMsg();
         customChatRoomMsg.setMessageType(messageType);
         customChatRoomMsg.setContentJsonStr(contentJson.toJSONString());
-        Message msg = Message.obtain(roomId, Conversation.ConversationType.CHATROOM, customChatRoomMsg);
-        RongIM.getInstance().sendMessage(msg, "pushContent", "pushData", new IRongCallback.ISendMessageCallback() {
-            @Override
-            public void onAttached(Message message) {
-
-            }
-
-            @Override
-            public void onSuccess(Message message) {
-                if (callback != null) {
-                    callback.onSucess(message);
-                }
-            }
-
-            @Override
-            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                MyLog.d(TAG, "send msg onError errorCode=" + errorCode);
-                if (callback != null) {
-                    callback.onFailed(message, errorCode.getValue(), errorCode.getMessage());
-                }
-            }
-        });
-    }
-
-    public void sendChatRoomMessage(String roomId, int messageType, byte[] data, ICallback callback) {
-        CustomChatRoomMsg customChatRoomMsg = new CustomChatRoomMsg();
-        customChatRoomMsg.setMessageType(messageType);
-        customChatRoomMsg.setData(data);
         Message msg = Message.obtain(roomId, Conversation.ConversationType.CHATROOM, customChatRoomMsg);
         RongIM.getInstance().sendMessage(msg, "pushContent", "pushData", new IRongCallback.ISendMessageCallback() {
             @Override

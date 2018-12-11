@@ -59,33 +59,24 @@ public class ChatRoomMsgManager {
      * @param msg
      */
     public void processRoomMsg(RoomMsg msg) {
-        Observable.just(msg)
-                .observeOn(Schedulers.computation())
-                .subscribeOn(Schedulers.computation())
-                .subscribe(new Consumer<RoomMsg>() {
-                    @Override
-                    public void accept(RoomMsg msg) throws Exception {
-                        boolean flag = true;  //是否放行的flag
-                        for (PushMsgFilter filter : pushMsgFilterList) {
-                            if (filter.processType() != null && filter.processType().contains(msg.getMsgType())) {
-                                flag = filter.doFilter(msg);
-                                if (!flag) {
-                                    break;
-                                }
-                            }
-                        }
+        boolean flag = true;  //是否放行的flag
+        for (PushMsgFilter filter : pushMsgFilterList) {
+            if (filter.processType() != null && filter.processType().contains(msg.getMsgType())) {
+                flag = filter.doFilter(msg);
+                if (!flag) {
+                    break;
+                }
+            }
+        }
 
-                        if (flag) {
-                            HashSet<IPushChatRoomMsgProcess> processors = mProcessorMap.get(msg.getMsgType());
-                            if (processors != null) {
-                                for (IPushChatRoomMsgProcess process : processors) {
-                                    process.processRoomMsg(msg.getMsgType(), msg);
-                                }
-                            }
-                        }
-                    }
-                });
-
-
+        if (flag) {
+            HashSet<IPushChatRoomMsgProcess> processors = mProcessorMap.get(msg.getMsgType());
+            if (processors != null) {
+                for (IPushChatRoomMsgProcess process : processors) {
+                    process.processRoomMsg(msg.getMsgType(), msg);
+                }
+            }
+        }
     }
+
 }

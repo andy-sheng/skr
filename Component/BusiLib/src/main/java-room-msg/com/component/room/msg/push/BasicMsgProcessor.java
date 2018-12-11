@@ -1,6 +1,5 @@
 package com.component.room.msg.push;
 
-import com.alibaba.fastjson.JSONObject;
 import com.common.utils.U;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IPushMsgProcess;
@@ -10,11 +9,6 @@ import com.module.msg.IPushMsgProcess;
  */
 public class BasicMsgProcessor implements IPushMsgProcess {
     public final static String TAG = "BasicMsgProcessor";
-
-    @Override
-    public void process(int messageType, JSONObject jsonObject) {
-        U.getToastUtil().showShort(TAG + "在处理 process" + " messageType=" + messageType + " jsonObject=" + jsonObject);
-    }
 
     @Override
     public void process(int messageType, byte[] data) {

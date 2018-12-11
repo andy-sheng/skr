@@ -30,7 +30,6 @@ public class CustomChatRoomMsg extends MessageContent {
 
     int messageType;
     String contentJsonStr;
-    byte[] data;
 
     public CustomChatRoomMsg() {
 
@@ -49,11 +48,6 @@ public class CustomChatRoomMsg extends MessageContent {
             if (jsonObj.has("type")) {
                 this.messageType = jsonObj.optInt("type");
             }
-            if (jsonObj.has("data")){
-                String dataString = jsonObj.optString("data");
-                this.data = U.getBase64Utils().decode(dataString);
-            }
-
         } catch (Exception e) {
             MyLog.e(TAG, e);
         }
@@ -62,7 +56,6 @@ public class CustomChatRoomMsg extends MessageContent {
     public CustomChatRoomMsg(Parcel source) {
         messageType = source.readInt();
         contentJsonStr = source.readString();
-        data = source.createByteArray();
     }
 
     public int getMessageType() {
@@ -81,22 +74,12 @@ public class CustomChatRoomMsg extends MessageContent {
         this.contentJsonStr = contentJsonStr;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
     @Override
     public byte[] encode() {
         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("type", messageType);
             jsonObj.put("content", contentJsonStr);
-            String dataString = U.getBase64Utils().encode(data);
-            jsonObj.put("data", dataString);
         } catch (JSONException e) {
             MyLog.d(TAG, e);
         }
@@ -118,7 +101,6 @@ public class CustomChatRoomMsg extends MessageContent {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(this.messageType);
         parcel.writeString(this.contentJsonStr);
-        parcel.writeByteArray(this.data);
     }
 
     /**

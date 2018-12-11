@@ -21,22 +21,13 @@ public interface IMsgService extends IProvider {
     void leaveChatRoom(String roomId);
 
     /**
-     * 通过融云发送聊天室消息，不经过 AppServer json
+     * 通过融云发送聊天室消息
      * @param roomId
      * @param messageType
      * @param contentJson
      * @param callback
      */
     void sendChatRoomMessage(String roomId, int messageType, JSONObject contentJson, ICallback callback);
-
-    /**
-     * 通过融云发送聊天室消息，不经过 AppServer pb
-     * @param roomId
-     * @param messageType
-     * @param data
-     * @param callback
-     */
-    void sendChatRoomMessage(String roomId, int messageType, byte[] data, ICallback callback);
 
     /**
      * 其他module设置自己的push处理模块
