@@ -3,9 +3,9 @@ package com.module.rankingmode.msg.event;
 import com.module.rankingmode.msg.BasePushInfo;
 
 public class JoinActionEvent {
-    BasePushInfo info;
-    int gameId;
-    long gameCreateMs;
+    public BasePushInfo info;
+    public int gameId;
+    public long gameCreateMs;
 
     public JoinActionEvent(BasePushInfo info, int gameId, long gameCreateMs) {
         this.info = info;

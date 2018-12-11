@@ -3,10 +3,10 @@ package com.module.rankingmode.msg.event;
 import com.module.rankingmode.msg.BasePushInfo;
 
 public class ReadyNoticeEvent {
-    long readyTimeMs;
-    int readyUserID;
+    public long readyTimeMs;
+    public int readyUserID;
 
-    BasePushInfo info;
+    public BasePushInfo info;
 
     public ReadyNoticeEvent(BasePushInfo info, long readyTimeMs, int readyUserID) {
         this.readyTimeMs = readyTimeMs;

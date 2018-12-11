@@ -19,8 +19,6 @@ import com.engine.EngineManager;
 import com.engine.Params;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
-import com.module.rankingmode.prepare.event.MatchStatusChangeEvent;
-import com.module.rankingmode.prepare.presenter.MatchPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.view.VoiceLineView;
 
@@ -52,8 +50,6 @@ public class MatchingFragment extends BaseFragment {
 
     VoiceLineView mVoiceLineView;
 
-    MatchPresenter matchPresenter;
-
     String songName;
     String songTime;
 
@@ -77,9 +73,6 @@ public class MatchingFragment extends BaseFragment {
         mMatchStatusTv = (ExTextView) mRootView.findViewById(R.id.match_status_tv);
 
         mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voice_line_view);
-        mMatchStatusTv.setTag(MatchStatusChangeEvent.MATCH_STATUS_START);
-
-        matchPresenter = new MatchPresenter();
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -200,17 +193,6 @@ public class MatchingFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return true;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(MatchStatusChangeEvent event) {
-
-
-    }
-
-    private void setMatchStatus(int matchStatus) {
-        mToneTuningTv.setVisibility(matchStatus == MatchStatusChangeEvent.MATCH_STATUS_START ? View.VISIBLE : View.GONE);
-        mVoiceLineView.setVisibility(matchStatus == MatchStatusChangeEvent.MATCH_STATUS_START ? View.VISIBLE : View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

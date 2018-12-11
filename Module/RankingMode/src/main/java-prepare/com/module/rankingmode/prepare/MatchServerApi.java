@@ -24,7 +24,7 @@ public interface MatchServerApi {
 
 
     @PUT("http://dev.game.inframe.mobi/v1/game/join")
-    Observable<ApiResult> joinRoom(@Body RequestBody body);
+    Observable<ApiResult> joinGame(@Body RequestBody body);
 
     @GET("http://dev.game.inframe.mobi/v1/game/join")
     Observable<ApiResult> getCurrentGameDate(@Query("gameID") int gameID);

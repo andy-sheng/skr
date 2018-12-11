@@ -27,6 +27,8 @@ public class ApiManager {
      */
     private static final String mBaseUrl = "http://dev.api.inframe.mobi/";
 
+    public static final String APPLICATION_JSOIN = "application/json; charset=utf-8";
+
     private Retrofit mDefalutRetrofit;
 
     /**

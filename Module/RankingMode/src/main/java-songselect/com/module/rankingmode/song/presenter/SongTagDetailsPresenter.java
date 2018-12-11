@@ -1,11 +1,6 @@
 package com.module.rankingmode.song.presenter;
 
-import android.content.Context;
-
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.common.base.BaseFragment;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -15,7 +10,6 @@ import com.module.rankingmode.song.SongSelectServerApi;
 import com.module.rankingmode.song.model.SongModel;
 import com.module.rankingmode.song.view.ISongTagDetailView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
@@ -24,6 +18,7 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
 
     public SongTagDetailsPresenter(ISongTagDetailView view) {
         this.view = view;
+        addToLifeCycle();
     }
 
     /**
@@ -50,6 +45,6 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
                     }
                 }
             }
-        });
+        },this);
     }
 }

@@ -6,11 +6,11 @@ import com.zq.live.proto.Common.UserInfo;
 
 public class JoinNoticeEvent {
 
-    long joinTimeMs;
-    UserInfo userInfo;
-    MusicInfo musicInfo;
+    public long joinTimeMs;
+    public UserInfo userInfo;
+    public MusicInfo musicInfo;
 
-    BasePushInfo info;
+    public BasePushInfo info;
 
     public JoinNoticeEvent(BasePushInfo info, long joinTimeMs, UserInfo userInfo, MusicInfo musicInfo) {
         this.info = info;

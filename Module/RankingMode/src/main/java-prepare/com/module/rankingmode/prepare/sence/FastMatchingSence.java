@@ -10,8 +10,10 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.module.rankingmode.R;
-import com.module.rankingmode.prepare.presenter.MatchPresenter;
+
+import com.module.rankingmode.prepare.presenter.MatchingPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
+import com.module.rankingmode.prepare.view.IMatchingView;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
 
 import java.util.concurrent.TimeUnit;
@@ -21,15 +23,21 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class FastMatchingSence extends RelativeLayout implements ISence {
+import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS;
+import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_ID;
+
+public class FastMatchingSence extends RelativeLayout implements ISence, IMatchingView {
+
     MatchSenceController matchSenceController;
 
-    MatchPresenter matchPresenter;
+    MatchingPresenter matchingPresenter;
 
     Disposable disposable;
 
     MatchingLayerView mLargeMatchingLayerView;
     MatchingLayerView mSmallMatchingLayerView;
+
+    Bundle nextBundle = new Bundle();
 
     public FastMatchingSence(Context context) {
         this(context, null);
@@ -44,11 +52,11 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
         init();
     }
 
-    private void init(){
+    private void init() {
         inflate(getContext(), R.layout.matching_sence_layout, this);
         BaseImageView ownerIcon = findViewById(R.id.owner_icon);
 
-        matchPresenter = new MatchPresenter();
+        matchingPresenter = new MatchingPresenter(this);
 
         mLargeMatchingLayerView = findViewById(R.id.large_matching_layer_view);
         mSmallMatchingLayerView = findViewById(R.id.small_matching_layer_view);
@@ -59,9 +67,10 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
                         .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
     }
+
     @Override
     public void toShow(RelativeLayout parentViewGroup, Bundle bundle) {
-        matchPresenter.startMatch();
+        matchingPresenter.startMatch();
         //这里可能有动画啥的
         setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         parentViewGroup.addView(this);
@@ -69,11 +78,11 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
         disposable = Observable.timer(10, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
-            @Override
-            public void accept(Long aLong) throws Exception {
-                matchSenceController.toNextSence(null);
-            }
-        });
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        matchSenceController.toNextSence(nextBundle);
+                    }
+                });
 
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("一大波skrer在来的路上...");
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配中...");
@@ -88,13 +97,17 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
 
     @Override
     public void toRemoveFromStack(RelativeLayout parentViewGroup) {
-        // todo 仅做test
-        matchPresenter.cancelMatch(1);
+        // todo 只有场景往上切是取消匹配
+        matchingPresenter.cancelMatch(1);
 
         parentViewGroup.removeView(this);
         mSmallMatchingLayerView.release();
         mLargeMatchingLayerView.release();
         disposable.dispose();
+
+        if (matchingPresenter != null) {
+            matchingPresenter.destroy();
+        }
     }
 
     //每个场景有一个是不是可以往下跳的判断
@@ -118,5 +131,12 @@ public class FastMatchingSence extends RelativeLayout implements ISence {
     @Override
     public void setSenceController(MatchSenceController matchSenceController) {
         this.matchSenceController = matchSenceController;
+    }
+
+    @Override
+    public void matchSucess(int gameId, long gameCreatMs) {
+        // 匹配成功
+        nextBundle.putInt(BUNDLE_KEY_GAME_ID, gameId);
+        nextBundle.putLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreatMs);
     }
 }
