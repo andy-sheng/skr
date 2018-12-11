@@ -10,6 +10,8 @@ import java.util.Date;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Unique;
 
+import retrofit2.http.Body;
+
 
 @Entity(
         indexes = {
@@ -31,15 +33,16 @@ public class UserAccount {
     private boolean needEditUserInfo;
     private String serviceToken;
     private String secretToken;
+    private String rongToken;
     private int sex;
     private String birthday;
     private String ext;
 
-    @Generated(hash = 575886058)
+    @Generated(hash = 1329320892)
     public UserAccount(long id, @NotNull String uid, String nickName, String avatar,
-            String password, boolean isLogOff, String thirdId, int channelId,
-            boolean needEditUserInfo, String serviceToken, String secretToken, int sex,
-            String birthday, String ext) {
+                       String password, boolean isLogOff, String thirdId, int channelId,
+                       boolean needEditUserInfo, String serviceToken, String secretToken,
+                       String rongToken, int sex, String birthday, String ext) {
         this.id = id;
         this.uid = uid;
         this.nickName = nickName;
@@ -51,6 +54,7 @@ public class UserAccount {
         this.needEditUserInfo = needEditUserInfo;
         this.serviceToken = serviceToken;
         this.secretToken = secretToken;
+        this.rongToken = rongToken;
         this.sex = sex;
         this.birthday = birthday;
         this.ext = ext;
@@ -146,6 +150,14 @@ public class UserAccount {
 
     public void setSecretToken(String secretToken) {
         this.secretToken = secretToken;
+    }
+
+    public String getRongToken() {
+        return this.rongToken;
+    }
+
+    public void setRongToken(String rongToken) {
+        this.rongToken = rongToken;
     }
 
     public String getExt() {

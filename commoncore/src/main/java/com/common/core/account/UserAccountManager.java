@@ -1,6 +1,8 @@
 package com.common.core.account;
 
 
+import android.widget.Toast;
+
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
@@ -13,6 +15,8 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.UmengStatistics;
 import com.common.utils.U;
+import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -51,7 +55,7 @@ public class UserAccountManager {
     }
 
     public void init() {
-        MyLog.d(TAG,"init" );
+        MyLog.d(TAG, "init");
         long channelId = HostChannelManager.getInstance().getChannelId();
         UserAccount userAccount = UserAccountLocalApi.getUserAccount(channelId);
         setAccount(userAccount);
@@ -70,7 +74,7 @@ public class UserAccountManager {
     }
 
     private void setAccount(UserAccount account) {
-        MyLog.d(TAG,"setAccount" + " account=" + account);
+        MyLog.d(TAG, "setAccount" + " account=" + account);
         mAccount = account;
         if (account != null) {
             // 取消匿名模式
@@ -80,7 +84,7 @@ public class UserAccountManager {
 //            MiLinkClientAdapter.getInstance().initCallBackFirst();
             // 同步昵称等详细信息
             MyUserInfoManager.getInstance().init();
-
+            connectRongIM(account.getRongToken());
             EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
         } else {
 
@@ -88,6 +92,24 @@ public class UserAccountManager {
         // 只有非游客模式才发已有账号的事件
     }
 
+    private void connectRongIM(String rongToken) {
+        ModuleServiceManager.getInstance().getMsgService().connectRongIM(rongToken, new ICallback() {
+            @Override
+            public void onSucess(Object obj) {
+                U.getToastUtil().showShort("与融云服务器连接成功");
+            }
+
+            @Override
+            public void onFailed(Object obj, int errcode, String message) {
+                boolean result = (boolean) obj;
+                if (result){
+                    // todo 连接融云失败
+                }else {
+                    // todo token有问题
+                }
+            }
+        });
+    }
 
     public void setAnonymousId(long anonymousId) {
 
@@ -130,6 +152,13 @@ public class UserAccountManager {
     public String getSSecurity() {
         if (mAccount != null) {
             return mAccount.getSecretToken();
+        }
+        return "";
+    }
+
+    public String getRongToken(){
+        if (mAccount != null){
+            return mAccount.getRongToken();
         }
         return "";
     }
@@ -250,6 +279,7 @@ public class UserAccountManager {
                         if (obj.getErrno() == 0) {
                             String secretToken = obj.getData().getJSONObject("token").getString("T");
                             String serviceToken = obj.getData().getJSONObject("token").getString("S");
+                            String rongToken = obj.getData().getJSONObject("token").getString("RC");
                             com.alibaba.fastjson.JSONObject profileJO = obj.getData().getJSONObject("profile");
                             long userID = profileJO.getLong("userID");
                             String nickName = profileJO.getString("nickname");
@@ -260,6 +290,7 @@ public class UserAccountManager {
                             UserAccount userAccount = new UserAccount();
                             userAccount.setServiceToken(serviceToken);
                             userAccount.setSecretToken(secretToken);
+                            userAccount.setRongToken(rongToken);
                             userAccount.setUid(String.valueOf(userID));
                             userAccount.setNickName(nickName);
                             userAccount.setSex(sex);

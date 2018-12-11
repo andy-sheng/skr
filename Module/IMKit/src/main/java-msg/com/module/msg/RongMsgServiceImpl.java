@@ -13,6 +13,11 @@ import io.rong.test.fragment.MessageFragment;
 public class RongMsgServiceImpl implements IMsgService {
 
     @Override
+    public void connectRongIM(String token, ICallback callback) {
+        RongMsgManager.getInstance().connectRongIM(token, callback);
+    }
+
+    @Override
     public void joinChatRoom(String roomId, ICallback callback) {
         RongMsgManager.getInstance().joinChatRoom(roomId, callback);
     }

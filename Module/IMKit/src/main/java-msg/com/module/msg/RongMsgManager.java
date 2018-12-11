@@ -85,7 +85,7 @@ public class RongMsgManager {
 
                         // todo pb形式
                         byte[] data = customChatRoomMsg.getData();
-                        for (IPushMsgProcess process : processors){
+                        for (IPushMsgProcess process : processors) {
                             process.process(customChatRoomMsg.getMessageType(), data);
                         }
                     }
@@ -106,6 +106,48 @@ public class RongMsgManager {
             }
             processorSet.add(processor);
         }
+    }
+
+    public void connectRongIM(String token, ICallback callback) {
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            /**
+             * 连接融云成功
+             * @param userid 当前 token 对应的用户 id
+             */
+            @Override
+            public void onSuccess(String userid) {
+                MyLog.d(TAG, "ConnectCallback connect Success");
+                if (callback != null) {
+                    callback.onSucess(userid);
+                }
+            }
+
+            /**
+             * 连接融云失败
+             * @param errorCode 错误码，可到官网 查看错误码对应的注释
+             *                  https://www.rongcloud.cn/docs/status_code.html#android_ios_code
+             */
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                MyLog.d(TAG, "ConnectCallback " + "onError" + " errorCode=" + errorCode);
+                if (callback != null) {
+                    callback.onFailed(true, errorCode.getValue(), errorCode.getMessage());
+                }
+            }
+
+            /**Token 错误。可以从下面两点检查
+             * 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
+             * 2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
+             */
+            @Override
+            public void onTokenIncorrect() {
+                MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
+                if (callback != null) {
+                    callback.onFailed(false, 0, "");
+                }
+            }
+        });
+
     }
 
     public void joinChatRoom(String roomId, ICallback callback) {
@@ -150,7 +192,7 @@ public class RongMsgManager {
         });
     }
 
-    public void sendChatRoomMessage(String roomId, int messageType, byte[] data, ICallback callback){
+    public void sendChatRoomMessage(String roomId, int messageType, byte[] data, ICallback callback) {
         CustomChatRoomMsg customChatRoomMsg = new CustomChatRoomMsg();
         customChatRoomMsg.setMessageType(messageType);
         customChatRoomMsg.setData(data);

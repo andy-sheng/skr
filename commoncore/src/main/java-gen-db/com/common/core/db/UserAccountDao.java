@@ -35,9 +35,10 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         public final static Property NeedEditUserInfo = new Property(8, boolean.class, "needEditUserInfo", false, "NEED_EDIT_USER_INFO");
         public final static Property ServiceToken = new Property(9, String.class, "serviceToken", false, "SERVICE_TOKEN");
         public final static Property SecretToken = new Property(10, String.class, "secretToken", false, "SECRET_TOKEN");
-        public final static Property Sex = new Property(11, int.class, "sex", false, "SEX");
-        public final static Property Birthday = new Property(12, String.class, "birthday", false, "BIRTHDAY");
-        public final static Property Ext = new Property(13, String.class, "ext", false, "EXT");
+        public final static Property RongToken = new Property(11, String.class, "rongToken", false, "RONG_TOKEN");
+        public final static Property Sex = new Property(12, int.class, "sex", false, "SEX");
+        public final static Property Birthday = new Property(13, String.class, "birthday", false, "BIRTHDAY");
+        public final static Property Ext = new Property(14, String.class, "ext", false, "EXT");
     }
 
 
@@ -64,9 +65,10 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
                 "\"NEED_EDIT_USER_INFO\" INTEGER NOT NULL ," + // 8: needEditUserInfo
                 "\"SERVICE_TOKEN\" TEXT," + // 9: serviceToken
                 "\"SECRET_TOKEN\" TEXT," + // 10: secretToken
-                "\"SEX\" INTEGER NOT NULL ," + // 11: sex
-                "\"BIRTHDAY\" TEXT," + // 12: birthday
-                "\"EXT\" TEXT);"); // 13: ext
+                "\"RONG_TOKEN\" TEXT," + // 11: rongToken
+                "\"SEX\" INTEGER NOT NULL ," + // 12: sex
+                "\"BIRTHDAY\" TEXT," + // 13: birthday
+                "\"EXT\" TEXT);"); // 14: ext
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_ACCOUNT_UID_DESC ON USER_ACCOUNT" +
                 " (\"UID\" DESC);");
@@ -116,16 +118,21 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         if (secretToken != null) {
             stmt.bindString(11, secretToken);
         }
-        stmt.bindLong(12, entity.getSex());
+ 
+        String rongToken = entity.getRongToken();
+        if (rongToken != null) {
+            stmt.bindString(12, rongToken);
+        }
+        stmt.bindLong(13, entity.getSex());
  
         String birthday = entity.getBirthday();
         if (birthday != null) {
-            stmt.bindString(13, birthday);
+            stmt.bindString(14, birthday);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(14, ext);
+            stmt.bindString(15, ext);
         }
     }
 
@@ -167,16 +174,21 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         if (secretToken != null) {
             stmt.bindString(11, secretToken);
         }
-        stmt.bindLong(12, entity.getSex());
+ 
+        String rongToken = entity.getRongToken();
+        if (rongToken != null) {
+            stmt.bindString(12, rongToken);
+        }
+        stmt.bindLong(13, entity.getSex());
  
         String birthday = entity.getBirthday();
         if (birthday != null) {
-            stmt.bindString(13, birthday);
+            stmt.bindString(14, birthday);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(14, ext);
+            stmt.bindString(15, ext);
         }
     }
 
@@ -199,9 +211,10 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
             cursor.getShort(offset + 8) != 0, // needEditUserInfo
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // serviceToken
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // secretToken
-            cursor.getInt(offset + 11), // sex
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // birthday
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // ext
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // rongToken
+            cursor.getInt(offset + 12), // sex
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // birthday
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // ext
         );
         return entity;
     }
@@ -219,9 +232,10 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         entity.setNeedEditUserInfo(cursor.getShort(offset + 8) != 0);
         entity.setServiceToken(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setSecretToken(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setSex(cursor.getInt(offset + 11));
-        entity.setBirthday(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setExt(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setRongToken(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setSex(cursor.getInt(offset + 12));
+        entity.setBirthday(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setExt(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
      }
     
     @Override

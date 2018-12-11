@@ -6,6 +6,12 @@ import com.module.common.ICallback;
 
 public interface IMsgService extends IProvider {
     /**
+     * 与融云服务器建立连接
+     * @param token
+     * @param callback
+     */
+    void connectRongIM(String token, ICallback callback);
+    /**
      * 加入融云聊天室
      * @param roomId
      * @param callback

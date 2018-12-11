@@ -7,7 +7,6 @@ import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
@@ -16,12 +15,10 @@ import retrofit2.http.Query;
  */
 public interface MatchServerApi {
 
-    @Headers("Content-Type : application/json")
     @PUT("http://dev.game.inframe.mobi/v1/game/query-match")
     Observable<ApiResult> startMatch(@Body RequestBody body);
 
 
-    @Headers("Content-Type : application/json")
     @PUT("http://dev.game.inframe.mobi/v1/game/cancel-match")
     Observable<ApiResult> cancleMatch(@Body RequestBody body);
 
