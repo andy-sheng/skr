@@ -55,7 +55,7 @@ public class UploadTask {
                         int code = data.getInteger("StatusCode");
                         if (code == 200) {
                             String accessKeyId = data.getString("AccessKeyId");
-                            String accessKeySecret = data.getString("accessKeySecret");
+                            String accessKeySecret = data.getString("AccessKeySecret");
                             String securityToken = data.getString("SecurityToken");
                             OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
 
@@ -77,7 +77,7 @@ public class UploadTask {
                             String callbackBody = callback.getString("callbackBody");
                             String callbackBodyType = callback.getString("callbackBodyType");
 
-                            PutObjectRequest request = createRequest(bucketName, "1111", callbackUrl, callbackBody, callbackBodyType);
+                            PutObjectRequest request = createRequest(bucketName, "1111.jpg", callbackUrl, callbackBody, callbackBodyType);
 
                             request.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
                                 @Override

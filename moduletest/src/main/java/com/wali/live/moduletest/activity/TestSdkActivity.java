@@ -555,20 +555,16 @@ public class TestSdkActivity extends BaseActivity {
                                                 @Override
                                                 public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
                                                     MyLog.d(TAG, "onProgress" + " request=" + request + " currentSize=" + currentSize + " totalSize=" + totalSize);
-
                                                 }
 
                                                 @Override
                                                 public void onSuccess(OSSRequest request, OSSResult result) {
                                                     MyLog.d(TAG, "onSuccess" + " request=" + request + " result=" + result);
-
-
                                                 }
 
                                                 @Override
                                                 public void onFailure(OSSRequest request, ClientException clientException, ServiceException serviceException) {
                                                     MyLog.d(TAG, "onFailure" + " request=" + request + " clientException=" + clientException + " serviceException=" + serviceException);
-
                                                 }
                                             });
 
