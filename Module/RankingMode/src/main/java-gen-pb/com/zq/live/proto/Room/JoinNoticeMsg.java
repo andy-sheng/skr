@@ -9,14 +9,13 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-import com.zq.live.proto.Common.MusicInfo;
-import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
-import java.lang.Long;
+import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 /**
@@ -27,53 +26,56 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
 
   private static final long serialVersionUID = 0L;
 
-  public static final Long DEFAULT_JOINTIMEMS = 0L;
+  public static final Integer DEFAULT_HASJOINEDUSERCNT = 0;
+
+  public static final Integer DEFAULT_READYCLOCKRESMS = 0;
 
   /**
-   * 进入房间的用户信息
+   * 加入游戏的信息
    */
   @WireField(
       tag = 1,
-      adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Room.JoinInfo#ADAPTER",
+      label = WireField.Label.REPEATED
   )
-  public final UserInfo userInfo;
+  public final List<JoinInfo> joinInfo;
 
   /**
-   * 演唱音乐信息
+   * 已经加入游戏的人数
    */
   @WireField(
       tag = 2,
-      adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER"
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final MusicInfo musicInfo;
+  public final Integer hasJoinedUserCnt;
 
   /**
-   * 加入的毫秒时间戳
+   * 准备时钟剩余秒数,最后一个玩家加入后，赋值
    */
   @WireField(
       tag = 3,
-      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
+      adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
-  public final Long joinTimeMs;
+  public final Integer readyClockResMs;
 
-  public JoinNoticeMsg(UserInfo userInfo, MusicInfo musicInfo, Long joinTimeMs) {
-    this(userInfo, musicInfo, joinTimeMs, ByteString.EMPTY);
+  public JoinNoticeMsg(List<JoinInfo> joinInfo, Integer hasJoinedUserCnt, Integer readyClockResMs) {
+    this(joinInfo, hasJoinedUserCnt, readyClockResMs, ByteString.EMPTY);
   }
 
-  public JoinNoticeMsg(UserInfo userInfo, MusicInfo musicInfo, Long joinTimeMs,
+  public JoinNoticeMsg(List<JoinInfo> joinInfo, Integer hasJoinedUserCnt, Integer readyClockResMs,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.userInfo = userInfo;
-    this.musicInfo = musicInfo;
-    this.joinTimeMs = joinTimeMs;
+    this.joinInfo = Internal.immutableCopyOf("joinInfo", joinInfo);
+    this.hasJoinedUserCnt = hasJoinedUserCnt;
+    this.readyClockResMs = readyClockResMs;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.userInfo = userInfo;
-    builder.musicInfo = musicInfo;
-    builder.joinTimeMs = joinTimeMs;
+    builder.joinInfo = Internal.copyOf("joinInfo", joinInfo);
+    builder.hasJoinedUserCnt = hasJoinedUserCnt;
+    builder.readyClockResMs = readyClockResMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -84,9 +86,9 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
     if (!(other instanceof JoinNoticeMsg)) return false;
     JoinNoticeMsg o = (JoinNoticeMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(userInfo, o.userInfo)
-        && Internal.equals(musicInfo, o.musicInfo)
-        && Internal.equals(joinTimeMs, o.joinTimeMs);
+        && joinInfo.equals(o.joinInfo)
+        && Internal.equals(hasJoinedUserCnt, o.hasJoinedUserCnt)
+        && Internal.equals(readyClockResMs, o.readyClockResMs);
   }
 
   @Override
@@ -94,9 +96,9 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (userInfo != null ? userInfo.hashCode() : 0);
-      result = result * 37 + (musicInfo != null ? musicInfo.hashCode() : 0);
-      result = result * 37 + (joinTimeMs != null ? joinTimeMs.hashCode() : 0);
+      result = result * 37 + joinInfo.hashCode();
+      result = result * 37 + (hasJoinedUserCnt != null ? hasJoinedUserCnt.hashCode() : 0);
+      result = result * 37 + (readyClockResMs != null ? readyClockResMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -105,9 +107,9 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (userInfo != null) builder.append(", userInfo=").append(userInfo);
-    if (musicInfo != null) builder.append(", musicInfo=").append(musicInfo);
-    if (joinTimeMs != null) builder.append(", joinTimeMs=").append(joinTimeMs);
+    if (!joinInfo.isEmpty()) builder.append(", joinInfo=").append(joinInfo);
+    if (hasJoinedUserCnt != null) builder.append(", hasJoinedUserCnt=").append(hasJoinedUserCnt);
+    if (readyClockResMs != null) builder.append(", readyClockResMs=").append(readyClockResMs);
     return builder.replace(0, 2, "JoinNoticeMsg{").append('}').toString();
   }
 
@@ -122,93 +124,95 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
   }
 
   /**
-   * 进入房间的用户信息
+   * 加入游戏的信息
    */
-  public UserInfo getUserInfo() {
-    if(userInfo==null){
-        return new UserInfo.Builder().build();
+  public List<JoinInfo> getJoinInfoList() {
+    if(joinInfo==null){
+        return new java.util.ArrayList<JoinInfo>();
     }
-    return userInfo;
+    return joinInfo;
   }
 
   /**
-   * 演唱音乐信息
+   * 已经加入游戏的人数
    */
-  public MusicInfo getMusicInfo() {
-    if(musicInfo==null){
-        return new MusicInfo.Builder().build();
+  public Integer getHasJoinedUserCnt() {
+    if(hasJoinedUserCnt==null){
+        return DEFAULT_HASJOINEDUSERCNT;
     }
-    return musicInfo;
+    return hasJoinedUserCnt;
   }
 
   /**
-   * 加入的毫秒时间戳
+   * 准备时钟剩余秒数,最后一个玩家加入后，赋值
    */
-  public Long getJoinTimeMs() {
-    if(joinTimeMs==null){
-        return DEFAULT_JOINTIMEMS;
+  public Integer getReadyClockResMs() {
+    if(readyClockResMs==null){
+        return DEFAULT_READYCLOCKRESMS;
     }
-    return joinTimeMs;
+    return readyClockResMs;
   }
 
   /**
-   * 进入房间的用户信息
+   * 加入游戏的信息
    */
-  public boolean hasUserInfo() {
-    return userInfo!=null;
+  public boolean hasJoinInfoList() {
+    return joinInfo!=null;
   }
 
   /**
-   * 演唱音乐信息
+   * 已经加入游戏的人数
    */
-  public boolean hasMusicInfo() {
-    return musicInfo!=null;
+  public boolean hasHasJoinedUserCnt() {
+    return hasJoinedUserCnt!=null;
   }
 
   /**
-   * 加入的毫秒时间戳
+   * 准备时钟剩余秒数,最后一个玩家加入后，赋值
    */
-  public boolean hasJoinTimeMs() {
-    return joinTimeMs!=null;
+  public boolean hasReadyClockResMs() {
+    return readyClockResMs!=null;
   }
 
   public static final class Builder extends Message.Builder<JoinNoticeMsg, Builder> {
-    public UserInfo userInfo;
+    public List<JoinInfo> joinInfo;
 
-    public MusicInfo musicInfo;
+    public Integer hasJoinedUserCnt;
 
-    public Long joinTimeMs;
+    public Integer readyClockResMs;
 
     public Builder() {
+      joinInfo = Internal.newMutableList();
     }
 
     /**
-     * 进入房间的用户信息
+     * 加入游戏的信息
      */
-    public Builder setUserInfo(UserInfo userInfo) {
-      this.userInfo = userInfo;
+    public Builder addAllJoinInfo(List<JoinInfo> joinInfo) {
+      Internal.checkElementsNotNull(joinInfo);
+      this.joinInfo = joinInfo;
       return this;
     }
 
     /**
-     * 演唱音乐信息
+     * 已经加入游戏的人数
      */
-    public Builder setMusicInfo(MusicInfo musicInfo) {
-      this.musicInfo = musicInfo;
+    public Builder setHasJoinedUserCnt(Integer hasJoinedUserCnt) {
+      this.hasJoinedUserCnt = hasJoinedUserCnt;
       return this;
     }
 
     /**
-     * 加入的毫秒时间戳
+     * 准备时钟剩余秒数,最后一个玩家加入后，赋值
      */
-    public Builder setJoinTimeMs(Long joinTimeMs) {
-      this.joinTimeMs = joinTimeMs;
+    public Builder setReadyClockResMs(Integer readyClockResMs) {
+      this.readyClockResMs = readyClockResMs;
       return this;
     }
 
     @Override
     public JoinNoticeMsg build() {
-      return new JoinNoticeMsg(userInfo, musicInfo, joinTimeMs, super.buildUnknownFields());
+      return new JoinNoticeMsg(joinInfo, hasJoinedUserCnt, readyClockResMs, super.buildUnknownFields());
     }
   }
 
@@ -219,17 +223,17 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
 
     @Override
     public int encodedSize(JoinNoticeMsg value) {
-      return UserInfo.ADAPTER.encodedSizeWithTag(1, value.userInfo)
-          + MusicInfo.ADAPTER.encodedSizeWithTag(2, value.musicInfo)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(3, value.joinTimeMs)
+      return JoinInfo.ADAPTER.asRepeated().encodedSizeWithTag(1, value.joinInfo)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.hasJoinedUserCnt)
+          + ProtoAdapter.SINT32.encodedSizeWithTag(3, value.readyClockResMs)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, JoinNoticeMsg value) throws IOException {
-      UserInfo.ADAPTER.encodeWithTag(writer, 1, value.userInfo);
-      MusicInfo.ADAPTER.encodeWithTag(writer, 2, value.musicInfo);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 3, value.joinTimeMs);
+      JoinInfo.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.joinInfo);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.hasJoinedUserCnt);
+      ProtoAdapter.SINT32.encodeWithTag(writer, 3, value.readyClockResMs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -239,9 +243,9 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setUserInfo(UserInfo.ADAPTER.decode(reader)); break;
-          case 2: builder.setMusicInfo(MusicInfo.ADAPTER.decode(reader)); break;
-          case 3: builder.setJoinTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 1: builder.joinInfo.add(JoinInfo.ADAPTER.decode(reader)); break;
+          case 2: builder.setHasJoinedUserCnt(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setReadyClockResMs(ProtoAdapter.SINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -256,8 +260,7 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
     @Override
     public JoinNoticeMsg redact(JoinNoticeMsg value) {
       Builder builder = value.newBuilder();
-      if (builder.userInfo != null) builder.userInfo = UserInfo.ADAPTER.redact(builder.userInfo);
-      if (builder.musicInfo != null) builder.musicInfo = MusicInfo.ADAPTER.redact(builder.musicInfo);
+      Internal.redactElements(builder.joinInfo, JoinInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

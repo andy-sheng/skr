@@ -10,12 +10,13 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Integer;
-import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 /**
@@ -26,43 +27,80 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
 
   private static final long serialVersionUID = 0L;
 
-  public static final Integer DEFAULT_READYUSERID = 0;
+  public static final Integer DEFAULT_HASREADYEDUSERCNT = 0;
 
-  public static final Long DEFAULT_READYTIMEMS = 0L;
+  public static final Boolean DEFAULT_ISGAMESTART = false;
 
   /**
-   * 准备用户ID
+   * 准备信息
    */
   @WireField(
       tag = 1,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.zq.live.proto.Room.ReadyInfo#ADAPTER",
+      label = WireField.Label.REPEATED
   )
-  public final Integer readyUserID;
+  public final List<ReadyInfo> readyInfo;
 
   /**
-   * 准备的毫秒时间戳
+   * 轮次信息
    */
   @WireField(
       tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
+      adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER",
+      label = WireField.Label.REPEATED
   )
-  public final Long readyTimeMs;
+  public final List<RoundInfo> roundInfo;
 
-  public ReadyNoticeMsg(Integer readyUserID, Long readyTimeMs) {
-    this(readyUserID, readyTimeMs, ByteString.EMPTY);
+  /**
+   * 游戏信息
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Room.GameInfo#ADAPTER"
+  )
+  public final GameInfo gameInfo;
+
+  /**
+   * 已经准备人数
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#SINT32"
+  )
+  public final Integer HasReadyedUserCnt;
+
+  /**
+   * 游戏是否开始
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  public final Boolean isGameStart;
+
+  public ReadyNoticeMsg(List<ReadyInfo> readyInfo, List<RoundInfo> roundInfo, GameInfo gameInfo,
+      Integer HasReadyedUserCnt, Boolean isGameStart) {
+    this(readyInfo, roundInfo, gameInfo, HasReadyedUserCnt, isGameStart, ByteString.EMPTY);
   }
 
-  public ReadyNoticeMsg(Integer readyUserID, Long readyTimeMs, ByteString unknownFields) {
+  public ReadyNoticeMsg(List<ReadyInfo> readyInfo, List<RoundInfo> roundInfo, GameInfo gameInfo,
+      Integer HasReadyedUserCnt, Boolean isGameStart, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.readyUserID = readyUserID;
-    this.readyTimeMs = readyTimeMs;
+    this.readyInfo = Internal.immutableCopyOf("readyInfo", readyInfo);
+    this.roundInfo = Internal.immutableCopyOf("roundInfo", roundInfo);
+    this.gameInfo = gameInfo;
+    this.HasReadyedUserCnt = HasReadyedUserCnt;
+    this.isGameStart = isGameStart;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.readyUserID = readyUserID;
-    builder.readyTimeMs = readyTimeMs;
+    builder.readyInfo = Internal.copyOf("readyInfo", readyInfo);
+    builder.roundInfo = Internal.copyOf("roundInfo", roundInfo);
+    builder.gameInfo = gameInfo;
+    builder.HasReadyedUserCnt = HasReadyedUserCnt;
+    builder.isGameStart = isGameStart;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -73,8 +111,11 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     if (!(other instanceof ReadyNoticeMsg)) return false;
     ReadyNoticeMsg o = (ReadyNoticeMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(readyUserID, o.readyUserID)
-        && Internal.equals(readyTimeMs, o.readyTimeMs);
+        && readyInfo.equals(o.readyInfo)
+        && roundInfo.equals(o.roundInfo)
+        && Internal.equals(gameInfo, o.gameInfo)
+        && Internal.equals(HasReadyedUserCnt, o.HasReadyedUserCnt)
+        && Internal.equals(isGameStart, o.isGameStart);
   }
 
   @Override
@@ -82,8 +123,11 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (readyUserID != null ? readyUserID.hashCode() : 0);
-      result = result * 37 + (readyTimeMs != null ? readyTimeMs.hashCode() : 0);
+      result = result * 37 + readyInfo.hashCode();
+      result = result * 37 + roundInfo.hashCode();
+      result = result * 37 + (gameInfo != null ? gameInfo.hashCode() : 0);
+      result = result * 37 + (HasReadyedUserCnt != null ? HasReadyedUserCnt.hashCode() : 0);
+      result = result * 37 + (isGameStart != null ? isGameStart.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -92,8 +136,11 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (readyUserID != null) builder.append(", readyUserID=").append(readyUserID);
-    if (readyTimeMs != null) builder.append(", readyTimeMs=").append(readyTimeMs);
+    if (!readyInfo.isEmpty()) builder.append(", readyInfo=").append(readyInfo);
+    if (!roundInfo.isEmpty()) builder.append(", roundInfo=").append(roundInfo);
+    if (gameInfo != null) builder.append(", gameInfo=").append(gameInfo);
+    if (HasReadyedUserCnt != null) builder.append(", HasReadyedUserCnt=").append(HasReadyedUserCnt);
+    if (isGameStart != null) builder.append(", isGameStart=").append(isGameStart);
     return builder.replace(0, 2, "ReadyNoticeMsg{").append('}').toString();
   }
 
@@ -108,66 +155,151 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
   }
 
   /**
-   * 准备用户ID
+   * 准备信息
    */
-  public Integer getReadyUserID() {
-    if(readyUserID==null){
-        return DEFAULT_READYUSERID;
+  public List<ReadyInfo> getReadyInfoList() {
+    if(readyInfo==null){
+        return new java.util.ArrayList<ReadyInfo>();
     }
-    return readyUserID;
+    return readyInfo;
   }
 
   /**
-   * 准备的毫秒时间戳
+   * 轮次信息
    */
-  public Long getReadyTimeMs() {
-    if(readyTimeMs==null){
-        return DEFAULT_READYTIMEMS;
+  public List<RoundInfo> getRoundInfoList() {
+    if(roundInfo==null){
+        return new java.util.ArrayList<RoundInfo>();
     }
-    return readyTimeMs;
+    return roundInfo;
   }
 
   /**
-   * 准备用户ID
+   * 游戏信息
    */
-  public boolean hasReadyUserID() {
-    return readyUserID!=null;
+  public GameInfo getGameInfo() {
+    if(gameInfo==null){
+        return new GameInfo.Builder().build();
+    }
+    return gameInfo;
   }
 
   /**
-   * 准备的毫秒时间戳
+   * 已经准备人数
    */
-  public boolean hasReadyTimeMs() {
-    return readyTimeMs!=null;
+  public Integer getHasReadyedUserCnt() {
+    if(HasReadyedUserCnt==null){
+        return DEFAULT_HASREADYEDUSERCNT;
+    }
+    return HasReadyedUserCnt;
+  }
+
+  /**
+   * 游戏是否开始
+   */
+  public Boolean getIsGameStart() {
+    if(isGameStart==null){
+        return DEFAULT_ISGAMESTART;
+    }
+    return isGameStart;
+  }
+
+  /**
+   * 准备信息
+   */
+  public boolean hasReadyInfoList() {
+    return readyInfo!=null;
+  }
+
+  /**
+   * 轮次信息
+   */
+  public boolean hasRoundInfoList() {
+    return roundInfo!=null;
+  }
+
+  /**
+   * 游戏信息
+   */
+  public boolean hasGameInfo() {
+    return gameInfo!=null;
+  }
+
+  /**
+   * 已经准备人数
+   */
+  public boolean hasHasReadyedUserCnt() {
+    return HasReadyedUserCnt!=null;
+  }
+
+  /**
+   * 游戏是否开始
+   */
+  public boolean hasIsGameStart() {
+    return isGameStart!=null;
   }
 
   public static final class Builder extends Message.Builder<ReadyNoticeMsg, Builder> {
-    public Integer readyUserID;
+    public List<ReadyInfo> readyInfo;
 
-    public Long readyTimeMs;
+    public List<RoundInfo> roundInfo;
+
+    public GameInfo gameInfo;
+
+    public Integer HasReadyedUserCnt;
+
+    public Boolean isGameStart;
 
     public Builder() {
+      readyInfo = Internal.newMutableList();
+      roundInfo = Internal.newMutableList();
     }
 
     /**
-     * 准备用户ID
+     * 准备信息
      */
-    public Builder setReadyUserID(Integer readyUserID) {
-      this.readyUserID = readyUserID;
+    public Builder addAllReadyInfo(List<ReadyInfo> readyInfo) {
+      Internal.checkElementsNotNull(readyInfo);
+      this.readyInfo = readyInfo;
       return this;
     }
 
     /**
-     * 准备的毫秒时间戳
+     * 轮次信息
      */
-    public Builder setReadyTimeMs(Long readyTimeMs) {
-      this.readyTimeMs = readyTimeMs;
+    public Builder addAllRoundInfo(List<RoundInfo> roundInfo) {
+      Internal.checkElementsNotNull(roundInfo);
+      this.roundInfo = roundInfo;
+      return this;
+    }
+
+    /**
+     * 游戏信息
+     */
+    public Builder setGameInfo(GameInfo gameInfo) {
+      this.gameInfo = gameInfo;
+      return this;
+    }
+
+    /**
+     * 已经准备人数
+     */
+    public Builder setHasReadyedUserCnt(Integer HasReadyedUserCnt) {
+      this.HasReadyedUserCnt = HasReadyedUserCnt;
+      return this;
+    }
+
+    /**
+     * 游戏是否开始
+     */
+    public Builder setIsGameStart(Boolean isGameStart) {
+      this.isGameStart = isGameStart;
       return this;
     }
 
     @Override
     public ReadyNoticeMsg build() {
-      return new ReadyNoticeMsg(readyUserID, readyTimeMs, super.buildUnknownFields());
+      return new ReadyNoticeMsg(readyInfo, roundInfo, gameInfo, HasReadyedUserCnt, isGameStart, super.buildUnknownFields());
     }
   }
 
@@ -178,15 +310,21 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
 
     @Override
     public int encodedSize(ReadyNoticeMsg value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.readyUserID)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.readyTimeMs)
+      return ReadyInfo.ADAPTER.asRepeated().encodedSizeWithTag(1, value.readyInfo)
+          + RoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(2, value.roundInfo)
+          + GameInfo.ADAPTER.encodedSizeWithTag(3, value.gameInfo)
+          + ProtoAdapter.SINT32.encodedSizeWithTag(4, value.HasReadyedUserCnt)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(5, value.isGameStart)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, ReadyNoticeMsg value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.readyUserID);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.readyTimeMs);
+      ReadyInfo.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.readyInfo);
+      RoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.roundInfo);
+      GameInfo.ADAPTER.encodeWithTag(writer, 3, value.gameInfo);
+      ProtoAdapter.SINT32.encodeWithTag(writer, 4, value.HasReadyedUserCnt);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 5, value.isGameStart);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -196,8 +334,11 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setReadyUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setReadyTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 1: builder.readyInfo.add(ReadyInfo.ADAPTER.decode(reader)); break;
+          case 2: builder.roundInfo.add(RoundInfo.ADAPTER.decode(reader)); break;
+          case 3: builder.setGameInfo(GameInfo.ADAPTER.decode(reader)); break;
+          case 4: builder.setHasReadyedUserCnt(ProtoAdapter.SINT32.decode(reader)); break;
+          case 5: builder.setIsGameStart(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -212,6 +353,9 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     @Override
     public ReadyNoticeMsg redact(ReadyNoticeMsg value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.readyInfo, ReadyInfo.ADAPTER);
+      Internal.redactElements(builder.roundInfo, RoundInfo.ADAPTER);
+      if (builder.gameInfo != null) builder.gameInfo = GameInfo.ADAPTER.redact(builder.gameInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

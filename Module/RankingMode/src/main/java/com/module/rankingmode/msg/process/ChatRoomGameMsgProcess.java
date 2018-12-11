@@ -8,26 +8,30 @@ import com.module.rankingmode.msg.event.JoinNoticeEvent;
 import com.module.rankingmode.msg.event.QuitGameEvent;
 import com.module.rankingmode.msg.event.ReadyAndStartNoticeEvent;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
-import com.module.rankingmode.msg.event.RoomInOutEvent;
 import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
 import com.zq.live.proto.Common.MusicInfo;
-import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
 import com.zq.live.proto.Room.ERoomMsgType;
+import com.zq.live.proto.Room.GameInfo;
 import com.zq.live.proto.Room.JoinActionMsg;
+import com.zq.live.proto.Room.JoinInfo;
 import com.zq.live.proto.Room.JoinNoticeMsg;
+import com.zq.live.proto.Room.PlayerInfo;
 import com.zq.live.proto.Room.QuitGameMsg;
 import com.zq.live.proto.Room.ReadyAndStartNoticeMsg;
+import com.zq.live.proto.Room.ReadyInfo;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
-import com.zq.live.proto.Room.RoomInOutMsg;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
+import com.zq.live.proto.Room.RoundInfo;
 import com.zq.live.proto.Room.RoundOverMsg;
 import com.zq.live.proto.Room.SyncStatusMsg;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
@@ -57,7 +61,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         } else if (msg.getMsgType() == ERoomMsgType.RM_SYNC_STATUS) {
             processSyncStatusMsg(basePushInfo, msg.getSyncStatusMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROOM_IN_OUT) {
-            processRoomInOutMsg(basePushInfo, msg.getRoomInOutMsg());
+
         }
     }
 
@@ -80,9 +84,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
 
         int gameId = joinActionMsg.getGameID();
-        long gameCreateMs = joinActionMsg.getGameCreateMS();
+        long gameCreateMs = joinActionMsg.getCreateTimeMs();
+        List<PlayerInfo> playerInfos = joinActionMsg.getPlayersList();
+        List<MusicInfo> musicInfos = joinActionMsg.getCommonMusicInfoList();
 
-        EventBus.getDefault().post(new JoinActionEvent(info, gameId, gameCreateMs));
+        EventBus.getDefault().post(new JoinActionEvent(info, gameId, gameCreateMs, playerInfos, musicInfos));
     }
 
     //加入游戏通知消息
@@ -92,11 +98,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             return;
         }
 
-        long joinTimeMs = joinNoticeMsg.getJoinTimeMs();
-        UserInfo userInfo = joinNoticeMsg.getUserInfo();
-        MusicInfo musicInfo = joinNoticeMsg.getMusicInfo();
+        List<JoinInfo> joinInfos = joinNoticeMsg.getJoinInfoList();
+        int hasJoinedUserCnt = joinNoticeMsg.getHasJoinedUserCnt();
+        int readyClockResMs = joinNoticeMsg.getReadyClockResMs();
 
-        EventBus.getDefault().post(new JoinNoticeEvent(info, joinTimeMs, userInfo, musicInfo));
+        EventBus.getDefault().post(new JoinNoticeEvent(info, joinInfos, hasJoinedUserCnt, readyClockResMs));
     }
 
     //准备游戏通知消息
@@ -106,10 +112,13 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             return;
         }
 
-        long readyTimeMs = readyNoticeMsg.getReadyTimeMs();
-        int readyUserID = readyNoticeMsg.getReadyUserID();
+        List<ReadyInfo> readyInfos = readyNoticeMsg.getReadyInfoList();//准备信息
+        List<RoundInfo> roundInfos = readyNoticeMsg.getRoundInfoList();//轮次信息
+        GameInfo gameInfo = readyNoticeMsg.getGameInfo();
+        int hasReadyedUserCnt = readyNoticeMsg.getHasReadyedUserCnt();
+        boolean isGameStart = readyNoticeMsg.getIsGameStart();
 
-        EventBus.getDefault().post(new ReadyNoticeEvent(info, readyTimeMs, readyUserID));
+        EventBus.getDefault().post(new ReadyNoticeEvent(info, readyInfos, roundInfos, gameInfo, hasReadyedUserCnt, isGameStart));
     }
 
     //准备并开始游戏通知消息
@@ -192,16 +201,5 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
 
         EventBus.getDefault().post(new SyncStatusEvent(info));
-    }
-
-    // 进出消息
-    private void processRoomInOutMsg(BasePushInfo info, RoomInOutMsg roomInOutMsg) {
-        if (roomInOutMsg == null) {
-            MyLog.d(TAG, "processRoomInOutMsg" + " roomInOutMsg == null");
-            return;
-        }
-
-        boolean isEnter = roomInOutMsg.getIsEnter();
-        EventBus.getDefault().post(new RoomInOutEvent(info, isEnter));
     }
 }

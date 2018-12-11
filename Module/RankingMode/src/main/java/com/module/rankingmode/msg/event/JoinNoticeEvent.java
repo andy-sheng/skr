@@ -3,19 +3,21 @@ package com.module.rankingmode.msg.event;
 import com.module.rankingmode.msg.BasePushInfo;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Room.JoinInfo;
+
+import java.util.List;
 
 public class JoinNoticeEvent {
-
-    public long joinTimeMs;
-    public UserInfo userInfo;
-    public MusicInfo musicInfo;
-
     public BasePushInfo info;
 
-    public JoinNoticeEvent(BasePushInfo info, long joinTimeMs, UserInfo userInfo, MusicInfo musicInfo) {
+    List<JoinInfo> joinInfos;
+    int hasJoinedUserCnt;
+    int readyClockResMs;
+
+    public JoinNoticeEvent(BasePushInfo info, List<JoinInfo> joinInfos, int hasJoinedUserCnt, int readyClockResMs) {
         this.info = info;
-        this.joinTimeMs = joinTimeMs;
-        this.userInfo = userInfo;
-        this.musicInfo = musicInfo;
+        this.joinInfos = joinInfos;
+        this.hasJoinedUserCnt = hasJoinedUserCnt;
+        this.readyClockResMs = readyClockResMs;
     }
 }

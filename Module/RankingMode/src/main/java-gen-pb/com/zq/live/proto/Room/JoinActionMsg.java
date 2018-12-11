@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.MusicInfo;
 import java.io.IOException;
 import java.lang.Integer;
 import java.lang.Long;
@@ -16,6 +17,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 /**
@@ -28,10 +30,10 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
 
   public static final Integer DEFAULT_GAMEID = 0;
 
-  public static final Long DEFAULT_GAMECREATEMS = 0L;
+  public static final Long DEFAULT_CREATETIMEMS = 0L;
 
   /**
-   * 游戏id
+   * 游戏ID
    */
   @WireField(
       tag = 1,
@@ -40,29 +42,55 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   public final Integer gameID;
 
   /**
-   * 游戏创建的毫秒时间戳
+   * 创建毫秒时间戳
    */
   @WireField(
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long gameCreateMS;
+  public final Long CreateTimeMs;
 
-  public JoinActionMsg(Integer gameID, Long gameCreateMS) {
-    this(gameID, gameCreateMS, ByteString.EMPTY);
+  /**
+   * 玩家信息
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Room.PlayerInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<PlayerInfo> players;
+
+  /**
+   * 共同演唱音乐信息
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<MusicInfo> commonMusicInfo;
+
+  public JoinActionMsg(Integer gameID, Long CreateTimeMs, List<PlayerInfo> players,
+      List<MusicInfo> commonMusicInfo) {
+    this(gameID, CreateTimeMs, players, commonMusicInfo, ByteString.EMPTY);
   }
 
-  public JoinActionMsg(Integer gameID, Long gameCreateMS, ByteString unknownFields) {
+  public JoinActionMsg(Integer gameID, Long CreateTimeMs, List<PlayerInfo> players,
+      List<MusicInfo> commonMusicInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.gameID = gameID;
-    this.gameCreateMS = gameCreateMS;
+    this.CreateTimeMs = CreateTimeMs;
+    this.players = Internal.immutableCopyOf("players", players);
+    this.commonMusicInfo = Internal.immutableCopyOf("commonMusicInfo", commonMusicInfo);
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.gameID = gameID;
-    builder.gameCreateMS = gameCreateMS;
+    builder.CreateTimeMs = CreateTimeMs;
+    builder.players = Internal.copyOf("players", players);
+    builder.commonMusicInfo = Internal.copyOf("commonMusicInfo", commonMusicInfo);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -74,7 +102,9 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     JoinActionMsg o = (JoinActionMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(gameID, o.gameID)
-        && Internal.equals(gameCreateMS, o.gameCreateMS);
+        && Internal.equals(CreateTimeMs, o.CreateTimeMs)
+        && players.equals(o.players)
+        && commonMusicInfo.equals(o.commonMusicInfo);
   }
 
   @Override
@@ -83,7 +113,9 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (gameID != null ? gameID.hashCode() : 0);
-      result = result * 37 + (gameCreateMS != null ? gameCreateMS.hashCode() : 0);
+      result = result * 37 + (CreateTimeMs != null ? CreateTimeMs.hashCode() : 0);
+      result = result * 37 + players.hashCode();
+      result = result * 37 + commonMusicInfo.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -93,7 +125,9 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (gameID != null) builder.append(", gameID=").append(gameID);
-    if (gameCreateMS != null) builder.append(", gameCreateMS=").append(gameCreateMS);
+    if (CreateTimeMs != null) builder.append(", CreateTimeMs=").append(CreateTimeMs);
+    if (!players.isEmpty()) builder.append(", players=").append(players);
+    if (!commonMusicInfo.isEmpty()) builder.append(", commonMusicInfo=").append(commonMusicInfo);
     return builder.replace(0, 2, "JoinActionMsg{").append('}').toString();
   }
 
@@ -108,7 +142,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   }
 
   /**
-   * 游戏id
+   * 游戏ID
    */
   public Integer getGameID() {
     if(gameID==null){
@@ -118,39 +152,79 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   }
 
   /**
-   * 游戏创建的毫秒时间戳
+   * 创建毫秒时间戳
    */
-  public Long getGameCreateMS() {
-    if(gameCreateMS==null){
-        return DEFAULT_GAMECREATEMS;
+  public Long getCreateTimeMs() {
+    if(CreateTimeMs==null){
+        return DEFAULT_CREATETIMEMS;
     }
-    return gameCreateMS;
+    return CreateTimeMs;
   }
 
   /**
-   * 游戏id
+   * 玩家信息
+   */
+  public List<PlayerInfo> getPlayersList() {
+    if(players==null){
+        return new java.util.ArrayList<PlayerInfo>();
+    }
+    return players;
+  }
+
+  /**
+   * 共同演唱音乐信息
+   */
+  public List<MusicInfo> getCommonMusicInfoList() {
+    if(commonMusicInfo==null){
+        return new java.util.ArrayList<MusicInfo>();
+    }
+    return commonMusicInfo;
+  }
+
+  /**
+   * 游戏ID
    */
   public boolean hasGameID() {
     return gameID!=null;
   }
 
   /**
-   * 游戏创建的毫秒时间戳
+   * 创建毫秒时间戳
    */
-  public boolean hasGameCreateMS() {
-    return gameCreateMS!=null;
+  public boolean hasCreateTimeMs() {
+    return CreateTimeMs!=null;
+  }
+
+  /**
+   * 玩家信息
+   */
+  public boolean hasPlayersList() {
+    return players!=null;
+  }
+
+  /**
+   * 共同演唱音乐信息
+   */
+  public boolean hasCommonMusicInfoList() {
+    return commonMusicInfo!=null;
   }
 
   public static final class Builder extends Message.Builder<JoinActionMsg, Builder> {
     public Integer gameID;
 
-    public Long gameCreateMS;
+    public Long CreateTimeMs;
+
+    public List<PlayerInfo> players;
+
+    public List<MusicInfo> commonMusicInfo;
 
     public Builder() {
+      players = Internal.newMutableList();
+      commonMusicInfo = Internal.newMutableList();
     }
 
     /**
-     * 游戏id
+     * 游戏ID
      */
     public Builder setGameID(Integer gameID) {
       this.gameID = gameID;
@@ -158,16 +232,34 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     }
 
     /**
-     * 游戏创建的毫秒时间戳
+     * 创建毫秒时间戳
      */
-    public Builder setGameCreateMS(Long gameCreateMS) {
-      this.gameCreateMS = gameCreateMS;
+    public Builder setCreateTimeMs(Long CreateTimeMs) {
+      this.CreateTimeMs = CreateTimeMs;
+      return this;
+    }
+
+    /**
+     * 玩家信息
+     */
+    public Builder addAllPlayers(List<PlayerInfo> players) {
+      Internal.checkElementsNotNull(players);
+      this.players = players;
+      return this;
+    }
+
+    /**
+     * 共同演唱音乐信息
+     */
+    public Builder addAllCommonMusicInfo(List<MusicInfo> commonMusicInfo) {
+      Internal.checkElementsNotNull(commonMusicInfo);
+      this.commonMusicInfo = commonMusicInfo;
       return this;
     }
 
     @Override
     public JoinActionMsg build() {
-      return new JoinActionMsg(gameID, gameCreateMS, super.buildUnknownFields());
+      return new JoinActionMsg(gameID, CreateTimeMs, players, commonMusicInfo, super.buildUnknownFields());
     }
   }
 
@@ -179,14 +271,18 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     @Override
     public int encodedSize(JoinActionMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.gameID)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.gameCreateMS)
+          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.CreateTimeMs)
+          + PlayerInfo.ADAPTER.asRepeated().encodedSizeWithTag(3, value.players)
+          + MusicInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.commonMusicInfo)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, JoinActionMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.gameID);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.gameCreateMS);
+      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.CreateTimeMs);
+      PlayerInfo.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.players);
+      MusicInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.commonMusicInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -197,7 +293,9 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setGameID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setGameCreateMS(ProtoAdapter.SINT64.decode(reader)); break;
+          case 2: builder.setCreateTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 3: builder.players.add(PlayerInfo.ADAPTER.decode(reader)); break;
+          case 4: builder.commonMusicInfo.add(MusicInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -212,6 +310,8 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     @Override
     public JoinActionMsg redact(JoinActionMsg value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.players, PlayerInfo.ADAPTER);
+      Internal.redactElements(builder.commonMusicInfo, MusicInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

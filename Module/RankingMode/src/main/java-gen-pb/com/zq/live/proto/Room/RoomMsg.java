@@ -201,22 +201,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   )
   public final SyncStatusMsg syncStatusMsg;
 
-  /**
-   * 进出消息，当MsgType == RM_ROOM_IN_OUT 时应存在
-   */
-  @WireField(
-      tag = 109,
-      adapter = "com.zq.live.proto.Room.RoomInOutMsg#ADAPTER"
-  )
-  public final RoomInOutMsg roomInOutMsg;
-
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
       ReadyNoticeMsg readyNoticeMsg, ReadyAndStartNoticeMsg readyAndStartNoticeMsg,
       RoundOverMsg roundOverMsg, RoundAndGameOverMsg roundAndGameOverMsg, QuitGameMsg quitGameMsg,
-      AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg, RoomInOutMsg roomInOutMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, readyAndStartNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, roomInOutMsg, ByteString.EMPTY);
+      AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, readyAndStartNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, ByteString.EMPTY);
   }
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
@@ -224,8 +215,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
       ReadyNoticeMsg readyNoticeMsg, ReadyAndStartNoticeMsg readyAndStartNoticeMsg,
       RoundOverMsg roundOverMsg, RoundAndGameOverMsg roundAndGameOverMsg, QuitGameMsg quitGameMsg,
-      AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg, RoomInOutMsg roomInOutMsg,
-      ByteString unknownFields) {
+      AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -245,7 +235,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     this.quitGameMsg = quitGameMsg;
     this.appSwapMsg = appSwapMsg;
     this.syncStatusMsg = syncStatusMsg;
-    this.roomInOutMsg = roomInOutMsg;
   }
 
   @Override
@@ -269,7 +258,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     builder.quitGameMsg = quitGameMsg;
     builder.appSwapMsg = appSwapMsg;
     builder.syncStatusMsg = syncStatusMsg;
-    builder.roomInOutMsg = roomInOutMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -297,8 +285,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         && Internal.equals(roundAndGameOverMsg, o.roundAndGameOverMsg)
         && Internal.equals(quitGameMsg, o.quitGameMsg)
         && Internal.equals(appSwapMsg, o.appSwapMsg)
-        && Internal.equals(syncStatusMsg, o.syncStatusMsg)
-        && Internal.equals(roomInOutMsg, o.roomInOutMsg);
+        && Internal.equals(syncStatusMsg, o.syncStatusMsg);
   }
 
   @Override
@@ -324,7 +311,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       result = result * 37 + (quitGameMsg != null ? quitGameMsg.hashCode() : 0);
       result = result * 37 + (appSwapMsg != null ? appSwapMsg.hashCode() : 0);
       result = result * 37 + (syncStatusMsg != null ? syncStatusMsg.hashCode() : 0);
-      result = result * 37 + (roomInOutMsg != null ? roomInOutMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -351,7 +337,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     if (quitGameMsg != null) builder.append(", quitGameMsg=").append(quitGameMsg);
     if (appSwapMsg != null) builder.append(", appSwapMsg=").append(appSwapMsg);
     if (syncStatusMsg != null) builder.append(", syncStatusMsg=").append(syncStatusMsg);
-    if (roomInOutMsg != null) builder.append(", roomInOutMsg=").append(roomInOutMsg);
     return builder.replace(0, 2, "RoomMsg{").append('}').toString();
   }
 
@@ -546,16 +531,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 进出消息，当MsgType == RM_ROOM_IN_OUT 时应存在
-   */
-  public RoomInOutMsg getRoomInOutMsg() {
-    if(roomInOutMsg==null){
-        return new RoomInOutMsg.Builder().build();
-    }
-    return roomInOutMsg;
-  }
-
-  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -681,13 +656,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     return syncStatusMsg!=null;
   }
 
-  /**
-   * 进出消息，当MsgType == RM_ROOM_IN_OUT 时应存在
-   */
-  public boolean hasRoomInOutMsg() {
-    return roomInOutMsg!=null;
-  }
-
   public static final class Builder extends Message.Builder<RoomMsg, Builder> {
     public Long timeMs;
 
@@ -724,8 +692,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     public AppSwapMsg appSwapMsg;
 
     public SyncStatusMsg syncStatusMsg;
-
-    public RoomInOutMsg roomInOutMsg;
 
     public Builder() {
     }
@@ -874,17 +840,9 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       return this;
     }
 
-    /**
-     * 进出消息，当MsgType == RM_ROOM_IN_OUT 时应存在
-     */
-    public Builder setRoomInOutMsg(RoomInOutMsg roomInOutMsg) {
-      this.roomInOutMsg = roomInOutMsg;
-      return this;
-    }
-
     @Override
     public RoomMsg build() {
-      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, readyAndStartNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, roomInOutMsg, super.buildUnknownFields());
+      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, readyAndStartNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, super.buildUnknownFields());
     }
   }
 
@@ -913,7 +871,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           + QuitGameMsg.ADAPTER.encodedSizeWithTag(106, value.quitGameMsg)
           + AppSwapMsg.ADAPTER.encodedSizeWithTag(107, value.appSwapMsg)
           + SyncStatusMsg.ADAPTER.encodedSizeWithTag(108, value.syncStatusMsg)
-          + RoomInOutMsg.ADAPTER.encodedSizeWithTag(109, value.roomInOutMsg)
           + value.unknownFields().size();
     }
 
@@ -937,7 +894,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       QuitGameMsg.ADAPTER.encodeWithTag(writer, 106, value.quitGameMsg);
       AppSwapMsg.ADAPTER.encodeWithTag(writer, 107, value.appSwapMsg);
       SyncStatusMsg.ADAPTER.encodeWithTag(writer, 108, value.syncStatusMsg);
-      RoomInOutMsg.ADAPTER.encodeWithTag(writer, 109, value.roomInOutMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -979,7 +935,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           case 106: builder.setQuitGameMsg(QuitGameMsg.ADAPTER.decode(reader)); break;
           case 107: builder.setAppSwapMsg(AppSwapMsg.ADAPTER.decode(reader)); break;
           case 108: builder.setSyncStatusMsg(SyncStatusMsg.ADAPTER.decode(reader)); break;
-          case 109: builder.setRoomInOutMsg(RoomInOutMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1007,7 +962,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       if (builder.quitGameMsg != null) builder.quitGameMsg = QuitGameMsg.ADAPTER.redact(builder.quitGameMsg);
       if (builder.appSwapMsg != null) builder.appSwapMsg = AppSwapMsg.ADAPTER.redact(builder.appSwapMsg);
       if (builder.syncStatusMsg != null) builder.syncStatusMsg = SyncStatusMsg.ADAPTER.redact(builder.syncStatusMsg);
-      if (builder.roomInOutMsg != null) builder.roomInOutMsg = RoomInOutMsg.ADAPTER.redact(builder.roomInOutMsg);
       builder.clearUnknownFields();
       return builder.build();
     }
