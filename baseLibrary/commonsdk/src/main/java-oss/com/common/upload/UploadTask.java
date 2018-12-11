@@ -1,5 +1,7 @@
 package com.common.upload;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
@@ -21,10 +23,14 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiObserver;
 import com.common.utils.U;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import io.reactivex.schedulers.Schedulers;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 public class UploadTask {
 
@@ -37,6 +43,11 @@ public class UploadTask {
     }
 
     private UploadParams mUploadParams;
+    private String mBucketName;
+    private String mObjectId = "111.webp";
+    private String mCallbackUrl;
+    private String mCallbackBody;
+    private String mCallbackBodyType;
     private OSS mOss;
     private OSSAsyncTask mTask;
 
@@ -70,44 +81,55 @@ public class UploadTask {
 
                             mOss = new OSSClient(U.app(), endpoint, credentialProvider, conf);
 
-                            String bucketName = uploadParams.getString("bucketName");
+                            mBucketName = uploadParams.getString("bucketName");
 
                             JSONObject callback = uploadParams.getJSONObject("callback");
-                            String callbackUrl = callback.getString("callbackUrl");
-                            String callbackBody = callback.getString("callbackBody");
-                            String callbackBodyType = callback.getString("callbackBodyType");
+                            mCallbackUrl = callback.getString("callbackUrl");
+                            mCallbackBody = callback.getString("callbackBody");
+                            mCallbackBodyType = callback.getString("callbackBodyType");
 
-                            PutObjectRequest request = createRequest(bucketName, "1111.jpg", callbackUrl, callbackBody, callbackBodyType);
+                            if (mUploadParams.isNeedCompress()) {
+                                String fileName = U.getFileUtils().getFileNameFromFilePath(mUploadParams.getFilePath());
+                                String targetFileName = U.getAppInfoUtils().getFilePathInSubDir("upload", "temp_" + fileName);
+                                // 需要压缩
+                                Luban.with(U.app())
+                                        .load(mUploadParams.getFilePath())
+                                        .ignoreBy(100)
+                                        .setTargetDir(targetFileName)
+                                        .filter(new CompressionPredicate() {
+                                            @Override
+                                            public boolean apply(String path) {
+                                                if (path.toLowerCase().endsWith(".gif")) {
+                                                    return false;
+                                                }
+                                                if (path.toLowerCase().endsWith(".zip")) {
+                                                    return false;
+                                                }
+                                                return true;
+                                            }
+                                        })
+                                        .setCompressListener(new OnCompressListener() {
+                                            @Override
+                                            public void onStart() {
 
-                            request.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
-                                @Override
-                                public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
-                                    if (uploadCallback != null) {
-                                        uploadCallback.onProgress(request, currentSize, totalSize);
-                                    }
-                                }
-                            });
+                                            }
 
-                            if (mTask != null) {
-                                mTask.cancel();
+                                            @Override
+                                            public void onSuccess(File file) {
+                                                MyLog.d(TAG,"压缩成功" + " file=" + file.getAbsolutePath());
+                                                upload(file.getAbsolutePath(), uploadCallback);
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                MyLog.d(TAG,"压缩失败");
+                                                upload(mUploadParams.getFilePath(), uploadCallback);
+                                            }
+                                        }).launch();
+                            } else {
+                                upload(mUploadParams.getFilePath(), uploadCallback);
                             }
-                            mTask = mOss.asyncPutObject(request, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
-                                @Override
-                                public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                                    if (uploadCallback != null) {
-                                        uploadCallback.onSuccess(request, result);
-                                        // 只有设置了servercallback，这个值才有数据
-                                        String serverCallbackReturnJson = result.getServerCallbackReturnBody();
-                                    }
-                                }
 
-                                @Override
-                                public void onFailure(PutObjectRequest request, ClientException clientException, ServiceException serviceException) {
-                                    if (uploadCallback != null) {
-                                        uploadCallback.onFailure(request, clientException, serviceException);
-                                    }
-                                }
-                            });
                         }
                     }
                 });
@@ -121,14 +143,49 @@ public class UploadTask {
         }
     }
 
+    private void upload(String filePath, UploadCallback uploadCallback) {
+        PutObjectRequest request = createRequest(filePath);
+
+        request.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
+            @Override
+            public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+                if (uploadCallback != null) {
+                    uploadCallback.onProgress(request, currentSize, totalSize);
+                }
+            }
+        });
+
+        if (mTask != null) {
+            mTask.cancel();
+        }
+        mTask = mOss.asyncPutObject(request, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                if (uploadCallback != null) {
+                    uploadCallback.onSuccess(request, result);
+                    // 只有设置了servercallback，这个值才有数据
+                    String serverCallbackReturnJson = result.getServerCallbackReturnBody();
+                }
+            }
+
+            @Override
+            public void onFailure(PutObjectRequest request, ClientException clientException, ServiceException serviceException) {
+                if (uploadCallback != null) {
+                    uploadCallback.onFailure(request, clientException, serviceException);
+                }
+            }
+        });
+    }
+
     /**
      * 创建普通上传
      *
      * @return
      */
-    private PutObjectRequest createRequest(String buckName, String objectkey, String callbackUrl, String callbackBody, String callbackBodyType) {
+    private PutObjectRequest createRequest(String filePath) {
+
         // 构造上传请求
-        PutObjectRequest put = new PutObjectRequest(buckName, objectkey, mUploadParams.getFilePath());
+        PutObjectRequest put = new PutObjectRequest(mBucketName, mObjectId, filePath);
 
 // 文件元信息的设置是可选的
         ObjectMetadata metadata = new ObjectMetadata();
@@ -147,10 +204,10 @@ public class UploadTask {
 
         put.setCallbackParam(new HashMap<String, String>() {
             {
-                put("callbackUrl", callbackUrl);
+                put("callbackUrl", mCallbackUrl);
 //                put("callbackHost", "oss-cn-hangzhou.aliyuncs.com");
-                put("callbackBodyType", callbackBodyType);
-                put("callbackBody", callbackBody);
+                put("callbackBodyType", mCallbackBodyType);
+                put("callbackBody", mCallbackBody);
             }
         });
 //        put.setCallbackVars(new HashMap<String, String>() {

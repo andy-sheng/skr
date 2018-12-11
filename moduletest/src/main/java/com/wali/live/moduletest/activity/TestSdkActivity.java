@@ -551,15 +551,16 @@ public class TestSdkActivity extends BaseActivity {
                                 if (list.size() > 0) {
                                     ImageItem imageItem = list.get(0);
                                     UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+                                            .setNeedCompress(true)
                                             .startUploadAsync(new UploadCallback() {
                                                 @Override
                                                 public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
-                                                    MyLog.d(TAG, "onProgress" + " request=" + request + " currentSize=" + currentSize + " totalSize=" + totalSize);
                                                 }
 
                                                 @Override
                                                 public void onSuccess(OSSRequest request, OSSResult result) {
                                                     MyLog.d(TAG, "onSuccess" + " request=" + request + " result=" + result);
+                                                    U.getToastUtil().showShort("上传成功");
                                                 }
 
                                                 @Override

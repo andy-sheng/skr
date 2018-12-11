@@ -64,6 +64,15 @@ public class AppInfoUtils {
     public String getSubDirPath(String dirName){
         return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator;
     }
+
+    /**
+     * 返回 类似 /ZQ_Live/logs/aaa.png
+     * @param dirName
+     * @return
+     */
+    public String getFilePathInSubDir(String dirName,String fileName){
+        return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator+fileName;
+    }
     /**
      * 获取应用程序名称
      * 如 直播助手
