@@ -44,7 +44,7 @@ public class UploadTask {
 
     private UploadParams mUploadParams;
     private String mBucketName;
-    private String mObjectId = "111.webp";
+    private String mObjectId = "111";
     private String mCallbackUrl;
     private String mCallbackBody;
     private String mCallbackBodyType;
