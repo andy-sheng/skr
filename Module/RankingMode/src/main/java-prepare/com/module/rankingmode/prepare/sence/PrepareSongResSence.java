@@ -2,16 +2,26 @@ package com.module.rankingmode.prepare.sence;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.common.view.ex.ExTextView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
+
+import java.util.concurrent.TimeUnit;
 
 public class PrepareSongResSence extends RelativeLayout implements ISence {
 
     MatchSenceController matchSenceController;
+
+    ExTextView mToneTuningTv;   //试音调音
+    ExTextView mMatchStatusTv;
+
 
     public PrepareSongResSence(Context context) {
         this(context, null);
@@ -37,6 +47,37 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
         parentViewGroup.addView(this);
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("成都");
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("准备竞演");
+
+        mToneTuningTv = findViewById(R.id.tone_tuning_tv);
+        mMatchStatusTv = findViewById(R.id.match_status_tv);
+
+        RxView.clicks(mMatchStatusTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
+                });
+
+        RxView.clicks(mToneTuningTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Audition, null);
+                });
+
+        mMatchStatusTv.setText("加载歌曲中");
+        mToneTuningTv.setText("加载歌曲中");
+        mMatchStatusTv.setEnabled(false);
+        mToneTuningTv.setEnabled(false);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMatchStatusTv.setText("开始匹配");
+                mToneTuningTv.setText("试唱调音");
+                mMatchStatusTv.setEnabled(true);
+                mToneTuningTv.setEnabled(true);
+            }
+        }, 1000);
+
     }
 
     @Override

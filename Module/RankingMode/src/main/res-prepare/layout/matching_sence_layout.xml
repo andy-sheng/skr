@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/maching_circle_container"/>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/match_status_tv"
+        android:layout_width="@dimen/view_192_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_105_dp"
+        android:gravity="center"
+        android:text="取消匹配"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#F8D91C" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_marginBottom="@dimen/view_40_dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/predict_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:text="预计时间 02：20"
+        android:textColor="@color/black_trans_50"
+        android:visibility="visible"/>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/wait_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/textsize_15_dp"
+        android:layout_centerHorizontal="true"
+        android:text="已经等待 00：00"
+        android:textColor="@color/black_trans_50"
+        android:visibility="visible"/>
 </RelativeLayout>

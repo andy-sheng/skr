@@ -9,10 +9,15 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
+import com.common.utils.U;
+import com.common.view.ex.ExTextView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
+
+import java.util.concurrent.TimeUnit;
 
 public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMatchSucessView {
 
@@ -27,6 +32,8 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     BaseImageView mIvAArea;
     BaseImageView mIvBArea;
     BaseImageView mIvCArea;
+
+    ExTextView mMatchStatusTv;
 
     MatchSucessPresenter presenter;
 
@@ -50,6 +57,8 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
         mIvBArea = findViewById(R.id.iv_b_area);
         mIvCArea = findViewById(R.id.iv_c_area);
 
+        mMatchStatusTv = findViewById(R.id.match_status_tv);
+
         AvatarUtils.loadAvatarByUrl(mIvAArea,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
                         .setCircle(true)
@@ -69,6 +78,12 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
                         .build());
 
         presenter = new MatchSucessPresenter(this);
+
+        RxView.clicks(mMatchStatusTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    U.getToastUtil().showShort("准备");
+                });
     }
 
     @Override
@@ -79,8 +94,8 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("已为你匹配到队伍");
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配成功");
 
-        currentGameId = bundle.getInt(BUNDLE_KEY_GAME_ID);
-        gameCreateMs = bundle.getInt(BUNDLE_KEY_GAME_CREATE_MS);
+//        currentGameId = bundle.getInt(BUNDLE_KEY_GAME_ID);
+//        gameCreateMs = bundle.getInt(BUNDLE_KEY_GAME_CREATE_MS);
 
         presenter.joinRoom(currentGameId);
     }

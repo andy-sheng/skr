@@ -4,20 +4,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
-import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
-import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.view.VoiceLineView;
@@ -26,9 +22,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * 匹配界面
@@ -44,9 +37,6 @@ public class MatchingFragment extends BaseFragment {
 
     CommonTitleBar mTitleBar;
     MatchSenceContainer mMatchContent; // 匹配中间的容器
-
-    ExTextView mToneTuningTv;   //试音调音
-    ExTextView mMatchStatusTv;
 
     VoiceLineView mVoiceLineView;
 
@@ -69,9 +59,6 @@ public class MatchingFragment extends BaseFragment {
         mTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.title_bar);
         mMatchContent = (MatchSenceContainer) mRootView.findViewById(R.id.match_content);
 
-        mToneTuningTv = (ExTextView) mRootView.findViewById(R.id.tone_tuning_tv);
-        mMatchStatusTv = (ExTextView) mRootView.findViewById(R.id.match_status_tv);
-
         mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voice_line_view);
 
         Bundle bundle = getArguments();
@@ -80,72 +67,11 @@ public class MatchingFragment extends BaseFragment {
             songTime = bundle.getString(KEY_SONG_TIME);
         }
 
-        mMatchContent.setOnStateChangeListener(onSenceStateChangeListener);
         mMatchContent.setCommonTitleBar(mTitleBar);
-
         mMatchContent.toNextSence(null);
 
-        RxView.clicks(mMatchStatusTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.PrepareSongRes) {
-                            mMatchContent.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
-                        } else if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.Matching) {
-                            mMatchContent.popSence();
-                        } else if (mMatchContent.getCurrentMatchState() == MatchSenceContainer.MatchSenceState.MatchingSucess){
-                            //这里就是开始准备了
-                        }
-                    }
-                });
-
-        RxView.clicks(mToneTuningTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        // todo 试唱调音
-                        mMatchContent.toNextSence(null);
-                    }
-                });
-
         initMediaEngine();
-
-        mMatchStatusTv.setText("加载歌曲中");
-        mToneTuningTv.setText("加载歌曲中");
-        mMatchStatusTv.setEnabled(false);
-        mToneTuningTv.setEnabled(false);
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mMatchStatusTv.setText("开始匹配");
-                mToneTuningTv.setText("试唱调音");
-                mMatchStatusTv.setEnabled(true);
-                mToneTuningTv.setEnabled(true);
-            }
-        }, 3000);
     }
-
-    private MatchSenceContainer.OnSenceStateChangeListener onSenceStateChangeListener = new MatchSenceContainer.OnSenceStateChangeListener() {
-        @Override
-        public void onChange(MatchSenceContainer.MatchSenceState matchSenceState) {
-            MyLog.d(TAG, "matchSenceState " + matchSenceState);
-            if (matchSenceState == MatchSenceContainer.MatchSenceState.PrepareSongRes) {
-                mMatchStatusTv.setText("开始匹配");
-                mToneTuningTv.setVisibility(View.VISIBLE);
-                mMatchStatusTv.setVisibility(View.VISIBLE);
-            } else if (matchSenceState == MatchSenceContainer.MatchSenceState.Audition) {
-                mMatchStatusTv.setVisibility(View.GONE);
-            } else if (matchSenceState == MatchSenceContainer.MatchSenceState.Matching) {
-                mToneTuningTv.setVisibility(View.GONE);
-                mMatchStatusTv.setText("取消匹配");
-            } else if (matchSenceState == MatchSenceContainer.MatchSenceState.MatchingSucess) {
-                mToneTuningTv.setVisibility(View.GONE);
-                mMatchStatusTv.setText("准备");
-            }
-        }
-    };
 
     // todo 后面会用我们自己的去采集声音拿到音高
     private void initMediaEngine() {

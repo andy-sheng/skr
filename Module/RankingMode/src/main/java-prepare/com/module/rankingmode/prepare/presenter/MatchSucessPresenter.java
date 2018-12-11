@@ -12,16 +12,9 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
-import com.module.rankingmode.msg.event.JoinNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.GameInfo;
-import com.module.rankingmode.prepare.model.JoinInfo;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
-import com.zq.live.proto.Common.UserInfo;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 
 import java.util.HashMap;
 
@@ -46,6 +39,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     public MatchSucessPresenter(@NonNull IMatchSucessView view) {
         this.view = view;
         matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
+        addToLifeCycle();
     }
 
     // 处理检查房间的逻辑
@@ -121,33 +115,5 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                 }
             }
         }, this);
-    }
-
-    // 加入游戏通知（别人进房间也会给我通知）
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(JoinNoticeEvent joinNoticeEvent) {
-        if (joinNoticeEvent != null) {
-            // 需要去更新GameInfo
-            if (currGameInfo != null) {
-                boolean isContain = false;
-                for (JoinInfo info : currGameInfo.getJoinInfo()) {
-                    if (info.getUserID() == joinNoticeEvent.userInfo.getUserID()) {
-                        // 已经存在，更新信息
-                        isContain = true;
-                    }
-                }
-
-                if (!isContain) {
-                    // 不存在，加入
-                    JoinInfo joinInfo = new JoinInfo();
-                    joinInfo.setUserID(joinNoticeEvent.userInfo.getUserID());
-                    currGameInfo.getJoinInfo().add(joinInfo);
-                }
-
-                if (currGameInfo.getJoinInfo().size() == 3 && handler != null) {
-                    handler.removeMessages(CHECK_CURREN_GAME_INFO);
-                }
-            }
-        }
     }
 }

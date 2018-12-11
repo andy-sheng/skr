@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     
@@ -10,4 +11,33 @@
         android:background="@drawable/match_start_bg"
         android:layout_width="@dimen/view_320_dp"
         android:layout_height="@dimen/view_320_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_marginBottom="@dimen/view_15_dp"
+        android:layout_above="@+id/match_status_tv"
+        android:visibility="visible"
+        android:id="@+id/tone_tuning_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+
+        android:drawableRight="@drawable/match_tone_tuning_dot"
+        android:text="试唱调音"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/match_status_tv"
+        android:layout_width="@dimen/view_192_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_105_dp"
+        android:gravity="center"
+        android:text="开始匹配"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#F8D91C" />
 </RelativeLayout>

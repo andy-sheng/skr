@@ -43,34 +43,6 @@
     </com.module.rankingmode.prepare.sence.controller.MatchSenceContainer>
 
     <com.common.view.ex.ExTextView
-        android:layout_above="@+id/match_status_tv"
-        android:visibility="visible"
-        android:id="@+id/tone_tuning_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_89_dp"
-        android:drawableRight="@drawable/match_tone_tuning_dot"
-        android:text="试唱调音"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_16_dp" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/match_status_tv"
-        android:layout_width="@dimen/view_192_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_105_dp"
-        android:gravity="center"
-        android:text="开始匹配"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textsize_16_dp"
-        app:bl_corners_radius="@dimen/view_20_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#F8D91C" />
-
-    <com.common.view.ex.ExTextView
         android:id="@+id/prepare_tips_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,27 +53,7 @@
         android:textColor="@color/black_trans_50"
         android:visibility="gone"/>
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/predict_time_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/match_status_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:text="预计时间 02：20"
-        android:textColor="@color/black_trans_50"
-        android:visibility="gone"/>
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/wait_time_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/predict_time_tv"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:layout_centerHorizontal="true"
-        android:text="已经等待 00：00"
-        android:textColor="@color/black_trans_50"
-        android:visibility="gone"/>
 
     <com.module.rankingmode.prepare.view.VoiceLineView
         android:id="@+id/voice_line_view"

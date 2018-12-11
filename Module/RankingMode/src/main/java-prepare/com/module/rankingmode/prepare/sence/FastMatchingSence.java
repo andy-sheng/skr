@@ -9,11 +9,20 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
+import com.common.mvp.PresenterEvent;
+import com.common.view.ex.ExTextView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.presenter.MatchingPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchingView;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_ID;
@@ -26,6 +35,8 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
 
     MatchingLayerView mLargeMatchingLayerView;
     MatchingLayerView mSmallMatchingLayerView;
+
+    ExTextView mMatchStatusTv;
 
     Bundle nextBundle = new Bundle();
 
@@ -46,6 +57,8 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         inflate(getContext(), R.layout.matching_sence_layout, this);
         BaseImageView ownerIcon = findViewById(R.id.owner_icon);
 
+        mMatchStatusTv = findViewById(R.id.match_status_tv);
+
         matchingPresenter = new MatchingPresenter(this);
 
         mLargeMatchingLayerView = findViewById(R.id.large_matching_layer_view);
@@ -58,6 +71,23 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
                         .build());
 
         matchingPresenter.getLoadingUserListIcon();
+
+        RxView.clicks(mMatchStatusTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    matchingPresenter.cancelMatch(1);
+                    matchSenceController.popSence();
+        });
+
+        Observable.timer(5, TimeUnit.SECONDS)
+                .compose(matchingPresenter.bindUntilEvent(PresenterEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                matchSenceController.toNextSence(null);
+            }
+        });
     }
 
     @Override
@@ -80,8 +110,6 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
     @Override
     public void toRemoveFromStack(RelativeLayout parentViewGroup) {
         // todo 只有场景往上切是取消匹配
-        matchingPresenter.cancelMatch(1);
-
         parentViewGroup.removeView(this);
         mSmallMatchingLayerView.release();
         mLargeMatchingLayerView.release();

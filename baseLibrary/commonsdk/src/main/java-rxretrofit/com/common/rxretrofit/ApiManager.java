@@ -73,11 +73,11 @@ public class ApiManager {
      */
     public void testInterceptor(Interceptor interceptor){
         // todo 测试使用自己打开
-//        if (mDefalutRetrofit != null){
-//            mDefalutRetrofit = null;
-//        }
-//
-//        mOutInterceptors.add(interceptor);
+        if (mDefalutRetrofit != null){
+            mDefalutRetrofit = null;
+        }
+
+        mOutInterceptors.add(interceptor);
     }
 
     private void tryInit() {

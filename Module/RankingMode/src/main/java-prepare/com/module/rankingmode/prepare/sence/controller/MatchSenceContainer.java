@@ -116,7 +116,9 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
             currentMatchSenceState = MatchSenceState.MatchingSucess;
         }
 
-        onStateChangeListener.onChange(currentMatchSenceState);
+        if(onStateChangeListener != null){
+            onStateChangeListener.onChange(currentMatchSenceState);
+        }
     }
 
     @Override

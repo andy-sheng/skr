@@ -1,6 +1,5 @@
 package com.module.msg;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -11,11 +10,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import io.rong.imkit.RongIM;
-import io.rong.test.token.RCTokenManager;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.test.token.RCTokenManager;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
@@ -112,7 +111,7 @@ public class RongMsgManager {
              */
             @Override
             public void onSuccess(String userid) {
-                MyLog.d(TAG, "ConnectCallback connect Success");
+                MyLog.d(TAG, "ConnectCallback connect Success userid is " + userid);
                 if (callback != null) {
                     callback.onSucess(userid);
                 }
