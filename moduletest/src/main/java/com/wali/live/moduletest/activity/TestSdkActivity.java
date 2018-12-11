@@ -17,9 +17,17 @@ import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.model.OSSRequest;
+import com.alibaba.sdk.android.oss.model.OSSResult;
+import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.share.ShareManager;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
+import com.common.upload.UploadTask;
 import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
@@ -536,8 +544,36 @@ public class TestSdkActivity extends BaseActivity {
                         .setBundle(bundle)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
-                                U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
+                                List<ImageItem> list = ImagePicker.getInstance().getSelectedImages();
+
+                                U.getToastUtil().showShort("拿到数据 size:" + list.size());
+                                if (list.size() > 0) {
+                                    ImageItem imageItem = list.get(0);
+                                    UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+                                            .startUploadAsync(new UploadCallback() {
+                                                @Override
+                                                public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+                                                    MyLog.d(TAG, "onProgress" + " request=" + request + " currentSize=" + currentSize + " totalSize=" + totalSize);
+
+                                                }
+
+                                                @Override
+                                                public void onSuccess(OSSRequest request, OSSResult result) {
+                                                    MyLog.d(TAG, "onSuccess" + " request=" + request + " result=" + result);
+
+
+                                                }
+
+                                                @Override
+                                                public void onFailure(OSSRequest request, ClientException clientException, ServiceException serviceException) {
+                                                    MyLog.d(TAG, "onFailure" + " request=" + request + " clientException=" + clientException + " serviceException=" + serviceException);
+
+                                                }
+                                            });
+
+                                }
+
                             }
                         })
                         .build());
@@ -572,7 +608,7 @@ public class TestSdkActivity extends BaseActivity {
                         .setDataBeforeAdd(1, list)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
                                 U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
                             }
                         })
