@@ -2,6 +2,7 @@ package com.imagebrowse;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -16,6 +17,7 @@ import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.LocalImage;
+import com.common.image.model.oss.OssPsFactory;
 import com.common.log.MyLog;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
@@ -108,6 +110,7 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     public void load(String path) {
+//        path = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/1111.jpg?x-oss-process=image/resize,w_480,h_1080/circle,r_500/blur,r_30,s_20";
         MyLog.d(TAG, "load" + " path=" + path);
         if (path.startsWith("http://") || path.startsWith("https://")) {
             HttpImage httpImage = (HttpImage) ImageFactory.newHttpImage(path)
@@ -115,6 +118,7 @@ public class EnhancedImageView extends RelativeLayout {
                     .setLoadingDrawable(U.app().getResources().getDrawable(R.drawable.loading_place_holder_img))
                     .setProgressBarDrawable(new ImageBrowseProgressBar())
                     .setTapToRetryEnabled(true)
+//                    .setOssProcessors(OssPsFactory.newResizeBuilder().setW(360).build(),OssPsFactory.newCropBuilder().setH(180).build())
                     .build();
             load(httpImage);
         } else {
@@ -127,7 +131,8 @@ public class EnhancedImageView extends RelativeLayout {
     public void load(BaseImage baseImage) {
         String path = baseImage.getUri().toString();
         if (path.startsWith("http://") || path.startsWith("https://")) {
-            if (path.endsWith(".gif")) {
+            Uri uri = Uri.parse(path);
+            if (uri.getPath().endsWith(".gif")) {
                 // gif直接走自有逻辑
                 downloadGiftByHttpUtils(path);
             } else {
@@ -280,7 +285,7 @@ public class EnhancedImageView extends RelativeLayout {
         realLoadByFresco(localImage);
     }
 
-    protected void realLoadByFresco(BaseImage baseImage){
+    protected void realLoadByFresco(BaseImage baseImage) {
         FrescoWorker.loadImage(mPhotoDraweeView, baseImage);
     }
 
@@ -398,7 +403,7 @@ public class EnhancedImageView extends RelativeLayout {
         }
         try {
             mGifFromFile = new GifDrawable(localFilePath);
-            if(!mGifFromFile.isRecycled()) {
+            if (!mGifFromFile.isRecycled()) {
                 mGifImageView.setImageDrawable(mGifFromFile);
             }
         } catch (IOException e) {

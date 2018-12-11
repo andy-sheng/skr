@@ -9,8 +9,12 @@ import android.text.TextUtils;
  */
 public class OssPsFactory {
 
-    public OssImgResize.Builder newResizeBuilder() {
+    public static OssImgResize.Builder newResizeBuilder() {
         return new OssImgResize.Builder();
+    }
+
+    public static OssImgCrop.Builder newCropBuilder() {
+        return new OssImgCrop.Builder();
     }
 
     /**
@@ -31,7 +35,7 @@ public class OssPsFactory {
             paramsSb.insert(0, "x-oss-process=image");
             String origin = uri.getQueryParameter("x-oss-process");
             if (!TextUtils.isEmpty(origin)) {
-                url.replace("x-oss-process=" + origin, paramsSb.toString());
+                url = url.replace("x-oss-process=" + origin, paramsSb.toString());
             } else {
                 String query = uri.getQuery();
                 if (TextUtils.isEmpty(query)) {

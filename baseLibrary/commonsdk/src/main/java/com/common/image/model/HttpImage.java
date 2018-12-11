@@ -43,6 +43,7 @@ public class HttpImage extends BaseImage {
     }
 
     public void setOssProcessors(IOssParam[] ossProcessors) {
-        OssPsFactory.fillOssParams(mUrl,ossProcessors);
+        mUrl = OssPsFactory.fillOssParams(mUrl,ossProcessors);
+        generateUri();
     }
 }
