@@ -14,7 +14,7 @@ import com.module.common.ICallback;
 import com.module.rankingmode.msg.event.JoinActionEvent;
 import com.module.rankingmode.msg.event.JoinNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
-import com.module.rankingmode.prepare.model.GameInfo;
+import com.module.rankingmode.prepare.model.JsonGameInfo;
 import com.module.rankingmode.prepare.view.IMatchingView;
 import com.zq.live.proto.Room.PlayerInfo;
 
@@ -45,7 +45,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
 
     int currentGameId;
 
-    GameInfo mGameInfo;
+    JsonGameInfo mJsonGameInfo;
 
     volatile MatchState matchState = MatchState.IDLE;
 
@@ -95,12 +95,12 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "startMatch");
         disposeMatchTask();
         matchState = MatchState.Matching;
-        // todo 短链接向服务器发送开始匹配请求
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("mode", 1);
         map.put("playbookItemID", 1);
-
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+
         startMatchTask = ApiMethods.subscribeWith(matchServerApi.startMatch(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -248,11 +248,11 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                             public void process(ApiResult result) {
                                 MyLog.d(TAG, "3 秒钟过去，需要拉去此刻的房间信息");
                                 if (result.getErrno() == 0) {
-                                    GameInfo gameInfo = JSON.parseObject(result.getData().toString(), GameInfo.class);
-                                    if (gameInfo.getHasJoinedUserCnt() == 3) {
+                                    JsonGameInfo jsonGameInfo = JSON.parseObject(result.getData().toString(), JsonGameInfo.class);
+                                    if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
                                         if(matchState == MatchState.JoinRongYunRoomSuccess){
                                             matchState = MatchState.JoinGameSuccess;
-                                            mGameInfo = gameInfo;
+                                            mJsonGameInfo = jsonGameInfo;
                                             view.matchSucess(currentGameId, System.currentTimeMillis());
                                         }else {
                                             MyLog.d(TAG, "3 秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
@@ -289,11 +289,11 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     MyLog.d(TAG, "process updateUserListState 1" + " result=" + result);
-                    GameInfo gameInfo = JSON.parseObject(result.getData().toString(), GameInfo.class);
-                    if (gameInfo.getHasJoinedUserCnt() == 3) {
+                    JsonGameInfo jsonGameInfo = JSON.parseObject(result.getData().toString(), JsonGameInfo.class);
+                    if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
                         if(matchState == MatchState.JoinRongYunRoomSuccess){
                             matchState = MatchState.JoinGameSuccess;
-                            mGameInfo = gameInfo;
+                            mJsonGameInfo = jsonGameInfo;
                             view.matchSucess(currentGameId, System.currentTimeMillis());
                         }
                     }else {

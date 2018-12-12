@@ -36,7 +36,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
    */
   @WireField(
       tag = 1,
-      adapter = "com.zq.live.proto.Room.ReadyInfo#ADAPTER",
+      adapter = "com.zq.live.proto.Room.JsonReadyInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   public final List<ReadyInfo> readyInfo;
@@ -64,7 +64,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
    */
   @WireField(
       tag = 4,
-      adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER",
+      adapter = "com.zq.live.proto.Room.JsonRoundInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   public final List<RoundInfo> roundInfo;
@@ -74,7 +74,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
    */
   @WireField(
       tag = 5,
-      adapter = "com.zq.live.proto.Room.GameStartInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Room.JsonGameStartInfo#ADAPTER"
   )
   public final GameStartInfo gameStartInfo;
 

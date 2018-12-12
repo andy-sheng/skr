@@ -10,6 +10,8 @@ import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
+import com.module.rankingmode.prepare.model.JsonGameInfo;
+import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
 import com.zq.live.proto.Room.ERoomMsgType;
@@ -37,6 +39,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
     @Override
     public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
+        MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType.getValue());
 
         BasePushInfo basePushInfo = BasePushInfo.parse(msg);
 
@@ -90,12 +93,9 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             MyLog.d(TAG, "processJoinNoticeMsg" + " joinNoticeMsg == null");
             return;
         }
-
-        List<JoinInfo> joinInfos = joinNoticeMsg.getJoinInfoList();
-        int hasJoinedUserCnt = joinNoticeMsg.getHasJoinedUserCnt();
-        int readyClockResMs = joinNoticeMsg.getReadyClockResMs();
-
-        EventBus.getDefault().post(new JoinNoticeEvent(info, joinInfos, hasJoinedUserCnt, readyClockResMs));
+        JsonGameInfo jsonGameInfo = new JsonGameInfo();
+        jsonGameInfo.parse(joinNoticeMsg);
+        EventBus.getDefault().post(new JoinNoticeEvent(info, jsonGameInfo));
     }
 
     //准备游戏通知消息
@@ -105,13 +105,9 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             return;
         }
 
-        List<ReadyInfo> readyInfos = readyNoticeMsg.getReadyInfoList();//准备信息
-        List<RoundInfo> roundInfos = readyNoticeMsg.getRoundInfoList();//轮次信息
-        GameStartInfo gameStartInfo = readyNoticeMsg.getGameStartInfo(); //
-        int hasReadyedUserCnt = readyNoticeMsg.getHasReadyedUserCnt();
-        boolean isGameStart = readyNoticeMsg.getIsGameStart();
-
-        EventBus.getDefault().post(new ReadyNoticeEvent(info, readyInfos, roundInfos, gameStartInfo, hasReadyedUserCnt, isGameStart));
+        JsonGameReadyInfo jsonGameReadyInfo = new JsonGameReadyInfo();
+        jsonGameReadyInfo.parse(readyNoticeMsg);
+        EventBus.getDefault().post(new ReadyNoticeEvent(info, jsonGameReadyInfo));
     }
 
 //    //准备并开始游戏通知消息

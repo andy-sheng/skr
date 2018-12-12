@@ -107,7 +107,7 @@ public final class ReadyInfo extends Message<ReadyInfo, ReadyInfo.Builder> {
     if (userID != null) builder.append(", userID=").append(userID);
     if (readySeq != null) builder.append(", readySeq=").append(readySeq);
     if (readyTimeMs != null) builder.append(", readyTimeMs=").append(readyTimeMs);
-    return builder.replace(0, 2, "ReadyInfo{").append('}').toString();
+    return builder.replace(0, 2, "JsonReadyInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {

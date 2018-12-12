@@ -107,7 +107,7 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
     if (userID != null) builder.append(", userID=").append(userID);
     if (joinSeq != null) builder.append(", joinSeq=").append(joinSeq);
     if (joinTimeMs != null) builder.append(", joinTimeMs=").append(joinTimeMs);
-    return builder.replace(0, 2, "JoinInfo{").append('}').toString();
+    return builder.replace(0, 2, "JsonJoinInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {

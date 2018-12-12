@@ -10,8 +10,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
-import com.module.rankingmode.prepare.model.GameInfo;
-import com.module.rankingmode.prepare.model.GameReadyInfo;
+import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -45,12 +44,12 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
 
         checkPlayerReadyState();
 
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
 
-    private void checkPlayerReadyState(){
+    private void checkPlayerReadyState() {
         MyLog.d(TAG, "checkPlayerReadyState");
         checkTask = HandlerTaskTimer.newBuilder().delay(100000).start(new HandlerTaskTimer.ObserverW() {
             @Override
@@ -61,13 +60,13 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                         MyLog.d(TAG, "checkPlayerReadyState result：" + result);
                         if (result.getErrno() == 0) {
                             // todo 带回所有已准备人的信息
-                            GameReadyInfo gameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyInfo.class);
-                            if(gameReadyInfo.isIsGameStart()){
-                                iMatchSucessView.allPlayerIsReady();
-                            }else {
+                            JsonGameReadyInfo jsonGameReadyInfo = JSON.parseObject(result.getData().toString(), JsonGameReadyInfo.class);
+                            if (jsonGameReadyInfo.isIsGameStart()) {
+                                iMatchSucessView.allPlayerIsReady(jsonGameReadyInfo);
+                            } else {
                                 iMatchSucessView.needReMatch();
                             }
-                        }else {
+                        } else {
                             iMatchSucessView.needReMatch();
                         }
                     }
@@ -83,9 +82,9 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * @param isPrepare  true为准备，false为取消准备
+     * @param isPrepare true为准备，false为取消准备
      */
-    public void prepare(boolean isPrepare){
+    public void prepare(boolean isPrepare) {
         MyLog.d(TAG, "prepare");
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", currentGameId);
@@ -106,12 +105,12 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadyNoticeEvent readyNoticeEvent) {
         MyLog.d(TAG, "onEventMainThread readyNoticeEvent " + readyNoticeEvent);
-        if(readyNoticeEvent.isGameStart){
-            if(checkTask != null){
+        if (readyNoticeEvent.jsonGameReadyInfo.isIsGameStart()) {
+            if (checkTask != null) {
                 checkTask.dispose();
             }
 
-            iMatchSucessView.allPlayerIsReady();
+            iMatchSucessView.allPlayerIsReady(readyNoticeEvent.jsonGameReadyInfo);
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.module.rankingmode.prepare.model;
+import com.common.log.MyLog;
+import com.zq.live.proto.Room.JoinInfo;
+
 import java.io.Serializable;
 
-public class JoinInfo implements Serializable {
+public class JsonJoinInfo implements Serializable {
 
     /**
      * userID : 30
@@ -35,5 +38,17 @@ public class JoinInfo implements Serializable {
 
     public void setJoinTimeMs(long joinTimeMs) {
         this.joinTimeMs = joinTimeMs;
+    }
+
+    public void parse(JoinInfo joinInfo){
+        if (joinInfo == null){
+            MyLog.e("JsonJoinInfo joinInfo == null");
+            return;
+        }
+
+        this.setUserID(joinInfo.getUserID());
+        this.setJoinSeq(joinInfo.getJoinSeq());
+        this.setJoinTimeMs(joinInfo.getJoinTimeMs());
+        return;
     }
 }

@@ -1,8 +1,11 @@
 package com.module.rankingmode.prepare.model;
 
+import com.common.log.MyLog;
+import com.zq.live.proto.Room.ReadyInfo;
+
 import java.io.Serializable;
 
-public class ReadyInfo implements Serializable {
+public class JsonReadyInfo implements Serializable {
     /**
      * userID : 1
      * readySeq : 1
@@ -36,4 +39,17 @@ public class ReadyInfo implements Serializable {
     public void setReadyTimeMs(long readyTimeMs) {
         this.readyTimeMs = readyTimeMs;
     }
+
+    public void parse(ReadyInfo readyInfo) {
+        if (readyInfo == null) {
+            MyLog.e("JsonReadyInfo ReadyInfo == null");
+            return;
+        }
+
+        this.setUserID(readyInfo.getUserID());
+        this.setReadySeq(readyInfo.getReadySeq());
+        this.setReadyTimeMs(readyInfo.getReadyTimeMs());
+        return;
+    }
+
 }

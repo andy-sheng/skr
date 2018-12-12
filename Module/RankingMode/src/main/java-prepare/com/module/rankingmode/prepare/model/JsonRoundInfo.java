@@ -1,8 +1,11 @@
 package com.module.rankingmode.prepare.model;
 
+import com.common.log.MyLog;
+import com.zq.live.proto.Room.RoundInfo;
+
 import java.io.Serializable;
 
-public class RoundInfo implements Serializable {
+public class JsonRoundInfo implements Serializable {
     /**
      * userID : 7
      * playbookID : 1
@@ -55,5 +58,19 @@ public class RoundInfo implements Serializable {
 
     public void setSingEndMs(int singEndMs) {
         this.singEndMs = singEndMs;
+    }
+
+    public void parse(RoundInfo roundInfo) {
+        if (roundInfo == null) {
+            MyLog.e("JsonRoundInfo RoundInfo == null");
+            return;
+        }
+
+        this.setUserID(roundInfo.getUserID());
+        this.setPlaybookID(roundInfo.getPlaybookID());
+        this.setRoundSeq(roundInfo.getRoundSeq());
+        this.setSingBeginMs(roundInfo.getSingBeginMs());
+        this.setSingEndMs(roundInfo.getSingEndMs());
+        return;
     }
 }

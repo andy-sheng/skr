@@ -140,7 +140,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (singBeginMs != null) builder.append(", singBeginMs=").append(singBeginMs);
     if (singEndMs != null) builder.append(", singEndMs=").append(singEndMs);
-    return builder.replace(0, 2, "RoundInfo{").append('}').toString();
+    return builder.replace(0, 2, "JsonRoundInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {

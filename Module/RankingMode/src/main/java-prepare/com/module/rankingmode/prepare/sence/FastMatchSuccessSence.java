@@ -15,6 +15,7 @@ import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
@@ -27,6 +28,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
 
     public final static String BUNDLE_KEY_GAME_ID = "current_game_id";
     public final static String BUNDLE_KEY_GAME_CREATE_MS = "game_create_ms";
+    public final static String BUNDLE_KEY_GAME_READY_INFO = "game_ready_info";
 
     int currentGameId;
     long gameCreateMs;
@@ -97,13 +99,13 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     }
 
     @Override
-    public void allPlayerIsReady() {
+    public void allPlayerIsReady(JsonGameReadyInfo jsonGameReadyInfo) {
         matchSenceController.popSence();
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
                 .withSerializable("song_model", songModel)
                 .withInt(BUNDLE_KEY_GAME_ID, currentGameId)
                 .withLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreateMs)
-//                .withSerializable("userList", list)
+                .withSerializable(BUNDLE_KEY_GAME_READY_INFO, jsonGameReadyInfo)
                 .greenChannel().navigation();
     }
 
