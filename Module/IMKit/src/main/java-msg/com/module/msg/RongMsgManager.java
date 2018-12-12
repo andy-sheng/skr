@@ -27,8 +27,7 @@ public class RongMsgManager {
     }
 
     private RongMsgManager() {
-        String id = U.getMD5Utils().MD5_32(U.getDeviceUtils().getDeviceID());
-        RCTokenManager.getInstance().getToken(id, id, "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543140813627&di=8fb590ba624746b929d3354c4aeb6ae9&imgtype=0&src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20180918%2F15%2F1537256494-ZnSKMzEoBI.jpeg");
+
     }
 
     public static final RongMsgManager getInstance() {

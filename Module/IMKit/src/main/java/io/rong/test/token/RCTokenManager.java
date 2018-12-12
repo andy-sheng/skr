@@ -15,7 +15,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.test.RongIMAPIManager;
 
 /**
- * 仅用来测试直接用从融云获取token
+ * todo 仅用来测试直接用从融云获取token，后面一定要删除
  */
 public class RCTokenManager {
 
