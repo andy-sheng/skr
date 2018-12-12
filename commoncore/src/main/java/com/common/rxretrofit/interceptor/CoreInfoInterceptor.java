@@ -17,10 +17,7 @@ public class CoreInfoInterceptor implements Interceptor {
         // todo 标识设备的唯一ID
         request = request.newBuilder()
                 .addHeader("Inframe-Client-ID",U.getDeviceUtils().getDeviceID())
-                .addHeader("Inframe-User-ID", UserAccountManager.getInstance().getUuid())
                 .build();
-
-
         //before
         Response response = chain.proceed(request);
         //after

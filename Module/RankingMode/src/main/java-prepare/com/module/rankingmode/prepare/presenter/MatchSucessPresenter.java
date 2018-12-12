@@ -29,16 +29,12 @@ import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 // 处理匹配成功之后   加入房间  检查房间
 public class MatchSucessPresenter extends RxLifeCyclePresenter {
 
-    private static final int CHECK_CURREN_GAME_INFO = 0;
-    private static final int CHECK_DEFAULT_TIME = 3000;
-
     IMatchSucessView iMatchSucessView;
     MatchServerApi matchServerApi;
 
     HandlerTaskTimer checkTask;
 
     int currentGameId; // 当前游戏id，即融云的房间号
-    GameInfo currGameInfo; // 当前游戏的信息
 
     public MatchSucessPresenter(@NonNull IMatchSucessView view, int currentGameId) {
         MyLog.d(TAG, "MatchSucessPresenter" + " view=" + view + " currentGameId=" + currentGameId);

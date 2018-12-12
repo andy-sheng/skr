@@ -74,7 +74,7 @@ public class ApiManager {
 
                     //手动创建一个OkHttpClient并设置超时时间缓存等设置
                     OkHttpClient.Builder defaultClient = new OkHttpClient.Builder()
-                            .connectTimeout(3 * 1000, TimeUnit.MILLISECONDS);
+                            .connectTimeout(10 * 1000, TimeUnit.MILLISECONDS);
                     mCookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(U.app()));
                     defaultClient.cookieJar(mCookieJar);
                     defaultClient.addInterceptor(new UserAgentInterceptor());
