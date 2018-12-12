@@ -240,7 +240,7 @@ public class FragmentUtils {
         /**
          * 允许在Fragment 被add之前，给fragment 设置一些值。会调用 setData 方法。
          * 虽然大部分值可以通过bundle传递，但有些值不适合bundle传递，比如一些很长的list
-         * 一个很特别的回到等等。
+         * 一个很特别的回调等等。
          */
         Object dataBeforeAdd;
         int dataType; // 数据类型标识

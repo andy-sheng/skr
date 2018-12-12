@@ -26,6 +26,7 @@ import com.module.rankingmode.msg.event.EventHelper;
 import com.module.rankingmode.room.RoomServerApi;
 import com.module.rankingmode.room.event.InputBoardEvent;
 import com.module.rankingmode.room.fragment.RankingRoomFragment;
+import com.module.rankingmode.room.model.RoomData;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,6 +43,8 @@ public class InputContainerView extends RelativeLayout {
     EmotionLayout mElEmotion;
     ViewGroup mPlaceHolderView;
     View mSendMsgBtn;
+
+    private RoomData mRoomData;
 
     public InputContainerView(Context context) {
         super(context);
@@ -106,14 +109,14 @@ public class InputContainerView extends RelativeLayout {
 
         initEmotionKeyboard();
 
-        mSendMsgBtn.setOnClickListener(new View.OnClickListener() {
+        mSendMsgBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String content = mEtContent.getText().toString();
                 RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("gameID", 111);
+                map.put("gameID", mRoomData.getGameId());
                 map.put("content", content);
 
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
@@ -163,4 +166,9 @@ public class InputContainerView extends RelativeLayout {
         }
         return false;
     }
+
+    public void setRoomData(RoomData roomData) {
+        mRoomData = roomData;
+    }
+
 }

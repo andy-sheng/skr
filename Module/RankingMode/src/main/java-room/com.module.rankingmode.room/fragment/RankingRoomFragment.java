@@ -8,11 +8,14 @@ import com.common.base.BaseFragment;
 import com.common.utils.U;
 import com.module.rankingmode.R;
 import com.module.rankingmode.room.comment.CommentView;
+import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.view.BottomContainerView;
 import com.module.rankingmode.room.view.InputContainerView;
 import com.module.rankingmode.room.view.TopContainerView;
 
 public class RankingRoomFragment extends BaseFragment {
+
+    RoomData mRoomData;
 
     InputContainerView mInputContainerView;
 
@@ -38,6 +41,7 @@ public class RankingRoomFragment extends BaseFragment {
 
     private void initInputView() {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);
+        mInputContainerView.setRoomData(mRoomData);
     }
 
 
@@ -75,6 +79,12 @@ public class RankingRoomFragment extends BaseFragment {
         return false;
     }
 
+    @Override
+    public void setData(int type, @Nullable Object data) {
+        if(type==0){
+            mRoomData = (RoomData) data;
+        }
+    }
 
     @Override
     protected boolean onBackPressed() {
