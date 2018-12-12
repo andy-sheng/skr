@@ -396,6 +396,7 @@ public class HttpUtils {
                 mDownLoadMap.remove(urlStr);
             }
         });
+        downloadTask.downloadAsync();
     }
 
     /**

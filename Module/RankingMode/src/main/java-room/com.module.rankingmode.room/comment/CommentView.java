@@ -23,6 +23,11 @@ public class CommentView extends RelativeLayout {
 
     CommentAdapter mCommentAdapter;
 
+    public CommentView(Context context) {
+        super(context);
+        init();
+    }
+
     public CommentView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
@@ -65,7 +70,7 @@ public class CommentView extends RelativeLayout {
         if (event.show) {
             lp.addRule(RelativeLayout.ABOVE,R.id.et_container);
         } else {
-            lp.addRule(RelativeLayout.ABOVE,R.id.bottom_container);
+            lp.addRule(RelativeLayout.ABOVE,R.id.bottom_container_view);
         }
         setLayoutParams(lp);
     }

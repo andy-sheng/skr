@@ -6,158 +6,32 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/place_holder_view"
+    <com.module.rankingmode.room.view.InputContainerView
+        android:id="@+id/input_container_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/yellow">
-        <!--表情区-->
-        <com.common.emoji.EmotionLayout
-            android:id="@+id/elEmotion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-    </FrameLayout>
+        android:layout_height="wrap_content"/>
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
-    <LinearLayout
-        android:id="@+id/et_container"
+    <com.module.rankingmode.room.view.BottomContainerView
+        android:id="@+id/bottom_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/place_holder_view"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:visibility="gone">
-
-        <com.common.view.ex.NoLeakEditText
-            android:id="@+id/etContent"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/view_32_dp"
-            android:layout_weight="1"
-            android:background="@drawable/room_input_et_bg"
-            android:gravity="center_vertical|left"
-            android:paddingLeft="@dimen/view_15_dp"
-            android:paddingRight="@dimen/view_15_dp"
-            android:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/ivEmo"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="5dp"
-            android:src="@drawable/emoji_btn" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/send_msg_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="发送"
-            app:bl_pressed_color="@color/red"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="@color/blue" />
-
-    </LinearLayout>
-
-    <!--这里面是软键盘弹出时 需要上移的布局-->
-    <RelativeLayout
-        android:id="@+id/bottom_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/place_holder_view"
+        android:layout_above="@+id/input_container_view"
         android:layout_marginBottom="@dimen/view_19_dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/emoji1_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:scaleType="centerInside"
-            app:src_unPressed_drawable="@drawable/emoji_btn" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/show_input_container_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_32_dp"
-            android:layout_marginLeft="@dimen/view_5_dp"
-            android:layout_marginRight="@dimen/view_5_dp"
-            android:layout_toLeftOf="@+id/emoji2_btn"
-            android:layout_toRightOf="@+id/emoji1_btn"
-            android:background="@drawable/room_input_et_bg"
-            android:gravity="center_vertical|left"
-            android:paddingLeft="@dimen/view_15_dp"
-            android:paddingRight="@dimen/view_10_dp"
-            android:text="打个招呼吧"
-            android:textColor="#898989"
-            android:textSize="@dimen/view_14_dp" />
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/emoji4_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:scaleType="centerInside"
-            app:src_unPressed_drawable="@drawable/emoji_btn" />
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/emoji3_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_15_dp"
-            android:layout_toLeftOf="@+id/emoji4_btn"
-            android:scaleType="centerInside"
-            app:src_unPressed_drawable="@drawable/emoji_btn" />
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/emoji2_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_15_dp"
-            android:layout_toLeftOf="@+id/emoji3_btn"
-            android:scaleType="centerInside"
-            app:src_unPressed_drawable="@drawable/emoji_btn" />
-    </RelativeLayout>
+        android:paddingRight="16dp"/>
 
     <com.module.rankingmode.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_container" />
+        android:layout_above="@+id/bottom_container_view" />
 
-    <RelativeLayout
-        android:id="@+id/top_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_5_dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/viewer_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:layout_marginRight="@dimen/view_5_dp"
-            android:layout_toLeftOf="@+id/close_btn" />
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/close_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_24_dp"
-            android:scaleType="centerInside"
-            app:src_unPressed_drawable="@drawable/emoji_btn" />
-    </RelativeLayout>
+    <!--<com.module.rankingmode.room.view.TopContainerView-->
+        <!--android:id="@+id/top_container_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/view_5_dp"/>-->
 
 
 </RelativeLayout>
