@@ -2,6 +2,7 @@ package com.module.rankingmode.msg.event;
 
 import com.module.rankingmode.msg.BasePushInfo;
 
+@Deprecated
 public class ReadyAndStartNoticeEvent {
     int readyUserID;   //准备用户ID
     long readyTimeMs;  //准备的毫秒时间戳

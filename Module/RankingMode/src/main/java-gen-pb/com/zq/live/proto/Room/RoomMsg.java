@@ -148,15 +148,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   public final ReadyNoticeMsg readyNoticeMsg;
 
   /**
-   * 准备并开始游戏通知消息 msgType == RM_READY_AND_START_NOTICE
-   */
-  @WireField(
-      tag = 103,
-      adapter = "com.zq.live.proto.Room.ReadyAndStartNoticeMsg#ADAPTER"
-  )
-  public final ReadyAndStartNoticeMsg readyAndStartNoticeMsg;
-
-  /**
    * 游戏轮次结束通知消息 msgType == RM_ROUND_OVER
    */
   @WireField(
@@ -204,18 +195,18 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
-      ReadyNoticeMsg readyNoticeMsg, ReadyAndStartNoticeMsg readyAndStartNoticeMsg,
-      RoundOverMsg roundOverMsg, RoundAndGameOverMsg roundAndGameOverMsg, QuitGameMsg quitGameMsg,
-      AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, readyAndStartNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, ByteString.EMPTY);
+      ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
+      RoundAndGameOverMsg roundAndGameOverMsg, QuitGameMsg quitGameMsg, AppSwapMsg appSwapMsg,
+      SyncStatusMsg syncStatusMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, ByteString.EMPTY);
   }
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
-      ReadyNoticeMsg readyNoticeMsg, ReadyAndStartNoticeMsg readyAndStartNoticeMsg,
-      RoundOverMsg roundOverMsg, RoundAndGameOverMsg roundAndGameOverMsg, QuitGameMsg quitGameMsg,
-      AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg, ByteString unknownFields) {
+      ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
+      RoundAndGameOverMsg roundAndGameOverMsg, QuitGameMsg quitGameMsg, AppSwapMsg appSwapMsg,
+      SyncStatusMsg syncStatusMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -229,7 +220,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     this.joinActionMsg = joinActionMsg;
     this.joinNoticeMsg = joinNoticeMsg;
     this.readyNoticeMsg = readyNoticeMsg;
-    this.readyAndStartNoticeMsg = readyAndStartNoticeMsg;
     this.roundOverMsg = roundOverMsg;
     this.roundAndGameOverMsg = roundAndGameOverMsg;
     this.quitGameMsg = quitGameMsg;
@@ -252,7 +242,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     builder.joinActionMsg = joinActionMsg;
     builder.joinNoticeMsg = joinNoticeMsg;
     builder.readyNoticeMsg = readyNoticeMsg;
-    builder.readyAndStartNoticeMsg = readyAndStartNoticeMsg;
     builder.roundOverMsg = roundOverMsg;
     builder.roundAndGameOverMsg = roundAndGameOverMsg;
     builder.quitGameMsg = quitGameMsg;
@@ -280,7 +269,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         && Internal.equals(joinActionMsg, o.joinActionMsg)
         && Internal.equals(joinNoticeMsg, o.joinNoticeMsg)
         && Internal.equals(readyNoticeMsg, o.readyNoticeMsg)
-        && Internal.equals(readyAndStartNoticeMsg, o.readyAndStartNoticeMsg)
         && Internal.equals(roundOverMsg, o.roundOverMsg)
         && Internal.equals(roundAndGameOverMsg, o.roundAndGameOverMsg)
         && Internal.equals(quitGameMsg, o.quitGameMsg)
@@ -305,7 +293,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       result = result * 37 + (joinActionMsg != null ? joinActionMsg.hashCode() : 0);
       result = result * 37 + (joinNoticeMsg != null ? joinNoticeMsg.hashCode() : 0);
       result = result * 37 + (readyNoticeMsg != null ? readyNoticeMsg.hashCode() : 0);
-      result = result * 37 + (readyAndStartNoticeMsg != null ? readyAndStartNoticeMsg.hashCode() : 0);
       result = result * 37 + (roundOverMsg != null ? roundOverMsg.hashCode() : 0);
       result = result * 37 + (roundAndGameOverMsg != null ? roundAndGameOverMsg.hashCode() : 0);
       result = result * 37 + (quitGameMsg != null ? quitGameMsg.hashCode() : 0);
@@ -331,7 +318,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     if (joinActionMsg != null) builder.append(", joinActionMsg=").append(joinActionMsg);
     if (joinNoticeMsg != null) builder.append(", joinNoticeMsg=").append(joinNoticeMsg);
     if (readyNoticeMsg != null) builder.append(", readyNoticeMsg=").append(readyNoticeMsg);
-    if (readyAndStartNoticeMsg != null) builder.append(", readyAndStartNoticeMsg=").append(readyAndStartNoticeMsg);
     if (roundOverMsg != null) builder.append(", roundOverMsg=").append(roundOverMsg);
     if (roundAndGameOverMsg != null) builder.append(", roundAndGameOverMsg=").append(roundAndGameOverMsg);
     if (quitGameMsg != null) builder.append(", quitGameMsg=").append(quitGameMsg);
@@ -471,16 +457,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 准备并开始游戏通知消息 msgType == RM_READY_AND_START_NOTICE
-   */
-  public ReadyAndStartNoticeMsg getReadyAndStartNoticeMsg() {
-    if(readyAndStartNoticeMsg==null){
-        return new ReadyAndStartNoticeMsg.Builder().build();
-    }
-    return readyAndStartNoticeMsg;
-  }
-
-  /**
    * 游戏轮次结束通知消息 msgType == RM_ROUND_OVER
    */
   public RoundOverMsg getRoundOverMsg() {
@@ -615,13 +591,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 准备并开始游戏通知消息 msgType == RM_READY_AND_START_NOTICE
-   */
-  public boolean hasReadyAndStartNoticeMsg() {
-    return readyAndStartNoticeMsg!=null;
-  }
-
-  /**
    * 游戏轮次结束通知消息 msgType == RM_ROUND_OVER
    */
   public boolean hasRoundOverMsg() {
@@ -680,8 +649,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     public JoinNoticeMsg joinNoticeMsg;
 
     public ReadyNoticeMsg readyNoticeMsg;
-
-    public ReadyAndStartNoticeMsg readyAndStartNoticeMsg;
 
     public RoundOverMsg roundOverMsg;
 
@@ -793,14 +760,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     }
 
     /**
-     * 准备并开始游戏通知消息 msgType == RM_READY_AND_START_NOTICE
-     */
-    public Builder setReadyAndStartNoticeMsg(ReadyAndStartNoticeMsg readyAndStartNoticeMsg) {
-      this.readyAndStartNoticeMsg = readyAndStartNoticeMsg;
-      return this;
-    }
-
-    /**
      * 游戏轮次结束通知消息 msgType == RM_ROUND_OVER
      */
     public Builder setRoundOverMsg(RoundOverMsg roundOverMsg) {
@@ -842,7 +801,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
 
     @Override
     public RoomMsg build() {
-      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, readyAndStartNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, super.buildUnknownFields());
+      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, super.buildUnknownFields());
     }
   }
 
@@ -865,7 +824,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           + JoinActionMsg.ADAPTER.encodedSizeWithTag(100, value.joinActionMsg)
           + JoinNoticeMsg.ADAPTER.encodedSizeWithTag(101, value.joinNoticeMsg)
           + ReadyNoticeMsg.ADAPTER.encodedSizeWithTag(102, value.readyNoticeMsg)
-          + ReadyAndStartNoticeMsg.ADAPTER.encodedSizeWithTag(103, value.readyAndStartNoticeMsg)
           + RoundOverMsg.ADAPTER.encodedSizeWithTag(104, value.roundOverMsg)
           + RoundAndGameOverMsg.ADAPTER.encodedSizeWithTag(105, value.roundAndGameOverMsg)
           + QuitGameMsg.ADAPTER.encodedSizeWithTag(106, value.quitGameMsg)
@@ -888,7 +846,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       JoinActionMsg.ADAPTER.encodeWithTag(writer, 100, value.joinActionMsg);
       JoinNoticeMsg.ADAPTER.encodeWithTag(writer, 101, value.joinNoticeMsg);
       ReadyNoticeMsg.ADAPTER.encodeWithTag(writer, 102, value.readyNoticeMsg);
-      ReadyAndStartNoticeMsg.ADAPTER.encodeWithTag(writer, 103, value.readyAndStartNoticeMsg);
       RoundOverMsg.ADAPTER.encodeWithTag(writer, 104, value.roundOverMsg);
       RoundAndGameOverMsg.ADAPTER.encodeWithTag(writer, 105, value.roundAndGameOverMsg);
       QuitGameMsg.ADAPTER.encodeWithTag(writer, 106, value.quitGameMsg);
@@ -929,7 +886,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           case 100: builder.setJoinActionMsg(JoinActionMsg.ADAPTER.decode(reader)); break;
           case 101: builder.setJoinNoticeMsg(JoinNoticeMsg.ADAPTER.decode(reader)); break;
           case 102: builder.setReadyNoticeMsg(ReadyNoticeMsg.ADAPTER.decode(reader)); break;
-          case 103: builder.setReadyAndStartNoticeMsg(ReadyAndStartNoticeMsg.ADAPTER.decode(reader)); break;
           case 104: builder.setRoundOverMsg(RoundOverMsg.ADAPTER.decode(reader)); break;
           case 105: builder.setRoundAndGameOverMsg(RoundAndGameOverMsg.ADAPTER.decode(reader)); break;
           case 106: builder.setQuitGameMsg(QuitGameMsg.ADAPTER.decode(reader)); break;
@@ -956,7 +912,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       if (builder.joinActionMsg != null) builder.joinActionMsg = JoinActionMsg.ADAPTER.redact(builder.joinActionMsg);
       if (builder.joinNoticeMsg != null) builder.joinNoticeMsg = JoinNoticeMsg.ADAPTER.redact(builder.joinNoticeMsg);
       if (builder.readyNoticeMsg != null) builder.readyNoticeMsg = ReadyNoticeMsg.ADAPTER.redact(builder.readyNoticeMsg);
-      if (builder.readyAndStartNoticeMsg != null) builder.readyAndStartNoticeMsg = ReadyAndStartNoticeMsg.ADAPTER.redact(builder.readyAndStartNoticeMsg);
       if (builder.roundOverMsg != null) builder.roundOverMsg = RoundOverMsg.ADAPTER.redact(builder.roundOverMsg);
       if (builder.roundAndGameOverMsg != null) builder.roundAndGameOverMsg = RoundAndGameOverMsg.ADAPTER.redact(builder.roundAndGameOverMsg);
       if (builder.quitGameMsg != null) builder.quitGameMsg = QuitGameMsg.ADAPTER.redact(builder.quitGameMsg);

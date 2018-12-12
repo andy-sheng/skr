@@ -6,7 +6,6 @@ import com.module.rankingmode.msg.event.AppSwapEvent;
 import com.module.rankingmode.msg.event.JoinActionEvent;
 import com.module.rankingmode.msg.event.JoinNoticeEvent;
 import com.module.rankingmode.msg.event.QuitGameEvent;
-import com.module.rankingmode.msg.event.ReadyAndStartNoticeEvent;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
@@ -14,13 +13,12 @@ import com.module.rankingmode.msg.event.SyncStatusEvent;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
 import com.zq.live.proto.Room.ERoomMsgType;
-import com.zq.live.proto.Room.GameInfo;
+import com.zq.live.proto.Room.GameStartInfo;
 import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinInfo;
 import com.zq.live.proto.Room.JoinNoticeMsg;
 import com.zq.live.proto.Room.PlayerInfo;
 import com.zq.live.proto.Room.QuitGameMsg;
-import com.zq.live.proto.Room.ReadyAndStartNoticeMsg;
 import com.zq.live.proto.Room.ReadyInfo;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomMsg;
@@ -48,8 +46,6 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processJoinNoticeMsg(basePushInfo, msg.getJoinNoticeMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_READY_NOTICE) {
             processReadyNoticeMsg(basePushInfo, msg.getReadyNoticeMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_READY_AND_START_NOTICE) {
-            processReadyAndStartNoticeMsg(basePushInfo, msg.getReadyAndStartNoticeMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_OVER) {
             processRoundOverMsg(basePushInfo, msg.getRoundOverMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_AND_GAME_OVER) {
@@ -60,8 +56,6 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processAppSwapMsg(basePushInfo, msg.getAppSwapMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_SYNC_STATUS) {
             processSyncStatusMsg(basePushInfo, msg.getSyncStatusMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_ROOM_IN_OUT) {
-
         }
     }
 
@@ -69,10 +63,9 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     public ERoomMsgType[] acceptType() {
         return new ERoomMsgType[]{
                 ERoomMsgType.RM_JOIN_ACTION, ERoomMsgType.RM_JOIN_NOTICE,
-                ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_READY_AND_START_NOTICE,
-                ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
-                ERoomMsgType.RM_QUIT_GAME, ERoomMsgType.RM_APP_SWAP,
-                ERoomMsgType.RM_SYNC_STATUS, ERoomMsgType.RM_ROOM_IN_OUT
+                ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_ROUND_OVER,
+                ERoomMsgType.RM_ROUND_AND_GAME_OVER, ERoomMsgType.RM_QUIT_GAME,
+                ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_SYNC_STATUS
         };
     }
 
@@ -114,29 +107,29 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         List<ReadyInfo> readyInfos = readyNoticeMsg.getReadyInfoList();//准备信息
         List<RoundInfo> roundInfos = readyNoticeMsg.getRoundInfoList();//轮次信息
-        GameInfo gameInfo = readyNoticeMsg.getGameInfo();
+        GameStartInfo gameStartInfo = readyNoticeMsg.getGameStartInfo(); //
         int hasReadyedUserCnt = readyNoticeMsg.getHasReadyedUserCnt();
         boolean isGameStart = readyNoticeMsg.getIsGameStart();
 
-        EventBus.getDefault().post(new ReadyNoticeEvent(info, readyInfos, roundInfos, gameInfo, hasReadyedUserCnt, isGameStart));
+        EventBus.getDefault().post(new ReadyNoticeEvent(info, readyInfos, roundInfos, gameStartInfo, hasReadyedUserCnt, isGameStart));
     }
 
-    //准备并开始游戏通知消息
-    private void processReadyAndStartNoticeMsg(BasePushInfo info, ReadyAndStartNoticeMsg readyAndStartNoticeMsg) {
-        if (readyAndStartNoticeMsg == null) {
-            MyLog.d(TAG, "processReadyAndStartNoticeMsg" + " readyAndStartNoticeMsg == null");
-            return;
-        }
-
-        int readyUserID = readyAndStartNoticeMsg.getReadyUserID();   //准备用户ID
-        long readyTimeMs = readyAndStartNoticeMsg.getReadyTimeMs();  //准备的毫秒时间戳
-        long startTimeMS = readyAndStartNoticeMsg.getStartTimeMS();  //开始的毫秒时间戳
-        int firstUserID = readyAndStartNoticeMsg.getFirstUserID();   //第一个用户ID
-        int firstMusicID = readyAndStartNoticeMsg.getFirstMusicID(); //第一首歌曲ID
-
-        EventBus.getDefault().post(new ReadyAndStartNoticeEvent(info, readyUserID, readyTimeMs, startTimeMS, firstUserID, firstMusicID));
-
-    }
+//    //准备并开始游戏通知消息
+//    private void processReadyAndStartNoticeMsg(BasePushInfo info, ReadyAndStartNoticeMsg readyAndStartNoticeMsg) {
+//        if (readyAndStartNoticeMsg == null) {
+//            MyLog.d(TAG, "processReadyAndStartNoticeMsg" + " readyAndStartNoticeMsg == null");
+//            return;
+//        }
+//
+//        int readyUserID = readyAndStartNoticeMsg.getReadyUserID();   //准备用户ID
+//        long readyTimeMs = readyAndStartNoticeMsg.getReadyTimeMs();  //准备的毫秒时间戳
+//        long startTimeMS = readyAndStartNoticeMsg.getStartTimeMS();  //开始的毫秒时间戳
+//        int firstUserID = readyAndStartNoticeMsg.getFirstUserID();   //第一个用户ID
+//        int firstMusicID = readyAndStartNoticeMsg.getFirstMusicID(); //第一首歌曲ID
+//
+//        EventBus.getDefault().post(new ReadyAndStartNoticeEvent(info, readyUserID, readyTimeMs, startTimeMS, firstUserID, firstMusicID));
+//
+//    }
 
     //游戏轮次结束通知消息
     private void processRoundOverMsg(BasePushInfo info, RoundOverMsg roundOverMsgr) {

@@ -17,8 +17,8 @@ import java.lang.String;
 import java.lang.StringBuilder;
 import okio.ByteString;
 
-public final class GameInfo extends Message<GameInfo, GameInfo.Builder> {
-  public static final ProtoAdapter<GameInfo> ADAPTER = new ProtoAdapter_GameInfo();
+public final class GameStartInfo extends Message<GameStartInfo, GameStartInfo.Builder> {
+  public static final ProtoAdapter<GameStartInfo> ADAPTER = new ProtoAdapter_GameStartInfo();
 
   private static final long serialVersionUID = 0L;
 
@@ -44,11 +44,11 @@ public final class GameInfo extends Message<GameInfo, GameInfo.Builder> {
   )
   public final Long startPassedMs;
 
-  public GameInfo(Long startTimeMs, Long startPassedMs) {
+  public GameStartInfo(Long startTimeMs, Long startPassedMs) {
     this(startTimeMs, startPassedMs, ByteString.EMPTY);
   }
 
-  public GameInfo(Long startTimeMs, Long startPassedMs, ByteString unknownFields) {
+  public GameStartInfo(Long startTimeMs, Long startPassedMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.startTimeMs = startTimeMs;
     this.startPassedMs = startPassedMs;
@@ -66,8 +66,8 @@ public final class GameInfo extends Message<GameInfo, GameInfo.Builder> {
   @Override
   public boolean equals(Object other) {
     if (other == this) return true;
-    if (!(other instanceof GameInfo)) return false;
-    GameInfo o = (GameInfo) other;
+    if (!(other instanceof GameStartInfo)) return false;
+    GameStartInfo o = (GameStartInfo) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(startTimeMs, o.startTimeMs)
         && Internal.equals(startPassedMs, o.startPassedMs);
@@ -90,16 +90,16 @@ public final class GameInfo extends Message<GameInfo, GameInfo.Builder> {
     StringBuilder builder = new StringBuilder();
     if (startTimeMs != null) builder.append(", startTimeMs=").append(startTimeMs);
     if (startPassedMs != null) builder.append(", startPassedMs=").append(startPassedMs);
-    return builder.replace(0, 2, "GameInfo{").append('}').toString();
+    return builder.replace(0, 2, "GameStartInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {
-    return GameInfo.ADAPTER.encode(this);
+    return GameStartInfo.ADAPTER.encode(this);
   }
 
-  public static final GameInfo parseFrom(byte[] data) throws IOException {
-    GameInfo c = null;
-       c = GameInfo.ADAPTER.decode(data);
+  public static final GameStartInfo parseFrom(byte[] data) throws IOException {
+    GameStartInfo c = null;
+       c = GameStartInfo.ADAPTER.decode(data);
     return c;
   }
 
@@ -137,7 +137,7 @@ public final class GameInfo extends Message<GameInfo, GameInfo.Builder> {
     return startPassedMs!=null;
   }
 
-  public static final class Builder extends Message.Builder<GameInfo, Builder> {
+  public static final class Builder extends Message.Builder<GameStartInfo, Builder> {
     public Long startTimeMs;
 
     public Long startPassedMs;
@@ -162,32 +162,32 @@ public final class GameInfo extends Message<GameInfo, GameInfo.Builder> {
     }
 
     @Override
-    public GameInfo build() {
-      return new GameInfo(startTimeMs, startPassedMs, super.buildUnknownFields());
+    public GameStartInfo build() {
+      return new GameStartInfo(startTimeMs, startPassedMs, super.buildUnknownFields());
     }
   }
 
-  private static final class ProtoAdapter_GameInfo extends ProtoAdapter<GameInfo> {
-    public ProtoAdapter_GameInfo() {
-      super(FieldEncoding.LENGTH_DELIMITED, GameInfo.class);
+  private static final class ProtoAdapter_GameStartInfo extends ProtoAdapter<GameStartInfo> {
+    public ProtoAdapter_GameStartInfo() {
+      super(FieldEncoding.LENGTH_DELIMITED, GameStartInfo.class);
     }
 
     @Override
-    public int encodedSize(GameInfo value) {
+    public int encodedSize(GameStartInfo value) {
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.startTimeMs)
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.startPassedMs)
           + value.unknownFields().size();
     }
 
     @Override
-    public void encode(ProtoWriter writer, GameInfo value) throws IOException {
+    public void encode(ProtoWriter writer, GameStartInfo value) throws IOException {
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.startTimeMs);
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.startPassedMs);
       writer.writeBytes(value.unknownFields());
     }
 
     @Override
-    public GameInfo decode(ProtoReader reader) throws IOException {
+    public GameStartInfo decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
@@ -206,7 +206,7 @@ public final class GameInfo extends Message<GameInfo, GameInfo.Builder> {
     }
 
     @Override
-    public GameInfo redact(GameInfo value) {
+    public GameStartInfo redact(GameStartInfo value) {
       Builder builder = value.newBuilder();
       builder.clearUnknownFields();
       return builder.build();

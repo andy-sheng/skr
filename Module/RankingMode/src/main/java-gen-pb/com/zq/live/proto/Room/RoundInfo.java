@@ -11,7 +11,6 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Integer;
-import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -23,19 +22,39 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
 
   private static final long serialVersionUID = 0L;
 
+  public static final Integer DEFAULT_USERID = 0;
+
+  public static final Integer DEFAULT_PLAYBOOKID = 0;
+
   public static final Integer DEFAULT_ROUNDSEQ = 0;
 
-  public static final Long DEFAULT_ROUNDBEGINMS = 0L;
+  public static final Integer DEFAULT_SINGBEGINMS = 0;
 
-  public static final Long DEFAULT_ROUNDENDMS = 0L;
+  public static final Integer DEFAULT_SINGENDMS = 0;
 
-  public static final Integer DEFAULT_ITEMID = 0;
+  /**
+   * 玩家id
+   */
+  @WireField(
+      tag = 1,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer userID;
+
+  /**
+   * 曲库id
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer playbookID;
 
   /**
    * 轮次顺序
    */
   @WireField(
-      tag = 1,
+      tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   public final Integer roundSeq;
@@ -44,49 +63,43 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
    * 轮次开始时间戳
    */
   @WireField(
-      tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Long roundBeginMs;
+  public final Integer singBeginMs;
 
   /**
    * 轮次结束时间戳
    */
   @WireField(
-      tag = 3,
-      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
-  )
-  public final Long roundEndMs;
-
-  /**
-   * 曲库id
-   */
-  @WireField(
-      tag = 4,
+      tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer itemID;
+  public final Integer singEndMs;
 
-  public RoundInfo(Integer roundSeq, Long roundBeginMs, Long roundEndMs, Integer itemID) {
-    this(roundSeq, roundBeginMs, roundEndMs, itemID, ByteString.EMPTY);
+  public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
+      Integer singEndMs) {
+    this(userID, playbookID, roundSeq, singBeginMs, singEndMs, ByteString.EMPTY);
   }
 
-  public RoundInfo(Integer roundSeq, Long roundBeginMs, Long roundEndMs, Integer itemID,
-      ByteString unknownFields) {
+  public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
+      Integer singEndMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
+    this.userID = userID;
+    this.playbookID = playbookID;
     this.roundSeq = roundSeq;
-    this.roundBeginMs = roundBeginMs;
-    this.roundEndMs = roundEndMs;
-    this.itemID = itemID;
+    this.singBeginMs = singBeginMs;
+    this.singEndMs = singEndMs;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
+    builder.userID = userID;
+    builder.playbookID = playbookID;
     builder.roundSeq = roundSeq;
-    builder.roundBeginMs = roundBeginMs;
-    builder.roundEndMs = roundEndMs;
-    builder.itemID = itemID;
+    builder.singBeginMs = singBeginMs;
+    builder.singEndMs = singEndMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -97,10 +110,11 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     if (!(other instanceof RoundInfo)) return false;
     RoundInfo o = (RoundInfo) other;
     return unknownFields().equals(o.unknownFields())
+        && Internal.equals(userID, o.userID)
+        && Internal.equals(playbookID, o.playbookID)
         && Internal.equals(roundSeq, o.roundSeq)
-        && Internal.equals(roundBeginMs, o.roundBeginMs)
-        && Internal.equals(roundEndMs, o.roundEndMs)
-        && Internal.equals(itemID, o.itemID);
+        && Internal.equals(singBeginMs, o.singBeginMs)
+        && Internal.equals(singEndMs, o.singEndMs);
   }
 
   @Override
@@ -108,10 +122,11 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
+      result = result * 37 + (userID != null ? userID.hashCode() : 0);
+      result = result * 37 + (playbookID != null ? playbookID.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
-      result = result * 37 + (roundBeginMs != null ? roundBeginMs.hashCode() : 0);
-      result = result * 37 + (roundEndMs != null ? roundEndMs.hashCode() : 0);
-      result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
+      result = result * 37 + (singBeginMs != null ? singBeginMs.hashCode() : 0);
+      result = result * 37 + (singEndMs != null ? singEndMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -120,10 +135,11 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
+    if (userID != null) builder.append(", userID=").append(userID);
+    if (playbookID != null) builder.append(", playbookID=").append(playbookID);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
-    if (roundBeginMs != null) builder.append(", roundBeginMs=").append(roundBeginMs);
-    if (roundEndMs != null) builder.append(", roundEndMs=").append(roundEndMs);
-    if (itemID != null) builder.append(", itemID=").append(itemID);
+    if (singBeginMs != null) builder.append(", singBeginMs=").append(singBeginMs);
+    if (singEndMs != null) builder.append(", singEndMs=").append(singEndMs);
     return builder.replace(0, 2, "RoundInfo{").append('}').toString();
   }
 
@@ -135,6 +151,26 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     RoundInfo c = null;
        c = RoundInfo.ADAPTER.decode(data);
     return c;
+  }
+
+  /**
+   * 玩家id
+   */
+  public Integer getUserID() {
+    if(userID==null){
+        return DEFAULT_USERID;
+    }
+    return userID;
+  }
+
+  /**
+   * 曲库id
+   */
+  public Integer getPlaybookID() {
+    if(playbookID==null){
+        return DEFAULT_PLAYBOOKID;
+    }
+    return playbookID;
   }
 
   /**
@@ -150,31 +186,35 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   /**
    * 轮次开始时间戳
    */
-  public Long getRoundBeginMs() {
-    if(roundBeginMs==null){
-        return DEFAULT_ROUNDBEGINMS;
+  public Integer getSingBeginMs() {
+    if(singBeginMs==null){
+        return DEFAULT_SINGBEGINMS;
     }
-    return roundBeginMs;
+    return singBeginMs;
   }
 
   /**
    * 轮次结束时间戳
    */
-  public Long getRoundEndMs() {
-    if(roundEndMs==null){
-        return DEFAULT_ROUNDENDMS;
+  public Integer getSingEndMs() {
+    if(singEndMs==null){
+        return DEFAULT_SINGENDMS;
     }
-    return roundEndMs;
+    return singEndMs;
+  }
+
+  /**
+   * 玩家id
+   */
+  public boolean hasUserID() {
+    return userID!=null;
   }
 
   /**
    * 曲库id
    */
-  public Integer getItemID() {
-    if(itemID==null){
-        return DEFAULT_ITEMID;
-    }
-    return itemID;
+  public boolean hasPlaybookID() {
+    return playbookID!=null;
   }
 
   /**
@@ -187,34 +227,45 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   /**
    * 轮次开始时间戳
    */
-  public boolean hasRoundBeginMs() {
-    return roundBeginMs!=null;
+  public boolean hasSingBeginMs() {
+    return singBeginMs!=null;
   }
 
   /**
    * 轮次结束时间戳
    */
-  public boolean hasRoundEndMs() {
-    return roundEndMs!=null;
-  }
-
-  /**
-   * 曲库id
-   */
-  public boolean hasItemID() {
-    return itemID!=null;
+  public boolean hasSingEndMs() {
+    return singEndMs!=null;
   }
 
   public static final class Builder extends Message.Builder<RoundInfo, Builder> {
+    public Integer userID;
+
+    public Integer playbookID;
+
     public Integer roundSeq;
 
-    public Long roundBeginMs;
+    public Integer singBeginMs;
 
-    public Long roundEndMs;
-
-    public Integer itemID;
+    public Integer singEndMs;
 
     public Builder() {
+    }
+
+    /**
+     * 玩家id
+     */
+    public Builder setUserID(Integer userID) {
+      this.userID = userID;
+      return this;
+    }
+
+    /**
+     * 曲库id
+     */
+    public Builder setPlaybookID(Integer playbookID) {
+      this.playbookID = playbookID;
+      return this;
     }
 
     /**
@@ -228,30 +279,22 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     /**
      * 轮次开始时间戳
      */
-    public Builder setRoundBeginMs(Long roundBeginMs) {
-      this.roundBeginMs = roundBeginMs;
+    public Builder setSingBeginMs(Integer singBeginMs) {
+      this.singBeginMs = singBeginMs;
       return this;
     }
 
     /**
      * 轮次结束时间戳
      */
-    public Builder setRoundEndMs(Long roundEndMs) {
-      this.roundEndMs = roundEndMs;
-      return this;
-    }
-
-    /**
-     * 曲库id
-     */
-    public Builder setItemID(Integer itemID) {
-      this.itemID = itemID;
+    public Builder setSingEndMs(Integer singEndMs) {
+      this.singEndMs = singEndMs;
       return this;
     }
 
     @Override
     public RoundInfo build() {
-      return new RoundInfo(roundSeq, roundBeginMs, roundEndMs, itemID, super.buildUnknownFields());
+      return new RoundInfo(userID, playbookID, roundSeq, singBeginMs, singEndMs, super.buildUnknownFields());
     }
   }
 
@@ -262,19 +305,21 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
 
     @Override
     public int encodedSize(RoundInfo value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.roundSeq)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.roundBeginMs)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(3, value.roundEndMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.itemID)
+      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.playbookID)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.roundSeq)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.singBeginMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.singEndMs)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RoundInfo value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.roundSeq);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.roundBeginMs);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 3, value.roundEndMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.itemID);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.playbookID);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.roundSeq);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.singBeginMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.singEndMs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -284,10 +329,11 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setRoundBeginMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 3: builder.setRoundEndMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 4: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 2: builder.setPlaybookID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: builder.setSingBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 5: builder.setSingEndMs(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
