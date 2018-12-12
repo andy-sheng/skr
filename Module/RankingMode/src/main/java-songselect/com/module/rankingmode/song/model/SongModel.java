@@ -1,6 +1,9 @@
 package com.module.rankingmode.song.model;
 
-public class SongModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class SongModel implements Parcelable {
     /**
      * itemID : 10
      * itemName : 沙漠骆驼
@@ -30,6 +33,10 @@ public class SongModel {
     private int endMs;
     private String melp;
     private String zip;
+
+
+    public SongModel() {
+    }
 
     public int getItemID() {
         return itemID;
@@ -134,4 +141,54 @@ public class SongModel {
     public void setZip(String zip) {
         this.zip = zip;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.itemID);
+        dest.writeString(this.itemName);
+        dest.writeString(this.cover);
+        dest.writeString(this.owner);
+        dest.writeString(this.lyric);
+        dest.writeString(this.ori);
+        dest.writeString(this.acc);
+        dest.writeString(this.midi);
+        dest.writeInt(this.totalMs);
+        dest.writeInt(this.beginMs);
+        dest.writeInt(this.endMs);
+        dest.writeString(this.melp);
+        dest.writeString(this.zip);
+    }
+
+    protected SongModel(Parcel in) {
+        this.itemID = in.readInt();
+        this.itemName = in.readString();
+        this.cover = in.readString();
+        this.owner = in.readString();
+        this.lyric = in.readString();
+        this.ori = in.readString();
+        this.acc = in.readString();
+        this.midi = in.readString();
+        this.totalMs = in.readInt();
+        this.beginMs = in.readInt();
+        this.endMs = in.readInt();
+        this.melp = in.readString();
+        this.zip = in.readString();
+    }
+
+    public static final Parcelable.Creator<SongModel> CREATOR = new Parcelable.Creator<SongModel>() {
+        @Override
+        public SongModel createFromParcel(Parcel source) {
+            return new SongModel(source);
+        }
+
+        @Override
+        public SongModel[] newArray(int size) {
+            return new SongModel[size];
+        }
+    };
 }

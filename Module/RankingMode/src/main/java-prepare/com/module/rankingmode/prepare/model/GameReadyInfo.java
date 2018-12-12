@@ -1,9 +1,13 @@
 package com.module.rankingmode.prepare.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class GameReadyInfo {
+public class GameReadyInfo implements Parcelable {
     /**
      * readyInfo : [{"userID":7,"readySeq":1,"readyTimeMs":1544584287997},{"userID":8,"readySeq":2,"readyTimeMs":1544584290741},{"userID":9,"readySeq":3,"readyTimeMs":1544586876228}]
      * HasReadyedUserCnt : 3
@@ -17,6 +21,9 @@ public class GameReadyInfo {
     private GameStartInfo gameStartInfo;
     private List<ReadyInfo> readyInfo;
     private List<RoundInfo> roundInfo;
+
+    public GameReadyInfo() {
+    }
 
     public int getHasReadyedUserCnt() {
         return HasReadyedUserCnt;
@@ -58,4 +65,39 @@ public class GameReadyInfo {
         this.roundInfo = roundInfo;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.HasReadyedUserCnt);
+        dest.writeByte(this.isGameStart ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.gameStartInfo, flags);
+        dest.writeList(this.readyInfo);
+        dest.writeList(this.roundInfo);
+    }
+
+    protected GameReadyInfo(Parcel in) {
+        this.HasReadyedUserCnt = in.readInt();
+        this.isGameStart = in.readByte() != 0;
+        this.gameStartInfo = in.readParcelable(GameStartInfo.class.getClassLoader());
+        this.readyInfo = new ArrayList<ReadyInfo>();
+        in.readList(this.readyInfo, ReadyInfo.class.getClassLoader());
+        this.roundInfo = new ArrayList<RoundInfo>();
+        in.readList(this.roundInfo, RoundInfo.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<GameReadyInfo> CREATOR = new Parcelable.Creator<GameReadyInfo>() {
+        @Override
+        public GameReadyInfo createFromParcel(Parcel source) {
+            return new GameReadyInfo(source);
+        }
+
+        @Override
+        public GameReadyInfo[] newArray(int size) {
+            return new GameReadyInfo[size];
+        }
+    };
 }
