@@ -1,23 +1,41 @@
 package com.module.rankingmode.song.model;
 
 public class SongModel {
-    String itemID;
-    String itemName;
-    String cover;
-    String owner;
-    String lyric;
-    String ori;
-    String acc;
-    String midi;
-    long totalMs;
-    long beginMs;
-    long endMs;
+    /**
+     * itemID : 10
+     * itemName : 沙漠骆驼
+     * cover : http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/cover/song/smlt_cover.jpg
+     * owner : 展展与罗罗
+     * lyric : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/lrc/smlt.zrce
+     * ori : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/mp3/smlt_mp3.mp3
+     * acc : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/bgm/smlt_sound.mp3
+     * midi :
+     * totalMs : 338000
+     * beginMs : 0
+     * endMs : 338000
+     * melp : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/mel/smlt.melp
+     * zip : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/mel/smlt_zbd.zip
+     */
 
-    public String getItemID() {
+    private int itemID;
+    private String itemName;
+    private String cover;
+    private String owner;
+    private String lyric;
+    private String ori;
+    private String acc;
+    private String midi;
+    private int totalMs;
+    private int beginMs;
+    private int endMs;
+    private String melp;
+    private String zip;
+
+    public int getItemID() {
         return itemID;
     }
 
-    public void setItemID(String itemID) {
+    public void setItemID(int itemID) {
         this.itemID = itemID;
     }
 
@@ -77,27 +95,43 @@ public class SongModel {
         this.midi = midi;
     }
 
-    public long getTotalMs() {
+    public int getTotalMs() {
         return totalMs;
     }
 
-    public void setTotalMs(long totalMs) {
+    public void setTotalMs(int totalMs) {
         this.totalMs = totalMs;
     }
 
-    public long getBeginMs() {
+    public int getBeginMs() {
         return beginMs;
     }
 
-    public void setBeginMs(long beginMs) {
+    public void setBeginMs(int beginMs) {
         this.beginMs = beginMs;
     }
 
-    public long getEndMs() {
+    public int getEndMs() {
         return endMs;
     }
 
-    public void setEndMs(long endMs) {
+    public void setEndMs(int endMs) {
         this.endMs = endMs;
+    }
+
+    public String getMelp() {
+        return melp;
+    }
+
+    public void setMelp(String melp) {
+        this.melp = melp;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 }
