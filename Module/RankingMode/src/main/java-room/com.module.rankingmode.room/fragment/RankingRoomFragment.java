@@ -6,28 +6,43 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.emoji.EmotionKeyboard;
 import com.common.emoji.EmotionLayout;
 import com.common.emoji.IEmotionExtClickListener;
 import com.common.emoji.IEmotionSelectedListener;
 import com.common.emoji.LQREmotionKit;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
+import com.module.rankingmode.msg.event.EventHelper;
+import com.module.rankingmode.room.RoomServerApi;
 import com.module.rankingmode.room.adapter.RoomViewerRvAdapter;
+import com.module.rankingmode.room.comment.CommentModel;
+import com.module.rankingmode.room.comment.CommentView;
+import com.module.rankingmode.room.event.InputBoardEvent;
 import com.module.rankingmode.room.model.RoomViewerModel;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class RankingRoomFragment extends BaseFragment {
 
@@ -38,6 +53,7 @@ public class RankingRoomFragment extends BaseFragment {
     ImageView mIvEmo;
     EmotionLayout mElEmotion;
     ViewGroup mPlaceHolderView;
+    View mSendMsgBtn;
 
     RelativeLayout mBottomContainer;
     ExImageView mEmoji1Btn;
@@ -45,6 +61,8 @@ public class RankingRoomFragment extends BaseFragment {
     ExImageView mEmoji4Btn;
     ExImageView mEmoji3Btn;
     ExImageView mEmoji2Btn;
+
+    CommentView mCommentView;
 
     RelativeLayout mTopContainer;
     RecyclerView mViewerRv;
@@ -60,8 +78,10 @@ public class RankingRoomFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        // 请保证从下面的view往上面的view开始初始化
         initInputView();
         initBottomView();
+        initCommentView();
         initTopView();
     }
 
@@ -75,6 +95,7 @@ public class RankingRoomFragment extends BaseFragment {
         mIvEmo = (ImageView) mRootView.findViewById(R.id.ivEmo);
         mElEmotion = (EmotionLayout) mRootView.findViewById(R.id.elEmotion);
         mPlaceHolderView = mRootView.findViewById(R.id.place_holder_view);
+        mSendMsgBtn = mRootView.findViewById(R.id.send_msg_btn);
 
         /**
          * 点击小表情自动添加到该 mEtContent 中
@@ -110,6 +131,28 @@ public class RankingRoomFragment extends BaseFragment {
         });
 
         initEmotionKeyboard();
+
+        mSendMsgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content = mEtContent.getText().toString();
+                RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("gameID", 111);
+                map.put("content", content);
+
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+                ApiMethods.subscribe(roomServerApi.sendMsg(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult obj) {
+
+                    }
+                },RankingRoomFragment.this);
+
+                EventHelper.pretendCommentPush(content);
+            }
+        });
     }
 
     private void initEmotionKeyboard() {
@@ -122,12 +165,14 @@ public class RankingRoomFragment extends BaseFragment {
         mEmotionKeyboard.setBoardStatusListener(new EmotionKeyboard.BoardStatusListener() {
             @Override
             public void onBoradShow() {
+                EventBus.getDefault().post(new InputBoardEvent(true));
                 mBottomContainer.setVisibility(View.GONE);
                 mInputContainer.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onBoradHide() {
+                EventBus.getDefault().post(new InputBoardEvent(false));
                 mBottomContainer.setVisibility(View.VISIBLE);
                 mInputContainer.setVisibility(View.GONE);
             }
@@ -150,6 +195,11 @@ public class RankingRoomFragment extends BaseFragment {
                 mEmotionKeyboard.showSoftInput();
             }
         });
+    }
+
+
+    private void initCommentView() {
+        mCommentView = mRootView.findViewById(R.id.comment_view);
     }
 
     private void initTopView() {

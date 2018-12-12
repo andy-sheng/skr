@@ -50,6 +50,16 @@
             android:layout_margin="5dp"
             android:src="@drawable/emoji_btn" />
 
+        <com.common.view.ex.ExTextView
+            android:id="@+id/send_msg_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="发送"
+            app:bl_pressed_color="@color/red"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="@color/blue" />
+
     </LinearLayout>
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
@@ -116,12 +126,17 @@
             app:src_unPressed_drawable="@drawable/emoji_btn" />
     </RelativeLayout>
 
+    <com.module.rankingmode.room.comment.CommentView
+        android:id="@+id/comment_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_container" />
 
     <RelativeLayout
         android:id="@+id/top_container"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/viewer_rv"

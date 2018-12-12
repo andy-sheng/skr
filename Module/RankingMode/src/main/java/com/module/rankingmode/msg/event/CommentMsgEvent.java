@@ -8,8 +8,8 @@ public class CommentMsgEvent {
     public final static int MSG_TYPE_RECE = 1;
 
     int type = MSG_TYPE_RECE;
-    String text;
-    BasePushInfo info;
+    public String text;
+    public BasePushInfo info;
 
     public CommentMsgEvent(BasePushInfo info, int type, String text) {
         this.info = info;
