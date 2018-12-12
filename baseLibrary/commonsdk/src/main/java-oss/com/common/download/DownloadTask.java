@@ -54,6 +54,7 @@ public class DownloadTask {
         boolean isCancel();
         void onGetResult(InputStream objectContent, long contentLength);
     }
+
     OssDownloadAdapter mOssDownloadAdapter;
     private String mBucketName;
     private String mObjectId;

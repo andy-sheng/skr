@@ -26,11 +26,7 @@ import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
 import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.interceptor.AddDeviceInfoInterceptor;
-import com.common.utils.U;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.PlatformConfig;
+import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
 
 import java.util.List;
 
@@ -66,7 +62,7 @@ public class CoreConfiguration implements ConfigModule {
             public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
                 // todo 服务器暂时无人对接，先屏蔽
-                ApiManager.getInstance().addInterceptor(new AddDeviceInfoInterceptor());
+                ApiManager.getInstance().addInterceptor(new CoreInfoInterceptor());
                 UserAccountManager.getInstance().init();
             }
 
