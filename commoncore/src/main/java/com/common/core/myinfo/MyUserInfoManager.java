@@ -1,19 +1,28 @@
 package com.common.core.myinfo;
 
 
+import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
+import com.common.core.account.UserAccountServerApi;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfo;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiResult;
 import com.wali.live.proto.User.GetOwnInfoRsp;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 保存个人详细信息，我的信息的管理, 其实是对User的decorate
@@ -68,6 +77,26 @@ public class MyUserInfoManager {
             //user信息设定成功了，发出eventbus
             EventBus.getDefault().post(new MyUserInfoEvent.UserInfoChangeEvent());
         }
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param nickName
+     * @param sex
+     * @param birthday
+     */
+    public void updateInfo(String nickName, int sex, String birthday,String avatar) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("nickname", nickName);
+        map.put("sex", sex);
+        map.put("birthday", birthday);
+        map.put("avatar", avatar);
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
+        MyUserInfoServerApi myUserAccountServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
+        Observable<ApiResult> apiResultObservable = myUserAccountServerApi.updateInfo(body);
+        ApiMethods.subscribe(apiResultObservable, null);
     }
 
     public long getUid() {

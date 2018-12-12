@@ -27,9 +27,4 @@ public interface UserAccountServerApi {
                                 @Query("sign") String phoneNum,
                                 @Query("code") String verifyCode);
 
-
-    @Headers("Content-Type : application/json")
-    @PUT("v1/uprofile/information")
-    Observable<ApiResult> updateInfo(@Body RequestBody body);
-
 }

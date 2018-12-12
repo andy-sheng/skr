@@ -307,22 +307,4 @@ public class UserAccountManager {
 
     }
 
-    /**
-     * 更新用户信息
-     *
-     * @param nickName
-     * @param sex
-     * @param birthday
-     */
-    public void updateInfo(String nickName, int sex, String birthday) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("nickname", nickName);
-        map.put("sex", sex);
-        map.put("birthday", birthday);
-
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
-        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        Observable<ApiResult> apiResultObservable = userAccountServerApi.updateInfo(body);
-        ApiMethods.subscribe(apiResultObservable, null);
-    }
 }

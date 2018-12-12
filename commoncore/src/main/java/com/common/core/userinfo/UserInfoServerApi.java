@@ -3,9 +3,8 @@ package com.common.core.userinfo;
 /**
  * 服务器请求关系,提供给RelationManager使用
  */
-public class UserInfoServerApi {
+public interface UserInfoServerApi {
 
-    public static final String PRE_KEY_SIX_LOAD_BY_WATER = "pre_key_six_load_by_water";//通过水位拉取用户信息
 
 //    /**
 //     * 获取一个用户的信息
