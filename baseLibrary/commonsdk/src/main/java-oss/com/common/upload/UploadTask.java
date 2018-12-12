@@ -196,7 +196,7 @@ public class UploadTask {
          */
 //       metadata.setContentType("application/octet-stream"); // 设置content-type
         try {
-            metadata.setContentMD5(BinaryUtil.calculateBase64Md5(mUploadParams.getFilePath())); // 校验MD5
+            metadata.setContentMD5(BinaryUtil.calculateBase64Md5(filePath)); // 校验MD5
         } catch (IOException e) {
             e.printStackTrace();
         }
