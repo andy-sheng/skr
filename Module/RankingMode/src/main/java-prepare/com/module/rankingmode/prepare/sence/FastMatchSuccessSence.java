@@ -100,7 +100,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     public void allPlayerIsReady() {
         matchSenceController.popSence();
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
-                .withParcelable("song_model", songModel)
+                .withSerializable("song_model", songModel)
                 .withInt(BUNDLE_KEY_GAME_ID, currentGameId)
                 .withLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreateMs)
 //                .withSerializable("userList", list)
@@ -111,7 +111,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     public void needReMatch() {
         matchSenceController.popSence();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("song_model", songModel);
+        bundle.putSerializable("song_model", songModel);
         matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, bundle);
         U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
@@ -126,7 +126,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
 
         currentGameId = bundle.getInt(BUNDLE_KEY_GAME_ID);
         gameCreateMs = bundle.getLong(BUNDLE_KEY_GAME_CREATE_MS);
-        songModel = (SongModel) bundle.getParcelable("song_model");
+        songModel = (SongModel) bundle.getSerializable("song_model");
 
         matchSucessPresenter = new MatchSucessPresenter(this, currentGameId);
 

@@ -57,7 +57,7 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     Bundle b = new Bundle();
-                    b.putParcelable("song_model", songModel);
+                    b.putSerializable("song_model", songModel);
                     matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, b);
                 });
 
@@ -65,12 +65,12 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     Bundle b = new Bundle();
-                    b.putParcelable("song_model", songModel);
+                    b.putSerializable("song_model", songModel);
                     matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Audition, b);
                 });
 
         if(bundle != null){
-            songModel = (SongModel) bundle.getParcelable("song_model");
+            songModel = (SongModel) bundle.getSerializable("song_model");
         }
 
         mMatchStatusTv.setText("加载歌曲中");

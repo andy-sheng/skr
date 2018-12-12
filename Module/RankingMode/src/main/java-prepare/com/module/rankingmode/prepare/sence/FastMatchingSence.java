@@ -88,7 +88,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("一大波skrer在来的路上...");
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配中...");
 
-        songModel = (SongModel) bundle.getParcelable("song_model");
+        songModel = (SongModel) bundle.getSerializable("song_model");
     }
 
     @Override
@@ -137,7 +137,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         // 匹配成功
         nextBundle.putInt(BUNDLE_KEY_GAME_ID, gameId);
         nextBundle.putLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreatMs);
-        nextBundle.putParcelable("song_model", songModel);
+        nextBundle.putSerializable("song_model", songModel);
         // TODO: 2018/12/12 这里需要把匹配到的信息带过去
 //        nextBundle.putSerializable("", );
         matchSenceController.toNextSence(nextBundle);

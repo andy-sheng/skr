@@ -62,7 +62,7 @@ public class MatchingFragment extends BaseFragment {
         mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voice_line_view);
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable("song_model", songModel);
+        bundle.putSerializable("song_model", songModel);
 
         mMatchContent.setCommonTitleBar(mTitleBar);
         mMatchContent.toNextSence(bundle);

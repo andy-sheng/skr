@@ -1,9 +1,8 @@
 package com.module.rankingmode.prepare.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class RoundInfo implements Parcelable {
+public class RoundInfo implements Serializable {
     /**
      * userID : 7
      * playbookID : 1
@@ -17,9 +16,6 @@ public class RoundInfo implements Parcelable {
     private int roundSeq;
     private int singBeginMs;
     private int singEndMs;
-
-    public RoundInfo() {
-    }
 
     public int getUserID() {
         return userID;
@@ -60,38 +56,4 @@ public class RoundInfo implements Parcelable {
     public void setSingEndMs(int singEndMs) {
         this.singEndMs = singEndMs;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.userID);
-        dest.writeInt(this.playbookID);
-        dest.writeInt(this.roundSeq);
-        dest.writeInt(this.singBeginMs);
-        dest.writeInt(this.singEndMs);
-    }
-
-    protected RoundInfo(Parcel in) {
-        this.userID = in.readInt();
-        this.playbookID = in.readInt();
-        this.roundSeq = in.readInt();
-        this.singBeginMs = in.readInt();
-        this.singEndMs = in.readInt();
-    }
-
-    public static final Parcelable.Creator<RoundInfo> CREATOR = new Parcelable.Creator<RoundInfo>() {
-        @Override
-        public RoundInfo createFromParcel(Parcel source) {
-            return new RoundInfo(source);
-        }
-
-        @Override
-        public RoundInfo[] newArray(int size) {
-            return new RoundInfo[size];
-        }
-    };
 }
