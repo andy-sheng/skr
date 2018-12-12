@@ -14,6 +14,7 @@ import com.module.rankingmode.prepare.model.GameInfo;
 import com.module.rankingmode.prepare.model.GameReadyInfo;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -47,6 +48,10 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         addToLifeCycle();
 
         checkPlayerReadyState();
+
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
     }
 
     private void checkPlayerReadyState(){
@@ -73,6 +78,12 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                 }, MatchSucessPresenter.this);
             }
         });
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /**

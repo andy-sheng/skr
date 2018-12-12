@@ -120,14 +120,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         map.put("mode", mode);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribeWith(matchServerApi.cancleMatch(body).retry(3), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    U.getToastUtil().showShort("取消匹配成功");
-                }
-            }
-        }, this);
+        ApiMethods.subscribe(matchServerApi.cancleMatch(body).retry(3), null);
     }
 
     // 加入指令，即服务器通知加入房间的指令
