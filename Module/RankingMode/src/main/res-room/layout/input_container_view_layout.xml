@@ -3,26 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <FrameLayout
-        android:id="@+id/place_holder_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/yellow">
-        <!--表情区-->
-        <com.common.emoji.EmotionLayout
-            android:id="@+id/elEmotion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-    </FrameLayout>
-
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <LinearLayout
         android:id="@+id/et_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/place_holder_view"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
@@ -56,6 +41,20 @@
             app:bl_pressed_color="@color/red"
             app:bl_shape="rectangle"
             app:bl_solid_color="@color/blue" />
-
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/place_holder_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_container"
+        android:background="@color/yellow">
+        <!--表情区-->
+        <com.common.emoji.EmotionLayout
+            android:id="@+id/elEmotion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </RelativeLayout>
+
 </merge>

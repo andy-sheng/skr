@@ -2,8 +2,10 @@ package com.module.rankingmode.room.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.utils.U;
 import com.module.rankingmode.R;
 import com.module.rankingmode.room.comment.CommentView;
 import com.module.rankingmode.room.view.BottomContainerView;
@@ -33,8 +35,9 @@ public class RankingRoomFragment extends BaseFragment {
         initCommentView();
         initTopView();
     }
-    private void initInputView() {downloadFileFromOssAsync
-            mInputContainerView = mRootView.findViewById(R.id.input_container_view);
+
+    private void initInputView() {
+        mInputContainerView = mRootView.findViewById(R.id.input_container_view);
     }
 
 
@@ -54,15 +57,17 @@ public class RankingRoomFragment extends BaseFragment {
     }
 
     private void initTopView() {
-//        mTopContainerView = mRootView.findViewById(R.id.top_container_view);
-        if (mTopContainerView != null) {
-            mTopContainerView.setListener(new TopContainerView.Listener() {
-                @Override
-                public void closeBtnClick() {
-                    getActivity().finish();
-                }
-            });
-        }
+        mTopContainerView = mRootView.findViewById(R.id.top_container_view);
+        // 加上状态栏的高度
+        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
+        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
+        topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+        mTopContainerView.setListener(new TopContainerView.Listener() {
+            @Override
+            public void closeBtnClick() {
+                getActivity().finish();
+            }
+        });
     }
 
     @Override
@@ -73,7 +78,7 @@ public class RankingRoomFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        if(mInputContainerView.onBackPressed()){
+        if (mInputContainerView.onBackPressed()) {
             return true;
         }
         return super.onBackPressed();

@@ -7,8 +7,10 @@
     android:orientation="vertical">
 
     <com.module.rankingmode.room.view.InputContainerView
+        android:layout_alignParentBottom="true"
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
+        android:background="#990099"
         android:layout_height="wrap_content"/>
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
@@ -18,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/input_container_view"
         android:layout_marginBottom="@dimen/view_19_dp"
+        android:background="@color/red"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"/>
 
@@ -25,13 +28,15 @@
         android:id="@+id/comment_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/blue"
         android:layout_above="@+id/bottom_container_view" />
 
-    <!--<com.module.rankingmode.room.view.TopContainerView-->
-        <!--android:id="@+id/top_container_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/view_5_dp"/>-->
+    <com.module.rankingmode.room.view.TopContainerView
+        android:id="@+id/top_container_view"
+        android:layout_width="match_parent"
+        android:background="#653000"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"/>
 
 
 </RelativeLayout>

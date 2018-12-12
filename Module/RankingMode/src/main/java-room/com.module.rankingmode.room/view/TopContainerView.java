@@ -68,10 +68,6 @@ public class TopContainerView extends RelativeLayout {
             }
         });
         MyLog.d(TAG,"init 3" );
-        // 加上状态栏的高度
-        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
-        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) this.getLayoutParams();
-        topLayoutParams.topMargin = statusBarHeight+topLayoutParams.topMargin;
 
         //TODO TEST
         List<RoomViewerModel> l = new ArrayList<>();

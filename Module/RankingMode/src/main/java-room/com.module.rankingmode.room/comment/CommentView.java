@@ -68,7 +68,7 @@ public class CommentView extends RelativeLayout {
     public void onEvent(InputBoardEvent event) {
         RelativeLayout.LayoutParams lp  = (LayoutParams) this.getLayoutParams();
         if (event.show) {
-            lp.addRule(RelativeLayout.ABOVE,R.id.et_container);
+            lp.addRule(RelativeLayout.ABOVE,R.id.input_container_view);
         } else {
             lp.addRule(RelativeLayout.ABOVE,R.id.bottom_container_view);
         }
