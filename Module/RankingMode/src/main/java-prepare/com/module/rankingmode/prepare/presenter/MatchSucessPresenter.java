@@ -1,8 +1,5 @@
 package com.module.rankingmode.prepare.presenter;
 
-import android.os.Handler;
-import android.os.Message;
-
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
@@ -10,9 +7,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.U;
-import com.module.ModuleServiceManager;
-import com.module.common.ICallback;
+import com.common.utils.HandlerTaskTimer;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.GameInfo;
@@ -36,96 +31,55 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     private static final int CHECK_CURREN_GAME_INFO = 0;
     private static final int CHECK_DEFAULT_TIME = 3000;
 
-    IMatchSucessView view;
+    IMatchSucessView iMatchSucessView;
     MatchServerApi matchServerApi;
+
+    HandlerTaskTimer checkTask;
 
     int currentGameId; // 当前游戏id，即融云的房间号
     GameInfo currGameInfo; // 当前游戏的信息
 
-    public MatchSucessPresenter(@NonNull IMatchSucessView view) {
-        this.view = view;
+    public MatchSucessPresenter(@NonNull IMatchSucessView view, int currentGameId) {
+        MyLog.d(TAG, "MatchSucessPresenter" + " view=" + view + " currentGameId=" + currentGameId);
+        this.iMatchSucessView = view;
+        this.currentGameId = currentGameId;
         matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
+
+        checkPlayerReadyState();
     }
 
-    // 处理检查房间的逻辑
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case CHECK_CURREN_GAME_INFO:
-                    getCurrentGameData();
-                default:
-                    break;
-            }
-
-        }
-    };
-
-    // 加入房间
-    public void joinRoom(int gameId) {
-        this.currentGameId = gameId;
-        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(gameId), new ICallback() {
+    private void checkPlayerReadyState(){
+        MyLog.d(TAG, "checkPlayerReadyState");
+        checkTask = HandlerTaskTimer.newBuilder().delay(100000).start(new HandlerTaskTimer.ObserverW() {
             @Override
-            public void onSucess(Object obj) {
-                joinGame();
-            }
-
-            @Override
-            public void onFailed(Object obj, int errcode, String message) {
-                U.getToastUtil().showShort("加入房间失败");
+            public void onNext(Integer integer) {
+                ApiMethods.subscribe(matchServerApi.getCurrentReadyData(currentGameId), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        MyLog.d(TAG, "checkPlayerReadyState result：" + result);
+                        if (result.getErrno() == 0) {
+                            // todo 带回所有已准备人的信息
+                            GameReadyInfo gameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyInfo.class);
+                            if(gameReadyInfo.isIsGameStart()){
+                                iMatchSucessView.allPlayerIsReady();
+                            }else {
+                                iMatchSucessView.needReMatch();
+                            }
+                        }else {
+                            iMatchSucessView.needReMatch();
+                        }
+                    }
+                }, MatchSucessPresenter.this);
             }
         });
     }
 
-    // 通知服务器，加入游戏
-    public void joinGame() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", currentGameId);
-
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(matchServerApi.joinGame(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    GameInfo gameInfo = (GameInfo) JSON.parse(result.getData().toString());
-                    if (gameInfo != null) {
-                        if (gameInfo.getHasJoinedUserCnt() < 3) {
-                            // todo 人数不足即开始3秒倒计时检测，向服务器查询游戏
-                            handler.sendEmptyMessageDelayed(CHECK_CURREN_GAME_INFO, CHECK_DEFAULT_TIME);
-                        }
-                        // todo 加入游戏成功 即可以进入准备
-                        currGameInfo = gameInfo;
-                    }
-                }
-            }
-        }, this);
-    }
-
-
-    // 获取加入游戏的数据
-    public void getCurrentGameData() {
-        ApiMethods.subscribe(matchServerApi.getCurrentGameDate(currentGameId), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    // todo 带回所有加房间人信息
-                    GameInfo gameInfo = (GameInfo) JSON.parse(result.getData().toString());
-                    if (gameInfo.getHasJoinedUserCnt() < 3) {
-                        // todo 人数未到 退出房间
-
-                    } else {
-                        // todo 人数已满 准备开始
-
-                    }
-                }
-            }
-        }, this);
-    }
-
-
-    // 准备游戏
-    public void readyGame() {
+    /**
+     * @param isPrepare  true为准备，false为取消准备
+     */
+    public void prepare(boolean isPrepare){
+        MyLog.d(TAG, "prepare");
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", currentGameId);
 
@@ -133,35 +87,24 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(matchServerApi.readyGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                MyLog.d(TAG, "prepare " + result);
                 if (result.getErrno() == 0) {
-                    // todo 带回所有已准备人的信息
-                    GameReadyInfo gameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyInfo.class);
-
+                    iMatchSucessView.ready(isPrepare);
                 }
             }
-        }, this);
+        }, MatchSucessPresenter.this);
     }
 
-    // 获取准备游戏的数据
-    public void checkCurrentReadyData() {
-        ApiMethods.subscribe(matchServerApi.getCurrentGameDate(currentGameId), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    // todo 带回所有已准备人的信息
-                    GameReadyInfo gameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyInfo.class);
-                }
-            }
-        }, this);
-    }
-
-    // 加入游戏通知（别人进房间也会给我通知）
+    // 加入指令，即服务器通知加入房间的指令
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadyNoticeEvent readyNoticeEvent) {
-        MyLog.d(TAG, "onEventMainThread" + " readyNoticeEvent");
-        if (readyNoticeEvent != null) {
-            // 拿到最新所有ready信息
+        MyLog.d(TAG, "onEventMainThread readyNoticeEvent " + readyNoticeEvent);
+        if(readyNoticeEvent.isGameStart){
+            if(checkTask != null){
+                checkTask.dispose();
+            }
 
+            iMatchSucessView.allPlayerIsReady();
         }
     }
 }

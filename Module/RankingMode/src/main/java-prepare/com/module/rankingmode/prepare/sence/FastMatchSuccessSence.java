@@ -6,14 +6,17 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
+import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
 
@@ -35,7 +38,9 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
 
     ExTextView mMatchStatusTv;
 
-    MatchSucessPresenter presenter;
+    MatchSucessPresenter matchSucessPresenter;
+
+    volatile boolean isPrepared = false;
 
     public FastMatchSuccessSence(Context context) {
         this(context, null);
@@ -76,14 +81,30 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
                         .setCircle(true)
                         .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
+    }
 
-        presenter = new MatchSucessPresenter(this);
+    @Override
+    public void ready(boolean isPrepareState) {
+        isPrepared = isPrepareState;
 
-        RxView.clicks(mMatchStatusTv)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getToastUtil().showShort("准备");
-                });
+        if(isPrepared){
+            mMatchStatusTv.setText("已准备");
+            mMatchStatusTv.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void allPlayerIsReady() {
+        matchSenceController.popSence();
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
+                .greenChannel().navigation();
+    }
+
+    @Override
+    public void needReMatch() {
+        matchSenceController.popSence();
+        matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
+        U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
 
     @Override
@@ -94,10 +115,17 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("已为你匹配到队伍");
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配成功");
 
-//        currentGameId = bundle.getInt(BUNDLE_KEY_GAME_ID);
-//        gameCreateMs = bundle.getInt(BUNDLE_KEY_GAME_CREATE_MS);
+        currentGameId = bundle.getInt(BUNDLE_KEY_GAME_ID);
+        gameCreateMs = bundle.getLong(BUNDLE_KEY_GAME_CREATE_MS);
 
-        presenter.joinRoom(currentGameId);
+        matchSucessPresenter = new MatchSucessPresenter(this, currentGameId);
+
+        RxView.clicks(mMatchStatusTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    U.getToastUtil().showShort("准备");
+                    matchSucessPresenter.prepare(!isPrepared);
+                });
     }
 
     @Override
@@ -109,6 +137,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     @Override
     public void toRemoveFromStack(RelativeLayout parentViewGroup) {
         parentViewGroup.removeView(this);
+        matchSucessPresenter.destroy();
     }
 
     //每个场景有一个是不是可以往下跳的判断
