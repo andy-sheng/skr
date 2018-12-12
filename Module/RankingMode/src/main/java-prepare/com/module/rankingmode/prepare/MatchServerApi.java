@@ -29,4 +29,10 @@ public interface MatchServerApi {
     @GET("http://dev.game.inframe.mobi/v1/game/join")
     Observable<ApiResult> getCurrentGameDate(@Query("gameID") int gameID);
 
+    @PUT("http://dev.game.inframe.mobi/v1/game/ready")
+    Observable<ApiResult> readyGame(@Body RequestBody body);
+
+    @GET("http://dev.game.inframe.mobi/v1/game/ready")
+    Observable<ApiResult> getCurrentReadyData(@Query("gameID") int gameID);
+
 }

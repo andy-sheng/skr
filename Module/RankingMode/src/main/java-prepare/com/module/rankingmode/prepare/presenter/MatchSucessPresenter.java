@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
+import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -12,9 +13,14 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
+import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.GameInfo;
+import com.module.rankingmode.prepare.model.GameReadyInfo;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -116,4 +122,48 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
             }
         }, this);
     }
+
+
+    // 准备游戏
+    public void readyGame() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", currentGameId);
+
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(matchServerApi.readyGame(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    // todo 带回所有已准备人的信息
+                    GameReadyInfo gameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyInfo.class);
+
+                }
+            }
+        }, this);
+    }
+
+    // 获取准备游戏的数据
+    public void checkCurrentReadyData() {
+        ApiMethods.subscribe(matchServerApi.getCurrentGameDate(currentGameId), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    // todo 带回所有已准备人的信息
+                    GameReadyInfo gameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyInfo.class);
+                }
+            }
+        }, this);
+    }
+
+    // 加入游戏通知（别人进房间也会给我通知）
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ReadyNoticeEvent readyNoticeEvent) {
+        MyLog.d(TAG, "onEventMainThread" + " readyNoticeEvent");
+        if (readyNoticeEvent != null) {
+            // 拿到最新所有ready信息
+
+        }
+    }
 }
+
+
