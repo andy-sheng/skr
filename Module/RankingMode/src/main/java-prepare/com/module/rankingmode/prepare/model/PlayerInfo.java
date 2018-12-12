@@ -3,7 +3,7 @@ package com.module.rankingmode.prepare.model;
 import com.common.core.userinfo.UserInfo;
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
-ß
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

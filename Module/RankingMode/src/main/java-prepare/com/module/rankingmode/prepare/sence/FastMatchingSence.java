@@ -20,12 +20,10 @@ import com.module.rankingmode.prepare.view.MatchingLayerView;
 import com.module.rankingmode.song.model.SongModel;
 
 import java.util.List;
-import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_ID;
-import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_PLAYER;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_PLAYERS;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_SONG;
 
