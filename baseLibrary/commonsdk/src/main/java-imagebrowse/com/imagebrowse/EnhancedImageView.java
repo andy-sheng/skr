@@ -17,7 +17,6 @@ import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.LocalImage;
-import com.common.image.model.oss.OssPsFactory;
 import com.common.log.MyLog;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
@@ -33,9 +32,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifDrawableBuilder;
 import pl.droidsonroids.gif.GifImageView;
-import pl.droidsonroids.gif.GifOptions;
 
 /**
  * 这个view过于复杂，在使用viewpager时就别重复使用了吧
@@ -345,7 +342,7 @@ public class EnhancedImageView extends RelativeLayout {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                U.getHttpUtils().downloadFile(url, getGifSaveFile(url, true), new HttpUtils.OnDownloadProgress() {
+                U.getHttpUtils().downloadFileSync(url, getGifSaveFile(url, true), new HttpUtils.OnDownloadProgress() {
                     @Override
                     public void onDownloaded(long downloaded, long totalLength) {
                         MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);

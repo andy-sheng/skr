@@ -9,6 +9,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.common.download.DownloadTask;
 import com.common.log.MyLog;
 
 import java.io.BufferedReader;
@@ -30,6 +31,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 
 public class HttpUtils {
     public final static String TAG = "HttpUtils";
@@ -299,17 +305,130 @@ public class HttpUtils {
         }
     }
 
+    public void cancelDownload(String bucketName, String objectkey) {
+        String urlStr = bucketName + "_" + objectkey;
+        DownloadParams downloadParams = mDownLoadMap.get(urlStr);
+        if (downloadParams != null) {
+            // 下载取消了
+            downloadParams.hasCancel = true;
+        }
+    }
+
     /**
-     * 唯一的下载接口
+     * oss文件下载接口，异步
+     *
+     * @param outputFile
+     * @param progress
+     */
+    public void downloadFileFromOssAsync(String bucketName, String objectkey, final File outputFile,
+                                         OnDownloadProgress progress) {
+        DownloadTask downloadTask = new DownloadTask(bucketName, objectkey, new DownloadTask.OssDownloadAdapter() {
+            boolean cancel = false;
+
+            @Override
+            public boolean isCancel() {
+                return cancel;
+            }
+
+            @Override
+            public void onGetResult(InputStream input, long totalLength) {
+                if (!outputFile.exists()) {
+                    File parentFile = outputFile.getParentFile();
+                    if (parentFile != null && !parentFile.exists()) {
+                        parentFile.mkdirs();
+                    }
+                    try {
+                        outputFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                String urlStr = bucketName + "_" + objectkey;
+                OutputStream output = null;
+                try {
+                    output = new FileOutputStream(outputFile);
+                    mDownLoadMap.put(urlStr, new DownloadParams(urlStr));
+                    byte[] buffer = new byte[1024];
+                    int count;
+                    long downloaded = 0;
+                    DownloadParams downloadParams = mDownLoadMap.get(urlStr);
+                    while ((count = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, count);
+                        if (downloadParams != null && downloadParams.hasCancel) {
+                            // 下载取消了
+                            cancel = true;
+                            if (null != progress) {
+                                progress.onCanceled();
+                            }
+                            mDownLoadMap.remove(urlStr);
+                            return;
+                        }
+                        downloaded += count;
+                        if (null != progress) {
+                            progress.onDownloaded(downloaded, totalLength);
+                        }
+                    }
+                    if (null != progress) {
+                        progress.onCompleted(outputFile.getAbsolutePath());
+                    }
+                    mDownLoadMap.remove(urlStr);
+                    return;
+                } catch (Exception e) {
+                    if (null != progress) {
+                        progress.onFailed();
+                    }
+                } finally {
+                    if (input != null) {
+                        try {
+                            input.close();
+                        } catch (IOException e) {
+                            //
+                        }
+                    }
+                    if (output != null) {
+                        try {
+                            output.close();
+                        } catch (IOException e) {
+                            //
+                        }
+                    }
+                }
+                mDownLoadMap.remove(urlStr);
+            }
+        });
+    }
+
+    /**
+     * 唯一的下载接口，异步
+     *
+     * @param urlStr
+     * @param outputFile
+     * @param progress
+     */
+    public void downloadFileAsync(String urlStr, final File outputFile,
+                                  OnDownloadProgress progress) {
+        io.reactivex.Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                downloadFileSync(urlStr, outputFile, progress);
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
+    /**
+     * 唯一的下载接口，同步
      *
      * @param urlStr
      * @param outputFile
      * @param progress
      * @return
      */
-    public boolean downloadFile(String urlStr, final File outputFile,
-                                OnDownloadProgress progress) {
-        if(Looper.getMainLooper()==Looper.myLooper()){
+    public boolean downloadFileSync(String urlStr, final File outputFile,
+                                    OnDownloadProgress progress) {
+        if (Looper.getMainLooper() == Looper.myLooper()) {
             throw new IllegalThreadStateException("cannot downloadFile on mainthread");
         }
         if (!outputFile.exists()) {
@@ -342,10 +461,9 @@ public class HttpUtils {
             int count;
             long downloaded = 0;
             long totalLength = conn.getContentLength();
+            DownloadParams downloadParams = mDownLoadMap.get(urlStr);
             while ((count = input.read(buffer)) != -1) {
                 output.write(buffer, 0, count);
-
-                DownloadParams downloadParams = mDownLoadMap.get(urlStr);
                 if (downloadParams != null && downloadParams.hasCancel) {
                     // 下载取消了
                     if (null != progress) {
@@ -354,7 +472,6 @@ public class HttpUtils {
                     mDownLoadMap.remove(urlStr);
                     return false;
                 }
-
                 downloaded += count;
                 if (null != progress) {
                     progress.onDownloaded(downloaded, totalLength);
@@ -365,15 +482,7 @@ public class HttpUtils {
             }
             mDownLoadMap.remove(urlStr);
             return true;
-        } catch (IOException e) {
-//            VoipLog.e("error while download file" + e);
-
-            if (null != progress) {
-                progress.onFailed();
-            }
-        } catch (Throwable e) {
-//            VoipLog.e("error while download file" + e);
-
+        } catch (Exception e) {
             if (null != progress) {
                 progress.onFailed();
             }

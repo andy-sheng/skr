@@ -218,7 +218,7 @@ public class PicturePagerActivity extends RongBaseNoActionbarActivity implements
                 Observable.create(new ObservableOnSubscribe<Object>() {
                     @Override
                     public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                        U.getHttpUtils().downloadFile(largeImageUri.toString(), getImageSaveFile(largeImageUri.toString() ,defaultPath), new HttpUtils.OnDownloadProgress() {
+                        U.getHttpUtils().downloadFileSync(largeImageUri.toString(), getImageSaveFile(largeImageUri.toString() ,defaultPath), new HttpUtils.OnDownloadProgress() {
                             @Override
                             public void onDownloaded(long downloaded, long totalLength) {
                                 MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);

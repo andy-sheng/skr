@@ -53,7 +53,7 @@ public class SongResourceManager {
         }
         outputFile.mkdirs();
 
-        U.getHttpUtils().downloadFile(songRes.getResUrl(), outputFile, new HttpUtils.OnDownloadProgress() {
+        U.getHttpUtils().downloadFileSync(songRes.getResUrl(), outputFile, new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
                 if(onDownloadProgress != null){
