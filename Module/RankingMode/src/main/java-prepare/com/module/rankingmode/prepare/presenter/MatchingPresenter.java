@@ -16,10 +16,15 @@ import com.module.rankingmode.msg.event.JoinNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.GameInfo;
 import com.module.rankingmode.prepare.view.IMatchingView;
+import com.zq.live.proto.Room.PlayerInfo;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.HashMap;
+import java.util.List;
+
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
@@ -122,6 +127,9 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(matchServerApi.cancleMatch(body).retry(3), null);
     }
 
+    // TODO: 2018/12/12 怎么确定一个push肯定是当前一轮的push？？？
+    JoinActionEvent joinActionEvent;
+
     // 加入指令，即服务器通知加入房间的指令
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinActionEvent joinActionEvent) {
@@ -131,6 +139,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
             // 是否要对加入通知进行过滤
             if(matchState == MatchState.Matching){
                 MyLog.d(TAG, "onEventMainThread JoinActionEvent 1 currentGameId is " + joinActionEvent.gameId);
+                this.joinActionEvent = joinActionEvent;
                 disposeLoopMatchTask();
                 disposeMatchTask();
                 matchState = MatchState.MatchSucess;
@@ -149,6 +158,14 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "onEventMainThread JoinNoticeEvent 2");
             updateUserListState();
         }
+    }
+
+    public List<PlayerInfo> getPlayerInfoList(){
+        if(joinActionEvent != null && joinActionEvent.playerInfoList != null){
+            return joinActionEvent.playerInfoList;
+        }
+
+        return null;
     }
 
     @Override

@@ -10,7 +10,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.common.base.BaseActivity;
-import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -23,7 +22,6 @@ import com.module.rankingmode.song.model.TagModel;
 import com.module.rankingmode.song.presenter.SongTagDetailsPresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SongListView extends FrameLayout implements ISongTagDetailView {
@@ -65,10 +63,11 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-
+                SongModel songModel = (SongModel) model;
                 U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((BaseActivity) SongListView.this.getContext(), MatchingFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(false)
+                        .setDataBeforeAdd(0, songModel)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {

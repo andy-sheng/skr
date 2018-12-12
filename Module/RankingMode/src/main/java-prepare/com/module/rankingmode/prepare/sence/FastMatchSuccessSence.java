@@ -19,6 +19,7 @@ import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
+import com.module.rankingmode.song.model.SongModel;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,6 +42,8 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     MatchSucessPresenter matchSucessPresenter;
 
     volatile boolean isPrepared = false;
+
+    SongModel songModel;
 
     public FastMatchSuccessSence(Context context) {
         this(context, null);
@@ -97,13 +100,19 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     public void allPlayerIsReady() {
         matchSenceController.popSence();
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
+                .withParcelable("song_model", songModel)
+                .withInt(BUNDLE_KEY_GAME_ID, currentGameId)
+                .withLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreateMs)
+//                .withSerializable("userList", list)
                 .greenChannel().navigation();
     }
 
     @Override
     public void needReMatch() {
         matchSenceController.popSence();
-        matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("song_model", songModel);
+        matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, bundle);
         U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
 
@@ -117,6 +126,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
 
         currentGameId = bundle.getInt(BUNDLE_KEY_GAME_ID);
         gameCreateMs = bundle.getLong(BUNDLE_KEY_GAME_CREATE_MS);
+        songModel = (SongModel) bundle.getParcelable("song_model");
 
         matchSucessPresenter = new MatchSucessPresenter(this, currentGameId);
 

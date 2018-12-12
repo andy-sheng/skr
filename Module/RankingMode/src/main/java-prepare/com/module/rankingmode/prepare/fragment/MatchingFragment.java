@@ -17,6 +17,7 @@ import com.engine.Params;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.view.VoiceLineView;
+import com.module.rankingmode.song.model.SongModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -40,8 +41,7 @@ public class MatchingFragment extends BaseFragment {
 
     VoiceLineView mVoiceLineView;
 
-    String songName;
-    String songTime;
+    SongModel songModel;
 
     HandlerTaskTimer mHandlerTaskTimer;
 
@@ -61,16 +61,20 @@ public class MatchingFragment extends BaseFragment {
 
         mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voice_line_view);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            songName = bundle.getString(KEY_SONG_NAME);
-            songTime = bundle.getString(KEY_SONG_TIME);
-        }
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("song_model", songModel);
 
         mMatchContent.setCommonTitleBar(mTitleBar);
-        mMatchContent.toNextSence(null);
+        mMatchContent.toNextSence(bundle);
 
         initMediaEngine();
+    }
+
+    @Override
+    public void setData(int type, @Nullable Object data) {
+        if(0 == type){
+            songModel = (SongModel) data;
+        }
     }
 
     // todo 后面会用我们自己的去采集声音拿到音高

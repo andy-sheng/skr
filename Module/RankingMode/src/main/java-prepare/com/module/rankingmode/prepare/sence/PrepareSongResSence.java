@@ -12,6 +12,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
+import com.module.rankingmode.song.model.SongModel;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +23,7 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
     ExTextView mToneTuningTv;   //试音调音
     ExTextView mMatchStatusTv;
 
+    SongModel songModel = null;
 
     public PrepareSongResSence(Context context) {
         this(context, null);
@@ -54,14 +56,22 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
         RxView.clicks(mMatchStatusTv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, null);
+                    Bundle b = new Bundle();
+                    b.putParcelable("song_model", songModel);
+                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, b);
                 });
 
         RxView.clicks(mToneTuningTv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Audition, null);
+                    Bundle b = new Bundle();
+                    b.putParcelable("song_model", songModel);
+                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Audition, b);
                 });
+
+        if(bundle != null){
+            songModel = (SongModel) bundle.getParcelable("song_model");
+        }
 
         mMatchStatusTv.setText("加载歌曲中");
         mToneTuningTv.setText("加载歌曲中");
