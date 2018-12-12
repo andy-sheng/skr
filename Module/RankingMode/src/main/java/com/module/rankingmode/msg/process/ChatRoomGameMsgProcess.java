@@ -12,25 +12,23 @@ import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
 import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
+import com.module.rankingmode.prepare.model.PlayerInfo;
+import com.module.rankingmode.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
 import com.zq.live.proto.Room.ERoomMsgType;
-import com.zq.live.proto.Room.GameStartInfo;
 import com.zq.live.proto.Room.JoinActionMsg;
-import com.zq.live.proto.Room.JoinInfo;
 import com.zq.live.proto.Room.JoinNoticeMsg;
-import com.zq.live.proto.Room.PlayerInfo;
 import com.zq.live.proto.Room.QuitGameMsg;
-import com.zq.live.proto.Room.ReadyInfo;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
-import com.zq.live.proto.Room.RoundInfo;
 import com.zq.live.proto.Room.RoundOverMsg;
 import com.zq.live.proto.Room.SyncStatusMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
@@ -81,10 +79,21 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         int gameId = joinActionMsg.getGameID();
         long gameCreateMs = joinActionMsg.getCreateTimeMs();
-        List<PlayerInfo> playerInfos = joinActionMsg.getPlayersList();
-        List<MusicInfo> musicInfos = joinActionMsg.getCommonMusicInfoList();
+        List<PlayerInfo> playerInfos = new ArrayList<>();
+        for (com.zq.live.proto.Room.PlayerInfo player : joinActionMsg.getPlayersList()){
+            PlayerInfo playerInfo = new PlayerInfo();
+            playerInfo.parse(player);
+            playerInfos.add(playerInfo);
+        }
 
-        EventBus.getDefault().post(new JoinActionEvent(info, gameId, gameCreateMs, playerInfos, musicInfos));
+        List<SongModel> songModels = new ArrayList<>();
+        for (MusicInfo musicInfo : joinActionMsg.getCommonMusicInfoList()){
+            SongModel songModel = new SongModel();
+            songModel.parse(musicInfo);
+            songModels.add(songModel);
+        }
+
+        EventBus.getDefault().post(new JoinActionEvent(info, gameId, gameCreateMs, playerInfos, songModels));
     }
 
     //加入游戏通知消息

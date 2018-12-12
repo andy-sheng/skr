@@ -12,16 +12,22 @@ import com.common.image.fresco.BaseImageView;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.presenter.MatchingPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchingView;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
 import com.module.rankingmode.song.model.SongModel;
 
+import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_ID;
+import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_PLAYER;
+import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_PLAYERS;
+import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_SONG;
 
 public class FastMatchingSence extends RelativeLayout implements ISence, IMatchingView {
 
@@ -75,7 +81,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
                 .subscribe(o -> {
                     matchingPresenter.cancelMatch(1);
                     matchSenceController.popSence();
-        });
+                });
     }
 
     @Override
@@ -133,13 +139,13 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
     }
 
     @Override
-    public void matchSucess(int gameId, long gameCreatMs) {
+    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> list) {
         // 匹配成功
         nextBundle.putInt(BUNDLE_KEY_GAME_ID, gameId);
         nextBundle.putLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreatMs);
-        nextBundle.putSerializable("song_model", songModel);
-        // TODO: 2018/12/12 这里需要把匹配到的信息带过去
-//        nextBundle.putSerializable("", );
+        nextBundle.putSerializable(BUNDLE_KEY_GAME_SONG, songModel);
+        // TODO: 2018/12/12 记得可以不改成bundle传数据
+//        nextBundle.putSerializable(BUNDLE_KEY_GAME_PLAYERS, (Object)list);
         matchSenceController.toNextSence(nextBundle);
     }
 

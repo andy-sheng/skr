@@ -29,6 +29,8 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     public final static String BUNDLE_KEY_GAME_ID = "current_game_id";
     public final static String BUNDLE_KEY_GAME_CREATE_MS = "game_create_ms";
     public final static String BUNDLE_KEY_GAME_READY_INFO = "game_ready_info";
+    public final static String BUNDLE_KEY_GAME_SONG = "game_song_info";
+    public final static String BUNDLE_KEY_GAME_PLAYERS = "game_player";
 
     int currentGameId;
     long gameCreateMs;

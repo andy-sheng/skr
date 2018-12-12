@@ -1,5 +1,8 @@
 package com.module.rankingmode.song.model;
 
+import com.common.log.MyLog;
+import com.zq.live.proto.Common.MusicInfo;
+
 import java.io.Serializable;
 
 public class SongModel implements Serializable {
@@ -136,4 +139,25 @@ public class SongModel implements Serializable {
     public void setZip(String zip) {
         this.zip = zip;
     }
+
+    public void parse(MusicInfo musicInfo) {
+        if (musicInfo == null) {
+            MyLog.e("SongModel MusicInfo == null");
+            return;
+        }
+
+        this.setItemID(musicInfo.getItemID());
+        this.setItemName(musicInfo.getItemName());
+        this.setCover(musicInfo.getCover());
+        this.setOwner(musicInfo.getOwner());
+        this.setLyric(musicInfo.getLyric());
+        this.setOri(musicInfo.getOri());
+        this.setAcc(musicInfo.getAcc());
+        this.setMidi(musicInfo.getMidi());
+        this.setTotalMs(musicInfo.getTotalMs());
+        this.setBeginMs(musicInfo.getBeginMs());
+        this.setEndMs(musicInfo.getEndMs());
+        // todo PB缺两个现在，等服务器完善
+    }
+
 }

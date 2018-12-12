@@ -15,8 +15,8 @@ import com.module.rankingmode.msg.event.JoinActionEvent;
 import com.module.rankingmode.msg.event.JoinNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
+import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.view.IMatchingView;
-import com.zq.live.proto.Room.PlayerInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -144,7 +144,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                 disposeMatchTask();
                 matchState = MatchState.MatchSucess;
                 this.currentGameId = joinActionEvent.gameId;
-                joinRoom(joinActionEvent.gameId);
+                joinRoom();
             }
         }
     }
@@ -160,14 +160,6 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         }
     }
 
-    public List<PlayerInfo> getPlayerInfoList(){
-        if(joinActionEvent != null && joinActionEvent.playerInfoList != null){
-            return joinActionEvent.playerInfoList;
-        }
-
-        return null;
-    }
-
     @Override
     public void destroy() {
         super.destroy();
@@ -176,12 +168,10 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
 
     /**
      * 加入融云房间，失败的话继续match，这里的失败得统计一下
-     * @param gameId
      */
-    private void joinRoom(int gameId) {
-        this.currentGameId = gameId;
-        MyLog.d(TAG, "joinRoom gameId " + gameId);
-        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(gameId), new ICallback() {
+    private void joinRoom() {
+        MyLog.d(TAG, "joinRoom gameId " + currentGameId);
+        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(currentGameId), new ICallback() {
             @Override
             public void onSucess(Object obj) {
                 if(matchState == MatchState.MatchSucess){
@@ -253,7 +243,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                                         if(matchState == MatchState.JoinRongYunRoomSuccess){
                                             matchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
-                                            view.matchSucess(currentGameId, System.currentTimeMillis());
+                                            view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
                                         }else {
                                             MyLog.d(TAG, "3 秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
@@ -294,7 +284,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                         if(matchState == MatchState.JoinRongYunRoomSuccess){
                             matchState = MatchState.JoinGameSuccess;
                             mJsonGameInfo = jsonGameInfo;
-                            view.matchSucess(currentGameId, System.currentTimeMillis());
+                            view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
                         }
                     }else {
                         MyLog.d(TAG, "process updateUserListState else");

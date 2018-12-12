@@ -537,133 +537,21 @@ public class UserInfo {
         this.avatar = avatar;
     }
 
-    public static UserInfo loadFrom(com.wali.live.proto.Relation.UserInfo userInfo, int type) {
+
+    public static UserInfo loadFrom(com.zq.live.proto.Common.UserInfo userInfo) {
         UserInfo user = new UserInfo();
         if (userInfo == null) {
             return user;
         }
 
-        user.setUserId(userInfo.getUserId());
-        user.setAvatar(userInfo.getAvatar());
-        user.setUserNickname(userInfo.getNickname());
-        user.setSignature(userInfo.getSignature());
-        user.setGender(userInfo.getGender());
-        user.setLevel(userInfo.getLevel());
-        user.setBadge(userInfo.getBadge());
-        user.setCertificationType(userInfo.getCertificationType());
-
-        if (userInfo.getIsBothway()) {
-            user.setRelative(BOTH_FOLLOWED);
-        } else {
-            if (type == QUERY_FOLLOWED_LIST) {
-                user.setRelative(MY_FOLLOWING);
-            } else if (type == QUERY_FOLLOWER_LIST) {
-                user.setRelative(MY_FOLLOWER);
-            } else {
-                user.setRelative(NO_RELATION);
-            }
-        }
-
-        if (type == QUERY_BLOCKER_LIST) {
-            user.setBlock(true);
-        }
+        user.setUserId(Long.valueOf(userInfo.getUserID()));
+        user.setUserNickname(userInfo.getNickName());
+        // TODO: 2018/12/12 头像怎么处理，待完善
+        // TODO: 2018/12/12  等级和是否为系统 待完善
+        user.setGender(userInfo.getSex().getValue());
+        user.setSignature(userInfo.getDescription());
 
         return user;
-    }
-
-    public static UserInfo loadFrom(PersonalInfo personalInfo, PersonalData personalData) {
-        UserInfo userInfo = new UserInfo();
-        if (personalInfo != null) {
-            userInfo.parse(personalInfo);
-        }
-
-        if (personalData != null) {
-            userInfo.parse(personalData);
-        }
-        return userInfo;
-    }
-
-
-    public void parse(PersonalInfo personalInfo) {
-        if (personalInfo == null) {
-            return;
-        }
-
-        this.setUserId(personalInfo.getZuid());
-        this.setAvatar(personalInfo.getAvatar());
-        this.setUserNickname(personalInfo.getNickname());
-        this.setSignature(personalInfo.getSign());
-        this.setGender(personalInfo.getGender());
-        this.setLevel(personalInfo.getLevel());
-        this.setBadge(personalInfo.getBadge());
-        this.setUpdateTime(personalInfo.getUpdateTime());
-        if (personalInfo.getIsBothwayFollowing()) {
-            this.setRelative(BOTH_FOLLOWED);
-        } else {
-            if (personalInfo.getIsFocused()) {
-                this.setRelative(MY_FOLLOWING);
-            } else {
-                this.setRelative(NO_RELATION);
-            }
-        }
-
-        this.setBlock(personalInfo.getIsBlocked());
-
-        this.setIsInspector(personalInfo.getIsInspector());
-        this.setRealAdminList(personalInfo.getAdminUidsList());
-        this.setIsUnionAdmin(personalInfo.getIsUnionAdmin());
-
-        this.setCertification(personalInfo.getCertification());
-        this.setCertificationType(personalInfo.getCertificationType());
-        this.setWaitingCertificationType(personalInfo.getWaitingCertificationType());
-        this.setCertificationId(personalInfo.getCertificationId());
-        this.setRealNameCertificationStatus(personalInfo.getRealNameCertificationStatus());
-
-        this.setCoverPhotoJson(personalInfo.getCoverPhoto());
-
-        this.setUserType(personalInfo.getUserType());
-        this.setRealBusinessInfo(personalInfo.getBusinessUserInfo());
-        this.setSellerStatus(personalInfo.getSellerStatus());
-
-        this.setIsFirstAudit(personalInfo.getIsFirstAudit());
-        this.setIsRedName(personalInfo.getIsRedname());
-
-        this.setRealRegions(personalInfo.getRegion());
-
-        this.setFansNum(personalInfo.getFansNumber());
-
-        this.setVipLevel(personalInfo.getVipLevel());
-        this.setIsVipFrozen(personalInfo.getVipDisable());
-        this.setIsVipHide(personalInfo.getVipHidden());
-
-        this.setIsLive(personalInfo.getIsLive());
-
-        return;
-    }
-
-    public void parse(PersonalData personalData) {
-        if (personalData == null) {
-            return;
-        }
-        this.liveTicketNum = personalData.getMliveTicketNum();
-        this.fansNum = personalData.getFansNum();
-        this.followNum = personalData.getFollowNum();
-        this.sendDiamondNum = personalData.getSendDiamondNum();
-        this.vodNum = personalData.getVodNum();
-        this.earnNum = personalData.getEarnNum();
-        this.diamondNum = personalData.getDiamondNum();
-
-        ByteString bs = ByteString.copyFrom(personalData.getUserEcoAttr().toByteArray());
-        try {
-            UserEcoAttr userEcoAttr = UserEcoAttr.parseFrom(bs.toByteArray());
-            if (userEcoAttr != null) {
-                this.payBarrageGiftId = userEcoAttr.getBulletGiftId();
-                this.virtualDiamondNum = userEcoAttr.getUsableVirtualGemCnt();
-                this.sentVirtualDiamondNum = userEcoAttr.getConsumVirtualGemCnt();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 

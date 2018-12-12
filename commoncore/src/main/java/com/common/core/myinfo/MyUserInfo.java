@@ -356,11 +356,4 @@ public class MyUserInfo {
     public void setUserInfo(UserInfo userInfo) {
         mUserInfo = userInfo;
     }
-
-    public static MyUserInfo loadFrom(GetOwnInfoRsp rsp) {
-        MyUserInfo user = new MyUserInfo();
-        UserInfo userInfo = UserInfo.loadFrom(rsp.getPersonalInfo(), rsp.getPersonalData());
-        user.setUserInfo(userInfo);
-        return user;
-    }
 }
