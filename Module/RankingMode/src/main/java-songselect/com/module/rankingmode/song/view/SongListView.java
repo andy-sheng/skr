@@ -92,7 +92,12 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
         this.tagModel = tagModel;
         if (this.tagModel != null) {
             // todo 假数据，后期再改
-            presenter.getSongDetailListItems(1, 0, 100);
+            if (tagModel.getTagID() == 1){
+                presenter.getRcomdMusicItems(0,100);
+            }else if (tagModel.getTagID() == 2){
+                presenter.getClickedMusicItmes(0,100);
+            }
+
         }
     }
 

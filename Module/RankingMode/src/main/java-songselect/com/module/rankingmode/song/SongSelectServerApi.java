@@ -43,4 +43,25 @@ public interface SongSelectServerApi {
     @GET("v1/playbook/search-items")
     Observable<ApiResult> searchSongDetail(@Query("keyword") String key);
 
+
+    /**
+     * 获取推荐的列表
+     * @param offset
+     * @param cnt
+     * @return
+     */
+    @GET("/v1/recommend/list-playbook-items")
+    Observable<ApiResult> getRcomdMusicItems(@Query("offset") int offset,
+                                             @Query("cnt") int cnt);
+
+
+    /**
+     * 获取已点的列表
+     * @param offset
+     * @param cnt
+     * @return
+     */
+    @GET("/v1/mate/list-playbook-items-clicked")
+    Observable<ApiResult> getClickedMusicItmes(@Query("offset") int offset,
+                                               @Query("cnt") int cnt);
 }

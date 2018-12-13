@@ -8,29 +8,21 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.common.base.BaseFragment;
-import com.common.loadsir.LoadSirManager;
-import com.common.loadsir.callback.ErrorCallback;
-import com.common.loadsir.callback.LoadingCallback;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
-import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
-import com.kingja.loadsir.core.LoadSir;
 import com.module.rankingmode.R;
 import com.module.rankingmode.song.model.TagModel;
-import com.module.rankingmode.song.presenter.SongSelectPresenter;
-import com.module.rankingmode.song.view.ISongTagView;
 import com.module.rankingmode.song.view.SongListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongSelectFragment extends BaseFragment implements ISongTagView {
+public class SongSelectFragment extends BaseFragment  {
     LinearLayout mMainActContainer;
     SlidingTabLayout mSelectSongTabLayout;
     NestViewPager mSonglistViewPager;
 
-    SongSelectPresenter songSelectPresenter;
     TagPagerAdapter adapter;
 
     LoadService mLoadService;
@@ -46,24 +38,41 @@ public class SongSelectFragment extends BaseFragment implements ISongTagView {
         mSelectSongTabLayout = (SlidingTabLayout) mRootView.findViewById(R.id.select_song_tab_layout);
         mSonglistViewPager = (NestViewPager) mRootView.findViewById(R.id.songlist_view_pager);
 
-        songSelectPresenter = new SongSelectPresenter(this);
-        addPresent(songSelectPresenter);
+        if (adapter == null) {
+            adapter = new TagPagerAdapter();
+        }
 
-        mLoadService = LoadSirManager.getDefault().register(mMainActContainer, new Callback.OnReloadListener() {
-            @Override
-            public void onReload(View v) {
-                songSelectPresenter.getSongsListTags(1, 0, 100);
-            }
-        });
-        mLoadService.showCallback(LoadingCallback.class);
-        // todo 仅做test
-        songSelectPresenter.getSongsListTags(1, 0, 100);
+        // 先写死
+        List<TagModel> tagModelList = new ArrayList<>();
+        TagModel tagModel = new TagModel();
+        tagModel.setTagID(1);
+        tagModel.setTagName("推荐");
+        tagModelList.add(tagModel);
+        TagModel tagModel1 = new TagModel();
+        tagModel1.setTagID(2);
+        tagModel1.setTagName("已点");
+        tagModelList.add(tagModel1);
+
+        adapter.setData(tagModelList);
+        mSonglistViewPager.setAdapter(adapter);
+        mSelectSongTabLayout.setViewPager(mSonglistViewPager);
+
+//        addPresent(songSelectPresenter);
+//        mLoadService = LoadSirManager.getDefault().register(mMainActContainer, new Callback.OnReloadListener() {
+//            @Override
+//            public void onReload(View v) {
+//                songSelectPresenter.getSongsListTags(1, 0, 100);
+//            }
+//        });
+//        mLoadService.showCallback(LoadingCallback.class);
+//
+//        songSelectPresenter.getSongsListTags(1, 0, 100);
     }
 
-    @Override
-    protected View loadSirReplaceRootView() {
-        return mLoadService.getLoadLayout();
-    }
+//    @Override
+//    protected View loadSirReplaceRootView() {
+//        return mLoadService.getLoadLayout();
+//    }
 
     @Override
     public void onDetach() {
@@ -76,26 +85,26 @@ public class SongSelectFragment extends BaseFragment implements ISongTagView {
         return false;
     }
 
-    @Override
-    public void loadSongsTags(List<TagModel> list) {
-        if (list == null) {
-            return;
-        }
+//    @Override
+//    public void loadSongsTags(List<TagModel> list) {
+//        if (list == null) {
+//            return;
+//        }
+//
+//        if (adapter == null) {
+//            adapter = new TagPagerAdapter();
+//        }
+//        adapter.setData(list);
+//        mSonglistViewPager.setAdapter(adapter);
+//        mSelectSongTabLayout.setViewPager(mSonglistViewPager);
+//        mLoadService.showSuccess();
+//    }
 
-        if (adapter == null) {
-            adapter = new TagPagerAdapter();
-        }
-        adapter.setData(list);
-        mSonglistViewPager.setAdapter(adapter);
-        mSelectSongTabLayout.setViewPager(mSonglistViewPager);
-        mLoadService.showSuccess();
-    }
-
-    @Override
-    public void loadSongsTagsFail() {
-        // 加载失败
-        mLoadService.showCallback(ErrorCallback.class);
-    }
+//    @Override
+//    public void loadSongsTagsFail() {
+//        // 加载失败
+//        mLoadService.showCallback(ErrorCallback.class);
+//    }
 
     class TagPagerAdapter extends PagerAdapter {
         List<TagModel> listData = new ArrayList<>();

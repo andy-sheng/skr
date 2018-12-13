@@ -47,4 +47,54 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
             }
         },this);
     }
+
+
+    /**
+     * 获取推荐的歌曲列表
+     * @param offset
+     * @param cnt
+     */
+    public void getRcomdMusicItems(int offset, int cnt) {
+        SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
+        ApiMethods.subscribe(songSelectServerApi.getRcomdMusicItems(offset, cnt), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    if (view != null) {
+                        view.loadSongsDetailItems(list);
+                    }
+                } else {
+                    if (view != null) {
+                        view.loadSongsDetailItemsFail();
+                    }
+                }
+            }
+        },this);
+    }
+
+    /**
+     * 获取已点的歌曲列表
+     * @param offset
+     * @param cnt
+     */
+    public void getClickedMusicItmes(int offset, int cnt) {
+        SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
+        ApiMethods.subscribe(songSelectServerApi.getClickedMusicItmes(offset, cnt), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    if (view != null) {
+                        view.loadSongsDetailItems(list);
+                    }
+                } else {
+                    if (view != null) {
+                        view.loadSongsDetailItemsFail();
+                    }
+                }
+            }
+        },this);
+    }
+
 }
