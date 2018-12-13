@@ -108,7 +108,7 @@ public class VoiceControlPanelView extends ScrollView {
             EngineManager.getInstance().resumeAudioMixing();
         }
 
-        EngineManager.getInstance().startAudioMixing("/assets/test.mp3", true, false, -1);
+
         mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
         mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getAudioMixingVolume());
     }

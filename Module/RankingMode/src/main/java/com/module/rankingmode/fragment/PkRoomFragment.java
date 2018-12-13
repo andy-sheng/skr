@@ -91,7 +91,7 @@ public class PkRoomFragment extends BaseFragment {
         mManyLineLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
 
         String fileName = "shamoluotuo";
-        LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", "5000", fileName.hashCode() + "");
+        LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", fileName.hashCode() + "");
 
 
 

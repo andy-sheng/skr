@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.common.log.MyLog;
+import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.LyricsInfo;
@@ -100,11 +101,10 @@ public class LyricsManager {
     /**
      * @param fileName
      * @param keyword
-     * @param duration
      * @param hash
      * @return
      */
-    public void loadLyricsUtil(final String fileName, final String keyword, final String duration, final String hash) {
+    public void loadLyricsUtil(final String fileName, final String keyword, final String hash) {
 
         Observable.create(new ObservableOnSubscribe<Object>() {
 
@@ -113,7 +113,7 @@ public class LyricsManager {
                 MyLog.d(TAG, "loadLyricsUtil 1");
                 if (!mLyricsUtils.containsKey(hash)) {
                     MyLog.d(TAG, "loadLyricsUtil 2");
-                    File lrcFile = LyricsUtils.getLrcFile(fileName, ResourceFileUtil.getFilePath(mContext, ResourceConstants.PATH_LYRICS, null));
+                    File lrcFile = LyricsUtils.getLrcFile(fileName, SongResUtils.getLyricDir());
                     MyLog.d(TAG, "loadLyricsUtil 3 " + lrcFile);
                     if (lrcFile != null) {
                         LyricsReader lyricsUtil = new LyricsReader();
