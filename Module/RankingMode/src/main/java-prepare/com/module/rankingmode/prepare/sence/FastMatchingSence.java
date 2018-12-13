@@ -81,14 +81,13 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         RxView.clicks(mMatchStatusTv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    matchingPresenter.cancelMatch(1);
+                    matchingPresenter.cancelMatch();
                     matchSenceController.popSence();
                 });
     }
 
     @Override
     public void toShow(RelativeLayout parentViewGroup, Bundle bundle) {
-        matchingPresenter.startLoopMatchTask();
         //这里可能有动画啥的
         setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         parentViewGroup.addView(this);
@@ -97,6 +96,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配中...");
 
         songModel = (SongModel) bundle.getSerializable("song_model");
+        matchingPresenter.startLoopMatchTask(songModel.getItemID());
     }
 
     @Override

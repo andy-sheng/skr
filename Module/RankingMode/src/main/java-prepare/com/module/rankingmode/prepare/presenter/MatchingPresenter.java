@@ -13,6 +13,7 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.rankingmode.msg.event.JoinActionEvent;
 import com.module.rankingmode.msg.event.JoinNoticeEvent;
+import com.module.rankingmode.prepare.GameModeType;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
 import com.module.rankingmode.prepare.model.PlayerInfo;
@@ -43,8 +44,10 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
     HandlerTaskTimer loopMatchTask;
     HandlerTaskTimer checkJoinStateTask;
 
-    int currentGameId;
+    int currentGameId; // 游戏标识
     long gameCreateTime;
+
+    int currentMusicId; //选择的歌曲id
 
     JsonGameInfo mJsonGameInfo;
 
@@ -65,8 +68,9 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
 
     }
 
-    public void startLoopMatchTask() {
+    public void startLoopMatchTask(int playbookItemID) {
         MyLog.d(TAG, "startLoopMatchTask");
+        this.currentMusicId = playbookItemID;
 
 //        loopMatchTask = HandlerTaskTimer.newBuilder()
 //                .interval(10000)
@@ -74,7 +78,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
 //            @Override
 //            public void onNext(Integer integer) {
 //                MyLog.d(TAG, "startLoopMatchTask onNext");
-        startMatch();
+        startMatch(currentMusicId);
 //            }
 //        });
     }
@@ -91,15 +95,19 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         }
     }
 
-    // 开始匹配
-    private void startMatch() {
+    /**
+     * 开始匹配
+     *
+     * @param playbookItemID 选择歌曲itemID
+     */
+    private void startMatch(int playbookItemID) {
         MyLog.d(TAG, "startMatch");
         disposeMatchTask();
         matchState = MatchState.Matching;
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("mode", 1);
-        map.put("playbookItemID", 1);
+        map.put("mode", GameModeType.GAME_MODE_CLASSIC_RANK);
+        map.put("playbookItemID", playbookItemID);
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
 
         startMatchTask = ApiMethods.subscribeWith(matchServerApi.startMatch(body), new ApiObserver<ApiResult>() {
@@ -115,14 +123,14 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
     }
 
     // 取消匹配,重新回到开始匹配，这里需要判断是因为可以准备了还是因为用户点击了取消
-    public void cancelMatch(int mode) {
+    public void cancelMatch() {
         MyLog.d(TAG, "cancelMatch");
         disposeLoopMatchTask();
         disposeMatchTask();
 
         matchState = MatchState.IDLE;
         HashMap<String, Object> map = new HashMap<>();
-        map.put("mode", mode);
+        map.put("mode", GameModeType.GAME_MODE_CLASSIC_RANK);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(matchServerApi.cancleMatch(body).retry(3), null);
@@ -195,7 +203,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
             @Override
             public void onFailed(Object obj, int errcode, String message) {
                 U.getToastUtil().showShort("加入房间失败");
-                startLoopMatchTask();
+                startLoopMatchTask(currentMusicId);
             }
         });
     }
@@ -216,14 +224,14 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                     updateUserListState();
                 } else {
                     U.getToastUtil().showShort("加入房间失败 resule.errMsg is " + result.getErrmsg());
-                    startLoopMatchTask();
+                    startLoopMatchTask(currentMusicId);
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 U.getToastUtil().showShort("加入房间失败");
-                startLoopMatchTask();
+                startLoopMatchTask(currentMusicId);
             }
         }, this);
 
@@ -245,21 +253,21 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                     public void onNext(Integer integer) {
                         MyLog.d(TAG, "checkCurrentGameData onNext");
                         matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
-                        ApiMethods.subscribeWith(matchServerApi.getCurrentGameDate(currentGameId), new ApiObserver<ApiResult>() {
+                        ApiMethods.subscribeWith(matchServerApi.getCurrentGameData(currentGameId), new ApiObserver<ApiResult>() {
                             @Override
                             public void process(ApiResult result) {
                                 MyLog.d(TAG, "3 秒钟过去，需要拉去此刻的房间信息");
                                 if (result.getErrno() == 0) {
                                     JsonGameInfo jsonGameInfo = JSON.parseObject(result.getData().toString(), JsonGameInfo.class);
                                     if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
-                                        if(matchState == MatchState.JoinRongYunRoomSuccess){
+                                        if (matchState == MatchState.JoinRongYunRoomSuccess) {
                                             matchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
                                             view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
-                                        }else {
+                                        } else {
                                             MyLog.d(TAG, "3 秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
-                                            startLoopMatchTask();
+                                            startLoopMatchTask(currentMusicId);
                                         }
                                     } else {
                                         MyLog.d(TAG, "3秒后拉完房间信息人数不够3个，需要重新match了");
@@ -268,7 +276,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                                     }
                                 } else {
                                     MyLog.d(TAG, "3秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
-                                    startLoopMatchTask();
+                                    startLoopMatchTask(currentMusicId);
                                 }
 
                             }
@@ -287,14 +295,14 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
      */
     private void updateUserListState() {
         MyLog.d(TAG, "updateUserListState");
-        ApiMethods.subscribeWith(matchServerApi.getCurrentGameDate(currentGameId), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribeWith(matchServerApi.getCurrentGameData(currentGameId), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     MyLog.d(TAG, "process updateUserListState 1" + " result=" + result);
                     JsonGameInfo jsonGameInfo = JSON.parseObject(result.getData().toString(), JsonGameInfo.class);
                     if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
-                        if(matchState == MatchState.JoinRongYunRoomSuccess){
+                        if (matchState == MatchState.JoinRongYunRoomSuccess) {
                             matchState = MatchState.JoinGameSuccess;
                             mJsonGameInfo = jsonGameInfo;
                             view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);

@@ -12,6 +12,7 @@ import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
 import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
+import com.module.rankingmode.prepare.model.JsonRoundInfo;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
@@ -145,8 +146,12 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
 
         long roundOverTimeMs = roundOverMsgr.getRoundOverTimeMs();
-        RoundInfo currentRound = roundOverMsgr.getCurrentRound();
-        RoundInfo nextRound = roundOverMsgr.getNextRound();
+
+        JsonRoundInfo currentRound = new JsonRoundInfo();
+        currentRound.parse(roundOverMsgr.getCurrentRound());
+
+        JsonRoundInfo nextRound = new JsonRoundInfo();
+        nextRound.parse(roundOverMsgr.getNextRound());
 
         EventBus.getDefault().post(new RoundOverEvent(info, roundOverTimeMs, currentRound, nextRound));
     }
