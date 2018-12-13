@@ -18,7 +18,6 @@ public class SongModel implements Serializable {
      * totalMs : 338000
      * beginMs : 0
      * endMs : 338000
-     * melp : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/mel/smlt.melp
      * zip : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/mel/smlt_zbd.zip
      */
 
@@ -37,7 +36,6 @@ public class SongModel implements Serializable {
     private int totalMs;
     private int beginMs;
     private int endMs;
-    private String melp;
     private String zip;
 
     public int getItemID() {
@@ -126,14 +124,6 @@ public class SongModel implements Serializable {
 
     public void setEndMs(int endMs) {
         this.endMs = endMs;
-    }
-
-    public String getMelp() {
-        return melp;
-    }
-
-    public void setMelp(String melp) {
-        this.melp = melp;
     }
 
     public String getZip() {

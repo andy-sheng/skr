@@ -6,6 +6,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
 import com.module.rankingmode.song.SongSelectServerApi;
 import com.module.rankingmode.song.model.SongModel;
 import com.module.rankingmode.song.view.ISongTagDetailView;
@@ -22,47 +23,25 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 获取曲库剧本的详细条目
-     *
-     * @param tag    曲库的剧本标签id
-     * @param offset 偏移量
-     * @param cnt    一页的数量
-     * @return
-     */
-    public void getSongDetailListItems(int tag, int offset, int cnt) {
-        SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-        ApiMethods.subscribe(songSelectServerApi.getSongDetailListItems(tag, offset, cnt), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
-                    if (view != null) {
-                        view.loadSongsDetailItems(list);
-                    }
-                } else {
-                    if (view != null) {
-                        view.loadSongsDetailItemsFail();
-                    }
-                }
-            }
-        },this);
-    }
-
-
-    /**
      * 获取推荐的歌曲列表
+     *
      * @param offset
      * @param cnt
      */
     public void getRcomdMusicItems(int offset, int cnt) {
+        if (offset == -1){
+            U.getToastUtil().showShort("没有更多数据了");
+            return;
+        }
         SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
         ApiMethods.subscribe(songSelectServerApi.getRcomdMusicItems(offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    int offset = result.getData().getIntValue("offset");
                     if (view != null) {
-                        view.loadSongsDetailItems(list);
+                        view.loadSongsDetailItems(list, offset);
                     }
                 } else {
                     if (view != null) {
@@ -70,11 +49,12 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
                     }
                 }
             }
-        },this);
+        }, this);
     }
 
     /**
      * 获取已点的歌曲列表
+     *
      * @param offset
      * @param cnt
      */
@@ -85,8 +65,9 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    int offset = result.getData().getIntValue("offset");
                     if (view != null) {
-                        view.loadSongsDetailItems(list);
+                        view.loadSongsDetailItems(list, offset);
                     }
                 } else {
                     if (view != null) {
@@ -94,7 +75,7 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
                     }
                 }
             }
-        },this);
+        }, this);
     }
 
 }

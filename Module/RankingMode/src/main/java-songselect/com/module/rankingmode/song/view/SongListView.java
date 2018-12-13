@@ -2,6 +2,8 @@ package com.module.rankingmode.song.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -21,10 +23,17 @@ import com.module.rankingmode.song.model.SongModel;
 import com.module.rankingmode.song.model.TagModel;
 import com.module.rankingmode.song.presenter.SongTagDetailsPresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.List;
 
 public class SongListView extends FrameLayout implements ISongTagDetailView {
+
+    private static final int DEDAULT_COUNT = 6;
+
+    int offset = 0;
+
     TagModel tagModel;
 
     LinearLayout mMainActContainer;
@@ -36,6 +45,8 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
     SongSelectAdapter mSongSelectAdapter;
 
     SongTagDetailsPresenter presenter;
+
+    Handler mUiHanlder = new Handler();
 
     public SongListView(Context context) {
         this(context, null);
@@ -78,12 +89,40 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
             }
         });
         mSongListView.setAdapter(mSongSelectAdapter);
+
+        mSongRefreshLayout.setEnableLoadMore(true);
+        mSongRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
+        mSongRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (tagModel.getTagID() == 1) {
+                            presenter.getRcomdMusicItems(offset, DEDAULT_COUNT);
+                        } else {
+                            presenter.getClickedMusicItmes(offset, DEDAULT_COUNT);
+                        }
+                    }
+                }, 1500);
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSongRefreshLayout.finishRefresh();
+                    }
+                }, 1500);
+            }
+        });
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (presenter != null){
+        if (presenter != null) {
             presenter.destroy();
         }
     }
@@ -92,17 +131,18 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
         this.tagModel = tagModel;
         if (this.tagModel != null) {
             // todo 假数据，后期再改
-            if (tagModel.getTagID() == 1){
-                presenter.getRcomdMusicItems(0,100);
-            }else if (tagModel.getTagID() == 2){
-                presenter.getClickedMusicItmes(0,100);
+            if (tagModel.getTagID() == 1) {
+                presenter.getRcomdMusicItems(offset, DEDAULT_COUNT);
+            } else if (tagModel.getTagID() == 2) {
+                presenter.getClickedMusicItmes(offset, DEDAULT_COUNT);
             }
 
         }
     }
 
     @Override
-    public void loadSongsDetailItems(List<SongModel> list) {
+    public void loadSongsDetailItems(List<SongModel> list, int offset) {
+        this.offset = offset;
         mSongSelectAdapter.setDataList(list);
     }
 

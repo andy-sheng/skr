@@ -95,6 +95,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "prepare " + result);
                 if (result.getErrno() == 0) {
+
                     iMatchSucessView.ready(isPrepare);
                 }
             }

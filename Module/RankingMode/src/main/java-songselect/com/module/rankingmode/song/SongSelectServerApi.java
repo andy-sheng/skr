@@ -9,7 +9,7 @@ import retrofit2.http.Query;
 public interface SongSelectServerApi {
 
     /**
-     * 获取曲库剧本的标签
+     * 根据游戏model列出剧本
      *
      * @param mode
      * @param offset
@@ -20,19 +20,6 @@ public interface SongSelectServerApi {
     Observable<ApiResult> getSongsListTags(@Query("mode") int mode,
                                            @Query("offset") int offset,
                                            @Query("cnt") int cnt);
-
-    /**
-     * 获取曲库剧本的详细条目
-     *
-     * @param tag
-     * @param offset
-     * @param cnt
-     * @return
-     */
-    @GET("v1/playbook/list-items")
-    Observable<ApiResult> getSongDetailListItems(@Query("tag") int tag,
-                                @Query("offset") int offset,
-                                @Query("cnt") int cnt);
 
 
     /**

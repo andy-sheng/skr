@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import com.common.base.BaseFragment;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
-import com.kingja.loadsir.core.LoadService;
 import com.module.rankingmode.R;
 import com.module.rankingmode.song.model.TagModel;
 import com.module.rankingmode.song.view.SongListView;
@@ -24,8 +23,6 @@ public class SongSelectFragment extends BaseFragment  {
     NestViewPager mSonglistViewPager;
 
     TagPagerAdapter adapter;
-
-    LoadService mLoadService;
 
     @Override
     public int initView() {
@@ -42,7 +39,7 @@ public class SongSelectFragment extends BaseFragment  {
             adapter = new TagPagerAdapter();
         }
 
-        // 先写死
+        // TODO: 2018/12/13 服务器暂不提供选歌TAG的接口，先写死 
         List<TagModel> tagModelList = new ArrayList<>();
         TagModel tagModel = new TagModel();
         tagModel.setTagID(1);
@@ -69,11 +66,6 @@ public class SongSelectFragment extends BaseFragment  {
 //        songSelectPresenter.getSongsListTags(1, 0, 100);
     }
 
-//    @Override
-//    protected View loadSirReplaceRootView() {
-//        return mLoadService.getLoadLayout();
-//    }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -85,6 +77,10 @@ public class SongSelectFragment extends BaseFragment  {
         return false;
     }
 
+//    @Override
+//    protected View loadSirReplaceRootView() {
+//        return mLoadService.getLoadLayout();
+//    }
 //    @Override
 //    public void loadSongsTags(List<TagModel> list) {
 //        if (list == null) {
@@ -99,7 +95,6 @@ public class SongSelectFragment extends BaseFragment  {
 //        mSelectSongTabLayout.setViewPager(mSonglistViewPager);
 //        mLoadService.showSuccess();
 //    }
-
 //    @Override
 //    public void loadSongsTagsFail() {
 //        // 加载失败
