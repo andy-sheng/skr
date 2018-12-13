@@ -40,8 +40,9 @@
 
         <activity
             android:name="com.common.core.login.LoginActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTask"/>
+            <!--android:screenOrientation="portrait" -->
+
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
 

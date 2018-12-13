@@ -19,10 +19,30 @@ public interface RoomServerApi {
 
     /**
      * 上报结束一轮游戏
+     *
      * @param body   游戏标识 gameID (必选)
      * @return
      */
     @PUT("http://dev.game.inframe.mobi/v1/game/round/over")
     Observable<ApiResult> sendRoundOver(@Body RequestBody body);
+
+    /**
+     * 当前轮次时上报心跳
+     *
+     * @param body  游戏标识 gameID (必选)
+     *              身份标识 userID (必选）
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/hb")
+    Observable<ApiResult> sendHeartBeat(@Body RequestBody body);
+
+    /**
+     * 退出游戏
+     *
+     * @param body 游戏标识 gameID (必选)
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/exit")
+    Observable<ApiResult> exitGame(@Body RequestBody body);
 
 }

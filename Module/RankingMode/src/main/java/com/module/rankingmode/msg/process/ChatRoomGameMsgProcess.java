@@ -203,6 +203,15 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             return;
         }
 
-        EventBus.getDefault().post(new SyncStatusEvent(info));
+        long syncStatusTimes = syncStatusMsg.getSyncStatusTimeMs();
+        long gameOverTimeMs = syncStatusMsg.getGameOverTimeMs();
+
+        JsonRoundInfo currentInfo = new JsonRoundInfo();
+        currentInfo.parse(syncStatusMsg.getCurrentRound());
+
+        JsonRoundInfo nextInfo = new JsonRoundInfo();
+        nextInfo.parse(syncStatusMsg.getNextRound());
+
+        EventBus.getDefault().post(new SyncStatusEvent(info, syncStatusTimes, gameOverTimeMs, syncStatusMsg.getOnlineInfoList(), currentInfo, nextInfo));
     }
 }
