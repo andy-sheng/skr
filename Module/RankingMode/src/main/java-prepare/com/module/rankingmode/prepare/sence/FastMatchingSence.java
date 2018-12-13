@@ -147,7 +147,6 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         nextBundle.putInt(BUNDLE_KEY_GAME_ID, gameId);
         nextBundle.putLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreatMs);
         nextBundle.putSerializable(BUNDLE_KEY_GAME_SONG, songModel);
-        // TODO: 2018/12/12 记得可以不改成bundle传数据
         EventBus.getDefault().postSticky(new PrepareEventClass.PlayerInfoListEvent(list));
         matchSenceController.toNextSence(nextBundle);
     }

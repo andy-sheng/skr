@@ -9,6 +9,7 @@ import com.common.utils.U;
 import com.module.rankingmode.R;
 import com.module.rankingmode.room.comment.CommentView;
 import com.module.rankingmode.room.model.RoomData;
+import com.module.rankingmode.room.presenter.RankingRoomPresenter;
 import com.module.rankingmode.room.view.BottomContainerView;
 import com.module.rankingmode.room.view.InputContainerView;
 import com.module.rankingmode.room.view.TopContainerView;
@@ -25,6 +26,8 @@ public class RankingRoomFragment extends BaseFragment {
 
     TopContainerView mTopContainerView;
 
+    RankingRoomPresenter presenter;
+
     @Override
     public int initView() {
         return R.layout.ranking_room_fragment_layout;
@@ -37,6 +40,9 @@ public class RankingRoomFragment extends BaseFragment {
         initBottomView();
         initCommentView();
         initTopView();
+
+        presenter = new RankingRoomPresenter();
+        addPresent(presenter);
     }
 
     private void initInputView() {

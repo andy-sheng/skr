@@ -17,4 +17,12 @@ public interface RoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/game/chat")
     Observable<ApiResult> sendMsg(@Body RequestBody body);
 
+    /**
+     * 上报结束一轮游戏
+     * @param body   游戏标识 gameID (必选)
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/round/over")
+    Observable<ApiResult> sendRoundOver(@Body RequestBody body);
+
 }
