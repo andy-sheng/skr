@@ -1,7 +1,6 @@
 package com.module.rankingmode.prepare.sence;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -17,25 +16,17 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
-import com.module.rankingmode.song.model.SongModel;
 
 import java.util.concurrent.TimeUnit;
 
 public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMatchSucessView {
     public static final String TAG = "FastMatchSuccessSence";
 
-    public final static String BUNDLE_KEY_GAME_ID = "current_game_id";
-    public final static String BUNDLE_KEY_GAME_CREATE_MS = "game_create_ms";
-    public final static String BUNDLE_KEY_GAME_READY_INFO = "game_ready_info";
-    public final static String BUNDLE_KEY_GAME_SONG = "game_song_info";
-    public final static String BUNDLE_KEY_GAME_PLAYERS = "game_player";
-
-    int currentGameId;
-    long gameCreateMs;
 
     MatchSenceController matchSenceController;
 
@@ -45,11 +36,11 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
 
     ExTextView mMatchStatusTv;
 
-    MatchSucessPresenter matchSucessPresenter;
+    MatchSucessPresenter mMatchSucessPresenter;
 
     volatile boolean isPrepared = false;
 
-    SongModel songModel;
+    PrepareData mPrepareData;
 
     public FastMatchSuccessSence(Context context) {
         this(context, null);
@@ -108,10 +99,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
         MyLog.d(TAG, "allPlayerIsReady" + " jsonGameReadyInfo=" + jsonGameReadyInfo);
         matchSenceController.popSence();
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
-                .withSerializable("song_model", songModel)
-                .withInt(BUNDLE_KEY_GAME_ID, currentGameId)
-                .withLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreateMs)
-                .withSerializable(BUNDLE_KEY_GAME_READY_INFO, jsonGameReadyInfo)
+                .withSerializable("prepare_data", mPrepareData)
                 .greenChannel().navigation();
     }
 
@@ -119,31 +107,30 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     public void needReMatch() {
         MyLog.d(TAG, "needReMatch");
         matchSenceController.popSence();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("song_model", songModel);
-        matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, bundle);
+        matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, mPrepareData);
         U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
 
     @Override
-    public void toShow(RelativeLayout parentViewGroup, Bundle bundle) {
-        //这里可能有动画啥的
-        setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        parentViewGroup.addView(this);
+    public void toShow(RelativeLayout parentViewGroup, PrepareData data) {
+        mPrepareData = data;
+        if(getParent()==null) {
+            //这里可能有动画啥的
+            setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            parentViewGroup.addView(this);
+        }
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("已为你匹配到队伍");
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配成功");
-
-        currentGameId = bundle.getInt(BUNDLE_KEY_GAME_ID);
-        gameCreateMs = bundle.getLong(BUNDLE_KEY_GAME_CREATE_MS);
-        songModel = (SongModel) bundle.getSerializable("song_model");
-
-        matchSucessPresenter = new MatchSucessPresenter(this, currentGameId);
+        if (mMatchSucessPresenter != null) {
+            mMatchSucessPresenter.destroy();
+        }
+        mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId());
 
         RxView.clicks(mMatchStatusTv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getToastUtil().showShort("准备");
-                    matchSucessPresenter.prepare(!isPrepared);
+                    mMatchSucessPresenter.prepare(!isPrepared);
                 });
     }
 
@@ -156,7 +143,14 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     @Override
     public void toRemoveFromStack(RelativeLayout parentViewGroup) {
         parentViewGroup.removeView(this);
-        matchSucessPresenter.destroy();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mMatchSucessPresenter != null) {
+            mMatchSucessPresenter.destroy();
+        }
     }
 
     //每个场景有一个是不是可以往下跳的判断

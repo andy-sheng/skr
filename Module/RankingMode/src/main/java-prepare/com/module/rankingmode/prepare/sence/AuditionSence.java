@@ -10,6 +10,7 @@ import com.common.log.MyLog;
 import com.common.utils.SongResUtils;
 import com.engine.EngineManager;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;
@@ -32,7 +33,7 @@ public class AuditionSence extends RelativeLayout implements ISence {
 
     ManyLyricsView mManyLyricsView;
 
-    SongModel songModel;
+    PrepareData mPrepareData;
 
     public AuditionSence(Context context) {
         this(context, null);
@@ -84,13 +85,16 @@ public class AuditionSence extends RelativeLayout implements ISence {
     }
 
     @Override
-    public void toShow(RelativeLayout parentViewGroup, Bundle bundle) {
-        //这里可能有动画啥的
-        setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        parentViewGroup.addView(this);
+    public void toShow(RelativeLayout parentViewGroup, PrepareData data) {
+        mPrepareData = data;
+        if(getParent()==null) {
+            //这里可能有动画啥的
+            setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            parentViewGroup.addView(this);
+        }
 
-        songModel = (SongModel) bundle.getSerializable("song_model");
         //从bundle里面拿音乐相关数据，然后开始试唱
+        SongModel songModel = mPrepareData.getSongModel();
         String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
         MyLog.d(TAG, "toShow" + " fileName=" + fileName + " song name is " + songModel.getItemName());
         if(!EventBus.getDefault().isRegistered(this)){
@@ -131,6 +135,12 @@ public class AuditionSence extends RelativeLayout implements ISence {
     @Override
     public void toRemoveFromStack(RelativeLayout parentViewGroup) {
         parentViewGroup.removeView(this);
+
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
         EngineManager.getInstance().stopAudioMixing();
         EventBus.getDefault().unregister(this);
     }

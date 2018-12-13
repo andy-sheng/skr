@@ -13,6 +13,7 @@ import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.presenter.PrepareSongPresenter;
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.song.model.SongModel;
@@ -26,13 +27,13 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
     ExTextView mToneTuningTv;   //试音调音
     ExTextView mMatchStatusTv;
 
-    SongModel songModel = null;
-
     HttpUtils.OnDownloadProgress onDownloadProgress;
 
     PrepareSongPresenter prepareSongPresenter;
 
     Handler handler = new Handler();
+
+    PrepareData mPrepareData;
 
     public PrepareSongResSence(Context context) {
         this(context, null);
@@ -46,8 +47,6 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
         super(context, attrs, defStyleAttr);
         init();
     }
-
-
 
     private void init() {
         inflate(getContext(), R.layout.prepare_songres_sence_layout, this);
@@ -88,10 +87,13 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
     }
 
     @Override
-    public void toShow(RelativeLayout parentViewGroup, Bundle bundle) {
-        //这里可能有动画啥的
-        setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        parentViewGroup.addView(this);
+    public void toShow(RelativeLayout parentViewGroup, PrepareData data) {
+        mPrepareData = data;
+        if(getParent()==null) {
+            //这里可能有动画啥的
+            setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            parentViewGroup.addView(this);
+        }
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("成都");
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("准备竞演");
 
@@ -101,25 +103,16 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
         RxView.clicks(mMatchStatusTv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    Bundle b = new Bundle();
-                    b.putSerializable("song_model", songModel);
-                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, b);
+                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Matching, mPrepareData);
                 });
 
         RxView.clicks(mToneTuningTv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    Bundle b = new Bundle();
-                    b.putSerializable("song_model", songModel);
-                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Audition, b);
+                    matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Audition, mPrepareData);
                 });
 
-        if (bundle != null) {
-            songModel = (SongModel) bundle.getSerializable("song_model");
-        }
-
-        prepareSongPresenter = new PrepareSongPresenter(onDownloadProgress, songModel);
-
+        prepareSongPresenter = new PrepareSongPresenter(onDownloadProgress, mPrepareData.getSongModel());
         mMatchStatusTv.setText("加载歌曲中");
         mToneTuningTv.setText("加载歌曲中");
         mMatchStatusTv.setEnabled(false);

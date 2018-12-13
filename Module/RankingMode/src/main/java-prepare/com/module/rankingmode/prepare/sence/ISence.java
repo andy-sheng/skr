@@ -3,6 +3,7 @@ package com.module.rankingmode.prepare.sence;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 
 /**
@@ -10,7 +11,7 @@ import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
  */
 public interface ISence {
     //新添加的场景
-    void toShow(RelativeLayout parentViewGroup, Bundle bundle);
+    void toShow(RelativeLayout parentViewGroup, PrepareData data);
 
     void toHide(RelativeLayout parentViewGroup);
 

@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.view.titlebar.CommonTitleBar;
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.sence.AuditionSence;
 import com.module.rankingmode.prepare.sence.FastMatchSuccessSence;
 import com.module.rankingmode.prepare.sence.FastMatchingSence;
@@ -56,7 +57,7 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
     }
 
     @Override
-    public void toAssignSence(MatchSenceState matchSenceState, Bundle bundle) {
+    public void toAssignSence(MatchSenceState matchSenceState, PrepareData data) {
         if (senceQueue.size() != 0) {
             ISence iSence = senceQueue.peek();
             if (!iSence.isPrepareToNextSence()) {
@@ -75,14 +76,14 @@ public class MatchSenceContainer extends RelativeLayout implements MatchSenceCon
         }
 
         ISence iSence = createSence(matchSenceState, getContext(), this);
-        iSence.toShow(this, bundle);
+        iSence.toShow(this, data);
         updateMatchSenceState(iSence);
         senceQueue.push(iSence);
     }
 
     @Override
-    public void toNextSence(Bundle bundle) {
-        toAssignSence(MatchSenceState.values()[currentMatchSenceState.getValue() + 1], bundle);
+    public void toNextSence(PrepareData data) {
+        toAssignSence(MatchSenceState.values()[currentMatchSenceState.getValue() + 1], data);
     }
 
     @Override

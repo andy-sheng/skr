@@ -13,22 +13,17 @@ import com.common.log.MyLog;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
-import com.module.rankingmode.prepare.event.PrepareEventClass;
 import com.module.rankingmode.prepare.model.PlayerInfo;
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchingPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchingView;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
-import com.module.rankingmode.song.model.SongModel;
 
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS;
-import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_ID;
-import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_SONG;
 
 public class FastMatchingSence extends RelativeLayout implements ISence, IMatchingView {
     public static final String TAG = "FastMatchingSence";
@@ -42,9 +37,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
 
     ExTextView mMatchStatusTv;
 
-    Bundle nextBundle = new Bundle();
-
-    SongModel songModel;
+    PrepareData mPrepareData;
 
     public FastMatchingSence(Context context) {
         this(context, null);
@@ -87,16 +80,18 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
     }
 
     @Override
-    public void toShow(RelativeLayout parentViewGroup, Bundle bundle) {
-        //这里可能有动画啥的
-        setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        parentViewGroup.addView(this);
+    public void toShow(RelativeLayout parentViewGroup, PrepareData data) {
+        mPrepareData = data;
+        if(getParent()==null) {
+            //这里可能有动画啥的
+            setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            parentViewGroup.addView(this);
+        }
 
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("一大波skrer在来的路上...");
         matchSenceController.getCommonTitleBar().getCenterTextView().setText("匹配中...");
 
-        songModel = (SongModel) bundle.getSerializable("song_model");
-        matchingPresenter.startLoopMatchTask(songModel.getItemID());
+        matchingPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID());
     }
 
     @Override
@@ -111,7 +106,11 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         parentViewGroup.removeView(this);
         mSmallMatchingLayerView.release();
         mLargeMatchingLayerView.release();
+    }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
         if (matchingPresenter != null) {
             matchingPresenter.destroy();
         }
@@ -144,11 +143,10 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
     public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> list) {
         MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " list=" + list);
         // 匹配成功
-        nextBundle.putInt(BUNDLE_KEY_GAME_ID, gameId);
-        nextBundle.putLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreatMs);
-        nextBundle.putSerializable(BUNDLE_KEY_GAME_SONG, songModel);
-        EventBus.getDefault().postSticky(new PrepareEventClass.PlayerInfoListEvent(list));
-        matchSenceController.toNextSence(nextBundle);
+        mPrepareData.setGameId(gameId);
+        mPrepareData.setGameCreatMs(gameCreatMs);
+        mPrepareData.setPlayerInfoList(list);
+        matchSenceController.toNextSence(mPrepareData);
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.view.VoiceLineView;
 import com.module.rankingmode.song.model.SongModel;
@@ -31,8 +32,7 @@ public class MatchingFragment extends BaseFragment {
 
     public final static String TAG = "MatchingFragment";
 
-    public static final String KEY_SONG_NAME = "key_song_name"; //歌曲名
-    public static final String KEY_SONG_TIME = "key_song_time"; //歌曲时长
+    private PrepareData mPrepareData = new PrepareData();
 
     RelativeLayout mMainActContainer;
 
@@ -41,11 +41,7 @@ public class MatchingFragment extends BaseFragment {
 
     VoiceLineView mVoiceLineView;
 
-    SongModel songModel;
-
     HandlerTaskTimer mHandlerTaskTimer;
-
-    Handler mHandler = new Handler();
 
     @Override
     public int initView() {
@@ -61,11 +57,8 @@ public class MatchingFragment extends BaseFragment {
 
         mVoiceLineView = (VoiceLineView) mRootView.findViewById(R.id.voice_line_view);
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("song_model", songModel);
-
         mMatchContent.setCommonTitleBar(mTitleBar);
-        mMatchContent.toNextSence(bundle);
+        mMatchContent.toNextSence(mPrepareData);
 
         initMediaEngine();
     }
@@ -73,7 +66,7 @@ public class MatchingFragment extends BaseFragment {
     @Override
     public void setData(int type, @Nullable Object data) {
         if(0 == type){
-            songModel = (SongModel) data;
+            mPrepareData.setSongModel((SongModel) data);
         }
     }
 

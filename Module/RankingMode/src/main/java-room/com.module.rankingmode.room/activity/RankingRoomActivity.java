@@ -9,6 +9,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.sence.FastMatchSuccessSence;
 import com.module.rankingmode.room.fragment.RankingRoomFragment;
 import com.module.rankingmode.room.model.RoomData;
@@ -27,11 +28,11 @@ public class RankingRoomActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        int gameId = getIntent().getIntExtra(FastMatchSuccessSence.BUNDLE_KEY_GAME_ID,0);
-        long createTs = getIntent().getLongExtra(FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS,0);
-
-        mRoomData.setGameId(gameId);
-        mRoomData.setCreateTs(createTs);
+        PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
+        if(prepareData!=null) {
+            mRoomData.setGameId(prepareData.getGameId());
+            mRoomData.setCreateTs(prepareData.getGameCreatMs());
+        }
 
         U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, RankingRoomFragment.class)
                 .setAddToBackStack(false)
