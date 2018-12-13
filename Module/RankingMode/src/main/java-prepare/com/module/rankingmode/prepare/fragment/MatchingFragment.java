@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.engine.EngineEvent;
@@ -23,6 +24,7 @@ import com.module.rankingmode.song.model.SongModel;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -78,7 +80,9 @@ public class MatchingFragment extends BaseFragment {
                     .setEnableVideo(false)
                     .build());
             EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-            EngineManager.getInstance().startAudioMixing("/assets/test.mp3", true, false, -1);
+            File accFile = SongResUtils.getAccFileByUrl(mPrepareData.getSongModel().getAcc());
+
+            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, -1);
             EngineManager.getInstance().pauseAudioMixing();
 
             String c = U.getDateTimeUtils().formatVideoTime(0);

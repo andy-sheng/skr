@@ -140,8 +140,6 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
 
     @Override
     public void onResumeSence(RelativeLayout parentViewGroup) {
-        matchSenceController.getCommonTitleBar().getCenterTextView().setText("成都");
-        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("准备竞演");
         setVisibility(VISIBLE);
     }
 
