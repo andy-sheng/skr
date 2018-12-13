@@ -94,7 +94,7 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
             setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             parentViewGroup.addView(this);
         }
-        matchSenceController.getCommonTitleBar().getCenterTextView().setText("成都");
+        matchSenceController.getCommonTitleBar().getCenterTextView().setText(mPrepareData.getSongModel().getItemName());
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("准备竞演");
 
         mToneTuningTv = findViewById(R.id.tone_tuning_tv);

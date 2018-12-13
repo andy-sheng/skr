@@ -62,7 +62,6 @@ public class ZipUrlResourceManager {
                 .filter(new Predicate<UrlRes>() {
                     @Override
                     public boolean test(UrlRes songRes) throws Exception {
-
                         return !songRes.isExist();
                     }
                 })
