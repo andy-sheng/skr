@@ -26,9 +26,13 @@ public class SongModel implements Serializable {
     private String itemName;
     private String cover;
     private String owner;
+    //歌词
     private String lyric;
+    //原唱
     private String ori;
+    //伴奏
     private String acc;
+    //midi文件，用来评分
     private String midi;
     private int totalMs;
     private int beginMs;

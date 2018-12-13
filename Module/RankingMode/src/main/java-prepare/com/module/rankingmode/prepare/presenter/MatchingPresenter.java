@@ -16,7 +16,6 @@ import com.module.rankingmode.msg.event.JoinNoticeEvent;
 import com.module.rankingmode.prepare.GameModeType;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
-import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.view.IMatchingView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,7 +23,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
-import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -148,10 +146,10 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
             // 是否要对加入通知进行过滤
             if (matchState == MatchState.Matching) {
                 MyLog.d(TAG, "onEventMainThread JoinActionEvent 1 currentGameId is " + joinActionEvent.gameId);
+                matchState = MatchState.MatchSucess;
                 this.joinActionEvent = joinActionEvent;
                 disposeLoopMatchTask();
                 disposeMatchTask();
-                matchState = MatchState.MatchSucess;
                 this.currentGameId = joinActionEvent.gameId;
                 this.gameCreateTime = joinActionEvent.gameCreateMs;
                 joinRoom();
