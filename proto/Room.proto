@@ -125,8 +125,8 @@ message RoundInfo
     uint32 userID       = 1; //玩家id
     uint32 playbookID   = 2; //曲库id
     uint32 roundSeq     = 3; //轮次顺序
-    uint32 singBeginMs = 4; //轮次开始时间戳
-    uint32 singEndMs   = 5; //轮次结束时间戳
+    uint32 singBeginMs = 4; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs   = 5; //演唱结束相对时间（相对于startTimeMs时间）
 }
 
 message ReadyInfo
@@ -134,6 +134,12 @@ message ReadyInfo
     uint32 userID      = 1; //用户id
     uint32 readySeq    = 2; //准备顺序
     sint64 readyTimeMs = 3; //准备时间戳
+}
+
+message OnlineInfo
+{
+    uint32 userID      = 1; //用户id
+    bool isOnline = 2; //是否在线
 }
 
 message GameStartInfo
@@ -146,7 +152,7 @@ message GameStartInfo
 message ReadyNoticeMsg
 {
     repeated ReadyInfo readyInfo = 1; //准备信息
-    sint32 HasReadyedUserCnt     = 2; //已经准备人数
+    sint32 hasReadyedUserCnt     = 2; //已经准备人数
     bool isGameStart             = 3; //游戏是否开始
     repeated RoundInfo roundInfo = 4; //轮次信息
     GameStartInfo gameStartInfo            = 5; // 游戏信息
@@ -155,16 +161,16 @@ message ReadyNoticeMsg
 // 游戏轮次结束通知消息
 message RoundOverMsg
 {
-    sint64 roundOverTimeMs = 1; //轮次结束的毫秒时间戳
-    uint32 nextRoundSeq    = 2; //下一轮顺序
-    uint32 nextUserID      = 3; //下一个用户ID
-    uint32 nextMusicID     = 4; //下一首歌曲ID
+    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
+    RoundInfo currentRound = 2; //当前轮次信息
+    RoundInfo nextRound    = 3; //下个轮次信息
 }
 
 // 轮次和游戏结束通知消息
 message RoundAndGameOverMsg
 {
     sint64 roundOverTimeMs = 1; //轮次结束的毫秒时间戳
+    RoundInfo currentRound = 2; //当前轮次信息
 }
 
 message QuitGameMsg
@@ -183,9 +189,10 @@ message AppSwapMsg
 
 message SyncStatusMsg
 {
-    // TODO:
-    //1. 玩家信息：在线状态，掉线
-    //2. 游戏信息：状态
-    //3. ...
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    repeated OnlineInfo onlineInfo = 2;//在线状态
+    RoundInfo currentRound = 3; //当前轮次信息
+    RoundInfo nextRound    = 4; //下个轮次信息
 }
+
 

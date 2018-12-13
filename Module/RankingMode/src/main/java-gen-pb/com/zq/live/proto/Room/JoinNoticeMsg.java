@@ -35,7 +35,7 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
    */
   @WireField(
       tag = 1,
-      adapter = "com.zq.live.proto.Room.JsonJoinInfo#ADAPTER",
+      adapter = "com.zq.live.proto.Room.JoinInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   public final List<JoinInfo> joinInfo;

@@ -154,9 +154,10 @@ public class SongModel implements Serializable {
         this.setOri(musicInfo.getOri());
         this.setAcc(musicInfo.getAcc());
         this.setMidi(musicInfo.getMidi());
-        this.setTotalMs(musicInfo.getTotalMs());
-        this.setBeginMs(musicInfo.getBeginMs());
-        this.setEndMs(musicInfo.getEndMs());
+        this.setZip(musicInfo.getZip());
+        this.setTotalMs(musicInfo.getTotalTimeMs());
+        this.setBeginMs(musicInfo.getBeginTimeMs());
+        this.setEndMs(musicInfo.getEndTimeMs());
         // todo PB缺两个现在，等服务器完善
     }
 

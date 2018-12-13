@@ -36,7 +36,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
    */
   @WireField(
       tag = 1,
-      adapter = "com.zq.live.proto.Room.JsonReadyInfo#ADAPTER",
+      adapter = "com.zq.live.proto.Room.ReadyInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   public final List<ReadyInfo> readyInfo;
@@ -48,7 +48,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
-  public final Integer HasReadyedUserCnt;
+  public final Integer hasReadyedUserCnt;
 
   /**
    * 游戏是否开始
@@ -64,7 +64,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
    */
   @WireField(
       tag = 4,
-      adapter = "com.zq.live.proto.Room.JsonRoundInfo#ADAPTER",
+      adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   public final List<RoundInfo> roundInfo;
@@ -74,20 +74,20 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
    */
   @WireField(
       tag = 5,
-      adapter = "com.zq.live.proto.Room.JsonGameStartInfo#ADAPTER"
+      adapter = "com.zq.live.proto.Room.GameStartInfo#ADAPTER"
   )
   public final GameStartInfo gameStartInfo;
 
-  public ReadyNoticeMsg(List<ReadyInfo> readyInfo, Integer HasReadyedUserCnt, Boolean isGameStart,
+  public ReadyNoticeMsg(List<ReadyInfo> readyInfo, Integer hasReadyedUserCnt, Boolean isGameStart,
       List<RoundInfo> roundInfo, GameStartInfo gameStartInfo) {
-    this(readyInfo, HasReadyedUserCnt, isGameStart, roundInfo, gameStartInfo, ByteString.EMPTY);
+    this(readyInfo, hasReadyedUserCnt, isGameStart, roundInfo, gameStartInfo, ByteString.EMPTY);
   }
 
-  public ReadyNoticeMsg(List<ReadyInfo> readyInfo, Integer HasReadyedUserCnt, Boolean isGameStart,
+  public ReadyNoticeMsg(List<ReadyInfo> readyInfo, Integer hasReadyedUserCnt, Boolean isGameStart,
       List<RoundInfo> roundInfo, GameStartInfo gameStartInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.readyInfo = Internal.immutableCopyOf("readyInfo", readyInfo);
-    this.HasReadyedUserCnt = HasReadyedUserCnt;
+    this.hasReadyedUserCnt = hasReadyedUserCnt;
     this.isGameStart = isGameStart;
     this.roundInfo = Internal.immutableCopyOf("roundInfo", roundInfo);
     this.gameStartInfo = gameStartInfo;
@@ -97,7 +97,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.readyInfo = Internal.copyOf("readyInfo", readyInfo);
-    builder.HasReadyedUserCnt = HasReadyedUserCnt;
+    builder.hasReadyedUserCnt = hasReadyedUserCnt;
     builder.isGameStart = isGameStart;
     builder.roundInfo = Internal.copyOf("roundInfo", roundInfo);
     builder.gameStartInfo = gameStartInfo;
@@ -112,7 +112,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     ReadyNoticeMsg o = (ReadyNoticeMsg) other;
     return unknownFields().equals(o.unknownFields())
         && readyInfo.equals(o.readyInfo)
-        && Internal.equals(HasReadyedUserCnt, o.HasReadyedUserCnt)
+        && Internal.equals(hasReadyedUserCnt, o.hasReadyedUserCnt)
         && Internal.equals(isGameStart, o.isGameStart)
         && roundInfo.equals(o.roundInfo)
         && Internal.equals(gameStartInfo, o.gameStartInfo);
@@ -124,7 +124,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + readyInfo.hashCode();
-      result = result * 37 + (HasReadyedUserCnt != null ? HasReadyedUserCnt.hashCode() : 0);
+      result = result * 37 + (hasReadyedUserCnt != null ? hasReadyedUserCnt.hashCode() : 0);
       result = result * 37 + (isGameStart != null ? isGameStart.hashCode() : 0);
       result = result * 37 + roundInfo.hashCode();
       result = result * 37 + (gameStartInfo != null ? gameStartInfo.hashCode() : 0);
@@ -137,7 +137,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (!readyInfo.isEmpty()) builder.append(", readyInfo=").append(readyInfo);
-    if (HasReadyedUserCnt != null) builder.append(", HasReadyedUserCnt=").append(HasReadyedUserCnt);
+    if (hasReadyedUserCnt != null) builder.append(", hasReadyedUserCnt=").append(hasReadyedUserCnt);
     if (isGameStart != null) builder.append(", isGameStart=").append(isGameStart);
     if (!roundInfo.isEmpty()) builder.append(", roundInfo=").append(roundInfo);
     if (gameStartInfo != null) builder.append(", gameStartInfo=").append(gameStartInfo);
@@ -168,10 +168,10 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
    * 已经准备人数
    */
   public Integer getHasReadyedUserCnt() {
-    if(HasReadyedUserCnt==null){
+    if(hasReadyedUserCnt==null){
         return DEFAULT_HASREADYEDUSERCNT;
     }
-    return HasReadyedUserCnt;
+    return hasReadyedUserCnt;
   }
 
   /**
@@ -215,7 +215,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
    * 已经准备人数
    */
   public boolean hasHasReadyedUserCnt() {
-    return HasReadyedUserCnt!=null;
+    return hasReadyedUserCnt!=null;
   }
 
   /**
@@ -242,7 +242,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
   public static final class Builder extends Message.Builder<ReadyNoticeMsg, Builder> {
     public List<ReadyInfo> readyInfo;
 
-    public Integer HasReadyedUserCnt;
+    public Integer hasReadyedUserCnt;
 
     public Boolean isGameStart;
 
@@ -267,8 +267,8 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     /**
      * 已经准备人数
      */
-    public Builder setHasReadyedUserCnt(Integer HasReadyedUserCnt) {
-      this.HasReadyedUserCnt = HasReadyedUserCnt;
+    public Builder setHasReadyedUserCnt(Integer hasReadyedUserCnt) {
+      this.hasReadyedUserCnt = hasReadyedUserCnt;
       return this;
     }
 
@@ -299,7 +299,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
 
     @Override
     public ReadyNoticeMsg build() {
-      return new ReadyNoticeMsg(readyInfo, HasReadyedUserCnt, isGameStart, roundInfo, gameStartInfo, super.buildUnknownFields());
+      return new ReadyNoticeMsg(readyInfo, hasReadyedUserCnt, isGameStart, roundInfo, gameStartInfo, super.buildUnknownFields());
     }
   }
 
@@ -311,7 +311,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     @Override
     public int encodedSize(ReadyNoticeMsg value) {
       return ReadyInfo.ADAPTER.asRepeated().encodedSizeWithTag(1, value.readyInfo)
-          + ProtoAdapter.SINT32.encodedSizeWithTag(2, value.HasReadyedUserCnt)
+          + ProtoAdapter.SINT32.encodedSizeWithTag(2, value.hasReadyedUserCnt)
           + ProtoAdapter.BOOL.encodedSizeWithTag(3, value.isGameStart)
           + RoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.roundInfo)
           + GameStartInfo.ADAPTER.encodedSizeWithTag(5, value.gameStartInfo)
@@ -321,7 +321,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     @Override
     public void encode(ProtoWriter writer, ReadyNoticeMsg value) throws IOException {
       ReadyInfo.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.readyInfo);
-      ProtoAdapter.SINT32.encodeWithTag(writer, 2, value.HasReadyedUserCnt);
+      ProtoAdapter.SINT32.encodeWithTag(writer, 2, value.hasReadyedUserCnt);
       ProtoAdapter.BOOL.encodeWithTag(writer, 3, value.isGameStart);
       RoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.roundInfo);
       GameStartInfo.ADAPTER.encodeWithTag(writer, 5, value.gameStartInfo);

@@ -10,7 +10,6 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
-import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
@@ -28,14 +27,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
 
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
 
-  public static final Integer DEFAULT_NEXTROUNDSEQ = 0;
-
-  public static final Integer DEFAULT_NEXTUSERID = 0;
-
-  public static final Integer DEFAULT_NEXTMUSICID = 0;
-
   /**
-   * 轮次结束的毫秒时间戳
+   * 本轮次结束的毫秒时间戳
    */
   @WireField(
       tag = 1,
@@ -44,53 +37,41 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   public final Long roundOverTimeMs;
 
   /**
-   * 下一轮顺序
+   * 当前轮次信息
    */
   @WireField(
       tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
   )
-  public final Integer nextRoundSeq;
+  public final RoundInfo currentRound;
 
   /**
-   * 下一个用户ID
+   * 下个轮次信息
    */
   @WireField(
       tag = 3,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
   )
-  public final Integer nextUserID;
+  public final RoundInfo nextRound;
 
-  /**
-   * 下一首歌曲ID
-   */
-  @WireField(
-      tag = 4,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
-  )
-  public final Integer nextMusicID;
-
-  public RoundOverMsg(Long roundOverTimeMs, Integer nextRoundSeq, Integer nextUserID,
-      Integer nextMusicID) {
-    this(roundOverTimeMs, nextRoundSeq, nextUserID, nextMusicID, ByteString.EMPTY);
+  public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound) {
+    this(roundOverTimeMs, currentRound, nextRound, ByteString.EMPTY);
   }
 
-  public RoundOverMsg(Long roundOverTimeMs, Integer nextRoundSeq, Integer nextUserID,
-      Integer nextMusicID, ByteString unknownFields) {
+  public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
-    this.nextRoundSeq = nextRoundSeq;
-    this.nextUserID = nextUserID;
-    this.nextMusicID = nextMusicID;
+    this.currentRound = currentRound;
+    this.nextRound = nextRound;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.roundOverTimeMs = roundOverTimeMs;
-    builder.nextRoundSeq = nextRoundSeq;
-    builder.nextUserID = nextUserID;
-    builder.nextMusicID = nextMusicID;
+    builder.currentRound = currentRound;
+    builder.nextRound = nextRound;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -102,9 +83,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     RoundOverMsg o = (RoundOverMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
-        && Internal.equals(nextRoundSeq, o.nextRoundSeq)
-        && Internal.equals(nextUserID, o.nextUserID)
-        && Internal.equals(nextMusicID, o.nextMusicID);
+        && Internal.equals(currentRound, o.currentRound)
+        && Internal.equals(nextRound, o.nextRound);
   }
 
   @Override
@@ -113,9 +93,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
-      result = result * 37 + (nextRoundSeq != null ? nextRoundSeq.hashCode() : 0);
-      result = result * 37 + (nextUserID != null ? nextUserID.hashCode() : 0);
-      result = result * 37 + (nextMusicID != null ? nextMusicID.hashCode() : 0);
+      result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
+      result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -125,9 +104,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
-    if (nextRoundSeq != null) builder.append(", nextRoundSeq=").append(nextRoundSeq);
-    if (nextUserID != null) builder.append(", nextUserID=").append(nextUserID);
-    if (nextMusicID != null) builder.append(", nextMusicID=").append(nextMusicID);
+    if (currentRound != null) builder.append(", currentRound=").append(currentRound);
+    if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     return builder.replace(0, 2, "RoundOverMsg{").append('}').toString();
   }
 
@@ -142,7 +120,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   }
 
   /**
-   * 轮次结束的毫秒时间戳
+   * 本轮次结束的毫秒时间戳
    */
   public Long getRoundOverTimeMs() {
     if(roundOverTimeMs==null){
@@ -152,77 +130,58 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   }
 
   /**
-   * 下一轮顺序
+   * 当前轮次信息
    */
-  public Integer getNextRoundSeq() {
-    if(nextRoundSeq==null){
-        return DEFAULT_NEXTROUNDSEQ;
+  public RoundInfo getCurrentRound() {
+    if(currentRound==null){
+        return new RoundInfo.Builder().build();
     }
-    return nextRoundSeq;
+    return currentRound;
   }
 
   /**
-   * 下一个用户ID
+   * 下个轮次信息
    */
-  public Integer getNextUserID() {
-    if(nextUserID==null){
-        return DEFAULT_NEXTUSERID;
+  public RoundInfo getNextRound() {
+    if(nextRound==null){
+        return new RoundInfo.Builder().build();
     }
-    return nextUserID;
+    return nextRound;
   }
 
   /**
-   * 下一首歌曲ID
-   */
-  public Integer getNextMusicID() {
-    if(nextMusicID==null){
-        return DEFAULT_NEXTMUSICID;
-    }
-    return nextMusicID;
-  }
-
-  /**
-   * 轮次结束的毫秒时间戳
+   * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
     return roundOverTimeMs!=null;
   }
 
   /**
-   * 下一轮顺序
+   * 当前轮次信息
    */
-  public boolean hasNextRoundSeq() {
-    return nextRoundSeq!=null;
+  public boolean hasCurrentRound() {
+    return currentRound!=null;
   }
 
   /**
-   * 下一个用户ID
+   * 下个轮次信息
    */
-  public boolean hasNextUserID() {
-    return nextUserID!=null;
-  }
-
-  /**
-   * 下一首歌曲ID
-   */
-  public boolean hasNextMusicID() {
-    return nextMusicID!=null;
+  public boolean hasNextRound() {
+    return nextRound!=null;
   }
 
   public static final class Builder extends Message.Builder<RoundOverMsg, Builder> {
     public Long roundOverTimeMs;
 
-    public Integer nextRoundSeq;
+    public RoundInfo currentRound;
 
-    public Integer nextUserID;
-
-    public Integer nextMusicID;
+    public RoundInfo nextRound;
 
     public Builder() {
     }
 
     /**
-     * 轮次结束的毫秒时间戳
+     * 本轮次结束的毫秒时间戳
      */
     public Builder setRoundOverTimeMs(Long roundOverTimeMs) {
       this.roundOverTimeMs = roundOverTimeMs;
@@ -230,32 +189,24 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     }
 
     /**
-     * 下一轮顺序
+     * 当前轮次信息
      */
-    public Builder setNextRoundSeq(Integer nextRoundSeq) {
-      this.nextRoundSeq = nextRoundSeq;
+    public Builder setCurrentRound(RoundInfo currentRound) {
+      this.currentRound = currentRound;
       return this;
     }
 
     /**
-     * 下一个用户ID
+     * 下个轮次信息
      */
-    public Builder setNextUserID(Integer nextUserID) {
-      this.nextUserID = nextUserID;
-      return this;
-    }
-
-    /**
-     * 下一首歌曲ID
-     */
-    public Builder setNextMusicID(Integer nextMusicID) {
-      this.nextMusicID = nextMusicID;
+    public Builder setNextRound(RoundInfo nextRound) {
+      this.nextRound = nextRound;
       return this;
     }
 
     @Override
     public RoundOverMsg build() {
-      return new RoundOverMsg(roundOverTimeMs, nextRoundSeq, nextUserID, nextMusicID, super.buildUnknownFields());
+      return new RoundOverMsg(roundOverTimeMs, currentRound, nextRound, super.buildUnknownFields());
     }
   }
 
@@ -267,18 +218,16 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     @Override
     public int encodedSize(RoundOverMsg value) {
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.nextRoundSeq)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.nextUserID)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.nextMusicID)
+          + RoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
+          + RoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RoundOverMsg value) throws IOException {
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.nextRoundSeq);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.nextUserID);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.nextMusicID);
+      RoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
+      RoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -289,9 +238,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 2: builder.setNextRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
-          case 3: builder.setNextUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 4: builder.setNextMusicID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 2: builder.setCurrentRound(RoundInfo.ADAPTER.decode(reader)); break;
+          case 3: builder.setNextRound(RoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -306,6 +254,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     @Override
     public RoundOverMsg redact(RoundOverMsg value) {
       Builder builder = value.newBuilder();
+      if (builder.currentRound != null) builder.currentRound = RoundInfo.ADAPTER.redact(builder.currentRound);
+      if (builder.nextRound != null) builder.nextRound = RoundInfo.ADAPTER.redact(builder.nextRound);
       builder.clearUnknownFields();
       return builder.build();
     }

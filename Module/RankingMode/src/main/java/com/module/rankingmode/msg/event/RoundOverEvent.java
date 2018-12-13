@@ -1,21 +1,19 @@
 package com.module.rankingmode.msg.event;
 
 import com.module.rankingmode.msg.BasePushInfo;
+import com.zq.live.proto.Room.RoundInfo;
 
 public class RoundOverEvent {
-    long roundOverTimeMs;
-    int nextRoundSeq;
-    int nextUserId;
-    int nextMusicId;
+    public BasePushInfo info;
 
-    BasePushInfo info;
+    public long roundOverTimeMs;
+    public RoundInfo currenRound;
+    public RoundInfo nextRound;
 
-    public RoundOverEvent(BasePushInfo info, long roundOverTimeMs, int nextRoundSeq, int nextUserId, int nextMusicId) {
-        this.roundOverTimeMs = roundOverTimeMs;
-        this.nextRoundSeq = nextRoundSeq;
-        this.nextUserId = nextUserId;
-        this.nextMusicId = nextMusicId;
-
+    public RoundOverEvent(BasePushInfo info, long roundOverTimeMs, RoundInfo currenRound, RoundInfo nextRound) {
         this.info = info;
+        this.roundOverTimeMs = roundOverTimeMs;
+        this.currenRound = currenRound;
+        this.nextRound = nextRound;
     }
 }

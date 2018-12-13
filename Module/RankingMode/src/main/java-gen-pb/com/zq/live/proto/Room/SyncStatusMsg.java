@@ -7,11 +7,15 @@ import com.squareup.wire.Message;
 import com.squareup.wire.ProtoAdapter;
 import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
+import com.squareup.wire.WireField;
+import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Builder> {
@@ -19,34 +23,103 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
 
   private static final long serialVersionUID = 0L;
 
-  public SyncStatusMsg() {
-    this(ByteString.EMPTY);
+  public static final Long DEFAULT_SYNCSTATUSTIMEMS = 0L;
+
+  /**
+   * 状态同步时的毫秒时间戳
+   */
+  @WireField(
+      tag = 1,
+      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
+  )
+  public final Long syncStatusTimeMs;
+
+  /**
+   * 在线状态
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.zq.live.proto.Room.OnlineInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<OnlineInfo> onlineInfo;
+
+  /**
+   * 当前轮次信息
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
+  )
+  public final RoundInfo currentRound;
+
+  /**
+   * 下个轮次信息
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
+  )
+  public final RoundInfo nextRound;
+
+  public SyncStatusMsg(Long syncStatusTimeMs, List<OnlineInfo> onlineInfo, RoundInfo currentRound,
+      RoundInfo nextRound) {
+    this(syncStatusTimeMs, onlineInfo, currentRound, nextRound, ByteString.EMPTY);
   }
 
-  public SyncStatusMsg(ByteString unknownFields) {
+  public SyncStatusMsg(Long syncStatusTimeMs, List<OnlineInfo> onlineInfo, RoundInfo currentRound,
+      RoundInfo nextRound, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
+    this.syncStatusTimeMs = syncStatusTimeMs;
+    this.onlineInfo = Internal.immutableCopyOf("onlineInfo", onlineInfo);
+    this.currentRound = currentRound;
+    this.nextRound = nextRound;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
+    builder.syncStatusTimeMs = syncStatusTimeMs;
+    builder.onlineInfo = Internal.copyOf("onlineInfo", onlineInfo);
+    builder.currentRound = currentRound;
+    builder.nextRound = nextRound;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
 
   @Override
   public boolean equals(Object other) {
-    return other instanceof SyncStatusMsg;
+    if (other == this) return true;
+    if (!(other instanceof SyncStatusMsg)) return false;
+    SyncStatusMsg o = (SyncStatusMsg) other;
+    return unknownFields().equals(o.unknownFields())
+        && Internal.equals(syncStatusTimeMs, o.syncStatusTimeMs)
+        && onlineInfo.equals(o.onlineInfo)
+        && Internal.equals(currentRound, o.currentRound)
+        && Internal.equals(nextRound, o.nextRound);
   }
 
   @Override
   public int hashCode() {
-    return unknownFields().hashCode();
+    int result = super.hashCode;
+    if (result == 0) {
+      result = unknownFields().hashCode();
+      result = result * 37 + (syncStatusTimeMs != null ? syncStatusTimeMs.hashCode() : 0);
+      result = result * 37 + onlineInfo.hashCode();
+      result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
+      result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
+      super.hashCode = result;
+    }
+    return result;
   }
 
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
+    if (syncStatusTimeMs != null) builder.append(", syncStatusTimeMs=").append(syncStatusTimeMs);
+    if (!onlineInfo.isEmpty()) builder.append(", onlineInfo=").append(onlineInfo);
+    if (currentRound != null) builder.append(", currentRound=").append(currentRound);
+    if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     return builder.replace(0, 2, "SyncStatusMsg{").append('}').toString();
   }
 
@@ -60,13 +133,123 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
     return c;
   }
 
+  /**
+   * 状态同步时的毫秒时间戳
+   */
+  public Long getSyncStatusTimeMs() {
+    if(syncStatusTimeMs==null){
+        return DEFAULT_SYNCSTATUSTIMEMS;
+    }
+    return syncStatusTimeMs;
+  }
+
+  /**
+   * 在线状态
+   */
+  public List<OnlineInfo> getOnlineInfoList() {
+    if(onlineInfo==null){
+        return new java.util.ArrayList<OnlineInfo>();
+    }
+    return onlineInfo;
+  }
+
+  /**
+   * 当前轮次信息
+   */
+  public RoundInfo getCurrentRound() {
+    if(currentRound==null){
+        return new RoundInfo.Builder().build();
+    }
+    return currentRound;
+  }
+
+  /**
+   * 下个轮次信息
+   */
+  public RoundInfo getNextRound() {
+    if(nextRound==null){
+        return new RoundInfo.Builder().build();
+    }
+    return nextRound;
+  }
+
+  /**
+   * 状态同步时的毫秒时间戳
+   */
+  public boolean hasSyncStatusTimeMs() {
+    return syncStatusTimeMs!=null;
+  }
+
+  /**
+   * 在线状态
+   */
+  public boolean hasOnlineInfoList() {
+    return onlineInfo!=null;
+  }
+
+  /**
+   * 当前轮次信息
+   */
+  public boolean hasCurrentRound() {
+    return currentRound!=null;
+  }
+
+  /**
+   * 下个轮次信息
+   */
+  public boolean hasNextRound() {
+    return nextRound!=null;
+  }
+
   public static final class Builder extends Message.Builder<SyncStatusMsg, Builder> {
+    public Long syncStatusTimeMs;
+
+    public List<OnlineInfo> onlineInfo;
+
+    public RoundInfo currentRound;
+
+    public RoundInfo nextRound;
+
     public Builder() {
+      onlineInfo = Internal.newMutableList();
+    }
+
+    /**
+     * 状态同步时的毫秒时间戳
+     */
+    public Builder setSyncStatusTimeMs(Long syncStatusTimeMs) {
+      this.syncStatusTimeMs = syncStatusTimeMs;
+      return this;
+    }
+
+    /**
+     * 在线状态
+     */
+    public Builder addAllOnlineInfo(List<OnlineInfo> onlineInfo) {
+      Internal.checkElementsNotNull(onlineInfo);
+      this.onlineInfo = onlineInfo;
+      return this;
+    }
+
+    /**
+     * 当前轮次信息
+     */
+    public Builder setCurrentRound(RoundInfo currentRound) {
+      this.currentRound = currentRound;
+      return this;
+    }
+
+    /**
+     * 下个轮次信息
+     */
+    public Builder setNextRound(RoundInfo nextRound) {
+      this.nextRound = nextRound;
+      return this;
     }
 
     @Override
     public SyncStatusMsg build() {
-      return new SyncStatusMsg(super.buildUnknownFields());
+      return new SyncStatusMsg(syncStatusTimeMs, onlineInfo, currentRound, nextRound, super.buildUnknownFields());
     }
   }
 
@@ -77,11 +260,19 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
 
     @Override
     public int encodedSize(SyncStatusMsg value) {
-      return value.unknownFields().size();
+      return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.syncStatusTimeMs)
+          + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(2, value.onlineInfo)
+          + RoundInfo.ADAPTER.encodedSizeWithTag(3, value.currentRound)
+          + RoundInfo.ADAPTER.encodedSizeWithTag(4, value.nextRound)
+          + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, SyncStatusMsg value) throws IOException {
+      ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.syncStatusTimeMs);
+      OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.onlineInfo);
+      RoundInfo.ADAPTER.encodeWithTag(writer, 3, value.currentRound);
+      RoundInfo.ADAPTER.encodeWithTag(writer, 4, value.nextRound);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -91,6 +282,10 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
+          case 1: builder.setSyncStatusTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 2: builder.onlineInfo.add(OnlineInfo.ADAPTER.decode(reader)); break;
+          case 3: builder.setCurrentRound(RoundInfo.ADAPTER.decode(reader)); break;
+          case 4: builder.setNextRound(RoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -105,6 +300,9 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
     @Override
     public SyncStatusMsg redact(SyncStatusMsg value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.onlineInfo, OnlineInfo.ADAPTER);
+      if (builder.currentRound != null) builder.currentRound = RoundInfo.ADAPTER.redact(builder.currentRound);
+      if (builder.nextRound != null) builder.nextRound = RoundInfo.ADAPTER.redact(builder.nextRound);
       builder.clearUnknownFields();
       return builder.build();
     }

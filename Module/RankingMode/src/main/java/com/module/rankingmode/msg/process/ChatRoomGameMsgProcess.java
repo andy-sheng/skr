@@ -23,6 +23,7 @@ import com.zq.live.proto.Room.QuitGameMsg;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
+import com.zq.live.proto.Room.RoundInfo;
 import com.zq.live.proto.Room.RoundOverMsg;
 import com.zq.live.proto.Room.SyncStatusMsg;
 
@@ -144,11 +145,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
 
         long roundOverTimeMs = roundOverMsgr.getRoundOverTimeMs();
-        int nextRoundSeq = roundOverMsgr.getNextRoundSeq();
-        int nextUserId = roundOverMsgr.getNextUserID();
-        int nextMusicId = roundOverMsgr.getNextMusicID();
+        RoundInfo currentRound = roundOverMsgr.getCurrentRound();
+        RoundInfo nextRound = roundOverMsgr.getNextRound();
 
-        EventBus.getDefault().post(new RoundOverEvent(info, roundOverTimeMs, nextRoundSeq, nextUserId, nextMusicId));
+        EventBus.getDefault().post(new RoundOverEvent(info, roundOverTimeMs, currentRound, nextRound));
     }
 
     //轮次和游戏结束通知消息

@@ -60,7 +60,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   public final Integer roundSeq;
 
   /**
-   * 轮次开始时间戳
+   * 演唱开始相对时间（相对于startTimeMs时间）
    */
   @WireField(
       tag = 4,
@@ -69,7 +69,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   public final Integer singBeginMs;
 
   /**
-   * 轮次结束时间戳
+   * 演唱结束相对时间（相对于startTimeMs时间）
    */
   @WireField(
       tag = 5,
@@ -140,7 +140,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (singBeginMs != null) builder.append(", singBeginMs=").append(singBeginMs);
     if (singEndMs != null) builder.append(", singEndMs=").append(singEndMs);
-    return builder.replace(0, 2, "JsonRoundInfo{").append('}').toString();
+    return builder.replace(0, 2, "RoundInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {
@@ -184,7 +184,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   }
 
   /**
-   * 轮次开始时间戳
+   * 演唱开始相对时间（相对于startTimeMs时间）
    */
   public Integer getSingBeginMs() {
     if(singBeginMs==null){
@@ -194,7 +194,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   }
 
   /**
-   * 轮次结束时间戳
+   * 演唱结束相对时间（相对于startTimeMs时间）
    */
   public Integer getSingEndMs() {
     if(singEndMs==null){
@@ -225,14 +225,14 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   }
 
   /**
-   * 轮次开始时间戳
+   * 演唱开始相对时间（相对于startTimeMs时间）
    */
   public boolean hasSingBeginMs() {
     return singBeginMs!=null;
   }
 
   /**
-   * 轮次结束时间戳
+   * 演唱结束相对时间（相对于startTimeMs时间）
    */
   public boolean hasSingEndMs() {
     return singEndMs!=null;
@@ -277,7 +277,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     }
 
     /**
-     * 轮次开始时间戳
+     * 演唱开始相对时间（相对于startTimeMs时间）
      */
     public Builder setSingBeginMs(Integer singBeginMs) {
       this.singBeginMs = singBeginMs;
@@ -285,7 +285,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     }
 
     /**
-     * 轮次结束时间戳
+     * 演唱结束相对时间（相对于startTimeMs时间）
      */
     public Builder setSingEndMs(Integer singEndMs) {
       this.singEndMs = singEndMs;

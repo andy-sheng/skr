@@ -36,19 +36,31 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   )
   public final Long roundOverTimeMs;
 
-  public RoundAndGameOverMsg(Long roundOverTimeMs) {
-    this(roundOverTimeMs, ByteString.EMPTY);
+  /**
+   * 当前轮次信息
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
+  )
+  public final RoundInfo currentRound;
+
+  public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound) {
+    this(roundOverTimeMs, currentRound, ByteString.EMPTY);
   }
 
-  public RoundAndGameOverMsg(Long roundOverTimeMs, ByteString unknownFields) {
+  public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
+    this.currentRound = currentRound;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.roundOverTimeMs = roundOverTimeMs;
+    builder.currentRound = currentRound;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -59,7 +71,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     if (!(other instanceof RoundAndGameOverMsg)) return false;
     RoundAndGameOverMsg o = (RoundAndGameOverMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(roundOverTimeMs, o.roundOverTimeMs);
+        && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
+        && Internal.equals(currentRound, o.currentRound);
   }
 
   @Override
@@ -68,6 +81,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
+      result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -77,6 +91,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
+    if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     return builder.replace(0, 2, "RoundAndGameOverMsg{").append('}').toString();
   }
 
@@ -101,14 +116,33 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   }
 
   /**
+   * 当前轮次信息
+   */
+  public RoundInfo getCurrentRound() {
+    if(currentRound==null){
+        return new RoundInfo.Builder().build();
+    }
+    return currentRound;
+  }
+
+  /**
    * 轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
     return roundOverTimeMs!=null;
   }
 
+  /**
+   * 当前轮次信息
+   */
+  public boolean hasCurrentRound() {
+    return currentRound!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoundAndGameOverMsg, Builder> {
     public Long roundOverTimeMs;
+
+    public RoundInfo currentRound;
 
     public Builder() {
     }
@@ -121,9 +155,17 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       return this;
     }
 
+    /**
+     * 当前轮次信息
+     */
+    public Builder setCurrentRound(RoundInfo currentRound) {
+      this.currentRound = currentRound;
+      return this;
+    }
+
     @Override
     public RoundAndGameOverMsg build() {
-      return new RoundAndGameOverMsg(roundOverTimeMs, super.buildUnknownFields());
+      return new RoundAndGameOverMsg(roundOverTimeMs, currentRound, super.buildUnknownFields());
     }
   }
 
@@ -135,12 +177,14 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     @Override
     public int encodedSize(RoundAndGameOverMsg value) {
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
+          + RoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RoundAndGameOverMsg value) throws IOException {
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
+      RoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -151,6 +195,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 2: builder.setCurrentRound(RoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -165,6 +210,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     @Override
     public RoundAndGameOverMsg redact(RoundAndGameOverMsg value) {
       Builder builder = value.newBuilder();
+      if (builder.currentRound != null) builder.currentRound = RoundInfo.ADAPTER.redact(builder.currentRound);
       builder.clearUnknownFields();
       return builder.build();
     }

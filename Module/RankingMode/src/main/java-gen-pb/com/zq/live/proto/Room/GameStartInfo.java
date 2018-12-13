@@ -90,7 +90,7 @@ public final class GameStartInfo extends Message<GameStartInfo, GameStartInfo.Bu
     StringBuilder builder = new StringBuilder();
     if (startTimeMs != null) builder.append(", startTimeMs=").append(startTimeMs);
     if (startPassedMs != null) builder.append(", startPassedMs=").append(startPassedMs);
-    return builder.replace(0, 2, "JsonGameStartInfo{").append('}').toString();
+    return builder.replace(0, 2, "GameStartInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {

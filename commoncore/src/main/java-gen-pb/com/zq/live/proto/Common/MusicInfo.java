@@ -41,11 +41,13 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
   public static final String DEFAULT_MIDI = "";
 
-  public static final Integer DEFAULT_TOTALMS = 0;
+  public static final String DEFAULT_ZIP = "";
 
-  public static final Integer DEFAULT_BEGINMS = 0;
+  public static final Integer DEFAULT_TOTALTIMEMS = 0;
 
-  public static final Integer DEFAULT_ENDMS = 0;
+  public static final Integer DEFAULT_BEGINTIMEMS = 0;
+
+  public static final Integer DEFAULT_ENDTIMEMS = 0;
 
   /**
    * 音乐条目标识
@@ -120,40 +122,50 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   public final String midi;
 
   /**
-   * 共计多少毫秒
+   * 资源压缩文件
    */
   @WireField(
       tag = 9,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  public final Integer totalMs;
+  public final String zip;
 
   /**
-   * 开始毫秒
+   * 共计多少毫秒
    */
   @WireField(
       tag = 10,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer beginMs;
+  public final Integer totalTimeMs;
 
   /**
-   * 结束毫秒
+   * 开始毫秒
    */
   @WireField(
       tag = 11,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer endMs;
+  public final Integer beginTimeMs;
+
+  /**
+   * 结束毫秒
+   */
+  @WireField(
+      tag = 12,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer endTimeMs;
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
-      String ori, String acc, String midi, Integer totalMs, Integer beginMs, Integer endMs) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, totalMs, beginMs, endMs, ByteString.EMPTY);
+      String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
+      Integer endTimeMs) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
-      String ori, String acc, String midi, Integer totalMs, Integer beginMs, Integer endMs,
-      ByteString unknownFields) {
+      String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
+      Integer endTimeMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -163,9 +175,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.ori = ori;
     this.acc = acc;
     this.midi = midi;
-    this.totalMs = totalMs;
-    this.beginMs = beginMs;
-    this.endMs = endMs;
+    this.zip = zip;
+    this.totalTimeMs = totalTimeMs;
+    this.beginTimeMs = beginTimeMs;
+    this.endTimeMs = endTimeMs;
   }
 
   @Override
@@ -179,9 +192,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.ori = ori;
     builder.acc = acc;
     builder.midi = midi;
-    builder.totalMs = totalMs;
-    builder.beginMs = beginMs;
-    builder.endMs = endMs;
+    builder.zip = zip;
+    builder.totalTimeMs = totalTimeMs;
+    builder.beginTimeMs = beginTimeMs;
+    builder.endTimeMs = endTimeMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -200,9 +214,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(ori, o.ori)
         && Internal.equals(acc, o.acc)
         && Internal.equals(midi, o.midi)
-        && Internal.equals(totalMs, o.totalMs)
-        && Internal.equals(beginMs, o.beginMs)
-        && Internal.equals(endMs, o.endMs);
+        && Internal.equals(zip, o.zip)
+        && Internal.equals(totalTimeMs, o.totalTimeMs)
+        && Internal.equals(beginTimeMs, o.beginTimeMs)
+        && Internal.equals(endTimeMs, o.endTimeMs);
   }
 
   @Override
@@ -218,9 +233,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (ori != null ? ori.hashCode() : 0);
       result = result * 37 + (acc != null ? acc.hashCode() : 0);
       result = result * 37 + (midi != null ? midi.hashCode() : 0);
-      result = result * 37 + (totalMs != null ? totalMs.hashCode() : 0);
-      result = result * 37 + (beginMs != null ? beginMs.hashCode() : 0);
-      result = result * 37 + (endMs != null ? endMs.hashCode() : 0);
+      result = result * 37 + (zip != null ? zip.hashCode() : 0);
+      result = result * 37 + (totalTimeMs != null ? totalTimeMs.hashCode() : 0);
+      result = result * 37 + (beginTimeMs != null ? beginTimeMs.hashCode() : 0);
+      result = result * 37 + (endTimeMs != null ? endTimeMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -237,9 +253,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (ori != null) builder.append(", ori=").append(ori);
     if (acc != null) builder.append(", acc=").append(acc);
     if (midi != null) builder.append(", midi=").append(midi);
-    if (totalMs != null) builder.append(", totalMs=").append(totalMs);
-    if (beginMs != null) builder.append(", beginMs=").append(beginMs);
-    if (endMs != null) builder.append(", endMs=").append(endMs);
+    if (zip != null) builder.append(", zip=").append(zip);
+    if (totalTimeMs != null) builder.append(", totalTimeMs=").append(totalTimeMs);
+    if (beginTimeMs != null) builder.append(", beginTimeMs=").append(beginTimeMs);
+    if (endTimeMs != null) builder.append(", endTimeMs=").append(endTimeMs);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -334,33 +351,43 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 资源压缩文件
+   */
+  public String getZip() {
+    if(zip==null){
+        return DEFAULT_ZIP;
+    }
+    return zip;
+  }
+
+  /**
    * 共计多少毫秒
    */
-  public Integer getTotalMs() {
-    if(totalMs==null){
-        return DEFAULT_TOTALMS;
+  public Integer getTotalTimeMs() {
+    if(totalTimeMs==null){
+        return DEFAULT_TOTALTIMEMS;
     }
-    return totalMs;
+    return totalTimeMs;
   }
 
   /**
    * 开始毫秒
    */
-  public Integer getBeginMs() {
-    if(beginMs==null){
-        return DEFAULT_BEGINMS;
+  public Integer getBeginTimeMs() {
+    if(beginTimeMs==null){
+        return DEFAULT_BEGINTIMEMS;
     }
-    return beginMs;
+    return beginTimeMs;
   }
 
   /**
    * 结束毫秒
    */
-  public Integer getEndMs() {
-    if(endMs==null){
-        return DEFAULT_ENDMS;
+  public Integer getEndTimeMs() {
+    if(endTimeMs==null){
+        return DEFAULT_ENDTIMEMS;
     }
-    return endMs;
+    return endTimeMs;
   }
 
   /**
@@ -420,24 +447,31 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 资源压缩文件
+   */
+  public boolean hasZip() {
+    return zip!=null;
+  }
+
+  /**
    * 共计多少毫秒
    */
-  public boolean hasTotalMs() {
-    return totalMs!=null;
+  public boolean hasTotalTimeMs() {
+    return totalTimeMs!=null;
   }
 
   /**
    * 开始毫秒
    */
-  public boolean hasBeginMs() {
-    return beginMs!=null;
+  public boolean hasBeginTimeMs() {
+    return beginTimeMs!=null;
   }
 
   /**
    * 结束毫秒
    */
-  public boolean hasEndMs() {
-    return endMs!=null;
+  public boolean hasEndTimeMs() {
+    return endTimeMs!=null;
   }
 
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
@@ -457,11 +491,13 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
     public String midi;
 
-    public Integer totalMs;
+    public String zip;
 
-    public Integer beginMs;
+    public Integer totalTimeMs;
 
-    public Integer endMs;
+    public Integer beginTimeMs;
+
+    public Integer endTimeMs;
 
     public Builder() {
     }
@@ -531,32 +567,40 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
+     * 资源压缩文件
+     */
+    public Builder setZip(String zip) {
+      this.zip = zip;
+      return this;
+    }
+
+    /**
      * 共计多少毫秒
      */
-    public Builder setTotalMs(Integer totalMs) {
-      this.totalMs = totalMs;
+    public Builder setTotalTimeMs(Integer totalTimeMs) {
+      this.totalTimeMs = totalTimeMs;
       return this;
     }
 
     /**
      * 开始毫秒
      */
-    public Builder setBeginMs(Integer beginMs) {
-      this.beginMs = beginMs;
+    public Builder setBeginTimeMs(Integer beginTimeMs) {
+      this.beginTimeMs = beginTimeMs;
       return this;
     }
 
     /**
      * 结束毫秒
      */
-    public Builder setEndMs(Integer endMs) {
-      this.endMs = endMs;
+    public Builder setEndTimeMs(Integer endTimeMs) {
+      this.endTimeMs = endTimeMs;
       return this;
     }
 
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, totalMs, beginMs, endMs, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, super.buildUnknownFields());
     }
   }
 
@@ -575,9 +619,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.STRING.encodedSizeWithTag(6, value.ori)
           + ProtoAdapter.STRING.encodedSizeWithTag(7, value.acc)
           + ProtoAdapter.STRING.encodedSizeWithTag(8, value.midi)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(9, value.totalMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(10, value.beginMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(11, value.endMs)
+          + ProtoAdapter.STRING.encodedSizeWithTag(9, value.zip)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(10, value.totalTimeMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(11, value.beginTimeMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(12, value.endTimeMs)
           + value.unknownFields().size();
     }
 
@@ -591,9 +636,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.STRING.encodeWithTag(writer, 6, value.ori);
       ProtoAdapter.STRING.encodeWithTag(writer, 7, value.acc);
       ProtoAdapter.STRING.encodeWithTag(writer, 8, value.midi);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 9, value.totalMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 10, value.beginMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 11, value.endMs);
+      ProtoAdapter.STRING.encodeWithTag(writer, 9, value.zip);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 10, value.totalTimeMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 11, value.beginTimeMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 12, value.endTimeMs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -611,9 +657,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 6: builder.setOri(ProtoAdapter.STRING.decode(reader)); break;
           case 7: builder.setAcc(ProtoAdapter.STRING.decode(reader)); break;
           case 8: builder.setMidi(ProtoAdapter.STRING.decode(reader)); break;
-          case 9: builder.setTotalMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 10: builder.setBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 11: builder.setEndMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 9: builder.setZip(ProtoAdapter.STRING.decode(reader)); break;
+          case 10: builder.setTotalTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 11: builder.setBeginTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 12: builder.setEndTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -30,9 +30,10 @@ message MusicInfo {
     string ori = 6; //原唱:origin
     string acc = 7; //伴奏:accompany
     string midi = 8; //音乐条目对应midi文件
-    uint32 totalMs = 9; //共计多少毫秒
-    uint32 beginMs = 10; //开始毫秒
-    uint32 endMs = 11; //结束毫秒
+    string zip      = 9; //资源压缩文件
+    uint32 totalTimeMs  = 10; //共计多少毫秒
+    uint32 beginTimeMs  = 11; //开始毫秒
+    uint32 endTimeMs    = 12; //结束毫秒
 }
 
 enum ESex {
