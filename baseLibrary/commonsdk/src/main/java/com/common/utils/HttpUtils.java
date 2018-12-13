@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -417,6 +416,25 @@ public class HttpUtils {
         })
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    public long getFileLength(String urlStr){
+        long length = 0;
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(10 * 1000);
+            conn.setReadTimeout(15 * 1000);
+            HttpURLConnection.setFollowRedirects(true);
+            conn.connect();
+            length = conn.getContentLength();
+        } catch (Exception e){
+            MyLog.e(TAG, "getFileLength error:" + e);
+        } finally {
+
+        }
+
+        return length;
     }
 
     /**

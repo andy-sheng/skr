@@ -9,9 +9,11 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
+import com.common.log.MyLog;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.event.PrepareEventClass;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.presenter.MatchingPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
@@ -19,15 +21,17 @@ import com.module.rankingmode.prepare.view.IMatchingView;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
 import com.module.rankingmode.song.model.SongModel;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_CREATE_MS;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_ID;
-import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_PLAYERS;
 import static com.module.rankingmode.prepare.sence.FastMatchSuccessSence.BUNDLE_KEY_GAME_SONG;
 
 public class FastMatchingSence extends RelativeLayout implements ISence, IMatchingView {
+    public static final String TAG = "FastMatchingSence";
 
     MatchSenceController matchSenceController;
 
@@ -138,12 +142,13 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
 
     @Override
     public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> list) {
+        MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " list=" + list);
         // 匹配成功
         nextBundle.putInt(BUNDLE_KEY_GAME_ID, gameId);
         nextBundle.putLong(BUNDLE_KEY_GAME_CREATE_MS, gameCreatMs);
         nextBundle.putSerializable(BUNDLE_KEY_GAME_SONG, songModel);
         // TODO: 2018/12/12 记得可以不改成bundle传数据
-//        nextBundle.putSerializable(BUNDLE_KEY_GAME_PLAYERS, (Object)list);
+        EventBus.getDefault().postSticky(new PrepareEventClass.PlayerInfoListEvent(list));
         matchSenceController.toNextSence(nextBundle);
     }
 

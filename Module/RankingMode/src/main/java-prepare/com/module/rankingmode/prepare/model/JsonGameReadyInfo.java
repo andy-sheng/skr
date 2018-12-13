@@ -95,4 +95,15 @@ public class JsonGameReadyInfo implements Serializable {
 
         return;
     }
+
+    @Override
+    public String toString() {
+        return "JsonGameReadyInfo{" +
+                "HasReadyedUserCnt=" + HasReadyedUserCnt +
+                ", isGameStart=" + isGameStart +
+                ", jsonGameStartInfo=" + jsonGameStartInfo +
+                ", jsonReadyInfo=" + jsonReadyInfo +
+                ", jsonRoundInfo=" + jsonRoundInfo +
+                '}';
+    }
 }

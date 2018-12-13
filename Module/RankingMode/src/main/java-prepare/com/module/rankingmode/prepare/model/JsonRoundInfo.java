@@ -73,4 +73,15 @@ public class JsonRoundInfo implements Serializable {
         this.setSingEndMs(roundInfo.getSingEndMs());
         return;
     }
+
+    @Override
+    public String toString() {
+        return "JsonRoundInfo{" +
+                "userID=" + userID +
+                ", playbookID=" + playbookID +
+                ", roundSeq=" + roundSeq +
+                ", singBeginMs=" + singBeginMs +
+                ", singEndMs=" + singEndMs +
+                '}';
+    }
 }

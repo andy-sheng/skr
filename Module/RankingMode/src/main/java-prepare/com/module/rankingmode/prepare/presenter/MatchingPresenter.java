@@ -44,6 +44,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
     HandlerTaskTimer checkJoinStateTask;
 
     int currentGameId;
+    long gameCreateTime;
 
     JsonGameInfo mJsonGameInfo;
 
@@ -54,17 +55,17 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
 
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
 
     //这里获取圆圈动画内的头像
-    public void getLoadingUserListIcon(){
+    public void getLoadingUserListIcon() {
 
     }
 
-    public void startLoopMatchTask(){
+    public void startLoopMatchTask() {
         MyLog.d(TAG, "startLoopMatchTask");
 
 //        loopMatchTask = HandlerTaskTimer.newBuilder()
@@ -73,19 +74,19 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
 //            @Override
 //            public void onNext(Integer integer) {
 //                MyLog.d(TAG, "startLoopMatchTask onNext");
-                startMatch();
+        startMatch();
 //            }
 //        });
     }
 
-    private void disposeLoopMatchTask(){
-        if(loopMatchTask != null){
+    private void disposeLoopMatchTask() {
+        if (loopMatchTask != null) {
             loopMatchTask.dispose();
         }
     }
 
-    public void disposeMatchTask(){
-        if(startMatchTask != null && !startMatchTask.isDisposed()){
+    public void disposeMatchTask() {
+        if (startMatchTask != null && !startMatchTask.isDisposed()) {
             startMatchTask.dispose();
         }
     }
@@ -137,13 +138,14 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         if (joinActionEvent != null) {
             // todo 收到服务器加入游戏的通知
             // 是否要对加入通知进行过滤
-            if(matchState == MatchState.Matching){
+            if (matchState == MatchState.Matching) {
                 MyLog.d(TAG, "onEventMainThread JoinActionEvent 1 currentGameId is " + joinActionEvent.gameId);
                 this.joinActionEvent = joinActionEvent;
                 disposeLoopMatchTask();
                 disposeMatchTask();
                 matchState = MatchState.MatchSucess;
                 this.currentGameId = joinActionEvent.gameId;
+                this.gameCreateTime = joinActionEvent.gameCreateMs;
                 joinRoom();
             }
         }
@@ -153,10 +155,20 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinNoticeEvent joinNoticeEvent) {
         MyLog.d(TAG, "onEventMainThread JoinNoticeEvent 1");
-        if (joinNoticeEvent != null) {
+        if (joinNoticeEvent != null && joinNoticeEvent.jsonGameInfo != null) {
             // 需要去更新GameInfo
             MyLog.d(TAG, "onEventMainThread JoinNoticeEvent 2");
-            updateUserListState();
+            if (joinNoticeEvent.jsonGameInfo.getHasJoinedUserCnt() == 3) {
+                if (matchState == MatchState.JoinRongYunRoomSuccess) {
+                    matchState = MatchState.JoinGameSuccess;
+
+                    if (checkJoinStateTask != null) {
+                        checkJoinStateTask.dispose();
+                    }
+
+                    view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
+                }
+            }
         }
     }
 
@@ -174,7 +186,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(currentGameId), new ICallback() {
             @Override
             public void onSucess(Object obj) {
-                if(matchState == MatchState.MatchSucess){
+                if (matchState == MatchState.MatchSucess) {
                     matchState = MatchState.JoinRongYunRoomSuccess;
                     joinGame();
                 }
@@ -249,8 +261,9 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
                                             startLoopMatchTask();
                                         }
-                                    }else {
+                                    } else {
                                         MyLog.d(TAG, "3秒后拉完房间信息人数不够3个，需要重新match了");
+                                        // TODO: 2018/12/12 方便测试这个先注掉
 //                                        startLoopMatchTask();
                                     }
                                 } else {
@@ -272,8 +285,8 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
     /**
      * 由于涉及到返回时序问题，都从服务器
      */
-    private void updateUserListState(){
-        MyLog.d(TAG, "updateUserListState" );
+    private void updateUserListState() {
+        MyLog.d(TAG, "updateUserListState");
         ApiMethods.subscribeWith(matchServerApi.getCurrentGameDate(currentGameId), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -286,10 +299,10 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                             mJsonGameInfo = jsonGameInfo;
                             view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
                         }
-                    }else {
+                    } else {
                         MyLog.d(TAG, "process updateUserListState else");
                     }
-                }else {
+                } else {
                     MyLog.d(TAG, "process updateUserListState 2" + " result=" + result);
                 }
             }
@@ -301,7 +314,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         }, MatchingPresenter.this);
     }
 
-    enum MatchState{
+    enum MatchState {
         IDLE,
         Matching,
         MatchSucess,

@@ -52,4 +52,12 @@ public class JsonReadyInfo implements Serializable {
         return;
     }
 
+    @Override
+    public String toString() {
+        return "JsonReadyInfo{" +
+                "userID=" + userID +
+                ", readySeq=" + readySeq +
+                ", readyTimeMs=" + readyTimeMs +
+                '}';
+    }
 }

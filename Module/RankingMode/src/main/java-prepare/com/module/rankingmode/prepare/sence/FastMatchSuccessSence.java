@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -25,6 +26,7 @@ import com.module.rankingmode.song.model.SongModel;
 import java.util.concurrent.TimeUnit;
 
 public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMatchSucessView {
+    public static final String TAG = "FastMatchSuccessSence";
 
     public final static String BUNDLE_KEY_GAME_ID = "current_game_id";
     public final static String BUNDLE_KEY_GAME_CREATE_MS = "game_create_ms";
@@ -92,6 +94,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
 
     @Override
     public void ready(boolean isPrepareState) {
+        MyLog.d(TAG, "ready" + " isPrepareState=" + isPrepareState);
         isPrepared = isPrepareState;
 
         if(isPrepared){
@@ -102,6 +105,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
 
     @Override
     public void allPlayerIsReady(JsonGameReadyInfo jsonGameReadyInfo) {
+        MyLog.d(TAG, "allPlayerIsReady" + " jsonGameReadyInfo=" + jsonGameReadyInfo);
         matchSenceController.popSence();
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
                 .withSerializable("song_model", songModel)
@@ -113,6 +117,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
 
     @Override
     public void needReMatch() {
+        MyLog.d(TAG, "needReMatch");
         matchSenceController.popSence();
         Bundle bundle = new Bundle();
         bundle.putSerializable("song_model", songModel);
