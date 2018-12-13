@@ -120,7 +120,12 @@ android {
             if (isBuildModule.toBoolean()) {
                 manifest.srcFile 'src/main/debug/AndroidManifest.xml'
             } else {
-                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                if(compileModuleTest.toBoolean()) {
+                    manifest.srcFile 'src/main/release/AndroidManifestWithTestModule.xml'
+                }else{
+                    manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                }
+
             }
         }
 
@@ -138,13 +143,13 @@ dependencies {
     if (isBuildModule.toBoolean()) {
         // 要区分，否则 build 编译会提示不能implementation application 的project
     } else {
-
+        if(compileModuleTest.toBoolean()) {
+            implementation project(":moduletest")
+        }
 //        implementation project(":modulechannel")
   //      implementation project(":modulewatch")
         implementation project(":Module:Home")
         implementation project(":Module:RankingMode")
-        implementation project(":moduletest")
-
         implementation project(":Module:IMKit")
 //        implementation project(":Module:IMLib")
         //  tools

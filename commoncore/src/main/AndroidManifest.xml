@@ -38,7 +38,10 @@
             android:name="com.common.core.CoreConfiguration"
             android:value="ConfigModule_1" />
 
-        <activity android:name="com.common.core.login.LoginActivity" />
+        <activity
+            android:name="com.common.core.login.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
 
@@ -72,7 +75,7 @@
 
         <receiver
             android:name="com.mi.milink.sdk.receiver.AlarmReceiver"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.milink.sdk.heartbeat" />
             </intent-filter>
@@ -84,7 +87,7 @@
 
         <receiver
             android:name="com.mi.milink.sdk.receiver.NetworkReceiver"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -92,23 +95,23 @@
 
         <receiver
             android:name="com.mi.milink.sdk.receiver.BootReceiver"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+        <activity
+            android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            >
+            android:windowSoftInputMode="adjustResize">
 
         </activity>
         <activity
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
             android:launchMode="singleTask"
-            android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -119,7 +122,7 @@
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -131,8 +134,8 @@
         </activity>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name="WXEntryActivity"
@@ -143,10 +146,8 @@
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="false"
-            >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
     </application>
 

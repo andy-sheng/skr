@@ -1,10 +1,15 @@
 package com.common.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -80,5 +85,14 @@ public class CommonUtils {
         } else {
             return View.generateViewId();
         }
+    }
+
+
+    public boolean isIntentAvailable(final Context context,
+                                     final Intent intent) {
+        final PackageManager packageManager = context.getPackageManager();
+        final List<ResolveInfo> list = packageManager.queryIntentActivities(
+                intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 }

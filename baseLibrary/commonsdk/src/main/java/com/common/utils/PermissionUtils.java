@@ -17,11 +17,15 @@ package com.common.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.common.log.MyLog;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -136,17 +140,14 @@ public class PermissionUtils {
                             for (Permission p : permissions) {
                                 if (!p.granted) {
                                     if (p.shouldShowRequestPermissionRationale) {
-                                        MyLog.d(TAG, "Request permissions failure");
                                         requestPermission.onRequestPermissionFailure(Arrays.asList(p.name));
                                         return;
                                     } else {
-                                        MyLog.d(TAG, "Request permissions failure with ask never again");
                                         requestPermission.onRequestPermissionFailureWithAskNeverAgain(Arrays.asList(p.name));
                                         return;
                                     }
                                 }
                             }
-                            MyLog.d(TAG, "Request permissions success");
                             requestPermission.onRequestPermissionSuccess();
                         }
 
@@ -217,5 +218,34 @@ public class PermissionUtils {
         requestPermission(requestPermission, activity, Manifest.permission.READ_PHONE_STATE);
     }
 
+
+
+    /**
+     * 跳转到APP权限设置界面
+     */
+    public void goToPermissionManager(Activity refs) {
+            Intent intent;
+            if (U.getDeviceUtils().isMiui()) {
+                PackageManager pm = refs.getPackageManager();
+                PackageInfo info;
+                try {
+                    info = pm.getPackageInfo(refs.getPackageName(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    com.common.log.MyLog.e(e);
+                    return;
+                }
+                intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+                // i.setClassName("com.android.settings", "com.miui.securitycenter.permission.AppPermissionsEditor");
+                intent.putExtra("extra_pkgname", refs.getPackageName());      // for MIUI 6
+                intent.putExtra("extra_package_uid", info.applicationInfo.uid);  // for MIUI 5
+            } else {
+                intent = new Intent();
+                intent.setAction("android.intent.action.MAIN");
+                intent.setClassName("com.android.settings", "com.android.settings.ManageApplications");
+            }
+            if (U.getCommonUtils().isIntentAvailable(refs,intent)) {
+                refs.startActivity(intent);
+            }
+    }
 }
 

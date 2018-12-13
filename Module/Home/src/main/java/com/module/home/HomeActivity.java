@@ -7,14 +7,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.viewpager.NestViewPager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
+import com.module.home.persenter.HomePresenter;
 import com.module.msg.IMsgService;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
@@ -26,6 +30,7 @@ public class HomeActivity extends BaseActivity {
     ExImageView mPersonInfoBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
+    HomePresenter mHomePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(this);
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         mGameBtn = (ExImageView) findViewById(R.id.game_btn);
         mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
@@ -52,9 +58,9 @@ public class HomeActivity extends BaseActivity {
                 if (position == 0) {
                     return new GameFragment();
                 } else if (position == 1) {
-                    if(mMsgService==null){
+                    if (mMsgService == null) {
                         return new PersonFragment();
-                    }else{
+                    } else {
                         return (Fragment) mMsgService.getMessageFragment();
                     }
                 } else if (position == 2) {
@@ -65,15 +71,34 @@ public class HomeActivity extends BaseActivity {
 
             @Override
             public int getCount() {
-                if(mMsgService==null){
+                if (mMsgService == null) {
                     return 2;
-                }else{
+                } else {
                     return 3;
                 }
             }
         };
 
         mMainVp.setAdapter(fragmentPagerAdapter);
+
+        mHomePresenter = new HomePresenter();
+
+        if (!UserAccountManager.getInstance().hasAccount()) {
+            // 到时会有广告页或者启动页挡一下的，先不用管
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+        } else {
+            initOnAccountReady();
+        }
+    }
+
+    public void initOnAccountReady() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mHomePresenter.checkPermiss(this);
     }
 
     @Override
@@ -84,5 +109,11 @@ public class HomeActivity extends BaseActivity {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public boolean onBackPressedForActivity() {
+        moveTaskToBack(false);
+        return true;
     }
 }

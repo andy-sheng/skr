@@ -301,7 +301,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     }
 
     @Override
-    public void onBackPressed() {
+    public final void onBackPressed() {
         /**
          * 先看看有没有顶层的 fragment 要处理这个事件的
          * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作
@@ -309,14 +309,26 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         BaseFragment fragment = U.getFragmentUtils().getTopFragment(this);
         if (fragment != null) {
             if (fragment.onBackPressed()) {
+                // 以及消费掉了
                 return;
             }
         }
-        /**
-         * 如果 Fragment addToBackStack 会在这里被弹出
-         */
+        if(onBackPressedForActivity()){
+            // activity也消费掉了
+            return;
+        }
+        // 才能走系统的消费
         super.onBackPressed();
     }
+
+    /**
+     * activity 请只覆盖这个方法 不覆盖onBackPressed
+     * @return
+     */
+    public boolean onBackPressedForActivity() {
+        return false;
+    }
+
 
     /**
      * 是否使用eventBus,默认为使用(true)，

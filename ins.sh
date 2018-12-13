@@ -22,6 +22,16 @@ getBuildModule(){
 	fi
 }
 
+getTestModuleEnable(){
+	result=`grep compileModuleTest=true gradle.properties`
+	echo $result
+	if [[ $result = "compileModuleTest=true" ]]; then
+		testModuleEnable=true
+	else
+		testModuleEnable=false
+	fi
+}
+
 #获得设备id并保存到数组
 getDeviceId(){
 	adb devices
@@ -41,7 +51,13 @@ installApkForAllDevices(){
     	echo "安装 $1 到 ${data}"
     	echo "adb -s ${data} install -r $1"
     	adb -s ${data} install -r $1
-    	adb -s ${data} shell am start -n com.zq.live/com.wali.live.moduletest.activity.TestSdkActivity
+
+    	if [[ $testModuleEnable = true ]]; then
+    		adb -s ${data} shell am start -n com.zq.live/com.wali.live.moduletest.activity.TestSdkActivity
+    	else
+    		adb -s ${data} shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n com.zq.live/com.module.home.HomeActivity
+    	fi
+    	$testModuleEnable
 	done  
 }
 
@@ -54,6 +70,10 @@ fi
 getBuildModule
 
 echo 当前isBuildModule=$isBuildModule
+
+getTestModuleEnable
+
+echo testModuleEnable=$testModuleEnable
 
 getDeviceId
 

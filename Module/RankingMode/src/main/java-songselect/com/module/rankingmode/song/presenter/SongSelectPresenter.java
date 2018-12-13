@@ -13,7 +13,6 @@ import com.module.rankingmode.song.SongSelectServerApi;
 import com.module.rankingmode.song.model.TagModel;
 import com.module.rankingmode.song.view.ISongTagView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Deprecated // 服务器暂时不支持拉标签

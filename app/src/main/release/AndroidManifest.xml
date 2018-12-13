@@ -16,8 +16,10 @@
             android:value="ConfigModule" />
 
         <activity
-            android:name="com.wali.live.moduletest.activity.TestSdkActivity"
-            android:theme="@style/AppTheme_MainActivity">
+            android:name="com.module.home.HomeActivity"
+            android:theme="@style/AppTheme_MainActivity"
+            android:windowSoftInputMode="adjustNothing|stateHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

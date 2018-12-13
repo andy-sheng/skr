@@ -1,0 +1,18 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tips_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/view_5_dp" />
+
+    <com.common.view.ex.ExButton
+        android:id="@+id/go_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tips_tv"
+        android:layout_centerHorizontal="true" />
+</merge>

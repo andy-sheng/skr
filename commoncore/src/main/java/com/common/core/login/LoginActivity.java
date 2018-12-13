@@ -108,4 +108,11 @@ public class LoginActivity extends BaseActivity {
     public boolean useEventBus() {
         return true;
     }
+
+    @Override
+    public boolean onBackPressedForActivity() {
+        moveTaskToBack(true);
+        return true;
+    }
+
 }
