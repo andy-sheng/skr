@@ -137,9 +137,9 @@ public class RongMsgManager {
             public void onTokenIncorrect() {
                 MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
                 if (callback != null) {
-                    callback.onFailed(false, 0, "");
-                }
+                callback.onFailed(false, 0, "");
             }
+        }
         });
 
     }

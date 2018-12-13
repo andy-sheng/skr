@@ -37,7 +37,7 @@ public class JudgeLoginInterceptor implements IInterceptor {
         }
 
         if (UserAccountManager.getInstance().hasAccount()) {
-            ModuleServiceManager.getInstance().getMsgService().connectRongIM(UserAccountManager.getInstance().getRongToken(),null);
+            UserAccountManager.getInstance().connectRongIM(UserAccountManager.getInstance().getRongToken());
             callback.onContinue(postcard);
         } else {
             // 不需要登陆

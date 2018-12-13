@@ -1,6 +1,7 @@
 package com.common.core.account;
 
 
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -84,31 +85,15 @@ public class UserAccountManager {
 //            MiLinkClientAdapter.getInstance().initCallBackFirst();
             // 同步昵称等详细信息
             MyUserInfoManager.getInstance().init();
+
+            // 与融云服务器建立连接
             connectRongIM(account.getRongToken());
+
             EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
         } else {
 
         }
         // 只有非游客模式才发已有账号的事件
-    }
-
-    private void connectRongIM(String rongToken) {
-        ModuleServiceManager.getInstance().getMsgService().connectRongIM(rongToken, new ICallback() {
-            @Override
-            public void onSucess(Object obj) {
-                U.getToastUtil().showShort("与融云服务器连接成功");
-            }
-
-            @Override
-            public void onFailed(Object obj, int errcode, String message) {
-                boolean result = (boolean) obj;
-                if (result){
-                    // todo 连接融云失败
-                }else {
-                    // todo token有问题
-                }
-            }
-        });
     }
 
     public void setAnonymousId(long anonymousId) {
@@ -156,34 +141,11 @@ public class UserAccountManager {
         return "";
     }
 
-    public String getRongToken(){
-        if (mAccount != null){
+    public String getRongToken() {
+        if (mAccount != null) {
             return mAccount.getRongToken();
         }
         return "";
-    }
-
-    public void logoff(final boolean deleteAccount) {
-        if (mAccount != null) {
-            Observable.create(new ObservableOnSubscribe<Object>() {
-                @Override
-                public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                    if (deleteAccount) {
-                        UserAccountLocalApi.delete(mAccount);
-                        ApiManager.getInstance().clearCookies();
-                    } else {
-                        mAccount.setIsLogOff(true);
-                        UserAccountLocalApi.insertOrReplace(mAccount);
-                        ApiManager.getInstance().clearCookies();
-                    }
-                    mAccount = null;
-                    UmengStatistics.onProfileSignOff();
-                    emitter.onComplete();
-                }
-            })
-                    .subscribeOn(Schedulers.io())
-                    .subscribe();
-        }
     }
 
 //    /**
@@ -268,6 +230,7 @@ public class UserAccountManager {
 //                .subscribe();
 //    }
 
+    // 手机登录
     public void loginByPhoneNum(String phoneNum, String verifyCode) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 1 为手机登录
@@ -304,6 +267,83 @@ public class UserAccountManager {
                         }
                     }
                 });
+
+    }
+
+    // todo 登出
+    public void logOut(final boolean deleteAccount) {
+        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
+        ApiMethods.subscribe(userAccountServerApi.loginOut(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    U.getToastUtil().showShort("登出成功了");
+                }
+            }
+        });
+    }
+
+    // todo 检查昵称是否可用
+    public void checkNickName(String nickname) {
+        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
+        ApiMethods.subscribe(userAccountServerApi.checkNickName(nickname), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    boolean isValid = result.getData().getBoolean("isValid");
+                    if (isValid){
+                        // 昵称可用
+                    }else {
+                        // 昵称不可用和理由
+                        String unValidReason = result.getData().getString("unValidReason");
+                    }
+                }
+            }
+        });
+    }
+
+    // 获取IM的token
+    public void getIMToken() {
+        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
+        ApiMethods.subscribe(userAccountServerApi.getIMToken(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    String token = result.getData().getString("RC");
+                    if (!TextUtils.isEmpty(token)) {
+                        connectRongIM(token);
+                    } else {
+                        MyLog.e(TAG, "getIMToken from Server is null");
+                    }
+
+                }
+            }
+        });
+    }
+
+    public void connectRongIM(String rongToken) {
+        if (TextUtils.isEmpty(rongToken)) {
+            getIMToken();
+        } else {
+            ModuleServiceManager.getInstance().getMsgService().connectRongIM(rongToken, new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    U.getToastUtil().showShort("与融云服务器连接成功");
+                }
+
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+                    boolean result = (boolean) obj;
+                    if (result) {
+                        // todo 连接融云失败
+                        U.getToastUtil().showShort("服务连接不可用");
+                    } else {
+                        // todo token有问题, 重试一次(可能过期或者appkey不一致等)
+                        getIMToken();
+                    }
+                }
+            });
+        }
 
     }
 
