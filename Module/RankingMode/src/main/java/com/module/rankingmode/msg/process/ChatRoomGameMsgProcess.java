@@ -12,6 +12,7 @@ import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
 import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
+import com.module.rankingmode.prepare.model.JsonOnLineInfo;
 import com.module.rankingmode.prepare.model.JsonRoundInfo;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.song.model.SongModel;
@@ -20,6 +21,7 @@ import com.zq.live.proto.Room.AppSwapMsg;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinNoticeMsg;
+import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QuitGameMsg;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomMsg;
@@ -82,14 +84,14 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         int gameId = joinActionMsg.getGameID();
         long gameCreateMs = joinActionMsg.getCreateTimeMs();
         List<PlayerInfo> playerInfos = new ArrayList<>();
-        for (com.zq.live.proto.Room.PlayerInfo player : joinActionMsg.getPlayersList()){
+        for (com.zq.live.proto.Room.PlayerInfo player : joinActionMsg.getPlayersList()) {
             PlayerInfo playerInfo = new PlayerInfo();
             playerInfo.parse(player);
             playerInfos.add(playerInfo);
         }
 
         List<SongModel> songModels = new ArrayList<>();
-        for (MusicInfo musicInfo : joinActionMsg.getCommonMusicInfoList()){
+        for (MusicInfo musicInfo : joinActionMsg.getCommonMusicInfoList()) {
             SongModel songModel = new SongModel();
             songModel.parse(musicInfo);
             songModels.add(songModel);
@@ -206,12 +208,19 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         long syncStatusTimes = syncStatusMsg.getSyncStatusTimeMs();
         long gameOverTimeMs = syncStatusMsg.getGameOverTimeMs();
 
+        List<JsonOnLineInfo> onLineInfos = new ArrayList<>();
+        for (OnlineInfo onlineInfo : syncStatusMsg.getOnlineInfoList()) {
+            JsonOnLineInfo jsonOnLineInfo = new JsonOnLineInfo();
+            jsonOnLineInfo.parse(onlineInfo);
+            onLineInfos.add(jsonOnLineInfo);
+        }
+
         JsonRoundInfo currentInfo = new JsonRoundInfo();
         currentInfo.parse(syncStatusMsg.getCurrentRound());
 
         JsonRoundInfo nextInfo = new JsonRoundInfo();
         nextInfo.parse(syncStatusMsg.getNextRound());
 
-        EventBus.getDefault().post(new SyncStatusEvent(info, syncStatusTimes, gameOverTimeMs, syncStatusMsg.getOnlineInfoList(), currentInfo, nextInfo));
+        EventBus.getDefault().post(new SyncStatusEvent(info, syncStatusTimes, gameOverTimeMs, onLineInfos, currentInfo, nextInfo));
     }
 }

@@ -14,8 +14,10 @@ import com.module.rankingmode.msg.event.QuitGameEvent;
 import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
+import com.module.rankingmode.prepare.model.JsonOnLineInfo;
 import com.module.rankingmode.prepare.model.JsonRoundInfo;
 import com.module.rankingmode.room.RoomServerApi;
+import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -83,6 +86,24 @@ public class RankingRoomPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     // TODO: 2018/12/13  当前postman返回的为空 待补充
+                }
+
+            }
+        }, this);
+    }
+
+    // 同步游戏详情状态(检测不到长连接调用)
+    public void syncGameStatus(int gameID) {
+        ApiMethods.subscribe(roomServerApi.syncGameStatus(gameID), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
+                    long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
+
+                    List<JsonOnLineInfo> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), JsonOnLineInfo.class); //在线状态
+                    JsonRoundInfo currentInfo = JSON.parseObject(result.getData().getString("currentRound"), JsonRoundInfo.class); //当前轮次信息
+                    JsonRoundInfo nextInfo = JSON.parseObject(result.getData().getString("nextRound"), JsonRoundInfo.class); //下个轮次信息
                 }
 
             }

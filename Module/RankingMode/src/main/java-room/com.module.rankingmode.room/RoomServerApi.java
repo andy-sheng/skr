@@ -5,8 +5,10 @@ import com.common.rxretrofit.ApiResult;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public interface RoomServerApi {
     /**
@@ -35,6 +37,15 @@ public interface RoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/game/hb")
     Observable<ApiResult> sendHeartBeat(@Body RequestBody body);
+
+    /**
+     * 同步游戏详情状态
+     *
+     * @param gameID
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/game/status")
+    Observable<ApiResult> syncGameStatus(@Query("gameID") int gameID);
 
     /**
      * 退出游戏
