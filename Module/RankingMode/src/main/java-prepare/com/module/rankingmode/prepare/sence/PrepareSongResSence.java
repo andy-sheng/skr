@@ -7,9 +7,14 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.utils.HttpUtils;
+import com.common.utils.SongResUtils;
+import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.engine.EngineManager;
+import com.engine.Params;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.presenter.PrepareSongPresenter;
@@ -18,6 +23,7 @@ import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.song.model.SongModel;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class PrepareSongResSence extends RelativeLayout implements ISence {
@@ -65,6 +71,7 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
                     mToneTuningTv.setText("试唱调音");
                     mMatchStatusTv.setEnabled(true);
                     mToneTuningTv.setEnabled(true);
+                    initMediaEngine();
                 });
             }
 
@@ -151,5 +158,26 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
     @Override
     public void setSenceController(MatchSenceController matchSenceController) {
         this.matchSenceController = matchSenceController;
+    }
+
+
+    private void initMediaEngine() {
+        if (!EngineManager.getInstance().isInit()) {
+            // 不能每次都初始化,播放伴奏
+            EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_COMMUNICATION)
+                    .setEnableVideo(false)
+                    .build());
+            EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            File accFile = SongResUtils.getAccFileByUrl(mPrepareData.getSongModel().getAcc());
+            if(accFile!=null && accFile.exists()){
+                EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, -1);
+                EngineManager.getInstance().pauseAudioMixing();
+
+                String c = U.getDateTimeUtils().formatVideoTime(0);
+                String d = U.getDateTimeUtils().formatVideoTime(EngineManager.getInstance().getAudioMixingDuration());
+                String info = String.format(U.app().getString(R.string.song_time_info), c, d);
+                matchSenceController.getCommonTitleBar().getCenterSubTextView().setText(info);
+            }
+        }
     }
 }

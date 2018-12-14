@@ -221,7 +221,7 @@ public class EngineManager implements AgoraOutCallback {
             }
         }
         AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
-        AgoraEngineAdapter.getInstance().setEnableSpeakerphone(mConfig.isEnableSpeakerphone());
+        setEnableSpeakerphone(mConfig.isEnableSpeakerphone());
     }
 
     public void setClientRole(boolean isAnchor) {

@@ -84,7 +84,7 @@ public class Params {
     private int recordingSignalVolume = 100;// 0-400 默认100，最多放大4倍
     private int selfUid; // 本人在引擎中的id
     private AudioEffectStyleEnum styleEnum = null;// 混响style
-    private boolean enableSpeakerphone = true;// 开启扬声器
+    private boolean enableSpeakerphone = false;// 开启扬声器
     private String mMIxMusicFilePath;
 
     public static Builder newBuilder(int channelProfile) {

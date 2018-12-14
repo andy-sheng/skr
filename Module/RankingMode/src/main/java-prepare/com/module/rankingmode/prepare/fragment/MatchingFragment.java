@@ -61,34 +61,12 @@ public class MatchingFragment extends BaseFragment {
 
         mMatchContent.setCommonTitleBar(mTitleBar);
         mMatchContent.toNextSence(mPrepareData);
-
-        initMediaEngine();
     }
 
     @Override
     public void setData(int type, @Nullable Object data) {
         if(0 == type){
             mPrepareData.setSongModel((SongModel) data);
-        }
-    }
-
-    // todo 后面会用我们自己的去采集声音拿到音高
-    private void initMediaEngine() {
-        if (!EngineManager.getInstance().isInit()) {
-            // 不能每次都初始化,播放伴奏
-            EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_COMMUNICATION)
-                    .setEnableVideo(false)
-                    .build());
-            EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-            File accFile = SongResUtils.getAccFileByUrl(mPrepareData.getSongModel().getAcc());
-
-            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, -1);
-            EngineManager.getInstance().pauseAudioMixing();
-
-            String c = U.getDateTimeUtils().formatVideoTime(0);
-            String d = U.getDateTimeUtils().formatVideoTime(EngineManager.getInstance().getAudioMixingDuration());
-            String info = String.format(getString(R.string.song_time_info), c, d);
-            mTitleBar.getCenterSubTextView().setText(info);
         }
     }
 
