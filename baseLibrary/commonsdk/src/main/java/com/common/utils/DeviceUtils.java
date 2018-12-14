@@ -1,6 +1,10 @@
 package com.common.utils;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothHeadset;
+import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -61,6 +65,8 @@ public class DeviceUtils {
      * 0 未初始化
      */
     private int mHeadsetPlugOn = 0;
+
+    private int mBlueToothHeadsetPlugOn = 0;
 
     DeviceUtils() {
 
@@ -304,19 +310,29 @@ public class DeviceUtils {
         return mDeviceHasNavigationBar == 1;
     }
 
-    public void setHeadsetPlugOn(int headsetPlugOn) {
+
+    /**
+     * 耳机是否插着，包括有线 和 蓝牙
+     * @return
+     */
+    public boolean getHeadsetPlugOn() {
+        return getWiredHeadsetPlugOn() || getBlueToothHeadsetOn();
+    }
+
+
+    public void setWiredHeadsetPlugOn(int headsetPlugOn) {
         if (headsetPlugOn != mHeadsetPlugOn) {
             mHeadsetPlugOn = headsetPlugOn;
-            EventBus.getDefault().post(new HeadsetPlugEvent(mHeadsetPlugOn == 1));
+            EventBus.getDefault().post(new HeadsetPlugEvent(mHeadsetPlugOn == 1 || mBlueToothHeadsetPlugOn == 1));
         }
     }
 
     /**
-     * 是否插着耳机 true 插着
+     * 是否插着有线耳机 true 插着
      *
      * @return
      */
-    public boolean getHeadsetPlugOn() {
+    public boolean getWiredHeadsetPlugOn() {
         if (mHeadsetPlugOn == 0) {
             // ==0 说明未初始化
             AudioManager audoManager = (AudioManager) U.app().getSystemService(Context.AUDIO_SERVICE);
@@ -328,16 +344,62 @@ public class DeviceUtils {
             // 注册广播持续监听, 这个耳机广播必须动态注册
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Intent.ACTION_HEADSET_PLUG);
-            U.app().registerReceiver(new HeadsetPlugReceiver(),intentFilter);
+            intentFilter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED);
+            U.app().registerReceiver(new HeadsetPlugReceiver(), intentFilter);
         }
         return mHeadsetPlugOn == 1;
+    }
+
+    public void setBlueToothHeadsetPlugOn(int headsetPlugOn) {
+        if (headsetPlugOn != mBlueToothHeadsetPlugOn) {
+            mBlueToothHeadsetPlugOn = headsetPlugOn;
+            EventBus.getDefault().post(new HeadsetPlugEvent(mHeadsetPlugOn == 1 || mBlueToothHeadsetPlugOn == 1));
+        }
+    }
+
+    /**
+     * 是否插着蓝牙耳机 true 插着
+     *
+     * @return
+     */
+    public boolean getBlueToothHeadsetOn() {
+        if (mBlueToothHeadsetPlugOn == 0) {
+            BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
+            if (ba == null) {
+                mBlueToothHeadsetPlugOn = -1;
+            } else if (ba.isEnabled()) {
+                int a2dp = ba.getProfileConnectionState(BluetoothProfile.A2DP);              //可操控蓝牙设备，如带播放暂停功能的蓝牙耳机
+                int headset = ba.getProfileConnectionState(BluetoothProfile.HEADSET);        //蓝牙头戴式耳机，支持语音输入输出
+                int health = ba.getProfileConnectionState(BluetoothProfile.HEALTH);          //蓝牙穿戴式设备
+
+                //查看是否蓝牙是否连接到三种设备的一种，以此来判断是否处于连接状态还是打开并没有连接的状态
+                int flag = -1;
+                if (a2dp == BluetoothProfile.STATE_CONNECTED) {
+                    flag = a2dp;
+                } else if (headset == BluetoothProfile.STATE_CONNECTED) {
+                    flag = headset;
+                } else if (health == BluetoothProfile.STATE_CONNECTED) {
+                    flag = health;
+                }
+                //说明连接上了三种设备的一种
+                if (flag != -1) {
+//            isBlueCon = 1;            //connected
+                    mBlueToothHeadsetPlugOn = 1;
+                } else {
+                    mBlueToothHeadsetPlugOn = -1;
+                }
+            } else {
+                mBlueToothHeadsetPlugOn = -1;
+            }
+        }
+        return mBlueToothHeadsetPlugOn == 1;
     }
 
     /**
      * 耳机插拔事件
      */
     public static class HeadsetPlugEvent {
-       public boolean on;
+        public boolean on;
 
         public HeadsetPlugEvent(boolean on) {
             this.on = on;
@@ -354,15 +416,26 @@ public class DeviceUtils {
                 if (intent.hasExtra("state")) {
                     if (intent.getIntExtra("state", 0) == 0) {
                         //耳机没插
-                        U.getDeviceUtils().setHeadsetPlugOn(-1);
+                        U.getDeviceUtils().setWiredHeadsetPlugOn(-1);
                     } else if (intent.getIntExtra("state", 0) == 1) {
                         //耳机插着
-                        U.getDeviceUtils().setHeadsetPlugOn(1);
+                        U.getDeviceUtils().setWiredHeadsetPlugOn(1);
                     }
                 }
+            } else if (BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
+                BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+                if (adapter != null && BluetoothAdapter.STATE_CONNECTED == adapter.getProfileConnectionState(BluetoothProfile.HEADSET)) {
+                    U.getDeviceUtils().setBlueToothHeadsetPlugOn(1);
+                } else {
+                    U.getDeviceUtils().setBlueToothHeadsetPlugOn(-1);
+                }
+            } else {
+                U.getDeviceUtils().setBlueToothHeadsetPlugOn(-1);
             }
         }
     }
+
 }
+
 
 

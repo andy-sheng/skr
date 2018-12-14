@@ -49,7 +49,8 @@ public class DeviceInfoFragment extends BaseFragment {
         sb.append("deviceId(参考miui唯一设备号的方法):").append(U.getDeviceUtils().getDeviceID()).append("\n");
         sb.append("是否开启了打印方法执行时间: switch:").append(TimeStatistics.getSwitch()).append(" dt:").append(TimeStatistics.sDt).append("\n");
         sb.append("agora sdk version:").append(RtcEngine.getSdkVersion()).append("\n");
-        sb.append("是否插着耳机:").append(U.getDeviceUtils().getHeadsetPlugOn()).append("\n");
+        sb.append("是否插着有线耳机:").append(U.getDeviceUtils().getWiredHeadsetPlugOn()).append("\n");
+        sb.append("是否插着蓝牙耳机:").append(U.getDeviceUtils().getBlueToothHeadsetOn()).append("\n");
         MyLog.w(TAG, "deviceId:" + U.getDeviceUtils().getDeviceID());
         mDescTv.setText(sb.toString());
     }
