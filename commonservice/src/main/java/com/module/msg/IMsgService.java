@@ -1,10 +1,18 @@
 package com.module.msg;
 
+import android.app.Application;
+
 import com.alibaba.android.arouter.facade.template.IProvider;
 import com.alibaba.fastjson.JSONObject;
 import com.module.common.ICallback;
 
 public interface IMsgService extends IProvider {
+
+    /**
+     * 初始化融云
+     */
+    void initRongIM(Application application);
+
     /**
      * 与融云服务器建立连接
      * @param token

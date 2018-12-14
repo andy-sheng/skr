@@ -39,7 +39,7 @@ public class RongIMConfiguration implements ConfigModule {
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
                 rcInit(application);
-                RongMsgManager.getInstance().init();
+                RongMsgManager.getInstance().init(application);
             }
 
             @Override
@@ -102,8 +102,6 @@ public class RongIMConfiguration implements ConfigModule {
                             @Override
                             public void onTokenIncorrect() {
                                 MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
-                                // 重新拿token
-                                RCTokenManager.getInstance().getToken();
                             }
                         });
                     } else {

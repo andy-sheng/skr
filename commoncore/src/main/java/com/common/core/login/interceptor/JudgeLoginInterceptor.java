@@ -8,7 +8,6 @@ import com.alibaba.android.arouter.facade.annotation.Interceptor;
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback;
 import com.alibaba.android.arouter.facade.template.IInterceptor;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.LoginActivity;
@@ -37,7 +36,6 @@ public class JudgeLoginInterceptor implements IInterceptor {
         }
 
         if (UserAccountManager.getInstance().hasAccount()) {
-            UserAccountManager.getInstance().connectRongIM(UserAccountManager.getInstance().getRongToken());
             callback.onContinue(postcard);
         } else {
             // 不需要登陆

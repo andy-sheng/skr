@@ -1,5 +1,6 @@
 package com.module.msg;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -11,6 +12,11 @@ import io.rong.test.fragment.MessageFragment;
 
 @Route(path = RouterConstants.SERVICE_MSG, name = "消息服务")
 public class RongMsgServiceImpl implements IMsgService {
+
+    @Override
+    public void initRongIM(Application application) {
+        RongMsgManager.getInstance().init(application);
+    }
 
     @Override
     public void connectRongIM(String token, ICallback callback) {

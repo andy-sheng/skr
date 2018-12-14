@@ -1,5 +1,7 @@
 package com.module.msg;
 
+import android.app.Application;
+
 import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -58,7 +60,14 @@ public class RongMsgManager {
      */
     private HashMap<Integer, HashSet<IPushMsgProcess>> mProcessorMap = new HashMap<>();
 
-    public void init() {
+    // 是否初始化
+    private boolean mIsInit = false;
+
+    public void init(Application application) {
+        if (!mIsInit) {
+            RongIM.init(application);
+            mIsInit = true;
+        }
         RongIM.registerMessageType(CustomChatRoomMsg.class);
         RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
 
@@ -137,9 +146,9 @@ public class RongMsgManager {
             public void onTokenIncorrect() {
                 MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
                 if (callback != null) {
-                callback.onFailed(false, 0, "");
+                    callback.onFailed(false, 0, "");
+                }
             }
-        }
         });
 
     }

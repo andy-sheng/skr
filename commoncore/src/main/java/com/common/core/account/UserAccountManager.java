@@ -304,6 +304,7 @@ public class UserAccountManager {
 
     // 获取IM的token
     public void getIMToken() {
+        MyLog.d(TAG, "getIMToken" );
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         ApiMethods.subscribe(userAccountServerApi.getIMToken(), new ApiObserver<ApiResult>() {
             @Override
@@ -322,6 +323,7 @@ public class UserAccountManager {
     }
 
     public void connectRongIM(String rongToken) {
+        MyLog.d(TAG, "connectRongIM" + " rongToken=" + rongToken);
         if (TextUtils.isEmpty(rongToken)) {
             getIMToken();
         } else {
