@@ -106,8 +106,17 @@ public class AuditionSence extends RelativeLayout implements ISence {
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("试唱调音");
 
         File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
+        String accFilePath = accFile.getAbsolutePath();
+        // 当前音乐在播放那就继续播放
+        if(accFilePath.equals(EngineManager.getInstance().getParams().getMIxMusicFilePath())){
+            if(!EngineManager.getInstance().getParams().isMixMusicPlaying()) {
+                EngineManager.getInstance().resumeAudioMixing();
+            }
+        }else{
+            EngineManager.getInstance().startAudioMixing(accFilePath,true,false,-1);
+        }
         if(accFile != null){
-            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, -1);
+
         }else {
             MyLog.e("what the fuck");
         }

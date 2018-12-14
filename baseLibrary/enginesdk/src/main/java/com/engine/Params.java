@@ -85,6 +85,7 @@ public class Params {
     private int selfUid; // 本人在引擎中的id
     private AudioEffectStyleEnum styleEnum = null;// 混响style
     private boolean enableSpeakerphone = true;// 开启扬声器
+    private String mMIxMusicFilePath;
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -356,6 +357,14 @@ public class Params {
 
     public void setEnableSpeakerphone(boolean enableSpeakerphone) {
         this.enableSpeakerphone = enableSpeakerphone;
+    }
+
+    public void setMIxMusicFilePath(String mixMusicFilePath) {
+        mMIxMusicFilePath = mixMusicFilePath;
+    }
+
+    public String getMIxMusicFilePath() {
+        return mMIxMusicFilePath;
     }
 
     public static class Builder {
