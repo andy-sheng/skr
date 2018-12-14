@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.changba.songstudio.CbEngineAdapter;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
+import com.common.utils.DeviceUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
@@ -17,6 +18,7 @@ import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -166,6 +168,9 @@ public class EngineManager implements AgoraOutCallback {
         AgoraEngineAdapter.getInstance().init(mConfig);
         CbEngineAdapter.getInstance().init(mConfig);
         mIsInit = true;
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     public boolean isInit() {
@@ -191,6 +196,9 @@ public class EngineManager implements AgoraOutCallback {
         mUiHandler.removeCallbacksAndMessages(null);
         mConfig = null;
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     public void startRecord() {
@@ -221,7 +229,11 @@ public class EngineManager implements AgoraOutCallback {
             }
         }
         AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
-        setEnableSpeakerphone(mConfig.isEnableSpeakerphone());
+        if (U.getDeviceUtils().getHeadsetPlugOn()) {
+            setEnableSpeakerphone(false);
+        } else {
+            setEnableSpeakerphone(true);
+        }
     }
 
     public void setClientRole(boolean isAnchor) {
@@ -467,6 +479,14 @@ public class EngineManager implements AgoraOutCallback {
         AgoraEngineAdapter.getInstance().setEnableSpeakerphone(enableSpeakerphone);
     }
 
+    /**
+     * 监听耳机插拔
+     * @param event
+     */
+    @Subscribe
+    public void onEvent(DeviceUtils.HeadsetPlugEvent event) {
+        setEnableSpeakerphone(!event.on);
+    }
     /*视频基础结束*/
 
     /*音频基础开始*/

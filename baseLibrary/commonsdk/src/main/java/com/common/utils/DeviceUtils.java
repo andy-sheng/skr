@@ -1,16 +1,22 @@
 package com.common.utils;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,6 +53,14 @@ public class DeviceUtils {
      * 唯一设备号，计算方法与miui相同
      */
     private String deviceID;
+
+    /**
+     * 是否插着耳机，不包括蓝牙耳机
+     * 1 插着
+     * -1 没插
+     * 0 未初始化
+     */
+    private int mHeadsetPlugOn = 0;
 
     DeviceUtils() {
 
@@ -288,6 +302,66 @@ public class DeviceUtils {
             }
         }
         return mDeviceHasNavigationBar == 1;
+    }
+
+    public void setHeadsetPlugOn(int headsetPlugOn) {
+        if (headsetPlugOn != mHeadsetPlugOn) {
+            mHeadsetPlugOn = headsetPlugOn;
+            EventBus.getDefault().post(new HeadsetPlugEvent(mHeadsetPlugOn == 1));
+        }
+    }
+
+    /**
+     * 是否插着耳机 true 插着
+     *
+     * @return
+     */
+    public boolean getHeadsetPlugOn() {
+        if (mHeadsetPlugOn == 0) {
+            // ==0 说明未初始化
+            AudioManager audoManager = (AudioManager) U.app().getSystemService(Context.AUDIO_SERVICE);
+            if (audoManager.isWiredHeadsetOn()) {
+                mHeadsetPlugOn = 1;
+            } else {
+                mHeadsetPlugOn = -1;
+            }
+            // 注册广播持续监听, 这个耳机广播必须动态注册
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_HEADSET_PLUG);
+            U.app().registerReceiver(new HeadsetPlugReceiver(),intentFilter);
+        }
+        return mHeadsetPlugOn == 1;
+    }
+
+    /**
+     * 耳机插拔事件
+     */
+    public static class HeadsetPlugEvent {
+       public boolean on;
+
+        public HeadsetPlugEvent(boolean on) {
+            this.on = on;
+        }
+    }
+
+    public static class HeadsetPlugReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (Intent.ACTION_HEADSET_PLUG.equals(action)) {
+                // 耳机插拔 不包括蓝牙耳机
+                if (intent.hasExtra("state")) {
+                    if (intent.getIntExtra("state", 0) == 0) {
+                        //耳机没插
+                        U.getDeviceUtils().setHeadsetPlugOn(-1);
+                    } else if (intent.getIntExtra("state", 0) == 1) {
+                        //耳机插着
+                        U.getDeviceUtils().setHeadsetPlugOn(1);
+                    }
+                }
+            }
+        }
     }
 }
 

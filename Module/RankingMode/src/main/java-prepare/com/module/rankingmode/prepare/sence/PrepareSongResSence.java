@@ -1,7 +1,6 @@
 package com.module.rankingmode.prepare.sence;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.module.rankingmode.prepare.presenter.PrepareSongPresenter;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
-import com.module.rankingmode.song.model.SongModel;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
