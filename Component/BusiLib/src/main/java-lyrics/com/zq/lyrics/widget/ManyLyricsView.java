@@ -434,7 +434,8 @@ public class ManyLyricsView extends AbstractLrcView {
                 float textWidth = LyricsUtils.getTextWidth(paint, text);
                 float textX = (getWidth() - textWidth) * 0.5f;
                 LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineBottomY);
-                LyricsUtils.drawText(canvas, paintHL, paintHLColors, text, textX, lineBottomY);
+                // TODO: 2018/12/14 不应该画2次
+//                LyricsUtils.drawText(canvas, paintHL, paintHLColors, text, textX, lineBottomY);
 
             } else if (i == curLyricsLineNum) {
                 float textWidth = LyricsUtils.getTextWidth(paintHL, text);
