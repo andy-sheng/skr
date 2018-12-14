@@ -21,6 +21,7 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess {
 
     @Override
     public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
+        MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType );
         BasePushInfo info = BasePushInfo.parse(msg);
 
         if (messageType == ERoomMsgType.RM_COMMENT) {

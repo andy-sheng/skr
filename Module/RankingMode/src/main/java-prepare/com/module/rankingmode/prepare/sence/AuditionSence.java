@@ -106,17 +106,16 @@ public class AuditionSence extends RelativeLayout implements ISence {
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("试唱调音");
 
         File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
-        String accFilePath = accFile.getAbsolutePath();
-        // 当前音乐在播放那就继续播放
-        if(accFilePath.equals(EngineManager.getInstance().getParams().getMIxMusicFilePath())){
-            if(!EngineManager.getInstance().getParams().isMixMusicPlaying()) {
-                EngineManager.getInstance().resumeAudioMixing();
-            }
-        }else{
-            EngineManager.getInstance().startAudioMixing(accFilePath,true,false,-1);
-        }
         if(accFile != null){
-
+            String accFilePath = accFile.getAbsolutePath();
+            // 当前音乐在播放那就继续播放
+            if(accFilePath.equals(EngineManager.getInstance().getParams().getMIxMusicFilePath())){
+                if(!EngineManager.getInstance().getParams().isMixMusicPlaying()) {
+                    EngineManager.getInstance().resumeAudioMixing();
+                }
+            }else{
+                EngineManager.getInstance().startAudioMixing(accFilePath,true,false,-1);
+            }
         }else {
             MyLog.e("what the fuck");
         }
@@ -133,6 +132,12 @@ public class AuditionSence extends RelativeLayout implements ISence {
                 mManyLyricsView.play(0);
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LrcEvent.RestartLrcEvent restartLrcEvent) {
+        String fileName = SongResUtils.getFileNameWithMD5(mPrepareData.getSongModel().getLyric());
+        LyricsManager.getLyricsManager(getContext()).loadLyricsUtil(fileName, mPrepareData.getSongModel().getItemName(), fileName.hashCode() + "");
     }
 
     @Override

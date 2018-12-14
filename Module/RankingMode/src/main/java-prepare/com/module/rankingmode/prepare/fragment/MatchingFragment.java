@@ -20,7 +20,9 @@ import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.view.VoiceLineView;
 import com.module.rankingmode.song.model.SongModel;
+import com.zq.lyrics.event.LrcEvent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -65,7 +67,7 @@ public class MatchingFragment extends BaseFragment {
 
     @Override
     public void setData(int type, @Nullable Object data) {
-        if(0 == type){
+        if (0 == type) {
             mPrepareData.setSongModel((SongModel) data);
         }
     }
@@ -122,6 +124,11 @@ public class MatchingFragment extends BaseFragment {
                 EngineEvent.MixMusicTimeInfo musicTimeInfo = (EngineEvent.MixMusicTimeInfo) engineEvent.getObj();
                 String c = U.getDateTimeUtils().formatVideoTime(musicTimeInfo.getCurrent());
                 String d = U.getDateTimeUtils().formatVideoTime(musicTimeInfo.getDuration());
+                // TODO: 2018/12/14  等产品确定是否需要循环播放
+//                if (musicTimeInfo.getCurrent() >= 0 && musicTimeInfo.getCurrent() <= 1000) {
+//                    // 重新开始了
+//                    EventBus.getDefault().post(new LrcEvent.RestartLrcEvent());
+//                }
                 String info = String.format(getString(R.string.song_time_info), c, d);
                 mTitleBar.getCenterSubTextView().setText(info);
                 break;
