@@ -41,7 +41,7 @@ public class RankingRoomFragment extends BaseFragment {
         initCommentView();
         initTopView();
 
-        presenter = new RankingRoomPresenter();
+        presenter = new RankingRoomPresenter(null, mRoomData);
         addPresent(presenter);
     }
 
