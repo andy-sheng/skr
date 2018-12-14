@@ -32,6 +32,7 @@ public class RankingRoomActivity extends BaseActivity {
         if(prepareData!=null) {
             mRoomData.setGameId(prepareData.getGameId());
             mRoomData.setCreateTs(prepareData.getGameCreatMs());
+            mRoomData.setGameReadyInfo(prepareData.getGameReadyInfo());
         }
 
         U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, RankingRoomFragment.class)

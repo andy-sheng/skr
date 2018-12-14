@@ -98,6 +98,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     public void allPlayerIsReady(JsonGameReadyInfo jsonGameReadyInfo) {
         MyLog.d(TAG, "allPlayerIsReady" + " jsonGameReadyInfo=" + jsonGameReadyInfo);
         matchSenceController.popSence();
+        mPrepareData.setGameReadyInfo(jsonGameReadyInfo);
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
                 .withSerializable("prepare_data", mPrepareData)
                 .greenChannel().navigation();

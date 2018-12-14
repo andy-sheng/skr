@@ -10,6 +10,7 @@ public class PrepareData implements Serializable {
     private int mGameId;
     private long mGameCreatMs;
     private List<PlayerInfo> mPlayerInfoList;
+    private JsonGameReadyInfo mGameReadyInfo;
 
     public void setSongModel(SongModel songModel) {
         mSongModel = songModel;
@@ -41,5 +42,13 @@ public class PrepareData implements Serializable {
 
     public List<PlayerInfo> getPlayerInfoList() {
         return mPlayerInfoList;
+    }
+
+    public void setGameReadyInfo(JsonGameReadyInfo gameReadyInfo) {
+        mGameReadyInfo = gameReadyInfo;
+    }
+
+    public JsonGameReadyInfo getGameReadyInfo() {
+        return mGameReadyInfo;
     }
 }
