@@ -1,4 +1,4 @@
-package com.module.rankingmode.room.adapter;
+package com.module.rankingmode.room.viewer;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
-import com.module.rankingmode.room.holder.RoomViewerHolder;
-import com.module.rankingmode.room.model.RoomViewerModel;
+import com.module.rankingmode.room.viewer.RoomViewerHolder;
+import com.module.rankingmode.room.viewer.RoomViewerModel;
 
 public class RoomViewerRvAdapter extends DiffAdapter<RoomViewerModel, RecyclerView.ViewHolder> {
 

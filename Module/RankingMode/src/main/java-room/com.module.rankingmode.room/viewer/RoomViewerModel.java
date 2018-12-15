@@ -1,4 +1,4 @@
-package com.module.rankingmode.room.model;
+package com.module.rankingmode.room.viewer;
 
 public class RoomViewerModel {
     String userId;

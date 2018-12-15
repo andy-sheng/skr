@@ -8,13 +8,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
-import com.module.rankingmode.room.adapter.RoomViewerRvAdapter;
+import com.module.rankingmode.room.viewer.RoomViewerRvAdapter;
 import com.module.rankingmode.room.event.InputBoardEvent;
-import com.module.rankingmode.room.model.RoomViewerModel;
+import com.module.rankingmode.room.viewer.RoomViewerModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
