@@ -67,36 +67,42 @@ public class RongMsgManager {
         if (!mIsInit) {
             RongIM.init(application);
             mIsInit = true;
-        }
-        RongIM.registerMessageType(CustomChatRoomMsg.class);
-        RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+            RongIM.registerMessageType(CustomChatRoomMsg.class);
+            RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
+                @Override
+                public void onChanged(ConnectionStatus connectionStatus) {
 
-            /**
-             * 收到消息的处理。
-             *
-             * @param message 收到的消息实体。
-             * @param left    剩余未拉取消息数目。
-             * @return 收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
-             */
-            @Override
-            public boolean onReceived(Message message, int left) {
-                MyLog.d(TAG, "onReceived" + " message=" + message + " left=" + left);
-                if (message.getContent() instanceof CustomChatRoomMsg) {
-                    // 是自定义消息 其content即整个RoomMsg
-                    CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) message.getContent();
-                    byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
-
-                    HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
-                    if (processors != null) {
-                        for (IPushMsgProcess process : processors) {
-                            process.process(MSG_TYPE_ROOM, data);
-                        }
-                    }
-                    return true;
                 }
-                return false;
-            }
-        });
+            });
+            RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+
+                /**
+                 * 收到消息的处理。
+                 *
+                 * @param message 收到的消息实体。
+                 * @param left    剩余未拉取消息数目。
+                 * @return 收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
+                 */
+                @Override
+                public boolean onReceived(Message message, int left) {
+                    MyLog.d(TAG, "onReceived" + " message=" + message + " left=" + left);
+                    if (message.getContent() instanceof CustomChatRoomMsg) {
+                        // 是自定义消息 其content即整个RoomMsg
+                        CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) message.getContent();
+                        byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
+
+                        HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
+                        if (processors != null) {
+                            for (IPushMsgProcess process : processors) {
+                                process.process(MSG_TYPE_ROOM, data);
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     public synchronized void addMsgProcessor(IPushMsgProcess processor) {
