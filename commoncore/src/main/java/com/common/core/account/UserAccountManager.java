@@ -63,7 +63,7 @@ public class UserAccountManager {
     }
 
     public void onLoginResult(UserAccount account) {
-        MyLog.w(TAG, "login" + " account=" + account);
+        MyLog.w(TAG, "login" + " accountId=" + account.getUid());
         if (account != null) {
             account.setIsLogOff(false);
             // 登出所有其他账号
@@ -75,7 +75,7 @@ public class UserAccountManager {
     }
 
     private void setAccount(UserAccount account) {
-        MyLog.d(TAG, "setAccount" + " account=" + account.getUid());
+        MyLog.d(TAG, "setAccount" + " accountId=" + account.getUid());
         mAccount = account;
         if (account != null) {
             // 取消匿名模式
@@ -291,9 +291,9 @@ public class UserAccountManager {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     boolean isValid = result.getData().getBoolean("isValid");
-                    if (isValid){
+                    if (isValid) {
                         // 昵称可用
-                    }else {
+                    } else {
                         // 昵称不可用和理由
                         String unValidReason = result.getData().getString("unValidReason");
                     }
@@ -304,7 +304,7 @@ public class UserAccountManager {
 
     // 获取IM的token
     public void getIMToken() {
-        MyLog.d(TAG, "getIMToken" );
+        MyLog.d(TAG, "getIMToken");
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         ApiMethods.subscribe(userAccountServerApi.getIMToken(), new ApiObserver<ApiResult>() {
             @Override
