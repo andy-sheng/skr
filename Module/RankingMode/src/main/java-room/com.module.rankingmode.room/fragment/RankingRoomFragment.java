@@ -127,8 +127,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void startRivalCountdown() {
-        addText("用户" + mRoomData.getRealRoundInfo().getUserID() + "的演唱开始了");
+    public void startRivalCountdown(int uid) {
+        addText("用户" + uid + "的演唱开始了");
     }
 
     @Override

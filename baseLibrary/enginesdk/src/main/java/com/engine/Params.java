@@ -535,6 +535,7 @@ public class Params implements Serializable {
         } else {
             return Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                     .setEnableVideo(false)
+                    .setEnableAudio(true)
                     .setUseCbEngine(false)
                     .build();
         }

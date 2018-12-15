@@ -1,6 +1,7 @@
 package com.common.utils;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import io.reactivex.Observable;
@@ -21,7 +22,7 @@ public final class HandlerTaskTimer {
     boolean hasCancel = false;
     Observer<Integer> consumer;
 
-    Handler mHandler = new Handler() {
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

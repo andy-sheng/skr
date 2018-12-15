@@ -7,7 +7,7 @@ import java.util.List;
 public interface IGameRuleView {
     void startSelfCountdown(Runnable countDownOver);
 
-    void startRivalCountdown();
+    void startRivalCountdown(int uid);
 
     void userExit();
 

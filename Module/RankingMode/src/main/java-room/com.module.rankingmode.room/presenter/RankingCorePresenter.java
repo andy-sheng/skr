@@ -65,7 +65,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         EngineManager.getInstance().init(params);
         EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
         // 不发送本地音频
-        EngineManager.getInstance().muteLocalAudioStream(false);
+        EngineManager.getInstance().muteLocalAudioStream(true);
     }
 
     @Override
@@ -280,7 +280,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(RoundInfoChangeEvent event) {
-        MyLog.d(TAG, "RoundInfoChangeEvent" + " myturn=" + event.myturn);
+        MyLog.d(TAG, "RoundInfoChangeEvent  轮次变更事件发生 " + " myturn=" + event.myturn);
         if (event.myturn) {
             // 轮到我唱了
             // 开始发心跳
@@ -293,7 +293,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
                     if (accFile != null && accFile.exists()) {
                         EngineManager.getInstance().muteLocalAudioStream(false);
-                        EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, true, 1);
+                        EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
                         EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
                         // 还应开始播放歌词
                         mIGameRuleView.playLyric(mRoomData.getSongModel().getItemID());
@@ -310,7 +310,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 mUiHanlder.post(new Runnable() {
                     @Override
                     public void run() {
-                        mIGameRuleView.startRivalCountdown();
+                        int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
+                        mIGameRuleView.startRivalCountdown(uid);
                     }
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {
@@ -322,6 +323,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             mIGameRuleView.gameFinish();
                         }
                     });
+                }else{
+                    MyLog.d(TAG,"结束时间比开始时间小，不应该吧");
                 }
             }
         }
@@ -329,7 +332,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     private void onGameOver(long gameOverTs) {
         MyLog.d(TAG, "游戏结束" + " gameOverTs=" + gameOverTs);
-        if (gameOverTs > mRoomData.getGameStartTs() && mRoomData.getGameOverTs() != 0) {
+        if (gameOverTs > mRoomData.getGameStartTs() && mRoomData.getGameOverTs() == 0) {
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
             mRoomData.checkRound();
@@ -409,7 +412,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     //轮次和游戏结束通知，除了已经结束状态，别的任何状态都要变成
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
-        MyLog.d(TAG, "onEventMainThread RoundOverEvent");
+        MyLog.d(TAG, "onEventMainThread 游戏结束push通知");
         onGameOver(roundAndGameOverEvent.roundOverTimeMs);
     }
 
@@ -429,7 +432,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     // 长连接 状态同步信令， 以11秒为单位检测
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SyncStatusEvent syncStatusEvent) {
-        MyLog.d(TAG, "onEventMainThread syncStatusEvent");
+        MyLog.d(TAG, "onEventMainThread receive syncStatusEvent");
         //从新开始12秒后拉取
         startSyncGameStateTask();
         updatePlayerState(syncStatusEvent.gameOverTimeMs, syncStatusEvent.syncStatusTimes, syncStatusEvent.onlineInfos, syncStatusEvent.currentInfo, syncStatusEvent.nextInfo);

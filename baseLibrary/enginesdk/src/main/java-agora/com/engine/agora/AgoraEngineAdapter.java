@@ -278,12 +278,11 @@ public class AgoraEngineAdapter {
             mRtcEngine.setCameraAutoFocusFaceModeEnabled(mConfig.isCameraAutoFocusFaceModeEnabled());
             // 开启视频
             mRtcEngine.enableVideo();
+            // 开关视频双流模式。对端能选择接收大流还是小流
+            mRtcEngine.enableDualStreamMode(true);
         } else {
             mRtcEngine.disableVideo();
         }
-
-        // 开关视频双流模式。对端能选择接收大流还是小流
-        mRtcEngine.enableDualStreamMode(true);
 
         // 发送方设置
         // 网络较差时，只发送音频流

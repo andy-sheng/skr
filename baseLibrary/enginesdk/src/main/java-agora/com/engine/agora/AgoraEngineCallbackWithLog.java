@@ -260,7 +260,9 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
-        MyLog.d(TAG, "onNetworkQuality" + " uid=" + uid + " txQuality=" + txQuality + " rxQuality=" + rxQuality);
+        if(vLogShow) {
+            MyLog.d(TAG, "onNetworkQuality" + " uid=" + uid + " txQuality=" + txQuality + " rxQuality=" + rxQuality);
+        }
         super.onNetworkQuality(uid, txQuality, rxQuality);
     }
 
