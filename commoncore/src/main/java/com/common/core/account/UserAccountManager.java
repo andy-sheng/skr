@@ -75,7 +75,7 @@ public class UserAccountManager {
     }
 
     private void setAccount(UserAccount account) {
-        MyLog.d(TAG, "setAccount" + " account=" + account);
+        MyLog.d(TAG, "setAccount" + " account=" + account.getUid());
         mAccount = account;
         if (account != null) {
             // 取消匿名模式
