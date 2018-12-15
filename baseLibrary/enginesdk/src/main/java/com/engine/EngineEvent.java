@@ -107,4 +107,11 @@ public class EngineEvent {
             this.duration = duration;
         }
     }
+
+    @Override
+    public String toString() {
+        return "EngineEvent{" +
+                "type=" + type +
+                '}';
+    }
 }

@@ -114,7 +114,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 .start(new HandlerTaskTimer.ObserverW() {
                            @Override
                            public void onNext(Integer integer) {
-                                addText("你要演唱要开始了，倒计时"+(4-integer));
+                               addText("你要演唱要开始了，倒计时" + (4 - integer));
                            }
 
                            @Override
@@ -128,7 +128,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void startRivalCountdown() {
-        addText("用户"+mRoomData.getRealRoundInfo().getUserID()+"的演唱开始了");
+        addText("用户" + mRoomData.getRealRoundInfo().getUserID() + "的演唱开始了");
     }
 
     @Override
@@ -143,11 +143,16 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void updateUserState(List<OnLineInfoModel> jsonOnLineInfoList) {
-        for(OnLineInfoModel onLineInfoModel:jsonOnLineInfoList){
-            if(!onLineInfoModel.isIsOnline()){
-                addText("用户"+onLineInfoModel.getUserID()+"处于离线状态");
+        for (OnLineInfoModel onLineInfoModel : jsonOnLineInfoList) {
+            if (!onLineInfoModel.isIsOnline()) {
+                addText("用户" + onLineInfoModel.getUserID() + "处于离线状态");
             }
         }
+    }
+
+    @Override
+    public void playLyric(int songId) {
+        addText("开始播放歌词 songId=" + songId);
     }
 
     void addText(String te) {

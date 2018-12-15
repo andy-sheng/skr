@@ -14,4 +14,6 @@ public interface IGameRuleView {
     void gameFinish();
 
     void updateUserState(List<OnLineInfoModel> jsonOnLineInfoList);
+
+    void playLyric(int songId);
 }

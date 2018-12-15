@@ -7,7 +7,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.engine.Params;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
@@ -38,6 +37,8 @@ public class RankingRoomActivity extends BaseActivity {
 
             mRoomData.setSongModel(prepareData.getSongModel());
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
+        }else{
+
         }
         U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, RankingRoomFragment.class)
                 .setAddToBackStack(false)

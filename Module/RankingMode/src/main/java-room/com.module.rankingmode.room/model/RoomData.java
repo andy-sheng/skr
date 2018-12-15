@@ -37,7 +37,7 @@ public class RoomData {
 
     private List<RoundInfoModel> mRoundInfoModelList;//所有的轮次信息
 
-    private RoundInfoModel mExcpectRoundInfo;// 按理的 期望的当前的轮次
+    private RoundInfoModel mExpectRoundInfo;// 按理的 期望的当前的轮次
 
     private RoundInfoModel mRealRoundInfo;// 实际的当前轮次信息
 
@@ -48,8 +48,8 @@ public class RoomData {
      * 检查轮次信息是否需要更新
      */
     public void checkRound() {
-        MyLog.d(TAG,"checkRound mExcpectRoundInfo="+mExcpectRoundInfo+" mRealRoundInfo="+mRealRoundInfo );
-        if (mExcpectRoundInfo == null) {
+        MyLog.d(TAG,"checkRound mExcpectRoundInfo="+ mExpectRoundInfo +" mRealRoundInfo="+mRealRoundInfo );
+        if (mExpectRoundInfo == null) {
             // 结束状态了
             if (mRealRoundInfo != null) {
                 mRealRoundInfo = null;
@@ -57,10 +57,10 @@ public class RoomData {
             }
             return;
         }
-        if (!RoomDataUtils.roundInfoEqual(mExcpectRoundInfo,mRealRoundInfo)) {
+        if (!RoomDataUtils.roundInfoEqual(mExpectRoundInfo,mRealRoundInfo)) {
             // 轮次需要更新了
             RoundInfoModel oldRoundInfo = mRealRoundInfo;
-            mRealRoundInfo = mExcpectRoundInfo;
+            mRealRoundInfo = mExpectRoundInfo;
             if (mRealRoundInfo.getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
                 // 轮到自己唱了。开始发心跳，开始倒计时，3秒后 开始开始混伴奏，开始解除引擎mute，
                 EventBus.getDefault().post(new RoundInfoChangeEvent(true));
@@ -135,12 +135,12 @@ public class RoomData {
         mRoundInfoModelList = roundInfoModelList;
     }
 
-    public RoundInfoModel getExcpectRoundInfo() {
-        return mExcpectRoundInfo;
+    public RoundInfoModel getExpectRoundInfo() {
+        return mExpectRoundInfo;
     }
 
-    public void setExcpectRoundInfo(RoundInfoModel excpectRoundInfo) {
-        mExcpectRoundInfo = excpectRoundInfo;
+    public void setExpectRoundInfo(RoundInfoModel expectRoundInfo) {
+        mExpectRoundInfo = expectRoundInfo;
     }
 
     public RoundInfoModel getRealRoundInfo() {

@@ -46,6 +46,7 @@ public class RoomDataUtils {
     /**
      * 轮次的seq是否大于
      * 1是否大于2
+     *
      * @param infoModel1
      * @param infoModel2
      * @return
@@ -55,9 +56,25 @@ public class RoomDataUtils {
             // 已经是结束状态
             return false;
         }
-        if(infoModel1 == null){
+        if (infoModel1 == null) {
             return true;
         }
         return infoModel1.getRoundSeq() > infoModel2.getRoundSeq();
+    }
+
+    /**
+     * 找到轮次等于 seq 的RoundInfoModel
+     *
+     * @param jsonRoundInfo
+     * @param seq
+     * @return
+     */
+    public static RoundInfoModel findRoundInfoBySeq(List<RoundInfoModel> jsonRoundInfo, int seq) {
+        for (RoundInfoModel infoModel : jsonRoundInfo) {
+            if (infoModel.getRoundSeq() == seq) {
+                return infoModel;
+            }
+        }
+        return null;
     }
 }

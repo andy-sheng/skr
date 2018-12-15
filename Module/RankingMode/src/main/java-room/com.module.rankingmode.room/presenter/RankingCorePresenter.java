@@ -64,7 +64,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         Params params = Params.getFromPref();
         EngineManager.getInstance().init(params);
         EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-        // 静音
+        // 不发送本地音频
         EngineManager.getInstance().muteLocalAudioStream(false);
     }
 
@@ -86,15 +86,24 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        EngineManager.getInstance().destroy();
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
-
-    // 上报轮次结束信息
+    /**
+     * 上报轮次结束信息
+     */
     public void sendRoundOverInfo() {
         MyLog.d(TAG, "sendRoundOverInfo");
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
+
+        // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
+        int roundSeq = -1;
+        if (mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
+            roundSeq = mRoomData.getRealRoundInfo().getRoundSeq();
+        }
+        int finalRoundSeq = roundSeq;
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
@@ -102,11 +111,15 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     MyLog.d(TAG, "sendRoundOverInfo" + " result=" + 0);
+                    // 尝试自己切换到下一个轮次
+                    if (finalRoundSeq >= 0) {
+                        RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
+                        mRoomData.setExpectRoundInfo(roundInfoModel);
+                        mRoomData.checkRound();
+                    }
                 } else {
                     MyLog.d(TAG, "sendRoundOverInfo" + " result=" + result);
                 }
-
-                syncGameStatus(mRoomData.getGameId());
             }
 
             @Override
@@ -116,7 +129,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    // 退出游戏
+    /**
+     * 退出游戏
+     */
     public void exitGame(int gameID) {
         MyLog.d(TAG, "exitGame" + " gameID=" + gameID);
         HashMap<String, Object> map = new HashMap<>();
@@ -140,13 +155,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void cancelHeartBeatTask() {
-        if (mHeartBeatTask != null) {
-            mHeartBeatTask.dispose();
-        }
-    }
-
-    //开始发心跳
+    /**
+     * 心跳相关
+     */
     public void startHeartBeatTask() {
         cancelHeartBeatTask();
         mHeartBeatTask = HandlerTaskTimer.newBuilder()
@@ -160,24 +171,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 });
     }
 
-    //轮询同步状态task
-    public void startSyncGameStateTask() {
-        cancelSyncGameStateTask();
-        mSyncGameStateTask = HandlerTaskTimer.newBuilder()
-                .delay(3000)
-                .interval(syncStateTaskInterval)
-                .take(-1)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        syncGameStatus(mRoomData.getGameId());
-                    }
-                });
-    }
-
-    public void cancelSyncGameStateTask() {
-        if (mSyncGameStateTask != null) {
-            mSyncGameStateTask.dispose();
+    public void cancelHeartBeatTask() {
+        if (mHeartBeatTask != null) {
+            mHeartBeatTask.dispose();
         }
     }
 
@@ -204,6 +200,29 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 MyLog.e(TAG, "sendHeartBeat errer " + e);
             }
         }, this);
+    }
+
+    /**
+     * 轮询同步状态task
+     */
+    public void startSyncGameStateTask() {
+        cancelSyncGameStateTask();
+        mSyncGameStateTask = HandlerTaskTimer.newBuilder()
+                .delay(3000)
+                .interval(syncStateTaskInterval)
+                .take(-1)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        syncGameStatus(mRoomData.getGameId());
+                    }
+                });
+    }
+
+    public void cancelSyncGameStateTask() {
+        if (mSyncGameStateTask != null) {
+            mSyncGameStateTask.dispose();
+        }
     }
 
 
@@ -245,10 +264,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             onGameOver(gameOverTimeMs);
         }
         // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-        if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getExcpectRoundInfo())) {
+        if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
             MyLog.d(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
             // 轮次确实比当前的高，可以切换
-            mRoomData.setExcpectRoundInfo(currentInfo);
+            mRoomData.setExpectRoundInfo(currentInfo);
             mRoomData.checkRound();
         }
     }
@@ -276,6 +295,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, true, 1);
                         EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
                         // 还应开始播放歌词
+                        mIGameRuleView.playLyric(mRoomData.getSongModel().getItemID());
                     }
                 }
             });
@@ -292,8 +312,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         mIGameRuleView.startRivalCountdown();
                     }
                 });
-
-            } else {
+            } else if (mRoomData.getRealRoundInfo() == null) {
                 if (mRoomData.getGameOverTs() > mRoomData.getGameStartTs()) {
                     // 游戏结束了,处理相应的ui逻辑
                     mUiHanlder.post(new Runnable() {
@@ -307,22 +326,50 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    void onGameOver(long gameOverTs) {
+    private void onGameOver(long gameOverTs) {
         MyLog.d(TAG, "游戏结束" + " gameOverTs=" + gameOverTs);
         if (gameOverTs > mRoomData.getGameStartTs() && mRoomData.getGameOverTs() != 0) {
             mRoomData.setGameOverTs(gameOverTs);
-            mRoomData.setExcpectRoundInfo(null);
+            mRoomData.setExpectRoundInfo(null);
             mRoomData.checkRound();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
+        MyLog.d(TAG, "EngineEvent" + " event=" + event);
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             EngineEvent.MixMusicTimeInfo timeInfo = (EngineEvent.MixMusicTimeInfo) event.getObj();
             if (timeInfo.getCurrent() >= mRoomData.getSongModel().getEndMs()) {
                 //可以发结束轮次的通知了
                 sendRoundOverInfo();
+            }
+        } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
+            if (!event.getUserStatus().isAudioMute()) {
+                int muteUserId = event.getUserStatus().getUserId();
+                MyLog.w(TAG, "EngineEvent 用人解麦了 muteUserId=" + muteUserId);
+                /**
+                 * 用户开始解开mute了，说明某个用户自己认为轮到自己唱了
+                 * 这里考虑下要不要加个判断，如果当前轮次是这个用户，才播放他的歌词
+                 * 就是是自己状态对，还是别人状态对的问题，这里先认为自己状态对.
+                 * 状态依赖服务器
+                 */
+                RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+                if (roundInfoModel != null) {
+                    int singUseriId = roundInfoModel.getUserID();
+                    if (muteUserId == singUseriId) {
+                        mUiHanlder.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mIGameRuleView.playLyric(roundInfoModel.getPlaybookID());
+                            }
+                        });
+                    } else {
+                        MyLog.w(TAG, "EngineEvent 解麦人不是当前轮次的人");
+                    }
+                } else {
+                    MyLog.w(TAG, "游戏已经结束了");
+                }
             }
         }
     }
@@ -338,9 +385,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             }
         }
         // 游戏轮次结束
-        if (RoomDataUtils.roundSeqLarger(roundOverEvent.nextRound, mRoomData.getExcpectRoundInfo())) {
+        if (RoomDataUtils.roundSeqLarger(roundOverEvent.nextRound, mRoomData.getExpectRoundInfo())) {
             // 轮次确实比当前的高，可以切换
-            mRoomData.setExcpectRoundInfo(roundOverEvent.nextRound);
+            mRoomData.setExpectRoundInfo(roundOverEvent.nextRound);
             mRoomData.checkRound();
         }
     }
@@ -352,14 +399,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         onGameOver(roundAndGameOverEvent.roundOverTimeMs);
     }
 
-
     // 退出游戏的通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(QuitGameEvent quitGameEvent) {
         MyLog.d(TAG, "onEventMainThread syncStatusEvent");
         U.getToastUtil().showShort("某一个人退出了");
     }
-
 
     // 应用进程切到后台通知
     @Subscribe(threadMode = ThreadMode.MAIN)
