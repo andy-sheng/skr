@@ -128,7 +128,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             public void onClick(View v) {
                 // 跳到预览
                 U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImagePreviewFragment.class)
-                        .setDataBeforeAdd(1, new ArrayList<>(mImagePicker.getSelectedImages()))
+                        .addDataBeforeAdd(1, new ArrayList<>(mImagePicker.getSelectedImages()))
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {

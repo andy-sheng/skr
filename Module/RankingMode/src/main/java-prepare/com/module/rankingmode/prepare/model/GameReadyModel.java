@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonGameReadyInfo implements Serializable {
+public class GameReadyModel implements Serializable {
     /**
      * jsonReadyInfo : [{"userID":7,"readySeq":1,"readyTimeMs":1544584287997},{"userID":8,"readySeq":2,"readyTimeMs":1544584290741},{"userID":9,"readySeq":3,"readyTimeMs":1544586876228}]
      * HasReadyedUserCnt : 3
@@ -22,7 +22,7 @@ public class JsonGameReadyInfo implements Serializable {
     private boolean isGameStart;
     private JsonGameStartInfo jsonGameStartInfo;
     private List<JsonReadyInfo> jsonReadyInfo;
-    private List<JsonRoundInfo> jsonRoundInfo;
+    private List<RoundInfoModel> jsonRoundInfo;
 
     public int getHasReadyedUserCnt() {
         return HasReadyedUserCnt;
@@ -56,11 +56,11 @@ public class JsonGameReadyInfo implements Serializable {
         this.jsonReadyInfo = jsonReadyInfo;
     }
 
-    public List<JsonRoundInfo> getJsonRoundInfo() {
+    public List<RoundInfoModel> getJsonRoundInfo() {
         return jsonRoundInfo;
     }
 
-    public void setJsonRoundInfo(List<JsonRoundInfo> jsonRoundInfo) {
+    public void setJsonRoundInfo(List<RoundInfoModel> jsonRoundInfo) {
         this.jsonRoundInfo = jsonRoundInfo;
     }
 
@@ -85,9 +85,9 @@ public class JsonGameReadyInfo implements Serializable {
         }
         this.setJsonReadyInfo(jsonReadyInfos);
 
-        List<JsonRoundInfo> jsonRoundInfos = new ArrayList<>();
+        List<RoundInfoModel> jsonRoundInfos = new ArrayList<>();
         for (RoundInfo roundInfo : msg.getRoundInfoList()) {
-            JsonRoundInfo jsonRoundInfo = new JsonRoundInfo();
+            RoundInfoModel jsonRoundInfo = new RoundInfoModel();
             jsonRoundInfo.parse(roundInfo);
             jsonRoundInfos.add(jsonRoundInfo);
         }

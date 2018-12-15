@@ -3,7 +3,7 @@ package com.module.rankingmode.prepare.model;
 import com.common.log.MyLog;
 import com.zq.live.proto.Room.OnlineInfo;
 
-public class JsonOnLineInfo {
+public class OnLineInfoModel {
     /**
      * userID : 16
      * isOnline : true

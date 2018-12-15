@@ -10,7 +10,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
-import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
+import com.module.rankingmode.prepare.model.GameReadyModel;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,7 +60,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                         MyLog.d(TAG, "checkPlayerReadyState result：" + result);
                         if (result.getErrno() == 0) {
                             // todo 带回所有已准备人的信息
-                            JsonGameReadyInfo jsonGameReadyInfo = JSON.parseObject(result.getData().toString(), JsonGameReadyInfo.class);
+                            GameReadyModel jsonGameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyModel.class);
                             if (jsonGameReadyInfo.isIsGameStart()) {
                                 iMatchSucessView.allPlayerIsReady(jsonGameReadyInfo);
                             } else {

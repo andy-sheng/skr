@@ -13,6 +13,7 @@ import com.common.base.R;
 import com.common.log.MyLog;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -153,8 +154,11 @@ public class FragmentUtils {
             return null;
         }
         fragment.setFragmentDataListener(params.fragmentDataListener);
-        if (params.dataBeforeAdd != null) {
-            fragment.setData(params.dataType, params.dataBeforeAdd);
+        if (!params.dataBeforeAddMap.isEmpty()) {
+            for(Integer dataType:params.dataBeforeAddMap.keySet()){
+                Object dataBeforeAdd = params.dataBeforeAddMap.get(dataType);
+                fragment.setData(dataType, dataBeforeAdd);
+            }
         }
         if (params.bundle != null) {
             fragment.setArguments(params.bundle);
@@ -242,8 +246,7 @@ public class FragmentUtils {
          * 虽然大部分值可以通过bundle传递，但有些值不适合bundle传递，比如一些很长的list
          * 一个很特别的回调等等。
          */
-        Object dataBeforeAdd;
-        int dataType; // 数据类型标识
+        HashMap<Integer,Object>   dataBeforeAddMap = new HashMap<>();
 
         /**
          * 用tag的一定要确保只有一个实例被添加
@@ -296,9 +299,8 @@ public class FragmentUtils {
             this.fragmentDataListener = l;
         }
 
-        public void setDataBeforeAdd(int dataType, Object dataBeforeAdd) {
-            this.dataType = dataType;
-            this.dataBeforeAdd = dataBeforeAdd;
+        public void addDataBeforeAdd(int dataType, Object dataBeforeAdd) {
+            this.dataBeforeAddMap.put(dataType,dataBeforeAdd);
         }
 
         public void setUseOldFragmentIfExist(boolean enable) {
@@ -366,8 +368,8 @@ public class FragmentUtils {
                 return this;
             }
 
-            public Builder setDataBeforeAdd(int dataType, Object dataBeforeAdd) {
-                mParams.setDataBeforeAdd(dataType, dataBeforeAdd);
+            public Builder addDataBeforeAdd(int dataType, Object dataBeforeAdd) {
+                mParams.addDataBeforeAdd(dataType, dataBeforeAdd);
                 return this;
             }
 

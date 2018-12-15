@@ -1,11 +1,11 @@
 package com.module.rankingmode.prepare.view;
 
-import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
+import com.module.rankingmode.prepare.model.GameReadyModel;
 
 public interface IMatchSucessView {
     void ready(boolean isPrepareState);
 
-    void allPlayerIsReady(JsonGameReadyInfo gameReadyInfo);
+    void allPlayerIsReady(GameReadyModel gameReadyInfo);
 
     void needReMatch();
 }

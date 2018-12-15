@@ -11,9 +11,9 @@ import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
-import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
-import com.module.rankingmode.prepare.model.JsonOnLineInfo;
-import com.module.rankingmode.prepare.model.JsonRoundInfo;
+import com.module.rankingmode.prepare.model.GameReadyModel;
+import com.module.rankingmode.prepare.model.OnLineInfoModel;
+import com.module.rankingmode.prepare.model.RoundInfoModel;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
@@ -26,7 +26,6 @@ import com.zq.live.proto.Room.QuitGameMsg;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
-import com.zq.live.proto.Room.RoundInfo;
 import com.zq.live.proto.Room.RoundOverMsg;
 import com.zq.live.proto.Room.SyncStatusMsg;
 
@@ -118,7 +117,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             return;
         }
 
-        JsonGameReadyInfo jsonGameReadyInfo = new JsonGameReadyInfo();
+        GameReadyModel jsonGameReadyInfo = new GameReadyModel();
         jsonGameReadyInfo.parse(readyNoticeMsg);
         EventBus.getDefault().post(new ReadyNoticeEvent(info, jsonGameReadyInfo));
     }
@@ -149,10 +148,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         long roundOverTimeMs = roundOverMsgr.getRoundOverTimeMs();
 
-        JsonRoundInfo currentRound = new JsonRoundInfo();
+        RoundInfoModel currentRound = new RoundInfoModel();
         currentRound.parse(roundOverMsgr.getCurrentRound());
 
-        JsonRoundInfo nextRound = new JsonRoundInfo();
+        RoundInfoModel nextRound = new RoundInfoModel();
         nextRound.parse(roundOverMsgr.getNextRound());
 
         EventBus.getDefault().post(new RoundOverEvent(info, roundOverTimeMs, currentRound, nextRound));
@@ -208,17 +207,17 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         long syncStatusTimes = syncStatusMsg.getSyncStatusTimeMs();
         long gameOverTimeMs = syncStatusMsg.getGameOverTimeMs();
 
-        List<JsonOnLineInfo> onLineInfos = new ArrayList<>();
+        List<OnLineInfoModel> onLineInfos = new ArrayList<>();
         for (OnlineInfo onlineInfo : syncStatusMsg.getOnlineInfoList()) {
-            JsonOnLineInfo jsonOnLineInfo = new JsonOnLineInfo();
+            OnLineInfoModel jsonOnLineInfo = new OnLineInfoModel();
             jsonOnLineInfo.parse(onlineInfo);
             onLineInfos.add(jsonOnLineInfo);
         }
 
-        JsonRoundInfo currentInfo = new JsonRoundInfo();
+        RoundInfoModel currentInfo = new RoundInfoModel();
         currentInfo.parse(syncStatusMsg.getCurrentRound());
 
-        JsonRoundInfo nextInfo = new JsonRoundInfo();
+        RoundInfoModel nextInfo = new RoundInfoModel();
         nextInfo.parse(syncStatusMsg.getNextRound());
 
         EventBus.getDefault().post(new SyncStatusEvent(info, syncStatusTimes, gameOverTimeMs, onLineInfos, currentInfo, nextInfo));

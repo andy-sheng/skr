@@ -78,7 +78,7 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
                 U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((BaseActivity) SongListView.this.getContext(), MatchingFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(false)
-                        .setDataBeforeAdd(0, songModel)
+                        .addDataBeforeAdd(0, songModel)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {

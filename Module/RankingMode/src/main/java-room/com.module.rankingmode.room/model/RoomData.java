@@ -1,33 +1,161 @@
 package com.module.rankingmode.room.model;
 
-import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
+import com.common.core.account.UserAccountManager;
+import com.common.log.MyLog;
+import com.module.rankingmode.prepare.model.OnLineInfoModel;
+import com.module.rankingmode.prepare.model.RoundInfoModel;
+import com.module.rankingmode.room.event.RoundInfoChangeEvent;
+import com.module.rankingmode.song.model.SongModel;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 public class RoomData {
-    int gameId;
-    long createTs;
-    private JsonGameReadyInfo mGameReadyInfo;
+    public final static String TAG = "RoomData";
+
+    private int mGameId; // 房间id
+
+    /**
+     * 当要拿服务器时间和本地时间比较时，请将服务器时间加上这个矫正值
+     * 如
+     * if(System.currentTimeMillis() > mGameStartTs + mShiftts){
+     *
+     * }
+     */
+    private int mShiftTs;// 本地时间比服务器快多少毫秒，比如快1秒，mShiftTs = 1000;
+
+    private long mGameCreateTs;// 游戏创建时间,服务器的
+
+    private long mGameStartTs;// 游戏开始时间,服务器的
+
+    private long mGameOverTs;// 游戏结束时间,服务器的
+
+    private long mLastSyncTs;// 上次同步服务器状态时间,服务器的
+
+    private SongModel mSongModel; // 歌曲信息
+
+    private List<RoundInfoModel> mRoundInfoModelList;//所有的轮次信息
+
+    private RoundInfoModel mExcpectRoundInfo;// 按理的 期望的当前的轮次
+
+    private RoundInfoModel mRealRoundInfo;// 实际的当前轮次信息
+
+    private List<OnLineInfoModel> mOnlineInfoList;//所有的用户在线信息
+
+
+    /**
+     * 检查轮次信息是否需要更新
+     */
+    public void checkRound() {
+        MyLog.d(TAG,"checkRound mExcpectRoundInfo="+mExcpectRoundInfo+" mRealRoundInfo="+mRealRoundInfo );
+        if (mExcpectRoundInfo == null) {
+            // 结束状态了
+            if (mRealRoundInfo != null) {
+                mRealRoundInfo = null;
+                EventBus.getDefault().post(new RoundInfoChangeEvent(false));
+            }
+            return;
+        }
+        if (!RoomDataUtils.roundInfoEqual(mExcpectRoundInfo,mRealRoundInfo)) {
+            // 轮次需要更新了
+            RoundInfoModel oldRoundInfo = mRealRoundInfo;
+            mRealRoundInfo = mExcpectRoundInfo;
+            if (mRealRoundInfo.getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
+                // 轮到自己唱了。开始发心跳，开始倒计时，3秒后 开始开始混伴奏，开始解除引擎mute，
+                EventBus.getDefault().post(new RoundInfoChangeEvent(true));
+            } else {
+                // 别人唱，本人的引擎mute，取消本人心跳。监听他人的引擎是否 unmute,开始混制歌词
+                EventBus.getDefault().post(new RoundInfoChangeEvent(false));
+            }
+        }
+    }
 
     public int getGameId() {
-        return gameId;
+        return mGameId;
     }
 
     public void setGameId(int gameId) {
-        this.gameId = gameId;
+        mGameId = gameId;
     }
 
-    public long getCreateTs() {
-        return createTs;
+    public int getShiftTs() {
+        return mShiftTs;
     }
 
-    public void setCreateTs(long createTs) {
-        this.createTs = createTs;
+    public void setShiftTs(int shiftTs) {
+        mShiftTs = shiftTs;
     }
 
-    public void setGameReadyInfo(JsonGameReadyInfo gameReadyInfo) {
-        mGameReadyInfo = gameReadyInfo;
+    public long getGameCreateTs() {
+        return mGameCreateTs;
     }
 
-    public JsonGameReadyInfo getGameReadyInfo() {
-        return mGameReadyInfo;
+    public void setGameCreateTs(long gameCreateTs) {
+        mGameCreateTs = gameCreateTs;
+    }
+
+    public long getGameStartTs() {
+        return mGameStartTs;
+    }
+
+    public void setGameStartTs(long gameStartTs) {
+        mGameStartTs = gameStartTs;
+    }
+
+    public long getGameOverTs() {
+        return mGameOverTs;
+    }
+
+    public void setGameOverTs(long gameOverTs) {
+        mGameOverTs = gameOverTs;
+    }
+
+    public long getLastSyncTs() {
+        return mLastSyncTs;
+    }
+
+    public void setLastSyncTs(long lastSyncTs) {
+        mLastSyncTs = lastSyncTs;
+    }
+
+    public SongModel getSongModel() {
+        return mSongModel;
+    }
+
+    public void setSongModel(SongModel songModel) {
+        mSongModel = songModel;
+    }
+
+    public List<RoundInfoModel> getRoundInfoModelList() {
+        return mRoundInfoModelList;
+    }
+
+    public void setRoundInfoModelList(List<RoundInfoModel> roundInfoModelList) {
+        mRoundInfoModelList = roundInfoModelList;
+    }
+
+    public RoundInfoModel getExcpectRoundInfo() {
+        return mExcpectRoundInfo;
+    }
+
+    public void setExcpectRoundInfo(RoundInfoModel excpectRoundInfo) {
+        mExcpectRoundInfo = excpectRoundInfo;
+    }
+
+    public RoundInfoModel getRealRoundInfo() {
+        return mRealRoundInfo;
+    }
+
+    public void setRealRoundInfo(RoundInfoModel realRoundInfo) {
+        mRealRoundInfo = realRoundInfo;
+    }
+
+    public List<OnLineInfoModel> getOnlineInfoList() {
+        return mOnlineInfoList;
+    }
+
+    public void setOnlineInfoList(List<OnLineInfoModel> onlineInfoList) {
+        mOnlineInfoList = onlineInfoList;
     }
 }

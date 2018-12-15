@@ -1,7 +1,12 @@
 package com.engine;
 
-import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
+import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
+import com.common.utils.U;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
 import io.agora.rtc.Constants;
@@ -12,7 +17,7 @@ import io.agora.rtc.video.VideoEncoderConfiguration;
  * 会影响引擎初始化的一些属性
  * 对于含义不清楚的参数，要看这个参数在哪里使用的
  */
-public class Params {
+public class Params implements Serializable {
     public static final int CHANNEL_TYPE_COMMUNICATION = Constants.CHANNEL_PROFILE_COMMUNICATION;
     public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
@@ -510,6 +515,28 @@ public class Params {
 
         public Params build() {
             return mParams;
+        }
+    }
+
+    public static void save2Pref(Params params) {
+        String s = JSON.toJSONString(params);
+        U.getPreferenceUtils().setSettingString("engine_pref_params", s);
+    }
+
+    /**
+     * 得到偏好的引擎设置，一般是在练歌房训练出来的
+     * @return
+     */
+    public static Params getFromPref() {
+        String s = U.getPreferenceUtils().getSettingString("engine_pref_params", "");
+        if (!TextUtils.isEmpty(s)) {
+            Params params = (Params) JSON.parse(s);
+            return params;
+        } else {
+            return Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
+                    .setEnableVideo(false)
+                    .setUseCbEngine(false)
+                    .build();
         }
     }
 }

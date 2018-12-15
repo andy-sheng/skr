@@ -5,16 +5,22 @@ import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.room.comment.CommentView;
 import com.module.rankingmode.room.model.RoomData;
-import com.module.rankingmode.room.presenter.RankingRoomPresenter;
+import com.module.rankingmode.room.presenter.RankingCorePresenter;
 import com.module.rankingmode.room.view.BottomContainerView;
+import com.module.rankingmode.room.view.IGameRuleView;
 import com.module.rankingmode.room.view.InputContainerView;
 import com.module.rankingmode.room.view.TopContainerView;
 
-public class RankingRoomFragment extends BaseFragment {
+import java.util.List;
+
+public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     RoomData mRoomData;
 
@@ -26,7 +32,9 @@ public class RankingRoomFragment extends BaseFragment {
 
     TopContainerView mTopContainerView;
 
-    RankingRoomPresenter presenter;
+    RankingCorePresenter presenter;
+
+    ExTextView mTestTv;
 
     @Override
     public int initView() {
@@ -40,8 +48,8 @@ public class RankingRoomFragment extends BaseFragment {
         initBottomView();
         initCommentView();
         initTopView();
-
-        presenter = new RankingRoomPresenter(null, mRoomData);
+        mTestTv = mRootView.findViewById(R.id.test_tv);
+        presenter = new RankingCorePresenter(this, mRoomData);
         addPresent(presenter);
     }
 
@@ -49,7 +57,6 @@ public class RankingRoomFragment extends BaseFragment {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
     }
-
 
     private void initBottomView() {
         mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
@@ -60,7 +67,6 @@ public class RankingRoomFragment extends BaseFragment {
             }
         });
     }
-
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
@@ -87,7 +93,7 @@ public class RankingRoomFragment extends BaseFragment {
 
     @Override
     public void setData(int type, @Nullable Object data) {
-        if(type==0){
+        if (type == 0) {
             mRoomData = (RoomData) data;
         }
     }
@@ -98,5 +104,54 @@ public class RankingRoomFragment extends BaseFragment {
             return true;
         }
         return super.onBackPressed();
+    }
+
+    @Override
+    public void startSelfCountdown(Runnable countDownOver) {
+        HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(3)
+                .start(new HandlerTaskTimer.ObserverW() {
+                           @Override
+                           public void onNext(Integer integer) {
+                                addText("你要演唱要开始了，倒计时"+(4-integer));
+                           }
+
+                           @Override
+                           public void onComplete() {
+                               super.onComplete();
+                               countDownOver.run();
+                           }
+                       }
+                );
+    }
+
+    @Override
+    public void startRivalCountdown() {
+        addText("用户"+mRoomData.getRealRoundInfo().getUserID()+"的演唱开始了");
+    }
+
+    @Override
+    public void userExit() {
+
+    }
+
+    @Override
+    public void gameFinish() {
+        addText("游戏结束了");
+    }
+
+    @Override
+    public void updateUserState(List<OnLineInfoModel> jsonOnLineInfoList) {
+        for(OnLineInfoModel onLineInfoModel:jsonOnLineInfoList){
+            if(!onLineInfoModel.isIsOnline()){
+                addText("用户"+onLineInfoModel.getUserID()+"处于离线状态");
+            }
+        }
+    }
+
+    void addText(String te) {
+        String a = mTestTv.getText() + "\n" + te;
+        mTestTv.setText(a);
     }
 }

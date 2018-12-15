@@ -602,7 +602,7 @@ public class TestSdkActivity extends BaseActivity {
                 U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePreviewFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
-                        .setDataBeforeAdd(1, list)
+                        .addDataBeforeAdd(1, list)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {

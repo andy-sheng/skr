@@ -15,7 +15,7 @@ import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
-import com.module.rankingmode.prepare.model.JsonGameReadyInfo;
+import com.module.rankingmode.prepare.model.GameReadyModel;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
@@ -95,10 +95,12 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     }
 
     @Override
-    public void allPlayerIsReady(JsonGameReadyInfo jsonGameReadyInfo) {
+    public void allPlayerIsReady(GameReadyModel jsonGameReadyInfo) {
         MyLog.d(TAG, "allPlayerIsReady" + " jsonGameReadyInfo=" + jsonGameReadyInfo);
         matchSenceController.popSence();
         mPrepareData.setGameReadyInfo(jsonGameReadyInfo);
+        long localStartTs = System.currentTimeMillis()-jsonGameReadyInfo.getJsonGameStartInfo().getStartPassedMs();
+        mPrepareData.setShiftTs((int) (localStartTs - jsonGameReadyInfo.getJsonGameStartInfo().getStartTimeMs()));
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
                 .withSerializable("prepare_data", mPrepareData)
                 .greenChannel().navigation();

@@ -7,12 +7,13 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.engine.Params;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
-import com.module.rankingmode.prepare.sence.FastMatchSuccessSence;
 import com.module.rankingmode.room.fragment.RankingRoomFragment;
 import com.module.rankingmode.room.model.RoomData;
+import com.module.rankingmode.room.model.RoomDataUtils;
 
 @Route(path = RouterConstants.ACTIVITY_RANKING_ROOM)
 public class RankingRoomActivity extends BaseActivity {
@@ -31,13 +32,16 @@ public class RankingRoomActivity extends BaseActivity {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if(prepareData!=null) {
             mRoomData.setGameId(prepareData.getGameId());
-            mRoomData.setCreateTs(prepareData.getGameCreatMs());
-            mRoomData.setGameReadyInfo(prepareData.getGameReadyInfo());
-        }
+            mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
+            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
+            mRoomData.setShiftTs(prepareData.getShiftTs());
 
+            mRoomData.setSongModel(prepareData.getSongModel());
+            mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
+        }
         U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, RankingRoomFragment.class)
                 .setAddToBackStack(false)
-                .setDataBeforeAdd(0,mRoomData)
+                .addDataBeforeAdd(0,mRoomData)
                 .build()
         );
     }
