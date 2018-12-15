@@ -218,6 +218,7 @@ public class EngineManager implements AgoraOutCallback {
      *                 不是主播只看不能说
      */
     public void joinRoom(String roomid, int userId, boolean isAnchor) {
+        MyLog.w(TAG,"joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor);
         if (userId <= 0) {
             userId = 0;
         }

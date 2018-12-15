@@ -20,7 +20,7 @@ public class GameReadyModel implements Serializable {
 
     private int HasReadyedUserCnt;
     private boolean isGameStart;
-    private JsonGameStartInfo jsonGameStartInfo;
+    private GameStartInfoModel jsonGameStartInfo;
     private List<JsonReadyInfo> jsonReadyInfo;
     private List<RoundInfoModel> jsonRoundInfo;
 
@@ -40,11 +40,11 @@ public class GameReadyModel implements Serializable {
         this.isGameStart = isGameStart;
     }
 
-    public JsonGameStartInfo getJsonGameStartInfo() {
+    public GameStartInfoModel getJsonGameStartInfo() {
         return jsonGameStartInfo;
     }
 
-    public void setJsonGameStartInfo(JsonGameStartInfo jsonGameStartInfo) {
+    public void setJsonGameStartInfo(GameStartInfoModel jsonGameStartInfo) {
         this.jsonGameStartInfo = jsonGameStartInfo;
     }
 
@@ -73,7 +73,7 @@ public class GameReadyModel implements Serializable {
         this.setHasReadyedUserCnt(msg.getHasReadyedUserCnt());
         this.setIsGameStart(msg.getIsGameStart());
 
-        JsonGameStartInfo jsonGameStartInfo = new JsonGameStartInfo();
+        GameStartInfoModel jsonGameStartInfo = new GameStartInfoModel();
         jsonGameStartInfo.parse(msg.getGameStartInfo());
         this.setJsonGameStartInfo(jsonGameStartInfo);
 

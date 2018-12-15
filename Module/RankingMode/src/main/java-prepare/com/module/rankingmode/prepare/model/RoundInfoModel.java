@@ -102,8 +102,6 @@ public class RoundInfoModel implements Serializable {
 
         if (userID != that.userID) return false;
         if (playbookID != that.playbookID) return false;
-        if (roundSeq != that.roundSeq) return false;
-        if (singBeginMs != that.singBeginMs) return false;
         return singEndMs == that.singEndMs;
     }
 
@@ -112,8 +110,6 @@ public class RoundInfoModel implements Serializable {
         int result = userID;
         result = 31 * result + playbookID;
         result = 31 * result + roundSeq;
-        result = 31 * result + singBeginMs;
-        result = 31 * result + singEndMs;
         return result;
     }
 
@@ -125,6 +121,7 @@ public class RoundInfoModel implements Serializable {
                 ", roundSeq=" + roundSeq +
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +
+                ", endTs=" + endTs +
                 '}';
     }
 }

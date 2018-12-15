@@ -9,6 +9,9 @@ import io.agora.rtc.IRtcEngineEventHandlerEx;
 public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     private String TAG;
 
+    // 比较不重要的log
+    boolean vLogShow = false;
+
     public AgoraEngineCallbackWithLog(String tag) {
         super();
         TAG = tag;
@@ -47,7 +50,9 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onApiCallExecuted(int error, String api, String result) {
-        MyLog.d(TAG, "onApiCallExecuted" + " error=" + error + " api=" + api + " result=" + result);
+        if(vLogShow) {
+            MyLog.d(TAG, "onApiCallExecuted" + " error=" + error + " api=" + api + " result=" + result);
+        }
         super.onApiCallExecuted(error, api, result);
     }
 
@@ -131,7 +136,9 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume) {
-        MyLog.d(TAG, "onAudioVolumeIndication" + " speakers=" + speakers + " totalVolume=" + totalVolume);
+        if (vLogShow) {
+            MyLog.d(TAG, "onAudioVolumeIndication" + " speakers=" + speakers + " totalVolume=" + totalVolume);
+        }
         super.onAudioVolumeIndication(speakers, totalVolume);
     }
 
@@ -245,7 +252,9 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onRtcStats(RtcStats stats) {
-        MyLog.d(TAG, "onRtcStats" + " stats=" + stats);
+        if(vLogShow) {
+            MyLog.d(TAG, "onRtcStats" + " stats=" + stats);
+        }
         super.onRtcStats(stats);
     }
 

@@ -29,6 +29,12 @@ public class ApiManager {
 
     public static final String APPLICATION_JSOIN = "application/json; charset=utf-8";
 
+    /**
+     * 会影响 {@link HttpLoggingInterceptor 中的日志打印}
+     * 比如 心跳日志就不打印 太多了
+     */
+    public static final String NO_LOG_TAG = "NO-LOG: true";
+
     private Retrofit mDefalutRetrofit;
 
     /**
@@ -88,19 +94,17 @@ public class ApiManager {
                     mOutInterceptors.clear();
 
 
-                    if (MyLog.isDebugLogOpen()) {
-                        // 确保这个拦截器最后添加,以便打印更多的日志
-                        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                            @Override
-                            public void log(String message) {
+                    // 确保这个拦截器最后添加,以便打印更多的日志
+                    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                        @Override
+                        public void log(String message) {
+                            if (MyLog.isDebugLogOpen()) {
                                 MyLog.d(TAG, message);
                             }
-                        });
-                        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                        defaultClient.addInterceptor(httpLoggingInterceptor);
-                    } else {
-
-                    }
+                        }
+                    });
+                    httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                    defaultClient.addInterceptor(httpLoggingInterceptor);
 
                     /*创建retrofit对象*/
                     mDefalutRetrofit = new Retrofit.Builder()

@@ -77,4 +77,27 @@ public class RoomDataUtils {
         }
         return null;
     }
+
+    public static int getUidOfRoundInfo(RoundInfoModel infoModel) {
+        if (infoModel == null) {
+            return 0;
+        }
+        return infoModel.getUserID();
+    }
+
+    public static int getSeqOfRoundInfo(RoundInfoModel infoModel) {
+        if (infoModel == null) {
+            return 0;
+        }
+        return infoModel.getRoundSeq();
+    }
+
+    public static RoundInfoModel getRoundInfoByUserId(List<RoundInfoModel> jsonRoundInfo, int uid) {
+        for (RoundInfoModel infoModel : jsonRoundInfo) {
+            if (infoModel.getUserID() == uid) {
+                return infoModel;
+            }
+        }
+        return null;
+    }
 }

@@ -5,7 +5,7 @@ import com.zq.live.proto.Room.GameStartInfo;
 
 import java.io.Serializable;
 
-public class JsonGameStartInfo implements Serializable {
+public class GameStartInfoModel implements Serializable {
     /**
      * startTimeMs : 1544586876239
      * startPassedMs : 3119
@@ -40,4 +40,13 @@ public class JsonGameStartInfo implements Serializable {
         this.setStartPassedMs(gameStartInfo.getStartPassedMs());
         return;
     }
+
+    @Override
+    public String toString() {
+        return "JsonGameStartInfo{" +
+                "startTimeMs=" + startTimeMs +
+                ", startPassedMs=" + startPassedMs +
+                '}';
+    }
 }
+

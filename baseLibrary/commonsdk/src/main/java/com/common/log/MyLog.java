@@ -290,6 +290,6 @@ public class MyLog {
     }
 
     public static boolean isDebugLogOpen() {
-        return BuildConfig.DEBUG || U.getChannelUtils().isTestChannel() || forceOpenFlag;
+        return BuildConfig.DEBUG  || forceOpenFlag || U.getChannelUtils().isTestChannel();
     }
 }
