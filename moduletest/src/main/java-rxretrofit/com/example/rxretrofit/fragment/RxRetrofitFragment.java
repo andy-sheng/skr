@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -16,9 +17,15 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.utils.U;
 import com.example.rxretrofit.TestService;
+import com.example.rxretrofit.fastjson.Sex;
 import com.example.rxretrofit.fastjson.Song;
+import com.example.rxretrofit.fastjson.SongsEnum;
+import com.example.rxretrofit.fastjson.Student;
 import com.wali.live.moduletest.R;
 
+import org.json.JSONStringer;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class RxRetrofitFragment extends BaseFragment {
@@ -50,19 +57,39 @@ public class RxRetrofitFragment extends BaseFragment {
         mTestRxretrofitEncap1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                encap1();
+                fastJson1();
+//                encap1();
             }
         });
 
         mTestRxretrofitEncap2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                encap2();
+//                encap2();
+                fastJson2();
             }
         });
 
 
+    }
 
+    private void fastJson1() {
+        String text = JSON.toJSONString(SongsEnum.SOUND_OF_SILENCE);
+        U.getToastUtil().showShort(text);
+    }
+
+    private void fastJson2() {
+        Student student = new Student();
+        student.setName("name");
+        student.setId(1L);
+        student.setSex(Sex.MAN);
+        MyLog.d(TAG, "fastJson2 toString = " + JSON.toJSON(student).toString() );
+        MyLog.d(TAG, "fastJson2 toJSONString = " + JSON.toJSONString(student));
+        Student student1 = JSON.parseObject(JSON.toJSON(student).toString(), Student.class);
+        Student student2 = JSON.parseObject(JSON.toJSONString(student), Student.class);
+        String str1 = "{\"id\":1,\"name\":\"name\",\"sex\":\"MAN\"}";
+        Student stu1 = JSON.parseObject(str1,Student.class);
+        U.getToastUtil().showShort(JSON.toJSONString(stu1));
     }
 
 
@@ -100,9 +127,9 @@ public class RxRetrofitFragment extends BaseFragment {
             @Override
             public void process(JSONObject obj) {
                 List<Song> list = JSON.parseArray(obj.getJSONObject("data").getString("playlist"), Song.class);
-                U.getToastUtil().showShort("得到数据结果 使用fastjoson转成list，list.size:"+list.size());
-                for(Song s:list){
-                    MyLog.w(TAG,"song:"+s.toString());
+                U.getToastUtil().showShort("得到数据结果 使用fastjoson转成list，list.size:" + list.size());
+                for (Song s : list) {
+                    MyLog.w(TAG, "song:" + s.toString());
                 }
             }
         }, this);
