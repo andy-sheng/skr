@@ -93,8 +93,6 @@ public class PkRoomFragment extends BaseFragment {
         String fileName = "shamoluotuo";
         LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", fileName.hashCode() + "");
 
-
-
         mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,11 +213,7 @@ public class PkRoomFragment extends BaseFragment {
         } else {
             mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
         }
-        EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
-                .setUseCbEngine(useChangbaEngine)
-                .setEnableVideo(true)
-                .setEnableAudio(true)
-                .build());
+        EngineManager.getInstance().init(Params.getFromPref());
         // 不再次调用 join Agora 的preview 不生效,因为init时已经离开房间了
         EngineManager.getInstance().joinRoom(ROOM_ID, 0, true);
 

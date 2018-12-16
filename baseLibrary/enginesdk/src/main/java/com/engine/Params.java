@@ -542,7 +542,7 @@ public class Params implements Serializable {
                     .setEnableVideo(false)
                     .setEnableAudio(true)
                     .setUseCbEngine(false)
-//                    .setStyleEnum(AudioEffectStyleEnum.GRAMOPHONE)
+                    .setStyleEnum(null)
                     .build();
         }
     }

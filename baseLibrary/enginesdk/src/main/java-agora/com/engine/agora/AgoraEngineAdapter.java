@@ -865,7 +865,7 @@ public class AgoraEngineAdapter {
         if (styleEnum == null) {
             mRtcEngine.registerAudioFrameObserver(null);
         } else {
-            // 注册这玩意怎么会导致没有声音
+            // 注册这玩意怎么会导致没有声音,return false 就会丢弃
             mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
                 @Override
                 public boolean onRecordFrame(byte[] samples,
@@ -873,11 +873,12 @@ public class AgoraEngineAdapter {
                                              int bytesPerSample,
                                              int channels,
                                              int samplesPerSec) {
-                    return CbEngineAdapter.getInstance().processAudioFrames(samples,
+                    CbEngineAdapter.getInstance().processAudioFrames(samples,
                             numOfSamples,
                             bytesPerSample,
                             channels,
                             samplesPerSec);
+                    return true;
                 }
 
                 @Override
@@ -886,7 +887,7 @@ public class AgoraEngineAdapter {
                                                int bytesPerSample,
                                                int channels,
                                                int samplesPerSec) {
-                    return false;
+                    return true;
                 }
             });
         }
