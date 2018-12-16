@@ -535,7 +535,7 @@ public class Params implements Serializable {
     public static Params getFromPref() {
         String s = U.getPreferenceUtils().getSettingString("engine_pref_params", "");
         if (!TextUtils.isEmpty(s)) {
-            Params params = (Params) JSON.parse(s);
+            Params params = JSON.parseObject(s, Params.class);
             return params;
         } else {
             return Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)

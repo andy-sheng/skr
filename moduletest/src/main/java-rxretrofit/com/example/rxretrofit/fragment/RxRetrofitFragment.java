@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
@@ -16,6 +17,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.utils.U;
+import com.engine.Params;
 import com.example.rxretrofit.TestService;
 import com.example.rxretrofit.fastjson.Sex;
 import com.example.rxretrofit.fastjson.Song;
@@ -27,6 +29,7 @@ import org.json.JSONStringer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RxRetrofitFragment extends BaseFragment {
 
@@ -57,8 +60,9 @@ public class RxRetrofitFragment extends BaseFragment {
         mTestRxretrofitEncap1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fastJson1();
+//                fastJson1();
 //                encap1();
+                testParams1();
             }
         });
 
@@ -66,7 +70,8 @@ public class RxRetrofitFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 //                encap2();
-                fastJson2();
+//                fastJson2();
+                testParams2();
             }
         });
 
@@ -83,13 +88,30 @@ public class RxRetrofitFragment extends BaseFragment {
         student.setName("name");
         student.setId(1L);
         student.setSex(Sex.MAN);
-        MyLog.d(TAG, "fastJson2 toString = " + JSON.toJSON(student).toString() );
+        MyLog.d(TAG, "fastJson2 toString = " + JSON.toJSON(student).toString());
         MyLog.d(TAG, "fastJson2 toJSONString = " + JSON.toJSONString(student));
         Student student1 = JSON.parseObject(JSON.toJSON(student).toString(), Student.class);
         Student student2 = JSON.parseObject(JSON.toJSONString(student), Student.class);
         String str1 = "{\"id\":1,\"name\":\"name\",\"sex\":\"MAN\"}";
-        Student stu1 = JSON.parseObject(str1,Student.class);
+        Student stu1 = JSON.parseObject(str1, Student.class);
         U.getToastUtil().showShort(JSON.toJSONString(stu1));
+    }
+
+    String text = "";
+    public void testParams1() {
+        Map<Integer, Song> map = new HashMap<>();
+        Song song = new Song();
+        song.setXqusic_id("2");
+        song.setXqusic_mid("3");
+        map.put(0, song);
+        map.put(1, song);
+        MyLog.d(TAG, "testParams1 toString = " + JSON.toJSON(map).toString());
+        text = JSON.toJSON(map).toString();
+    }
+
+    public void testParams2() {
+        Map<Integer,Song> s = JSON.parseObject(text, new TypeReference<Map<Integer, Song>>(){});
+        MyLog.d(TAG, "testParams2" );
     }
 
 
