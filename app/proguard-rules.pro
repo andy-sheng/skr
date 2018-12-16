@@ -255,9 +255,11 @@ public static java.lang.String TABLENAME;
 
 -keep class **.BuildConfig {*;}
 
+-keep class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
 -keep class com.common.statistics.TimeStatistics{*;}
 #蒲公英
--libraryjars ../baseLibrary/commonsdk/libs/pgyer_sdk_3.0.2.jar
+#-libraryjars ../baseLibrary/commonsdk/libs/pgyer_sdk_3.0.2.jar
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }
 

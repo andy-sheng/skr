@@ -4,7 +4,7 @@ include ':baseLibrary:commonsdk','baseLibrary:enginesdk'
 include ':Module:Home', ':Module:RankingMode',':Module:IMKit'
 
 include ':Component:IMLib',':Component:BusiLib'
-include ':plugindemo'
+//include ':plugindemo'
 
 include ':baseLibrary:my-utils-gradle'
 
