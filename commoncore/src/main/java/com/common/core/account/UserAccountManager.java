@@ -75,9 +75,9 @@ public class UserAccountManager {
     }
 
     private void setAccount(UserAccount account) {
-        MyLog.d(TAG, "setAccount" + " accountId=" + account.getUid());
         mAccount = account;
         if (account != null) {
+            MyLog.d(TAG, "setAccount" + " accountId=" + account.getUid());
             // 取消匿名模式
 //            MiLinkClientAdapter.getInstance().setIsTouristMode(false);
             // MilinkChannelClientAdapter.getInstance().destroy();
