@@ -102,7 +102,7 @@ public class RoundInfoModel implements Serializable {
 
         if (userID != that.userID) return false;
         if (playbookID != that.playbookID) return false;
-        return singEndMs == that.singEndMs;
+        return true;
     }
 
     @Override
