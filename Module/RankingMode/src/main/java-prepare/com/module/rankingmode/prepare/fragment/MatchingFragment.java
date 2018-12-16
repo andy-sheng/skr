@@ -94,7 +94,7 @@ public class MatchingFragment extends BaseFragment {
             mMatchContent.removeAllViews();
         }
         // 退出了匹配页面，销毁引擎
-        EngineManager.getInstance().destroy();
+        EngineManager.getInstance().destroy("prepare");
     }
 
     @Override

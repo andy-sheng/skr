@@ -47,6 +47,8 @@ public class EngineManager implements AgoraOutCallback {
     private Handler mUiHandler = new Handler();
     private HandlerTaskTimer mMusicTimePlayTimeListener;
 
+    private String mInitFrom;
+
     @Override
     public void onUserJoined(int uid, int elapsed) {
         // 用户加入了
@@ -162,8 +164,9 @@ public class EngineManager implements AgoraOutCallback {
         return EngineManagerHolder.INSTANCE;
     }
 
-    public void init(Params params) {
-        destroy();
+    public void init(String from,Params params) {
+        mInitFrom = from;
+        destroy(from);
         mConfig = params;
         AgoraEngineAdapter.getInstance().init(mConfig);
         CbEngineAdapter.getInstance().init(mConfig);
@@ -184,7 +187,10 @@ public class EngineManager implements AgoraOutCallback {
     /**
      * 销毁所有
      */
-    public void destroy() {
+    public void destroy(String from) {
+        if(mInitFrom!=null && !mInitFrom.equals(from)){
+            return;
+        }
         mIsInit = false;
         if (mMusicTimePlayTimeListener != null) {
             mMusicTimePlayTimeListener.dispose();

@@ -213,7 +213,7 @@ public class PkRoomFragment extends BaseFragment {
         } else {
             mModeSwitchBtn.setText("使用唱吧引擎：已关闭");
         }
-        EngineManager.getInstance().init(Params.getFromPref());
+        EngineManager.getInstance().init("pkroom",Params.getFromPref());
         // 不再次调用 join Agora 的preview 不生效,因为init时已经离开房间了
         EngineManager.getInstance().joinRoom(ROOM_ID, 0, true);
 
@@ -252,7 +252,7 @@ public class PkRoomFragment extends BaseFragment {
         super.destroy();
         mUiHandler.removeCallbacksAndMessages(null);
         ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(ROOM_ID);
-        EngineManager.getInstance().destroy();
+        EngineManager.getInstance().destroy("pkroom");
     }
 
     @Override

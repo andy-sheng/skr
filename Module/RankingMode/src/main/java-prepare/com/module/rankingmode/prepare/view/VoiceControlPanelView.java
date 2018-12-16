@@ -99,7 +99,7 @@ public class VoiceControlPanelView extends ScrollView {
 
         if (!EngineManager.getInstance().isInit()) {
             // 不能每次都初始化,播放伴奏
-            EngineManager.getInstance().init(Params.newBuilder(Params.CHANNEL_TYPE_COMMUNICATION)
+            EngineManager.getInstance().init("prepare",Params.newBuilder(Params.CHANNEL_TYPE_COMMUNICATION)
                     .setEnableVideo(false)
                     .build());
             EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);

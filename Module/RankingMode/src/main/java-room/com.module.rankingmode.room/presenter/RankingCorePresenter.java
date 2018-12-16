@@ -64,7 +64,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         mRoomData = roomData;
         TAG = "RankingCorePresenter_" + mRoomData.getGameId();
         Params params = Params.getFromPref();
-        EngineManager.getInstance().init(params);
+        EngineManager.getInstance().init("rankingroom",params);
         EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
         // 不发送本地音频
         EngineManager.getInstance().muteLocalAudioStream(true);
@@ -88,7 +88,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        EngineManager.getInstance().destroy();
+        EngineManager.getInstance().destroy("rankingroom");
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
