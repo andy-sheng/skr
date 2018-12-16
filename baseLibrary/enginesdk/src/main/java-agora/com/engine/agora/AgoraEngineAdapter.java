@@ -223,7 +223,7 @@ public class AgoraEngineAdapter {
      */
     private void initRtcEngineInner() {
         if (mConfig.isEnableAudio()) {
-            MyLog.d(TAG,"initRtcEngineInner enableAudio" );
+            MyLog.d(TAG, "initRtcEngineInner enableAudio");
             //该方法需要在 joinChannel 之前设置好，joinChannel 后设置不生效。
             mRtcEngine.enableAudio();
             mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(mConfig.getAudioProfile())
@@ -238,29 +238,32 @@ public class AgoraEngineAdapter {
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
             // 注册这玩意怎么会导致没有声音
-            mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
-                @Override
-                public boolean onRecordFrame(byte[] samples,
-                                             int numOfSamples,
-                                             int bytesPerSample,
-                                             int channels,
-                                             int samplesPerSec) {
-                    return CbEngineAdapter.getInstance().processAudioFrames(samples,
-                            numOfSamples,
-                            bytesPerSample,
-                            channels,
-                            samplesPerSec);
-                }
-
-                @Override
-                public boolean onPlaybackFrame(byte [] 	samples,
-                                               int 	numOfSamples,
-                                               int 	bytesPerSample,
-                                               int 	channels,
-                                               int 	samplesPerSec) {
-                    return false;
-                }
-            });
+//            mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
+//                @Override
+//                public boolean onRecordFrame(byte[] samples,
+//                                             int numOfSamples,
+//                                             int bytesPerSample,
+//                                             int channels,
+//                                             int samplesPerSec) {
+//                    return CbEngineAdapter.getInstance().processAudioFrames(samples,
+//                            numOfSamples,
+//                            bytesPerSample,
+//                            channels,
+//                            samplesPerSec);
+//                }
+//
+//                @Override
+//                public boolean onPlaybackFrame(byte[] samples,
+//                                               int numOfSamples,
+//                                               int bytesPerSample,
+//                                               int channels,
+//                                               int samplesPerSec) {
+//                    return false;
+//                }
+//            });
+            // 设置onRecordFrame回调的数据
+            setRecordingAudioFrameParameters(44100, 2, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
+            setPlaybackAudioFrameParameters(44100, 2, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
         } else {
             mRtcEngine.disableAudio();
         }
@@ -726,6 +729,42 @@ public class AgoraEngineAdapter {
      */
     public void setInEarMonitoringVolume(int volume) {
         mRtcEngine.setInEarMonitoringVolume(volume);
+    }
+
+    /**
+     * @param sampleRate     指定 onRecordFrame 中返回数据的采样率，可设置为 8000，16000，32000，44100 或 48000。
+     * @param channel        指定 onRecordFrame 中返回数据的通道数，可设置为 1 或 2：
+     *                       * 1：单声道
+     *                       * 2：双声道
+     * @param mode           指定 onRecordFrame 的使用模式：
+     *                       RAW_AUDIO_FRAME_OP_MODE_READ_ONLY：只读模式，用户仅从 AudioFrame 获取原始音频数据。例如：若用户通过 Agora SDK 采集数据，自己进行 RTMP 推流，则可以选择该模式。
+     *                       RAW_AUDIO_FRAME_OP_MODE_WRITE_ONLY：只写模式，用户替换 AudioFrame 中的数据以供 Agora SDK 编码传输。例如：若用户自行采集数据，可选择该模式。
+     *                       RAW_AUDIO_FRAME_OP_MODE_READ_WRITE：读写模式，用户从 AudioFrame 获取并修改数据，并返回给 Aogra SDK 进行编码传输。例如：若用户自己有音效处理模块，且想要根据实际需要对数据进行前处理 (例如变声)，则可以选择该模式。
+     * @param samplesPerCall 指定 onRecordFrame 中返回数据的采样点数，如 RTMP 推流应用中通常为 1024。 SamplesPerCall = (int)(SampleRate × sampleInterval)，其中：sample ≥ 0.01，单位为秒。
+     */
+    public int setRecordingAudioFrameParameters(int sampleRate,
+                                                int channel,
+                                                int mode,
+                                                int samplesPerCall) {
+        return mRtcEngine.setRecordingAudioFrameParameters(sampleRate, channel, mode, samplesPerCall);
+    }
+
+    /**
+     * @param sampleRate     指定 onPlaybackFrame 中返回数据的采样率，可设置为 8000，16000，32000，44100 或 48000
+     * @param channel        指定 onPlaybackFrame 中返回数据的通道数，可设置为 1 或 2：
+     *                       1：单声道
+     *                       2：双声道
+     * @param mode           指定 onPlaybackFrame 的使用模式：
+     *                       RAW_AUDIO_FRAME_OP_MODE_READ_ONLY：只读模式，用户仅从 AudioFrame 获取原始音频数据，不作任何修改。例如：若用户通过 Agora SDK 采集数据，自己进行 RTMP 推流，则可以选择该模式。
+     *                       RAW_AUDIO_FRAME_OP_MODE_WRITE_ONLY：只写模式，用户替换 AudioFrame 中的数据。例如：若用户自行采集数据，可选择该模式。
+     *                       RAW_AUDIO_FRAME_OP_MODE_READ_WRITE：读写模式，用户从 AudioFrame 获取数据、修改。例如：若用户自己有音效处理模块，且想要根据实际需要对数据进行后处理 (例如变声)，则可以选择该模式。
+     * @param samplesPerCall 指定 onPlaybackFrame 中返回数据的采样点数，如 RTMP 推流应用中通常为 1024。 SamplesPerCall = (int)(SampleRate × sampleInterval)，其中：sample ≥ 0.01，单位为秒。
+     */
+    public int setPlaybackAudioFrameParameters(int sampleRate,
+                                               int channel,
+                                               int mode,
+                                               int samplesPerCall) {
+        return mRtcEngine.setPlaybackAudioFrameParameters(sampleRate, channel, mode, samplesPerCall);
     }
 
     /*音频基础结束*/

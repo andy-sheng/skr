@@ -1,7 +1,6 @@
 package com.module.rankingmode.prepare.sence;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -109,7 +108,7 @@ public class AuditionSence extends RelativeLayout implements ISence {
         if(accFile != null){
             String accFilePath = accFile.getAbsolutePath();
             // 当前音乐在播放那就继续播放
-            if(accFilePath.equals(EngineManager.getInstance().getParams().getMIxMusicFilePath())){
+            if(accFilePath.equals(EngineManager.getInstance().getParams().getMixMusicFilePath())){
                 if(!EngineManager.getInstance().getParams().isMixMusicPlaying()) {
                     EngineManager.getInstance().resumeAudioMixing();
                 }

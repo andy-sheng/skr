@@ -60,7 +60,7 @@ public class Params implements Serializable {
 
     private Constants.AudioScenario audioScenario = Constants.AudioScenario.SHOWROOM; // 秀场场景
 
-    private boolean enableAudioQualityIndication = true;
+    private boolean enableAudioQualityIndication = true;// 开启音量提示
 
     private int volumeIndicationInterval = 300; // 是谁在说话提示最小间隔
 
@@ -90,7 +90,7 @@ public class Params implements Serializable {
     private int selfUid; // 本人在引擎中的id
     private AudioEffectStyleEnum styleEnum = null;// 混响style
     private boolean enableSpeakerphone = false;// 开启扬声器
-    private String mMIxMusicFilePath;
+    private String mMixMusicFilePath;// 伴奏路径
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -364,12 +364,12 @@ public class Params implements Serializable {
         this.enableSpeakerphone = enableSpeakerphone;
     }
 
-    public void setMIxMusicFilePath(String mixMusicFilePath) {
-        mMIxMusicFilePath = mixMusicFilePath;
+    public void setMixMusicFilePath(String mixMusicFilePath) {
+        mMixMusicFilePath = mixMusicFilePath;
     }
 
-    public String getMIxMusicFilePath() {
-        return mMIxMusicFilePath;
+    public String getMixMusicFilePath() {
+        return mMixMusicFilePath;
     }
 
     public static class Builder {

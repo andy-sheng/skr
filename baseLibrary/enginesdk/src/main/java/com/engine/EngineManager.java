@@ -625,7 +625,7 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
         mConfig.setMixMusicPlaying(true);
-        mConfig.setMIxMusicFilePath(filePath);
+        mConfig.setMixMusicFilePath(filePath);
         startMusicPlayTimeListener();
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
         EventBus.getDefault().post(engineEvent);
@@ -638,7 +638,7 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void stopAudioMixing() {
         mConfig.setMixMusicPlaying(false);
-        mConfig.setMIxMusicFilePath(null);
+        mConfig.setMixMusicFilePath(null);
         stopMusicPlayTimeListener();
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
         EventBus.getDefault().post(engineEvent);
