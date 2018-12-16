@@ -9,10 +9,6 @@ import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
 import com.common.core.account.UserAccount;
-
-import com.common.core.db.UserInfoDao;
-import com.common.core.db.UserAccountDao;
-import com.common.core.account.UserAccount;
 import com.common.core.userinfo.UserInfo;
 
 import com.common.core.db.UserAccountDao;
