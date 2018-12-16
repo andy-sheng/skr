@@ -10,6 +10,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -97,7 +98,15 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     @Override
     public void allPlayerIsReady(GameReadyModel jsonGameReadyInfo) {
         MyLog.d(TAG, "allPlayerIsReady" + " jsonGameReadyInfo=" + jsonGameReadyInfo);
-        matchSenceController.popSence();
+        HandlerTaskTimer.newBuilder()
+                .delay(3000)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        matchSenceController.popSence();
+                        // TODO: 2018/12/16 需要产品确定这个地方退到什么地方 
+                    }
+                });
         mPrepareData.setGameReadyInfo(jsonGameReadyInfo);
         long localStartTs = System.currentTimeMillis()-jsonGameReadyInfo.getJsonGameStartInfo().getStartPassedMs();
         mPrepareData.setShiftTs((int) (localStartTs - jsonGameReadyInfo.getJsonGameStartInfo().getStartTimeMs()));
