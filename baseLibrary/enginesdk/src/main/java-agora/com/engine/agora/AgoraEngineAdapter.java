@@ -618,6 +618,7 @@ public class AgoraEngineAdapter {
      * @param muted
      */
     public void muteLocalAudioStream(boolean muted) {
+        MyLog.d(TAG,"muteLocalAudioStream" + " muted=" + muted);
         mRtcEngine.muteLocalAudioStream(muted);
     }
 

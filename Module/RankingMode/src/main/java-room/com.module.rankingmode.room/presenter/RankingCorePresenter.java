@@ -42,7 +42,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class RankingCorePresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "RankingCorePresenter";
+    String TAG = "RankingCorePresenter";
     private static long heartBeatTaskInterval = 2000;
     private static long checkStateTaskDelay = 10000;
     private static long syncStateTaskInterval = 12000;
@@ -60,6 +60,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     Handler mUiHanlder = new Handler();
 
     public RankingCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
+        TAG = "RankingCorePresenter_" + mRoomData.getGameId();
         mIGameRuleView = iGameRuleView;
         mRoomData = roomData;
         Params params = Params.getFromPref();
@@ -95,7 +96,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      * 上报轮次结束信息
      */
     public void sendRoundOverInfo() {
-        MyLog.d(TAG, "sendRoundOverInfo");
+        MyLog.d(TAG, "上报我的演唱结束");
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
 
@@ -111,7 +112,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    MyLog.d(TAG, "sendRoundOverInfo" + " result=" + 0);
+                    MyLog.d(TAG, "我的演唱结束上报成功");
                     // 尝试自己切换到下一个轮次
                     if (finalRoundSeq >= 0) {
                         RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
@@ -257,7 +258,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      * 根据时间戳更新选手状态,目前就只有两个入口，SyncStatusEvent push了sycn，不写更多入口
      */
     private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, List<OnLineInfoModel> onlineInfos, RoundInfoModel currentInfo, RoundInfoModel nextInfo) {
-        MyLog.d(TAG,"updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + currentInfo + " nextInfo=" + nextInfo);
+        MyLog.d(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + currentInfo + " nextInfo=" + nextInfo);
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
             mRoomData.setOnlineInfoList(onlineInfos);
@@ -304,9 +305,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 }
             });
         } else {
+            MyLog.d(TAG, "不是我的轮次，停止发心跳，停止混音，闭麦");
             cancelHeartBeatTask();
-            EngineManager.getInstance().muteLocalAudioStream(true);
             EngineManager.getInstance().stopAudioMixing();
+            EngineManager.getInstance().muteLocalAudioStream(true);
             // 收到其他的人onMute消息 开始播放其他人的歌的歌词，应该提前下载好
             if (mRoomData.getRealRoundInfo() != null) {
                 // 其他人演唱
@@ -326,8 +328,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             mIGameRuleView.gameFinish();
                         }
                     });
-                }else{
-                    MyLog.d(TAG,"结束时间比开始时间小，不应该吧");
+                } else {
+                    MyLog.d(TAG, "结束时间比开始时间小，不应该吧");
                 }
             }
         }
@@ -352,26 +354,26 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
             int muteUserId = event.getUserStatus().getUserId();
-            MyLog.w(TAG, "EngineEvent 有人解麦了 muteUserId=" + muteUserId);
-            RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(),muteUserId);
+            RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
             if (!event.getUserStatus().isAudioMute()) {
+                MyLog.w(TAG, "EngineEvent muteUserId=" + muteUserId + "解麦了");
                 /**
                  * 用户开始解开mute了，说明某个用户自己认为轮到自己唱了
                  * 这里考虑下要不要加个判断，如果当前轮次是这个用户，才播放他的歌词
                  * 就是是自己状态对，还是别人状态对的问题，这里先认为自己状态对.
                  * 状态依赖服务器
                  */
-                if(infoModel!=null){
-                    if(RoomDataUtils.roundInfoEqual(infoModel,mRoomData.getRealRoundInfo())){
+                if (infoModel != null) {
+                    if (RoomDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
                         //正好相等，没问题,放歌词
-                        MyLog.w(TAG, "正好相等，没问题,放歌词");
+                        MyLog.w(TAG, "是当前轮次，没问题,放歌词");
                         mUiHanlder.post(new Runnable() {
                             @Override
                             public void run() {
                                 mIGameRuleView.playLyric(infoModel.getPlaybookID());
                             }
                         });
-                    }else if(RoomDataUtils.roundSeqLarger(infoModel,mRoomData.getExpectRoundInfo())){
+                    } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
                         // 假设演唱的轮次在当前轮次后面，说明本地滞后了
                         MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
                         mRoomData.setExpectRoundInfo(infoModel);
@@ -383,13 +385,15 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             }
                         });
                     }
+                }else{
+                    MyLog.w(TAG, "找不到该人的轮次信息？？？为什么？？？");
                 }
-            }else{
+            } else {
                 /**
                  * 有人闭麦了，可以考虑加个逻辑，如果闭麦的人是当前演唱的人
                  * 说明此人演唱结束，可以考虑进入下一轮
                  */
-
+                MyLog.w(TAG, "EngineEvent muteUserId=" + muteUserId + "闭麦了");
             }
         }
     }
