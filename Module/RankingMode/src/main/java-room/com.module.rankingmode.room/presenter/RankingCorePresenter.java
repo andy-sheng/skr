@@ -321,6 +321,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {
                 if (mRoomData.getGameOverTs() > mRoomData.getGameStartTs()) {
+                    // 取消轮询
+                    cancelSyncGameStateTask();
                     // 游戏结束了,处理相应的ui逻辑
                     mUiHanlder.post(new Runnable() {
                         @Override
