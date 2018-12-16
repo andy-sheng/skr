@@ -60,9 +60,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     Handler mUiHanlder = new Handler();
 
     public RankingCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
-        TAG = "RankingCorePresenter_" + mRoomData.getGameId();
         mIGameRuleView = iGameRuleView;
         mRoomData = roomData;
+        TAG = "RankingCorePresenter_" + mRoomData.getGameId();
         Params params = Params.getFromPref();
         EngineManager.getInstance().init(params);
         EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
