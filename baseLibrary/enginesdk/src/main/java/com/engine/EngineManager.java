@@ -218,7 +218,7 @@ public class EngineManager implements AgoraOutCallback {
      *                 不是主播只看不能说
      */
     public void joinRoom(String roomid, int userId, boolean isAnchor) {
-        MyLog.w(TAG,"joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor);
+        MyLog.w(TAG, "joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor);
         if (userId <= 0) {
             userId = 0;
         }
@@ -232,8 +232,10 @@ public class EngineManager implements AgoraOutCallback {
         AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
         if (U.getDeviceUtils().getHeadsetPlugOn()) {
             setEnableSpeakerphone(false);
+            enableInEarMonitoring(true);
         } else {
             setEnableSpeakerphone(true);
+            enableInEarMonitoring(false);
         }
     }
 
@@ -482,11 +484,18 @@ public class EngineManager implements AgoraOutCallback {
 
     /**
      * 监听耳机插拔
+     *
      * @param event
      */
     @Subscribe
     public void onEvent(DeviceUtils.HeadsetPlugEvent event) {
-        setEnableSpeakerphone(!event.on);
+        if (event.on) {
+            setEnableSpeakerphone(false);
+            enableInEarMonitoring(true);
+        } else {
+            setEnableSpeakerphone(true);
+            enableInEarMonitoring(false);
+        }
     }
     /*视频基础结束*/
 
