@@ -18,8 +18,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.JavaBeanSerializer;
-import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -81,11 +79,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.alibaba.fastjson.serializer.SerializerFeature.WriteEnumUsingToString;
 
 @Route(path = RouterConstants.ACTIVITY_TEST)
 public class TestSdkActivity extends BaseActivity {
@@ -152,6 +147,14 @@ public class TestSdkActivity extends BaseActivity {
                 return mDataList.size();
             }
         });
+
+        mDataList.add(new H("退出登录", new Runnable() {
+            @Override
+            public void run() {
+                UserAccountManager.getInstance().logoff(true);
+            }
+        }));
+
 
         mDataList.add(new H("进入首页", new Runnable() {
             @Override

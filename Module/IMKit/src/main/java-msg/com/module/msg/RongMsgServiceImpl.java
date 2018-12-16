@@ -24,6 +24,16 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
+    public void disconnect() {
+        RongMsgManager.getInstance().disconnect();
+    }
+
+    @Override
+    public void logout() {
+        RongMsgManager.getInstance().logout();
+    }
+
+    @Override
     public void joinChatRoom(String roomId, ICallback callback) {
         RongMsgManager.getInstance().joinChatRoom(roomId, callback);
     }

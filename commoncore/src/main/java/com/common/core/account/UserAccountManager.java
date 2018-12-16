@@ -270,8 +270,11 @@ public class UserAccountManager {
 
     }
 
-    // todo 登出
-    public void logOut(final boolean deleteAccount) {
+    /**
+     * 退出登录
+     * @param deleteAccount
+     */
+    public void logoff(final boolean deleteAccount) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         ApiMethods.subscribe(userAccountServerApi.loginOut(), new ApiObserver<ApiResult>() {
             @Override
@@ -281,6 +284,28 @@ public class UserAccountManager {
                 }
             }
         });
+        ModuleServiceManager.getInstance().getMsgService().logout();
+        if (mAccount != null) {
+            Observable.create(new ObservableOnSubscribe<Object>() {
+                @Override
+                public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                    if (deleteAccount) {
+                        UserAccountLocalApi.delete(mAccount);
+                        ApiManager.getInstance().clearCookies();
+                    } else {
+                        mAccount.setIsLogOff(true);
+                        UserAccountLocalApi.insertOrReplace(mAccount);
+                        ApiManager.getInstance().clearCookies();
+                    }
+                    mAccount = null;
+                    UmengStatistics.onProfileSignOff();
+                    emitter.onComplete();
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .subscribe();
+        }
+
     }
 
     // todo 检查昵称是否可用
@@ -300,6 +325,8 @@ public class UserAccountManager {
                 }
             }
         });
+
+
     }
 
     // 获取IM的token

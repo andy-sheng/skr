@@ -159,6 +159,22 @@ public class RongMsgManager {
 
     }
 
+    /**
+     * <p>断开与融云服务器的连接。当调用此接口断开连接后，仍然可以接收 Push 消息。</p>
+     * <p>若想断开连接后不接受 Push 消息，可以调用{@link #logout()}</p>
+     */
+    public void disconnect() {
+        RongIM.getInstance().disconnect();
+    }
+
+    /**
+     * <p>断开与融云服务器的连接，并且不再接收 Push 消息。</p>
+     * <p>若想断开连接后仍然接受 Push 消息，可以调用 {@link #disconnect()}</p>
+     */
+    public void logout() {
+        RongIM.getInstance().logout();
+    }
+
     public void joinChatRoom(String roomId, ICallback callback) {
         mJoinroomCallback = callback;
         /**

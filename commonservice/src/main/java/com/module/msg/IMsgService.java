@@ -19,6 +19,11 @@ public interface IMsgService extends IProvider {
      * @param callback
      */
     void connectRongIM(String token, ICallback callback);
+
+    void disconnect();
+
+    void logout();
+
     /**
      * 加入融云聊天室
      * @param roomId
