@@ -3,7 +3,11 @@ package com.engine;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import java.io.Serializable;
@@ -168,6 +172,7 @@ public class Params implements Serializable {
         this.enableAudio = enableAudio;
     }
 
+    @JSONField()
     public Constants.AudioProfile getAudioProfile() {
         return audioProfile;
     }
@@ -372,6 +377,34 @@ public class Params implements Serializable {
         return mMixMusicFilePath;
     }
 
+    public int getEarMonitoringVolume() {
+        return earMonitoringVolume;
+    }
+
+    public void setEarMonitoringVolume(int earMonitoringVolume) {
+        this.earMonitoringVolume = earMonitoringVolume;
+    }
+
+    public HashMap<Integer, Integer> getLocalVoiceReverb() {
+        return localVoiceReverb;
+    }
+
+    public void setLocalVoiceReverb(HashMap<Integer, Integer> localVoiceReverb) {
+        this.localVoiceReverb = localVoiceReverb;
+    }
+
+    public boolean isCameraTorchOn() {
+        return cameraTorchOn;
+    }
+
+    public boolean isLocalVideoStreamMute() {
+        return localVideoStreamMute;
+    }
+
+    public boolean isAllRemoteVideoStreamsMute() {
+        return allRemoteVideoStreamsMute;
+    }
+
     public static class Builder {
         Params mParams = new Params();
 
@@ -523,17 +556,25 @@ public class Params implements Serializable {
         }
     }
 
+    /**
+     * 存起引擎的偏好的信息到Pref
+     *
+     * @param params
+     */
     public static void save2Pref(Params params) {
         String s = JSON.toJSONString(params);
+        MyLog.w(EngineManager.TAG, "save2Pref " + s);
         U.getPreferenceUtils().setSettingString("engine_pref_params", s);
     }
 
     /**
      * 得到偏好的引擎设置，一般是在练歌房训练出来的
+     *
      * @return
      */
     public static Params getFromPref() {
         String s = U.getPreferenceUtils().getSettingString("engine_pref_params", "");
+        MyLog.w(EngineManager.TAG, "getFromPref " + s);
         if (!TextUtils.isEmpty(s)) {
             Params params = JSON.parseObject(s, Params.class);
             return params;
@@ -542,7 +583,7 @@ public class Params implements Serializable {
                     .setEnableVideo(false)
                     .setEnableAudio(true)
                     .setUseCbEngine(false)
-                    .setStyleEnum(null)
+                    .setStyleEnum(AudioEffectStyleEnum.ORIGINAL)
                     .build();
         }
     }

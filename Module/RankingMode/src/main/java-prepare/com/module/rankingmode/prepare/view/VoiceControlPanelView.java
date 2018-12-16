@@ -78,16 +78,17 @@ public class VoiceControlPanelView extends ScrollView {
             }
         });
         mScenesBtnGroup = (RadioGroup) this.findViewById(R.id.scenes_btn_group);
+
         mScenesBtnGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 MyLog.d(TAG, "onCheckedChanged" + " group=" + group + " checkedId=" + checkedId);
                 if (checkedId == R.id.default_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(null);
-                } else if (checkedId == R.id.dianxin_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.LIVE_MAGIC);
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ORIGINAL);
+                } else if (checkedId == R.id.dianyin_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.POPULAR);
                 } else if (checkedId == R.id.kongling_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.NEW_CENT);
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.GRAMOPHONE);
                 } else if (checkedId == R.id.ktv_sbtn) {
                     EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.DANCE);
                 } else if (checkedId == R.id.rock_sbtn) {
@@ -95,19 +96,29 @@ public class VoiceControlPanelView extends ScrollView {
                 }
             }
         });
-        mScenesBtnGroup.check(R.id.default_sbtn);
+
+        AudioEffectStyleEnum styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
+
+        if (styleEnum == AudioEffectStyleEnum.ORIGINAL) {
+            mScenesBtnGroup.check(R.id.default_sbtn);
+        } else if (styleEnum == AudioEffectStyleEnum.POPULAR) {
+            mScenesBtnGroup.check(R.id.dianyin_sbtn);
+        } else if (styleEnum == AudioEffectStyleEnum.GRAMOPHONE) {
+            mScenesBtnGroup.check(R.id.kongling_sbtn);
+        } else if (styleEnum == AudioEffectStyleEnum.DANCE) {
+            mScenesBtnGroup.check(R.id.ktv_sbtn);
+        } else if (styleEnum == AudioEffectStyleEnum.ROCK) {
+            mScenesBtnGroup.check(R.id.rock_sbtn);
+        }
 
         if (!EngineManager.getInstance().isInit()) {
             // 不能每次都初始化,播放伴奏
-            EngineManager.getInstance().init("prepare",Params.newBuilder(Params.CHANNEL_TYPE_COMMUNICATION)
-                    .setEnableVideo(false)
-                    .build());
+            EngineManager.getInstance().init("prepare",Params.getFromPref());
             EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
 
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
-
 
         mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
         mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getAudioMixingVolume());
@@ -118,6 +129,7 @@ public class VoiceControlPanelView extends ScrollView {
         super.onDetachedFromWindow();
         // 停止播放混音
         EngineManager.getInstance().pauseAudioMixing();
+        Params.save2Pref(EngineManager.getInstance().getParams());
     }
 
     @Override

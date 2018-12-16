@@ -101,6 +101,58 @@ public class SOXReverbParam {
 		return echoNum;
 	}
 
+	public void setReverberance(int reverberance) {
+		this.reverberance = reverberance;
+	}
+
+	public void setDamping(int damping) {
+		this.damping = damping;
+	}
+
+	public void setRoomScale(int roomScale) {
+		this.roomScale = roomScale;
+	}
+
+	public void setPreDelay(int preDelay) {
+		this.preDelay = preDelay;
+	}
+
+	public void setWetGain(int wetGain) {
+		this.wetGain = wetGain;
+	}
+
+	public void setStereoDepth(int stereoDepth) {
+		this.stereoDepth = stereoDepth;
+	}
+
+	public void setDryWetMix(int dryWetMix) {
+		this.dryWetMix = dryWetMix;
+	}
+
+	public void setEchoDelay(int echoDelay) {
+		this.echoDelay = echoDelay;
+	}
+
+	public void setEchoPredecay(int echoPredecay) {
+		this.echoPredecay = echoPredecay;
+	}
+
+	public void setEchoPeriod(int echoPeriod) {
+		this.echoPeriod = echoPeriod;
+	}
+
+	public void setEchoDecayRatio(int echoDecayRatio) {
+		this.echoDecayRatio = echoDecayRatio;
+	}
+
+	public void setEchoPhaseDiff(int echoPhaseDiff) {
+		this.echoPhaseDiff = echoPhaseDiff;
+	}
+
+	public void setEchoNum(int echoNum) {
+		this.echoNum = echoNum;
+	}
+
 	@Override
 	public String toString() {
 		return "SOXReverbParam [reverberance=" + reverberance + ", damping="

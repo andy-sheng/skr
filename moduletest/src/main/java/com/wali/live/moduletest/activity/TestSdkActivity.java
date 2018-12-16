@@ -17,6 +17,10 @@ import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.JavaBeanSerializer;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.model.OSSRequest;
@@ -68,6 +72,8 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
+import com.wali.live.moduletest.fastjson.AA;
+import com.wali.live.moduletest.fastjson.CC;
 import com.wali.live.moduletest.fragment.ShowTextViewFragment;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
@@ -75,8 +81,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.alibaba.fastjson.serializer.SerializerFeature.WriteEnumUsingToString;
 
 @Route(path = RouterConstants.ACTIVITY_TEST)
 public class TestSdkActivity extends BaseActivity {
@@ -111,7 +120,6 @@ public class TestSdkActivity extends BaseActivity {
     public void onEvent(MyUserInfoEvent.UserInfoChangeEvent event) {
         loadAccountInfo();
     }
-
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
@@ -159,6 +167,22 @@ public class TestSdkActivity extends BaseActivity {
             public void run() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_MESSAGE)
                         .navigation();
+            }
+        }));
+
+        mDataList.add(new H("fastJson枚举", new Runnable() {
+
+            @Override
+            public void run() {
+                AA aa = new AA();
+                aa.setA("字段1");
+                aa.setB("字段2");
+                aa.setCc(CC.blue);
+                MyLog.w(TAG,"aaa:"+aa);
+
+                String ttt = JSON.toJSONString(aa,SerializerFeature.EMPTY);
+                aa = (AA) JSON.parse(ttt);
+                MyLog.w(TAG,"aaa:"+aa);
             }
         }));
 

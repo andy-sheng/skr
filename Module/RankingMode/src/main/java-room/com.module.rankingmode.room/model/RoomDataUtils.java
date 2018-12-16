@@ -1,5 +1,6 @@
 package com.module.rankingmode.room.model;
 
+import com.common.log.MyLog;
 import com.module.rankingmode.prepare.model.RoundInfoModel;
 
 import java.util.Collections;
@@ -92,6 +93,13 @@ public class RoomDataUtils {
         return infoModel.getRoundSeq();
     }
 
+    /**
+     * 根据用户id 尝试找到该用户对应的轮次
+     *
+     * @param jsonRoundInfo
+     * @param uid
+     * @return
+     */
     public static RoundInfoModel getRoundInfoByUserId(List<RoundInfoModel> jsonRoundInfo, int uid) {
         for (RoundInfoModel infoModel : jsonRoundInfo) {
             if (infoModel.getUserID() == uid) {
@@ -99,5 +107,22 @@ public class RoomDataUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * 以本地时间估算 距离 realRoundInfo 结束还有几秒
+     * 假设 realRoundInfo 还有3秒结束，返回3000
+     * 假设已经结束3秒了 返回 -3000
+     *
+     * @param roomData
+     * @param realRoundInfo
+     */
+    public static int estimateTs2End(RoomData roomData, RoundInfoModel realRoundInfo) {
+        if (realRoundInfo == null) {
+            MyLog.d("estimateTs2End realRoundInfo=" + realRoundInfo);
+            return 0;
+        }
+        long ts = realRoundInfo.getSingEndMs() + roomData.getGameStartTs() + roomData.getShiftTs();
+        return (int) (ts - System.currentTimeMillis());
     }
 }

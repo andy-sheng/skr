@@ -127,6 +127,8 @@ public class EngineManager implements AgoraOutCallback {
     @Override
     public void onAudioMixingFinished() {
         mConfig.setMixMusicPlaying(false);
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP, null);
+        EventBus.getDefault().post(engineEvent);
     }
 
     @Override

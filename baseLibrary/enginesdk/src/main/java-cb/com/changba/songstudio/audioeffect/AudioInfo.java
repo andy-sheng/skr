@@ -97,6 +97,38 @@ public class AudioInfo implements Serializable{
 		this.pitchShiftLevel = pitchShiftLevel;
 	}
 
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public void setChannels(int channels) {
+		this.channels = channels;
+	}
+
+	public void setAudioSampleRate(int audioSampleRate) {
+		this.audioSampleRate = audioSampleRate;
+	}
+
+	public void setRecordedTimeMills(int recordedTimeMills) {
+		this.recordedTimeMills = recordedTimeMills;
+	}
+
+	public void setTotalTimeMills(int totalTimeMills) {
+		this.totalTimeMills = totalTimeMills;
+	}
+
+	public void setAccompanyAGCVolume(float accompanyAGCVolume) {
+		this.accompanyAGCVolume = accompanyAGCVolume;
+	}
+
+	public void setAccompanyPitch(float accompanyPitch) {
+		this.accompanyPitch = accompanyPitch;
+	}
+
+	public void setPitchShiftLevel(int pitchShiftLevel) {
+		this.pitchShiftLevel = pitchShiftLevel;
+	}
+
 	public void setAudioAGCVolume(float audioAGCVolume) {
 		this.audioAGCVolume = audioAGCVolume;
 	}

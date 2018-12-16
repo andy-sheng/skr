@@ -79,6 +79,30 @@ public class SOXCompressorParam {
 		return expansion_ratio;
 	}
 
+	public void setAttacktime(float attacktime) {
+		this.attacktime = attacktime;
+	}
+
+	public void setDecaytime(float decaytime) {
+		this.decaytime = decaytime;
+	}
+
+	public void setThreshold(int threshold) {
+		this.threshold = threshold;
+	}
+
+	public void setRatio(float ratio) {
+		this.ratio = ratio;
+	}
+
+	public void setExpansion_threshold(int expansion_threshold) {
+		this.expansion_threshold = expansion_threshold;
+	}
+
+	public void setExpansion_ratio(float expansion_ratio) {
+		this.expansion_ratio = expansion_ratio;
+	}
+
 	public static SOXCompressorParam buildDefaultParam() {
 		return new SOXCompressorParam(0.02f, 0.04f, 20, 1.5f, 25, 1.3f, 0);
 	}

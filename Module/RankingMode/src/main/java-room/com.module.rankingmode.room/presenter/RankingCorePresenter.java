@@ -97,6 +97,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      */
     public void sendRoundOverInfo() {
         MyLog.d(TAG, "上报我的演唱结束");
+        estimateOverTsThisRound();
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
 
@@ -244,6 +246,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     updatePlayerState(gameOverTimeMs, syncStatusTimes, onlineInfos, currentInfo, nextInfo);
                 } else {
                     MyLog.e(TAG, "syncGameStatus " + result.getErrmsg());
+                    estimateOverTsThisRound();
                 }
             }
 
@@ -285,6 +288,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(RoundInfoChangeEvent event) {
         MyLog.d(TAG, "RoundInfoChangeEvent  轮次变更事件发生 " + " myturn=" + event.myturn);
+        estimateOverTsThisRound();
         if (event.myturn) {
             // 轮到我唱了
             // 开始发心跳
@@ -355,9 +359,18 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    private int estimateOverTsThisRound() {
+        int pt = RoomDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
+        MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
+        return pt;
+    }
+
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
-        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
+        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STOP) {
+            //伴奏播放结束了也发结束轮次的通知了
+            sendRoundOverInfo();
+        } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             EngineEvent.MixMusicTimeInfo timeInfo = (EngineEvent.MixMusicTimeInfo) event.getObj();
             if (timeInfo.getCurrent() >= mRoomData.getSongModel().getEndMs()) {
                 //可以发结束轮次的通知了
@@ -396,7 +409,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             }
                         });
                     }
-                }else{
+                } else {
                     MyLog.w(TAG, "找不到该人的轮次信息？？？为什么？？？");
                 }
             } else {

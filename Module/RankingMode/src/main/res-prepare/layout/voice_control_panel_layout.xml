@@ -85,7 +85,7 @@
             app:fillColor_checked="#f2978b"
             app:strokeColor="@color/white"
             app:textColor_checked="@color/black"
-            app:textColor_normal="#808080" />
+            app:textColor_normal="@color/white" />
 
         <com.module.rankingmode.prepare.view.ScenesSelectBtn
             android:id="@+id/ktv_sbtn"
@@ -100,7 +100,7 @@
             app:fillColor_checked="#f2978b"
             app:strokeColor="#dfab73"
             app:textColor_checked="@color/black"
-            app:textColor_normal="#808080" />
+            app:textColor_normal="@color/white" />
 
         <com.module.rankingmode.prepare.view.ScenesSelectBtn
             android:id="@+id/rock_sbtn"
@@ -115,10 +115,10 @@
             app:fillColor_checked="#f2978b"
             app:strokeColor="#b0e8ba"
             app:textColor_checked="@color/black"
-            app:textColor_normal="#808080" />
+            app:textColor_normal="@color/white" />
 
         <com.module.rankingmode.prepare.view.ScenesSelectBtn
-            android:id="@+id/dianxin_sbtn"
+            android:id="@+id/dianyin_sbtn"
             android:layout_width="@dimen/view_56_dp"
             android:layout_height="@dimen/view_56_dp"
             android:layout_marginLeft="@dimen/view_16_dp"
@@ -130,7 +130,7 @@
             app:fillColor_checked="#f2978b"
             app:strokeColor="#b0d5ec"
             app:textColor_checked="@color/black"
-            app:textColor_normal="#808080" />
+            app:textColor_normal="@color/white" />
 
         <com.module.rankingmode.prepare.view.ScenesSelectBtn
             android:id="@+id/kongling_sbtn"
@@ -145,6 +145,6 @@
             app:fillColor_checked="#f2978b"
             app:strokeColor="#e0adeb"
             app:textColor_checked="@color/black"
-            app:textColor_normal="#808080" />
+            app:textColor_normal="@color/white" />
     </RadioGroup>
 </LinearLayout>

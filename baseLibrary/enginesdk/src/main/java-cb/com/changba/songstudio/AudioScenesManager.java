@@ -16,7 +16,7 @@ public class AudioScenesManager {
         AudioEffect audioEffect = AudioEffectParamController.getInstance().extractParam(styleEnum,
                 AudioEffectEQEnum.STANDARD);
         AudioInfo audioInfo = getAudioInfo();
-        audioInfo.setAudioAGCVolume(1.9f);
+        audioInfo.setAudioAGCVolume(1.0f);
         audioEffect.setAudioInfo(audioInfo);
         return audioEffect;
     }
@@ -31,8 +31,6 @@ public class AudioScenesManager {
     }
 
     private static AudioInfo getAudioInfo() {
-        int pitchShiftLevel = 0;
-        float accompanyPitch = (float) Math.pow(1.059463094359295, pitchShiftLevel);
         int audioSampleRate = 44100;
         int channels = 1;
         float audioAGCVolume = 1.0f;

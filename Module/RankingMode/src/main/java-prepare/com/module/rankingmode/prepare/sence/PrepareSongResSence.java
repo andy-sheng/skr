@@ -158,13 +158,10 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
         this.matchSenceController = matchSenceController;
     }
 
-
     private void initMediaEngine() {
         if (!EngineManager.getInstance().isInit()) {
             // 不能每次都初始化,播放伴奏
-            EngineManager.getInstance().init("prepare",Params.newBuilder(Params.CHANNEL_TYPE_COMMUNICATION)
-                    .setEnableVideo(false)
-                    .build());
+            EngineManager.getInstance().init("prepare",Params.getFromPref());
             EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
             File accFile = SongResUtils.getAccFileByUrl(mPrepareData.getSongModel().getAcc());
             if(accFile!=null && accFile.exists()){

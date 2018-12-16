@@ -143,6 +143,94 @@ public class SOXEqualizerParam {
 		return bandWidth4;
 	}
 
+	public void setEnable1(boolean enable1) {
+		this.enable1 = enable1;
+	}
+
+	public void setFrequency1(int frequency1) {
+		this.frequency1 = frequency1;
+	}
+
+	public void setBandWidth1(float bandWidth1) {
+		this.bandWidth1 = bandWidth1;
+	}
+
+	public void setGain1(float gain1) {
+		this.gain1 = gain1;
+	}
+
+	public void setEnable2(boolean enable2) {
+		this.enable2 = enable2;
+	}
+
+	public void setFrequency2(int frequency2) {
+		this.frequency2 = frequency2;
+	}
+
+	public void setBandWidth2(float bandWidth2) {
+		this.bandWidth2 = bandWidth2;
+	}
+
+	public void setGain2(float gain2) {
+		this.gain2 = gain2;
+	}
+
+	public void setEnable3(boolean enable3) {
+		this.enable3 = enable3;
+	}
+
+	public void setFrequency3(int frequency3) {
+		this.frequency3 = frequency3;
+	}
+
+	public void setBandWidth3(float bandWidth3) {
+		this.bandWidth3 = bandWidth3;
+	}
+
+	public void setGain3(float gain3) {
+		this.gain3 = gain3;
+	}
+
+	public void setEnable4(boolean enable4) {
+		this.enable4 = enable4;
+	}
+
+	public void setFrequency4(int frequency4) {
+		this.frequency4 = frequency4;
+	}
+
+	public void setBandWidth4(float bandWidth4) {
+		this.bandWidth4 = bandWidth4;
+	}
+
+	public void setGain4(float gain4) {
+		this.gain4 = gain4;
+	}
+
+	public void setLowpassEnabled(boolean lowpassEnabled) {
+		this.lowpassEnabled = lowpassEnabled;
+	}
+
+	public void setLowpassFrequency(int lowpassFrequency) {
+		this.lowpassFrequency = lowpassFrequency;
+	}
+
+	public void setLowpassBandWidth(float lowpassBandWidth) {
+		this.lowpassBandWidth = lowpassBandWidth;
+	}
+
+	public void setHighpassEnabled(boolean highpassEnabled) {
+		this.highpassEnabled = highpassEnabled;
+	}
+
+	public void setHighpassFrequency(int highpassFrequency) {
+		this.highpassFrequency = highpassFrequency;
+	}
+
+	public void setHighpassBandWidth(float highpassBandWidth) {
+		this.highpassBandWidth = highpassBandWidth;
+	}
+
 	public float getGain4() {
 		return gain4;
 	}

@@ -1,6 +1,7 @@
 package com.changba.songstudio;
 
 import com.changba.songstudio.audioeffect.AudioEffect;
+import com.changba.songstudio.audioeffect.AudioEffectParamController;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -280,25 +281,19 @@ public class CbEngineAdapter {
 //        recordingStudio = null;
         if (audioEffectEngine != null) {
             audioEffectEngine.destroyAudioEffect();
+            audioEffectEngine = null;
         }
     }
 
     IFAudioEffectEngine audioEffectEngine;
 
     public void setIFAudioEffectEngine(AudioEffectStyleEnum styleEnum) {
+        IFAudioEffectEngine.load();
         AudioEffect audioEffect = AudioScenesManager.getAudioEffect(styleEnum);
-        if (audioEffect == null) {
-            if (audioEffectEngine != null) {
-                audioEffectEngine.destroyAudioEffect();
-            }
-            audioEffectEngine = null;
-            return;
-        }
         if (audioEffectEngine == null) {
-            audioEffectEngine = new IFAudioEffectEngine(U.app(), audioEffect);
-        } else {
-            audioEffectEngine.setAudioEffect(audioEffect);
+            audioEffectEngine = new IFAudioEffectEngine(audioEffect);
         }
+        audioEffectEngine.setAudioEffect(audioEffect);
         return;
     }
 

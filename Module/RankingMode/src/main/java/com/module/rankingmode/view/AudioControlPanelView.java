@@ -56,6 +56,9 @@ public class AudioControlPanelView extends ScrollView {
                 case UPDATE_MUSIC_PROGRESS: {
                     int now = EngineManager.getInstance().getAudioMixingCurrentPosition();
                     int total = EngineManager.getInstance().getAudioMixingDuration();
+                    if(total<=0){
+                        return;
+                    }
                     MyLog.d(TAG, "now:" + now + " totoal:" + total);
                     float p = now*100 / total;
                     mMusicSeekbar.setProgress(p);

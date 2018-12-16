@@ -9,6 +9,10 @@ package com.changba.songstudio.audioeffect;
 public class OutputGainParam {
 	private float gain;
 
+	public void setGain(float gain) {
+		this.gain = gain;
+	}
+
 	public OutputGainParam() {
 	}
 
