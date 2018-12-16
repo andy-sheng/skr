@@ -8,6 +8,7 @@ import android.view.TextureView;
 import android.view.ViewGroup;
 
 import com.changba.songstudio.CbEngineAdapter;
+import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.Params;
@@ -237,30 +238,8 @@ public class AgoraEngineAdapter {
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
-            // 注册这玩意怎么会导致没有声音
-//            mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
-//                @Override
-//                public boolean onRecordFrame(byte[] samples,
-//                                             int numOfSamples,
-//                                             int bytesPerSample,
-//                                             int channels,
-//                                             int samplesPerSec) {
-//                    return CbEngineAdapter.getInstance().processAudioFrames(samples,
-//                            numOfSamples,
-//                            bytesPerSample,
-//                            channels,
-//                            samplesPerSec);
-//                }
-//
-//                @Override
-//                public boolean onPlaybackFrame(byte[] samples,
-//                                               int numOfSamples,
-//                                               int bytesPerSample,
-//                                               int channels,
-//                                               int samplesPerSec) {
-//                    return false;
-//                }
-//            });
+            setIFAudioEffectEngine(mConfig.getStyleEnum());
+
             // 设置onRecordFrame回调的数据
             setRecordingAudioFrameParameters(44100, 2, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
             setPlaybackAudioFrameParameters(44100, 2, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
@@ -618,7 +597,7 @@ public class AgoraEngineAdapter {
      * @param muted
      */
     public void muteLocalAudioStream(boolean muted) {
-        MyLog.d(TAG,"muteLocalAudioStream" + " muted=" + muted);
+        MyLog.d(TAG, "muteLocalAudioStream" + " muted=" + muted);
         mRtcEngine.muteLocalAudioStream(muted);
     }
 
@@ -881,6 +860,37 @@ public class AgoraEngineAdapter {
         mRtcEngine.setAudioMixingPosition(posMs);
     }
 
+
+    public void setIFAudioEffectEngine(AudioEffectStyleEnum styleEnum) {
+        if (styleEnum == null) {
+            mRtcEngine.registerAudioFrameObserver(null);
+        } else {
+            // 注册这玩意怎么会导致没有声音
+            mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
+                @Override
+                public boolean onRecordFrame(byte[] samples,
+                                             int numOfSamples,
+                                             int bytesPerSample,
+                                             int channels,
+                                             int samplesPerSec) {
+                    return CbEngineAdapter.getInstance().processAudioFrames(samples,
+                            numOfSamples,
+                            bytesPerSample,
+                            channels,
+                            samplesPerSec);
+                }
+
+                @Override
+                public boolean onPlaybackFrame(byte[] samples,
+                                               int numOfSamples,
+                                               int bytesPerSample,
+                                               int channels,
+                                               int samplesPerSec) {
+                    return false;
+                }
+            });
+        }
+    }
     /*音频高级扩展结束*/
 
     /*音频特效相关开始*/

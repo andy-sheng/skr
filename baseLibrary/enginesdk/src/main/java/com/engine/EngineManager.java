@@ -568,6 +568,7 @@ public class EngineManager implements AgoraOutCallback {
     public void setAudioEffectStyle(AudioEffectStyleEnum styleEnum) {
         mConfig.setStyleEnum(styleEnum);
         CbEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
+        AgoraEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
     }
 
     /**

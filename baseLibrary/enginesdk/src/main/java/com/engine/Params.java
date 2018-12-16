@@ -513,6 +513,11 @@ public class Params implements Serializable {
             return this;
         }
 
+        public Builder setStyleEnum(AudioEffectStyleEnum styleEnum) {
+            mParams.setStyleEnum(styleEnum);
+            return this;
+        }
+
         public Params build() {
             return mParams;
         }
@@ -537,6 +542,7 @@ public class Params implements Serializable {
                     .setEnableVideo(false)
                     .setEnableAudio(true)
                     .setUseCbEngine(false)
+//                    .setStyleEnum(AudioEffectStyleEnum.GRAMOPHONE)
                     .build();
         }
     }
