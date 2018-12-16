@@ -44,6 +44,7 @@ import okhttp3.RequestBody;
 public class RankingCorePresenter extends RxLifeCyclePresenter {
     public final static String TAG = "RankingCorePresenter";
     private static long heartBeatTaskInterval = 2000;
+    private static long checkStateTaskDelay = 10000;
     private static long syncStateTaskInterval = 12000;
 
     RoomData mRoomData;
@@ -75,7 +76,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             EventBus.getDefault().register(this);
         }
         mRoomData.checkRound();
-        startSyncGameStateTask();
+        startSyncGameStateTask(3000);
     }
 
     @Override
@@ -205,15 +206,17 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     /**
      * 轮询同步状态task
      */
-    public void startSyncGameStateTask() {
+    public void startSyncGameStateTask(long delayTime) {
+        MyLog.d(TAG, "startSyncGameStateTask start time = " + System.currentTimeMillis());
         cancelSyncGameStateTask();
         mSyncGameStateTask = HandlerTaskTimer.newBuilder()
-                .delay(3000)
+                .delay(delayTime)
                 .interval(syncStateTaskInterval)
                 .take(-1)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
+                        MyLog.d(TAG, "startSyncGameStateTask" + " integer=" + integer + " exec time = " + System.currentTimeMillis());
                         syncGameStatus(mRoomData.getGameId());
                     }
                 });
@@ -434,7 +437,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(SyncStatusEvent syncStatusEvent) {
         MyLog.d(TAG, "onEventMainThread receive syncStatusEvent");
         //从新开始12秒后拉取
-        startSyncGameStateTask();
+        startSyncGameStateTask(checkStateTaskDelay);
         updatePlayerState(syncStatusEvent.gameOverTimeMs, syncStatusEvent.syncStatusTimes, syncStatusEvent.onlineInfos, syncStatusEvent.currentInfo, syncStatusEvent.nextInfo);
     }
 }
