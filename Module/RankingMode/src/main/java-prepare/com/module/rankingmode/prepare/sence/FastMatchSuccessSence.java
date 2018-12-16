@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.base.BaseActivity;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
@@ -99,12 +100,12 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     public void allPlayerIsReady(GameReadyModel jsonGameReadyInfo) {
         MyLog.d(TAG, "allPlayerIsReady" + " jsonGameReadyInfo=" + jsonGameReadyInfo);
         HandlerTaskTimer.newBuilder()
-                .delay(3000)
+                .delay(2000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
                         matchSenceController.popSence();
-                        // TODO: 2018/12/16 需要产品确定这个地方退到什么地方 
+                        ((BaseActivity)getContext()).finish();
                     }
                 });
         mPrepareData.setGameReadyInfo(jsonGameReadyInfo);
