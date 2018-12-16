@@ -317,6 +317,15 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     public void run() {
                         int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
                         mIGameRuleView.startRivalCountdown(uid);
+                        mUiHanlder.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                //因为在三秒钟之内可能发生了变化，所以需要再判断一下
+                                if(uid == RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo())){
+                                    mIGameRuleView.playLyric(mRoomData.getRealRoundInfo().getPlaybookID());
+                                }
+                            }
+                        }, 3000);
                     }
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {

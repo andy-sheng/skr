@@ -152,12 +152,14 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LrcEvent.FinishLoadLrcEvent finishLoadLrcEvent) {
+        MyLog.d(TAG, "onEventMainThread" + " finishLoadLrcEvent hash is =" + finishLoadLrcEvent.hash);
         LyricsReader lyricsReader = LyricsManager.getLyricsManager(getContext()).getLyricsUtil(finishLoadLrcEvent.hash);
         if (lyricsReader != null) {
             lyricsReader.setHash(finishLoadLrcEvent.hash);
             mManyLyricsView.initLrcData();
             mManyLyricsView.setLyricsReader(lyricsReader);
             if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY){
+                MyLog.d(TAG, "onEventMainThread " + "play");
                 mManyLyricsView.play(0);
             }
         }
@@ -204,6 +206,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void gameFinish() {
         addText("游戏结束了");
+        mManyLyricsView.initLrcData();
     }
 
     @Override
