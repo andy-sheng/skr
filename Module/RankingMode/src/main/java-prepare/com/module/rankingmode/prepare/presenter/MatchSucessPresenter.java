@@ -8,17 +8,23 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.SongResUtils;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.GameReadyModel;
+import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
+import com.zq.lyrics.model.UrlRes;
+import com.zq.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -35,7 +41,9 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
 
     int currentGameId; // 当前游戏id，即融云的房间号
 
-    public MatchSucessPresenter(@NonNull IMatchSucessView view, int currentGameId) {
+    ZipUrlResourceManager zipUrlResourceManager;
+
+    public MatchSucessPresenter(@NonNull IMatchSucessView view, int currentGameId, PrepareData prepareData) {
         MyLog.d(TAG, "MatchSucessPresenter" + " view=" + view + " currentGameId=" + currentGameId);
         this.iMatchSucessView = view;
         this.currentGameId = currentGameId;
@@ -47,6 +55,17 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        ArrayList<UrlRes> urlResArrayList = new ArrayList<>();
+        Observable.fromIterable(prepareData.getPlayerInfoList())
+                .subscribe(playerInfo -> {
+                            UrlRes lyric = new UrlRes(playerInfo.getSongList().get(0).getLyric(), SongResUtils.getLyricDir(), SongResUtils.SUFF_ZRCE);
+                            urlResArrayList.add(lyric);
+                        }, throwable -> MyLog.e(TAG, throwable)
+                        , () -> {
+                            zipUrlResourceManager = new ZipUrlResourceManager(urlResArrayList, null);
+                            zipUrlResourceManager.go();
+                        });
     }
 
     private void checkPlayerReadyState() {

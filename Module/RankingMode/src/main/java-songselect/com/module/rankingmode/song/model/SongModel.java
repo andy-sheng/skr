@@ -155,4 +155,21 @@ public class SongModel implements Serializable {
         // todo PB缺两个现在，等服务器完善
     }
 
+    @Override
+    public String toString() {
+        return "SongModel{" +
+                "itemID=" + itemID +
+                ", itemName='" + itemName + '\'' +
+                ", cover='" + cover + '\'' +
+                ", owner='" + owner + '\'' +
+                ", lyric='" + lyric + '\'' +
+                ", ori='" + ori + '\'' +
+                ", acc='" + acc + '\'' +
+                ", midi='" + midi + '\'' +
+                ", totalMs=" + totalMs +
+                ", beginMs=" + beginMs +
+                ", endMs=" + endMs +
+                ", zip='" + zip + '\'' +
+                '}';
+    }
 }

@@ -98,7 +98,7 @@ public class ZipUrlResourceManager {
                 });
     }
 
-    public void startQueue() {
+    private void startQueue() {
         UrlRes res = null;
         if (taskQueue.size() > 0) {
             res = taskQueue.remove(0);

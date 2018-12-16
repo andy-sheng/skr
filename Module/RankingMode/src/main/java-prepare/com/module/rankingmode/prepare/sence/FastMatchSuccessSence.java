@@ -137,7 +137,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
         if (mMatchSucessPresenter != null) {
             mMatchSucessPresenter.destroy();
         }
-        mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId());
+        mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId(), mPrepareData);
 
         RxView.clicks(mMatchStatusTv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)

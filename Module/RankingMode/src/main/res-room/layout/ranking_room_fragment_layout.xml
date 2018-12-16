@@ -13,6 +13,23 @@
         android:background="#990099"
         android:layout_height="wrap_content"/>
 
+    <com.zq.lyrics.widget.ManyLyricsView
+        android:layout_marginTop="@dimen/view_50_dp"
+        app:ly_eable_verbatim="true"
+        app:ly_eable_scroll="false"
+        app:ly_outline_paint_color="@color/black"
+        app:ly_high_light_paint_color_from="#FF4848"
+        app:ly_high_light_paint_color_to="#FF4848"
+        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_24"
+        app:ly_paint_text_size="@dimen/textsize_dimen_18"
+        app:ly_paint_color_from="@color/black_trans_35"
+        app:ly_paint_color_to="@color/black_trans_35"
+
+        android:layout_alignParentTop="true"
+        android:id="@+id/many_lyrics_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.rankingmode.room.view.BottomContainerView
         android:id="@+id/bottom_container_view"
