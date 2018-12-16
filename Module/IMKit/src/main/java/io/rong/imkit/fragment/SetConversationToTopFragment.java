@@ -9,6 +9,9 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.rong.common.RLog;
 import io.rong.imkit.R;
 import io.rong.imkit.RongContext;
@@ -71,6 +74,7 @@ public class SetConversationToTopFragment extends BaseSettingFragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConversationTopEvent conversationTopEvent) {
         if (conversationTopEvent != null && conversationTopEvent.getTargetId().equals(this.getTargetId()) && conversationTopEvent.getConversationType().getValue() == this.getConversationType().getValue()) {
             this.setSwitchBtnStatus(conversationTopEvent.isTop());

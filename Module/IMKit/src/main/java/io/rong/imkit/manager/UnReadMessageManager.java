@@ -6,6 +6,8 @@
 package io.rong.imkit.manager;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,18 +41,21 @@ public class UnReadMessageManager {
         return io.rong.imkit.manager.UnReadMessageManager.SingletonHolder.sInstance;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OnReceiveMessageEvent event) {
         RLog.d("UnReadMessageManager", "OnReceiveMessageEvent " + event.getLeft());
         this.left = event.getLeft();
         this.syncUnreadCount(event.getMessage(), event.getLeft());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageLeftEvent event) {
         RLog.d("UnReadMessageManager", "MessageLeftEvent " + event.left);
         this.left = event.left;
         this.syncUnreadCount((Message) null, event.left);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConnectEvent event) {
         this.syncUnreadCount((Message) null, 0);
     }
@@ -73,9 +78,9 @@ public class UnReadMessageManager {
                 });
             }
         }
-
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConversationRemoveEvent removeEvent) {
         ConversationType conversationType = removeEvent.getType();
         Iterator var3 = this.mMultiConversationUnreadInfos.iterator();
@@ -107,10 +112,12 @@ public class UnReadMessageManager {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Message message) {
         this.syncUnreadCount(message, 0);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ConversationUnreadEvent unreadEvent) {
         ConversationType conversationType = unreadEvent.getType();
         Iterator var3 = this.mMultiConversationUnreadInfos.iterator();
@@ -193,6 +200,7 @@ public class UnReadMessageManager {
         this.syncUnreadCount((Message) null, 0);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SyncReadStatusEvent event) {
         RLog.d("UnReadMessageManager", "SyncReadStatusEvent " + this.left);
         if (this.left == 0) {
@@ -221,12 +229,12 @@ public class UnReadMessageManager {
                         }
                     }
                 }
-
                 return;
             }
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(RemoteMessageRecallEvent event) {
         RLog.d("UnReadMessageManager", "SyncReadStatusEvent " + this.left);
         if (this.left == 0) {
