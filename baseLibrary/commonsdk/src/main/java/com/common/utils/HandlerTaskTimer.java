@@ -49,6 +49,7 @@ public final class HandlerTaskTimer {
                             // 还能继续发送
                             if (inerval > 0) {
                                 // 有时间间隔,继续发
+                                mHandler.removeMessages(MSG_EXECUTE);
                                 mHandler.sendEmptyMessageDelayed(MSG_EXECUTE, inerval);
                             } else {
                                 // 没有设置时间间隔
@@ -60,6 +61,7 @@ public final class HandlerTaskTimer {
                         // 还能继续发送
                         if (inerval > 0) {
                             // 有时间间隔,继续发
+                            mHandler.removeMessages(MSG_EXECUTE);
                             mHandler.sendEmptyMessageDelayed(MSG_EXECUTE, inerval);
                         } else {
                             // 没有设置时间间隔

@@ -63,8 +63,8 @@ public class UserAccountManager {
     }
 
     public void onLoginResult(UserAccount account) {
-        MyLog.w(TAG, "login" + " accountId=" + account.getUid());
         if (account != null) {
+            MyLog.w(TAG, "login" + " accountId=" + account.getUid());
             account.setIsLogOff(false);
             // 登出所有其他账号
             UserAccountLocalApi.loginAccount(account);

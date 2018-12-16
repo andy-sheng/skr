@@ -223,6 +223,7 @@ public class AgoraEngineAdapter {
      */
     private void initRtcEngineInner() {
         if (mConfig.isEnableAudio()) {
+            MyLog.d(TAG,"initRtcEngineInner enableAudio" );
             //该方法需要在 joinChannel 之前设置好，joinChannel 后设置不生效。
             mRtcEngine.enableAudio();
             mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(mConfig.getAudioProfile())
@@ -236,6 +237,7 @@ public class AgoraEngineAdapter {
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
+            // 注册这玩意怎么会导致没有声音
             mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
                 @Override
                 public boolean onRecordFrame(byte[] samples,
@@ -981,7 +983,7 @@ public class AgoraEngineAdapter {
         mRtcEngine.setVideoQualityParameters(preferFrameRateOverImageQuality);
     }
 
-    public void setLogFilter(boolean debug) {
+    public void setLogLevel(boolean debug) {
         if (debug) {
             mRtcEngine.setLogFilter(Constants.LOG_FILTER_DEBUG);
         } else {
