@@ -8,4 +8,7 @@ public class AccountEvent {
      */
     public static class SetAccountEvent {
     }
+
+    public static class LogoffAccountEvent {
+    }
 }

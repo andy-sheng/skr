@@ -107,10 +107,9 @@ public class TestSdkActivity extends BaseActivity {
 
         AvatarUtils.loadAvatarByUrl(baseImageView,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setWebpFormat(true)
+                        .setCircle(true)
                         .setBorderWidth(2)
-                        .setBorderColor(Color.RED)
-                        .setCornerRadius(5)
+                        .setBorderColor(Color.BLUE)
                         .build());
 
     }

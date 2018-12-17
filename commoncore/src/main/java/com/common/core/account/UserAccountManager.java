@@ -313,6 +313,7 @@ public class UserAccountManager {
                     }
                     mAccount = null;
                     UmengStatistics.onProfileSignOff();
+                    EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent());
                     emitter.onComplete();
                 }
             })

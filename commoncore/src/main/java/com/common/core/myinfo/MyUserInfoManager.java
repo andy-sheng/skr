@@ -124,7 +124,6 @@ public class MyUserInfoManager {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                             UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
-
                             // 取得个人信息
                             UserInfo userInfo = UserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {

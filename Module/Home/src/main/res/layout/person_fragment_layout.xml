@@ -1,13 +1,76 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/person_main_containner"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/test_btn"
-        android:layout_width="wrap_content"
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="个人主页" />
+        app:centerText="个人主页"
+        app:centerType="textView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:orientation="vertical"
+        android:padding="@dimen/view_10_dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.common.image.fresco.BaseImageView
+                android:id="@+id/avatar_iv"
+                android:layout_width="@dimen/view_100_dp"
+                android:layout_height="@dimen/view_100_dp" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/avatar_iv"
+                android:minWidth="@dimen/view_100_dp"
+                android:textSize="@dimen/textsize_30_dp" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/update_nickname_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_toRightOf="@+id/name_tv"
+                android:text="修改昵称"
+                app:bl_pressed_textColor="@color/red"
+                app:bl_unPressed_textColor="#5fff0000" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/clear_cache_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_20_dp">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清除缓存" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/logout_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_20_dp">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="退出登录" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

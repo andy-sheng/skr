@@ -63,6 +63,9 @@ android {
             java.srcDirs += 'src/main/java-gen-db'
             java.srcDirs += 'src/main/java-gen-pb'
 
+            java.srcDirs += 'src/main/java-personcenter'
+            res.srcDirs += 'src/main/res-personcenter'
+
             java.srcDirs += 'src/main/java'
             res.srcDirs += ['src/main/res']
 
