@@ -176,11 +176,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             SwipeBackHelper.onCreate(this);
         }
 
-        if (useEventBus()) {
-            if (!EventBus.getDefault().isRegistered(this)) {
-                EventBus.getDefault().register(this);
-            }
-        }
         int layoutResID = initView(savedInstanceState);
         //如果initView返回0,框架则不会调用setContentView(),当然也不会 Bind ButterKnife
 //        if (layoutResID != 0) {
@@ -195,6 +190,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         }
         setContentView(layoutResID);
         initData(savedInstanceState);
+        if (useEventBus()) {
+            if (!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this);
+            }
+        }
     }
 
     @Override
@@ -281,11 +281,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     }
 
     protected void destroy() {
-        if (canSlide()) {
-            SwipeBackHelper.onDestroy(this);
-        }
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+        if (canSlide()) {
+            SwipeBackHelper.onDestroy(this);
         }
         for (Presenter presenter : mPresenterSet) {
             presenter.destroy();
