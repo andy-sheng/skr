@@ -3,7 +3,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:layout_above="@+id/et_container"
+        android:layout_above="@+id/bottom_container"
         android:background="#ffdadada"
         android:layout_width="match_parent"
         android:layout_height="1px"/>
@@ -17,8 +17,8 @@
         android:padding="@dimen/view_dimen_10">
 
         <com.common.view.ex.ExImageView
+            android:src="@drawable/ic_notify_normal"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/bottom_navegation_k"
             android:id="@+id/game_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,8 +27,8 @@
              />
 
         <com.common.view.ex.ExImageView
+            android:src="@drawable/ic_notify_selected"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/bottom_navegation_message"
             android:id="@+id/message_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,8 +37,8 @@
              />
 
         <com.common.view.ex.ExImageView
+            android:src="@drawable/ic_notify_normal1"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/bottom_navegation_message"
             android:id="@+id/person_info_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,9 +48,10 @@
     </LinearLayout>
 
     <com.common.view.viewpager.NestViewPager
+        android:background="@color/white"
         android:id="@+id/main_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/et_container" />
+        android:layout_above="@+id/bottom_container" />
 
 </RelativeLayout>
