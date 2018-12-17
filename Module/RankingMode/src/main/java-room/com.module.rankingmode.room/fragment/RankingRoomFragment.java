@@ -122,6 +122,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
+        mCommentView.setRoomData(mRoomData);
     }
 
     private void initTopView() {

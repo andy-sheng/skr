@@ -11,6 +11,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
 import com.module.rankingmode.msg.event.CommentMsgEvent;
 import com.module.rankingmode.room.event.InputBoardEvent;
+import com.module.rankingmode.room.model.RoomData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,6 +23,7 @@ public class CommentView extends RelativeLayout {
     LinearLayoutManager mLinearLayoutManager;
 
     CommentAdapter mCommentAdapter;
+    private RoomData mRoomData;
 
     public CommentView(Context context) {
         super(context);
@@ -59,6 +61,8 @@ public class CommentView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommentMsgEvent event) {
         CommentModel commentModel = new CommentModel();
+        commentModel.setUserId(event.info.getSender().getUserID());
+        commentModel.setAvatar(event.info.getSender().getAvatar());
         commentModel.setText(event.text);
         commentModel.setCommentType(CommentModel.TYPE_TEXT);
         mCommentAdapter.insertFirst(commentModel);
@@ -66,13 +70,20 @@ public class CommentView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InputBoardEvent event) {
-        RelativeLayout.LayoutParams lp  = (LayoutParams) this.getLayoutParams();
+        LayoutParams lp = (LayoutParams) this.getLayoutParams();
         if (event.show) {
-            lp.addRule(RelativeLayout.ABOVE,R.id.input_container_view);
+            lp.addRule(RelativeLayout.ABOVE, R.id.input_container_view);
         } else {
-            lp.addRule(RelativeLayout.ABOVE,R.id.bottom_container_view);
+            lp.addRule(RelativeLayout.ABOVE, R.id.bottom_container_view);
         }
         setLayoutParams(lp);
     }
 
+    public void setRoomData(RoomData roomData) {
+        mRoomData = roomData;
+    }
+
+    public RoomData getRoomData() {
+        return mRoomData;
+    }
 }

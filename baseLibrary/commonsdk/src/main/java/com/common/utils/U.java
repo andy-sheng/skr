@@ -314,4 +314,8 @@ public class U {
     public static boolean isCoreProcess() {
         return sCoreProcess;
     }
+
+    public static int getColor(int colorId){
+        return U.app().getResources().getColor(colorId);
+    }
 }

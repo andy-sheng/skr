@@ -57,7 +57,7 @@ public class InputContainerView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(),R.layout.input_container_view_layout,this);
+        inflate(getContext(), R.layout.input_container_view_layout, this);
         initInputView();
     }
 
@@ -127,7 +127,7 @@ public class InputContainerView extends RelativeLayout {
                     }
                 });
 
-                EventHelper.pretendCommentPush(content);
+                EventHelper.pretendCommentPush(content, mRoomData.getGameId());
             }
         });
     }
@@ -169,6 +169,8 @@ public class InputContainerView extends RelativeLayout {
 
     public void setRoomData(RoomData roomData) {
         mRoomData = roomData;
+        EventHelper.pretendCommentPush("请注意保持直播间和谐", mRoomData.getGameId());
     }
+
 
 }

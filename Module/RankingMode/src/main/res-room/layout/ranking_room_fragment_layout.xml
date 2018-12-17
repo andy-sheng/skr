@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="#2E3041">
 
     <com.module.rankingmode.room.view.InputContainerView
         android:id="@+id/input_container_view"
@@ -43,7 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_container_view"
-        android:background="@color/blue" />
+        android:paddingLeft="@dimen/view_18_dp"
+        android:paddingBottom="@dimen/view_7_dp" />
 
     <com.module.rankingmode.room.view.TopContainerView
         android:id="@+id/top_container_view"
