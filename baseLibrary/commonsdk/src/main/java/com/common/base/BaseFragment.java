@@ -32,6 +32,7 @@ import com.common.lifecycle.FragmentLifecycleable;
 import com.common.log.MyLog;
 import com.common.mvp.Presenter;
 import com.common.statistics.StatisticsAdapter;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
@@ -376,4 +377,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         return RxLifecycle.bindUntilEvent(provideLifecycleSubject(), event);
     }
 
+    public void finish(){
+        U.getFragmentUtils().popFragment(this);
+    }
 }

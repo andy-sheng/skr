@@ -65,7 +65,7 @@ public class FragmentUtils {
     /**
      * 弹出activity 顶部的fragment
      */
-    public static boolean popFragment(FragmentActivity activity) {
+    public boolean popFragment(FragmentActivity activity) {
         if (activity == null) {
             return false;
         }
@@ -85,7 +85,7 @@ public class FragmentUtils {
     /**
      * 弹出activity fragment及其以上所有的fragment
      */
-    public static boolean popFragment(BaseFragment fragment) {
+    public boolean popFragment(BaseFragment fragment) {
         if (fragment == null) {
             return false;
         }

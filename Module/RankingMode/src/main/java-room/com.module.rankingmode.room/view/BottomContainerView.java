@@ -19,11 +19,11 @@ public class BottomContainerView extends RelativeLayout {
 
     Listener mBottomContainerListener;
 
-    ExImageView mEmoji1Btn;
-    ExTextView mShowInputContainerBtn;
-    ExImageView mEmoji4Btn;
-    ExImageView mEmoji3Btn;
+    ExImageView mQuickBtn;
+    ExImageView mShowInputContainerBtn;
     ExImageView mEmoji2Btn;
+    ExImageView mEmoji1Btn;
+
 
     public BottomContainerView(Context context) {
         super(context);
@@ -36,12 +36,13 @@ public class BottomContainerView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(),R.layout.bottom_container_view_layout,this);
-        mEmoji1Btn = (ExImageView) this.findViewById(R.id.emoji1_btn);
-        mShowInputContainerBtn = (ExTextView) this.findViewById(R.id.show_input_container_btn);
-        mEmoji4Btn = (ExImageView) this.findViewById(R.id.emoji4_btn);
-        mEmoji3Btn = (ExImageView) this.findViewById(R.id.emoji3_btn);
+        inflate(getContext(), R.layout.bottom_container_view_layout, this);
+
+        mQuickBtn = (ExImageView) this.findViewById(R.id.quick_btn);
+        mShowInputContainerBtn = (ExImageView) this.findViewById(R.id.show_input_container_btn);
         mEmoji2Btn = (ExImageView) this.findViewById(R.id.emoji2_btn);
+        mEmoji1Btn = (ExImageView) this.findViewById(R.id.emoji1_btn);
+
         mShowInputContainerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,9 +68,9 @@ public class BottomContainerView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InputBoardEvent event) {
-        if(event.show){
+        if (event.show) {
             setVisibility(GONE);
-        }else{
+        } else {
             setVisibility(VISIBLE);
         }
     }
