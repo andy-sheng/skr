@@ -66,6 +66,10 @@ public class AvatarUtils {
         if (params.isBlur) {
             avatarImg.setPostprocessor(new BlurPostprocessor());
         }
+        if (params.mBorderWidth > 0) {
+            avatarImg.setBorderWidth(params.mBorderWidth);
+            avatarImg.setBorderColor(params.mBorderColor);
+        }
         FrescoWorker.loadImage(draweeView, avatarImg);
     }
 
@@ -118,7 +122,7 @@ public class AvatarUtils {
 //    }
 
     public static LoadParams.Builder newParamsBuilder(String url) {
-        return new LoadParams.Builder().setUrl(url);
+        return new LoadParams.Builder(url);
     }
 
     public static class LoadParams {
@@ -133,6 +137,10 @@ public class AvatarUtils {
         int loadingAvatarResId = R.drawable.avatar_default_b;
         int width = 0;
         int height = 0;
+        //边框
+        protected float mBorderWidth = 0;
+        //边框颜色
+        protected int mBorderColor = 0;
 
         LoadParams() {
         }
@@ -177,10 +185,19 @@ public class AvatarUtils {
             this.url = url;
         }
 
+        public void setBorderWidth(float borderWidth) {
+            mBorderWidth = borderWidth;
+        }
+
+        public void setBorderColor(int borderColor) {
+            mBorderColor = borderColor;
+        }
+
         public static class Builder {
             private LoadParams mUploadParams = new LoadParams();
 
-            Builder() {
+            Builder(String url) {
+                mUploadParams.setUrl(url);
             }
 
 //            public Builder setUid(long uid) {
@@ -190,11 +207,6 @@ public class AvatarUtils {
 
             public Builder setSizeType(ImageUtils.SIZE sizeType) {
                 mUploadParams.setSizeType(sizeType);
-                return this;
-            }
-
-            public Builder setUrl(String url) {
-                mUploadParams.setUrl(url);
                 return this;
             }
 
@@ -228,6 +240,15 @@ public class AvatarUtils {
                 return this;
             }
 
+            public Builder setBorderWidth(float borderWidth) {
+                mUploadParams.setBorderWidth(borderWidth);
+                return this;
+            }
+
+            public Builder setBorderColor(int borderColor) {
+                mUploadParams.setBorderColor(borderColor);
+                return this;
+            }
 
             public LoadParams build() {
                 if (this.mUploadParams == null) {

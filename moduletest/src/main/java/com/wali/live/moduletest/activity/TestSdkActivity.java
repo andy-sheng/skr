@@ -1,6 +1,7 @@
 package com.wali.live.moduletest.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -107,6 +108,8 @@ public class TestSdkActivity extends BaseActivity {
         AvatarUtils.loadAvatarByUrl(baseImageView,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setWebpFormat(true)
+                        .setBorderWidth(10)
+                        .setBorderColor(Color.RED)
                         .build());
 
     }
