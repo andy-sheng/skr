@@ -7,6 +7,7 @@ import com.common.core.R;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.processor.BlurPostprocessor;
 import com.common.image.model.BaseImage;
+import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.image.model.oss.format.OssImgFormat;
@@ -37,45 +38,58 @@ public class AvatarUtils {
      */
     public static void loadAvatarByUrl(final SimpleDraweeView draweeView
             , LoadParams params) {
-        String url = params.url;
-        BaseImage avatarImg;
-        if (TextUtils.isEmpty(url)) {
-            avatarImg = ImageFactory.newResImage(params.loadingAvatarResId).build();
+        HttpImage httpImage = getAvatarUrl(params);
+        if (httpImage == null) {
+            BaseImage avatarImg = ImageFactory.newResImage(params.loadingAvatarResId).build();
+            FrescoWorker.loadImage(draweeView, avatarImg);
         } else {
-            ImageFactory.Builder imgBuilder = ImageFactory.newHttpImage(url)
-                    .setWidth(params.width)
-                    .setHeight(params.height)
-                    .setIsCircle(params.isCircle)
-                    .setFailureDrawable(params.loadingAvatarResId > 0 ? U.app().getResources().getDrawable(
-                            params.loadingAvatarResId) : null)
-                    .setFailureScaleType(
-                            params.isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
-
-            if (params.sizeType != null && params.sizeType != ImageUtils.SIZE.ORIGIN) {
-                imgBuilder.addOssProcessors(OssImgFactory.newResizeBuilder().setW(params.sizeType.getW()).build());
-            }
-            if (params.isWebpFormat) {
-                imgBuilder.addOssProcessors(OssImgFactory.newFormatBuilder().setFormat(OssImgFormat.ImgF.webp).build());
-            }
-            avatarImg = imgBuilder.build();
+            FrescoWorker.loadImage(draweeView, httpImage);
         }
-        if (params.loadingAvatarResId > 0) {
-            avatarImg.setLoadingDrawable(U.app().getResources().getDrawable(params.loadingAvatarResId));
-            avatarImg.setLoadingScaleType(params.isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
-        }
-        if (params.isBlur) {
-            avatarImg.setPostprocessor(new BlurPostprocessor());
-        }
-        if (params.mBorderWidth > 0) {
-            avatarImg.setBorderWidth(params.mBorderWidth);
-            avatarImg.setBorderColor(params.mBorderColor);
-        }
-        FrescoWorker.loadImage(draweeView, avatarImg);
     }
 
-//    public static String getAvatarUrl(LoadParams ) {
-//        return getAvatarUrlByCustom(uid, ImageUtils.SIZE.SIZE_160, 0, false);
-//    }
+    /**
+     * 自行取得 HttpImage 做些处理
+     *
+     * @param params
+     * @return
+     */
+    public static HttpImage getAvatarUrl(LoadParams params) {
+        String url = params.url;
+        if (TextUtils.isEmpty(url)) {
+            return null;
+        }
+        ImageFactory.Builder imgBuilder = ImageFactory.newHttpImage(url)
+                .setWidth(params.width)
+                .setHeight(params.height)
+                .setIsCircle(params.isCircle)
+                .setFailureDrawable(params.loadingAvatarResId > 0 ? U.app().getResources().getDrawable(
+                        params.loadingAvatarResId) : null)
+                .setFailureScaleType(
+                        params.isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
+
+        if (params.sizeType != null && params.sizeType != ImageUtils.SIZE.ORIGIN) {
+            imgBuilder.addOssProcessors(OssImgFactory.newResizeBuilder().setW(params.sizeType.getW()).build());
+        }
+        if (params.isWebpFormat) {
+            imgBuilder.addOssProcessors(OssImgFactory.newFormatBuilder().setFormat(OssImgFormat.ImgF.webp).build());
+        }
+        if (params.loadingAvatarResId > 0) {
+            imgBuilder.setLoadingDrawable(U.app().getResources().getDrawable(params.loadingAvatarResId));
+            imgBuilder.setLoadingScaleType(params.isCircle ? ScalingUtils.ScaleType.CENTER_INSIDE : ScalingUtils.ScaleType.CENTER_CROP);
+        }
+        if (params.isBlur) {
+            imgBuilder.setPostprocessor(new BlurPostprocessor());
+        }
+        if (params.mBorderWidth > 0) {
+            imgBuilder.setBorderWidth(params.mBorderWidth);
+            imgBuilder.setBorderColor(params.mBorderColor);
+        }
+        imgBuilder.setCornerRadii(params.mCornerRadii);
+        imgBuilder.setCornerRadius(params.mCornerRadius);
+
+        HttpImage avatarImg = (HttpImage) imgBuilder.build();
+        return avatarImg;
+    }
 //
 //    public static String getAvatarUrl(long uid, long timestamp) {
 //        return getAvatarUrlByCustom(uid, ImageUtils.SIZE.SIZE_160, timestamp, false);
@@ -141,6 +155,9 @@ public class AvatarUtils {
         protected float mBorderWidth = 0;
         //边框颜色
         protected int mBorderColor = 0;
+        //圆角矩形参数
+        protected float mCornerRadius = 0;
+        protected float[] mCornerRadii;
 
         LoadParams() {
         }
@@ -191,6 +208,14 @@ public class AvatarUtils {
 
         public void setBorderColor(int borderColor) {
             mBorderColor = borderColor;
+        }
+
+        public void setCornerRadius(float cornerRadius) {
+            mCornerRadius = cornerRadius;
+        }
+
+        public void setCornerRadii(float[] cornerRadii) {
+            mCornerRadii = cornerRadii;
         }
 
         public static class Builder {
@@ -247,6 +272,16 @@ public class AvatarUtils {
 
             public Builder setBorderColor(int borderColor) {
                 mUploadParams.setBorderColor(borderColor);
+                return this;
+            }
+
+            public Builder setCornerRadius(float cornerRadius) {
+                mUploadParams.setCornerRadius(cornerRadius);
+                return this;
+            }
+
+            public Builder setCornerRadii(float[] cornerRadii) {
+                mUploadParams.setCornerRadii(cornerRadii);
                 return this;
             }
 

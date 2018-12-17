@@ -50,7 +50,7 @@ public abstract class BaseImage {
     // fresco回调
     protected IFrescoCallBack mCallBack;
     //圆角矩形参数
-    protected int mCornerRadius = 0;
+    protected float mCornerRadius = 0;
     protected float[] mCornerRadii;
     //边框
     protected float mBorderWidth = 0;
@@ -113,7 +113,7 @@ public abstract class BaseImage {
         return mPostprocessor;
     }
 
-    public int getCornerRadius() {
+    public float getCornerRadius() {
         return mCornerRadius;
     }
 
@@ -191,7 +191,7 @@ public abstract class BaseImage {
         this.mPostprocessor = postprocessor;
     }
 
-    public void setCornerRadius(int cornerRadius) {
+    public void setCornerRadius(float cornerRadius) {
         this.mCornerRadius = cornerRadius;
     }
 

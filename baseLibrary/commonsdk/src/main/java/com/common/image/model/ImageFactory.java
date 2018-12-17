@@ -98,7 +98,7 @@ public class ImageFactory {
             return this;
         }
 
-        public ImageFactory.Builder setCornerRadius(int cornerRadius) {
+        public ImageFactory.Builder setCornerRadius(float cornerRadius) {
             mBaseImage.setCornerRadius(cornerRadius);
             return this;
         }
@@ -108,7 +108,7 @@ public class ImageFactory {
             return this;
         }
 
-        public ImageFactory.Builder setBorderWidth(int borderWidth) {
+        public ImageFactory.Builder setBorderWidth(float borderWidth) {
             mBaseImage.setBorderWidth(borderWidth);
             return this;
         }
