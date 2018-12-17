@@ -59,6 +59,13 @@ android {
 
             java.srcDirs += 'src/main/java-contacts'
             res.srcDirs += 'src/main/res-contacts'
+
+            if (!useIMKitJar.toBoolean()) {
+                java.srcDirs += 'src/main/java-imkit'
+                res.srcDirs += 'src/main/res-imkit'
+            } else {
+                res.srcDirs += 'src/main/res-imkitjar'
+            }
         }
     }
 }
@@ -67,6 +74,10 @@ dependencies {
     //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
     api project(":commoncore")
     api project(":Component:IMLib")
+
+    if (useIMKitJar.toBoolean()) {
+        api files('libs/Rong_IMKit.jar')
+    }
     if (isBuildModule.toBoolean()) {
 //        tools
         annotationProcessor rootProject.ext.dependencies["arouter-compiler"]

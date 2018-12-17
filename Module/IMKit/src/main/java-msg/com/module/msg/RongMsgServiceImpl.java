@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.module.RouterConstants;
 import com.module.common.ICallback;
 
-import io.rong.test.fragment.MessageFragment;
+import test.fragment.MessageFragment;
 
 @Route(path = RouterConstants.SERVICE_MSG, name = "消息服务")
 public class RongMsgServiceImpl implements IMsgService {

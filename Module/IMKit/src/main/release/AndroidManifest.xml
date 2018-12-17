@@ -35,7 +35,7 @@
 
         <!--会话列表-->
         <activity
-            android:name="io.rong.test.activity.MessageActivity"
+            android:name="test.activity.MessageActivity"
             android:launchMode="singleTop">
 
             <intent-filter>
@@ -52,7 +52,7 @@
 
         <!--会话界面-->
         <activity
-            android:name="io.rong.test.activity.ConversationActivity"
+            android:name="test.activity.ConversationActivity"
             android:launchMode="singleTop"
             android:windowSoftInputMode="stateHidden|adjustResize">
 
