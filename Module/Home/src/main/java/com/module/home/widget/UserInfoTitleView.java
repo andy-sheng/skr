@@ -37,9 +37,7 @@ public class UserInfoTitleView extends RelativeLayout {
 
         AvatarUtils.loadAvatarByUrl(mIvUserIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setWebpFormat(true)
                         .setCircle(true)
-                        .setCornerRadius(200)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.WHITE)
                         .build());
