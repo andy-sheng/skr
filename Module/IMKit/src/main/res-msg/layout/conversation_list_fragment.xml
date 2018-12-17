@@ -18,29 +18,10 @@
         app:leftText="搜索"/>
 
     <LinearLayout
-        android:id="@+id/test_1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/titlebar">
-        <com.common.view.ex.ExButton
-            android:id="@+id/test_connect1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="连接用户1001"/>
-
-        <com.common.view.ex.ExButton
-            android:id="@+id/test_connect2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="连接用户1002"/>
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/test_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/test_1"
+        android:layout_below="@+id/titlebar"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExButton

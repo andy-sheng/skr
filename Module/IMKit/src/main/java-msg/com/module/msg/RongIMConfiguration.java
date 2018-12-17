@@ -10,14 +10,8 @@ import android.util.Log;
 import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
-import com.common.log.MyLog;
-import com.common.utils.U;
 
 import java.util.List;
-
-import io.rong.imkit.RongIM;
-import io.rong.test.token.RCTokenManager;
-import io.rong.imlib.RongIMClient;
 
 public class RongIMConfiguration implements ConfigModule {
 

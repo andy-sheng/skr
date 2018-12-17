@@ -16,7 +16,6 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.test.token.RCTokenManager;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 

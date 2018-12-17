@@ -24,15 +24,12 @@ import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
-import io.rong.test.token.RCTokenManager;
 
 public class MessageFragment extends BaseFragment implements  RongIM.UserInfoProvider,IMessageFragment {
 
     // todo 目前给两个账号用来测试通信，待账号完善接入
     CommonTitleBar commonTitleBar;
 
-    ExButton mTestConnect1;
-    ExButton mTestConnect2;
     ExButton mTestMsg1;
     ExButton mTestMsg2;
 
@@ -55,9 +52,6 @@ public class MessageFragment extends BaseFragment implements  RongIM.UserInfoPro
     public void initData(@Nullable Bundle savedInstanceState) {
         commonTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
-        mTestConnect1 = (ExButton) mRootView.findViewById(R.id.test_connect1);
-        mTestConnect2 = (ExButton) mRootView.findViewById(R.id.test_connect2);
-
         mTestMsg1 = (ExButton) mRootView.findViewById(R.id.test_msg1);
         mTestMsg2 = (ExButton) mRootView.findViewById(R.id.test_msg2);
 
@@ -68,20 +62,6 @@ public class MessageFragment extends BaseFragment implements  RongIM.UserInfoPro
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content,mConversationListFragment);
         transaction.commit();
-
-        mTestConnect1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RCTokenManager.getInstance().getToken("1001","帅哥",testUri.toString());
-            }
-        });
-
-        mTestConnect2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RCTokenManager.getInstance().getToken("1002","美女",testUri.toString());
-            }
-        });
 
 
         mTestMsg1.setOnClickListener(new View.OnClickListener() {
