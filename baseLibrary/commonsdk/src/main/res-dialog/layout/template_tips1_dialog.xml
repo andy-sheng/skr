@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/view_344_dp"
+    android:layout_height="@dimen/view_250_dp"
+    android:layout_centerHorizontal="true"
+    android:background="@drawable/img_bg1">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/message_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_74_dp"
+        android:gravity="center"
+        android:text="马上要为你匹配对手了\n还要退出吗?"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/ok_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_24_dp"
+        android:text="确定" />
+</RelativeLayout>

@@ -82,10 +82,10 @@ public class SubConversationListAdapter extends ConversationListAdapter {
         if (tag.portraitPosition() == 1) {
             holder.leftImageLayout.setVisibility(View.VISIBLE);
             if (data.getIconUrl() != null) {
-                AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
-                        .setUrl(data.getIconUrl().toString()).setLoadingAvatarResId(defaultId).build());
+                AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(data.getIconUrl().toString())
+                        .setLoadingAvatarResId(defaultId).build());
             } else {
-                AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
+                AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(data.getIconUrl().toString())
                         .setLoadingAvatarResId(defaultId).build());
             }
 
@@ -114,10 +114,10 @@ public class SubConversationListAdapter extends ConversationListAdapter {
         } else if (tag.portraitPosition() == 2) {
             holder.rightImageLayout.setVisibility(View.VISIBLE);
             if (data.getIconUrl() != null) {
-                AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
-                        .setUrl(data.getIconUrl().toString()).setLoadingAvatarResId(defaultId).build());
+                AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(data.getIconUrl().toString())
+                        .setLoadingAvatarResId(defaultId).build());
             } else {
-                AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
+                AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(data.getIconUrl().toString())
                         .setLoadingAvatarResId(defaultId).build());
             }
 

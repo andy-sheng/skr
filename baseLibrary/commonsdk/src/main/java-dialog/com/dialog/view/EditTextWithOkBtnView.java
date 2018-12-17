@@ -30,7 +30,7 @@ public class EditTextWithOkBtnView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.template_edittext1, this);
+        inflate(getContext(), R.layout.template_edittext1_dialog, this);
         mContentEt = (NoLeakEditText) this.findViewById(R.id.content_et);
         mOkBtn = (ExTextView) this.findViewById(R.id.ok_btn);
     }

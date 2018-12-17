@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.common.core.share.ShareManager;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
+import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
@@ -60,6 +62,8 @@ import com.imagepicker.fragment.ImagePreviewFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.module.home.IHomeService;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.pgyersdk.crash.PgyCrashManager;
 import com.pgyersdk.feedback.PgyerFeedbackManager;
 import com.pgyersdk.update.DownloadFileListener;
@@ -151,9 +155,18 @@ public class TestSdkActivity extends BaseActivity {
             }
         });
 
-        mDataList.add(new H("退出登录", new Runnable() {
+        mDataList.add(new H("测试Dialog", new Runnable() {
             @Override
             public void run() {
+
+                TipsDialogView tipsDialogView = new TipsDialogView(TestSdkActivity.this);
+                DialogPlus.newDialog(TestSdkActivity.this)
+                        .setContentHolder(new ViewHolder(tipsDialogView))
+                        .setGravity(Gravity.BOTTOM)
+                        .setContentBackgroundResource(R.color.red)
+                        .setOverlayBackgroundResource(R.color.black_trans_50)
+                        .setExpanded(false)
+                        .create().show();
                 UserAccountManager.getInstance().logoff(true);
             }
         }));

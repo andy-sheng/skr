@@ -137,14 +137,13 @@ public class ConversationListAdapter extends BaseAdapter<UIConversation> {
                         }
                     });
                     if (data.getConversationGatherState()) {
-                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
+                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder("")
                                 .setLoadingAvatarResId(defaultId).build());
                     } else if (data.getIconUrl() != null) {
-                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
-                                .setUrl(data.getIconUrl().toString())
+                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(data.getIconUrl().toString())
                                 .setLoadingAvatarResId(defaultId).build());
                     } else {
-                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder(0)
+                        AvatarUtils.loadAvatarByUrl(holder.leftImageView, AvatarUtils.newParamsBuilder("")
                                 .setLoadingAvatarResId(defaultId).build());
                     }
 
@@ -190,14 +189,13 @@ public class ConversationListAdapter extends BaseAdapter<UIConversation> {
                         }
                     });
                     if (data.getConversationGatherState()) {
-                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
+                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder("")
                                 .setLoadingAvatarResId(defaultId).build());
                     } else if (data.getIconUrl() != null) {
-                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
-                                .setUrl(data.getIconUrl().toString())
+                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(data.getIconUrl().toString())
                                 .setLoadingAvatarResId(defaultId).build());
                     } else {
-                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder(0)
+                        AvatarUtils.loadAvatarByUrl(holder.rightImageView, AvatarUtils.newParamsBuilder("")
                                 .setLoadingAvatarResId(defaultId).build());
                     }
 

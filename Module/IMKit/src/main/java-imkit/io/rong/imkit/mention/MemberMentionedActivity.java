@@ -294,8 +294,8 @@ public class MemberMentionedActivity extends RongBaseNoActionbarActivity {
             UserInfo userInfo = ((io.rong.imkit.mention.MemberMentionedActivity.MemberInfo) this.mList.get(position)).userInfo;
             if (userInfo != null) {
                 viewHolder.name.setText(userInfo.getName());
-                AvatarUtils.loadAvatarByUrl(viewHolder.portrait, AvatarUtils.newParamsBuilder(0)
-                        .setUrl(userInfo.getPortraitUri().toString()).build());
+                AvatarUtils.loadAvatarByUrl(viewHolder.portrait, AvatarUtils.newParamsBuilder(userInfo.getPortraitUri().toString())
+                        .build());
             }
 
             int section = this.getSectionForPosition(position);

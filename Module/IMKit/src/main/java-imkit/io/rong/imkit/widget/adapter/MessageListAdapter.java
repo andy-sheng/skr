@@ -666,19 +666,19 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                                 portrait = userInfo.getPortraitUri();
                             }
 
-                            AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0)
-                                    .setUrl(portrait.toString()).build());
+                            AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(portrait.toString())
+                                    .build());
                         } else if ((data.getConversationType().equals(ConversationType.PUBLIC_SERVICE) || data.getConversationType().equals(ConversationType.APP_PUBLIC_SERVICE)) && data.getMessageDirection().equals(MessageDirection.RECEIVE)) {
                             if (userInfo != null) {
                                 portrait = userInfo.getPortraitUri();
-                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0)
-                                        .setUrl(portrait.toString()).build());
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(portrait.toString())
+                                        .build());
                             } else {
                                 mKey = ConversationKey.obtain(data.getTargetId(), data.getConversationType());
                                 publicServiceProfile = RongContext.getInstance().getPublicServiceInfoFromCache(mKey.getKey());
                                 portrait = publicServiceProfile.getPortraitUri();
-                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0)
-                                        .setUrl(portrait.toString()).build());
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(portrait.toString())
+                                        .build());
                             }
                         } else if (!TextUtils.isEmpty(data.getSenderUserId())) {
                             if (userInfo == null) {
@@ -686,10 +686,10 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                             }
 
                             if (userInfo != null && userInfo.getPortraitUri() != null) {
-                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0)
-                                        .setUrl(userInfo.getPortraitUri().toString()).build());
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(portrait.toString())
+                                        .build());
                             } else {
-                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(0).build());
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder("").build());
                             }
                         }
                     } else if (holder.leftIconView.getVisibility() == View.VISIBLE) {
@@ -702,20 +702,20 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
 
                             if (userInfo != null) {
                                 portrait = userInfo.getPortraitUri();
-                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).setUrl(portrait.toString())
+                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(portrait.toString())
                                         .setLoadingAvatarResId(R.drawable.rc_cs_default_portrait).build());
                             }
                         } else if ((data.getConversationType().equals(ConversationType.PUBLIC_SERVICE) || data.getConversationType().equals(ConversationType.APP_PUBLIC_SERVICE)) && data.getMessageDirection().equals(MessageDirection.RECEIVE)) {
                             if (userInfo != null) {
                                 portrait = userInfo.getPortraitUri();
-                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).setUrl(portrait.toString()).build());
+                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(portrait.toString()).build());
                             } else {
                                 mKey = ConversationKey.obtain(data.getTargetId(), data.getConversationType());
                                 publicServiceProfile = RongContext.getInstance().getPublicServiceInfoFromCache(mKey.getKey());
                                 if (publicServiceProfile != null && publicServiceProfile.getPortraitUri() != null) {
-                                    AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).setUrl(publicServiceProfile.getPortraitUri().toString()).build());
+                                    AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(publicServiceProfile.getPortraitUri().toString()).build());
                                 } else {
-                                    AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).build());
+                                    AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder("").build());
                                 }
                             }
                         } else if (!TextUtils.isEmpty(data.getSenderUserId())) {
@@ -724,10 +724,10 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                             }
 
                             if (userInfo != null && userInfo.getPortraitUri() != null) {
-                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0)
-                                        .setUrl(userInfo.getPortraitUri().toString()).build());
+                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(userInfo.getPortraitUri().toString())
+                                        .build());
                             } else {
-                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder(0).build());
+                                AvatarUtils.loadAvatarByUrl(holder.leftIconView, AvatarUtils.newParamsBuilder("").build());
                             }
                         }
                     }
