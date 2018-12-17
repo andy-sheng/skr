@@ -1,38 +1,54 @@
 package com.module.rankingmode.song.holder;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.song.model.SongModel;
 
 public class SongInfoHolder extends RecyclerView.ViewHolder {
-    ExTextView mSongNameTv;
+
     SongModel mSongModel;
+    int position;
 
-    RecyclerOnItemClickListener mRecyclerOnItemClickListener;
+    SimpleDraweeView mSongCoverIv;
+    ExTextView mSongNameTv;
+    ExTextView mSongOwnerTv;
+    ExTextView mSongSelectTv;
 
-    public SongInfoHolder(View itemView) {
+    public SongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
         super(itemView);
+
+        mSongCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
-        itemView.setOnClickListener(new View.OnClickListener() {
+        mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
+        mSongSelectTv = (ExTextView) itemView.findViewById(R.id.song_select_tv);
+
+        mSongSelectTv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (mRecyclerOnItemClickListener != null) {
-                    mRecyclerOnItemClickListener.onItemClicked(itemView,-1,mSongModel);
+            public void onClick(View view) {
+                if (recyclerOnItemClickListener != null) {
+                    recyclerOnItemClickListener.onItemClicked(itemView, position, mSongModel);
                 }
             }
         });
     }
 
     public void bind(int position, SongModel songModel) {
-        mSongModel = songModel;
+        this.position = position;
+        this.mSongModel = songModel;
+
         mSongNameTv.setText(mSongModel.getItemName());
+        mSongOwnerTv.setText(mSongModel.getOwner());
+        FrescoWorker.loadImage(mSongCoverIv,ImageFactory.newHttpImage(mSongModel.getCover())
+                .setCornerRadius(9).setBorderWidth(6)
+                .setBorderColor(Color.parseColor("#0C2275")).build());
     }
 
-    public void setListener(RecyclerOnItemClickListener recyclerOnItemClickListener) {
-        mRecyclerOnItemClickListener = recyclerOnItemClickListener;
-    }
 }

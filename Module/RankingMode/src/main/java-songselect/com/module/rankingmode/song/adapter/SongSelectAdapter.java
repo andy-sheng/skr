@@ -26,8 +26,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);
-        SongInfoHolder viewHolder = new SongInfoHolder(view);
-        viewHolder.setListener(mRecyclerOnItemClickListener);
+        SongInfoHolder viewHolder = new SongInfoHolder(view, mRecyclerOnItemClickListener);
         return viewHolder;
     }
 
