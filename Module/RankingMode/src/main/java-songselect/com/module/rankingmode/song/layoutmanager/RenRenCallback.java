@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.module.rankingmode.song.layoutmanager.CardConfig.MAX_SHOW_COUNT;
 import static com.module.rankingmode.song.layoutmanager.CardConfig.SCALE_GAP;
+import static com.module.rankingmode.song.layoutmanager.CardConfig.TRANS_X_GAP;
 import static com.module.rankingmode.song.layoutmanager.CardConfig.TRANS_Y_GAP;
 
 /**
@@ -92,6 +93,7 @@ public class RenRenCallback extends ItemTouchHelper.SimpleCallback {
 
                 if (level < MAX_SHOW_COUNT - 1) {
                     child.setScaleY((float) (1 - SCALE_GAP * level + fraction * SCALE_GAP));
+                    child.setTranslationX((float) (TRANS_X_GAP * level - fraction * TRANS_X_GAP));
                     child.setTranslationY((float) (TRANS_Y_GAP * level - fraction * TRANS_Y_GAP));
                 } else {
                     //child.setTranslationY((float) (mTranslationYGap * (level - 1) - fraction * mTranslationYGap));

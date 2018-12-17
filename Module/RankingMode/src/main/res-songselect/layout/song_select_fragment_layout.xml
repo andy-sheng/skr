@@ -6,6 +6,31 @@
     android:background="@drawable/dabeijing"
     android:orientation="vertical">
 
+    <com.common.view.ex.ExImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_90_dp"
+        android:src="@drawable/img_select_triangle" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:src="@drawable/img_mirc" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_66_dp"
+        android:src="@drawable/img_select_song"
+        android:background="@drawable/img_select_song_bg"/>
+
     <!--<com.common.view.viewpager.SlidingTabLayout-->
     <!--android:layout_marginTop="@dimen/view_20_dp"-->
     <!--android:id="@+id/select_song_tab_layout"-->
@@ -53,5 +78,6 @@
         android:layout_marginLeft="@dimen/view_36_dp"
         android:layout_marginTop="@dimen/view_46_dp"
         android:src="@drawable/img_back" />
+
 
 </RelativeLayout>

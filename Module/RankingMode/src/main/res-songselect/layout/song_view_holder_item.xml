@@ -1,8 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_marginRight="@dimen/view_32_dp"
-    android:layout_marginLeft="@dimen/view_32_dp"
     android:layout_height="@dimen/view_76_dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -40,7 +38,7 @@
         android:layout_height="@dimen/view_33_dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/view_9_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_7_dp"
         android:text="演唱"
         android:gravity="center"
