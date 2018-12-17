@@ -2,6 +2,7 @@ package com.common.upload;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
@@ -44,7 +45,7 @@ public class UploadTask {
 
     private UploadParams mUploadParams;
     private String mBucketName;
-    private String mObjectId = "111";
+    private String mDir;
     private String mCallbackUrl;
     private String mCallbackBody;
     private String mCallbackBodyType;
@@ -63,11 +64,15 @@ public class UploadTask {
 
                     @Override
                     public void process(JSONObject data) {
-                        int code = data.getInteger("StatusCode");
+                        boolean has = data.containsKey("statusCode");
+                        if (!has) {
+                            return;
+                        }
+                        int code = data.getInteger("statusCode");
                         if (code == 200) {
-                            String accessKeyId = data.getString("AccessKeyId");
-                            String accessKeySecret = data.getString("AccessKeySecret");
-                            String securityToken = data.getString("SecurityToken");
+                            String accessKeyId = data.getString("accessKeyId");
+                            String accessKeySecret = data.getString("accessKeySecret");
+                            String securityToken = data.getString("securityToken");
                             OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken);
 
                             ClientConfiguration conf = new ClientConfiguration();
@@ -82,6 +87,7 @@ public class UploadTask {
                             mOss = new OSSClient(U.app(), endpoint, credentialProvider, conf);
 
                             mBucketName = uploadParams.getString("bucketName");
+                            mDir = uploadParams.getString("dir");
 
                             JSONObject callback = uploadParams.getJSONObject("callback");
                             mCallbackUrl = callback.getString("callbackUrl");
@@ -116,13 +122,13 @@ public class UploadTask {
 
                                             @Override
                                             public void onSuccess(File file) {
-                                                MyLog.d(TAG,"压缩成功" + " file=" + file.getAbsolutePath());
+                                                MyLog.d(TAG, "压缩成功" + " file=" + file.getAbsolutePath());
                                                 upload(file.getAbsolutePath(), uploadCallback);
                                             }
 
                                             @Override
                                             public void onError(Throwable e) {
-                                                MyLog.d(TAG,"压缩失败");
+                                                MyLog.d(TAG, "压缩失败");
                                                 upload(mUploadParams.getFilePath(), uploadCallback);
                                             }
                                         }).launch();
@@ -150,7 +156,7 @@ public class UploadTask {
             @Override
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
                 if (uploadCallback != null) {
-                    uploadCallback.onProgress(request, currentSize, totalSize);
+                    uploadCallback.onProgress(currentSize, totalSize);
                 }
             }
         });
@@ -162,16 +168,18 @@ public class UploadTask {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                 if (uploadCallback != null) {
-                    uploadCallback.onSuccess(request, result);
                     // 只有设置了servercallback，这个值才有数据
                     String serverCallbackReturnJson = result.getServerCallbackReturnBody();
+                    MyLog.w(TAG, "serverCallbackReturnJson:" + serverCallbackReturnJson);
+                    JSONObject jo = JSON.parseObject(serverCallbackReturnJson);
+                    uploadCallback.onSuccess(jo.getString("url"));
                 }
             }
 
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientException, ServiceException serviceException) {
                 if (uploadCallback != null) {
-                    uploadCallback.onFailure(request, clientException, serviceException);
+                    uploadCallback.onFailure("error:" + serviceException.getErrorCode() + " clientMsg:" + clientException.getMessage() + " serverMsg:" + serviceException.getMessage());
                 }
             }
         });
@@ -183,7 +191,10 @@ public class UploadTask {
      * @return
      */
     private PutObjectRequest createRequest(String filePath) {
-
+        String ext = U.getFileUtils().getSuffixFromFilePath(filePath);
+        String fileName = U.getMD5Utils().MD5_16(System.currentTimeMillis() + filePath);
+        String mObjectId = mDir + fileName + "." + ext;
+        MyLog.w(TAG, "mObjectId:" + mObjectId);
         // 构造上传请求
         PutObjectRequest put = new PutObjectRequest(mBucketName, mObjectId, filePath);
 

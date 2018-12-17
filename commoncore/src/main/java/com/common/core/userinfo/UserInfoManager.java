@@ -464,8 +464,15 @@ public class UserInfoManager {
         // 根据返回值判断是否去服务器查询
         // todo 仅测试
         Uri testUri = Uri.parse("http://cms-bucket.nosdn.127.net/a2482c0b2b984dc88a479e6b7438da6020161219074944.jpeg");
-        UserInfo friend1 = new UserInfo(1001, "帅哥", 0);
-        UserInfo friend2 = new UserInfo(1002, "美女", 0);
+
+        UserInfo friend1 = new UserInfo();
+        friend1.setUserId(1001);
+        friend1.setUserNickname("帅哥");
+
+        UserInfo friend2 = new UserInfo();
+        friend2.setUserId(1002);
+        friend2.setUserNickname("美女");
+        
         List<UserInfo> list = new ArrayList<>();
         list.add(friend1);
         list.add(friend2);

@@ -72,9 +72,8 @@ public class MatchingUserIconView extends Sprite {
 
     public void loadUserIcon(String userIconUrl){
         AvatarUtils.loadAvatarByUrl(mIvUserIcon,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
 
     }

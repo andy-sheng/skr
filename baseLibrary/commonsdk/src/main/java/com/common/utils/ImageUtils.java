@@ -116,63 +116,73 @@ public class ImageUtils {
         return option;
     }
 
-    /**
-     * 简化拼接方法
-     * 具体拼接规则
-     * http://wiki.n.miui.com/pages/viewpage.action?pageId=18998589
-     * 0 : 原始webp地址
-     * 160 : 160尺寸地址
-     * 320 : 320尺寸地址
-     * 480 : 480尺寸地址
-     */
-    public String getSizeSuffix(SIZE dimenSize) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("@style@");
-        switch (dimenSize) {
-            case ORIGIN:
-                sb.append("original");
-                break;
-            case SIZE_160:
-                sb.append("160");
-                break;
-            case SIZE_320:
-                sb.append("320");
-                break;
-            case SIZE_480:
-                sb.append("480");
-                break;
-            case SIZE_640:
-                sb.append("640");
-                break;
-        }
-        return sb.toString();
-    }
-
-    public static String getSizeSuffixJpg(SIZE dimenSize) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("@style@");
-        switch (dimenSize) {
-            case ORIGIN:
-                return "";
-            case SIZE_160:
-                sb.append("160");
-                break;
-            case SIZE_320:
-                sb.append("320");
-                break;
-            case SIZE_480:
-                sb.append("480");
-                break;
-            case SIZE_640:
-                sb.append("640");
-                break;
-        }
-        sb.append("jpg");
-        return sb.toString();
-    }
+//    /**
+//     * 简化拼接方法
+//     * 具体拼接规则
+//     * http://wiki.n.miui.com/pages/viewpage.action?pageId=18998589
+//     * 0 : 原始webp地址
+//     * 160 : 160尺寸地址
+//     * 320 : 320尺寸地址
+//     * 480 : 480尺寸地址
+//     */
+//    public String getSizeSuffix(SIZE dimenSize) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("@style@");
+//        switch (dimenSize) {
+//            case ORIGIN:
+//                sb.append("original");
+//                break;
+//            case SIZE_160:
+//                sb.append("160");
+//                break;
+//            case SIZE_320:
+//                sb.append("320");
+//                break;
+//            case SIZE_480:
+//                sb.append("480");
+//                break;
+//            case SIZE_640:
+//                sb.append("640");
+//                break;
+//        }
+//        return sb.toString();
+//    }
+//
+//    public static String getSizeSuffixJpg(SIZE dimenSize) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("@style@");
+//        switch (dimenSize) {
+//            case ORIGIN:
+//                return "";
+//            case SIZE_160:
+//                sb.append("160");
+//                break;
+//            case SIZE_320:
+//                sb.append("320");
+//                break;
+//            case SIZE_480:
+//                sb.append("480");
+//                break;
+//            case SIZE_640:
+//                sb.append("640");
+//                break;
+//        }
+//        sb.append("jpg");
+//        return sb.toString();
+//    }
 
     public enum SIZE {
-        ORIGIN, SIZE_160, SIZE_320, SIZE_480, SIZE_640
+        ORIGIN(1080), SIZE_160(160), SIZE_320(320), SIZE_480(480), SIZE_640(640);
+
+        int w;
+
+        SIZE(int w) {
+            this.w = w;
+        }
+
+        public int getW() {
+            return w;
+        }
     }
 
     /**

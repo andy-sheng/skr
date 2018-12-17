@@ -3,7 +3,7 @@ package com.common.image.model.oss;
 
 /**
  * 裁剪
- * 通过{@link OssPsFactory 使用}
+ * 通过{@link OssImgFactory 使用}
  */
 public class OssImgCrop implements IOssParam {
 

@@ -61,7 +61,7 @@ public class SpecificProcessor extends CommonProcessor {
                 .withString("url", uri.toString())
                 .withLong("uid", MyUserInfoManager.getInstance().getUid())
                 .withString("videoUrl", MyUserInfoManager.getInstance().getMyUserInfo().getViewUrl())
-                .withLong("avatar", MyUserInfoManager.getInstance().getAvatar())
+                .withString("avatar", MyUserInfoManager.getInstance().getAvatar())
                 .greenChannel().navigation();
 
     }

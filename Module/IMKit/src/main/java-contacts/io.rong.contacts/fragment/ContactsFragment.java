@@ -321,8 +321,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     private void updatePersonalUI() {
         mNameTextView.setText(MyUserInfoManager.getInstance().getNickName());
         AvatarUtils.loadAvatarByUrl(mAvatar,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .build());
 
     }

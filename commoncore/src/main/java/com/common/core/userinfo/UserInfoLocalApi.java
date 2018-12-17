@@ -67,7 +67,7 @@ public class UserInfoLocalApi {
 
         UserInfo userInfoDB = getUserInfoByUUid(userInfo.getUserId());
         if (userInfoDB != null) {
-            userInfo.fill(userInfoDB);
+            UserInfoDataUtils.fill(userInfo,userInfoDB);
             EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_UPDATE, userInfo));
         } else {
             EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_INSERT, userInfo));
@@ -161,7 +161,7 @@ public class UserInfoLocalApi {
     /**
      * 获取黑名单
      *
-     * @return
+     * @returnf
      */
     public static List<UserInfo> getBockerList() {
         List<UserInfo> userInfos = null;

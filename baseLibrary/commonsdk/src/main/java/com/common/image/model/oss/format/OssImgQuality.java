@@ -2,12 +2,12 @@ package com.common.image.model.oss.format;
 
 
 import com.common.image.model.oss.IOssParam;
-import com.common.image.model.oss.OssPsFactory;
+import com.common.image.model.oss.OssImgFactory;
 
 /**
  * 图片质量压缩
  * 对于 jpg和webp 支持质量压缩
- * 通过{@link OssPsFactory 使用}
+ * 通过{@link OssImgFactory 使用}
  */
 public class OssImgQuality implements IOssParam {
 

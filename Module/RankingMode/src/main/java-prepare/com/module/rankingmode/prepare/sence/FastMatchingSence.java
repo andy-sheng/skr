@@ -1,7 +1,6 @@
 package com.module.rankingmode.prepare.sence;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -64,9 +63,8 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
         mSmallMatchingLayerView = findViewById(R.id.small_matching_layer_view);
 
         AvatarUtils.loadAvatarByUrl(ownerIcon,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
 
         matchingPresenter.getLoadingUserListIcon();

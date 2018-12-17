@@ -113,7 +113,7 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public boolean onBackPressedForActivity() {
-        moveTaskToBack(false);
+        moveTaskToBack(true);
         return true;
     }
 }

@@ -17,6 +17,10 @@ import java.io.IOException;
 import okio.ByteString;
 
 
+/**
+ * 除了个人基本信息外
+ * 还有许多额外信息，存在 UserInfo 的ext中？
+ */
 public class MyUserInfo {
     private UserInfo mUserInfo;
 
@@ -53,11 +57,11 @@ public class MyUserInfo {
         this.mUserInfo.setUserId(uid);
     }
 
-    public Long getAvatar() {
+    public String getAvatar() {
         return this.mUserInfo.getAvatar();
     }
 
-    public void setAvatar(Long avatar) {
+    public void setAvatar(String avatar) {
         this.mUserInfo.setAvatar(avatar);
     }
 
@@ -69,61 +73,6 @@ public class MyUserInfo {
         this.mUserInfo.setUserNickname(nickName);
     }
 
-    public String getSign() {
-        return this.mUserInfo.getSignature();
-    }
-
-    public void setSign(String sign) {
-        this.mUserInfo.setSignature(sign);
-    }
-
-    public Integer getGender() {
-        return this.mUserInfo.getGender();
-    }
-
-    public void setGender(Integer gender) {
-        this.mUserInfo.setGender(gender);
-    }
-
-    public Integer getLevel() {
-        return this.mUserInfo.getLevel();
-    }
-
-    public void setLevel(Integer level) {
-        this.mUserInfo.setLevel(level);
-    }
-
-    public Integer getBadge() {
-        return this.mUserInfo.getBadge();
-    }
-
-    public void setBadge(Integer badge) {
-        this.mUserInfo.setBadge(badge);
-    }
-
-    public Long getUpdateTs() {
-        return this.mUserInfo.getUpdateTime();
-    }
-
-    public void setUpdateTs(Long updateTs) {
-        this.mUserInfo.setUpdateTime(updateTs);
-    }
-
-    public Integer getCertificationType() {
-        return this.mUserInfo.getCertificationType();
-    }
-
-    public void setCertificationType(Integer certificationType) {
-        this.mUserInfo.setCertificationType(certificationType);
-    }
-
-    public String getCertification() {
-        return this.mUserInfo.getCertification();
-    }
-
-    public void setCertification(String certification) {
-        this.mUserInfo.setCertification(certification);
-    }
 
     public Boolean getCertificationChanged() {
         return this.certificationChanged;
@@ -133,101 +82,6 @@ public class MyUserInfo {
         this.certificationChanged = certificationChanged;
     }
 
-    public Boolean getIsBlock() {
-        return this.mUserInfo.getBlock();
-    }
-
-    public void setIsBlock(Boolean isBlock) {
-        this.mUserInfo.setBlock(isBlock);
-    }
-
-    public Integer getLiveTicketNum() {
-        return this.mUserInfo.getLiveTicketNum();
-    }
-
-    public void setLiveTicketNum(Integer liveTicketNum) {
-        this.mUserInfo.setLiveTicketNum(liveTicketNum);
-    }
-
-    public Integer getFansNum() {
-        return this.mUserInfo.getFansNum();
-    }
-
-    public void setFansNum(Integer fansNum) {
-        this.mUserInfo.setFansNum(fansNum);
-    }
-
-    public Integer getFollowNum() {
-        return this.mUserInfo.getFansNum();
-    }
-
-    public void setFollowNum(Integer followNum) {
-        this.mUserInfo.setFollowNum(followNum);
-    }
-
-    public Integer getVodNum() {
-        return this.mUserInfo.getVodNum();
-    }
-
-    public void setVodNum(Integer vodNum) {
-        this.mUserInfo.setVodNum(vodNum);
-    }
-
-    public Integer getEarnNum() {
-        return this.mUserInfo.getEarnNum();
-    }
-
-    public void setEarnNum(Integer earnNum) {
-        this.mUserInfo.setEarnNum(earnNum);
-    }
-
-    public Integer getDiamondNum() {
-        return this.mUserInfo.getDiamondNum();
-    }
-
-    public void setDiamondNum(Integer diamondNum) {
-        this.mUserInfo.setDiamondNum(diamondNum);
-    }
-
-    public Integer getGoldCoinNum() {
-        return this.mUserInfo.getGoldCoinNum();
-    }
-
-    public void setGoldCoinNum(Integer goldCoinNum) {
-        this.setGoldCoinNum(goldCoinNum);
-    }
-
-    public Integer getSendDiamondNum() {
-        return this.mUserInfo.getSendDiamondNum();
-    }
-
-    public void setSendDiamondNum(Integer sendDiamondNum) {
-        this.mUserInfo.setSendDiamondNum(sendDiamondNum);
-    }
-
-    public Integer getSentVirtualDiamondNum() {
-        return this.mUserInfo.getSentVirtualDiamondNum();
-    }
-
-    public void setSentVirtualDiamondNum(Integer sentVirtualDiamondNum) {
-        this.mUserInfo.setSendDiamondNum(sentVirtualDiamondNum);
-    }
-
-    public Integer getVirtualDiamondNum() {
-        return this.mUserInfo.getVirtualDiamondNum();
-    }
-
-    public void setVirtualDiamondNum(Integer virtualDiamondNum) {
-        this.mUserInfo.setVirtualDiamondNum(virtualDiamondNum);
-    }
-
-    public Boolean getIsLive() {
-        return this.mUserInfo.getIsLive();
-    }
-
-    public void setIsLive(Boolean isLive) {
-        this.mUserInfo.setIsLive(isLive);
-    }
 
     public String getViewUrl() {
         return this.viewUrl;
@@ -293,37 +147,6 @@ public class MyUserInfo {
         this.norbleMedal = norbleMedal;
     }
 
-    public Integer getVipLevel() {
-        return this.mUserInfo.getVipLevel();
-    }
-
-    public void setVipLevel(Integer vipLevel) {
-        this.mUserInfo.setVipLevel(vipLevel);
-    }
-
-    public Boolean getIsVipFrozen() {
-        return this.mUserInfo.getIsVipFrozen();
-    }
-
-    public void setIsVipFrozen(Boolean isVipFrozen) {
-        this.mUserInfo.setIsVipFrozen(isVipFrozen);
-    }
-
-    public Boolean getIsVipHide() {
-        return this.mUserInfo.getIsVipHide();
-    }
-
-    public void setIsVipHide(Boolean isVipHide) {
-        this.mUserInfo.setIsVipHide(isVipHide);
-    }
-
-    public Integer getNobleLevel() {
-        return this.mUserInfo.getNobleLevel();
-    }
-
-    public void setNobleLevel(Integer nobleLevel) {
-        this.mUserInfo.setNobleLevel(nobleLevel);
-    }
 
     public Boolean getIsNeedBindPhone() {
         return this.isNeedBindPhone;

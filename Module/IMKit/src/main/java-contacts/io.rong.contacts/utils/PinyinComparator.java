@@ -25,7 +25,7 @@ public class PinyinComparator implements Comparator<UserInfo> {
         if (o1.getLetter().equals("@")
                 || o2.getLetter().equals("#")) {
             return -1;
-        } else if (o1.getLetter().equals("#")
+        } else if (o1.getLetter().equals("#q")
                    || o2.getLetter().equals("@")) {
             return 1;
         } else {

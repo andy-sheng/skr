@@ -9,6 +9,8 @@ import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -70,6 +72,7 @@ public class UserAccountManager {
             UserAccountLocalApi.loginAccount(account);
             // 用户登录成功，这里应该是要发出通知的
             setAccount(account);
+
             U.getActivityUtils().showSnackbar("登录成功", false);
         }
     }
@@ -248,7 +251,18 @@ public class UserAccountManager {
                             String nickName = profileJO.getString("nickname");
                             int sex = profileJO.getInteger("sex");
                             String birthday = profileJO.getString("birthday");
+                            String avatar = profileJO.getString("avatar");
+
                             boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
+
+                            // 设置个人信息
+                            UserInfo userInfo = new UserInfo();
+                            userInfo.setUserId(userID);
+                            userInfo.setUserNickname(nickName);
+                            userInfo.setSex(sex);
+                            userInfo.setBirthday(birthday);
+                            userInfo.setAvatar(avatar);
+                            UserInfoLocalApi.insertOrUpdate(userInfo,false,false);
 
                             UserAccount userAccount = new UserAccount();
                             userAccount.setServiceToken(serviceToken);

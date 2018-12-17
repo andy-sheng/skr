@@ -14,7 +14,7 @@ import com.common.image.model.oss.format.OssImgQuality;
  * 使用强大的阿里oss系统的图片处理
  * https://help.aliyun.com/document_detail/44686.html?spm=a2c4g.11186623.6.1157.49f753b3esuUNU
  */
-public class OssPsFactory {
+public class OssImgFactory {
 
     public static OssImgResize.Builder newResizeBuilder() {
         return new OssImgResize.Builder();
@@ -65,26 +65,35 @@ public class OssPsFactory {
      * @param ossProcessors
      * @return
      */
-    public static String fillOssParams(String url, IOssParam[] ossProcessors) {
+    public static String addOssParams(String url, IOssParam[] ossProcessors) {
         Uri uri = Uri.parse(url);
         if (uri != null) {
             StringBuilder paramsSb = new StringBuilder();
             for (IOssParam oss : ossProcessors) {
                 paramsSb.append(oss.getOpDesc());
             }
-            paramsSb.insert(0, "x-oss-process=image");
 //            String origin = uri.getQueryParameter("x-oss-process");
 //            if (!TextUtils.isEmpty(origin)) {
 //            替换掉原有的,后来想象也不能覆盖，先注释掉
 //                url = url.replace("x-oss-process=" + origin, paramsSb.toString());
 //            } else {
+
             String query = uri.getQuery();
             if (TextUtils.isEmpty(query)) {
+                paramsSb.insert(0, "x-oss-process=image");
                 url = url + "?" + paramsSb.toString();
             } else {
-                url = url + "&" + paramsSb.toString();
+                String f = "x-oss-process=image";
+                int index = url.indexOf(f);
+                if(index>=0){
+                    // 以及有图片处理相关了
+                    String p1 = url.substring(0,index+f.length());
+                    String p2 = url.substring(index+f.length(),url.length());
+                    url = p1+paramsSb.toString()+p2;
+                }else{
+                    url = url + "&" + paramsSb.toString();
+                }
             }
-//            }
             return url;
         } else {
             return url;

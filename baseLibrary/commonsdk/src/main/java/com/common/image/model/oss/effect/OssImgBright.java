@@ -2,11 +2,11 @@ package com.common.image.model.oss.effect;
 
 
 import com.common.image.model.oss.IOssParam;
-import com.common.image.model.oss.OssPsFactory;
+import com.common.image.model.oss.OssImgFactory;
 
 /**
  * 图片亮度
- * 通过{@link OssPsFactory 使用}
+ * 通过{@link OssImgFactory 使用}
  */
 public class OssImgBright implements IOssParam {
 

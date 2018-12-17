@@ -10,11 +10,14 @@ import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
 import com.wali.live.proto.User.GetOwnInfoRsp;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import io.reactivex.Observable;
@@ -83,20 +86,65 @@ public class MyUserInfoManager {
      * 更新用户信息
      *
      * @param nickName
-     * @param sex
+     * @param sex      -1 代表不更新
      * @param birthday
      */
-    public void updateInfo(String nickName, int sex, String birthday,String avatar) {
+    public void updateInfo(String nickName, int sex, String birthday, String avatar) {
+
+        final UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(UserAccountManager.getInstance().getUuidAsLong());
         HashMap<String, Object> map = new HashMap<>();
-        map.put("nickname", nickName);
-        map.put("sex", sex);
-        map.put("birthday", birthday);
-        map.put("avatar", avatar);
+        if (nickName != null) {
+            map.put("nickname", nickName);
+            userInfo.setUserNickname(nickName);
+        }
+        if (sex != -1) {
+            map.put("sex", sex);
+            userInfo.setSex(sex);
+        }
+        if (birthday != null) {
+            map.put("birthday", birthday);
+            userInfo.setBirthday(birthday);
+        }
+        if (avatar != null) {
+            map.put("avatar", avatar);
+            userInfo.setAvatar(avatar);
+        }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
         MyUserInfoServerApi myUserAccountServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
         Observable<ApiResult> apiResultObservable = myUserAccountServerApi.updateInfo(body);
-        ApiMethods.subscribe(apiResultObservable, null);
+        ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    U.getToastUtil().showShort("个人信息更新成功");
+                    //写入数据库
+                    Observable.create(new ObservableOnSubscribe<Object>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                            UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
+
+                            // 取得个人信息
+                            UserInfo userInfo = UserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
+                            if (userInfo != null) {
+                                if (mUser != null) {
+                                    mUser.setUserInfo(userInfo);
+                                    setMyUserInfo(mUser);
+                                } else {
+                                    MyUserInfo myUserInfo = new MyUserInfo();
+                                    myUserInfo.setUserInfo(userInfo);
+                                    setMyUserInfo(mUser);
+                                }
+                            }
+                            emitter.onComplete();
+                        }
+                    })
+                            .subscribeOn(Schedulers.io())
+                            .subscribe();
+                }
+            }
+        });
     }
 
     public long getUid() {
@@ -107,28 +155,15 @@ public class MyUserInfoManager {
         return mUser != null ? mUser.getNickName() : "";
     }
 
-    public long getAvatar() {
-        return mUser != null ? mUser.getAvatar() : 0;
-    }
+    public String getAvatar() {
+        if (mUser != null) {
 
-    public int getLevel() {
-        return mUser != null ? mUser.getLevel() : 0;
-    }
-
-    public int getVipLevel() {
-        return mUser != null ? mUser.getVipLevel() : 0;
+        }
+        return mUser != null ? mUser.getAvatar() : "";
     }
 
     public boolean isRedName() {
         return mUser != null ? mUser.getRedName() : false;
-    }
-
-    public boolean isVipFrozen() {
-        return mUser != null ? mUser.getIsVipFrozen() : false;
-    }
-
-    public synchronized int getNobleLevel() {
-        return mUser != null ? mUser.getNobleLevel() : 0;
     }
 
     private static class MyUserInfoManagerHolder {

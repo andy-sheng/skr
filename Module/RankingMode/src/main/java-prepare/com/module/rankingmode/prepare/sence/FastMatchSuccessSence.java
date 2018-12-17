@@ -67,21 +67,18 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
         mMatchStatusTv = findViewById(R.id.match_status_tv);
 
         AvatarUtils.loadAvatarByUrl(mIvAArea,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mIvBArea,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mIvCArea,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
                         .build());
     }
 

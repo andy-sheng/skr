@@ -102,9 +102,7 @@ public class FriendListAdapter extends BaseAdapter implements SectionIndexer {
             viewHolder.tvTitle.setText(this.list.get(position).getUserNickname());
         }
 
-        AvatarUtils.loadAvatarByUrl(viewHolder.mImageView,
-                AvatarUtils.newParamsBuilder(list.get(position).getUserId())
-                        .setTimestamp(list.get(position).getAvatar())
+        AvatarUtils.loadAvatarByUrl(viewHolder.mImageView, AvatarUtils.newParamsBuilder(list.get(position).getAvatar())
                         .build());
         if (context.getSharedPreferences("config", Context.MODE_PRIVATE).getBoolean("isDebug", false)) {
             viewHolder.tvUserId.setVisibility(View.VISIBLE);

@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.common.image.model.oss.IOssParam;
-import com.common.image.model.oss.OssPsFactory;
+import com.common.image.model.oss.OssImgFactory;
 
 /**
  * Created by lan on 15-12-14.
@@ -42,8 +42,8 @@ public class HttpImage extends BaseImage {
         }
     }
 
-    public void setOssProcessors(IOssParam[] ossProcessors) {
-        mUrl = OssPsFactory.fillOssParams(mUrl,ossProcessors);
+    public void addOssProcessors(IOssParam[] ossProcessors) {
+        mUrl = OssImgFactory.addOssParams(mUrl,ossProcessors);
         generateUri();
     }
 }

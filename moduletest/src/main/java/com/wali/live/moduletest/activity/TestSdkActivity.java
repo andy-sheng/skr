@@ -97,7 +97,7 @@ public class TestSdkActivity extends BaseActivity {
 
     void loadAccountInfo() {
         if (UserAccountManager.getInstance().hasAccount()) {
-            mTitlebar.getCenterTextView().setText(MyUserInfoManager.getInstance().getNickName());
+            mTitlebar.getCenterTextView().setText("id:" + MyUserInfoManager.getInstance().getUid() + " name:" + MyUserInfoManager.getInstance().getNickName());
         } else {
             mTitlebar.getCenterTextView().setText("未登陆");
         }
@@ -105,8 +105,8 @@ public class TestSdkActivity extends BaseActivity {
         BaseImageView baseImageView = view.findViewById(R.id.head_img);
 
         AvatarUtils.loadAvatarByUrl(baseImageView,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getUid())
-                        .setTimestamp(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setWebpFormat(true)
                         .build());
 
     }
@@ -181,11 +181,11 @@ public class TestSdkActivity extends BaseActivity {
                 aa.setA("字段1");
                 aa.setB("字段2");
                 aa.setCc(CC.blue);
-                MyLog.w(TAG,"aaa:"+aa);
+                MyLog.w(TAG, "aaa:" + aa);
 
-                String ttt = JSON.toJSONString(aa,SerializerFeature.EMPTY);
+                String ttt = JSON.toJSONString(aa, SerializerFeature.EMPTY);
                 aa = (AA) JSON.parse(ttt);
-                MyLog.w(TAG,"aaa:"+aa);
+                MyLog.w(TAG, "aaa:" + aa);
             }
         }));
 
@@ -581,19 +581,21 @@ public class TestSdkActivity extends BaseActivity {
                                             .setNeedCompress(true)
                                             .startUploadAsync(new UploadCallback() {
                                                 @Override
-                                                public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+                                                public void onProgress(long currentSize, long totalSize) {
+
                                                 }
 
                                                 @Override
-                                                public void onSuccess(OSSRequest request, OSSResult result) {
-                                                    MyLog.d(TAG, "onSuccess" + " request=" + request + " result=" + result);
-                                                    U.getToastUtil().showShort("上传成功");
+                                                public void onSuccess(String url) {
+                                                    U.getToastUtil().showShort("上传成功 url:" + url);
+                                                    MyUserInfoManager.getInstance().updateInfo(null, -1, null, url);
                                                 }
 
                                                 @Override
-                                                public void onFailure(OSSRequest request, ClientException clientException, ServiceException serviceException) {
-                                                    MyLog.d(TAG, "onFailure" + " request=" + request + " clientException=" + clientException + " serviceException=" + serviceException);
+                                                public void onFailure(String msg) {
+
                                                 }
+
                                             });
 
                                 }
