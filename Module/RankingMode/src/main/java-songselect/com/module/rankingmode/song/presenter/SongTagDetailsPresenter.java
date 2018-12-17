@@ -11,6 +11,7 @@ import com.module.rankingmode.song.SongSelectServerApi;
 import com.module.rankingmode.song.model.SongModel;
 import com.module.rankingmode.song.view.ISongTagDetailView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
@@ -29,7 +30,7 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
      * @param cnt
      */
     public void getRcomdMusicItems(int offset, int cnt) {
-        if (offset == -1){
+        if (offset == -1) {
             U.getToastUtil().showShort("没有更多数据了");
             return;
         }
@@ -39,9 +40,13 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    List<SongModel> data = new ArrayList<>();
+                    for (int i = 0; i < 21; i++) {
+                        data.addAll(list);
+                    }
                     int offset = result.getData().getIntValue("offset");
                     if (view != null) {
-                        view.loadSongsDetailItems(list, offset);
+                        view.loadSongsDetailItems(data, offset);
                     }
                 } else {
                     if (view != null) {

@@ -3,26 +3,67 @@ package com.module.rankingmode.song.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
+import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.fragment.MatchingFragment;
+import com.module.rankingmode.song.adapter.SongCardsAdapter;
+import com.module.rankingmode.song.event.SwipCardEvent;
+import com.module.rankingmode.song.layoutmanager.CardConfig;
+import com.module.rankingmode.song.layoutmanager.OverLayCardLayoutManager;
+import com.module.rankingmode.song.layoutmanager.TanTanCallback;
+import com.module.rankingmode.song.model.SongCardModel;
+import com.module.rankingmode.song.model.SongModel;
 import com.module.rankingmode.song.model.TagModel;
+import com.module.rankingmode.song.presenter.SongTagDetailsPresenter;
+import com.module.rankingmode.song.view.ISongTagDetailView;
 import com.module.rankingmode.song.view.SongListView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class SongSelectFragment extends BaseFragment  {
-    LinearLayout mMainActContainer;
-    SlidingTabLayout mSelectSongTabLayout;
-    NestViewPager mSonglistViewPager;
+public class SongSelectFragment extends BaseFragment implements ISongTagDetailView {
 
-    TagPagerAdapter adapter;
+    public static final int DEFAULT_FIRST_COUNT = 30; // 第一次从推荐页面拉去歌曲数
+    public static final int DEFAULT_COUNT = 6;  // 从服务器拉去歌曲数
+
+    RelativeLayout mMainActContainer;
+
+    ExImageView mSelectBack;
+    ExImageView mSelectBackIv;
+    ExImageView mSelectClickedIv;
+
+    RecyclerView mCardRecycleview;
+    SongCardsAdapter adapter;
+
+    SongTagDetailsPresenter presenter;
+
+    List<SongCardModel> songCardModels; // 需要显示的数据
+    List<SongCardModel> mDeleteList; // 已经滑走的数据
+
+    int offset; //当前偏移量
+
+    TanTanCallback callback;
 
     @Override
     public int initView() {
@@ -31,39 +72,113 @@ public class SongSelectFragment extends BaseFragment  {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (LinearLayout) mRootView.findViewById(R.id.main_act_container);
-        mSelectSongTabLayout = (SlidingTabLayout) mRootView.findViewById(R.id.select_song_tab_layout);
-        mSonglistViewPager = (NestViewPager) mRootView.findViewById(R.id.songlist_view_pager);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mCardRecycleview = (RecyclerView) mRootView.findViewById(R.id.card_recycleview);
 
-        if (adapter == null) {
-            adapter = new TagPagerAdapter();
+        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
+        mCardRecycleview = (RecyclerView)mRootView.findViewById(R.id.card_recycleview);
+        mSelectBackIv = (ExImageView)mRootView.findViewById(R.id.select_back_iv);
+        mSelectClickedIv = (ExImageView)mRootView.findViewById(R.id.select_clicked_iv);
+        mSelectBack = (ExImageView)mRootView.findViewById(R.id.select_back);
+
+
+        RxView.clicks(mSelectBackIv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    backToLastCard();
+                });
+
+        RxView.clicks(mSelectClickedIv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    switchToClicked();
+                });
+
+        RxView.clicks(mSelectBack)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    U.getFragmentUtils().popFragment(this);
+                });
+
+        mDeleteList = new ArrayList<>();
+        songCardModels = new ArrayList<>();
+        mCardRecycleview.setLayoutManager(new OverLayCardLayoutManager());
+        adapter = new SongCardsAdapter(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, int position, Object model) {
+                SongModel songModel = (SongModel) model;
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((BaseActivity) getContext(), MatchingFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(false)
+                        .addDataBeforeAdd(0, songModel)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                            }
+                        })
+                        .build());
+            }
+        });
+
+        mCardRecycleview.setAdapter(adapter);
+
+        // 默认推荐
+        presenter = new SongTagDetailsPresenter(this);
+        presenter.getRcomdMusicItems(0, DEFAULT_FIRST_COUNT);
+    }
+
+
+    // 返回上一张选歌卡片
+    private void backToLastCard() {
+        if (mDeleteList == null || mDeleteList.size() == 0) {
+            U.getToastUtil().showShort("没有更多了");
         }
 
-        // TODO: 2018/12/13 服务器暂不提供选歌TAG的接口，先写死 
-        List<TagModel> tagModelList = new ArrayList<>();
-        TagModel tagModel = new TagModel();
-        tagModel.setTagID(1);
-        tagModel.setTagName("推荐");
-        tagModelList.add(tagModel);
-        TagModel tagModel1 = new TagModel();
-        tagModel1.setTagID(2);
-        tagModel1.setTagName("已点");
-        tagModelList.add(tagModel1);
+        SongCardModel songCardModel = mDeleteList.remove(0);
 
-        adapter.setData(tagModelList);
-        mSonglistViewPager.setAdapter(adapter);
-        mSelectSongTabLayout.setViewPager(mSonglistViewPager);
+        if (songCardModels != null) {
+            songCardModels.add(songCardModel);
+            adapter.notifyDataSetChanged();
+        }
+    }
 
-//        addPresent(songSelectPresenter);
-//        mLoadService = LoadSirManager.getDefault().register(mMainActContainer, new Callback.OnReloadListener() {
-//            @Override
-//            public void onReload(View v) {
-//                songSelectPresenter.getSongsListTags(1, 0, 100);
-//            }
-//        });
-//        mLoadService.showCallback(LoadingCallback.class);
-//
-//        songSelectPresenter.getSongsListTags(1, 0, 100);
+    // TODO: 2018/12/17  切换到已点界面, 要不要保存当前记录的数据，取决从已点回来的逻辑 
+    private void switchToClicked() {
+
+    }
+
+    @Override
+    public void loadSongsDetailItems(List<SongModel> list, int offset) {
+        this.offset = offset; //保存当前偏移量
+        SongCardModel songCardModel = new SongCardModel();
+        for (int i = 0; i < list.size(); i++) {
+            if (songCardModel == null) {
+                songCardModel = new SongCardModel();
+            }
+            songCardModel.getList().add(list.get(i));
+
+            if ((i + 1) % SongCardModel.MAX_COUNT == 0) {
+                songCardModels.add(0, songCardModel);
+                songCardModel = null;
+            }
+        }
+        if (songCardModel != null) {
+            songCardModels.add(0, songCardModel);
+        }
+
+        adapter.setmDataList(songCardModels);
+        CardConfig.initConfig(getContext());
+
+        callback = new TanTanCallback(mCardRecycleview, adapter, songCardModels, mDeleteList);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(mCardRecycleview);
+    }
+
+    @Override
+    public void loadSongsDetailItemsFail() {
+
     }
 
     @Override
@@ -74,73 +189,12 @@ public class SongSelectFragment extends BaseFragment  {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
-//    @Override
-//    protected View loadSirReplaceRootView() {
-//        return mLoadService.getLoadLayout();
-//    }
-//    @Override
-//    public void loadSongsTags(List<TagModel> list) {
-//        if (list == null) {
-//            return;
-//        }
-//
-//        if (adapter == null) {
-//            adapter = new TagPagerAdapter();
-//        }
-//        adapter.setData(list);
-//        mSonglistViewPager.setAdapter(adapter);
-//        mSelectSongTabLayout.setViewPager(mSonglistViewPager);
-//        mLoadService.showSuccess();
-//    }
-//    @Override
-//    public void loadSongsTagsFail() {
-//        // 加载失败
-//        mLoadService.showCallback(ErrorCallback.class);
-//    }
-
-    class TagPagerAdapter extends PagerAdapter {
-        List<TagModel> listData = new ArrayList<>();
-
-        ArrayList<ViewGroup> layouts = new ArrayList<>();
-
-        @Override
-        public int getCount() {
-            return listData.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object o) {
-            return view == o;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            ViewGroup l = layouts.get(position);
-            container.addView(l);
-            return l;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(layouts.get(position));
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return listData.get(position).getTagName();
-        }
-
-        public void setData(List<TagModel> listData) {
-            this.listData = listData;
-            for (TagModel tagModel : listData) {
-                SongListView songListView = new SongListView(getContext());
-                songListView.setTagModel(tagModel);
-                layouts.add(songListView);
-            }
-            notifyDataSetChanged();
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SwipCardEvent event) {
+        // TODO: 2018/12/17 要不要再去拉数据 当前是只去拉一页
+        presenter.getRcomdMusicItems(offset, DEFAULT_COUNT);
     }
 }

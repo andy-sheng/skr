@@ -1,18 +1,57 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/dabeijing"
+    android:orientation="vertical">
 
-    <com.common.view.viewpager.SlidingTabLayout
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:id="@+id/select_song_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_80_dp"/>
+    <!--<com.common.view.viewpager.SlidingTabLayout-->
+    <!--android:layout_marginTop="@dimen/view_20_dp"-->
+    <!--android:id="@+id/select_song_tab_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/view_80_dp"-->
+    <!--android:visibility="gone"/>-->
 
-    <com.common.view.viewpager.NestViewPager
-        android:id="@+id/songlist_view_pager"
+    <!--<com.common.view.viewpager.NestViewPager-->
+    <!--android:id="@+id/songlist_view_pager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:visibility="gone"/>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/card_recycleview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_back_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_106_dp"
+        android:layout_marginBottom="@dimen/view_13_dp"
+        android:src="@drawable/img_back" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_clicked_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_93_dp"
+        android:layout_marginBottom="@dimen/view_13_dp"
+        android:src="@drawable/img_yidian" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_36_dp"
+        android:layout_marginTop="@dimen/view_46_dp"
+        android:src="@drawable/img_back" />
+
+</RelativeLayout>

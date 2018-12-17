@@ -39,7 +39,6 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         }
     }
 
-
     @Override
     public int getItemCount() {
         if (mDataList == null) {

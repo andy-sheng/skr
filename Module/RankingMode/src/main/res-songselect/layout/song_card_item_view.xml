@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/view_311_dp"
+    android:layout_height="@dimen/view_490_dp"
+    android:background="@drawable/img_kaishipipei_bg">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/song_list_recycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
