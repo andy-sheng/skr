@@ -106,13 +106,6 @@ public class AuditionSence extends RelativeLayout implements ISence {
 
         LyricsManager.getLyricsManager(getContext()).loadLyricsUtil(fileName, songModel.getItemName(), fileName.hashCode() + "");
 
-        Observable.timer(10000, TimeUnit.MILLISECONDS).subscribe(new Consumer<Long>() {
-            @Override
-            public void accept(Long aLong) throws Exception {
-                LyricsManager.getLyricsManager(getContext()).loadLyricsUtil(fileName, songModel.getItemName(), fileName.hashCode() + "");
-            }
-        });
-
         matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("试唱调音");
 
         File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
@@ -139,7 +132,7 @@ public class AuditionSence extends RelativeLayout implements ISence {
             mManyLyricsView.initLrcData();
             mManyLyricsView.setLyricsReader(lyricsReader);
             if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY){
-                mManyLyricsView.play(50000);
+                mManyLyricsView.play(0);
             }
         }
     }
