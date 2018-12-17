@@ -64,7 +64,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         mRoomData = roomData;
         TAG = "RankingCorePresenter_" + mRoomData.getGameId();
         Params params = Params.getFromPref();
-        EngineManager.getInstance().init("rankingroom",params);
+        EngineManager.getInstance().init("rankingroom", params);
         EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
         // 不发送本地音频
         EngineManager.getInstance().muteLocalAudioStream(true);
@@ -155,6 +155,38 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, "exitGame error " + e);
+            }
+        }, this);
+    }
+
+    /**
+     * 游戏切后台或切回来
+     *
+     * @param gameID 游戏标识
+     * @param out    切出去
+     * @param in     切回来
+     */
+    public void swapGame(int gameID, boolean out, boolean in) {
+        MyLog.d(TAG, "swapGame" + " gameID=" + gameID + " out=" + out + " in=" + in);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", gameID);
+        map.put("out", out);
+        map.put("in", in);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.swap(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    U.getToastUtil().showShort("切换请求发送成功");
+                } else {
+                    MyLog.e(TAG, "swapGame result errno is " + result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, "swapGame error " + e);
             }
         }, this);
     }
@@ -325,7 +357,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 //因为在三秒钟之内可能发生了变化，所以需要再判断一下
-                                if(uid == RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo())){
+                                if (uid == RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo())) {
                                     mIGameRuleView.playLyric(mRoomData.getRealRoundInfo().getPlaybookID());
                                 }
                             }

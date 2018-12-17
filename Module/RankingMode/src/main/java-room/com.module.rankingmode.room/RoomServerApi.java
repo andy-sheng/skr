@@ -59,4 +59,33 @@ public interface RoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/game/exit")
     Observable<ApiResult> exitGame(@Body RequestBody body);
 
+
+    /**
+     * 切换前后台
+     *
+     * @param body 游戏标识 gameID (必选)
+     *             切到后台 out (必选)
+     *             切回来   in  (必选)
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/swap")
+    Observable<ApiResult> swap(@Body RequestBody body);
+
+
+    /**
+     * 进行投票
+     *
+     * @param body 游戏标识 gameID (必选)
+     *             被投票人 votedUserID (必选)
+     *             系统评分 sysScoreVal (必选)
+     *             时间戳  timeMs  (必选)
+     *             签名  sign md5(skrer+gameID+votedUserID+sysScoreVal+timeMs) (必选)
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/vote")
+    Observable<ApiResult> vote(@Body RequestBody body);
+
+    @GET("http://dev.game.inframe.mobi/v1/game/vote")
+    Observable<ApiResult> getVoteResult(@Query("gameID") int gameID);
+
 }
