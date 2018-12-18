@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
@@ -26,6 +27,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   private static final long serialVersionUID = 0L;
 
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
+
+  public static final Integer DEFAULT_EXITUSERID = 0;
 
   /**
    * 本轮次结束的毫秒时间戳
@@ -54,16 +57,27 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   )
   public final RoundInfo nextRound;
 
-  public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound) {
-    this(roundOverTimeMs, currentRound, nextRound, ByteString.EMPTY);
+  /**
+   * 退出用户的ID
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer exitUserID;
+
+  public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound,
+      Integer exitUserID) {
+    this(roundOverTimeMs, currentRound, nextRound, exitUserID, ByteString.EMPTY);
   }
 
   public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound,
-      ByteString unknownFields) {
+      Integer exitUserID, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
+    this.exitUserID = exitUserID;
   }
 
   @Override
@@ -72,6 +86,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     builder.roundOverTimeMs = roundOverTimeMs;
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
+    builder.exitUserID = exitUserID;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -84,7 +99,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(currentRound, o.currentRound)
-        && Internal.equals(nextRound, o.nextRound);
+        && Internal.equals(nextRound, o.nextRound)
+        && Internal.equals(exitUserID, o.exitUserID);
   }
 
   @Override
@@ -95,6 +111,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
+      result = result * 37 + (exitUserID != null ? exitUserID.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -106,6 +123,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
+    if (exitUserID != null) builder.append(", exitUserID=").append(exitUserID);
     return builder.replace(0, 2, "RoundOverMsg{").append('}').toString();
   }
 
@@ -150,6 +168,16 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   }
 
   /**
+   * 退出用户的ID
+   */
+  public Integer getExitUserID() {
+    if(exitUserID==null){
+        return DEFAULT_EXITUSERID;
+    }
+    return exitUserID;
+  }
+
+  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -170,12 +198,21 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     return nextRound!=null;
   }
 
+  /**
+   * 退出用户的ID
+   */
+  public boolean hasExitUserID() {
+    return exitUserID!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoundOverMsg, Builder> {
     public Long roundOverTimeMs;
 
     public RoundInfo currentRound;
 
     public RoundInfo nextRound;
+
+    public Integer exitUserID;
 
     public Builder() {
     }
@@ -204,9 +241,17 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       return this;
     }
 
+    /**
+     * 退出用户的ID
+     */
+    public Builder setExitUserID(Integer exitUserID) {
+      this.exitUserID = exitUserID;
+      return this;
+    }
+
     @Override
     public RoundOverMsg build() {
-      return new RoundOverMsg(roundOverTimeMs, currentRound, nextRound, super.buildUnknownFields());
+      return new RoundOverMsg(roundOverTimeMs, currentRound, nextRound, exitUserID, super.buildUnknownFields());
     }
   }
 
@@ -220,6 +265,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
           + RoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + RoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.exitUserID)
           + value.unknownFields().size();
     }
 
@@ -228,6 +274,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
       RoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       RoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.exitUserID);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -240,6 +287,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           case 2: builder.setCurrentRound(RoundInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setNextRound(RoundInfo.ADAPTER.decode(reader)); break;
+          case 4: builder.setExitUserID(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

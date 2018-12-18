@@ -57,19 +57,29 @@ public enum ERoomMsgType implements WireEnum {
   RM_ROUND_AND_GAME_OVER(104),
 
   /**
-   * 退出游戏通知
-   */
-  RM_QUIT_GAME(105),
-
-  /**
    * app进程后台切换通知
    */
-  RM_APP_SWAP(106),
+  RM_APP_SWAP(105),
 
   /**
    * 状态同步
    */
-  RM_SYNC_STATUS(107);
+  RM_SYNC_STATUS(106),
+
+  /**
+   * 在开始游戏前退出
+   */
+  RM_EXIT_GAME_BEFORE_PLAY(107),
+
+  /**
+   * 在完成游戏后退出
+   */
+  RM_EXIT_GAME_AFTER_PLAY(108),
+
+  /**
+   * 在游戏中,但不再round时退出
+   */
+  RM_EXIT_GAME_OUT_ROUND(109);
 
   public static final ProtoAdapter<ERoomMsgType> ADAPTER = new ProtoAdapter_ERoomMsgType();
 
@@ -93,9 +103,11 @@ public enum ERoomMsgType implements WireEnum {
       case 102: return RM_READY_NOTICE;
       case 103: return RM_ROUND_OVER;
       case 104: return RM_ROUND_AND_GAME_OVER;
-      case 105: return RM_QUIT_GAME;
-      case 106: return RM_APP_SWAP;
-      case 107: return RM_SYNC_STATUS;
+      case 105: return RM_APP_SWAP;
+      case 106: return RM_SYNC_STATUS;
+      case 107: return RM_EXIT_GAME_BEFORE_PLAY;
+      case 108: return RM_EXIT_GAME_AFTER_PLAY;
+      case 109: return RM_EXIT_GAME_OUT_ROUND;
       default: return null;
     }
   }

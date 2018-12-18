@@ -25,14 +25,16 @@ message RoomMsg
     SpecialEmojiMsg specialEmojiMsg = 11; // 特殊表情消息  msgType == RM_SPECIAL_EMOJI
     DynamicEmojiMsg dynamicemojiMsg = 12; // 动态表情消息  msgType == RM_DYNAMIC_EMOJI
 
-    JoinActionMsg joinActionMsg                   = 100; //加入游戏指令消息 msgType == RM_JOIN_ACTION
-    JoinNoticeMsg joinNoticeMsg                   = 101; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
-    ReadyNoticeMsg readyNoticeMsg                 = 102; //准备游戏通知消息 msgType == RM_READY_NOTICE
-    RoundOverMsg roundOverMsg                     = 104; //游戏轮次结束通知消息 msgType == RM_ROUND_OVER
-    RoundAndGameOverMsg roundAndGameOverMsg       = 105; //轮次和游戏结束通知消息 msgType == RM_ROUND_AND_GAME_OVER
-    QuitGameMsg quitGameMsg                       = 106; //退出游戏通知  msgType == RM_QUIT_GAME
-    AppSwapMsg appSwapMsg                         = 107; //app进程后台通知  msgType ==  RM_APP_SWAP
-    SyncStatusMsg syncStatusMsg                   = 108; //状态同步信令 msgType == RM_SYNC_STATUS
+    JoinActionMsg joinActionMsg                 = 100; //加入游戏指令消息 msgType == RM_JOIN_ACTION
+    JoinNoticeMsg joinNoticeMsg                 = 101; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
+    ReadyNoticeMsg readyNoticeMsg               = 102; //准备游戏通知消息 msgType == RM_READY_NOTICE
+    RoundOverMsg roundOverMsg                   = 103; //游戏轮次结束通知消息 msgType == RM_ROUND_OVER
+    RoundAndGameOverMsg roundAndGameOverMsg     = 104; //轮次和游戏结束通知消息 msgType == RM_ROUND_AND_GAME_OVER
+    AppSwapMsg appSwapMsg                       = 105; //app进程后台通知  msgType ==  RM_APP_SWAP
+    SyncStatusMsg syncStatusMsg                 = 106; //状态同步消息 msgType == RM_SYNC_STATUS
+    ExitGameBeforePlayMsg exitGameBeforePlayMsg = 107; //再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
+    ExitGameAfterPlayMsg exitGameAfterPlayMsg   = 108; //游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
+    ExitGameOutRoundMsg exitGameOutRoundMsg     = 109; //游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
 }
 
 // 消息位置类型
@@ -52,14 +54,16 @@ enum ERoomMsgType {
     RM_SPECIAL_EMOJI = 11; //特殊表情消息
     RM_DYNAMIC_EMOJI = 12; //动态表情消息
 
-    RM_JOIN_ACTION            = 100; //加入游戏指令消息
-    RM_JOIN_NOTICE            = 101; //加入游戏通知消息
-    RM_READY_NOTICE           = 102; //准备游戏通知消息
-    RM_ROUND_OVER             = 103; //游戏轮次结束通知消息
-    RM_ROUND_AND_GAME_OVER    = 104; //轮次和游戏结束通知消息
-    RM_QUIT_GAME              = 105; //退出游戏通知
-    RM_APP_SWAP               = 106; //app进程后台切换通知
-    RM_SYNC_STATUS            = 107; //状态同步
+    RM_JOIN_ACTION           = 100; //加入游戏指令消息
+    RM_JOIN_NOTICE           = 101; //加入游戏通知消息
+    RM_READY_NOTICE          = 102; //准备游戏通知消息
+    RM_ROUND_OVER            = 103; //游戏轮次结束通知消息
+    RM_ROUND_AND_GAME_OVER   = 104; //轮次和游戏结束通知消息
+    RM_APP_SWAP              = 105; //app进程后台切换通知
+    RM_SYNC_STATUS           = 106; //状态同步
+    RM_EXIT_GAME_BEFORE_PLAY = 107; //在开始游戏前退出
+    RM_EXIT_GAME_AFTER_PLAY  = 108; //在完成游戏后退出
+    RM_EXIT_GAME_OUT_ROUND   = 109; //在游戏中,但不再round时退出
 }
 
 // 准备并开始游戏通知消息
@@ -122,9 +126,9 @@ message JoinInfo
 
 message RoundInfo
 {
-    uint32 userID       = 1; //玩家id
-    uint32 playbookID   = 2; //曲库id
-    uint32 roundSeq     = 3; //轮次顺序
+    uint32 userID      = 1; //玩家id
+    uint32 playbookID  = 2; //曲库id
+    uint32 roundSeq    = 3; //轮次顺序
     uint32 singBeginMs = 4; //演唱开始相对时间（相对于startTimeMs时间）
     uint32 singEndMs   = 5; //演唱结束相对时间（相对于startTimeMs时间）
 }
@@ -138,7 +142,7 @@ message ReadyInfo
 
 message OnlineInfo
 {
-    uint32 userID      = 1; //用户id
+    uint32 userID = 1; //用户id
     bool isOnline = 2; //是否在线
 }
 
@@ -155,7 +159,7 @@ message ReadyNoticeMsg
     sint32 hasReadyedUserCnt     = 2; //已经准备人数
     bool isGameStart             = 3; //游戏是否开始
     repeated RoundInfo roundInfo = 4; //轮次信息
-    GameStartInfo gameStartInfo            = 5; // 游戏信息
+    GameStartInfo gameStartInfo  = 5; // 游戏信息
 }
 
 // 游戏轮次结束通知消息
@@ -164,6 +168,7 @@ message RoundOverMsg
     sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
     RoundInfo currentRound = 2; //当前轮次信息
     RoundInfo nextRound    = 3; //下个轮次信息
+    uint32 exitUserID      = 4; //退出用户的ID
 }
 
 // 轮次和游戏结束通知消息
@@ -171,12 +176,25 @@ message RoundAndGameOverMsg
 {
     sint64 roundOverTimeMs = 1; //轮次结束的毫秒时间戳
     RoundInfo currentRound = 2; //当前轮次信息
+    uint32 exitUserID      = 3; //退出用户的ID
 }
 
-message QuitGameMsg
+message ExitGameBeforePlayMsg
 {
-    uint32 quitUserID = 1; //退出玩家ID
-    sint64 quitTimeMs = 2; //退出毫秒时间戳
+    uint32 exitUserID = 1; //退出玩家ID
+    sint64 exitTimeMs = 2; //退出毫秒时间戳
+}
+
+message ExitGameAfterPlayMsg
+{
+    uint32 exitUserID = 1; //退出玩家ID
+    sint64 exitTimeMs = 2; //退出毫秒时间戳
+}
+
+message ExitGameOutRoundMsg
+{
+    uint32 exitUserID = 1; //退出玩家ID
+    sint64 exitTimeMs = 2; //退出毫秒时间戳
 }
 
 message AppSwapMsg
@@ -189,11 +207,11 @@ message AppSwapMsg
 
 message SyncStatusMsg
 {
-    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
-    sint64 gameOverTimeMs = 2;   //游戏结束时间
-    repeated OnlineInfo onlineInfo = 3;//在线状态
-    RoundInfo currentRound = 4; //当前轮次信息
-    RoundInfo nextRound    = 5; //下个轮次信息
+    sint64 syncStatusTimeMs        = 1; //状态同步时的毫秒时间戳
+    sint64 gameOverTimeMs          = 2; //游戏结束时间
+    repeated OnlineInfo onlineInfo = 3; //在线状态
+    RoundInfo currentRound         = 4; //当前轮次信息
+    RoundInfo nextRound            = 5; //下个轮次信息
 }
 
 

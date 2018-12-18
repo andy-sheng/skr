@@ -22,7 +22,6 @@ import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinNoticeMsg;
 import com.zq.live.proto.Room.OnlineInfo;
-import com.zq.live.proto.Room.QuitGameMsg;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
@@ -54,12 +53,16 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processRoundOverMsg(basePushInfo, msg.getRoundOverMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_AND_GAME_OVER) {
             processRoundAndGameOverMsg(basePushInfo, msg.getRoundAndGameOverMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_QUIT_GAME) {
-            processQuitGameMsg(basePushInfo, msg.getQuitGameMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_APP_SWAP) {
             processAppSwapMsg(basePushInfo, msg.getAppSwapMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_SYNC_STATUS) {
             processSyncStatusMsg(basePushInfo, msg.getSyncStatusMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY) {
+
+        } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY) {
+
+        } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_OUT_ROUND) {
+
         }
     }
 
@@ -67,9 +70,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     public ERoomMsgType[] acceptType() {
         return new ERoomMsgType[]{
                 ERoomMsgType.RM_JOIN_ACTION, ERoomMsgType.RM_JOIN_NOTICE,
-                ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_ROUND_OVER,
-                ERoomMsgType.RM_ROUND_AND_GAME_OVER, ERoomMsgType.RM_QUIT_GAME,
-                ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_SYNC_STATUS
+                ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_SYNC_STATUS,
+                ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
+                ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY,
+                ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND
         };
     }
 
@@ -154,7 +158,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         RoundInfoModel nextRound = new RoundInfoModel();
         nextRound.parse(roundOverMsgr.getNextRound());
 
-        EventBus.getDefault().post(new RoundOverEvent(info, roundOverTimeMs, currentRound, nextRound));
+        EventBus.getDefault().post(new RoundOverEvent(info, roundOverTimeMs, currentRound, nextRound, roundOverMsgr.getExitUserID()));
     }
 
     //轮次和游戏结束通知消息
@@ -169,18 +173,18 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs));
     }
 
-    //退出游戏通知
-    private void processQuitGameMsg(BasePushInfo info, QuitGameMsg quitGameMsg) {
-        if (quitGameMsg == null) {
-            MyLog.d(TAG, "processQuitGameMsg" + " quitGameMsg == null");
-            return;
-        }
-
-        int quitUserId = quitGameMsg.getQuitUserID();
-        long quitTimeMs = quitGameMsg.getQuitTimeMs();
-
-        EventBus.getDefault().post(new QuitGameEvent(info, quitUserId, quitTimeMs));
-    }
+//    //退出游戏通知
+//    private void processQuitGameMsg(BasePushInfo info, QuitGameMsg quitGameMsg) {
+//        if (quitGameMsg == null) {
+//            MyLog.d(TAG, "processQuitGameMsg" + " quitGameMsg == null");
+//            return;
+//        }
+//
+//        int quitUserId = quitGameMsg.getQuitUserID();
+//        long quitTimeMs = quitGameMsg.getQuitTimeMs();
+//
+//        EventBus.getDefault().post(new QuitGameEvent(info, quitUserId, quitTimeMs));
+//    }
 
     //app进程后台通知
     private void processAppSwapMsg(BasePushInfo info, AppSwapMsg appSwapMsg) {

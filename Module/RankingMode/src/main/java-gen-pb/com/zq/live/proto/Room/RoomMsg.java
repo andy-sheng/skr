@@ -151,7 +151,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
    * 游戏轮次结束通知消息 msgType == RM_ROUND_OVER
    */
   @WireField(
-      tag = 104,
+      tag = 103,
       adapter = "com.zq.live.proto.Room.RoundOverMsg#ADAPTER"
   )
   public final RoundOverMsg roundOverMsg;
@@ -160,53 +160,73 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
    * 轮次和游戏结束通知消息 msgType == RM_ROUND_AND_GAME_OVER
    */
   @WireField(
-      tag = 105,
+      tag = 104,
       adapter = "com.zq.live.proto.Room.RoundAndGameOverMsg#ADAPTER"
   )
   public final RoundAndGameOverMsg roundAndGameOverMsg;
 
   /**
-   * 退出游戏通知  msgType == RM_QUIT_GAME
-   */
-  @WireField(
-      tag = 106,
-      adapter = "com.zq.live.proto.Room.QuitGameMsg#ADAPTER"
-  )
-  public final QuitGameMsg quitGameMsg;
-
-  /**
    * app进程后台通知  msgType ==  RM_APP_SWAP
    */
   @WireField(
-      tag = 107,
+      tag = 105,
       adapter = "com.zq.live.proto.Room.AppSwapMsg#ADAPTER"
   )
   public final AppSwapMsg appSwapMsg;
 
   /**
-   * 状态同步信令 msgType == RM_SYNC_STATUS
+   * 状态同步消息 msgType == RM_SYNC_STATUS
    */
   @WireField(
-      tag = 108,
+      tag = 106,
       adapter = "com.zq.live.proto.Room.SyncStatusMsg#ADAPTER"
   )
   public final SyncStatusMsg syncStatusMsg;
+
+  /**
+   * 再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
+   */
+  @WireField(
+      tag = 107,
+      adapter = "com.zq.live.proto.Room.ExitGameBeforePlayMsg#ADAPTER"
+  )
+  public final ExitGameBeforePlayMsg exitGameBeforePlayMsg;
+
+  /**
+   * 游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
+   */
+  @WireField(
+      tag = 108,
+      adapter = "com.zq.live.proto.Room.ExitGameAfterPlayMsg#ADAPTER"
+  )
+  public final ExitGameAfterPlayMsg exitGameAfterPlayMsg;
+
+  /**
+   * 游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
+   */
+  @WireField(
+      tag = 109,
+      adapter = "com.zq.live.proto.Room.ExitGameOutRoundMsg#ADAPTER"
+  )
+  public final ExitGameOutRoundMsg exitGameOutRoundMsg;
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
       ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
-      RoundAndGameOverMsg roundAndGameOverMsg, QuitGameMsg quitGameMsg, AppSwapMsg appSwapMsg,
-      SyncStatusMsg syncStatusMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, ByteString.EMPTY);
+      RoundAndGameOverMsg roundAndGameOverMsg, AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg,
+      ExitGameBeforePlayMsg exitGameBeforePlayMsg, ExitGameAfterPlayMsg exitGameAfterPlayMsg,
+      ExitGameOutRoundMsg exitGameOutRoundMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, ByteString.EMPTY);
   }
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
       ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
-      RoundAndGameOverMsg roundAndGameOverMsg, QuitGameMsg quitGameMsg, AppSwapMsg appSwapMsg,
-      SyncStatusMsg syncStatusMsg, ByteString unknownFields) {
+      RoundAndGameOverMsg roundAndGameOverMsg, AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg,
+      ExitGameBeforePlayMsg exitGameBeforePlayMsg, ExitGameAfterPlayMsg exitGameAfterPlayMsg,
+      ExitGameOutRoundMsg exitGameOutRoundMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -222,9 +242,11 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     this.readyNoticeMsg = readyNoticeMsg;
     this.roundOverMsg = roundOverMsg;
     this.roundAndGameOverMsg = roundAndGameOverMsg;
-    this.quitGameMsg = quitGameMsg;
     this.appSwapMsg = appSwapMsg;
     this.syncStatusMsg = syncStatusMsg;
+    this.exitGameBeforePlayMsg = exitGameBeforePlayMsg;
+    this.exitGameAfterPlayMsg = exitGameAfterPlayMsg;
+    this.exitGameOutRoundMsg = exitGameOutRoundMsg;
   }
 
   @Override
@@ -244,9 +266,11 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     builder.readyNoticeMsg = readyNoticeMsg;
     builder.roundOverMsg = roundOverMsg;
     builder.roundAndGameOverMsg = roundAndGameOverMsg;
-    builder.quitGameMsg = quitGameMsg;
     builder.appSwapMsg = appSwapMsg;
     builder.syncStatusMsg = syncStatusMsg;
+    builder.exitGameBeforePlayMsg = exitGameBeforePlayMsg;
+    builder.exitGameAfterPlayMsg = exitGameAfterPlayMsg;
+    builder.exitGameOutRoundMsg = exitGameOutRoundMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -271,9 +295,11 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         && Internal.equals(readyNoticeMsg, o.readyNoticeMsg)
         && Internal.equals(roundOverMsg, o.roundOverMsg)
         && Internal.equals(roundAndGameOverMsg, o.roundAndGameOverMsg)
-        && Internal.equals(quitGameMsg, o.quitGameMsg)
         && Internal.equals(appSwapMsg, o.appSwapMsg)
-        && Internal.equals(syncStatusMsg, o.syncStatusMsg);
+        && Internal.equals(syncStatusMsg, o.syncStatusMsg)
+        && Internal.equals(exitGameBeforePlayMsg, o.exitGameBeforePlayMsg)
+        && Internal.equals(exitGameAfterPlayMsg, o.exitGameAfterPlayMsg)
+        && Internal.equals(exitGameOutRoundMsg, o.exitGameOutRoundMsg);
   }
 
   @Override
@@ -295,9 +321,11 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       result = result * 37 + (readyNoticeMsg != null ? readyNoticeMsg.hashCode() : 0);
       result = result * 37 + (roundOverMsg != null ? roundOverMsg.hashCode() : 0);
       result = result * 37 + (roundAndGameOverMsg != null ? roundAndGameOverMsg.hashCode() : 0);
-      result = result * 37 + (quitGameMsg != null ? quitGameMsg.hashCode() : 0);
       result = result * 37 + (appSwapMsg != null ? appSwapMsg.hashCode() : 0);
       result = result * 37 + (syncStatusMsg != null ? syncStatusMsg.hashCode() : 0);
+      result = result * 37 + (exitGameBeforePlayMsg != null ? exitGameBeforePlayMsg.hashCode() : 0);
+      result = result * 37 + (exitGameAfterPlayMsg != null ? exitGameAfterPlayMsg.hashCode() : 0);
+      result = result * 37 + (exitGameOutRoundMsg != null ? exitGameOutRoundMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -320,9 +348,11 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     if (readyNoticeMsg != null) builder.append(", readyNoticeMsg=").append(readyNoticeMsg);
     if (roundOverMsg != null) builder.append(", roundOverMsg=").append(roundOverMsg);
     if (roundAndGameOverMsg != null) builder.append(", roundAndGameOverMsg=").append(roundAndGameOverMsg);
-    if (quitGameMsg != null) builder.append(", quitGameMsg=").append(quitGameMsg);
     if (appSwapMsg != null) builder.append(", appSwapMsg=").append(appSwapMsg);
     if (syncStatusMsg != null) builder.append(", syncStatusMsg=").append(syncStatusMsg);
+    if (exitGameBeforePlayMsg != null) builder.append(", exitGameBeforePlayMsg=").append(exitGameBeforePlayMsg);
+    if (exitGameAfterPlayMsg != null) builder.append(", exitGameAfterPlayMsg=").append(exitGameAfterPlayMsg);
+    if (exitGameOutRoundMsg != null) builder.append(", exitGameOutRoundMsg=").append(exitGameOutRoundMsg);
     return builder.replace(0, 2, "RoomMsg{").append('}').toString();
   }
 
@@ -477,16 +507,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 退出游戏通知  msgType == RM_QUIT_GAME
-   */
-  public QuitGameMsg getQuitGameMsg() {
-    if(quitGameMsg==null){
-        return new QuitGameMsg.Builder().build();
-    }
-    return quitGameMsg;
-  }
-
-  /**
    * app进程后台通知  msgType ==  RM_APP_SWAP
    */
   public AppSwapMsg getAppSwapMsg() {
@@ -497,13 +517,43 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 状态同步信令 msgType == RM_SYNC_STATUS
+   * 状态同步消息 msgType == RM_SYNC_STATUS
    */
   public SyncStatusMsg getSyncStatusMsg() {
     if(syncStatusMsg==null){
         return new SyncStatusMsg.Builder().build();
     }
     return syncStatusMsg;
+  }
+
+  /**
+   * 再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
+   */
+  public ExitGameBeforePlayMsg getExitGameBeforePlayMsg() {
+    if(exitGameBeforePlayMsg==null){
+        return new ExitGameBeforePlayMsg.Builder().build();
+    }
+    return exitGameBeforePlayMsg;
+  }
+
+  /**
+   * 游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
+   */
+  public ExitGameAfterPlayMsg getExitGameAfterPlayMsg() {
+    if(exitGameAfterPlayMsg==null){
+        return new ExitGameAfterPlayMsg.Builder().build();
+    }
+    return exitGameAfterPlayMsg;
+  }
+
+  /**
+   * 游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
+   */
+  public ExitGameOutRoundMsg getExitGameOutRoundMsg() {
+    if(exitGameOutRoundMsg==null){
+        return new ExitGameOutRoundMsg.Builder().build();
+    }
+    return exitGameOutRoundMsg;
   }
 
   /**
@@ -605,13 +655,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 退出游戏通知  msgType == RM_QUIT_GAME
-   */
-  public boolean hasQuitGameMsg() {
-    return quitGameMsg!=null;
-  }
-
-  /**
    * app进程后台通知  msgType ==  RM_APP_SWAP
    */
   public boolean hasAppSwapMsg() {
@@ -619,10 +662,31 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 状态同步信令 msgType == RM_SYNC_STATUS
+   * 状态同步消息 msgType == RM_SYNC_STATUS
    */
   public boolean hasSyncStatusMsg() {
     return syncStatusMsg!=null;
+  }
+
+  /**
+   * 再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
+   */
+  public boolean hasExitGameBeforePlayMsg() {
+    return exitGameBeforePlayMsg!=null;
+  }
+
+  /**
+   * 游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
+   */
+  public boolean hasExitGameAfterPlayMsg() {
+    return exitGameAfterPlayMsg!=null;
+  }
+
+  /**
+   * 游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
+   */
+  public boolean hasExitGameOutRoundMsg() {
+    return exitGameOutRoundMsg!=null;
   }
 
   public static final class Builder extends Message.Builder<RoomMsg, Builder> {
@@ -654,11 +718,15 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
 
     public RoundAndGameOverMsg roundAndGameOverMsg;
 
-    public QuitGameMsg quitGameMsg;
-
     public AppSwapMsg appSwapMsg;
 
     public SyncStatusMsg syncStatusMsg;
+
+    public ExitGameBeforePlayMsg exitGameBeforePlayMsg;
+
+    public ExitGameAfterPlayMsg exitGameAfterPlayMsg;
+
+    public ExitGameOutRoundMsg exitGameOutRoundMsg;
 
     public Builder() {
     }
@@ -776,14 +844,6 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     }
 
     /**
-     * 退出游戏通知  msgType == RM_QUIT_GAME
-     */
-    public Builder setQuitGameMsg(QuitGameMsg quitGameMsg) {
-      this.quitGameMsg = quitGameMsg;
-      return this;
-    }
-
-    /**
      * app进程后台通知  msgType ==  RM_APP_SWAP
      */
     public Builder setAppSwapMsg(AppSwapMsg appSwapMsg) {
@@ -792,16 +852,40 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     }
 
     /**
-     * 状态同步信令 msgType == RM_SYNC_STATUS
+     * 状态同步消息 msgType == RM_SYNC_STATUS
      */
     public Builder setSyncStatusMsg(SyncStatusMsg syncStatusMsg) {
       this.syncStatusMsg = syncStatusMsg;
       return this;
     }
 
+    /**
+     * 再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
+     */
+    public Builder setExitGameBeforePlayMsg(ExitGameBeforePlayMsg exitGameBeforePlayMsg) {
+      this.exitGameBeforePlayMsg = exitGameBeforePlayMsg;
+      return this;
+    }
+
+    /**
+     * 游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
+     */
+    public Builder setExitGameAfterPlayMsg(ExitGameAfterPlayMsg exitGameAfterPlayMsg) {
+      this.exitGameAfterPlayMsg = exitGameAfterPlayMsg;
+      return this;
+    }
+
+    /**
+     * 游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
+     */
+    public Builder setExitGameOutRoundMsg(ExitGameOutRoundMsg exitGameOutRoundMsg) {
+      this.exitGameOutRoundMsg = exitGameOutRoundMsg;
+      return this;
+    }
+
     @Override
     public RoomMsg build() {
-      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, quitGameMsg, appSwapMsg, syncStatusMsg, super.buildUnknownFields());
+      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, super.buildUnknownFields());
     }
   }
 
@@ -824,11 +908,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           + JoinActionMsg.ADAPTER.encodedSizeWithTag(100, value.joinActionMsg)
           + JoinNoticeMsg.ADAPTER.encodedSizeWithTag(101, value.joinNoticeMsg)
           + ReadyNoticeMsg.ADAPTER.encodedSizeWithTag(102, value.readyNoticeMsg)
-          + RoundOverMsg.ADAPTER.encodedSizeWithTag(104, value.roundOverMsg)
-          + RoundAndGameOverMsg.ADAPTER.encodedSizeWithTag(105, value.roundAndGameOverMsg)
-          + QuitGameMsg.ADAPTER.encodedSizeWithTag(106, value.quitGameMsg)
-          + AppSwapMsg.ADAPTER.encodedSizeWithTag(107, value.appSwapMsg)
-          + SyncStatusMsg.ADAPTER.encodedSizeWithTag(108, value.syncStatusMsg)
+          + RoundOverMsg.ADAPTER.encodedSizeWithTag(103, value.roundOverMsg)
+          + RoundAndGameOverMsg.ADAPTER.encodedSizeWithTag(104, value.roundAndGameOverMsg)
+          + AppSwapMsg.ADAPTER.encodedSizeWithTag(105, value.appSwapMsg)
+          + SyncStatusMsg.ADAPTER.encodedSizeWithTag(106, value.syncStatusMsg)
+          + ExitGameBeforePlayMsg.ADAPTER.encodedSizeWithTag(107, value.exitGameBeforePlayMsg)
+          + ExitGameAfterPlayMsg.ADAPTER.encodedSizeWithTag(108, value.exitGameAfterPlayMsg)
+          + ExitGameOutRoundMsg.ADAPTER.encodedSizeWithTag(109, value.exitGameOutRoundMsg)
           + value.unknownFields().size();
     }
 
@@ -846,11 +932,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       JoinActionMsg.ADAPTER.encodeWithTag(writer, 100, value.joinActionMsg);
       JoinNoticeMsg.ADAPTER.encodeWithTag(writer, 101, value.joinNoticeMsg);
       ReadyNoticeMsg.ADAPTER.encodeWithTag(writer, 102, value.readyNoticeMsg);
-      RoundOverMsg.ADAPTER.encodeWithTag(writer, 104, value.roundOverMsg);
-      RoundAndGameOverMsg.ADAPTER.encodeWithTag(writer, 105, value.roundAndGameOverMsg);
-      QuitGameMsg.ADAPTER.encodeWithTag(writer, 106, value.quitGameMsg);
-      AppSwapMsg.ADAPTER.encodeWithTag(writer, 107, value.appSwapMsg);
-      SyncStatusMsg.ADAPTER.encodeWithTag(writer, 108, value.syncStatusMsg);
+      RoundOverMsg.ADAPTER.encodeWithTag(writer, 103, value.roundOverMsg);
+      RoundAndGameOverMsg.ADAPTER.encodeWithTag(writer, 104, value.roundAndGameOverMsg);
+      AppSwapMsg.ADAPTER.encodeWithTag(writer, 105, value.appSwapMsg);
+      SyncStatusMsg.ADAPTER.encodeWithTag(writer, 106, value.syncStatusMsg);
+      ExitGameBeforePlayMsg.ADAPTER.encodeWithTag(writer, 107, value.exitGameBeforePlayMsg);
+      ExitGameAfterPlayMsg.ADAPTER.encodeWithTag(writer, 108, value.exitGameAfterPlayMsg);
+      ExitGameOutRoundMsg.ADAPTER.encodeWithTag(writer, 109, value.exitGameOutRoundMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -886,11 +974,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           case 100: builder.setJoinActionMsg(JoinActionMsg.ADAPTER.decode(reader)); break;
           case 101: builder.setJoinNoticeMsg(JoinNoticeMsg.ADAPTER.decode(reader)); break;
           case 102: builder.setReadyNoticeMsg(ReadyNoticeMsg.ADAPTER.decode(reader)); break;
-          case 104: builder.setRoundOverMsg(RoundOverMsg.ADAPTER.decode(reader)); break;
-          case 105: builder.setRoundAndGameOverMsg(RoundAndGameOverMsg.ADAPTER.decode(reader)); break;
-          case 106: builder.setQuitGameMsg(QuitGameMsg.ADAPTER.decode(reader)); break;
-          case 107: builder.setAppSwapMsg(AppSwapMsg.ADAPTER.decode(reader)); break;
-          case 108: builder.setSyncStatusMsg(SyncStatusMsg.ADAPTER.decode(reader)); break;
+          case 103: builder.setRoundOverMsg(RoundOverMsg.ADAPTER.decode(reader)); break;
+          case 104: builder.setRoundAndGameOverMsg(RoundAndGameOverMsg.ADAPTER.decode(reader)); break;
+          case 105: builder.setAppSwapMsg(AppSwapMsg.ADAPTER.decode(reader)); break;
+          case 106: builder.setSyncStatusMsg(SyncStatusMsg.ADAPTER.decode(reader)); break;
+          case 107: builder.setExitGameBeforePlayMsg(ExitGameBeforePlayMsg.ADAPTER.decode(reader)); break;
+          case 108: builder.setExitGameAfterPlayMsg(ExitGameAfterPlayMsg.ADAPTER.decode(reader)); break;
+          case 109: builder.setExitGameOutRoundMsg(ExitGameOutRoundMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -914,9 +1004,11 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       if (builder.readyNoticeMsg != null) builder.readyNoticeMsg = ReadyNoticeMsg.ADAPTER.redact(builder.readyNoticeMsg);
       if (builder.roundOverMsg != null) builder.roundOverMsg = RoundOverMsg.ADAPTER.redact(builder.roundOverMsg);
       if (builder.roundAndGameOverMsg != null) builder.roundAndGameOverMsg = RoundAndGameOverMsg.ADAPTER.redact(builder.roundAndGameOverMsg);
-      if (builder.quitGameMsg != null) builder.quitGameMsg = QuitGameMsg.ADAPTER.redact(builder.quitGameMsg);
       if (builder.appSwapMsg != null) builder.appSwapMsg = AppSwapMsg.ADAPTER.redact(builder.appSwapMsg);
       if (builder.syncStatusMsg != null) builder.syncStatusMsg = SyncStatusMsg.ADAPTER.redact(builder.syncStatusMsg);
+      if (builder.exitGameBeforePlayMsg != null) builder.exitGameBeforePlayMsg = ExitGameBeforePlayMsg.ADAPTER.redact(builder.exitGameBeforePlayMsg);
+      if (builder.exitGameAfterPlayMsg != null) builder.exitGameAfterPlayMsg = ExitGameAfterPlayMsg.ADAPTER.redact(builder.exitGameAfterPlayMsg);
+      if (builder.exitGameOutRoundMsg != null) builder.exitGameOutRoundMsg = ExitGameOutRoundMsg.ADAPTER.redact(builder.exitGameOutRoundMsg);
       builder.clearUnknownFields();
       return builder.build();
     }
