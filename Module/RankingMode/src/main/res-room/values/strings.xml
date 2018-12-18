@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="quick_msg_arr">
+        <item>你是海豚转世吧</item>
+        <item>你的声音怎么这么好听 </item>
+        <item>你是海豚转世吧</item>
+        <item>你的声音怎么这么好听</item>
+        <item>你是海豚转世吧1</item>
+        <item>你是海豚转世吧2</item>
+        <item>你是海豚转世吧3</item>
+        <item>你是海豚转世吧4</item>
+    </string-array>
+
+</resources>

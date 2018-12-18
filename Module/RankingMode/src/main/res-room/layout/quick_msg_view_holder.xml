@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/comment_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_marginBottom="@dimen/view_5_dp"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/view_15_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:text="你是海豚转世吧！"
+        android:textColor="#ff0c2275"
+        android:textSize="@dimen/textsize_16_dp" />
+
+</RelativeLayout>

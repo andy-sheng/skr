@@ -1,0 +1,15 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/quick_msg_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:overScrollMode="never"
+        android:scrollbarSize="@dimen/view_4_dp"
+        android:scrollbarThumbVertical="@drawable/quick_msg_scorll_bar"
+        android:scrollbars="vertical" />
+</merge>

@@ -2,6 +2,7 @@ package com.module.rankingmode.room.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
@@ -118,6 +119,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mInputContainerView.showSoftInput();
             }
         });
+        mBottomContainerView.setRoomData(mRoomData);
     }
 
     private void initCommentView() {
