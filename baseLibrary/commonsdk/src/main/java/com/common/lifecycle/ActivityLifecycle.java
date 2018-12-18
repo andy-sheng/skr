@@ -65,8 +65,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     }
 
 
-    int resumeNum;
-    int pauseNum;
+    int mActivityCount = 0;
 
     public ActivityLifecycle() {
 
@@ -93,29 +92,29 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityStarted(Activity activity) {
+        mActivityCount++;
+        if (mActivityCount == 1) {
+            U.getActivityUtils().setAppForeground(true);
+        }
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
         U.getActivityUtils().setCurrentActivity(activity);
-        resumeNum++;
-        if (resumeNum > pauseNum) {
-            U.getActivityUtils().setAppForeground(true);
-        }
         StatisticsAdapter.recordSessionStart(activity, activity.getClass().getSimpleName());
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        pauseNum++;
-        if (resumeNum <= pauseNum) {
-            U.getActivityUtils().setAppForeground(false);
-        }
         StatisticsAdapter.recordSessionEnd(activity, activity.getClass().getSimpleName());
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
+        mActivityCount--;
+        if (mActivityCount == 0) {
+            U.getActivityUtils().setAppForeground(false);
+        }
         if (U.getActivityUtils().getCurrentActivity() == activity) {
             U.getActivityUtils().setCurrentActivity(null);
         }

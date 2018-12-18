@@ -131,7 +131,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         mRoomData.checkRound();
                     }
                 } else {
-                    MyLog.d(TAG, "sendRoundOverInfo" + " result=" + result);
                     U.getToastUtil().showShort("请求轮次结束失败");
                 }
             }
@@ -307,18 +306,26 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             mRoomData.setOnlineInfoList(onlineInfos);
             mIGameRuleView.updateUserState(onlineInfos);
         }
-        if (gameOverTimeMs > mRoomData.getGameStartTs()) {
-            // 游戏结束了
-            onGameOver("sync", gameOverTimeMs);
-        } else if(gameOverTimeMs!=0){
-            MyLog.d(TAG, "结束时间比开始时间小，不应该吧 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
-        }
-        // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-        if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
-            MyLog.d(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
-            // 轮次确实比当前的高，可以切换
-            mRoomData.setExpectRoundInfo(currentInfo);
-            mRoomData.checkRound();
+        if (gameOverTimeMs != 0) {
+            if (gameOverTimeMs > mRoomData.getGameStartTs()) {
+                // 游戏结束了
+                onGameOver("sync", gameOverTimeMs);
+            } else {
+                MyLog.w(TAG, "服务器结束时间不合法 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
+            }
+        } else {
+            // 没结束 current 不应该为null
+            if (currentInfo != null) {
+                // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
+                if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
+                    MyLog.d(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
+                    // 轮次确实比当前的高，可以切换
+                    mRoomData.setExpectRoundInfo(currentInfo);
+                    mRoomData.checkRound();
+                }
+            } else {
+                MyLog.w(TAG, "服务器结束时间不合法 currentInfo=null");
+            }
         }
     }
 
@@ -490,7 +497,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
         MyLog.d(TAG, "onEventMainThread 游戏结束push通知");
-        onGameOver("push",roundAndGameOverEvent.roundOverTimeMs);
+        onGameOver("push", roundAndGameOverEvent.roundOverTimeMs);
     }
 
     // 应用进程切到后台通知
