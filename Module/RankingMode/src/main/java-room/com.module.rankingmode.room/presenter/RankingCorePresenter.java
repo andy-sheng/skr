@@ -249,7 +249,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      * 轮询同步状态task
      */
     public void startSyncGameStateTask(long delayTime) {
-        MyLog.d(TAG, "startSyncGameStateTask start time = " + System.currentTimeMillis());
         cancelSyncGameStateTask();
         mSyncGameStateTask = HandlerTaskTimer.newBuilder()
                 .delay(delayTime)
