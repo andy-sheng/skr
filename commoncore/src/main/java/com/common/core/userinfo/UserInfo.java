@@ -7,6 +7,8 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.Serializable;
+
 /**
  * 个人信息(基础类)
  */
@@ -15,7 +17,8 @@ import org.greenrobot.greendao.annotation.Generated;
                 @Index(value = "userId DESC", unique = true)
         }
 )
-public class UserInfo {
+public class UserInfo implements Serializable {
+    private static final long serialVersionUID = -5809782578272943999L;
     @Id
     private long id;
     @NonNull
