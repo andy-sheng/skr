@@ -130,6 +130,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         GameReadyModel jsonGameReadyInfo = new GameReadyModel();
         jsonGameReadyInfo.parse(readyNoticeMsg);
+        MyLog.d("AAAA", "startTime = " + jsonGameReadyInfo.getJsonGameStartInfo().getStartTimeMs());
         EventBus.getDefault().post(new ReadyNoticeEvent(info, jsonGameReadyInfo));
     }
 
@@ -177,6 +178,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         long roundOverTimeMs = roundAndGameOverMsg.getRoundOverTimeMs();
 
+        MyLog.d("AAAAAA", "roundOverTimeMs" + roundOverTimeMs);
         EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs));
     }
 
@@ -218,6 +220,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         RoundInfoModel nextInfo = new RoundInfoModel();
         nextInfo.parse(syncStatusMsg.getNextRound());
 
+        MyLog.d("AAAAAA", "gameOverTimeMs =" + gameOverTimeMs);
         EventBus.getDefault().post(new SyncStatusEvent(info, syncStatusTimes, gameOverTimeMs, onLineInfos, currentInfo, nextInfo));
     }
 
