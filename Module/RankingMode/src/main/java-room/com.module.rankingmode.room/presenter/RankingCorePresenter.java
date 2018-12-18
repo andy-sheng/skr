@@ -10,6 +10,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
@@ -86,6 +87,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     @Override
     public void destroy() {
         super.destroy();
+        exitGame();
         cancelHeartBeatTask();
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
@@ -139,10 +141,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     /**
      * 退出游戏
      */
-    public void exitGame(int gameID) {
-        MyLog.d(TAG, "exitGame" + " gameID=" + gameID);
+    public void exitGame() {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", gameID);
+        map.put("gameID", mRoomData.getGameId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.exitGame(body), new ApiObserver<ApiResult>() {
@@ -165,14 +166,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     /**
      * 游戏切后台或切回来
      *
-     * @param gameID 游戏标识
      * @param out    切出去
      * @param in     切回来
      */
-    public void swapGame(int gameID, boolean out, boolean in) {
-        MyLog.d(TAG, "swapGame" + " gameID=" + gameID + " out=" + out + " in=" + in);
+    public void swapGame(boolean out, boolean in) {
+        MyLog.d(TAG, "swapGame" + " out=" + out + " in=" + in);
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", gameID);
+        map.put("gameID", mRoomData.getGameId());
         map.put("out", out);
         map.put("in", in);
 
@@ -511,4 +511,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             U.getToastUtil().showShort("不在你的轮次，某一个人退出了");
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event){
+        swapGame(!event.foreground,event.foreground);
+    }
+
 }
