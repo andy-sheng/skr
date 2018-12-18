@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/dabeijing"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,7 +23,7 @@
         android:layout_height="@dimen/view_106_dp" />
 
     <RelativeLayout
-        android:layout_marginTop="@dimen/view_11_dp"
+        android:layout_marginTop="@dimen/view_d_11_dp"
         android:background="@drawable/img_kaishipipei_bg"
         android:layout_marginBottom="@dimen/view_15_dp"
         android:layout_below="@+id/iv_top"

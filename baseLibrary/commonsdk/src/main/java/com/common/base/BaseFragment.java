@@ -32,7 +32,6 @@ import com.common.lifecycle.FragmentLifecycleable;
 import com.common.log.MyLog;
 import com.common.mvp.Presenter;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
@@ -254,6 +253,16 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    //要栈顶了，根据需求做一些处理，一般为显示
+    public void toStaskTop(){
+
+    }
+
+    //要压栈了，根据需求做一些处理，一般为隐藏
+    public void pushIntoStash(){
+
     }
 
     /**

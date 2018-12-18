@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -99,8 +100,10 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
+                songModel.setItemID(2);
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                        .setAddToBackStack(true)
+                        .setAddToBackStack(false)
+                        .setHideFragment(SongSelectFragment.class)
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, songModel)
                         .setFragmentDataListener(new FragmentDataListener() {
@@ -188,5 +191,17 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     public void onEventMainThread(SwipCardEvent event) {
         // TODO: 2018/12/17 要不要再去拉数据 当前是只去拉一页
         presenter.getRcomdMusicItems(offset, DEFAULT_COUNT);
+    }
+
+    @Override
+    public void toStaskTop() {
+        MyLog.d(TAG, "toStaskTop" );
+        mRootView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void pushIntoStash() {
+        MyLog.d(TAG, "pushIntoStash" );
+        mRootView.setVisibility(View.GONE);
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
@@ -20,7 +21,12 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.PrepareSongPresenter;
+import com.module.rankingmode.song.event.SongSelectEventClass;
+import com.module.rankingmode.song.fragment.SongSelectFragment;
 import com.module.rankingmode.song.model.SongModel;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -53,7 +59,15 @@ public class PrepareResFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SongSelectEventClass.PopSelectSongFragment event) {
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopAbove(false)
+                .setShowFragment(SongSelectFragment.class)
+                .setPopFragment(PrepareResFragment.this).build());
     }
 
     @Override
@@ -117,7 +131,8 @@ public class PrepareResFragment extends BaseFragment {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) PrepareResFragment.this.getContext(), MatchFragment.class)
-                            .setAddToBackStack(true)
+                            .setHideFragment(PrepareResFragment.class)
+                            .setAddToBackStack(false)
                             .setHasAnimation(false)
                             .addDataBeforeAdd(0, mPrepareData)
                             .setFragmentDataListener(new FragmentDataListener() {
@@ -132,7 +147,10 @@ public class PrepareResFragment extends BaseFragment {
         RxView.clicks(ivBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    U.getFragmentUtils().popFragment(PrepareResFragment.this);
+                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                            .setPopAbove(false)
+                            .setShowFragment(SongSelectFragment.class)
+                            .setPopFragment(PrepareResFragment.this).build());
                 });
 
         ivStartMatch.setEnabled(false);
@@ -153,5 +171,27 @@ public class PrepareResFragment extends BaseFragment {
         if(type == 0){
             mPrepareData.setSongModel((SongModel) data);
         }
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopAbove(false)
+                .setShowFragment(SongSelectFragment.class)
+                .setPopFragment(PrepareResFragment.this).build());
+
+        return true;
+    }
+
+    @Override
+    public void toStaskTop() {
+        MyLog.d(TAG, "toStaskTop" );
+        mRootView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void pushIntoStash() {
+        MyLog.d(TAG, "pushIntoStash" );
+        mRootView.setVisibility(View.GONE);
     }
 }

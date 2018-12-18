@@ -125,8 +125,9 @@ public class FragmentUtils {
                 if (params.showFragment != null) {
                     String showTag = params.showFragment.getName();
                     Fragment showFragment = fragmentManager.findFragmentByTag(showTag);
-                    if (showFragment != null) {
-                        ft = ft.show(showFragment);
+                    if (showFragment != null && showFragment instanceof BaseFragment) {
+//                        ft = ft.show(showFragment);
+                        ((BaseFragment)showFragment).toStaskTop();
                     }
                 }
                 ft.commitAllowingStateLoss();
@@ -158,8 +159,9 @@ public class FragmentUtils {
         if (params.hideFragment != null) {
             String hideTag = params.hideFragment.getName();
             Fragment hideFragment = fragmentManager.findFragmentByTag(hideTag);
-            if (hideFragment != null) {
-                ft = ft.hide(hideFragment);
+            if (hideFragment != null && hideFragment instanceof BaseFragment) {
+//                ft = ft.hide(hideFragment);
+                ((BaseFragment)hideFragment).pushIntoStash();
             }
         }
 
@@ -267,7 +269,7 @@ public class FragmentUtils {
      * 打开一个fragment可能需要的参数
      * 使用 builder 模式
      */
-    static class PopParams {
+    public static class PopParams {
         BaseActivity mActivity;
         BaseFragment popFragment;// 要弹出fragment
         boolean popAbove = true;// 包不包括自己以上的所有fragment，true为包括，false为只会remove自己
@@ -292,7 +294,7 @@ public class FragmentUtils {
         public static class Builder {
             PopParams mParams = new PopParams();
 
-            Builder() {
+            public Builder() {
             }
 
             public Builder setPopFragment(BaseFragment popFragment) {
@@ -326,7 +328,7 @@ public class FragmentUtils {
      * 打开一个fragment可能需要的参数
      * 使用 builder 模式
      */
-    static class AddParams {
+    public static class AddParams {
         BaseFragment fromFragment;//来源于哪个 fragment 主要是 setTargetFragment 时使用
         Class<? extends Fragment> hideFragment;//启动的目标fragment时要隐藏的fragment
         Class<? extends Fragment> targetFragment;//要启动的目标fragment

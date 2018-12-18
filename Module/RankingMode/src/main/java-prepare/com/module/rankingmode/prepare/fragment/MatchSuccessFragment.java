@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -22,6 +23,9 @@ import com.module.rankingmode.prepare.model.GameReadyModel;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
+import com.module.rankingmode.song.event.SongSelectEventClass;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 
@@ -120,14 +124,20 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
                 .withSerializable("prepare_data", mPrepareData)
                 .greenChannel().navigation();
+
+        EventBus.getDefault().post(new SongSelectEventClass.PopSelectSongFragment());
+
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopAbove(false)
+                .setPopFragment(MatchSuccessFragment.this).build());
     }
 
     @Override
     public void needReMatch() {
         MyLog.d(TAG, "needReMatch");
-        U.getFragmentUtils().popFragment(MatchSuccessFragment.this);
+
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) MatchSuccessFragment.this.getContext(), MatchFragment.class)
-                .setAddToBackStack(true)
+                .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, mPrepareData.getSongModel())
                 .setFragmentDataListener(new FragmentDataListener() {
@@ -137,6 +147,52 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                     }
                 })
                 .build());
+
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopAbove(false)
+                .setPopFragment(MatchSuccessFragment.this).build());
+
         U.getToastUtil().showShort("有人没有准备，需要重新匹配");
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        if(isPrepared){
+            U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                    .setPopAbove(false)
+                    .setPopFragment(MatchSuccessFragment.this).build());
+
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) MatchSuccessFragment.this.getContext(), MatchFragment.class)
+                    .setAddToBackStack(false)
+                    .setHasAnimation(false)
+                    .addDataBeforeAdd(0, mPrepareData)
+                    .setFragmentDataListener(new FragmentDataListener() {
+                        @Override
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                        }
+                    })
+                    .build());
+        } else {
+            U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                    .setPopAbove(false)
+                    .setShowFragment(PrepareResFragment.class)
+                    .setPopFragment(MatchSuccessFragment.this).build());
+        }
+
+
+        return true;
+    }
+
+    @Override
+    public void toStaskTop() {
+        MyLog.d(TAG, "toStaskTop" );
+        mRootView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void pushIntoStash() {
+        MyLog.d(TAG, "pushIntoStash" );
+        mRootView.setVisibility(View.GONE);
     }
 }

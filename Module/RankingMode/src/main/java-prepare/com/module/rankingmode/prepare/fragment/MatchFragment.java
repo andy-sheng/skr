@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
@@ -45,27 +46,33 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
-        mIvTop = (ExImageView)mRootView.findViewById(R.id.iv_top);
-        mTvMatchedTime = (ExTextView)mRootView.findViewById(R.id.tv_matched_time);
-        mSdvIcon1 = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_icon1);
-        mSdvIcon3 = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_icon3);
-        mSdvIcon2 = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_icon2);
-        mTvTip = (ExTextView)mRootView.findViewById(R.id.tv_tip);
-        mIvCancelMatch = (ExImageView)mRootView.findViewById(R.id.iv_cancel_match);
+        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
+        mTvMatchedTime = (ExTextView) mRootView.findViewById(R.id.tv_matched_time);
+        mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
+        mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
+        mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
+        mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
+        mIvCancelMatch = (ExImageView) mRootView.findViewById(R.id.iv_cancel_match);
 
         RxView.clicks(mIvCancelMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     matchingPresenter.cancelMatch();
-                    U.getFragmentUtils().popFragment(MatchFragment.this);
+                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                            .setPopAbove(false)
+                            .setShowFragment(PrepareResFragment.class)
+                            .setPopFragment(MatchFragment.this).build());
                 });
 
         RxView.clicks(mIvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     matchingPresenter.cancelMatch();
-                    U.getFragmentUtils().popFragment(MatchFragment.this);
+                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                            .setPopAbove(false)
+                            .setShowFragment(PrepareResFragment.class)
+                            .setPopFragment(MatchFragment.this).build());
                 });
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon1,
@@ -100,7 +107,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     @Override
     public void setData(int type, @Nullable Object data) {
-        if(type == 0){
+        if (type == 0) {
             mPrepareData = (PrepareData) data;
         }
     }
@@ -108,6 +115,17 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        matchingPresenter.cancelMatch();
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopAbove(false)
+                .setShowFragment(PrepareResFragment.class)
+                .setPopFragment(MatchFragment.this).build());
+
+        return true;
     }
 
     @Override
@@ -119,7 +137,8 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 //        U.getFragmentUtils().popFragment(MatchFragment.this);
 
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) MatchFragment.this.getContext(), MatchSuccessFragment.class)
-                .setAddToBackStack(true)
+                .setAddToBackStack(false)
+                .setHideFragment(MatchFragment.class)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, mPrepareData)
                 .setFragmentDataListener(new FragmentDataListener() {
@@ -134,5 +153,17 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void showUserIconList() {
 
+    }
+
+    @Override
+    public void toStaskTop() {
+        MyLog.d(TAG, "toStaskTop" );
+        mRootView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void pushIntoStash() {
+        MyLog.d(TAG, "pushIntoStash" );
+        mRootView.setVisibility(View.GONE);
     }
 }
