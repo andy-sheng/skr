@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.base.R;
@@ -61,32 +62,13 @@ public class FragmentUtils {
         return (BaseFragment) l.get(l.size() - 1);
     }
 
-
-    /**
-     * 弹出activity 顶部的fragment
-     */
-    public boolean popFragment(FragmentActivity activity) {
-        if (activity == null) {
-            return false;
-        }
-        try {
-//            if (immediate) {
-            return activity.getSupportFragmentManager().popBackStackImmediate();
-//            } else {
-            // 这个方法会丢到主线程队列的末尾去执行
-//                activity.getSupportFragmentManager().popBackStack();
-//            }
-        } catch (IllegalStateException e) {
-            MyLog.e(e);
-        }
-        return false;
-    }
-
     /**
      * 弹出activity fragment及其以上所有的fragment
      */
     public boolean popFragment(BaseFragment fragment) {
-        popFragment(newPopParamsBuilder(fragment).build());
+        popFragment(newPopParamsBuilder()
+                .setPopFragment(fragment)
+                .build());
         return false;
     }
 
@@ -123,6 +105,8 @@ public class FragmentUtils {
                 ft.commitAllowingStateLoss();
                 return true;
             }
+        } else if (params.mActivity != null) {
+            return params.mActivity.getSupportFragmentManager().popBackStackImmediate();
         }
         return false;
     }
@@ -248,9 +232,8 @@ public class FragmentUtils {
                 .setTargetFragment(fragment);
     }
 
-    public static PopParams.Builder newPopParamsBuilder(BaseFragment popFragment) {
-        return new PopParams.Builder()
-                .setPopFragment(popFragment);
+    public static PopParams.Builder newPopParamsBuilder() {
+        return new PopParams.Builder();
     }
 
     /**
@@ -258,6 +241,7 @@ public class FragmentUtils {
      * 使用 builder 模式
      */
     static class PopParams {
+        BaseActivity mActivity;
         BaseFragment popFragment;// 要弹出fragment
         boolean popAbove = true;// 包不包括自己以上的所有fragment，true为包括，false为只会remove自己
         Class<? extends Fragment> showFragment;//弹出时要显示的fragment
@@ -272,6 +256,10 @@ public class FragmentUtils {
 
         public void setPopAbove(boolean popAbove) {
             this.popAbove = popAbove;
+        }
+
+        public void setActivity(BaseActivity activity) {
+            mActivity = activity;
         }
 
         public static class Builder {
@@ -294,6 +282,12 @@ public class FragmentUtils {
                 mParams.setPopAbove(popAbove);
                 return this;
             }
+
+            public Builder setActivity(BaseActivity activity) {
+                mParams.setActivity(activity);
+                return this;
+            }
+
 
             public PopParams build() {
                 return mParams;
