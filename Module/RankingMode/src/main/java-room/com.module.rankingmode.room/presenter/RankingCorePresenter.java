@@ -416,7 +416,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
-        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_STOP) {
+        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {
             //伴奏播放结束了也发结束轮次的通知了
             sendRoundOverInfo();
         } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
