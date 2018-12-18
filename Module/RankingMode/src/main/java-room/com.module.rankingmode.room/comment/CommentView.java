@@ -5,8 +5,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
 import com.module.rankingmode.msg.event.CommentMsgEvent;
@@ -18,12 +20,19 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class CommentView extends RelativeLayout {
+    public final static String TAG = "CommentView";
+
     RecyclerView mCommentRv;
 
     LinearLayoutManager mLinearLayoutManager;
 
     CommentAdapter mCommentAdapter;
+
     private RoomData mRoomData;
+    private boolean mOnBottom = true;
+    private boolean mDraging = false;
+    private boolean mHasDataUpdate = false;
+    private long mLastSetCommentListTs = 0;
 
     public CommentView(Context context) {
         super(context);
@@ -33,6 +42,55 @@ public class CommentView extends RelativeLayout {
     public CommentView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+    }
+
+    RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            MyLog.d(TAG, "onScrollStateChangd,newState:" + newState + ",mOnBottom:" + mOnBottom);
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                // 闲置状态
+                mDraging = false;
+                // 停下来判断是否是最后一个,这里忽然有次不能到底了会有bug
+                // 如果最后一个可见的元素==列表中最后一个元素，则认为到底了,
+                int firstVisiblePosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+                MyLog.d(TAG, "onScrollStateChangd firstVisiblePosition :" + firstVisiblePosition);
+                if (firstVisiblePosition == 0) {
+                    setOnBottom("onScrollStateChanged", true);
+                } else {
+                    setOnBottom("onScrollStateChanged", false);
+                }
+            } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                // 手动拖着滑动
+                mDraging = true;
+            } else {
+                // 自动滑动
+            }
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//            changeAlpha();
+        }
+    };
+
+    private void setOnBottom(String from, boolean onBottom) {
+        MyLog.d(TAG, "onBottom:" + this.mOnBottom + "-->" + onBottom + " from:" + from);
+        if (this.mOnBottom != onBottom) {
+            this.mOnBottom = onBottom;
+            if (mOnBottom) {
+                if (mHasDataUpdate) {
+                    mCommentAdapter.notifyDataSetChanged();
+                }
+                mCommentRv.smoothScrollToPosition(0);
+//                mMoveToLastItemIv.setVisibility(GONE);
+//                mHasMore = 0;
+//                if (mRoomChatMsgManager != null) {
+//                    mRoomChatMsgManager.updateMaxSize(mRoomChatMsgManager.getInitMaxSize());
+//                }
+            }
+            // 不在底部不需要更新数据
+        }
     }
 
     private void init() {
@@ -50,6 +108,7 @@ public class CommentView extends RelativeLayout {
             }
         });
         mCommentRv.setAdapter(mCommentAdapter);
+        mCommentRv.addOnScrollListener(mOnScrollListener);
     }
 
     @Override
@@ -65,7 +124,19 @@ public class CommentView extends RelativeLayout {
         commentModel.setAvatar(event.info.getSender().getAvatar());
         commentModel.setText(event.text);
         commentModel.setCommentType(CommentModel.TYPE_TEXT);
-        mCommentAdapter.insertFirst(commentModel);
+        mCommentAdapter.getDataList().add(0, commentModel);
+        if (!mOnBottom || mDraging) {
+            mHasDataUpdate = true;
+//            mHasMore++;
+//            mMoveToLastItemIv.setVisibility(VISIBLE);
+//            String s = mHasMore > 99 ? "99+" : String.valueOf(mHasMore);
+//            mMoveToLastItemIv.setText(getResources().getQuantityString(R.plurals.more_comment_text, mHasMore, s));
+//            if (mRoomChatMsgManager != null) {
+//                mRoomChatMsgManager.updateMaxSize(Integer.MAX_VALUE);
+//            }
+        } else {
+            mCommentAdapter.notifyItemInserted(0);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
