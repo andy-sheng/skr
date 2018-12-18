@@ -49,6 +49,9 @@ public class GameFragment extends BaseFragment {
                                 .greenChannel().navigation();
                     }
                 });
+
+
+
     }
 
     @Override

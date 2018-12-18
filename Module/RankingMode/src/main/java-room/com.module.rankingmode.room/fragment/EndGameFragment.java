@@ -1,24 +1,162 @@
 package com.module.rankingmode.room.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.U;
+import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.module.rankingmode.R;
+import com.module.rankingmode.prepare.model.PlayerInfo;
+import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.presenter.EndGamePresenter;
+import com.module.rankingmode.room.view.IVoteView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 // 游戏结束页
-public class EndGameFragment extends BaseFragment {
+public class EndGameFragment extends BaseFragment implements IVoteView {
+
+    RoomData mRoomData;
+
+    RelativeLayout mMainActContainer;
+
+    // 左边视图
+    SimpleDraweeView mVoteLeftIv;
+    ExTextView mVoteLeftNameTv;
+    ExTextView mVoteLeftSongTv;
+    ExImageView mVoteLeftShadowIv;
+    ExImageView mVoteLeftMie;
+
+    // 右边视图
+    SimpleDraweeView mVoteRightIv;
+    ExTextView mVoteRigntNameTv;
+    ExTextView mVoteRightSongTv;
+    ExImageView mVoteRightShadowIv;
+    ExImageView mVoteRightMie;
+
+    ExTextView mVoteDownTv;
+    ExImageView mVoteVsIv;
 
     EndGamePresenter presenter;
 
+    PlayerInfo left;
+    PlayerInfo right;
+
     @Override
     public int initView() {
-        return 0;
+        return R.layout.ranking_room_end_fragment_layout;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        presenter = new EndGamePresenter();
+
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+
+        mVoteDownTv = (ExTextView) mRootView.findViewById(R.id.vote_down_tv);
+        mVoteVsIv = (ExImageView) mRootView.findViewById(R.id.vote_vs_iv);
+
+        mVoteLeftIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_left_iv);
+        mVoteLeftNameTv = (ExTextView) mRootView.findViewById(R.id.vote_left_name_tv);
+        mVoteLeftSongTv = (ExTextView) mRootView.findViewById(R.id.vote_left_song_tv);
+        mVoteLeftShadowIv = (ExImageView) mRootView.findViewById(R.id.vote_left_shadow_iv);
+
+        mVoteRightIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_right_iv);
+        mVoteRigntNameTv = (ExTextView) mRootView.findViewById(R.id.vote_rignt_name_tv);
+        mVoteRightSongTv = (ExTextView) mRootView.findViewById(R.id.vote_right_song_tv);
+        mVoteRightShadowIv = (ExImageView) mRootView.findViewById(R.id.vote_right_shadow_iv);
+
+        mVoteLeftMie = (ExImageView) mRootView.findViewById(R.id.vote_left_mie);
+        mVoteRightMie = (ExImageView) mRootView.findViewById(R.id.vote_right_mie);
+
+        if (left != null) {
+            AvatarUtils.loadAvatarByUrl(mVoteLeftIv, AvatarUtils.newParamsBuilder(left.getUserInfo().getAvatar())
+                    .setCircle(true)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                    .setBorderColor(Color.parseColor("#33A4E1"))
+                    .build());
+            mVoteLeftNameTv.setText(left.getUserInfo().getUserNickname());
+            mVoteLeftSongTv.setText(left.getSongList().get(0).getItemName());
+
+            RxView.clicks(mVoteLeftIv)
+                    .throttleFirst(300, TimeUnit.MILLISECONDS)
+                    .subscribe(o -> {
+                        // TODO: 2018/12/18  我的机器评分，暂时当作100分
+                        presenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId(), 100);
+                    });
+        }
+
+        if (right != null) {
+            AvatarUtils.loadAvatarByUrl(mVoteRightIv, AvatarUtils.newParamsBuilder(right.getUserInfo().getAvatar())
+                    .setCircle(true)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                    .setBorderColor(Color.parseColor("#FF75A2"))
+                    .build());
+            mVoteRigntNameTv.setText(right.getUserInfo().getUserNickname());
+            mVoteRightSongTv.setText(right.getSongList().get(0).getItemName());
+
+            RxView.clicks(mVoteRightMie)
+                    .throttleFirst(300, TimeUnit.MILLISECONDS)
+                    .subscribe(o -> {
+                        // TODO: 2018/12/18  我的机器评分，暂时当作100分
+                        presenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId(), 100);
+                    });
+        }
+
+
+        presenter = new EndGamePresenter(this);
         addPresent(presenter);
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
+
+    @Override
+    public void setData(int type, @Nullable Object data) {
+        if (type == 0) {
+            mRoomData = (RoomData) data;
+            if (mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0) {
+                List<PlayerInfo> otherPlays = new ArrayList<>();
+                for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()) {
+                    if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
+                        otherPlays.add(playerInfo);
+                    }
+                }
+
+                left = otherPlays.get(0);
+                right = otherPlays.get(1);
+            }
+        }
+    }
+
+    @Override
+    public void voteSucess(long votedUserId) {
+        // TODO: 2018/12/18  可能要加上星星的特效 
+        if (left.getUserInfo().getUserId() == votedUserId) {
+            mVoteLeftIv.setSelected(true);
+            mVoteLeftIv.setClickable(false);
+            mVoteLeftShadowIv.setVisibility(View.VISIBLE);
+        } else if (right.getUserInfo().getUserId() == votedUserId) {
+            mVoteRightIv.setSelected(true);
+            mVoteRightIv.setClickable(false);
+            mVoteRightShadowIv.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void voteFailed() {
+
     }
 }

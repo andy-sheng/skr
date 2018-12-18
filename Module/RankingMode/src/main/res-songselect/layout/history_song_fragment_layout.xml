@@ -20,34 +20,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_90_dp"
-        android:src="@drawable/img_select_triangle" />
-
-    <com.common.view.ex.ExImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_24_dp"
-        android:src="@drawable/img_mirc" />
-
-    <com.common.view.ex.ExImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_66_dp"
-        android:background="@drawable/img_select_song_bg"
-        android:src="@drawable/img_select_song" />
+        android:src="@drawable/img_top_changguo_bg" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_marginTop="@dimen/view_124_dp"
         android:layout_marginLeft="@dimen/view_14_dp"
         android:layout_marginRight="@dimen/view_13_dp"
-        android:paddingBottom="@dimen/view_20_dp"
-        android:paddingTop="@dimen/view_20_dp"
-        android:background="@drawable/img_kaishipipei_bg"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:paddingTop="@dimen/view_10_dp"
+        android:background="@drawable/img_nichangguode_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

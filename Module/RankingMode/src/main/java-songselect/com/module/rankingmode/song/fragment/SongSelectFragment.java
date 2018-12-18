@@ -129,6 +129,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     private void backToLastCard() {
         if (mDeleteList == null || mDeleteList.size() == 0) {
             U.getToastUtil().showShort("没有更多了");
+            return;
         }
 
         SongCardModel songCardModel = mDeleteList.remove(0);

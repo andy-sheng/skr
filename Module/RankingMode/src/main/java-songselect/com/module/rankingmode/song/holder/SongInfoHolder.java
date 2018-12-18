@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -47,7 +48,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         mSongNameTv.setText(mSongModel.getItemName());
         mSongOwnerTv.setText(mSongModel.getOwner());
         FrescoWorker.loadImage(mSongCoverIv,ImageFactory.newHttpImage(mSongModel.getCover())
-                .setCornerRadius(9).setBorderWidth(6)
+                .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .setBorderColor(Color.parseColor("#0C2275")).build());
     }
 

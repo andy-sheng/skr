@@ -9,6 +9,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.rankingmode.room.RoomServerApi;
+import com.module.rankingmode.room.view.IVoteView;
 
 import java.util.HashMap;
 
@@ -21,6 +22,12 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
 
     RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
+    IVoteView view;
+
+    public EndGamePresenter(IVoteView view) {
+        this.view = view;
+    }
+
     /**
      * 投票
      *
@@ -28,7 +35,7 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
      * @param votedUserID 被投人id
      * @param sysScoreVal 系统对自己的打分
      */
-    public void vote(int gameID, int votedUserID, int sysScoreVal) {
+    public void vote(int gameID, long votedUserID, int sysScoreVal) {
         MyLog.d(TAG, "vote" + " gameID=" + gameID + " votedUserID=" + votedUserID + " sysScoreVal=" + sysScoreVal);
         long timeMs = System.currentTimeMillis();
         String sign = U.getMD5Utils().MD5_32("skrer" + String.valueOf(gameID) +
@@ -47,8 +54,10 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("投票成功");
+                    view.voteSucess(votedUserID);
                 } else {
                     MyLog.e(TAG, "vote result errno is " + result.getErrmsg());
+                    view.voteFailed();
                 }
             }
 
