@@ -33,6 +33,7 @@
     <dimen name="view_10_33_dp">10.33dp</dimen>
     <dimen name="view_10_67_dp">10.67dp</dimen>
     <dimen name="view_11_dp">11dp</dimen>
+    <dimen name="view_d_11_dp">-11dp</dimen>
     <dimen name="view_11_33_dp">11.33dp</dimen>
     <dimen name="view_11_67_dp">11.67dp</dimen>
     <dimen name="view_12_dp">12dp</dimen>
@@ -108,6 +109,7 @@
     <dimen name="view_35_33_dp">35.33dp</dimen>
     <dimen name="view_35_67_dp">35.67dp</dimen>
     <dimen name="view_36_dp">36dp</dimen>
+    <dimen name="view_d_36_dp">-36dp</dimen>
     <dimen name="view_36_33_dp">36.33dp</dimen>
     <dimen name="view_36_67_dp">36.67dp</dimen>
     <dimen name="view_37_dp">37dp</dimen>

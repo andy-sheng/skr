@@ -17,7 +17,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
-import com.module.rankingmode.prepare.fragment.MatchingFragment;
+import com.module.rankingmode.prepare.fragment.PrepareResFragment;
 import com.module.rankingmode.song.adapter.SongSelectAdapter;
 import com.module.rankingmode.song.model.SongModel;
 import com.module.rankingmode.song.model.TagModel;
@@ -75,7 +75,7 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((BaseActivity) SongListView.this.getContext(), MatchingFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((BaseActivity) SongListView.this.getContext(), PrepareResFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, songModel)

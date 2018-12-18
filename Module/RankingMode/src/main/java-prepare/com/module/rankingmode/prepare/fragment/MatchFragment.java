@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -110,6 +111,7 @@ public class MatchFragment extends BaseSenceFragment implements IMatchingView {
 
     @Override
     public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> playerInfoList) {
+        MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " playerInfoList=" + playerInfoList);
         mPrepareData.setGameId(gameId);
         mPrepareData.setGameCreatMs(gameCreatMs);
         mPrepareData.setPlayerInfoList(playerInfoList);

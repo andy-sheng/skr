@@ -2,12 +2,9 @@ package com.module.rankingmode.song.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseActivity;
@@ -16,13 +13,10 @@ import com.common.base.FragmentDataListener;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.common.view.viewpager.NestViewPager;
-import com.common.view.viewpager.SlidingTabLayout;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
-import com.module.rankingmode.prepare.fragment.MatchingFragment;
+import com.module.rankingmode.prepare.fragment.PrepareResFragment;
 import com.module.rankingmode.song.adapter.SongCardsAdapter;
 import com.module.rankingmode.song.event.SwipCardEvent;
 import com.module.rankingmode.song.layoutmanager.CardConfig;
@@ -30,10 +24,8 @@ import com.module.rankingmode.song.layoutmanager.OverLayCardLayoutManager;
 import com.module.rankingmode.song.layoutmanager.TanTanCallback;
 import com.module.rankingmode.song.model.SongCardModel;
 import com.module.rankingmode.song.model.SongModel;
-import com.module.rankingmode.song.model.TagModel;
 import com.module.rankingmode.song.presenter.SongTagDetailsPresenter;
 import com.module.rankingmode.song.view.ISongTagDetailView;
-import com.module.rankingmode.song.view.SongListView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -107,7 +99,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((BaseActivity) getContext(), MatchingFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, songModel)
