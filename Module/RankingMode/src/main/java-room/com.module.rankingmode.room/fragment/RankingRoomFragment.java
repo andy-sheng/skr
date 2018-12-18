@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
@@ -236,7 +237,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void gameFinish() {
         addText("游戏结束了");
-        mManyLyricsView.initLrcData();
+//        mManyLyricsView.initLrcData();
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                .setAddToBackStack(true)
+                .addDataBeforeAdd(0,mRoomData)
+                .build()
+        );
     }
 
     @Override

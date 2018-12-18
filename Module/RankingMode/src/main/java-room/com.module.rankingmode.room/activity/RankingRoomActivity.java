@@ -10,11 +10,9 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
-import com.module.rankingmode.room.fragment.EndGameFragment;
-import com.module.rankingmode.room.fragment.RankingRoomFragment;
+import com.module.rankingmode.room.fragment.EvaluationFragment;
 import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.model.RoomDataUtils;
-import com.module.rankingmode.room.presenter.EndGamePresenter;
 import com.module.rankingmode.song.model.SongModel;
 
 import java.util.ArrayList;
@@ -55,11 +53,6 @@ public class RankingRoomActivity extends BaseActivity {
 
         }
 
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, EndGameFragment.class)
-                .setAddToBackStack(false)
-                .addDataBeforeAdd(0,mRoomData)
-                .build()
-        );
     }
 
     @Override

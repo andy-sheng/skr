@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 // 游戏结束页
-public class EndGameFragment extends BaseFragment implements IVoteView {
+public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     RoomData mRoomData;
 
@@ -55,7 +55,7 @@ public class EndGameFragment extends BaseFragment implements IVoteView {
 
     @Override
     public int initView() {
-        return R.layout.ranking_room_end_fragment_layout;
+        return R.layout.ranking_room_evaluation_fragment_layout;
     }
 
     @Override
@@ -158,5 +158,11 @@ public class EndGameFragment extends BaseFragment implements IVoteView {
     @Override
     public void voteFailed() {
 
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        getActivity().finish();
+        return true;
     }
 }
