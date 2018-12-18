@@ -3,9 +3,9 @@ package com.module.rankingmode.msg.process;
 import com.common.log.MyLog;
 import com.module.rankingmode.msg.BasePushInfo;
 import com.module.rankingmode.msg.event.AppSwapEvent;
+import com.module.rankingmode.msg.event.ExitGameEvent;
 import com.module.rankingmode.msg.event.JoinActionEvent;
 import com.module.rankingmode.msg.event.JoinNoticeEvent;
-import com.module.rankingmode.msg.event.QuitGameEvent;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
@@ -19,6 +19,9 @@ import com.module.rankingmode.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
 import com.zq.live.proto.Room.ERoomMsgType;
+import com.zq.live.proto.Room.ExitGameAfterPlayMsg;
+import com.zq.live.proto.Room.ExitGameBeforePlayMsg;
+import com.zq.live.proto.Room.ExitGameOutRoundMsg;
 import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinNoticeMsg;
 import com.zq.live.proto.Room.OnlineInfo;
@@ -32,6 +35,10 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
+import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_BEFORE_PLAY;
+import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
 public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
@@ -58,11 +65,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         } else if (msg.getMsgType() == ERoomMsgType.RM_SYNC_STATUS) {
             processSyncStatusMsg(basePushInfo, msg.getSyncStatusMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY) {
-
+            processExitGameBeforePlay(basePushInfo, msg.getExitGameBeforePlayMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY) {
-
+            processExitGameAfterPlay(basePushInfo, msg.getExitGameAfterPlayMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_OUT_ROUND) {
-
+            processExitGameOutRound(basePushInfo, msg.getExitGameOutRoundMsg());
         }
     }
 
@@ -173,19 +180,6 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs));
     }
 
-//    //退出游戏通知
-//    private void processQuitGameMsg(BasePushInfo info, QuitGameMsg quitGameMsg) {
-//        if (quitGameMsg == null) {
-//            MyLog.d(TAG, "processQuitGameMsg" + " quitGameMsg == null");
-//            return;
-//        }
-//
-//        int quitUserId = quitGameMsg.getQuitUserID();
-//        long quitTimeMs = quitGameMsg.getQuitTimeMs();
-//
-//        EventBus.getDefault().post(new QuitGameEvent(info, quitUserId, quitTimeMs));
-//    }
-
     //app进程后台通知
     private void processAppSwapMsg(BasePushInfo info, AppSwapMsg appSwapMsg) {
         if (appSwapMsg == null) {
@@ -226,4 +220,43 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         EventBus.getDefault().post(new SyncStatusEvent(info, syncStatusTimes, gameOverTimeMs, onLineInfos, currentInfo, nextInfo));
     }
+
+    //退出游戏通知, 游戏开始前
+    private void processExitGameBeforePlay(BasePushInfo basePushInfo, ExitGameBeforePlayMsg exitGameBeforePlayMsg) {
+        if (exitGameBeforePlayMsg == null) {
+            MyLog.d(TAG, "processExitGameBeforePlay" + " exitGameBeforePlayMsg == null");
+            return;
+        }
+
+        int exitUserID = exitGameBeforePlayMsg.getExitUserID();
+        long exitTimeMs = exitGameBeforePlayMsg.getExitTimeMs();
+
+        EventBus.getDefault().post(new ExitGameEvent(basePushInfo, EXIT_GAME_BEFORE_PLAY, exitUserID, exitTimeMs));
+    }
+
+    //退出游戏通知，游戏开始后
+    private void processExitGameAfterPlay(BasePushInfo basePushInfo, ExitGameAfterPlayMsg exitGameAfterPlayMsg) {
+        if (exitGameAfterPlayMsg == null) {
+            MyLog.d(TAG, "processExitGameAfterPlay" + " exitGameAfterPlayMsg == null");
+            return;
+        }
+        int exitUserID = exitGameAfterPlayMsg.getExitUserID();
+        long exitTimeMs = exitGameAfterPlayMsg.getExitTimeMs();
+
+        EventBus.getDefault().post(new ExitGameEvent(basePushInfo, EXIT_GAME_AFTER_PLAY, exitUserID, exitTimeMs));
+    }
+
+    //退出游戏通知，游戏中非自己轮次
+    private void processExitGameOutRound(BasePushInfo basePushInfo, ExitGameOutRoundMsg exitGameOutRoundMsg) {
+        if (exitGameOutRoundMsg == null) {
+            MyLog.d(TAG, "processExitGameOutRound" + " exitGameOutRoundMsg == null");
+            return;
+        }
+
+        int exitUserID = exitGameOutRoundMsg.getExitUserID();
+        long exitTimeMs = exitGameOutRoundMsg.getExitTimeMs();
+
+        EventBus.getDefault().post(new ExitGameEvent(basePushInfo, EXIT_GAME_OUT_ROUND, exitUserID, exitTimeMs));
+    }
+
 }

@@ -17,7 +17,7 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.rankingmode.msg.event.AppSwapEvent;
-import com.module.rankingmode.msg.event.QuitGameEvent;
+import com.module.rankingmode.msg.event.ExitGameEvent;
 import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
@@ -40,6 +40,9 @@ import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+
+import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
+import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
 public class RankingCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankingCorePresenter";
@@ -470,6 +473,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             mRoomData.setExpectRoundInfo(roundOverEvent.nextRound);
             mRoomData.checkRound();
         }
+
+        if (roundOverEvent.exitUserID != 0) {
+            // TODO: 2018/12/18 有人退出了
+        }
     }
 
     //轮次和游戏结束通知，除了已经结束状态，别的任何状态都要变成
@@ -477,13 +484,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
         MyLog.d(TAG, "onEventMainThread 游戏结束push通知");
         onGameOver(roundAndGameOverEvent.roundOverTimeMs);
-    }
-
-    // 退出游戏的通知
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(QuitGameEvent quitGameEvent) {
-        MyLog.d(TAG, "onEventMainThread syncStatusEvent");
-        U.getToastUtil().showShort("某一个人退出了");
     }
 
     // 应用进程切到后台通知
@@ -499,5 +499,16 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         //从新开始12秒后拉取
         startSyncGameStateTask(checkStateTaskDelay);
         updatePlayerState(syncStatusEvent.gameOverTimeMs, syncStatusEvent.syncStatusTimes, syncStatusEvent.onlineInfos, syncStatusEvent.currentInfo, syncStatusEvent.nextInfo);
+    }
+
+    // TODO: 2018/12/18 退出游戏了
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ExitGameEvent exitGameEvent) {
+        MyLog.d(TAG, "onEventMainThread syncStatusEvent");
+        if (exitGameEvent.type == EXIT_GAME_AFTER_PLAY) {
+            U.getToastUtil().showShort("游戏开始后，某一个人退出了");
+        } else if (exitGameEvent.type == EXIT_GAME_OUT_ROUND) {
+            U.getToastUtil().showShort("不在你的轮次，某一个人退出了");
+        }
     }
 }

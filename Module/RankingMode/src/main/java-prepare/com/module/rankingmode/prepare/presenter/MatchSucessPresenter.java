@@ -9,6 +9,8 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
+import com.common.utils.U;
+import com.module.rankingmode.msg.event.ExitGameEvent;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.GameReadyModel;
@@ -30,6 +32,9 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
+import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
+import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_BEFORE_PLAY;
+import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
 // 处理匹配成功之后   加入房间  检查房间
 public class MatchSucessPresenter extends RxLifeCyclePresenter {
@@ -130,6 +135,15 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
             }
 
             iMatchSucessView.allPlayerIsReady(readyNoticeEvent.jsonGameReadyInfo);
+        }
+    }
+
+    // TODO: 2018/12/18 有人退出游戏了
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ExitGameEvent exitGameEvent) {
+        MyLog.d(TAG, "onEventMainThread syncStatusEvent");
+        if (exitGameEvent.type == EXIT_GAME_BEFORE_PLAY) {
+            U.getToastUtil().showShort("游戏开始前，某一个人退出了");
         }
     }
 }
