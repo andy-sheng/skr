@@ -62,6 +62,33 @@ public class FragmentUtils {
         return (BaseFragment) l.get(l.size() - 1);
     }
 
+
+    /**
+     * 隐藏fragment
+     */
+    public void hideFragment(BaseFragment fragment) {
+        FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+        if (fragmentManager != null) {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.hide(fragment);
+            ft.commitAllowingStateLoss();
+        }
+    }
+
+    /**
+     * 显示fragment
+     *
+     * @param fragment
+     */
+    public void showFragment(BaseFragment fragment) {
+        FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+        if (fragmentManager != null) {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.show(fragment);
+            ft.commitAllowingStateLoss();
+        }
+    }
+
     /**
      * 弹出activity fragment及其以上所有的fragment
      */
@@ -459,7 +486,6 @@ public class FragmentUtils {
                 mParams.setHideFragment(hideFragment);
                 return this;
             }
-
 
             public AddParams build() {
                 return mParams;
