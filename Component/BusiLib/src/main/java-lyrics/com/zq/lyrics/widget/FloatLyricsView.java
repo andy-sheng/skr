@@ -126,10 +126,11 @@ public class FloatLyricsView extends AbstractLrcView {
         List<LyricsLineInfo> splitLyricsLineInfos = lrcLineInfos.get(lyricsLineNum).getSplitLyricsLineInfos();
         LyricsLineInfo lyricsLineInfo = splitLyricsLineInfos.get(splitLyricsLineNum);
         //获取行歌词高亮宽度
-        float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paint, lyricsLineInfo, splitLyricsWordIndex, lyricsWordHLTime);
+        float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paintHL, lyricsLineInfo, splitLyricsWordIndex, lyricsWordHLTime);
         // 当行歌词
         String curLyrics = lyricsLineInfo.getLineLyrics();
-        float curLrcTextWidth = LyricsUtils.getTextWidth(paint, curLyrics);
+        //获取当前高亮歌词的宽度
+        float curLrcTextWidth = LyricsUtils.getTextWidth(paintHL, curLyrics);
         // 当前歌词行的x坐标
         float textX = 0;
         // 当前歌词行的y坐标
@@ -228,8 +229,13 @@ public class FloatLyricsView extends AbstractLrcView {
                         preLrcTextY);
             }
         }
-        //画歌词
+
+        //画歌词,在画高亮和普通歌词的时候轮廓大小不一样
+        float outLineHLSize = paintOutline.getTextSize();
+        paintOutline.setTextSize(paintHL.getTextSize());
         LyricsUtils.drawOutline(canvas, paintOutline, curLyrics, textX, textY);
+        paintOutline.setTextSize(outLineHLSize);
+
         if (mEnableVerbatim) {
             LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColors, paintHLColors, curLyrics, lineLyricsHLWidth, textX, textY);
         }else {

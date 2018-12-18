@@ -166,6 +166,16 @@ public class ManyLyricsView extends AbstractLrcView {
     private int mResetDuration = 3000;
 
     /**
+     * 高亮以上画多少行
+     */
+    private int upLineNum = 2;
+
+    /**
+     * 高亮以下画多少行
+     */
+    private int downLineNum = 2;
+
+    /**
      * Handler处理滑动指示器隐藏和歌词滚动到当前播放的位置
      */
     private Handler mHandler = new Handler() {
@@ -339,27 +349,32 @@ public class ManyLyricsView extends AbstractLrcView {
         //画额外歌词
         lineBottomY = drawDownExtraLyrics(canvas, extraLrcPaint, extraLrcPaintHL, lyricsLineNum, extraSplitLyricsLineNum, extraSplitLyricsWordIndex, extraLrcSpaceLineHeight, lyricsWordHLTime, translateLyricsWordHLTime, lineBottomY);
 
-
-        //画当前行正面的歌词
-        for (int i = lyricsLineNum + 1; i < lrcLineInfos.size(); i++) {
-            LyricsLineInfo downLyricsLineInfo = lrcLineInfos
-                    .get(i);
-            //获取分割后的歌词列表
-            List<LyricsLineInfo> lyricsLineInfos = downLyricsLineInfo.getSplitLyricsLineInfos();
-            lineBottomY = drawDownLyrics(canvas, paint, paintHL, lyricsLineInfos, -1, -2, spaceLineHeight, -1, lineBottomY);
-            //画额外歌词
-            lineBottomY = drawDownExtraLyrics(canvas, extraLrcPaint, extraLrcPaintHL, i, -1, -2, extraLrcSpaceLineHeight, -1, -1, lineBottomY);
+        {
+            //画当前行下面的歌词
+            int maxDownLineNum = lrcLineInfos.size() - lyricsLineNum > downLineNum ? lyricsLineNum + downLineNum + 1 : lrcLineInfos.size();
+            for (int i = lyricsLineNum + 1; i < maxDownLineNum; i++) {
+                LyricsLineInfo downLyricsLineInfo = lrcLineInfos
+                        .get(i);
+                //获取分割后的歌词列表
+                List<LyricsLineInfo> lyricsLineInfos = downLyricsLineInfo.getSplitLyricsLineInfos();
+                lineBottomY = drawDownLyrics(canvas, paint, paintHL, lyricsLineInfos, -1, -2, spaceLineHeight, -1, lineBottomY);
+                //画额外歌词
+                lineBottomY = drawDownExtraLyrics(canvas, extraLrcPaint, extraLrcPaintHL, i, -1, -2, extraLrcSpaceLineHeight, -1, -1, lineBottomY);
+            }
         }
 
-
-        // 画当前歌词之前的歌词
-        float lineTopY = mCentreY;
-        for (int i = lyricsLineNum - 1; i >= 0; i--) {
-            LyricsLineInfo upLyricsLineInfo = lrcLineInfos
-                    .get(i);
-            //获取分割后的歌词列表
-            List<LyricsLineInfo> lyricsLineInfos = upLyricsLineInfo.getSplitLyricsLineInfos();
-            lineTopY = drawUpExtraLyrics(canvas, paint, lyricsLineInfos, i, extraLrcSpaceLineHeight, lineTopY);
+        {
+            int maxUpLineNum = lyricsLineNum - upLineNum;
+            maxUpLineNum = maxUpLineNum < 0 ? 0 : maxUpLineNum;
+            // 画当前歌词之前的歌词
+            float lineTopY = mCentreY;
+            for (int i = lyricsLineNum - 1; i >= maxUpLineNum; i--) {
+                LyricsLineInfo upLyricsLineInfo = lrcLineInfos
+                        .get(i);
+                //获取分割后的歌词列表
+                List<LyricsLineInfo> lyricsLineInfos = upLyricsLineInfo.getSplitLyricsLineInfos();
+                lineTopY = drawUpExtraLyrics(canvas, paint, lyricsLineInfos, i, extraLrcSpaceLineHeight, lineTopY);
+            }
         }
 
         //绘画时间、播放按钮等

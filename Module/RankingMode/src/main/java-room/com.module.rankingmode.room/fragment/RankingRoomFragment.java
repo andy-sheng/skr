@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
@@ -14,6 +15,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
+import com.module.rankingmode.prepare.model.RoundInfoModel;
 import com.module.rankingmode.room.comment.CommentView;
 import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.presenter.RankingCorePresenter;
@@ -28,6 +30,7 @@ import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.UrlRes;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
 import com.zq.lyrics.widget.AbstractLrcView;
+import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -59,6 +62,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     ManyLyricsView mManyLyricsView;
 
+    FloatLyricsView mFloatLyricsView;
+
     ZipUrlResourceManager zipUrlResourceManager;
 
     @Override
@@ -76,6 +81,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
         mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
+        mFloatLyricsView = mRootView.findViewById(R.id.float_lyrics_view);
+        mFloatLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
+
         mTestTv = mRootView.findViewById(R.id.test_tv);
         presenter = new RankingCorePresenter(this, mRoomData);
         addPresent(presenter);
@@ -90,7 +98,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         @Override
         public void onCompleted(String localPath) {
             MyLog.d(TAG, "onCompleted" + " localPath=" + localPath);
-            if(playingSongModel != null){
+            if (playingSongModel != null) {
                 playLyric(playingSongModel.getItemID());
             }
         }
@@ -159,12 +167,31 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         LyricsReader lyricsReader = LyricsManager.getLyricsManager(getContext()).getLyricsUtil(finishLoadLrcEvent.hash);
         if (lyricsReader != null) {
             lyricsReader.setHash(finishLoadLrcEvent.hash);
-            mManyLyricsView.initLrcData();
-            mManyLyricsView.setLyricsReader(lyricsReader);
-            if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY){
-                MyLog.d(TAG, "onEventMainThread " + "play");
-                mManyLyricsView.play(0);
+
+            //自己
+            if (presenter.getRoomData().getRealRoundInfo().getUserID()
+                    == MyUserInfoManager.getInstance().getUid()) {
+                mFloatLyricsView.setVisibility(View.GONE);
+                mManyLyricsView.setVisibility(View.VISIBLE);
+                mManyLyricsView.initLrcData();
+                mManyLyricsView.setLyricsReader(lyricsReader);
+                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                    MyLog.d(TAG, "onEventMainThread " + "play");
+                    RoundInfoModel roundInfo = presenter.getRoomData().getRealRoundInfo();
+                    mManyLyricsView.play(roundInfo.getSingBeginMs());
+                }
+            } else {
+                mManyLyricsView.setVisibility(View.GONE);
+                mFloatLyricsView.setVisibility(View.VISIBLE);
+                mFloatLyricsView.initLrcData();
+                mFloatLyricsView.setLyricsReader(lyricsReader);
+                if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                    MyLog.d(TAG, "onEventMainThread " + "play");
+                    RoundInfoModel roundInfo = presenter.getRoomData().getRealRoundInfo();
+                    mFloatLyricsView.play(roundInfo.getSingBeginMs());
+                }
             }
+
         }
     }
 
@@ -214,7 +241,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void updateUserState(List<OnLineInfoModel> jsonOnLineInfoList) {
-        if(jsonOnLineInfoList==null){
+        if (jsonOnLineInfoList == null) {
             return;
         }
         for (OnLineInfoModel onLineInfoModel : jsonOnLineInfoList) {
@@ -234,9 +261,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 .subscribe(songModel -> {
                     playingSongModel = songModel;
                     File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
-                    MyLog.d(TAG, "playLyric songModel:" +  songModel);
+                    MyLog.d(TAG, "playLyric songModel:" + songModel);
 
-                    if(file == null){
+                    if (file == null) {
                         MyLog.d(TAG, "playLyric 1");
                         ArrayList<UrlRes> urlResArrayList = new ArrayList<>();
                         UrlRes lyric = new UrlRes(songModel.getLyric(), SongResUtils.getLyricDir(), SongResUtils.SUFF_ZRCE);
@@ -250,7 +277,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", fileName.hashCode() + "");
 
                     }
-        }, throwable -> {});
+                }, throwable -> {
+                    MyLog.e(TAG, throwable);
+                });
     }
 
     void addText(String te) {

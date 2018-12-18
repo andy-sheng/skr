@@ -74,6 +74,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         EngineManager.getInstance().muteLocalAudioStream(true);
     }
 
+    public RoomData getRoomData(){
+        return mRoomData;
+    }
+
     @Override
     public void start() {
         super.start();
