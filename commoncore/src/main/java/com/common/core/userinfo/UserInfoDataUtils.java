@@ -48,6 +48,10 @@ public class UserInfoDataUtils {
             newUserInfo.setBlock(userInfoDB.getBlock());
         }
 
+        if (newUserInfo.getIsSystem() == -1) {
+            newUserInfo.setIsSystem(userInfoDB.getIsSystem());
+        }
+
         if (newUserInfo.getExt() == null) {
             newUserInfo.setExt(userInfoDB.getExt());
         }

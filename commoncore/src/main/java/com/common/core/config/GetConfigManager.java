@@ -22,7 +22,6 @@ import com.common.core.config.event.SixinWhiteListUpdateEvent;
 import com.common.core.view.RoundRectDradable;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.wali.live.proto.Config.MiLinkGetConfigReq;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;

@@ -35,7 +35,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         public final static Property Birthday = new Property(8, String.class, "birthday", false, "BIRTHDAY");
         public final static Property Relative = new Property(9, int.class, "relative", false, "RELATIVE");
         public final static Property Block = new Property(10, int.class, "block", false, "BLOCK");
-        public final static Property Ext = new Property(11, String.class, "ext", false, "EXT");
+        public final static Property IsSystem = new Property(11, int.class, "isSystem", false, "IS_SYSTEM");
+        public final static Property Ext = new Property(12, String.class, "ext", false, "EXT");
     }
 
 
@@ -62,7 +63,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
                 "\"BIRTHDAY\" TEXT," + // 8: birthday
                 "\"RELATIVE\" INTEGER NOT NULL ," + // 9: relative
                 "\"BLOCK\" INTEGER NOT NULL ," + // 10: block
-                "\"EXT\" TEXT);"); // 11: ext
+                "\"IS_SYSTEM\" INTEGER NOT NULL ," + // 11: isSystem
+                "\"EXT\" TEXT);"); // 12: ext
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_INFO_USER_ID_DESC ON USER_INFO" +
                 " (\"USER_ID\" DESC);");
@@ -108,10 +110,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         }
         stmt.bindLong(10, entity.getRelative());
         stmt.bindLong(11, entity.getBlock());
+        stmt.bindLong(12, entity.getIsSystem());
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(12, ext);
+            stmt.bindString(13, ext);
         }
     }
 
@@ -149,10 +152,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         }
         stmt.bindLong(10, entity.getRelative());
         stmt.bindLong(11, entity.getBlock());
+        stmt.bindLong(12, entity.getIsSystem());
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(12, ext);
+            stmt.bindString(13, ext);
         }
     }
 
@@ -175,7 +179,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // birthday
             cursor.getInt(offset + 9), // relative
             cursor.getInt(offset + 10), // block
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // ext
+            cursor.getInt(offset + 11), // isSystem
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // ext
         );
         return entity;
     }
@@ -193,7 +198,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         entity.setBirthday(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setRelative(cursor.getInt(offset + 9));
         entity.setBlock(cursor.getInt(offset + 10));
-        entity.setExt(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setIsSystem(cursor.getInt(offset + 11));
+        entity.setExt(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
      }
     
     @Override

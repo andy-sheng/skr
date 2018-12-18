@@ -10,14 +10,14 @@ import java.util.List;
 
 public class PlayerInfo implements Serializable {
 
-    UserInfo userInfo;
+    com.common.core.userinfo.UserInfo userInfo;
     List<SongModel> songList;
 
-    public UserInfo getUserInfo() {
+    public com.common.core.userinfo.UserInfo getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
+    public void setUserInfo(com.common.core.userinfo.UserInfo userInfo) {
         this.userInfo = userInfo;
     }
 
@@ -33,8 +33,8 @@ public class PlayerInfo implements Serializable {
         if (playerInfo == null){
             return;
         }
-
-        this.setUserInfo(playerInfo.getUserInfo());
+        com.common.core.userinfo.UserInfo userInfo = DataUtils.parse2UserInfo(playerInfo.getUserInfo());
+        this.setUserInfo(userInfo);
         List<SongModel> list = new ArrayList<>();
         for (MusicInfo musicInfo : playerInfo.getMusicInfoList()){
             SongModel songModel = new SongModel();

@@ -47,6 +47,8 @@ public class RankingRoomActivity extends BaseActivity {
             mRoomData.setSongModelList(songModelArrayList);
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
+
+            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         }else{
 
         }

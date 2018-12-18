@@ -46,7 +46,7 @@ android {
         }
     }
 
-    useLibrary 'org.apache.http.legacy'
+//    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -62,7 +62,7 @@ dependencies {
     api files('libs/protobuf-java-2.6.0.jar')
     // 小米oauth登录用
     api files('libs/oauth.jar')
-    api files('libs/ks3-android-sdk-v-1.4.6.jar')
+//    api files('libs/ks3-android-sdk-v-1.4.6.jar')
 
     api files('libs/umeng-share-core-6.9.3.jar')
     api files('libs/umeng-share-QQ-simplify-6.9.3.jar')

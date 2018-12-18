@@ -3,6 +3,7 @@ package com.module.rankingmode.room.model;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
+import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.RoundInfoModel;
 import com.module.rankingmode.room.event.RoundInfoChangeEvent;
 import com.module.rankingmode.song.model.SongModel;
@@ -43,9 +44,9 @@ public class RoomData {
 
     private List<OnLineInfoModel> mOnlineInfoList;//所有的用户在线信息
 
-    //所有人要唱的歌曲
-    public List<SongModel> songModelList;
+    public List<SongModel> songModelList;//所有人要唱的歌曲
 
+    private List<PlayerInfo> mPlayerInfoList;//选手信息
 
     /**
      * 检查轮次信息是否需要更新
@@ -168,5 +169,13 @@ public class RoomData {
 
     public void setOnlineInfoList(List<OnLineInfoModel> onlineInfoList) {
         mOnlineInfoList = onlineInfoList;
+    }
+
+    public void setPlayerInfoList(List<PlayerInfo> playerInfoList) {
+        mPlayerInfoList = playerInfoList;
+    }
+
+    public List<PlayerInfo> getPlayerInfoList() {
+        return mPlayerInfoList;
     }
 }

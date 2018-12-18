@@ -3,9 +3,6 @@ package com.common.core.userinfo;
 import android.net.Uri;
 
 import com.common.log.MyLog;
-import com.wali.live.proto.User.GetHomepageResp;
-import com.wali.live.proto.User.GetUserInfoByIdRsp;
-import com.wali.live.proto.User.MutiGetUserInfoRsp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +40,13 @@ public class UserInfoManager {
          */
         boolean onGetLocalDB(UserInfo userInfo);
 
-        /**
-         * 从服务器获取个人信息
-         *
-         * @param response
-         * @return
-         */
-        boolean onGetServer(GetUserInfoByIdRsp response);
+//        /**
+//         * 从服务器获取个人信息
+//         *
+//         * @param response
+//         * @return
+//         */
+//        boolean onGetServer(GetUserInfoByIdRsp response);
     }
 
     /**
@@ -85,10 +82,10 @@ public class UserInfoManager {
          */
         boolean onGetLocalDB(UserInfo userInfo);
 
-        /**
-         * 从服务器获取个人主页信息
-         */
-        boolean onGetServer(GetHomepageResp response);
+//        /**
+//         * 从服务器获取个人主页信息
+//         */
+//        boolean onGetServer(GetHomepageResp response);
     }
 
     /**
@@ -125,10 +122,10 @@ public class UserInfoManager {
          */
         boolean onGetLocalDB(List<UserInfo> list);
 
-        /**
-         * 本地数据库中查询个人主页信息(list)
-         */
-        boolean onGetServer(MutiGetUserInfoRsp rsp);
+//        /**
+//         * 本地数据库中查询个人主页信息(list)
+//         */
+//        boolean onGetServer(MutiGetUserInfoRsp rsp);
     }
 
     public void getUserInfoList(List<Long> uuidList, UserListCallBack callBack) {
@@ -145,9 +142,9 @@ public class UserInfoManager {
             queryServer = true;
         }
 
-        if (queryServer || !callBack.onGetLocalDB(list)) {
-            callBack.onGetServer(getHomepageListById(uuidList));
-        }
+//        if (queryServer || !callBack.onGetLocalDB(list)) {
+//            callBack.onGetServer(getHomepageListById(uuidList));
+//        }
     }
 
     /**
@@ -157,29 +154,29 @@ public class UserInfoManager {
      * @param uuidList
      * @return
      */
-    private MutiGetUserInfoRsp getHomepageListById(List<Long> uuidList) {
-        if (uuidList == null || uuidList.size() <= 0) {
-            MyLog.w(TAG, "getHomepageListById Illegal parameter");
-            return null;
-        }
-//        MutiGetUserInfoRsp response = UserInfoServerApi.getHomepageListById(uuidList);
-//        if (response != null && response.getRetCode() == 0) {
-//            List<UserInfo> userInfoList = new ArrayList<>();
-//            List<PersonalInfo> personalInfos = response.getPersonalInfoList();
-//            if (personalInfos != null && personalInfos.size() > 0) {
-//                for (PersonalInfo personalInfo : personalInfos) {
-//                    UserInfo userInfo = new UserInfo();
-//                    userInfo.parse(personalInfo);
-//                    userInfoList.add(userInfo);
-//                }
-//
-//                UserInfoLocalApi.insertOrUpdate(userInfoList);
-//            }
-//            return response;
+//    private MutiGetUserInfoRsp getHomepageListById(List<Long> uuidList) {
+//        if (uuidList == null || uuidList.size() <= 0) {
+//            MyLog.w(TAG, "getHomepageListById Illegal parameter");
+//            return null;
 //        }
-
-        return null;
-    }
+////        MutiGetUserInfoRsp response = UserInfoServerApi.getHomepageListById(uuidList);
+////        if (response != null && response.getRetCode() == 0) {
+////            List<UserInfo> userInfoList = new ArrayList<>();
+////            List<PersonalInfo> personalInfos = response.getPersonalInfoList();
+////            if (personalInfos != null && personalInfos.size() > 0) {
+////                for (PersonalInfo personalInfo : personalInfos) {
+////                    UserInfo userInfo = new UserInfo();
+////                    userInfo.parse(personalInfo);
+////                    userInfoList.add(userInfo);
+////                }
+////
+////                UserInfoLocalApi.insertOrUpdate(userInfoList);
+////            }
+////            return response;
+////        }
+//
+//        return null;
+//    }
 
     /**
      * @param followType 关注类别

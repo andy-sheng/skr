@@ -3,21 +3,17 @@ package com.common.core.myinfo;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
-import com.common.core.account.UserAccountServerApi;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfo;
 import com.common.core.userinfo.UserInfoLocalApi;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.wali.live.proto.User.GetOwnInfoRsp;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import io.reactivex.Observable;

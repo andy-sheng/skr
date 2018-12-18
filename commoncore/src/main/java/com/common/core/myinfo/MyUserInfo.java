@@ -1,20 +1,6 @@
 package com.common.core.myinfo;
 
 import com.common.core.userinfo.UserInfo;
-import com.wali.live.proto.User.GetOwnInfoRsp;
-import com.wali.live.proto.User.PersonalData;
-import com.wali.live.proto.User.PersonalInfo;
-import com.wali.live.proto.User.UserEcoAttr;
-
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
-import org.greenrobot.greendao.annotation.NotNull;
-
-import java.io.IOException;
-
-import okio.ByteString;
 
 
 /**
