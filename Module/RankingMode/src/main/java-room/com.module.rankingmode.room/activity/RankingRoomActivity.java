@@ -11,6 +11,7 @@ import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.room.fragment.EvaluationFragment;
+import com.module.rankingmode.room.fragment.RankingRoomFragment;
 import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.model.RoomDataUtils;
 import com.module.rankingmode.song.model.SongModel;
@@ -52,7 +53,11 @@ public class RankingRoomActivity extends BaseActivity {
         }else{
 
         }
-
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, RankingRoomFragment.class)
+                .setAddToBackStack(false)
+                .addDataBeforeAdd(0,mRoomData)
+                .build()
+        );
     }
 
     @Override
