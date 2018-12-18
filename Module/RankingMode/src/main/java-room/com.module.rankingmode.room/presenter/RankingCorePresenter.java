@@ -310,7 +310,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (gameOverTimeMs > mRoomData.getGameStartTs()) {
             // 游戏结束了
             onGameOver("sync", gameOverTimeMs);
-        } else {
+        } else if(gameOverTimeMs!=0){
             MyLog.d(TAG, "结束时间比开始时间小，不应该吧 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
         }
         // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
