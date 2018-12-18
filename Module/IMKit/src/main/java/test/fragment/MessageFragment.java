@@ -86,7 +86,7 @@ public class MessageFragment extends BaseFragment implements  RongIM.UserInfoPro
             @Override
             public void onClick(View view) {
                 U.getFragmentUtils().addFragment(
-                        FragmentUtils.newParamsBuilder(getActivity(), ContactsFragment.class)
+                        FragmentUtils.newAddParamsBuilder(getActivity(), ContactsFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());

@@ -55,7 +55,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                     Bundle bundle = new Bundle();
                     bundle.putString(VerifyCodeFragment.EXTRA_PHONE_NUMBER, phoneNumber);
                     U.getFragmentUtils().addFragment(FragmentUtils
-                            .newParamsBuilder(getActivity(), VerifyCodeFragment.class)
+                            .newAddParamsBuilder(getActivity(), VerifyCodeFragment.class)
                             .setAddToBackStack(true)
                             .setHasAnimation(true)
                             .setBundle(bundle)

@@ -21,7 +21,7 @@ public class EmojiActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         U.getFragmentUtils().addFragment(FragmentUtils
-                .newParamsBuilder(EmojiActivity.this, EmojiFragment.class)
+                .newAddParamsBuilder(EmojiActivity.this, EmojiFragment.class)
                 .setAddToBackStack(false)
                 .build());
     }

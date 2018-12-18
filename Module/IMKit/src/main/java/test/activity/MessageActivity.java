@@ -26,7 +26,7 @@ public class MessageActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newParamsBuilder(MessageActivity.this, MessageFragment.class)
+                FragmentUtils.newAddParamsBuilder(MessageActivity.this, MessageFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());

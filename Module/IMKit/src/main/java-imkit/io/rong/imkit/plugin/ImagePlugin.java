@@ -65,7 +65,7 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
                 .setCropStyle(CropImageView.Style.CIRCLE)
                 .build()
         );
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(fragment.getActivity(), ImagePickerFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(fragment.getActivity(), ImagePickerFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
                 .setBundle(bundle)

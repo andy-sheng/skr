@@ -21,11 +21,6 @@ import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.sdk.android.oss.ClientException;
-import com.alibaba.sdk.android.oss.ServiceException;
-import com.alibaba.sdk.android.oss.model.OSSRequest;
-import com.alibaba.sdk.android.oss.model.OSSResult;
-import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.share.ShareManager;
@@ -498,7 +493,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, SmartRefreshFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, SmartRefreshFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -509,7 +504,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, DrawerFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, DrawerFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -533,7 +528,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, EmojiFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, EmojiFragment.class)
                         .setAddToBackStack(true)
                         .build());
             }
@@ -543,7 +538,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, ShowTextViewFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, ShowTextViewFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -565,7 +560,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(TestSdkActivity.this, DialogsFragment.class)
+                        .newAddParamsBuilder(TestSdkActivity.this, DialogsFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
@@ -581,7 +576,7 @@ public class TestSdkActivity extends BaseActivity {
                         .setCropStyle(CropImageView.Style.CIRCLE)
                         .build()
                 );
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePickerFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, ImagePickerFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .setBundle(bundle)
@@ -644,7 +639,7 @@ public class TestSdkActivity extends BaseActivity {
                     list.add(imageItem);
                 }
 
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, ImagePreviewFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, ImagePreviewFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .addDataBeforeAdd(1, list)
@@ -661,7 +656,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("类微信带拼音索引的联系人列表", new Runnable() {
             @Override
             public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, PickContactFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, PickContactFragment.class)
                         .setHasAnimation(true)
                         .build());
             }
@@ -670,7 +665,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("二维码实验", new Runnable() {
             @Override
             public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, QrcodeTestFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, QrcodeTestFragment.class)
                         .setHasAnimation(true)
                         .build());
             }
@@ -693,7 +688,7 @@ public class TestSdkActivity extends BaseActivity {
         mDataList.add(new H("Rxretrofit实验", new Runnable() {
             @Override
             public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(TestSdkActivity.this, RxRetrofitFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, RxRetrofitFragment.class)
                         .setHasAnimation(true)
                         .build());
             }

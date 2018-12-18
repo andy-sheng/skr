@@ -96,7 +96,7 @@ public class PersonFragment extends BaseFragment {
                         .build()
                 );
 
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImagePickerFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePickerFragment.class)
                         .setContainerViewId(R.id.person_main_containner)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)

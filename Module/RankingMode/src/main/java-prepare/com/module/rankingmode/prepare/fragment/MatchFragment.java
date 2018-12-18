@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
+import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 //这个是匹配界面，之前的FastMatchingSence
-public class MatchFragment extends BaseSenceFragment implements IMatchingView {
+public class MatchFragment extends BaseFragment implements IMatchingView {
     ExImageView mIvBack;
     ExImageView mIvTop;
     ExTextView mTvMatchedTime;
@@ -117,7 +118,7 @@ public class MatchFragment extends BaseSenceFragment implements IMatchingView {
         mPrepareData.setPlayerInfoList(playerInfoList);
 //        U.getFragmentUtils().popFragment(MatchFragment.this);
 
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((FragmentActivity) MatchFragment.this.getContext(), MatchSuccessFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) MatchFragment.this.getContext(), MatchSuccessFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, mPrepareData)

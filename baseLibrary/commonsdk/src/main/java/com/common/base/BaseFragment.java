@@ -380,4 +380,8 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     public void finish(){
         U.getFragmentUtils().popFragment(this);
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+    }
 }

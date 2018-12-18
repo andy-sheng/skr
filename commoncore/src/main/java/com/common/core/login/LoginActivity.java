@@ -11,25 +11,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
 import com.common.core.login.fragment.LoginByPhoneFragment;
-import com.common.core.login.fragment.VerifyCodeFragment;
 import com.common.utils.FragmentUtils;
 import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
-import com.common.core.account.UserAccountManager;
-import com.common.core.account.UserAccountServerApi;
 import com.common.core.account.event.AccountEvent;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.common.view.ex.ExButton;
-import com.common.view.ex.NoLeakEditText;
-import com.common.view.titlebar.CommonTitleBar;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import io.reactivex.Observable;
 
 @Route(path = RouterConstants.ACTIVITY_LOGIN)
 public class LoginActivity extends BaseActivity {
@@ -69,7 +58,7 @@ public class LoginActivity extends BaseActivity {
                 }
 
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newParamsBuilder(LoginActivity.this, LoginByPhoneFragment.class)
+                        .newAddParamsBuilder(LoginActivity.this, LoginByPhoneFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());

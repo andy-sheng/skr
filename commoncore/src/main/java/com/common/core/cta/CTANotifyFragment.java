@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.common.utils.PreferenceUtils;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.R;
@@ -72,7 +71,7 @@ public class CTANotifyFragment extends BaseFragment implements View.OnClickListe
 
     public static void openFragment(BaseActivity activity, CTANotifyButtonClickListener listener) {
         CTANotifyFragment fragment = (CTANotifyFragment) U.getFragmentUtils().addFragment(
-                FragmentUtils.newParamsBuilder(activity, CTANotifyFragment.class)
+                FragmentUtils.newAddParamsBuilder(activity, CTANotifyFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());

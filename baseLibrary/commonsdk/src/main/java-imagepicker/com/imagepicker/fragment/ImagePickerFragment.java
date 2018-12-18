@@ -127,7 +127,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             @Override
             public void onClick(View v) {
                 // 跳到预览
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImagePreviewFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePreviewFragment.class)
                         .addDataBeforeAdd(1, new ArrayList<>(mImagePicker.getSelectedImages()))
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
@@ -321,7 +321,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             // 多选就去大图浏览界面
             Bundle bundle = new Bundle();
             bundle.putInt(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
-            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImagePreviewFragment.class)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePreviewFragment.class)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
                         public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
@@ -347,7 +347,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
      * 跳转到裁剪页面
      */
     private void gotoCrop() {
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(getActivity(), ImageCropFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImageCropFragment.class)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {

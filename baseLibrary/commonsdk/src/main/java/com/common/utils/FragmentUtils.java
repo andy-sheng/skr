@@ -55,10 +55,10 @@ public class FragmentUtils {
          */
         FragmentManager fm = activity.getSupportFragmentManager();
         List<Fragment> l = fm.getFragments();
-        if(l.isEmpty()){
+        if (l.isEmpty()) {
             return null;
         }
-        return (BaseFragment) l.get(l.size()-1);
+        return (BaseFragment) l.get(l.size() - 1);
     }
 
 
@@ -86,24 +86,42 @@ public class FragmentUtils {
      * 弹出activity fragment及其以上所有的fragment
      */
     public boolean popFragment(BaseFragment fragment) {
-        if (fragment == null) {
-            return false;
-        }
-        if (fragment.getActivity() != null) {
-            FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+        popFragment(newPopParamsBuilder(fragment).build());
+        return false;
+    }
+
+    public boolean popFragment(PopParams params) {
+        FragmentManager fragmentManager = null;
+        if (params.popFragment != null) {
+            fragmentManager = params.popFragment.getActivity().getSupportFragmentManager();
             if (fragmentManager != null) {
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+
                 for (Fragment f : fragmentManager.getFragments()) {
-                    if (f == fragment) {
-                        /**
-                         *  至于int flags有两个取值：0或FragmentManager.POP_BACK_STACK_INCLUSIVE；
-                         *  当取值0时，表示除了参数一指定这一层之上的所有层都退出栈，指定的这一层为栈顶层； 
-                         *  当取值POP_BACK_STACK_INCLUSIVE时，表示连着参数一指定的这一层一起退出栈
-                         *  另外第一个参数一般用 tag ，只有静态添加的 fragment 才用id
-                         */
-                        boolean b = fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        return b;
+                    if (f == params.popFragment) {
+                        if (params.popAbove) {
+                            /**
+                             *  至于int flags有两个取值：0或FragmentManager.POP_BACK_STACK_INCLUSIVE；
+                             *  当取值0时，表示除了参数一指定这一层之上的所有层都退出栈，指定的这一层为栈顶层； 
+                             *  当取值POP_BACK_STACK_INCLUSIVE时，表示连着参数一指定的这一层一起退出栈
+                             *  另外第一个参数一般用 tag ，只有静态添加的 fragment 才用id
+                             */
+                            fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        } else {
+                            ft = ft.remove(f);
+                        }
                     }
                 }
+
+                if (params.showFragment != null) {
+                    String showTag = params.showFragment.getName();
+                    Fragment showFragment = fragmentManager.findFragmentByTag(showTag);
+                    if (showFragment != null) {
+                        ft = ft.show(showFragment);
+                    }
+                }
+                ft.commitAllowingStateLoss();
+                return true;
             }
         }
         return false;
@@ -117,13 +135,22 @@ public class FragmentUtils {
      * @param params
      * @return
      */
-    public BaseFragment addFragment(Params params) {
+    public BaseFragment addFragment(AddParams params) {
         // 这里用 类名做TAG 保证了
-        String tag = params.targetFragment.getName();
+        String showTag = params.targetFragment.getName();
 
         FragmentManager fragmentManager = params.fragmentActivity.getSupportFragmentManager();
+        Object fragmentObject = fragmentManager.findFragmentByTag(showTag);
+
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        Object fragmentObject = fragmentManager.findFragmentByTag(tag);
+
+        if (params.hideFragment != null) {
+            String hideTag = params.hideFragment.getName();
+            Fragment hideFragment = fragmentManager.findFragmentByTag(hideTag);
+            if (hideFragment != null) {
+                ft = ft.hide(hideFragment);
+            }
+        }
 
         if (fragmentObject != null
                 && (fragmentObject instanceof BaseFragment)) {
@@ -132,15 +159,15 @@ public class FragmentUtils {
                 MyLog.d(TAG, "addFragment" + " oldFragment!=null");
                 if (params.useOldFragmentIfExist) {
                     if (!oldFragment.isAdded()) {
-                        ft.add(params.containerViewId, oldFragment, tag);
+                        ft = ft.add(params.containerViewId, oldFragment, showTag);
                     }
                     if (oldFragment.isHidden()) {
-                        ft.show(oldFragment);
+                        ft = ft.show(oldFragment);
                     }
                     ft.commitAllowingStateLoss();
                     return oldFragment;
                 } else {
-                    ft.remove(oldFragment);
+                    ft = ft.remove(oldFragment);
                     ft.commitAllowingStateLoss();
 
                     ft = fragmentManager.beginTransaction();
@@ -155,7 +182,7 @@ public class FragmentUtils {
         }
         fragment.setFragmentDataListener(params.fragmentDataListener);
         if (!params.dataBeforeAddMap.isEmpty()) {
-            for(Integer dataType:params.dataBeforeAddMap.keySet()){
+            for (Integer dataType : params.dataBeforeAddMap.keySet()) {
                 Object dataBeforeAdd = params.dataBeforeAddMap.get(dataType);
                 fragment.setData(dataType, dataBeforeAdd);
             }
@@ -173,16 +200,16 @@ public class FragmentUtils {
         }
 
         if (params.hasAnimation) {
-            ft.setCustomAnimations(params.enterAnim, params.exitAnim, params.enterAnim, params.exitAnim);
+            ft = ft.setCustomAnimations(params.enterAnim, params.exitAnim, params.enterAnim, params.exitAnim);
         }
         /**
          * 是否加到回退栈中，back键盘返回上一个fragment
          * getBackStackEntryCount 的值 跟 这个 无关。
          */
         if (params.addToBackStack) {
-            ft.addToBackStack(tag);
+            ft = ft.addToBackStack(showTag);
         }
-        ft.add(params.containerViewId, fragment, tag);
+        ft = ft.add(params.containerViewId, fragment, showTag);
         if (params.allowStateLoss) {
             ft.commitAllowingStateLoss();
         } else {
@@ -214,22 +241,74 @@ public class FragmentUtils {
         }
     }
 
-    public static Params.Builder newParamsBuilder(FragmentActivity fragmentActivity, Class<? extends Fragment> fragment) {
-        return new Params.Builder()
+    public static AddParams.Builder newAddParamsBuilder(FragmentActivity
+                                                                fragmentActivity, Class<? extends Fragment> fragment) {
+        return new AddParams.Builder()
                 .setFragmentActivity(fragmentActivity)
                 .setTargetFragment(fragment);
+    }
+
+    public static PopParams.Builder newPopParamsBuilder(BaseFragment popFragment) {
+        return new PopParams.Builder()
+                .setPopFragment(popFragment);
     }
 
     /**
      * 打开一个fragment可能需要的参数
      * 使用 builder 模式
      */
-    static class Params {
-        /**
-         * 来源于哪个 fragment 主要是 setTargetFragment 时使用
-         */
-        BaseFragment fromFragment;
-        Class<? extends Fragment> targetFragment;
+    static class PopParams {
+        BaseFragment popFragment;// 要弹出fragment
+        boolean popAbove = true;// 包不包括自己以上的所有fragment，true为包括，false为只会remove自己
+        Class<? extends Fragment> showFragment;//弹出时要显示的fragment
+
+        public void setPopFragment(BaseFragment popFragment) {
+            this.popFragment = popFragment;
+        }
+
+        public void setShowFragment(Class<? extends Fragment> showFragment) {
+            this.showFragment = showFragment;
+        }
+
+        public void setPopAbove(boolean popAbove) {
+            this.popAbove = popAbove;
+        }
+
+        public static class Builder {
+            PopParams mParams = new PopParams();
+
+            Builder() {
+            }
+
+            public Builder setPopFragment(BaseFragment popFragment) {
+                mParams.setPopFragment(popFragment);
+                return this;
+            }
+
+            public Builder setShowFragment(Class<? extends Fragment> showFragment) {
+                mParams.setShowFragment(showFragment);
+                return this;
+            }
+
+            public Builder setPopAbove(boolean popAbove) {
+                mParams.setPopAbove(popAbove);
+                return this;
+            }
+
+            public PopParams build() {
+                return mParams;
+            }
+        }
+    }
+
+    /**
+     * 打开一个fragment可能需要的参数
+     * 使用 builder 模式
+     */
+    static class AddParams {
+        BaseFragment fromFragment;//来源于哪个 fragment 主要是 setTargetFragment 时使用
+        Class<? extends Fragment> hideFragment;//启动的目标fragment时要隐藏的fragment
+        Class<? extends Fragment> targetFragment;//要启动的目标fragment
         //  不用 content 做container，因为android4957等等都是基于actvity的根布局做逻辑的
         // int containerViewId = android.R.id.content;
         int containerViewId = R.id.main_act_container;
@@ -246,7 +325,7 @@ public class FragmentUtils {
          * 虽然大部分值可以通过bundle传递，但有些值不适合bundle传递，比如一些很长的list
          * 一个很特别的回调等等。
          */
-        HashMap<Integer,Object>   dataBeforeAddMap = new HashMap<>();
+        HashMap<Integer, Object> dataBeforeAddMap = new HashMap<>();
 
         /**
          * 用tag的一定要确保只有一个实例被添加
@@ -300,15 +379,19 @@ public class FragmentUtils {
         }
 
         public void addDataBeforeAdd(int dataType, Object dataBeforeAdd) {
-            this.dataBeforeAddMap.put(dataType,dataBeforeAdd);
+            this.dataBeforeAddMap.put(dataType, dataBeforeAdd);
         }
 
         public void setUseOldFragmentIfExist(boolean enable) {
             this.useOldFragmentIfExist = enable;
         }
 
+        public void setHideFragment(Class<? extends Fragment> hideFragment) {
+            this.hideFragment = hideFragment;
+        }
+
         public static class Builder {
-            Params mParams = new Params();
+            AddParams mParams = new AddParams();
 
             Builder() {
             }
@@ -378,7 +461,13 @@ public class FragmentUtils {
                 return this;
             }
 
-            public Params build() {
+            public Builder setHideFragment(Class<? extends Fragment> hideFragment) {
+                mParams.setHideFragment(hideFragment);
+                return this;
+            }
+
+
+            public AddParams build() {
                 return mParams;
             }
         }

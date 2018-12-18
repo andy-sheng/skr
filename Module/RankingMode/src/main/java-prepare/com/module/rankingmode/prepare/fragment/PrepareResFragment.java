@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
+import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
@@ -26,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 准备资源界面
  */
-public class PrepareResFragment extends BaseSenceFragment {
+public class PrepareResFragment extends BaseFragment {
     ExImageView mIvTop;
     SimpleDraweeView mSongIcon;
     ExTextView mSongName;
@@ -115,7 +116,7 @@ public class PrepareResFragment extends BaseSenceFragment {
         RxView.clicks(ivStartMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((FragmentActivity) PrepareResFragment.this.getContext(), MatchFragment.class)
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) PrepareResFragment.this.getContext(), MatchFragment.class)
                             .setAddToBackStack(true)
                             .setHasAnimation(false)
                             .addDataBeforeAdd(0, mPrepareData)

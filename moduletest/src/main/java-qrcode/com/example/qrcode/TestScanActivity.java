@@ -1,12 +1,8 @@
 package com.example.qrcode;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
@@ -214,7 +210,7 @@ public class TestScanActivity extends BaseActivity implements QRCodeView.Delegat
                     .setCrop(false)
                     .build()
             );
-            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, ImagePickerFragment.class)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ImagePickerFragment.class)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
                         public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {

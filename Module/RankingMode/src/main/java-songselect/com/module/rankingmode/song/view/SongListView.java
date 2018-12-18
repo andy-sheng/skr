@@ -75,7 +75,7 @@ public class SongListView extends FrameLayout implements ISongTagDetailView {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
-                U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((BaseActivity) SongListView.this.getContext(), PrepareResFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) SongListView.this.getContext(), PrepareResFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, songModel)

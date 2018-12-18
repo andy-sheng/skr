@@ -23,7 +23,7 @@ public class RankingModeActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
         if (selectSong) {
-            U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, SongSelectFragment.class)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SongSelectFragment.class)
                     .setAddToBackStack(true)
                     .setHasAnimation(false)
                     .setFragmentDataListener(new FragmentDataListener() {
@@ -39,7 +39,7 @@ public class RankingModeActivity extends BaseActivity {
     }
 
     void showRoomFragment() {
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, PkRoomFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, PkRoomFragment.class)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .build());

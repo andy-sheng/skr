@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
@@ -24,7 +25,7 @@ import com.module.rankingmode.prepare.view.IMatchSucessView;
 
 import java.util.concurrent.TimeUnit;
 
-public class MatchSuccessFragment extends BaseSenceFragment implements IMatchSucessView {
+public class MatchSuccessFragment extends BaseFragment implements IMatchSucessView {
     ExImageView mIvTop;
     SimpleDraweeView mSdvIcon1;
     SimpleDraweeView mSdvIcon2;
@@ -125,7 +126,7 @@ public class MatchSuccessFragment extends BaseSenceFragment implements IMatchSuc
     public void needReMatch() {
         MyLog.d(TAG, "needReMatch");
         U.getFragmentUtils().popFragment(MatchSuccessFragment.this);
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((FragmentActivity) MatchSuccessFragment.this.getContext(), MatchFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) MatchSuccessFragment.this.getContext(), MatchFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, mPrepareData.getSongModel())

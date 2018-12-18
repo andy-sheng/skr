@@ -50,7 +50,7 @@ public class RankingRoomActivity extends BaseActivity {
         }else{
 
         }
-        U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder(this, RankingRoomFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, RankingRoomFragment.class)
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0,mRoomData)
                 .build()
