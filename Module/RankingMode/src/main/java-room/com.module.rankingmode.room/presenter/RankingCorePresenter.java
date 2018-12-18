@@ -74,7 +74,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         EngineManager.getInstance().muteLocalAudioStream(true);
     }
 
-    public RoomData getRoomData(){
+    public RoomData getRoomData() {
         return mRoomData;
     }
 
@@ -132,6 +132,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     }
                 } else {
                     MyLog.d(TAG, "sendRoundOverInfo" + " result=" + result);
+                    U.getToastUtil().showShort("请求轮次结束失败");
                 }
             }
 
@@ -170,8 +171,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     /**
      * 游戏切后台或切回来
      *
-     * @param out    切出去
-     * @param in     切回来
+     * @param out 切出去
+     * @param in  切回来
      */
     public void swapGame(boolean out, boolean in) {
         MyLog.d(TAG, "swapGame" + " out=" + out + " in=" + in);
@@ -308,7 +309,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
         if (gameOverTimeMs > mRoomData.getGameStartTs()) {
             // 游戏结束了
-            onGameOver(gameOverTimeMs);
+            onGameOver("sync", gameOverTimeMs);
+        } else {
+            MyLog.d(TAG, "结束时间比开始时间小，不应该吧 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
         }
         // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
         if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
@@ -383,15 +386,15 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         }
                     });
                 } else {
-                    MyLog.d(TAG, "结束时间比开始时间小，不应该吧");
+                    MyLog.d(TAG, "结束时间比开始时间小，不应该吧 startTs:" + mRoomData.getGameStartTs() + " overTs:" + mRoomData.getGameOverTs());
                 }
             }
         }
     }
 
-    private void onGameOver(long gameOverTs) {
-        MyLog.d(TAG, "游戏结束" + " gameOverTs=" + gameOverTs);
-        if (gameOverTs > mRoomData.getGameStartTs() && mRoomData.getGameOverTs() == 0) {
+    private void onGameOver(String from, long gameOverTs) {
+        MyLog.d(TAG, "游戏结束 gameOverTs=" + gameOverTs + " from:" + from);
+        if (gameOverTs > mRoomData.getGameStartTs() && gameOverTs > mRoomData.getGameOverTs()) {
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
             mRoomData.checkRound();
@@ -487,7 +490,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
         MyLog.d(TAG, "onEventMainThread 游戏结束push通知");
-        onGameOver(roundAndGameOverEvent.roundOverTimeMs);
+        onGameOver("push",roundAndGameOverEvent.roundOverTimeMs);
     }
 
     // 应用进程切到后台通知
@@ -517,8 +520,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(ActivityUtils.ForeOrBackgroundChange event){
-        swapGame(!event.foreground,event.foreground);
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        swapGame(!event.foreground, event.foreground);
     }
 
 }
