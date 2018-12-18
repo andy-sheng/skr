@@ -12,7 +12,6 @@ import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Boolean;
 import java.lang.Integer;
-import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -34,8 +33,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   public static final String DEFAULT_NICKNAME = "";
 
   public static final String DEFAULT_AVATAR = "";
-
-  public static final Long DEFAULT_LEVEL = 0L;
 
   public static final ESex DEFAULT_SEX = ESex.SX_UNKNOWN;
 
@@ -71,19 +68,10 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   public final String avatar;
 
   /**
-   * 等级
-   */
-  @WireField(
-      tag = 4,
-      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
-  )
-  public final Long level;
-
-  /**
    * 性别
    */
   @WireField(
-      tag = 5,
+      tag = 4,
       adapter = "com.zq.live.proto.Common.ESex#ADAPTER"
   )
   public final ESex sex;
@@ -92,7 +80,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
    * 个人描述
    */
   @WireField(
-      tag = 6,
+      tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
   public final String description;
@@ -101,23 +89,22 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
    * 是否为系统
    */
   @WireField(
-      tag = 7,
+      tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
   public final Boolean isSystem;
 
-  public UserInfo(Integer userID, String nickName, String avatar, Long level, ESex sex,
-      String description, Boolean isSystem) {
-    this(userID, nickName, avatar, level, sex, description, isSystem, ByteString.EMPTY);
+  public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
+      Boolean isSystem) {
+    this(userID, nickName, avatar, sex, description, isSystem, ByteString.EMPTY);
   }
 
-  public UserInfo(Integer userID, String nickName, String avatar, Long level, ESex sex,
-      String description, Boolean isSystem, ByteString unknownFields) {
+  public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
+      Boolean isSystem, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.nickName = nickName;
     this.avatar = avatar;
-    this.level = level;
     this.sex = sex;
     this.description = description;
     this.isSystem = isSystem;
@@ -129,7 +116,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     builder.userID = userID;
     builder.nickName = nickName;
     builder.avatar = avatar;
-    builder.level = level;
     builder.sex = sex;
     builder.description = description;
     builder.isSystem = isSystem;
@@ -146,7 +132,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
         && Internal.equals(userID, o.userID)
         && Internal.equals(nickName, o.nickName)
         && Internal.equals(avatar, o.avatar)
-        && Internal.equals(level, o.level)
         && Internal.equals(sex, o.sex)
         && Internal.equals(description, o.description)
         && Internal.equals(isSystem, o.isSystem);
@@ -160,7 +145,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (nickName != null ? nickName.hashCode() : 0);
       result = result * 37 + (avatar != null ? avatar.hashCode() : 0);
-      result = result * 37 + (level != null ? level.hashCode() : 0);
       result = result * 37 + (sex != null ? sex.hashCode() : 0);
       result = result * 37 + (description != null ? description.hashCode() : 0);
       result = result * 37 + (isSystem != null ? isSystem.hashCode() : 0);
@@ -175,7 +159,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     if (userID != null) builder.append(", userID=").append(userID);
     if (nickName != null) builder.append(", nickName=").append(nickName);
     if (avatar != null) builder.append(", avatar=").append(avatar);
-    if (level != null) builder.append(", level=").append(level);
     if (sex != null) builder.append(", sex=").append(sex);
     if (description != null) builder.append(", description=").append(description);
     if (isSystem != null) builder.append(", isSystem=").append(isSystem);
@@ -220,16 +203,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
         return DEFAULT_AVATAR;
     }
     return avatar;
-  }
-
-  /**
-   * 等级
-   */
-  public Long getLevel() {
-    if(level==null){
-        return DEFAULT_LEVEL;
-    }
-    return level;
   }
 
   /**
@@ -284,13 +257,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   }
 
   /**
-   * 等级
-   */
-  public boolean hasLevel() {
-    return level!=null;
-  }
-
-  /**
    * 性别
    */
   public boolean hasSex() {
@@ -317,8 +283,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     public String nickName;
 
     public String avatar;
-
-    public Long level;
 
     public ESex sex;
 
@@ -354,14 +318,6 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     }
 
     /**
-     * 等级
-     */
-    public Builder setLevel(Long level) {
-      this.level = level;
-      return this;
-    }
-
-    /**
      * 性别
      */
     public Builder setSex(ESex sex) {
@@ -387,7 +343,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
 
     @Override
     public UserInfo build() {
-      return new UserInfo(userID, nickName, avatar, level, sex, description, isSystem, super.buildUnknownFields());
+      return new UserInfo(userID, nickName, avatar, sex, description, isSystem, super.buildUnknownFields());
     }
   }
 
@@ -401,10 +357,9 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.STRING.encodedSizeWithTag(2, value.nickName)
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.avatar)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(4, value.level)
-          + ESex.ADAPTER.encodedSizeWithTag(5, value.sex)
-          + ProtoAdapter.STRING.encodedSizeWithTag(6, value.description)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(7, value.isSystem)
+          + ESex.ADAPTER.encodedSizeWithTag(4, value.sex)
+          + ProtoAdapter.STRING.encodedSizeWithTag(5, value.description)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(6, value.isSystem)
           + value.unknownFields().size();
     }
 
@@ -413,10 +368,9 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.STRING.encodeWithTag(writer, 2, value.nickName);
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.avatar);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 4, value.level);
-      ESex.ADAPTER.encodeWithTag(writer, 5, value.sex);
-      ProtoAdapter.STRING.encodeWithTag(writer, 6, value.description);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 7, value.isSystem);
+      ESex.ADAPTER.encodeWithTag(writer, 4, value.sex);
+      ProtoAdapter.STRING.encodeWithTag(writer, 5, value.description);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 6, value.isSystem);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -429,8 +383,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setNickName(ProtoAdapter.STRING.decode(reader)); break;
           case 3: builder.setAvatar(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.setLevel(ProtoAdapter.SINT64.decode(reader)); break;
-          case 5: {
+          case 4: {
             try {
               builder.setSex(ESex.ADAPTER.decode(reader));
             } catch (ProtoAdapter.EnumConstantNotFoundException e) {
@@ -438,8 +391,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
             }
             break;
           }
-          case 6: builder.setDescription(ProtoAdapter.STRING.decode(reader)); break;
-          case 7: builder.setIsSystem(ProtoAdapter.BOOL.decode(reader)); break;
+          case 5: builder.setDescription(ProtoAdapter.STRING.decode(reader)); break;
+          case 6: builder.setIsSystem(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

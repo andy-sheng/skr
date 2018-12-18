@@ -24,7 +24,6 @@ public class EventHelper {
             UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
                     , MyUserInfoManager.getInstance().getNickName()
                     , MyUserInfoManager.getInstance().getAvatar()
-                    , 1L
                     , ESex.SX_FEMALE
                     , ""
                     , false);

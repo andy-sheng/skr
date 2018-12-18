@@ -11,13 +11,12 @@ java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-de
 
 // 用户信息
 message UserInfo {
-    uint32 userID = 1; //用户ID
-    string nickName = 2; //发信者昵称
-    string avatar = 3; //头像地址
-    sint64 level = 4; //等级
-    ESex sex = 5; //性别
-    string description = 6; //个人描述
-    bool isSystem = 7; //是否为系统
+    uint32 userID      = 1; //用户ID
+    string nickName    = 2; //发信者昵称
+    string avatar      = 3; //头像地址
+    ESex sex           = 4; //性别
+    string description = 5; //个人描述
+    bool isSystem      = 6; //是否为系统
 }
 
 // 音乐信息
