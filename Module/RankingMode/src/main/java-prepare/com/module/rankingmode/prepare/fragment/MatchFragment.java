@@ -115,12 +115,12 @@ public class MatchFragment extends BaseSenceFragment implements IMatchingView {
         mPrepareData.setGameId(gameId);
         mPrepareData.setGameCreatMs(gameCreatMs);
         mPrepareData.setPlayerInfoList(playerInfoList);
-        U.getFragmentUtils().popFragment(MatchFragment.this);
+//        U.getFragmentUtils().popFragment(MatchFragment.this);
 
         U.getFragmentUtils().addFragment(FragmentUtils.newParamsBuilder((FragmentActivity) MatchFragment.this.getContext(), MatchSuccessFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(false)
-                .addDataBeforeAdd(0, mPrepareData.getSongModel())
+                .addDataBeforeAdd(0, mPrepareData)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {

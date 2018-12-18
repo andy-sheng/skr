@@ -95,6 +95,11 @@ public class MatchSuccessFragment extends BaseSenceFragment implements IMatchSuc
     }
 
     @Override
+    public boolean useEventBus() {
+        return false;
+    }
+
+    @Override
     public void ready(boolean isPrepareState) {
         MyLog.d(TAG, "ready" + " isPrepareState=" + isPrepareState);
         isPrepared = isPrepareState;
