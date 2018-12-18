@@ -2,6 +2,7 @@ package com.engine;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
@@ -655,34 +656,40 @@ public class EngineManager implements AgoraOutCallback {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
-        mConfig.setMixMusicPlaying(false);
-        mConfig.setMixMusicFilePath(null);
-        stopMusicPlayTimeListener();
-        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_FINISH);
-        EventBus.getDefault().post(engineEvent);
-        AgoraEngineAdapter.getInstance().stopAudioMixing();
+        if(!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+            mConfig.setMixMusicPlaying(false);
+            mConfig.setMixMusicFilePath(null);
+            stopMusicPlayTimeListener();
+            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
+            EventBus.getDefault().post(engineEvent);
+            AgoraEngineAdapter.getInstance().stopAudioMixing();
+        }
     }
 
     /**
      * 继续播放混音
      */
     public void resumeAudioMixing() {
-        mConfig.setMixMusicPlaying(true);
-        startMusicPlayTimeListener();
-        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
-        EventBus.getDefault().post(engineEvent);
-        AgoraEngineAdapter.getInstance().resumeAudioMixing();
+        if(!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+            mConfig.setMixMusicPlaying(true);
+            startMusicPlayTimeListener();
+            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
+            EventBus.getDefault().post(engineEvent);
+            AgoraEngineAdapter.getInstance().resumeAudioMixing();
+        }
     }
 
     /**
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
-        mConfig.setMixMusicPlaying(false);
-        stopMusicPlayTimeListener();
-        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_PAUSE);
-        EventBus.getDefault().post(engineEvent);
-        AgoraEngineAdapter.getInstance().pauseAudioMixing();
+        if(!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+            mConfig.setMixMusicPlaying(false);
+            stopMusicPlayTimeListener();
+            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_PAUSE);
+            EventBus.getDefault().post(engineEvent);
+            AgoraEngineAdapter.getInstance().pauseAudioMixing();
+        }
     }
 
     private void startMusicPlayTimeListener() {

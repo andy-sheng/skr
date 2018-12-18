@@ -15,9 +15,10 @@ public class EngineEvent {
 
     public static final int TYPE_MUSIC_PLAY_START = 10;// 伴奏开始
     public static final int TYPE_MUSIC_PLAY_PAUSE = 11;// 伴奏暂停
-    public static final int TYPE_MUSIC_PLAY_FINISH = 12;// 伴奏结束
+    public static final int TYPE_MUSIC_PLAY_STOP = 12;// 伴奏停止
+    public static final int TYPE_MUSIC_PLAY_FINISH = 13;// 伴奏结束
 
-    public static final int TYPE_MUSIC_PLAY_TIME_FLY_LISTENER = 13;// 伴奏时间流逝
+    public static final int TYPE_MUSIC_PLAY_TIME_FLY_LISTENER = 14;// 伴奏时间流逝
 
     public static final int TYPE_ENGINE_DESTROY = 99;
 

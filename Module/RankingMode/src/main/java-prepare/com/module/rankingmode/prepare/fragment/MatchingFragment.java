@@ -113,6 +113,7 @@ public class MatchingFragment extends BaseFragment {
                 }
                 break;
             case EngineEvent.TYPE_MUSIC_PLAY_PAUSE:
+            case EngineEvent.TYPE_MUSIC_PLAY_STOP:
             case EngineEvent.TYPE_MUSIC_PLAY_FINISH:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     mTitleBar.getCenterSubTextView().setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.matching_prepare_titlebar_center_dot_yellow, 0, 0, 0);
