@@ -120,6 +120,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
         // 默认推荐
         presenter = new SongTagDetailsPresenter(this);
+        addPresent(presenter);
         presenter.getRcomdMusicItems(0, DEFAULT_FIRST_COUNT);
     }
 
@@ -140,7 +141,16 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     // TODO: 2018/12/17  切换到已点界面, 要不要保存当前记录的数据，取决从已点回来的逻辑 
     private void switchToClicked() {
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(false)
+                .setFragmentDataListener(new FragmentDataListener() {
+                    @Override
+                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
 
+                    }
+                })
+                .build());
     }
 
     @Override

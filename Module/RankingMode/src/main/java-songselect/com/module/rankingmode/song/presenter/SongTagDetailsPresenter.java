@@ -20,7 +20,6 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
 
     public SongTagDetailsPresenter(ISongTagDetailView view) {
         this.view = view;
-        addToLifeCycle();
     }
 
     /**
@@ -40,6 +39,7 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    // TODO: 2018/12/18 仅测试使用多点数据
                     List<SongModel> data = new ArrayList<>();
                     for (int i = 0; i < 21; i++) {
                         data.addAll(list);
@@ -70,9 +70,14 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    // TODO: 2018/12/18 仅测试使用多点数据
+                    List<SongModel> data = new ArrayList<>();
+                    for (int i = 0; i < 21; i++) {
+                        data.addAll(list);
+                    }
                     int offset = result.getData().getIntValue("offset");
                     if (view != null) {
-                        view.loadSongsDetailItems(list, offset);
+                        view.loadSongsDetailItems(data, offset);
                     }
                 } else {
                     if (view != null) {
