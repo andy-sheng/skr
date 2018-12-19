@@ -4,6 +4,7 @@ import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
@@ -222,10 +223,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     // 上报心跳，只有当前演唱者上报 2s一次
     public void sendHeartBeat() {
-        MyLog.d(TAG, "sendHeartBeat" + " gameID=" + mRoomData.getGameId());
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
-        map.put("userID", UserAccountManager.getInstance().getUuid());
+        map.put("userID", MyUserInfoManager.getInstance().getUid());
+
+        MyLog.d(TAG, "sendHeartBeat" + " gameID=" + mRoomData.getGameId());
+        MyLog.d(TAG, "sendHeartBeat" + " useID=" + UserAccountManager.getInstance().getUuid());
+        MyLog.d(TAG, "sendHeartBeat" + " useID=" + MyUserInfoManager.getInstance().getUid());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendHeartBeat(body), new ApiObserver<ApiResult>() {
@@ -235,6 +239,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     // TODO: 2018/12/13  当前postman返回的为空 待补充
                 } else {
                     MyLog.e(TAG, "sendHeartBeat " + result.getErrmsg());
+                    MyLog.e(TAG, "sendHeartBeat traceId" + result.getTraceId());
                 }
             }
 
@@ -278,6 +283,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
+                    MyLog.d("AAAAAA", " syncGameStatus " + " gameOverTimeMs =" + gameOverTimeMs);
                     List<OnLineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnLineInfoModel.class); //在线状态
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
                     RoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), RoundInfoModel.class); //下个轮次信息
