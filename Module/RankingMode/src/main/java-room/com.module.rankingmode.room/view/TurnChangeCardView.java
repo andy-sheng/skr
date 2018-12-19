@@ -20,11 +20,10 @@ import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.RoundInfoModel;
 import com.module.rankingmode.room.model.RoomData;
-import com.zq.live.proto.Room.RoundInfo;
 
 public class TurnChangeCardView extends RelativeLayout {
 
-    RoomData roomData;
+    RoomData mRoomData;
 
     ExImageView mTurnChangeBgIv;
     SimpleDraweeView mTurnCurrentIv;
@@ -50,10 +49,10 @@ public class TurnChangeCardView extends RelativeLayout {
     }
 
     public void setData(RoomData data) {
-        this.roomData = data;
+        this.mRoomData = data;
 
-        int curUid = roomData.getRealRoundInfo().getUserID();
-        int seq = roomData.getRealRoundInfo().getRoundSeq();
+        int curUid = mRoomData.getRealRoundInfo().getUserID();
+        int seq = mRoomData.getRealRoundInfo().getRoundSeq();
 
         PlayerInfo nexInfo = null;
         PlayerInfo curInfo = null;
@@ -61,14 +60,14 @@ public class TurnChangeCardView extends RelativeLayout {
             nexInfo = null;
         } else {
             int nextUid = 0;
-            for (RoundInfoModel roundInfoModel : roomData.getRoundInfoModelList()) {
+            for (RoundInfoModel roundInfoModel : mRoomData.getRoundInfoModelList()) {
                 if (roundInfoModel.getRoundSeq() == seq + 1) {
                     nextUid = roundInfoModel.getUserID();
                     break;
                 }
             }
 
-            for (PlayerInfo playerInfo : roomData.getPlayerInfoList()){
+            for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()){
                 if (playerInfo.getUserInfo().getUserId() == curUid){
                     curInfo = playerInfo;
                 }else if (playerInfo.getUserInfo().getUserId() == nextUid){

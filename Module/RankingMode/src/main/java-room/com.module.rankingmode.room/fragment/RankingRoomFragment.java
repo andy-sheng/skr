@@ -70,7 +70,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     FloatLyricsView mFloatLyricsView;
 
-    Handler handler = new Handler();
+    Handler mUiHanlder = new Handler();
 
     Disposable prepareLyricTask;
 
@@ -225,8 +225,14 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
-        mTurnChangeView.setData(mRoomData);
-        playShowTurnCardAnimator();
+        mUiHanlder.post(new Runnable() {
+            @Override
+            public void run() {
+                mTurnChangeView.setData(mRoomData);
+                playShowTurnCardAnimator();
+            }
+        });
+
         HandlerTaskTimer.newBuilder()
                 .interval(1000)
                 .take(3)
@@ -263,7 +269,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mManyLyricsView.initLrcData();
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
                 .setAddToBackStack(true)
-                .addDataBeforeAdd(0,mRoomData)
+                .addDataBeforeAdd(0, mRoomData)
                 .build()
         );
 
@@ -290,7 +296,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         showMsg("开始播放歌词 songId=" + songModel.getItemID());
         playingSongModel = songModel;
 
-        if(prepareLyricTask != null && !prepareLyricTask.isDisposed()){
+        if (prepareLyricTask != null && !prepareLyricTask.isDisposed()) {
             prepareLyricTask.dispose();
         }
 
@@ -308,19 +314,19 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    private void parseLyrics(String fileName){
+    private void parseLyrics(String fileName) {
         MyLog.d(TAG, "parseLyrics" + " fileName=" + fileName);
         prepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, "沙漠骆驼", fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lyricsReader -> {
-                    showLyric(fileName.hashCode()+ "", lyricsReader);
+                    showLyric(fileName.hashCode() + "", lyricsReader);
                 }, throwable -> {
                     MyLog.e(TAG, throwable);
                 });
     }
 
-    private void showLyric(String fileNameHash, LyricsReader lyricsReader){
+    private void showLyric(String fileNameHash, LyricsReader lyricsReader) {
         MyLog.d(TAG, "showLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
         if (lyricsReader != null) {
             lyricsReader.setHash(fileNameHash);
@@ -351,7 +357,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    private void fetchLyricTask(SongModel songModel){
+    private void fetchLyricTask(SongModel songModel) {
         MyLog.d(TAG, "fetchLyricTask" + " songModel=" + songModel);
         prepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
@@ -363,7 +369,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 File oldName = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
                 File newName = new File(SongResUtils.createLyricFileName(songModel.getLyric()));
 
-                if(isSuccess){
+                if (isSuccess) {
                     if (oldName.renameTo(newName)) {
                         System.out.println("已重命名");
                     } else {
@@ -380,13 +386,13 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(file -> {
-            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-            parseLyrics(fileName);
-        }, throwable -> {
-            MyLog.e(TAG, throwable);
-        }, () -> {
+                    final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
+                    parseLyrics(fileName);
+                }, throwable -> {
+                    MyLog.e(TAG, throwable);
+                }, () -> {
 
-        });
+                });
     }
 
     @Override
@@ -401,7 +407,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     boolean needScroll = true;
 
     void addText(String te) {
-        handler.post(() -> {
+        mUiHanlder.post(() -> {
             mTestTv.append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis(), "HH:mm:ss:SSS") + ":" + te + "\n");
             if (needScroll) {
                 scrollView.smoothScrollTo(0, mTestTv.getBottom());
