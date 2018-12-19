@@ -14,25 +14,24 @@
         android:scaleType="centerInside"
         app:src_unPressed_drawable="@drawable/emoji_btn" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_60_dp">
 
-    <!--<com.module.rankingmode.room.view.ScoreProgressBar-->
-    <!--android:id="@+id/progressBar1"-->
-    <!--android:layout_width="@dimen/view_245_dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:progress="50"-->
-    <!--style="@style/score_progress_bar_style"-->
-    <!--android:secondaryProgress="70"-->
-    <!--android:visibility="visible"-->
-    <!--/>-->
+        <com.module.rankingmode.room.scorebar.ScorePrograssBar2
+            android:id="@+id/score_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true" />
 
-    <com.module.rankingmode.room.scorebar.ScorePrograssBar
-        android:id="@+id/score_progress_bar"
-        android:layout_width="@dimen/view_265_dp"
-        android:layout_height="@dimen/view_30_dp" />
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="@dimen/view_47_dp"
+            android:layout_height="@dimen/view_47_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_7_dp" />
+    </RelativeLayout>
 
-    <com.common.image.fresco.BaseImageView
-        android:id="@+id/avatar_iv"
-        android:layout_width="@dimen/view_47_dp"
-        android:layout_height="@dimen/view_47_dp" />
 
 </merge>

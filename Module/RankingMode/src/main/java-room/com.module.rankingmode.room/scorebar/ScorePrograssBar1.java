@@ -15,7 +15,7 @@ import com.common.utils.U;
 
 import java.util.Random;
 
-public class ScorePrograssBar extends View {
+public class ScorePrograssBar1 extends View {
 
     public static class Params {
         int viewW, viewH;//
@@ -116,13 +116,13 @@ public class ScorePrograssBar extends View {
     private Paint mPaintProgress;
     private Paint mPaintCircle;
 
-    public ScorePrograssBar(Context context) {
+    public ScorePrograssBar1(Context context) {
         super(context);
         init();
 
     }
 
-    public ScorePrograssBar(Context context, AttributeSet attrs) {
+    public ScorePrograssBar1(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }

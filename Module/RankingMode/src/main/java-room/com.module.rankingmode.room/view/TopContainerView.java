@@ -11,8 +11,8 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.view.ex.ExImageView;
 import com.module.rankingmode.R;
-import com.module.rankingmode.room.scorebar.ScorePrograssBar;
 import com.module.rankingmode.room.event.InputBoardEvent;
+import com.module.rankingmode.room.scorebar.ScorePrograssBar2;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,7 +22,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class TopContainerView extends RelativeLayout {
     public final static String TAG = "TopContainerView";
     ExImageView mCloseBtn;
-    ScorePrograssBar mScoreProgressBar;
+    ScorePrograssBar2 mScoreProgressBar;
     BaseImageView mAvatarIv;
 
     Listener mListener;
@@ -91,6 +91,7 @@ public class TopContainerView extends RelativeLayout {
     }
 
     public void loadAvatar(AvatarUtils.LoadParams params) {
+        params.setCircle(true);
         AvatarUtils.loadAvatarByUrl(mAvatarIv, params);
     }
 

@@ -29,10 +29,10 @@
         app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
     <com.zq.lyrics.widget.FloatLyricsView
-        android:layout_marginTop="@dimen/view_320_dp"
         android:id="@+id/float_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_60_dp"
+        android:layout_marginTop="@dimen/view_320_dp"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="false"
         app:ly_high_light_paint_color_from="@color/white"
@@ -63,8 +63,7 @@
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:background="#653000" />
+        android:layout_marginTop="@dimen/view_5_dp" />
 
     <ScrollView
         android:layout_width="match_parent"

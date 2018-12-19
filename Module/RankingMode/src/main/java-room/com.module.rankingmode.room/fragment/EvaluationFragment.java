@@ -100,7 +100,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         }
 
-
         presenter = new EndGamePresenter(this);
         addPresent(presenter);
 
