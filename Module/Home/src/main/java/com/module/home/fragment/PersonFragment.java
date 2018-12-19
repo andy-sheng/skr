@@ -39,6 +39,7 @@ public class PersonFragment extends BaseFragment {
 
     BaseImageView mAvatarIv;
     ExTextView mNameTv;
+    ExTextView mUserIdTv;
     ExTextView mUpdateNicknameBtn;
     RelativeLayout mClearCacheBtn;
     RelativeLayout mLogoutBtn;
@@ -55,6 +56,8 @@ public class PersonFragment extends BaseFragment {
         mUpdateNicknameBtn = (ExTextView) mRootView.findViewById(R.id.update_nickname_btn);
         mClearCacheBtn = (RelativeLayout) mRootView.findViewById(R.id.clear_cache_btn);
         mLogoutBtn = (RelativeLayout) mRootView.findViewById(R.id.logout_btn);
+        mUserIdTv = mRootView.findViewById(R.id.user_id_tv);
+        mUserIdTv.setText("用户id:"+UserAccountManager.getInstance().getUuid());
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
                 .getAvatar())

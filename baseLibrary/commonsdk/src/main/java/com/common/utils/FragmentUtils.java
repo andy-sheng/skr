@@ -1,5 +1,6 @@
 package com.common.utils;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -62,6 +63,14 @@ public class FragmentUtils {
         return (BaseFragment) l.get(l.size() - 1);
     }
 
+    public BaseFragment findFragment(FragmentActivity activity, Class<? extends Fragment> fragment) {
+        String showTag = fragment.getName();
+        Fragment showFragment = activity.getSupportFragmentManager().findFragmentByTag(showTag);
+        if (showFragment instanceof BaseFragment) {
+            return (BaseFragment) showFragment;
+        }
+        return null;
+    }
 
     /**
      * 隐藏fragment
@@ -101,11 +110,10 @@ public class FragmentUtils {
 
     public boolean popFragment(PopParams params) {
         FragmentManager fragmentManager = null;
+        FragmentTransaction ft;
         if (params.popFragment != null) {
             fragmentManager = params.popFragment.getActivity().getSupportFragmentManager();
             if (fragmentManager != null) {
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-
                 for (Fragment f : fragmentManager.getFragments()) {
                     if (f == params.popFragment) {
                         if (params.popAbove) {
@@ -114,28 +122,39 @@ public class FragmentUtils {
                              *  当取值0时，表示除了参数一指定这一层之上的所有层都退出栈，指定的这一层为栈顶层； 
                              *  当取值POP_BACK_STACK_INCLUSIVE时，表示连着参数一指定的这一层一起退出栈
                              *  另外第一个参数一般用 tag ，只有静态添加的 fragment 才用id
+                             *
+                             *  使用这种方式pop时 请确保 add fragment 是已经压入addToBackStack = true 压入堆栈
                              */
                             fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         } else {
+                            ft = fragmentManager.beginTransaction();
                             ft = ft.remove(f);
+                            ft.commitAllowingStateLoss();
                         }
                     }
                 }
-
-                if (params.showFragment != null) {
-                    String showTag = params.showFragment.getName();
-                    Fragment showFragment = fragmentManager.findFragmentByTag(showTag);
-                    if (showFragment != null && showFragment instanceof BaseFragment) {
-//                        ft = ft.show(showFragment);
-                        ((BaseFragment)showFragment).toStaskTop();
-                    }
-                }
-                ft.commitAllowingStateLoss();
-                return true;
             }
         } else if (params.mActivity != null) {
-            return params.mActivity.getSupportFragmentManager().popBackStackImmediate();
+            fragmentManager = params.mActivity.getSupportFragmentManager();
+            if (params.backToFragment != null) {
+                BaseFragment back2Fragment = findFragment(params.mActivity, params.backToFragment);
+                if (back2Fragment != null) {
+                    // 不包括 back2Fragment 本身
+                    fragmentManager.popBackStackImmediate(back2Fragment.getTag(), 0);
+                }
+            } else {
+                return params.mActivity.getSupportFragmentManager().popBackStackImmediate();
+            }
         }
+
+        if (params.notifyShowFragment != null && fragmentManager != null) {
+            String showTag = params.notifyShowFragment.getName();
+            Fragment showFragment = fragmentManager.findFragmentByTag(showTag);
+            if (showFragment != null && showFragment instanceof BaseFragment) {
+                ((BaseFragment) showFragment).notifyToShow();
+            }
+        }
+
         return false;
     }
 
@@ -156,12 +175,11 @@ public class FragmentUtils {
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        if (params.hideFragment != null) {
-            String hideTag = params.hideFragment.getName();
+        if (params.notifyHideFragment != null) {
+            String hideTag = params.notifyHideFragment.getName();
             Fragment hideFragment = fragmentManager.findFragmentByTag(hideTag);
             if (hideFragment != null && hideFragment instanceof BaseFragment) {
-//                ft = ft.hide(hideFragment);
-                ((BaseFragment)hideFragment).pushIntoStash();
+                ((BaseFragment) hideFragment).notifyToHide();
             }
         }
 
@@ -270,25 +288,30 @@ public class FragmentUtils {
      * 使用 builder 模式
      */
     public static class PopParams {
-        BaseActivity mActivity;
+        FragmentActivity mActivity;
         BaseFragment popFragment;// 要弹出fragment
         boolean popAbove = true;// 包不包括自己以上的所有fragment，true为包括，false为只会remove自己
-        Class<? extends Fragment> showFragment;//弹出时要显示的fragment
+        Class<? extends Fragment> notifyShowFragment;//弹出时目标fragment时，要通知即将要显示的notifyShowFragment
+        Class<? extends Fragment> backToFragment;// 将要达到的页面，将这个页面之上的所有Fragment全部弹出
 
         public void setPopFragment(BaseFragment popFragment) {
             this.popFragment = popFragment;
         }
 
-        public void setShowFragment(Class<? extends Fragment> showFragment) {
-            this.showFragment = showFragment;
+        public void setNotifyShowFragment(Class<? extends Fragment> notifyShowFragment) {
+            this.notifyShowFragment = notifyShowFragment;
         }
 
         public void setPopAbove(boolean popAbove) {
             this.popAbove = popAbove;
         }
 
-        public void setActivity(BaseActivity activity) {
+        public void setActivity(FragmentActivity activity) {
             mActivity = activity;
+        }
+
+        public void setBackToFragment(Class<? extends Fragment> backToFragment) {
+            this.backToFragment = backToFragment;
         }
 
         public static class Builder {
@@ -302,8 +325,8 @@ public class FragmentUtils {
                 return this;
             }
 
-            public Builder setShowFragment(Class<? extends Fragment> showFragment) {
-                mParams.setShowFragment(showFragment);
+            public Builder setNotifyShowFragment(Class<? extends Fragment> showFragment) {
+                mParams.setNotifyShowFragment(showFragment);
                 return this;
             }
 
@@ -312,11 +335,15 @@ public class FragmentUtils {
                 return this;
             }
 
-            public Builder setActivity(BaseActivity activity) {
+            public Builder setActivity(FragmentActivity activity) {
                 mParams.setActivity(activity);
                 return this;
             }
 
+            public Builder setBackToFragment(Class<? extends Fragment> backToFragment) {
+                mParams.setBackToFragment(backToFragment);
+                return this;
+            }
 
             public PopParams build() {
                 return mParams;
@@ -330,7 +357,7 @@ public class FragmentUtils {
      */
     public static class AddParams {
         BaseFragment fromFragment;//来源于哪个 fragment 主要是 setTargetFragment 时使用
-        Class<? extends Fragment> hideFragment;//启动的目标fragment时要隐藏的fragment
+        Class<? extends Fragment> notifyHideFragment;//启动的目标fragment时要通知隐藏的fragment
         Class<? extends Fragment> targetFragment;//要启动的目标fragment
         //  不用 content 做container，因为android4957等等都是基于actvity的根布局做逻辑的
         // int containerViewId = android.R.id.content;
@@ -409,8 +436,8 @@ public class FragmentUtils {
             this.useOldFragmentIfExist = enable;
         }
 
-        public void setHideFragment(Class<? extends Fragment> hideFragment) {
-            this.hideFragment = hideFragment;
+        public void setNotifyHideFragment(Class<? extends Fragment> notifyHideFragment) {
+            this.notifyHideFragment = notifyHideFragment;
         }
 
         public static class Builder {
@@ -484,8 +511,8 @@ public class FragmentUtils {
                 return this;
             }
 
-            public Builder setHideFragment(Class<? extends Fragment> hideFragment) {
-                mParams.setHideFragment(hideFragment);
+            public Builder setNotifyHideFragment(Class<? extends Fragment> hideFragment) {
+                mParams.setNotifyHideFragment(hideFragment);
                 return this;
             }
 

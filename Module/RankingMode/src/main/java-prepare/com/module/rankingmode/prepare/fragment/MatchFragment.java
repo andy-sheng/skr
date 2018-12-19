@@ -58,21 +58,13 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         RxView.clicks(mIvCancelMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    matchingPresenter.cancelMatch();
-                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                            .setPopAbove(false)
-                            .setShowFragment(PrepareResFragment.class)
-                            .setPopFragment(MatchFragment.this).build());
+                    goBack();
                 });
 
         RxView.clicks(mIvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    matchingPresenter.cancelMatch();
-                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                            .setPopAbove(false)
-                            .setShowFragment(PrepareResFragment.class)
-                            .setPopFragment(MatchFragment.this).build());
+                    goBack();
                 });
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon1,
@@ -117,15 +109,13 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         super.onDetach();
     }
 
-    @Override
-    protected boolean onBackPressed() {
+    void goBack() {
         matchingPresenter.cancelMatch();
         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopFragment(MatchFragment.this)
                 .setPopAbove(false)
-                .setShowFragment(PrepareResFragment.class)
-                .setPopFragment(MatchFragment.this).build());
-
-        return true;
+                .setNotifyShowFragment(PrepareResFragment.class)
+                .build());
     }
 
     @Override
@@ -134,11 +124,10 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mPrepareData.setGameId(gameId);
         mPrepareData.setGameCreatMs(gameCreatMs);
         mPrepareData.setPlayerInfoList(playerInfoList);
-//        U.getFragmentUtils().popFragment(MatchFragment.this);
 
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) MatchFragment.this.getContext(), MatchSuccessFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchSuccessFragment.class)
                 .setAddToBackStack(false)
-                .setHideFragment(MatchFragment.class)
+                .setNotifyHideFragment(MatchFragment.class)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, mPrepareData)
                 .setFragmentDataListener(new FragmentDataListener() {
@@ -156,14 +145,26 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     @Override
-    public void toStaskTop() {
-        MyLog.d(TAG, "toStaskTop" );
-        mRootView.setVisibility(View.VISIBLE);
+    protected boolean onBackPressed() {
+        goBack();
+        return true;
     }
 
     @Override
-    public void pushIntoStash() {
-        MyLog.d(TAG, "pushIntoStash" );
-        mRootView.setVisibility(View.GONE);
+    public void notifyToShow() {
+        MyLog.d(TAG, "toStaskTop");
+        mRootView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * MatchSuccessFragment add后，动画播放完再remove掉匹配中页面
+     */
+    @Override
+    public void notifyToHide() {
+        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                .setPopFragment(this)
+                .setPopAbove(false)
+                .build()
+        );
     }
 }

@@ -37,6 +37,16 @@
                 android:textSize="@dimen/textsize_30_dp" />
 
             <com.common.view.ex.ExTextView
+                android:id="@+id/user_id_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/avatar_iv"
+                android:layout_below="@+id/name_tv"
+                android:layout_marginTop="@dimen/view_10_dp"
+                android:minWidth="@dimen/view_100_dp"
+                android:textSize="@dimen/textsize_30_dp" />
+
+            <com.common.view.ex.ExTextView
                 android:id="@+id/update_nickname_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -255,14 +255,14 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         }
     }
 
-    //要栈顶了，根据需求做一些处理，一般为显示
-    public void toStaskTop(){
-
+    //通知你，你要准备显示了
+    public void notifyToShow(){
+        U.getFragmentUtils().showFragment(this);
     }
 
-    //要压栈了，根据需求做一些处理，一般为隐藏
-    public void pushIntoStash(){
-
+    //通知你，你要准备隐藏了
+    public void notifyToHide(){
+        U.getFragmentUtils().hideFragment(this);
     }
 
     /**

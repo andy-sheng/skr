@@ -21,12 +21,8 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.PrepareSongPresenter;
-import com.module.rankingmode.song.event.SongSelectEventClass;
 import com.module.rankingmode.song.fragment.SongSelectFragment;
 import com.module.rankingmode.song.model.SongModel;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,29 +55,21 @@ public class PrepareResFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return true;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(SongSelectEventClass.PopSelectSongFragment event) {
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopAbove(false)
-                .setShowFragment(SongSelectFragment.class)
-                .setPopFragment(PrepareResFragment.this).build());
+        return false;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvTop = (ExImageView)mRootView.findViewById(R.id.iv_top);
-        mSongIcon = (SimpleDraweeView)mRootView.findViewById(R.id.song_icon);
-        mSongName = (ExTextView)mRootView.findViewById(R.id.song_name);
-        mTvDuration = (ExTextView)mRootView.findViewById(R.id.tv_duration);
-        mTvLyric = (ExTextView)mRootView.findViewById(R.id.tv_lyric);
-        ivStartMatch = (ExImageView)mRootView.findViewById(R.id.iv_start_match);
+        mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
+        mSongIcon = (SimpleDraweeView) mRootView.findViewById(R.id.song_icon);
+        mSongName = (ExTextView) mRootView.findViewById(R.id.song_name);
+        mTvDuration = (ExTextView) mRootView.findViewById(R.id.tv_duration);
+        mTvLyric = (ExTextView) mRootView.findViewById(R.id.tv_lyric);
+        ivStartMatch = (ExImageView) mRootView.findViewById(R.id.iv_start_match);
 
         mSongName.setText(mPrepareData.getSongModel().getItemName());
 
-        ivBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
+        ivBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
 
         AvatarUtils.loadAvatarByUrl(mSongIcon,
@@ -130,8 +118,8 @@ public class PrepareResFragment extends BaseFragment {
         RxView.clicks(ivStartMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) PrepareResFragment.this.getContext(), MatchFragment.class)
-                            .setHideFragment(PrepareResFragment.class)
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
+                            .setNotifyHideFragment(PrepareResFragment.class)
                             .setAddToBackStack(false)
                             .setHasAnimation(false)
                             .addDataBeforeAdd(0, mPrepareData)
@@ -148,9 +136,9 @@ public class PrepareResFragment extends BaseFragment {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                            .setPopAbove(false)
-                            .setShowFragment(SongSelectFragment.class)
-                            .setPopFragment(PrepareResFragment.this).build());
+                            .setPopFragment(PrepareResFragment.this)
+                            .setNotifyShowFragment(SongSelectFragment.class)
+                            .build());
                 });
 
         ivStartMatch.setEnabled(false);
@@ -168,30 +156,30 @@ public class PrepareResFragment extends BaseFragment {
 
     @Override
     public void setData(int type, @Nullable Object data) {
-        if(type == 0){
+        if (type == 0) {
             mPrepareData.setSongModel((SongModel) data);
         }
     }
 
     @Override
     protected boolean onBackPressed() {
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopAbove(false)
-                .setShowFragment(SongSelectFragment.class)
-                .setPopFragment(PrepareResFragment.this).build());
-
+        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                .setPopFragment(this)
+                .setNotifyShowFragment(SongSelectFragment.class)
+                .build()
+        );
         return true;
     }
 
     @Override
-    public void toStaskTop() {
-        MyLog.d(TAG, "toStaskTop" );
+    public void notifyToShow() {
+        MyLog.d(TAG, "toStaskTop");
         mRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void pushIntoStash() {
-        MyLog.d(TAG, "pushIntoStash" );
+    public void notifyToHide() {
+        MyLog.d(TAG, "pushIntoStash");
         mRootView.setVisibility(View.GONE);
     }
 }

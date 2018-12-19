@@ -101,8 +101,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                        .setAddToBackStack(false)
-                        .setHideFragment(SongSelectFragment.class)
+                        .setAddToBackStack(true)
+                        .setNotifyHideFragment(SongSelectFragment.class)
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, songModel)
                         .setFragmentDataListener(new FragmentDataListener() {
@@ -203,13 +203,13 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     }
 
     @Override
-    public void toStaskTop() {
+    public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop" );
         mRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void pushIntoStash() {
+    public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash" );
         mRootView.setVisibility(View.GONE);
     }

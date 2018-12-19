@@ -24,7 +24,7 @@ public class RankingModeActivity extends BaseActivity {
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
         if (selectSong) {
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SongSelectFragment.class)
-                    .setAddToBackStack(true)
+                    .setAddToBackStack(false)
                     .setHasAnimation(false)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -23,9 +24,7 @@ import com.module.rankingmode.prepare.model.GameReadyModel;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
-import com.module.rankingmode.song.event.SongSelectEventClass;
-
-import org.greenrobot.eventbus.EventBus;
+import com.module.rankingmode.song.fragment.SongSelectFragment;
 
 import java.util.concurrent.TimeUnit;
 
@@ -50,12 +49,12 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvTop = (ExImageView)mRootView.findViewById(R.id.iv_top);
-        mSdvIcon1 = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_icon1);
-        mSdvIcon2 = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_icon2);
-        mSdvIcon3 = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_icon3);
-        mIvVs = (ImageView)mRootView.findViewById(R.id.iv_vs);
-        mIvPrepare = (ExImageView)mRootView.findViewById(R.id.iv_prepare);
+        mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
+        mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
+        mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
+        mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
+        mIvVs = (ImageView) mRootView.findViewById(R.id.iv_vs);
+        mIvPrepare = (ExImageView) mRootView.findViewById(R.id.iv_prepare);
 
         if (mMatchSucessPresenter != null) {
             mMatchSucessPresenter.destroy();
@@ -64,7 +63,6 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         RxView.clicks(mIvPrepare)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-
                     mMatchSucessPresenter.prepare(!isPrepared);
                 });
 
@@ -94,7 +92,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     @Override
     public void setData(int type, @Nullable Object data) {
-        if(type == 0){
+        if (type == 0) {
             mPrepareData = (PrepareData) data;
         }
     }
@@ -109,7 +107,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         MyLog.d(TAG, "ready" + " isPrepareState=" + isPrepareState);
         isPrepared = isPrepareState;
 
-        if(isPrepared){
+        if (isPrepared) {
             U.getToastUtil().showShort("已准备");
             mIvPrepare.setEnabled(false);
         }
@@ -117,29 +115,35 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     @Override
     public void allPlayerIsReady(GameReadyModel jsonGameReadyInfo) {
-
         mPrepareData.setGameReadyInfo(jsonGameReadyInfo);
-        long localStartTs = System.currentTimeMillis()-jsonGameReadyInfo.getJsonGameStartInfo().getStartPassedMs();
+        long localStartTs = System.currentTimeMillis() - jsonGameReadyInfo.getJsonGameStartInfo().getStartPassedMs();
         mPrepareData.setShiftTs((int) (localStartTs - jsonGameReadyInfo.getJsonGameStartInfo().getStartTimeMs()));
+
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
                 .withSerializable("prepare_data", mPrepareData)
-                .greenChannel().navigation();
+                .navigation();
 
-        EventBus.getDefault().post(new SongSelectEventClass.PopSelectSongFragment());
-
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopAbove(false)
-                .setPopFragment(MatchSuccessFragment.this).build());
+        // 这个activity直接到选歌页面,没问题
+        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                .setActivity(getActivity())
+                .setBackToFragment(SongSelectFragment.class)
+                .build());
     }
 
     @Override
     public void needReMatch() {
-        MyLog.d(TAG, "needReMatch");
+        MyLog.d(TAG, "needReMatch 有人没准备，需要重新匹配");
+        goMatch();
+        U.getToastUtil().showShort("有人没有准备，需要重新匹配");
+    }
 
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) MatchSuccessFragment.this.getContext(), MatchFragment.class)
+    void goMatch() {
+        // 这个activity直接到匹配页面,可是这时匹配中页面已经销毁了
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
+                .setNotifyHideFragment(MatchSuccessFragment.class)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
-                .addDataBeforeAdd(0, mPrepareData.getSongModel())
+                .addDataBeforeAdd(0, mPrepareData)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
@@ -147,52 +151,37 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                     }
                 })
                 .build());
-
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopAbove(false)
-                .setPopFragment(MatchSuccessFragment.this).build());
-
-        U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
 
     @Override
     protected boolean onBackPressed() {
-        if(isPrepared){
-            U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                    .setPopAbove(false)
-                    .setPopFragment(MatchSuccessFragment.this).build());
-
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((FragmentActivity) MatchSuccessFragment.this.getContext(), MatchFragment.class)
-                    .setAddToBackStack(false)
-                    .setHasAnimation(false)
-                    .addDataBeforeAdd(0, mPrepareData)
-                    .setFragmentDataListener(new FragmentDataListener() {
-                        @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                        }
-                    })
-                    .build());
+        if (isPrepared) {
+            //已经准备，说明用户想玩，直接到匹配中页面
+            goMatch();
         } else {
-            U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                    .setPopAbove(false)
-                    .setShowFragment(PrepareResFragment.class)
-                    .setPopFragment(MatchSuccessFragment.this).build());
+            //还没准备就退出，说明用户不想玩了，到开始匹配页面
+            U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                    .setActivity(getActivity())
+                    .setBackToFragment(PrepareResFragment.class)
+                    .setNotifyShowFragment(PrepareResFragment.class)
+                    .build());
         }
-
-
         return true;
     }
 
     @Override
-    public void toStaskTop() {
-        MyLog.d(TAG, "toStaskTop" );
+    public void notifyToShow() {
+        MyLog.d(TAG, "toStaskTop");
         mRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void pushIntoStash() {
-        MyLog.d(TAG, "pushIntoStash" );
-        mRootView.setVisibility(View.GONE);
+    public void notifyToHide() {
+        MyLog.d(TAG, "pushIntoStash");
+        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                .setPopFragment(this)
+                .setPopAbove(false)
+                .build()
+        );
     }
 }
