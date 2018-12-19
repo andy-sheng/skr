@@ -16,7 +16,8 @@ public interface IGameRuleView {
 
     void updateUserState(List<OnLineInfoModel> jsonOnLineInfoList);
 
-    void playLyric(SongModel songModel);
+    //先显示，然后再播放
+    void playLyric(SongModel songModel, boolean play);
 
     void showMsg(String msg);
 }

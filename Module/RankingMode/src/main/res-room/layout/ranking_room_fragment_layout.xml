@@ -5,12 +5,7 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
-    <com.module.rankingmode.room.view.InputContainerView
-        android:id="@+id/input_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#990099" />
+
 
     <com.zq.lyrics.widget.ManyLyricsView
         android:visibility="gone"
@@ -45,6 +40,30 @@
         app:ly_paint_color_to="@color/white_trans_50"
         app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
+    <ScrollView
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_400_dp">
+
+        <com.common.view.ex.ExTextView
+            android:textColor="@color/green"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="insideOverlay"
+            android:fadeScrollbars="false"
+            android:scrollbarFadeDuration="2000"
+            android:id="@+id/test_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+    <com.module.rankingmode.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#990099" />
+
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.rankingmode.room.view.BottomContainerView
         android:id="@+id/bottom_container_view"
@@ -67,22 +86,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_5_dp" />
 
-    <ScrollView
+    <TextView
+        android:background="@color/white_trans_20"
         android:layout_marginTop="@dimen/view_80_dp"
-        android:id="@+id/scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_400_dp">
+        android:id="@+id/tv_control"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_60_dp">
 
-        <com.common.view.ex.ExTextView
-            android:textColor="@color/green"
-            android:scrollbars="vertical"
-            android:scrollbarStyle="insideOverlay"
-            android:fadeScrollbars="false"
-            android:scrollbarFadeDuration="2000"
-            android:id="@+id/test_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+    </TextView>
 
     <com.module.rankingmode.room.view.TurnChangeCardView
         android:id="@+id/turn_change_view"

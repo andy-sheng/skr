@@ -22,7 +22,6 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
-import com.module.rankingmode.prepare.model.RoundInfoModel;
 import com.module.rankingmode.room.comment.CommentView;
 import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.presenter.RankingCorePresenter;
@@ -102,12 +101,13 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTestTv = mRootView.findViewById(R.id.test_tv);
         mTestTv.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-        mTestTv.setOnClickListener(v -> {
+        mRootView.findViewById(R.id.tv_control).setOnClickListener(v -> {
             needScroll = !needScroll;
         });
         presenter = new RankingCorePresenter(this, mRoomData);
         addPresent(presenter);
 
+        showMsg("gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
 
 
@@ -292,7 +292,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     SongModel playingSongModel;
 
     @Override
-    public void playLyric(SongModel songModel) {
+    public void playLyric(SongModel songModel, boolean play) {
         showMsg("开始播放歌词 songId=" + songModel.getItemID());
         playingSongModel = songModel;
 
@@ -305,29 +305,31 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         if (file == null) {
             MyLog.d(TAG, "playLyric is not in local file");
 
-            fetchLyricTask(songModel);
+            fetchLyricTask(songModel, play);
         } else {
             MyLog.d(TAG, "playLyric is exist");
 
             final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-            parseLyrics(fileName);
+            parseLyrics(fileName, play);
         }
     }
 
-    private void parseLyrics(String fileName) {
+
+    private void parseLyrics(String fileName, boolean play){
         MyLog.d(TAG, "parseLyrics" + " fileName=" + fileName);
         prepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, "沙漠骆驼", fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lyricsReader -> {
-                    showLyric(fileName.hashCode() + "", lyricsReader);
+                    drawLyric(fileName.hashCode()+ "", lyricsReader, play);
                 }, throwable -> {
                     MyLog.e(TAG, throwable);
                 });
     }
 
-    private void showLyric(String fileNameHash, LyricsReader lyricsReader) {
-        MyLog.d(TAG, "showLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
+
+    private void drawLyric(String fileNameHash, LyricsReader lyricsReader, boolean play){
+        MyLog.d(TAG, "drawLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
         if (lyricsReader != null) {
             lyricsReader.setHash(fileNameHash);
 
@@ -338,9 +340,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.setVisibility(View.VISIBLE);
                 mManyLyricsView.initLrcData();
                 mManyLyricsView.setLyricsReader(lyricsReader);
-                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.d(TAG, "onEventMainThread " + "play");
-                    RoundInfoModel roundInfo = presenter.getRoomData().getRealRoundInfo();
                     mManyLyricsView.play(0);
                 }
             } else {
@@ -348,16 +349,16 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mFloatLyricsView.setVisibility(View.VISIBLE);
                 mFloatLyricsView.initLrcData();
                 mFloatLyricsView.setLyricsReader(lyricsReader);
-                if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.d(TAG, "onEventMainThread " + "play");
-                    RoundInfoModel roundInfo = presenter.getRoomData().getRealRoundInfo();
                     mFloatLyricsView.play(0);
                 }
             }
         }
     }
 
-    private void fetchLyricTask(SongModel songModel) {
+
+    private void fetchLyricTask(SongModel songModel, boolean play){
         MyLog.d(TAG, "fetchLyricTask" + " songModel=" + songModel);
         prepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
@@ -386,13 +387,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(file -> {
-                    final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-                    parseLyrics(fileName);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                }, () -> {
-
-                });
+            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
+            parseLyrics(fileName, play);
+        }, throwable -> {
+            MyLog.e(TAG, throwable);
+        });
     }
 
     @Override

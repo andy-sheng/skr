@@ -93,7 +93,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public void destroy() {
         super.destroy();
         exitGame();
-        cancelHeartBeatTask();
+        cancelHeartBeatTask("destroy");
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -207,7 +207,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      * 心跳相关
      */
     public void startHeartBeatTask() {
-        cancelHeartBeatTask();
+        cancelHeartBeatTask("startHeartBeatTask");
         mHeartBeatTask = HandlerTaskTimer.newBuilder()
                 .interval(heartBeatTaskInterval)
                 .take(-1)
@@ -219,7 +219,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 });
     }
 
-    public void cancelHeartBeatTask() {
+    public void cancelHeartBeatTask(String from) {
+        mIGameRuleView.showMsg("取消心跳，是从 " + from);
         if (mHeartBeatTask != null) {
             mHeartBeatTask.dispose();
         }
@@ -371,7 +372,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
                         EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
                         // 还应开始播放歌词
-                        mIGameRuleView.playLyric(mRoomData.getSongModel());
+                        mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
                         mIGameRuleView.showMsg("开始唱了，歌词和伴奏响起");
                     }
                 }
@@ -381,7 +382,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
         } else {
             MyLog.d(TAG, "不是我的轮次，停止发心跳，停止混音，闭麦");
-            cancelHeartBeatTask();
+            cancelHeartBeatTask("切换唱将");
             EngineManager.getInstance().stopAudioMixing();
             EngineManager.getInstance().muteLocalAudioStream(true);
             // 收到其他的人onMute消息 开始播放其他人的歌的歌词，应该提前下载好
@@ -394,16 +395,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         mIGameRuleView.startRivalCountdown(uid);
                         mIGameRuleView.showMsg("演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
                                 + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
-//                        mUiHanlder.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                //因为在三秒钟之内可能发生了变化，所以需要再判断一下
-//                                if (uid == RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo())) {
-//                                    mIGameRuleView.playLyric(mRoomData.getRealRoundInfo().getPlaybookID());
-//                                    mIGameRuleView.showMsg(uid + "开始唱了，伴奏走起 one");
-//                                }
-//                            }
-//                        }, 3000);
+
+                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
+                        mIGameRuleView.showMsg(uid + "开始唱了，伴奏走起 one");
+
                     }
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {
@@ -469,7 +464,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 mIGameRuleView.showMsg("引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), muteUserId));
+                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
@@ -481,7 +476,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 mIGameRuleView.showMsg("引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), muteUserId));
+                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     }
@@ -504,7 +499,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundOverEvent roundOverEvent) {
         MyLog.d(TAG, "onRoundOverEvent 轮次结束push通知:" + roundOverEvent.currenRound + " nextRound:" + roundOverEvent.nextRound);
-        mIGameRuleView.showMsg("收到服务器的某一个人结束的push，轮次结束的人是 " + roundOverEvent.currenRound.getUserID()+ ", exitUserID 是 " + roundOverEvent.exitUserID);
+        mIGameRuleView.showMsg("收到服务器的某一个人结束的push，轮次结束的人是 " + roundOverEvent.currenRound.getUserID() + ", exitUserID 是 " + roundOverEvent.exitUserID);
         if (RoomDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
             // 确实等于当前轮次
             if (mRoomData.getRealRoundInfo() != null) {
