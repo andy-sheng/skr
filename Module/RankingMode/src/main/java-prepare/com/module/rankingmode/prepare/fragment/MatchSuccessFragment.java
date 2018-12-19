@@ -137,6 +137,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
 
+
     void goMatch() {
         // 这个activity直接到匹配页面,可是这时匹配中页面已经销毁了
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
@@ -151,6 +152,12 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                     }
                 })
                 .build());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mMatchSucessPresenter.destroy();
     }
 
     @Override

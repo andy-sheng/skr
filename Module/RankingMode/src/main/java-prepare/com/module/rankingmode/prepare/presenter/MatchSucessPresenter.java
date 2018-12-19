@@ -102,6 +102,9 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     @Override
     public void destroy() {
         super.destroy();
+        if (checkTask != null) {
+            checkTask.dispose();
+        }
         EventBus.getDefault().unregister(this);
     }
 
