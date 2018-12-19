@@ -48,7 +48,7 @@ import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND
 
 public class RankingCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankingCorePresenter";
-    private static long heartBeatTaskInterval = 2000;
+    private static long heartBeatTaskInterval = 3000;
     private static long checkStateTaskDelay = 10000;
     private static long syncStateTaskInterval = 12000;
 
