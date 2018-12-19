@@ -14,12 +14,17 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.viewpager.NestViewPager;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.home.persenter.HomePresenter;
 import com.module.msg.IMsgService;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity {
@@ -51,6 +56,8 @@ public class HomeActivity extends BaseActivity {
         mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
+
+        mMainVp.setViewPagerCanScroll(false);
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -89,6 +96,33 @@ public class HomeActivity extends BaseActivity {
         } else {
             initOnAccountReady();
         }
+
+        RxView.clicks(mGameBtn)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                       mMainVp.setCurrentItem(0,false);
+                    }
+                });
+
+        RxView.clicks(mMessageBtn)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        mMainVp.setCurrentItem(1,false);
+                    }
+                });
+
+        RxView.clicks(mPersonInfoBtn)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        mMainVp.setCurrentItem(2,false);
+                    }
+                });
     }
 
     public void initOnAccountReady() {

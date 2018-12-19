@@ -1,5 +1,8 @@
 package com.module.rankingmode.room.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -24,6 +27,7 @@ import com.module.rankingmode.room.view.BottomContainerView;
 import com.module.rankingmode.room.view.IGameRuleView;
 import com.module.rankingmode.room.view.InputContainerView;
 import com.module.rankingmode.room.view.TopContainerView;
+import com.module.rankingmode.room.view.TurnChangeCardView;
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
@@ -67,6 +71,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     ZipUrlResourceManager zipUrlResourceManager;
 
+    TurnChangeCardView mTurnChangeView;
+
     @Override
     public int initView() {
         return R.layout.ranking_room_fragment_layout;
@@ -85,9 +91,70 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mFloatLyricsView = mRootView.findViewById(R.id.float_lyrics_view);
         mFloatLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
 
+        mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
+
         mTestTv = mRootView.findViewById(R.id.test_tv);
         presenter = new RankingCorePresenter(this, mRoomData);
         addPresent(presenter);
+
+    }
+
+
+    ObjectAnimator mTurnChangeCardShowAnimator;
+
+    public void playShowTurnCardAnimator() {
+        if (mTurnChangeCardShowAnimator == null) {
+            mTurnChangeCardShowAnimator = ObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0);
+            mTurnChangeCardShowAnimator.setDuration(1000);
+
+            mTurnChangeCardShowAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    HandlerTaskTimer.newBuilder()
+                            .delay(2000)
+                            .start(new HandlerTaskTimer.ObserverW() {
+                                @Override
+                                public void onNext(Integer integer) {
+                                    playHideTurnCardAnimator();
+                                }
+                            });
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    mTurnChangeView.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
+        mTurnChangeCardShowAnimator.start();
+    }
+
+    ObjectAnimator mTurnChangeCardHideAnimator;
+
+    public void playHideTurnCardAnimator() {
+        if (mTurnChangeCardHideAnimator == null) {
+            mTurnChangeCardHideAnimator = ObjectAnimator.ofFloat(mTurnChangeView, "translationX", 0, -U.getDisplayUtils().getScreenWidth());
+            mTurnChangeCardHideAnimator.setDuration(1000);
+
+            mTurnChangeCardHideAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    mTurnChangeView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                }
+            });
+        }
+
+        mTurnChangeCardHideAnimator.start();
+
     }
 
     HttpUtils.OnDownloadProgress onDownloadProgress = new HttpUtils.OnDownloadProgress() {
@@ -196,6 +263,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
+
     @Override
     protected boolean onBackPressed() {
         if (mInputContainerView.onBackPressed()) {
@@ -206,6 +274,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
+        mTurnChangeView.setData(mRoomData);
+        playShowTurnCardAnimator();
         HandlerTaskTimer.newBuilder()
                 .interval(1000)
                 .take(3)
@@ -227,6 +297,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void startRivalCountdown(int uid) {
         addText("用户" + uid + "的演唱开始了");
+        mTurnChangeView.setData(mRoomData);
+        playShowTurnCardAnimator();
     }
 
     @Override
@@ -240,7 +312,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 //        mManyLyricsView.initLrcData();
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
                 .setAddToBackStack(true)
-                .addDataBeforeAdd(0,mRoomData)
+                .addDataBeforeAdd(0, mRoomData)
                 .build()
         );
     }

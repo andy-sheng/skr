@@ -227,10 +227,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         map.put("userID", MyUserInfoManager.getInstance().getUid());
 
-        MyLog.d(TAG, "sendHeartBeat" + " gameID=" + mRoomData.getGameId());
-        MyLog.d(TAG, "sendHeartBeat" + " useID=" + UserAccountManager.getInstance().getUuid());
-        MyLog.d(TAG, "sendHeartBeat" + " useID=" + MyUserInfoManager.getInstance().getUid());
-
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendHeartBeat(body), new ApiObserver<ApiResult>() {
             @Override

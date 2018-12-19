@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_207_dp"
+    android:layout_marginTop="@dimen/view_30_dp">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/turn_change_bg_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/room_turn_card_bg_blue"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/turn_current_iv"
+        android:layout_width="@dimen/view_61_dp"
+        android:layout_height="@dimen/view_61_dp"
+        android:layout_centerHorizontal="true" />
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/turn_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/turn_current_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:text="林松"
+        android:textColor="#FFED61"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/turn_song_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/turn_name_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:text="《平凡之路》"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_22_dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/turn_next_iv"
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_26_dp" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/turn_next_info_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_14_dp"
+            android:layout_toRightOf="@+id/turn_next_iv"
+            android:text="下一首由金嗓子元宝演唱" />
+    </RelativeLayout>
+
+</RelativeLayout>

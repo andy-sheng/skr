@@ -3,55 +3,52 @@
     android:layout_height="match_parent">
 
     <View
-        android:layout_above="@+id/bottom_container"
-        android:background="#ffdadada"
         android:layout_width="match_parent"
-        android:layout_height="1px"/>
+        android:layout_height="1px"
+        android:layout_above="@+id/bottom_container"
+        android:background="#ffdadada" />
 
     <LinearLayout
-        android:background="#ffefefef"
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_56_dp"
         android:layout_alignParentBottom="true"
+        android:background="#ffefefef"
         android:padding="@dimen/view_dimen_10">
 
         <com.common.view.ex.ExImageView
-            android:src="@drawable/ic_notify_normal"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/game_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-             />
-
-        <com.common.view.ex.ExImageView
-            android:src="@drawable/ic_notify_selected"
-            android:layout_gravity="center_vertical"
             android:id="@+id/message_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
-             />
+            android:src="@drawable/ic_notify_normal" />
 
         <com.common.view.ex.ExImageView
-            android:src="@drawable/ic_notify_normal1"
+            android:id="@+id/game_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:src="@drawable/ic_notify_selected" />
+
+        <com.common.view.ex.ExImageView
             android:id="@+id/person_info_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
-             />
+            android:src="@drawable/ic_notify_normal1" />
     </LinearLayout>
 
     <com.common.view.viewpager.NestViewPager
-        android:background="@color/white"
         android:id="@+id/main_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_container" />
+        android:layout_above="@+id/bottom_container"
+        android:background="@color/white" />
 
 </RelativeLayout>

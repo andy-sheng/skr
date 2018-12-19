@@ -75,4 +75,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </ScrollView>
+
+    <com.module.rankingmode.room.view.TurnChangeCardView
+        android:id="@+id/turn_change_view"
+        android:layout_below="@+id/top_container_view"
+        android:layout_marginTop="@dimen/view_34_dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+    </com.module.rankingmode.room.view.TurnChangeCardView>
 </RelativeLayout>
