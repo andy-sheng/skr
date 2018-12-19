@@ -63,6 +63,8 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         RxView.clicks(mIvPrepare)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    mIvPrepare.setBackground(getResources().getDrawable(R.drawable.btn_pipeichenggong_pressed));
+                    mIvPrepare.setClickable(false);
                     mMatchSucessPresenter.prepare(!isPrepared);
                 });
 

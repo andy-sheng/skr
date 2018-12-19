@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@drawable/img_matching_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/img_matching_bg"
+    android:orientation="vertical">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_top"
-        android:background="@drawable/img_top_pipeichenggong_bg"
-        android:layout_marginTop="@dimen/view_29_dp"
-        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/view_218_dp"
-        android:layout_height="@dimen/view_106_dp" />
+        android:layout_height="@dimen/view_106_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_29_dp"
+        android:background="@drawable/img_top_pipeichenggong_bg" />
 
     <RelativeLayout
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/view_220_dp"
-        android:layout_height="@dimen/view_220_dp">
+        android:layout_height="@dimen/view_220_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_icon1"
-            android:layout_alignParentLeft="true"
             android:layout_width="@dimen/view_88_dp"
-            android:layout_height="@dimen/view_88_dp" />
+            android:layout_height="@dimen/view_88_dp"
+            android:layout_alignParentLeft="true" />
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:layout_alignParentRight="true"
             android:id="@+id/sdv_icon2"
             android:layout_width="@dimen/view_88_dp"
-            android:layout_height="@dimen/view_88_dp" />
+            android:layout_height="@dimen/view_88_dp"
+            android:layout_alignParentRight="true" />
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
             android:id="@+id/sdv_icon3"
             android:layout_width="@dimen/view_88_dp"
-            android:layout_height="@dimen/view_88_dp" />
+            android:layout_height="@dimen/view_88_dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/iv_vs"
-        android:layout_centerInParent="true"
-        android:src="@drawable/img_pipeichenggong_enabled"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/img_pipeichenggong_enabled" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_prepare"
-        android:background="@drawable/btn_pipeichenggong_normal"
-        android:layout_marginBottom="@dimen/view_70_dp"
+        android:layout_width="@dimen/view_206_dp"
+        android:layout_height="@dimen/view_54_dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_width="@dimen/view_206_dp"
-        android:layout_height="@dimen/view_54_dp" />
+        android:layout_marginBottom="@dimen/view_70_dp"
+        android:background="@drawable/btn_pipeichenggong_normal" />
 </RelativeLayout>
