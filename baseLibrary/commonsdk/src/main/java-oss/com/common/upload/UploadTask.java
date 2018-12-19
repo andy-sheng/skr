@@ -191,9 +191,14 @@ public class UploadTask {
      * @return
      */
     private PutObjectRequest createRequest(String filePath) {
-        String ext = U.getFileUtils().getSuffixFromFilePath(filePath);
-        String fileName = U.getMD5Utils().MD5_16(System.currentTimeMillis() + filePath);
-        String mObjectId = mDir + fileName + "." + ext;
+        String mObjectId;
+        if(TextUtils.isEmpty(mUploadParams.getFileName())) {
+            String ext = U.getFileUtils().getSuffixFromFilePath(filePath);
+            String fileName = U.getMD5Utils().MD5_16(System.currentTimeMillis() + filePath);
+             mObjectId = mDir + fileName + "." + ext;
+        }else{
+            mObjectId = mUploadParams.getFileName();
+        }
         MyLog.w(TAG, "mObjectId:" + mObjectId);
         // 构造上传请求
         PutObjectRequest put = new PutObjectRequest(mBucketName, mObjectId, filePath);

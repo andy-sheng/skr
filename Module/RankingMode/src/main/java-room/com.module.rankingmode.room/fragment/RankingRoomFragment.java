@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
@@ -71,11 +72,13 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     Handler mUiHanlder = new Handler();
 
-    Disposable prepareLyricTask;
+    Disposable mPrepareLyricTask;
 
-    ScrollView scrollView;
+    ScrollView mScrollView;
 
     TurnChangeCardView mTurnChangeView;
+
+    BaseImageView mReadyGoView;
 
     @Override
     public int initView() {
@@ -85,16 +88,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         // 请保证从下面的view往上面的view开始初始化
-        scrollView = mRootView.findViewById(R.id.scrollview);
+        mScrollView = mRootView.findViewById(R.id.scrollview);
         initInputView();
         initBottomView();
         initCommentView();
         initTopView();
-
-        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
-        mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
-        mFloatLyricsView = mRootView.findViewById(R.id.float_lyrics_view);
-        mFloatLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
+        initLyricsView();
 
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
 
@@ -104,6 +103,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mRootView.findViewById(R.id.tv_control).setOnClickListener(v -> {
             needScroll = !needScroll;
         });
+
+        showReadyGoView();
+
         presenter = new RankingCorePresenter(this, mRoomData);
         addPresent(presenter);
 
@@ -203,6 +205,36 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         });
     }
 
+    private void initLyricsView(){
+        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
+        mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
+        mFloatLyricsView = mRootView.findViewById(R.id.float_lyrics_view);
+        mFloatLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
+    }
+
+    private void showReadyGoView() {
+        if (mReadyGoView == null) {
+            mReadyGoView = new BaseImageView(getActivity());
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(188));
+            lp.topMargin = U.getDisplayUtils().dip2px(143);
+            ((RelativeLayout)mRootView).addView(mReadyGoView, lp);
+        }
+//        FrescoWorker.loadImage(mReadyGoView, ImageFactory.newHttpImage("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/ready_go.webp")
+//                .setCallBack(new IFrescoCallBack() {
+//                    @Override
+//                    public void processWithInfo(ImageInfo info) {
+//
+//                    }
+//
+//                    @Override
+//                    public void processWithFailure() {
+//
+//                    }
+//                })
+//                .build()
+//        );build
+    }
+
     @Override
     public boolean useEventBus() {
         return false;
@@ -289,15 +321,15 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    SongModel playingSongModel;
+    SongModel mPlayingSongModel;
 
     @Override
     public void playLyric(SongModel songModel, boolean play) {
         showMsg("开始播放歌词 songId=" + songModel.getItemID());
-        playingSongModel = songModel;
+        mPlayingSongModel = songModel;
 
-        if (prepareLyricTask != null && !prepareLyricTask.isDisposed()) {
-            prepareLyricTask.dispose();
+        if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
+            mPrepareLyricTask.dispose();
         }
 
         File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
@@ -317,7 +349,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void parseLyrics(String fileName, boolean play){
         MyLog.d(TAG, "parseLyrics" + " fileName=" + fileName);
-        prepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, "沙漠骆驼", fileName.hashCode() + "")
+        mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, "沙漠骆驼", fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lyricsReader -> {
@@ -334,7 +366,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             lyricsReader.setHash(fileNameHash);
 
             //自己
-            if (presenter.getRoomData().getRealRoundInfo().getUserID()
+            if (mRoomData.getRealRoundInfo().getUserID()
                     == MyUserInfoManager.getInstance().getUid()) {
                 mFloatLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.setVisibility(View.VISIBLE);
@@ -360,7 +392,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void fetchLyricTask(SongModel songModel, boolean play){
         MyLog.d(TAG, "fetchLyricTask" + " songModel=" + songModel);
-        prepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
+        mPrepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
                 File tempFile = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
@@ -409,7 +441,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mUiHanlder.post(() -> {
             mTestTv.append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis(), "HH:mm:ss:SSS") + ":" + te + "\n");
             if (needScroll) {
-                scrollView.smoothScrollTo(0, mTestTv.getBottom());
+                mScrollView.smoothScrollTo(0, mTestTv.getBottom());
             }
         });
     }

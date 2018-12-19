@@ -187,19 +187,29 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("fastJson枚举", new Runnable() {
+        mDataList.add(new H("上传到oss，指定文件名", new Runnable() {
 
             @Override
             public void run() {
-                AA aa = new AA();
-                aa.setA("字段1");
-                aa.setB("字段2");
-                aa.setCc(CC.blue);
-                MyLog.w(TAG, "aaa:" + aa);
+               UploadParams.newBuilder("/sdcard/aaa.webp")
+                       .setFileName("ready_go.webp")
+                       .startUploadAsync(new UploadCallback() {
+                           @Override
+                           public void onProgress(long currentSize, long totalSize) {
 
-                String ttt = JSON.toJSONString(aa, SerializerFeature.EMPTY);
-                aa = (AA) JSON.parse(ttt);
-                MyLog.w(TAG, "aaa:" + aa);
+                           }
+
+                           @Override
+                           public void onSuccess(String url) {
+                               MyLog.w(TAG,"onSuccess" + " url=" + url);
+                                U.getToastUtil().showShort("url:"+url);
+                           }
+
+                           @Override
+                           public void onFailure(String msg) {
+
+                           }
+                       });
             }
         }));
 
