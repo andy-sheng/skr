@@ -68,11 +68,11 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mCardRecycleview = (RecyclerView) mRootView.findViewById(R.id.card_recycleview);
 
-        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
-        mCardRecycleview = (RecyclerView)mRootView.findViewById(R.id.card_recycleview);
-        mSelectBackIv = (ExImageView)mRootView.findViewById(R.id.select_back_iv);
-        mSelectClickedIv = (ExImageView)mRootView.findViewById(R.id.select_clicked_iv);
-        mSelectBack = (ExImageView)mRootView.findViewById(R.id.select_back);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mCardRecycleview = (RecyclerView) mRootView.findViewById(R.id.card_recycleview);
+        mSelectBackIv = (ExImageView) mRootView.findViewById(R.id.select_back_iv);
+        mSelectClickedIv = (ExImageView) mRootView.findViewById(R.id.select_clicked_iv);
+        mSelectBack = (ExImageView) mRootView.findViewById(R.id.select_back);
 
 
         RxView.clicks(mSelectBackIv)
@@ -90,7 +90,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         RxView.clicks(mSelectBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    U.getFragmentUtils().popFragment(this);
+                    getActivity().finish();
                 });
 
         mDeleteList = new ArrayList<>();
@@ -204,13 +204,13 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void notifyToShow() {
-        MyLog.d(TAG, "toStaskTop" );
+        MyLog.d(TAG, "toStaskTop");
         mRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void notifyToHide() {
-        MyLog.d(TAG, "pushIntoStash" );
+        MyLog.d(TAG, "pushIntoStash");
         mRootView.setVisibility(View.GONE);
     }
 }
