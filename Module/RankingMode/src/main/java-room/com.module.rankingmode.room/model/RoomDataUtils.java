@@ -1,7 +1,9 @@
 package com.module.rankingmode.room.model;
 
 import com.common.log.MyLog;
+import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.RoundInfoModel;
+import com.module.rankingmode.song.model.SongModel;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -106,6 +108,27 @@ public class RoomDataUtils {
                 return infoModel;
             }
         }
+        return null;
+    }
+
+    /**
+     * 根据id找songmodel
+     *
+     * @param
+     * @param uid
+     * @return
+     */
+    public static SongModel getPlayerInfoUserId(List<PlayerInfo> playerInfos, int uid) {
+        try {
+            for (PlayerInfo infoModel : playerInfos) {
+                if (infoModel.getUserInfo().getUserId() == uid) {
+                    return infoModel.getSongList().get(0);
+                }
+            }
+        }catch (Exception e){
+            MyLog.e(e);
+        }
+
         return null;
     }
 

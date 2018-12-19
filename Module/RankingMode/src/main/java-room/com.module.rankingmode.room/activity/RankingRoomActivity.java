@@ -5,18 +5,15 @@ import android.support.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
-import com.module.rankingmode.room.fragment.EvaluationFragment;
 import com.module.rankingmode.room.fragment.RankingRoomFragment;
 import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.model.RoomDataUtils;
-import com.module.rankingmode.song.model.SongModel;
-
-import java.util.ArrayList;
 
 @Route(path = RouterConstants.ACTIVITY_RANKING_ROOM)
 public class RankingRoomActivity extends BaseActivity {
@@ -41,14 +38,9 @@ public class RankingRoomActivity extends BaseActivity {
 
             mRoomData.setSongModel(prepareData.getSongModel());
 
-            ArrayList<SongModel> songModelArrayList = new ArrayList<>();
-            for (com.module.rankingmode.prepare.model.PlayerInfo playerInfo : prepareData.getPlayerInfoList()){
-                songModelArrayList.addAll(playerInfo.getSongList());
-            }
-            mRoomData.setSongModelList(songModelArrayList);
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
-
+            MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         }else{
 

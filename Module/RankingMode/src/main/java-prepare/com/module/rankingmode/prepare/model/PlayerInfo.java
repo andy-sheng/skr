@@ -2,7 +2,6 @@ package com.module.rankingmode.prepare.model;
 
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
-import com.zq.live.proto.Common.UserInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,5 +41,13 @@ public class PlayerInfo implements Serializable {
             list.add(songModel);
         }
         this.setSongList(list);
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerInfo{" +
+                "userInfo=" + userInfo +
+                ", songList=" + songList +
+                '}';
     }
 }

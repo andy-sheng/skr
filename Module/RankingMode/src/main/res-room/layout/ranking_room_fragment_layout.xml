@@ -13,6 +13,7 @@
         android:background="#990099" />
 
     <com.zq.lyrics.widget.ManyLyricsView
+        android:visibility="gone"
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -29,6 +30,7 @@
         app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
     <com.zq.lyrics.widget.FloatLyricsView
+        android:visibility="gone"
         android:id="@+id/float_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_60_dp"
@@ -66,10 +68,17 @@
         android:layout_marginTop="@dimen/view_5_dp" />
 
     <ScrollView
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/view_400_dp">
 
         <com.common.view.ex.ExTextView
+            android:textColor="@color/green"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="insideOverlay"
+            android:fadeScrollbars="false"
+            android:scrollbarFadeDuration="2000"
             android:id="@+id/test_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

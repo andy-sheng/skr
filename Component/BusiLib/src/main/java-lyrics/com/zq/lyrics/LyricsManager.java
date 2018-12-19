@@ -23,7 +23,9 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -59,7 +61,7 @@ public class LyricsManager {
         return _LyricsManager;
     }
 
-    private static void copyLrcFileInfo(){
+    private static void copyLrcFileInfo() {
         Observable.create(new ObservableOnSubscribe<Object>() {
 
             @Override
@@ -70,13 +72,13 @@ public class LyricsManager {
                     String originalName = "shamoluotuo.zrce";
 
                     File dirFile = new File(ResourceConstants.PATH_LYRICS);
-                    if(!dirFile.exists()){
+                    if (!dirFile.exists()) {
                         dirFile.mkdirs();
                     }
 
                     File file = new File(ResourceConstants.PATH_LYRICS + File.separator + originalName);
 
-                    if(!file.exists()){
+                    if (!file.exists()) {
                         InputStream is = U.app().getAssets().open(originalName);
                         bufferedSource = Okio.buffer(Okio.source(is));
                         file.createNewFile();
@@ -98,6 +100,38 @@ public class LyricsManager {
                 .subscribe();
     }
 
+    public Observable<LyricsReader> loadLyricsObserable(final String fileName, final String keyword, final String hash) {
+        return Observable.create(new ObservableOnSubscribe<LyricsReader>() {
+
+            @Override
+            public void subscribe(ObservableEmitter<LyricsReader> emitter) {
+                MyLog.d(TAG, "loadLyricsUtil 1");
+                LyricsReader lyricsReader = null;
+                if (!mLyricsUtils.containsKey(hash)) {
+                    MyLog.d(TAG, "loadLyricsUtil 2");
+                    File lrcFile = LyricsUtils.getLrcFile(fileName, SongResUtils.getLyricDir());
+                    MyLog.d(TAG, "loadLyricsUtil 3 " + lrcFile);
+                    if (lrcFile != null) {
+                        lyricsReader = new LyricsReader();
+                        try {
+
+                            lyricsReader.loadLrc(lrcFile);
+                            mLyricsUtils.put(hash, lyricsReader);
+                        } catch (Exception e) {
+                            Log.e("LyricsManager", "" + e.toString());
+                            emitter.onError(e);
+                        }
+                    }
+                } else {
+                    lyricsReader = mLyricsUtils.get(hash);
+                }
+
+                emitter.onNext(lyricsReader);
+                emitter.onComplete();
+            }
+        });
+    }
+
     /**
      * @param fileName
      * @param keyword
@@ -105,6 +139,29 @@ public class LyricsManager {
      * @return
      */
     public void loadLyricsUtil(final String fileName, final String keyword, final String hash) {
+        loadLyricsObserable(fileName, keyword, hash).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LyricsReader>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LyricsReader lyricsReader) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e(TAG, e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        EventBus.getDefault().post(new LrcEvent.FinishLoadLrcEvent(hash));
+                    }
+                });
 
         Observable.create(new ObservableOnSubscribe<Object>() {
 
@@ -212,7 +269,6 @@ public class LyricsManager {
     public LyricsReader getLyricsUtil(String hash) {
         return mLyricsUtils.get(hash);
     }
-
 
 
     /**

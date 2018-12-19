@@ -32,9 +32,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
-import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
 import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_BEFORE_PLAY;
-import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
 // 处理匹配成功之后   加入房间  检查房间
 public class MatchSucessPresenter extends RxLifeCyclePresenter {

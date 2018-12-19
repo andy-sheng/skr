@@ -4,16 +4,19 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
-import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -31,21 +34,19 @@ import com.module.rankingmode.room.view.TurnChangeCardView;
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.model.UrlRes;
-import com.zq.lyrics.utils.ZipUrlResourceManager;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
@@ -69,7 +70,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     FloatLyricsView mFloatLyricsView;
 
-    ZipUrlResourceManager zipUrlResourceManager;
+    Handler handler = new Handler();
+
+    Disposable prepareLyricTask;
+
+    ScrollView scrollView;
 
     TurnChangeCardView mTurnChangeView;
 
@@ -81,6 +86,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         // 请保证从下面的view往上面的view开始初始化
+        scrollView = mRootView.findViewById(R.id.scrollview);
         initInputView();
         initBottomView();
         initCommentView();
@@ -94,6 +100,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
 
         mTestTv = mRootView.findViewById(R.id.test_tv);
+        mTestTv.setMovementMethod(ScrollingMovementMethod.getInstance());
+
+        mTestTv.setOnClickListener(v -> {
+            needScroll = !needScroll;
+        });
         presenter = new RankingCorePresenter(this, mRoomData);
         addPresent(presenter);
 
@@ -157,31 +168,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     }
 
-    HttpUtils.OnDownloadProgress onDownloadProgress = new HttpUtils.OnDownloadProgress() {
-        @Override
-        public void onDownloaded(long downloaded, long totalLength) {
-
-        }
-
-        @Override
-        public void onCompleted(String localPath) {
-            MyLog.d(TAG, "onCompleted" + " localPath=" + localPath);
-            if (playingSongModel != null) {
-                playLyric(playingSongModel.getItemID());
-            }
-        }
-
-        @Override
-        public void onCanceled() {
-
-        }
-
-        @Override
-        public void onFailed() {
-
-        }
-    };
-
     private void initInputView() {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
@@ -219,7 +205,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public boolean useEventBus() {
-        return true;
+        return false;
     }
 
     @Override
@@ -228,41 +214,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mRoomData = (RoomData) data;
         }
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(LrcEvent.FinishLoadLrcEvent finishLoadLrcEvent) {
-        MyLog.d(TAG, "onEventMainThread" + " finishLoadLrcEvent hash is =" + finishLoadLrcEvent.hash);
-        LyricsReader lyricsReader = LyricsManager.getLyricsManager(getContext()).getLyricsUtil(finishLoadLrcEvent.hash);
-        if (lyricsReader != null) {
-            lyricsReader.setHash(finishLoadLrcEvent.hash);
-
-            //自己
-            if (presenter.getRoomData().getRealRoundInfo().getUserID()
-                    == MyUserInfoManager.getInstance().getUid()) {
-                mFloatLyricsView.setVisibility(View.GONE);
-                mManyLyricsView.setVisibility(View.VISIBLE);
-                mManyLyricsView.initLrcData();
-                mManyLyricsView.setLyricsReader(lyricsReader);
-                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                    MyLog.d(TAG, "onEventMainThread " + "play");
-                    RoundInfoModel roundInfo = presenter.getRoomData().getRealRoundInfo();
-                    mManyLyricsView.play(roundInfo.getSingBeginMs());
-                }
-            } else {
-                mManyLyricsView.setVisibility(View.GONE);
-                mFloatLyricsView.setVisibility(View.VISIBLE);
-                mFloatLyricsView.initLrcData();
-                mFloatLyricsView.setLyricsReader(lyricsReader);
-                if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                    MyLog.d(TAG, "onEventMainThread " + "play");
-                    RoundInfoModel roundInfo = presenter.getRoomData().getRealRoundInfo();
-                    mFloatLyricsView.play(roundInfo.getSingBeginMs());
-                }
-            }
-
-        }
-    }
-
 
     @Override
     protected boolean onBackPressed() {
@@ -282,7 +233,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 .start(new HandlerTaskTimer.ObserverW() {
                            @Override
                            public void onNext(Integer integer) {
-                               addText("你的演唱要开始了，倒计时" + (4 - integer));
+                               showMsg("你的演唱要开始了，倒计时" + (4 - integer));
                            }
 
                            @Override
@@ -296,7 +247,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void startRivalCountdown(int uid) {
-        addText("用户" + uid + "的演唱开始了");
+        showMsg("用户" + uid + "的演唱开始了");
         mTurnChangeView.setData(mRoomData);
         playShowTurnCardAnimator();
     }
@@ -308,13 +259,16 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void gameFinish() {
-        addText("游戏结束了");
-//        mManyLyricsView.initLrcData();
+        showMsg("游戏结束了");
+        mManyLyricsView.initLrcData();
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
                 .setAddToBackStack(true)
-                .addDataBeforeAdd(0, mRoomData)
+                .addDataBeforeAdd(0,mRoomData)
                 .build()
         );
+
+        mFloatLyricsView.setVisibility(View.GONE);
+        mManyLyricsView.setVisibility(View.GONE);
     }
 
     @Override
@@ -324,7 +278,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
         for (OnLineInfoModel onLineInfoModel : jsonOnLineInfoList) {
             if (!onLineInfoModel.isIsOnline()) {
-                addText("用户" + onLineInfoModel.getUserID() + "处于离线状态");
+                showMsg("用户" + onLineInfoModel.getUserID() + "处于离线状态");
             }
         }
     }
@@ -332,36 +286,126 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     SongModel playingSongModel;
 
     @Override
-    public void playLyric(int songId) {
-        addText("开始播放歌词 songId=" + songId);
-        Observable.fromIterable(mRoomData.getSongModelList())
-                .filter(songModel -> songModel.getItemID() == songId)
-                .subscribe(songModel -> {
-                    playingSongModel = songModel;
-                    File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
-                    MyLog.d(TAG, "playLyric songModel:" + songModel);
+    public void playLyric(SongModel songModel) {
+        showMsg("开始播放歌词 songId=" + songModel.getItemID());
+        playingSongModel = songModel;
 
-                    if (file == null) {
-                        MyLog.d(TAG, "playLyric 1");
-                        ArrayList<UrlRes> urlResArrayList = new ArrayList<>();
-                        UrlRes lyric = new UrlRes(songModel.getLyric(), SongResUtils.getLyricDir(), SongResUtils.SUFF_ZRCE);
-                        urlResArrayList.add(lyric);
-                        zipUrlResourceManager = new ZipUrlResourceManager(urlResArrayList, onDownloadProgress);
-                        zipUrlResourceManager.go();
-                    } else {
-                        MyLog.d(TAG, "playLyric 2");
+        if(prepareLyricTask != null && !prepareLyricTask.isDisposed()){
+            prepareLyricTask.dispose();
+        }
 
-                        String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-                        LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", fileName.hashCode() + "");
+        File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
 
-                    }
+        if (file == null) {
+            MyLog.d(TAG, "playLyric is not in local file");
+
+            fetchLyricTask(songModel);
+        } else {
+            MyLog.d(TAG, "playLyric is exist");
+
+            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
+            parseLyrics(fileName);
+        }
+    }
+
+    private void parseLyrics(String fileName){
+        MyLog.d(TAG, "parseLyrics" + " fileName=" + fileName);
+        prepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, "沙漠骆驼", fileName.hashCode() + "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(lyricsReader -> {
+                    showLyric(fileName.hashCode()+ "", lyricsReader);
                 }, throwable -> {
                     MyLog.e(TAG, throwable);
                 });
     }
 
+    private void showLyric(String fileNameHash, LyricsReader lyricsReader){
+        MyLog.d(TAG, "showLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
+        if (lyricsReader != null) {
+            lyricsReader.setHash(fileNameHash);
+
+            //自己
+            if (presenter.getRoomData().getRealRoundInfo().getUserID()
+                    == MyUserInfoManager.getInstance().getUid()) {
+                mFloatLyricsView.setVisibility(View.GONE);
+                mManyLyricsView.setVisibility(View.VISIBLE);
+                mManyLyricsView.initLrcData();
+                mManyLyricsView.setLyricsReader(lyricsReader);
+                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                    MyLog.d(TAG, "onEventMainThread " + "play");
+                    RoundInfoModel roundInfo = presenter.getRoomData().getRealRoundInfo();
+                    mManyLyricsView.play(0);
+                }
+            } else {
+                mManyLyricsView.setVisibility(View.GONE);
+                mFloatLyricsView.setVisibility(View.VISIBLE);
+                mFloatLyricsView.initLrcData();
+                mFloatLyricsView.setLyricsReader(lyricsReader);
+                if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                    MyLog.d(TAG, "onEventMainThread " + "play");
+                    RoundInfoModel roundInfo = presenter.getRoomData().getRealRoundInfo();
+                    mFloatLyricsView.play(0);
+                }
+            }
+        }
+    }
+
+    private void fetchLyricTask(SongModel songModel){
+        MyLog.d(TAG, "fetchLyricTask" + " songModel=" + songModel);
+        prepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
+            @Override
+            public void subscribe(ObservableEmitter<File> emitter) {
+                File tempFile = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
+
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getLyric(), tempFile, null);
+
+                File oldName = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
+                File newName = new File(SongResUtils.createLyricFileName(songModel.getLyric()));
+
+                if(isSuccess){
+                    if (oldName.renameTo(newName)) {
+                        System.out.println("已重命名");
+                    } else {
+                        System.out.println("Error");
+                        emitter.onError(new Throwable("重命名错误"));
+                    }
+                } else {
+                    emitter.onError(new Throwable("下载失败"));
+                }
+
+                emitter.onNext(newName);
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(file -> {
+            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
+            parseLyrics(fileName);
+        }, throwable -> {
+            MyLog.e(TAG, throwable);
+        }, () -> {
+
+        });
+    }
+
+    @Override
+    public void showMsg(String msg) {
+        if (!TextUtils.isEmpty(msg)) {
+            addText(msg);
+        } else {
+            addText("收到一个空信息");
+        }
+    }
+
+    boolean needScroll = true;
+
     void addText(String te) {
-        String a = mTestTv.getText() + "\n" + te;
-        mTestTv.setText(a);
+        handler.post(() -> {
+            mTestTv.append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis(), "HH:mm:ss:SSS") + ":" + te + "\n");
+            if (needScroll) {
+                scrollView.smoothScrollTo(0, mTestTv.getBottom());
+            }
+        });
     }
 }

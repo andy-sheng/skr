@@ -44,8 +44,6 @@ public class RoomData {
 
     private List<OnLineInfoModel> mOnlineInfoList;//所有的用户在线信息
 
-    public List<SongModel> songModelList;//所有人要唱的歌曲
-
     private List<PlayerInfo> mPlayerInfoList;//选手信息
 
     /**
@@ -73,14 +71,6 @@ public class RoomData {
                 EventBus.getDefault().post(new RoundInfoChangeEvent(false));
             }
         }
-    }
-
-    public List<SongModel> getSongModelList() {
-        return songModelList;
-    }
-
-    public void setSongModelList(List<SongModel> songModelList) {
-        this.songModelList = songModelList;
     }
 
     public int getGameId() {

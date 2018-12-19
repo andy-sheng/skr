@@ -75,4 +75,12 @@ public class SongResUtils {
 
         return U.getMD5Utils().MD5_16(origen);
     }
+
+    public static String createLyricFileName(String url){
+        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + SUFF_ZRCE;
+    }
+
+    public static String createTempLyricFileName(String url){
+        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_ZRCE;
+    }
 }
