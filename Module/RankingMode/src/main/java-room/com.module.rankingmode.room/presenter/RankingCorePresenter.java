@@ -86,7 +86,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             EventBus.getDefault().register(this);
         }
         mRoomData.checkRound();
-        startSyncGameStateTask(3000);
+        startSyncGameStateTask(checkStateTaskDelay);
     }
 
     @Override

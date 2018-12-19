@@ -189,7 +189,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     @Override
     public void onDetach() {
         super.onDetach();
-        getActivity().finish();
     }
 
     @Override
