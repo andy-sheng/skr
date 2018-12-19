@@ -54,8 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/view_106_dp"
-        android:layout_marginBottom="@dimen/view_13_dp"
+        android:padding="@dimen/view_13_dp"
+        android:layout_marginLeft="@dimen/view_93_dp"
         android:src="@drawable/select_song_back" />
 
     <com.common.view.ex.ExImageView
@@ -64,8 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/view_93_dp"
-        android:layout_marginBottom="@dimen/view_13_dp"
+        android:padding="@dimen/view_13_dp"
+        android:layout_marginRight="@dimen/view_80_dp"
         android:src="@drawable/img_yidian" />
 
     <com.common.view.ex.ExImageView
@@ -74,8 +74,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/view_36_dp"
-        android:layout_marginTop="@dimen/view_46_dp"
+        android:padding="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
         android:src="@drawable/img_back" />
 
 

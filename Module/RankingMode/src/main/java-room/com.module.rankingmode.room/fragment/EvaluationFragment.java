@@ -87,13 +87,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     .build());
             mVoteLeftNameTv.setText(left.getUserInfo().getUserNickname());
             mVoteLeftSongTv.setText(left.getSongList().get(0).getItemName());
-
-            RxView.clicks(mVoteLeftIv)
-                    .throttleFirst(300, TimeUnit.MILLISECONDS)
-                    .subscribe(o -> {
-                        // TODO: 2018/12/18  我的机器评分，暂时当作100分
-                        presenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId(), 100);
-                    });
         }
 
         if (right != null) {
@@ -105,17 +98,25 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mVoteRigntNameTv.setText(right.getUserInfo().getUserNickname());
             mVoteRightSongTv.setText(right.getSongList().get(0).getItemName());
 
-            RxView.clicks(mVoteRightMie)
-                    .throttleFirst(300, TimeUnit.MILLISECONDS)
-                    .subscribe(o -> {
-                        // TODO: 2018/12/18  我的机器评分，暂时当作100分
-                        presenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId(), 100);
-                    });
         }
 
 
         presenter = new EndGamePresenter(this);
         addPresent(presenter);
+
+        RxView.clicks(mVoteLeftMie)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    // TODO: 2018/12/18  我的机器评分，暂时当作100分
+                    presenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId(), 100);
+                });
+
+        RxView.clicks(mVoteRightMie)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    // TODO: 2018/12/18  我的机器评分，暂时当作100分
+                    presenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId(), 100);
+                });
     }
 
     @Override
@@ -145,12 +146,12 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void voteSucess(long votedUserId) {
         // TODO: 2018/12/18  可能要加上星星的特效 
         if (left.getUserInfo().getUserId() == votedUserId) {
-            mVoteLeftIv.setSelected(true);
-            mVoteLeftIv.setClickable(false);
+            mVoteLeftMie.setSelected(true);
+            mVoteLeftMie.setClickable(false);
             mVoteLeftShadowIv.setVisibility(View.VISIBLE);
         } else if (right.getUserInfo().getUserId() == votedUserId) {
-            mVoteRightIv.setSelected(true);
-            mVoteRightIv.setClickable(false);
+            mVoteRightMie.setSelected(true);
+            mVoteRightMie.setClickable(false);
             mVoteRightShadowIv.setVisibility(View.VISIBLE);
         }
     }
