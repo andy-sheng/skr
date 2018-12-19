@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.common.base.BaseFragment;
@@ -36,17 +35,17 @@ public class PrepareResFragment extends BaseFragment {
     ExTextView mTvDuration;
     ExTextView mTvLyric;
 
-    ExImageView ivBack;
+    ExImageView mIvBack;
 
-    ExImageView ivStartMatch;
+    ExImageView mIvStartMatch;
 
     private PrepareData mPrepareData = new PrepareData();
 
-    HttpUtils.OnDownloadProgress onDownloadProgress;
+    HttpUtils.OnDownloadProgress mOnDownloadProgress;
 
-    PrepareSongPresenter prepareSongPresenter;
+    PrepareSongPresenter mPrepareSongPresenter;
 
-    Handler handler;
+    Handler mUiHandler;
 
     @Override
     public int initView() {
@@ -65,11 +64,11 @@ public class PrepareResFragment extends BaseFragment {
         mSongName = (ExTextView) mRootView.findViewById(R.id.song_name);
         mTvDuration = (ExTextView) mRootView.findViewById(R.id.tv_duration);
         mTvLyric = (ExTextView) mRootView.findViewById(R.id.tv_lyric);
-        ivStartMatch = (ExImageView) mRootView.findViewById(R.id.iv_start_match);
+        mIvStartMatch = (ExImageView) mRootView.findViewById(R.id.iv_start_match);
 
         mSongName.setText(mPrepareData.getSongModel().getItemName());
 
-        ivBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
 
         AvatarUtils.loadAvatarByUrl(mSongIcon,
@@ -81,9 +80,9 @@ public class PrepareResFragment extends BaseFragment {
 
         mTvDuration.setText(U.getDateTimeUtils().formatTimeStringForDate(mPrepareData.getSongModel().getTotalMs(), "mm:ss"));
 
-        handler = new Handler();
+        mUiHandler = new Handler();
 
-        onDownloadProgress = new HttpUtils.OnDownloadProgress() {
+        mOnDownloadProgress = new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
 //                MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);
@@ -92,16 +91,16 @@ public class PrepareResFragment extends BaseFragment {
             @Override
             public void onCompleted(String localPath) {
                 MyLog.d(TAG, "onCompleted" + " localPath=" + localPath);
-                handler.post(() -> {
+                mUiHandler.post(() -> {
                     U.getToastUtil().showShort("歌曲资源已经准备好了");
-                    ivStartMatch.setEnabled(true);
+                    mIvStartMatch.setEnabled(true);
                 });
             }
 
             @Override
             public void onCanceled() {
                 MyLog.d(TAG, "onCanceled");
-                handler.post(() -> {
+                mUiHandler.post(() -> {
 
                 });
             }
@@ -109,13 +108,13 @@ public class PrepareResFragment extends BaseFragment {
             @Override
             public void onFailed() {
                 MyLog.d(TAG, "onFailed");
-                handler.post(() -> {
+                mUiHandler.post(() -> {
 
                 });
             }
         };
 
-        RxView.clicks(ivStartMatch)
+        RxView.clicks(mIvStartMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
@@ -132,7 +131,7 @@ public class PrepareResFragment extends BaseFragment {
                             .build());
                 });
 
-        RxView.clicks(ivBack)
+        RxView.clicks(mIvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
@@ -141,17 +140,17 @@ public class PrepareResFragment extends BaseFragment {
                             .build());
                 });
 
-        ivStartMatch.setEnabled(false);
+        mIvStartMatch.setEnabled(false);
 
-        prepareSongPresenter = new PrepareSongPresenter(onDownloadProgress, mPrepareData.getSongModel());
-        prepareSongPresenter.prepareRes();
+        mPrepareSongPresenter = new PrepareSongPresenter(mOnDownloadProgress, mPrepareData.getSongModel());
+        mPrepareSongPresenter.prepareRes();
 
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        prepareSongPresenter.cancelTask();
+        mPrepareSongPresenter.cancelTask();
     }
 
     @Override

@@ -106,7 +106,6 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     public void ready(boolean isPrepareState) {
         MyLog.d(TAG, "ready" + " isPrepareState=" + isPrepareState);
         isPrepared = isPrepareState;
-
         if (isPrepared) {
             U.getToastUtil().showShort("已准备");
             mIvPrepare.setEnabled(false);
@@ -126,6 +125,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         // 这个activity直接到选歌页面,没问题
         U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
                 .setActivity(getActivity())
+                .setNotifyShowFragment(SongSelectFragment.class)
                 .setBackToFragment(SongSelectFragment.class)
                 .build());
     }

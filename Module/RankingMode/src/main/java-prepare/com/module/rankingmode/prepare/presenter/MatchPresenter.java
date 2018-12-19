@@ -32,7 +32,7 @@ import okhttp3.RequestBody;
 import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
-public class MatchingPresenter extends RxLifeCyclePresenter {
+public class MatchPresenter extends RxLifeCyclePresenter {
     public static final String TAG = "MatchingPresenter";
 
     IMatchingView view;
@@ -51,7 +51,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
 
     volatile MatchState matchState = MatchState.IDLE;
 
-    public MatchingPresenter(@NonNull IMatchingView view) {
+    public MatchPresenter(@NonNull IMatchingView view) {
         this.view = view;
         matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
@@ -70,15 +70,15 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "startLoopMatchTask");
         this.currentMusicId = playbookItemID;
 
-//        loopMatchTask = HandlerTaskTimer.newBuilder()
-//                .interval(10000)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//            @Override
-//            public void onNext(Integer integer) {
-//                MyLog.d(TAG, "startLoopMatchTask onNext");
-        startMatch(currentMusicId);
-//            }
-//        });
+        loopMatchTask = HandlerTaskTimer.newBuilder()
+                .interval(10000)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        MyLog.d(TAG, "startLoopMatchTask onNext");
+                        startMatch(currentMusicId);
+                    }
+                });
     }
 
     private void disposeLoopMatchTask() {
@@ -181,6 +181,8 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
     @Override
     public void destroy() {
         super.destroy();
+        disposeLoopMatchTask();
+        disposeMatchTask();
         EventBus.getDefault().unregister(this);
     }
 
@@ -270,20 +272,19 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
                                     } else {
                                         MyLog.d(TAG, "3秒后拉完房间信息人数不够3个，需要重新match了");
                                         // TODO: 2018/12/12 方便测试这个先注掉
-//                                        startLoopMatchTask();
+                                        startLoopMatchTask(currentMusicId);
                                     }
                                 } else {
                                     MyLog.d(TAG, "3秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
                                     startLoopMatchTask(currentMusicId);
                                 }
-
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                MyLog.d(MatchingPresenter.TAG, "checkCurrentGameData2 process" + " e=" + e);
+                                MyLog.d(MatchPresenter.TAG, "checkCurrentGameData2 process" + " e=" + e);
                             }
-                        }, MatchingPresenter.this);
+                        }, MatchPresenter.this);
                     }
                 });
     }
@@ -317,7 +318,7 @@ public class MatchingPresenter extends RxLifeCyclePresenter {
             public void onError(Throwable e) {
                 MyLog.d(TAG, "onError updateUserListState 3" + " e=" + e);
             }
-        }, MatchingPresenter.this);
+        }, MatchPresenter.this);
     }
 
     enum MatchState {

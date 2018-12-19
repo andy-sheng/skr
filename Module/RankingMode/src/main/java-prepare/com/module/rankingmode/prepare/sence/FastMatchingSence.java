@@ -14,7 +14,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
-import com.module.rankingmode.prepare.presenter.MatchingPresenter;
+import com.module.rankingmode.prepare.presenter.MatchPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchingView;
 import com.module.rankingmode.prepare.view.MatchingLayerView;
@@ -29,7 +29,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
 
     MatchSenceController matchSenceController;
 
-    MatchingPresenter matchingPresenter;
+    MatchPresenter matchingPresenter;
 
     MatchingLayerView mLargeMatchingLayerView;
     MatchingLayerView mSmallMatchingLayerView;
@@ -57,7 +57,7 @@ public class FastMatchingSence extends RelativeLayout implements ISence, IMatchi
 
         mMatchStatusTv = findViewById(R.id.match_status_tv);
 
-        matchingPresenter = new MatchingPresenter(this);
+        matchingPresenter = new MatchPresenter(this);
 
         mLargeMatchingLayerView = findViewById(R.id.large_matching_layer_view);
         mSmallMatchingLayerView = findViewById(R.id.small_matching_layer_view);

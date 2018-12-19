@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.View;
 
@@ -22,7 +21,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
-import com.module.rankingmode.prepare.presenter.MatchingPresenter;
+import com.module.rankingmode.prepare.presenter.MatchPresenter;
 import com.module.rankingmode.prepare.view.IMatchingView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -42,7 +41,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     ExTextView mTvTip;
     ExImageView mIvCancelMatch;
 
-    MatchingPresenter matchingPresenter;
+    MatchPresenter mMatchPresenter;
     PrepareData mPrepareData;
 
     @Override
@@ -94,8 +93,8 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                         .setBorderColor(Color.WHITE)
                         .build());
 
-        matchingPresenter = new MatchingPresenter(this);
-        matchingPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID());
+        mMatchPresenter = new MatchPresenter(this);
+        mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID());
     }
 
     @Override
@@ -113,9 +112,11 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void onDetach() {
         super.onDetach();
+        mMatchPresenter.destroy();
     }
 
     void goBack() {
+        mMatchPresenter.cancelMatch();
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                 .setMessageTip("马上要为你匹配到对手了\n还要退出吗？")
                 .setConfirmTip("退出")
@@ -134,7 +135,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                         if (view instanceof ExTextView) {
                             if (view.getId() == R.id.confirm_tv) {
                                 dialog.dismiss();
-                                matchingPresenter.cancelMatch();
+                                mMatchPresenter.cancelMatch();
                                 U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                         .setPopFragment(MatchFragment.this)
                                         .setPopAbove(false)
