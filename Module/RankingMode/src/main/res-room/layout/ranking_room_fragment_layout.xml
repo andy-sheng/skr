@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_60_dp"
         app:ly_eable_scroll="false"
-        app:ly_eable_verbatim="true"
+        app:ly_eable_verbatim="false"
         app:ly_high_light_paint_color_from="@color/white"
         app:ly_high_light_paint_color_to="@color/white"
         app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"

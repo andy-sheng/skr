@@ -100,7 +100,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
-                songModel.setItemID(2);
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                         .setAddToBackStack(false)
                         .setHideFragment(SongSelectFragment.class)
