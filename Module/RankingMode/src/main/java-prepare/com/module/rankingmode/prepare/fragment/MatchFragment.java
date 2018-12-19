@@ -12,6 +12,7 @@ import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -43,6 +44,8 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     MatchPresenter mMatchPresenter;
     PrepareData mPrepareData;
+
+    HandlerTaskTimer mMatchTimeTask;
 
     @Override
     public int initView() {
@@ -95,7 +98,32 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
         mMatchPresenter = new MatchPresenter(this);
         mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID());
+
+        startTimeTask();
     }
+
+
+    /**
+     * 更新已匹配时间
+     */
+    public void startTimeTask() {
+        mMatchTimeTask = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(-1)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        mTvMatchedTime.setText(String.format(U.app().getString(R.string.match_time_info), integer));
+                    }
+                });
+    }
+
+    public void stopTimeTask() {
+        if (mMatchTimeTask != null) {
+            mMatchTimeTask.dispose();
+        }
+    }
+
 
     @Override
     public boolean useEventBus() {
@@ -136,6 +164,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                             if (view.getId() == R.id.confirm_tv) {
                                 dialog.dismiss();
                                 mMatchPresenter.cancelMatch();
+                                stopTimeTask();
                                 U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                         .setPopFragment(MatchFragment.this)
                                         .setPopAbove(false)
@@ -160,6 +189,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mPrepareData.setGameCreatMs(gameCreatMs);
         mPrepareData.setPlayerInfoList(playerInfoList);
 
+        stopTimeTask();
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchSuccessFragment.class)
                 .setAddToBackStack(false)
                 .setNotifyHideFragment(MatchFragment.class)

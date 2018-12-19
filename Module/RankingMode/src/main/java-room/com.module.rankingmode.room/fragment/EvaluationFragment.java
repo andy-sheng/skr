@@ -147,10 +147,12 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         if (left.getUserInfo().getUserId() == votedUserId) {
             mVoteLeftMie.setSelected(true);
             mVoteLeftMie.setClickable(false);
+            mVoteRightMie.setClickable(false);
             mVoteLeftShadowIv.setVisibility(View.VISIBLE);
         } else if (right.getUserInfo().getUserId() == votedUserId) {
             mVoteRightMie.setSelected(true);
             mVoteRightMie.setClickable(false);
+            mVoteLeftMie.setClickable(false);
             mVoteRightShadowIv.setVisibility(View.VISIBLE);
         }
     }
