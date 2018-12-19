@@ -2,8 +2,10 @@ package com.module.rankingmode.prepare.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.View;
 
 import com.common.base.BaseFragment;
@@ -14,6 +16,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
@@ -21,6 +24,9 @@ import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchingPresenter;
 import com.module.rankingmode.prepare.view.IMatchingView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -110,12 +116,40 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     void goBack() {
-        matchingPresenter.cancelMatch();
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopFragment(MatchFragment.this)
-                .setPopAbove(false)
-                .setNotifyShowFragment(PrepareResFragment.class)
-                .build());
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip("马上要为你匹配到对手了\n还要退出吗？")
+                .setConfirmTip("退出")
+                .setCancelTip("继续匹配")
+                .build();
+
+        DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setExpanded(false)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view instanceof ExTextView) {
+                            if (view.getId() == R.id.confirm_tv) {
+                                dialog.dismiss();
+                                matchingPresenter.cancelMatch();
+                                U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                                        .setPopFragment(MatchFragment.this)
+                                        .setPopAbove(false)
+                                        .setNotifyShowFragment(PrepareResFragment.class)
+                                        .build());
+                            }
+
+                            if (view.getId() == R.id.cancel_tv) {
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+                })
+                .create().show();
+
     }
 
     @Override

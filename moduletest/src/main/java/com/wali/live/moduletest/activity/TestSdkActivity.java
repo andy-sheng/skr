@@ -1,8 +1,11 @@
 package com.wali.live.moduletest.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -27,6 +30,7 @@ import com.common.core.share.ShareManager;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
+import com.common.utils.CommonReceiver;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
@@ -110,7 +114,6 @@ public class TestSdkActivity extends BaseActivity {
                         .setBorderWidth(2)
                         .setBorderColor(Color.BLUE)
                         .build());
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -154,7 +157,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
 
-                TipsDialogView tipsDialogView = new TipsDialogView(TestSdkActivity.this);
+                TipsDialogView tipsDialogView = new TipsDialogView.Builder(TestSdkActivity.this).build();
                 DialogPlus.newDialog(TestSdkActivity.this)
                         .setContentHolder(new ViewHolder(tipsDialogView))
                         .setGravity(Gravity.BOTTOM)

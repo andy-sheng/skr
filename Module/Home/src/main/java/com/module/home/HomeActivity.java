@@ -1,5 +1,8 @@
 package com.module.home;
 
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +14,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.utils.CommonReceiver;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+
 import com.common.view.viewpager.NestViewPager;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
@@ -102,7 +107,7 @@ public class HomeActivity extends BaseActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                       mMainVp.setCurrentItem(0,false);
+                        mMainVp.setCurrentItem(0, false);
                     }
                 });
 
@@ -111,7 +116,7 @@ public class HomeActivity extends BaseActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        mMainVp.setCurrentItem(1,false);
+                        mMainVp.setCurrentItem(1, false);
                     }
                 });
 
@@ -120,9 +125,15 @@ public class HomeActivity extends BaseActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        mMainVp.setCurrentItem(2,false);
+                        mMainVp.setCurrentItem(2, false);
                     }
                 });
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(new CommonReceiver(), filter);
     }
 
     public void initOnAccountReady() {
@@ -133,6 +144,14 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         mHomePresenter.checkPermiss(this);
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
+        if (mHomePresenter != null) {
+            mHomePresenter.destroy();
+        }
     }
 
     @Override
