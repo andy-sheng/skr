@@ -141,6 +141,29 @@ public class FragmentUtils {
                 if (back2Fragment != null) {
                     // 不包括 back2Fragment 本身
                     fragmentManager.popBackStackImmediate(back2Fragment.getTag(), 0);
+                    // 然后从后往前把 back2Fragment之前都删除了
+                    List<Fragment> l = fragmentManager.getFragments();
+                    for (int i=l.size()-1;i>=0;i--) {
+                        Fragment f = l.get(i);
+                        if (f == params.popFragment) {
+                            if (params.popAbove) {
+                                /**
+                                 *  至于int flags有两个取值：0或FragmentManager.POP_BACK_STACK_INCLUSIVE；
+                                 *  当取值0时，表示除了参数一指定这一层之上的所有层都退出栈，指定的这一层为栈顶层； 
+                                 *  当取值POP_BACK_STACK_INCLUSIVE时，表示连着参数一指定的这一层一起退出栈
+                                 *  另外第一个参数一般用 tag ，只有静态添加的 fragment 才用id
+                                 *
+                                 *  使用这种方式pop时 请确保 add fragment 是已经压入addToBackStack = true 压入堆栈
+                                 */
+                                fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                            } else {
+                                ft = fragmentManager.beginTransaction();
+                                ft = ft.remove(f);
+                                ft.commitAllowingStateLoss();
+                            }
+                        }
+                    }
+
                 }
             } else {
                 return params.mActivity.getSupportFragmentManager().popBackStackImmediate();
