@@ -57,6 +57,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     int offset; //当前偏移量
 
     TanTanCallback callback;
+    OverLayCardLayoutManager mOverLayCardLayoutManager;
 
     @Override
     public int initView() {
@@ -95,7 +96,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
         mDeleteList = new ArrayList<>();
         songCardModels = new ArrayList<>();
-        mCardRecycleview.setLayoutManager(new OverLayCardLayoutManager());
+        mOverLayCardLayoutManager = new OverLayCardLayoutManager();
+        mCardRecycleview.setLayoutManager(mOverLayCardLayoutManager);
         adapter = new SongCardsAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
@@ -134,6 +136,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         SongCardModel songCardModel = mDeleteList.remove(0);
 
         if (songCardModels != null) {
+            mOverLayCardLayoutManager.setDelete(true);
             songCardModels.add(songCardModel);
             adapter.notifyDataSetChanged();
         }

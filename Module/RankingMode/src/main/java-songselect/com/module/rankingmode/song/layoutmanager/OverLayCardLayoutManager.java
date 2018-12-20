@@ -4,6 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+
+import com.common.log.MyLog;
+import com.module.rankingmode.R;
+
+import static com.umeng.socialize.utils.ContextUtil.getContext;
 
 /**
  * 介绍：参考人人影视 最多排列四个
@@ -17,6 +23,8 @@ import android.view.ViewGroup;
 public class OverLayCardLayoutManager extends RecyclerView.LayoutManager {
     private static final String TAG = "swipecard";
 
+    boolean isDelete = false; // 标记顶层view是否被删除回来的
+
     @Override
     public RecyclerView.LayoutParams generateDefaultLayoutParams() {
         return new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -24,7 +32,7 @@ public class OverLayCardLayoutManager extends RecyclerView.LayoutManager {
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        Log.e(TAG, "onLayoutChildren() called with: recycler = [" + recycler + "], state = [" + state + "]");
+//        Log.e(TAG, "onLayoutChildren() called with: recycler = [" + recycler + "], state = [" + state + "]");
         detachAndScrapAttachedViews(recycler);
         int itemCount = getItemCount();
         if (itemCount < 1) {
@@ -62,8 +70,26 @@ public class OverLayCardLayoutManager extends RecyclerView.LayoutManager {
 
             //第几层,举例子，count =7， 最后一个TopView（6）是第0层，
             int level = itemCount - position - 1;
-            //除了顶层不需要缩小和位移
-            if (level > 0 /*&& level < mShowCount - 1*/) {
+            if (level == 0 && isDelete) {
+                // 给删除的顶层做落下的一个动画 动画效果可修改
+                view.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.song_card_del_top_in));
+                isDelete = false;
+            }
+
+            if (level == 1 && isDelete) {
+                // recycleview的缓存问题，会导致图片先陷进去再执行动画，做如下修改
+                View view1 = recycler.getViewForPosition(position);
+                addView(view1);
+                measureChildWithMargins(view1, 0, 0);
+                int widthSpace1 = getWidth() - getDecoratedMeasuredWidth(view);
+                int heightSpace1= getHeight() - getDecoratedMeasuredHeight(view);
+                //我们在布局时，将childView居中处理，这里也可以改为只水平居中
+                layoutDecoratedWithMargins(view1, widthSpace1 / 2, heightSpace1 / 2,
+                        widthSpace1 / 2 + getDecoratedMeasuredWidth(view1),
+                        heightSpace1 / 2 + getDecoratedMeasuredHeight(view1));
+                view1.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.song_card_in));
+            } else if (level > 0 /*&& level < mShowCount - 1*/) {
+                //除了顶层不需要缩小和位移
                 //每一层都需要X方向的缩小
                 view.setScaleX(1 - CardConfig.SCALE_GAP * level);
                 //前N层，依次向下位移和Y方向的缩小
@@ -80,4 +106,7 @@ public class OverLayCardLayoutManager extends RecyclerView.LayoutManager {
         }
     }
 
+    public void setDelete(boolean delete) {
+        isDelete = delete;
+    }
 }
