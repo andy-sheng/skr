@@ -25,10 +25,10 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
     private String mFrom = "";
     // 我们页面的根布局以及layoutparams
     private View mChildOfContent;
-    private FrameLayout.LayoutParams frameLayoutParams;
+    private FrameLayout.LayoutParams mFrameLayoutParams;
 
     // 我们视图view先前的高度
-    private int usableHeightPrevious = 0;
+    private int mUsableHeightPrevious = 0;
 
 
     ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -62,7 +62,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
          * 所以这里就有一个bug
          */
         mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
-        frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
+        mFrameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
     }
 
     /**
@@ -98,7 +98,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
                 + " screenHeight:" + U.getDisplayUtils().getScreenHeight()
                 + " phoneHeight:" + U.getDisplayUtils().getPhoneHeight()
         );
-        if (usableHeightNow != usableHeightPrevious) {
+        if (usableHeightNow != mUsableHeightPrevious) {
             /**
              * usableHeightSansKeyboard 这里为 2248 手机高度。
              * getSoftButtonsBarHeight = 130。 这里会算上虚拟按键的高度
@@ -142,7 +142,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
                     KeyboardEvent keyboardEvent = new KeyboardEvent(mFrom, KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE, heightDifference);
                     EventBus.getDefault().post(keyboardEvent);
                 } else {
-                    frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
+                    mFrameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
                 }
             } else {
                 MyLog.d(TAG, "键盘变为不可见");
@@ -151,10 +151,10 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
                     KeyboardEvent keyboardEvent = new KeyboardEvent(mFrom, KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN, 0);
                     EventBus.getDefault().post(keyboardEvent);
                 }
-                frameLayoutParams.height = usableHeightSansKeyboard;
+                mFrameLayoutParams.height = usableHeightSansKeyboard;
             }
             mChildOfContent.requestLayout();
-            usableHeightPrevious = usableHeightNow;
+            mUsableHeightPrevious = usableHeightNow;
         }
     }
 
