@@ -77,7 +77,7 @@ public class TurnChangeCardView extends RelativeLayout {
 
         }
 
-        initData(curInfo, nexInfo);
+        bindData(curInfo, nexInfo);
     }
 
     public void init() {
@@ -106,7 +106,7 @@ public class TurnChangeCardView extends RelativeLayout {
 
     }
 
-    public void initData(PlayerInfo cur, PlayerInfo next) {
+    public void bindData(PlayerInfo cur, PlayerInfo next) {
         if (cur != null) {
             if (cur.getUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
                 mTurnChangeBgIv.setBackground(getResources().getDrawable(R.drawable.room_turn_card_bg_blue));

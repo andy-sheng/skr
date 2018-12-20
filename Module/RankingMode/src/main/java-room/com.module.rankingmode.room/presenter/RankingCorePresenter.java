@@ -48,9 +48,9 @@ import static com.module.rankingmode.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND
 
 public class RankingCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankingCorePresenter";
-    private static long heartBeatTaskInterval = 3000;
-    private static long checkStateTaskDelay = 10000;
-    private static long syncStateTaskInterval = 12000;
+    private static long sHeartBeatTaskInterval = 3000;
+    private static long sCheckStateTaskDelay = 10000;
+    private static long sSyncStateTaskInterval = 12000;
 
     RoomData mRoomData;
 
@@ -75,10 +75,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         EngineManager.getInstance().muteLocalAudioStream(true);
     }
 
-    public RoomData getRoomData() {
-        return mRoomData;
-    }
-
     @Override
     public void start() {
         super.start();
@@ -86,7 +82,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             EventBus.getDefault().register(this);
         }
         mRoomData.checkRound();
-        startSyncGameStateTask(checkStateTaskDelay);
+        startSyncGameStateTask(sCheckStateTaskDelay);
     }
 
     @Override
@@ -209,7 +205,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public void startHeartBeatTask() {
         cancelHeartBeatTask("startHeartBeatTask");
         mHeartBeatTask = HandlerTaskTimer.newBuilder()
-                .interval(heartBeatTaskInterval)
+                .interval(sHeartBeatTaskInterval)
                 .take(-1)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
@@ -261,7 +257,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         cancelSyncGameStateTask();
         mSyncGameStateTask = HandlerTaskTimer.newBuilder()
                 .delay(delayTime)
-                .interval(syncStateTaskInterval)
+                .interval(sSyncStateTaskInterval)
                 .take(-1)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
@@ -361,25 +357,31 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             // 轮到我唱了
             // 开始发心跳
             startHeartBeatTask();
-            // 开始倒计时 3 2 1
-            mIGameRuleView.startSelfCountdown(new Runnable() {
+            mUiHanlder.post(new Runnable() {
                 @Override
                 public void run() {
-                    // 开始开始混伴奏，开始解除引擎mute
-                    File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
-                    if (accFile != null && accFile.exists()) {
-                        EngineManager.getInstance().muteLocalAudioStream(false);
-                        EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
-                        EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
-                        // 还应开始播放歌词
-                        mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-                        mIGameRuleView.showMsg("开始唱了，歌词和伴奏响起");
-                    }
+                    // 开始倒计时 3 2 1
+                    mIGameRuleView.startSelfCountdown(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 开始开始混伴奏，开始解除引擎mute
+                            File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
+                            if (accFile != null && accFile.exists()) {
+                                EngineManager.getInstance().muteLocalAudioStream(false);
+                                EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
+                                EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
+                                // 还应开始播放歌词
+                                mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
+                                mIGameRuleView.showMsg("开始唱了，歌词和伴奏响起");
+                            }
+                        }
+                    });
+
+                    mIGameRuleView.showMsg("演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
+                            + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
                 }
             });
 
-            mIGameRuleView.showMsg("演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
-                    + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
         } else {
             MyLog.d(TAG, "不是我的轮次，停止发心跳，停止混音，闭麦");
             cancelHeartBeatTask("切换唱将");
@@ -539,7 +541,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(SyncStatusEvent syncStatusEvent) {
         MyLog.d(TAG, "onEventMainThread receive syncStatusEvent");
         mIGameRuleView.showMsg("收到服务器更新状态的push了");
-        startSyncGameStateTask(checkStateTaskDelay);
+        startSyncGameStateTask(sCheckStateTaskDelay);
         updatePlayerState(syncStatusEvent.gameOverTimeMs, syncStatusEvent.syncStatusTimes, syncStatusEvent.onlineInfos, syncStatusEvent.currentInfo, syncStatusEvent.nextInfo);
     }
 

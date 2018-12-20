@@ -3,6 +3,7 @@ package com.module.rankingmode.room.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,12 +16,18 @@ import android.widget.ScrollView;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.fresco.IFrescoCallBack;
+import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
+import com.facebook.fresco.animation.drawable.AnimationListener;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.room.comment.CommentView;
@@ -62,7 +69,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     TopContainerView mTopContainerView;
 
-    RankingCorePresenter presenter;
+    RankingCorePresenter mCorePresenter;
 
     ExTextView mTestTv;
 
@@ -79,6 +86,21 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     TurnChangeCardView mTurnChangeView;
 
     BaseImageView mReadyGoView;
+
+    SongModel mPlayingSongModel;
+
+    boolean mNeedScroll = true;
+
+    boolean mReadyGoPlaying = false;
+
+    HandlerTaskTimer mSelfSingTaskTimer;
+
+    ObjectAnimator mTurnChangeCardShowAnimator;
+
+    ObjectAnimator mTurnChangeCardHideAnimator;
+
+    Runnable mPendingSelfCountDownRunnable;
+    int mPendingRivalCountdownUid = -1;
 
     @Override
     public int initView() {
@@ -101,21 +123,19 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTestTv.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         mRootView.findViewById(R.id.tv_control).setOnClickListener(v -> {
-            needScroll = !needScroll;
+            mNeedScroll = !mNeedScroll;
         });
 
         showReadyGoView();
 
-        presenter = new RankingCorePresenter(this, mRoomData);
-        addPresent(presenter);
+        mCorePresenter = new RankingCorePresenter(this, mRoomData);
+        addPresent(mCorePresenter);
 
         showMsg("gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
 
-
-    ObjectAnimator mTurnChangeCardShowAnimator;
-
     public void playShowTurnCardAnimator() {
+        mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardShowAnimator == null) {
             mTurnChangeCardShowAnimator = ObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0);
             mTurnChangeCardShowAnimator.setDuration(1000);
@@ -124,14 +144,18 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    HandlerTaskTimer.newBuilder()
-                            .delay(2000)
-                            .start(new HandlerTaskTimer.ObserverW() {
-                                @Override
-                                public void onNext(Integer integer) {
-                                    playHideTurnCardAnimator();
-                                }
-                            });
+                    mUiHanlder.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            playHideTurnCardAnimator();
+                        }
+                    },2000);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    super.onAnimationCancel(animation);
+                    onAnimationEnd(animation);
                 }
 
                 @Override
@@ -145,9 +169,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTurnChangeCardShowAnimator.start();
     }
 
-    ObjectAnimator mTurnChangeCardHideAnimator;
-
     public void playHideTurnCardAnimator() {
+        mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardHideAnimator == null) {
             mTurnChangeCardHideAnimator = ObjectAnimator.ofFloat(mTurnChangeView, "translationX", 0, -U.getDisplayUtils().getScreenWidth());
             mTurnChangeCardHideAnimator.setDuration(1000);
@@ -157,6 +180,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
                     mTurnChangeView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    super.onAnimationCancel(animation);
+                    onAnimationEnd(animation);
                 }
 
                 @Override
@@ -205,7 +234,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         });
     }
 
-    private void initLyricsView(){
+    private void initLyricsView() {
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
         mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
         mFloatLyricsView = mRootView.findViewById(R.id.float_lyrics_view);
@@ -217,24 +246,82 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mReadyGoView = new BaseImageView(getActivity());
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(188));
             lp.topMargin = U.getDisplayUtils().dip2px(143);
-            ((RelativeLayout)mRootView).addView(mReadyGoView, lp);
+            ((RelativeLayout) mRootView).addView(mReadyGoView, lp);
         }
-//        FrescoWorker.loadImage(mReadyGoView, ImageFactory.newHttpImage("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/ready_go.webp")
-//                .setCallBack(new IFrescoCallBack() {
-//                    @Override
-//                    public void processWithInfo(ImageInfo info) {
-//
-//                    }
-//
-//                    @Override
-//                    public void processWithFailure() {
-//
-//                    }
-//                })
-//                .build()
-//        );build
+        mReadyGoPlaying = true;
+        FrescoWorker.loadImage(mReadyGoView, ImageFactory.newHttpImage(RoomData.READY_GO_WEBP_URL)
+                .setCallBack(new IFrescoCallBack() {
+                    @Override
+                    public void processWithInfo(ImageInfo info, Animatable animatable) {
+                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
+                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
+                                int curFrame = 0;
+                                @Override
+                                public void onAnimationStart(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
+                                }
+
+                                @Override
+                                public void onAnimationStop(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
+                                    onReadyGoOver();
+                                }
+
+                                @Override
+                                public void onAnimationReset(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationReset" + " drawable=" + drawable);
+                                    onReadyGoOver();
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationRepeat" + " drawable=" + drawable);
+                                }
+
+                                @Override
+                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
+                                    MyLog.d(TAG, "onAnimationFrame" + " drawable=" + drawable + " frameNumber=" + frameNumber);
+                                    // 按序列播放  0 1 2 3 4 5 循环再次到  5 - 0 时说明重复播放了
+                                    if(frameNumber<curFrame){
+                                        onReadyGoOver();
+                                    }
+                                    curFrame = frameNumber;
+                                }
+                            });
+                            animatable.start();
+                        }
+                    }
+
+                    @Override
+                    public void processWithFailure() {
+                        MyLog.d(TAG, "processWithFailure");
+                        onReadyGoOver();
+                    }
+                })
+                .build()
+        );
     }
 
+    void onReadyGoOver(){
+        MyLog.d(TAG,"onReadyGoOver" );
+        if(mReadyGoPlaying) {
+            mReadyGoPlaying = false;
+            // 移除 readyGoView
+            if (mReadyGoView != null) {
+                ((RelativeLayout) mRootView).removeView(mReadyGoView);
+            }
+            // 轮到自己演唱了，倒计时因为播放readyGo没播放
+            if(mPendingSelfCountDownRunnable!=null){
+                startSelfCountdown(mPendingSelfCountDownRunnable);
+                mPendingSelfCountDownRunnable = null;
+            }
+            // 轮到他人唱了，倒计时因为播放readyGo没播放
+            if(mPendingRivalCountdownUid!=-1){
+                startRivalCountdown(mPendingRivalCountdownUid);
+                mPendingRivalCountdownUid = -1;
+            }
+        }
+    }
     @Override
     public boolean useEventBus() {
         return false;
@@ -248,6 +335,15 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
+    public void destroy() {
+        super.destroy();
+        mUiHanlder.removeCallbacksAndMessages(null);
+        if (mSelfSingTaskTimer != null) {
+            mSelfSingTaskTimer.dispose();
+        }
+    }
+
+    @Override
     protected boolean onBackPressed() {
         if (mInputContainerView.onBackPressed()) {
             return true;
@@ -255,39 +351,52 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         return super.onBackPressed();
     }
 
+    /**
+     * 保证在主线程
+     */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
-        mUiHanlder.post(new Runnable() {
-            @Override
-            public void run() {
-                mTurnChangeView.setData(mRoomData);
-                playShowTurnCardAnimator();
+        if(mReadyGoPlaying){
+            // 正在播放readyGo动画，保存参数，延迟播放卡片
+            mPendingSelfCountDownRunnable = countDownOver;
+        }else{
+            mTurnChangeView.setData(mRoomData);
+            playShowTurnCardAnimator();
+            if (mSelfSingTaskTimer != null) {
+                mSelfSingTaskTimer.dispose();
             }
-        });
+            mSelfSingTaskTimer = HandlerTaskTimer.newBuilder()
+                    .interval(1000)
+                    .take(3)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                               @Override
+                               public void onNext(Integer integer) {
+                                   showMsg("你的演唱要开始了，倒计时" + (4 - integer));
+                               }
 
-        HandlerTaskTimer.newBuilder()
-                .interval(1000)
-                .take(3)
-                .start(new HandlerTaskTimer.ObserverW() {
-                           @Override
-                           public void onNext(Integer integer) {
-                               showMsg("你的演唱要开始了，倒计时" + (4 - integer));
+                               @Override
+                               public void onComplete() {
+                                   super.onComplete();
+                                   countDownOver.run();
+                               }
                            }
-
-                           @Override
-                           public void onComplete() {
-                               super.onComplete();
-                               countDownOver.run();
-                           }
-                       }
-                );
+                    );
+        }
     }
 
+    /**
+     * 保证在主线程
+     */
     @Override
     public void startRivalCountdown(int uid) {
-        showMsg("用户" + uid + "的演唱开始了");
-        mTurnChangeView.setData(mRoomData);
-        playShowTurnCardAnimator();
+        if(mReadyGoPlaying){
+            // 正在播放readyGo动画，保存参数，延迟播放卡片
+            mPendingRivalCountdownUid = uid;
+        }else{
+            showMsg("用户" + uid + "的演唱开始了");
+            mTurnChangeView.setData(mRoomData);
+            playShowTurnCardAnimator();
+        }
     }
 
     @Override
@@ -321,8 +430,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    SongModel mPlayingSongModel;
-
     @Override
     public void playLyric(SongModel songModel, boolean play) {
         showMsg("开始播放歌词 songId=" + songModel.getItemID());
@@ -347,20 +454,20 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
 
-    private void parseLyrics(String fileName, boolean play){
+    private void parseLyrics(String fileName, boolean play) {
         MyLog.d(TAG, "parseLyrics" + " fileName=" + fileName);
         mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, "沙漠骆驼", fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lyricsReader -> {
-                    drawLyric(fileName.hashCode()+ "", lyricsReader, play);
+                    drawLyric(fileName.hashCode() + "", lyricsReader, play);
                 }, throwable -> {
                     MyLog.e(TAG, throwable);
                 });
     }
 
 
-    private void drawLyric(String fileNameHash, LyricsReader lyricsReader, boolean play){
+    private void drawLyric(String fileNameHash, LyricsReader lyricsReader, boolean play) {
         MyLog.d(TAG, "drawLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
         if (lyricsReader != null) {
             lyricsReader.setHash(fileNameHash);
@@ -390,7 +497,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
 
-    private void fetchLyricTask(SongModel songModel, boolean play){
+    private void fetchLyricTask(SongModel songModel, boolean play) {
         MyLog.d(TAG, "fetchLyricTask" + " songModel=" + songModel);
         mPrepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
@@ -419,11 +526,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(file -> {
-            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-            parseLyrics(fileName, play);
-        }, throwable -> {
-            MyLog.e(TAG, throwable);
-        });
+                    final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
+                    parseLyrics(fileName, play);
+                }, throwable -> {
+                    MyLog.e(TAG, throwable);
+                });
     }
 
     @Override
@@ -435,12 +542,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    boolean needScroll = true;
-
     void addText(String te) {
         mUiHanlder.post(() -> {
             mTestTv.append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis(), "HH:mm:ss:SSS") + ":" + te + "\n");
-            if (needScroll) {
+            if (mNeedScroll) {
                 mScrollView.smoothScrollTo(0, mTestTv.getBottom());
             }
         });

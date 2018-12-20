@@ -82,7 +82,6 @@ public class ScorePrograssBar2 extends View {
 
         canvas.save();
         float temp = curProgress * (w1 + extendX - sx) / 100.0f;
-        MyLog.d(TAG, "onDraw" + " curProgress=" + curProgress + " temp:" + temp + " sx:" + sx + " w1:" + w1);
 
         Path path = new Path();
         path.lineTo(temp + sx, 0);

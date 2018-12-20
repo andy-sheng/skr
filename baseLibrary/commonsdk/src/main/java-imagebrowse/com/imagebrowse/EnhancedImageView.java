@@ -2,6 +2,7 @@ package com.imagebrowse;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -197,9 +198,9 @@ public class EnhancedImageView extends RelativeLayout {
         IFrescoCallBack preCallback = httpImage.getCallBack();
         httpImage.setCallBack(new IFrescoCallBack() {
             @Override
-            public void processWithInfo(ImageInfo info) {
+            public void processWithInfo(ImageInfo info, Animatable animatable) {
                 if (preCallback != null) {
-                    preCallback.processWithInfo(info);
+                    preCallback.processWithInfo(info, animatable);
                 }
                 if (!useSubSampleView()) {
                     return;
@@ -250,9 +251,9 @@ public class EnhancedImageView extends RelativeLayout {
 
         localImage.setCallBack(new IFrescoCallBack() {
             @Override
-            public void processWithInfo(ImageInfo info) {
+            public void processWithInfo(ImageInfo info, Animatable animatable) {
                 if (preCallback != null) {
-                    preCallback.processWithInfo(info);
+                    preCallback.processWithInfo(info,animatable);
                 }
                 if (!useSubSampleView()) {
                     return;

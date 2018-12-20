@@ -249,7 +249,7 @@ public class FrescoWorker {
                     @Override
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
                         if (baseImage.getCallBack() != null) {
-                            baseImage.getCallBack().processWithInfo(imageInfo);
+                            baseImage.getCallBack().processWithInfo(imageInfo,animatable);
                         }
                     }
                 });

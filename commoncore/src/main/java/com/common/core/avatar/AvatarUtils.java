@@ -294,7 +294,11 @@ public class AvatarUtils {
                     MyLog.e(TAG, "LoadParams.Build url must not null");
 //                    throw new IllegalArgumentException("");
                 }
-
+                if (mUploadParams.isCircle) {
+                    if (mUploadParams.loadingAvatarResId == R.drawable.avatar_default_b) {
+                        mUploadParams.loadingAvatarResId = R.drawable.avatar_default_circle;
+                    }
+                }
                 return this.mUploadParams;
             }
         }
