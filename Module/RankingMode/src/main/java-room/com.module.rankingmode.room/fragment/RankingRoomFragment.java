@@ -306,6 +306,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                                 @Override
                                 public void onAnimationRepeat(AnimatedDrawable2 drawable) {
                                     MyLog.d(TAG, "onAnimationRepeat" + " drawable=" + drawable);
+                                    onReadyGoOver();
                                 }
 
                                 @Override
@@ -319,6 +320,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                                 }
                             });
                             animatable.start();
+                        }else{
+                            onReadyGoOver();
                         }
                     }
 
