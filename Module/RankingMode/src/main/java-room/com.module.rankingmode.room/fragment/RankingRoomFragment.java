@@ -446,11 +446,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void gameFinish() {
         showMsg("游戏结束了");
 
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(0, mRoomData)
-                .build()
-        );
+//        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+//                .setAddToBackStack(true)
+//                .addDataBeforeAdd(0, mRoomData)
+//                .build()
+//        );
 
         if (mSelfSingTaskTimer != null) {
             mSelfSingTaskTimer.dispose();

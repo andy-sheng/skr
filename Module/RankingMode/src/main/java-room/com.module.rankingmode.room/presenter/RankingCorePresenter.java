@@ -150,24 +150,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.exitGame(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    U.getToastUtil().showShort("退出游戏成功");
-                    mIGameRuleView.showMsg("退出游戏成功 traceid is " + result.getTraceId());
-                } else {
-                    MyLog.e(TAG, "exitGame result errno is " + result.getErrmsg());
-                    mIGameRuleView.showMsg("退出游戏失败 traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, "exitGame error " + e);
-                mIGameRuleView.showMsg("退出游戏错误");
-            }
-        }, this);
+        ApiMethods.subscribe(mRoomServerApi.exitGame(body), null);
     }
 
     /**
@@ -428,7 +411,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                 + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
 
                         mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
-                        mIGameRuleView.showMsg(uid + "开始唱了，伴奏走起 one");
+                        mIGameRuleView.showMsg(uid + "开始唱了，歌词走起");
 
                     }
                 });
@@ -583,9 +566,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEventMainThread receive syncStatusEvent");
 
         String msg = "收到服务器更新状态的push了, currentRound 是 ";
-        msg = msg + syncStatusEvent.currentInfo == null ? "null" : syncStatusEvent.currentInfo.getUserID() + "";
-        msg = msg + ", nextInfo 是 " + syncStatusEvent.nextInfo == null ? "null" : syncStatusEvent.nextInfo.getUserID() + "";
-        msg = msg + ", timeMs" + + syncStatusEvent.info.getTimeMs();
+        msg = msg + (syncStatusEvent.currentInfo == null ? "null" : syncStatusEvent.currentInfo.getUserID() + "");
+        msg = msg + ", nextInfo 是 " + (syncStatusEvent.nextInfo == null ? "null" : syncStatusEvent.nextInfo.getUserID() + "");
+        msg = msg + ", timeMs" + syncStatusEvent.info.getTimeMs();
         mIGameRuleView.showMsg(msg);
         startSyncGameStateTask(sSyncStateTaskInterval);
         updatePlayerState(syncStatusEvent.gameOverTimeMs, syncStatusEvent.syncStatusTimes, syncStatusEvent.onlineInfos, syncStatusEvent.currentInfo, syncStatusEvent.nextInfo);
