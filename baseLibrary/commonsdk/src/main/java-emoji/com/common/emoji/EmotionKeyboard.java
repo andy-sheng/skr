@@ -297,7 +297,7 @@ public class EmotionKeyboard {
     }
 
     public boolean isEmotionShown() {
-        return mEmotionLayout.getVisibility() == View.VISIBLE;
+        return mEmotionLayout.isShown();
     }
 
     public void destroy() {
