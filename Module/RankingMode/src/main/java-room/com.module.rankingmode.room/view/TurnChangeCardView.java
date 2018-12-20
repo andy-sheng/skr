@@ -48,9 +48,12 @@ public class TurnChangeCardView extends RelativeLayout {
         init();
     }
 
-    public void setData(RoomData data) {
+    public boolean setData(RoomData data) {
         this.mRoomData = data;
 
+        if (mRoomData.getRealRoundInfo() == null) {
+            return false;
+        }
         int curUid = mRoomData.getRealRoundInfo().getUserID();
         int seq = mRoomData.getRealRoundInfo().getRoundSeq();
 
@@ -67,17 +70,22 @@ public class TurnChangeCardView extends RelativeLayout {
                 }
             }
 
-            for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()){
-                if (playerInfo.getUserInfo().getUserId() == curUid){
+            for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()) {
+                if (playerInfo.getUserInfo().getUserId() == curUid) {
                     curInfo = playerInfo;
-                }else if (playerInfo.getUserInfo().getUserId() == nextUid){
+                } else if (playerInfo.getUserInfo().getUserId() == nextUid) {
                     nexInfo = playerInfo;
                 }
             }
 
         }
 
+        if (curInfo == null) {
+            return false;
+        }
+
         bindData(curInfo, nexInfo);
+        return true;
     }
 
     public void init() {

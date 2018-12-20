@@ -285,6 +285,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         if (animatable != null && animatable instanceof AnimatedDrawable2) {
                             ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
                                 int curFrame = 0;
+
                                 @Override
                                 public void onAnimationStart(AnimatedDrawable2 drawable) {
                                     MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
@@ -390,8 +391,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
             mPendingSelfCountDownRunnable = countDownOver;
         } else {
-            mTurnChangeView.setData(mRoomData);
-            playShowTurnCardAnimator();
+            if (mTurnChangeView.setData(mRoomData)) {
+                playShowTurnCardAnimator();
+            }
             if (mSelfSingTaskTimer != null) {
                 mSelfSingTaskTimer.dispose();
             }
@@ -425,8 +427,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mPendingRivalCountdownUid = uid;
         } else {
             showMsg("用户" + uid + "的演唱开始了");
-            mTurnChangeView.setData(mRoomData);
-            playShowTurnCardAnimator();
+            if (mTurnChangeView.setData(mRoomData)) {
+                playShowTurnCardAnimator();
+            }
+
         }
     }
 
