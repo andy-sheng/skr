@@ -105,11 +105,11 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
              * getSoftButtonsBarHeight = 130。 这里会算上虚拟按键的高度
              */
             int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
-            if (mChildOfContent.getParent() == null) {
-                usableHeightSansKeyboard = mChildOfContent.getHeight();
-            } else {
-                usableHeightSansKeyboard = ((ViewGroup) mChildOfContent.getParent()).getHeight();
-            }
+//            if (mChildOfContent.getParent() == null) {
+//                usableHeightSansKeyboard = mChildOfContent.getHeight();
+//            } else {
+//                usableHeightSansKeyboard = ((ViewGroup) mChildOfContent.getParent()).getHeight();
+//            }
             if (U.getKeyBoardUtils().hasNavigationBar()) {
                 int navBarHeight = U.getKeyBoardUtils().getVirtualNavBarHeight();
                 MyLog.d(TAG, "possiblyResizeChildOfContent navBarHeight=" + navBarHeight);
