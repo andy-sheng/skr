@@ -5,13 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.common.view.ex.ExImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_90_dp"
-        android:src="@drawable/img_select_triangle" />
 
     <com.common.view.ex.ExImageView
         android:layout_width="wrap_content"
@@ -19,29 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_24_dp"
-        android:src="@drawable/img_mirc" />
-
-    <com.common.view.ex.ExImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_66_dp"
-        android:src="@drawable/select_song_text"
-        android:background="@drawable/select_song_text_bg"/>
-
-    <!--<com.common.view.viewpager.SlidingTabLayout-->
-    <!--android:layout_marginTop="@dimen/view_20_dp"-->
-    <!--android:id="@+id/select_song_tab_layout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/view_80_dp"-->
-    <!--android:visibility="gone"/>-->
-
-    <!--<com.common.view.viewpager.NestViewPager-->
-    <!--android:id="@+id/songlist_view_pager"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:visibility="gone"/>-->
+        android:src="@drawable/img_top_xuanzegequ_bg" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/card_recycleview"

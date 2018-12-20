@@ -10,25 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_90_dp"
-        android:src="@drawable/img_select_triangle" />
-
-    <com.common.view.ex.ExImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_24_dp"
-        android:src="@drawable/img_mirc" />
+        android:src="@drawable/img_top_miedeng_bg" />
 
-    <com.common.view.ex.ExImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_66_dp"
-        android:background="@drawable/vote_miedeng_text_bg"
-        android:src="@drawable/vote_miedeng_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
