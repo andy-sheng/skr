@@ -120,7 +120,7 @@ public class PrepareResFragment extends BaseFragment {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
                             .setNotifyHideFragment(PrepareResFragment.class)
                             .setAddToBackStack(false)
-                            .setHasAnimation(false)
+                            .setHasAnimation(true)
                             .addDataBeforeAdd(0, mPrepareData)
                             .setFragmentDataListener(new FragmentDataListener() {
                                 @Override

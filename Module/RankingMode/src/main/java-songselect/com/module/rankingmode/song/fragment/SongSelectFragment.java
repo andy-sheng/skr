@@ -103,7 +103,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                         .setAddToBackStack(true)
                         .setNotifyHideFragment(SongSelectFragment.class)
-                        .setHasAnimation(false)
+                        .setHasAnimation(true)
                         .addDataBeforeAdd(0, songModel)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
@@ -143,7 +143,9 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     private void switchToClicked() {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
                 .setAddToBackStack(true)
-                .setHasAnimation(false)
+                .setHasAnimation(true)
+                .setEnterAnim(R.anim.slide_in_bottom)
+                .setExitAnim(R.anim.slide_out_bottom)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {

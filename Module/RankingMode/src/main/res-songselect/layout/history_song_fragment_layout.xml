@@ -28,7 +28,6 @@
         android:layout_marginTop="@dimen/view_124_dp"
         android:layout_marginLeft="@dimen/view_14_dp"
         android:layout_marginRight="@dimen/view_13_dp"
-        android:paddingBottom="@dimen/view_5_dp"
         android:paddingTop="@dimen/view_10_dp"
         android:background="@drawable/img_nichangguode_bg"
         android:layout_width="match_parent"

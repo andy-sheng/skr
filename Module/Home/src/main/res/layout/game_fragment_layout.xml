@@ -45,6 +45,7 @@
                     android:layout_height="3dp"/>
 
                 <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_yule_pk"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
                     android:src="@drawable/btn_yule_shouye_down_normal"

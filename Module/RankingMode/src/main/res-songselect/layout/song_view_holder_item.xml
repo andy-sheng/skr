@@ -40,12 +40,14 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_7_dp"
-        android:text="演唱"
         android:gravity="center"
+        android:text="演唱"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_14_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#FFF7BB"
-        app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_stroke_width="@dimen/view_2_dp"
-        app:bl_stroke_color="#0C2275"/>
+        app:bl_stroke_color="#0C2275"
+        app:bl_stroke_width="@dimen/view_2_dp" />
 
 </RelativeLayout>
