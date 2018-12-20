@@ -48,11 +48,17 @@ public class RoomData {
 
     private List<PlayerInfo> mPlayerInfoList;//选手信息
 
+    private volatile boolean mIsGameFinish = false;
+
     /**
      * 检查轮次信息是否需要更新
      */
     public void checkRound() {
         MyLog.d(TAG,"checkRound mExcpectRoundInfo="+ mExpectRoundInfo +" mRealRoundInfo="+mRealRoundInfo );
+        if(mIsGameFinish){
+            MyLog.d(TAG, "游戏结束了，不需要再check");
+            return;
+        }
         if (mExpectRoundInfo == null) {
             // 结束状态了
             if (mRealRoundInfo != null) {
@@ -73,6 +79,14 @@ public class RoomData {
                 EventBus.getDefault().post(new RoundInfoChangeEvent(false));
             }
         }
+    }
+
+    public void setIsGameFinish(boolean isGameFinish) {
+        this.mIsGameFinish = isGameFinish;
+    }
+
+    public boolean isIsGameFinish() {
+        return mIsGameFinish;
     }
 
     public int getGameId() {

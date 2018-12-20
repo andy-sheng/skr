@@ -28,6 +28,7 @@ import com.common.view.ex.ExTextView;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.room.comment.CommentView;
@@ -46,6 +47,8 @@ import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -54,6 +57,9 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Sink;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
@@ -100,6 +106,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     ObjectAnimator mTurnChangeCardHideAnimator;
 
     Runnable mPendingSelfCountDownRunnable;
+
     int mPendingRivalCountdownUid = -1;
 
     @Override
@@ -122,8 +129,30 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTestTv = mRootView.findViewById(R.id.test_tv);
         mTestTv.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-        mRootView.findViewById(R.id.tv_control).setOnClickListener(v -> {
+        RxView.clicks(mRootView.findViewById(R.id.tv_control)).subscribe(o -> {
             mNeedScroll = !mNeedScroll;
+        });
+
+        RxView.longClicks(mRootView.findViewById(R.id.tv_control)).subscribe(o -> {
+            String filename = U.getAppInfoUtils().getMainDir() + File.separator + mRoomData.getGameId() + ".txt";
+            File file = new File(filename);
+            BufferedSink bufferedSink = null;
+            try {
+                Sink sink = Okio.sink(file);
+                bufferedSink = Okio.buffer(sink);
+                bufferedSink.writeString(mTestTv.getText().toString(), Charset.forName("GBK"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (null != bufferedSink) {
+                    bufferedSink.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            U.getToastUtil().showShort("导出文件成功");
         });
 
         showReadyGoView();
@@ -149,7 +178,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         public void run() {
                             playHideTurnCardAnimator();
                         }
-                    },2000);
+                    }, 2000);
                 }
 
                 @Override
@@ -282,7 +311,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                                 public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
                                     MyLog.d(TAG, "onAnimationFrame" + " drawable=" + drawable + " frameNumber=" + frameNumber);
                                     // 按序列播放  0 1 2 3 4 5 循环再次到  5 - 0 时说明重复播放了
-                                    if(frameNumber<curFrame){
+                                    if (frameNumber < curFrame) {
                                         onReadyGoOver();
                                     }
                                     curFrame = frameNumber;
@@ -302,26 +331,27 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         );
     }
 
-    void onReadyGoOver(){
-        MyLog.d(TAG,"onReadyGoOver" );
-        if(mReadyGoPlaying) {
+    void onReadyGoOver() {
+        MyLog.d(TAG, "onReadyGoOver");
+        if (mReadyGoPlaying) {
             mReadyGoPlaying = false;
             // 移除 readyGoView
             if (mReadyGoView != null) {
                 ((RelativeLayout) mRootView).removeView(mReadyGoView);
             }
             // 轮到自己演唱了，倒计时因为播放readyGo没播放
-            if(mPendingSelfCountDownRunnable!=null){
+            if (mPendingSelfCountDownRunnable != null) {
                 startSelfCountdown(mPendingSelfCountDownRunnable);
                 mPendingSelfCountDownRunnable = null;
             }
             // 轮到他人唱了，倒计时因为播放readyGo没播放
-            if(mPendingRivalCountdownUid!=-1){
+            if (mPendingRivalCountdownUid != -1) {
                 startRivalCountdown(mPendingRivalCountdownUid);
                 mPendingRivalCountdownUid = -1;
             }
         }
     }
+
     @Override
     public boolean useEventBus() {
         return false;
@@ -356,31 +386,32 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
-        if(mReadyGoPlaying){
+        if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
             mPendingSelfCountDownRunnable = countDownOver;
-        }else{
+        } else {
             mTurnChangeView.setData(mRoomData);
             playShowTurnCardAnimator();
             if (mSelfSingTaskTimer != null) {
                 mSelfSingTaskTimer.dispose();
             }
-            mSelfSingTaskTimer = HandlerTaskTimer.newBuilder()
-                    .interval(1000)
-                    .take(3)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                               @Override
-                               public void onNext(Integer integer) {
-                                   showMsg("你的演唱要开始了，倒计时" + (4 - integer));
-                               }
 
-                               @Override
-                               public void onComplete() {
-                                   super.onComplete();
-                                   countDownOver.run();
-                               }
-                           }
-                    );
+            mSelfSingTaskTimer = HandlerTaskTimer.newBuilder()
+                    .delay(1000)
+                    .interval(1000)
+                    .take(4)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                        @Override
+                        public void onNext(Integer integer) {
+                            showMsg("你的演唱要开始了，倒计时" + (4 - integer));
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            super.onComplete();
+                            countDownOver.run();
+                        }
+                    });
         }
     }
 
@@ -389,10 +420,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startRivalCountdown(int uid) {
-        if(mReadyGoPlaying){
+        if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
             mPendingRivalCountdownUid = uid;
-        }else{
+        } else {
             showMsg("用户" + uid + "的演唱开始了");
             mTurnChangeView.setData(mRoomData);
             playShowTurnCardAnimator();
@@ -407,12 +438,20 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void gameFinish() {
         showMsg("游戏结束了");
-        mManyLyricsView.initLrcData();
+
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
                 .setAddToBackStack(true)
                 .addDataBeforeAdd(0, mRoomData)
                 .build()
         );
+
+        if (mSelfSingTaskTimer != null) {
+            mSelfSingTaskTimer.dispose();
+        }
+
+        if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
+            mPrepareLyricTask.dispose();
+        }
 
         mFloatLyricsView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
@@ -481,7 +520,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.setLyricsReader(lyricsReader);
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.d(TAG, "onEventMainThread " + "play");
-                    mManyLyricsView.play(0);
+                    mManyLyricsView.play(mPlayingSongModel.getBeginMs());
                 }
             } else {
                 mManyLyricsView.setVisibility(View.GONE);
@@ -490,7 +529,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mFloatLyricsView.setLyricsReader(lyricsReader);
                 if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.d(TAG, "onEventMainThread " + "play");
-                    mFloatLyricsView.play(0);
+                    mFloatLyricsView.play(mPlayingSongModel.getBeginMs());
                 }
             }
         }

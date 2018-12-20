@@ -118,7 +118,7 @@ public class RoomDataUtils {
      * @param uid
      * @return
      */
-    public static SongModel getPlayerInfoUserId(List<PlayerInfo> playerInfos, int uid) {
+    public static SongModel getPlayerInfoUserId(List<PlayerInfo> playerInfos, long uid) {
         try {
             for (PlayerInfo infoModel : playerInfos) {
                 if (infoModel.getUserInfo().getUserId() == uid) {
