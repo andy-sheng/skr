@@ -61,6 +61,11 @@ public class TurnChangeCardView extends RelativeLayout {
         PlayerInfo curInfo = null;
         if (seq == 3) {
             nexInfo = null;
+            for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()) {
+                if (playerInfo.getUserInfo().getUserId() == curUid) {
+                    curInfo = playerInfo;
+                }
+            }
         } else {
             int nextUid = 0;
             for (RoundInfoModel roundInfoModel : mRoomData.getRoundInfoModelList()) {
@@ -96,22 +101,6 @@ public class TurnChangeCardView extends RelativeLayout {
         mTurnSongTv = (ExTextView) findViewById(R.id.turn_song_tv);
         mTurnNextIv = (SimpleDraweeView) findViewById(R.id.turn_next_iv);
         mTurnNextInfoTv = (ExTextView) findViewById(R.id.turn_next_info_tv);
-
-        SpannableStringBuilder ssb = new SpanUtils()
-                .append("下一首由").append("金嗓子元宝").setClickSpan(new ClickableSpan() {
-                    @Override
-                    public void onClick(View widget) {
-                        U.getToastUtil().showShort("事件触发了");
-                    }
-
-                    @Override
-                    public void updateDrawState(TextPaint ds) {
-                        ds.setColor(Color.YELLOW);
-                        ds.setUnderlineText(false);
-                    }
-                }).append("点击事件").create();
-        mTurnNextInfoTv.setText(ssb);
-
     }
 
     public void bindData(PlayerInfo cur, PlayerInfo next) {
