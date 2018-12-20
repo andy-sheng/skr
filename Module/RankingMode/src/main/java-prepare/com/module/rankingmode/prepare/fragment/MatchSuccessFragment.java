@@ -12,6 +12,7 @@ import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -21,11 +22,14 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.GameReadyModel;
+import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
 import com.module.rankingmode.song.fragment.SongSelectFragment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MatchSuccessFragment extends BaseFragment implements IMatchSucessView {
@@ -41,6 +45,9 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     volatile boolean isPrepared = false;
 
     PrepareData mPrepareData;
+
+    PlayerInfo leftPlayer;
+    PlayerInfo rightPlayer;
 
     @Override
     public int initView() {
@@ -60,6 +67,16 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
             mMatchSucessPresenter.destroy();
         }
 
+        if (mPrepareData.getPlayerInfoList() != null && mPrepareData.getPlayerInfoList().size() > 0) {
+            for (PlayerInfo playerInfo : mPrepareData.getPlayerInfoList()) {
+                if (leftPlayer != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
+                    rightPlayer = playerInfo;
+                } else if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
+                    leftPlayer = playerInfo;
+                }
+            }
+        }
+
         RxView.clicks(mIvPrepare)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -69,14 +86,14 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                 });
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
+                AvatarUtils.newParamsBuilder(leftPlayer.getSongList().get(0).getCover())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.WHITE)
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
+                AvatarUtils.newParamsBuilder(rightPlayer.getSongList().get(0).getCover())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.WHITE)

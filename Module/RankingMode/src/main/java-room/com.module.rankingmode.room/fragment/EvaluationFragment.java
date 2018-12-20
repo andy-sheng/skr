@@ -128,15 +128,13 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         if (type == 0) {
             mRoomData = (RoomData) data;
             if (mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0) {
-                List<PlayerInfo> otherPlays = new ArrayList<>();
                 for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()) {
-                    if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
-                        otherPlays.add(playerInfo);
+                    if (left != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
+                        right = playerInfo;
+                    } else if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
+                        left = playerInfo;
                     }
                 }
-
-                left = otherPlays.get(0);
-                right = otherPlays.get(1);
             }
         }
     }
