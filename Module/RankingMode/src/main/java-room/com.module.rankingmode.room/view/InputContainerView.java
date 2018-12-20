@@ -173,4 +173,9 @@ public class InputContainerView extends RelativeLayout {
     }
 
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mEmotionKeyboard.destroy();
+    }
 }

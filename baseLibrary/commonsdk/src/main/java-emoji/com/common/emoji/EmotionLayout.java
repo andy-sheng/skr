@@ -352,4 +352,11 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
     public void setShowSticker(boolean showSticker) {
         this.mShowSticker = showSticker;
     }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        Log.d("OOOOOOO","setVisibility" + " visibility=" + visibility);
+
+    }
 }
