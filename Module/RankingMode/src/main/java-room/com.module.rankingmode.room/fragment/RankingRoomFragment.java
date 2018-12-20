@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -65,6 +66,8 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
+    static final int ENSURE_RUN = 99;
+
     RoomData mRoomData;
 
     InputContainerView mInputContainerView;
@@ -83,7 +86,17 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     FloatLyricsView mFloatLyricsView;
 
-    Handler mUiHanlder = new Handler();
+    Handler mUiHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == ENSURE_RUN) {
+                Runnable runnable = (Runnable) msg.obj;
+                runnable.run();
+                onReadyGoOver();
+            }
+        }
+    };
 
     Disposable mPrepareLyricTask;
 
@@ -98,8 +111,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     boolean mNeedScroll = true;
 
     boolean mReadyGoPlaying = false;
-
-    HandlerTaskTimer mSelfSingTaskTimer;
 
     ObjectAnimator mTurnChangeCardShowAnimator;
 
@@ -163,7 +174,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         showMsg("gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
 
-    public void playShowTurnCardAnimator() {
+    public void playShowTurnCardAnimator(Runnable countDownRunnable) {
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardShowAnimator == null) {
             mTurnChangeCardShowAnimator = ObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0);
@@ -176,7 +187,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                     mUiHanlder.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            playHideTurnCardAnimator();
+                            playHideTurnCardAnimator(countDownRunnable);
                         }
                     }, 2000);
                 }
@@ -198,7 +209,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTurnChangeCardShowAnimator.start();
     }
 
-    public void playHideTurnCardAnimator() {
+    public void playHideTurnCardAnimator(Runnable countDownRunnable) {
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardHideAnimator == null) {
             mTurnChangeCardHideAnimator = ObjectAnimator.ofFloat(mTurnChangeView, "translationX", 0, -U.getDisplayUtils().getScreenWidth());
@@ -208,12 +219,18 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
+                    MyLog.d(TAG, "onAnimationEnd" + " animation=" + animation);
                     mTurnChangeView.setVisibility(View.GONE);
+                    if (countDownRunnable != null) {
+                        countDownRunnable.run();
+                        mUiHanlder.removeMessages(ENSURE_RUN);
+                    }
                 }
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
                     super.onAnimationCancel(animation);
+                    MyLog.d(TAG, "onAnimationCancel" + " animation=" + animation);
                     onAnimationEnd(animation);
                 }
 
@@ -223,9 +240,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 }
             });
         }
-
         mTurnChangeCardHideAnimator.start();
-
     }
 
     private void initInputView() {
@@ -320,7 +335,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                                 }
                             });
                             animatable.start();
-                        }else{
+                        } else {
                             onReadyGoOver();
                         }
                     }
@@ -372,9 +387,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void destroy() {
         super.destroy();
         mUiHanlder.removeCallbacksAndMessages(null);
-        if (mSelfSingTaskTimer != null) {
-            mSelfSingTaskTimer.dispose();
-        }
     }
 
     @Override
@@ -395,29 +407,16 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mPendingSelfCountDownRunnable = countDownOver;
         } else {
             if (mTurnChangeView.setData(mRoomData)) {
-                playShowTurnCardAnimator();
+                playShowTurnCardAnimator(countDownOver);
             }
-            if (mSelfSingTaskTimer != null) {
-                mSelfSingTaskTimer.dispose();
-            }
-
-            mSelfSingTaskTimer = HandlerTaskTimer.newBuilder()
-                    .delay(1000)
-                    .interval(1000)
-                    .take(4)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            showMsg("你的演唱要开始了，倒计时" + (4 - integer));
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            super.onComplete();
-                            countDownOver.run();
-                        }
-                    });
         }
+
+        // 确保演唱逻辑一定要执行
+        Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
+        msg.what = ENSURE_RUN;
+        msg.obj = countDownOver;
+        // 目前 readyGo动画3秒 + 卡片动画4秒，按理7秒后一定执行，这里容错，允许延迟1秒
+        mUiHanlder.sendMessageDelayed(msg, 8000);
     }
 
     /**
@@ -431,7 +430,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         } else {
             showMsg("用户" + uid + "的演唱开始了");
             if (mTurnChangeView.setData(mRoomData)) {
-                playShowTurnCardAnimator();
+                playShowTurnCardAnimator(null);
             }
 
         }
@@ -451,10 +450,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 //                .addDataBeforeAdd(0, mRoomData)
 //                .build()
 //        );
-
-        if (mSelfSingTaskTimer != null) {
-            mSelfSingTaskTimer.dispose();
-        }
 
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
