@@ -102,7 +102,7 @@ public class DisplayUtils {
          * 一般都是2118，这里返回2028,莫名其妙的
          */
         if (U.getDeviceUtils().hasNavigationBar()
-                && U.getDeviceUtils().getProductModel().equals("MI 8")) {
+                && U.getDeviceUtils().getProductModel().equals("MI 8 SE")) {
             if (h == 2028) {
                 return 2118;
             }

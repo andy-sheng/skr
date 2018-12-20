@@ -8,7 +8,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:overScrollMode="never"
         android:scrollbarSize="@dimen/view_4_dp"
         android:scrollbarThumbVertical="@drawable/quick_msg_scorll_bar"
         android:scrollbars="vertical" />

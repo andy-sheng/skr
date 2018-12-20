@@ -8,6 +8,7 @@
         android:id="@+id/et_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/room_input_et_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
@@ -19,10 +20,14 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/view_32_dp"
             android:layout_weight="1"
-            android:background="@drawable/room_input_et_bg"
+            android:background="@null"
             android:gravity="center_vertical|left"
+            android:hint="喜欢他就说啊～"
             android:paddingLeft="@dimen/view_15_dp"
             android:paddingRight="@dimen/view_15_dp"
+            android:textColor="@color/black_trans_90"
+            android:textColorHint="@color/black_trans_50"
+            android:textSize="@dimen/textsize_16_dp"
             android:visibility="visible" />
 
         <ImageView
@@ -34,13 +39,19 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/send_msg_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/view_56_dp"
+            android:layout_height="@dimen/view_32_dp"
             android:gravity="center"
             android:text="发送"
-            app:bl_pressed_color="@color/red"
+            android:textSize="@dimen/view_14_dp"
+            app:bl_corners_radius="@dimen/view_8_dp"
+            app:bl_pressed_textColor="#1E3386"
             app:bl_shape="rectangle"
-            app:bl_solid_color="@color/blue" />
+            app:bl_solid_color="#fffff7bb"
+            app:bl_stroke_color="#ff0c2275"
+            app:bl_stroke_width="@dimen/view_2_dp"
+            app:bl_unPressed_textColor="#0C2275"
+            app:bl_unpressed_color="#fffff7bb" />
     </LinearLayout>
 
     <RelativeLayout
@@ -48,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/et_container"
-        android:background="@color/yellow">
+        android:background="@color/white">
         <!--表情区-->
         <com.common.emoji.EmotionLayout
             android:id="@+id/elEmotion"
