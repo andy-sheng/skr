@@ -145,7 +145,6 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     void goBack() {
-        mMatchPresenter.cancelMatch();
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                 .setMessageTip("马上要为你匹配到对手了\n还要退出吗？")
                 .setConfirmTip("退出")
