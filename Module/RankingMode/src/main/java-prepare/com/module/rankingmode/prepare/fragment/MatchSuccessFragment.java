@@ -3,12 +3,10 @@ package com.module.rankingmode.prepare.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -29,7 +27,6 @@ import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
 import com.module.rankingmode.song.fragment.SongSelectFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -89,6 +86,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         initAvatar(true);
 
         mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId(), mPrepareData);
+        addPresent(mMatchSucessPresenter);
     }
 
 
