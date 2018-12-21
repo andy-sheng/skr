@@ -106,6 +106,8 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("mode", GameModeType.GAME_MODE_CLASSIC_RANK);
         map.put("playbookItemID", playbookItemID);
+        map.put("platform", 2);   // 代表是android平台
+
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
 
         startMatchTask = ApiMethods.subscribeWith(matchServerApi.startMatch(body), new ApiObserver<ApiResult>() {
