@@ -113,7 +113,7 @@ public class TurnChangeCardView extends RelativeLayout {
             AvatarUtils.loadAvatarByUrl(mTurnCurrentIv, AvatarUtils.newParamsBuilder(cur.getUserInfo().getAvatar())
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .setBorderColor(R.color.white)
+                    .setBorderColor(Color.WHITE)
                     .build());
             mTurnNameTv.setText(cur.getUserInfo().getUserNickname());
             mTurnSongTv.setText(cur.getSongList().get(0).getItemName());
@@ -123,7 +123,7 @@ public class TurnChangeCardView extends RelativeLayout {
             AvatarUtils.loadAvatarByUrl(mTurnNextIv, AvatarUtils.newParamsBuilder(next.getUserInfo().getAvatar())
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                    .setBorderColor(R.color.white)
+                    .setBorderColor(Color.WHITE)
                     .build());
             SpannableStringBuilder ssb = new SpanUtils()
                     .append("下一首由").append(next.getUserInfo().getUserNickname()).setClickSpan(new ClickableSpan() {
