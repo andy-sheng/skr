@@ -17,6 +17,7 @@ import com.module.rankingmode.prepare.model.GameReadyModel;
 import com.module.rankingmode.prepare.model.JsonReadyInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
+import com.module.rankingmode.room.RoomServerApi;
 import com.zq.lyrics.model.UrlRes;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
 
@@ -102,6 +103,18 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                 }, MatchSucessPresenter.this);
             }
         });
+    }
+
+    /**
+     * 退出游戏
+     */
+    public void exitGame() {
+        RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", currentGameId);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(roomServerApi.exitGame(body), null);
     }
 
     @Override

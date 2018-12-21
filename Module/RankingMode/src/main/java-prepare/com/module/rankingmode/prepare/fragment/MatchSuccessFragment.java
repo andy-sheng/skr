@@ -13,8 +13,10 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
@@ -31,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MatchSuccessFragment extends BaseFragment implements IMatchSucessView {
     ExImageView mIvTop;
+    ExTextView mTvReadyTime;
     SimpleDraweeView mSdvIcon1;
     SimpleDraweeView mSdvIcon2;
     SimpleDraweeView mSdvIcon3;
@@ -46,6 +49,8 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     PlayerInfo leftPlayer;
     PlayerInfo rightPlayer;
 
+    HandlerTaskTimer mReadyTimeTask;
+
     @Override
     public int initView() {
         return R.layout.match_success_fragment_layout;
@@ -54,6 +59,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
+        mTvReadyTime = (ExTextView) mRootView.findViewById(R.id.tv_ready_time);
         mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
         mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
@@ -86,6 +92,30 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
         mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId(), mPrepareData);
         addPresent(mMatchSucessPresenter);
+
+        startTimeTask();
+    }
+
+
+    /**
+     * 更新准备时间倒计时
+     */
+    public void startTimeTask() {
+        mReadyTimeTask = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(10)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        mTvReadyTime.setText(String.format(U.app().getString(R.string.ready_time_info), 10 - integer));
+                    }
+                });
+    }
+
+    public void stopTimeTask() {
+        if (mReadyTimeTask != null) {
+            mReadyTimeTask.dispose();
+        }
     }
 
 
@@ -132,6 +162,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         MyLog.d(TAG, "ready" + " isPrepareState=" + isPrepareState);
         isPrepared = isPrepareState;
         if (isPrepared) {
+            stopTimeTask();
             U.getToastUtil().showShort("已准备");
             mIvPrepare.setEnabled(false);
         }
@@ -195,6 +226,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     @Override
     public void needReMatch() {
         MyLog.d(TAG, "needReMatch 有人没准备，需要重新匹配");
+        mMatchSucessPresenter.exitGame();
         goMatch();
         U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
@@ -203,7 +235,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     void goMatch() {
         // 这个activity直接到匹配页面,可是这时匹配中页面已经销毁了
         // 如果已经准备了就从新开始匹配，没有准备就直接跳转到选择歌曲界面
-        if(isPrepared){
+        if (isPrepared) {
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
                     .setNotifyHideFragment(MatchSuccessFragment.class)
                     .setAddToBackStack(false)
@@ -251,6 +283,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     public void onDestroyView() {
         super.onDestroyView();
         mMatchSucessPresenter.destroy();
+        stopTimeTask();
     }
 
     @Override

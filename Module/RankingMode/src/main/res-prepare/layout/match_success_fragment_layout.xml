@@ -14,6 +14,23 @@
         android:layout_marginTop="@dimen/view_29_dp"
         android:background="@drawable/img_top_pipeichenggong_bg" />
 
+    <com.common.view.ex.ExImageView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_120_dp"
+        android:background="@drawable/img_notify_pipeishijian_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_ready_time"
+        android:textStyle="bold"
+        android:textColor="#0C2275"
+        android:text="准备倒计时 10s"
+        android:layout_marginTop="@dimen/view_148_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <RelativeLayout
         android:layout_width="@dimen/view_220_dp"
         android:layout_height="@dimen/view_220_dp"

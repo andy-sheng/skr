@@ -2,4 +2,5 @@
 <resources>
     <string name="song_time_info">准备竞演 %s / %s</string>
     <string name="match_time_info">已经匹配 %ds</string>
+    <string name="ready_time_info">准备倒计时 %ds</string>
 </resources>

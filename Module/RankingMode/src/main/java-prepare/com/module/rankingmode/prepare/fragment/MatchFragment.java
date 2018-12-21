@@ -142,6 +142,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     public void onDetach() {
         super.onDetach();
         mMatchPresenter.destroy();
+        stopTimeTask();
     }
 
     void goBack() {
