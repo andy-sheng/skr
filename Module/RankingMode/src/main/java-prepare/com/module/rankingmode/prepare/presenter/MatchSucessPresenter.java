@@ -14,6 +14,7 @@ import com.module.rankingmode.msg.event.ExitGameEvent;
 import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.GameReadyModel;
+import com.module.rankingmode.prepare.model.JsonReadyInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
 import com.zq.lyrics.model.UrlRes;
@@ -25,6 +26,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
@@ -120,7 +122,8 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "prepare " + result);
                 if (result.getErrno() == 0) {
-                    iMatchSucessView.ready(isPrepare);
+                    List<JsonReadyInfo> model = JSON.parseArray(result.getData().getString("readyInfo"), JsonReadyInfo.class);
+                    iMatchSucessView.ready(isPrepare, model);
                 }
             }
         }, MatchSucessPresenter.this);

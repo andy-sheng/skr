@@ -18,12 +18,14 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.GameReadyModel;
+import com.module.rankingmode.prepare.model.JsonReadyInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceContainer;
 import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMatchSucessView {
@@ -83,7 +85,7 @@ public class FastMatchSuccessSence extends RelativeLayout implements ISence, IMa
     }
 
     @Override
-    public void ready(boolean isPrepareState) {
+    public void ready(boolean isPrepareState, List<JsonReadyInfo> list) {
         MyLog.d(TAG, "ready" + " isPrepareState=" + isPrepareState);
         isPrepared = isPrepareState;
 

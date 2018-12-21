@@ -22,6 +22,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.GameReadyModel;
+import com.module.rankingmode.prepare.model.JsonReadyInfo;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
@@ -85,9 +86,17 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                     mMatchSucessPresenter.prepare(!isPrepared);
                 });
 
+        initAvatar(true);
+
+        mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId(), mPrepareData);
+    }
+
+
+    private void initAvatar(boolean isGray) {
         AvatarUtils.loadAvatarByUrl(mSdvIcon1,
                 AvatarUtils.newParamsBuilder(leftPlayer.getSongList().get(0).getCover())
                         .setCircle(true)
+                        .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.WHITE)
                         .build());
@@ -95,6 +104,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         AvatarUtils.loadAvatarByUrl(mSdvIcon2,
                 AvatarUtils.newParamsBuilder(rightPlayer.getSongList().get(0).getCover())
                         .setCircle(true)
+                        .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.WHITE)
                         .build());
@@ -102,11 +112,10 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         AvatarUtils.loadAvatarByUrl(mSdvIcon3,
                 AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
                         .setCircle(true)
+                        .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.WHITE)
                         .build());
-
-        mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId(), mPrepareData);
     }
 
     @Override
@@ -122,12 +131,46 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     }
 
     @Override
-    public void ready(boolean isPrepareState) {
+    public void ready(boolean isPrepareState, List<JsonReadyInfo> list) {
         MyLog.d(TAG, "ready" + " isPrepareState=" + isPrepareState);
         isPrepared = isPrepareState;
         if (isPrepared) {
             U.getToastUtil().showShort("已准备");
             mIvPrepare.setEnabled(false);
+            if (list == null || list.size() == 0) {
+                return;
+            }
+            for (JsonReadyInfo jsonReadyInfo : list) {
+                if (jsonReadyInfo.getUserID() == leftPlayer.getUserInfo().getUserId()) {
+                    AvatarUtils.loadAvatarByUrl(mSdvIcon1,
+                            AvatarUtils.newParamsBuilder(leftPlayer.getSongList().get(0).getCover())
+                                    .setCircle(true)
+                                    .setGray(false)
+                                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                    .setBorderColor(Color.WHITE)
+                                    .build());
+                }
+
+                if (jsonReadyInfo.getUserID() == rightPlayer.getUserInfo().getUserId()) {
+                    AvatarUtils.loadAvatarByUrl(mSdvIcon2,
+                            AvatarUtils.newParamsBuilder(rightPlayer.getSongList().get(0).getCover())
+                                    .setCircle(true)
+                                    .setGray(false)
+                                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                    .setBorderColor(Color.WHITE)
+                                    .build());
+                }
+
+                if (jsonReadyInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    AvatarUtils.loadAvatarByUrl(mSdvIcon3,
+                            AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
+                                    .setCircle(true)
+                                    .setGray(false)
+                                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                    .setBorderColor(Color.WHITE)
+                                    .build());
+                }
+            }
         }
     }
 
@@ -136,6 +179,8 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         mPrepareData.setGameReadyInfo(jsonGameReadyInfo);
         long localStartTs = System.currentTimeMillis() - jsonGameReadyInfo.getJsonGameStartInfo().getStartPassedMs();
         mPrepareData.setShiftTs((int) (localStartTs - jsonGameReadyInfo.getJsonGameStartInfo().getStartTimeMs()));
+
+        initAvatar(false);
 
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
                 .withSerializable("prepare_data", mPrepareData)

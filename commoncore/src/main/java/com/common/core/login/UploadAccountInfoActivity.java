@@ -144,6 +144,8 @@ public class UploadAccountInfoActivity extends BaseActivity {
                     ARouter.getInstance().build(path).with(bundle).navigation();
                 }
             }
+
+            finish();
         }
 
     }
