@@ -2,7 +2,6 @@ package com.module.rankingmode.prepare.sence;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
@@ -10,8 +9,6 @@ import com.common.utils.SongResUtils;
 import com.engine.EngineManager;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
-import com.module.rankingmode.prepare.sence.controller.MatchSenceController;
-import com.module.rankingmode.song.model.SongModel;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
@@ -22,17 +19,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
-public class AuditionSence extends RelativeLayout implements ISence {
+public class AuditionSence extends RelativeLayout{
     public static final String TAG = "AuditionSence";
-    MatchSenceController matchSenceController;
+//    MatchSenceController matchSenceController;
 
     ManyLyricsView mManyLyricsView;
 
@@ -87,42 +78,42 @@ public class AuditionSence extends RelativeLayout implements ISence {
         });
     }
 
-    @Override
-    public void toShow(RelativeLayout parentViewGroup, PrepareData data) {
-        mPrepareData = data;
-        if(getParent()==null) {
-            //这里可能有动画啥的
-            setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            parentViewGroup.addView(this);
-        }
-
-        //从bundle里面拿音乐相关数据，然后开始试唱
-        SongModel songModel = mPrepareData.getSongModel();
-        String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-        MyLog.d(TAG, "toShow" + " fileName=" + fileName + " song name is " + songModel.getItemName());
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this);
-        }
-
-        LyricsManager.getLyricsManager(getContext()).loadLyricsUtil(fileName, songModel.getItemName(), fileName.hashCode() + "");
-
-        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("试唱调音");
-
-        File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
-        if(accFile != null){
-            String accFilePath = accFile.getAbsolutePath();
-            // 当前音乐在播放那就继续播放
-            if(accFilePath.equals(EngineManager.getInstance().getParams().getMixMusicFilePath())){
-                if(!EngineManager.getInstance().getParams().isMixMusicPlaying()) {
-                    EngineManager.getInstance().resumeAudioMixing();
-                }
-            }else{
-                EngineManager.getInstance().startAudioMixing(accFilePath,true,false,-1);
-            }
-        }else {
-            MyLog.e("what the fuck");
-        }
-    }
+//    @Override
+//    public void toShow(RelativeLayout parentViewGroup, PrepareData data) {
+//        mPrepareData = data;
+//        if(getParent()==null) {
+//            //这里可能有动画啥的
+//            setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//            parentViewGroup.addView(this);
+//        }
+//
+//        //从bundle里面拿音乐相关数据，然后开始试唱
+//        SongModel songModel = mPrepareData.getSongModel();
+//        String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
+//        MyLog.d(TAG, "toShow" + " fileName=" + fileName + " song name is " + songModel.getItemName());
+//        if(!EventBus.getDefault().isRegistered(this)){
+//            EventBus.getDefault().register(this);
+//        }
+//
+//        LyricsManager.getLyricsManager(getContext()).loadLyricsUtil(fileName, songModel.getItemName(), fileName.hashCode() + "");
+//
+////        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("试唱调音");
+//
+//        File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
+//        if(accFile != null){
+//            String accFilePath = accFile.getAbsolutePath();
+//            // 当前音乐在播放那就继续播放
+//            if(accFilePath.equals(EngineManager.getInstance().getParams().getMixMusicFilePath())){
+//                if(!EngineManager.getInstance().getParams().isMixMusicPlaying()) {
+//                    EngineManager.getInstance().resumeAudioMixing();
+//                }
+//            }else{
+//                EngineManager.getInstance().startAudioMixing(accFilePath,true,false,-1);
+//            }
+//        }else {
+//            MyLog.e("what the fuck");
+//        }
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LrcEvent.FinishLoadLrcEvent finishLoadLrcEvent) {
@@ -144,43 +135,9 @@ public class AuditionSence extends RelativeLayout implements ISence {
     }
 
     @Override
-    public void toHide(RelativeLayout parentViewGroup) {
-        //可能有动画
-        setVisibility(GONE);
-    }
-
-    @Override
-    public void toRemoveFromStack(RelativeLayout parentViewGroup) {
-        parentViewGroup.removeView(this);
-
-    }
-
-    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         EngineManager.getInstance().stopAudioMixing();
         EventBus.getDefault().unregister(this);
-    }
-
-    //每个场景有一个是不是可以往下跳的判断
-    @Override
-    public boolean isPrepareToNextSence() {
-        return true;
-    }
-
-    @Override
-    public void onResumeSence(RelativeLayout parentViewGroup) {
-        matchSenceController.getCommonTitleBar().getCenterSubTextView().setText("试唱调音");
-        setVisibility(VISIBLE);
-    }
-
-    @Override
-    public boolean removeWhenPush() {
-        return true;
-    }
-
-    @Override
-    public void setSenceController(MatchSenceController matchSenceController) {
-        this.matchSenceController = matchSenceController;
     }
 }
