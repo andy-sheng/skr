@@ -407,11 +407,15 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     public void run() {
                         int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
                         mIGameRuleView.startRivalCountdown(uid);
-                        mIGameRuleView.showMsg("演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
-                                + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
+                        if(mRoomData.getRealRoundInfo() != null){
+                            mIGameRuleView.showMsg("演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
+                                    + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
+                            mIGameRuleView.showMsg(uid + "开始唱了，歌词走起");
+                        }else {
+                            mIGameRuleView.showMsg("mRoomData.getRealRoundInfo() 为空啊！！！！");
+                        }
 
                         mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
-                        mIGameRuleView.showMsg(uid + "开始唱了，歌词走起");
 
                     }
                 });
