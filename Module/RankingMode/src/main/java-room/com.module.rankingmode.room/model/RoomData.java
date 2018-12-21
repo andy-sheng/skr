@@ -1,6 +1,7 @@
 package com.module.rankingmode.room.model;
 
 import com.common.core.account.UserAccountManager;
+import com.common.core.userinfo.UserInfo;
 import com.common.log.MyLog;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.prepare.model.PlayerInfo;
@@ -23,7 +24,7 @@ public class RoomData {
      * 当要拿服务器时间和本地时间比较时，请将服务器时间加上这个矫正值
      * 如
      * if(System.currentTimeMillis() > mGameStartTs + mShiftts){
-     *
+     * <p>
      * }
      */
     private int mShiftTs;// 本地时间比服务器快多少毫秒，比如快1秒，mShiftTs = 1000;
@@ -54,8 +55,8 @@ public class RoomData {
      * 检查轮次信息是否需要更新
      */
     public void checkRound() {
-        MyLog.d(TAG,"checkRound mExcpectRoundInfo="+ mExpectRoundInfo +" mRealRoundInfo="+mRealRoundInfo );
-        if(mIsGameFinish){
+        MyLog.d(TAG, "checkRound mExcpectRoundInfo=" + mExpectRoundInfo + " mRealRoundInfo=" + mRealRoundInfo);
+        if (mIsGameFinish) {
             MyLog.d(TAG, "游戏结束了，不需要再check");
             return;
         }
@@ -67,7 +68,7 @@ public class RoomData {
             }
             return;
         }
-        if (!RoomDataUtils.roundInfoEqual(mExpectRoundInfo,mRealRoundInfo)) {
+        if (!RoomDataUtils.roundInfoEqual(mExpectRoundInfo, mRealRoundInfo)) {
             // 轮次需要更新了
             RoundInfoModel oldRoundInfo = mRealRoundInfo;
             mRealRoundInfo = mExpectRoundInfo;
@@ -183,5 +184,18 @@ public class RoomData {
 
     public List<PlayerInfo> getPlayerInfoList() {
         return mPlayerInfoList;
+    }
+
+    public UserInfo getUserInfo(int userID) {
+        if (userID == 0) {
+            return null;
+        }
+        for (PlayerInfo playerInfo : mPlayerInfoList) {
+            if (playerInfo.getUserInfo().getUserId() == userID) {
+                return playerInfo.getUserInfo();
+            }
+        }
+
+        return null;
     }
 }

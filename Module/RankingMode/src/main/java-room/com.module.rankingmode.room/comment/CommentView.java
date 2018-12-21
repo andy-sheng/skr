@@ -121,7 +121,7 @@ public class CommentView extends RelativeLayout {
     public void onEvent(CommentMsgEvent event) {
         CommentModel commentModel = new CommentModel();
         commentModel.setUserId(event.info.getSender().getUserID());
-        commentModel.setAvatar(event.info.getSender().getAvatar());
+        commentModel.setAvatar(mRoomData.getUserInfo(event.info.getSender().getUserID()).getAvatar());
         commentModel.setText(event.text);
         commentModel.setCommentType(CommentModel.TYPE_TEXT);
         mCommentAdapter.getDataList().add(0, commentModel);
