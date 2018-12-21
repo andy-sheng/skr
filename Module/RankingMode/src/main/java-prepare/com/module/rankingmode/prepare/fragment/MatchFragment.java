@@ -168,6 +168,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                                 U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                         .setPopFragment(MatchFragment.this)
                                         .setPopAbove(false)
+                                        .setHasAnimation(true)
                                         .setNotifyShowFragment(PrepareResFragment.class)
                                         .build());
                             }
@@ -190,6 +191,8 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mPrepareData.setPlayerInfoList(playerInfoList);
 
         stopTimeTask();
+
+        //先添加成功界面面
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchSuccessFragment.class)
                 .setAddToBackStack(false)
                 .setNotifyHideFragment(MatchFragment.class)
@@ -202,6 +205,14 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                     }
                 })
                 .build());
+
+        //匹配成功直接先把自己pop掉
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopFragment(MatchFragment.this)
+                .setPopAbove(false)
+                .setHasAnimation(false)
+                .build());
+
     }
 
     @Override
@@ -218,7 +229,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        mRootView.setVisibility(View.VISIBLE);
+//        mRootView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -226,10 +237,11 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
      */
     @Override
     public void notifyToHide() {
-        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                .setPopFragment(this)
-                .setPopAbove(false)
-                .build()
-        );
+//        mRootView.setVisibility(View.GONE);
+//        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+//                .setPopFragment(this)
+//                .setPopAbove(false)
+//                .build()
+//        );
     }
 }

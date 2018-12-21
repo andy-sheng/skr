@@ -3,7 +3,6 @@ package com.module.rankingmode.prepare.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -25,7 +24,6 @@ import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.MatchSucessPresenter;
 import com.module.rankingmode.prepare.view.IMatchSucessView;
-import com.module.rankingmode.song.fragment.SongSelectFragment;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -189,12 +187,8 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                 .withSerializable("prepare_data", mPrepareData)
                 .navigation();
 
-        // 这个activity直接到选歌页面,没问题
-        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                .setActivity(getActivity())
-                .setNotifyShowFragment(SongSelectFragment.class)
-                .setBackToFragment(SongSelectFragment.class)
-                .build());
+        //直接到首页，不是选歌界面
+        getActivity().finish();
     }
 
     @Override
@@ -207,18 +201,49 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     void goMatch() {
         // 这个activity直接到匹配页面,可是这时匹配中页面已经销毁了
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
-                .setNotifyHideFragment(MatchSuccessFragment.class)
-                .setAddToBackStack(false)
-                .setHasAnimation(false)
-                .addDataBeforeAdd(0, mPrepareData)
-                .setFragmentDataListener(new FragmentDataListener() {
-                    @Override
-                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+        // 如果已经准备了就从新开始匹配，没有准备就直接跳转到选择歌曲界面
+        if(isPrepared){
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
+                    .setNotifyHideFragment(MatchSuccessFragment.class)
+                    .setAddToBackStack(false)
+                    .setHasAnimation(false)
+                    .addDataBeforeAdd(0, mPrepareData)
+                    .setFragmentDataListener(new FragmentDataListener() {
+                        @Override
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
 
-                    }
-                })
-                .build());
+                        }
+                    })
+                    .build());
+
+            U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                    .setActivity(getActivity())
+                    .setPopFragment(MatchSuccessFragment.this)
+                    .setPopAbove(false)
+                    .setHasAnimation(true)
+                    .build());
+        } else {
+//            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SongSelectFragment.class)
+//                    .setNotifyHideFragment(MatchSuccessFragment.class)
+//                    .setAddToBackStack(false)
+//                    .setHasAnimation(false)
+//                    .addDataBeforeAdd(0, mPrepareData)
+//                    .setFragmentDataListener(new FragmentDataListener() {
+//                        @Override
+//                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+//
+//                        }
+//                    })
+//                    .build());
+
+            U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                    .setActivity(getActivity())
+                    .setPopFragment(MatchSuccessFragment.this)
+                    .setPopAbove(false)
+                    .setHasAnimation(true)
+                    .setNotifyShowFragment(PrepareResFragment.class)
+                    .build());
+        }
     }
 
     @Override
@@ -229,33 +254,24 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     @Override
     protected boolean onBackPressed() {
-        if (isPrepared) {
-            //已经准备，说明用户想玩，直接到匹配中页面
-            goMatch();
-        } else {
-            //还没准备就退出，说明用户不想玩了，到开始匹配页面
-            U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                    .setActivity(getActivity())
-                    .setBackToFragment(PrepareResFragment.class)
-                    .setNotifyShowFragment(PrepareResFragment.class)
-                    .build());
-        }
+        goMatch();
         return true;
     }
 
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        mRootView.setVisibility(View.VISIBLE);
+//        mRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
-        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                .setPopFragment(this)
-                .setPopAbove(false)
-                .build()
-        );
+//        mRootView.setVisibility(View.GONE);
+//        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+//                .setPopFragment(this)
+//                .setPopAbove(false)
+//                .build()
+//        );
     }
 }

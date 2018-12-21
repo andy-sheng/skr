@@ -103,7 +103,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                        .setAddToBackStack(true)
+                        .setAddToBackStack(false)
                         .setNotifyHideFragment(SongSelectFragment.class)
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, songModel)
@@ -125,6 +125,16 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         presenter.getRcomdMusicItems(0, DEFAULT_FIRST_COUNT);
     }
 
+    @Override
+    protected boolean onBackPressed() {
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopFragment(SongSelectFragment.this)
+                .setPopAbove(false)
+                .build());
+
+        getActivity().finish();
+        return true;
+    }
 
     // 返回上一张选歌卡片
     private void backToLastCard() {
@@ -210,12 +220,12 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        mRootView.setVisibility(View.VISIBLE);
+//        mRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
-        mRootView.setVisibility(View.GONE);
+//        mRootView.setVisibility(View.GONE);
     }
 }

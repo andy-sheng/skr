@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.ProgressBar;
 
 import com.common.base.BaseFragment;
@@ -145,6 +144,8 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                     U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                             .setPopFragment(PrepareResFragment.this)
                             .setNotifyShowFragment(SongSelectFragment.class)
+                            .setHasAnimation(true)
+                            .setPopAbove(false)
                             .build());
                 });
 
@@ -175,25 +176,28 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         }
     }
 
+
+
     @Override
     protected boolean onBackPressed() {
-        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                .setPopFragment(this)
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopFragment(PrepareResFragment.this)
                 .setNotifyShowFragment(SongSelectFragment.class)
-                .build()
-        );
+                .setHasAnimation(true)
+                .setPopAbove(false)
+                .build());
         return true;
     }
 
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        mRootView.setVisibility(View.VISIBLE);
+//        mRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
-        mRootView.setVisibility(View.GONE);
+//        mRootView.setVisibility(View.GONE);
     }
 }

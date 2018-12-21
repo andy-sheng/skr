@@ -1,6 +1,5 @@
 package com.common.utils;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -8,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.base.R;
@@ -128,6 +126,9 @@ public class FragmentUtils {
                             fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         } else {
                             ft = fragmentManager.beginTransaction();
+                            if(params.hasAnimation){
+                                ft.setCustomAnimations(params.enterAnim, params.exitAnim, params.enterAnim, params.exitAnim);
+                            }
                             ft = ft.remove(f);
                             ft.commitAllowingStateLoss();
                         }
@@ -307,6 +308,9 @@ public class FragmentUtils {
         boolean popAbove = true;// 包不包括自己以上的所有fragment，true为包括，false为只会remove自己
         Class<? extends Fragment> notifyShowFragment;//弹出时目标fragment时，要通知即将要显示的notifyShowFragment
         Class<? extends Fragment> backToFragment;// 将要达到的页面，将这个页面之上的所有Fragment全部弹出
+        boolean hasAnimation = false;
+        int enterAnim = R.anim.slide_right_in;
+        int exitAnim = R.anim.slide_right_out;
 
         public void setPopFragment(BaseFragment popFragment) {
             this.popFragment = popFragment;
@@ -351,6 +355,11 @@ public class FragmentUtils {
 
             public Builder setActivity(FragmentActivity activity) {
                 mParams.setActivity(activity);
+                return this;
+            }
+
+            public Builder setHasAnimation(boolean hasAnimation) {
+                mParams.hasAnimation = hasAnimation;
                 return this;
             }
 
