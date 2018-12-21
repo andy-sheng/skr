@@ -54,6 +54,7 @@
     <color name="white_trans_95">#f3ffffff</color>
 
     <color name="transparent">#00000000</color>
+    <color name="log_c_t_color">@color/yellow</color>
     <color name="color_949494_trans_80">#cc949494</color>
     <color name="color_e5aa1e_trans_60">#99e5aa1e</color>
     <color name="color_14b9c7_trans_60">#9914b9c7</color>

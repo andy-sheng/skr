@@ -112,6 +112,16 @@ public class DateTimeUtils {
     }
 
     /**
+     * 12:03:23.122
+     * @param rowTime
+     * @return
+     */
+    public  String formatTimeStringForDate(final long rowTime) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+        return simpleDateFormat.format(new Date(rowTime));
+    }
+
+    /**
      * 格式化时间
      *
      * @param videoTime 默认是毫秒单位，视频的时间

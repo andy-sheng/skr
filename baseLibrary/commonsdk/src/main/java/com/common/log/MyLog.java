@@ -1,9 +1,9 @@
 package com.common.log;
 
-import android.os.Environment;
 import android.util.Log;
 
 import com.common.base.BuildConfig;
+import com.common.log.screenlog.ScreenLogPrinter;
 import com.common.utils.U;
 import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.LogLevel;
@@ -15,7 +15,6 @@ import com.elvishew.xlog.printer.Printer;
 import com.elvishew.xlog.printer.file.FilePrinter;
 import com.elvishew.xlog.printer.file.backup.FileSizeBackupStrategy;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,11 +26,11 @@ public class MyLog {
 
     private static int sCurrentLogLevel = LogLevel.ALL;             //当前的日志级别
     static boolean sHasInit = false;
-    static boolean forceOpenFlag = false;
+    static boolean sForceOpenFlag = false;
 
     static {
-        forceOpenFlag = U.getPreferenceUtils().getSettingBoolean("key_forceOpenFlag", false);
-        Log.e("MyLog", "forceOpenFlag:" + forceOpenFlag);
+        sForceOpenFlag = U.getPreferenceUtils().getSettingBoolean("key_forceOpenFlag", false);
+        Log.e("MyLog", "forceOpenFlag:" + sForceOpenFlag);
     }
 
     public static void init() {
@@ -71,10 +70,13 @@ public class MyLog {
                     .backupStrategy(new FileSizeBackupStrategy(50 * 1024 * 1024))          // 指定日志文件备份策略，默认为 FileSizeBackupStrategy(1024 * 1024)
                     .logFlattener(new MyFlattener())                       // 指定日志平铺器，默认为 DefaultFlattener
                     .build();
+
             XLog.init(                                                 // 初始化 XLog
                     config,                                                // 指定日志配置，如果不指定，会默认使用 new LogConfiguration.Builder().build()
                     androidPrinter,                                        // 添加任意多的打印器。如果没有添加任何打印器，会默认使用 AndroidPrinter(Android)/ConsolePrinter(java)
-                    filePrinter);
+                    filePrinter,
+                    ScreenLogPrinter.getInstance()
+            );
         }
         sHasInit = true;
     }
@@ -285,11 +287,17 @@ public class MyLog {
     }
 
     public static void setForceOpenFlag(boolean flag) {
-        forceOpenFlag = flag;
+        sForceOpenFlag = flag;
         U.getPreferenceUtils().setSettingBoolean("key_forceOpenFlag", flag);
+        if(sForceOpenFlag){
+            ScreenLogPrinter.getInstance().onDebugOpenFlagChange(true);
+        }else{
+            ScreenLogPrinter.getInstance().onDebugOpenFlagChange(isDebugLogOpen());
+        }
+
     }
 
     public static boolean isDebugLogOpen() {
-        return BuildConfig.DEBUG  || forceOpenFlag || U.getChannelUtils().isTestChannel();
+        return BuildConfig.DEBUG || sForceOpenFlag || U.getChannelUtils().isTestChannel();
     }
 }

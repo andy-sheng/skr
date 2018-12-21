@@ -578,7 +578,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     void addText(String te) {
         mUiHanlder.post(() -> {
-            mTestTv.append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis(), "HH:mm:ss:SSS") + ":" + te + "\n");
+            mTestTv.append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis(), "HH:mm:ss.SSS") + ":" + te + "\n");
             if (mNeedScroll) {
                 mScrollView.smoothScrollTo(0, mTestTv.getBottom());
             }
