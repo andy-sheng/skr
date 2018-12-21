@@ -192,7 +192,7 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                UploadParams.newBuilder("/sdcard/aaa.webp")
-                       .setFileName("ready_go2.webp")
+                       .setFileName("ready_go3.webp")
                        .startUploadAsync(new UploadCallback() {
                            @Override
                            public void onProgress(long currentSize, long totalSize) {
