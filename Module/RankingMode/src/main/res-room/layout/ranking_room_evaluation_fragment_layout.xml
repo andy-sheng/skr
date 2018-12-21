@@ -153,8 +153,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                app:bl_pressed_drawable="@drawable/vote_btn_circle_pressed"
-                app:bl_unPressed_drawable="@drawable/vote_btn_circle_normal" />
+                app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
+                app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
 
         </RelativeLayout>
 
@@ -172,8 +172,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
-                app:bl_pressed_drawable="@drawable/vote_btn_circle_pressed"
-                app:bl_unPressed_drawable="@drawable/vote_btn_circle_normal" />
+                app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
         </RelativeLayout>
     </LinearLayout>
 
