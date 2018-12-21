@@ -53,6 +53,7 @@ public class TopContainerView extends RelativeLayout {
         });
         initSparkPrograssBar();
         loadAvatar(AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                .setCircle(true)
                 .build());
     }
 
