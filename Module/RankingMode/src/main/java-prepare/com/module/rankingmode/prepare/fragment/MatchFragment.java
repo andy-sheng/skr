@@ -229,7 +229,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-//        mRootView.setVisibility(View.VISIBLE);
+        mRootView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -237,7 +237,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
      */
     @Override
     public void notifyToHide() {
-//        mRootView.setVisibility(View.GONE);
+        mRootView.setVisibility(View.GONE);
 //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
 //                .setPopFragment(this)
 //                .setPopAbove(false)

@@ -220,12 +220,12 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-//        mRootView.setVisibility(View.VISIBLE);
+        mRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
-//        mRootView.setVisibility(View.GONE);
+        mRootView.setVisibility(View.GONE);
     }
 }
