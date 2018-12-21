@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
+import com.common.core.userinfo.UserInfo;
 import com.common.log.MyLog;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
@@ -121,7 +122,12 @@ public class CommentView extends RelativeLayout {
     public void onEvent(CommentMsgEvent event) {
         CommentModel commentModel = new CommentModel();
         commentModel.setUserId(event.info.getSender().getUserID());
-        commentModel.setAvatar(mRoomData.getUserInfo(event.info.getSender().getUserID()).getAvatar());
+        if(mRoomData != null){
+            UserInfo sender = mRoomData.getUserInfo(event.info.getSender().getUserID());
+            if (sender != null) {
+                commentModel.setAvatar(sender.getAvatar());
+            }
+        }
         commentModel.setText(event.text);
         commentModel.setCommentType(CommentModel.TYPE_TEXT);
         mCommentAdapter.getDataList().add(0, commentModel);
@@ -151,7 +157,7 @@ public class CommentView extends RelativeLayout {
     }
 
     public void setRoomData(RoomData roomData) {
-        mRoomData = roomData;
+        this.mRoomData = roomData;
     }
 
     public RoomData getRoomData() {
