@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -177,8 +178,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void playShowTurnCardAnimator(Runnable countDownRunnable) {
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardShowAnimator == null) {
-            mTurnChangeCardShowAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0);
-            mTurnChangeCardShowAnimator.setDuration(1000);
+            mTurnChangeCardShowAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0.08f * U.getDisplayUtils().getScreenWidth(), 0);
+            mTurnChangeCardShowAnimator.setDuration(750);
         }
         // 这里有坑！！！一直一定要保证 countDownRunnable 每次都要改变，能准确拿到
         mTurnChangeCardShowAnimator.setListener(new ExObjectAnimator.Listener() {
@@ -194,7 +195,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                     public void run() {
                         playHideTurnCardAnimator(countDownRunnable);
                     }
-                }, 2000);
+                }, 1500);
             }
         });
         mTurnChangeCardShowAnimator.start();
@@ -203,8 +204,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void playHideTurnCardAnimator(Runnable countDownRunnable) {
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardHideAnimator == null) {
-            mTurnChangeCardHideAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", 0, -U.getDisplayUtils().getScreenWidth());
-            mTurnChangeCardHideAnimator.setDuration(1000);
+            mTurnChangeCardHideAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", 0, -0.08f * U.getDisplayUtils().getScreenWidth(), U.getDisplayUtils().getScreenWidth());
+            mTurnChangeCardHideAnimator.setDuration(750);
         }
         mTurnChangeCardHideAnimator.setListener(new ExObjectAnimator.Listener() {
             @Override

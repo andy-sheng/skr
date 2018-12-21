@@ -129,45 +129,50 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     }
 
     @Override
-    public void ready(boolean isPrepareState, List<JsonReadyInfo> list) {
+    public void ready(boolean isPrepareState) {
         MyLog.d(TAG, "ready" + " isPrepareState=" + isPrepareState);
         isPrepared = isPrepareState;
         if (isPrepared) {
             U.getToastUtil().showShort("已准备");
             mIvPrepare.setEnabled(false);
-            if (list == null || list.size() == 0) {
-                return;
+        }
+    }
+
+    @Override
+    public void readyList(List<JsonReadyInfo> readyInfos) {
+        if (readyInfos == null || readyInfos.size() == 0) {
+            return;
+        }
+
+        for (JsonReadyInfo jsonReadyInfo : readyInfos) {
+            if (jsonReadyInfo.getUserID() == leftPlayer.getUserInfo().getUserId()) {
+                AvatarUtils.loadAvatarByUrl(mSdvIcon1,
+                        AvatarUtils.newParamsBuilder(leftPlayer.getSongList().get(0).getCover())
+                                .setCircle(true)
+                                .setGray(false)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                .setBorderColor(Color.WHITE)
+                                .build());
             }
-            for (JsonReadyInfo jsonReadyInfo : list) {
-                if (jsonReadyInfo.getUserID() == leftPlayer.getUserInfo().getUserId()) {
-                    AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                            AvatarUtils.newParamsBuilder(leftPlayer.getSongList().get(0).getCover())
-                                    .setCircle(true)
-                                    .setGray(false)
-                                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                    .setBorderColor(Color.WHITE)
-                                    .build());
-                }
 
-                if (jsonReadyInfo.getUserID() == rightPlayer.getUserInfo().getUserId()) {
-                    AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                            AvatarUtils.newParamsBuilder(rightPlayer.getSongList().get(0).getCover())
-                                    .setCircle(true)
-                                    .setGray(false)
-                                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                    .setBorderColor(Color.WHITE)
-                                    .build());
-                }
+            if (jsonReadyInfo.getUserID() == rightPlayer.getUserInfo().getUserId()) {
+                AvatarUtils.loadAvatarByUrl(mSdvIcon2,
+                        AvatarUtils.newParamsBuilder(rightPlayer.getSongList().get(0).getCover())
+                                .setCircle(true)
+                                .setGray(false)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                .setBorderColor(Color.WHITE)
+                                .build());
+            }
 
-                if (jsonReadyInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                    AvatarUtils.loadAvatarByUrl(mSdvIcon3,
-                            AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
-                                    .setCircle(true)
-                                    .setGray(false)
-                                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                    .setBorderColor(Color.WHITE)
-                                    .build());
-                }
+            if (jsonReadyInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                AvatarUtils.loadAvatarByUrl(mSdvIcon3,
+                        AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
+                                .setCircle(true)
+                                .setGray(false)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                .setBorderColor(Color.WHITE)
+                                .build());
             }
         }
     }

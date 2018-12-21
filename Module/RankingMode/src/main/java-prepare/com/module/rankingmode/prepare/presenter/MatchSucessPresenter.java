@@ -123,7 +123,9 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                 MyLog.d(TAG, "prepare " + result);
                 if (result.getErrno() == 0) {
                     List<JsonReadyInfo> model = JSON.parseArray(result.getData().getString("readyInfo"), JsonReadyInfo.class);
-                    iMatchSucessView.ready(isPrepare, model);
+                    iMatchSucessView.ready(isPrepare);
+                    //  已准备人
+                    iMatchSucessView.readyList(model);
                 }
             }
         }, MatchSucessPresenter.this);
@@ -140,6 +142,9 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
 
             iMatchSucessView.allPlayerIsReady(readyNoticeEvent.jsonGameReadyInfo);
         }
+
+        // 已准备人
+        iMatchSucessView.readyList(readyNoticeEvent.jsonGameReadyInfo.getJsonReadyInfo());
     }
 
     // TODO: 2018/12/18 有人退出游戏了
