@@ -100,7 +100,7 @@ public class LyricsManager {
                 .subscribe();
     }
 
-    public Observable<LyricsReader> loadLyricsObserable(final String fileName, final String keyword, final String hash) {
+    public Observable<LyricsReader> loadLyricsObserable(final String fileName, final String hash) {
         return Observable.create(new ObservableOnSubscribe<LyricsReader>() {
 
             @Override
@@ -132,6 +132,36 @@ public class LyricsManager {
         });
     }
 
+    public Observable<File> fetchLyricTask(final String url) {
+        MyLog.d(TAG, "fetchLyricTask" + " url =" + url);
+        return Observable.create(new ObservableOnSubscribe<File>() {
+            @Override
+            public void subscribe(ObservableEmitter<File> emitter) {
+                File tempFile = new File(SongResUtils.createTempLyricFileName(url));
+
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(url, tempFile, null);
+
+                File oldName = new File(SongResUtils.createTempLyricFileName(url));
+                File newName = new File(SongResUtils.createLyricFileName(url));
+
+                if (isSuccess) {
+                    if (oldName.renameTo(newName)) {
+                        System.out.println("已重命名");
+                    } else {
+                        System.out.println("Error");
+                        emitter.onError(new Throwable("重命名错误"));
+                    }
+                } else {
+                    emitter.onError(new Throwable("下载失败"));
+                }
+
+                emitter.onNext(newName);
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     /**
      * @param fileName
      * @param keyword
@@ -139,7 +169,7 @@ public class LyricsManager {
      * @return
      */
     public void loadLyricsUtil(final String fileName, final String keyword, final String hash) {
-        loadLyricsObserable(fileName, keyword, hash).subscribeOn(Schedulers.io())
+        loadLyricsObserable(fileName, hash).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LyricsReader>() {
                     @Override

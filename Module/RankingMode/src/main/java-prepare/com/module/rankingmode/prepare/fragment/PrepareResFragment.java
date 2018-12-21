@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
@@ -20,6 +21,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.PrepareData;
 import com.module.rankingmode.prepare.presenter.PrepareSongPresenter;
+import com.module.rankingmode.prepare.view.IPrepareResView;
 import com.module.rankingmode.song.fragment.SongSelectFragment;
 import com.module.rankingmode.song.model.SongModel;
 
@@ -28,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 准备资源界面
  */
-public class PrepareResFragment extends BaseFragment {
+public class PrepareResFragment extends BaseFragment implements IPrepareResView {
     ExImageView mIvTop;
     SimpleDraweeView mSongIcon;
     ExTextView mSongName;
@@ -36,8 +38,8 @@ public class PrepareResFragment extends BaseFragment {
     ExTextView mTvLyric;
 
     ExImageView mIvBack;
-
-    ExImageView mIvStartMatch;
+    ProgressBar songResProgressbar;
+    ExTextView mIvStartMatch;
 
     private PrepareData mPrepareData = new PrepareData();
 
@@ -64,8 +66,9 @@ public class PrepareResFragment extends BaseFragment {
         mSongName = (ExTextView) mRootView.findViewById(R.id.song_name);
         mTvDuration = (ExTextView) mRootView.findViewById(R.id.tv_duration);
         mTvLyric = (ExTextView) mRootView.findViewById(R.id.tv_lyric);
-        mIvStartMatch = (ExImageView) mRootView.findViewById(R.id.iv_start_match);
-
+        mIvStartMatch = mRootView.findViewById(R.id.iv_start_match);
+        songResProgressbar = (ProgressBar)mRootView.findViewById(R.id.song_res_progressbar);
+        songResProgressbar.setMax(100);
         mSongName.setText(mPrepareData.getSongModel().getItemName());
 
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
@@ -85,7 +88,11 @@ public class PrepareResFragment extends BaseFragment {
         mOnDownloadProgress = new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
-//                MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);
+                MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);
+                mUiHandler.post(() -> {
+                    int progress = (int) ((((float)downloaded / (float) totalLength)) * 100);
+                    songResProgressbar.setProgress(progress);
+                });
             }
 
             @Override
@@ -93,6 +100,7 @@ public class PrepareResFragment extends BaseFragment {
                 MyLog.d(TAG, "onCompleted" + " localPath=" + localPath);
                 mUiHandler.post(() -> {
                     U.getToastUtil().showShort("歌曲资源已经准备好了");
+                    songResProgressbar.setProgress(100);
                     mIvStartMatch.setEnabled(true);
                 });
             }
@@ -142,9 +150,16 @@ public class PrepareResFragment extends BaseFragment {
 
         mIvStartMatch.setEnabled(false);
 
-        mPrepareSongPresenter = new PrepareSongPresenter(mOnDownloadProgress, mPrepareData.getSongModel());
+        mPrepareSongPresenter = new PrepareSongPresenter(mOnDownloadProgress, this, mPrepareData.getSongModel());
+        addPresent(mPrepareSongPresenter);
         mPrepareSongPresenter.prepareRes();
 
+    }
+
+    @Override
+    public void onLyricReady(String lyrics) {
+        MyLog.d(TAG, "onLyricReady" + " lyrics=" + lyrics);
+        mTvLyric.setText(lyrics);
     }
 
     @Override

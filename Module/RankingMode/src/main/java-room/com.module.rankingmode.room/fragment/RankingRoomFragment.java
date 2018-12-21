@@ -1,8 +1,6 @@
 package com.module.rankingmode.room.fragment;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,8 +20,6 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
-import com.common.utils.FragmentUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -465,6 +461,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void playLyric(SongModel songModel, boolean play) {
         showMsg("开始播放歌词 songId=" + songModel.getItemID());
+        if(songModel == null){
+            showMsg("songModel 是空的");
+            return;
+        }
         mPlayingSongModel = songModel;
 
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
@@ -488,7 +488,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void parseLyrics(String fileName, boolean play) {
         MyLog.d(TAG, "parseLyrics" + " fileName=" + fileName);
-        mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, "沙漠骆驼", fileName.hashCode() + "")
+        mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lyricsReader -> {

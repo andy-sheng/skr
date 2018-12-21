@@ -117,7 +117,7 @@ public class PrepareSongResSence extends RelativeLayout implements ISence {
                     matchSenceController.toAssignSence(MatchSenceContainer.MatchSenceState.Audition, mPrepareData);
                 });
 
-        prepareSongPresenter = new PrepareSongPresenter(onDownloadProgress, mPrepareData.getSongModel());
+//        prepareSongPresenter = new PrepareSongPresenter(onDownloadProgress, mPrepareData.getSongModel());
         mMatchStatusTv.setText("加载歌曲中");
         mToneTuningTv.setText("加载歌曲中");
         mMatchStatusTv.setEnabled(false);
