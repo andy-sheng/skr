@@ -43,6 +43,8 @@
             android:launchMode="singleTask"/>
             <!--android:screenOrientation="portrait" -->
 
+        <activity android:name=".login.UploadAccountInfoActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
 

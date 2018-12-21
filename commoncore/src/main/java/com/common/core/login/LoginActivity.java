@@ -10,7 +10,10 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
+import com.common.core.account.UserAccount;
+import com.common.core.account.UserAccountManager;
 import com.common.core.login.fragment.LoginByPhoneFragment;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
 import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
@@ -19,6 +22,8 @@ import com.common.utils.U;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import static com.module.RouterConstants.ACTIVITY_UPLOAD;
 
 @Route(path = RouterConstants.ACTIVITY_LOGIN)
 public class LoginActivity extends BaseActivity {
@@ -64,29 +69,41 @@ public class LoginActivity extends BaseActivity {
                         .build());
             }
         });
-
-        findViewById(R.id.green_channel_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME).greenChannel().navigation();
-            }
-        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent setAccountEvent) {
         //登陆成功
         U.getToastUtil().showShort("登录成功");
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            String path = bundle.getString(KEY_ORIGIN_PATH);
-            if (!TextUtils.isEmpty(path)) {
-                // 跳转到原页面，并带上参数
-                ARouter.getInstance().build(path).with(bundle).navigation();
+        // 昵称不能为空
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+            // 无头像或昵称
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                String path = bundle.getString(KEY_ORIGIN_PATH);
+                if (!TextUtils.isEmpty(path)) {
+                    // 跳转到上传资料页面
+                    ARouter.getInstance()
+                            .build(ACTIVITY_UPLOAD)
+                            .withString(LoginActivity.KEY_ORIGIN_PATH, path)
+                            .with(bundle)
+                            .navigation();
+                }
+            }
+        } else {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                String path = bundle.getString(KEY_ORIGIN_PATH);
+                if (!TextUtils.isEmpty(path)) {
+                    // 跳转到原页面，并带上参数
+                    ARouter.getInstance().build(path).with(bundle).navigation();
+                }
             }
         }
+
         finish();
     }
+
 
     @Override
     protected void onStart() {

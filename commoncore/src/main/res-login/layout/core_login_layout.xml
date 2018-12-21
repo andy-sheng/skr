@@ -50,15 +50,4 @@
 
     </LinearLayout>
 
-
-    <com.common.view.ex.ExButton
-        android:id="@+id/green_channel_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_dimen_100"
-        android:layout_marginTop="@dimen/view_dimen_20"
-        android:text="绿色通道" />
-
 </RelativeLayout>
