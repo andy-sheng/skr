@@ -21,6 +21,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
+import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -433,11 +434,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void gameFinish() {
         showMsg("游戏结束了");
 
-//        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-//                .setAddToBackStack(true)
-//                .addDataBeforeAdd(0, mRoomData)
-//                .build()
-//        );
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                .setAddToBackStack(true)
+                .addDataBeforeAdd(0, mRoomData)
+                .build()
+        );
 
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
