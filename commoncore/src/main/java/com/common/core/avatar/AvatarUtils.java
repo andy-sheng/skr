@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.common.core.R;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.processor.BlurPostprocessor;
+import com.common.image.fresco.processor.GrayPostprocessor;
 import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
@@ -87,6 +88,9 @@ public class AvatarUtils {
         imgBuilder.setCornerRadii(params.mCornerRadii);
         imgBuilder.setCornerRadius(params.mCornerRadius);
 
+        if (params.isGray) {
+            imgBuilder.setPostprocessor(new GrayPostprocessor());
+        }
         HttpImage avatarImg = (HttpImage) imgBuilder.build();
         return avatarImg;
     }
@@ -141,10 +145,8 @@ public class AvatarUtils {
 
     public static class LoadParams {
 
-        String url;
-        long uid;
+        String url; // 头像url
         ImageUtils.SIZE sizeType = ImageUtils.SIZE.SIZE_160;
-        //        long timestamp = 0 ;
         boolean isWebpFormat = false;
         boolean isCircle = false;
         boolean isBlur = false;
@@ -158,6 +160,8 @@ public class AvatarUtils {
         //圆角矩形参数
         protected float mCornerRadius = 0;
         protected float[] mCornerRadii;
+
+        boolean isGray = false;
 
         LoadParams() {
         }
@@ -216,6 +220,10 @@ public class AvatarUtils {
 
         public void setCornerRadii(float[] cornerRadii) {
             mCornerRadii = cornerRadii;
+        }
+
+        public void setGray(boolean gray) {
+            isGray = gray;
         }
 
         public static class Builder {
@@ -282,6 +290,11 @@ public class AvatarUtils {
 
             public Builder setCornerRadii(float[] cornerRadii) {
                 mUploadParams.setCornerRadii(cornerRadii);
+                return this;
+            }
+
+            public Builder setGray(boolean gray) {
+                mUploadParams.setGray(gray);
                 return this;
             }
 
