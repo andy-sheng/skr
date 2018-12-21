@@ -190,6 +190,9 @@ public class RoomData {
         if (userID == 0) {
             return null;
         }
+        if (mPlayerInfoList == null) {
+            return null;
+        }
         for (PlayerInfo playerInfo : mPlayerInfoList) {
             if (playerInfo.getUserInfo().getUserId() == userID) {
                 return playerInfo.getUserInfo();
