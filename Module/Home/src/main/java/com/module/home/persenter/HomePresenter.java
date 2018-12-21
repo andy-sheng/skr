@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
@@ -30,14 +31,14 @@ public class HomePresenter {
     DialogPlus mPerTipsDialogPlus;
     long mLastCheckTs = 0;
 
-    public HomePresenter(){
-        if (!EventBus.getDefault().isRegistered(this)){
+    public HomePresenter() {
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
 
-    public void destroy(){
-        if (EventBus.getDefault().isRegistered(this)){
+    public void destroy() {
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }
@@ -129,28 +130,41 @@ public class HomePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(NetworkUtils.NetworkChangeEvent event) {
         if (event.type == -1) {
-            TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                    .setMessageTip("网络连接失败\n请检查网络异常，请检查网络")
-                    .setOkBtnTip("确认")
-                    .build();
-
-            DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
-                    .setContentHolder(new ViewHolder(tipsDialogView))
-                    .setGravity(Gravity.BOTTOM)
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_50)
-                    .setExpanded(false)
-                    .setOnClickListener(new OnClickListener() {
+            HandlerTaskTimer.newBuilder()
+                    .delay(5000)
+                    .start(new HandlerTaskTimer.ObserverW() {
                         @Override
-                        public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                            if (view instanceof ExTextView) {
-                                if (view.getId() == R.id.ok_btn) {
-                                    dialog.dismiss();
-                                }
+                        public void onNext(Integer integer) {
+                            if (!U.getNetworkUtils().hasNetwork()) {
+                                showNetworkDisConnectDialog();
                             }
                         }
-                    })
-                    .create().show();
+                    });
         }
+    }
+
+    private void showNetworkDisConnectDialog() {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                .setMessageTip("网络连接失败\n请检查网络异常，请检查网络")
+                .setOkBtnTip("确认")
+                .build();
+
+        DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setExpanded(false)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view instanceof ExTextView) {
+                            if (view.getId() == R.id.ok_btn) {
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+                })
+                .create().show();
     }
 }
