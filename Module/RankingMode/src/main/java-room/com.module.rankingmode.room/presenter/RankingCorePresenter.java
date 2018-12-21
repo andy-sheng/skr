@@ -384,7 +384,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                 EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
                                 // 还应开始播放歌词
                                 mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-                                mIGameRuleView.showMsg("开始唱了，歌词和伴奏响起");
+                                mIGameRuleView.showMsg("本人开始唱了，歌词和伴奏响起");
                             }
                         }
                     });

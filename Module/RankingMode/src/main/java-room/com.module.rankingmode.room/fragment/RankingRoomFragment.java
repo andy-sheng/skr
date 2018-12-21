@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
@@ -92,7 +93,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             super.handleMessage(msg);
             if (msg.what == ENSURE_RUN) {
                 Runnable runnable = (Runnable) msg.obj;
-                runnable.run();
+                if (runnable != null) {
+                    runnable.run();
+                    mPendingSelfCountDownRunnable = null;
+                }
                 onReadyGoOver();
             }
         }
@@ -112,9 +116,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     boolean mReadyGoPlaying = false;
 
-    ObjectAnimator mTurnChangeCardShowAnimator;
+    ExObjectAnimator mTurnChangeCardShowAnimator;
 
-    ObjectAnimator mTurnChangeCardHideAnimator;
+    ExObjectAnimator mTurnChangeCardHideAnimator;
 
     Runnable mPendingSelfCountDownRunnable;
 
@@ -177,69 +181,50 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void playShowTurnCardAnimator(Runnable countDownRunnable) {
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardShowAnimator == null) {
-            mTurnChangeCardShowAnimator = ObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0);
+            mTurnChangeCardShowAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0);
             mTurnChangeCardShowAnimator.setDuration(1000);
-
-            mTurnChangeCardShowAnimator.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    mUiHanlder.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            playHideTurnCardAnimator(countDownRunnable);
-                        }
-                    }, 2000);
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                    super.onAnimationCancel(animation);
-                    onAnimationEnd(animation);
-                }
-
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    super.onAnimationStart(animation);
-                    mTurnChangeView.setVisibility(View.VISIBLE);
-                }
-            });
         }
+        // 这里有坑！！！一直一定要保证 countDownRunnable 每次都要改变，能准确拿到
+        mTurnChangeCardShowAnimator.setListener(new ExObjectAnimator.Listener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                mTurnChangeView.setVisibility(View.VISIBLE);
+            }
 
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        playHideTurnCardAnimator(countDownRunnable);
+                    }
+                }, 2000);
+            }
+        });
         mTurnChangeCardShowAnimator.start();
     }
 
     public void playHideTurnCardAnimator(Runnable countDownRunnable) {
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardHideAnimator == null) {
-            mTurnChangeCardHideAnimator = ObjectAnimator.ofFloat(mTurnChangeView, "translationX", 0, -U.getDisplayUtils().getScreenWidth());
+            mTurnChangeCardHideAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", 0, -U.getDisplayUtils().getScreenWidth());
             mTurnChangeCardHideAnimator.setDuration(1000);
-
-            mTurnChangeCardHideAnimator.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    MyLog.d(TAG, "onAnimationEnd" + " animation=" + animation);
-                    mTurnChangeView.setVisibility(View.GONE);
-                    if (countDownRunnable != null) {
-                        countDownRunnable.run();
-                        mUiHanlder.removeMessages(ENSURE_RUN);
-                    }
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                    super.onAnimationCancel(animation);
-                    MyLog.d(TAG, "onAnimationCancel" + " animation=" + animation);
-                    onAnimationEnd(animation);
-                }
-
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    super.onAnimationStart(animation);
-                }
-            });
         }
+        mTurnChangeCardHideAnimator.setListener(new ExObjectAnimator.Listener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                mTurnChangeView.setVisibility(View.GONE);
+                if (countDownRunnable != null) {
+                    countDownRunnable.run();
+                    mUiHanlder.removeMessages(ENSURE_RUN);
+                }
+            }
+        });
         mTurnChangeCardHideAnimator.start();
     }
 
@@ -402,21 +387,27 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
-        if (mReadyGoPlaying) {
-            // 正在播放readyGo动画，保存参数，延迟播放卡片
-            mPendingSelfCountDownRunnable = countDownOver;
-        } else {
-            if (mTurnChangeView.setData(mRoomData)) {
-                playShowTurnCardAnimator(countDownOver);
-            }
-        }
-
         // 确保演唱逻辑一定要执行
         Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
         msg.what = ENSURE_RUN;
         msg.obj = countDownOver;
-        // 目前 readyGo动画3秒 + 卡片动画4秒，按理7秒后一定执行，这里容错，允许延迟1秒
-        mUiHanlder.sendMessageDelayed(msg, 8000);
+
+        if (mReadyGoPlaying) {
+            // 正在播放readyGo动画，保存参数，延迟播放卡片
+            mPendingSelfCountDownRunnable = countDownOver;
+            // 目前 readyGo动画3秒 + 卡片动画4秒，按理7秒后一定执行，这里容错，允许延迟1秒
+            mUiHanlder.removeMessages(ENSURE_RUN);
+            mUiHanlder.sendMessageDelayed(msg, 8000);
+        } else {
+            if (mTurnChangeView.setData(mRoomData)) {
+                playShowTurnCardAnimator(countDownOver);
+                mUiHanlder.removeMessages(ENSURE_RUN);
+                mUiHanlder.sendMessageDelayed(msg, 5000);
+            } else {
+                countDownOver.run();
+            }
+        }
+
     }
 
     /**
