@@ -1,7 +1,12 @@
 package com.common.log.screenlog;
 
-import com.common.utils.U;
+import android.util.Log;
 
+import com.common.log.MyFlattener;
+import com.common.utils.U;
+import com.elvishew.xlog.LogLevel;
+
+import java.io.File;
 import java.util.HashSet;
 
 public class LogListContainer {
@@ -12,6 +17,8 @@ public class LogListContainer {
     }
 
     public static final int MAX_COUNT = 10000;
+
+    MyFlattener mMyFlattener;
 
     Node mHead;// 队列头
 
@@ -28,11 +35,13 @@ public class LogListContainer {
     public LogListContainer() {
         mHead = new Node();
         mHead.mLogModel = new LogModel();
+        mHead.mLogModel.level = LogLevel.WARN;
         mHead.mLogModel.tag = "链表头";
         mHead.mLogModel.msg = "当前时间:" + U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis());
         mTail = mHead;
         mLength = 1;
         mLastInput = mTail;
+        mMyFlattener = new MyFlattener();
     }
 
 
@@ -58,7 +67,8 @@ public class LogListContainer {
                     mLastNotifyTs = System.currentTimeMillis();
                     StringBuilder sb = new StringBuilder();
                     while (mLastInput != null) {
-                        sb.append(mLastInput.mLogModel.tag + ":" + mLastInput.mLogModel.msg).append("\n");
+                        LogModel l = mLastInput.mLogModel;
+                        sb.append(mMyFlattener.flatten(l.level, l.tag, l.msg)).append("\n");
                         mLastInput = mLastInput.next;
                     }
                     // 通知更新
@@ -74,7 +84,8 @@ public class LogListContainer {
             mLastInput = mHead;
             while (mLastInput != null) {
                 if (set == null || set.contains(mLastInput.mLogModel.tag)) {
-                    sb.append(mLastInput.mLogModel.tag + ":" + mLastInput.mLogModel.msg).append("\n");
+                    LogModel l = mLastInput.mLogModel;
+                    sb.append(mMyFlattener.flatten(l.level, l.tag, l.msg)).append("\n");
                 }
                 mLastInput = mLastInput.next;
             }

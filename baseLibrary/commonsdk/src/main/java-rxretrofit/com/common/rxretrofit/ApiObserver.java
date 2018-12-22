@@ -42,7 +42,7 @@ public abstract class ApiObserver<T> implements Observer<T> {
             String log = Log.getStackTraceString(e);
             U.getToastUtil().showShort(log);
         }
-        MyLog.w(API_TAG, e);
+        MyLog.e(API_TAG, e);
     }
 
     @Override

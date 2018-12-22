@@ -49,6 +49,8 @@ android {
             // commontitlebar
             res.srcDirs += 'src/main/res-titlebar'
 
+            //xlog
+            java.srcDirs += 'src/main/java-xlog'
             // 直接引入支持下拉加载 recyclerView,放弃 paginate，使用SmartRefreshLayout
 //            java.srcDirs += 'src/main/java-paginate'
 //            res.srcDirs += 'src/main/res-paginate'
@@ -101,6 +103,7 @@ android {
 
             // lubban 图片压缩
             java.srcDirs += 'src/main/java-luban'
+
         }
 
 //        release {
@@ -150,8 +153,8 @@ dependencies {
 
     // 权限检查
     api(rootProject.ext.dependencies["rxpermissions2"])
-    // 日志
-    implementation(rootProject.ext.dependencies["xlog"])
+    // 日志 以源代码方式方式引入
+    //implementation(rootProject.ext.dependencies["xlog"])
 
     // fresco图片加载
     api(rootProject.ext.dependencies["fresco"])

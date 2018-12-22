@@ -45,7 +45,7 @@ public class FrescoLogDelegate implements LoggingDelegate {
     @Override
     public void v(String tag, String msg, Throwable tr) {
         if (sSwitch) {
-            MyLog.w(TAG, " " + tag + " : " + msg, tr);
+            MyLog.e(TAG, " " + tag + " : " + msg, tr);
         }
     }
 
@@ -73,7 +73,7 @@ public class FrescoLogDelegate implements LoggingDelegate {
     @Override
     public void i(String tag, String msg, Throwable tr) {
         if (sSwitch) {
-            MyLog.i(TAG, tr);
+            MyLog.e(TAG, msg,tr);
         }
     }
 
@@ -87,7 +87,7 @@ public class FrescoLogDelegate implements LoggingDelegate {
     @Override
     public void w(String tag, String msg, Throwable tr) {
         if (sSwitch) {
-            MyLog.w(TAG, " " + tag + " : " + msg, tr);
+            MyLog.e(TAG, " " + tag + " : " + msg, tr);
         }
     }
 
@@ -115,7 +115,7 @@ public class FrescoLogDelegate implements LoggingDelegate {
     @Override
     public void wtf(String tag, String msg, Throwable tr) {
         if (sSwitch) {
-            MyLog.w(TAG, " " + tag + " : " + msg, tr);
+            MyLog.e(TAG, " " + tag + " : " + msg, tr);
         }
     }
 

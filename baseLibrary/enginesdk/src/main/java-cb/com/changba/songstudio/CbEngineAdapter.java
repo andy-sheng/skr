@@ -23,7 +23,7 @@ public class CbEngineAdapter {
             System.loadLibrary("native-lib");
         } catch (Exception e) {
             e.printStackTrace();
-            MyLog.w(TAG, e);
+            MyLog.e(TAG, e);
         }
     }
 

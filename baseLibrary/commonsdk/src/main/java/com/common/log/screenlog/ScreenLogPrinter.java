@@ -91,6 +91,7 @@ public class ScreenLogPrinter implements Printer {
         if (MyLog.isDebugLogOpen()) {
             //传感器是开着的，接受日志
             LogModel logModel = new LogModel();
+            logModel.level = logLevel;
             logModel.tag = tag;
             logModel.msg = msg;
             mLogListContainer.addLog(logModel);

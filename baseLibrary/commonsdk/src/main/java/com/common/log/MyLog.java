@@ -37,7 +37,7 @@ public class MyLog {
         if (!sHasInit) {
             String logTag = U.getAppInfoUtils().getAppName();
             //存放的路径
-            if (BuildConfig.DEBUG) {
+            if (isDebugLogOpen()) {
                 sCurrentLogLevel = LogLevel.ALL;
             } else {
                 //这里开发中先全部放开日志
@@ -45,7 +45,7 @@ public class MyLog {
             }
             LogConfiguration config = new LogConfiguration.Builder()
                     .logLevel(sCurrentLogLevel)            // 指定日志级别，低于该级别的日志将不会被打印，默认为 LogLevel.ALL
-                    .tag(logTag + "LOG")                                         // 指定 TAG，默认为 "X-LOG"
+                    .tag("SKER")                                         // 指定 TAG，默认为 "X-LOG"
 //                    .t()                                                   // 允许打印线程信息，默认禁止
 //                    .st(2)                                                 // 允许打印深度为2的调用栈信息，默认禁止
 //                .b()                                                   // 允许打印日志边框，默认禁止
@@ -88,22 +88,22 @@ public class MyLog {
         if (!sHasInit) {
             return;
         }
-        XLog.v(msg);
+        XLog.v(null, msg);
     }
 
     public static final void d(String msg) {
         if (!sHasInit) {
             return;
         }
-        XLog.d(msg);
+        XLog.d(null, msg);
     }
 
-    public static final void d(String msg, Throwable tr) {
+    public static final void w(String msg) {
         if (!sHasInit) {
             return;
         }
         try {
-            XLog.e(msg, tr);
+            XLog.w(null, msg);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,125 +114,104 @@ public class MyLog {
             return;
         }
         try {
-            XLog.i(msg);
+            XLog.i(null, msg);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static final void i(String msg, Throwable tr) {
-        if (!sHasInit) {
-            return;
-        }
-        try {
-            XLog.e(msg, tr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static final void w(String msg) {
-        if (!sHasInit) {
-            return;
-        }
-        try {
-            XLog.w(msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static final void i(String tag, String msg) {
-
-        if (!sHasInit) {
-            return;
-        }
-        XLog.i(tag + ": " + msg);
-    }
-
-    public static final void v(String tag, String msg) {
-        if (!sHasInit) {
-            return;
-        }
-        XLog.v(tag + ": " + msg);
-    }
-
-    public static final void v(String msg, Throwable tr) {
-        if (!sHasInit) {
-            return;
-        }
-        XLog.v(msg, tr);
-    }
-
-    public static final void d(String tag, String msg) {
-        if (!sHasInit) {
-            return;
-        }
-        XLog.d(tag + ": " + msg);
-    }
-
-    public static final void w(String tag, String msg) {
-        if (!sHasInit) {
-            return;
-        }
-        XLog.w(tag + ": " + msg);
-    }
-
-    public static final void w(String msg, Throwable tr) {
-        if (!sHasInit) {
-            return;
-        }
-        XLog.e(msg, tr);
-    }
-
-    public static final void e(String tag, String msg) {
-        if (!sHasInit) {
-            return;
-        }
-        XLog.e(tag + ": " + msg);
     }
 
     public static final void e(String msg) {
         if (!sHasInit) {
             return;
         }
-        XLog.e(msg);
+        XLog.e(null, msg);
     }
 
-    public static final void e(String msg, Throwable tr) {
+    /*分割*/
+
+    public static final void v(String tag, String msg) {
         if (!sHasInit) {
             return;
         }
-        XLog.e(msg, tr);
+        XLog.v(tag, msg);
+    }
+
+    public static final void d(String tag, String msg) {
+        if (!sHasInit) {
+            return;
+        }
+        XLog.d(tag, msg);
+    }
+
+
+    public static final void w(String tag, String msg) {
+        if (!sHasInit) {
+            return;
+        }
+        XLog.w(tag, msg);
+    }
+
+
+    public static final void i(String tag, String msg) {
+
+        if (!sHasInit) {
+            return;
+        }
+        XLog.i(tag, msg);
+    }
+
+    public static final void e(String tag, String msg) {
+        if (!sHasInit) {
+            return;
+        }
+        XLog.e(tag, msg);
+    }
+
+    /*分割*/
+
+
+    public static final void d(String tag, String msg, Throwable tr) {
+        if (!sHasInit) {
+            return;
+        }
+        XLog.d(tag, msg, tr);
+    }
+
+    public static final void d(String tag, Throwable tr) {
+        if (!sHasInit) {
+            return;
+        }
+        XLog.d(tag, null, tr);
+    }
+
+    public static final void d(Throwable tr) {
+        if (!sHasInit) {
+            return;
+        }
+        XLog.d(null, null, tr);
     }
 
     public static final void e(String tag, String msg, Throwable tr) {
         if (!sHasInit) {
             return;
         }
-        XLog.e(tag + ": " + msg, tr);
+        XLog.e(tag, msg, tr);
     }
 
-    public static final void d(String tag, String msg, Throwable tr) {
+    public static final void e(String tag, Throwable tr) {
         if (!sHasInit) {
             return;
         }
-        XLog.e(tag + ": " + msg, tr);
-    }
-
-    public static final void w(String tag, String msg, Throwable tr) {
-        if (!sHasInit) {
-            return;
-        }
-        XLog.e(tag + ": " + msg, tr);
+        XLog.e(tag, null, tr);
     }
 
     public static final void e(Throwable tr) {
         if (!sHasInit) {
             return;
         }
-        XLog.e(tr);
+        XLog.e(null, null, tr);
     }
+
 
     // log
 
@@ -289,9 +268,9 @@ public class MyLog {
     public static void setForceOpenFlag(boolean flag) {
         sForceOpenFlag = flag;
         U.getPreferenceUtils().setSettingBoolean("key_forceOpenFlag", flag);
-        if(sForceOpenFlag){
+        if (sForceOpenFlag) {
             ScreenLogPrinter.getInstance().onDebugOpenFlagChange(true);
-        }else{
+        } else {
             ScreenLogPrinter.getInstance().onDebugOpenFlagChange(isDebugLogOpen());
         }
 

@@ -78,8 +78,8 @@ public class NestViewPager extends ViewPager {
         }
         try {
             return super.onInterceptTouchEvent(ev);
-        }catch (Exception e){
-            MyLog.e(TAG,e);
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
             return false;
         }
     }
