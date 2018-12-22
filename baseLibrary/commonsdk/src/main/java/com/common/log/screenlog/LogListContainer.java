@@ -77,7 +77,9 @@ public class LogListContainer {
                     StringBuilder sb = new StringBuilder();
                     while (mLastInput != null) {
                         LogModel l = mLastInput.mLogModel;
-                        sb.append(mMyFlattener.flatten(l.level, l.tag, l.msg)).append("\n");
+                        if (mListener.accept(l.tag)) {
+                            sb.append(mMyFlattener.flatten(l.level, l.tag, l.msg)).append("\n");
+                        }
                         mLastInput = mLastInput.next;
                     }
                     // 通知更新
@@ -111,6 +113,8 @@ public class LogListContainer {
     }
 
     public interface Listener {
+        boolean accept(String tag);
+
         int getNotifyInterval();
 
         void notifyLogUpdate(String logs);

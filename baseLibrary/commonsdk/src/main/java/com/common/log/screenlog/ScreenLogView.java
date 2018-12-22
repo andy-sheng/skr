@@ -157,6 +157,14 @@ public class ScreenLogView extends RelativeLayout {
         });
         ScreenLogPrinter.getInstance().setListener(new LogListContainer.Listener() {
             @Override
+            public boolean accept(String tag) {
+                if (mSelectTagSet.isEmpty()) {
+                    return true;
+                }
+                return mSelectTagSet.contains(tag);
+            }
+
+            @Override
             public int getNotifyInterval() {
                 return 200;
             }
