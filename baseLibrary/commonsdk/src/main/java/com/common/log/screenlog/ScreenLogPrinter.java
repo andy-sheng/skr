@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class ScreenLogPrinter implements Printer {
@@ -31,6 +32,10 @@ public class ScreenLogPrinter implements Printer {
 
     public String getLogByTag(HashSet<String> set) {
         return mLogListContainer.getLogByTag(set);
+    }
+
+    public HashMap<String, Integer> getAllLogTags() {
+        return mLogListContainer.getTagMap();
     }
 
     private static class ScreenLogPrinterHolder {

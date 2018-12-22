@@ -7,6 +7,7 @@ import com.common.utils.U;
 import com.elvishew.xlog.LogLevel;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class LogListContainer {
@@ -17,6 +18,8 @@ public class LogListContainer {
     }
 
     public static final int MAX_COUNT = 10000;
+
+    HashMap<String, Integer> mTagNumMap = new HashMap<>();
 
     MyFlattener mMyFlattener;
 
@@ -36,17 +39,23 @@ public class LogListContainer {
         mHead = new Node();
         mHead.mLogModel = new LogModel();
         mHead.mLogModel.level = LogLevel.WARN;
-        mHead.mLogModel.tag = "链表头";
+        mHead.mLogModel.tag = "SKER";
         mHead.mLogModel.msg = "当前时间:" + U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis());
         mTail = mHead;
         mLength = 1;
         mLastInput = mTail;
         mMyFlattener = new MyFlattener();
+        mMyFlattener.setShowyyyyMMdd(false);
     }
-
 
     public void addLog(LogModel logModel) {
         synchronized (this) {
+            if (mTagNumMap.containsKey(logModel.tag)) {
+                int n = mTagNumMap.get(logModel.tag);
+                mTagNumMap.put(logModel.tag, n + 1);
+            } else {
+                mTagNumMap.put(logModel.tag, 1);
+            }
             Node node = new Node();
             node.mLogModel = logModel;
             mTail.next = node;
@@ -91,6 +100,10 @@ public class LogListContainer {
             }
         }
         return sb.toString();
+    }
+
+    public HashMap<String, Integer> getTagMap() {
+        return mTagNumMap;
     }
 
     public void setListener(Listener l) {
