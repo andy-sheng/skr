@@ -69,16 +69,17 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     public void startLoopMatchTask(int playbookItemID) {
         MyLog.d(TAG, "startLoopMatchTask");
         this.currentMusicId = playbookItemID;
-        //现在只需要发一次，不轮询发
-//        loopMatchTask = HandlerTaskTimer.newBuilder()
-//                .interval(10000)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        MyLog.d(TAG, "startLoopMatchTask onNext");
+
+        disposeLoopMatchTask();
+        loopMatchTask = HandlerTaskTimer.newBuilder()
+                .interval(10000)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        MyLog.d(TAG, "startLoopMatchTask onNext");
         startMatch(currentMusicId);
-//                    }
-//                });
+                    }
+                });
     }
 
     private void disposeLoopMatchTask() {
