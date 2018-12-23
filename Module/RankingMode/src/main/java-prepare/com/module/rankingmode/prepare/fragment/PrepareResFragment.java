@@ -97,7 +97,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
             @Override
             public void onCompleted(String localPath) {
-                MyLog.d(TAG, "onCompleted" + " localPath=" + localPath);
+                MyLog.w(TAG, "onCompleted" + " localPath=" + localPath);
                 mUiHandler.post(() -> {
                     U.getToastUtil().showShort("歌曲资源已经准备好了");
                     songResProgressbar.setProgress(100);

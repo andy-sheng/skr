@@ -76,7 +76,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 //                    @Override
 //                    public void onNext(Integer integer) {
 //                        MyLog.d(TAG, "startLoopMatchTask onNext");
-                        startMatch(currentMusicId);
+        startMatch(currentMusicId);
 //                    }
 //                });
     }
@@ -116,7 +116,6 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("开始匹配");
                 } else {
-                    U.getToastUtil().showShort("开始匹配失败");
                     onError(new Throwable("开始匹配失败"));
                 }
             }
@@ -149,12 +148,10 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     // 加入指令，即服务器通知加入房间的指令
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinActionEvent joinActionEvent) {
-        MyLog.d(TAG, "onEventMainThread JoinActionEvent 1");
         if (joinActionEvent != null) {
-            // todo 收到服务器加入游戏的通知
+            MyLog.w(TAG, "onEventMainThread JoinActionEvent currentGameId is " + joinActionEvent.gameId);
             // 是否要对加入通知进行过滤
             if (matchState == MatchState.Matching) {
-                MyLog.d(TAG, "onEventMainThread JoinActionEvent 1 currentGameId is " + joinActionEvent.gameId);
                 matchState = MatchState.MatchSucess;
                 this.joinActionEvent = joinActionEvent;
                 disposeLoopMatchTask();
@@ -169,10 +166,9 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     // 加入游戏通知（别人进房间也会给我通知）
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinNoticeEvent joinNoticeEvent) {
-        MyLog.d(TAG, "onEventMainThread JoinNoticeEvent 1");
         if (joinNoticeEvent != null && joinNoticeEvent.jsonGameInfo != null) {
+            MyLog.w(TAG, " onEventMainThread JoinNoticeEvent ");
             // 需要去更新GameInfo
-            MyLog.d(TAG, "onEventMainThread JoinNoticeEvent 2");
             if (joinNoticeEvent.jsonGameInfo.getHasJoinedUserCnt() == 3) {
                 if (matchState == MatchState.JoinRongYunRoomSuccess) {
                     matchState = MatchState.JoinGameSuccess;
@@ -232,7 +228,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     updateUserListState();
                 } else {
-                    U.getToastUtil().showShort("加入房间失败 resule.errMsg is " + result.getErrmsg());
+                    MyLog.w(TAG, "加入房间失败 resule.errMsg is " + result.getErrmsg());
                     startLoopMatchTask(currentMusicId);
                 }
             }
@@ -325,7 +321,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onError(Throwable e) {
-                MyLog.d(TAG, "onError updateUserListState 3" + " e=" + e);
+                MyLog.e(TAG, e);
             }
         }, MatchPresenter.this);
     }

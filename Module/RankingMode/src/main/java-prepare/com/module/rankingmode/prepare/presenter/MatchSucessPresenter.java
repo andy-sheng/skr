@@ -88,7 +88,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                 ApiMethods.subscribe(matchServerApi.getCurrentReadyData(currentGameId), new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult result) {
-                        MyLog.d(TAG, "checkPlayerReadyState result：" + result);
+                        MyLog.w(TAG, "checkPlayerReadyState result：" + result);
                         if (result.getErrno() == 0) {
                             // todo 带回所有已准备人的信息
                             GameReadyModel jsonGameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyModel.class);
@@ -144,7 +144,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(matchServerApi.readyGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "prepare " + result);
+                MyLog.w(TAG, "prepare " + result);
                 if (result.getErrno() == 0) {
                     List<JsonReadyInfo> model = JSON.parseArray(result.getData().getString("readyInfo"), JsonReadyInfo.class);
                     iMatchSucessView.ready(isPrepare);
@@ -158,7 +158,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     // 加入指令，即服务器通知加入房间的指令
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadyNoticeEvent readyNoticeEvent) {
-        MyLog.d(TAG, "onEventMainThread readyNoticeEvent " + readyNoticeEvent);
+        MyLog.w(TAG, "onEventMainThread readyNoticeEvent " + readyNoticeEvent);
         if (readyNoticeEvent.jsonGameReadyInfo.isIsGameStart()) {
             if (checkTask != null) {
                 checkTask.dispose();
@@ -174,9 +174,8 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     // TODO: 2018/12/18 有人退出游戏了
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ExitGameEvent exitGameEvent) {
-        MyLog.d(TAG, "onEventMainThread syncStatusEvent");
         if (exitGameEvent.type == EXIT_GAME_BEFORE_PLAY) {
-            U.getToastUtil().showShort("游戏开始前，某一个人退出了");
+            MyLog.w(TAG, "onEventMainThread EXIT_GAME_BEFORE_PLAY");
             iMatchSucessView.needReMatch(true);
         }
     }
