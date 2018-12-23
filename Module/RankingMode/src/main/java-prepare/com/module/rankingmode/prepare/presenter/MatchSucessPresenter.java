@@ -186,7 +186,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(ExitGameEvent exitGameEvent) {
         if (exitGameEvent.type == EXIT_GAME_BEFORE_PLAY) {
             MyLog.w(TAG, "onEventMainThread EXIT_GAME_BEFORE_PLAY " + " timeMs = " + exitGameEvent.info.getTimeMs());
-            iMatchSucessView.needReMatch(true);
+//            iMatchSucessView.needReMatch(true);
         }
     }
 }
