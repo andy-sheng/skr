@@ -457,11 +457,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 if (event.getObj() != null) {
                     List<EngineEvent.UserVolumeInfo> list = (List<EngineEvent.UserVolumeInfo>) event.getObj();
                     for (EngineEvent.UserVolumeInfo info : list) {
-                        if (info.getUid() == UserAccountManager.getInstance().getUuidAsLong()) {
+
+                        if (info.getUid() == UserAccountManager.getInstance().getUuidAsLong()
+                                || info.getUid() == 0) {
                             mUiHanlder.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mIGameRuleView.updateScrollBarProgress(info.getVolume());
+                                    mIGameRuleView.updateScrollBarProgress(info.getVolume()/3);
                                 }
                             });
                             break;

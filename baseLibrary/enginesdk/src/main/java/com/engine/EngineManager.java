@@ -137,6 +137,10 @@ public class EngineManager implements AgoraOutCallback {
     public void onAudioVolumeIndication(IRtcEngineEventHandler.AudioVolumeInfo[] speakers, int totalVolume) {
         List<EngineEvent.UserVolumeInfo> l = new ArrayList<>();
         for (IRtcEngineEventHandler.AudioVolumeInfo info : speakers) {
+//            MyLog.d(TAG,"onAudioVolumeIndication" + " info=" + info.uid+" volume="+info.volume);
+            /**
+             * 如果是自己的声音 id 是0 。
+             */
             EngineEvent.UserVolumeInfo userVolumeInfo = new EngineEvent.UserVolumeInfo(info.uid, info.volume);
             l.add(userVolumeInfo);
         }

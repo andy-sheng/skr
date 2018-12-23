@@ -97,7 +97,7 @@ public class TopContainerView extends RelativeLayout {
     }
 
     public void setScoreProgress(int progress){
-        mScoreProgressBar.setProgress(100);
+        mScoreProgressBar.setProgress(progress);
     }
     public void setListener(Listener l) {
         mListener = l;
