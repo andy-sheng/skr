@@ -368,7 +368,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (event.myturn) {
             // 轮到我唱了
             // 开始发心跳
-            startHeartBeatTask();
+            if(U.getActivityUtils().isAppForeground()){
+                startHeartBeatTask();
+            }
+
             mUiHanlder.post(new Runnable() {
                 @Override
                 public void run() {
@@ -590,10 +593,18 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
-        mIGameRuleView.showMsg("一个人退出到后台了");
+        mIGameRuleView.showMsg(event.foreground ? "切换到前台" : "切换到后台");
         swapGame(!event.foreground, event.foreground);
+        if(mRoomData.getRealRoundInfo() != null
+                && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()){
+            if(event.foreground){
+                startHeartBeatTask();
+            }else {
+                cancelHeartBeatTask("前后台切换");
+            }
+        }
     }
 
 }
