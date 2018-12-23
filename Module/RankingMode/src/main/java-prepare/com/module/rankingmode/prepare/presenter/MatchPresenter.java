@@ -69,16 +69,16 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     public void startLoopMatchTask(int playbookItemID) {
         MyLog.d(TAG, "startLoopMatchTask");
         this.currentMusicId = playbookItemID;
-
-        loopMatchTask = HandlerTaskTimer.newBuilder()
-                .interval(10000)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        MyLog.d(TAG, "startLoopMatchTask onNext");
+        //现在只需要发一次，不轮询发
+//        loopMatchTask = HandlerTaskTimer.newBuilder()
+//                .interval(10000)
+//                .start(new HandlerTaskTimer.ObserverW() {
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        MyLog.d(TAG, "startLoopMatchTask onNext");
                         startMatch(currentMusicId);
-                    }
-                });
+//                    }
+//                });
     }
 
     private void disposeLoopMatchTask() {
@@ -110,14 +110,21 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
 
-        startMatchTask = ApiMethods.subscribeWith(matchServerApi.startMatch(body), new ApiObserver<ApiResult>() {
+        startMatchTask = ApiMethods.subscribeWith(matchServerApi.startMatch(body).retry(10), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("开始匹配");
                 } else {
-                    U.getToastUtil().showShort("开始匹配错误");
+                    U.getToastUtil().showShort("开始匹配失败");
+                    onError(new Throwable("开始匹配失败"));
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, e);
+                startMatch(currentMusicId);
             }
         }, this);
     }
