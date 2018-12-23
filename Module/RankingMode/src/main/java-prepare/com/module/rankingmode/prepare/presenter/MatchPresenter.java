@@ -113,6 +113,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         startMatchTask = ApiMethods.subscribeWith(matchServerApi.startMatch(body).retry(10), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("开始匹配");
                 } else {
@@ -149,7 +150,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinActionEvent joinActionEvent) {
         if (joinActionEvent != null) {
-            MyLog.w(TAG, "onEventMainThread JoinActionEvent currentGameId is " + joinActionEvent.gameId);
+            MyLog.w(TAG, "onEventMainThread JoinActionEvent currentGameId is " + joinActionEvent.gameId + " timeMs = " + joinActionEvent.info.getTimeMs());
             // 是否要对加入通知进行过滤
             if (matchState == MatchState.Matching) {
                 matchState = MatchState.MatchSucess;
@@ -167,7 +168,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinNoticeEvent joinNoticeEvent) {
         if (joinNoticeEvent != null && joinNoticeEvent.jsonGameInfo != null) {
-            MyLog.w(TAG, " onEventMainThread JoinNoticeEvent ");
+            MyLog.w(TAG, " onEventMainThread JoinNoticeEvent timeMs = " + joinNoticeEvent.info.getTimeMs());
             // 需要去更新GameInfo
             if (joinNoticeEvent.jsonGameInfo.getHasJoinedUserCnt() == 3) {
                 if (matchState == MatchState.JoinRongYunRoomSuccess) {
@@ -225,10 +226,10 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(matchServerApi.joinGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                MyLog.w(TAG, "加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     updateUserListState();
                 } else {
-                    MyLog.w(TAG, "加入房间失败 resule.errMsg is " + result.getErrmsg());
                     startLoopMatchTask(currentMusicId);
                 }
             }
@@ -261,7 +262,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                         ApiMethods.subscribeWith(matchServerApi.getCurrentGameData(currentGameId), new ApiObserver<ApiResult>() {
                             @Override
                             public void process(ApiResult result) {
-                                MyLog.d(TAG, "3 秒钟过去，需要拉去此刻的房间信息");
+                                MyLog.w(TAG, "checkCurrentGameData result = " + result.getErrno() + " traceId = " + result.getTraceId());
                                 if (result.getErrno() == 0) {
                                     JsonGameInfo jsonGameInfo = JSON.parseObject(result.getData().toString(), JsonGameInfo.class);
                                     if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
@@ -302,8 +303,8 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribeWith(matchServerApi.getCurrentGameData(currentGameId), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                MyLog.w(TAG, "updateUserListState result = " + result.getErrno() + " traceId = " + result.getTraceId());
                 if (result.getErrno() == 0) {
-                    MyLog.d(TAG, "process updateUserListState 1" + " result=" + result);
                     JsonGameInfo jsonGameInfo = JSON.parseObject(result.getData().toString(), JsonGameInfo.class);
                     if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
                         if (matchState == MatchState.JoinRongYunRoomSuccess) {
