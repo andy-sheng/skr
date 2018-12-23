@@ -15,8 +15,9 @@
             android:name="com.wali.live.newlivesdk.MainConfiguration"
             android:value="ConfigModule" />
 
+
         <activity
-            android:name="com.module.home.HomeActivity"
+            android:name="com.wali.live.moduletest.activity.TestSdkActivity"
             android:theme="@style/AppTheme_MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,10 +26,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.module.home.HomeActivity"
+            android:theme="@style/AppTheme_MainActivity"
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
+
         <!--<activity-->
             <!--android:name="com.module.home.HomeActivity"-->
-            <!--android:theme="@style/AppTheme_MainActivity"-->
-            <!--android:windowSoftInputMode="adjustNothing|stateHidden" />-->
+            <!--android:theme="@style/AppTheme_MainActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+
 
     </application>
 </manifest>
