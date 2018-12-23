@@ -10,7 +10,11 @@ public interface IMatchSucessView {
 
     void allPlayerIsReady(GameReadyModel gameReadyInfo);
 
-    void needReMatch();
+    /**
+     * otherEr是否是别人的原因导致无法准备
+     * @param otherEr
+     */
+    void needReMatch(boolean otherEr);
 
     void readyList(List<JsonReadyInfo> readyInfos);
 }

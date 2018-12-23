@@ -89,16 +89,16 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                             if (jsonGameReadyInfo.isIsGameStart()) {
                                 iMatchSucessView.allPlayerIsReady(jsonGameReadyInfo);
                             } else {
-                                iMatchSucessView.needReMatch();
+                                iMatchSucessView.needReMatch(false);
                             }
                         } else {
-                            iMatchSucessView.needReMatch();
+                            iMatchSucessView.needReMatch(false);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        iMatchSucessView.needReMatch();
+                        iMatchSucessView.needReMatch(false);
                     }
                 }, MatchSucessPresenter.this);
             }
@@ -171,6 +171,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEventMainThread syncStatusEvent");
         if (exitGameEvent.type == EXIT_GAME_BEFORE_PLAY) {
             U.getToastUtil().showShort("游戏开始前，某一个人退出了");
+            iMatchSucessView.needReMatch(true);
         }
     }
 }

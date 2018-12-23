@@ -224,18 +224,18 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     }
 
     @Override
-    public void needReMatch() {
+    public void needReMatch(boolean otherEr) {
         MyLog.d(TAG, "needReMatch 有人没准备，需要重新匹配");
         mMatchSucessPresenter.exitGame();
-        goMatch();
+        goMatch(otherEr);
         U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
 
 
-    void goMatch() {
-        // 这个activity直接到匹配页面,可是这时匹配中页面已经销毁了
+    void goMatch(boolean otherEr) {
         // 如果已经准备了就从新开始匹配，没有准备就直接跳转到选择歌曲界面
-        if (isPrepared) {
+        // 如果rematch的时候是因为别人退出房间的原因导致rematch直接跳转到match界面
+        if(isPrepared || otherEr){
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
                     .setNotifyHideFragment(MatchSuccessFragment.class)
                     .setAddToBackStack(false)
@@ -256,19 +256,6 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                     .setHasAnimation(true)
                     .build());
         } else {
-//            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SongSelectFragment.class)
-//                    .setNotifyHideFragment(MatchSuccessFragment.class)
-//                    .setAddToBackStack(false)
-//                    .setHasAnimation(false)
-//                    .addDataBeforeAdd(0, mPrepareData)
-//                    .setFragmentDataListener(new FragmentDataListener() {
-//                        @Override
-//                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-//
-//                        }
-//                    })
-//                    .build());
-
             U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
                     .setActivity(getActivity())
                     .setPopFragment(MatchSuccessFragment.this)
@@ -288,7 +275,15 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     @Override
     protected boolean onBackPressed() {
-        goMatch();
+        //主动触发回退直接到PrepareResFragment界面
+        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                .setActivity(getActivity())
+                .setPopFragment(MatchSuccessFragment.this)
+                .setPopAbove(false)
+                .setHasAnimation(true)
+                .setNotifyShowFragment(PrepareResFragment.class)
+                .build());
+        mMatchSucessPresenter.exitGame();
         return true;
     }
 
