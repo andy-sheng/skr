@@ -276,7 +276,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
-                    MyLog.d("AAAAAA", " syncGameStatus " + " gameOverTimeMs =" + gameOverTimeMs);
+                    MyLog.d(TAG, " syncGameStatus " + " gameOverTimeMs =" + gameOverTimeMs);
                     List<OnLineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnLineInfoModel.class); //在线状态
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
                     RoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), RoundInfoModel.class); //下个轮次信息
