@@ -143,8 +143,7 @@ public class CommentView extends RelativeLayout {
 //            }
         } else {
             // TODO: 2018/12/23 后期可优化，只更新某一部分位置信息 
-            mCommentAdapter.notifyItemInserted(0);
-            mCommentAdapter.notifyItemRangeChanged(0, mCommentAdapter.getDataList().size());
+            mCommentAdapter.notifyDataSetChanged();
             mCommentRv.smoothScrollToPosition(0);
         }
     }

@@ -2,6 +2,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/view_7_dp"
+    android:paddingRight="@dimen/view_10_dp"
     android:layout_marginBottom="@dimen/view_7_dp">
 
     <com.common.image.fresco.BaseImageView
@@ -16,12 +17,13 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_11_dp"
         android:layout_toRightOf="@+id/avatar_iv"
+        android:background="@drawable/qipao"
         android:gravity="left"
         android:paddingLeft="@dimen/view_15_dp"
         android:paddingRight="@dimen/view_10_dp"
         android:text="沙漠骆驼好听"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_14_dp"
-        android:background="@drawable/qipao"/>
+        android:textStyle="bold" />
 
 </RelativeLayout>
