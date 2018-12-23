@@ -101,6 +101,7 @@ public class CommentView extends RelativeLayout {
             EventBus.getDefault().register(this);
         }
         mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
+        mLinearLayoutManager.setStackFromEnd(true);
         mCommentRv.setLayoutManager(mLinearLayoutManager);
         mCommentAdapter = new CommentAdapter(new RecyclerOnItemClickListener() {
             @Override
@@ -141,7 +142,10 @@ public class CommentView extends RelativeLayout {
 //                mRoomChatMsgManager.updateMaxSize(Integer.MAX_VALUE);
 //            }
         } else {
+            // TODO: 2018/12/23 后期可优化，只更新某一部分位置信息 
             mCommentAdapter.notifyItemInserted(0);
+            mCommentAdapter.notifyItemRangeChanged(0, mCommentAdapter.getDataList().size());
+            mCommentRv.smoothScrollToPosition(0);
         }
     }
 
