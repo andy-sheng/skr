@@ -25,7 +25,9 @@ public interface RoomServerApi {
      * 上报结束一轮游戏
      *
      * @param body 游戏标识 gameID (必选)
-     * @return
+     * @return  当前轮次结束时间戳roundOverTimeMs
+     *          当前轮次信息currentRound
+     *          下个轮次信息nextRound
      */
     @PUT("http://dev.game.inframe.mobi/v1/game/round/over")
     Observable<ApiResult> sendRoundOver(@Body RequestBody body);
@@ -45,7 +47,11 @@ public interface RoomServerApi {
      * 同步游戏详情状态
      *
      * @param gameID
-     * @return
+     * @return   同步请求时间戳  syncStatusTimeMs
+     *           游戏结束时间戳  gameOverTimeMs
+     *           游戏在线  onlineInfo（List）
+     *           当前轮次信息 currentRound
+     *           下个轮次信息 nextRound
      */
     @GET("http://dev.game.inframe.mobi/v1/game/status")
     Observable<ApiResult> syncGameStatus(@Query("gameID") int gameID);
