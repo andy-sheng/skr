@@ -11,14 +11,16 @@
 
         <activity
             android:name=".RankingModeActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <activity
             android:name=".room.activity.RankingRoomActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>

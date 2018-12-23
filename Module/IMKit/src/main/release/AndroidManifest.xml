@@ -36,7 +36,8 @@
         <!--会话列表-->
         <activity
             android:name="test.activity.MessageActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -54,7 +55,8 @@
         <activity
             android:name="test.activity.ConversationActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
