@@ -35,25 +35,25 @@ import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 public class MatchPresenter extends RxLifeCyclePresenter {
     public static final String TAG = "MatchingPresenter";
 
-    IMatchingView view;
-    MatchServerApi matchServerApi;
+    IMatchingView mView;
+    MatchServerApi mMatchServerApi;
 
-    Disposable startMatchTask;
-    HandlerTaskTimer loopMatchTask;
-    HandlerTaskTimer checkJoinStateTask;
+    Disposable mStartMatchTask;
+    HandlerTaskTimer mLoopMatchTask;
+    HandlerTaskTimer mCheckJoinStateTask;
 
-    int currentGameId; // 游戏标识
-    long gameCreateTime;
+    int mCurrentGameId; // 游戏标识
+    long mGameCreateTime;
 
-    int currentMusicId; //选择的歌曲id
+    int mCurrentMusicId; //选择的歌曲id
 
     JsonGameInfo mJsonGameInfo;
 
-    volatile MatchState matchState = MatchState.IDLE;
+    volatile MatchState mMatchState = MatchState.IDLE;
 
     public MatchPresenter(@NonNull IMatchingView view) {
-        this.view = view;
-        matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
+        this.mView = view;
+        mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
 
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -68,29 +68,29 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
     public void startLoopMatchTask(int playbookItemID) {
         MyLog.d(TAG, "startLoopMatchTask");
-        this.currentMusicId = playbookItemID;
+        this.mCurrentMusicId = playbookItemID;
 
         disposeLoopMatchTask();
-        loopMatchTask = HandlerTaskTimer.newBuilder()
+        mLoopMatchTask = HandlerTaskTimer.newBuilder()
                 .interval(10000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
                         MyLog.d(TAG, "startLoopMatchTask onNext");
-        startMatch(currentMusicId);
+        startMatch(mCurrentMusicId);
                     }
                 });
     }
 
     private void disposeLoopMatchTask() {
-        if (loopMatchTask != null) {
-            loopMatchTask.dispose();
+        if (mLoopMatchTask != null) {
+            mLoopMatchTask.dispose();
         }
     }
 
     public void disposeMatchTask() {
-        if (startMatchTask != null && !startMatchTask.isDisposed()) {
-            startMatchTask.dispose();
+        if (mStartMatchTask != null && !mStartMatchTask.isDisposed()) {
+            mStartMatchTask.dispose();
         }
     }
 
@@ -102,7 +102,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     private void startMatch(int playbookItemID) {
         MyLog.d(TAG, "startMatch");
         disposeMatchTask();
-        matchState = MatchState.Matching;
+        mMatchState = MatchState.Matching;
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("mode", GameModeType.GAME_MODE_CLASSIC_RANK);
@@ -111,7 +111,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
 
-        startMatchTask = ApiMethods.subscribeWith(matchServerApi.startMatch(body).retry(10), new ApiObserver<ApiResult>() {
+        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retry(10), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
@@ -125,7 +125,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, e);
-                startMatch(currentMusicId);
+                startMatch(mCurrentMusicId);
             }
         }, this);
     }
@@ -136,12 +136,12 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         disposeLoopMatchTask();
         disposeMatchTask();
 
-        matchState = MatchState.IDLE;
+        mMatchState = MatchState.IDLE;
         HashMap<String, Object> map = new HashMap<>();
         map.put("mode", GameModeType.GAME_MODE_CLASSIC_RANK);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(matchServerApi.cancleMatch(body).retry(3), null);
+        ApiMethods.subscribe(mMatchServerApi.cancleMatch(body).retry(3), null);
     }
 
     // TODO: 2018/12/12 怎么确定一个push肯定是当前一轮的push？？？
@@ -153,13 +153,13 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         if (joinActionEvent != null) {
             MyLog.w(TAG, "onEventMainThread JoinActionEvent currentGameId is " + joinActionEvent.gameId + " timeMs = " + joinActionEvent.info.getTimeMs());
             // 是否要对加入通知进行过滤
-            if (matchState == MatchState.Matching) {
-                matchState = MatchState.MatchSucess;
+            if (mMatchState == MatchState.Matching) {
+                mMatchState = MatchState.MatchSucess;
                 this.joinActionEvent = joinActionEvent;
                 disposeLoopMatchTask();
                 disposeMatchTask();
-                this.currentGameId = joinActionEvent.gameId;
-                this.gameCreateTime = joinActionEvent.gameCreateMs;
+                this.mCurrentGameId = joinActionEvent.gameId;
+                this.mGameCreateTime = joinActionEvent.gameCreateMs;
                 joinRoom();
             }
         }
@@ -172,14 +172,14 @@ public class MatchPresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, " onEventMainThread JoinNoticeEvent timeMs = " + joinNoticeEvent.info.getTimeMs());
             // 需要去更新GameInfo
             if (joinNoticeEvent.jsonGameInfo.getHasJoinedUserCnt() == 3) {
-                if (matchState == MatchState.JoinRongYunRoomSuccess) {
-                    matchState = MatchState.JoinGameSuccess;
+                if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
+                    mMatchState = MatchState.JoinGameSuccess;
 
-                    if (checkJoinStateTask != null) {
-                        checkJoinStateTask.dispose();
+                    if (mCheckJoinStateTask != null) {
+                        mCheckJoinStateTask.dispose();
                     }
 
-                    view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
+                    mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
                 }
             }
         }
@@ -197,12 +197,12 @@ public class MatchPresenter extends RxLifeCyclePresenter {
      * 加入融云房间，失败的话继续match，这里的失败得统计一下
      */
     private void joinRoom() {
-        MyLog.d(TAG, "joinRoom gameId " + currentGameId);
-        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(currentGameId), new ICallback() {
+        MyLog.d(TAG, "joinRoom gameId " + mCurrentGameId);
+        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mCurrentGameId), new ICallback() {
             @Override
             public void onSucess(Object obj) {
-                if (matchState == MatchState.MatchSucess) {
-                    matchState = MatchState.JoinRongYunRoomSuccess;
+                if (mMatchState == MatchState.MatchSucess) {
+                    mMatchState = MatchState.JoinRongYunRoomSuccess;
                     joinGame();
                 }
             }
@@ -210,7 +210,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
             @Override
             public void onFailed(Object obj, int errcode, String message) {
                 U.getToastUtil().showShort("加入房间失败");
-                startLoopMatchTask(currentMusicId);
+                startLoopMatchTask(mCurrentMusicId);
             }
         });
     }
@@ -221,24 +221,24 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     private void joinGame() {
         MyLog.d(TAG, "joinGame gameId ");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", currentGameId);
+        map.put("gameID", mCurrentGameId);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(matchServerApi.joinGame(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mMatchServerApi.joinGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     updateUserListState();
                 } else {
-                    startLoopMatchTask(currentMusicId);
+                    startLoopMatchTask(mCurrentMusicId);
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 U.getToastUtil().showShort("加入房间失败");
-                startLoopMatchTask(currentMusicId);
+                startLoopMatchTask(mCurrentMusicId);
             }
         }, this);
 
@@ -253,37 +253,37 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     public void checkCurrentGameData() {
         MyLog.d(TAG, "checkCurrentGameData");
 
-        checkJoinStateTask = HandlerTaskTimer.newBuilder()
+        mCheckJoinStateTask = HandlerTaskTimer.newBuilder()
                 .delay(3000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
                         MyLog.d(TAG, "checkCurrentGameData onNext");
-                        matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
-                        ApiMethods.subscribeWith(matchServerApi.getCurrentGameData(currentGameId), new ApiObserver<ApiResult>() {
+                        mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
+                        ApiMethods.subscribeWith(mMatchServerApi.getCurrentGameData(mCurrentGameId), new ApiObserver<ApiResult>() {
                             @Override
                             public void process(ApiResult result) {
                                 MyLog.w(TAG, "checkCurrentGameData result = " + result.getErrno() + " traceId = " + result.getTraceId());
                                 if (result.getErrno() == 0) {
                                     JsonGameInfo jsonGameInfo = JSON.parseObject(result.getData().toString(), JsonGameInfo.class);
                                     if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
-                                        if (matchState == MatchState.JoinRongYunRoomSuccess) {
-                                            matchState = MatchState.JoinGameSuccess;
+                                        if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
+                                            mMatchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
-                                            view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
+                                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
                                         } else {
                                             MyLog.d(TAG, "3 秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
-                                            startLoopMatchTask(currentMusicId);
+                                            startLoopMatchTask(mCurrentMusicId);
                                         }
                                     } else {
                                         MyLog.d(TAG, "3秒后拉完房间信息人数不够3个，需要重新match了");
                                         // TODO: 2018/12/12 方便测试这个先注掉
-                                        startLoopMatchTask(currentMusicId);
+                                        startLoopMatchTask(mCurrentMusicId);
                                     }
                                 } else {
                                     MyLog.d(TAG, "3秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
-                                    startLoopMatchTask(currentMusicId);
+                                    startLoopMatchTask(mCurrentMusicId);
                                 }
                             }
 
@@ -301,17 +301,17 @@ public class MatchPresenter extends RxLifeCyclePresenter {
      */
     private void updateUserListState() {
         MyLog.d(TAG, "updateUserListState");
-        ApiMethods.subscribeWith(matchServerApi.getCurrentGameData(currentGameId), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribeWith(mMatchServerApi.getCurrentGameData(mCurrentGameId), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "updateUserListState result = " + result.getErrno() + " traceId = " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     JsonGameInfo jsonGameInfo = JSON.parseObject(result.getData().toString(), JsonGameInfo.class);
                     if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
-                        if (matchState == MatchState.JoinRongYunRoomSuccess) {
-                            matchState = MatchState.JoinGameSuccess;
+                        if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
+                            mMatchState = MatchState.JoinGameSuccess;
                             mJsonGameInfo = jsonGameInfo;
-                            view.matchSucess(currentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
+                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
                         }
                     } else {
                         MyLog.d(TAG, "process updateUserListState else");
