@@ -35,6 +35,10 @@ public class UserInfoTitleView extends RelativeLayout {
         mTvUserName = findViewById(R.id.tv_user_name);
         mTvUserLevel = findViewById(R.id.tv_user_level);
 
+        setData();
+    }
+
+    public void setData(){
         AvatarUtils.loadAvatarByUrl(mIvUserIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
@@ -45,6 +49,4 @@ public class UserInfoTitleView extends RelativeLayout {
         mTvUserName.setText(MyUserInfoManager.getInstance().getNickName());
         mTvUserLevel.setText("铂金唱将");
     }
-
-
 }

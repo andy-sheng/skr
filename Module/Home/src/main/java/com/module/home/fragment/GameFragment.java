@@ -6,23 +6,26 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.animation.AnimationSet;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
-import com.common.utils.U;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.widget.UserInfoTitleView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
 public class GameFragment extends BaseFragment {
-
+    UserInfoTitleView userTitleView;
 
     @Override
     public int initView() {
@@ -34,6 +37,7 @@ public class GameFragment extends BaseFragment {
         ExImageView ivAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
         ExImageView ivNormalPk = (ExImageView) mRootView.findViewById(R.id.iv_normal_pk);
         ExImageView mIvYulePk = (ExImageView) mRootView.findViewById(R.id.iv_yule_pk);
+        userTitleView = (UserInfoTitleView)mRootView.findViewById(R.id.user_title_view);
 
 
         RxView.clicks(ivAthleticsPk)
@@ -114,8 +118,13 @@ public class GameFragment extends BaseFragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        userTitleView.setData();
+    }
+
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 }
