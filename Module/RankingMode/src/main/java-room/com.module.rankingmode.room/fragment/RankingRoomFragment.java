@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -578,7 +577,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     void addText(String te) {
         mUiHanlder.post(() -> {
-            mTestTv.append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis(), "HH:mm:ss.SSS") + ":" + te + "\n");
+            MyLog.d("GameInfo", te);
             if (mNeedScroll) {
                 mScrollView.smoothScrollTo(0, mTestTv.getBottom());
             }
