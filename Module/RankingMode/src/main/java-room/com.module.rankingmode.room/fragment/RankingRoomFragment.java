@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -23,11 +22,9 @@ import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExTextView;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.room.comment.CommentView;
@@ -46,8 +43,6 @@ import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -56,9 +51,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okio.BufferedSink;
-import okio.Okio;
-import okio.Sink;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
@@ -77,8 +69,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     TopContainerView mTopContainerView;
 
     RankingCorePresenter mCorePresenter;
-
-    ExTextView mTestTv;
 
     ManyLyricsView mManyLyricsView;
 
@@ -137,35 +127,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         initLyricsView();
 
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
-
-        mTestTv = mRootView.findViewById(R.id.test_tv);
-        mTestTv.setMovementMethod(ScrollingMovementMethod.getInstance());
-
-        RxView.clicks(mRootView.findViewById(R.id.tv_control)).subscribe(o -> {
-            mNeedScroll = !mNeedScroll;
-        });
-
-        RxView.longClicks(mRootView.findViewById(R.id.tv_control)).subscribe(o -> {
-            String filename = U.getAppInfoUtils().getMainDir() + File.separator + mRoomData.getGameId() + ".txt";
-            File file = new File(filename);
-            BufferedSink bufferedSink = null;
-            try {
-                Sink sink = Okio.sink(file);
-                bufferedSink = Okio.buffer(sink);
-                bufferedSink.writeString(mTestTv.getText().toString(), Charset.forName("GBK"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (null != bufferedSink) {
-                    bufferedSink.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            U.getToastUtil().showShort("导出文件成功");
-        });
 
         showReadyGoView();
 
@@ -576,11 +537,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     void addText(String te) {
-        mUiHanlder.post(() -> {
-            MyLog.w("GameInfo", te);
-            if (mNeedScroll) {
-                mScrollView.smoothScrollTo(0, mTestTv.getBottom());
-            }
-        });
+        MyLog.w("GameInfo", te);
     }
 }
