@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/top_voice_bg"
+        android:layout_marginTop="@dimen/view_90_dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_245_dp"
+        android:background="@drawable/img_pop_guanzhongjiemian_normal"
+        android:visibility="gone" />
+
 
     <com.zq.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"

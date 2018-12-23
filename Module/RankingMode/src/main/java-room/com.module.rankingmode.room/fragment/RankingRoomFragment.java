@@ -22,6 +22,7 @@ import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
@@ -67,6 +68,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     CommentView mCommentView;
 
     TopContainerView mTopContainerView;
+
+    ExImageView mTopVoiceBg;
 
     RankingCorePresenter mCorePresenter;
 
@@ -125,8 +128,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         initCommentView();
         initTopView();
         initLyricsView();
-
-        mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
+        initTurnChangeView();
 
         showReadyGoView();
 
@@ -137,6 +139,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     public void playShowTurnCardAnimator(Runnable countDownRunnable) {
+        mTopVoiceBg.setVisibility(View.GONE);
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardShowAnimator == null) {
             mTurnChangeCardShowAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0.08f * U.getDisplayUtils().getScreenWidth(), 0);
@@ -180,6 +183,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 if (countDownRunnable != null) {
                     countDownRunnable.run();
                     mUiHanlder.removeMessages(ENSURE_RUN);
+                }
+                if (mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
+                    mTopVoiceBg.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -226,6 +232,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
         mFloatLyricsView = mRootView.findViewById(R.id.float_lyrics_view);
         mFloatLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
+    }
+
+    private void initTurnChangeView() {
+        mTopVoiceBg = (ExImageView) mRootView.findViewById(R.id.top_voice_bg);
+        mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
     }
 
     private void showReadyGoView() {
@@ -423,7 +434,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void playLyric(SongModel songModel, boolean play) {
         showMsg("开始播放歌词 songId=" + songModel.getItemID());
-        if(songModel == null){
+        if (songModel == null) {
             showMsg("songModel 是空的");
             return;
         }
