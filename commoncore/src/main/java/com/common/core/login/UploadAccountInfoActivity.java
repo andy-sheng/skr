@@ -136,14 +136,14 @@ public class UploadAccountInfoActivity extends BaseActivity {
 
         if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
             U.getToastUtil().showShort("昵称不为空");
-            Bundle bundle = getIntent().getExtras();
-            if (bundle != null) {
-                String path = bundle.getString(KEY_ORIGIN_PATH);
-                if (!TextUtils.isEmpty(path)) {
-                    // 跳转到原页面，并带上参数
-                    ARouter.getInstance().build(path).with(bundle).navigation();
-                }
-            }
+//            Bundle bundle = getIntent().getExtras();
+//            if (bundle != null) {
+//                String path = bundle.getString(KEY_ORIGIN_PATH);
+//                if (!TextUtils.isEmpty(path)) {
+//                    // 跳转到原页面，并带上参数
+//                    ARouter.getInstance().build(path).with(bundle).navigation();
+//                }
+//            }
 
             finish();
         }

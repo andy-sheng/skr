@@ -14,6 +14,7 @@ import com.common.core.account.UserAccount;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.fragment.LoginByPhoneFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
@@ -77,18 +78,15 @@ public class LoginActivity extends BaseActivity {
         U.getToastUtil().showShort("登录成功");
         // 昵称不能为空
         if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+            MyLog.d(TAG, "onEvent 用户昵称为空");
             // 无头像或昵称
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-                String path = bundle.getString(KEY_ORIGIN_PATH);
-                if (!TextUtils.isEmpty(path)) {
-                    // 跳转到上传资料页面
-                    ARouter.getInstance()
-                            .build(ACTIVITY_UPLOAD)
-                            .withString(LoginActivity.KEY_ORIGIN_PATH, path)
-                            .with(bundle)
-                            .navigation();
-                }
+                // 跳转到上传资料页面
+                ARouter.getInstance()
+                        .build(ACTIVITY_UPLOAD)
+                        .with(bundle)
+                        .navigation();
             }
         } else {
             Bundle bundle = getIntent().getExtras();
