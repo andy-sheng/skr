@@ -30,7 +30,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
 
     // 我们视图view先前的高度
     private int mUsableHeightPrevious = 0;
-
+    private boolean mLogSwitch = false;
 
     ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         public void onGlobalLayout() {
@@ -70,7 +70,9 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
      * 以下数据，以米8手机，虚拟按键开启为例子，让情况尽可能复杂
      */
     private void possiblyResizeChildOfContent() {
-        MyLog.d(TAG, "possiblyResizeChildOfContent mFrom:" + mFrom);
+        if(mLogSwitch) {
+            MyLog.d(TAG, "possiblyResizeChildOfContent mFrom:" + mFrom);
+        }
         Activity curActivity = U.getActivityUtils().getCurrentActivity();
         if (curActivity != mBaseActivityRef.get()) {
             MyLog.d(TAG, "not curActivity ,return");
@@ -94,11 +96,13 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);
         int usableHeightNow = r.bottom;
-        MyLog.d(TAG, "possiblyResizeChildOfContent r.top:" + r.top + " r.bottom:" + r.bottom
-                + " usableHeightNow:" + usableHeightNow
-                + " screenHeight:" + U.getDisplayUtils().getScreenHeight()
-                + " phoneHeight:" + U.getDisplayUtils().getPhoneHeight()
-        );
+        if(mLogSwitch) {
+            MyLog.d(TAG, "possiblyResizeChildOfContent r.top:" + r.top + " r.bottom:" + r.bottom
+                    + " usableHeightNow:" + usableHeightNow
+                    + " screenHeight:" + U.getDisplayUtils().getScreenHeight()
+                    + " phoneHeight:" + U.getDisplayUtils().getPhoneHeight()
+            );
+        }
         if (usableHeightNow != mUsableHeightPrevious) {
             /**
              * usableHeightSansKeyboard 这里为 2248 手机高度。
