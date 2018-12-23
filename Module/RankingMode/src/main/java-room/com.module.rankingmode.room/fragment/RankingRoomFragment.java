@@ -577,7 +577,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     void addText(String te) {
         mUiHanlder.post(() -> {
-            MyLog.d("GameInfo", te);
+            MyLog.w("GameInfo", te);
             if (mNeedScroll) {
                 mScrollView.smoothScrollTo(0, mTestTv.getBottom());
             }

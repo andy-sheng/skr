@@ -121,7 +121,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mIGameRuleView.showMsg("演唱结束上报成功 traceid is " + result.getTraceId());
-                    MyLog.d(TAG, "我的演唱结束上报成功");
                     // 尝试自己切换到下一个轮次
 //                    if (finalRoundSeq >= 0) {
 //                        RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
@@ -130,7 +129,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 //                    }
                 } else {
                     mIGameRuleView.showMsg("演唱结束上报失败 traceid is " + result.getTraceId());
-                    U.getToastUtil().showShort("请求轮次结束失败");
                 }
             }
 
@@ -221,15 +219,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     // TODO: 2018/12/13  当前postman返回的为空 待补充
                     mIGameRuleView.showMsg("心跳ok, traceid is " + result.getTraceId());
                 } else {
-                    MyLog.e(TAG, "sendHeartBeat " + result.getErrmsg());
-                    MyLog.e(TAG, "sendHeartBeat traceId" + result.getTraceId());
                     mIGameRuleView.showMsg("心跳失败 traceid is " + result.getTraceId());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                MyLog.e(TAG, "sendHeartBeat errer " + e);
                 mIGameRuleView.showMsg("心跳错误" + e);
             }
         }, this);
@@ -254,7 +249,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onNext(Integer integer) {
                         mIGameRuleView.showMsg("12秒钟的 syncGameTask 去更新状态了");
-                        MyLog.d(TAG, "startSyncGameStateTask" + " integer=" + integer + " exec time = " + System.currentTimeMillis());
                         syncGameStatus(mRoomData.getGameId());
                     }
                 });
@@ -276,7 +270,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
-                    MyLog.d(TAG, " syncGameStatus " + " gameOverTimeMs =" + gameOverTimeMs);
                     List<OnLineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnLineInfoModel.class); //在线状态
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
                     RoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), RoundInfoModel.class); //下个轮次信息
@@ -303,7 +296,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     }
                     updatePlayerState(gameOverTimeMs, syncStatusTimes, onlineInfos, currentInfo, nextInfo);
                 } else {
-                    MyLog.e(TAG, "syncGameStatus " + result.getErrmsg());
                     mIGameRuleView.showMsg("syncGameStatus失败 traceid is " + result.getTraceId());
                     estimateOverTsThisRound();
                 }
@@ -312,7 +304,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void onError(Throwable e) {
                 mIGameRuleView.showMsg("syncGameStatus失败了，errno是" + e);
-                MyLog.e(TAG, "syncGameStatus错误");
             }
         }, this);
     }
@@ -350,7 +341,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 }
             } else {
                 mIGameRuleView.showMsg("服务器结束时间不合法 currentInfo=null");
-                MyLog.w(TAG, "服务器结束时间不合法 currentInfo=null");
             }
         }
     }
@@ -362,7 +352,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(RoundInfoChangeEvent event) {
-        MyLog.d(TAG, "RoundInfoChangeEvent  轮次变更事件发生 " + " myturn=" + event.myturn);
         mIGameRuleView.showMsg("开始切换唱将 myturn=" + event.myturn);
         estimateOverTsThisRound();
         if (event.myturn) {
@@ -438,7 +427,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         }
                     });
                 } else {
-                    MyLog.d(TAG, "结束时间比开始时间小，不应该吧 startTs:" + mRoomData.getGameStartTs() + " overTs:" + mRoomData.getGameOverTs());
+                    mIGameRuleView.showMsg("结束时间比开始时间小，不应该吧 startTs:" + mRoomData.getGameStartTs() + " overTs:" + mRoomData.getGameOverTs());
                 }
             }
         }
@@ -454,7 +443,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void onGameOver(String from, long gameOverTs) {
-        MyLog.d(TAG, "游戏结束 gameOverTs=" + gameOverTs + " from:" + from);
+        mIGameRuleView.showMsg( "游戏结束 gameOverTs=" + gameOverTs + " from:" + from);
         if (gameOverTs > mRoomData.getGameStartTs() && gameOverTs > mRoomData.getGameOverTs()) {
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
@@ -483,7 +472,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             int muteUserId = event.getUserStatus().getUserId();
             RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
             if (!event.getUserStatus().isAudioMute()) {
-                MyLog.w(TAG, "EngineEvent muteUserId=" + muteUserId + "解麦了");
+                mIGameRuleView.showMsg("EngineEvent muteUserId=" + muteUserId + "解麦了");
                 /**
                  * 用户开始解开mute了，说明某个用户自己认为轮到自己唱了
                  * 这里考虑下要不要加个判断，如果当前轮次是这个用户，才播放他的歌词
@@ -493,7 +482,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 if (infoModel != null) {
                     if (RoomDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
                         //正好相等，没问题,放歌词
-                        MyLog.w(TAG, "是当前轮次，没问题,放歌词");
+                        mIGameRuleView.showMsg("是当前轮次，没问题,放歌词");
                         mUiHanlder.post(new Runnable() {
                             @Override
                             public void run() {
@@ -516,7 +505,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     }
                 } else {
                     mIGameRuleView.showMsg("引擎监测到有人开始唱了， 找不到该人的轮次信息？？？为什么？？？");
-                    MyLog.w(TAG, "找不到该人的轮次信息？？？为什么？？？");
                 }
             } else {
                 /**
@@ -524,7 +512,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                  * 说明此人演唱结束，可以考虑进入下一轮
                  */
                 mIGameRuleView.showMsg("引擎监测到有人有人闭麦了，id是" + muteUserId);
-                MyLog.w(TAG, "EngineEvent muteUserId=" + muteUserId + "闭麦了");
             }
         }
     }
@@ -532,7 +519,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     // 游戏轮次结束的通知消息（在某人向服务器短连接成功后推送)
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundOverEvent roundOverEvent) {
-        MyLog.d(TAG, "onRoundOverEvent 轮次结束push通知:" + roundOverEvent.currenRound + " nextRound:" + roundOverEvent.nextRound);
         mIGameRuleView.showMsg("收到服务器的某一个人轮次结束的push，id是 " + roundOverEvent.currenRound.getUserID()
                 + ", exitUserID 是 " + roundOverEvent.exitUserID + " timets 是" + roundOverEvent.info.getTimeMs());
         if (RoomDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
@@ -558,7 +544,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     //轮次和游戏结束通知，除了已经结束状态，别的任何状态都要变成
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
-        MyLog.d(TAG, "onEventMainThread 游戏结束push通知");
         mIGameRuleView.showMsg("收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
         onGameOver("push", roundAndGameOverEvent.roundOverTimeMs);
         cancelSyncGameStateTask();
@@ -573,8 +558,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     // 长连接 状态同步信令， 以11秒为单位检测
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SyncStatusEvent syncStatusEvent) {
-        MyLog.d(TAG, "onEventMainThread receive syncStatusEvent");
-
         String msg = "收到服务器更新状态的push了, currentRound 是 ";
         msg = msg + (syncStatusEvent.currentInfo == null ? "null" : syncStatusEvent.currentInfo.getUserID() + "");
         msg = msg + ", nextInfo 是 " + (syncStatusEvent.nextInfo == null ? "null" : syncStatusEvent.nextInfo.getUserID() + "");
@@ -587,7 +570,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     // TODO: 2018/12/18 退出游戏了
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ExitGameEvent exitGameEvent) {
-        MyLog.d(TAG, "onEventMainThread syncStatusEvent");
         mIGameRuleView.showMsg("收到一个人退出的push了，type是" + exitGameEvent.type+ ",timeMs是" + exitGameEvent.info.getTimeMs());
         if (exitGameEvent.type == EXIT_GAME_AFTER_PLAY) {   //我在唱歌，有一个人退出
             U.getToastUtil().showShort("游戏结束后，某一个人退出了");
