@@ -121,7 +121,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     private void initAvatar(boolean isGray) {
         AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                AvatarUtils.newParamsBuilder(leftPlayer.getSongList().get(0).getCover())
+                AvatarUtils.newParamsBuilder(leftPlayer.getUserInfo().getAvatar())
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -129,7 +129,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                AvatarUtils.newParamsBuilder(rightPlayer.getSongList().get(0).getCover())
+                AvatarUtils.newParamsBuilder(rightPlayer.getUserInfo().getAvatar())
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -137,7 +137,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon3,
-                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -177,7 +177,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         for (JsonReadyInfo jsonReadyInfo : readyInfos) {
             if (jsonReadyInfo.getUserID() == leftPlayer.getUserInfo().getUserId()) {
                 AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                        AvatarUtils.newParamsBuilder(leftPlayer.getSongList().get(0).getCover())
+                        AvatarUtils.newParamsBuilder(leftPlayer.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -187,7 +187,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
             if (jsonReadyInfo.getUserID() == rightPlayer.getUserInfo().getUserId()) {
                 AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                        AvatarUtils.newParamsBuilder(rightPlayer.getSongList().get(0).getCover())
+                        AvatarUtils.newParamsBuilder(rightPlayer.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -197,7 +197,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
             if (jsonReadyInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 AvatarUtils.loadAvatarByUrl(mSdvIcon3,
-                        AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
+                        AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
