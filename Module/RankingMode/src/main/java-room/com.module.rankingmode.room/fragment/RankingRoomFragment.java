@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -135,7 +134,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mCorePresenter = new RankingCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
-        showMsg("gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
+        MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
 
     public void playShowTurnCardAnimator(Runnable countDownRunnable) {
@@ -248,64 +247,64 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
         mReadyGoPlaying = true;
         FrescoWorker.loadImage(mReadyGoView, ImageFactory.newHttpImage(RoomData.READY_GO_WEBP_URL)
-                .setCallBack(new IFrescoCallBack() {
-                    @Override
-                    public void processWithInfo(ImageInfo info, Animatable animatable) {
-                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
-                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
-                                int curFrame = 0;
+                        .setCallBack(new IFrescoCallBack() {
+                            @Override
+                            public void processWithInfo(ImageInfo info, Animatable animatable) {
+                                if (animatable != null && animatable instanceof AnimatedDrawable2) {
+                                    ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
+                                        int curFrame = 0;
 
-                                @Override
-                                public void onAnimationStart(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                }
+                                        @Override
+                                        public void onAnimationStart(AnimatedDrawable2 drawable) {
+                                            MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
+                                        }
 
-                                @Override
-                                public void onAnimationStop(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
+                                        @Override
+                                        public void onAnimationStop(AnimatedDrawable2 drawable) {
+                                            MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
+                                            onReadyGoOver();
+                                        }
+
+                                        @Override
+                                        public void onAnimationReset(AnimatedDrawable2 drawable) {
+//                                    MyLog.d(TAG, "onAnimationReset" + " drawable=" + drawable);
+                                            onReadyGoOver();
+                                        }
+
+                                        @Override
+                                        public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+//                                    MyLog.d(TAG, "onAnimationRepeat" + " drawable=" + drawable);
+                                            onReadyGoOver();
+                                        }
+
+                                        @Override
+                                        public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
+//                                    MyLog.d(TAG, "onAnimationFrame" + " drawable=" + drawable + " frameNumber=" + frameNumber);
+                                            // 按序列播放  0 1 2 3 4 5 循环再次到  5 - 0 时说明重复播放了
+                                            if (frameNumber < curFrame) {
+                                                onReadyGoOver();
+                                            }
+                                            curFrame = frameNumber;
+                                        }
+                                    });
+                                    animatable.start();
+                                } else {
                                     onReadyGoOver();
                                 }
+                            }
 
-                                @Override
-                                public void onAnimationReset(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationReset" + " drawable=" + drawable);
-                                    onReadyGoOver();
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationRepeat" + " drawable=" + drawable);
-                                    onReadyGoOver();
-                                }
-
-                                @Override
-                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
-                                    MyLog.d(TAG, "onAnimationFrame" + " drawable=" + drawable + " frameNumber=" + frameNumber);
-                                    // 按序列播放  0 1 2 3 4 5 循环再次到  5 - 0 时说明重复播放了
-                                    if (frameNumber < curFrame) {
-                                        onReadyGoOver();
-                                    }
-                                    curFrame = frameNumber;
-                                }
-                            });
-                            animatable.start();
-                        } else {
-                            onReadyGoOver();
-                        }
-                    }
-
-                    @Override
-                    public void processWithFailure() {
-                        MyLog.d(TAG, "processWithFailure");
-                        onReadyGoOver();
-                    }
-                })
-                .build()
+                            @Override
+                            public void processWithFailure() {
+                                MyLog.d(TAG, "processWithFailure");
+                                onReadyGoOver();
+                            }
+                        })
+                        .build()
         );
     }
 
     void onReadyGoOver() {
-        MyLog.d(TAG, "onReadyGoOver");
+        MyLog.w(TAG, "onReadyGoOver");
         if (mReadyGoPlaying) {
             mReadyGoPlaying = false;
             // 移除 readyGoView
@@ -388,7 +387,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
             mPendingRivalCountdownUid = uid;
         } else {
-            showMsg("用户" + uid + "的演唱开始了");
+            MyLog.w(TAG, "用户" + uid + "的演唱开始了");
             if (mTurnChangeView.setData(mRoomData)) {
                 playShowTurnCardAnimator(null);
             }
@@ -403,7 +402,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void gameFinish() {
-        showMsg("游戏结束了");
+        MyLog.w(TAG, "游戏结束了");
 
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
                 .setAddToBackStack(true)
@@ -426,16 +425,21 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
         for (OnLineInfoModel onLineInfoModel : jsonOnLineInfoList) {
             if (!onLineInfoModel.isIsOnline()) {
-                showMsg("用户" + onLineInfoModel.getUserID() + "处于离线状态");
+                MyLog.w(TAG, "用户" + onLineInfoModel.getUserID() + "处于离线状态");
             }
         }
     }
 
     @Override
+    public void updateScrollBarProgress(int volume) {
+        mTopContainerView.setScoreProgress(volume);
+    }
+
+    @Override
     public void playLyric(SongModel songModel, boolean play) {
-        showMsg("开始播放歌词 songId=" + songModel.getItemID());
+        MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
         if (songModel == null) {
-            showMsg("songModel 是空的");
+            MyLog.d(TAG, "songModel 是空的");
             return;
         }
         mPlayingSongModel = songModel;
@@ -447,11 +451,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
 
         if (file == null) {
-            MyLog.d(TAG, "playLyric is not in local file");
+            MyLog.w(TAG, "playLyric is not in local file");
 
             fetchLyricTask(songModel, play);
         } else {
-            MyLog.d(TAG, "playLyric is exist");
+            MyLog.w(TAG, "playLyric is exist");
 
             final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
             parseLyrics(fileName, play);
@@ -460,7 +464,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
 
     private void parseLyrics(String fileName, boolean play) {
-        MyLog.d(TAG, "parseLyrics" + " fileName=" + fileName);
+        MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
         mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -473,7 +477,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
 
     private void drawLyric(String fileNameHash, LyricsReader lyricsReader, boolean play) {
-        MyLog.d(TAG, "drawLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
+        MyLog.w(TAG, "drawLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
         if (lyricsReader != null) {
             lyricsReader.setHash(fileNameHash);
 
@@ -485,7 +489,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.initLrcData();
                 mManyLyricsView.setLyricsReader(lyricsReader);
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
-                    MyLog.d(TAG, "onEventMainThread " + "play");
+                    MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
                 }
             } else {
@@ -494,7 +498,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mFloatLyricsView.initLrcData();
                 mFloatLyricsView.setLyricsReader(lyricsReader);
                 if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
-                    MyLog.d(TAG, "onEventMainThread " + "play");
+                    MyLog.w(TAG, "onEventMainThread " + "play");
                     mFloatLyricsView.play(mPlayingSongModel.getBeginMs());
                 }
             }
@@ -503,7 +507,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
 
     private void fetchLyricTask(SongModel songModel, boolean play) {
-        MyLog.d(TAG, "fetchLyricTask" + " songModel=" + songModel);
+        MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
         mPrepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
@@ -516,9 +520,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
                 if (isSuccess) {
                     if (oldName.renameTo(newName)) {
-                        System.out.println("已重命名");
+                        MyLog.w(TAG, "已重命名");
                     } else {
-                        System.out.println("Error");
+                        MyLog.w(TAG, "Error");
                         emitter.onError(new Throwable("重命名错误"));
                     }
                 } else {
@@ -538,16 +542,4 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 });
     }
 
-    @Override
-    public void showMsg(String msg) {
-        if (!TextUtils.isEmpty(msg)) {
-            addText(msg);
-        } else {
-            addText("收到一个空信息");
-        }
-    }
-
-    void addText(String te) {
-        MyLog.w("GameInfo", te);
-    }
 }

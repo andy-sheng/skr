@@ -31,14 +31,15 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         public final static Property Password = new Property(4, String.class, "password", false, "PASSWORD");
         public final static Property IsLogOff = new Property(5, boolean.class, "isLogOff", false, "IS_LOG_OFF");
         public final static Property ThirdId = new Property(6, String.class, "thirdId", false, "THIRD_ID");
-        public final static Property ChannelId = new Property(7, int.class, "channelId", false, "CHANNEL_ID");
-        public final static Property NeedEditUserInfo = new Property(8, boolean.class, "needEditUserInfo", false, "NEED_EDIT_USER_INFO");
-        public final static Property ServiceToken = new Property(9, String.class, "serviceToken", false, "SERVICE_TOKEN");
-        public final static Property SecretToken = new Property(10, String.class, "secretToken", false, "SECRET_TOKEN");
-        public final static Property RongToken = new Property(11, String.class, "rongToken", false, "RONG_TOKEN");
-        public final static Property Sex = new Property(12, int.class, "sex", false, "SEX");
-        public final static Property Birthday = new Property(13, String.class, "birthday", false, "BIRTHDAY");
-        public final static Property Ext = new Property(14, String.class, "ext", false, "EXT");
+        public final static Property PhoneNum = new Property(7, String.class, "phoneNum", false, "PHONE_NUM");
+        public final static Property ChannelId = new Property(8, int.class, "channelId", false, "CHANNEL_ID");
+        public final static Property NeedEditUserInfo = new Property(9, boolean.class, "needEditUserInfo", false, "NEED_EDIT_USER_INFO");
+        public final static Property ServiceToken = new Property(10, String.class, "serviceToken", false, "SERVICE_TOKEN");
+        public final static Property SecretToken = new Property(11, String.class, "secretToken", false, "SECRET_TOKEN");
+        public final static Property RongToken = new Property(12, String.class, "rongToken", false, "RONG_TOKEN");
+        public final static Property Sex = new Property(13, int.class, "sex", false, "SEX");
+        public final static Property Birthday = new Property(14, String.class, "birthday", false, "BIRTHDAY");
+        public final static Property Ext = new Property(15, String.class, "ext", false, "EXT");
     }
 
 
@@ -61,14 +62,15 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
                 "\"PASSWORD\" TEXT," + // 4: password
                 "\"IS_LOG_OFF\" INTEGER NOT NULL ," + // 5: isLogOff
                 "\"THIRD_ID\" TEXT," + // 6: thirdId
-                "\"CHANNEL_ID\" INTEGER NOT NULL ," + // 7: channelId
-                "\"NEED_EDIT_USER_INFO\" INTEGER NOT NULL ," + // 8: needEditUserInfo
-                "\"SERVICE_TOKEN\" TEXT," + // 9: serviceToken
-                "\"SECRET_TOKEN\" TEXT," + // 10: secretToken
-                "\"RONG_TOKEN\" TEXT," + // 11: rongToken
-                "\"SEX\" INTEGER NOT NULL ," + // 12: sex
-                "\"BIRTHDAY\" TEXT," + // 13: birthday
-                "\"EXT\" TEXT);"); // 14: ext
+                "\"PHONE_NUM\" TEXT," + // 7: phoneNum
+                "\"CHANNEL_ID\" INTEGER NOT NULL ," + // 8: channelId
+                "\"NEED_EDIT_USER_INFO\" INTEGER NOT NULL ," + // 9: needEditUserInfo
+                "\"SERVICE_TOKEN\" TEXT," + // 10: serviceToken
+                "\"SECRET_TOKEN\" TEXT," + // 11: secretToken
+                "\"RONG_TOKEN\" TEXT," + // 12: rongToken
+                "\"SEX\" INTEGER NOT NULL ," + // 13: sex
+                "\"BIRTHDAY\" TEXT," + // 14: birthday
+                "\"EXT\" TEXT);"); // 15: ext
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_ACCOUNT_UID_DESC ON USER_ACCOUNT" +
                 " (\"UID\" DESC);");
@@ -106,33 +108,38 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         if (thirdId != null) {
             stmt.bindString(7, thirdId);
         }
-        stmt.bindLong(8, entity.getChannelId());
-        stmt.bindLong(9, entity.getNeedEditUserInfo() ? 1L: 0L);
+ 
+        String phoneNum = entity.getPhoneNum();
+        if (phoneNum != null) {
+            stmt.bindString(8, phoneNum);
+        }
+        stmt.bindLong(9, entity.getChannelId());
+        stmt.bindLong(10, entity.getNeedEditUserInfo() ? 1L: 0L);
  
         String serviceToken = entity.getServiceToken();
         if (serviceToken != null) {
-            stmt.bindString(10, serviceToken);
+            stmt.bindString(11, serviceToken);
         }
  
         String secretToken = entity.getSecretToken();
         if (secretToken != null) {
-            stmt.bindString(11, secretToken);
+            stmt.bindString(12, secretToken);
         }
  
         String rongToken = entity.getRongToken();
         if (rongToken != null) {
-            stmt.bindString(12, rongToken);
+            stmt.bindString(13, rongToken);
         }
-        stmt.bindLong(13, entity.getSex());
+        stmt.bindLong(14, entity.getSex());
  
         String birthday = entity.getBirthday();
         if (birthday != null) {
-            stmt.bindString(14, birthday);
+            stmt.bindString(15, birthday);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(15, ext);
+            stmt.bindString(16, ext);
         }
     }
 
@@ -162,33 +169,38 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         if (thirdId != null) {
             stmt.bindString(7, thirdId);
         }
-        stmt.bindLong(8, entity.getChannelId());
-        stmt.bindLong(9, entity.getNeedEditUserInfo() ? 1L: 0L);
+ 
+        String phoneNum = entity.getPhoneNum();
+        if (phoneNum != null) {
+            stmt.bindString(8, phoneNum);
+        }
+        stmt.bindLong(9, entity.getChannelId());
+        stmt.bindLong(10, entity.getNeedEditUserInfo() ? 1L: 0L);
  
         String serviceToken = entity.getServiceToken();
         if (serviceToken != null) {
-            stmt.bindString(10, serviceToken);
+            stmt.bindString(11, serviceToken);
         }
  
         String secretToken = entity.getSecretToken();
         if (secretToken != null) {
-            stmt.bindString(11, secretToken);
+            stmt.bindString(12, secretToken);
         }
  
         String rongToken = entity.getRongToken();
         if (rongToken != null) {
-            stmt.bindString(12, rongToken);
+            stmt.bindString(13, rongToken);
         }
-        stmt.bindLong(13, entity.getSex());
+        stmt.bindLong(14, entity.getSex());
  
         String birthday = entity.getBirthday();
         if (birthday != null) {
-            stmt.bindString(14, birthday);
+            stmt.bindString(15, birthday);
         }
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(15, ext);
+            stmt.bindString(16, ext);
         }
     }
 
@@ -207,14 +219,15 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // password
             cursor.getShort(offset + 5) != 0, // isLogOff
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // thirdId
-            cursor.getInt(offset + 7), // channelId
-            cursor.getShort(offset + 8) != 0, // needEditUserInfo
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // serviceToken
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // secretToken
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // rongToken
-            cursor.getInt(offset + 12), // sex
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // birthday
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // ext
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // phoneNum
+            cursor.getInt(offset + 8), // channelId
+            cursor.getShort(offset + 9) != 0, // needEditUserInfo
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // serviceToken
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // secretToken
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // rongToken
+            cursor.getInt(offset + 13), // sex
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // birthday
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15) // ext
         );
         return entity;
     }
@@ -228,14 +241,15 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
         entity.setPassword(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setIsLogOff(cursor.getShort(offset + 5) != 0);
         entity.setThirdId(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setChannelId(cursor.getInt(offset + 7));
-        entity.setNeedEditUserInfo(cursor.getShort(offset + 8) != 0);
-        entity.setServiceToken(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setSecretToken(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setRongToken(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setSex(cursor.getInt(offset + 12));
-        entity.setBirthday(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setExt(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setPhoneNum(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setChannelId(cursor.getInt(offset + 8));
+        entity.setNeedEditUserInfo(cursor.getShort(offset + 9) != 0);
+        entity.setServiceToken(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setSecretToken(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setRongToken(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setSex(cursor.getInt(offset + 13));
+        entity.setBirthday(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setExt(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
      }
     
     @Override

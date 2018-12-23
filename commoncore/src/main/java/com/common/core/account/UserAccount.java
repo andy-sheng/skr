@@ -28,6 +28,7 @@ public class UserAccount {
     private String password;
     private boolean isLogOff;
     private String thirdId;
+    private String phoneNum;
     @NotNull
     private int channelId;
     private boolean needEditUserInfo;
@@ -38,11 +39,11 @@ public class UserAccount {
     private String birthday;
     private String ext;
 
-    @Generated(hash = 1329320892)
+    @Generated(hash = 1117352047)
     public UserAccount(long id, @NotNull String uid, String nickName, String avatar,
-                       String password, boolean isLogOff, String thirdId, int channelId,
-                       boolean needEditUserInfo, String serviceToken, String secretToken,
-                       String rongToken, int sex, String birthday, String ext) {
+            String password, boolean isLogOff, String thirdId, String phoneNum, int channelId,
+            boolean needEditUserInfo, String serviceToken, String secretToken,
+            String rongToken, int sex, String birthday, String ext) {
         this.id = id;
         this.uid = uid;
         this.nickName = nickName;
@@ -50,6 +51,7 @@ public class UserAccount {
         this.password = password;
         this.isLogOff = isLogOff;
         this.thirdId = thirdId;
+        this.phoneNum = phoneNum;
         this.channelId = channelId;
         this.needEditUserInfo = needEditUserInfo;
         this.serviceToken = serviceToken;
@@ -202,6 +204,14 @@ public class UserAccount {
 
     public void setSex(int sex) {
         this.sex = sex;
+    }
+
+    public String getPhoneNum() {
+        return this.phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
 }

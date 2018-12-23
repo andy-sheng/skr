@@ -10,6 +10,7 @@ import android.view.animation.AnimationSet;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -91,8 +92,10 @@ public class GameFragment extends BaseFragment {
                             .greenChannel().navigation();
                 } else if (view.getId() == R.id.iv_normal_pk) {
                     //TODO  test
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
-                            .greenChannel().navigation();
+                    if (UserAccountManager.getInstance().getPhoneNum().startsWith("1571888")) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
+                                .greenChannel().navigation();
+                    }
                 } else if (view.getId() == R.id.iv_yule_pk) {
 
                 }

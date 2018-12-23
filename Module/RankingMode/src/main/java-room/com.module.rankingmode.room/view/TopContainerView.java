@@ -64,7 +64,7 @@ public class TopContainerView extends RelativeLayout {
             public void run() {
                 mScoreProgressBar.setProgress(50);
             }
-        }, 10000);
+        }, 4000);
     }
 
     @Override
@@ -96,6 +96,9 @@ public class TopContainerView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, params);
     }
 
+    public void setScoreProgress(int progress){
+        mScoreProgressBar.setProgress(100);
+    }
     public void setListener(Listener l) {
         mListener = l;
     }

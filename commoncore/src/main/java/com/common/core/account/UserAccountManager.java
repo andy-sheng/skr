@@ -130,6 +130,13 @@ public class UserAccountManager {
         return 0L;
     }
 
+    public String getPhoneNum() {
+        if (mAccount != null) {
+            return mAccount.getPhoneNum();
+        }
+        return "";
+    }
+
     public String getServiceToken() {
         if (mAccount != null) {
             return mAccount.getServiceToken();
@@ -234,7 +241,7 @@ public class UserAccountManager {
 //    }
 
     // 手机登录
-    public void loginByPhoneNum(String phoneNum, String verifyCode) {
+    public void loginByPhoneNum(final String phoneNum, String verifyCode) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 1 为手机登录
         userAccountServerApi.login(1, phoneNum, verifyCode)
@@ -265,6 +272,7 @@ public class UserAccountManager {
                             UserInfoLocalApi.insertOrUpdate(userInfo,false,false);
 
                             UserAccount userAccount = new UserAccount();
+                            userAccount.setPhoneNum(phoneNum);
                             userAccount.setServiceToken(serviceToken);
                             userAccount.setSecretToken(secretToken);
                             userAccount.setRongToken(rongToken);

@@ -1,5 +1,6 @@
 package com.module.rankingmode.room.model;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.rankingmode.prepare.model.PlayerInfo;
 import com.module.rankingmode.prepare.model.RoundInfoModel;
@@ -147,5 +148,9 @@ public class RoomDataUtils {
         }
         long ts = realRoundInfo.getSingEndMs() + roomData.getGameStartTs() + roomData.getShiftTs();
         return (int) (ts - System.currentTimeMillis());
+    }
+
+    public static boolean isMyRound(RoundInfoModel infoModel) {
+        return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 }
