@@ -371,7 +371,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             //再次确认
                             if(mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()){
                                 // 开始开始混伴奏，开始解除引擎mute
-                                File accFile = SongResUtils.getORIFileByUrl(mRoomData.getSongModel().getOri());
+                                File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
                                 if (accFile != null && accFile.exists()) {
                                     EngineManager.getInstance().muteLocalAudioStream(false);
                                     EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
