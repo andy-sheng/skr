@@ -134,7 +134,8 @@ public class ScreenLogView extends RelativeLayout {
             public void onClick(View v) {
                 String name = U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis(), "yyyy-MM-dd_HH_mm_ss");
 
-                String filename = U.getAppInfoUtils().getMainDir() + File.separator + "slog_" + name + ".txt";
+//                String filename = U.getAppInfoUtils().getMainDir() + File.separator + "slog_" + name + ".txt";
+                String filename = U.getAppInfoUtils().getMainDir() + File.separator + "slog.txt";
                 File file = new File(filename);
                 BufferedSink bufferedSink = null;
                 try {

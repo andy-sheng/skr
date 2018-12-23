@@ -61,7 +61,7 @@ public class TagSelectView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.tag_select_view_layout, this);
-        setBackgroundResource(R.color.white_trans_50);
+        setBackgroundResource(R.color.white);
 
         mControlPanel = (LinearLayout) this.findViewById(R.id.control_panel);
         mOkBtn = (ExTextView) this.findViewById(R.id.ok_btn);
@@ -168,9 +168,12 @@ public class TagSelectView extends RelativeLayout {
         Collections.sort(tagsModels, new Comparator<TagsModel>() {
             @Override
             public int compare(TagsModel o1, TagsModel o2) {
-                return o2.num - o1.num;
+                // 条数大小排序
+//                return o2.num - o1.num;
+                return o1.tag.compareTo(o2.tag);
             }
         });
+
         mTagsAdapter.setDataList(tagsModels);
     }
 
