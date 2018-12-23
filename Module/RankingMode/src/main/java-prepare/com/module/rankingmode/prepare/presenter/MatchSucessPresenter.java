@@ -76,6 +76,11 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
 
     private void checkPlayerReadyState() {
         MyLog.d(TAG, "checkPlayerReadyState");
+        if(!iMatchSucessView.isReady()){
+            iMatchSucessView.needReMatch(false);
+            return;
+        }
+
         checkTask = HandlerTaskTimer.newBuilder().delay(10000).start(new HandlerTaskTimer.ObserverW() {
             @Override
             public void onNext(Integer integer) {

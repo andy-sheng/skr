@@ -231,6 +231,10 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
 
+    @Override
+    public boolean isReady() {
+        return isPrepared;
+    }
 
     void goMatch(boolean otherEr) {
         // 如果已经准备了就从新开始匹配，没有准备就直接跳转到选择歌曲界面

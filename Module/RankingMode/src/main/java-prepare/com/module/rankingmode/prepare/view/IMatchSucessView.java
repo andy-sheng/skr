@@ -10,6 +10,8 @@ public interface IMatchSucessView {
 
     void allPlayerIsReady(GameReadyModel gameReadyInfo);
 
+    boolean isReady();
+
     /**
      * otherEr是否是别人的原因导致无法准备
      * @param otherEr
