@@ -108,12 +108,6 @@
             android:name="com.common.base.CommonConfiguration"
             android:value="ConfigModule_0" />
 
-        <receiver android:name="com.common.utils.CommonReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-
         <provider
             android:name="com.imagepicker.ImagePickerProvider"
             android:authorities="${applicationId}.provider"

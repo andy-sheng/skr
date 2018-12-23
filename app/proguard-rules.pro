@@ -277,7 +277,8 @@ public static java.lang.String TABLENAME;
 -keep interface * implements com.alibaba.android.arouter.facade.template.IProvider
 
 # 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现
-# -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+-keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+
 
 # 为了 fastjson 反序列化
 -keep class * implements java.io.Serializable{*;}

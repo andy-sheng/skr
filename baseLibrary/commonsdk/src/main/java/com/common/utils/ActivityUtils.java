@@ -259,10 +259,11 @@ public class ActivityUtils {
 
     /**
      * 由 ActivityLifecycle 来判断是否在前台
+     *
      * @param isAppForeground
      */
     public void setAppForeground(boolean isAppForeground) {
-        if(this.mIsAppForeground!=isAppForeground){
+        if (this.mIsAppForeground != isAppForeground) {
             this.mIsAppForeground = isAppForeground;
             EventBus.getDefault().post(new ForeOrBackgroundChange(mIsAppForeground));
         }
@@ -277,7 +278,7 @@ public class ActivityUtils {
     }
 
     /**
-     * 耳机插拔事件
+     * 是否在后台回调
      */
     public static class ForeOrBackgroundChange {
         public boolean foreground;

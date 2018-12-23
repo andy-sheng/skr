@@ -90,6 +90,7 @@ if [[ $1 = "app" ]]; then
 	fi
 	if [[ $2 = "release" ]]; then
 		echo "编译app release  加 --profile 会输出耗时报表"
+		./gradlew clean
 		#./gradlew :app:assembleRelease --profile
 		if [[ $3 = "all" ]];then
 		    echo "编译release所有渠道"

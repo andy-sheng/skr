@@ -26,6 +26,7 @@ import com.common.base.delegate.AppLifecycles;
 import com.common.image.fresco.FrescoInitManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
+import com.common.utils.CommonReceiver;
 import com.common.utils.U;
 import com.kingja.loadsir.LoadSirUtil;
 import com.kingja.loadsir.callback.SuccessCallback;
@@ -73,6 +74,7 @@ public class CommonConfiguration implements ConfigModule {
                 MyLog.init();
                 FrescoInitManager.initFresco(U.app());
                 PgyCrashManager.register();
+                CommonReceiver.register();
             }
 
             @Override
