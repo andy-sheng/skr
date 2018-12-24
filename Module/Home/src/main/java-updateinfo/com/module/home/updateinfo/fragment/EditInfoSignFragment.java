@@ -88,6 +88,8 @@ public class EditInfoSignFragment extends BaseFragment {
             }
         });
     }
+
+
     private void clickComplete() {
         String sign = mSignEt.getText().toString().trim();
         // TODO: 2018/12/24 判断签名，上传服务器

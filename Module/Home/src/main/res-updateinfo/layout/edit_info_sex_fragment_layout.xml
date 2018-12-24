@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="修改个人信息"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"
+        android:layout_below="@+id/titlebar"
+        android:background="#0C2275" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_133_dp"
+        android:layout_marginTop="@dimen/view_206_dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/male"
+                android:layout_width="@dimen/view_110_dp"
+                android:layout_height="@dimen/view_110_dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/view_18_dp"
+                android:scaleType="center"
+                android:src="@drawable/nan_dianjifangda"
+                app:bl_shape="oval"
+                app:bl_size_height="@dimen/view_110_dp"
+                app:bl_size_width="@dimen/view_110_dp"
+                app:bl_solid_color="#0288D0"
+                app:bl_stroke_color="#0C2275"
+                app:bl_stroke_width="@dimen/view_3_dp" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/male_taoxin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/male"
+                android:layout_alignRight="@+id/male"
+                android:layout_marginTop="@dimen/view_25_dp"
+                android:layout_marginRight="@dimen/view_25_dp"
+                android:src="@drawable/nan_taoxin"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/female"
+                android:layout_width="@dimen/view_110_dp"
+                android:layout_height="@dimen/view_110_dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_18_dp"
+                android:scaleType="center"
+                android:src="@drawable/nv_dianjifangda"
+                app:bl_shape="oval"
+                app:bl_size_height="@dimen/view_110_dp"
+                app:bl_size_width="@dimen/view_110_dp"
+                app:bl_solid_color="#CA2C60"
+                app:bl_stroke_color="#0C2275"
+                app:bl_stroke_width="@dimen/view_3_dp" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/female_taoxin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/female"
+                android:layout_alignRight="@+id/female"
+                android:layout_marginTop="@dimen/view_25_dp"
+                android:layout_marginRight="@dimen/view_25_dp"
+                android:src="@drawable/nv_taoxin"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

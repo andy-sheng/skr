@@ -26,6 +26,7 @@ import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
+import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 import com.module.home.updateinfo.fragment.EditInfoSignFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -196,7 +197,11 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     //修改性别
     private void onClickSexContainer() {
-
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, EditInfoSexFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
     }
 
     @Override
