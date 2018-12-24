@@ -116,11 +116,21 @@ public abstract class AbstractLrcView extends View {
      * 高亮歌词画笔
      */
     private Paint mPaintHL;
+
+    /**
+     * 高亮歌词画笔
+     */
+    private Paint mSubPaintHL;
+
     //高亮颜色
     private int[] mPaintHLColors = new int[]{
             ColorUtils.parserColor("#0288d1"),
             ColorUtils.parserColor("#0288d1")
     };
+
+    //高亮副颜色
+    private int mSubPaintHLColor = ColorUtils.parserColor("#555555");
+
     /**
      * 轮廓画笔
      */
@@ -439,6 +449,15 @@ public abstract class AbstractLrcView extends View {
         mPaintHL.setFakeBoldText(true);
         mPaintHL.setTextSize(hlSize);
 
+        //高亮画笔,画不高亮的部分
+        mSubPaintHL = new Paint();
+        mSubPaintHL.setDither(true);
+        mSubPaintHL.setAntiAlias(true);
+        mSubPaintHL.setFakeBoldText(true);
+        mSubPaintHLColor = typedArray.getColor(R.styleable.lrc_view_ly_high_light_sub_paint_color, Color.BLACK);
+        mSubPaintHL.setColor(mSubPaintHLColor);
+        mSubPaintHL.setTextSize(hlSize);
+
         //轮廓画笔
         mPaintOutline = new Paint();
         mPaintOutline.setDither(true);
@@ -668,6 +687,18 @@ public abstract class AbstractLrcView extends View {
             initExtraLrcTypeAndCallBack();
             invalidateView();
         }
+    }
+
+    protected long getCurPlayingTime(){
+        return mCurPlayingTime;
+    }
+
+    public Paint getSubPaintHL() {
+        return mSubPaintHL;
+    }
+
+    public int getSubPaintHLColor() {
+        return mSubPaintHLColor;
     }
 
     /**
@@ -1188,6 +1219,7 @@ public abstract class AbstractLrcView extends View {
             //获取分割后的歌词字索引
             mSplitLyricsWordIndex = LyricsUtils.getSplitLyricsWordIndex(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
             mLyricsWordHLTime = LyricsUtils.getDisWordsIndexLenTime(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
+            MyLog.d("LyricsView", " mLyricsWordHLTime is " + mLyricsWordHLTime);
         } else {
             //lrc歌词
             //获取分割后的索引

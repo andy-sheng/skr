@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
+import com.common.log.MyLog;
 import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsInfo;
@@ -323,6 +324,7 @@ public class ManyLyricsView extends AbstractLrcView {
         TreeMap<Integer, LyricsLineInfo> lrcLineInfos = getLrcLineInfos();
         Paint paint = getPaint();
         Paint paintHL = getPaintHL();
+        Paint subPaintHL = getSubPaintHL();
         Paint extraLrcPaint = getExtraLrcPaint();
         Paint extraLrcPaintHL = getExtraLrcPaintHL();
         int lyricsLineNum = getLyricsLineNum();
@@ -455,9 +457,13 @@ public class ManyLyricsView extends AbstractLrcView {
             } else if (i == curLyricsLineNum) {
                 float textWidth = LyricsUtils.getTextWidth(paintHL, text);
                 float textX = (getWidth() - textWidth) * 0.5f;
+                //这行歌词过去的时间,在话动感歌词的时候需要用到
+                long currentLineSpendTime = getCurPlayingTime() - (long) splitLyricsLineInfos.get(i).getStartTime();
+                float drawHLTextPaintSize = LyricsUtils.getDrawDynamicTextPaintSize(currentLineSpendTime, paint.getTextSize(), paintHL.getTextSize());
+                MyLog.d("ManyLyricsView", "drawHLTextPaintSize " + drawHLTextPaintSize);
                 //绘画动感歌词
                 float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
-                LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColors, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY);
+                LyricsUtils.drawDynamicText(canvas, paint, paintHL, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY);
 
             } else if (i > curLyricsLineNum) {
                 float textWidth = LyricsUtils.getTextWidth(paint, text);

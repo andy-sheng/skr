@@ -120,6 +120,7 @@ public class FloatLyricsView extends AbstractLrcView {
         int[] paintHLColors = getPaintHLColors();
         float spaceLineHeight = getSpaceLineHeight();
         float paddingLeftOrRight = getPaddingLeftOrRight();
+        int[] subPaintHLColors = new int[]{getSubPaintHLColor(), getSubPaintHLColor()};
 
 
         // 先设置当前歌词，之后再根据索引判断是否放在左边还是右边
@@ -237,7 +238,7 @@ public class FloatLyricsView extends AbstractLrcView {
         paintOutline.setTextSize(outLineHLSize);
 
         if (mEnableVerbatim) {
-            LyricsUtils.drawDynamicText(canvas, paint, paintHL, paintColors, paintHLColors, curLyrics, lineLyricsHLWidth, textX, textY);
+            LyricsUtils.drawDynamicText(canvas, paint, paintHL, subPaintHLColors, paintHLColors, curLyrics, lineLyricsHLWidth, textX, textY);
         }else {
             LyricsUtils.drawText(canvas, paintHL, paintHLColors, curLyrics, textX, textY);
         }

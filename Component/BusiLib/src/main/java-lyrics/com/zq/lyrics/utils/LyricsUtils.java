@@ -451,6 +451,23 @@ public class LyricsUtils {
     }
 
     /**
+     * 得到渐变画笔大小
+     * @param lyricsWordHLTime   过去的时间
+     * @param textSizeOne        原始大小
+     * @param textSizeTwo        需要到达的大小
+     * @return
+     */
+    public static float getDrawDynamicTextPaintSize(long lyricsWordHLTime, float textSizeOne, float textSizeTwo){
+        if(lyricsWordHLTime >= 1000){
+            return textSizeTwo;
+        }
+
+        float degree = textSizeTwo - textSizeOne;
+
+        return (degree * (float) lyricsWordHLTime) / 1000f ;
+    }
+
+    /**
      * 绘画动感文本
      *
      * @param canvas

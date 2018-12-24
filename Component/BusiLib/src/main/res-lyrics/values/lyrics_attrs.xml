@@ -2,6 +2,7 @@
 <resources>
     <attr name="ly_high_light_paint_color_from" format="color|reference" />
     <attr name="ly_high_light_paint_color_to" format="color|reference" />
+    <attr name="ly_high_light_sub_paint_color" format="color|reference" />
     <attr name="ly_high_light_paint_text_size" format="dimension|reference" />
     <attr name="ly_paint_color_from" format="color|reference" />
     <attr name="ly_paint_color_to" format="color|reference" />
@@ -11,6 +12,7 @@
     <attr name="ly_eable_scroll" format="boolean" />
 
     <declare-styleable name="lrc_view">
+        <attr name="ly_high_light_sub_paint_color"/>
         <attr name="ly_high_light_paint_color_from" />
         <attr name="ly_high_light_paint_color_to" />
         <attr name="ly_high_light_paint_text_size"/>
