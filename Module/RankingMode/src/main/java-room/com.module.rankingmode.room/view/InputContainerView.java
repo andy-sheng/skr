@@ -122,8 +122,11 @@ public class InputContainerView extends RelativeLayout {
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
                 ApiMethods.subscribe(roomServerApi.sendMsg(body), new ApiObserver<ApiResult>() {
                     @Override
-                    public void process(ApiResult obj) {
-
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            mEtContent.setText("");
+                            U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext());
+                        }
                     }
                 });
 
