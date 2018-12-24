@@ -139,7 +139,7 @@ public class PersonFragment extends BaseFragment {
         mLogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserAccountManager.getInstance().logoff(true);
+                UserAccountManager.getInstance().logoff();
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
             }
         });

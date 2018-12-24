@@ -269,7 +269,7 @@ public class UserAccountManager {
                             userInfo.setSex(sex);
                             userInfo.setBirthday(birthday);
                             userInfo.setAvatar(avatar);
-                            UserInfoLocalApi.insertOrUpdate(userInfo,false,false);
+                            UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
 
                             UserAccount userAccount = new UserAccount();
                             userAccount.setPhoneNum(phoneNum);
@@ -293,19 +293,40 @@ public class UserAccountManager {
     }
 
     /**
+     * 用户主动退出登录
+     */
+    public void logoff() {
+        logoff(false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true);
+    }
+
+    /**
+     * 收到账号过期的通知，被踢下线等等
+     */
+    public void notifyAccountExpired() {
+        logoff(false, AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED, false);
+    }
+
+    /**
      * 退出登录
+     *
      * @param deleteAccount
      */
-    public void logoff(final boolean deleteAccount) {
-        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        ApiMethods.subscribe(userAccountServerApi.loginOut(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    U.getToastUtil().showShort("登出成功了");
+    private void logoff(final boolean deleteAccount, final int reason, boolean notifyServer) {
+        if (!UserAccountManager.getInstance().hasAccount()) {
+            MyLog.w(TAG, "logoff but hasAccount = false");
+            return;
+        }
+        if (notifyServer) {
+            UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
+            ApiMethods.subscribe(userAccountServerApi.loginOut(), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        U.getToastUtil().showShort("登出成功了");
+                    }
                 }
-            }
-        });
+            });
+        }
         ModuleServiceManager.getInstance().getMsgService().logout();
         if (mAccount != null) {
             Observable.create(new ObservableOnSubscribe<Object>() {
@@ -321,14 +342,13 @@ public class UserAccountManager {
                     }
                     mAccount = null;
                     UmengStatistics.onProfileSignOff();
-                    EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent());
+                    EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     emitter.onComplete();
                 }
             })
                     .subscribeOn(Schedulers.io())
                     .subscribe();
         }
-
     }
 
     // todo 检查昵称是否可用
@@ -396,7 +416,6 @@ public class UserAccountManager {
                 }
             });
         }
-
     }
 
 }

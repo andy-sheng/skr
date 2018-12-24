@@ -21,13 +21,13 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiObserver;
 import com.common.utils.U;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
@@ -60,10 +60,9 @@ public class UploadTask {
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
         UploadAppServerApi uploadAppServerApi = ApiManager.getInstance().createService(UploadAppServerApi.class);
         uploadAppServerApi.getSTSToken().subscribeOn(Schedulers.io())
-                .subscribe(new ApiObserver<JSONObject>() {
-
+                .subscribe(new Consumer<JSONObject>() {
                     @Override
-                    public void process(JSONObject data) {
+                    public void accept(JSONObject data) throws Exception {
                         boolean has = data.containsKey("statusCode");
                         if (!has) {
                             return;
@@ -137,6 +136,11 @@ public class UploadTask {
                             }
 
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        MyLog.e(throwable);
                     }
                 });
         return this;

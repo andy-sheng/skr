@@ -20,7 +20,6 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiObserver;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.HttpUtils;
@@ -35,6 +34,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
@@ -69,12 +69,11 @@ public class DownloadTask {
 
     public DownloadTask downloadAsync() {
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
-        DownloadAppServerApi uploadAppServerApi = ApiManager.getInstance().createService(DownloadAppServerApi.class);
-        uploadAppServerApi.getSTSToken().subscribeOn(Schedulers.io())
-                .subscribe(new ApiObserver<JSONObject>() {
-
+        DownloadAppServerApi downloadAppServerApi = ApiManager.getInstance().createService(DownloadAppServerApi.class);
+        downloadAppServerApi.getSTSToken().subscribeOn(Schedulers.io())
+                .subscribe(new Consumer<JSONObject>() {
                     @Override
-                    public void process(JSONObject data) {
+                    public void accept(JSONObject data) throws Exception {
                         int code = data.getInteger("StatusCode");
                         if (code == 200) {
                             String accessKeyId = data.getString("AccessKeyId");
@@ -92,6 +91,11 @@ public class DownloadTask {
                             mOss = new OSSClient(U.app(), credentialProvider, conf);
                             download();
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        MyLog.e(throwable);
                     }
                 });
         return this;

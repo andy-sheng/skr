@@ -153,21 +153,21 @@ public class TestSdkActivity extends BaseActivity {
             }
         });
 
-        mDataList.add(new H("测试Dialog", new Runnable() {
-            @Override
-            public void run() {
-
-                TipsDialogView tipsDialogView = new TipsDialogView.Builder(TestSdkActivity.this).build();
-                DialogPlus.newDialog(TestSdkActivity.this)
-                        .setContentHolder(new ViewHolder(tipsDialogView))
-                        .setGravity(Gravity.BOTTOM)
-                        .setContentBackgroundResource(R.color.red)
-                        .setOverlayBackgroundResource(R.color.black_trans_50)
-                        .setExpanded(false)
-                        .create().show();
-                UserAccountManager.getInstance().logoff(true);
-            }
-        }));
+//        mDataList.add(new H("测试Dialog", new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                TipsDialogView tipsDialogView = new TipsDialogView.Builder(TestSdkActivity.this).build();
+//                DialogPlus.newDialog(TestSdkActivity.this)
+//                        .setContentHolder(new ViewHolder(tipsDialogView))
+//                        .setGravity(Gravity.BOTTOM)
+//                        .setContentBackgroundResource(R.color.red)
+//                        .setOverlayBackgroundResource(R.color.black_trans_50)
+//                        .setExpanded(false)
+//                        .create().show();
+//                UserAccountManager.getInstance().logoff(true);
+//            }
+//        }));
 
 
         mDataList.add(new H("进入首页", new Runnable() {
