@@ -2,6 +2,7 @@ package com.common.rxretrofit;
 
 import android.util.Log;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 
@@ -28,6 +29,11 @@ public abstract class ApiObserver<T> implements Observer<T> {
                 ApiResult result = (ApiResult) obj;
                 if (result.errno != 0) {
                     U.getToastUtil().showShort("errno:" + result.errno + " errmsg:" + result.errmsg);
+                }
+
+                // TODO: 2018/12/24 身份解析失败，需要调到登陆页面 
+                if (result.errno == 107) {
+                    
                 }
             }
         }
