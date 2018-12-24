@@ -46,7 +46,7 @@ import java.util.TreeMap;
  * @date: 2018-04-21 20:28
  */
 public class ManyLyricsView extends AbstractLrcView {
-
+    public final static String TAG = "ManyLyricsView";
     /**
      * 初始
      */
@@ -304,7 +304,7 @@ public class ManyLyricsView extends AbstractLrcView {
     @Override
     protected void onDrawLrcView(Canvas canvas) {
         if (mShadeHeight == 0) {
-            mShadeHeight = getHeight() / 4;
+            mShadeHeight = getHeight() / 2;
         }
         drawManyLrcView(canvas);
     }
@@ -440,7 +440,8 @@ public class ManyLyricsView extends AbstractLrcView {
                 alpha = mMaxAlpha - (int) ((lineBottomY - (getHeight() - mShadeHeight)) * (mMaxAlpha - mMinAlpha) / mShadeHeight);
             }
 
-            alpha = Math.max(alpha, 0);
+            MyLog.d(TAG, "alpha " + alpha);
+            alpha = (int) (Math.max(alpha, 0) * 0.8f);
             paint.setAlpha(alpha);
             paintHL.setAlpha(alpha);
 
@@ -463,6 +464,8 @@ public class ManyLyricsView extends AbstractLrcView {
                 MyLog.d("ManyLyricsView", "drawHLTextPaintSize " + drawHLTextPaintSize);
                 //绘画动感歌词
                 float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
+                paint.setAlpha(255);
+                paintHL.setAlpha(255);
                 LyricsUtils.drawDynamicText(canvas, paint, paintHL, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY);
 
             } else if (i > curLyricsLineNum) {
