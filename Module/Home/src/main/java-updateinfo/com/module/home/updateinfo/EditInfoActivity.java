@@ -25,7 +25,8 @@ import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
-import com.module.home.fragment.SettingFragment;
+import com.module.home.updateinfo.fragment.EditInfoNameFragment;
+import com.module.home.updateinfo.fragment.EditInfoSignFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -35,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
+
+// 个人资料编辑
 public class EditInfoActivity extends BaseActivity implements View.OnClickListener {
 
     RelativeLayout mMainActContainer;
@@ -170,12 +173,20 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     //修改昵称
     private void onClickNameContainer() {
-
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, EditInfoNameFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
     }
 
     //修改签名
     private void onClickSignContainer() {
-
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, EditInfoSignFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
     }
 
     //修改年龄段

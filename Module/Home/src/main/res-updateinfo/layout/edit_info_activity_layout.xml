@@ -18,7 +18,8 @@
         app:leftType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="#0288D0">
+    </com.common.view.titlebar.CommonTitleBar>
 
     <View
         android:layout_width="match_parent"

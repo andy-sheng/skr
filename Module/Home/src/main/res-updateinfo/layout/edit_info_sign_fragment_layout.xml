@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="修改签名"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText="完成"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_16_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"
+        android:layout_below="@+id/titlebar"
+        android:background="#0C2275" />
+
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/sign_et"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_80_dp"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="left|top"
+        android:lineSpacingExtra="@dimen/view_10_dp"
+        android:maxLines="2"
+        android:paddingLeft="@dimen/view_14_dp"
+        android:paddingRight="@dimen/view_14_dp"
+        android:text="这个签名是撕哥送的"
+        android:textColor="#091E77"
+        android:textSize="@dimen/view_16_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#BCBDCD" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sign_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sign_et"
+        android:layout_alignLeft="@+id/sign_et"
+        android:layout_marginTop="@dimen/view_9_dp"
+        android:text="9/20"
+        android:textColor="#800C2275"
+        android:textSize="@dimen/textsize_16_dp" />
+
+</RelativeLayout>
