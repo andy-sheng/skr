@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchMatch.Vertical">
 
-    <com.common.view.titlebar.CommonTitleBar xmlns:titlebar="http://schemas.android.com/apk/res-auto"
+    <com.common.view.titlebar.CommonTitleBar
+        xmlns:titlebar="http://schemas.android.com/apk/res-auto"
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

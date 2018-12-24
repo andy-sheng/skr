@@ -69,6 +69,8 @@ android {
             java.srcDirs += 'src/main/java'
             res.srcDirs += ['src/main/res']
 
+            java.srcDirs += 'src/main/java-updateinfo'
+            res.srcDirs += 'src/main/res-updateinfo'
         }
     }
 }

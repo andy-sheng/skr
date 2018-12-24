@@ -43,6 +43,7 @@ public class PersonFragment extends BaseFragment {
     ExTextView mUpdateNicknameBtn;
     RelativeLayout mClearCacheBtn;
     RelativeLayout mLogoutBtn;
+    RelativeLayout mSetting;
 
     @Override
     public int initView() {
@@ -57,7 +58,9 @@ public class PersonFragment extends BaseFragment {
         mClearCacheBtn = (RelativeLayout) mRootView.findViewById(R.id.clear_cache_btn);
         mLogoutBtn = (RelativeLayout) mRootView.findViewById(R.id.logout_btn);
         mUserIdTv = mRootView.findViewById(R.id.user_id_tv);
-        mUserIdTv.setText("用户id:"+UserAccountManager.getInstance().getUuid());
+        mUserIdTv.setText("用户id:" + UserAccountManager.getInstance().getUuid());
+        mSetting = (RelativeLayout) mRootView.findViewById(R.id.setting);
+
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
                 .getAvatar())
@@ -141,6 +144,17 @@ public class PersonFragment extends BaseFragment {
             public void onClick(View v) {
                 UserAccountManager.getInstance().logoff();
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+            }
+        });
+
+        mSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
             }
         });
 

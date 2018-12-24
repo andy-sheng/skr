@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="设置"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"
+        android:layout_below="@+id/titlebar"
+        android:background="#0C2275" />
+
+    <!--修改个人信息-->
+    <RelativeLayout
+        android:id="@+id/edit_person"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_63_dp"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginTop="@dimen/view_3_dp">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_15_dp"
+            android:text="修改个人信息"
+            android:textColor="#0C2275" />
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_17_dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_back"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_alignParentBottom="true"
+            android:background="#D8D8D8" />
+
+    </RelativeLayout>
+
+
+    <!--清理缓存-->
+    <RelativeLayout
+        android:id="@+id/clear_cache"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_63_dp"
+        android:layout_below="@id/edit_person">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_15_dp"
+            android:text="清理缓存"
+            android:textColor="#0C2275" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/textsize_16_dp"
+            android:textColor="#80091E77"
+            android:text="2.5M"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/view_15_dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_alignParentBottom="true"
+            android:background="#D8D8D8" />
+
+    </RelativeLayout>
+
+    <!--意见反馈-->
+    <RelativeLayout
+        android:id="@+id/user_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_63_dp"
+        android:layout_below="@+id/clear_cache">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_15_dp"
+            android:text="意见反馈"
+            android:textColor="#0C2275" />
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_17_dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_back"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_alignParentBottom="true"
+            android:background="#D8D8D8" />
+
+    </RelativeLayout>
+
+    <!--用户服务协议-->
+    <RelativeLayout
+        android:id="@+id/service_agreen"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_63_dp"
+        android:layout_below="@+id/user_feedback">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_15_dp"
+            android:text="用户服务协议"
+            android:textColor="#0C2275" />
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_17_dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_back"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_alignParentBottom="true"
+            android:background="#D8D8D8" />
+
+    </RelativeLayout>
+
+
+    <!--评价撕歌-->
+    <RelativeLayout
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_63_dp"
+        android:layout_below="@id/service_agreen">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_15_dp"
+            android:text="评价撕歌"
+            android:textColor="#0C2275" />
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_17_dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_back"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_alignParentBottom="true"
+            android:background="#D8D8D8" />
+
+    </RelativeLayout>
+
+    <!--退出登录-->
+    <com.common.view.ex.ExTextView
+        android:id="@+id/exit_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_32_dp"
+        android:background="@drawable/img_btn_bg_red"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_8_dp"
+        android:textStyle="bold"
+        android:text="退出登录"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_20_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/exit_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_34_dp"
+        android:text="当前版本1.0"
+        android:textColor="#8590BA"
+        android:textSize="@dimen/textsize_16_dp" />
+
+</RelativeLayout>
