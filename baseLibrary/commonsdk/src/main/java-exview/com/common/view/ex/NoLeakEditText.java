@@ -22,10 +22,16 @@ public class NoLeakEditText extends AppCompatEditText {
 
     public NoLeakEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
+        loadAttributes(context,attrs);
     }
 
     public NoLeakEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        loadAttributes(context,attrs);
+    }
+
+    private void loadAttributes(Context context, AttributeSet attrs) {
+        AttributeInject.injectBackground(this, context, attrs);
     }
 
     @Override
