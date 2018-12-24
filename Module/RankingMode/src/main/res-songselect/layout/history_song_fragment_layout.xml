@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/view_36_dp"
-        android:layout_marginTop="@dimen/view_46_dp"
+        android:padding="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
         android:src="@drawable/img_back" />
 
     <com.common.view.ex.ExImageView
