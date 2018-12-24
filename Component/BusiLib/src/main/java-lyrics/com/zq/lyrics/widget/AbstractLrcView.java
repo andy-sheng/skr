@@ -355,7 +355,7 @@ public abstract class AbstractLrcView extends View {
     /**
      * 刷新延时时间
      */
-    private long mRefreshTime = 30;
+    private long mRefreshTime = 20;
 
     /**
      * 子线程用于执行耗时任务
@@ -1374,6 +1374,10 @@ public abstract class AbstractLrcView extends View {
 
     public float getLyricsWordHLTime() {
         return mLyricsWordHLTime;
+    }
+
+    public long getPlayerSpendTime() {
+        return mPlayerSpendTime;
     }
 
     public int getExtraSplitLyricsLineNum() {

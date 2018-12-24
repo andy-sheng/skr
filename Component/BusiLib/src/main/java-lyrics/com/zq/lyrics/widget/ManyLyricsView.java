@@ -441,7 +441,7 @@ public class ManyLyricsView extends AbstractLrcView {
             }
 
             MyLog.d(TAG, "alpha " + alpha);
-            alpha = (int) (Math.max(alpha, 0) * 0.8f);
+//            alpha = (int) (Math.max(alpha, 0) * 0.8f);
             paint.setAlpha(alpha);
             paintHL.setAlpha(alpha);
 
@@ -456,18 +456,26 @@ public class ManyLyricsView extends AbstractLrcView {
 //                LyricsUtils.drawText(canvas, paintHL, paintHLColors, text, textX, lineBottomY);
 
             } else if (i == curLyricsLineNum) {
+
+                //这行歌词过去的时间,在话动感歌词的时候需要用到
+                long currentLineSpendTime = getCurPlayingTime() + getPlayerSpendTime() - (long) splitLyricsLineInfos.get(i).getStartTime();
+                //根据时间算出渐变文字大小
+                float drawHLTextPaintSize = LyricsUtils.getDrawDynamicTextPaintSize(currentLineSpendTime, paint.getTextSize(), paintHL.getTextSize());
+                MyLog.d("ManyLyricsView", "currentLineSpendTime " + drawHLTextPaintSize + ", paint.getTextSize" + paint.getTextSize() + ", paintHL text size " + paintHL.getTextSize());
+                //先把原始的拿出来
+                float paintOriginalTextSize = paint.getTextSize();
+                float paintHLOriginalTextSize = paintHL.getTextSize();
+                paint.setTextSize(drawHLTextPaintSize);
+                paintHL.setTextSize(drawHLTextPaintSize);
+                //绘画动感歌词
                 float textWidth = LyricsUtils.getTextWidth(paintHL, text);
                 float textX = (getWidth() - textWidth) * 0.5f;
-                //这行歌词过去的时间,在话动感歌词的时候需要用到
-                long currentLineSpendTime = getCurPlayingTime() - (long) splitLyricsLineInfos.get(i).getStartTime();
-                float drawHLTextPaintSize = LyricsUtils.getDrawDynamicTextPaintSize(currentLineSpendTime, paint.getTextSize(), paintHL.getTextSize());
-                MyLog.d("ManyLyricsView", "drawHLTextPaintSize " + drawHLTextPaintSize);
-                //绘画动感歌词
                 float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
-                paint.setAlpha(255);
-                paintHL.setAlpha(255);
-                LyricsUtils.drawDynamicText(canvas, paint, paintHL, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY);
 
+                LyricsUtils.drawDynamicText(canvas, paint, paintHL, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY);
+                //再把原来的大小设置进去
+                paint.setTextSize(paintOriginalTextSize);
+                paintHL.setTextSize(paintHLOriginalTextSize);
             } else if (i > curLyricsLineNum) {
                 float textWidth = LyricsUtils.getTextWidth(paint, text);
                 float textX = (getWidth() - textWidth) * 0.5f;
