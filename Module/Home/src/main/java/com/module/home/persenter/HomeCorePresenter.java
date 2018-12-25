@@ -1,10 +1,14 @@
 package com.module.home.persenter;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.core.account.UserAccountManager;
+import com.common.core.account.event.AccountEvent;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.NetworkUtils;
@@ -12,6 +16,7 @@ import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
+import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.view.PermissionTipsView;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -24,14 +29,24 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class HomePresenter {
+public class HomeCorePresenter {
 
     public final static String TAG = "HomePresenter";
 
     DialogPlus mPerTipsDialogPlus;
+
     long mLastCheckTs = 0;
 
-    public HomePresenter() {
+    Handler mUiHandler = new Handler();
+
+    private Runnable mNetworkChangeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            showNetworkDisConnectDialog();
+        }
+    };
+
+    public HomeCorePresenter() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -130,18 +145,12 @@ public class HomePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(NetworkUtils.NetworkChangeEvent event) {
         if (event.type == -1) {
-            HandlerTaskTimer.newBuilder()
-                    .delay(5000)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            if (!U.getNetworkUtils().hasNetwork()) {
-                                showNetworkDisConnectDialog();
-                            }
-                        }
-                    });
+            mUiHandler.postDelayed(mNetworkChangeRunnable, 3000);
+        } else {
+            mUiHandler.removeCallbacks(mNetworkChangeRunnable);
         }
     }
+
 
     private void showNetworkDisConnectDialog() {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
@@ -167,4 +176,14 @@ public class HomePresenter {
                 })
                 .create().show();
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AccountEvent.LogoffAccountEvent event) {
+        if (event.reason == AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED) {
+            MyLog.w(TAG, "LogoffAccountEvent" + " 账号已经过期，需要重新登录,跳到登录页面");
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+        }
+    }
+
 }

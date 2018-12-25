@@ -1,8 +1,5 @@
 package com.module.home;
 
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +11,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
-import com.common.utils.CommonReceiver;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
@@ -24,7 +20,7 @@ import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
-import com.module.home.persenter.HomePresenter;
+import com.module.home.persenter.HomeCorePresenter;
 import com.module.msg.IMsgService;
 
 import java.util.concurrent.TimeUnit;
@@ -40,7 +36,7 @@ public class HomeActivity extends BaseActivity {
     ExImageView mPersonInfoBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
-    HomePresenter mHomePresenter;
+    HomeCorePresenter mHomePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +89,8 @@ public class HomeActivity extends BaseActivity {
 
         mMainVp.setAdapter(fragmentPagerAdapter);
         mGameBtn.setSelected(true);
-        mHomePresenter = new HomePresenter();
+
+        mHomePresenter = new HomeCorePresenter();
 
         if (!UserAccountManager.getInstance().hasAccount()) {
             // 到时会有广告页或者启动页挡一下的，先不用管

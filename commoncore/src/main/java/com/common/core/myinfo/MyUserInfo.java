@@ -11,22 +11,17 @@ public class MyUserInfo {
     private UserInfo mUserInfo;
 
     private Boolean certificationChanged; // 认证改变
-
     private String viewUrl;                                       //直播地址
     private String roomId = null;                                 //正在直播的id, 房间号
     private String tvRoomId = null;                               //正在播放的电视台房间id
     private Integer roomType;
-
     private Boolean online;  // 是否在线，这个只有在添加管理员的时候使用了。
     private Integer appType; // app类型 4代表一直播
     private Boolean redName; // 是否被社区红名了
-
     private String norbleMedal = null;
-
-    //实名：手机绑定
-    private Boolean isNeedBindPhone;
+    //aaa
+    private Boolean isNeedBindPhone;//实名：手机绑定
     private String phoneNum;
-
     private String ext;
 
     public MyUserInfo() {
