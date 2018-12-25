@@ -55,7 +55,8 @@ ext {
             "recyclerview-v7"          : "com.android.support:recyclerview-v7:${version["androidSupportSdkVersion"]}",
             // 支持从图像冲抽取突出颜色，用来凸显主题背景
             "palette"                  : "com.android.support:palette-v7:${version["androidSupportSdkVersion"]}",
-
+            //webview
+            "agentweb"                 : 'com.just.agentweb:agentweb:4.0.2',
             //network
             "retrofit"                 : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",
             "retrofit-converter-gson"  : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
