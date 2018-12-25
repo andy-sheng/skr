@@ -107,6 +107,11 @@ android {
             // webview
             java.srcDirs += 'src/main/java-agentweb'
             res.srcDirs += 'src/main/res-agentweb'
+
+            // 滚轮时间、地址等选择器
+            java.srcDirs += 'src/main/java-picker'
+            res.srcDirs += 'src/main/res-picker'
+
         }
 
 //        release {

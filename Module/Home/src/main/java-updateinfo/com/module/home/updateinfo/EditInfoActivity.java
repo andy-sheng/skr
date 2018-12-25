@@ -25,6 +25,7 @@ import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
+import com.module.home.updateinfo.fragment.EditInfoAgeFragment;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 import com.module.home.updateinfo.fragment.EditInfoSignFragment;
@@ -190,9 +191,13 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .build());
     }
 
-    //修改年龄段
+    //修改年龄
     private void onClickAgeContainer() {
-
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, EditInfoAgeFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
     }
 
     //修改性别

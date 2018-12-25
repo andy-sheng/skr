@@ -38,7 +38,7 @@ public class DateTimeUtils {
     DateTimeUtils() {
     }
 
-    public  boolean isYesterday(long rowTime) {
+    public boolean isYesterday(long rowTime) {
         boolean bret = false;
         if (rowTime > 0) {
 
@@ -64,11 +64,11 @@ public class DateTimeUtils {
         return bret;
     }
 
-    public  boolean isThisWeek(final long time) {
+    public boolean isThisWeek(final long time) {
         return (System.currentTimeMillis() - time) < MILLIS_IN_WEEK;
     }
 
-    public  boolean isThisYear(final long time) {
+    public boolean isThisYear(final long time) {
         final Calendar today = Calendar.getInstance();
         today.setTime(new Date());
 
@@ -78,17 +78,26 @@ public class DateTimeUtils {
         return otherday.get(Calendar.YEAR) == today.get(Calendar.YEAR);
     }
 
+    /**
+     * 格式化日期
+     * @param date 日期
+     * @return 年-月-日
+     */
+    public String formatDateString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
+    }
+
 
     /**
      * @param context
      * @param rowTime 某个时间戳
-     * @return
-     * 1. 今天 HH:mm
+     * @return 1. 今天 HH:mm
      * 2. 明天 HH:mm
      * 3. 昨天 HH:mm
      * 4. xx月xx日
      */
-    public  String formatTimeStringForNotice(final Context context, final long rowTime) {
+    public String formatTimeStringForNotice(final Context context, final long rowTime) {
         long now = System.currentTimeMillis();
         long dayDiff = getDayDiff(now, rowTime);
         String time = formatTimeStringForDate(rowTime, "HH:mm");
@@ -106,17 +115,18 @@ public class DateTimeUtils {
         return result;
     }
 
-    public  String formatTimeStringForDate(final long rowTime, final String formatStr) {
+    public String formatTimeStringForDate(final long rowTime, final String formatStr) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatStr);
         return simpleDateFormat.format(new Date(rowTime));
     }
 
     /**
      * 12:03:23.122
+     *
      * @param rowTime
      * @return
      */
-    public  String formatTimeStringForDate(final long rowTime) {
+    public String formatTimeStringForDate(final long rowTime) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
         return simpleDateFormat.format(new Date(rowTime));
     }
@@ -129,7 +139,7 @@ public class DateTimeUtils {
      * 小于1小时的 00:00
      * 大于1小时的 00:00:00
      */
-    public  String formatVideoTime(long videoTime) {
+    public String formatVideoTime(long videoTime) {
         MyLog.d(TAG, "formatVideoTime, videoTime = " + videoTime);
 
         int seconds = 0;
@@ -171,7 +181,7 @@ public class DateTimeUtils {
      * @param timeToBase   　基准时间
      * @return
      */
-    public  String formatHumanableDate(final long timeToFormat, final long timeToBase) {
+    public String formatHumanableDate(final long timeToFormat, final long timeToBase) {
         MyLog.v(TAG + " formatHumanableDate timeToFormat == " + timeToFormat + " timeToBase == " + timeToBase);
         if (timeToFormat < 0 || timeToBase < 0) {
             MyLog.e(TAG + " formatHumanableDate timeToFormat or timeToBase < 0, timeToFormat == " + timeToFormat + " timeToBase == " + timeToBase);
@@ -223,7 +233,7 @@ public class DateTimeUtils {
      * @param TSR
      * @return
      */
-    public  long getDayDiff(long TSL, long TSR) {
+    public long getDayDiff(long TSL, long TSR) {
         return adjustTimeZoneMillis(TSR) / MILILIS_ONE_DAY - adjustTimeZoneMillis(TSL) / MILILIS_ONE_DAY;
     }
 
@@ -232,7 +242,7 @@ public class DateTimeUtils {
      *
      * @notice Date，Calender类已经添加时区，不需要调用此函数矫正，只提供给getDayDiff使用
      */
-    private  long adjustTimeZoneMillis(long millis) {
+    private long adjustTimeZoneMillis(long millis) {
         Calendar cal = Calendar.getInstance();
         int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
         int dstOffset = cal.get(Calendar.DST_OFFSET);

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="选择年龄"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText="完成"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_16_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"
+        android:layout_below="@+id/titlebar"
+        android:background="#0C2275" />
+
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginTop="@dimen/view_30_dp" />
+
+</RelativeLayout>
