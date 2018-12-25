@@ -21,6 +21,12 @@ android {
         multiDexEnabled true
 
         vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
     }
 
     buildTypes {
@@ -133,6 +139,7 @@ android {
 
 dependencies {
     // New api keyword is exactly the same as the old compile keyword.
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     // implementation 只会引入依赖的A，不会把A依赖的B也引进来
     api(rootProject.ext.dependencies["support-v4"])
     api(rootProject.ext.dependencies["appcompat-v7"])

@@ -38,6 +38,7 @@ import android.webkit.WebViewClient;
 import com.alipay.sdk.app.H5PayCallback;
 import com.alipay.sdk.app.PayTask;
 import com.alipay.sdk.util.H5PayResultModel;
+import com.common.log.MyLog;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
@@ -427,6 +428,7 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 			return isIntercepted;
 		} catch (Throwable ignore) {
 			if (AgentWebConfig.DEBUG) {
+				MyLog.d("支付包sdk未打进apk引起的，可以忽略");
 				ignore.printStackTrace();
 			}
 		}

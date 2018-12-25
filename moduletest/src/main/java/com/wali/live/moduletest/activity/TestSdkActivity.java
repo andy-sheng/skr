@@ -178,11 +178,12 @@ public class TestSdkActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new H("打开消息", new Runnable() {
+        mDataList.add(new H("打开webview", new Runnable() {
 
             @Override
             public void run() {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_MESSAGE)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString(RouterConstants.KEY_WEB_URL,"http://www.mi.com")
                         .navigation();
             }
         }));

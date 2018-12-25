@@ -137,6 +137,13 @@
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
 
         </activity>
+
+        <activity
+            android:name="com.common.webview.AgentWebActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            >
+        </activity>
     </application>
 
 </manifest>

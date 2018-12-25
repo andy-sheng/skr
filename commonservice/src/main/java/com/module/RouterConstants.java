@@ -2,6 +2,7 @@ package com.module;
 
 /**
  * 保存所有ARouter_Path
+ * 请按module来分
  */
 public interface RouterConstants {
     String ACTIVITY_HOME = "/home/HomeActivity";
@@ -12,26 +13,28 @@ public interface RouterConstants {
     String ACTIVITY_RANKING_ROOM = "/rankingmode/RankingRoomActivity";
     String ACTIVITY_MESSAGE = "/imkit/MessageActivity";
 
+
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";
     String ACTIVITY_TEST = "/test/TestSdkActivity";
 
-    String ACTIVITY_WATCH = "/watch/WatchSdkAcitivity";
 
+    String ACTIVITY_WATCH = "/watch/WatchSdkAcitivity";
     //VideoDetailSdkActivity
     String ACTIVITY_VIDEO = "VideoDetailSdkActivity";
     //SubChannelActivity
     String ACTIVITY_SUB_CHANNEL = "SubChannelActivity";
     //HalfWebViewActivity
     String ACTIVITY_HALFWEB = "HalfWebViewActivity";
-    //WebViewActivity
-    String ACTIVITY_WEB = "WebViewActivity";
     //LongTextActivity
     String ACTIVITY_LONGTEXT= "LongTextActivity";
     //RechargeActivity
     String ACTIVITY_RECHARGE = "RechargeActivity";
-
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
+
+    //WebViewActivity
+    String ACTIVITY_WEB = "/common/WebViewActivity";
+    String KEY_WEB_URL = "url";
 
     String SERVICE_HOME = "/home/service1";
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
