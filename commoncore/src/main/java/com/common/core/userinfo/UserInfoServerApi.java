@@ -1,11 +1,18 @@
 package com.common.core.userinfo;
 
+import com.common.rxretrofit.ApiResult;
+
+import io.reactivex.Observable;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
 /**
  * 服务器请求关系,提供给RelationManager使用
  */
 public interface UserInfoServerApi {
 
-
+    @GET("v1/uprofile/information")
+    Observable<ApiResult> getUserInfo(@Query("userID") int userID);
 //    /**
 //     * 获取一个用户的信息
 //     *

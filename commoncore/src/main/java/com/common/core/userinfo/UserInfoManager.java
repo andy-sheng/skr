@@ -3,9 +3,19 @@ package com.common.core.userinfo;
 import android.net.Uri;
 
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 
 public class UserInfoManager {
 
@@ -54,7 +64,7 @@ public class UserInfoManager {
      *
      * @uuid 用户id
      */
-    public void getUserInfoByUuid(final long uuid, UserInfoCallBack userInfoCallBack) {
+    public void getUserInfoByUuid(final int uuid, UserInfoCallBack userInfoCallBack) {
         if (uuid <= 0 || userInfoCallBack == null) {
             MyLog.w(TAG, "getUserInfoByUuid Illegal parameter");
             return;
@@ -62,14 +72,25 @@ public class UserInfoManager {
 
         UserInfo local = UserInfoLocalApi.getUserInfoByUUid(uuid);
         if (local == null || !userInfoCallBack.onGetLocalDB(local)) {
-//            GetUserInfoByIdRsp response = UserInfoServerApi.getUserInfoByUuid(uuid);
-//            if (response != null && response.getErrorCode() == 0) {
-//                UserInfo userInfo = new UserInfo();
-//                userInfo.parse(response.getPersonalInfo());
-//                MyLog.w(TAG, "getUserInfoByUuid userInfo = " + userInfo.toString());
-//                UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
-//            }
-//            userInfoCallBack.onGetServer(response);
+            UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+            Observable<ApiResult> apiResultObservable = userInfoServerApi.getUserInfo(uuid);
+            ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    if (obj.getErrno() == 0) {
+                        U.getToastUtil().showShort("获取个人信息更新成功");
+                        //写入数据库
+                        Observable.create(new ObservableOnSubscribe<Object>() {
+                            @Override
+                            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                                emitter.onComplete();
+                            }
+                        })
+                                .subscribeOn(Schedulers.io())
+                                .subscribe();
+                    }
+                }
+            });
         }
     }
 
@@ -469,7 +490,7 @@ public class UserInfoManager {
         UserInfo friend2 = new UserInfo();
         friend2.setUserId(1002);
         friend2.setUserNickname("美女");
-        
+
         List<UserInfo> list = new ArrayList<>();
         list.add(friend1);
         list.add(friend2);

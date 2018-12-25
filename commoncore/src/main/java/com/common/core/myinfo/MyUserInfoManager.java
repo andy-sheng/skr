@@ -87,29 +87,59 @@ public class MyUserInfoManager {
      */
     public void updateInfo(String nickName, int sex, String birthday, String avatar, String sign, Location location) {
 
-        final UserInfo userInfo = new UserInfo();
-        userInfo.setUserId(UserAccountManager.getInstance().getUuidAsLong());
+//        final UserInfo userInfo = new UserInfo();
+//        userInfo.setUserId(UserAccountManager.getInstance().getUuidAsLong());
+//        HashMap<String, Object> map = new HashMap<>();
+//        if (nickName != null) {
+//            map.put("nickname", nickName);
+//            userInfo.setUserNickname(nickName);
+//        }
+//        if (sex != -1) {
+//            map.put("sex", sex);
+//            userInfo.setSex(sex);
+//        }
+//        if (birthday != null) {
+//            map.put("birthday", birthday);
+//            userInfo.setBirthday(birthday);
+//        }
+//        if (avatar != null) {
+//            map.put("avatar", avatar);
+//            userInfo.setAvatar(avatar);
+//        }
+//
+//        if (sign != null) {
+//            map.put("signature", sign);
+//            userInfo.setSignature(sign);
+//        }
+//
+//        if (location != null) {
+//            map.put("location", JSON.toJSONString(location));
+//        }
+
+
+        final MyUserInfo myUserInfo = new MyUserInfo();
+        myUserInfo.getUserInfo().setUserId(UserAccountManager.getInstance().getUuidAsLong());
         HashMap<String, Object> map = new HashMap<>();
         if (nickName != null) {
             map.put("nickname", nickName);
-            userInfo.setUserNickname(nickName);
+            myUserInfo.getUserInfo().setUserNickname(nickName);
         }
         if (sex != -1) {
             map.put("sex", sex);
-            userInfo.setSex(sex);
+            myUserInfo.getUserInfo().setSex(sex);
         }
         if (birthday != null) {
             map.put("birthday", birthday);
-            userInfo.setBirthday(birthday);
+            myUserInfo.getUserInfo().setBirthday(birthday);
         }
         if (avatar != null) {
             map.put("avatar", avatar);
-            userInfo.setAvatar(avatar);
+            myUserInfo.getUserInfo().setAvatar(avatar);
         }
 
         if (sign != null) {
             map.put("signature", sign);
-            userInfo.setSignature(sign);
+            myUserInfo.getUserInfo().setSignature(sign);
         }
 
         if (location != null) {
@@ -128,7 +158,8 @@ public class MyUserInfoManager {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                            UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
+                            myUserInfo.getUserInfo().setExt(myUserInfo.packetToJson().toString());
+                            UserInfoLocalApi.insertOrUpdate(myUserInfo.getUserInfo(), false, false);
                             // 取得个人信息
                             UserInfo userInfo = UserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {

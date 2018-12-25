@@ -1,5 +1,8 @@
 package com.common.core.myinfo;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.common.core.userinfo.UserInfo;
 
 
@@ -182,5 +185,48 @@ public class MyUserInfo {
 
     public void setUserInfo(UserInfo userInfo) {
         mUserInfo = userInfo;
+        parseFromJson(JSON.parseObject(userInfo.getExt()));
     }
+
+
+    public JSONObject packetToJson() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("certificationChanged", certificationChanged);
+            jsonObject.put("viewUrl", viewUrl);
+            jsonObject.put("roomId", roomId);
+            jsonObject.put("tvRoomId", tvRoomId);
+            jsonObject.put("roomType", roomType);
+            jsonObject.put("online", online);
+            jsonObject.put("appType", appType);
+            jsonObject.put("redName", redName);
+            jsonObject.put("norbleMedal", norbleMedal);
+            jsonObject.put("isNeedBindPhone", isNeedBindPhone);
+            jsonObject.put("phoneNum", phoneNum);
+            jsonObject.put("ext", ext);
+        } catch (JSONException e) {
+
+        }
+
+        return jsonObject;
+    }
+
+    public void parseFromJson(JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return;
+        }
+        certificationChanged = jsonObject.getBoolean("certificationChanged");
+        viewUrl = jsonObject.getString("viewUrl");
+        roomId = jsonObject.getString("roomId");
+        tvRoomId = jsonObject.getString("tvRoomId");
+        roomType = jsonObject.getIntValue("roomType");
+        online = jsonObject.getBoolean("online");
+        appType = jsonObject.getIntValue("appType");
+        redName = jsonObject.getBoolean("redName");
+        norbleMedal = jsonObject.getString("norbleMedal");
+        isNeedBindPhone = jsonObject.getBoolean("isNeedBindPhone");
+        phoneNum = jsonObject.getString("phoneNum");
+        ext = jsonObject.getString("ext");
+    }
+
 }
