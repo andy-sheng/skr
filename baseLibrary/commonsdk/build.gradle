@@ -118,6 +118,10 @@ android {
             java.srcDirs += 'src/main/java-picker'
             res.srcDirs += 'src/main/res-picker'
 
+            // 标签布局
+            java.srcDirs += 'src/main/java-flowlayout'
+            res.srcDirs += 'src/main/res-flowlayout'
+
         }
 
 //        release {

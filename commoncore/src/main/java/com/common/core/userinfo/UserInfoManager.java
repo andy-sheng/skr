@@ -2,6 +2,7 @@ package com.common.core.userinfo;
 
 import android.net.Uri;
 
+import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -15,6 +16,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class UserInfoManager {
@@ -50,13 +55,13 @@ public class UserInfoManager {
          */
         boolean onGetLocalDB(UserInfo userInfo);
 
-//        /**
-//         * 从服务器获取个人信息
-//         *
-//         * @param response
-//         * @return
-//         */
-//        boolean onGetServer(GetUserInfoByIdRsp response);
+        /**
+         * 从服务器获取个人信息
+         *
+         * @param userInfo
+         * @return
+         */
+        boolean onGetServer(UserInfo userInfo);
     }
 
     /**
@@ -64,8 +69,8 @@ public class UserInfoManager {
      *
      * @uuid 用户id
      */
-    public void getUserInfoByUuid(final int uuid, UserInfoCallBack userInfoCallBack) {
-        if (uuid <= 0 || userInfoCallBack == null) {
+    public void getUserInfoByUuid(final int uuid, final UserInfoCallBack userInfoCallBack) {
+        if (uuid <= 0) {
             MyLog.w(TAG, "getUserInfoByUuid Illegal parameter");
             return;
         }
@@ -79,15 +84,28 @@ public class UserInfoManager {
                 public void process(ApiResult obj) {
                     if (obj.getErrno() == 0) {
                         U.getToastUtil().showShort("获取个人信息更新成功");
+                        final JsonUserInfo jsonUserInfo = JSON.parseObject(obj.getData().toString(), JsonUserInfo.class);
                         //写入数据库
-                        Observable.create(new ObservableOnSubscribe<Object>() {
+                        Observable.create(new ObservableOnSubscribe<UserInfo>() {
                             @Override
-                            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                                emitter.onComplete();
+                            public void subscribe(ObservableEmitter<UserInfo> emitter) throws Exception {
+                                // 写入数据库
+                                UserInfoLocalApi.insertOrUpdate(JsonUserInfo.toUserInfo(jsonUserInfo), false, false);
+                                UserInfo userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
+
+                                emitter.onNext(userInfo);
                             }
                         })
                                 .subscribeOn(Schedulers.io())
-                                .subscribe();
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<UserInfo>() {
+                                    @Override
+                                    public void accept(UserInfo userInfo) throws Exception {
+                                        if (userInfoCallBack != null) {
+                                            userInfoCallBack.onGetServer(userInfo);
+                                        }
+                                    }
+                                });
                     }
                 }
             });

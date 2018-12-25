@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -13,6 +14,8 @@ import android.widget.ScrollView;
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
@@ -22,20 +25,25 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
+import com.module.rankingmode.room.comment.CommentModel;
 import com.module.rankingmode.room.comment.CommentView;
 import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.presenter.RankingCorePresenter;
 import com.module.rankingmode.room.view.BottomContainerView;
 import com.module.rankingmode.room.view.IGameRuleView;
 import com.module.rankingmode.room.view.InputContainerView;
+import com.module.rankingmode.room.view.PersonInfoDialogView;
 import com.module.rankingmode.room.view.TopContainerView;
 import com.module.rankingmode.room.view.TurnChangeCardView;
 import com.module.rankingmode.song.model.SongModel;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.AbstractLrcView;
@@ -209,7 +217,42 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
+        mCommentView.setListener(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, int position, Object model) {
+                if (model instanceof CommentModel) {
+                    int userID = ((CommentModel) model).getUserId();
+                    UserInfoManager.getInstance().getUserInfoByUuid(userID, new UserInfoManager.UserInfoCallBack() {
+
+                        @Override
+                        public boolean onGetLocalDB(UserInfo userInfo) {
+                            // TODO: 2018/12/25  从数据库取数据
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onGetServer(UserInfo userInfo) {
+                            // TODO: 2018/12/25  从服务器取数据
+                            showPersonInfoView();
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
         mCommentView.setRoomData(mRoomData);
+    }
+
+    private void showPersonInfoView() {
+        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext());
+
+        DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(personInfoDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.transparent)
+                .setExpanded(false)
+                .create().show();
     }
 
     private void initTopView() {

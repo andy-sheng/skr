@@ -156,7 +156,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                 .setContentHolder(new ViewHolder(tipsDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
                 .setOnClickListener(new OnClickListener() {
                     @Override

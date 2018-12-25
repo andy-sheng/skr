@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
- * 服务器请求关系,提供给RelationManager使用
+ *
  */
 public interface UserInfoServerApi {
 

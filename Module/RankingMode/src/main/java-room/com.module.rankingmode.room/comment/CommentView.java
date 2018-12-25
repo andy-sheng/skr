@@ -9,6 +9,7 @@ import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
 import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
@@ -29,6 +30,8 @@ public class CommentView extends RelativeLayout {
 
     CommentAdapter mCommentAdapter;
 
+    RecyclerOnItemClickListener mClickListener;
+
     private RoomData mRoomData;
     private boolean mOnBottom = true;
     private boolean mDraging = false;
@@ -43,6 +46,10 @@ public class CommentView extends RelativeLayout {
     public CommentView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+    }
+
+    public void setListener(RecyclerOnItemClickListener listener) {
+        this.mClickListener = listener;
     }
 
     RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
@@ -106,7 +113,9 @@ public class CommentView extends RelativeLayout {
         mCommentAdapter = new CommentAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-
+                if (mClickListener != null){
+                    mClickListener.onItemClicked(view, position, model);
+                }
             }
         });
         mCommentRv.setAdapter(mCommentAdapter);
@@ -123,7 +132,7 @@ public class CommentView extends RelativeLayout {
     public void onEvent(CommentMsgEvent event) {
         CommentModel commentModel = new CommentModel();
         commentModel.setUserId(event.info.getSender().getUserID());
-        if(mRoomData != null){
+        if (mRoomData != null) {
             UserInfo sender = mRoomData.getUserInfo(event.info.getSender().getUserID());
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
