@@ -59,6 +59,29 @@ public class MyUserInfo {
         this.mUserInfo.setUserNickname(nickName);
     }
 
+    public void setBirthday(String birthday) {
+        this.mUserInfo.setBirthday(birthday);
+    }
+
+    public String getBirthday() {
+        return this.mUserInfo.getBirthday();
+    }
+
+    public void setSex(int sex) {
+        this.mUserInfo.setSex(sex);
+    }
+
+    public int getSex() {
+        return this.mUserInfo.getSex();
+    }
+
+    public String getSignature() {
+        return this.mUserInfo.getSignature();
+    }
+
+    public void setSignature(String signature) {
+        this.mUserInfo.setSignature(signature);
+    }
 
     public Boolean getCertificationChanged() {
         return this.certificationChanged;

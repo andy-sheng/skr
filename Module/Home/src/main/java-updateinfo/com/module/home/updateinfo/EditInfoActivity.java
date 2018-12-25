@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.upload.UploadCallback;
@@ -108,9 +109,15 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .setBorderColor(Color.WHITE)
                         .build());
         mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
-        mSignTv.setText("这个签名是撕哥送的");
+        mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
         mAgeTv.setText("18-22岁");
-        mAgeTv.setText("男");
+        String sex = "未知";
+        if (MyUserInfoManager.getInstance().getSex() == 1) {
+            sex = "男";
+        } else if (MyUserInfoManager.getInstance().getSex() == 2) {
+            sex = "女";
+        }
+        mSexTv.setText(sex);
         mLocationTv.setText("浙江省-平湖市");
     }
 
@@ -158,7 +165,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                                         @Override
                                         public void onSuccess(String url) {
                                             U.getToastUtil().showShort("上传成功 url:" + url);
-                                            MyUserInfoManager.getInstance().updateInfo(null, -1, null, url);
+                                            MyUserInfoManager.getInstance().updateInfo(null, -1, null, url, null, null);
                                         }
 
                                         @Override

@@ -36,12 +36,16 @@ public class UserInfoDataUtils {
             newUserInfo.setLetter(userInfoDB.getLetter());
         }
 
-        if (newUserInfo.getBlock() == -1) {
-            newUserInfo.setBlock(userInfoDB.getBlock());
-        }
-
         if (newUserInfo.getSex() == -1) {
             newUserInfo.setSex(userInfoDB.getSex());
+        }
+
+        if (TextUtils.isEmpty(newUserInfo.getBirthday())){
+            newUserInfo.setBirthday(userInfoDB.getBirthday());
+        }
+
+        if (TextUtils.isEmpty(newUserInfo.getSignature())){
+            newUserInfo.setSignature(userInfoDB.getSignature());
         }
 
         if (newUserInfo.getBlock() == -1) {

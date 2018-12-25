@@ -4,9 +4,11 @@ package com.module.home.updateinfo.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
@@ -62,6 +64,12 @@ public class EditInfoSignFragment extends BaseFragment {
                 });
 
 
+        mSignEt.setText(MyUserInfoManager.getInstance().getSignature());
+        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getSignature())) {
+            mSignTextSize.setText("" + MyUserInfoManager.getInstance().getSignature().length() + "/20");
+        } else {
+            mSignTextSize.setText("0/20");
+        }
         mSignEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -92,7 +100,19 @@ public class EditInfoSignFragment extends BaseFragment {
 
     private void clickComplete() {
         String sign = mSignEt.getText().toString().trim();
-        // TODO: 2018/12/24 判断签名，上传服务器
+
+        if (TextUtils.isEmpty(sign)) {
+            U.getToastUtil().showShort("签名不能为空");
+            return;
+        }
+
+        if (sign.equals(MyUserInfoManager.getInstance().getSignature())) {
+            // 签名一样没改
+            U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
+        } else {
+            MyUserInfoManager.getInstance().updateInfo(null, -1, null, null, sign, null);
+            U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
+        }
     }
 
 

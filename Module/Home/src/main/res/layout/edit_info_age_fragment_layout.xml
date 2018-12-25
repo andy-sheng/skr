@@ -21,7 +21,8 @@
         app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="#0288D0">
+    </com.common.view.titlebar.CommonTitleBar>
 
     <View
         android:layout_width="match_parent"
@@ -35,6 +36,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titlebar"
-        android:layout_marginTop="@dimen/view_30_dp" />
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_30_dp" />
 
 </RelativeLayout>

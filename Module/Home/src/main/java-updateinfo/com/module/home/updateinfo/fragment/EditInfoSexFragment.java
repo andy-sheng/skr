@@ -10,12 +10,14 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.zq.live.proto.Common.ESex;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +31,8 @@ public class EditInfoSexFragment extends BaseFragment {
     ExImageView mMaleTaoxin;
     ExImageView mFemale;
     ExImageView mFemaleTaoxin;
+
+    int sex = 0;// 未知、非法参数
 
     @Override
     public int initView() {
@@ -52,12 +56,21 @@ public class EditInfoSexFragment extends BaseFragment {
                     }
                 });
 
+        RxView.clicks(mTitlebar.getRightTextView())
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        clickComplete();
+                    }
+                });
+
         RxView.clicks(mMale)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        clickMale();
+                        selectSex(true);
                     }
                 });
 
@@ -66,23 +79,50 @@ public class EditInfoSexFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        clickFeMale();
+                        selectSex(false);
                     }
                 });
     }
 
+    private void clickComplete() {
+        if (this.sex == 0) {
+            U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+            return;
+        } else {
+            MyUserInfoManager.getInstance().updateInfo(null, sex, null, null, null, null);
+            U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+        }
+    }
 
-    private void clickMale() {
-        mMaleTaoxin.setVisibility(View.VISIBLE);
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(mMale, "scaleX", 1f, 1.2f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(mMale, "scaleY", 1f, 1.2f);
-        ObjectAnimator a3 = ObjectAnimator.ofFloat(mMaleTaoxin, "scaleX", 0f, 1f);
-        ObjectAnimator a4 = ObjectAnimator.ofFloat(mMaleTaoxin, "scaleY", 0f, 1f);
+
+    // 选一个，另一个需要缩放动画
+    private void selectSex(boolean isMale) {
+        this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
+        boolean needAnimation = false; //另一个性别是否需要缩放动画
+        if (mMaleTaoxin.getVisibility() == View.VISIBLE || mFemaleTaoxin.getVisibility() == View.VISIBLE) {
+            // 当前已有被选中的，需要一个缩放动画
+            needAnimation = true;
+        }
+
+        // 放大动画
+        ObjectAnimator a1 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleX", 1f, 1.2f);
+        ObjectAnimator a2 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleY", 1f, 1.2f);
+        ObjectAnimator a3 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleX", 0f, 1f);
+        ObjectAnimator a4 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleY", 0f, 1f);
 
         AnimatorSet set = new AnimatorSet();
         set.setDuration(80);
-        set.playTogether(a1,a2,a3,a4);
-        set.start();
+
+        if (needAnimation) {
+            // 缩小动画
+            ObjectAnimator s1 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleX", 1.2f, 1f);
+            ObjectAnimator s2 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleY", 1.2f, 1f);
+            ObjectAnimator s3 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleX", 1f, 0f);
+            ObjectAnimator s4 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleY", 1f, 0f);
+            set.playTogether(a1, a2, a3, a4, s1, s2, s3, s4);
+        } else {
+            set.playTogether(a1, a2, a3, a4);
+        }
 
         set.addListener(new Animator.AnimatorListener() {
             @Override
@@ -92,7 +132,11 @@ public class EditInfoSexFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                mMaleTaoxin.setVisibility(View.VISIBLE);
+                mMaleTaoxin.setVisibility(isMale ? View.VISIBLE : View.GONE);
+                mFemaleTaoxin.setVisibility(isMale ? View.GONE : View.VISIBLE);
+
+                mMale.setClickable(isMale ? false : true);
+                mMaleTaoxin.setClickable(isMale ? true : false);
             }
 
             @Override
@@ -106,44 +150,8 @@ public class EditInfoSexFragment extends BaseFragment {
             }
         });
 
-    }
-
-    private void clickFeMale() {
-        mFemaleTaoxin.setVisibility(View.VISIBLE);
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(mFemale, "scaleX", 1f, 1.2f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(mFemale, "scaleY", 1f, 1.2f);
-        ObjectAnimator a3 = ObjectAnimator.ofFloat(mFemaleTaoxin, "scaleX", 0f, 1f);
-        ObjectAnimator a4 = ObjectAnimator.ofFloat(mFemaleTaoxin, "scaleY", 0f, 1f);
-
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(80);
-        set.playTogether(a1,a2,a3,a4);
         set.start();
-
-        set.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                mFemaleTaoxin.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                onAnimationEnd(animator);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-
     }
-
 
     @Override
     public boolean useEventBus() {

@@ -28,10 +28,11 @@ public class UserInfo implements Serializable {
     private String userNickname;    // 昵称
     private String userDisplayname; // 备注
     private String letter;          // 昵称或备注的首字母
-    private long updateTime=-1;        //更新时间，水位
+    private long updateTime = -1;        //更新时间，水位
 
     private int sex = -1;         // 性别
-    private String birthday; // 生日
+    private String birthday;      // 生日
+    private String signature;     // 签名
     // 关系
     private int relative = -1;  //0为双方未关注, 1为我关注该用户, 2为该用户关注我, 3为双方关注
     private int block = -1;  // 是否拉黑,1为拉黑 0为没有
@@ -39,132 +40,141 @@ public class UserInfo implements Serializable {
 
     private String ext; //待扩展
 
-@Generated(hash = 1700347813)
-public UserInfo(long id, long userId, String avatar, String userNickname,
-        String userDisplayname, String letter, long updateTime, int sex,
-        String birthday, int relative, int block, int isSystem, String ext) {
-    this.id = id;
-    this.userId = userId;
-    this.avatar = avatar;
-    this.userNickname = userNickname;
-    this.userDisplayname = userDisplayname;
-    this.letter = letter;
-    this.updateTime = updateTime;
-    this.sex = sex;
-    this.birthday = birthday;
-    this.relative = relative;
-    this.block = block;
-    this.isSystem = isSystem;
-    this.ext = ext;
-}
+    @Generated(hash = 30940502)
+    public UserInfo(long id, long userId, String avatar, String userNickname,
+                    String userDisplayname, String letter, long updateTime, int sex,
+                    String birthday, String signature, int relative, int block,
+                    int isSystem, String ext) {
+        this.id = id;
+        this.userId = userId;
+        this.avatar = avatar;
+        this.userNickname = userNickname;
+        this.userDisplayname = userDisplayname;
+        this.letter = letter;
+        this.updateTime = updateTime;
+        this.sex = sex;
+        this.birthday = birthday;
+        this.signature = signature;
+        this.relative = relative;
+        this.block = block;
+        this.isSystem = isSystem;
+        this.ext = ext;
+    }
 
-@Generated(hash = 1279772520)
-public UserInfo() {
-}
+    @Generated(hash = 1279772520)
+    public UserInfo() {
+    }
 
-public long getId() {
-    return this.id;
-}
+    public long getId() {
+        return this.id;
+    }
 
-public void setId(long id) {
-    this.id = id;
-}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-public long getUserId() {
-    return this.userId;
-}
+    public long getUserId() {
+        return this.userId;
+    }
 
-public void setUserId(long userId) {
-    this.userId = userId;
-}
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
-public String getAvatar() {
-    return this.avatar;
-}
+    public String getAvatar() {
+        return this.avatar;
+    }
 
-public void setAvatar(String avatar) {
-    this.avatar = avatar;
-}
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
-public String getUserNickname() {
-    return this.userNickname;
-}
+    public String getUserNickname() {
+        return this.userNickname;
+    }
 
-public void setUserNickname(String userNickname) {
-    this.userNickname = userNickname;
-}
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
 
-public String getUserDisplayname() {
-    return this.userDisplayname;
-}
+    public String getUserDisplayname() {
+        return this.userDisplayname;
+    }
 
-public void setUserDisplayname(String userDisplayname) {
-    this.userDisplayname = userDisplayname;
-}
+    public void setUserDisplayname(String userDisplayname) {
+        this.userDisplayname = userDisplayname;
+    }
 
-public String getLetter() {
-    return this.letter;
-}
+    public String getLetter() {
+        return this.letter;
+    }
 
-public void setLetter(String letter) {
-    this.letter = letter;
-}
+    public void setLetter(String letter) {
+        this.letter = letter;
+    }
 
-public long getUpdateTime() {
-    return this.updateTime;
-}
+    public long getUpdateTime() {
+        return this.updateTime;
+    }
 
-public void setUpdateTime(long updateTime) {
-    this.updateTime = updateTime;
-}
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
+    }
 
-public int getSex() {
-    return this.sex;
-}
+    public int getSex() {
+        return this.sex;
+    }
 
-public void setSex(int sex) {
-    this.sex = sex;
-}
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
 
-public String getBirthday() {
-    return this.birthday;
-}
+    public String getBirthday() {
+        return this.birthday;
+    }
 
-public void setBirthday(String birthday) {
-    this.birthday = birthday;
-}
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
-public int getRelative() {
-    return this.relative;
-}
+    public String getSignature() {
+        return this.signature;
+    }
 
-public void setRelative(int relative) {
-    this.relative = relative;
-}
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 
-public int getBlock() {
-    return this.block;
-}
+    public int getRelative() {
+        return this.relative;
+    }
 
-public void setBlock(int block) {
-    this.block = block;
-}
+    public void setRelative(int relative) {
+        this.relative = relative;
+    }
 
-public int getIsSystem() {
-    return this.isSystem;
-}
+    public int getBlock() {
+        return this.block;
+    }
 
-public void setIsSystem(int isSystem) {
-    this.isSystem = isSystem;
-}
+    public void setBlock(int block) {
+        this.block = block;
+    }
 
-public String getExt() {
-    return this.ext;
-}
+    public int getIsSystem() {
+        return this.isSystem;
+    }
 
-public void setExt(String ext) {
-    this.ext = ext;
-}
+    public void setIsSystem(int isSystem) {
+        this.isSystem = isSystem;
+    }
 
+    public String getExt() {
+        return this.ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
+    }
 }
 

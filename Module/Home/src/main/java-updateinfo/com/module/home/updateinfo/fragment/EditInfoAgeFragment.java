@@ -3,6 +3,7 @@ package com.module.home.updateinfo.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,17 @@ import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 
 public class EditInfoAgeFragment extends BaseFragment {
 
@@ -47,19 +52,49 @@ public class EditInfoAgeFragment extends BaseFragment {
         mFrameLayout = (FrameLayout) mRootView.findViewById(R.id.frame_layout);
 
         initTimePicker();
+
+        RxView.clicks(mTitlebar.getLeftTextView())
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+                    }
+                });
+
+        RxView.clicks(mTitlebar.getRightTextView())
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        pvCustomLunar.returnData();
+                    }
+                });
     }
 
     private void initTimePicker() {
+        String birthday = MyUserInfoManager.getInstance().getMyUserInfo().getBirthday();
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
+        if (TextUtils.isEmpty(birthday)) {
+            selectedDate.set(1990, 0, 1);
+        } else {
+            String[] strings = birthday.split("-");
+            int year = Integer.valueOf(strings[0]);
+            int month = Integer.valueOf(strings[1]);
+            int date = Integer.valueOf(strings[2]);
+            selectedDate.set(year, month - 1, date);
+        }
         Calendar startDate = Calendar.getInstance();
-        startDate.set(2014, 1, 23);
+        startDate.set(1900, 1, 1);
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2069, 2, 28);
+
         //时间选择器 ，自定义布局
         pvCustomLunar = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
-                Toast.makeText(getContext(), U.getDateTimeUtils().formatDateString(date), Toast.LENGTH_SHORT).show();
+                String bir = U.getDateTimeUtils().formatDateString(date);
+                MyUserInfoManager.getInstance().updateInfo(null, -1, bir, null, null, null);
+                U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
             }
         })
                 .setDate(selectedDate)
@@ -68,26 +103,26 @@ public class EditInfoAgeFragment extends BaseFragment {
 
                     @Override
                     public void customLayout(final View v) {
-                        final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
-
-                        tvSubmit.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                pvCustomLunar.returnData();
-                                pvCustomLunar.dismiss();
-                            }
-                        });
-
-                        //公农历切换
-                        CheckBox cb_lunar = (CheckBox) v.findViewById(R.id.cb_lunar);
-                        cb_lunar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                pvCustomLunar.setLunarCalendar(!pvCustomLunar.isLunarCalendar());
-                                //自适应宽
-                                setTimePickerChildWeight(v, isChecked ? 0.8f : 1f, isChecked ? 1f : 1.1f);
-                            }
-                        });
+//                        final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
+//
+//                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                pvCustomLunar.returnData();
+//                                pvCustomLunar.dismiss();
+//                            }
+//                        });
+//
+//                        //公农历切换
+//                        CheckBox cb_lunar = (CheckBox) v.findViewById(R.id.cb_lunar);
+//                        cb_lunar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                            @Override
+//                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                                pvCustomLunar.setLunarCalendar(!pvCustomLunar.isLunarCalendar());
+//                                //自适应宽
+//                                setTimePickerChildWeight(v, isChecked ? 0.8f : 1f, isChecked ? 1f : 1.1f);
+//                            }
+//                        });
 
                     }
 
@@ -113,10 +148,12 @@ public class EditInfoAgeFragment extends BaseFragment {
                 })
                 .setType(new boolean[]{true, true, true, false, false, false})
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                .setDividerColor(Color.RED)
-                .setDecorView(mFrameLayout)
+                .setDividerColor(Color.GRAY)
+                .setDecorView(mFrameLayout) //非dialog模式下,设置ViewGroup, pickerView将会添加到这个ViewGroup中
+                .setOutSideCancelable(false)
                 .build();
 
+        pvCustomLunar.setKeyBackCancelable(false); //系统返回键监听屏蔽掉
         pvCustomLunar.show();
     }
 

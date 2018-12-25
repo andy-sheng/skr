@@ -2,6 +2,7 @@ package com.module.home.updateinfo.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -28,8 +29,8 @@ public class EditInfoNameFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
-        mNicknameEt = (NoLeakEditText)mRootView.findViewById(R.id.nickname_et);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mNicknameEt = (NoLeakEditText) mRootView.findViewById(R.id.nickname_et);
 
         mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
 
@@ -51,13 +52,25 @@ public class EditInfoNameFragment extends BaseFragment {
                         clickComplete();
                     }
                 });
-        
-        
+
+
     }
 
     private void clickComplete() {
         String nickName = mNicknameEt.getText().toString().trim();
-        // TODO: 2018/12/24 判断并做后续请求 
+        if (TextUtils.isEmpty(nickName)) {
+            U.getToastUtil().showShort("昵称不能为空");
+            return;
+        }
+
+        // TODO: 2018/12/25 是否需要对昵称长度进行校验
+        if (nickName.equals(MyUserInfoManager.getInstance().getNickName())) {
+            // 昵称一样,没改
+            U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
+        } else {
+            MyUserInfoManager.getInstance().updateInfo(nickName, -1, null, null, null, null);
+            U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
+        }
     }
 
     @Override

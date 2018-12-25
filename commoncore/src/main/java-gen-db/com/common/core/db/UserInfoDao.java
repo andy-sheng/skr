@@ -33,10 +33,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         public final static Property UpdateTime = new Property(6, long.class, "updateTime", false, "UPDATE_TIME");
         public final static Property Sex = new Property(7, int.class, "sex", false, "SEX");
         public final static Property Birthday = new Property(8, String.class, "birthday", false, "BIRTHDAY");
-        public final static Property Relative = new Property(9, int.class, "relative", false, "RELATIVE");
-        public final static Property Block = new Property(10, int.class, "block", false, "BLOCK");
-        public final static Property IsSystem = new Property(11, int.class, "isSystem", false, "IS_SYSTEM");
-        public final static Property Ext = new Property(12, String.class, "ext", false, "EXT");
+        public final static Property Signature = new Property(9, String.class, "signature", false, "SIGNATURE");
+        public final static Property Relative = new Property(10, int.class, "relative", false, "RELATIVE");
+        public final static Property Block = new Property(11, int.class, "block", false, "BLOCK");
+        public final static Property IsSystem = new Property(12, int.class, "isSystem", false, "IS_SYSTEM");
+        public final static Property Ext = new Property(13, String.class, "ext", false, "EXT");
     }
 
 
@@ -61,10 +62,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
                 "\"UPDATE_TIME\" INTEGER NOT NULL ," + // 6: updateTime
                 "\"SEX\" INTEGER NOT NULL ," + // 7: sex
                 "\"BIRTHDAY\" TEXT," + // 8: birthday
-                "\"RELATIVE\" INTEGER NOT NULL ," + // 9: relative
-                "\"BLOCK\" INTEGER NOT NULL ," + // 10: block
-                "\"IS_SYSTEM\" INTEGER NOT NULL ," + // 11: isSystem
-                "\"EXT\" TEXT);"); // 12: ext
+                "\"SIGNATURE\" TEXT," + // 9: signature
+                "\"RELATIVE\" INTEGER NOT NULL ," + // 10: relative
+                "\"BLOCK\" INTEGER NOT NULL ," + // 11: block
+                "\"IS_SYSTEM\" INTEGER NOT NULL ," + // 12: isSystem
+                "\"EXT\" TEXT);"); // 13: ext
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_INFO_USER_ID_DESC ON USER_INFO" +
                 " (\"USER_ID\" DESC);");
@@ -108,13 +110,18 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         if (birthday != null) {
             stmt.bindString(9, birthday);
         }
-        stmt.bindLong(10, entity.getRelative());
-        stmt.bindLong(11, entity.getBlock());
-        stmt.bindLong(12, entity.getIsSystem());
+ 
+        String signature = entity.getSignature();
+        if (signature != null) {
+            stmt.bindString(10, signature);
+        }
+        stmt.bindLong(11, entity.getRelative());
+        stmt.bindLong(12, entity.getBlock());
+        stmt.bindLong(13, entity.getIsSystem());
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(13, ext);
+            stmt.bindString(14, ext);
         }
     }
 
@@ -150,13 +157,18 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         if (birthday != null) {
             stmt.bindString(9, birthday);
         }
-        stmt.bindLong(10, entity.getRelative());
-        stmt.bindLong(11, entity.getBlock());
-        stmt.bindLong(12, entity.getIsSystem());
+ 
+        String signature = entity.getSignature();
+        if (signature != null) {
+            stmt.bindString(10, signature);
+        }
+        stmt.bindLong(11, entity.getRelative());
+        stmt.bindLong(12, entity.getBlock());
+        stmt.bindLong(13, entity.getIsSystem());
  
         String ext = entity.getExt();
         if (ext != null) {
-            stmt.bindString(13, ext);
+            stmt.bindString(14, ext);
         }
     }
 
@@ -177,10 +189,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
             cursor.getLong(offset + 6), // updateTime
             cursor.getInt(offset + 7), // sex
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // birthday
-            cursor.getInt(offset + 9), // relative
-            cursor.getInt(offset + 10), // block
-            cursor.getInt(offset + 11), // isSystem
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // ext
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // signature
+            cursor.getInt(offset + 10), // relative
+            cursor.getInt(offset + 11), // block
+            cursor.getInt(offset + 12), // isSystem
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // ext
         );
         return entity;
     }
@@ -196,10 +209,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Long> {
         entity.setUpdateTime(cursor.getLong(offset + 6));
         entity.setSex(cursor.getInt(offset + 7));
         entity.setBirthday(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setRelative(cursor.getInt(offset + 9));
-        entity.setBlock(cursor.getInt(offset + 10));
-        entity.setIsSystem(cursor.getInt(offset + 11));
-        entity.setExt(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setSignature(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setRelative(cursor.getInt(offset + 10));
+        entity.setBlock(cursor.getInt(offset + 11));
+        entity.setIsSystem(cursor.getInt(offset + 12));
+        entity.setExt(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     @Override

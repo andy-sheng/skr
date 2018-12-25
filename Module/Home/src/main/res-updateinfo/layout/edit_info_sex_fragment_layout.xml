@@ -15,6 +15,10 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
+        app:rightText="完成"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_16_dp"
+        app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
@@ -27,7 +31,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_133_dp"
+        android:layout_height="@dimen/view_138_dp"
         android:layout_marginTop="@dimen/view_206_dp"
         android:orientation="horizontal">
 
@@ -61,7 +65,7 @@
                 android:layout_marginTop="@dimen/view_25_dp"
                 android:layout_marginRight="@dimen/view_25_dp"
                 android:src="@drawable/nan_taoxin"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </RelativeLayout>
 
@@ -95,10 +99,20 @@
                 android:layout_marginTop="@dimen/view_25_dp"
                 android:layout_marginRight="@dimen/view_25_dp"
                 android:src="@drawable/nv_taoxin"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </RelativeLayout>
 
     </LinearLayout>
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_358_dp"
+        android:gravity="center"
+        android:text="性别是一个很重要的信息，只能修改一次喔\n敢不敢谨慎一些"
+        android:textColor="#800C2275"
+        android:textSize="@dimen/textsize_16_dp" />
 
 </RelativeLayout>

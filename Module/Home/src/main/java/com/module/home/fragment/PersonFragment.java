@@ -81,7 +81,7 @@ public class PersonFragment extends BaseFragment {
                         if (mDialogPlus != null) {
                             mDialogPlus.dismiss();
                         }
-                        MyUserInfoManager.getInstance().updateInfo(editText.getContentEt().getText().toString(), -1, null, null);
+                        MyUserInfoManager.getInstance().updateInfo(editText.getContentEt().getText().toString(), -1, null, null, null, null);
                     }
                 });
                 mDialogPlus = DialogPlus.newDialog(getContext())
@@ -123,7 +123,7 @@ public class PersonFragment extends BaseFragment {
                                                 @Override
                                                 public void onSuccess(String url) {
                                                     U.getToastUtil().showShort("上传成功 url:" + url);
-                                                    MyUserInfoManager.getInstance().updateInfo(null, -1, null, url);
+                                                    MyUserInfoManager.getInstance().updateInfo(null, -1, null, url, null, null);
                                                 }
 
                                                 @Override

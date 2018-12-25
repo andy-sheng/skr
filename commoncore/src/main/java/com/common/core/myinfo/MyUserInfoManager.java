@@ -85,7 +85,7 @@ public class MyUserInfoManager {
      * @param sex      -1 代表不更新
      * @param birthday
      */
-    public void updateInfo(String nickName, int sex, String birthday, String avatar) {
+    public void updateInfo(String nickName, int sex, String birthday, String avatar, String sign, Location location) {
 
         final UserInfo userInfo = new UserInfo();
         userInfo.setUserId(UserAccountManager.getInstance().getUuidAsLong());
@@ -105,6 +105,15 @@ public class MyUserInfoManager {
         if (avatar != null) {
             map.put("avatar", avatar);
             userInfo.setAvatar(avatar);
+        }
+
+        if (sign != null) {
+            map.put("signature", sign);
+            userInfo.setSignature(sign);
+        }
+
+        if (location != null) {
+            map.put("location", JSON.toJSONString(location));
         }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
@@ -151,10 +160,15 @@ public class MyUserInfoManager {
     }
 
     public String getAvatar() {
-        if (mUser != null) {
-
-        }
         return mUser != null ? mUser.getAvatar() : "";
+    }
+
+    public String getSignature() {
+        return mUser != null ? mUser.getSignature() : "";
+    }
+
+    public int getSex() {
+        return mUser != null ? mUser.getSex() : 0;
     }
 
     public boolean isRedName() {

@@ -191,25 +191,25 @@ public class TestSdkActivity extends BaseActivity {
 
             @Override
             public void run() {
-               UploadParams.newBuilder("/sdcard/aaa.webp")
-                       .setFileName("ready_go4.webp")
-                       .startUploadAsync(new UploadCallback() {
-                           @Override
-                           public void onProgress(long currentSize, long totalSize) {
+                UploadParams.newBuilder("/sdcard/aaa.webp")
+                        .setFileName("ready_go4.webp")
+                        .startUploadAsync(new UploadCallback() {
+                            @Override
+                            public void onProgress(long currentSize, long totalSize) {
 
-                           }
+                            }
 
-                           @Override
-                           public void onSuccess(String url) {
-                               MyLog.w(TAG,"onSuccess" + " url=" + url);
-                                U.getToastUtil().showShort("url:"+url);
-                           }
+                            @Override
+                            public void onSuccess(String url) {
+                                MyLog.w(TAG, "onSuccess" + " url=" + url);
+                                U.getToastUtil().showShort("url:" + url);
+                            }
 
-                           @Override
-                           public void onFailure(String msg) {
+                            @Override
+                            public void onFailure(String msg) {
 
-                           }
-                       });
+                            }
+                        });
             }
         }));
 
@@ -612,7 +612,7 @@ public class TestSdkActivity extends BaseActivity {
                                                 @Override
                                                 public void onSuccess(String url) {
                                                     U.getToastUtil().showShort("上传成功 url:" + url);
-                                                    MyUserInfoManager.getInstance().updateInfo(null, -1, null, url);
+                                                    MyUserInfoManager.getInstance().updateInfo(null, -1, null, url, null, null);
                                                 }
 
                                                 @Override
