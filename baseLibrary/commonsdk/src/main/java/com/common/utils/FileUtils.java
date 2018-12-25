@@ -40,7 +40,29 @@ public class FileUtils {
     }
 
     /**
-     * 传入一个文件路径，返回文件夹路径
+     * 返回该文件夹内所有文件的大小
+     *
+     * @param path
+     * @return
+     */
+    public long getDirSize(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            if (file.isFile()) {
+                return file.length();
+            } else if (file.isDirectory()) {
+                long len = 0;
+                for (File f : file.listFiles()) {
+                    len += getDirSize(f.getAbsolutePath());
+                }
+                return len;
+            }
+        }
+        return 0L;
+    }
+
+    /**
+     * 传入一个文件路径，文件后缀入 /sdcard/a.jpg 返回 jpg
      *
      * @param path
      * @return
@@ -58,7 +80,7 @@ public class FileUtils {
     }
 
     /**
-     * 传入一个文件路径，返回文件名
+     * 传入一个文件路径，返回文件名  /sdcard/a.jpg 返回 a.jpg
      *
      * @param path
      * @return
