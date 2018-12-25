@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dabeijing">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_top_img"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_111_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_35_dp"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginRight="@dimen/view_35_dp"
+        android:background="@drawable/img_top_zhanjijieguo_bg" />
+
+    <com.common.view.ex.ExRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_top_img"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginTop="@dimen/view_d_11_dp"
+        android:layout_marginRight="@dimen/view_15_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_solid_color="#2E3041"
+        app:bl_stroke_color="#0C2275"
+        app:bl_stroke_width="@dimen/view_3_dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdv_own_icon"
+            android:layout_width="@dimen/view_65_dp"
+            android:layout_height="@dimen/view_65_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_13_dp" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_owner_name"
+            android:layout_marginTop="@dimen/view_6_dp"
+            android:layout_below="@+id/sdv_own_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="CHSNN"
+            android:textColor="@color/white"
+            android:textSize="@dimen/view_20_dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/view_51_dp"
+            android:layout_marginLeft="@dimen/view_40_dp"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.common.view.ex.ExImageView
+                android:id="@+id/iv_own_record"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="@dimen/view_28_dp"
+                android:layout_height="@dimen/view_28_dp"
+                 />
+
+            <com.common.view.ex.ExTextView
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_16_dp"
+                android:id="@+id/tv_own_record"
+                android:text="亚军"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginRight="@dimen/view_40_dp"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/view_51_dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_light_count"
+                android:textSize="@dimen/textsize_14_dp"
+                android:text=""
+                android:drawablePadding="@dimen/view_4_dp"
+                android:drawableLeft="@drawable/record_light_enable"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="@dimen/view_28_dp"
+                android:layout_height="@dimen/view_28_dp"
+                />
+
+            <com.common.view.ex.ExTextView
+                android:textColor="@color/white_trans_50"
+                android:textSize="@dimen/textsize_16_dp"
+                android:text="亮灯"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <com.common.view.ex.ExTextView
+            android:layout_marginTop="@dimen/view_135_dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_16_dp"
+            android:text="《印第安老鸡婆》"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/view_181_dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.module.rankingmode.room.view.RecordItemView
+                android:id="@+id/record_item_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.module.rankingmode.room.view.RecordItemView
+                android:id="@+id/record_item_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.module.rankingmode.room.view.RecordItemView
+                android:id="@+id/record_item_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.common.view.ex.ExRelativeLayout>
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/view_24_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.common.view.ex.ExTextView
+            android:textStyle="bold"
+            android:text="返回大厅"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textColor="#0C2275"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_7_dp"
+            android:background="@drawable/btn_dialog_cancle"
+            android:id="@+id/tv_back"
+            android:layout_width="@dimen/view_140_dp"
+            android:layout_height="@dimen/view_54_dp" />
+
+        <com.common.view.ex.ExTextView
+            android:textStyle="bold"
+            android:text="再开一局"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_7_dp"
+            android:background="@drawable/btn_dialog_confirm"
+            android:id="@+id/tv_again"
+            android:layout_width="@dimen/view_140_dp"
+            android:layout_height="@dimen/view_54_dp" />
+    </LinearLayout>
+</RelativeLayout>

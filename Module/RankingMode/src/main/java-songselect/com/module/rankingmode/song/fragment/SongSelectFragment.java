@@ -114,6 +114,17 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                             }
                         })
                         .build());
+                //测试
+//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankingRecordFragment.class)
+//                        .setAddToBackStack(true)
+//                        .setHasAnimation(true)
+//                        .setFragmentDataListener(new FragmentDataListener() {
+//                            @Override
+//                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+//
+//                            }
+//                        })
+//                        .build());
             }
         });
 
