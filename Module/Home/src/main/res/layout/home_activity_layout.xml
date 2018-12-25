@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -24,7 +25,9 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
-            android:src="@drawable/ic_notify_normal" />
+            android:scaleType="center"
+            app:src_selected_drawable="@drawable/ic_chat_selected"
+            app:src_unSelected_drawable="@drawable/ic_chat_normal" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/game_btn"
@@ -33,7 +36,9 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
-            android:src="@drawable/ic_notify_selected" />
+            android:scaleType="center"
+            app:src_selected_drawable="@drawable/ic_home_selected"
+            app:src_unSelected_drawable="@drawable/ic_home_normal" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/person_info_btn"
@@ -42,7 +47,9 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
-            android:src="@drawable/ic_notify_normal1" />
+            android:scaleType="center"
+            app:src_selected_drawable="@drawable/ic_me_selected"
+            app:src_unSelected_drawable="@drawable/ic_me_normal" />
     </LinearLayout>
 
     <com.common.view.viewpager.NestViewPager

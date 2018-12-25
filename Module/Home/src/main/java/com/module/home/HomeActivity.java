@@ -92,7 +92,7 @@ public class HomeActivity extends BaseActivity {
         };
 
         mMainVp.setAdapter(fragmentPagerAdapter);
-
+        mGameBtn.setSelected(true);
         mHomePresenter = new HomePresenter();
 
         if (!UserAccountManager.getInstance().hasAccount()) {
@@ -108,6 +108,9 @@ public class HomeActivity extends BaseActivity {
                     @Override
                     public void accept(Object o) {
                         mMainVp.setCurrentItem(0, false);
+                        mGameBtn.setSelected(true);
+                        mMessageBtn.setSelected(false);
+                        mPersonInfoBtn.setSelected(false);
                     }
                 });
 
@@ -117,6 +120,9 @@ public class HomeActivity extends BaseActivity {
                     @Override
                     public void accept(Object o) {
                         mMainVp.setCurrentItem(1, false);
+                        mGameBtn.setSelected(false);
+                        mMessageBtn.setSelected(true);
+                        mPersonInfoBtn.setSelected(false);
                     }
                 });
 
@@ -126,6 +132,9 @@ public class HomeActivity extends BaseActivity {
                     @Override
                     public void accept(Object o) {
                         mMainVp.setCurrentItem(2, false);
+                        mGameBtn.setSelected(false);
+                        mMessageBtn.setSelected(false);
+                        mPersonInfoBtn.setSelected(true);
                     }
                 });
 
