@@ -67,42 +67,42 @@
         </activity>
 
         <!-- milinkservice -->
-        <service
-            android:name="com.mi.milink.sdk.service.MiLinkService"
-            android:exported="false"
-            android:process=":remote">
-            <intent-filter>
-                <action android:name="com.mi.milink.sdk.service.MiLinkService" />
-            </intent-filter>
-        </service>
+        <!--<service-->
+            <!--android:name="com.mi.milink.sdk.service.MiLinkService"-->
+            <!--android:exported="false"-->
+            <!--android:process=":remote">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.mi.milink.sdk.service.MiLinkService" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
 
-        <receiver
-            android:name="com.mi.milink.sdk.receiver.AlarmReceiver"
-            android:process=":remote">
-            <intent-filter>
-                <action android:name="com.milink.sdk.heartbeat" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.push.PING_TIMER" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+            <!--android:name="com.mi.milink.sdk.receiver.AlarmReceiver"-->
+            <!--android:process=":remote">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.milink.sdk.heartbeat" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.xiaomi.push.PING_TIMER" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
 
-        <receiver
-            android:name="com.mi.milink.sdk.receiver.NetworkReceiver"
-            android:process=":remote">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+            <!--android:name="com.mi.milink.sdk.receiver.NetworkReceiver"-->
+            <!--android:process=":remote">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
-        <receiver
-            android:name="com.mi.milink.sdk.receiver.BootReceiver"
-            android:process=":remote">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+            <!--android:name="com.mi.milink.sdk.receiver.BootReceiver"-->
+            <!--android:process=":remote">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <activity
             android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
