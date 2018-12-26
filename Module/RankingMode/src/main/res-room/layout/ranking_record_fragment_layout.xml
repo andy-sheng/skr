@@ -16,6 +16,8 @@
         android:background="@drawable/img_top_zhanjijieguo_bg" />
 
     <com.common.view.ex.ExRelativeLayout
+        android:layout_marginBottom="@dimen/view_26_dp"
+        android:layout_above="@+id/ll_bottom_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_top_img"
@@ -27,32 +29,48 @@
         app:bl_stroke_color="#0C2275"
         app:bl_stroke_width="@dimen/view_3_dp">
 
-        <include layout="@layout/record_title_athletics"/>
+        <include
+            android:id="@+id/record_title"
+            layout="@layout/record_title_athletics"/>
 
-        <LinearLayout
-            android:layout_marginTop="@dimen/view_181_dp"
+        <ScrollView
+            android:layout_below="@+id/record_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.module.rankingmode.room.view.RecordItemView
-                android:id="@+id/record_item_one"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.module.rankingmode.room.view.RecordItemView
+                    android:id="@+id/record_item_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <com.module.rankingmode.room.view.RecordItemView
-                android:id="@+id/record_item_two"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <View
+                    android:background="@color/white_trans_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"/>
 
-            <com.module.rankingmode.room.view.RecordItemView
-                android:id="@+id/record_item_three"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                <com.module.rankingmode.room.view.RecordItemView
+                    android:id="@+id/record_item_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:background="@color/white_trans_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"/>
+
+                <com.module.rankingmode.room.view.RecordItemView
+                    android:id="@+id/record_item_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </ScrollView>
     </com.common.view.ex.ExRelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_bottom_area"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:layout_marginBottom="@dimen/view_24_dp"

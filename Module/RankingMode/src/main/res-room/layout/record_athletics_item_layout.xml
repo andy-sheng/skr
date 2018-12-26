@@ -43,10 +43,10 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:layout_marginTop="@dimen/view_16_dp"
         android:orientation="horizontal"
         android:layout_marginRight="@dimen/view_16_dp"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <com.common.view.ex.ExImageView
@@ -59,7 +59,7 @@
         <com.common.view.ex.ExImageView
             app:bl_selected_drawable="@drawable/record_light_enable"
             app:bl_unSelected_drawable="@drawable/record_light_disable"
-            android:layout_marginLeft="@dimen/view_7_dp"
+            android:layout_marginLeft="@dimen/view_12_dp"
             android:id="@+id/iv_light_two"
             android:layout_width="@dimen/view_22_dp"
             android:layout_height="@dimen/view_20_dp" />
@@ -67,9 +67,35 @@
         <com.common.view.ex.ExImageView
             app:bl_selected_drawable="@drawable/record_light_enable"
             app:bl_unSelected_drawable="@drawable/record_light_disable"
-            android:layout_marginLeft="@dimen/view_7_dp"
+            android:layout_marginLeft="@dimen/view_12_dp"
             android:id="@+id/iv_light_three"
             android:layout_width="@dimen/view_22_dp"
             android:layout_height="@dimen/view_20_dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/view_18_dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_marginRight="@dimen/view_14_dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_light_one_icon"
+            android:layout_width="@dimen/view_25_33_dp"
+            android:layout_height="@dimen/view_25_33_dp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_marginLeft="@dimen/view_9_dp"
+            android:id="@+id/iv_light_one_two"
+            android:layout_width="@dimen/view_25_33_dp"
+            android:layout_height="@dimen/view_25_33_dp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:id="@+id/iv_light_one_three"
+            android:layout_width="@dimen/view_25_33_dp"
+            android:layout_height="@dimen/view_25_33_dp" />
     </LinearLayout>
 </RelativeLayout>

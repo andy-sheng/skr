@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="@dimen/view_181_dp">
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdv_own_icon"
         android:layout_width="@dimen/view_65_dp"
@@ -78,4 +78,10 @@
         android:text="《印第安老鸡婆》"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <View
+        android:layout_alignParentBottom="true"
+        android:background="@color/white_trans_10"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
 </RelativeLayout>

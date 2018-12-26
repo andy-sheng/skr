@@ -17,7 +17,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rankingmode.R;
-import com.module.rankingmode.prepare.fragment.PrepareResFragment;
+import com.module.rankingmode.room.fragment.RankingRecordFragment;
 import com.module.rankingmode.song.adapter.SongCardsAdapter;
 import com.module.rankingmode.song.event.SwipCardEvent;
 import com.module.rankingmode.song.layoutmanager.CardConfig;
@@ -101,23 +101,12 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         adapter = new SongCardsAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                SongModel songModel = (SongModel) model;
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                        .setAddToBackStack(false)
-                        .setNotifyHideFragment(SongSelectFragment.class)
-                        .setHasAnimation(true)
-                        .addDataBeforeAdd(0, songModel)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
-                        .build());
-                //测试
-//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankingRecordFragment.class)
-//                        .setAddToBackStack(true)
+//                SongModel songModel = (SongModel) model;
+//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
+//                        .setAddToBackStack(false)
+//                        .setNotifyHideFragment(SongSelectFragment.class)
 //                        .setHasAnimation(true)
+//                        .addDataBeforeAdd(0, songModel)
 //                        .setFragmentDataListener(new FragmentDataListener() {
 //                            @Override
 //                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
@@ -125,6 +114,17 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 //                            }
 //                        })
 //                        .build());
+                //测试
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankingRecordFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                            }
+                        })
+                        .build());
             }
         });
 

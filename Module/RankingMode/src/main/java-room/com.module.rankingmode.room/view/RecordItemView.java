@@ -21,6 +21,10 @@ public class RecordItemView extends RelativeLayout {
     ExImageView mIvLightTwo;
     ExImageView mIvLightThree;
 
+    SimpleDraweeView mIvLightOneIcon;
+    SimpleDraweeView mIvLightOneTwo;
+    SimpleDraweeView mIvLightOneThree;
+
     public RecordItemView(Context context) {
         super(context);
         init();
@@ -32,7 +36,7 @@ public class RecordItemView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.record_item_layout, this);
+        inflate(getContext(), R.layout.record_athletics_item_layout, this);
         mSdvSingerIcon = (SimpleDraweeView)findViewById(R.id.sdv_singer_icon);
         mIvRanking = (ExImageView) findViewById(R.id.iv_ranking);
         mTvSingerName = (ExTextView) findViewById(R.id.tv_singer_name);
@@ -48,6 +52,34 @@ public class RecordItemView extends RelativeLayout {
                         .setBorderColor(0xFF85EAFF)
                         .build());
 
+
+        mIvLightOneIcon = (SimpleDraweeView)findViewById(R.id.iv_light_one_icon);
+        mIvLightOneTwo = (SimpleDraweeView)findViewById(R.id.iv_light_one_two);
+        mIvLightOneThree = (SimpleDraweeView)findViewById(R.id.iv_light_one_three);
+
+        AvatarUtils.loadAvatarByUrl(mIvLightOneIcon,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .setGray(false)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setBorderColor(0xFF85EAFF)
+                        .build());
+
+        AvatarUtils.loadAvatarByUrl(mIvLightOneTwo,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .setGray(false)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setBorderColor(0xFF85EAFF)
+                        .build());
+
+        AvatarUtils.loadAvatarByUrl(mIvLightOneThree,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .setGray(false)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setBorderColor(0xFF85EAFF)
+                        .build());
     }
 
     public void setData(){
