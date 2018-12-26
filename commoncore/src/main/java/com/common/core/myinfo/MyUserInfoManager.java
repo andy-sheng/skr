@@ -4,8 +4,6 @@ package com.common.core.myinfo;
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.userinfo.UserInfo;
-import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -41,9 +39,8 @@ public class MyUserInfoManager {
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
                     MyUserInfo myUserInfo = new MyUserInfo();
-                    UserInfo userInfo = UserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
+                    MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                     if (userInfo != null) {
-                        myUserInfo.setUserInfo(userInfo);
                         setMyUserInfo(myUserInfo);
                     }
                     // 从服务器拉一次
@@ -87,61 +84,27 @@ public class MyUserInfoManager {
      */
     public void updateInfo(String nickName, int sex, String birthday, String avatar, String sign, Location location) {
 
-//        final UserInfo userInfo = new UserInfo();
-//        userInfo.setUserId(UserAccountManager.getInstance().getUuidAsLong());
-//        HashMap<String, Object> map = new HashMap<>();
-//        if (nickName != null) {
-//            map.put("nickname", nickName);
-//            userInfo.setUserNickname(nickName);
-//        }
-//        if (sex != -1) {
-//            map.put("sex", sex);
-//            userInfo.setSex(sex);
-//        }
-//        if (birthday != null) {
-//            map.put("birthday", birthday);
-//            userInfo.setBirthday(birthday);
-//        }
-//        if (avatar != null) {
-//            map.put("avatar", avatar);
-//            userInfo.setAvatar(avatar);
-//        }
-//
-//        if (sign != null) {
-//            map.put("signature", sign);
-//            userInfo.setSignature(sign);
-//        }
-//
-//        if (location != null) {
-//            map.put("location", JSON.toJSONString(location));
-//        }
-
-
-        final MyUserInfo myUserInfo = new MyUserInfo();
-        myUserInfo.getUserInfo().setUserId(UserAccountManager.getInstance().getUuidAsLong());
         HashMap<String, Object> map = new HashMap<>();
         if (nickName != null) {
             map.put("nickname", nickName);
-            myUserInfo.getUserInfo().setUserNickname(nickName);
+            mUser.setUserNickname(nickName);
         }
         if (sex != -1) {
             map.put("sex", sex);
-            myUserInfo.getUserInfo().setSex(sex);
+            mUser.setSex(sex);
         }
         if (birthday != null) {
             map.put("birthday", birthday);
-            myUserInfo.getUserInfo().setBirthday(birthday);
+            mUser.setBirthday(birthday);
         }
         if (avatar != null) {
             map.put("avatar", avatar);
-            myUserInfo.getUserInfo().setAvatar(avatar);
+            mUser.setAvatar(avatar);
         }
-
         if (sign != null) {
             map.put("signature", sign);
-            myUserInfo.getUserInfo().setSignature(sign);
+            mUser.setSignature(sign);
         }
-
         if (location != null) {
             map.put("location", JSON.toJSONString(location));
         }
@@ -158,19 +121,11 @@ public class MyUserInfoManager {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                            myUserInfo.getUserInfo().setExt(myUserInfo.packetToJson().toString());
-                            UserInfoLocalApi.insertOrUpdate(myUserInfo.getUserInfo(), false, false);
+                            MyUserInfoLocalApi.insertOrUpdate(mUser);
                             // 取得个人信息
-                            UserInfo userInfo = UserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
+                            MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                if (mUser != null) {
-                                    mUser.setUserInfo(userInfo);
-                                    setMyUserInfo(mUser);
-                                } else {
-                                    MyUserInfo myUserInfo = new MyUserInfo();
-                                    myUserInfo.setUserInfo(userInfo);
-                                    setMyUserInfo(mUser);
-                                }
+                                setMyUserInfo(mUser);
                             }
                             emitter.onComplete();
                         }
@@ -183,11 +138,11 @@ public class MyUserInfoManager {
     }
 
     public long getUid() {
-        return mUser != null ? mUser.getUid() : 0;
+        return mUser != null ? mUser.getUserId() : 0;
     }
 
     public String getNickName() {
-        return mUser != null ? mUser.getNickName() : "";
+        return mUser != null ? mUser.getUserNickname() : "";
     }
 
     public String getAvatar() {
@@ -200,10 +155,6 @@ public class MyUserInfoManager {
 
     public int getSex() {
         return mUser != null ? mUser.getSex() : 0;
-    }
-
-    public boolean isRedName() {
-        return mUser != null ? mUser.getRedName() : false;
     }
 
     private static class MyUserInfoManagerHolder {

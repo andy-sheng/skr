@@ -1,14 +1,13 @@
 package com.common.core.userinfo;
 
-import android.text.TextUtils;
-
 import com.common.core.db.GreenDaoManager;
-import com.common.core.db.UserInfoDao;
+import com.common.core.db.UserInfoDBDao;
 import com.common.core.userinfo.event.UserInfoDBChangeEvent;
 import com.common.log.MyLog;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.common.core.userinfo.event.UserInfoDBChangeEvent.EVENT_DB_INSERT;
@@ -23,8 +22,8 @@ public class UserInfoLocalApi {
     //Relation中的relative  0为默认值, 1为双方未关注, 2为我关注该用户, 3为该用户关注我, 4为双方关注
     private static final String TAG = "UserInfoLocalApi";
 
-    private static UserInfoDao getUserInfoDao() {
-        return GreenDaoManager.getDaoSession().getUserInfoDao();
+    private static UserInfoDBDao getUserInfoDao() {
+        return GreenDaoManager.getDaoSession().getUserInfoDBDao();
     }
 
     /**
@@ -36,13 +35,18 @@ public class UserInfoLocalApi {
      * @param userInfoList
      * @return
      */
-    public static int insertOrUpdate(List<UserInfo> userInfoList) {
+    public static int insertOrUpdate(List<UserInfoModel> userInfoList) {
         MyLog.d(TAG, "insertOrUpdate" + " relationList.size=" + userInfoList.size());
         if (userInfoList == null || userInfoList.isEmpty()) {
             MyLog.w(TAG + " insertOrUpdate relationList == null");
             return 0;
         }
-        getUserInfoDao().insertOrReplaceInTx(userInfoList);
+        List<UserInfoDB> userInfoDBList = new ArrayList<>();
+        for (UserInfoModel userInfoModel : userInfoList) {
+            UserInfoDB userInfoDB = UserInfoModel.toUserInfoDB(userInfoModel);
+            userInfoDBList.add(userInfoDB);
+        }
+        getUserInfoDao().insertOrReplaceInTx(userInfoDBList);
         // 默认插入list都是从服务器直接获取,即一次初始化
         EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_INIT, null));
         return userInfoList.size();
@@ -53,26 +57,26 @@ public class UserInfoLocalApi {
      * <p>
      * 由于relation表存储关系和关系人信息,注意默认值引起的影响
      *
-     * @param userInfo
+     * @param userInfoModel
      * @param relationChange 关系是否改变
      * @param blockChange    拉黑状态是否改变
      * @return
      */
-    public static int insertOrUpdate(UserInfo userInfo, boolean relationChange, boolean blockChange) {
+    public static int insertOrUpdate(UserInfoModel userInfoModel, boolean relationChange, boolean blockChange) {
         MyLog.d(TAG, "insertOrUpdate");
-        if (userInfo == null) {
+        if (userInfoModel == null) {
             MyLog.w(TAG, "insertOrUpdate relation == null");
             return 0;
         }
 
-        UserInfo userInfoDB = getUserInfoByUUid(userInfo.getUserId());
-        if (userInfoDB != null) {
-            UserInfoDataUtils.fill(userInfo,userInfoDB);
-            EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_UPDATE, userInfo));
+        UserInfoModel userInfoModelInDB = getUserInfoByUUid(userInfoModel.getUserId());
+        if (userInfoModelInDB != null) {
+            UserInfoDataUtils.fill(userInfoModel, userInfoModelInDB);
+            EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_UPDATE, userInfoModel));
         } else {
-            EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_INSERT, userInfo));
+            EventBus.getDefault().post(new UserInfoDBChangeEvent(EVENT_DB_INSERT, userInfoModel));
         }
-        getUserInfoDao().insertOrReplaceInTx(userInfo);
+        getUserInfoDao().insertOrReplaceInTx(UserInfoModel.toUserInfoDB(userInfoModel));
         return 1;
     }
 
@@ -93,7 +97,7 @@ public class UserInfoLocalApi {
      */
     public static boolean deleUserInfoByUUid(long uid) {
         if (uid > 0) {
-            UserInfo userInfo = getUserInfoByUUid(uid);
+            UserInfoModel userInfo = getUserInfoByUUid(uid);
             if (userInfo != null) {
                 MyLog.w(TAG, "deleteUserInfo in DB");
                 getUserInfoDao().deleteByKey(uid);
@@ -111,11 +115,16 @@ public class UserInfoLocalApi {
      * @param uid
      * @return
      */
-    public static UserInfo getUserInfoByUUid(long uid) {
+    public static UserInfoModel getUserInfoByUUid(long uid) {
         if (uid <= 0) {
             return null;
         }
-        return getUserInfoDao().queryBuilder().where(UserInfoDao.Properties.UserId.eq(uid)).unique();
+        UserInfoDB userInfoDB = getUserInfoDao().queryBuilder().where(UserInfoDBDao.Properties.UserId.eq(uid)).unique();
+        if (userInfoDB == null) {
+            return null;
+        } else {
+            return UserInfoModel.parseFromDB(userInfoDB);
+        }
     }
 
     /**
@@ -124,15 +133,20 @@ public class UserInfoLocalApi {
      * @param longs
      * @return
      */
-    public static List<UserInfo> getUserInfoByUUidList(List<Long> longs) {
+    public static List<UserInfoModel> getUserInfoByUUidList(List<Long> longs) {
         if (longs == null || longs.isEmpty()) {
             MyLog.w(TAG, "getRelationByUUidList but uids == null");
             return null;
         }
 
-        return getUserInfoDao().queryBuilder().where(
-                UserInfoDao.Properties.UserId.in(longs)
+        List<UserInfoDB> dbList = getUserInfoDao().queryBuilder().where(
+                UserInfoDBDao.Properties.UserId.in(longs)
         ).list();
+        List<UserInfoModel> l = new ArrayList<>();
+        for (UserInfoDB db : dbList) {
+            l.add(UserInfoModel.parseFromDB(db));
+        }
+        return l;
     }
 
     /**
@@ -142,20 +156,24 @@ public class UserInfoLocalApi {
      * @param isBlock  是否包含黑名单
      * @return
      */
-    public static List<UserInfo> getFriendUserInfoList(int relative, boolean isBlock) {
-        List<UserInfo> userInfos = null;
+    public static List<UserInfoModel> getFriendUserInfoList(int relative, boolean isBlock) {
+        List<UserInfoDB> dbList = null;
         if (isBlock) {
-            userInfos = getUserInfoDao().queryBuilder().where(
-                    UserInfoDao.Properties.Relative.eq(relative)
+            dbList = getUserInfoDao().queryBuilder().where(
+                    UserInfoDBDao.Properties.Relative.eq(relative)
             ).build().list();
         } else {
-            userInfos = getUserInfoDao().queryBuilder().where(
-                    UserInfoDao.Properties.Relative.eq(relative),
-                    UserInfoDao.Properties.Block.eq(false)
+            dbList = getUserInfoDao().queryBuilder().where(
+                    UserInfoDBDao.Properties.Relative.eq(relative),
+                    UserInfoDBDao.Properties.Block.eq(false)
             ).build().list();
         }
 
-        return userInfos;
+        List<UserInfoModel> l = new ArrayList<>();
+        for (UserInfoDB db : dbList) {
+            l.add(UserInfoModel.parseFromDB(db));
+        }
+        return l;
     }
 
     /**
@@ -163,12 +181,15 @@ public class UserInfoLocalApi {
      *
      * @returnf
      */
-    public static List<UserInfo> getBockerList() {
-        List<UserInfo> userInfos = null;
-        userInfos = getUserInfoDao().queryBuilder().where(
-                UserInfoDao.Properties.Block.eq(true)
+    public static List<UserInfoModel> getBockerList() {
+        List<UserInfoDB> dbList = getUserInfoDao().queryBuilder().where(
+                UserInfoDBDao.Properties.Block.eq(true)
         ).build().list();
-        return userInfos;
+        List<UserInfoModel> l = new ArrayList<>();
+        for (UserInfoDB db : dbList) {
+            l.add(UserInfoModel.parseFromDB(db));
+        }
+        return l;
     }
 
 }

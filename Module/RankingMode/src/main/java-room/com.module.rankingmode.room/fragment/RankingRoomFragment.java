@@ -14,8 +14,8 @@ import android.widget.ScrollView;
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.UserInfo;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
@@ -225,13 +225,13 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                     UserInfoManager.getInstance().getUserInfoByUuid(userID, new UserInfoManager.UserInfoCallBack() {
 
                         @Override
-                        public boolean onGetLocalDB(UserInfo userInfo) {
+                        public boolean onGetLocalDB(UserInfoModel userInfo) {
                             // TODO: 2018/12/25  从数据库取数据
                             return false;
                         }
 
                         @Override
-                        public boolean onGetServer(UserInfo userInfo) {
+                        public boolean onGetServer(UserInfoModel userInfo) {
                             // TODO: 2018/12/25  从服务器取数据
                             showPersonInfoView();
                             return false;

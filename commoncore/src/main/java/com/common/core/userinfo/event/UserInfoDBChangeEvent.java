@@ -1,6 +1,6 @@
 package com.common.core.userinfo.event;
 
-import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoModel;
 
 public class UserInfoDBChangeEvent {
 
@@ -10,9 +10,9 @@ public class UserInfoDBChangeEvent {
     public static final int EVENT_DB_REMOVE = 4; // 删除数据
 
     public int type;
-    public UserInfo mUserInfo;
+    public UserInfoModel mUserInfo;
 
-    public UserInfoDBChangeEvent(int type, UserInfo userInfo) {
+    public UserInfoDBChangeEvent(int type, UserInfoModel userInfo) {
         this.type = type;
         this.mUserInfo = userInfo;
     }

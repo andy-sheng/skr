@@ -1,5 +1,6 @@
 package com.module.rankingmode.prepare.model;
 
+import com.common.core.userinfo.UserInfoModel;
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
 
@@ -9,14 +10,14 @@ import java.util.List;
 
 public class PlayerInfo implements Serializable {
 
-    com.common.core.userinfo.UserInfo userInfo;
+    UserInfoModel userInfo;
     List<SongModel> songList;
 
-    public com.common.core.userinfo.UserInfo getUserInfo() {
+    public UserInfoModel getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(com.common.core.userinfo.UserInfo userInfo) {
+    public void setUserInfo(UserInfoModel userInfo) {
         this.userInfo = userInfo;
     }
 
@@ -32,7 +33,7 @@ public class PlayerInfo implements Serializable {
         if (playerInfo == null){
             return;
         }
-        com.common.core.userinfo.UserInfo userInfo = DataUtils.parse2UserInfo(playerInfo.getUserInfo());
+        UserInfoModel userInfo = DataUtils.parse2UserInfo(playerInfo.getUserInfo());
         this.setUserInfo(userInfo);
         List<SongModel> list = new ArrayList<>();
         for (MusicInfo musicInfo : playerInfo.getMusicInfoList()){

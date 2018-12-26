@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.UserInfo;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoModel;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -54,8 +54,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
      */
     private TextView mDialogTextView;
 
-    private List<UserInfo> mFriendList;
-    private List<UserInfo> mFilteredFriendList;
+    private List<UserInfoModel> mFriendList;
+    private List<UserInfoModel> mFilteredFriendList;
     /**
      * 好友列表的 mFriendListAdapter
      */
@@ -133,7 +133,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         return true;
     }
 
-    private void startFriendDetailsPage(UserInfo info) {
+    private void startFriendDetailsPage(UserInfoModel info) {
         // todo 打开个人主页
 //        Intent intent = new Intent(getActivity(), UserDetailActivity.class);
 //        intent.putExtra("type", CLICK_CONTACT_FRAGMENT_FRIEND);
@@ -155,16 +155,16 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
      * @param filterStr 需要过滤的 String
      */
     private void filterData(String filterStr) {
-        List<UserInfo> filterDateList = new ArrayList<>();
+        List<UserInfoModel> filterDateList = new ArrayList<>();
 
         try {
             if (TextUtils.isEmpty(filterStr)) {
                 filterDateList = mFriendList;
             } else {
                 filterDateList.clear();
-                for (UserInfo userInfo : mFriendList) {
+                for (UserInfoModel userInfo : mFriendList) {
                     String name = userInfo.getUserNickname();
-                    String displayName = userInfo.getUserDisplayname();
+                    String displayName = userInfo.getUserNickname();
                     if (!TextUtils.isEmpty(displayName)) {
                         if (name.contains(filterStr) || mCharacterParser.getSelling(name).startsWith(filterStr) || displayName.contains(filterStr) || mCharacterParser.getSelling(displayName).startsWith(filterStr)) {
                             filterDateList.add(userInfo);
@@ -230,22 +230,22 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void updateUI() {
-        UserInfoManager.getInstance().getFriends(new UserInfoManager.ResultCallback<List<UserInfo>>() {
+        UserInfoManager.getInstance().getFriends(new UserInfoManager.ResultCallback<List<UserInfoModel>>() {
             @Override
-            public boolean onGetLocalDB(List<UserInfo> friends) {
+            public boolean onGetLocalDB(List<UserInfoModel> friends) {
                 updateFriendsList(friends);
                 return true;
             }
 
             @Override
-            public boolean onGetServer(List<UserInfo> friends) {
+            public boolean onGetServer(List<UserInfoModel> friends) {
                 updateFriendsList(friends);
                 return true;
             }
         });
     }
 
-    private void updateFriendsList(List<UserInfo> friendsList) {
+    private void updateFriendsList(List<UserInfoModel> friendsList) {
         //updateUI fragment初始化和好友信息更新时都会调用,isReloadList表示是否是好友更新时调用
         boolean isReloadList = false;
         if (mFriendList != null && mFriendList.size() > 0) {
@@ -285,7 +285,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                    UserInfo bean = mFriendList.get(position - 1);
+                    UserInfoModel bean = mFriendList.get(position - 1);
                     startFriendDetailsPage(bean);
                     return true;
                 }
@@ -327,8 +327,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void handleFriendDataForSort() {
-        for (UserInfo friend : mFriendList) {
-            String displayName = friend.getUserDisplayname();
+        for (UserInfoModel friend : mFriendList) {
+            String displayName = null;
             String nickName = friend.getUserNickname();
             if (!TextUtils.isEmpty(displayName)) {
                 String letters = replaceFirstCharacterWithUppercase(mCharacterParser.getSelling(displayName));

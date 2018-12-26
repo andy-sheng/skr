@@ -10,7 +10,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoModel;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
@@ -25,9 +25,9 @@ public class FriendListAdapter extends BaseAdapter implements SectionIndexer {
 
     private Context context;
 
-    private List<UserInfo> list;
+    private List<UserInfoModel> list;
 
-    public FriendListAdapter(Context context, List<UserInfo> list) {
+    public FriendListAdapter(Context context, List<UserInfoModel> list) {
         this.context = context;
         this.list = list;
     }
@@ -36,7 +36,7 @@ public class FriendListAdapter extends BaseAdapter implements SectionIndexer {
     /**
      * 传入新的数据 刷新UI的方法
      */
-    public void updateListView(List<UserInfo> list) {
+    public void updateListView(List<UserInfoModel> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -66,7 +66,7 @@ public class FriendListAdapter extends BaseAdapter implements SectionIndexer {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        final UserInfo mContent = list.get(position);
+        final UserInfoModel mContent = list.get(position);
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.contact_item, parent, false);
@@ -96,11 +96,7 @@ public class FriendListAdapter extends BaseAdapter implements SectionIndexer {
         } else {
             viewHolder.tvLetter.setVisibility(View.GONE);
         }
-        if (!TextUtils.isEmpty(mContent.getUserDisplayname())) {
-            viewHolder.tvTitle.setText(this.list.get(position).getUserDisplayname());
-        } else {
             viewHolder.tvTitle.setText(this.list.get(position).getUserNickname());
-        }
 
         AvatarUtils.loadAvatarByUrl(viewHolder.mImageView, AvatarUtils.newParamsBuilder(list.get(position).getAvatar())
                         .build());

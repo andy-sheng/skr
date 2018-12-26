@@ -1,6 +1,7 @@
 package io.rong.contacts.utils;
 
-import com.common.core.userinfo.UserInfo;
+
+import com.common.core.userinfo.UserInfoModel;
 
 import java.util.Comparator;
 
@@ -9,7 +10,7 @@ import java.util.Comparator;
  * @author
  *
  */
-public class PinyinComparator implements Comparator<UserInfo> {
+public class PinyinComparator implements Comparator<UserInfoModel> {
 
 
     public static PinyinComparator instance = null;
@@ -21,7 +22,7 @@ public class PinyinComparator implements Comparator<UserInfo> {
         return instance;
     }
 
-    public int compare(UserInfo o1, UserInfo o2) {
+    public int compare(UserInfoModel o1, UserInfoModel o2) {
         if (o1.getLetter().equals("@")
                 || o2.getLetter().equals("#")) {
             return -1;

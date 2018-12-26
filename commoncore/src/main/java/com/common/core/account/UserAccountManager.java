@@ -8,8 +8,9 @@ import com.alibaba.fastjson.JSON;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
+import com.common.core.myinfo.MyUserInfo;
+import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.UserInfo;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -263,13 +264,13 @@ public class UserAccountManager {
                             boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
 
                             // 设置个人信息
-                            UserInfo userInfo = new UserInfo();
-                            userInfo.setUserId(userID);
-                            userInfo.setUserNickname(nickName);
-                            userInfo.setSex(sex);
-                            userInfo.setBirthday(birthday);
-                            userInfo.setAvatar(avatar);
-                            UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
+                            MyUserInfo myUserInfo = new MyUserInfo();
+                            myUserInfo.setUserId(userID);
+                            myUserInfo.setUserNickname(nickName);
+                            myUserInfo.setSex(sex);
+                            myUserInfo.setBirthday(birthday);
+                            myUserInfo.setAvatar(avatar);
+                            MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
 
                             UserAccount userAccount = new UserAccount();
                             userAccount.setPhoneNum(phoneNum);

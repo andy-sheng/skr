@@ -1,6 +1,8 @@
 package com.common.core.myinfo;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
 
     /**
      * province : 北京1

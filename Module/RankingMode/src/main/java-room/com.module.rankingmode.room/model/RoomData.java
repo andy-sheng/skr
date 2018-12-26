@@ -1,7 +1,7 @@
 package com.module.rankingmode.room.model;
 
 import com.common.core.account.UserAccountManager;
-import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoModel;
 import com.common.log.MyLog;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.prepare.model.PlayerInfo;
@@ -186,7 +186,7 @@ public class RoomData {
         return mPlayerInfoList;
     }
 
-    public UserInfo getUserInfo(int userID) {
+    public UserInfoModel getUserInfo(int userID) {
         if (userID == 0) {
             return null;
         }

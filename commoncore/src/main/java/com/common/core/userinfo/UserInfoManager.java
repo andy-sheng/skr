@@ -16,9 +16,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -53,7 +51,7 @@ public class UserInfoManager {
          * @param userInfo
          * @return
          */
-        boolean onGetLocalDB(UserInfo userInfo);
+        boolean onGetLocalDB(UserInfoModel userInfo);
 
         /**
          * 从服务器获取个人信息
@@ -61,7 +59,7 @@ public class UserInfoManager {
          * @param userInfo
          * @return
          */
-        boolean onGetServer(UserInfo userInfo);
+        boolean onGetServer(UserInfoModel userInfo);
     }
 
     /**
@@ -75,7 +73,7 @@ public class UserInfoManager {
             return;
         }
 
-        UserInfo local = UserInfoLocalApi.getUserInfoByUUid(uuid);
+        UserInfoModel local = UserInfoLocalApi.getUserInfoByUUid(uuid);
         if (local == null || !userInfoCallBack.onGetLocalDB(local)) {
             UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
             Observable<ApiResult> apiResultObservable = userInfoServerApi.getUserInfo(uuid);
@@ -84,23 +82,23 @@ public class UserInfoManager {
                 public void process(ApiResult obj) {
                     if (obj.getErrno() == 0) {
                         U.getToastUtil().showShort("获取个人信息更新成功");
-                        final JsonUserInfo jsonUserInfo = JSON.parseObject(obj.getData().toString(), JsonUserInfo.class);
+                        final UserInfoModel jsonUserInfo = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                         //写入数据库
-                        Observable.create(new ObservableOnSubscribe<UserInfo>() {
+                        Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
                             @Override
-                            public void subscribe(ObservableEmitter<UserInfo> emitter) throws Exception {
+                            public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
                                 // 写入数据库
-                                UserInfoLocalApi.insertOrUpdate(JsonUserInfo.toUserInfo(jsonUserInfo), false, false);
-                                UserInfo userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
+                                UserInfoLocalApi.insertOrUpdate(jsonUserInfo, false, false);
+                                UserInfoModel userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
 
                                 emitter.onNext(userInfo);
                             }
                         })
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<UserInfo>() {
+                                .subscribe(new Consumer<UserInfoModel>() {
                                     @Override
-                                    public void accept(UserInfo userInfo) throws Exception {
+                                    public void accept(UserInfoModel userInfo) throws Exception {
                                         if (userInfoCallBack != null) {
                                             userInfoCallBack.onGetServer(userInfo);
                                         }
@@ -119,7 +117,7 @@ public class UserInfoManager {
         /**
          * 本地数据库中查询个人主页信息
          */
-        boolean onGetLocalDB(UserInfo userInfo);
+        boolean onGetLocalDB(UserInfoModel userInfo);
 
 //        /**
 //         * 从服务器获取个人主页信息
@@ -139,7 +137,7 @@ public class UserInfoManager {
             return;
         }
 
-        UserInfo local = UserInfoLocalApi.getUserInfoByUUid(uuid);
+        UserInfoModel local = UserInfoLocalApi.getUserInfoByUUid(uuid);
         if (local == null || !callBack.onGetLocalDB(local)) {
 //            GetHomepageResp response = UserInfoServerApi.getHomepageByUuid(uuid, needPullLiveInfo);
 //            if (response != null && response.getRetCode() == 0) {
@@ -159,7 +157,7 @@ public class UserInfoManager {
         /**
          * 本地数据库中查询个人主页信息(list)
          */
-        boolean onGetLocalDB(List<UserInfo> list);
+        boolean onGetLocalDB(List<UserInfoModel> list);
 
 //        /**
 //         * 本地数据库中查询个人主页信息(list)
@@ -173,7 +171,7 @@ public class UserInfoManager {
             return;
         }
 
-        List<UserInfo> list = UserInfoLocalApi.getUserInfoByUUidList(uuidList);
+        List<UserInfoModel> list = UserInfoLocalApi.getUserInfoByUUidList(uuidList);
         boolean queryServer = false;
         if (list == null || list.size() == 0) {
             queryServer = true;
@@ -223,8 +221,8 @@ public class UserInfoManager {
      * @param isBlock    是否包含黑名单用户
      * @return
      */
-    public List<UserInfo> getFriendsUserInfoFromDB(int followType, boolean bothway, boolean isBlock) {
-        List<UserInfo> localRelations = new ArrayList<>();
+    public List<UserInfoModel> getFriendsUserInfoFromDB(int followType, boolean bothway, boolean isBlock) {
+        List<UserInfoModel> localRelations = new ArrayList<>();
         if (followType == BOTH_FOLLOWED && bothway) {
             localRelations.addAll(UserInfoLocalApi.getFriendUserInfoList(BOTH_FOLLOWED, isBlock));
         } else {
@@ -249,8 +247,8 @@ public class UserInfoManager {
      * @param loadByWater
      * @return
      */
-    public List<UserInfo> syncFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
-        List<UserInfo> userInfoList = getFollowingFromServer(uuid, count, offset, bothway, loadByWater);
+    public List<UserInfoModel> syncFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
+        List<UserInfoModel> userInfoList = getFollowingFromServer(uuid, count, offset, bothway, loadByWater);
         UserInfoLocalApi.insertOrUpdate(userInfoList);
         MyLog.w(TAG, "syncFollowingFromServer userInfoList.size() = " + userInfoList.size());
         return userInfoList;
@@ -264,8 +262,8 @@ public class UserInfoManager {
      * @param loadByWater
      * @return
      */
-    private List<UserInfo> getFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
-        List<UserInfo> userInfoList = new ArrayList<>();
+    private List<UserInfoModel> getFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
+        List<UserInfoModel> userInfoList = new ArrayList<>();
 //        FollowingListResponse response = UserInfoServerApi.getFollowingListResponse(uuid, count, offset, bothway, loadByWater);
 //        if (response != null && response.getCode() == 0) {
 //            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
@@ -295,15 +293,15 @@ public class UserInfoManager {
      * @param offset
      * @return
      */
-    public List<UserInfo> syncFollowerListFromServer(long uuid, int count, int offset) {
-        List<UserInfo> userInfoList = getFollowerListFromServer(uuid, count, offset);
+    public List<UserInfoModel> syncFollowerListFromServer(long uuid, int count, int offset) {
+        List<UserInfoModel> userInfoList = getFollowerListFromServer(uuid, count, offset);
         UserInfoLocalApi.insertOrUpdate(userInfoList);
         MyLog.w(TAG, "syncFollowerListFromServer userInfoList.size() = " + userInfoList.size());
         return userInfoList;
     }
 
-    private List<UserInfo> getFollowerListFromServer(long uuid, int count, int offset) {
-        List<UserInfo> userInfoList = new ArrayList<>();
+    private List<UserInfoModel> getFollowerListFromServer(long uuid, int count, int offset) {
+        List<UserInfoModel> userInfoList = new ArrayList<>();
 //        FollowerListResponse response = UserInfoServerApi.getFollowerListResponse(uuid, count, offset);
 //        if (response != null && response.getCode() == 0) {
 //            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
@@ -332,15 +330,15 @@ public class UserInfoManager {
      * @param offset
      * @return
      */
-    public List<UserInfo> syncBockerListFromServer(long uuid, int count, int offset) {
-        List<UserInfo> userInfoList = getBockerListFromServer(uuid, count, offset);
+    public List<UserInfoModel> syncBockerListFromServer(long uuid, int count, int offset) {
+        List<UserInfoModel> userInfoList = getBockerListFromServer(uuid, count, offset);
         UserInfoLocalApi.insertOrUpdate(userInfoList);
         MyLog.w(TAG, "syncBockerListFromServer userInfoList.size() = " + userInfoList.size());
         return userInfoList;
     }
 
-    private List<UserInfo> getBockerListFromServer(long uuid, int count, int offset) {
-        List<UserInfo> userInfoList = new ArrayList<>();
+    private List<UserInfoModel> getBockerListFromServer(long uuid, int count, int offset) {
+        List<UserInfoModel> userInfoList = new ArrayList<>();
 //        BlockerListResponse response = UserInfoServerApi.getBlockerListResponse(uuid, count, offset);
 //        if (response != null && response.getCode() == 0) {
 //            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
@@ -501,15 +499,15 @@ public class UserInfoManager {
         // todo 仅测试
         Uri testUri = Uri.parse("http://cms-bucket.nosdn.127.net/a2482c0b2b984dc88a479e6b7438da6020161219074944.jpeg");
 
-        UserInfo friend1 = new UserInfo();
+        UserInfoModel friend1 = new UserInfoModel();
         friend1.setUserId(1001);
         friend1.setUserNickname("帅哥");
 
-        UserInfo friend2 = new UserInfo();
+        UserInfoModel friend2 = new UserInfoModel();
         friend2.setUserId(1002);
         friend2.setUserNickname("美女");
 
-        List<UserInfo> list = new ArrayList<>();
+        List<UserInfoModel> list = new ArrayList<>();
         list.add(friend1);
         list.add(friend2);
         if (resultCallback != null) {

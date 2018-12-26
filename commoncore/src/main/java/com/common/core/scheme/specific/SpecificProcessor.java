@@ -60,7 +60,6 @@ public class SpecificProcessor extends CommonProcessor {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_VIDEO)
                 .withString("url", uri.toString())
                 .withLong("uid", MyUserInfoManager.getInstance().getUid())
-                .withString("videoUrl", MyUserInfoManager.getInstance().getMyUserInfo().getViewUrl())
                 .withString("avatar", MyUserInfoManager.getInstance().getAvatar())
                 .greenChannel().navigation();
 

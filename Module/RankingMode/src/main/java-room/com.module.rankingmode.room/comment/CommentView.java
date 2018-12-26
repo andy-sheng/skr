@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
-import com.common.core.userinfo.UserInfo;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rankingmode.R;
@@ -133,7 +133,7 @@ public class CommentView extends RelativeLayout {
         CommentModel commentModel = new CommentModel();
         commentModel.setUserId(event.info.getSender().getUserID());
         if (mRoomData != null) {
-            UserInfo sender = mRoomData.getUserInfo(event.info.getSender().getUserID());
+            UserInfoModel sender = mRoomData.getUserInfo(event.info.getSender().getUserID());
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
             }

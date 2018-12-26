@@ -1,10 +1,10 @@
 package com.module.rankingmode.prepare.model;
 
-import com.common.core.userinfo.UserInfo;
+import com.common.core.userinfo.UserInfoModel;
 
 public class DataUtils {
-    public static UserInfo parse2UserInfo(com.zq.live.proto.Common.UserInfo pbUserInfo) {
-        UserInfo userInfo = new UserInfo();
+    public static UserInfoModel parse2UserInfo(com.zq.live.proto.Common.UserInfo pbUserInfo) {
+        UserInfoModel userInfo = new UserInfoModel();
         userInfo.setUserId(pbUserInfo.userID);
         userInfo.setUserNickname(pbUserInfo.getNickName());
         userInfo.setAvatar(pbUserInfo.getAvatar());
