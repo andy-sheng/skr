@@ -17,6 +17,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 
+import com.component.busilib.fragment.OtherPersonFragment;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 
@@ -79,6 +80,20 @@ public class PersonFragment extends BaseFragment {
                     public void accept(Object o) {
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+                    }
+                });
+
+
+        RxView.clicks(mMedalLayout)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), OtherPersonFragment.class)
                                         .setAddToBackStack(true)
                                         .setHasAnimation(true)
                                         .build());
