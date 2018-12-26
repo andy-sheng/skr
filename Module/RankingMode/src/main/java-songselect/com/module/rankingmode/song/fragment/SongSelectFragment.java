@@ -136,17 +136,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         presenter.getRcomdMusicItems(0, DEFAULT_FIRST_COUNT);
     }
 
-    @Override
-    protected boolean onBackPressed() {
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopFragment(SongSelectFragment.this)
-                .setPopAbove(false)
-                .build());
-
-        getActivity().finish();
-        return true;
-    }
-
     // 返回上一张选歌卡片
     private void backToLastCard() {
         if (mDeleteList == null || mDeleteList.size() == 0) {

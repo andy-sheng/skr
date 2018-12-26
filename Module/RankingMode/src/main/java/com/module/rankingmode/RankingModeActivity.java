@@ -29,7 +29,7 @@ public class RankingModeActivity extends BaseActivity {
         if (selectSong) {
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SongSelectFragment.class)
                     .setAddToBackStack(false)
-                    .setHasAnimation(true)
+                    .setHasAnimation(false)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
                         public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
