@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 if (virtualApkEnable.toBoolean()) {
     apply plugin: 'com.didi.virtualapk.host'
 }
+//if (aliFeedback.toBoolean()) {
+//    apply plugin: 'com.aliyun.ams.emas-services'
+//}
+
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
