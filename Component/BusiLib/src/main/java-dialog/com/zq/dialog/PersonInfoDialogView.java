@@ -55,6 +55,9 @@ public class PersonInfoDialogView extends RelativeLayout {
         mReport = (ExTextView) this.findViewById(R.id.report);
         mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
         mFollowTv = (ExTextView) this.findViewById(R.id.follow_tv);
+
+        // TODO: 2018/12/26 暂时砍掉举报 
+        mReport.setVisibility(GONE);
     }
 
     public void setData(UserInfoModel userInfo){
