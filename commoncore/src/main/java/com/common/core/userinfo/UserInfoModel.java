@@ -114,10 +114,7 @@ public class UserInfoModel {
 
             JSONObject jsonObject = new JSONObject();
             Location location = userInfModel.getLocation();
-            if(location!=null) {
-                String locationJsonStr = JSON.toJSONString(location);
-                jsonObject.put("location", locationJsonStr);
-            }
+            jsonObject.put("location", location);
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -135,13 +132,10 @@ public class UserInfoModel {
             userInfoModel.setLetter(userInDB.getLetter());
             userInfoModel.setIsSystem(userInDB.getIsSystem());
             String extJSon = userInDB.getExt();
-            if(!TextUtils.isEmpty(extJSon)){
+            if (!TextUtils.isEmpty(extJSon)) {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
-                String locationJsonStr = jsonObject.getString("location");
-                if(!TextUtils.isEmpty(locationJsonStr)) {
-                    Location location = JSON.parseObject(locationJsonStr, Location.class);
-                    userInfoModel.setLocation(location);
-                }
+                Location location = jsonObject.getObject("location", Location.class);
+                userInfoModel.setLocation(location);
             }
         }
         return userInfoModel;

@@ -13,6 +13,7 @@ import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.log.MyLog;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
@@ -234,7 +235,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
             @Override
             public void onReceive(LbsUtils.Location location) {
-                if (location != null) {
+                MyLog.d(TAG,"onReceive" + " location=" + location);
+                if (location != null && location.isValid()) {
                     Location l = new Location();
                     l.setProvince(location.getProvince());
                     l.setCity(location.getCity());

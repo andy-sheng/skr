@@ -140,8 +140,7 @@ public class MyUserInfo implements Serializable {
             try {
                 Location location = myUserInfo.getLocation();
                 if (location != null) {
-                    String locationJsonStr = JSON.toJSONString(location);
-                    jsonObject.put("location", locationJsonStr);
+                    jsonObject.put("location", location);
                 }
                 jsonObject.put("phoneNum", myUserInfo.getPhoneNum());
                 jsonObject.put("ext", myUserInfo.getExt());
@@ -166,7 +165,7 @@ public class MyUserInfo implements Serializable {
             myInfoModel.setBirthday(userInDB.getBirthday());
             myInfoModel.setSignature(userInDB.getSignature());
 
-            String extJSon = myInfoModel.getExt();
+            String extJSon = userInDB.getExt();
             if (!TextUtils.isEmpty(extJSon)) {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
                 String phoneNum = jsonObject.getString("phoneNum");
@@ -174,11 +173,8 @@ public class MyUserInfo implements Serializable {
                 String ext = jsonObject.getString("ext");
                 myInfoModel.setExt(ext);
 
-                String locationJsonStr = jsonObject.getString("location");
-                if (!TextUtils.isEmpty(locationJsonStr)) {
-                    Location location = JSON.parseObject(locationJsonStr, Location.class);
-                    myInfoModel.setLocation(location);
-                }
+                Location location = jsonObject.getObject("location", Location.class);
+                myInfoModel.setLocation(location);
             }
         }
         return myInfoModel;

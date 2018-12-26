@@ -1,5 +1,7 @@
 package com.common.core.myinfo;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 
 public class Location implements Serializable {
@@ -37,4 +39,27 @@ public class Location implements Serializable {
     public void setDistrict(String district) {
         this.district = district;
     }
+
+    public String getDesc() {
+        StringBuilder sb = new StringBuilder();
+        String province = getProvince();
+        if (!TextUtils.isEmpty(province)) {
+            sb.append(province).append("-");
+        }
+        String city = getCity();
+
+        if (!TextUtils.isEmpty(city)) {
+            if (!city.equals(province)) {
+                sb.append(city).append("-");
+            }else{
+                // 说明是直辖市，例如北京
+            }
+        }
+        String district = getDistrict();
+        if (!TextUtils.isEmpty(district)) {
+            sb.append(district);
+        }
+        return sb.toString();
+    }
+
 }

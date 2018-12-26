@@ -108,7 +108,7 @@ public class MyUserInfoManager {
             mUser.setSignature(updateParams.sign);
         }
         if (updateParams.location != null) {
-            map.put("location", JSON.toJSONString(updateParams.location));
+            map.put("location", updateParams.location);
             mUser.setLocation(updateParams.location);
         }
 
@@ -165,25 +165,10 @@ public class MyUserInfoManager {
     }
 
     public String getLocationDesc() {
-        Location location = mUser.getLocation();
-        if (location != null) {
-            StringBuilder sb = new StringBuilder();
-            String province = location.getProvince();
-            if (!TextUtils.isEmpty(province)) {
-                sb.append(province).append("-");
-            }
-            String city = location.getCity();
-            if (!TextUtils.isEmpty(city)) {
-                sb.append(city).append("-");
-            }
-            String district = location.getDistrict();
-            if (!TextUtils.isEmpty(district)) {
-                sb.append(district);
-            }
-            return sb.toString();
-        } else {
+        if(mUser.getLocation()==null){
             return "未知位置";
         }
+       return mUser.getLocation().getDesc();
     }
 
 

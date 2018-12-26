@@ -1,5 +1,7 @@
 package com.common.utils;
 
+import android.text.TextUtils;
+
 import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -138,7 +140,7 @@ public class LbsUtils {
             /**
              * 5分钟内 可以拿来用
              */
-            if (mLocation != null) {
+            if (mLocation != null && mLocation.isValid()) {
                 if (System.currentTimeMillis() - mLastSyncTs < 5 * 60 * 1000) {
                     callback.onReceive(mLocation);
                     return;
@@ -279,6 +281,9 @@ public class LbsUtils {
             this.locationDesc = locationDesc;
         }
 
+        public boolean isValid(){
+            return !TextUtils.isEmpty(addressDesc);
+        }
 
         @Override
         public String toString() {
