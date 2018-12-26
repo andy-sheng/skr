@@ -1,5 +1,7 @@
 package com.common.core.userinfo;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.Location;
@@ -109,10 +111,13 @@ public class UserInfoModel {
             userInfoDB.setSignature(userInfModel.getSignature());
             userInfoDB.setLetter(userInfModel.getLetter());
             userInfoDB.setIsSystem(userInfModel.getIsSystem());
-            Location location = userInfModel.getLocation();
-            String locationJsonStr = JSON.toJSONString(location);
+
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("location", locationJsonStr);
+            Location location = userInfModel.getLocation();
+            if(location!=null) {
+                String locationJsonStr = JSON.toJSONString(location);
+                jsonObject.put("location", locationJsonStr);
+            }
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -129,10 +134,15 @@ public class UserInfoModel {
             userInfoModel.setSignature(userInDB.getSignature());
             userInfoModel.setLetter(userInDB.getLetter());
             userInfoModel.setIsSystem(userInDB.getIsSystem());
-            JSONObject jsonObject = JSON.parseObject(userInDB.getExt(), JSONObject.class);
-            String locationJsonStr = jsonObject.getString("location");
-            Location location = JSON.parseObject(locationJsonStr, Location.class);
-            userInfoModel.setLocation(location);
+            String extJSon = userInDB.getExt();
+            if(!TextUtils.isEmpty(extJSon)){
+                JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
+                String locationJsonStr = jsonObject.getString("location");
+                if(!TextUtils.isEmpty(locationJsonStr)) {
+                    Location location = JSON.parseObject(locationJsonStr, Location.class);
+                    userInfoModel.setLocation(location);
+                }
+            }
         }
         return userInfoModel;
     }

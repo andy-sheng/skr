@@ -93,7 +93,9 @@ public class EditInfoAgeFragment extends BaseFragment {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 String bir = U.getDateTimeUtils().formatDateString(date);
-                MyUserInfoManager.getInstance().updateInfo(null, -1, bir, null, null, null);
+                MyUserInfoManager.getInstance().updateInfo(  MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                        .setBirthday(bir)
+                        .build());
                 U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
             }
         })

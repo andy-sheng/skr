@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -16,7 +17,9 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
 import com.common.utils.FragmentUtils;
+import com.common.utils.LbsUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -57,6 +60,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     ExTextView mSexTv;
     RelativeLayout mEditLocation;
     ExTextView mLocationTv;
+    ExImageView mLocationRefreshBtn;
+
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -80,6 +85,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         mAgeTv = (ExTextView) findViewById(R.id.age_tv);
         mSexTv = (ExTextView) findViewById(R.id.sex_tv);
         mLocationTv = (ExTextView) findViewById(R.id.location_tv);
+        mLocationRefreshBtn = (ExImageView) findViewById(R.id.location_refresh_btn);
 
         initViewData();
 
@@ -89,6 +95,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         mEditAge.setOnClickListener(this);
         mEditSex.setOnClickListener(this);
         mEditLocation.setOnClickListener(this);
+        mLocationRefreshBtn.setOnClickListener(this);
 
         RxView.clicks(mTitlebar.getLeftTextView())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -118,7 +125,9 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             sex = "女";
         }
         mSexTv.setText(sex);
-        mLocationTv.setText("浙江省-平湖市");
+        mLocationTv.setText(MyUserInfoManager.getInstance().getLocationDesc());
+
+
     }
 
     @Override
@@ -134,6 +143,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             onClickAgeContainer(); // 年龄
         } else if (viewId == R.id.edit_sex) {
             onClickSexContainer(); // 性别
+        } else if (viewId == R.id.location_refresh_btn) {
+            onClickLocationRefresh();
         }
     }
 
@@ -165,7 +176,10 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                                         @Override
                                         public void onSuccess(String url) {
                                             U.getToastUtil().showShort("上传成功 url:" + url);
-                                            MyUserInfoManager.getInstance().updateInfo(null, -1, null, url, null, null);
+                                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                                                    .newMyInfoUpdateParamsBuilder()
+                                                    .setAvatar(url)
+                                                    .build());
                                         }
 
                                         @Override
@@ -214,6 +228,26 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
+    }
+
+    private void onClickLocationRefresh() {
+        U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
+            @Override
+            public void onReceive(LbsUtils.Location location) {
+                if (location != null) {
+                    Location l = new Location();
+                    l.setProvince(location.getProvince());
+                    l.setCity(location.getCity());
+                    l.setDistrict(location.getDistrict());
+
+                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                            .newMyInfoUpdateParamsBuilder()
+                            .setLocation(l)
+                            .build());
+                }
+
+            }
+        });
     }
 
     @Override

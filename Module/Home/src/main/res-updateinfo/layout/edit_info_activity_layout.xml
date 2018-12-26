@@ -259,11 +259,12 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_55_dp"
-            android:text="浙江省-平湖市"
+            android:text="获取当前位置"
             android:textColor="#80091E77"
             android:textSize="@dimen/textsize_16_dp" />
 
         <com.common.view.ex.ExImageView
+            android:id="@+id/location_refresh_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

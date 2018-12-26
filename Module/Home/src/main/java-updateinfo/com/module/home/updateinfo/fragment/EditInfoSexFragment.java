@@ -89,7 +89,9 @@ public class EditInfoSexFragment extends BaseFragment {
             U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
             return;
         } else {
-            MyUserInfoManager.getInstance().updateInfo(null, sex, null, null, null, null);
+            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                    .setSex(sex)
+                    .build());
             U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
         }
     }

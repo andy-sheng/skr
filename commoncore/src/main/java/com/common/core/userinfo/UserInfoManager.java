@@ -92,6 +92,7 @@ public class UserInfoManager {
                                 UserInfoModel userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
 
                                 emitter.onNext(userInfo);
+                                emitter.onComplete();
                             }
                         })
                                 .subscribeOn(Schedulers.io())

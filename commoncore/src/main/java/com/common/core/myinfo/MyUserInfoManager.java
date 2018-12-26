@@ -1,9 +1,12 @@
 package com.common.core.myinfo;
 
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -27,7 +30,9 @@ import okhttp3.RequestBody;
  */
 public class MyUserInfoManager {
 
-    private MyUserInfo mUser;
+    public final static String TAG = "MyUserInfoManager";
+
+    private MyUserInfo mUser = new MyUserInfo();
 
     public void init() {
         load();
@@ -38,10 +43,10 @@ public class MyUserInfoManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
-                    MyUserInfo myUserInfo = new MyUserInfo();
                     MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
+                    MyLog.d(TAG, "load myUserInfo=" + userInfo);
                     if (userInfo != null) {
-                        setMyUserInfo(myUserInfo);
+                        setMyUserInfo(userInfo);
                     }
                     // 从服务器拉一次
 //                    GetOwnInfoRsp rsp = MyUserInfoServerApi.getOwnInfoRsp(UserAccountManager.getInstance().getUuidAsLong());
@@ -78,35 +83,33 @@ public class MyUserInfoManager {
     /**
      * 更新用户信息
      *
-     * @param nickName
-     * @param sex      -1 代表不更新
-     * @param birthday
      */
-    public void updateInfo(String nickName, int sex, String birthday, String avatar, String sign, Location location) {
+    public void updateInfo(MyInfoUpdateParams updateParams) {
 
         HashMap<String, Object> map = new HashMap<>();
-        if (nickName != null) {
-            map.put("nickname", nickName);
-            mUser.setUserNickname(nickName);
+        if (updateParams.nickName != null) {
+            map.put("nickname", updateParams.nickName);
+            mUser.setUserNickname(updateParams.nickName);
         }
-        if (sex != -1) {
-            map.put("sex", sex);
-            mUser.setSex(sex);
+        if (updateParams.sex != -1) {
+            map.put("sex", updateParams.sex);
+            mUser.setSex(updateParams.sex);
         }
-        if (birthday != null) {
-            map.put("birthday", birthday);
-            mUser.setBirthday(birthday);
+        if (updateParams.birthday != null) {
+            map.put("birthday", updateParams.birthday);
+            mUser.setBirthday(updateParams.birthday);
         }
-        if (avatar != null) {
-            map.put("avatar", avatar);
-            mUser.setAvatar(avatar);
+        if (updateParams.avatar != null) {
+            map.put("avatar", updateParams.avatar);
+            mUser.setAvatar(updateParams.avatar);
         }
-        if (sign != null) {
-            map.put("signature", sign);
-            mUser.setSignature(sign);
+        if (updateParams.sign != null) {
+            map.put("signature", updateParams.sign);
+            mUser.setSignature(updateParams.sign);
         }
-        if (location != null) {
-            map.put("location", JSON.toJSONString(location));
+        if (updateParams.location != null) {
+            map.put("location", JSON.toJSONString(updateParams.location));
+            mUser.setLocation(updateParams.location);
         }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
@@ -157,6 +160,33 @@ public class MyUserInfoManager {
         return mUser != null ? mUser.getSex() : 0;
     }
 
+    public Location getLocation() {
+        return mUser.getLocation();
+    }
+
+    public String getLocationDesc() {
+        Location location = mUser.getLocation();
+        if (location != null) {
+            StringBuilder sb = new StringBuilder();
+            String province = location.getProvince();
+            if (!TextUtils.isEmpty(province)) {
+                sb.append(province).append("-");
+            }
+            String city = location.getCity();
+            if (!TextUtils.isEmpty(city)) {
+                sb.append(city).append("-");
+            }
+            String district = location.getDistrict();
+            if (!TextUtils.isEmpty(district)) {
+                sb.append(district);
+            }
+            return sb.toString();
+        } else {
+            return "未知位置";
+        }
+    }
+
+
     private static class MyUserInfoManagerHolder {
         private static final MyUserInfoManager INSTANCE = new MyUserInfoManager();
     }
@@ -167,5 +197,110 @@ public class MyUserInfoManager {
 
     public static final MyUserInfoManager getInstance() {
         return MyUserInfoManagerHolder.INSTANCE;
+    }
+
+    public static MyInfoUpdateParams.Builder newMyInfoUpdateParamsBuilder(){
+        return new MyInfoUpdateParams.Builder();
+    }
+
+    public static class MyInfoUpdateParams {
+        String nickName;
+        int sex = -1;
+        String birthday;
+        String avatar;
+        String sign;
+        Location location;
+
+        private MyInfoUpdateParams() {
+        }
+
+        public String getNickName() {
+            return nickName;
+        }
+
+        public void setNickName(String nickName) {
+            this.nickName = nickName;
+        }
+
+        public int getSex() {
+            return sex;
+        }
+
+        public void setSex(int sex) {
+            this.sex = sex;
+        }
+
+        public String getBirthday() {
+            return birthday;
+        }
+
+        public void setBirthday(String birthday) {
+            this.birthday = birthday;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
+        public String getSign() {
+            return sign;
+        }
+
+        public void setSign(String sign) {
+            this.sign = sign;
+        }
+
+        public Location getLocation() {
+            return location;
+        }
+
+        public void setLocation(Location location) {
+            this.location = location;
+        }
+
+        public static class Builder {
+            MyInfoUpdateParams mParams = new MyInfoUpdateParams();
+
+            Builder() {
+            }
+
+            public Builder setNickName(String nickName) {
+                mParams.setNickName(nickName);
+                return this;
+            }
+
+            public Builder setSex(int sex) {
+                mParams.setSex(sex);
+                return this;
+            }
+
+            public Builder setBirthday(String birthday) {
+                mParams.setBirthday(birthday);
+                return this;
+            }
+
+            public Builder setAvatar(String avatar) {
+                mParams.setAvatar(avatar);
+                return this;
+            }
+
+            public Builder setSign(String sign) {
+                mParams.setSign(sign);
+                return this;
+            }
+
+            public Builder setLocation(Location location) {
+                mParams.setLocation(location);
+                return this;
+            }
+
+            public MyInfoUpdateParams build() {
+                return mParams;
+            }
+        }
     }
 }

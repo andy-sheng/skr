@@ -97,7 +97,9 @@ public class UploadAccountInfoActivity extends BaseActivity {
                                                 @Override
                                                 public void onSuccess(String url) {
                                                     U.getToastUtil().showShort("上传成功 url:" + url);
-                                                    MyUserInfoManager.getInstance().updateInfo(null, -1, null, url, null, null);
+                                                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                                            .setAvatar(url)
+                                                            .build());
                                                 }
 
                                                 @Override
@@ -120,7 +122,9 @@ public class UploadAccountInfoActivity extends BaseActivity {
                     public void accept(Object o) {
                         String nickName = mNicknameEt.getText().toString().trim();
                         if (!TextUtils.isEmpty(nickName)) {
-                            MyUserInfoManager.getInstance().updateInfo(nickName, -1, null, null, null, null);
+                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                    .setNickName(nickName)
+                            .build());
                         } else {
                             U.getToastUtil().showShort("上传个人资料成功");
                         }

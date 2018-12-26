@@ -1,5 +1,7 @@
 package com.common.core.myinfo;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -137,9 +139,10 @@ public class MyUserInfo implements Serializable {
             JSONObject jsonObject = new JSONObject();
             try {
                 Location location = myUserInfo.getLocation();
-                String locationJsonStr = JSON.toJSONString(location);
-
-                jsonObject.put("location", locationJsonStr);
+                if (location != null) {
+                    String locationJsonStr = JSON.toJSONString(location);
+                    jsonObject.put("location", locationJsonStr);
+                }
                 jsonObject.put("phoneNum", myUserInfo.getPhoneNum());
                 jsonObject.put("ext", myUserInfo.getExt());
 
@@ -163,18 +166,38 @@ public class MyUserInfo implements Serializable {
             myInfoModel.setBirthday(userInDB.getBirthday());
             myInfoModel.setSignature(userInDB.getSignature());
 
-            JSONObject jsonObject = JSON.parseObject(myInfoModel.getExt(), JSONObject.class);
-            String phoneNum = jsonObject.getString("phoneNum");
-            myInfoModel.setPhoneNum(phoneNum);
-            String ext = jsonObject.getString("ext");
-            myInfoModel.setExt(ext);
+            String extJSon = myInfoModel.getExt();
+            if (!TextUtils.isEmpty(extJSon)) {
+                JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
+                String phoneNum = jsonObject.getString("phoneNum");
+                myInfoModel.setPhoneNum(phoneNum);
+                String ext = jsonObject.getString("ext");
+                myInfoModel.setExt(ext);
 
-            String locationJsonStr = jsonObject.getString("location");
-            Location location = JSON.parseObject(locationJsonStr, Location.class);
-            myInfoModel.setLocation(location);
+                String locationJsonStr = jsonObject.getString("location");
+                if (!TextUtils.isEmpty(locationJsonStr)) {
+                    Location location = JSON.parseObject(locationJsonStr, Location.class);
+                    myInfoModel.setLocation(location);
+                }
+            }
         }
         return myInfoModel;
     }
 
-
+    @Override
+    public String toString() {
+        return "MyUserInfo{" +
+                "userId=" + userId +
+                ", avatar='" + avatar + '\'' +
+                ", userNickname='" + userNickname + '\'' +
+                ", userDisplayname='" + userDisplayname + '\'' +
+                ", updateTime=" + updateTime +
+                ", sex=" + sex +
+                ", birthday='" + birthday + '\'' +
+                ", signature='" + signature + '\'' +
+                ", location=" + location +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", ext='" + ext + '\'' +
+                '}';
+    }
 }

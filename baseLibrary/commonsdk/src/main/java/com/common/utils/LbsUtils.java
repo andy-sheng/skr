@@ -139,7 +139,7 @@ public class LbsUtils {
              * 5分钟内 可以拿来用
              */
             if (mLocation != null) {
-                if (System.currentTimeMillis() - mLastSyncTs < 20 * 60 * 1000) {
+                if (System.currentTimeMillis() - mLastSyncTs < 5 * 60 * 1000) {
                     callback.onReceive(mLocation);
                     return;
                 }
@@ -156,7 +156,7 @@ public class LbsUtils {
      *
      * @return
      */
-    public void getLocationInner(Callback callback) {
+    private void getLocationInner(Callback callback) {
         if (!U.getPermissionUtils().checkLocation(U.getActivityUtils().getTopActivity())) {
             U.getPermissionUtils().requestLocation(new PermissionUtils.RequestPermission() {
                 @Override

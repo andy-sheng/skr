@@ -110,7 +110,9 @@ public class EditInfoSignFragment extends BaseFragment {
             // 签名一样没改
             U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
         } else {
-            MyUserInfoManager.getInstance().updateInfo(null, -1, null, null, sign, null);
+            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                    .setSign(sign)
+                    .build());
             U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
         }
     }

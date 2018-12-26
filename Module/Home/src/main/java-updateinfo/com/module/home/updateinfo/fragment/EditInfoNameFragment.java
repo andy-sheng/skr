@@ -68,7 +68,9 @@ public class EditInfoNameFragment extends BaseFragment {
             // 昵称一样,没改
             U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
         } else {
-            MyUserInfoManager.getInstance().updateInfo(nickName, -1, null, null, null, null);
+            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                    .setNickName(nickName)
+                    .build());
             U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
         }
     }
