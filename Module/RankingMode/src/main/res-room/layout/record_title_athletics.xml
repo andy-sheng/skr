@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_own_icon"
+        android:layout_width="@dimen/view_65_dp"
+        android:layout_height="@dimen/view_65_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_13_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_own_record"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_46_dp" />
+
+    <com.module.rankingmode.room.view.RecordCircleView
+        android:layout_width="@dimen/view_130_dp"
+        android:layout_height="@dimen/view_130_dp"
+        android:layout_alignParentRight="true"
+         />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_135_dp"
+        android:text="《印第安老鸡婆》sss"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_16_dp" />
+</RelativeLayout>
