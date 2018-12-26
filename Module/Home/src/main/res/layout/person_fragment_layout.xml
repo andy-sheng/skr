@@ -2,97 +2,174 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/person_main_containner"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gerenzhongxin_bg">
 
 
-    <com.common.view.titlebar.CommonTitleBar
-        android:id="@+id/titlebar"
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_72_dp"
+        android:layout_height="@dimen/view_72_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_40_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/share_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/textsize_23_dp"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:text="分享" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/setting_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/textsize_23_dp"
+        android:text="设置" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/name_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="个人主页"
-        app:centerType="textView" />
+        android:layout_below="@+id/avatar_iv"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:gravity="center"
+        android:minWidth="@dimen/view_100_dp"
+        android:text="赤木晴子"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_24_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sign_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name_tv"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:gravity="center"
+        android:minWidth="@dimen/view_100_dp"
+        android:text="哥就是那个KTV里最跑调的孩子"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titlebar"
-        android:orientation="vertical"
-        android:padding="@dimen/view_10_dp">
+        android:layout_below="@+id/sign_tv"
+        android:layout_marginTop="@dimen/view_26_dp"
+        android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <com.common.image.fresco.BaseImageView
-                android:id="@+id/avatar_iv"
-                android:layout_width="@dimen/view_100_dp"
-                android:layout_height="@dimen/view_100_dp" />
+            android:id="@+id/friends"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/name_tv"
+                android:id="@+id/friends_num_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/avatar_iv"
-                android:minWidth="@dimen/view_100_dp"
+                android:layout_centerHorizontal="true"
+                android:text="12"
+                android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_30_dp" />
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/user_id_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/avatar_iv"
-                android:layout_below="@+id/name_tv"
-                android:layout_marginTop="@dimen/view_10_dp"
-                android:minWidth="@dimen/view_100_dp"
+                android:layout_below="@+id/friends_num_tv"
+                android:layout_centerHorizontal="true"
+                android:text="好友"
+                android:textColor="#0C2275"
+                android:textSize="@dimen/textsize_12_dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fans"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/fans_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="34"
+                android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_30_dp" />
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/update_nickname_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_toRightOf="@+id/name_tv"
-                android:text="修改昵称"
-                app:bl_pressed_textColor="@color/red"
-                app:bl_unPressed_textColor="#5fff0000" />
+                android:layout_below="@+id/fans_num_tv"
+                android:layout_centerHorizontal="true"
+                android:text="粉丝"
+                android:textColor="#0C2275"
+                android:textSize="@dimen/textsize_12_dp" />
+
         </RelativeLayout>
 
+
         <RelativeLayout
-            android:id="@+id/clear_cache_btn"
-            android:layout_width="match_parent"
+            android:id="@+id/follows"
+            android:layout_width="@dimen/view_0_dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_20_dp">
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/follows_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="5"
+                android:textColor="#0C2275"
+                android:textSize="@dimen/textsize_30_dp" />
 
             <com.common.view.ex.ExTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="清除缓存" />
-        </RelativeLayout>
+                android:layout_below="@+id/follows_num_tv"
+                android:layout_centerHorizontal="true"
+                android:text="关注"
+                android:textColor="#0C2275"
+                android:textSize="@dimen/textsize_12_dp" />
 
-        <RelativeLayout
-            android:id="@+id/logout_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_20_dp">
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="退出登录" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/setting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_20_dp">
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="设置" />
         </RelativeLayout>
 
     </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/medal_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_148_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_278_dp"
+        android:background="@drawable/gerenzhongxin_zhanji_bg">
+
+    </RelativeLayout>
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/audition_room_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/medal_layout"
+        android:layout_alignLeft="@+id/medal_layout"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:background="@drawable/gerenzhongxin_shiyinfang" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/music_test_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/medal_layout"
+        android:layout_alignRight="@id/medal_layout"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:background="@drawable/gerenzhongxin_yinyueceshi" />
 
 </RelativeLayout>
