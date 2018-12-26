@@ -17,6 +17,9 @@ android {
             java.srcDirs += 'src/main/java-room-msg'
             java.srcDirs += 'src/main/java-lyrics'
             res.srcDirs += 'src/main/res-lyrics'
+
+            java.srcDirs += 'src/main/java-dialog'
+            res.srcDirs += 'src/main/res-dialog'
         }
     }
 }

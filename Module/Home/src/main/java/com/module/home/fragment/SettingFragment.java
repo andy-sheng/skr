@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
@@ -117,7 +119,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-
+                        // TODO: 2018/12/26 用户服务协议
                     }
                 });
 
@@ -126,7 +128,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-
+                        // TODO: 2018/12/26 用户评价
                     }
                 });
 
@@ -135,7 +137,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-
+                        UserAccountManager.getInstance().logoff();
                     }
                 });
         long cacheSize = U.getPreferenceUtils().getSettingLong("key_cache_size", 0);

@@ -5,6 +5,7 @@ import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
@@ -38,7 +39,10 @@ import com.module.rankingmode.room.presenter.RankingCorePresenter;
 import com.module.rankingmode.room.view.BottomContainerView;
 import com.module.rankingmode.room.view.IGameRuleView;
 import com.module.rankingmode.room.view.InputContainerView;
-import com.module.rankingmode.room.view.PersonInfoDialogView;
+
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.zq.dialog.PersonInfoDialogView;
 import com.module.rankingmode.room.view.TopContainerView;
 import com.module.rankingmode.room.view.TurnChangeCardView;
 import com.module.rankingmode.song.model.SongModel;
@@ -233,7 +237,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         @Override
                         public boolean onGetServer(UserInfoModel userInfo) {
                             // TODO: 2018/12/25  从服务器取数据
-                            showPersonInfoView();
+                            showPersonInfoView(userInfo);
                             return false;
                         }
                     });
@@ -243,8 +247,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mCommentView.setRoomData(mRoomData);
     }
 
-    private void showPersonInfoView() {
+    boolean isReport = false;
+
+    private void showPersonInfoView(UserInfoModel userInfo) {
         PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext());
+        personInfoDialogView.setData(userInfo);
 
         DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(personInfoDialogView))
@@ -252,7 +259,34 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.transparent)
                 .setExpanded(false)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view.getId() == R.id.report) {
+                            // 举报
+                            dialog.dismiss();
+                            isReport = true;
+                            U.getToastUtil().showShort("你点击了举报按钮");
+                        } else if (view.getId() == R.id.follow_tv) {
+                            // 关注
+                            U.getToastUtil().showShort("你点击了关注按钮");
+                        }
+                    }
+                })
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        if (isReport) {
+                            showReportView();
+                        }
+                        isReport = false;
+                    }
+                })
                 .create().show();
+    }
+
+    private void showReportView() {
+        // TODO: 2018/12/26  等举报完善再写
     }
 
     private void initTopView() {
