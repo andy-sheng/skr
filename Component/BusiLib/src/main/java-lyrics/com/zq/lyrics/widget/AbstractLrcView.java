@@ -1089,7 +1089,7 @@ public abstract class AbstractLrcView extends View {
     /**
      * 重置数据
      */
-    private void resetData() {
+    public void resetData() {
         //
         mLrcPlayerStatus = LRCPLAYERSTATUS_INIT;
         removeCallbacksAndMessages();
@@ -1261,8 +1261,9 @@ public abstract class AbstractLrcView extends View {
     public void release() {
         removeCallbacksAndMessages();
         //关闭线程
-//        if (mWorkerHandler != null)
-//            mWorkerHandler.removeCallbacksAndMessages(null);
+        if (mWorkerHandler != null){
+            mWorkerHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     /**
