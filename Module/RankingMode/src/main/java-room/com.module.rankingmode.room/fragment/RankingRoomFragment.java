@@ -492,7 +492,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
 
         mFloatLyricsView.setVisibility(View.GONE);
+        mFloatLyricsView.release();
         mManyLyricsView.setVisibility(View.GONE);
+        mManyLyricsView.release();
     }
 
     @Override
@@ -562,6 +564,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             if (mRoomData.getRealRoundInfo().getUserID()
                     == MyUserInfoManager.getInstance().getUid()) {
                 mFloatLyricsView.setVisibility(View.GONE);
+                mFloatLyricsView.release();
                 mManyLyricsView.setVisibility(View.VISIBLE);
                 mManyLyricsView.initLrcData();
                 mManyLyricsView.setLyricsReader(lyricsReader);
@@ -571,6 +574,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 }
             } else {
                 mManyLyricsView.setVisibility(View.GONE);
+                mManyLyricsView.release();
                 mFloatLyricsView.setVisibility(View.VISIBLE);
                 mFloatLyricsView.initLrcData();
                 mFloatLyricsView.setLyricsReader(lyricsReader);

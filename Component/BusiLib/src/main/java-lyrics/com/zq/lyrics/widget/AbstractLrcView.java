@@ -1261,8 +1261,8 @@ public abstract class AbstractLrcView extends View {
     public void release() {
         removeCallbacksAndMessages();
         //关闭线程
-        if (mHandlerThread != null)
-            mHandlerThread.quit();
+//        if (mWorkerHandler != null)
+//            mWorkerHandler.removeCallbacksAndMessages(null);
     }
 
     /**
