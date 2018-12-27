@@ -48,7 +48,7 @@
                     android:id="@+id/iv_yule_pk"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/btn_yule_shouye_down_normal"
+                    android:src="@drawable/btn_yule_shouye2_down_normal"
                     android:layout_alignParentRight="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
