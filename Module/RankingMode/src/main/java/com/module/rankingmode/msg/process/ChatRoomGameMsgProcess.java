@@ -10,11 +10,14 @@ import com.module.rankingmode.msg.event.ReadyNoticeEvent;
 import com.module.rankingmode.msg.event.RoundAndGameOverEvent;
 import com.module.rankingmode.msg.event.RoundOverEvent;
 import com.module.rankingmode.msg.event.SyncStatusEvent;
+import com.module.rankingmode.msg.event.VoteResultEvent;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
 import com.module.rankingmode.prepare.model.GameReadyModel;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.prepare.model.RoundInfoModel;
 import com.module.rankingmode.prepare.model.PlayerInfo;
+import com.module.rankingmode.room.model.UserScoreModel;
+import com.module.rankingmode.room.model.VoteInfoModel;
 import com.module.rankingmode.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
@@ -30,6 +33,9 @@ import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
 import com.zq.live.proto.Room.RoundOverMsg;
 import com.zq.live.proto.Room.SyncStatusMsg;
+import com.zq.live.proto.Room.UserScoreRecord;
+import com.zq.live.proto.Room.VoteInfo;
+import com.zq.live.proto.Room.VoteResultMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -70,6 +76,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processExitGameAfterPlay(basePushInfo, msg.getExitGameAfterPlayMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_OUT_ROUND) {
             processExitGameOutRound(basePushInfo, msg.getExitGameOutRoundMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_VOTE_RESULT) {
+            processVoteResult(basePushInfo, msg.getVoteResultMsg());
         }
     }
 
@@ -80,7 +88,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_SYNC_STATUS,
                 ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
                 ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY,
-                ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND
+                ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND,
+                ERoomMsgType.RM_VOTE_RESULT
         };
     }
 
@@ -178,8 +187,23 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         long roundOverTimeMs = roundAndGameOverMsg.getRoundOverTimeMs();
 
+        // TODO: 2018/12/27 新增投票打分信息和分值信息
+        List<VoteInfoModel> voteInfoModels = new ArrayList<>();
+        for (VoteInfo voteInfo : roundAndGameOverMsg.getVoteInfoList()) {
+            VoteInfoModel voteInfoModel = new VoteInfoModel();
+            voteInfoModel.parse(voteInfo);
+            voteInfoModels.add(voteInfoModel);
+        }
+
+        List<UserScoreModel> userScoreModels = new ArrayList<>();
+        for (UserScoreRecord userScoreRecord : roundAndGameOverMsg.getUserScoreRecordList()) {
+            UserScoreModel userScoreModel = new UserScoreModel();
+            userScoreModel.parse(userScoreRecord);
+            userScoreModels.add(userScoreModel);
+        }
+
         MyLog.d(TAG, " processRoundAndGameOverMsg " + "roundOverTimeMs" + roundOverTimeMs);
-        EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs));
+        EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs, voteInfoModels, userScoreModels));
     }
 
     //app进程后台通知
@@ -260,6 +284,26 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         long exitTimeMs = exitGameOutRoundMsg.getExitTimeMs();
 
         EventBus.getDefault().post(new ExitGameEvent(basePushInfo, EXIT_GAME_OUT_ROUND, exitUserID, exitTimeMs));
+    }
+
+    //游戏投票结果消息
+    private void processVoteResult(BasePushInfo basePushInfo, VoteResultMsg voteResultMsg) {
+
+        List<VoteInfoModel> voteInfoModels = new ArrayList<>();
+        for (VoteInfo voteInfo : voteResultMsg.getVoteInfoList()) {
+            VoteInfoModel voteInfoModel = new VoteInfoModel();
+            voteInfoModel.parse(voteInfo);
+            voteInfoModels.add(voteInfoModel);
+        }
+
+        List<UserScoreModel> userScoreModels = new ArrayList<>();
+        for (UserScoreRecord userScoreRecord : voteResultMsg.getUserScoreRecordList()) {
+            UserScoreModel userScoreModel = new UserScoreModel();
+            userScoreModel.parse(userScoreRecord);
+            userScoreModels.add(userScoreModel);
+        }
+
+        EventBus.getDefault().post(new VoteResultEvent(basePushInfo, voteInfoModels, userScoreModels));
     }
 
 }

@@ -9,6 +9,8 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -48,10 +50,12 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     ExTextView mVoteDownTv;
     ExImageView mVoteVsIv;
 
-    EndGamePresenter presenter;
+    EndGamePresenter mPresenter;
 
     PlayerInfo left;
     PlayerInfo right;
+
+    HandlerTaskTimer mVoteTimeTask;
 
     @Override
     public int initView() {
@@ -100,20 +104,45 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         }
 
-        presenter = new EndGamePresenter(this);
-        addPresent(presenter);
+        mPresenter = new EndGamePresenter(this);
+        addPresent(mPresenter);
 
         RxView.clicks(mVoteLeftMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    presenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
+                    mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
                 });
 
         RxView.clicks(mVoteRightMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    presenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
+                    mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
                 });
+
+        startTimeTask();
+    }
+
+    /**
+     * 更新评分倒计时
+     */
+    public void startTimeTask() {
+        mVoteTimeTask = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(12)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        if (integer == 12) {
+                            mPresenter.getVoteResult(mRoomData.getGameId());
+                        }
+                    }
+                });
+    }
+
+    public void stopTimeTask() {
+        if (mVoteTimeTask != null) {
+            mVoteTimeTask.dispose();
+        }
     }
 
     @Override
@@ -159,7 +188,14 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     }
 
     @Override
+    public void destroy() {
+        super.destroy();
+        stopTimeTask();
+    }
+
+    @Override
     protected boolean onBackPressed() {
+        stopTimeTask();
         getActivity().finish();
         return true;
     }

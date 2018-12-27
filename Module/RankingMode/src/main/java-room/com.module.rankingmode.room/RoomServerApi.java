@@ -91,6 +91,12 @@ public interface RoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/game/vote")
     Observable<ApiResult> vote(@Body RequestBody body);
 
+    /**
+     * 获取投票结果
+     * @param gameID
+     * @return    投票打分信息 List<VoteInfoModel>
+     *            分值信息    List<UserScoreModel>
+     */
     @GET("http://dev.game.inframe.mobi/v1/game/vote")
     Observable<ApiResult> getVoteResult(@Query("gameID") int gameID);
 

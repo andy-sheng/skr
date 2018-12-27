@@ -9,9 +9,12 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.rankingmode.room.RoomServerApi;
+import com.module.rankingmode.room.model.UserScoreModel;
+import com.module.rankingmode.room.model.VoteInfoModel;
 import com.module.rankingmode.room.view.IVoteView;
 
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -31,8 +34,8 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
     /**
      * 投票
      *
-     * @param gameID      游戏标识别
-     * @param pickUserID  被灭灯用户id
+     * @param gameID     游戏标识别
+     * @param pickUserID 被灭灯用户id
      */
     public void vote(int gameID, long pickUserID) {
         MyLog.d(TAG, "vote" + " gameID=" + gameID + " votedUserID=" + pickUserID);
@@ -71,6 +74,8 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
+                    List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
                     U.getToastUtil().showShort("获取投票结果成功");
                 } else {
                     MyLog.e(TAG, "getVoteResult result errno is " + result.getErrmsg());
