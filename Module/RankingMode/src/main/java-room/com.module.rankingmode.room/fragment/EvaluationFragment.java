@@ -106,15 +106,13 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         RxView.clicks(mVoteLeftMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    // TODO: 2018/12/18  我的机器评分，暂时当作100分
-                    presenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId(), 100);
+                    presenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
                 });
 
         RxView.clicks(mVoteRightMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    // TODO: 2018/12/18  我的机器评分，暂时当作100分
-                    presenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId(), 100);
+                    presenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
                 });
     }
 

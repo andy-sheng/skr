@@ -25,6 +25,9 @@ public interface RoomServerApi {
      * 上报结束一轮游戏
      *
      * @param body 游戏标识 gameID (必选)
+     *             机器评分 sysScore (必选)
+     *             时间戳 timeMs (必选)
+     *             签名  sign (必选)  md5(skrer|gameID|score|timeMs)
      * @return  当前轮次结束时间戳roundOverTimeMs
      *          当前轮次信息currentRound
      *          下个轮次信息nextRound
@@ -83,9 +86,6 @@ public interface RoomServerApi {
      *
      * @param body 游戏标识 gameID (必选)
      *             被投票人 votedUserID (必选)
-     *             系统评分 sysScoreVal (必选)
-     *             时间戳  timeMs  (必选)
-     *             签名  sign md5(skrer+gameID+votedUserID+sysScoreVal+timeMs) (必选)
      * @return
      */
     @PUT("http://dev.game.inframe.mobi/v1/game/vote")

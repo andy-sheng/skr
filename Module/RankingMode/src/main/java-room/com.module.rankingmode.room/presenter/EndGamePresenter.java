@@ -33,20 +33,13 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
      *
      * @param gameID      游戏标识别
      * @param votedUserID 被投人id
-     * @param sysScoreVal 系统对自己的打分
      */
-    public void vote(int gameID, long votedUserID, int sysScoreVal) {
-        MyLog.d(TAG, "vote" + " gameID=" + gameID + " votedUserID=" + votedUserID + " sysScoreVal=" + sysScoreVal);
-        long timeMs = System.currentTimeMillis();
-        String sign = U.getMD5Utils().MD5_32("skrer" + String.valueOf(gameID) +
-                String.valueOf(votedUserID) + String.valueOf(sysScoreVal) + String.valueOf(timeMs));
+    public void vote(int gameID, long votedUserID) {
+        MyLog.d(TAG, "vote" + " gameID=" + gameID + " votedUserID=" + votedUserID);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", gameID);
         map.put("votedUserID", votedUserID);
-        map.put("sysScoreVal", sysScoreVal);
-        map.put("timeMs", timeMs);
-        map.put("sign", sign);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.vote(body), new ApiObserver<ApiResult>() {

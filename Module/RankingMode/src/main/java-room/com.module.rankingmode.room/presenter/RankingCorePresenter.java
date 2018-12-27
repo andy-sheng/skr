@@ -104,8 +104,20 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "上报我的演唱结束");
         estimateOverTsThisRound();
 
+        // TODO: 2018/12/27 机器评分先写死，都给90分
+        long timeMs = System.currentTimeMillis();
+        int sysScore = 90;
+        String sign = U.getMD5Utils().MD5_32("skrer|" +
+                String.valueOf(mRoomData.getGameId()) + "|" +
+                String.valueOf(sysScore) + "|" +
+                String.valueOf(timeMs));
+
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
+        map.put("sysScore", sysScore);
+        map.put("timeMs", timeMs);
+        map.put("sign", sign);
 
         // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
         int roundSeq = -1;
@@ -463,7 +475,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             mUiHanlder.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mIGameRuleView.updateScrollBarProgress(info.getVolume()/3);
+                                    mIGameRuleView.updateScrollBarProgress(info.getVolume() / 3);
                                 }
                             });
                             break;
