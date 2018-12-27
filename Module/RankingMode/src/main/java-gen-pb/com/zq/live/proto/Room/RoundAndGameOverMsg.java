@@ -16,6 +16,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 /**
@@ -57,16 +58,39 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   )
   public final Integer exitUserID;
 
-  public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound, Integer exitUserID) {
-    this(roundOverTimeMs, currentRound, exitUserID, ByteString.EMPTY);
+  /**
+   * 投票打分信息
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.Room.VoteInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<VoteInfo> voteInfo;
+
+  /**
+   * 分值信息
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.Room.UserScoreRecord#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<UserScoreRecord> userScoreRecord;
+
+  public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound, Integer exitUserID,
+      List<VoteInfo> voteInfo, List<UserScoreRecord> userScoreRecord) {
+    this(roundOverTimeMs, currentRound, exitUserID, voteInfo, userScoreRecord, ByteString.EMPTY);
   }
 
   public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound, Integer exitUserID,
-      ByteString unknownFields) {
+      List<VoteInfo> voteInfo, List<UserScoreRecord> userScoreRecord, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.exitUserID = exitUserID;
+    this.voteInfo = Internal.immutableCopyOf("voteInfo", voteInfo);
+    this.userScoreRecord = Internal.immutableCopyOf("userScoreRecord", userScoreRecord);
   }
 
   @Override
@@ -75,6 +99,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     builder.roundOverTimeMs = roundOverTimeMs;
     builder.currentRound = currentRound;
     builder.exitUserID = exitUserID;
+    builder.voteInfo = Internal.copyOf("voteInfo", voteInfo);
+    builder.userScoreRecord = Internal.copyOf("userScoreRecord", userScoreRecord);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -87,7 +113,9 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(currentRound, o.currentRound)
-        && Internal.equals(exitUserID, o.exitUserID);
+        && Internal.equals(exitUserID, o.exitUserID)
+        && voteInfo.equals(o.voteInfo)
+        && userScoreRecord.equals(o.userScoreRecord);
   }
 
   @Override
@@ -98,6 +126,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (exitUserID != null ? exitUserID.hashCode() : 0);
+      result = result * 37 + voteInfo.hashCode();
+      result = result * 37 + userScoreRecord.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -109,6 +139,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (exitUserID != null) builder.append(", exitUserID=").append(exitUserID);
+    if (!voteInfo.isEmpty()) builder.append(", voteInfo=").append(voteInfo);
+    if (!userScoreRecord.isEmpty()) builder.append(", userScoreRecord=").append(userScoreRecord);
     return builder.replace(0, 2, "RoundAndGameOverMsg{").append('}').toString();
   }
 
@@ -153,6 +185,26 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   }
 
   /**
+   * 投票打分信息
+   */
+  public List<VoteInfo> getVoteInfoList() {
+    if(voteInfo==null){
+        return new java.util.ArrayList<VoteInfo>();
+    }
+    return voteInfo;
+  }
+
+  /**
+   * 分值信息
+   */
+  public List<UserScoreRecord> getUserScoreRecordList() {
+    if(userScoreRecord==null){
+        return new java.util.ArrayList<UserScoreRecord>();
+    }
+    return userScoreRecord;
+  }
+
+  /**
    * 轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -173,6 +225,20 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     return exitUserID!=null;
   }
 
+  /**
+   * 投票打分信息
+   */
+  public boolean hasVoteInfoList() {
+    return voteInfo!=null;
+  }
+
+  /**
+   * 分值信息
+   */
+  public boolean hasUserScoreRecordList() {
+    return userScoreRecord!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoundAndGameOverMsg, Builder> {
     public Long roundOverTimeMs;
 
@@ -180,7 +246,13 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
 
     public Integer exitUserID;
 
+    public List<VoteInfo> voteInfo;
+
+    public List<UserScoreRecord> userScoreRecord;
+
     public Builder() {
+      voteInfo = Internal.newMutableList();
+      userScoreRecord = Internal.newMutableList();
     }
 
     /**
@@ -207,9 +279,27 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       return this;
     }
 
+    /**
+     * 投票打分信息
+     */
+    public Builder addAllVoteInfo(List<VoteInfo> voteInfo) {
+      Internal.checkElementsNotNull(voteInfo);
+      this.voteInfo = voteInfo;
+      return this;
+    }
+
+    /**
+     * 分值信息
+     */
+    public Builder addAllUserScoreRecord(List<UserScoreRecord> userScoreRecord) {
+      Internal.checkElementsNotNull(userScoreRecord);
+      this.userScoreRecord = userScoreRecord;
+      return this;
+    }
+
     @Override
     public RoundAndGameOverMsg build() {
-      return new RoundAndGameOverMsg(roundOverTimeMs, currentRound, exitUserID, super.buildUnknownFields());
+      return new RoundAndGameOverMsg(roundOverTimeMs, currentRound, exitUserID, voteInfo, userScoreRecord, super.buildUnknownFields());
     }
   }
 
@@ -223,6 +313,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
           + RoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.exitUserID)
+          + VoteInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.voteInfo)
+          + UserScoreRecord.ADAPTER.asRepeated().encodedSizeWithTag(5, value.userScoreRecord)
           + value.unknownFields().size();
     }
 
@@ -231,6 +323,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
       RoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.exitUserID);
+      VoteInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.voteInfo);
+      UserScoreRecord.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.userScoreRecord);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -243,6 +337,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           case 2: builder.setCurrentRound(RoundInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setExitUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: builder.voteInfo.add(VoteInfo.ADAPTER.decode(reader)); break;
+          case 5: builder.userScoreRecord.add(UserScoreRecord.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -258,6 +354,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     public RoundAndGameOverMsg redact(RoundAndGameOverMsg value) {
       Builder builder = value.newBuilder();
       if (builder.currentRound != null) builder.currentRound = RoundInfo.ADAPTER.redact(builder.currentRound);
+      Internal.redactElements(builder.voteInfo, VoteInfo.ADAPTER);
+      Internal.redactElements(builder.userScoreRecord, UserScoreRecord.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

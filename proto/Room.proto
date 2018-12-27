@@ -11,7 +11,6 @@ java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-de
 
 */
 
-// 房间消息：此结构会通过pb编码后，通过聊天室通道到达客户端
 message RoomMsg
 {
     sint64 timeMs        = 1; //房间消息产生时间，单位毫秒
@@ -35,6 +34,58 @@ message RoomMsg
     ExitGameBeforePlayMsg exitGameBeforePlayMsg = 107; //再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
     ExitGameAfterPlayMsg exitGameAfterPlayMsg   = 108; //游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
     ExitGameOutRoundMsg exitGameOutRoundMsg     = 109; //游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
+    VoteResultMsg voteResultMsg                 = 110; //游戏投票结果消息
+}
+
+// 投票结果
+message VoteResultMsg
+{
+    repeated VoteInfo voteInfo               = 1; //投票打分信息
+    repeated UserScoreRecord userScoreRecord = 2; //分值信息
+}
+
+// 用户分值变动记录
+message UserScoreRecord
+{
+    uint32 userID            = 1; //用户标识
+    EScoreType scoreType     = 2; //分值类型
+    int32 scoreNow           = 3; //当前总分
+    int32 scoreBefore        = 4; //之前总分
+    repeated ScoreItem items = 5; //分值变动详情
+    string scoreTypeDesc     = 6; //分值类型描述
+    string scoreNowDesc      = 7; //当前分值描述
+    string scoreBeforeDesc   = 8; //之前分支描述
+}
+
+enum EScoreType {
+    ST_UNKNOWN            = 0; //未知
+    ST_LEVEL              = 1; //段位
+    ST_UP_LEVEL_GAME      = 2; //晋级赛
+    ST_TOTAL_STAR         = 3; //总星星数
+    ST_SUB_LEVEL_STAR     = 4; //子段位星星数
+    ST_UP_LEVEL_STAR      = 5; //晋级赛星星数
+    ST_BATTLE_INDEX       = 6; //战力值
+    ST_BATTLE_INDEX_TOTAL = 7; //总战力值
+    ST_BATTLE_RATING      = 8; //战斗评价, sss or ss or s or a...
+}
+
+// 分值变动条目
+message ScoreItem
+{
+    string why  = 1; //分值变动原因
+    int32 score = 2; //分值变动
+}
+
+//投票信息
+message VoteInfo
+{
+    uint32 userID         = 1; //用户标识
+    uint32 itemID         = 2; //演唱曲目ID
+    sint32 rank           = 3; //排名
+    bool isEscape         = 4; //是否逃跑
+    bool sysVote          = 5; //系统是否投票
+    sint32 sysScore       = 6; //系统打分分值
+    repeated uint32 voter = 7; //投票者
 }
 
 // 消息位置类型
@@ -64,6 +115,7 @@ enum ERoomMsgType {
     RM_EXIT_GAME_BEFORE_PLAY = 107; //在开始游戏前退出
     RM_EXIT_GAME_AFTER_PLAY  = 108; //在完成游戏后退出
     RM_EXIT_GAME_OUT_ROUND   = 109; //在游戏中,但不再round时退出
+    RM_VOTE_RESULT           = 110; //游戏投票结果消息
 }
 
 // 准备并开始游戏通知消息
@@ -93,7 +145,7 @@ message JoinActionMsg
 
 message PlayerInfo
 {
-    Common.UserInfo userInfo            = 1; // 玩家信息
+    Common.UserInfo userInfo            = 1; //玩家信息
     repeated Common.MusicInfo musicInfo = 2; //演唱信息
 }
 
@@ -177,6 +229,9 @@ message RoundAndGameOverMsg
     sint64 roundOverTimeMs = 1; //轮次结束的毫秒时间戳
     RoundInfo currentRound = 2; //当前轮次信息
     uint32 exitUserID      = 3; //退出用户的ID
+
+    repeated VoteInfo voteInfo               = 4; //投票打分信息
+    repeated UserScoreRecord userScoreRecord = 5; //分值信息
 }
 
 message ExitGameBeforePlayMsg

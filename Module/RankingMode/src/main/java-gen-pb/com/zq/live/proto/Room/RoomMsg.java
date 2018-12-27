@@ -22,7 +22,6 @@ import okio.ByteString;
 /**
  * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
  * --proto_path=./proto --java_out=./Module/RankingMode/src/main/java-gen-pb/ Room.proto
- * 房间消息：此结构会通过pb编码后，通过聊天室通道到达客户端
  */
 public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   public static final ProtoAdapter<RoomMsg> ADAPTER = new ProtoAdapter_RoomMsg();
@@ -210,14 +209,23 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   )
   public final ExitGameOutRoundMsg exitGameOutRoundMsg;
 
+  /**
+   * 游戏投票结果消息
+   */
+  @WireField(
+      tag = 110,
+      adapter = "com.zq.live.proto.Room.VoteResultMsg#ADAPTER"
+  )
+  public final VoteResultMsg voteResultMsg;
+
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
       ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
       RoundAndGameOverMsg roundAndGameOverMsg, AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg,
       ExitGameBeforePlayMsg exitGameBeforePlayMsg, ExitGameAfterPlayMsg exitGameAfterPlayMsg,
-      ExitGameOutRoundMsg exitGameOutRoundMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, ByteString.EMPTY);
+      ExitGameOutRoundMsg exitGameOutRoundMsg, VoteResultMsg voteResultMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, ByteString.EMPTY);
   }
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
@@ -226,7 +234,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       ReadyNoticeMsg readyNoticeMsg, RoundOverMsg roundOverMsg,
       RoundAndGameOverMsg roundAndGameOverMsg, AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg,
       ExitGameBeforePlayMsg exitGameBeforePlayMsg, ExitGameAfterPlayMsg exitGameAfterPlayMsg,
-      ExitGameOutRoundMsg exitGameOutRoundMsg, ByteString unknownFields) {
+      ExitGameOutRoundMsg exitGameOutRoundMsg, VoteResultMsg voteResultMsg,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -247,6 +256,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     this.exitGameBeforePlayMsg = exitGameBeforePlayMsg;
     this.exitGameAfterPlayMsg = exitGameAfterPlayMsg;
     this.exitGameOutRoundMsg = exitGameOutRoundMsg;
+    this.voteResultMsg = voteResultMsg;
   }
 
   @Override
@@ -271,6 +281,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     builder.exitGameBeforePlayMsg = exitGameBeforePlayMsg;
     builder.exitGameAfterPlayMsg = exitGameAfterPlayMsg;
     builder.exitGameOutRoundMsg = exitGameOutRoundMsg;
+    builder.voteResultMsg = voteResultMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -299,7 +310,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         && Internal.equals(syncStatusMsg, o.syncStatusMsg)
         && Internal.equals(exitGameBeforePlayMsg, o.exitGameBeforePlayMsg)
         && Internal.equals(exitGameAfterPlayMsg, o.exitGameAfterPlayMsg)
-        && Internal.equals(exitGameOutRoundMsg, o.exitGameOutRoundMsg);
+        && Internal.equals(exitGameOutRoundMsg, o.exitGameOutRoundMsg)
+        && Internal.equals(voteResultMsg, o.voteResultMsg);
   }
 
   @Override
@@ -326,6 +338,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       result = result * 37 + (exitGameBeforePlayMsg != null ? exitGameBeforePlayMsg.hashCode() : 0);
       result = result * 37 + (exitGameAfterPlayMsg != null ? exitGameAfterPlayMsg.hashCode() : 0);
       result = result * 37 + (exitGameOutRoundMsg != null ? exitGameOutRoundMsg.hashCode() : 0);
+      result = result * 37 + (voteResultMsg != null ? voteResultMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -353,6 +366,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     if (exitGameBeforePlayMsg != null) builder.append(", exitGameBeforePlayMsg=").append(exitGameBeforePlayMsg);
     if (exitGameAfterPlayMsg != null) builder.append(", exitGameAfterPlayMsg=").append(exitGameAfterPlayMsg);
     if (exitGameOutRoundMsg != null) builder.append(", exitGameOutRoundMsg=").append(exitGameOutRoundMsg);
+    if (voteResultMsg != null) builder.append(", voteResultMsg=").append(voteResultMsg);
     return builder.replace(0, 2, "RoomMsg{").append('}').toString();
   }
 
@@ -557,6 +571,16 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
+   * 游戏投票结果消息
+   */
+  public VoteResultMsg getVoteResultMsg() {
+    if(voteResultMsg==null){
+        return new VoteResultMsg.Builder().build();
+    }
+    return voteResultMsg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -689,6 +713,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     return exitGameOutRoundMsg!=null;
   }
 
+  /**
+   * 游戏投票结果消息
+   */
+  public boolean hasVoteResultMsg() {
+    return voteResultMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoomMsg, Builder> {
     public Long timeMs;
 
@@ -727,6 +758,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     public ExitGameAfterPlayMsg exitGameAfterPlayMsg;
 
     public ExitGameOutRoundMsg exitGameOutRoundMsg;
+
+    public VoteResultMsg voteResultMsg;
 
     public Builder() {
     }
@@ -883,9 +916,17 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       return this;
     }
 
+    /**
+     * 游戏投票结果消息
+     */
+    public Builder setVoteResultMsg(VoteResultMsg voteResultMsg) {
+      this.voteResultMsg = voteResultMsg;
+      return this;
+    }
+
     @Override
     public RoomMsg build() {
-      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, super.buildUnknownFields());
+      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, super.buildUnknownFields());
     }
   }
 
@@ -915,6 +956,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           + ExitGameBeforePlayMsg.ADAPTER.encodedSizeWithTag(107, value.exitGameBeforePlayMsg)
           + ExitGameAfterPlayMsg.ADAPTER.encodedSizeWithTag(108, value.exitGameAfterPlayMsg)
           + ExitGameOutRoundMsg.ADAPTER.encodedSizeWithTag(109, value.exitGameOutRoundMsg)
+          + VoteResultMsg.ADAPTER.encodedSizeWithTag(110, value.voteResultMsg)
           + value.unknownFields().size();
     }
 
@@ -939,6 +981,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       ExitGameBeforePlayMsg.ADAPTER.encodeWithTag(writer, 107, value.exitGameBeforePlayMsg);
       ExitGameAfterPlayMsg.ADAPTER.encodeWithTag(writer, 108, value.exitGameAfterPlayMsg);
       ExitGameOutRoundMsg.ADAPTER.encodeWithTag(writer, 109, value.exitGameOutRoundMsg);
+      VoteResultMsg.ADAPTER.encodeWithTag(writer, 110, value.voteResultMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -981,6 +1024,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           case 107: builder.setExitGameBeforePlayMsg(ExitGameBeforePlayMsg.ADAPTER.decode(reader)); break;
           case 108: builder.setExitGameAfterPlayMsg(ExitGameAfterPlayMsg.ADAPTER.decode(reader)); break;
           case 109: builder.setExitGameOutRoundMsg(ExitGameOutRoundMsg.ADAPTER.decode(reader)); break;
+          case 110: builder.setVoteResultMsg(VoteResultMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1009,6 +1053,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       if (builder.exitGameBeforePlayMsg != null) builder.exitGameBeforePlayMsg = ExitGameBeforePlayMsg.ADAPTER.redact(builder.exitGameBeforePlayMsg);
       if (builder.exitGameAfterPlayMsg != null) builder.exitGameAfterPlayMsg = ExitGameAfterPlayMsg.ADAPTER.redact(builder.exitGameAfterPlayMsg);
       if (builder.exitGameOutRoundMsg != null) builder.exitGameOutRoundMsg = ExitGameOutRoundMsg.ADAPTER.redact(builder.exitGameOutRoundMsg);
+      if (builder.voteResultMsg != null) builder.voteResultMsg = VoteResultMsg.ADAPTER.redact(builder.voteResultMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

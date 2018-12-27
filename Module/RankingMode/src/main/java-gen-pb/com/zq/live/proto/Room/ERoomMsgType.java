@@ -79,7 +79,12 @@ public enum ERoomMsgType implements WireEnum {
   /**
    * 在游戏中,但不再round时退出
    */
-  RM_EXIT_GAME_OUT_ROUND(109);
+  RM_EXIT_GAME_OUT_ROUND(109),
+
+  /**
+   * 游戏投票结果消息
+   */
+  RM_VOTE_RESULT(110);
 
   public static final ProtoAdapter<ERoomMsgType> ADAPTER = new ProtoAdapter_ERoomMsgType();
 
@@ -108,6 +113,7 @@ public enum ERoomMsgType implements WireEnum {
       case 107: return RM_EXIT_GAME_BEFORE_PLAY;
       case 108: return RM_EXIT_GAME_AFTER_PLAY;
       case 109: return RM_EXIT_GAME_OUT_ROUND;
+      case 110: return RM_VOTE_RESULT;
       default: return null;
     }
   }
