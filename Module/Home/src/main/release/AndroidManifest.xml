@@ -9,7 +9,9 @@
             android:name="com.module.home.HomeConfiguration"
             android:value="ConfigModule" />
 
-        <activity android:name=".updateinfo.EditInfoActivity"/>
+        <activity android:name=".updateinfo.EditInfoActivity" />
+
+        <activity android:name=".updateinfo.UploadAccountInfoActivity" />
 
     </application>
 

@@ -3,7 +3,9 @@ package com.module.home.updateinfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -137,6 +139,35 @@ public class UploadAccountInfoActivity extends BaseActivity {
                     }
                 });
 
+        mNicknameEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                int length = U.getStringUtils().getStringLength(editable.toString());
+                int selectionStart = mNicknameEt.getSelectionStart();
+                int selectionEnd = mNicknameEt.getSelectionEnd();
+                if (length > 14) {
+                    editable.delete(selectionStart - 1, selectionEnd);
+                    mNicknameEt.setText(editable.toString());
+                    int selection = editable.length();
+                    mNicknameEt.setSelection(selection);
+                    mNicknameHintTv.setVisibility(View.VISIBLE);
+                    mNicknameHintTv.setText("昵称不能超过7哥汉字或14个英文");
+                } else {
+                    mNicknameHintTv.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 
     private void checkNickName(String nickName) {
@@ -151,7 +182,9 @@ public class UploadAccountInfoActivity extends BaseActivity {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     // 昵称可用
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(UploadAccountInfoActivity.this);
+                    if (U.getKeyBoardUtils().getKeyBoardHeightNow(UploadAccountInfoActivity.this) != 0) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(UploadAccountInfoActivity.this);
+                    }
                     Bundle bundle = new Bundle();
                     bundle.putString(UPLOAD_ACCOUNT_NICKNAME, nickName);
                     U.getFragmentUtils().addFragment(FragmentUtils

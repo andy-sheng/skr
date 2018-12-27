@@ -5,7 +5,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -17,10 +19,15 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Common.ESex;
 
 import java.util.concurrent.TimeUnit;
@@ -140,10 +147,44 @@ public class EditInfoSexFragment extends BaseFragment {
             U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
             return;
         } else {
-            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                    .setSex(sex)
-                    .build());
-            U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+            TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                    .setMessageTip("确定修改性别？\n 性别只能修改一次哦～")
+                    .setConfirmTip("取消")
+                    .setCancelTip("确认修改")
+                    .build();
+
+            DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                            if (view instanceof ExTextView) {
+                                if (view.getId() == R.id.confirm_tv) {
+                                    dialog.dismiss();
+                                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                            .setSex(sex)
+                                            .build());
+                                    U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+                                }
+
+                                if (view.getId() == R.id.cancel_tv) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        }
+                    })
+                    .setOnDismissListener(new OnDismissListener() {
+                        @Override
+                        public void onDismiss(@NonNull DialogPlus dialog) {
+
+                        }
+                    })
+                    .create().show();
+
         }
     }
 

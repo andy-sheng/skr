@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="edit_nickname_confim_tips">确认将昵称修改为%s吗?\n三个月以后才能再次修改喔～</string>
+</resources>

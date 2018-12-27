@@ -14,8 +14,6 @@
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
-        app:leftDrawable="@drawable/img_back"
-        app:leftType="textView"
         app:rightType="textView"
         app:rightText="1/3"
         app:rightTextColor="@color/white_trans_70"

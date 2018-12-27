@@ -47,7 +47,9 @@ public class EditInfoSignFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext());
+                        if (U.getKeyBoardUtils().getKeyBoardHeightNow(getActivity()) != 0) {
+                            U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext());
+                        }
                         U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
                     }
                 });
@@ -58,7 +60,6 @@ public class EditInfoSignFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         // 完成
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext());
                         clickComplete();
                     }
                 });
@@ -110,6 +111,9 @@ public class EditInfoSignFragment extends BaseFragment {
             // 签名一样没改
             U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
         } else {
+            if (U.getKeyBoardUtils().getKeyBoardHeightNow(getActivity()) != 0) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext());
+            }
             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                     .setSign(sign)
                     .build());

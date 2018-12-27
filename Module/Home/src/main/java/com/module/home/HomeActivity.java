@@ -50,7 +50,6 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(this);
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         mGameBtn = (ExImageView) findViewById(R.id.game_btn);
         mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
