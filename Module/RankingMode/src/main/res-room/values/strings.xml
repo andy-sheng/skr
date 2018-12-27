@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="quick_msg_arr">
-        <item>你是海豚转世吧</item>
-        <item>你的声音怎么这么好听 </item>
-        <item>你是海豚转世吧</item>
-        <item>你的声音怎么这么好听</item>
-        <item>你是海豚转世吧1</item>
-        <item>你是海豚转世吧2</item>
-        <item>你是海豚转世吧3</item>
-        <item>你是海豚转世吧4</item>
+        <item>开口跪！</item>
+        <item>高手，这是高手</item>
+        <item>大家好，我先表演一个劈叉！</item>
+        <item>你可真skr小调皮！</item>
+        <item>你是国家分配给我的对象吗！</item>
+        <item>好好唱，不然我喊撕哥来揍你！</item>
+        <item>请开始你的表演！</item>
+        <item>你这该死的，无处安放的魅力！</item>
+        <item>我关注你你就关注我好不好呀</item>
+        <item>秀儿，是你吗？</item>
     </string-array>
-
 </resources>
