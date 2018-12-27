@@ -19,6 +19,7 @@ public class VoteInfoModel {
     private int itemID;
     private boolean isEscape;
     private int sysScore;
+    private int rank;
     private List<Integer> voter;
 
     public int getUserID() {
@@ -61,12 +62,21 @@ public class VoteInfoModel {
         this.voter = voter;
     }
 
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
     public void parse(VoteInfo voteInfo) {
         if (voteInfo == null) {
             MyLog.e("VoteInfoModel VoteInfo == null");
             return;
         }
 
+        this.setRank(voteInfo.getRank());
         this.setUserID(voteInfo.getUserID());
         this.setItemID(voteInfo.getItemID());
         this.setIsEscape(voteInfo.getIsEscape());

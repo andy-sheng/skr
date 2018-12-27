@@ -484,6 +484,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
                 .setAddToBackStack(true)
                 .addDataBeforeAdd(0, recordData)
+                .addDataBeforeAdd(1, mRoomData)
                 .build()
         );
     }
