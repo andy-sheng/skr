@@ -417,6 +417,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void destroy() {
         super.destroy();
         mUiHanlder.removeCallbacksAndMessages(null);
+        mManyLyricsView.release();
+        mFloatLyricsView.release();
     }
 
     @Override
