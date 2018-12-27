@@ -135,7 +135,7 @@ public class WheelView extends View {
     public WheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        textSize = getResources().getDimensionPixelSize(R.dimen.textsize_20_dp);//默认大小
+        textSize = getResources().getDimensionPixelSize(R.dimen.textsize_25_dp);//默认大小
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
         float density = dm.density; // 屏幕密度比（0.75/1.0/1.5/2.0/3.0）
@@ -153,13 +153,13 @@ public class WheelView extends View {
         }
 
         if (attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.pickerview, 0, 0);
-            mGravity = a.getInt(R.styleable.pickerview_wheelview_gravity, Gravity.CENTER);
-            textColorOut = a.getColor(R.styleable.pickerview_wheelview_textColorOut, 0xFFa8a8a8);
-            textColorCenter = a.getColor(R.styleable.pickerview_wheelview_textColorCenter, 0xFF2a2a2a);
-            dividerColor = a.getColor(R.styleable.pickerview_wheelview_dividerColor, 0xFFd5d5d5);
-            textSize = a.getDimensionPixelOffset(R.styleable.pickerview_wheelview_textSize, textSize);
-            lineSpacingMultiplier = a.getFloat(R.styleable.pickerview_wheelview_lineSpacingMultiplier, lineSpacingMultiplier);
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WheelView, 0, 0);
+            mGravity = a.getInt(R.styleable.WheelView_wheelview_gravity, Gravity.CENTER);
+            textColorOut = a.getColor(R.styleable.WheelView_wheelview_textColorOut, 0xFFa8a8a8);
+            textColorCenter = a.getColor(R.styleable.WheelView_wheelview_textColorCenter, 0xFF0C2275);
+            dividerColor = a.getColor(R.styleable.WheelView_wheelview_dividerColor, 0xFFd5d5d5);
+//            textSize = a.getDimensionPixelOffset(R.styleable.WheelView_wheelview_textSize, textSize);
+            lineSpacingMultiplier = a.getFloat(R.styleable.WheelView_wheelview_lineSpacingMultiplier, lineSpacingMultiplier);
             a.recycle();//回收内存
         }
 
@@ -362,6 +362,8 @@ public class WheelView extends View {
         if (adapter == null) {
             return;
         }
+
+
         //initPosition越界会造成preCurrentIndex的值不正确
         initPosition = Math.min(Math.max(0, initPosition), adapter.getItemsCount() - 1);
 
@@ -522,7 +524,7 @@ public class WheelView extends View {
                     // 控制文字倾斜角度
                     paintOuterText.setTextSkewX((textXOffset == 0 ? 0 : (textXOffset > 0 ? 1 : -1)) * (angle > 0 ? -1 : 1) * DEFAULT_TEXT_TARGET_SKEWX * offsetCoefficient);
                     // 控制透明度
-                    paintOuterText.setAlpha((int) ((1 - offsetCoefficient) * 255));
+                    paintOuterText.setAlpha((int) (((1 - offsetCoefficient) * 255) * 0.2));
                     // 控制文字水平偏移距离
                     canvas.drawText(contentText, drawOutContentStart + textXOffset * offsetCoefficient, maxTextHeight, paintOuterText);
                     canvas.restore();
