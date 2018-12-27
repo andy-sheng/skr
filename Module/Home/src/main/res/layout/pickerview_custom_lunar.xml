@@ -3,7 +3,7 @@
     android:id="@+id/timepicker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="#F9F4F1"
     android:orientation="horizontal">
 
     <!--&lt;!&ndash;此部分需要完整复制过去，删减或者更改ID会导致初始化找不到内容而报空&ndash;&gt;-->
@@ -21,7 +21,6 @@
         android:layout_weight="1" />
 
     <com.contrarywind.wheelview.view.WheelView
-
         android:id="@+id/month"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

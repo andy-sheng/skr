@@ -1,5 +1,6 @@
 package com.module.home.updateinfo;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,8 +12,13 @@ import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.image.fresco.BaseImageView;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
@@ -28,6 +34,7 @@ import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,11 +48,15 @@ import io.reactivex.functions.Consumer;
 @Route(path = RouterConstants.ACTIVITY_UPLOAD)
 public class UploadAccountInfoActivity extends BaseActivity {
 
+    public static final String UPLOAD_ACCOUNT_NICKNAME = "upload_account_nickname";
+    public static final String UPLOAD_ACCOUNT_SEX = "upload_account_sex";
+
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     BaseImageView mAvatarIv;
     NoLeakEditText mNicknameEt;
-    ExTextView mSubmitTv;
+    ExTextView mNicknameHintTv;
+    ExTextView mNextTv;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -58,10 +69,14 @@ public class UploadAccountInfoActivity extends BaseActivity {
         mTitlebar = (CommonTitleBar) findViewById(R.id.titlebar);
         mAvatarIv = (BaseImageView) findViewById(R.id.avatar_iv);
         mNicknameEt = (NoLeakEditText) findViewById(R.id.nickname_et);
-        mSubmitTv = (ExTextView) findViewById(R.id.submit_tv);
+        mNicknameHintTv = (ExTextView) findViewById(R.id.nickname_hint_tv);
+        mNextTv = (ExTextView) findViewById(R.id.next_tv);
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
                 .getAvatar())
+                .setCircle(true)
+                .setBorderColor(Color.parseColor("#0C2275"))
+                .setBorderWidth(U.getDisplayUtils().dip2px(3))
                 .build());
 
         mAvatarIv.setOnClickListener(new View.OnClickListener() {
@@ -112,43 +127,58 @@ public class UploadAccountInfoActivity extends BaseActivity {
             }
         });
 
-        RxView.clicks(mSubmitTv)
+        RxView.clicks(mNextTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
                         String nickName = mNicknameEt.getText().toString().trim();
-                        if (!TextUtils.isEmpty(nickName)) {
-                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                    .setNickName(nickName)
-                            .build());
-                        } else {
-                            U.getToastUtil().showShort("上传个人资料成功");
-                        }
+                        checkNickName(nickName);
                     }
                 });
+
+    }
+
+    private void checkNickName(String nickName) {
+        if (TextUtils.isEmpty(nickName)) {
+            U.getToastUtil().showShort("昵称为空");
+            return;
+        }
+
+        MyUserInfoServerApi myUserInfoServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
+        ApiMethods.subscribe(myUserInfoServerApi.checkNickName(nickName), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    // 昵称可用
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(UploadAccountInfoActivity.this);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(UPLOAD_ACCOUNT_NICKNAME, nickName);
+                    U.getFragmentUtils().addFragment(FragmentUtils
+                            .newAddParamsBuilder(UploadAccountInfoActivity.this, EditInfoSexFragment.class)
+                            .setBundle(bundle)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .build());
+                } else {
+                    // 昵称不可用
+                    mNicknameHintTv.setVisibility(View.VISIBLE);
+                    mNicknameHintTv.setText(result.getErrmsg());
+                }
+
+            }
+        }, this);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
                 .getAvatar())
+                .setCircle(true)
+                .setBorderColor(Color.parseColor("#0C2275"))
+                .setBorderWidth(U.getDisplayUtils().dip2px(3))
                 .build());
-
-        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
-            U.getToastUtil().showShort("昵称不为空");
-//            Bundle bundle = getIntent().getExtras();
-//            if (bundle != null) {
-//                String path = bundle.getString(KEY_ORIGIN_PATH);
-//                if (!TextUtils.isEmpty(path)) {
-//                    // 跳转到原页面，并带上参数
-//                    ARouter.getInstance().build(path).with(bundle).navigation();
-//                }
-//            }
-
-            finish();
-        }
-
     }
 
     @Override

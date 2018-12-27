@@ -4,16 +4,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
@@ -22,6 +16,7 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
@@ -32,12 +27,20 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
+import static com.module.home.updateinfo.UploadAccountInfoActivity.UPLOAD_ACCOUNT_NICKNAME;
+import static com.module.home.updateinfo.UploadAccountInfoActivity.UPLOAD_ACCOUNT_SEX;
+
 public class EditInfoAgeFragment extends BaseFragment {
+
+    boolean isUpload = false; //当前是否是完善个人资料
+    String nickname;   // 保存完善个人资料传过来的昵称
+    int sex;    // 保存完善个人资料传过来的性别
 
     CommonTitleBar mTitlebar;
     FrameLayout mFrameLayout;
 
     TimePickerView pvCustomLunar;
+    ExTextView mCompleteTv;
 
     @Override
     public int initView() {
@@ -50,6 +53,8 @@ public class EditInfoAgeFragment extends BaseFragment {
 
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mFrameLayout = (FrameLayout) mRootView.findViewById(R.id.frame_layout);
+        mCompleteTv = (ExTextView) mRootView.findViewById(R.id.complete_tv);
+
 
         initTimePicker();
 
@@ -70,6 +75,30 @@ public class EditInfoAgeFragment extends BaseFragment {
                         pvCustomLunar.returnData();
                     }
                 });
+
+        RxView.clicks(mCompleteTv)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        pvCustomLunar.returnData();
+                    }
+                });
+
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mTitlebar.getRightTextView().setText("3/3");
+            mTitlebar.getCenterTextView().setText("完善个人信息");
+            mTitlebar.getRightTextView().setTextSize(16);
+            mTitlebar.getRightTextView().setTextColor(getResources().getColor(R.color.white_trans_70));
+            mTitlebar.getRightTextView().setClickable(false);
+
+            mCompleteTv.setVisibility(View.VISIBLE);
+            isUpload = true;
+            nickname = bundle.getString(UPLOAD_ACCOUNT_NICKNAME);
+            sex = bundle.getInt(UPLOAD_ACCOUNT_SEX);
+        }
     }
 
     private void initTimePicker() {
@@ -92,11 +121,24 @@ public class EditInfoAgeFragment extends BaseFragment {
         pvCustomLunar = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
-                String bir = U.getDateTimeUtils().formatDateString(date);
-                MyUserInfoManager.getInstance().updateInfo(  MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                        .setBirthday(bir)
-                        .build());
-                U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+                if (!isUpload) {
+                    // 修改个人信息
+                    String bir = U.getDateTimeUtils().formatDateString(date);
+                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                            .setBirthday(bir)
+                            .build());
+                    U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+                } else {
+                    // 完善个人信息
+                    String bir = U.getDateTimeUtils().formatDateString(date);
+                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                            .setNickName(nickname)
+                            .setSex(sex)
+                            .setBirthday(bir)
+                            .build());
+                    getActivity().finish();
+                }
+
             }
         })
                 .setDate(selectedDate)

@@ -16,6 +16,10 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
+        app:rightType="textView"
+        app:rightText="1/3"
+        app:rightTextColor="@color/white_trans_70"
+        app:rightTextSize="@dimen/textsize_16_dp"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
@@ -33,6 +37,16 @@
         android:layout_below="@+id/titlebar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_32_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:text="点击上传头像"
+        android:textColor="#4c0C2275"
+        android:textSize="@dimen/textsize_12_dp" />
 
     <com.common.view.ex.NoLeakEditText
         android:id="@+id/nickname_et"
@@ -61,6 +75,18 @@
         app:bl_stroke_width="@dimen/view_3_dp" />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/nickname_hint_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nickname_et"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:text="昵称的提示哦"
+        android:textColor="#EF5E85"
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone" />
+
+    <com.common.view.ex.ExTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/nickname_et"
@@ -72,29 +98,13 @@
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/submit_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/nickname_et"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_10_dp"
-        android:background="@color/gray"
-        android:gravity="center"
-        android:paddingLeft="@dimen/view_20_dp"
-        android:paddingTop="@dimen/view_10_dp"
-        android:paddingRight="@dimen/view_20_dp"
-        android:paddingBottom="@dimen/view_10_dp"
-        android:text="上传资料" />
-
     <com.common.view.ex.ExTextView
         android:id="@+id/next_tv"
         android:layout_width="@dimen/view_206_dp"
         android:layout_height="@dimen/view_54_dp"
-        android:layout_below="@+id/titlebar"
+        android:layout_below="@+id/nickname_et"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_251_dp"
+        android:layout_marginTop="@dimen/view_46_dp"
         android:background="@drawable/img_btn_bg_yellow"
         android:gravity="center"
         android:paddingRight="@dimen/view_6_dp"

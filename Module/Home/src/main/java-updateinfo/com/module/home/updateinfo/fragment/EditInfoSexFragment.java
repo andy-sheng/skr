@@ -3,6 +3,7 @@ package com.module.home.updateinfo.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,26 +12,35 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.zq.live.proto.Common.ESex;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
+import static com.module.home.updateinfo.UploadAccountInfoActivity.UPLOAD_ACCOUNT_NICKNAME;
+import static com.module.home.updateinfo.UploadAccountInfoActivity.UPLOAD_ACCOUNT_SEX;
+
 //编辑性别
 public class EditInfoSexFragment extends BaseFragment {
+
+    String nickname; // 从完善个人信息进来记录名字
 
     CommonTitleBar mTitlebar;
     ExImageView mMale;
     ExImageView mMaleTaoxin;
     ExImageView mFemale;
     ExImageView mFemaleTaoxin;
+    ExTextView mNextTv;
 
     int sex = 0;// 未知、非法参数
 
@@ -46,6 +56,8 @@ public class EditInfoSexFragment extends BaseFragment {
         mMaleTaoxin = (ExImageView) mRootView.findViewById(R.id.male_taoxin);
         mFemale = (ExImageView) mRootView.findViewById(R.id.female);
         mFemaleTaoxin = (ExImageView) mRootView.findViewById(R.id.female_taoxin);
+        mNextTv = (ExTextView) mRootView.findViewById(R.id.next_tv);
+
 
         RxView.clicks(mTitlebar.getLeftTextView())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -82,6 +94,45 @@ public class EditInfoSexFragment extends BaseFragment {
                         selectSex(false);
                     }
                 });
+
+        RxView.clicks(mNextTv)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        clickNext();
+                    }
+                });
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mTitlebar.getRightTextView().setText("2/3");
+            mTitlebar.getCenterTextView().setText("完善个人信息");
+            mTitlebar.getRightTextView().setTextSize(16);
+            mTitlebar.getRightTextView().setTextColor(getResources().getColor(R.color.white_trans_70));
+            mTitlebar.getRightTextView().setClickable(false);
+
+            mNextTv.setVisibility(View.VISIBLE);
+            nickname = bundle.getString(UPLOAD_ACCOUNT_NICKNAME);
+        }
+    }
+
+    private void clickNext() {
+        if (sex == 0) {
+            U.getToastUtil().showShort("请选择性别");
+            return;
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString(UPLOAD_ACCOUNT_NICKNAME, nickname);
+        bundle.putInt(UPLOAD_ACCOUNT_SEX, sex);
+
+        U.getFragmentUtils().addFragment(FragmentUtils
+                .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                .setBundle(bundle)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .build());
     }
 
     private void clickComplete() {
