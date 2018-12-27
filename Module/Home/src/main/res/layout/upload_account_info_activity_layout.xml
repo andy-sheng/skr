@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="完善个人资料"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"
+        android:layout_below="@+id/titlebar"
+        android:background="#0C2275" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_100_dp"
+        android:layout_below="@+id/titlebar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_32_dp" />
+
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/nickname_et"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_below="@+id/avatar_iv"
+        android:layout_marginLeft="@dimen/view_44_dp"
+        android:layout_marginTop="@dimen/view_44_dp"
+        android:layout_marginRight="@dimen/view_44_dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:hint="取个有意思的昵称吧～"
+        android:inputType="text"
+        android:maxLength="14"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/view_60_dp"
+        android:paddingRight="@dimen/view_14_dp"
+        android:textColor="#091E77"
+        android:textColorHint="#4c0C2275"
+        android:textSize="@dimen/view_16_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#BCBDCD"
+        app:bl_stroke_color="#0C2275"
+        app:bl_stroke_width="@dimen/view_3_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nickname_et"
+        android:layout_alignTop="@+id/nickname_et"
+        android:layout_alignBottom="@+id/nickname_et"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_20_dp"
+        android:text="昵称"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp" />
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/submit_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nickname_et"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:background="@color/gray"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_20_dp"
+        android:paddingTop="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_20_dp"
+        android:paddingBottom="@dimen/view_10_dp"
+        android:text="上传资料" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/next_tv"
+        android:layout_width="@dimen/view_206_dp"
+        android:layout_height="@dimen/view_54_dp"
+        android:layout_below="@+id/titlebar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_251_dp"
+        android:background="@drawable/img_btn_bg_yellow"
+        android:gravity="center"
+        android:paddingRight="@dimen/view_6_dp"
+        android:paddingBottom="@dimen/view_6_dp"
+        android:text="下一步"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

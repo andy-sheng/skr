@@ -6,8 +6,8 @@ package com.module;
  */
 public interface RouterConstants {
     String ACTIVITY_HOME = "/home/HomeActivity";
+    String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
     String ACTIVITY_LOGIN = "/core/LoginActivity";
-    String ACTIVITY_UPLOAD = "/core/UploadAccountInfoActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
     String ACTIVITY_RANKINGMODE = "/rankingmode/RankingModeActivity";
     String ACTIVITY_RANKING_ROOM = "/rankingmode/RankingRoomActivity";

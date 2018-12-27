@@ -1,4 +1,4 @@
-package com.common.core.login;
+package com.module.home.updateinfo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,10 +7,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
-import com.common.core.R;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -29,6 +27,7 @@ import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
+import com.module.home.R;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -37,8 +36,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
-
-import static com.common.core.login.LoginActivity.KEY_ORIGIN_PATH;
 
 
 @Route(path = RouterConstants.ACTIVITY_UPLOAD)
@@ -52,7 +49,7 @@ public class UploadAccountInfoActivity extends BaseActivity {
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.core_upload_account_info_layout;
+        return R.layout.upload_account_info_activity_layout;
     }
 
     @Override

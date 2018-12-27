@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 
 import com.common.core.avatar.AvatarUtils;
@@ -19,6 +20,7 @@ import com.common.view.ex.ExTextView;
 
 import com.component.busilib.fragment.OtherPersonFragment;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.module.home.R;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -97,6 +99,18 @@ public class PersonFragment extends BaseFragment {
                                         .setAddToBackStack(true)
                                         .setHasAnimation(true)
                                         .build());
+                    }
+                });
+
+
+        RxView.clicks(mMusicTestTv)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // TODO: 2018/12/27  只做test
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
+                                .greenChannel().navigation();
                     }
                 });
 
