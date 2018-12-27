@@ -1,6 +1,7 @@
 package com.module.rankingmode.room.view;
 
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
+import com.module.rankingmode.room.model.RecordData;
 import com.module.rankingmode.song.model.SongModel;
 
 import java.util.List;
@@ -13,6 +14,13 @@ public interface IGameRuleView {
     void userExit();
 
     void gameFinish();
+
+    void showVoteView();
+
+    /**
+     * 战绩界面
+     */
+    void showRecordView(RecordData recordData);
 
     void updateUserState(List<OnLineInfoModel> jsonOnLineInfoList);
 

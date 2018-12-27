@@ -34,20 +34,20 @@ import com.module.rankingmode.R;
 import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.room.comment.CommentModel;
 import com.module.rankingmode.room.comment.CommentView;
+import com.module.rankingmode.room.model.RecordData;
 import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.presenter.RankingCorePresenter;
 import com.module.rankingmode.room.view.BottomContainerView;
 import com.module.rankingmode.room.view.IGameRuleView;
 import com.module.rankingmode.room.view.InputContainerView;
-
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
-import com.zq.dialog.PersonInfoDialogView;
 import com.module.rankingmode.room.view.TopContainerView;
 import com.module.rankingmode.room.view.TurnChangeCardView;
 import com.module.rankingmode.song.model.SongModel;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.dialog.PersonInfoDialogView;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.AbstractLrcView;
@@ -480,14 +480,26 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void gameFinish() {
-        MyLog.w(TAG, "游戏结束了");
+    public void showRecordView(RecordData recordData) {
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+                .setAddToBackStack(true)
+                .addDataBeforeAdd(0, recordData)
+                .build()
+        );
+    }
 
+    @Override
+    public void showVoteView() {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
                 .setAddToBackStack(true)
                 .addDataBeforeAdd(0, mRoomData)
                 .build()
         );
+    }
+
+    @Override
+    public void gameFinish() {
+        MyLog.w(TAG, "游戏结束了");
 
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();

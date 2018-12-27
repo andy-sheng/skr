@@ -12,6 +12,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rankingmode.R;
+import com.module.rankingmode.room.model.RecordData;
 import com.module.rankingmode.room.view.RecordItemView;
 
 public class RankingRecordFragment extends BaseFragment {
@@ -26,6 +27,8 @@ public class RankingRecordFragment extends BaseFragment {
     RecordItemView mRecordItemThree;
     ExTextView mTvBack;
     ExTextView mTvAgain;
+
+    RecordData mRecordData;
 
     @Override
     public int initView() {
@@ -56,7 +59,15 @@ public class RankingRecordFragment extends BaseFragment {
     }
 
     @Override
+    public void setData(int type, @Nullable Object data) {
+        if(type == 0){
+            mRecordData = (RecordData) data;
+        }
+    }
+
+    @Override
     public boolean useEventBus() {
         return false;
     }
+
 }

@@ -27,6 +27,7 @@ import com.module.rankingmode.prepare.model.OnLineInfoModel;
 import com.module.rankingmode.prepare.model.RoundInfoModel;
 import com.module.rankingmode.room.RoomServerApi;
 import com.module.rankingmode.room.event.RoundInfoChangeEvent;
+import com.module.rankingmode.room.model.RecordData;
 import com.module.rankingmode.room.model.RoomData;
 import com.module.rankingmode.room.model.RoomDataUtils;
 import com.module.rankingmode.room.view.IGameRuleView;
@@ -571,6 +572,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
         onGameOver("push", roundAndGameOverEvent.roundOverTimeMs);
         cancelSyncGameStateTask();
+
+        if (roundAndGameOverEvent.mVoteInfoModels != null && roundAndGameOverEvent.mVoteInfoModels.size() > 0) {
+            //不需要跳转评论页,直接跳转战绩页
+            mIGameRuleView.showRecordView(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mUserScoreModels));
+        } else {
+            mIGameRuleView.showVoteView();
+        }
     }
 
     // 应用进程切到后台通知
