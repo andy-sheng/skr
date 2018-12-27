@@ -125,7 +125,7 @@ public class InputContainerView extends RelativeLayout {
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
                             mEtContent.setText("");
-                            U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext());
+                            U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext(),mEtContent);
                         }
                     }
                 });

@@ -100,10 +100,8 @@ public class EditInfoNameFragment extends BaseFragment {
             return;
         }
 
-        if (U.getKeyBoardUtils().getKeyBoardHeightNow(getActivity()) != 0) {
-            U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext());
-        }
-        
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+
         if (nickName.equals(MyUserInfoManager.getInstance().getNickName())) {
             // 昵称一样,没改
             U.getFragmentUtils().popFragment(EditInfoNameFragment.this);

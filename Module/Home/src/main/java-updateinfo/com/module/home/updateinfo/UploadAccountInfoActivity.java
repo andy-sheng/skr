@@ -182,9 +182,7 @@ public class UploadAccountInfoActivity extends BaseActivity {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     // 昵称可用
-                    if (U.getKeyBoardUtils().getKeyBoardHeightNow(UploadAccountInfoActivity.this) != 0) {
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(UploadAccountInfoActivity.this);
-                    }
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(UploadAccountInfoActivity.this);
                     Bundle bundle = new Bundle();
                     bundle.putString(UPLOAD_ACCOUNT_NICKNAME, nickName);
                     U.getFragmentUtils().addFragment(FragmentUtils
