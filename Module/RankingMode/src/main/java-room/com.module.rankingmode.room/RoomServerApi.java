@@ -85,7 +85,7 @@ public interface RoomServerApi {
      * 进行投票
      *
      * @param body 游戏标识 gameID (必选)
-     *             被投票人 votedUserID (必选)
+     *             被投票人 pickUserID (必选)
      * @return
      */
     @PUT("http://dev.game.inframe.mobi/v1/game/vote")

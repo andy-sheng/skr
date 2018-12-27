@@ -32,14 +32,14 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
      * 投票
      *
      * @param gameID      游戏标识别
-     * @param votedUserID 被投人id
+     * @param pickUserID  被灭灯用户id
      */
-    public void vote(int gameID, long votedUserID) {
-        MyLog.d(TAG, "vote" + " gameID=" + gameID + " votedUserID=" + votedUserID);
+    public void vote(int gameID, long pickUserID) {
+        MyLog.d(TAG, "vote" + " gameID=" + gameID + " votedUserID=" + pickUserID);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", gameID);
-        map.put("votedUserID", votedUserID);
+        map.put("pickUserID", pickUserID);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.vote(body), new ApiObserver<ApiResult>() {
@@ -47,7 +47,7 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("投票成功");
-                    view.voteSucess(votedUserID);
+                    view.voteSucess(pickUserID);
                 } else {
                     MyLog.e(TAG, "vote result errno is " + result.getErrmsg());
                     view.voteFailed();
