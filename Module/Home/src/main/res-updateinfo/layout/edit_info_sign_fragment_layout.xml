@@ -49,7 +49,7 @@
         android:textSize="@dimen/view_16_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#BCBDCD" />
+        app:bl_solid_color="#E1E1EC" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/sign_text_size"

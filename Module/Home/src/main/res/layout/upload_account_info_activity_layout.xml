@@ -68,7 +68,7 @@
         android:textSize="@dimen/view_16_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#BCBDCD"
+        app:bl_solid_color="#E1E1EC"
         app:bl_stroke_color="#0C2275"
         app:bl_stroke_width="@dimen/view_3_dp" />
 
