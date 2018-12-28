@@ -16,6 +16,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.FragmentUtils;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -86,6 +87,22 @@ public class LoginByPhoneFragment extends BaseFragment {
                             U.getToastUtil().showShort("手机号有误");
                         }
 
+                    }
+                });
+
+
+        RxView.clicks(mIvBack)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                                .setActivity(getActivity())
+                                .setPopFragment(LoginByPhoneFragment.this)
+                                .setPopAbove(false)
+                                .setHasAnimation(true)
+                                .setNotifyShowFragment(LoginFragment.class)
+                                .build());
                     }
                 });
     }

@@ -10,9 +10,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
-import com.common.core.account.UserAccount;
-import com.common.core.account.UserAccountManager;
 import com.common.core.login.fragment.LoginByPhoneFragment;
+import com.common.core.login.fragment.LoginFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
@@ -31,16 +30,11 @@ public class LoginActivity extends BaseActivity {
 
     public static final String KEY_SHOW_TOAST = "key_show_toast";
     public static final String KEY_ORIGIN_PATH = "key_origin_path";
-    RelativeLayout mMainActContainer;
-    ExTextView mLogoTv;
-    ExTextView mWeixinLoginTv;
-    ExTextView mPhoneLoginTv;
-    ExTextView mWeiboLoginTv;
 
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.core_login_layout;
+        return R.layout.core_login_activity_layout;
     }
 
     @Override
@@ -49,27 +43,11 @@ public class LoginActivity extends BaseActivity {
             U.getToastUtil().showShort("请先登录");
         }
 
-        mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
-        mLogoTv = (ExTextView) findViewById(R.id.logo_tv);
-        mWeixinLoginTv = (ExTextView) findViewById(R.id.weixin_login_tv);
-        mPhoneLoginTv = (ExTextView) findViewById(R.id.phone_login_tv);
-        mWeiboLoginTv = (ExTextView) findViewById(R.id.weibo_login_tv);
-
-
-        mPhoneLoginTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
-
-                U.getFragmentUtils().addFragment(FragmentUtils
-                        .newAddParamsBuilder(LoginActivity.this, LoginByPhoneFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
-            }
-        });
+        U.getFragmentUtils().addFragment(FragmentUtils
+                .newAddParamsBuilder(LoginActivity.this, LoginFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .build());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
