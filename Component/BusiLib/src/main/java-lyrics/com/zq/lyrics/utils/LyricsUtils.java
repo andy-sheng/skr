@@ -458,6 +458,10 @@ public class LyricsUtils {
      * @return
      */
     public static float getDrawDynamicTextPaintSize(long lyricsWordHLTime, float textSizeOne, float textSizeTwo){
+        if(lyricsWordHLTime < 0){
+            return textSizeTwo;
+        }
+
         if(lyricsWordHLTime >= 300){
             return textSizeTwo;
         }

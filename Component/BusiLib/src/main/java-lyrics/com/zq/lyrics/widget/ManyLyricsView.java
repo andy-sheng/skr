@@ -461,7 +461,7 @@ public class ManyLyricsView extends AbstractLrcView {
                 long currentLineSpendTime = getCurPlayingTime() + getPlayerSpendTime() - (long) splitLyricsLineInfos.get(i).getStartTime();
                 //根据时间算出渐变文字大小
                 float drawHLTextPaintSize = LyricsUtils.getDrawDynamicTextPaintSize(currentLineSpendTime, paint.getTextSize(), paintHL.getTextSize());
-                MyLog.d("ManyLyricsView", "currentLineSpendTime " + drawHLTextPaintSize + ", paint.getTextSize" + paint.getTextSize() + ", paintHL text size " + paintHL.getTextSize());
+                MyLog.d("ManyLyricsView", "drawHLTextPaintSize " + drawHLTextPaintSize + " currentLineSpendTime " + currentLineSpendTime + ", paint.getTextSize" + paint.getTextSize() + ", paintHL text size " + paintHL.getTextSize());
                 //先把原始的拿出来
                 float paintOriginalTextSize = paint.getTextSize();
                 float paintHLOriginalTextSize = paintHL.getTextSize();
