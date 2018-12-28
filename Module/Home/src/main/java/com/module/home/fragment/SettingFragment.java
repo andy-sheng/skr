@@ -3,6 +3,7 @@ package com.module.home.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
@@ -15,7 +16,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.feedback.FeedbackManager;
 import com.module.home.updateinfo.EditInfoActivity;
-import com.pgyersdk.feedback.PgyerFeedbackManager;
+import com.zq.toast.CommonToastView;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +24,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -203,6 +202,10 @@ public class SettingFragment extends BaseFragment {
                         U.getPreferenceUtils().setSettingLong("key_cache_size", 0);
                         U.getPreferenceUtils().setSettingLong("key_cache_update_ts", System.currentTimeMillis());
                         setCacheSize(0);
+                        U.getToastUtil().showCommonViewShort(new CommonToastView.Builder(getContext())
+                                .setImage(R.drawable.qingchuhuancun)
+                                .setText("清除缓存成功")
+                                .build());
                     }
                 });
     }

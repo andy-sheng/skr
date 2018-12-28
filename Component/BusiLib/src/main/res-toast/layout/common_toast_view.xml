@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/view_151_dp"
+    android:layout_height="@dimen/view_140_dp"
+    app:bl_corners_radius="@dimen/view_12_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="@color/black_trans_80">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/view_45_dp"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_34_dp"
+        android:src="@drawable/touxiangshezhichenggong_icon"/>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_94_dp"
+        android:text="设置成功"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp" />
+
+
+</com.common.view.ex.ExRelativeLayout>

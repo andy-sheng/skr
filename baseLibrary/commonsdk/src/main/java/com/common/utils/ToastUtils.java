@@ -285,6 +285,22 @@ public class ToastUtils {
         });
     }
 
+    public void showCommonViewShort(View view) {
+        if (view == null) {
+            return;
+        }
+        setGravity(Gravity.CENTER, 0, 0);
+        show(view, Toast.LENGTH_SHORT);
+    }
+
+    public void showCommonViewLong(View view) {
+        if (view == null) {
+            return;
+        }
+        setGravity(Gravity.CENTER, 0, 0);
+        show(view, Toast.LENGTH_LONG);
+    }
+
     private void setBg() {
         if (sBgResource != -1) {
             final View toastView = sToast.getView();

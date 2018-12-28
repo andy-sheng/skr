@@ -20,6 +20,9 @@ android {
 
             java.srcDirs += 'src/main/java-dialog'
             res.srcDirs += 'src/main/res-dialog'
+
+            java.srcDirs += 'src/main/java-toast'
+            res.srcDirs += 'src/main/res-toast'
         }
     }
 }

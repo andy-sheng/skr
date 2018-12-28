@@ -207,6 +207,7 @@ public class PersonFragment extends BaseFragment {
     private void initViewData() {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
                 .getAvatar())
+                .setCircle(true)
                 .setBorderColor(Color.parseColor("#33A4E1"))
                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
                 .build());
