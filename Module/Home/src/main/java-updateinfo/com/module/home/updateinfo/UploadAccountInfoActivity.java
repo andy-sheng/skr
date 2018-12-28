@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -181,20 +182,24 @@ public class UploadAccountInfoActivity extends BaseActivity {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    // 昵称可用
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(UploadAccountInfoActivity.this);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(UPLOAD_ACCOUNT_NICKNAME, nickName);
-                    U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder(UploadAccountInfoActivity.this, EditInfoSexFragment.class)
-                            .setBundle(bundle)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .build());
-                } else {
-                    // 昵称不可用
-                    mNicknameHintTv.setVisibility(View.VISIBLE);
-                    mNicknameHintTv.setText(result.getErrmsg());
+                    boolean isValid = result.getData().getBoolean("isValid");
+                    String unValidReason = result.getData().getString("unValidReason");
+                    if (isValid) {
+                        // 昵称可用
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(UploadAccountInfoActivity.this);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(UPLOAD_ACCOUNT_NICKNAME, nickName);
+                        U.getFragmentUtils().addFragment(FragmentUtils
+                                .newAddParamsBuilder(UploadAccountInfoActivity.this, EditInfoSexFragment.class)
+                                .setBundle(bundle)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+                    } else {
+                        // 昵称不可用
+                        mNicknameHintTv.setVisibility(View.VISIBLE);
+                        mNicknameHintTv.setText(unValidReason);
+                    }
                 }
 
             }
