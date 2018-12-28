@@ -1,5 +1,6 @@
 package com.module.home.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -206,6 +207,8 @@ public class PersonFragment extends BaseFragment {
     private void initViewData() {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
                 .getAvatar())
+                .setBorderColor(Color.parseColor("#33A4E1"))
+                .setBorderWidth(U.getDisplayUtils().dip2px(3))
                 .build());
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
