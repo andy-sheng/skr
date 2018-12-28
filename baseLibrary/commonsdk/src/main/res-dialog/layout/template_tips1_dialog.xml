@@ -42,28 +42,28 @@
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
-            android:id="@+id/confirm_tv"
+            android:id="@+id/cancel_tv"
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/btn_dialog_cancle"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
-            android:text="确认请求"
+            android:text="取消请求"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_20_dp"
             android:textStyle="bold"
             android:visibility="gone" />
 
         <com.common.view.ex.ExTextView
-            android:id="@+id/cancel_tv"
+            android:id="@+id/confirm_tv"
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/btn_dialog_confirm"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
-            android:text="取消请求"
+            android:text="确认请求"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp"
             android:textStyle="bold"

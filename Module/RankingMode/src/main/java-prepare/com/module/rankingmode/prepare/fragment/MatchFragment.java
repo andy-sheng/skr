@@ -190,8 +190,8 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     void goBack() {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                 .setMessageTip("马上要为你匹配到对手了\n还要退出吗？")
-                .setConfirmTip("退出")
-                .setCancelTip("继续匹配")
+                .setCancelTip("退出")
+                .setConfirmTip("继续匹配")
                 .build();
 
         DialogPlus.newDialog(getContext())
@@ -205,6 +205,11 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                     public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
                         if (view instanceof ExTextView) {
                             if (view.getId() == R.id.confirm_tv) {
+                                // 继续匹配
+                                dialog.dismiss();
+                            }
+
+                            if (view.getId() == R.id.cancel_tv) {
                                 dialog.dismiss();
                                 mMatchPresenter.cancelMatch();
                                 stopTimeTask();
@@ -214,10 +219,6 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                                         .setHasAnimation(true)
                                         .setNotifyShowFragment(PrepareResFragment.class)
                                         .build());
-                            }
-
-                            if (view.getId() == R.id.cancel_tv) {
-                                dialog.dismiss();
                             }
                         }
                     }
