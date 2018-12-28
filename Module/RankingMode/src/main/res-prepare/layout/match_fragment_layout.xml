@@ -75,6 +75,7 @@
         </RelativeLayout>
 
         <com.common.view.ex.ExTextView
+            android:gravity="center"
             android:id="@+id/tv_tip"
             android:textSize="@dimen/textsize_16_dp"
             android:textColor="#0C2275"
@@ -82,23 +83,23 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/view_121_dp"
             android:layout_above="@+id/iv_cancel_match"
-            android:text="中途退出会有惩罚的哦"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.common.view.ex.ExTextView
-            android:layout_marginRight="@dimen/view_77_dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/view_96_dp"
-            android:alpha="0.5"
-            android:layout_above="@+id/iv_cancel_match"
-            android:textSize="@dimen/textsize_12_dp"
-            android:textColor="#0C2275"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:text="——撕歌语录"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <!--<com.common.view.ex.ExTextView-->
+            <!--android:layout_marginRight="@dimen/view_77_dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginBottom="@dimen/view_96_dp"-->
+            <!--android:alpha="0.5"-->
+            <!--android:layout_above="@+id/iv_cancel_match"-->
+            <!--android:textSize="@dimen/textsize_12_dp"-->
+            <!--android:textColor="#0C2275"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:text="——撕歌语录"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_cancel_match"

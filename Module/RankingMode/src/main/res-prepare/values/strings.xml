@@ -3,4 +3,15 @@
     <string name="song_time_info">准备竞演 %s / %s</string>
     <string name="match_time_info">已经匹配 %ds</string>
     <string name="ready_time_info">准备倒计时 %ds</string>
+
+    <string-array name="match_quotations">
+        <item>撕哥画圈圈：多次不准备的人会被惩罚的！</item>
+        <item>撕哥超害羞：听说每局都有小姐姐诶～</item>
+        <item>撕哥很慌：自从上了榜单怎么辣么多人关注我，飘了！</item>
+        <item>撕哥好紧张：段位差一颗星就能超过隔壁村赵铁柱了！</item>
+        <item>撕哥小确幸：和一个唱《后来》的菇凉互相关注了呢～</item>
+        <item>撕哥震惊：排位竟然还有隐藏分？还能保星？what？！</item>
+        <item>撕哥哭了：竟然因为自己唱歌太好听被产品小姐姐勾搭了！</item>
+        <item>撕哥欣慰：《一唱到底》模式证明了自己还是可以坚持很久的！</item>
+    </string-array>
 </resources>

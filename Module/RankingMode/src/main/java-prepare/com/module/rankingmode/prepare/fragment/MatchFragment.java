@@ -1,5 +1,6 @@
 package com.module.rankingmode.prepare.fragment;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,7 +46,11 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     MatchPresenter mMatchPresenter;
     PrepareData mPrepareData;
 
+    String[] mQuotationsArray;
+
     HandlerTaskTimer mMatchTimeTask;
+
+    HandlerTaskTimer mMatchQuotationTask;
 
     @Override
     public int initView() {
@@ -62,6 +67,9 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
         mIvCancelMatch = (ExImageView) mRootView.findViewById(R.id.iv_cancel_match);
+
+        Resources res =getResources();
+        mQuotationsArray = res.getStringArray(R.array.match_quotations);
 
         RxView.clicks(mIvCancelMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
@@ -101,6 +109,31 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID());
 
         startTimeTask();
+        startMatchQuotationTask();
+    }
+
+    private void startMatchQuotationTask(){
+        mMatchQuotationTask = HandlerTaskTimer.newBuilder()
+                .interval(3000)
+                .take(-1)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        int size = mQuotationsArray.length;
+                        int index = integer % (size - 1);
+                        String string = mQuotationsArray[index];
+                        String rString = "";
+
+                        while (string.length() > 15){
+                            rString = rString + string.substring(0, 15) + "\n";
+                            string = string.substring(15);
+                        }
+
+                        rString = rString + string;
+                        mTvTip.setText(rString);
+                        MyLog.d(TAG, "startMatchQuotationTask");
+                    }
+                });
     }
 
 
@@ -135,6 +168,15 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     public void setData(int type, @Nullable Object data) {
         if (type == 0) {
             mPrepareData = (PrepareData) data;
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+
+        if(mMatchQuotationTask != null){
+            mMatchQuotationTask.dispose();
         }
     }
 
