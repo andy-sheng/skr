@@ -28,4 +28,6 @@ public interface IGameRuleView {
     void playLyric(SongModel songModel, boolean play);
 
     void updateScrollBarProgress(int volume);
+
+    void showLastedTime(long wholeTile);
 }
