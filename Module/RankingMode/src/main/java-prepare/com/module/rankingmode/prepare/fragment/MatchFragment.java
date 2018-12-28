@@ -83,21 +83,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                     goBack();
                 });
 
-        AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
-                        .build());
-
         AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
-                        .build());
-
-        AvatarUtils.loadAvatarByUrl(mSdvIcon3,
                 AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -110,6 +96,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
         startTimeTask();
         startMatchQuotationTask();
+        mMatchPresenter.getMatchingUserIconList();
     }
 
     private void startMatchQuotationTask(){
@@ -177,6 +164,10 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
         if(mMatchQuotationTask != null){
             mMatchQuotationTask.dispose();
+        }
+
+        if(mShowUserListIconTask != null){
+            mShowUserListIconTask.dispose();
         }
     }
 
@@ -259,9 +250,48 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     }
 
-    @Override
-    public void showUserIconList() {
+    HandlerTaskTimer mShowUserListIconTask;
 
+    private int iconListIndex = 0;
+
+    @Override
+    public void showUserIconList(List<String> avatarURL) {
+        if(avatarURL == null || avatarURL.size() == 0){
+            return;
+        }
+
+        if(mShowUserListIconTask != null){
+            mShowUserListIconTask.dispose();
+        }
+
+        iconListIndex = 0;
+
+        mShowUserListIconTask = HandlerTaskTimer.newBuilder()
+                .interval(5000)
+                .take(-1)
+                .start(new HandlerTaskTimer.ObserverW() {
+            @Override
+            public void onNext(Integer integer) {
+
+                iconListIndex += integer;
+                int index1 = iconListIndex % (avatarURL.size() - 1);
+                AvatarUtils.loadAvatarByUrl(mSdvIcon1,
+                        AvatarUtils.newParamsBuilder(avatarURL.get(index1))
+                                .setCircle(true)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                .setBorderColor(Color.WHITE)
+                                .build());
+
+                iconListIndex += integer;
+                int index2 = iconListIndex % (avatarURL.size() - 1);
+                AvatarUtils.loadAvatarByUrl(mSdvIcon3,
+                        AvatarUtils.newParamsBuilder(avatarURL.get(index2))
+                                .setCircle(true)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                .setBorderColor(Color.WHITE)
+                                .build());
+            }
+        });
     }
 
     @Override

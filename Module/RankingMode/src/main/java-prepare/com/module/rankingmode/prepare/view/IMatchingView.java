@@ -11,5 +11,5 @@ public interface IMatchingView {
      */
     void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> playerInfoList);
 
-    void showUserIconList();
+    void showUserIconList(List<String> avatarURL);
 }

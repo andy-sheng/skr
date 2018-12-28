@@ -16,6 +16,7 @@ import com.module.rankingmode.msg.event.JoinNoticeEvent;
 import com.module.rankingmode.prepare.GameModeType;
 import com.module.rankingmode.prepare.MatchServerApi;
 import com.module.rankingmode.prepare.model.JsonGameInfo;
+import com.module.rankingmode.prepare.model.MatchingUserIconListInfo;
 import com.module.rankingmode.prepare.view.IMatchingView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,6 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -50,6 +52,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     JsonGameInfo mJsonGameInfo;
 
     volatile MatchState mMatchState = MatchState.IDLE;
+    private List<String> avatarURL;
 
     public MatchPresenter(@NonNull IMatchingView view) {
         this.mView = view;
@@ -59,10 +62,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-    }
 
-    //这里获取圆圈动画内的头像
-    public void getLoadingUserListIcon() {
 
     }
 
@@ -246,6 +246,31 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 获取头像
+     */
+    public void getMatchingUserIconList() {
+        MyLog.d(TAG, "getMatchingUserIconList gameId ");
+
+        ApiMethods.subscribe(mMatchServerApi.getMatchingAvatar(1), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    MyLog.d(TAG, "getMatchingUserIconList result =  " + result.getErrno() + " traceId = " + result.getTraceId());
+                    MatchingUserIconListInfo matchingUserIconListInfo = JSON.parseObject(result.getData().toString(), MatchingUserIconListInfo.class);
+                    mView.showUserIconList(matchingUserIconListInfo.getAvatarURL());
+                } else {
+                    MyLog.w(TAG, "getMatchingUserIconList result =  " + result.getErrno() + " traceId = " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, "getMatchingUserIconList 失败");
+            }
+        }, this);
+    }
+
+    /**
      * 加入完我们服务器三秒钟后检查房间的情况，
      * 如果三个人都已经加入房间了或者还没到三秒就已经有push告诉客户端已经三个人都加入房间了
      * 就可以跳转到准备界面
@@ -326,6 +351,14 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                 MyLog.e(TAG, e);
             }
         }, MatchPresenter.this);
+    }
+
+    public List<String> getAvatarURL() {
+        return avatarURL;
+    }
+
+    public void setAvatarURL(List<String> avatarURL) {
+        this.avatarURL = avatarURL;
     }
 
     enum MatchState {
