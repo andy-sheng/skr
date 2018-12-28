@@ -38,6 +38,8 @@ public class RecordCircleView extends View {
     private int mArrowHeight = 0;
     private int mMin = 0; // 最小值
     private int mMax = 900; // 最大值
+    //从哪里开始转
+    private int mStart = 300;
     private int mCreditValue = 650; // 信用分
     private int mSolidCreditValue = mCreditValue; // 信用分(设定后不变)
     private int mSparkleWidth; // 亮点宽度
@@ -73,7 +75,7 @@ public class RecordCircleView extends View {
         super(context, attrs, defStyleAttr);
 
         init();
-        setCreditValueWithAnim(500);
+        setCreditValueWithAnim(700);
     }
 
     private void init() {
@@ -337,7 +339,7 @@ public class RecordCircleView extends View {
 
         mSolidCreditValue = creditValue;
 
-        ValueAnimator creditValueAnimator = ValueAnimator.ofInt(mMin, mSolidCreditValue);
+        ValueAnimator creditValueAnimator = ValueAnimator.ofInt(mStart, mSolidCreditValue);
         creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -349,7 +351,7 @@ public class RecordCircleView extends View {
         // 计算最终值对应的角度，以扫过的角度的线性变化来播放动画
         float degree = calculateRelativeAngleWithValue(mSolidCreditValue);
 
-        ValueAnimator degreeValueAnimator = ValueAnimator.ofFloat(mStartAngle, mStartAngle + degree);
+        ValueAnimator degreeValueAnimator = ValueAnimator.ofFloat(mStartAngle + calculateRelativeAngleWithValue(mStart), mStartAngle + degree);
         degreeValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -357,7 +359,7 @@ public class RecordCircleView extends View {
             }
         });
 
-        long delay = 10 * creditValue;
+        long delay = 5 * (creditValue - mStart);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet
                 .setDuration(delay)
