@@ -82,7 +82,6 @@ public class MyUserInfoManager {
 
     /**
      * 更新用户信息
-     *
      */
     public void updateInfo(MyInfoUpdateParams updateParams) {
 
@@ -160,15 +159,19 @@ public class MyUserInfoManager {
         return mUser != null ? mUser.getSex() : 0;
     }
 
+    public String getBirthday() {
+        return mUser != null ? mUser.getBirthday() : "";
+    }
+
     public Location getLocation() {
         return mUser.getLocation();
     }
 
     public String getLocationDesc() {
-        if(mUser.getLocation()==null){
+        if (mUser.getLocation() == null) {
             return "未知位置";
         }
-       return mUser.getLocation().getDesc();
+        return mUser.getLocation().getDesc();
     }
 
 
@@ -184,7 +187,7 @@ public class MyUserInfoManager {
         return MyUserInfoManagerHolder.INSTANCE;
     }
 
-    public static MyInfoUpdateParams.Builder newMyInfoUpdateParamsBuilder(){
+    public static MyInfoUpdateParams.Builder newMyInfoUpdateParamsBuilder() {
         return new MyInfoUpdateParams.Builder();
     }
 

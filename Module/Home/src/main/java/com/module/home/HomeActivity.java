@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.text.TextUtils;
 import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -137,7 +139,12 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void initOnAccountReady() {
-
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
+                || MyUserInfoManager.getInstance().getSex() == 0
+                || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
+                    .greenChannel().navigation();
+        }
     }
 
     @Override
