@@ -1,0 +1,33 @@
+package com.module.playways.rank.room.view;
+
+import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.rank.room.model.RecordData;
+import com.module.playways.rank.song.model.SongModel;
+
+import java.util.List;
+
+public interface IGameRuleView {
+    void startSelfCountdown(Runnable countDownOver);
+
+    void startRivalCountdown(int uid);
+
+    void userExit();
+
+    void gameFinish();
+
+    void showVoteView();
+
+    /**
+     * 战绩界面
+     */
+    void showRecordView(RecordData recordData);
+
+    void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
+
+    //先显示，然后再播放
+    void playLyric(SongModel songModel, boolean play);
+
+    void updateScrollBarProgress(int volume);
+
+    void showLastedTime(long wholeTile);
+}

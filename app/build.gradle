@@ -153,7 +153,7 @@ dependencies {
 //        implementation project(":modulechannel")
   //      implementation project(":modulewatch")
         implementation project(":Module:Home")
-        implementation project(":Module:RankingMode")
+        implementation project(":Module:PlayWays")
         implementation project(":Module:IMKit")
 //        implementation project(":Module:IMLib")
         //  tools

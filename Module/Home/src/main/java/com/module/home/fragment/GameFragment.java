@@ -35,9 +35,9 @@ public class GameFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         ExImageView ivAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
-        ExImageView ivNormalPk = (ExImageView) mRootView.findViewById(R.id.iv_normal_pk);
-        ExImageView mIvYulePk = (ExImageView) mRootView.findViewById(R.id.iv_yule_pk);
-        userTitleView = (UserInfoTitleView)mRootView.findViewById(R.id.user_title_view);
+        ExImageView ivNormalPk = (ExImageView) mRootView.findViewById(R.id.iv_yule_game);
+        ExImageView mIvYulePk = (ExImageView) mRootView.findViewById(R.id.iv_singend_game);
+        userTitleView = (UserInfoTitleView) mRootView.findViewById(R.id.user_title_view);
 
 
         RxView.clicks(ivAthleticsPk)
@@ -93,15 +93,16 @@ public class GameFragment extends BaseFragment {
                 if (view.getId() == R.id.iv_athletics_pk) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE)
                             .withBoolean("selectSong", true)
-                            .greenChannel().navigation();
-                } else if (view.getId() == R.id.iv_normal_pk) {
+                            .navigation();
+                } else if (view.getId() == R.id.iv_yule_game) {
                     //TODO  test
                     if (UserAccountManager.getInstance().getPhoneNum().startsWith("1571888")) {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
-                                .greenChannel().navigation();
+                                .navigation();
                     }
-                } else if (view.getId() == R.id.iv_yule_pk) {
-
+                } else if (view.getId() == R.id.iv_singend_game) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SINGEND_ROOM)
+                            .navigation();
                 }
             }
 

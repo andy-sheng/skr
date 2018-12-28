@@ -11,6 +11,7 @@ public interface RouterConstants {
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
     String ACTIVITY_RANKINGMODE = "/rankingmode/RankingModeActivity";
     String ACTIVITY_RANKING_ROOM = "/rankingmode/RankingRoomActivity";
+    String ACTIVITY_SINGEND_ROOM = "/rankingmode/SingEndRoomActivity";
     String ACTIVITY_MESSAGE = "/imkit/MessageActivity";
 
 

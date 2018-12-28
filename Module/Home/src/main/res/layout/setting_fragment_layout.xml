@@ -204,7 +204,7 @@
         android:textSize="@dimen/textsize_20_dp" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/version"
+        android:id="@+id/version_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/exit_login"

@@ -3,12 +3,10 @@ package com.module.home.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
@@ -40,7 +38,7 @@ public class SettingFragment extends BaseFragment {
     RelativeLayout mServiceAgreen;
     RelativeLayout mComment;
     ExTextView mExitLogin;
-    ExTextView mVersion;
+    ExTextView mVersionTv;
 
     ExTextView mCacheSizeTv;
 
@@ -63,7 +61,7 @@ public class SettingFragment extends BaseFragment {
         mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
         mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
         mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
-        mVersion = (ExTextView) mRootView.findViewById(R.id.version);
+        mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
 
         RxView.clicks(mTitlebar.getLeftTextView())
@@ -137,6 +135,8 @@ public class SettingFragment extends BaseFragment {
             // 大于两分钟了，可以重新算下
             computeCache();
         }
+
+        mVersionTv.setText("当前版本:"+U.getAppInfoUtils().getVersionName());
     }
 
 
