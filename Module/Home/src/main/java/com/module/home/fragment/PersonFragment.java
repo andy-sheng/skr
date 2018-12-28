@@ -4,22 +4,31 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 
+import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.image.fresco.BaseImageView;
 
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
+import com.common.upload.UploadTask;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 
 import com.component.busilib.fragment.OtherPersonFragment;
+import com.imagepicker.ImagePicker;
+import com.imagepicker.fragment.ImagePickerFragment;
+import com.imagepicker.model.ImageItem;
+import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -27,6 +36,7 @@ import com.module.home.R;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
@@ -115,92 +125,55 @@ public class PersonFragment extends BaseFragment {
                     }
                 });
 
-//        mUpdateNicknameBtn.setOnClickListener(new View.OnClickListener() {
-//            DialogPlus mDialogPlus;
-//
-//            @Override
-//            public void onClick(View v) {
-//                EditTextWithOkBtnView editText = new EditTextWithOkBtnView(getContext());
-//                editText.getContentEt().setText(MyUserInfoManager.getInstance().getNickName());
-//                editText.getContentEt().setHint("输入昵称");
-//                editText.getOkBtn().setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if (mDialogPlus != null) {
-//                            mDialogPlus.dismiss();
-//                        }
-//                        MyUserInfoManager.getInstance().updateInfo(
-//                                MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-//                                        .setNickName(editText.getContentEt().getText().toString())
-//                                        .build()
-//                                );
-//                    }
-//                });
-//                mDialogPlus = DialogPlus.newDialog(getContext())
-//                        .setGravity(Gravity.CENTER)
-//                        .setContentHolder(new ViewHolder(editText))
-//                        .create();
-//                mDialogPlus.show();
-//            }
-//        });
-//
-//        mAvatarIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
-//                        .setSelectLimit(1)
-//                        .setCropStyle(CropImageView.Style.CIRCLE)
-//                        .build()
-//                );
-//
-//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePickerFragment.class)
-//                        .setContainerViewId(R.id.person_main_containner)
-//                        .setAddToBackStack(true)
-//                        .setHasAnimation(true)
-//                        .setFragmentDataListener(new FragmentDataListener() {
-//                            @Override
-//                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-//                                List<ImageItem> list = ImagePicker.getInstance().getSelectedImages();
-//                                if (list.size() > 0) {
-//                                    ImageItem imageItem = list.get(0);
-//                                    UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
-//                                            .setNeedCompress(true)
-//                                            .startUploadAsync(new UploadCallback() {
-//                                                @Override
-//                                                public void onProgress(long currentSize, long totalSize) {
-//
-//                                                }
-//
-//                                                @Override
-//                                                public void onSuccess(String url) {
-//                                                    U.getToastUtil().showShort("上传成功 url:" + url);
-//                                                    MyUserInfoManager.getInstance().updateInfo(  MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-//                                                            .setAvatar(url)
-//                                                            .build());
-//                                                }
-//
-//                                                @Override
-//                                                public void onFailure(String msg) {
-//
-//                                                }
-//
-//                                            });
-//                                }
-//                            }
-//                        })
-//                        .build());
-//            }
-//        });
-//
-//        mLogoutBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                UserAccountManager.getInstance().logoff();
-//                ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
-//            }
-//        });
-//
+        RxView.clicks(mAvatarIv)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // TODO: 2018/12/28 可能会加上一个大图预览的功能
+                        ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
+                                .setSelectLimit(1)
+                                .setCropStyle(CropImageView.Style.CIRCLE)
+                                .build()
+                        );
+
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePickerFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .setFragmentDataListener(new FragmentDataListener() {
+                                    @Override
+                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
+                                        List<ImageItem> list = ImagePicker.getInstance().getSelectedImages();
+                                        if (list.size() > 0) {
+                                            ImageItem imageItem = list.get(0);
+                                            UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+                                                    .setNeedCompress(true)
+                                                    .startUploadAsync(new UploadCallback() {
+                                                        @Override
+                                                        public void onProgress(long currentSize, long totalSize) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onSuccess(String url) {
+                                                            U.getToastUtil().showShort("上传成功 url:" + url);
+                                                            MyUserInfoManager.getInstance().updateInfo(  MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                                                    .setAvatar(url)
+                                                                    .build());
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(String msg) {
+
+                                                        }
+
+                                                    });
+                                        }
+                                    }
+                                })
+                                .build());
+                    }
+                });
 
     }
 
