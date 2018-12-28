@@ -21,8 +21,10 @@
         android:layout_marginTop="@dimen/view_46_dp" />
 
     <com.module.rankingmode.room.view.RecordCircleView
-        android:layout_width="@dimen/view_130_dp"
-        android:layout_height="@dimen/view_130_dp"
+        android:layout_marginRight="@dimen/view_34_dp"
+        android:layout_marginTop="@dimen/view_51_dp"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
         android:layout_alignParentRight="true"
          />
 

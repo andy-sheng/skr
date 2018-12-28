@@ -16,11 +16,11 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.common.utils.U;
 import com.module.rankingmode.R;
 
 /**
@@ -34,8 +34,8 @@ public class RecordCircleView extends View {
     private int mStartAngle = 120; // 起始角度
     private int mSweepAngle = 300; // 绘制角度
     //最外面边框的大小
-    private int mStrokeWidth = 10;
-    private int mArrowHeight = 100;
+    private int mStrokeWidth = U.getDisplayUtils().dip2px(2);
+    private int mArrowHeight = 0;
     private int mMin = 0; // 最小值
     private int mMax = 900; // 最大值
     private int mCreditValue = 650; // 信用分
@@ -77,9 +77,9 @@ public class RecordCircleView extends View {
     }
 
     private void init() {
-        mSparkleWidth = dp2px(15);
-        mProgressWidth = dp2px(15);
+        mProgressWidth = U.getDisplayUtils().dip2px(8);
         mCalibrationWidth = dp2px(10);
+        mSparkleWidth = U.getDisplayUtils().dip2px(8);
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -162,24 +162,24 @@ public class RecordCircleView extends View {
             /**
              * 画信用值指示亮点
              */
-            float[] point = getCoordinatePoint(
-                    mRadius - mSparkleWidth / 2f,
-                    mStartAngle + calculateRelativeAngleWithValue(mCreditValue)
-            );
-            mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setShader(generateRadialGradient(point[0], point[1]));
-            canvas.drawCircle(point[0], point[1], mSparkleWidth / 2f, mPaint);
+//            float[] point = getCoordinatePoint(
+//                    mRadius - mSparkleWidth / 2f,
+//                    mStartAngle + calculateRelativeAngleWithValue(mCreditValue)
+//            );
+//            mPaint.setStyle(Paint.Style.FILL);
+//            mPaint.setShader(generateRadialGradient(point[0], point[1]));
+//            canvas.drawCircle(point[0], point[1], mSparkleWidth / 2f, mPaint);
 
-            canvas.save();
-            canvas.rotate(mAngleWhenAnim + 90, mCenterX, mCenterY);
-            Drawable d = getResources().getDrawable(R.drawable.btn_return_xuanzegequ_normal);
-            int startX = (int) mCenterX - 10;
-            int startY = 0;
-            int width = (int) mCenterX + 10;
-            int height = 100;
-            d.setBounds(startX, startY, width, height);
-            d.draw(canvas);
-            canvas.restore();
+//            canvas.save();
+//            canvas.rotate(mAngleWhenAnim + 90, mCenterX, mCenterY);
+//            Drawable d = getResources().getDrawable(R.drawable.btn_return_xuanzegequ_normal);
+//            int startX = (int) mCenterX - 10;
+//            int startY = 0;
+//            int width = (int) mCenterX + 10;
+//            int height = 100;
+//            d.setBounds(startX, startY, width, height);
+//            d.draw(canvas);
+//            canvas.restore();
         } else {
             /**
              * 画进度圆弧(起始到信用值)
@@ -187,32 +187,33 @@ public class RecordCircleView extends View {
             mPaint.setShader(generateSweepGradient());
             canvas.drawArc(mRectFProgressArc, mStartAngle + 1,
                     mAngleWhenAnim - mStartAngle - 2, false, mPaint);
-            /**
-             * 画信用值指示亮点
-             */
-            float[] point = getCoordinatePoint(
-                    mRadius - mSparkleWidth / 2f,
-                    mAngleWhenAnim
-            );
-            mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setShader(generateRadialGradient(point[0], point[1]));
-            canvas.drawCircle(point[0], point[1], mSparkleWidth / 2f, mPaint);
+//            /**
+//             * 画信用值指示亮点
+//             */
+//            float[] point = getCoordinatePoint(
+//                    mRadius - mSparkleWidth / 2f,
+//                    mAngleWhenAnim
+//            );
+//            mPaint.setStyle(Paint.Style.FILL);
+//            mPaint.setShader(generateRadialGradient(point[0], point[1]));
+//            canvas.drawCircle(point[0], point[1], mSparkleWidth / 2f, mPaint);
 
-            canvas.save();
-            canvas.rotate(mAngleWhenAnim + 90, mCenterX, mCenterY);
-            Drawable d = getResources().getDrawable(R.drawable.btn_return_xuanzegequ_normal);
-            int startX = (int) mCenterX - 10;
-            int startY = 0;
-            int width = (int) mCenterX + 10;
-            int height = 100;
-            d.setBounds(startX, startY, width, height);
-            d.draw(canvas);
-            canvas.restore();
+//            canvas.save();
+//            canvas.rotate(mAngleWhenAnim + 90, mCenterX, mCenterY);
+//            Drawable d = getResources().getDrawable(R.drawable.btn_return_xuanzegequ_normal);
+//            int startX = (int) mCenterX - 10;
+//            int startY = 0;
+//            int width = (int) mCenterX + 10;
+//            int height = 100;
+//            d.setBounds(startX, startY, width, height);
+//            d.draw(canvas);
+//            canvas.restore();
         }
 
         /**
          * 画实时度数值
          */
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setShader(null);
         mPaint.setAlpha(255);
         mPaint.setTextSize(sp2px(15));

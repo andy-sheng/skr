@@ -1,14 +1,12 @@
 package com.module.rankingmode.room.fragment;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -16,12 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rankingmode.R;
 import com.module.rankingmode.room.model.RecordData;
 import com.module.rankingmode.room.model.RoomData;
-import com.module.rankingmode.room.model.VoteInfoModel;
 import com.module.rankingmode.room.view.RecordItemView;
-
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 public class RankingRecordFragment extends BaseFragment {
     ExImageView mIvTopImg;
@@ -66,51 +59,52 @@ public class RankingRecordFragment extends BaseFragment {
                         .setBorderColor(Color.WHITE)
                         .build());
 
-        Observable.fromIterable(mRecordData.mVoteInfoModels)
-                .filter(new Predicate<VoteInfoModel>() {
-                    @Override
-                    public boolean test(VoteInfoModel voteInfoModel) throws Exception {
-                        return voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
-                    }
-                })
-                .subscribe(new Consumer<VoteInfoModel>() {
-            @Override
-            public void accept(VoteInfoModel voteInfoModel) throws Exception {
-                Drawable drawable = null;
-                String str = "";
-                switch (voteInfoModel.getRank()){
-                    case 1:
-                        drawable = getResources().getDrawable(R.drawable.ic_medal1_normal);
-                        str = "冠军";
-                        break;
-                    case 2:
-                        drawable = getResources().getDrawable(R.drawable.ic_medal2_normal);
-                        str = "亚军";
-                        break;
-                    case 3:
-                        drawable = getResources().getDrawable(R.drawable.ic_medal3_normal);
-                        str = "季军";
-                        break;
-                }
-                mIvOwnRecord.setBackground(drawable);
-
-                if(mTvOwnRecord != null){
-                    mTvOwnRecord.setText(str);
-                }
-            }
-        });
-
-        if(mTvOwnerName != null){
-            mTvOwnerName.setText(MyUserInfoManager.getInstance().getNickName());
-        }
-
-        try {
-            mRecordItemOne.setData(mRoomData, mRecordData.mVoteInfoModels.get(0));
-            mRecordItemOne.setData(mRoomData, mRecordData.mVoteInfoModels.get(1));
-            mRecordItemOne.setData(mRoomData, mRecordData.mVoteInfoModels.get(2));
-        }catch (Exception e){
-            MyLog.e(TAG, e);
-        }
+        return;
+//        Observable.fromIterable(mRecordData.mVoteInfoModels)
+//                .filter(new Predicate<VoteInfoModel>() {
+//                    @Override
+//                    public boolean test(VoteInfoModel voteInfoModel) throws Exception {
+//                        return voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
+//                    }
+//                })
+//                .subscribe(new Consumer<VoteInfoModel>() {
+//            @Override
+//            public void accept(VoteInfoModel voteInfoModel) throws Exception {
+//                Drawable drawable = null;
+//                String str = "";
+//                switch (voteInfoModel.getRank()){
+//                    case 1:
+//                        drawable = getResources().getDrawable(R.drawable.ic_medal1_normal);
+//                        str = "冠军";
+//                        break;
+//                    case 2:
+//                        drawable = getResources().getDrawable(R.drawable.ic_medal2_normal);
+//                        str = "亚军";
+//                        break;
+//                    case 3:
+//                        drawable = getResources().getDrawable(R.drawable.ic_medal3_normal);
+//                        str = "季军";
+//                        break;
+//                }
+//                mIvOwnRecord.setBackground(drawable);
+//
+//                if(mTvOwnRecord != null){
+//                    mTvOwnRecord.setText(str);
+//                }
+//            }
+//        });
+//
+//        if(mTvOwnerName != null){
+//            mTvOwnerName.setText(MyUserInfoManager.getInstance().getNickName());
+//        }
+//
+//        try {
+//            mRecordItemOne.setData(mRoomData, mRecordData.mVoteInfoModels.get(0));
+//            mRecordItemOne.setData(mRoomData, mRecordData.mVoteInfoModels.get(1));
+//            mRecordItemOne.setData(mRoomData, mRecordData.mVoteInfoModels.get(2));
+//        }catch (Exception e){
+//            MyLog.e(TAG, e);
+//        }
     }
 
     @Override
