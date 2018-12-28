@@ -221,6 +221,8 @@ dependencies {
 
     // 使用矢量图来播动画的库
     api rootProject.ext.dependencies["lottie"]
+    // SVGA YY的动画播放框架
+    api rootProject.ext.dependencies["svga"]
 
     // 小米统计sdk
     api files('libs/MiStats_SDK_Client_1_4_0.jar')

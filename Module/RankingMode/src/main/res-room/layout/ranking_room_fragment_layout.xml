@@ -5,13 +5,11 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
-    <com.common.view.ex.ExImageView
+    <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/top_voice_bg"
-        android:layout_marginTop="@dimen/view_90_dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_245_dp"
-        android:background="@drawable/img_pop_guanzhongjiemian_normal"
-        android:visibility="gone" />
+        android:layout_marginTop="@dimen/view_90_dp" />
 
 
     <com.zq.lyrics.widget.ManyLyricsView
@@ -25,8 +23,8 @@
         app:ly_eable_verbatim="true"
         app:ly_high_light_paint_color_from="#EF5E85"
         app:ly_high_light_paint_color_to="#EF5E85"
-        app:ly_high_light_sub_paint_color="@color/white"
         app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
+        app:ly_high_light_sub_paint_color="@color/white"
         app:ly_outline_paint_color="@color/black"
         app:ly_paint_color_from="@color/white_trans_50"
         app:ly_paint_color_to="@color/white_trans_50"
@@ -42,8 +40,8 @@
         app:ly_eable_verbatim="false"
         app:ly_high_light_paint_color_from="@color/white"
         app:ly_high_light_paint_color_to="@color/white"
-        app:ly_high_light_sub_paint_color="@color/white"
         app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
+        app:ly_high_light_sub_paint_color="@color/white"
         app:ly_outline_paint_color="@color/black"
         app:ly_paint_color_from="@color/white_trans_50"
         app:ly_paint_color_to="@color/white_trans_50"
@@ -65,10 +63,10 @@
 
     <com.module.rankingmode.room.comment.CommentView
         android:id="@+id/comment_view"
-        android:layout_marginRight="@dimen/view_128_dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_250_dp"
         android:layout_above="@+id/bottom_container_view"
+        android:layout_marginRight="@dimen/view_128_dp"
         android:paddingLeft="@dimen/view_18_dp"
         android:paddingBottom="@dimen/view_7_dp" />
 

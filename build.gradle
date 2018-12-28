@@ -84,6 +84,8 @@ allprojects {
 
         maven { url 'https://dl.bintray.com/umsdk/release' }
 
+        maven { url 'https://jitpack.io' }
+
         maven { url "${rootDir}${File.separator}local_maven" }
 
         if (aliFeedback.toBoolean()) {

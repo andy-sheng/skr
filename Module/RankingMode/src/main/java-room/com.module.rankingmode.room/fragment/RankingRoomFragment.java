@@ -43,6 +43,10 @@ import com.module.rankingmode.room.view.InputContainerView;
 import com.module.rankingmode.room.view.TopContainerView;
 import com.module.rankingmode.room.view.TurnChangeCardView;
 import com.module.rankingmode.song.model.SongModel;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -55,6 +59,10 @@ import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -63,6 +71,11 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
@@ -80,7 +93,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     TopContainerView mTopContainerView;
 
-    ExImageView mTopVoiceBg;
+    SVGAImageView mTopVoiceBg;
 
     RankingCorePresenter mCorePresenter;
 
@@ -311,8 +324,46 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initTurnChangeView() {
-        mTopVoiceBg = (ExImageView) mRootView.findViewById(R.id.top_voice_bg);
+        mTopVoiceBg = (SVGAImageView) mRootView.findViewById(R.id.top_voice_bg);
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
+
+        //TODO 还要修改
+        SVGAParser parser = new SVGAParser(getActivity());
+        parser.setFileDownloader(new SVGAParser.FileDownloader() {
+            @Override
+            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder().url(url).get().build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                            complete.invoke(response.body().byteStream());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            failure.invoke(e);
+                        }
+                    }
+                }).start();
+            }
+        });
+        try {
+            parser.parse(new URL(RoomData.ROOM_VOICE_SVGA), new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete( SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mTopVoiceBg.setImageDrawable(drawable);
+                    mTopVoiceBg.startAnimation();
+                }
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showReadyGoView() {
