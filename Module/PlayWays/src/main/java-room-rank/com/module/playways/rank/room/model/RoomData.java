@@ -23,6 +23,7 @@ public class RoomData {
 
     private int mGameId; // 房间id
 
+    private String mSysAvatar; // 系统头像
     /**
      * 当要拿服务器时间和本地时间比较时，请将服务器时间加上这个矫正值
      * 如
@@ -107,6 +108,14 @@ public class RoomData {
 
     public void setGameId(int gameId) {
         mGameId = gameId;
+    }
+
+    public String getSysAvatar() {
+        return mSysAvatar;
+    }
+
+    public void setSysAvatar(String sysAvatar) {
+        mSysAvatar = sysAvatar;
     }
 
     public int getShiftTs() {

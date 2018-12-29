@@ -75,8 +75,8 @@ android {
             java.srcDirs += 'src/main/java-feedback'
             res.srcDirs += 'src/main/res-feedback'
 
-            java.srcDirs += 'src/main/java-audiotest'
-            res.srcDirs += 'src/main/res-audiotest'
+            java.srcDirs += 'src/main/java-musictest'
+            res.srcDirs += 'src/main/res-musictest'
         }
     }
 }

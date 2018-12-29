@@ -181,7 +181,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                         mCheckJoinStateTask.dispose();
                     }
 
-                    mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
+                    mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar());
                 }
             }
         }
@@ -297,7 +297,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                                             mMatchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
-                                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
+                                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar());
                                         } else {
                                             MyLog.d(TAG, "3 秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
@@ -338,7 +338,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                             mMatchState = MatchState.JoinGameSuccess;
                             mJsonGameInfo = jsonGameInfo;
-                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList);
+                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar());
                         }
                     } else {
                         MyLog.d(TAG, "process updateUserListState else");

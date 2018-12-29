@@ -35,6 +35,7 @@ public class RankingRoomActivity extends BaseActivity {
         if (prepareData != null) {
             mRoomData.setGameType(prepareData.getGameType());
             mRoomData.setGameId(prepareData.getGameId());
+            mRoomData.setSysAvatar(prepareData.getSysAvatar());
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
             mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());

@@ -219,9 +219,10 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     @Override
-    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> playerInfoList) {
+    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> playerInfoList, String avatar) {
         MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " playerInfoList=" + playerInfoList);
         mPrepareData.setGameId(gameId);
+        mPrepareData.setSysAvatar(avatar);
         mPrepareData.setGameCreatMs(gameCreatMs);
         mPrepareData.setPlayerInfoList(playerInfoList);
 

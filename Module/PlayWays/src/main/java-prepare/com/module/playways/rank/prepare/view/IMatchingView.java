@@ -9,7 +9,7 @@ public interface IMatchingView {
     /**
      * 匹配成功
      */
-    void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> playerInfoList);
+    void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> playerInfoList, String systemAvatar);
 
     void showUserIconList(List<String> avatarURL);
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 public class PrepareData implements Serializable {
     private int mGameType;
+    private String sysAvatar; // 系统头像
     private SongModel mSongModel;
     private int mGameId;
     private long mGameCreatMs;
@@ -20,6 +21,14 @@ public class PrepareData implements Serializable {
 
     public void setGameType(int gameType) {
         mGameType = gameType;
+    }
+
+    public String getSysAvatar() {
+        return sysAvatar;
+    }
+
+    public void setSysAvatar(String sysAvatar) {
+        this.sysAvatar = sysAvatar;
     }
 
     public void setSongModel(SongModel songModel) {
