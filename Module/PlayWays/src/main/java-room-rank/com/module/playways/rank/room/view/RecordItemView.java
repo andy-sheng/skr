@@ -7,16 +7,17 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoModel;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.prepare.GameModeType;
-import com.module.rank.R;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.song.model.SongModel;
+import com.module.rank.R;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -128,7 +129,7 @@ public class RecordItemView extends RelativeLayout {
             public void accept(Integer integer) throws Exception {
                 mExImageViews[integer].setSelected(true);
             }
-        });
+        }, throwable -> MyLog.e(throwable));
 
         if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
@@ -154,7 +155,7 @@ public class RecordItemView extends RelativeLayout {
                                         .build());
                     }
                 }
-            });
+            }, throwable -> MyLog.e(throwable));
         }
     }
 }

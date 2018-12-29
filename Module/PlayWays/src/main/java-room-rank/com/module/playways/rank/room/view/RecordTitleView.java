@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -107,6 +108,6 @@ public class RecordTitleView extends RelativeLayout {
                             mTvOwnRecord.setText(str);
                         }
                     }
-                });
+                }, throwable -> MyLog.e(throwable));
     }
 }
