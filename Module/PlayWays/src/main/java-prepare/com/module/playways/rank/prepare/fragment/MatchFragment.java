@@ -92,7 +92,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
         mMatchPresenter = new MatchPresenter(this);
         addPresent(mMatchPresenter);
-        mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID());
+        mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID(), mPrepareData.getGameType());
 
         startTimeTask();
         startMatchQuotationTask();

@@ -67,7 +67,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mTvDuration = (ExTextView) mRootView.findViewById(R.id.tv_duration);
         mTvLyric = (ExTextView) mRootView.findViewById(R.id.tv_lyric);
         mIvStartMatch = mRootView.findViewById(R.id.iv_start_match);
-        songResProgressbar = (ProgressBar)mRootView.findViewById(R.id.song_res_progressbar);
+        songResProgressbar = (ProgressBar) mRootView.findViewById(R.id.song_res_progressbar);
         songResProgressbar.setMax(100);
         mSongName.setText(mPrepareData.getSongModel().getItemName());
 
@@ -90,7 +90,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
             public void onDownloaded(long downloaded, long totalLength) {
                 MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);
                 mUiHandler.post(() -> {
-                    int progress = (int) ((((float)downloaded / (float) totalLength)) * 100);
+                    int progress = (int) ((((float) downloaded / (float) totalLength)) * 100);
                     songResProgressbar.setProgress(progress);
                 });
             }
@@ -175,8 +175,11 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         if (type == 0) {
             mPrepareData.setSongModel((SongModel) data);
         }
-    }
 
+        if (type == 1) {
+            mPrepareData.setGameType((int) data);
+        }
+    }
 
 
     @Override

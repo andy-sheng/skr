@@ -19,6 +19,8 @@ public class RoomData {
     public final static String READY_GO_WEBP_URL = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/ready_go4.webp";
     public final static String ROOM_VOICE_SVGA = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/room_voice1.svga";
 
+    private int mGameType; // 游戏类型
+
     private int mGameId; // 房间id
 
     /**
@@ -89,6 +91,14 @@ public class RoomData {
 
     public boolean isIsGameFinish() {
         return mIsGameFinish;
+    }
+
+    public int getGameType() {
+        return mGameType;
+    }
+
+    public void setGameType(int gameType) {
+        mGameType = gameType;
     }
 
     public int getGameId() {

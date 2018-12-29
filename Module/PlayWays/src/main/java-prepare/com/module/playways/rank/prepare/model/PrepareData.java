@@ -6,12 +6,21 @@ import java.io.Serializable;
 import java.util.List;
 
 public class PrepareData implements Serializable {
+    private int mGameType;
     private SongModel mSongModel;
     private int mGameId;
     private long mGameCreatMs;
     private List<PlayerInfo> mPlayerInfoList;
     private GameReadyModel mGameReadyInfo;
     private int shiftTs;
+
+    public int getGameType() {
+        return mGameType;
+    }
+
+    public void setGameType(int gameType) {
+        mGameType = gameType;
+    }
 
     public void setSongModel(SongModel songModel) {
         mSongModel = songModel;

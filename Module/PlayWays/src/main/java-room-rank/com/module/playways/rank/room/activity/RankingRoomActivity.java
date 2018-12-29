@@ -33,11 +33,11 @@ public class RankingRoomActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData != null) {
+            mRoomData.setGameType(prepareData.getGameType());
             mRoomData.setGameId(prepareData.getGameId());
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
             mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
-
 
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));

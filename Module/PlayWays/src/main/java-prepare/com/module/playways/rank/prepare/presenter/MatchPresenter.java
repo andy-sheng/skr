@@ -48,6 +48,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     long mGameCreateTime;
 
     int mCurrentMusicId; //选择的歌曲id
+    int mGameType; // 当前游戏类型
 
     GameInfoModel mJsonGameInfo;
 
@@ -66,9 +67,10 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
     }
 
-    public void startLoopMatchTask(int playbookItemID) {
+    public void startLoopMatchTask(int playbookItemID, int gameType) {
         MyLog.d(TAG, "startLoopMatchTask");
         this.mCurrentMusicId = playbookItemID;
+        this.mGameType = gameType;
 
         disposeLoopMatchTask();
         mLoopMatchTask = HandlerTaskTimer.newBuilder()
@@ -77,7 +79,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onNext(Integer integer) {
                         MyLog.d(TAG, "startLoopMatchTask onNext");
-        startMatch(mCurrentMusicId);
+                        startMatch(mCurrentMusicId, mGameType);
                     }
                 });
     }
@@ -99,13 +101,13 @@ public class MatchPresenter extends RxLifeCyclePresenter {
      *
      * @param playbookItemID 选择歌曲itemID
      */
-    private void startMatch(int playbookItemID) {
+    private void startMatch(int playbookItemID, int gameType) {
         MyLog.d(TAG, "startMatch");
         disposeMatchTask();
         mMatchState = MatchState.Matching;
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("mode", GameModeType.GAME_MODE_CLASSIC_RANK);
+        map.put("mode", gameType);
         map.put("playbookItemID", playbookItemID);
         map.put("platform", 2);   // 代表是android平台
 
@@ -125,7 +127,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, e);
-                startMatch(mCurrentMusicId);
+                startMatch(mCurrentMusicId, mGameType);
             }
         }, this);
     }
@@ -138,7 +140,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
         mMatchState = MatchState.IDLE;
         HashMap<String, Object> map = new HashMap<>();
-        map.put("mode", GameModeType.GAME_MODE_CLASSIC_RANK);
+        map.put("mode", mGameType);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.cancleMatch(body).retry(3), null);
@@ -210,7 +212,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
             @Override
             public void onFailed(Object obj, int errcode, String message) {
                 U.getToastUtil().showShort("加入房间失败");
-                startLoopMatchTask(mCurrentMusicId);
+                startLoopMatchTask(mCurrentMusicId, mGameType);
             }
         });
     }
@@ -231,14 +233,14 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     updateUserListState();
                 } else {
-                    startLoopMatchTask(mCurrentMusicId);
+                    startLoopMatchTask(mCurrentMusicId, mGameType);
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 U.getToastUtil().showShort("加入房间失败");
-                startLoopMatchTask(mCurrentMusicId);
+                startLoopMatchTask(mCurrentMusicId, mGameType);
             }
         }, this);
 
@@ -299,16 +301,16 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                                         } else {
                                             MyLog.d(TAG, "3 秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
-                                            startLoopMatchTask(mCurrentMusicId);
+                                            startLoopMatchTask(mCurrentMusicId, mGameType);
                                         }
                                     } else {
                                         MyLog.d(TAG, "3秒后拉完房间信息人数不够3个，需要重新match了");
                                         // TODO: 2018/12/12 方便测试这个先注掉
-                                        startLoopMatchTask(mCurrentMusicId);
+                                        startLoopMatchTask(mCurrentMusicId, mGameType);
                                     }
                                 } else {
                                     MyLog.d(TAG, "3秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
-                                    startLoopMatchTask(mCurrentMusicId);
+                                    startLoopMatchTask(mCurrentMusicId, mGameType);
                                 }
                             }
 

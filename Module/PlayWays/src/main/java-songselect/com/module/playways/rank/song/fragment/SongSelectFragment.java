@@ -17,6 +17,8 @@ import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.audioroom.AudioRoomActivity;
+import com.module.playways.rank.RankingModeActivity;
+import com.module.playways.rank.prepare.GameModeType;
 import com.module.playways.rank.song.adapter.SongCardsAdapter;
 import com.module.playways.rank.song.event.SwipCardEvent;
 import com.module.playways.rank.song.model.SongCardModel;
@@ -107,18 +109,22 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     U.getToastUtil().showShort("试音房");
                     return;
                 }
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                        .setAddToBackStack(false)
-                        .setNotifyHideFragment(SongSelectFragment.class)
-                        .setHasAnimation(true)
-                        .addDataBeforeAdd(0, songModel)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
 
-                            }
-                        })
-                        .build());
+                if (getActivity() instanceof RankingModeActivity){
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
+                            .setAddToBackStack(false)
+                            .setNotifyHideFragment(SongSelectFragment.class)
+                            .setHasAnimation(true)
+                            .addDataBeforeAdd(0, songModel)
+                            .addDataBeforeAdd(1, GameModeType.GAME_MODE_CLASSIC_RANK)
+                            .setFragmentDataListener(new FragmentDataListener() {
+                                @Override
+                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                                }
+                            })
+                            .build());
+                }
                 //测试
 //                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankingRecordFragment.class)
 //                        .setAddToBackStack(true)
