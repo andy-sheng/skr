@@ -10,6 +10,11 @@
             android:value="ConfigModule" />
 
         <activity
+            android:name="com.module.playways.audioroom.AudioRoomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
             android:name="com.module.playways.rank.RankingModeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -19,16 +24,16 @@
         <activity
             android:name="com.module.playways.rank.room.activity.RankingRoomActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
 
         </activity>
 
         <activity
             android:name="com.moudle.playways.singend.room.activity.SingEndRoomActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
 
         </activity>
     </application>

@@ -16,6 +16,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.rank.song.adapter.SongCardsAdapter;
 import com.module.playways.rank.song.event.SwipCardEvent;
 import com.module.playways.rank.song.model.SongCardModel;
@@ -102,6 +103,10 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
+                if (getActivity() instanceof AudioRoomActivity) {
+                    U.getToastUtil().showShort("试音房");
+                    return;
+                }
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                         .setAddToBackStack(false)
                         .setNotifyHideFragment(SongSelectFragment.class)

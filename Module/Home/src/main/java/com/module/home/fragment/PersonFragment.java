@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 
 import com.common.base.FragmentDataListener;
+import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -25,6 +26,8 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 
 import com.component.busilib.fragment.OtherPersonFragment;
+import com.engine.EngineManager;
+import com.engine.Params;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
 import com.imagepicker.model.ImageItem;
@@ -157,7 +160,7 @@ public class PersonFragment extends BaseFragment {
                                                         @Override
                                                         public void onSuccess(String url) {
                                                             U.getToastUtil().showShort("上传成功 url:" + url);
-                                                            MyUserInfoManager.getInstance().updateInfo(  MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                                                     .setAvatar(url)
                                                                     .build());
                                                         }
@@ -172,6 +175,18 @@ public class PersonFragment extends BaseFragment {
                                     }
                                 })
                                 .build());
+                    }
+                });
+
+
+        RxView.clicks(mAuditionRoomTv)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
+                                .withBoolean("selectSong", true)
+                                .navigation();
                     }
                 });
 

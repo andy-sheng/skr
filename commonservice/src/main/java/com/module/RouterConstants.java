@@ -9,6 +9,8 @@ public interface RouterConstants {
     String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
     String ACTIVITY_LOGIN = "/core/LoginActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
+
+    String ACTIVITY_AUDIOROOM = "/rankingmode/AudioRoomActivity";
     String ACTIVITY_RANKINGMODE = "/rankingmode/RankingModeActivity";
     String ACTIVITY_RANKING_ROOM = "/rankingmode/RankingRoomActivity";
     String ACTIVITY_SINGEND_ROOM = "/rankingmode/SingEndRoomActivity";
@@ -28,7 +30,7 @@ public interface RouterConstants {
     //HalfWebViewActivity
     String ACTIVITY_HALFWEB = "HalfWebViewActivity";
     //LongTextActivity
-    String ACTIVITY_LONGTEXT= "LongTextActivity";
+    String ACTIVITY_LONGTEXT = "LongTextActivity";
     //RechargeActivity
     String ACTIVITY_RECHARGE = "RechargeActivity";
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
