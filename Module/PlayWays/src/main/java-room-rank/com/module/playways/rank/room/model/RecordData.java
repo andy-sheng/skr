@@ -1,5 +1,7 @@
 package com.module.playways.rank.room.model;
 
+import com.common.core.myinfo.MyUserInfoManager;
+
 import java.util.List;
 
 public class RecordData {
@@ -10,4 +12,16 @@ public class RecordData {
         this.mVoteInfoModels = mVoteInfoModels;
         this.mUserScoreModels = mUserScoreModels;
     }
+
+    public VoteInfoModel getSelfVoteInfoModel(){
+        for (VoteInfoModel voteInfoModel :
+                mVoteInfoModels) {
+            if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()){
+                return voteInfoModel;
+            }
+        }
+
+        return null;
+    }
+
 }

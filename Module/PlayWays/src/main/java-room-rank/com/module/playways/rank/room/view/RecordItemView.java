@@ -11,6 +11,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.playways.rank.prepare.GameModeType;
 import com.module.rank.R;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
@@ -38,21 +39,34 @@ public class RecordItemView extends RelativeLayout {
 
     ExTextView mTvSongName;
 
+    RoomData mRoomData;
+
     public RecordItemView(Context context) {
         super(context);
-        init();
     }
 
     public RecordItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     private void init() {
-        inflate(getContext(), R.layout.record_athletics_item_layout, this);
-        mTvSongName = (ExTextView)findViewById(R.id.tv_song_name);
+        if (mRoomData.getGameType() == GameModeType.GAME_MODE_FUNNY) {
+            inflate(getContext(), R.layout.record_item_layout, this);
+        } else {
+            inflate(getContext(), R.layout.record_athletics_item_layout, this);
 
-        mSdvSingerIcon = (SimpleDraweeView)findViewById(R.id.sdv_singer_icon);
+            mIvLightOneIcon = (SimpleDraweeView) findViewById(R.id.iv_light_one_icon);
+            mIvLightOneTwo = (SimpleDraweeView) findViewById(R.id.iv_light_one_two);
+            mIvLightOneThree = (SimpleDraweeView) findViewById(R.id.iv_light_one_three);
+
+            mSimpleDraweeViews[0] = mIvLightOneIcon;
+            mSimpleDraweeViews[1] = mIvLightOneTwo;
+            mSimpleDraweeViews[2] = mIvLightOneThree;
+        }
+
+        mTvSongName = (ExTextView) findViewById(R.id.tv_song_name);
+
+        mSdvSingerIcon = (SimpleDraweeView) findViewById(R.id.sdv_singer_icon);
         mIvRanking = (ExImageView) findViewById(R.id.iv_ranking);
         mTvSingerName = (ExTextView) findViewById(R.id.tv_singer_name);
         mIvLightOne = (ExImageView) findViewById(R.id.iv_light_one);
@@ -70,45 +84,16 @@ public class RecordItemView extends RelativeLayout {
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .setBorderColor(0xFF85EAFF)
                         .build());
-
-
-        mIvLightOneIcon = (SimpleDraweeView)findViewById(R.id.iv_light_one_icon);
-        mIvLightOneTwo = (SimpleDraweeView)findViewById(R.id.iv_light_one_two);
-        mIvLightOneThree = (SimpleDraweeView)findViewById(R.id.iv_light_one_three);
-
-        mSimpleDraweeViews[0] = mIvLightOneIcon;
-        mSimpleDraweeViews[1] = mIvLightOneTwo;
-        mSimpleDraweeViews[2] = mIvLightOneThree;
-
-        AvatarUtils.loadAvatarByUrl(mIvLightOneIcon,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setCircle(true)
-                        .setGray(false)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(0xFF85EAFF)
-                        .build());
-
-        AvatarUtils.loadAvatarByUrl(mIvLightOneTwo,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setCircle(true)
-                        .setGray(false)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(0xFF85EAFF)
-                        .build());
-
-        AvatarUtils.loadAvatarByUrl(mIvLightOneThree,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setCircle(true)
-                        .setGray(false)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(0xFF85EAFF)
-                        .build());
     }
 
-    public void setData(RoomData roomData, VoteInfoModel voteInfoModel){
-        if(voteInfoModel == null){
+    public void setData(RoomData roomData, VoteInfoModel voteInfoModel) {
+        if (voteInfoModel == null) {
             return;
         }
+
+        mRoomData = roomData;
+
+        init();
 
         UserInfoModel playerInfo = roomData.getUserInfo(voteInfoModel.getUserID());
         SongModel songModel = RoomDataUtils.getPlayerInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getUserID());
@@ -124,7 +109,7 @@ public class RecordItemView extends RelativeLayout {
         mTvSingerName.setText(playerInfo.getUserNickname());
         mTvSongName.setText("《" + songModel.getItemName() + "》");
 
-        switch (voteInfoModel.getRank()){
+        switch (voteInfoModel.getRank()) {
             case 1:
                 mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal1_normal));
                 break;
@@ -137,20 +122,20 @@ public class RecordItemView extends RelativeLayout {
         }
 
         //这里需要判读是娱乐还是竞技
-        if(true){
-            Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
-                @Override
-                public void accept(Integer integer) throws Exception {
-                    mExImageViews[integer].setSelected(true);
-                }
-            });
 
+        Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                mExImageViews[integer].setSelected(true);
+            }
+        });
 
+        if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
                 @Override
                 public void accept(Integer integer) throws Exception {
                     int voterId = voteInfoModel.getVoter().get(integer);
-                    if(voterId == 1){
+                    if (voterId == 1) {
                         AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
                                 AvatarUtils.newParamsBuilder("local")
                                         .setCircle(true)
@@ -158,7 +143,7 @@ public class RecordItemView extends RelativeLayout {
                                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                                         .setBorderColor(0xFF85EAFF)
                                         .build());
-                    }else {
+                    } else {
                         UserInfoModel playerInfo = roomData.getUserInfo(voterId);
                         AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
                                 AvatarUtils.newParamsBuilder(playerInfo.getAvatar())

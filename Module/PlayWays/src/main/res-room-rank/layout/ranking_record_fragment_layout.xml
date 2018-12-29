@@ -16,6 +16,7 @@
         android:background="@drawable/img_top_zhanjijieguo_bg" />
 
     <com.common.view.ex.ExRelativeLayout
+        android:padding="@dimen/view_3_dp"
         android:layout_marginBottom="@dimen/view_26_dp"
         android:layout_above="@+id/ll_bottom_area"
         android:layout_width="match_parent"
@@ -29,12 +30,13 @@
         app:bl_stroke_color="#0C2275"
         app:bl_stroke_width="@dimen/view_3_dp">
 
-        <include
-            android:id="@+id/record_title"
-            layout="@layout/record_title_athletics"/>
+        <com.module.playways.rank.room.view.RecordTitleView
+            android:id="@+id/record_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <ScrollView
-            android:layout_below="@+id/record_title"
+            android:layout_below="@+id/record_title_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
