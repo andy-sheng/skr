@@ -221,4 +221,9 @@ public class UploadAccountInfoActivity extends BaseActivity {
     public boolean useEventBus() {
         return true;
     }
+
+    @Override
+    public boolean canSlide() {
+        return false;
+    }
 }

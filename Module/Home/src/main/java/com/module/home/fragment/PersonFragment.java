@@ -122,9 +122,7 @@ public class PersonFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        // TODO: 2018/12/27  只做test
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
-                                .greenChannel().navigation();
+                        
                     }
                 });
 

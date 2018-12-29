@@ -45,7 +45,7 @@ public class LoginActivity extends BaseActivity {
 
         U.getFragmentUtils().addFragment(FragmentUtils
                 .newAddParamsBuilder(LoginActivity.this, LoginFragment.class)
-                .setAddToBackStack(true)
+                .setAddToBackStack(false)
                 .setHasAnimation(true)
                 .build());
     }
@@ -97,4 +97,8 @@ public class LoginActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public boolean canSlide() {
+        return false;
+    }
 }
