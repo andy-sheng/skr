@@ -8,10 +8,16 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.module.playways.rank.msg.event.VoteResultEvent;
 import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.view.IVoteView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +35,22 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
 
     public EndGamePresenter(IVoteView view) {
         this.view = view;
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     /**
@@ -77,6 +99,8 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
                     List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
                     List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
                     U.getToastUtil().showShort("获取投票结果成功");
+
+                    view.showRecordView(new RecordData(voteInfoModelList, userScoreModelList));
                 } else {
                     MyLog.e(TAG, "getVoteResult result errno is " + result.getErrmsg());
                 }
@@ -89,4 +113,9 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(VoteResultEvent event) {
+        MyLog.d(TAG, "VoteResultEvent" + " event=" + event);
+        view.showRecordView(new RecordData(event.mVoteInfoModels, event.mUserScoreModels));
+    }
 }

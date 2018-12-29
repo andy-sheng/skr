@@ -9,12 +9,14 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.rank.room.model.RecordData;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PlayerInfo;
 import com.module.playways.rank.room.model.RoomData;
@@ -181,6 +183,18 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     @Override
     public void voteFailed() {
+
+    }
+
+    @Override
+    public void showRecordView(RecordData recordData) {
+        stopTimeTask();
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+                .setAddToBackStack(true)
+                .addDataBeforeAdd(0, recordData)
+                .addDataBeforeAdd(1, mRoomData)
+                .build()
+        );
 
     }
 
