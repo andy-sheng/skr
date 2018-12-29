@@ -29,11 +29,12 @@
          />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/tv_song_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_135_dp"
-        android:text="《印第安老鸡婆》sss"
+        android:text=""
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_16_dp" />
 

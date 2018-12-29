@@ -111,7 +111,7 @@ public class RecordItemView extends RelativeLayout {
         }
 
         UserInfoModel playerInfo = roomData.getUserInfo(voteInfoModel.getUserID());
-        SongModel songModel = RoomDataUtils.getPlayerInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getItemID());
+        SongModel songModel = RoomDataUtils.getPlayerInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getUserID());
 
         AvatarUtils.loadAvatarByUrl(mSdvSingerIcon,
                 AvatarUtils.newParamsBuilder(playerInfo.getAvatar())
@@ -145,10 +145,12 @@ public class RecordItemView extends RelativeLayout {
                 }
             });
 
-            Observable.fromIterable(voteInfoModel.getVoter()).subscribe(new Consumer<Integer>() {
+
+            Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
                 @Override
                 public void accept(Integer integer) throws Exception {
-                    if(integer == 1){
+                    int voterId = voteInfoModel.getVoter().get(integer);
+                    if(voterId == 1){
                         AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
                                 AvatarUtils.newParamsBuilder("local")
                                         .setCircle(true)
@@ -157,7 +159,7 @@ public class RecordItemView extends RelativeLayout {
                                         .setBorderColor(0xFF85EAFF)
                                         .build());
                     }else {
-                        UserInfoModel playerInfo = roomData.getUserInfo(integer);
+                        UserInfoModel playerInfo = roomData.getUserInfo(voterId);
                         AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
                                 AvatarUtils.newParamsBuilder(playerInfo.getAvatar())
                                         .setCircle(true)
