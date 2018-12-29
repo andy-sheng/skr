@@ -213,8 +213,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                     countDownRunnable.run();
                     mUiHanlder.removeMessages(ENSURE_RUN);
                 }
-                if (mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
-                    mTopVoiceBg.setVisibility(View.VISIBLE);
+                // TODO: 2018/12/29 先加一个保护 
+                if (mRoomData.getRealRoundInfo() != null) {
+                    if (mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
+                        mTopVoiceBg.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
@@ -309,7 +312,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void initTopView() {
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
-        mTvPassedTime = (ExTextView)mRootView.findViewById(R.id.tv_passed_time);
+        mTvPassedTime = (ExTextView) mRootView.findViewById(R.id.tv_passed_time);
 
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
@@ -358,11 +361,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         try {
             parser.parse(new URL(RoomData.ROOM_VOICE_SVGA), new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete( SVGAVideoEntity videoItem) {
+                public void onComplete(SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
                     mTopVoiceBg.setImageDrawable(drawable);
                     mTopVoiceBg.startAnimation();
                 }
+
                 @Override
                 public void onError() {
 
@@ -591,7 +595,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void showLastedTime(long wholeTile) {
         MyLog.d(TAG, "showLastedTime" + " wholeTile=" + wholeTile);
-        if(mShowLastedTimeTask != null){
+        if (mShowLastedTimeTask != null) {
             mShowLastedTimeTask.dispose();
         }
 
@@ -601,27 +605,27 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
         mShowLastedTimeTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take((int)lastedTime + 1)
+                .take((int) lastedTime + 1)
                 .start(new HandlerTaskTimer.ObserverW() {
-            @Override
-            public void onNext(Integer integer) {
-                long lastTime = lastedTime + 1 - integer;
+                    @Override
+                    public void onNext(Integer integer) {
+                        long lastTime = lastedTime + 1 - integer;
 
-                if(lastTime < 0){
-                    cancelShowLastedTimeTask();
-                    mTvPassedTime.setText("");
-                    return;
-                }
+                        if (lastTime < 0) {
+                            cancelShowLastedTimeTask();
+                            mTvPassedTime.setText("");
+                            return;
+                        }
 
-                mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
-            }
-        });
+                        mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
+                    }
+                });
 
     }
 
-    private void cancelShowLastedTimeTask(){
+    private void cancelShowLastedTimeTask() {
         mTvPassedTime.setText("");
-        if(mShowLastedTimeTask != null){
+        if (mShowLastedTimeTask != null) {
             mShowLastedTimeTask.dispose();
             mShowLastedTimeTask = null;
         }
