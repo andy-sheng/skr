@@ -30,6 +30,8 @@ import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.rank.room.model.UserScoreModel;
+import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.view.IGameRuleView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,6 +43,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -60,6 +64,15 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     HandlerTaskTimer mSyncGameStateTask;
 
+    HandlerTaskTimer mGetVoteStateTask;
+
+    PublishSubject<RecordData> mGameFinishActionSubject = PublishSubject.create();
+
+    /**
+     * 服务器确定已结束，收到RoundAndGameOver事件
+     */
+    volatile boolean isConfirmRoundAndGameOver = false;
+
     IGameRuleView mIGameRuleView;
 
     Handler mUiHanlder = new Handler();
@@ -68,6 +81,19 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         mIGameRuleView = iGameRuleView;
         mRoomData = roomData;
         TAG = "RankingCorePresenter";
+
+        mGameFinishActionSubject.subscribe(new Consumer<RecordData>() {
+            @Override
+            public void accept(RecordData recordData) throws Exception {
+                if (recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
+                    //不需要跳转评论页,直接跳转战绩页
+                    mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mUserScoreModels));
+                } else {
+                    mIGameRuleView.showVoteView();
+                }
+            }
+        });
+
         Params params = Params.getFromPref();
         EngineManager.getInstance().init("rankingroom", params);
         EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
@@ -271,6 +297,35 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 获取投票结果
+     *
+     * @param gameID
+     */
+    public void getVoteResult(int gameID) {
+        ApiMethods.subscribe(mRoomServerApi.getVoteResult(gameID), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
+                    List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
+                    U.getToastUtil().showShort("获取投票结果成功");
+
+                    mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, userScoreModelList));
+                    mGameFinishActionSubject.onComplete();
+
+                } else {
+                    MyLog.e(TAG, "getVoteResult result errno is " + result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, e);
+            }
+        }, this);
+    }
+
 
     // 同步游戏详情状态(检测不到长连接调用)
     public void syncGameStatus(int gameID) {
@@ -441,12 +496,23 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 游戏真的结束了
+     * 游戏真的结束了,游戏的结束可能是Sync接口和Sync push，还有收到RoundAndGameOver push
      */
     private void gameIsFinish() {
         mRoomData.setIsGameFinish(true);
         cancelHeartBeatTask("gameIsFinish");
         cancelSyncGameStateTask();
+
+        if(!isConfirmRoundAndGameOver){
+            mGetVoteStateTask = HandlerTaskTimer.newBuilder()
+                    .delay(3000)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                        @Override
+                        public void onNext(Integer integer) {
+                            getVoteResult(mRoomData.getGameId());
+                        }
+                    });
+        }
     }
 
     private void onGameOver(String from, long gameOverTs) {
@@ -571,15 +637,17 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
         MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
+        isConfirmRoundAndGameOver = true;
+
+        if(mGetVoteStateTask != null){
+            mGetVoteStateTask.dispose();
+        }
+
         onGameOver("push", roundAndGameOverEvent.roundOverTimeMs);
         cancelSyncGameStateTask();
 
-        if (roundAndGameOverEvent.mVoteInfoModels != null && roundAndGameOverEvent.mVoteInfoModels.size() > 0) {
-            //不需要跳转评论页,直接跳转战绩页
-            mIGameRuleView.showRecordView(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mUserScoreModels));
-        } else {
-            mIGameRuleView.showVoteView();
-        }
+        mGameFinishActionSubject.onNext(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mUserScoreModels));
+        mGameFinishActionSubject.onComplete();
     }
 
     // 应用进程切到后台通知

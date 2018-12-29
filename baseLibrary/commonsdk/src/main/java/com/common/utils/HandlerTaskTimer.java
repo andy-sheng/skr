@@ -4,7 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import io.reactivex.Observable;
+import com.common.log.MyLog;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -29,12 +30,20 @@ public final class HandlerTaskTimer {
                 case MSG_EXECUTE:
                     times++;
                     if (consumer != null) {
-                        consumer.onNext(times);
+                        try {
+                            consumer.onNext(times);
+                        }catch (Exception e){
+                            MyLog.e("HandlerTaskTimer",e);
+                        }
                     }
                     // 如果已经取消了
                     if (hasCancel) {
                         if (consumer != null) {
-                            consumer.onComplete();
+                            try {
+                                consumer.onComplete();
+                            }catch (Exception e){
+                                MyLog.e("HandlerTaskTimer", e);
+                            }
                         }
                         return;
                     }
@@ -43,7 +52,11 @@ public final class HandlerTaskTimer {
                         if (times >= take) {
                             // 达到次数限制了
                             if (consumer != null) {
-                                consumer.onComplete();
+                                try {
+                                    consumer.onComplete();
+                                }catch (Exception e){
+                                    MyLog.e("HandlerTaskTimer",e);
+                                }
                             }
                         } else {
                             // 还能继续发送
@@ -53,7 +66,11 @@ public final class HandlerTaskTimer {
                                 mHandler.sendEmptyMessageDelayed(MSG_EXECUTE, inerval);
                             } else {
                                 // 没有设置时间间隔
-                                consumer.onComplete();
+                                try {
+                                    consumer.onComplete();
+                                }catch (Exception e){
+                                    MyLog.e("HandlerTaskTimer",e);
+                                }
                             }
                         }
                     } else {
@@ -65,7 +82,11 @@ public final class HandlerTaskTimer {
                             mHandler.sendEmptyMessageDelayed(MSG_EXECUTE, inerval);
                         } else {
                             // 没有设置时间间隔
-                            consumer.onComplete();
+                            try {
+                                consumer.onComplete();
+                            }catch (Exception e){
+                                MyLog.e("HandlerTaskTimer",e);
+                            }
                         }
                     }
                     break;
