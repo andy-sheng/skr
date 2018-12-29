@@ -12,6 +12,7 @@ import com.common.image.model.ImageFactory;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.playways.rank.prepare.GameModeType;
 import com.module.rank.R;
 import com.module.playways.rank.room.fragment.PkRoomFragment;
 import com.module.playways.rank.room.model.RoomData;
@@ -19,6 +20,8 @@ import com.module.playways.rank.song.fragment.SongSelectFragment;
 
 @Route(path = RouterConstants.ACTIVITY_RANKINGMODE)
 public class RankingModeActivity extends BaseActivity {
+
+    public static final String KEY_GAME_TYPE = "key_game_type";
 
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.rankingmode_activity_layout;
@@ -28,9 +31,12 @@ public class RankingModeActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
         if (selectSong) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(KEY_GAME_TYPE, GameModeType.GAME_MODE_CLASSIC_RANK);
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SongSelectFragment.class)
                     .setAddToBackStack(false)
                     .setHasAnimation(false)
+                    .setBundle(bundle)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
                         public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {

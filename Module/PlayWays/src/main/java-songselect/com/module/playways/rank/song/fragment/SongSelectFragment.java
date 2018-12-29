@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.module.playways.rank.RankingModeActivity.KEY_GAME_TYPE;
+
 public class SongSelectFragment extends BaseFragment implements ISongTagDetailView {
 
     public static final int DEFAULT_FIRST_COUNT = 30; // 第一次从推荐页面拉去歌曲数
@@ -58,6 +60,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     List<SongCardModel> mDeleteList; // 已经滑走的数据
 
     int offset; //当前偏移量
+    int mGameType;
 
     TanTanCallback callback;
     OverLayCardLayoutManager mOverLayCardLayoutManager;
@@ -78,6 +81,10 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectClickedIv = (ExImageView) mRootView.findViewById(R.id.select_clicked_iv);
         mSelectBack = (ExImageView) mRootView.findViewById(R.id.select_back);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mGameType = bundle.getInt(KEY_GAME_TYPE);
+        }
 
         RxView.clicks(mSelectBackIv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
@@ -110,13 +117,13 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     return;
                 }
 
-                if (getActivity() instanceof RankingModeActivity){
+                if (getActivity() instanceof RankingModeActivity) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                             .setAddToBackStack(false)
                             .setNotifyHideFragment(SongSelectFragment.class)
                             .setHasAnimation(true)
                             .addDataBeforeAdd(0, songModel)
-                            .addDataBeforeAdd(1, GameModeType.GAME_MODE_CLASSIC_RANK)
+                            .addDataBeforeAdd(1, mGameType)
                             .setFragmentDataListener(new FragmentDataListener() {
                                 @Override
                                 public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
