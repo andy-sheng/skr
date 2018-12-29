@@ -131,6 +131,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
+                        mVoteDownTv.setText(String.format(U.app().getString(R.string.evaluation_time_info), 12 - integer));
                         if (integer == 12) {
                             mPresenter.getVoteResult(mRoomData.getGameId());
                         }
