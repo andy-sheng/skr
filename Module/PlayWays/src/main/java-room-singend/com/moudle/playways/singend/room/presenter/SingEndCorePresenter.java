@@ -26,6 +26,7 @@ import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
@@ -172,8 +173,11 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "swapGame" + " out=" + out + " in=" + in);
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
-        map.put("out", out);
-        map.put("in", in);
+        if (out) {
+            map.put("status", SwapStatusType.SS_SWAP_OUT);
+        } else if (in) {
+            map.put("status", SwapStatusType.SS_SWAP_IN);
+        }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.swap(body), new ApiObserver<ApiResult>() {

@@ -26,6 +26,7 @@ import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
@@ -198,8 +199,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "swapGame" + " out=" + out + " in=" + in);
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
-        map.put("out", out);
-        map.put("in", in);
+        if (out) {
+            map.put("status", SwapStatusType.SS_SWAP_OUT);
+        } else if (in) {
+            map.put("status", SwapStatusType.SS_SWAP_IN);
+        }
+
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.swap(body), new ApiObserver<ApiResult>() {
@@ -503,7 +508,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         cancelHeartBeatTask("gameIsFinish");
         cancelSyncGameStateTask();
 
-        if(!isConfirmRoundAndGameOver){
+        if (!isConfirmRoundAndGameOver) {
             mGetVoteStateTask = HandlerTaskTimer.newBuilder()
                     .delay(3000)
                     .start(new HandlerTaskTimer.ObserverW() {
@@ -639,7 +644,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
         isConfirmRoundAndGameOver = true;
 
-        if(mGetVoteStateTask != null){
+        if (mGetVoteStateTask != null) {
             mGetVoteStateTask.dispose();
         }
 
