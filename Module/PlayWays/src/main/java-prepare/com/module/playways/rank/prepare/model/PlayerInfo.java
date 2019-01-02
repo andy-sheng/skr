@@ -9,9 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerInfo implements Serializable {
-
     UserInfoModel userInfo;
     List<SongModel> songList;
+    //是否是机器人
+    boolean isSkrer;
+    List<ResourceInfo> resourceInfoList;
+
+    public boolean isSkrer() {
+        return isSkrer;
+    }
+
+    public List<ResourceInfo> getResourceInfoList() {
+        return resourceInfoList;
+    }
 
     public UserInfoModel getUserInfo() {
         return userInfo;
@@ -42,6 +52,8 @@ public class PlayerInfo implements Serializable {
             list.add(songModel);
         }
         this.setSongList(list);
+        this.isSkrer = playerInfo.isSkrer;
+        this.resourceInfoList = ResourceInfo.parse(playerInfo.getResourceList());
     }
 
     @Override
@@ -49,6 +61,8 @@ public class PlayerInfo implements Serializable {
         return "PlayerInfo{" +
                 "userInfo=" + userInfo +
                 ", songList=" + songList +
+                ", isSkrer=" + isSkrer +
+                ", resourceInfoList=" + resourceInfoList +
                 '}';
     }
 }
