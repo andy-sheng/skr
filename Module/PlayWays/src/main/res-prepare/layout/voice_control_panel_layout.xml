@@ -1,24 +1,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/view_257_dp"
+    android:layout_marginLeft="@dimen/view_10_dp"
+    android:layout_marginRight="@dimen/view_10_dp"
+    android:background="@drawable/img_bg1"
     android:orientation="vertical">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_11_dp"
+        android:drawableRight="@drawable/ic_arrow_back"
+        android:text="调音"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_29_dp"
         android:layout_marginRight="@dimen/view_6_dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="人声"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/view_14_dp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/view_16_dp" />
 
         <SeekBar
             android:id="@+id/people_voice_seekbar"
@@ -26,14 +42,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:max="200"
-            android:maxHeight="@dimen/view_2_dp"
+            android:maxHeight="@dimen/view_5_dp"
             android:min="0"
             android:minHeight="@dimen/view_2_dp"
             android:paddingLeft="@dimen/view_10_dp"
             android:paddingRight="@dimen/view_10_dp"
             android:progressDrawable="@drawable/voice_control_panel_seekbar_bg" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,11 +60,12 @@
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="伴奏"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/view_14_dp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/view_16_dp" />
 
         <SeekBar
             android:id="@+id/music_voice_seekbar"
@@ -57,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:max="100"
-            android:maxHeight="@dimen/view_2_dp"
+            android:maxHeight="@dimen/view_5_dp"
             android:min="0"
             android:minHeight="@dimen/view_2_dp"
             android:paddingLeft="@dimen/view_10_dp"
@@ -69,82 +85,119 @@
         android:id="@+id/scenes_btn_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_35_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.module.playways.rank.prepare.view.ScenesSelectBtn
-            android:id="@+id/default_sbtn"
-            android:layout_width="@dimen/view_56_dp"
-            android:layout_height="@dimen/view_56_dp"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:text="默认"
-            app:fillColor="@color/transparent"
-            app:fillColor_checked="#f2978b"
-            app:strokeColor="@color/white"
-            app:textColor_checked="@color/black"
-            app:textColor_normal="@color/white" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <com.module.playways.rank.prepare.view.ScenesSelectBtn
-            android:id="@+id/ktv_sbtn"
-            android:layout_width="@dimen/view_56_dp"
-            android:layout_height="@dimen/view_56_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:button="@null"
-            android:checked="false"
-            android:gravity="center"
-            android:text="KTV"
-            app:fillColor="@color/transparent"
-            app:fillColor_checked="#f2978b"
-            app:strokeColor="#dfab73"
-            app:textColor_checked="@color/black"
-            app:textColor_normal="@color/white" />
+            <com.module.playways.rank.prepare.view.ScenesSelectBtn
+                android:id="@+id/default_sbtn"
+                android:layout_width="@dimen/view_53_dp"
+                android:layout_height="@dimen/view_53_dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="默认"
+                app:fillColor="@color/transparent"
+                app:fillColor_checked="#f2978b"
+                app:strokeColor="@color/white"
+                app:textColor_checked="@color/black"
+                app:textColor_normal="@color/white" />
+        </FrameLayout>
 
-        <com.module.playways.rank.prepare.view.ScenesSelectBtn
-            android:id="@+id/rock_sbtn"
-            android:layout_width="@dimen/view_56_dp"
-            android:layout_height="@dimen/view_56_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:button="@null"
-            android:checked="false"
-            android:gravity="center"
-            android:text="摇滚"
-            app:fillColor="@color/transparent"
-            app:fillColor_checked="#f2978b"
-            app:strokeColor="#b0e8ba"
-            app:textColor_checked="@color/black"
-            app:textColor_normal="@color/white" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <com.module.playways.rank.prepare.view.ScenesSelectBtn
-            android:id="@+id/dianyin_sbtn"
-            android:layout_width="@dimen/view_56_dp"
-            android:layout_height="@dimen/view_56_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:button="@null"
-            android:checked="false"
-            android:gravity="center"
-            android:text="电音"
-            app:fillColor="@color/transparent"
-            app:fillColor_checked="#f2978b"
-            app:strokeColor="#b0d5ec"
-            app:textColor_checked="@color/black"
-            app:textColor_normal="@color/white" />
+            <com.module.playways.rank.prepare.view.ScenesSelectBtn
+                android:id="@+id/ktv_sbtn"
+                android:layout_width="@dimen/view_53_dp"
+                android:layout_height="@dimen/view_53_dp"
+                android:layout_gravity="center"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:text="KTV"
+                app:fillColor="@color/transparent"
+                app:fillColor_checked="#f2978b"
+                app:strokeColor="#dfab73"
+                app:textColor_checked="@color/black"
+                app:textColor_normal="@color/white" />
+        </FrameLayout>
 
-        <com.module.playways.rank.prepare.view.ScenesSelectBtn
-            android:id="@+id/kongling_sbtn"
-            android:layout_width="@dimen/view_56_dp"
-            android:layout_height="@dimen/view_56_dp"
-            android:layout_marginLeft="@dimen/view_16_dp"
-            android:button="@null"
-            android:checked="false"
-            android:gravity="center"
-            android:text="空灵"
-            app:fillColor="@color/transparent"
-            app:fillColor_checked="#f2978b"
-            app:strokeColor="#e0adeb"
-            app:textColor_checked="@color/black"
-            app:textColor_normal="@color/white" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.module.playways.rank.prepare.view.ScenesSelectBtn
+                android:id="@+id/rock_sbtn"
+                android:layout_width="@dimen/view_53_dp"
+                android:layout_height="@dimen/view_53_dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:text="摇滚"
+                app:fillColor="@color/transparent"
+                app:fillColor_checked="#f2978b"
+                app:strokeColor="#b0e8ba"
+                app:textColor_checked="@color/black"
+                app:textColor_normal="@color/white" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.module.playways.rank.prepare.view.ScenesSelectBtn
+                android:id="@+id/dianyin_sbtn"
+                android:layout_width="@dimen/view_53_dp"
+                android:layout_height="@dimen/view_53_dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:text="电音"
+                app:fillColor="@color/transparent"
+                app:fillColor_checked="#f2978b"
+                app:strokeColor="#b0d5ec"
+                app:textColor_checked="@color/black"
+                app:textColor_normal="@color/white" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.module.playways.rank.prepare.view.ScenesSelectBtn
+                android:id="@+id/kongling_sbtn"
+                android:layout_width="@dimen/view_53_dp"
+                android:layout_height="@dimen/view_53_dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:text="空灵"
+                app:fillColor="@color/transparent"
+                app:fillColor_checked="#f2978b"
+                app:strokeColor="#e0adeb"
+                app:textColor_checked="@color/black"
+                app:textColor_normal="@color/white" />
+        </FrameLayout>
     </RadioGroup>
 </LinearLayout>

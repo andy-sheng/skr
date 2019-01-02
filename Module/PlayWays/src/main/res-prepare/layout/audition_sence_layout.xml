@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/view_50_dp"
+        android:layout_marginTop="@dimen/view_120_dp"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
         app:ly_high_light_paint_color_from="#EF5E85"
@@ -25,7 +25,21 @@
         app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
     <com.module.playways.rank.prepare.view.VoiceControlPanelView
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:id="@+id/voice_control_view"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_up"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textColor="#FFED61"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:drawableBottom="@drawable/ic_arrow_back"
+        android:text="调音"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
