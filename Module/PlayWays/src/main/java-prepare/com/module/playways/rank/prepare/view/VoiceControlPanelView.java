@@ -15,6 +15,8 @@ import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.rank.R;
 
+import static com.changba.songstudio.audioeffect.AudioEffectStyleEnum.POPULAR;
+
 public class VoiceControlPanelView extends ScrollView {
     public final static String TAG = "VoiceControlPanelView";
     public final static int UPDATE_MUSIC_PROGRESS = 100;
@@ -83,25 +85,25 @@ public class VoiceControlPanelView extends ScrollView {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 MyLog.d(TAG, "onCheckedChanged" + " group=" + group + " checkedId=" + checkedId);
-                if (checkedId == R.id.default_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ORIGINAL);
-                } else if (checkedId == R.id.dianyin_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.POPULAR);
-                } else if (checkedId == R.id.kongling_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.GRAMOPHONE);
-                } else if (checkedId == R.id.ktv_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.DANCE);
-                } else if (checkedId == R.id.rock_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ROCK);
-                }
+//                if (checkedId == R.id.default_sbtn) {
+//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ORIGINAL);
+//                } else if (checkedId == R.id.dianyin_sbtn) {
+//                    EngineManager.getInstance().setAudioEffectStyle(POPULAR);
+//                } else if (checkedId == R.id.kongling_sbtn) {
+//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.GRAMOPHONE);
+//                } else if (checkedId == R.id.ktv_sbtn) {
+//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.DANCE);
+//                } else if (checkedId == R.id.rock_sbtn) {
+//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ROCK);
+//                }
             }
         });
 
-        AudioEffectStyleEnum styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
+        AudioEffectStyleEnum styleEnum = POPULAR;
 
         if (styleEnum == AudioEffectStyleEnum.ORIGINAL) {
             mScenesBtnGroup.check(R.id.default_sbtn);
-        } else if (styleEnum == AudioEffectStyleEnum.POPULAR) {
+        } else if (styleEnum == POPULAR) {
             mScenesBtnGroup.check(R.id.dianyin_sbtn);
         } else if (styleEnum == AudioEffectStyleEnum.GRAMOPHONE) {
             mScenesBtnGroup.check(R.id.kongling_sbtn);

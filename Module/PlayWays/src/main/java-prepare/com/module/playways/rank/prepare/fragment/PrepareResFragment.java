@@ -18,6 +18,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.rank.prepare.sence.AuditionFragment;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.PrepareSongPresenter;
@@ -121,6 +122,22 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                 });
             }
         };
+
+        RxView.longClicks(mIvStartMatch)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .addDataBeforeAdd(0, mPrepareData)
+                            .setFragmentDataListener(new FragmentDataListener() {
+                                @Override
+                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                                }
+                            })
+                            .build());
+                });
 
         RxView.clicks(mIvStartMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
