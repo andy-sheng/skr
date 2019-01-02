@@ -35,6 +35,7 @@ import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.musictest.MusicTestFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -122,7 +123,12 @@ public class PersonFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        
+                        // 暂时先不做
+//                        U.getFragmentUtils().addFragment(
+//                                FragmentUtils.newAddParamsBuilder(getActivity(), MusicTestFragment.class)
+//                                        .setAddToBackStack(true)
+//                                        .setHasAnimation(true)
+//                                        .build());
                     }
                 });
 
