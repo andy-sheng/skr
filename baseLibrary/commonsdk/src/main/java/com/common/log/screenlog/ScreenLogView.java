@@ -2,6 +2,7 @@ package com.common.log.screenlog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -39,6 +40,7 @@ public class ScreenLogView extends RelativeLayout {
     ExTextView mAutoScrollTv;
     ExTextView mTagSelectTv;
     ExTextView mSaveBtn;
+    ExTextView mSelectColorBtn;
 
     boolean mNeedScroll = true;
 
@@ -74,6 +76,7 @@ public class ScreenLogView extends RelativeLayout {
         mAutoScrollTv = (ExTextView) this.findViewById(R.id.auto_scroll_tv);
         mTagSelectTv = (ExTextView) this.findViewById(R.id.tag_select_tv);
         mSaveBtn = (ExTextView) this.findViewById(R.id.save_btn);
+        mSelectColorBtn = (ExTextView) this.findViewById(R.id.select_color_btn);
 
         mCloseTv.setOnClickListener(new OnClickListener() {
             @Override
@@ -156,6 +159,23 @@ public class ScreenLogView extends RelativeLayout {
                 U.getToastUtil().showLong("日志文件存在：" + filename);
             }
         });
+
+        mSelectColorBtn.setOnClickListener(new OnClickListener() {
+            int index = 0;
+            String colors[] = new String[]{
+                    "#ffffff", "#000000", "#ff0000", "#0000ff"
+            };
+
+            @Override
+            public void onClick(View v) {
+                index = (index + 1) % colors.length;
+                int color = Color.parseColor(colors[index]);
+                mSelectColorBtn.setTextColor(color);
+                mLogTv.setTextColor(color);
+            }
+
+        });
+
         ScreenLogPrinter.getInstance().setListener(new LogListContainer.Listener() {
             @Override
             public boolean accept(String tag) {
