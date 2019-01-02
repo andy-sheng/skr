@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -33,9 +34,11 @@ import com.imagepicker.fragment.ImagePickerFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.musictest.MusicTestFragment;
+import com.module.home.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -89,6 +92,48 @@ public class PersonFragment extends BaseFragment {
 
         initViewData();
 
+        RxView.clicks(mFriends)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // 好友，双向关注
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+
+                    }
+                });
+
+        RxView.clicks(mFans)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // 粉丝，我关注的
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+                    }
+                });
+
+        RxView.clicks(mFollows)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // 关注, 关注我的
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+                    }
+                });
 
         RxView.clicks(mSettingTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
