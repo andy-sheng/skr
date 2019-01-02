@@ -292,21 +292,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         } else if (view.getId() == R.id.follow_tv) {
                             // 关注
                             U.getToastUtil().showShort("你点击了关注按钮");
-                            UserInfoManager.getInstance().mateRelation(userInfo.getUserId(), UserInfoManager.RA_BUILD, new UserInfoManager.ResponseCallBack<Boolean>() {
-                                @Override
-                                public void onServerSucess(Boolean isFriend) {
-                                    if (isFriend) {
-                                        // 双向关注
-                                    }else {
-                                        // 已关注
-                                    }
-                                }
 
-                                @Override
-                                public void onServerFailed() {
-
-                                }
-                            });
+                            UserInfoManager.getInstance().mateRelation(userInfo, UserInfoManager.RA_BUILD);
                         }
                     }
                 })

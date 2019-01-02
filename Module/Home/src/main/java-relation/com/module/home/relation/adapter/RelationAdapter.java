@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.common.core.myinfo.MyUserInfo;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoModel;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.home.R;
 import com.module.home.relation.view.RelationHolderView;
 
@@ -20,20 +19,26 @@ public class RelationAdapter extends RecyclerView.Adapter {
     List<UserInfoModel> mUserInfos = new ArrayList<>();
 
     private int mode;
+    RecyclerOnItemClickListener mRecyclerOnItemClickListener;
 
-    public RelationAdapter(int mode) {
+    public RelationAdapter(int mode, RecyclerOnItemClickListener mRecyclerOnItemClickListener) {
         this.mode = mode;
+        this.mRecyclerOnItemClickListener = mRecyclerOnItemClickListener;
     }
 
     public void addData(List<UserInfoModel> list) {
         mUserInfos.addAll(list);
     }
 
+    public List<UserInfoModel> getData() {
+        return mUserInfos;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.relation_view_holder_item, parent, false);
-        RelationHolderView viewHolder = new RelationHolderView(view);
+        RelationHolderView viewHolder = new RelationHolderView(view, mRecyclerOnItemClickListener);
         return viewHolder;
     }
 
@@ -42,7 +47,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
         if (holder instanceof RelationHolderView) {
             RelationHolderView songInfoHolder = (RelationHolderView) holder;
             UserInfoModel songModel = mUserInfos.get(position);
-            songInfoHolder.bind(mode, songModel);
+            songInfoHolder.bind(mode, position, songModel);
         }
     }
 

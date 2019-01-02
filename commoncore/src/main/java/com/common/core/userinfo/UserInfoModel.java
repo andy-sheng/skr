@@ -30,6 +30,7 @@ public class UserInfoModel implements Serializable {
     private Location location;
     private String letter;
     private int mIsSystem;
+    private boolean isFriend;
 
     public int getUserId() {
         return userId;
@@ -101,6 +102,14 @@ public class UserInfoModel implements Serializable {
 
     public int getIsSystem() {
         return mIsSystem;
+    }
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    public void setFriend(boolean friend) {
+        isFriend = friend;
     }
 
     public static UserInfoDB toUserInfoDB(UserInfoModel userInfModel) {

@@ -3,12 +3,16 @@ package com.common.core.userinfo;
 import android.net.Uri;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.zq.live.proto.Common.UserInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -158,12 +162,12 @@ public class UserInfoManager {
     /**
      * 处理关系
      *
-     * @param toUserID
+     * @param userInfo
      * @param action
      */
-    public void mateRelation(final int toUserID, final int action, final ResponseCallBack responseCallBack) {
+    public void mateRelation(final UserInfoModel userInfo, final int action) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("toUserID", toUserID);
+        map.put("toUserID", userInfo.getUserId());
         map.put("action", action);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
@@ -174,12 +178,10 @@ public class UserInfoManager {
                 if (obj.getErrno() == 0) {
                     U.getToastUtil().showShort("关系处理请求成功");
                     final boolean isFriend = obj.getData().getBoolean("isFriend");
-                    if (responseCallBack != null) {
-                        responseCallBack.onServerSucess(isFriend);
-                    }
-                } else {
-                    if (responseCallBack != null) {
-                        responseCallBack.onServerFailed();
+                    if (action == RA_BUILD) {
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userInfo, isFriend));
+                    } else if (action == RA_UNBUILD) {
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userInfo, isFriend));
                     }
                 }
             }
