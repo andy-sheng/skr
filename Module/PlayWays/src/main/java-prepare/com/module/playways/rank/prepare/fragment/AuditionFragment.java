@@ -1,5 +1,7 @@
 package com.module.playways.rank.prepare.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
@@ -47,9 +49,11 @@ public class AuditionFragment extends BaseFragment {
 
     PrepareData mPrepareData;
 
-    SongModel songModel;
+    SongModel mSongModel;
 
     VoiceControlPanelView mVoiceControlPanelView;
+
+    private boolean mIsVoiceShow = true;
 
     @Override
     public int initView() {
@@ -58,9 +62,6 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
 
         mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
@@ -110,13 +111,11 @@ public class AuditionFragment extends BaseFragment {
             }
         });
 
-        songModel = mPrepareData.getSongModel();
+        mSongModel = mPrepareData.getSongModel();
 
-        playMusic(songModel);
-        playLyrics(songModel);
+        playMusic(mSongModel);
+        playLyrics(mSongModel);
     }
-
-    private boolean mIsVoiceShow = true;
 
     private void showVoicePanelView(boolean show){
         mVoiceControlPanelView.clearAnimation();
@@ -137,14 +136,19 @@ public class AuditionFragment extends BaseFragment {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(300);
         animatorSet.play(creditValueAnimator);
-        animatorSet.start();
-
-        HandlerTaskTimer.newBuilder().delay(300).start(new HandlerTaskTimer.ObserverW() {
+        animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onNext(Integer integer) {
+            public void onAnimationCancel(Animator animation) {
+                onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
                 mTvUp.setVisibility(show ? View.GONE : View.VISIBLE);
             }
         });
+        animatorSet.start();
     }
 
     @Override
@@ -190,13 +194,12 @@ public class AuditionFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LrcEvent.RestartLrcEvent restartLrcEvent) {
-        playLyrics(songModel);
+        playLyrics(mSongModel);
     }
 
     @Override
     public void destroy() {
         EngineManager.getInstance().stopAudioMixing();
-        EventBus.getDefault().unregister(this);
         mManyLyricsView.release();
     }
 }

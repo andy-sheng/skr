@@ -8,6 +8,7 @@ import android.util.Log;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
+import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.printer.Printer;
 
 import org.greenrobot.eventbus.EventBus;
@@ -93,7 +94,8 @@ public class ScreenLogPrinter implements Printer {
 
     @Override
     public void println(int logLevel, String tag, String msg) {
-        if (MyLog.isDebugLogOpen()) {
+        // v级别的log就不打印到屏幕了
+        if (logLevel > LogLevel.VERBOSE && MyLog.isDebugLogOpen()) {
             //传感器是开着的，接受日志
             LogModel logModel = new LogModel();
             logModel.level = logLevel;

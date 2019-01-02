@@ -19,7 +19,6 @@ import static com.changba.songstudio.audioeffect.AudioEffectStyleEnum.POPULAR;
 
 public class VoiceControlPanelView extends ScrollView {
     public final static String TAG = "VoiceControlPanelView";
-    public final static int UPDATE_MUSIC_PROGRESS = 100;
 
     SeekBar mPeopleVoiceSeekbar;
     SeekBar mMusicVoiceSeekbar;
@@ -85,25 +84,32 @@ public class VoiceControlPanelView extends ScrollView {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 MyLog.d(TAG, "onCheckedChanged" + " group=" + group + " checkedId=" + checkedId);
-//                if (checkedId == R.id.default_sbtn) {
-//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ORIGINAL);
-//                } else if (checkedId == R.id.dianyin_sbtn) {
-//                    EngineManager.getInstance().setAudioEffectStyle(POPULAR);
-//                } else if (checkedId == R.id.kongling_sbtn) {
-//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.GRAMOPHONE);
-//                } else if (checkedId == R.id.ktv_sbtn) {
-//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.DANCE);
-//                } else if (checkedId == R.id.rock_sbtn) {
-//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ROCK);
-//                }
+                if (checkedId == R.id.default_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ORIGINAL);
+                } else if (checkedId == R.id.dianyin_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(POPULAR);
+                } else if (checkedId == R.id.kongling_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.GRAMOPHONE);
+                } else if (checkedId == R.id.ktv_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.DANCE);
+                } else if (checkedId == R.id.rock_sbtn) {
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ROCK);
+                }
             }
         });
 
-        AudioEffectStyleEnum styleEnum = POPULAR;
+        if (!EngineManager.getInstance().isInit()) {
+            // 不能每次都初始化,播放伴奏
+            EngineManager.getInstance().init("prepare", Params.getFromPref());
+            EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
 
-        if (styleEnum == AudioEffectStyleEnum.ORIGINAL) {
-            mScenesBtnGroup.check(R.id.default_sbtn);
-        } else if (styleEnum == POPULAR) {
+        } else {
+            EngineManager.getInstance().resumeAudioMixing();
+        }
+
+        AudioEffectStyleEnum styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
+
+        if (styleEnum == AudioEffectStyleEnum.POPULAR) {
             mScenesBtnGroup.check(R.id.dianyin_sbtn);
         } else if (styleEnum == AudioEffectStyleEnum.GRAMOPHONE) {
             mScenesBtnGroup.check(R.id.kongling_sbtn);
@@ -111,15 +117,8 @@ public class VoiceControlPanelView extends ScrollView {
             mScenesBtnGroup.check(R.id.ktv_sbtn);
         } else if (styleEnum == AudioEffectStyleEnum.ROCK) {
             mScenesBtnGroup.check(R.id.rock_sbtn);
-        }
-
-        if (!EngineManager.getInstance().isInit()) {
-            // 不能每次都初始化,播放伴奏
-            EngineManager.getInstance().init("prepare",Params.getFromPref());
-            EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-
         } else {
-            EngineManager.getInstance().resumeAudioMixing();
+            mScenesBtnGroup.check(R.id.default_sbtn);
         }
 
         mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());

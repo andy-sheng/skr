@@ -172,7 +172,7 @@ public class EngineManager implements AgoraOutCallback {
         return EngineManagerHolder.INSTANCE;
     }
 
-    public void init(String from,Params params) {
+    public void init(String from, Params params) {
         mInitFrom = from;
         destroy(from);
         mConfig = params;
@@ -196,8 +196,10 @@ public class EngineManager implements AgoraOutCallback {
      * 销毁所有
      */
     public void destroy(String from) {
-        if(mInitFrom!=null && !mInitFrom.equals(from)){
-            return;
+        if (!"force".equals(from)) {
+            if (mInitFrom != null && !mInitFrom.equals(from)) {
+                return;
+            }
         }
         mIsInit = false;
         if (mMusicTimePlayTimeListener != null) {
@@ -661,7 +663,7 @@ public class EngineManager implements AgoraOutCallback {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
-        if(!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+        if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
             mConfig.setMixMusicPlaying(false);
             mConfig.setMixMusicFilePath(null);
             stopMusicPlayTimeListener();
@@ -675,7 +677,7 @@ public class EngineManager implements AgoraOutCallback {
      * 继续播放混音
      */
     public void resumeAudioMixing() {
-        if(!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+        if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
             mConfig.setMixMusicPlaying(true);
             startMusicPlayTimeListener();
             EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
@@ -688,7 +690,7 @@ public class EngineManager implements AgoraOutCallback {
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
-        if(!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+        if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
             mConfig.setMixMusicPlaying(false);
             stopMusicPlayTimeListener();
             EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_PAUSE);

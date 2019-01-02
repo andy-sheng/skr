@@ -11,6 +11,7 @@ import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.engine.EngineManager;
 import com.module.RouterConstants;
 import com.module.playways.rank.prepare.GameModeType;
 import com.module.rank.R;
@@ -61,6 +62,12 @@ public class RankingModeActivity extends BaseActivity {
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .build());
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
+        EngineManager.getInstance().destroy("force");
     }
 
     @Override
