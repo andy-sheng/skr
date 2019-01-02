@@ -153,4 +153,27 @@ public class RoomDataUtils {
     public static boolean isMyRound(RoundInfoModel infoModel) {
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
+
+    public static PlayerInfo getPlayerInfoById(RoomData roomData, long uid){
+        for (PlayerInfo playerInfo :
+                roomData.getPlayerInfoList()) {
+            if (playerInfo.getUserInfo().getUserId() == uid) {
+                return playerInfo;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static long getSongDuration(RoundInfoModel roundInfoModel){
+        if(roundInfoModel == null){
+            return 0;
+        }
+
+        return roundInfoModel.getSingEndMs() - roundInfoModel.getSingBeginMs();
+    }
 }

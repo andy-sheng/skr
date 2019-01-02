@@ -24,6 +24,7 @@ import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.rank.prepare.model.PlayerInfo;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
@@ -422,6 +423,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(RoundInfoChangeEvent event) {
         MyLog.w(TAG, "开始切换唱将 myturn=" + event.myturn);
         estimateOverTsThisRound();
+        //以防万一
+        closeMachinePlayer();
         if (event.myturn) {
             // 轮到我唱了
             // 开始发心跳
@@ -470,6 +473,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     public void run() {
                         int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
                         mIGameRuleView.startRivalCountdown(uid);
+
+                        checkMachineUser(uid);
+
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
                                     + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
@@ -498,6 +504,51 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         }
+    }
+
+    private void checkMachineUser(long uid){
+        PlayerInfo playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+        if(playerInfo == null){
+            MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
+            return;
+        }
+
+        /**
+         * 机器人
+         */
+        if(playerInfo.isSkrer()){
+            MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
+            //因为机器人没有逃跑，所以不需要加保护。这里的4000不写死，第一个人应该是7000
+            long delayTime = 4000l;
+            HandlerTaskTimer.newBuilder()
+                    .delay(delayTime)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                @Override
+                public void onNext(Integer integer) {
+                    String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
+                    // TODO: 2019/1/2 得分文件需要现下载
+                    String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
+                    // TODO: 2019/1/2 ExoPlayer播放音频文件
+                    //ExoPlayer.play
+                    //直接播放歌词
+                    mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), true);
+                }
+            });
+
+            HandlerTaskTimer.newBuilder()
+                    .delay(delayTime + RoomDataUtils.getSongDuration(mRoomData.getRealRoundInfo()))
+                    .start(new HandlerTaskTimer.ObserverW() {
+                @Override
+                public void onNext(Integer integer) {
+                    closeMachinePlayer();
+                }
+            });
+        }
+    }
+
+    private void closeMachinePlayer(){
+        // TODO: 2019/1/2 关闭播放器
+        MyLog.d(TAG, "closeMachinePlayer");
     }
 
     /**
