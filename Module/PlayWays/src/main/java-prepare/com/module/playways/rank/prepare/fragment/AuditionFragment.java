@@ -1,4 +1,4 @@
-package com.module.playways.rank.prepare.sence;
+package com.module.playways.rank.prepare.fragment;
 
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;

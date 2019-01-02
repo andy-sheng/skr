@@ -18,7 +18,6 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.rank.prepare.sence.AuditionFragment;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.PrepareSongPresenter;
