@@ -169,12 +169,12 @@ public class ManyLyricsView extends AbstractLrcView {
     /**
      * 高亮以上画多少行
      */
-    private int upLineNum = 2;
+    private int mUpLineNum = 100;
 
     /**
      * 高亮以下画多少行
      */
-    private int downLineNum = 2;
+    private int mDownLineNum = 100;
 
     /**
      * Handler处理滑动指示器隐藏和歌词滚动到当前播放的位置
@@ -233,6 +233,14 @@ public class ManyLyricsView extends AbstractLrcView {
         if(typedArray.hasValue(R.styleable.many_line_lrc_view_ly_eable_scroll)){
             mTouchAble = typedArray.getBoolean(R.styleable.many_line_lrc_view_ly_eable_scroll, true);
         }
+
+        if(typedArray.hasValue(R.styleable.many_line_lrc_view_ly_top_line_num)){
+            int upLineNum = typedArray.getInteger(R.styleable.many_line_lrc_view_ly_top_line_num, 2);
+            //上下一样
+            mUpLineNum = upLineNum;
+            mDownLineNum = upLineNum;
+        }
+
         typedArray.recycle();
         //初始化
         mScroller = new Scroller(context, new LinearInterpolator());
@@ -353,7 +361,7 @@ public class ManyLyricsView extends AbstractLrcView {
 
         {
             //画当前行下面的歌词
-            int maxDownLineNum = lrcLineInfos.size() - lyricsLineNum > downLineNum ? lyricsLineNum + downLineNum + 1 : lrcLineInfos.size();
+            int maxDownLineNum = lrcLineInfos.size() - lyricsLineNum > mDownLineNum ? lyricsLineNum + mDownLineNum + 1 : lrcLineInfos.size();
             for (int i = lyricsLineNum + 1; i < maxDownLineNum; i++) {
                 LyricsLineInfo downLyricsLineInfo = lrcLineInfos
                         .get(i);
@@ -366,7 +374,7 @@ public class ManyLyricsView extends AbstractLrcView {
         }
 
         {
-            int maxUpLineNum = lyricsLineNum - upLineNum;
+            int maxUpLineNum = lyricsLineNum - mUpLineNum;
             maxUpLineNum = maxUpLineNum < 0 ? 0 : maxUpLineNum;
             // 画当前歌词之前的歌词
             float lineTopY = mCentreY;
