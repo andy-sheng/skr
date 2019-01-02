@@ -300,7 +300,16 @@ public class ManyLyricsView extends AbstractLrcView {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
                 if(onLyricViewTapListener != null){
-                    onLyricViewTapListener.onSigleTap();
+                    int scrollLrcLineNum = getScrollLrcLineNum(mOffsetY);
+                    TreeMap<Integer, LyricsLineInfo> lrcLineInfos = getLrcLineInfos();
+                    int startTime = lrcLineInfos.get(scrollLrcLineNum).getStartTime();
+
+                    //用户随便点的
+                    if(scrollLrcLineNum == getLyricsLineNum()){
+                        onLyricViewTapListener.onSigleTap(-1);
+                    }else {
+                        onLyricViewTapListener.onSigleTap(startTime);
+                    }
                 }
                 return super.onSingleTapConfirmed(e);
             }
@@ -1381,7 +1390,7 @@ public class ManyLyricsView extends AbstractLrcView {
     public interface OnLyricViewTapListener{
         void onDoubleTap();
 
-        void onSigleTap();
+        void onSigleTap(int progress);
     }
 
 }

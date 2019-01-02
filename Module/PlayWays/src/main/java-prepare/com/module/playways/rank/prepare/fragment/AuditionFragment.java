@@ -77,14 +77,6 @@ public class AuditionFragment extends BaseFragment {
                 });
 
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
-        mManyLyricsView.setOnLrcClickListener(new ManyLyricsView.OnLrcClickListener() {
-            @Override
-            public void onLrcPlayClicked(int progress) {
-                MyLog.d(TAG, "onLrcPlayClicked");
-                EngineManager.getInstance().setAudioMixingPosition(progress);
-                mManyLyricsView.seekto(progress);
-            }
-        });
 
         mManyLyricsView.setOnLyricViewTapListener(new ManyLyricsView.OnLyricViewTapListener() {
             @Override
@@ -97,7 +89,13 @@ public class AuditionFragment extends BaseFragment {
             }
 
             @Override
-            public void onSigleTap() {
+            public void onSigleTap(int progress) {
+                MyLog.d(TAG, "progress " + progress);
+                if(progress > 0){
+                    EngineManager.getInstance().setAudioMixingPosition(progress);
+                    mManyLyricsView.seekto(progress);
+                }
+
                 if (!EngineManager.getInstance().getParams().isMixMusicPlaying()) {
                     EngineManager.getInstance().resumeAudioMixing();
                 }
