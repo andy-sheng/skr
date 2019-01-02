@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -26,6 +25,10 @@ import io.reactivex.functions.Consumer;
 
 public class GameFragment extends BaseFragment {
     UserInfoTitleView userTitleView;
+
+    public static final int GAME_MODE_CLASSIC_RANK = 1; // 经典排位模式
+
+    public static final int GAME_MODE_FUNNY = 2; // 娱乐模式
 
     @Override
     public int initView() {
@@ -92,14 +95,14 @@ public class GameFragment extends BaseFragment {
             public void onAnimationEnd(Animator animator) {
                 if (view.getId() == R.id.iv_athletics_pk) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE)
+                            .withInt("key_game_type", GAME_MODE_CLASSIC_RANK)
                             .withBoolean("selectSong", true)
                             .navigation();
                 } else if (view.getId() == R.id.iv_yule_game) {
-                    //TODO  test
-                    if (UserAccountManager.getInstance().getPhoneNum().startsWith("1571888")) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
-                                .navigation();
-                    }
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE)
+                            .withInt("key_game_type", GAME_MODE_FUNNY)
+                            .withBoolean("selectSong", true)
+                            .navigation();
                 } else if (view.getId() == R.id.iv_singend_game) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_SINGEND_ROOM)
                             .navigation();

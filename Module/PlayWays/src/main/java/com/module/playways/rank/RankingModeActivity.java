@@ -30,9 +30,10 @@ public class RankingModeActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
+        int gameType = getIntent().getIntExtra(KEY_GAME_TYPE, GameModeType.GAME_MODE_CLASSIC_RANK);
         if (selectSong) {
             Bundle bundle = new Bundle();
-            bundle.putInt(KEY_GAME_TYPE, GameModeType.GAME_MODE_CLASSIC_RANK);
+            bundle.putInt(KEY_GAME_TYPE, gameType);
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SongSelectFragment.class)
                     .setAddToBackStack(false)
                     .setHasAnimation(false)

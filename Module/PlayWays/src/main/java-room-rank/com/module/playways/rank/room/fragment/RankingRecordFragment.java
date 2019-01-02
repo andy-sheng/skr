@@ -3,11 +3,13 @@ package com.module.playways.rank.room.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.view.RecordItemView;
@@ -48,6 +50,16 @@ public class RankingRecordFragment extends BaseFragment {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     getActivity().finish();
+                });
+
+        RxView.clicks(mTvAgain)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    getActivity().finish();
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE)
+                            .withInt("key_game_type", mRoomData.getGameType())
+                            .withBoolean("selectSong", true)
+                            .navigation();
                 });
 
         try {
