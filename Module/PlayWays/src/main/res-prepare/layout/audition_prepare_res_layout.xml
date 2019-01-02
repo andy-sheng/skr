@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_34_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/view_5_dp"
+        android:src="@drawable/img_back" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_song_name"
+        android:textSize="@dimen/textsize_20_dp"
+        android:layout_marginTop="@dimen/view_36_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="你好"
+        android:textColor="@color/white" />
+
+
+    <com.common.view.ex.ExTextView
+        android:textSize="@dimen/textsize_16_dp"
+        android:textColor="#FF447D"
+        android:id="@+id/tv_res_progress"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

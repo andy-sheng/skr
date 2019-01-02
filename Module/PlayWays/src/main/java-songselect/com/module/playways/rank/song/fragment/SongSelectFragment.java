@@ -18,18 +18,18 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.rank.RankingModeActivity;
-import com.module.playways.rank.prepare.GameModeType;
+import com.module.playways.rank.prepare.fragment.AuditionPrepareResFragment;
+import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.song.adapter.SongCardsAdapter;
 import com.module.playways.rank.song.event.SwipCardEvent;
-import com.module.playways.rank.song.model.SongCardModel;
-import com.module.playways.rank.song.model.SongModel;
-import com.module.playways.rank.song.view.ISongTagDetailView;
-import com.module.rank.R;
-import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.song.layoutmanager.CardConfig;
 import com.module.playways.rank.song.layoutmanager.OverLayCardLayoutManager;
 import com.module.playways.rank.song.layoutmanager.TanTanCallback;
+import com.module.playways.rank.song.model.SongCardModel;
+import com.module.playways.rank.song.model.SongModel;
 import com.module.playways.rank.song.presenter.SongTagDetailsPresenter;
+import com.module.playways.rank.song.view.ISongTagDetailView;
+import com.module.rank.R;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -114,6 +114,17 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
                     U.getToastUtil().showShort("试音房");
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), AuditionPrepareResFragment.class)
+                            .setAddToBackStack(false)
+                            .setHasAnimation(true)
+                            .addDataBeforeAdd(0, songModel)
+                            .setFragmentDataListener(new FragmentDataListener() {
+                                @Override
+                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                                }
+                            })
+                            .build());
                     return;
                 }
 
