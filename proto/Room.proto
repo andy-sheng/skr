@@ -7,7 +7,7 @@ package com.zq.live.proto.Room;
 /**
 
 java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
---proto_path=./proto --java_out=./Module/RankingMode/src/main/java-gen-pb/ Room.proto
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ Room.proto
 
 */
 
@@ -147,6 +147,8 @@ message PlayerInfo
 {
     Common.UserInfo userInfo            = 1; //玩家信息
     repeated Common.MusicInfo musicInfo = 2; //演唱信息
+    bool isSkrer                   = 3; //是否为机器人
+    repeated Common.ResourceInfo resource = 4; //资源信息
 }
 
 // 特殊表情消息

@@ -21,7 +21,7 @@ import okio.ByteString;
 
 /**
  * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
- * --proto_path=./proto --java_out=./Module/RankingMode/src/main/java-gen-pb/ Room.proto
+ * --proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ Room.proto
  */
 public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   public static final ProtoAdapter<RoomMsg> ADAPTER = new ProtoAdapter_RoomMsg();

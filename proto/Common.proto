@@ -41,3 +41,12 @@ enum ESex {
     SX_FEMALE = 2; // 女性
     SX_SECRET = 3; //保密
 }
+
+message ResourceInfo
+{
+    uint32 resourceID = 1; //资源id
+    uint32 itemID     = 2; //音乐条目id
+    string audioURL   = 3; //声音资源URL
+    string midiURL    = 4; //打分资源URL
+}
+
