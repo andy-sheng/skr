@@ -1,18 +1,16 @@
 package com.common.core.userinfo;
 
 import android.net.Uri;
-import android.service.carrier.CarrierMessagingService;
 
 import com.alibaba.fastjson.JSON;
-import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.zq.live.proto.Common.UserInfo;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -202,24 +200,25 @@ public class UserInfoManager {
             return;
         }
 
+        final WeakReference<ResponseCallBack> responseCallBackWeakReference = new WeakReference<>(responseCallBack);
+
         Observable<ApiResult> apiResultObservable = userInfoServerApi.getRelationList(relation, offset, limit);
         ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
 
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    if (responseCallBack != null) {
-                        responseCallBack.onServerSucess(obj);
+                    if (responseCallBackWeakReference.get() != null) {
+                        responseCallBackWeakReference.get().onServerSucess(obj);
                     }
                 } else {
-                    if (responseCallBack != null) {
-                        responseCallBack.onServerFailed();
+                    if (responseCallBackWeakReference.get() != null) {
+                        responseCallBackWeakReference.get().onServerFailed();
                     }
                 }
 
             }
         });
-
 
 //        List<UserInfoModel> local = UserInfoLocalApi.getFriendUserInfoList(relation, false);
 //        if (local == null || !resultCallback.onGetLocalDB(local)) {
