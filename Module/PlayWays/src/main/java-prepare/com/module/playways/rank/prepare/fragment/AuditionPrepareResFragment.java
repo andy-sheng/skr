@@ -131,9 +131,4 @@ public class AuditionPrepareResFragment extends BaseFragment {
     public boolean useEventBus() {
         return false;
     }
-
-    @Override
-    public void destroy() {
-
-    }
 }

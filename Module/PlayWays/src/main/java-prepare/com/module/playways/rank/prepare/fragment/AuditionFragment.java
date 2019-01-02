@@ -10,7 +10,6 @@ import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -26,7 +25,6 @@ import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -199,6 +197,7 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     public void destroy() {
+        super.destroy();
         EngineManager.getInstance().stopAudioMixing();
         mManyLyricsView.release();
     }

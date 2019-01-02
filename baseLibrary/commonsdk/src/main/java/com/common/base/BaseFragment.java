@@ -17,6 +17,7 @@ package com.common.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -245,6 +246,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         super.onDestroyView();
     }
 
+    @CallSuper
     public void destroy() {
         MyLog.w(TAG, "destroy");
         for (Presenter presenter : mPresenterSet) {
