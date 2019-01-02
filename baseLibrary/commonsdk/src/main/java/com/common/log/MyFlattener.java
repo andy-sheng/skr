@@ -24,7 +24,7 @@ public class MyFlattener extends DefaultFlattener {
         Date now = new Date();
         String formattedNow = mSimpleDateFormat.format(now);
         return formattedNow
-                + '|' + Process.myPid()
+//                + '|' + Process.myPid()
                 + '|' + Thread.currentThread().getId()
                 + '|' + LogLevel.getShortLevelName(logLevel)
                 + '|' + tag
@@ -36,7 +36,7 @@ public class MyFlattener extends DefaultFlattener {
             String format = "yyyy-MM-dd HH:mm:ss.SSS";
             mSimpleDateFormat = new SimpleDateFormat(format, Locale.US);
         } else {
-            String format = "HH:mm:ss.S";
+            String format = "HH:mm:ss.SSS";
             mSimpleDateFormat = new SimpleDateFormat(format, Locale.US);
         }
     }
