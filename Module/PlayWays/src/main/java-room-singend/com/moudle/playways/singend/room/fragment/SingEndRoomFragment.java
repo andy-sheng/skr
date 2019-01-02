@@ -248,7 +248,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
             public void onItemClicked(View view, int position, Object model) {
                 if (model instanceof CommentModel) {
                     int userID = ((CommentModel) model).getUserId();
-                    UserInfoManager.getInstance().getUserInfoByUuid(userID, new UserInfoManager.UserInfoCallBack() {
+                    UserInfoManager.getInstance().getUserInfoByUuid(userID, new UserInfoManager.ResultCallback<UserInfoModel>() {
 
                         @Override
                         public boolean onGetLocalDB(UserInfoModel userInfo) {

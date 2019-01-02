@@ -8,6 +8,7 @@ import com.common.core.myinfo.Location;
 
 import java.io.Serializable;
 
+// TODO: 2019/1/2 该类会作为json来解析，不要改变量名 
 public class UserInfoModel implements Serializable {
 
     /**
@@ -21,7 +22,7 @@ public class UserInfoModel implements Serializable {
      */
 
     private int userId;
-    private String userNickname;
+    private String nickname;
     private int sex;
     private String birthday;
     private String avatar;
@@ -38,12 +39,12 @@ public class UserInfoModel implements Serializable {
         this.userId = userId;
     }
 
-    public String getUserNickname() {
-        return userNickname;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUserNickname(String userNickname) {
-        this.userNickname = userNickname;
+    public void setNickname(String userNickname) {
+        this.nickname = userNickname;
     }
 
     public int getSex() {
@@ -106,7 +107,7 @@ public class UserInfoModel implements Serializable {
         UserInfoDB userInfoDB = new UserInfoDB();
         if (userInfModel != null) {
             userInfoDB.setUserId(userInfModel.getUserId());
-            userInfoDB.setUserNickname(userInfModel.getUserNickname());
+            userInfoDB.setUserNickname(userInfModel.getNickname());
             userInfoDB.setSex(userInfModel.getSex());
             userInfoDB.setBirthday(userInfModel.getBirthday());
             userInfoDB.setAvatar(userInfModel.getAvatar());
@@ -126,7 +127,7 @@ public class UserInfoModel implements Serializable {
         UserInfoModel userInfoModel = new UserInfoModel();
         if (userInDB != null) {
             userInfoModel.setUserId((int) userInDB.getUserId());
-            userInfoModel.setUserNickname(userInDB.getUserNickname());
+            userInfoModel.setNickname(userInDB.getUserNickname());
             userInfoModel.setSex(userInDB.getSex());
             userInfoModel.setBirthday(userInDB.getBirthday());
             userInfoModel.setAvatar(userInDB.getAvatar());

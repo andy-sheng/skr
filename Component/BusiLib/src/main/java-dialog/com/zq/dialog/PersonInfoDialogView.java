@@ -67,7 +67,7 @@ public class PersonInfoDialogView extends RelativeLayout {
                         .setBorderWidth(2)
                         .setBorderColor(Color.BLUE)
                         .build());
-        mNameTv.setText(userInfo.getUserNickname());
+        mNameTv.setText(userInfo.getNickname());
         mSignTv.setText(userInfo.getSignature());
 
         // TODO: 2018/12/26  根据产品策略调整

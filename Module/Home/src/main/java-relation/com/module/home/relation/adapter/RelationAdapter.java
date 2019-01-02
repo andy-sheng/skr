@@ -23,14 +23,10 @@ public class RelationAdapter extends RecyclerView.Adapter {
 
     public RelationAdapter(int mode) {
         this.mode = mode;
-        UserInfoModel userInfoModel = new UserInfoModel();
-        userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
-        userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
-        userInfoModel.setUserNickname(MyUserInfoManager.getInstance().getNickName());
-        for (int i = 0; i < 10; i++) {
-            mUserInfos.add(userInfoModel);
-        }
+    }
 
+    public void addData(List<UserInfoModel> list) {
+        mUserInfos.addAll(list);
     }
 
     @NonNull

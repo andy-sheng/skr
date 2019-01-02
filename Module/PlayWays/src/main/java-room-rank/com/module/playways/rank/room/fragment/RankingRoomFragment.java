@@ -5,6 +5,7 @@ import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.UserManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -77,6 +78,7 @@ import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.http.Body;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
@@ -247,7 +249,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             public void onItemClicked(View view, int position, Object model) {
                 if (model instanceof CommentModel) {
                     int userID = ((CommentModel) model).getUserId();
-                    UserInfoManager.getInstance().getUserInfoByUuid(userID, new UserInfoManager.UserInfoCallBack() {
+                    UserInfoManager.getInstance().getUserInfoByUuid(userID, new UserInfoManager.ResultCallback<UserInfoModel>() {
 
                         @Override
                         public boolean onGetLocalDB(UserInfoModel userInfo) {
@@ -291,6 +293,21 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         } else if (view.getId() == R.id.follow_tv) {
                             // 关注
                             U.getToastUtil().showShort("你点击了关注按钮");
+                            UserInfoManager.getInstance().mateRelation(userInfo.getUserId(), UserInfoManager.RA_BUILD, new UserInfoManager.ResponseCallBack<Boolean>() {
+                                @Override
+                                public void onServerSucess(Boolean isFriend) {
+                                    if (isFriend) {
+                                        // 双向关注
+                                    }else {
+                                        // 已关注
+                                    }
+                                }
+
+                                @Override
+                                public void onServerFailed() {
+
+                                }
+                            });
                         }
                     }
                 })

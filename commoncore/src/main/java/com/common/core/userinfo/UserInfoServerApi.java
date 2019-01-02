@@ -3,7 +3,10 @@ package com.common.core.userinfo;
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 /**
@@ -13,6 +16,45 @@ public interface UserInfoServerApi {
 
     @GET("v1/uprofile/information")
     Observable<ApiResult> getUserInfo(@Query("userID") int userID);
+
+
+    /**
+     * 处理关系
+     *
+     * @param body "toUserID" : 关系被动接受者id
+     *             "action" :  创建关系 or 解除关系
+     *             0  未知 RA_UNKNOWN
+     *             1  创建关系 RA_BUILD
+     *             2  解除关系 RA_UNBUILD
+     * @return
+     */
+    @PUT("/v1/mate/relation")
+    Observable<ApiResult> mateRelation(@Body RequestBody body);
+
+    /**
+     * 获取指定关系列表
+     * @param relation  [必选]关系类型   0 未知  RC_UNKNOWN
+     *                                 1 关注  RC_Follow
+     *                                 2 粉丝  RC_Fans
+     *                                 3 好友  RC_Friend
+     * @param offset    [必选]偏移
+     * @param limit     [必选]限制数量,最大50
+     * @return
+     */
+    @GET("/v1/mate/relation")
+    Observable<ApiResult> getRelationList(@Query("relation") int relation,
+                                          @Query("offset") int offset,
+                                          @Query("limit") int limit);
+
+    /**
+     * 获取指定用户的关系数量
+     * @param userID
+     * @return
+     */
+    @GET("/v1/mate/cnt")
+    Observable<ApiResult> getRelationNum(@Query("userID") int userID);
+
+
 //    /**
 //     * 获取一个用户的信息
 //     *

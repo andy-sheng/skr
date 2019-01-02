@@ -5,23 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
-import com.common.utils.DisplayUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.relation.view.RelationView;
-import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,9 +64,9 @@ public class RelationFragment extends BaseFragment {
         mTabTitleList.add("好友");
         mTabTitleList.add("粉丝");
         mTabTitleList.add("关注");
-        mTitleAndViewMap.put("好友", new RelationView(getContext(), RelationView.FRIENDS_MODE));
-        mTitleAndViewMap.put("粉丝", new RelationView(getContext(), RelationView.FANS_MODE));
-        mTitleAndViewMap.put("关注", new RelationView(getContext(), RelationView.FOLLOWS_MODE));
+        mTitleAndViewMap.put("好友", new RelationView(getContext(), UserInfoManager.RELATION_FRIENDS));
+        mTitleAndViewMap.put("粉丝", new RelationView(getContext(), UserInfoManager.RELATION_FANS));
+        mTitleAndViewMap.put("关注", new RelationView(getContext(), UserInfoManager.RELATION_FOLLOW));
 
         mRelationTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
         mRelationTab.setSelectedIndicatorColors(Color.parseColor("#FE8400"));

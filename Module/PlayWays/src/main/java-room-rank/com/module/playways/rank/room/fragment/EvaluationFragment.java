@@ -88,7 +88,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     .setBorderWidth(U.getDisplayUtils().dip2px(3))
                     .setBorderColor(Color.parseColor("#33A4E1"))
                     .build());
-            mVoteLeftNameTv.setText(left.getUserInfo().getUserNickname());
+            mVoteLeftNameTv.setText(left.getUserInfo().getNickname());
             mVoteLeftSongTv.setText(left.getSongList().get(0).getItemName());
         }
 
@@ -98,7 +98,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     .setBorderWidth(U.getDisplayUtils().dip2px(3))
                     .setBorderColor(Color.parseColor("#FF75A2"))
                     .build());
-            mVoteRigntNameTv.setText(right.getUserInfo().getUserNickname());
+            mVoteRigntNameTv.setText(right.getUserInfo().getNickname());
             mVoteRightSongTv.setText(right.getSongList().get(0).getItemName());
 
         }

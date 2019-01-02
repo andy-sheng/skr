@@ -1,16 +1,20 @@
 package com.common.core.userinfo;
 
 import android.net.Uri;
+import android.service.carrier.CarrierMessagingService;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.zq.live.proto.Common.UserInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -19,19 +23,27 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class UserInfoManager {
 
-    public static final int NO_RELATION = 1; //双方未关注
-    public static final int MY_FOLLOWING = 2; //我关注
-    public static final int MY_FOLLOWER = 3; //对方关注我 (等同于我未关注他)
-    public static final int BOTH_FOLLOWED = 4; //双方互相关注
+    // 从存储的角度来说双方关注的人即会存在我关注的人之中，也会存在粉丝之中，存数据库时做个区分
+    public static final int NO_RELATION = 0;           //未知
+    public static final int RELATION_FOLLOW = 1;       //我关注的人，关注
+    public static final int RELATION_FANS = 2;         //关注我的人，粉丝
+    public static final int RELATION_FRIENDS = 3;      //双方关注，好友
 
-    protected static final int QUERY_FOLLOWED_LIST = 1; //查询关注列表
-    protected static final int QUERY_FOLLOWER_LIST = 2; //查询粉丝列表
-    protected static final int QUERY_BLOCKER_LIST = 3;
+    public static final int RA_UNKNOWN = 0;       //未知
+    public static final int RA_BUILD = 1;         //创建关系
+    public static final int RA_UNBUILD = 2;       //解除关系
 
     private static final String TAG = UserInfoManager.class.getSimpleName();
+    UserInfoServerApi userInfoServerApi;
+
+    private UserInfoManager() {
+        userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+    }
 
     private static class UserAccountManagerHolder {
         private static final UserInfoManager INSTANCE = new UserInfoManager();
@@ -42,40 +54,74 @@ public class UserInfoManager {
     }
 
     /**
-     * 个人信息回调接口
+     * 泛型类，主要用于 API 中功能的回调处理,需要查询数据库的
+     *
+     * @param <T> 声明一个泛型 T。
      */
-    public interface UserInfoCallBack {
-        /**
-         * 本地数据库中查询个人信息
-         *
-         * @param userInfo
-         * @return
-         */
-        boolean onGetLocalDB(UserInfoModel userInfo);
+    public static abstract class ResultCallback<T> {
+
+        public ResultCallback() {
+
+        }
 
         /**
-         * 从服务器获取个人信息
+         * 本地数据库，成功时回调。
          *
-         * @param userInfo
-         * @return
+         * @param t 已声明的类型。
          */
-        boolean onGetServer(UserInfoModel userInfo);
+        public abstract boolean onGetLocalDB(T t);
+
+        /**
+         * 服务器，成功时回调。
+         *
+         * @param t 已声明的类型。
+         */
+        public abstract boolean onGetServer(T t);
+
     }
+
+
+    /**
+     * 泛型类，主要用于 API 中功能的回调处理。
+     *
+     * @param <T> 声明一个泛型 T。
+     */
+    public static abstract class ResponseCallBack<T> {
+
+
+        public ResponseCallBack() {
+
+        }
+
+        /**
+         * 服务器，成功时回调。
+         *
+         * @param t 已声明的类型。
+         */
+        public abstract void onServerSucess(T t);
+
+
+        /**
+         * 服务器，失败时回调。
+         */
+        public abstract void onServerFailed();
+
+    }
+
 
     /**
      * 获取一个用户的信息
      *
      * @uuid 用户id
      */
-    public void getUserInfoByUuid(final int uuid, final UserInfoCallBack userInfoCallBack) {
+    public void getUserInfoByUuid(final int uuid, final ResultCallback resultCallback) {
         if (uuid <= 0) {
             MyLog.w(TAG, "getUserInfoByUuid Illegal parameter");
             return;
         }
 
         UserInfoModel local = UserInfoLocalApi.getUserInfoByUUid(uuid);
-        if (local == null || !userInfoCallBack.onGetLocalDB(local)) {
-            UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        if (local == null || !resultCallback.onGetLocalDB(local)) {
             Observable<ApiResult> apiResultObservable = userInfoServerApi.getUserInfo(uuid);
             ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
                 @Override
@@ -100,8 +146,8 @@ public class UserInfoManager {
                                 .subscribe(new Consumer<UserInfoModel>() {
                                     @Override
                                     public void accept(UserInfoModel userInfo) throws Exception {
-                                        if (userInfoCallBack != null) {
-                                            userInfoCallBack.onGetServer(userInfo);
+                                        if (resultCallback != null) {
+                                            resultCallback.onGetServer(userInfo);
                                         }
                                     }
                                 });
@@ -112,34 +158,197 @@ public class UserInfoManager {
     }
 
     /**
-     * 个人主页信息回调接口
+     * 处理关系
+     *
+     * @param toUserID
+     * @param action
      */
-    public interface UserInfoPageCallBack {
-        /**
-         * 本地数据库中查询个人主页信息
-         */
-        boolean onGetLocalDB(UserInfoModel userInfo);
+    public void mateRelation(final int toUserID, final int action, final ResponseCallBack responseCallBack) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("toUserID", toUserID);
+        map.put("action", action);
 
-//        /**
-//         * 从服务器获取个人主页信息
-//         */
-//        boolean onGetServer(GetHomepageResp response);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        Observable<ApiResult> apiResultObservable = userInfoServerApi.mateRelation(body);
+        ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    U.getToastUtil().showShort("关系处理请求成功");
+                    final boolean isFriend = obj.getData().getBoolean("isFriend");
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerSucess(isFriend);
+                    }
+                } else {
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerFailed();
+                    }
+                }
+            }
+        });
     }
 
     /**
-     * 获取一个用户个人主页信息
+     * 获取关系列表
      *
-     * @param needPullLiveInfo 是否需要拉取直播信息
-     * @uuid 用户id
+     * @param relation
+     * @param offset
+     * @param limit
+     * @param responseCallBack
      */
-    public void getHomepageByUuid(long uuid, boolean needPullLiveInfo, UserInfoPageCallBack callBack) {
-        if (uuid <= 0 || callBack == null) {
-            MyLog.w(TAG, "getHomepageByUuid Illegal parameter");
+    public void getRelationList(final int relation, int offset, int limit, final ResponseCallBack responseCallBack) {
+        if (relation == 0) {
+            MyLog.w(TAG, "getRelationList Illegal parameter");
             return;
         }
 
-        UserInfoModel local = UserInfoLocalApi.getUserInfoByUUid(uuid);
-        if (local == null || !callBack.onGetLocalDB(local)) {
+        Observable<ApiResult> apiResultObservable = userInfoServerApi.getRelationList(relation, offset, limit);
+        ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
+
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerSucess(obj);
+                    }
+                } else {
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerFailed();
+                    }
+                }
+
+            }
+        });
+
+
+//        List<UserInfoModel> local = UserInfoLocalApi.getFriendUserInfoList(relation, false);
+//        if (local == null || !resultCallback.onGetLocalDB(local)) {
+//            Observable<ApiResult> apiResultObservable = userInfoServerApi.getRelationList(relation, offset, limit);
+//            ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
+//                @Override
+//                public void process(ApiResult obj) {
+//                    if (obj.getErrno() == 0) {
+//                        U.getToastUtil().showShort("获取关系列表成功");
+//                        //写入数据库
+//                        Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
+//                            @Override
+//                            public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
+//                                // 写入数据库
+//                                UserInfoLocalApi.insertOrUpdate(jsonUserInfo, false, false);
+//                                UserInfoModel userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
+//
+//                                emitter.onNext(userInfo);
+//                                emitter.onComplete();
+//                            }
+//                        })
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(new Consumer<UserInfoModel>() {
+//                                    @Override
+//                                    public void accept(UserInfoModel userInfo) throws Exception {
+//                                        if (resultCallback != null) {
+//                                            resultCallback.onGetServer(userInfo);
+//                                        }
+//                                    }
+//                                });
+//                    }
+//                }
+//            });
+//        }
+
+    }
+
+
+    public void getFriends(ResultCallback resultCallback) {
+        // 拿到本地存储所有好友关系
+        // 根据返回值判断是否去服务器查询
+        // todo 仅测试
+        Uri testUri = Uri.parse("http://cms-bucket.nosdn.127.net/a2482c0b2b984dc88a479e6b7438da6020161219074944.jpeg");
+
+        UserInfoModel friend1 = new UserInfoModel();
+        friend1.setUserId(1001);
+        friend1.setNickname("帅哥");
+
+        UserInfoModel friend2 = new UserInfoModel();
+        friend2.setUserId(1002);
+        friend2.setNickname("美女");
+
+        List<UserInfoModel> list = new ArrayList<>();
+        list.add(friend1);
+        list.add(friend2);
+        if (resultCallback != null) {
+            resultCallback.onGetLocalDB(list);
+        }
+    }
+
+
+//    /**
+//     * 个人信息回调接口
+//     */
+//    public interface UserInfoCallBack {
+//        /**
+//         * 本地数据库中查询个人信息
+//         *
+//         * @param userInfo
+//         * @return
+//         */
+//        boolean onGetLocalDB(UserInfoModel userInfo);
+//
+//        /**
+//         * 从服务器获取个人信息
+//         *
+//         * @param userInfo
+//         * @return
+//         */
+//        boolean onGetServer(UserInfoModel userInfo);
+//    }
+//    /**
+//     * 个人信息list回调接口
+//     */
+//    public interface UserListCallBack {
+//        /**
+//         * 本地数据库中查询个人主页信息(list)
+//         */
+//        boolean onGetLocalDB(List<UserInfoModel> list);
+//
+//        /**
+//         * 本地数据库中查询个人主页信息(list)
+//         */
+//        boolean onGetServer(List<UserInfoModel> list);
+//    }
+//
+//
+//
+//
+//    /**
+//     * 个人主页信息回调接口
+//     */
+//    public interface UserInfoPageCallBack {
+//        /**
+//         * 本地数据库中查询个人主页信息
+//         */
+//        boolean onGetLocalDB(UserInfoModel userInfo);
+//
+////        /**
+////         * 从服务器获取个人主页信息
+////         */
+////        boolean onGetServer(GetHomepageResp response);
+//    }
+//
+//    /**
+//     * 获取一个用户个人主页信息
+//     *
+//     * @param needPullLiveInfo 是否需要拉取直播信息
+//     * @uuid 用户id
+//     */
+//    public void getHomepageByUuid(long uuid, boolean needPullLiveInfo, UserInfoPageCallBack callBack) {
+//        if (uuid <= 0 || callBack == null) {
+//            MyLog.w(TAG, "getHomepageByUuid Illegal parameter");
+//            return;
+//        }
+//
+//        UserInfoModel local = UserInfoLocalApi.getUserInfoByUUid(uuid);
+//        if (local == null || !callBack.onGetLocalDB(local)) {
 //            GetHomepageResp response = UserInfoServerApi.getHomepageByUuid(uuid, needPullLiveInfo);
 //            if (response != null && response.getRetCode() == 0) {
 //                UserInfo userInfo = new UserInfo();
@@ -148,50 +357,35 @@ public class UserInfoManager {
 //                UserInfoLocalApi.insertOrUpdate(userInfo, false, false);
 //            }
 //            callBack.onGetServer(response);
-        }
-    }
-
-    /**
-     * 个人信息list回调接口
-     */
-    public interface UserListCallBack {
-        /**
-         * 本地数据库中查询个人主页信息(list)
-         */
-        boolean onGetLocalDB(List<UserInfoModel> list);
-
-//        /**
-//         * 本地数据库中查询个人主页信息(list)
-//         */
-//        boolean onGetServer(MutiGetUserInfoRsp rsp);
-    }
-
-    public void getUserInfoList(List<Long> uuidList, UserListCallBack callBack) {
-        if (uuidList == null || uuidList.size() <= 0 || callBack == null) {
-            MyLog.w(TAG, "getUserInfoList Illegal parameter");
-            return;
-        }
-
-        List<UserInfoModel> list = UserInfoLocalApi.getUserInfoByUUidList(uuidList);
-        boolean queryServer = false;
-        if (list == null || list.size() == 0) {
-            queryServer = true;
-        } else if (list.size() < uuidList.size()) {
-            queryServer = true;
-        }
-
-//        if (queryServer || !callBack.onGetLocalDB(list)) {
-//            callBack.onGetServer(getHomepageListById(uuidList));
 //        }
-    }
+//    }
 
-    /**
-     * 获取list用户的个人主页信息list
-     * (注:不要一次性拉去过多数据)
-     *
-     * @param uuidList
-     * @return
-     */
+//    public void getUserInfoList(List<Long> uuidList, UserListCallBack callBack) {
+//        if (uuidList == null || uuidList.size() <= 0 || callBack == null) {
+//            MyLog.w(TAG, "getUserInfoList Illegal parameter");
+//            return;
+//        }
+//
+//        List<UserInfoModel> list = UserInfoLocalApi.getUserInfoByUUidList(uuidList);
+//        boolean queryServer = false;
+//        if (list == null || list.size() == 0) {
+//            queryServer = true;
+//        } else if (list.size() < uuidList.size()) {
+//            queryServer = true;
+//        }
+//
+////        if (queryServer || !callBack.onGetLocalDB(list)) {
+////            callBack.onGetServer(getHomepageListById(uuidList));
+////        }
+//    }
+
+//    /**
+//     * 获取list用户的个人主页信息list
+//     * (注:不要一次性拉去过多数据)
+//     *
+//     * @param uuidList
+//     * @return
+//     */
 //    private MutiGetUserInfoRsp getHomepageListById(List<Long> uuidList) {
 //        if (uuidList == null || uuidList.size() <= 0) {
 //            MyLog.w(TAG, "getHomepageListById Illegal parameter");
@@ -216,55 +410,55 @@ public class UserInfoManager {
 //        return null;
 //    }
 
-    /**
-     * @param followType 关注类别
-     * @param bothway    是否包含相互关注
-     * @param isBlock    是否包含黑名单用户
-     * @return
-     */
-    public List<UserInfoModel> getFriendsUserInfoFromDB(int followType, boolean bothway, boolean isBlock) {
-        List<UserInfoModel> localRelations = new ArrayList<>();
-        if (followType == BOTH_FOLLOWED && bothway) {
-            localRelations.addAll(UserInfoLocalApi.getFriendUserInfoList(BOTH_FOLLOWED, isBlock));
-        } else {
-            localRelations.addAll(UserInfoLocalApi.getFriendUserInfoList(followType, isBlock));
-            if (bothway) {
-                localRelations.addAll(UserInfoLocalApi.getFriendUserInfoList(BOTH_FOLLOWED, isBlock));
-            }
-        }
+//    /**
+//     * @param followType 关注类别
+//     * @param bothway    是否包含相互关注
+//     * @param isBlock    是否包含黑名单用户
+//     * @return
+//     */
+//    public List<UserInfoModel> getFriendsUserInfoFromDB(int followType, boolean bothway, boolean isBlock) {
+//        List<UserInfoModel> localRelations = new ArrayList<>();
+//        if (followType == BOTH_FOLLOWED && bothway) {
+//            localRelations.addAll(UserInfoLocalApi.getFriendUserInfoList(BOTH_FOLLOWED, isBlock));
+//        } else {
+//            localRelations.addAll(UserInfoLocalApi.getFriendUserInfoList(followType, isBlock));
+//            if (bothway) {
+//                localRelations.addAll(UserInfoLocalApi.getFriendUserInfoList(BOTH_FOLLOWED, isBlock));
+//            }
+//        }
+//
+//        MyLog.w(TAG, "getFriendsUserInfoFromDB followType = " + followType + " userInfoList.size() = " + localRelations.size() +
+//                " contain BothFollow = " + bothway);
+//        return localRelations;
+//    }
+//
+//    /**
+//     * 查询关注列表(我关注的人)
+//     *
+//     * @param uuid
+//     * @param count
+//     * @param offset
+//     * @param bothway
+//     * @param loadByWater
+//     * @return
+//     */
+//    public List<UserInfoModel> syncFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
+//        List<UserInfoModel> userInfoList = getFollowingFromServer(uuid, count, offset, bothway, loadByWater);
+//        UserInfoLocalApi.insertOrUpdate(userInfoList);
+//        MyLog.w(TAG, "syncFollowingFromServer userInfoList.size() = " + userInfoList.size());
+//        return userInfoList;
+//    }
 
-        MyLog.w(TAG, "getFriendsUserInfoFromDB followType = " + followType + " userInfoList.size() = " + localRelations.size() +
-                " contain BothFollow = " + bothway);
-        return localRelations;
-    }
-
-    /**
-     * 查询关注列表(我关注的人)
-     *
-     * @param uuid
-     * @param count
-     * @param offset
-     * @param bothway
-     * @param loadByWater
-     * @return
-     */
-    public List<UserInfoModel> syncFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
-        List<UserInfoModel> userInfoList = getFollowingFromServer(uuid, count, offset, bothway, loadByWater);
-        UserInfoLocalApi.insertOrUpdate(userInfoList);
-        MyLog.w(TAG, "syncFollowingFromServer userInfoList.size() = " + userInfoList.size());
-        return userInfoList;
-    }
-
-    /**
-     * @param uuid
-     * @param count
-     * @param offset
-     * @param bothway
-     * @param loadByWater
-     * @return
-     */
-    private List<UserInfoModel> getFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
-        List<UserInfoModel> userInfoList = new ArrayList<>();
+//    /**
+//     * @param uuid
+//     * @param count
+//     * @param offset
+//     * @param bothway
+//     * @param loadByWater
+//     * @return
+//     */
+//    private List<UserInfoModel> getFollowingFromServer(long uuid, int count, int offset, boolean bothway, boolean loadByWater) {
+//        List<UserInfoModel> userInfoList = new ArrayList<>();
 //        FollowingListResponse response = UserInfoServerApi.getFollowingListResponse(uuid, count, offset, bothway, loadByWater);
 //        if (response != null && response.getCode() == 0) {
 //            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
@@ -282,27 +476,27 @@ public class UserInfoManager {
 //            }
 //        }
 //        MyLog.w(TAG, "getFollowingFromServer userInfoList.size() = " + userInfoList.size());
-        return userInfoList;
-    }
+//        return userInfoList;
+//    }
 
 
-    /**
-     * 查询粉丝列表(关注我的人)
-     *
-     * @param uuid
-     * @param count
-     * @param offset
-     * @return
-     */
-    public List<UserInfoModel> syncFollowerListFromServer(long uuid, int count, int offset) {
-        List<UserInfoModel> userInfoList = getFollowerListFromServer(uuid, count, offset);
-        UserInfoLocalApi.insertOrUpdate(userInfoList);
-        MyLog.w(TAG, "syncFollowerListFromServer userInfoList.size() = " + userInfoList.size());
-        return userInfoList;
-    }
+//    /**
+//     * 查询粉丝列表(关注我的人)
+//     *
+//     * @param uuid
+//     * @param count
+//     * @param offset
+//     * @return
+//     */
+//    public List<UserInfoModel> syncFollowerListFromServer(long uuid, int count, int offset) {
+//        List<UserInfoModel> userInfoList = getFollowerListFromServer(uuid, count, offset);
+//        UserInfoLocalApi.insertOrUpdate(userInfoList);
+//        MyLog.w(TAG, "syncFollowerListFromServer userInfoList.size() = " + userInfoList.size());
+//        return userInfoList;
+//    }
 
-    private List<UserInfoModel> getFollowerListFromServer(long uuid, int count, int offset) {
-        List<UserInfoModel> userInfoList = new ArrayList<>();
+//    private List<UserInfoModel> getFollowerListFromServer(long uuid, int count, int offset) {
+//        List<UserInfoModel> userInfoList = new ArrayList<>();
 //        FollowerListResponse response = UserInfoServerApi.getFollowerListResponse(uuid, count, offset);
 //        if (response != null && response.getCode() == 0) {
 //            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
@@ -320,26 +514,26 @@ public class UserInfoManager {
 //            }
 //        }
 //        MyLog.w(TAG, "getFollowerListFromServer userInfoList.size() = " + userInfoList.size());
-        return userInfoList;
-    }
+//        return userInfoList;
+//    }
 
-    /**
-     * 查询黑名单(我拉黑的)
-     *
-     * @param uuid
-     * @param count
-     * @param offset
-     * @return
-     */
-    public List<UserInfoModel> syncBockerListFromServer(long uuid, int count, int offset) {
-        List<UserInfoModel> userInfoList = getBockerListFromServer(uuid, count, offset);
-        UserInfoLocalApi.insertOrUpdate(userInfoList);
-        MyLog.w(TAG, "syncBockerListFromServer userInfoList.size() = " + userInfoList.size());
-        return userInfoList;
-    }
+//    /**
+//     * 查询黑名单(我拉黑的)
+//     *
+//     * @param uuid
+//     * @param count
+//     * @param offset
+//     * @return
+//     */
+//    public List<UserInfoModel> syncBockerListFromServer(long uuid, int count, int offset) {
+//        List<UserInfoModel> userInfoList = getBockerListFromServer(uuid, count, offset);
+//        UserInfoLocalApi.insertOrUpdate(userInfoList);
+//        MyLog.w(TAG, "syncBockerListFromServer userInfoList.size() = " + userInfoList.size());
+//        return userInfoList;
+//    }
 
-    private List<UserInfoModel> getBockerListFromServer(long uuid, int count, int offset) {
-        List<UserInfoModel> userInfoList = new ArrayList<>();
+//    private List<UserInfoModel> getBockerListFromServer(long uuid, int count, int offset) {
+//        List<UserInfoModel> userInfoList = new ArrayList<>();
 //        BlockerListResponse response = UserInfoServerApi.getBlockerListResponse(uuid, count, offset);
 //        if (response != null && response.getCode() == 0) {
 //            List<com.wali.live.proto.Relation.UserInfo> userInfos = response.getUsersList();
@@ -357,8 +551,8 @@ public class UserInfoManager {
 //        }
 //
 //        MyLog.w(TAG, "getBockerListFromServer userInfoList.size() = " + userInfoList.size());
-        return userInfoList;
-    }
+//        return userInfoList;
+//    }
 
 //    /**
 //     * 关注
@@ -462,57 +656,4 @@ public class UserInfoManager {
 //            }
 //        });
 //    }
-
-    /**
-     * 泛型类，主要用于 API 中功能的回调处理。
-     *
-     * @param <T> 声明一个泛型 T。
-     */
-    public static abstract class ResultCallback<T> {
-
-        public static class Result<T> {
-            public T t;
-        }
-
-        public ResultCallback() {
-
-        }
-
-        /**
-         * 本地数据库，成功时回调。
-         *
-         * @param t 已声明的类型。
-         */
-        public abstract boolean onGetLocalDB(T t);
-
-        /**
-         * 服务器，成功时回调。
-         *
-         * @param t 已声明的类型。
-         */
-        public abstract boolean onGetServer(T t);
-
-    }
-
-    public void getFriends(ResultCallback resultCallback) {
-        // 拿到本地存储所有好友关系
-        // 根据返回值判断是否去服务器查询
-        // todo 仅测试
-        Uri testUri = Uri.parse("http://cms-bucket.nosdn.127.net/a2482c0b2b984dc88a479e6b7438da6020161219074944.jpeg");
-
-        UserInfoModel friend1 = new UserInfoModel();
-        friend1.setUserId(1001);
-        friend1.setUserNickname("帅哥");
-
-        UserInfoModel friend2 = new UserInfoModel();
-        friend2.setUserId(1002);
-        friend2.setUserNickname("美女");
-
-        List<UserInfoModel> list = new ArrayList<>();
-        list.add(friend1);
-        list.add(friend2);
-        if (resultCallback != null) {
-            resultCallback.onGetLocalDB(list);
-        }
-    }
 }

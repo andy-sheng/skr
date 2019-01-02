@@ -107,7 +107,7 @@ public class RecordItemView extends RelativeLayout {
                         .setBorderColor(0xFF85EAFF)
                         .build());
 
-        mTvSingerName.setText(playerInfo.getUserNickname());
+        mTvSingerName.setText(playerInfo.getNickname());
         mTvSongName.setText("《" + songModel.getItemName() + "》");
 
         switch (voteInfoModel.getRank()) {

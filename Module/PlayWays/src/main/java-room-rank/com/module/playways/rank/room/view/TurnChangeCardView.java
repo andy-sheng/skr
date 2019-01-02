@@ -115,7 +115,7 @@ public class TurnChangeCardView extends RelativeLayout {
                     .setBorderWidth(U.getDisplayUtils().dip2px(3))
                     .setBorderColor(Color.WHITE)
                     .build());
-            mTurnNameTv.setText(cur.getUserInfo().getUserNickname());
+            mTurnNameTv.setText(cur.getUserInfo().getNickname());
             mTurnSongTv.setText(cur.getSongList().get(0).getItemName());
         }
 
@@ -126,7 +126,7 @@ public class TurnChangeCardView extends RelativeLayout {
                     .setBorderColor(Color.WHITE)
                     .build());
             SpannableStringBuilder ssb = new SpanUtils()
-                    .append("下一首由").append(next.getUserInfo().getUserNickname()).setClickSpan(new ClickableSpan() {
+                    .append("下一首由").append(next.getUserInfo().getNickname()).setClickSpan(new ClickableSpan() {
                         @Override
                         public void onClick(View widget) {
                             U.getToastUtil().showShort("事件触发了");

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoModel;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -35,13 +36,13 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .setBorderColor(Color.parseColor("#FF79A9"))
                         .build());
-        mNameTv.setText(userInfoModel.getUserNickname());
-        mUseridTv.setText(String.valueOf(userInfoModel.getUserId()));
-        if (mode == RelationView.FRIENDS_MODE) {
+        mNameTv.setText(userInfoModel.getNickname());
+        mUseridTv.setText("ID: " + String.valueOf(userInfoModel.getUserId()));
+        if (mode == UserInfoManager.RELATION_FRIENDS) {
             mFollowTv.setText("互相关注");
-        } else if (mode == RelationView.FANS_MODE) {
+        } else if (mode == UserInfoManager.RELATION_FANS) {
             mFollowTv.setText("未关注");
-        } else if (mode == RelationView.FOLLOWS_MODE) {
+        } else if (mode == UserInfoManager.RELATION_FOLLOW) {
             mFollowTv.setText("已关注");
             mFollowTv.setWidth(U.getDisplayUtils().dip2px(86));
         }

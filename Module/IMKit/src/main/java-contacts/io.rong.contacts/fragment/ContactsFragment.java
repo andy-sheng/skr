@@ -163,8 +163,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             } else {
                 filterDateList.clear();
                 for (UserInfoModel userInfo : mFriendList) {
-                    String name = userInfo.getUserNickname();
-                    String displayName = userInfo.getUserNickname();
+                    String name = userInfo.getNickname();
+                    String displayName = userInfo.getNickname();
                     if (!TextUtils.isEmpty(displayName)) {
                         if (name.contains(filterStr) || mCharacterParser.getSelling(name).startsWith(filterStr) || displayName.contains(filterStr) || mCharacterParser.getSelling(displayName).startsWith(filterStr)) {
                             filterDateList.add(userInfo);
@@ -329,7 +329,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     private void handleFriendDataForSort() {
         for (UserInfoModel friend : mFriendList) {
             String displayName = null;
-            String nickName = friend.getUserNickname();
+            String nickName = friend.getNickname();
             if (!TextUtils.isEmpty(displayName)) {
                 String letters = replaceFirstCharacterWithUppercase(mCharacterParser.getSelling(displayName));
                 friend.setLetter(letters);

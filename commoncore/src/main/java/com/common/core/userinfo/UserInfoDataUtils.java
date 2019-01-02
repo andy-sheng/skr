@@ -26,8 +26,8 @@ public class UserInfoDataUtils {
             newUserInfo.setAvatar(userInfoDB.getAvatar());
         }
 
-        if (newUserInfo.getUserNickname() == null) {
-            newUserInfo.setUserNickname(userInfoDB.getUserNickname());
+        if (newUserInfo.getNickname() == null) {
+            newUserInfo.setNickname(userInfoDB.getNickname());
         }
 
         if (newUserInfo.getSex() == -1) {

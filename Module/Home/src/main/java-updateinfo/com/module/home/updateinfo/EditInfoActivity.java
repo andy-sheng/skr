@@ -235,7 +235,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
             @Override
             public void onReceive(LbsUtils.Location location) {
-                MyLog.d(TAG,"onReceive" + " location=" + location);
+                MyLog.d(TAG, "onReceive" + " location=" + location);
                 if (location != null && location.isValid()) {
                     Location l = new Location();
                     l.setProvince(location.getProvince());
@@ -250,6 +250,11 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
             }
         });
+    }
+
+    @Override
+    public boolean canSlide() {
+        return false;
     }
 
     @Override
