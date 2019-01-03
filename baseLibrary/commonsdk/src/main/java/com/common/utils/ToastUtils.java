@@ -285,7 +285,7 @@ public class ToastUtils {
         });
     }
 
-    public void showCommonViewShort(View view) {
+    public void showSkrCustomShort(View view) {
         if (view == null) {
             return;
         }
@@ -293,7 +293,7 @@ public class ToastUtils {
         show(view, Toast.LENGTH_SHORT);
     }
 
-    public void showCommonViewLong(View view) {
+    public void showSkrCustomLong(View view) {
         if (view == null) {
             return;
         }

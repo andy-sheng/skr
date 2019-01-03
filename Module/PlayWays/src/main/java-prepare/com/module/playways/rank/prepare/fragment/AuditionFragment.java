@@ -34,6 +34,7 @@ import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
+import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -228,6 +229,10 @@ public class AuditionFragment extends BaseFragment {
                                 U.getFragmentUtils().popFragment(AuditionFragment.this);
                                 // 要保存
                                 Params.save2Pref(EngineManager.getInstance().getParams());
+                                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                                        .setImage(R.drawable.touxiangshezhichenggong_icon)
+                                        .setText("保存成功")
+                                        .build());
                             }
 
                             if (view.getId() == R.id.cancel_tv) {
