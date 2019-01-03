@@ -718,6 +718,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.setVisibility(View.VISIBLE);
                 mManyLyricsView.initLrcData();
                 mManyLyricsView.setLyricsReader(lyricsReader);
+                if(!play){
+                    mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
+                    mManyLyricsView.pause();
+                }
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
@@ -728,6 +732,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mFloatLyricsView.setVisibility(View.VISIBLE);
                 mFloatLyricsView.initLrcData();
                 mFloatLyricsView.setLyricsReader(lyricsReader);
+                if(!play){
+                    mFloatLyricsView.seekto(mPlayingSongModel.getBeginMs());
+                    mFloatLyricsView.pause();
+                }
                 if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mFloatLyricsView.play(mPlayingSongModel.getBeginMs());

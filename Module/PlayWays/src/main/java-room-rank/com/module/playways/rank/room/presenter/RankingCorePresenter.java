@@ -450,7 +450,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                 if (accFile != null && accFile.exists()) {
                                     EngineManager.getInstance().muteLocalAudioStream(false);
                                     EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
-                                    EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
+                                    EngineManager.getInstance().setAudioMixingPosition(0);
                                     // 还应开始播放歌词
                                     mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
                                     mIGameRuleView.showLastedTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
@@ -701,7 +701,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             sendRoundOverInfo();
         } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             EngineEvent.MixMusicTimeInfo timeInfo = (EngineEvent.MixMusicTimeInfo) event.getObj();
-            if (timeInfo.getCurrent() >= mRoomData.getSongModel().getEndMs()) {
+            if (timeInfo.getCurrent() >= mRoomData.getSongModel().getEndMs() - mRoomData.getSongModel().getBeginMs()) {
                 //可以发结束轮次的通知了
                 sendRoundOverInfo();
             }
