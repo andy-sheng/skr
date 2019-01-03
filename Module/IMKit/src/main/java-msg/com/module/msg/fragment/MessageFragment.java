@@ -9,12 +9,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.msg.IMessageFragment;
 import com.zq.relation.fragment.RelationFragment;
-import java.util.List;
 
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
@@ -22,13 +23,16 @@ import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
-public class MessageFragment extends BaseFragment implements  RongIM.UserInfoProvider,IMessageFragment {
+public class MessageFragment extends BaseFragment implements RongIM.UserInfoProvider, IMessageFragment {
+
+    public final static String TAG = "MessageFragment";
 
     CommonTitleBar commonTitleBar;
 
-    List<UserInfo> list;
-
     Fragment mConversationListFragment; //获取融云的会话列表对象
+
+    Uri testUri = Uri.parse("http://cms-bucket.nosdn.127.net/a2482c0b2b984dc88a479e6b7438da6020161219074944.jpeg");
+
 
     @Override
     public int initView() {
@@ -47,10 +51,10 @@ public class MessageFragment extends BaseFragment implements  RongIM.UserInfoPro
         mConversationListFragment = initConversationList();
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content,mConversationListFragment);
+        transaction.replace(R.id.content, mConversationListFragment);
         transaction.commit();
 
-        RongIM.setUserInfoProvider(this,true);
+        RongIM.setUserInfoProvider(this, true);
 
         commonTitleBar.getRightCustomView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,11 +101,10 @@ public class MessageFragment extends BaseFragment implements  RongIM.UserInfoPro
 
     @Override
     public UserInfo getUserInfo(String useId) {
-        for(UserInfo userInfo : list){
-            if (userInfo.getUserId().equals(useId)){
-                return userInfo;
-            }
-        }
-        return null;
+        // TODO: 2019/1/3  此处需根据指定id找到相应的userInfo 待补充
+        MyLog.d(TAG, "getUserInfo" + " useId=" + useId + " avatar = " + MyUserInfoManager.getInstance().getAvatar());
+        UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
+                MyUserInfoManager.getInstance().getNickName(), testUri);
+        return userInfo;
     }
 }

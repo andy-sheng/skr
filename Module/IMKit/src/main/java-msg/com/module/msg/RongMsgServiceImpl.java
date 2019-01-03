@@ -58,6 +58,10 @@ public class RongMsgServiceImpl implements IMsgService {
         return new MessageFragment();
     }
 
+    @Override
+    public void startConversation(Context context, int type, String targetId, String title) {
+        RongMsgManager.getInstance().startConversation(context, type, targetId, title);
+    }
 
 
     @Override

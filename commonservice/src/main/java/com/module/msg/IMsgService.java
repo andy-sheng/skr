@@ -1,6 +1,7 @@
 package com.module.msg;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.alibaba.android.arouter.facade.template.IProvider;
 import com.alibaba.fastjson.JSONObject;
@@ -15,6 +16,7 @@ public interface IMsgService extends IProvider {
 
     /**
      * 与融云服务器建立连接
+     *
      * @param token
      * @param callback
      */
@@ -26,6 +28,7 @@ public interface IMsgService extends IProvider {
 
     /**
      * 加入融云聊天室
+     *
      * @param roomId
      * @param callback
      */
@@ -35,6 +38,7 @@ public interface IMsgService extends IProvider {
 
     /**
      * 通过融云发送聊天室消息
+     *
      * @param roomId
      * @param messageType
      * @param contentJson
@@ -44,9 +48,19 @@ public interface IMsgService extends IProvider {
 
     /**
      * 其他module设置自己的push处理模块
+     *
      * @param processor
      */
     void addMsgProcessor(IPushMsgProcess processor);
 
     IMessageFragment getMessageFragment();
+
+    /**
+     * 启动会话界面
+     * @param context
+     * @param type
+     * @param targetId
+     * @param title
+     */
+    void startConversation(Context context, int type, String targetId, String title);
 }

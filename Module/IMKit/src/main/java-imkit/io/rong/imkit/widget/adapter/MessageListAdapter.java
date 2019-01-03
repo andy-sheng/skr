@@ -686,7 +686,7 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                             }
 
                             if (userInfo != null && userInfo.getPortraitUri() != null) {
-                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(portrait.toString())
+                                AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder(userInfo.getPortraitUri().toString())
                                         .build());
                             } else {
                                 AvatarUtils.loadAvatarByUrl(holder.rightIconView, AvatarUtils.newParamsBuilder("").build());
