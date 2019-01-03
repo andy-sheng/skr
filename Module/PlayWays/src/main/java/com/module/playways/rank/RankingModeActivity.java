@@ -67,7 +67,7 @@ public class RankingModeActivity extends BaseActivity {
     @Override
     protected void destroy() {
         super.destroy();
-        EngineManager.getInstance().destroy("force");
+        EngineManager.getInstance().destroy("prepare");
     }
 
     @Override
