@@ -60,6 +60,15 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getRelationNum(@Query("userID") int userID);
 
 
+    /**
+     * 判断和指定某人的社交关系
+     * @param toUserID   指定人的id
+     * @return
+     */
+    @GET("/v1/mate/has-relation")
+    Observable<ApiResult> getRelation(@Query("toUserID") int toUserID);
+
+
 //    /**
 //     * 获取一个用户的信息
 //     *

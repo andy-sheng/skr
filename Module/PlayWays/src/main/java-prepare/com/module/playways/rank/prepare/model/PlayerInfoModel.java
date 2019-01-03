@@ -52,7 +52,7 @@ public class PlayerInfoModel implements Serializable {
             list.add(songModel);
         }
         this.setSongList(list);
-        this.isSkrer = playerInfo.isSkrer;
+        this.isSkrer = playerInfo.getIsSkrer();
         this.resourceInfoList = ResourceInfoModel.parse(playerInfo.getResourceList());
     }
 

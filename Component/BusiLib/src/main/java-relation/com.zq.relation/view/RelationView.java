@@ -1,6 +1,7 @@
 package com.zq.relation.view;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,17 +9,22 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
+import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoModel;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.person.fragment.OtherPersonFragment;
 import com.zq.relation.adapter.RelationAdapter;
+import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,7 +69,15 @@ public class RelationView extends RelativeLayout {
             public void onItemClicked(View view, int position, Object model) {
                 UserInfoModel userInfoModel = (UserInfoModel) model;
                 if (view.getId() == R.id.content) {
-
+                    // 跳到他人的个人主页
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
+                    U.getFragmentUtils().addFragment(FragmentUtils
+                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment.class)
+                            .setBundle(bundle)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .build());
                 } else if (view.getId() == R.id.follow_tv) {
                     // 关注和好友都是有关系的人
                     if (mMode == UserInfoManager.RELATION_FANS) {

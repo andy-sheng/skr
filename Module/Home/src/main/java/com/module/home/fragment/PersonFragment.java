@@ -10,7 +10,6 @@ import com.common.base.BaseFragment;
 
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoManager;
@@ -24,7 +23,6 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 
-import com.component.busilib.fragment.OtherPersonFragment;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
 import com.imagepicker.model.ImageItem;
@@ -35,6 +33,7 @@ import com.module.home.R;
 import com.module.home.model.RelationNumMode;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
+import com.zq.person.fragment.OtherPersonFragment;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
