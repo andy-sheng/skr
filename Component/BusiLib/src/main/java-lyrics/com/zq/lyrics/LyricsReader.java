@@ -10,6 +10,7 @@ import com.zq.lyrics.utils.LyricsIOUtils;
 import com.zq.lyrics.utils.LyricsUtils;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -132,6 +133,15 @@ public class LyricsReader {
 
     }
 
+    public void cut(long startTs, long endTs) {
+        Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, LyricsLineInfo> entry = it.next();
+            if(entry.getValue().getEndTime() > endTs){
+                it.remove();
+            }
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
 

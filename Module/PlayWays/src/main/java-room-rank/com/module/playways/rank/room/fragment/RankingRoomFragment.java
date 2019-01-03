@@ -717,6 +717,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mFloatLyricsView.resetData();
                 mManyLyricsView.setVisibility(View.VISIBLE);
                 mManyLyricsView.initLrcData();
+                lyricsReader.cut(mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs());
                 mManyLyricsView.setLyricsReader(lyricsReader);
                 if(!play){
                     mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
@@ -731,6 +732,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.resetData();
                 mFloatLyricsView.setVisibility(View.VISIBLE);
                 mFloatLyricsView.initLrcData();
+                lyricsReader.cut(mPlayingSongModel.getBeginMs(),mPlayingSongModel.getEndMs());
                 mFloatLyricsView.setLyricsReader(lyricsReader);
                 if(!play){
                     mFloatLyricsView.seekto(mPlayingSongModel.getBeginMs());
