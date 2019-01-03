@@ -50,26 +50,45 @@
             android:layout_height="wrap_content" />
 
         <RelativeLayout
+            android:id="@+id/rl_icon_container"
             android:layout_marginTop="@dimen/view_142_dp"
             android:layout_centerHorizontal="true"
-            android:layout_width="@dimen/view_162_dp"
+            android:layout_width="@dimen/view_262_dp"
             android:layout_height="wrap_content">
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:alpha="0.5"
-                android:layout_centerVertical="true"
-                android:id="@+id/sdv_icon1"
-                android:layout_alignParentLeft="true"
-                android:layout_width="@dimen/view_57_dp"
-                android:layout_height="@dimen/view_57_dp" />
+
             <com.facebook.drawee.view.SimpleDraweeView
                 android:layout_centerVertical="true"
                 android:id="@+id/sdv_icon3"
                 android:layout_alignParentRight="true"
-                android:layout_width="@dimen/view_57_dp"
-                android:layout_height="@dimen/view_57_dp" />
+                android:layout_width="@dimen/view_65_dp"
+                android:layout_height="@dimen/view_65_dp" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:visibility="invisible"
+                android:layout_centerVertical="true"
+                android:id="@+id/sdv_sub_icon1"
+                android:layout_alignParentLeft="true"
+                android:layout_width="@dimen/view_65_dp"
+                android:layout_height="@dimen/view_65_dp" />
+
             <com.facebook.drawee.view.SimpleDraweeView
                 android:layout_centerHorizontal="true"
                 android:id="@+id/sdv_icon2"
+                android:layout_width="@dimen/view_65_dp"
+                android:layout_height="@dimen/view_65_dp" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:visibility="invisible"
+                android:layout_centerVertical="true"
+                android:id="@+id/sdv_sub_icon3"
+                android:layout_alignParentRight="true"
+                android:layout_width="@dimen/view_65_dp"
+                android:layout_height="@dimen/view_65_dp" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_centerVertical="true"
+                android:id="@+id/sdv_icon1"
+                android:layout_alignParentLeft="true"
                 android:layout_width="@dimen/view_65_dp"
                 android:layout_height="@dimen/view_65_dp" />
         </RelativeLayout>

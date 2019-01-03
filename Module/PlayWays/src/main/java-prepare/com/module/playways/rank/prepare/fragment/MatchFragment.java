@@ -1,5 +1,10 @@
 package com.module.playways.rank.prepare.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
@@ -22,9 +28,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
+import com.module.playways.rank.prepare.presenter.MatchPresenter;
 import com.module.playways.rank.prepare.view.IMatchingView;
 import com.module.rank.R;
-import com.module.playways.rank.prepare.presenter.MatchPresenter;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -34,14 +40,21 @@ import java.util.concurrent.TimeUnit;
 
 //这个是匹配界面，之前的FastMatchingSence
 public class MatchFragment extends BaseFragment implements IMatchingView {
+    public static final long ANIMATION_DURATION = 1800;
     ExImageView mIvBack;
     ExImageView mIvTop;
     ExTextView mTvMatchedTime;
     SimpleDraweeView mSdvIcon1;
+    SimpleDraweeView mSdvSubIcon1;
     SimpleDraweeView mSdvIcon3;
+    SimpleDraweeView mSdvSubIcon3;
     SimpleDraweeView mSdvIcon2;
     ExTextView mTvTip;
     ExImageView mIvCancelMatch;
+
+    AnimatorSet mIconAnimatorSet;
+
+    RelativeLayout mRlIconContainer;
 
     MatchPresenter mMatchPresenter;
     PrepareData mPrepareData;
@@ -49,8 +62,6 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     String[] mQuotationsArray;
 
     HandlerTaskTimer mMatchTimeTask;
-
-    HandlerTaskTimer mMatchQuotationTask;
 
     @Override
     public int initView() {
@@ -67,8 +78,12 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
         mIvCancelMatch = (ExImageView) mRootView.findViewById(R.id.iv_cancel_match);
+        mRlIconContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_icon_container);
+        mSdvSubIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon1);
+        mSdvSubIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon3);
 
-        Resources res =getResources();
+
+        Resources res = getResources();
         mQuotationsArray = res.getStringArray(R.array.match_quotations);
 
         RxView.clicks(mIvCancelMatch)
@@ -99,30 +114,149 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mMatchPresenter.getMatchingUserIconList();
     }
 
-    private void startMatchQuotationTask(){
-        mMatchQuotationTask = HandlerTaskTimer.newBuilder()
-                .interval(3000)
-                .take(-1)
+    private HandlerTaskTimer mControlTask;
+
+    private void startMatchQuotationTask() {
+        mControlTask = HandlerTaskTimer.newBuilder().delay(1000)
+                .interval(ANIMATION_DURATION * 2 + 300)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int size = mQuotationsArray.length;
-                        int index = integer % (size - 1);
-                        String string = mQuotationsArray[index];
-                        String rString = "";
-
-                        while (string.length() > 15){
-                            rString = rString + string.substring(0, 15) + "\n";
-                            string = string.substring(15);
-                        }
-
-                        rString = rString + string;
-                        mTvTip.setText(rString);
-                        MyLog.d(TAG, "startMatchQuotationTask");
+                        doAnimation(integer);
+                        changeQuotation(integer);
                     }
                 });
     }
 
+    private void doAnimation(final Integer integer) {
+        if(mIconAnimatorSet != null && mIconAnimatorSet.isRunning()){
+            mIconAnimatorSet.cancel();
+        }
+
+        mIconAnimatorSet = new AnimatorSet();
+        ObjectAnimator anim1 = ObjectAnimator.ofFloat(mSdvIcon1, "translationX", 0, mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth());
+        ObjectAnimator anim2 = ObjectAnimator.ofFloat(mSdvIcon1, "translationX", mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth(), 0);
+        ObjectAnimator sub_anim1 = ObjectAnimator.ofFloat(mSdvSubIcon1, "translationX", 0, mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth());
+        ObjectAnimator sub_anim2 = ObjectAnimator.ofFloat(mSdvSubIcon1, "translationX", mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth(), 0);
+
+        ObjectAnimator anim3 = ObjectAnimator.ofFloat(mSdvIcon3, "translationX", 0, -(mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth()));
+        ObjectAnimator anim4 = ObjectAnimator.ofFloat(mSdvIcon3, "translationX", -(mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth()), 0);
+        ObjectAnimator sub_anim3 = ObjectAnimator.ofFloat(mSdvSubIcon3, "translationX", 0, -(mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth()));
+        ObjectAnimator sub_anim4 = ObjectAnimator.ofFloat(mSdvSubIcon3, "translationX", -(mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth()), 0);
+
+        final float[] preDegree = new float[]{0.0f};
+
+        //1号在上面
+        anim1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float f = (float) animation.getAnimatedValue();
+                float p = mRlIconContainer.getMeasuredWidth() / 2 - (float) mSdvIcon1.getMeasuredWidth() / 2;
+                float degree = f - p;
+
+                if (degree * preDegree[0] < 0) {
+                    MyLog.d(TAG, "is good 1");
+                    changeIcons(1);
+                }
+
+                preDegree[0] = degree;
+            }
+        });
+
+        anim1.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                preDegree[0] = 0.0f;
+                mSdvIcon1.setVisibility(View.INVISIBLE);
+                mSdvIcon3.setVisibility(View.INVISIBLE);
+                mSdvSubIcon1.setVisibility(View.VISIBLE);
+                mSdvSubIcon3.setVisibility(View.VISIBLE);
+            }
+        });
+
+        anim2.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mSdvSubIcon1.setVisibility(View.INVISIBLE);
+                mSdvSubIcon3.setVisibility(View.INVISIBLE);
+                mSdvIcon1.setVisibility(View.VISIBLE);
+                mSdvIcon3.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //3号在上面
+        anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float f = (float) animation.getAnimatedValue();
+                float p = mRlIconContainer.getMeasuredWidth() / 2 - (float) mSdvIcon1.getMeasuredWidth() / 2;
+                float degree = f - p;
+
+                if (degree * preDegree[0] < 0) {
+                    MyLog.d(TAG, "is good 2");
+                    changeIcons(3);
+                }
+
+                preDegree[0] = degree;
+            }
+        });
+
+        mIconAnimatorSet.setDuration(ANIMATION_DURATION);
+        mIconAnimatorSet.play(anim1).with(sub_anim1).with(anim3).with(sub_anim3).before(anim2);
+        mIconAnimatorSet.play(anim2).with(sub_anim2).with(anim4).with(sub_anim4);
+
+        mIconAnimatorSet.start();
+    }
+
+    private void changeQuotation(Integer integer) {
+        int size = mQuotationsArray.length;
+        int index = integer % (size - 1);
+        String string = mQuotationsArray[index];
+        String rString = "";
+
+        while (string.length() > 15) {
+            rString = rString + string.substring(0, 15) + "\n";
+            string = string.substring(15);
+        }
+
+        rString = rString + string;
+        mTvTip.setText(rString);
+    }
+
+
+    private void changeIcons(Integer num) {
+        if (mAvatarURL == null || mAvatarURL.size() == 0) {
+            return;
+        }
+
+
+        if(num != 1){
+            iconListIndex += 1;
+            int index1 = iconListIndex % (mAvatarURL.size() - 1);
+            loadIconInImage(mAvatarURL.get(index1), mSdvIcon1);
+            loadIconInImage(mAvatarURL.get(index1), mSdvSubIcon1);
+        }
+
+        iconListIndex += 1;
+        int index2 = iconListIndex % (mAvatarURL.size() - 1);
+        loadIconInImage(mAvatarURL.get(index2), mSdvIcon2);
+
+        if(num != 3){
+            iconListIndex += 1;
+            int index3 = iconListIndex % (mAvatarURL.size() - 1);
+            loadIconInImage(mAvatarURL.get(index3), mSdvIcon3);
+            loadIconInImage(mAvatarURL.get(index3), mSdvSubIcon3);
+        }
+    }
+
+    private void loadIconInImage(String url, SimpleDraweeView simpleDraweeView) {
+        AvatarUtils.loadAvatarByUrl(simpleDraweeView,
+                AvatarUtils.newParamsBuilder(url)
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                        .setBorderColor(Color.WHITE)
+                        .build());
+    }
 
     /**
      * 更新已匹配时间
@@ -161,14 +295,6 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void destroy() {
         super.destroy();
-
-        if(mMatchQuotationTask != null){
-            mMatchQuotationTask.dispose();
-        }
-
-        if(mShowUserListIconTask != null){
-            mShowUserListIconTask.dispose();
-        }
     }
 
     @Override
@@ -176,6 +302,14 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         super.onDetach();
         mMatchPresenter.destroy();
         stopTimeTask();
+
+        if (mControlTask != null) {
+            mControlTask.dispose();
+        }
+
+        if(mIconAnimatorSet != null && mIconAnimatorSet.isRunning()){
+            mIconAnimatorSet.cancel();
+        }
     }
 
     void goBack() {
@@ -251,48 +385,19 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     }
 
-    HandlerTaskTimer mShowUserListIconTask;
-
     private int iconListIndex = 0;
+
+    List<String> mAvatarURL = null;
 
     @Override
     public void showUserIconList(List<String> avatarURL) {
-        if(avatarURL == null || avatarURL.size() == 0){
+        if (avatarURL == null || avatarURL.size() == 0) {
             return;
         }
 
-        if(mShowUserListIconTask != null){
-            mShowUserListIconTask.dispose();
-        }
+        mAvatarURL = avatarURL;
 
-        iconListIndex = 0;
-
-        mShowUserListIconTask = HandlerTaskTimer.newBuilder()
-                .interval(5000)
-                .take(-1)
-                .start(new HandlerTaskTimer.ObserverW() {
-            @Override
-            public void onNext(Integer integer) {
-
-                iconListIndex += integer;
-                int index1 = iconListIndex % (avatarURL.size() - 1);
-                AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                        AvatarUtils.newParamsBuilder(avatarURL.get(index1))
-                                .setCircle(true)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColor(Color.WHITE)
-                                .build());
-
-                iconListIndex += integer;
-                int index2 = iconListIndex % (avatarURL.size() - 1);
-                AvatarUtils.loadAvatarByUrl(mSdvIcon3,
-                        AvatarUtils.newParamsBuilder(avatarURL.get(index2))
-                                .setCircle(true)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColor(Color.WHITE)
-                                .build());
-            }
-        });
+        changeIcons(0);
     }
 
     @Override
