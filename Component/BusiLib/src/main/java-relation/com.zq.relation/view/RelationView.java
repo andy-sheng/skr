@@ -42,6 +42,7 @@ public class RelationView extends RelativeLayout {
     private int mMode = UserInfoManager.RELATION_FRIENDS;
     private int mOffset = 0; // 偏移量
     private int DEFAULT_COUNT = 30; // 每次拉去最大值
+    private boolean hasMore = true; // 是否还有数据
 
     RecyclerView mRecyclerView;
     SmartRefreshLayout mRefreshLayout;
@@ -116,6 +117,10 @@ public class RelationView extends RelativeLayout {
     }
 
     public void loadData(int mode, int offset, int limit) {
+        if (!hasMore) {
+            U.getToastUtil().showShort("没有更多数据了");
+            return;
+        }
         UserInfoManager.getInstance().getRelationList(mode, offset, limit, new UserInfoManager.ResponseCallBack<ApiResult>() {
             @Override
             public void onServerSucess(ApiResult result) {
@@ -124,6 +129,9 @@ public class RelationView extends RelativeLayout {
                 if (userInfoModels != null && userInfoModels.size() != 0) {
                     mRelationAdapter.addData(userInfoModels);
                     mRelationAdapter.notifyDataSetChanged();
+                    hasMore = true;
+                } else {
+                    hasMore = false;
                 }
             }
 

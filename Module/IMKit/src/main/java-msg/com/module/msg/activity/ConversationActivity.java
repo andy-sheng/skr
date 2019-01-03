@@ -1,12 +1,15 @@
 package com.module.msg.activity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
 import com.common.view.titlebar.CommonTitleBar;
+import com.jakewharton.rxbinding2.view.RxView;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 import io.rong.imkit.R;
 
 /**
@@ -14,7 +17,7 @@ import io.rong.imkit.R;
  */
 public class ConversationActivity extends FragmentActivity {
 
-    CommonTitleBar titleBar;
+    CommonTitleBar mTitleBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,9 +28,18 @@ public class ConversationActivity extends FragmentActivity {
     }
 
     public void initData() {
-        titleBar = findViewById(R.id.titlebar);
+        mTitleBar = findViewById(R.id.titlebar);
 
-        String targetId = getIntent().getData().getQueryParameter("title");
-        titleBar.getCenterTextView().setText(targetId);
+        String title = getIntent().getData().getQueryParameter("title");
+        mTitleBar.getCenterTextView().setText(title);
+
+        RxView.clicks(mTitleBar.getLeftTextView())
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        finish();
+                    }
+                });
     }
 }
