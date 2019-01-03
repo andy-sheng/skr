@@ -32,6 +32,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     public static final int DEFAULT_SONG_COUNT = 30;  // 每次从服务器拉去歌曲数
     int offset = 0; //偏移量
+    boolean hasMore = true; // 是否还有更多数据标记位
     List<SongModel> datas; // 歌曲的数据源
 
     RelativeLayout mMainActContainer;
@@ -75,7 +76,11 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                presenter.getRcomdMusicItems(offset, DEFAULT_SONG_COUNT);
+                if (hasMore) {
+                    presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT);
+                } else {
+                    U.getToastUtil().showShort("没有更多数据了");
+                }
             }
 
             @Override
@@ -98,8 +103,9 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     }
 
     @Override
-    public void loadSongsDetailItems(List<SongModel> list, int offset) {
+    public void loadSongsDetailItems(List<SongModel> list, int offset, boolean hasMore) {
         this.offset = offset;
+        this.hasMore = hasMore;
         if (datas == null) {
             datas = new ArrayList<>();
         }

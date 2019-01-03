@@ -61,6 +61,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     int offset; //当前偏移量
     int mGameType;
+    boolean hasMore = true; // 是否还有更多数据标记位
 
     TanTanCallback callback;
     OverLayCardLayoutManager mOverLayCardLayoutManager;
@@ -198,31 +199,34 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     }
 
     @Override
-    public void loadSongsDetailItems(List<SongModel> list, int offset) {
+    public void loadSongsDetailItems(List<SongModel> list, int offset, boolean hasMore) {
         this.offset = offset; //保存当前偏移量
-        SongCardModel songCardModel = new SongCardModel();
-        for (int i = 0; i < list.size(); i++) {
-            if (songCardModel == null) {
-                songCardModel = new SongCardModel();
-            }
-            songCardModel.getList().add(list.get(i));
+        this.hasMore = hasMore;
+        if (list != null && list.size() > 0) {
+            SongCardModel songCardModel = new SongCardModel();
+            for (int i = 0; i < list.size(); i++) {
+                if (songCardModel == null) {
+                    songCardModel = new SongCardModel();
+                }
+                songCardModel.getList().add(list.get(i));
 
-            if ((i + 1) % SongCardModel.MAX_COUNT == 0) {
+                if ((i + 1) % SongCardModel.MAX_COUNT == 0) {
+                    songCardModels.add(0, songCardModel);
+                    songCardModel = null;
+                }
+            }
+            if (songCardModel != null) {
                 songCardModels.add(0, songCardModel);
-                songCardModel = null;
             }
+
+            adapter.setmDataList(songCardModels);
+            CardConfig.initConfig(getContext());
+
+            callback = new TanTanCallback(mCardRecycleview, adapter, songCardModels, mDeleteList);
+
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            itemTouchHelper.attachToRecyclerView(mCardRecycleview);
         }
-        if (songCardModel != null) {
-            songCardModels.add(0, songCardModel);
-        }
-
-        adapter.setmDataList(songCardModels);
-        CardConfig.initConfig(getContext());
-
-        callback = new TanTanCallback(mCardRecycleview, adapter, songCardModels, mDeleteList);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(mCardRecycleview);
     }
 
     @Override
@@ -242,8 +246,13 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SwipCardEvent event) {
-        // TODO: 2018/12/17 要不要再去拉数据 当前是只去拉一页
-        presenter.getRcomdMusicItems(offset, DEFAULT_COUNT);
+        if (hasMore) {
+            presenter.getRcomdMusicItems(offset, DEFAULT_COUNT);
+        } else {
+            // TODO: 2019/1/3 考虑要不要将delte中的数据拿一点回来
+            U.getToastUtil().showShort("没有更多数据了");
+        }
+
     }
 
     @Override

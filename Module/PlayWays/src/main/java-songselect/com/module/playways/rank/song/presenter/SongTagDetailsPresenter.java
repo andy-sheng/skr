@@ -29,24 +29,24 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
      * @param cnt
      */
     public void getRcomdMusicItems(int offset, int cnt) {
-        if (offset == -1) {
-            U.getToastUtil().showShort("没有更多数据了");
-            return;
-        }
         SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
         ApiMethods.subscribe(songSelectServerApi.getRcomdMusicItems(offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
-                    // TODO: 2018/12/18 仅测试使用多点数据
-                    List<SongModel> data = new ArrayList<>();
-                    for (int i = 0; i < 21; i++) {
-                        data.addAll(list);
-                    }
-                    int offset = result.getData().getIntValue("offset");
-                    if (view != null) {
-                        view.loadSongsDetailItems(data, offset);
+                    if (list != null && list.size() > 0) {
+                        // TODO: 2018/12/18 仅测试使用多点数据
+                        List<SongModel> data = new ArrayList<>();
+                        for (int i = 0; i < 21; i++) {
+                            data.addAll(list);
+                        }
+                        int offset = result.getData().getIntValue("offset");
+                        if (view != null) {
+                            view.loadSongsDetailItems(data, offset, true);
+                        }
+                    } else {
+                        view.loadSongsDetailItems(null, offset, false);
                     }
                 } else {
                     if (view != null) {
@@ -70,15 +70,22 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
-                    // TODO: 2018/12/18 仅测试使用多点数据
-                    List<SongModel> data = new ArrayList<>();
-                    for (int i = 0; i < 21; i++) {
-                        data.addAll(list);
+                    if (list != null && list.size() > 0) {
+                        // TODO: 2018/12/18 仅测试使用多点数据
+                        List<SongModel> data = new ArrayList<>();
+                        for (int i = 0; i < 21; i++) {
+                            data.addAll(list);
+                        }
+                        int offset = result.getData().getIntValue("offset");
+                        if (view != null) {
+                            view.loadSongsDetailItems(data, offset, true);
+                        }
+                    } else {
+                        if (view != null) {
+                            view.loadSongsDetailItems(null, offset, false);
+                        }
                     }
-                    int offset = result.getData().getIntValue("offset");
-                    if (view != null) {
-                        view.loadSongsDetailItems(data, offset);
-                    }
+
                 } else {
                     if (view != null) {
                         view.loadSongsDetailItemsFail();
