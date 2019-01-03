@@ -1,4 +1,4 @@
-package com.module.home.relation.view;
+package com.zq.relation.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -14,11 +14,11 @@ import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.home.R;
-import com.module.home.relation.adapter.RelationAdapter;
+import com.component.busilib.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.relation.adapter.RelationAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

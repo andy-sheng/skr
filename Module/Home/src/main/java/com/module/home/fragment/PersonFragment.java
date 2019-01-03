@@ -3,16 +3,12 @@ package com.module.home.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
-import android.support.v4.app.Fragment;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 
 import com.common.base.FragmentDataListener;
-import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -27,18 +23,14 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 
 import com.component.busilib.fragment.OtherPersonFragment;
-import com.engine.EngineManager;
-import com.engine.Params;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.musictest.MusicTestFragment;
-import com.module.home.relation.fragment.RelationFragment;
+import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -98,8 +90,11 @@ public class PersonFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         // 好友，双向关注
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FRIENDS);
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setBundle(bundle)
                                         .setAddToBackStack(true)
                                         .setHasAnimation(true)
                                         .build());
@@ -113,8 +108,11 @@ public class PersonFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         // 粉丝，我关注的
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FANS);
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setBundle(bundle)
                                         .setAddToBackStack(true)
                                         .setHasAnimation(true)
                                         .build());
@@ -127,8 +125,11 @@ public class PersonFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         // 关注, 关注我的
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FOLLOW);
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setBundle(bundle)
                                         .setAddToBackStack(true)
                                         .setHasAnimation(true)
                                         .build());

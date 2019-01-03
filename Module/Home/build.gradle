@@ -77,9 +77,6 @@ android {
 
             java.srcDirs += 'src/main/java-musictest'
             res.srcDirs += 'src/main/res-musictest'
-
-            java.srcDirs += 'src/main/java-relation'
-            res.srcDirs += 'src/main/res-relation'
         }
     }
 }

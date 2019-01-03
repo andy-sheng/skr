@@ -23,6 +23,9 @@ android {
 
             java.srcDirs += 'src/main/java-toast'
             res.srcDirs += 'src/main/res-toast'
+
+            java.srcDirs += 'src/main/java-relation'
+            res.srcDirs += 'src/main/res-relation'
         }
     }
 }

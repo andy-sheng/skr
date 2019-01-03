@@ -1,4 +1,4 @@
-package com.module.home.relation.adapter;
+package com.zq.relation.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 
 import com.common.core.userinfo.UserInfoModel;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.home.R;
-import com.module.home.relation.view.RelationHolderView;
+import com.component.busilib.R;
+import com.zq.relation.view.RelationHolderView;
 
 import java.util.ArrayList;
 import java.util.List;

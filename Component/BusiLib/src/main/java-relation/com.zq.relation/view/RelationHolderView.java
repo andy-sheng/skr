@@ -1,4 +1,4 @@
-package com.module.home.relation.view;
+package com.zq.relation.view;
 
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
@@ -9,12 +9,11 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoModel;
-import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.home.R;
 
 public class RelationHolderView extends RecyclerView.ViewHolder {
     RelativeLayout mContent;
@@ -26,7 +25,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
     int position;
     UserInfoModel userInfoModel;
 
-    public RelationHolderView(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
+    public RelationHolderView(View itemView, final RecyclerOnItemClickListener recyclerOnItemClickListener) {
         super(itemView);
 
         mContent = (RelativeLayout) itemView.findViewById(R.id.content);

@@ -1,4 +1,4 @@
-package com.module.home.relation.fragment;
+package com.zq.relation.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,9 +16,9 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.component.busilib.R;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.home.R;
-import com.module.home.relation.view.RelationView;
+import com.zq.relation.view.RelationView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +28,12 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 
 public class RelationFragment extends BaseFragment {
-    @Override
-    public int initView() {
-        return R.layout.relation_fragment_layout;
-    }
+
+    public static final int FROM_FRIENDS = 0;
+    public static final int FROM_FANS = 1;
+    public static final int FROM_FOLLOW = 2;
+
+    public static final String FROM_PAGE_KEY = "from_page_key";
 
     CommonTitleBar mTitlebar;
     LinearLayout mContainer;
@@ -43,6 +45,12 @@ public class RelationFragment extends BaseFragment {
 
     List<String> mTabTitleList = new ArrayList<>();
     HashMap<String, RelationView> mTitleAndViewMap = new HashMap<>();
+
+
+    @Override
+    public int initView() {
+        return R.layout.relation_fragment_layout;
+    }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
@@ -121,6 +129,12 @@ public class RelationFragment extends BaseFragment {
         mRelationVp.setAdapter(mTabPagerAdapter);
         mRelationTab.setViewPager(mRelationVp);
         mTabPagerAdapter.notifyDataSetChanged();
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            int from = bundle.getInt(FROM_PAGE_KEY);
+            mRelationVp.setCurrentItem(from);
+        }
     }
 
     @Override
