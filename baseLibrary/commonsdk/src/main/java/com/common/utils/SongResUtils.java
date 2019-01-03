@@ -6,10 +6,10 @@ import java.io.File;
 
 public class SongResUtils {
     //后缀。后缀可以有很多
-    public static String SUFF_ZRCE = "zrce";
-    public static String SUFF_ACC = "mp3";
-    public static String SUFF_ORI = "mp3";
-    public static String SUFF_MIDI = "mid";
+    public static final String SUFF_ZRCE = "zrce";
+    public static final String SUFF_ACC = "mp3";
+    public static final String SUFF_ORI = "mp3";
+    public static final String SUFF_MIDI = "mid";
 
     //存储目录
     private static final String LYRIC_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "lyrics";

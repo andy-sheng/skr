@@ -51,7 +51,7 @@ public class ResourceInfoModel implements Serializable {
 
     @Override
     public String toString() {
-        return "ResourceInfo{" +
+        return "ResourceInfoModel{" +
                 "resourceID=" + resourceID +
                 ", itemID=" + itemID +
                 ", audioURL='" + audioURL + '\'' +

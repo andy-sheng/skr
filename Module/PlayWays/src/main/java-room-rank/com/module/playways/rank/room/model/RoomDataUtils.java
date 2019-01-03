@@ -166,7 +166,7 @@ public class RoomDataUtils {
     }
 
     /**
-     *
+     * @param roundInfoModel
      * @return
      */
     public static long getSongDuration(RoundInfoModel roundInfoModel){

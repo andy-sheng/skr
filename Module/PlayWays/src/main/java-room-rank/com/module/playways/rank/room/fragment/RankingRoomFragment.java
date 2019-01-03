@@ -24,6 +24,7 @@ import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -36,6 +37,7 @@ import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.presenter.RankingCorePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
@@ -98,6 +100,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     SVGAImageView mTopVoiceBg;
 
     RankingCorePresenter mCorePresenter;
+
+    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
     ManyLyricsView mManyLyricsView;
 
@@ -164,6 +168,31 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
         mCorePresenter = new RankingCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
+
+        mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
+            @Override
+            public void onDownloaded(long downloaded, long totalLength) {
+
+            }
+
+            @Override
+            public void onCompleted(String localPath) {
+                MyLog.d(TAG, "机器人打分文件下载就绪");
+            }
+
+            @Override
+            public void onCanceled() {
+
+            }
+
+            @Override
+            public void onFailed() {
+
+            }
+        }, mRoomData.getPlayerInfoList());
+
+        addPresent(mDownLoadScoreFilePresenter);
+        mDownLoadScoreFilePresenter.prepareRes();
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
