@@ -102,7 +102,6 @@ public class VoiceControlPanelView extends ScrollView {
             // 不能每次都初始化,播放伴奏
             EngineManager.getInstance().init("prepare", Params.getFromPref());
             EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
@@ -130,7 +129,7 @@ public class VoiceControlPanelView extends ScrollView {
         super.onDetachedFromWindow();
         // 停止播放混音
         EngineManager.getInstance().pauseAudioMixing();
-        Params.save2Pref(EngineManager.getInstance().getParams());
+
     }
 
     @Override

@@ -124,14 +124,14 @@ public class EditInfoNameFragment extends BaseFragment {
                             if (view instanceof ExTextView) {
                                 if (view.getId() == R.id.confirm_tv) {
                                     dialog.dismiss();
-                                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                            .setNickName(nickName)
-                                            .build());
-                                    U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
                                 }
 
                                 if (view.getId() == R.id.cancel_tv) {
                                     dialog.dismiss();
+                                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                            .setNickName(nickName)
+                                            .build());
+                                    U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
                                 }
                             }
                         }

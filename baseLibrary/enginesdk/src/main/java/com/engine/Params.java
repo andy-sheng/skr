@@ -562,9 +562,11 @@ public class Params implements Serializable {
      * @param params
      */
     public static void save2Pref(Params params) {
-        String s = JSON.toJSONString(params);
-        MyLog.w(EngineManager.TAG, "save2Pref " + s);
-        U.getPreferenceUtils().setSettingString("engine_pref_params", s);
+        if(params!=null) {
+            String s = JSON.toJSONString(params);
+            MyLog.w(EngineManager.TAG, "save2Pref " + s);
+            U.getPreferenceUtils().setSettingString("engine_pref_params", s);
+        }
     }
 
     /**

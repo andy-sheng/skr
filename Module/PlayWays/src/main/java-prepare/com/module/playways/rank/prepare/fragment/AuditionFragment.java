@@ -5,20 +5,30 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
 
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.dialog.view.TipsDialogView;
 import com.engine.EngineManager;
+import com.engine.Params;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.event.LrcEvent;
@@ -69,7 +79,7 @@ public class AuditionFragment extends BaseFragment {
         RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     showVoicePanelView(false);
-        });
+                });
 
         RxView.clicks(mTvUp).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -91,7 +101,7 @@ public class AuditionFragment extends BaseFragment {
             @Override
             public void onSigleTap(int progress) {
                 MyLog.d(TAG, "progress " + progress);
-                if(progress > 0){
+                if (progress > 0) {
                     EngineManager.getInstance().setAudioMixingPosition(progress);
                     mManyLyricsView.seekto(progress);
                 }
@@ -111,9 +121,11 @@ public class AuditionFragment extends BaseFragment {
 
         playMusic(mSongModel);
         playLyrics(mSongModel);
+
+
     }
 
-    private void showVoicePanelView(boolean show){
+    private void showVoicePanelView(boolean show) {
         mVoiceControlPanelView.clearAnimation();
         mVoiceControlPanelView.setTranslationY(show ? mVoiceControlPanelView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0);
 
@@ -125,7 +137,7 @@ public class AuditionFragment extends BaseFragment {
         creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mVoiceControlPanelView.setTranslationY((int)animation.getAnimatedValue());
+                mVoiceControlPanelView.setTranslationY((int) animation.getAnimatedValue());
             }
         });
 
@@ -191,6 +203,48 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LrcEvent.RestartLrcEvent restartLrcEvent) {
         playLyrics(mSongModel);
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip("是否将这次调音设置应用到所有游戏对局中？")
+                .setConfirmTip("保存")
+                .setCancelTip("取消")
+                .build();
+
+        DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view instanceof ExTextView) {
+                            if (view.getId() == R.id.confirm_tv) {
+                                dialog.dismiss();
+                                U.getFragmentUtils().popFragment(AuditionFragment.this);
+                                // 要保存
+                                Params.save2Pref(EngineManager.getInstance().getParams());
+                            }
+
+                            if (view.getId() == R.id.cancel_tv) {
+                                dialog.dismiss();
+                                U.getFragmentUtils().popFragment(AuditionFragment.this);
+                            }
+                        }
+                    }
+                })
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+
+                    }
+                })
+                .create().show();
+        return true;
     }
 
     @Override
