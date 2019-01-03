@@ -149,8 +149,8 @@ public class EditInfoSexFragment extends BaseFragment {
         } else {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                     .setMessageTip("确定修改性别？\n 性别只能修改一次哦～")
-                    .setConfirmTip("取消")
-                    .setCancelTip("确认修改")
+                    .setConfirmTip("确认修改")
+                    .setCancelTip("取消")
                     .build();
 
             DialogPlus.newDialog(getContext())
