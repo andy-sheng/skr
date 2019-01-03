@@ -182,8 +182,8 @@ public class HomeCorePresenter {
     public void onEvent(AccountEvent.LogoffAccountEvent event) {
         if (event.reason == AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED) {
             MyLog.w(TAG, "LogoffAccountEvent" + " 账号已经过期，需要重新登录,跳到登录页面");
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
         }
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
     }
 
 }
