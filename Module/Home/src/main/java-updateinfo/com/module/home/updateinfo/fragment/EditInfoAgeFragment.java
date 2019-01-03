@@ -85,6 +85,9 @@ public class EditInfoAgeFragment extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
+            mTitlebar.getLeftTextView().setVisibility(View.GONE);
+            mTitlebar.getLeftTextView().setClickable(false);
+
             mTitlebar.getRightTextView().setText("3/3");
             mTitlebar.getCenterTextView().setText("完善个人信息");
             mTitlebar.getRightTextView().setTextSize(16);
