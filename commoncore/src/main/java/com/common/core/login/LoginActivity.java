@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
+import com.common.core.account.UserAccountManager;
 import com.common.core.login.fragment.LoginByPhoneFragment;
 import com.common.core.login.fragment.LoginFragment;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -53,38 +54,32 @@ public class LoginActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent setAccountEvent) {
         //登陆成功
-        U.getToastUtil().showShort("登录成功");
-        // 昵称不能为空
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName()) || TextUtils.isEmpty(MyUserInfoManager.getInstance().getAvatar())) {
-            // 无头像，昵称，性别和生日都进到指定页面
-            ARouter.getInstance()
-                    .build(ACTIVITY_UPLOAD)
-                    .withInt("jump_to_foot", 1)
-                    .navigation();
-        } else if (MyUserInfoManager.getInstance().getSex() == 0) {
-            // 无性别，进到指定页面
-            ARouter.getInstance()
-                    .build(ACTIVITY_UPLOAD)
-                    .withInt("jump_to_foot", 2)
-                    .navigation();
-        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-            // 无生日，进到指定页面
-            ARouter.getInstance()
-                    .build(ACTIVITY_UPLOAD)
-                    .withInt("jump_to_foot", 3)
-                    .navigation();
-        } else {
-            Bundle bundle = getIntent().getExtras();
-            if (bundle != null) {
-                String path = bundle.getString(KEY_ORIGIN_PATH);
-                if (!TextUtils.isEmpty(path)) {
-                    // 跳转到原页面，并带上参数
-                    ARouter.getInstance().build(path).with(bundle).navigation();
+        if (UserAccountManager.getInstance().hasAccount()) {
+            U.getToastUtil().showShort("登录成功");
+            // 昵称不能为空
+            if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+                MyLog.d(TAG, "onEvent 用户昵称为空");
+                // 无头像或昵称
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    // 跳转到上传资料页面
+                    ARouter.getInstance()
+                            .build(ACTIVITY_UPLOAD)
+                            .with(bundle)
+                            .navigation();
+                }
+            } else {
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    String path = bundle.getString(KEY_ORIGIN_PATH);
+                    if (!TextUtils.isEmpty(path)) {
+                        // 跳转到原页面，并带上参数
+                        ARouter.getInstance().build(path).with(bundle).navigation();
+                    }
                 }
             }
+            finish();
         }
-
-        finish();
     }
 
 

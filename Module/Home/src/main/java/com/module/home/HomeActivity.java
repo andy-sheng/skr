@@ -10,7 +10,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
-
 import com.common.log.MyLog;
 import com.common.view.ex.ExImageView;
 
@@ -92,10 +91,7 @@ public class HomeActivity extends BaseActivity {
 
         mHomePresenter = new HomeCorePresenter();
 
-        if (!UserAccountManager.getInstance().hasAccount()) {
-            // 到时会有广告页或者启动页挡一下的，先不用管
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
-        }
+        mHomePresenter.checkUserInfo();
 
         RxView.clicks(mGameBtn)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)

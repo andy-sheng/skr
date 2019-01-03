@@ -79,7 +79,7 @@ public class Params implements Serializable {
     private int bandGain = 0;// 子带增益
 
     private boolean mixMusicPlaying = false; // 混音在播放中
-    private int audioMixingVolume = 100; // 混音音量 0-100，默认是100
+    private int audioMixingVolume = 80; // 混音音量 0-100，默认是100
     private boolean enableInEarMonitoring = false;// 耳返
     private int earMonitoringVolume = 100; // 耳返音量
     private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流

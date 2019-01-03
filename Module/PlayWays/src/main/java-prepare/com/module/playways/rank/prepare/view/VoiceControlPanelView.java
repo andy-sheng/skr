@@ -24,7 +24,6 @@ public class VoiceControlPanelView extends ScrollView {
     SeekBar mMusicVoiceSeekbar;
     RadioGroup mScenesBtnGroup;
 
-
     public VoiceControlPanelView(Context context) {
         super(context);
         init();

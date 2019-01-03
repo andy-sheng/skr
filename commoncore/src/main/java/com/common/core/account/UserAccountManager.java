@@ -2,16 +2,13 @@ package com.common.core.account;
 
 
 import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.log.MyLog;
 import com.common.log.screenlog.ScreenLogView;
 import com.common.rxretrofit.ApiManager;
@@ -24,17 +21,11 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 
 /**
@@ -46,6 +37,8 @@ public class UserAccountManager {
     private static final String TAG = UserAccountManager.class.getSimpleName();
 
     private UserAccount mAccount;
+
+    private boolean mHasloadAccountFromDB = false;//有没有尝试load过账号
 
     private static class UserAccountManagerHolder {
         private static final UserAccountManager INSTANCE = new UserAccountManager();
@@ -81,6 +74,7 @@ public class UserAccountManager {
 
     private void setAccount(UserAccount account) {
         mAccount = account;
+        mHasloadAccountFromDB = true;
         if (account != null) {
             MyLog.d(TAG, "setAccount" + " accountId=" + account.getUid());
             // 取消匿名模式
@@ -94,17 +88,22 @@ public class UserAccountManager {
             // 与融云服务器建立连接
             connectRongIM(account.getRongToken());
 
-            EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
-            ScreenLogView.addInfo("用户id",account.getUid());
+            ScreenLogView.addInfo("用户id", account.getUid());
         } else {
 
         }
+        EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
         // 只有非游客模式才发已有账号的事件
     }
 
     public void setAnonymousId(long anonymousId) {
 
     }
+
+    public boolean hasLoadAccountFromDB() {
+        return mHasloadAccountFromDB;
+    }
+
 
     public boolean hasAccount() {
         if (mAccount == null) {
