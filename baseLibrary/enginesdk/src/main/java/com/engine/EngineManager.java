@@ -22,6 +22,8 @@ import com.engine.agora.effect.EffectModel;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -774,5 +776,36 @@ public class EngineManager implements AgoraOutCallback {
         AgoraEngineAdapter.getInstance().setAudioMixingPosition(posMs);
     }
 
+    /**
+     * 开始客户端录音。
+     *
+     * Agora SDK 支持通话过程中在客户端进行录音。该方法录制频道内所有用户的音频，并生成一个包含所有用户声音的录音文件，录音文件格式可以为：
+     *
+     * .wav：文件大，音质保真度高
+     * .aac：文件小，有一定的音质保真度损失
+     * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
+     */
+    public void startAudioRecording(String saveAudioForAiFilePath, int audioRecordingQualityHigh) {
+        File file = new File(saveAudioForAiFilePath);
+        if(!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
+        if(file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+            }
+        }
+        AgoraEngineAdapter.getInstance().startAudioRecording(saveAudioForAiFilePath,audioRecordingQualityHigh);
+    }
+
+    /**
+     * 停止客户端录音。
+     *
+     * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
+     */
+    public void stopAudioRecording() {
+        AgoraEngineAdapter.getInstance().stopAudioRecording();
+    }
     /*音频高级扩展结束*/
 }

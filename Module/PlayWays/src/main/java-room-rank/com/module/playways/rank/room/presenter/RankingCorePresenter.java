@@ -11,10 +11,13 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
+import com.component.busilib.SkrConfig;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
@@ -45,6 +48,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import io.agora.rtc.Constants;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import okhttp3.MediaType;
@@ -451,6 +455,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                     mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
                                     mIGameRuleView.showLastedTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
                                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
+
+                                    //开始录制声音
+                                    if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+                                        // 需要上传音频伪装成机器人
+                                        EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                                    }
                                 }
                             }
                         }
@@ -462,7 +472,21 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             MyLog.w(TAG, "不是我的轮次，停止发心跳，停止混音，闭麦");
+
             cancelHeartBeatTask("切换唱将");
+
+            if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+                //属于需要上传音频文件的状态
+                if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
+                    // 上一轮是我的轮次，暂停录音
+                    EngineManager.getInstance().stopAudioRecording();
+                    boolean scoreEnough = true; // 分数满足
+                    if (scoreEnough) {
+                        uploadResForAi(event.getLastRoundInfoModel());
+                    }
+                }
+            }
+
             EngineManager.getInstance().stopAudioMixing();
             EngineManager.getInstance().muteLocalAudioStream(true);
             // 收到其他的人onMute消息 开始播放其他人的歌的歌词，应该提前下载好
@@ -506,9 +530,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    private void checkMachineUser(long uid){
+    private void checkMachineUser(long uid) {
         PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
-        if(playerInfo == null){
+        if (playerInfo == null) {
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
             return;
         }
@@ -516,37 +540,37 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         /**
          * 机器人
          */
-        if(playerInfo.isSkrer()){
+        if (playerInfo.isSkrer()) {
             MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
             //因为机器人没有逃跑，所以不需要加保护。这里的4000不写死，第一个人应该是7000
             long delayTime = 4000l;
             HandlerTaskTimer.newBuilder()
                     .delay(delayTime)
                     .start(new HandlerTaskTimer.ObserverW() {
-                @Override
-                public void onNext(Integer integer) {
-                    String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
-                    // TODO: 2019/1/2 得分文件需要现下载
-                    String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
-                    // TODO: 2019/1/2 ExoPlayer播放音频文件
-                    //ExoPlayer.play
-                    //直接播放歌词
-                    mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), true);
-                }
-            });
+                        @Override
+                        public void onNext(Integer integer) {
+                            String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
+                            // TODO: 2019/1/2 得分文件需要现下载
+                            String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
+                            // TODO: 2019/1/2 ExoPlayer播放音频文件
+                            //ExoPlayer.play
+                            //直接播放歌词
+                            mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), true);
+                        }
+                    });
 
             HandlerTaskTimer.newBuilder()
                     .delay(delayTime + RoomDataUtils.getSongDuration(mRoomData.getRealRoundInfo()))
                     .start(new HandlerTaskTimer.ObserverW() {
-                @Override
-                public void onNext(Integer integer) {
-                    closeMachinePlayer();
-                }
-            });
+                        @Override
+                        public void onNext(Integer integer) {
+                            closeMachinePlayer();
+                        }
+                    });
         }
     }
 
-    private void closeMachinePlayer(){
+    private void closeMachinePlayer() {
         // TODO: 2019/1/2 关闭播放器
         MyLog.d(TAG, "closeMachinePlayer");
     }
@@ -578,6 +602,71 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             mRoomData.setExpectRoundInfo(null);
             mRoomData.checkRound();
         }
+    }
+
+    private void uploadResForAi(RoundInfoModel roundInfoModel) {
+        //上传音频文件
+        UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
+                .setFileType(UploadParams.FileType.audioAi)
+                .startUploadAsync(new UploadCallback() {
+                    @Override
+                    public void onProgress(long currentSize, long totalSize) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String url) {
+                        sendUploadRequest(roundInfoModel, url, "");
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+
+                    }
+                });
+    }
+
+
+    /**
+     * 上传机器人资源相关文件到服务器
+     * @param roundInfoModel
+     * @param audioUrl
+     * @param midiUrl
+     */
+    private void sendUploadRequest(RoundInfoModel roundInfoModel, String audioUrl, String midiUrl) {
+        long timeMs = System.currentTimeMillis();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("itemID", roundInfoModel.getPlaybookID());
+        map.put("sysScore", roundInfoModel.getSysScore());
+        map.put("audioURL", audioUrl);
+        map.put("midiURL", midiUrl);
+        map.put("timeMs", timeMs);
+        StringBuilder sb = new StringBuilder();
+        sb.append("skrer").append(mRoomData.getGameId())
+                .append(roundInfoModel.getPlaybookID())
+                .append(roundInfoModel.getSysScore())
+                .append(audioUrl)
+                .append(midiUrl)
+                .append(timeMs);
+        String sign = U.getMD5Utils().MD5_32(sb.toString());
+        map.put("sign", sign);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.putGameResource(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    MyLog.e(TAG, "sendAiUploadRequest success");
+                } else {
+                    MyLog.e(TAG, "sendAiUploadRequest failed， errno is " + result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, "sendUploadRequest error " + e);
+            }
+        }, this);
     }
 
     private int estimateOverTsThisRound() {

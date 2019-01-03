@@ -7,6 +7,8 @@ public class UploadParams {
 
     private boolean needCompress = false;
 
+    private FileType fileType = FileType.normal;
+
     UploadParams() {
     }
 
@@ -38,8 +40,29 @@ public class UploadParams {
         this.fileName = fileName;
     }
 
+    public void setFileType(FileType fileType) {
+        this.fileType = fileType;
+    }
+
+    public FileType getFileType() {
+        return fileType;
+    }
+
     public static Builder newBuilder(String filePath) {
         return new Builder().setFilePath(filePath);
+    }
+
+    public enum FileType{
+        normal(""),audioAi("audios/"),midiAi("midis/");
+
+        private String ossSavaDir;
+        FileType(String d) {
+            ossSavaDir = d;
+        }
+
+        public String getOssSavaDir() {
+            return ossSavaDir;
+        }
     }
 
     public static class Builder {
@@ -64,6 +87,11 @@ public class UploadParams {
             return this;
         }
 
+        public Builder setFileType(FileType fileType) {
+            this.mParams.setFileType(fileType);
+            return this;
+        }
+
         public UploadParams build() {
             return mParams;
         }
@@ -72,5 +100,6 @@ public class UploadParams {
             UploadTask uploadTask = new UploadTask(mParams);
             return uploadTask.startUpload(uploadCallback);
         }
+
     }
 }

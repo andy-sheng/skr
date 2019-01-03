@@ -18,6 +18,7 @@ public class RoomData {
 
     public final static String READY_GO_WEBP_URL = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/ready_go4.webp";
     public final static String ROOM_VOICE_SVGA = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/room_voice1.svga";
+    public static final String AUDIO_FOR_AI_PATH = "audioforai.wav";
 
     private int mGameType; // 游戏类型
 
@@ -67,21 +68,22 @@ public class RoomData {
         if (mExpectRoundInfo == null) {
             // 结束状态了
             if (mRealRoundInfo != null) {
+                RoundInfoModel lastRoundInfoModel = mRealRoundInfo;
                 mRealRoundInfo = null;
-                EventBus.getDefault().post(new RoundInfoChangeEvent(false));
+                EventBus.getDefault().post(new RoundInfoChangeEvent(false,lastRoundInfoModel));
             }
             return;
         }
         if (!RoomDataUtils.roundInfoEqual(mExpectRoundInfo, mRealRoundInfo)) {
             // 轮次需要更新了
-            RoundInfoModel oldRoundInfo = mRealRoundInfo;
+            RoundInfoModel lastRoundInfoModel = mRealRoundInfo;
             mRealRoundInfo = mExpectRoundInfo;
             if (mRealRoundInfo.getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
                 // 轮到自己唱了。开始发心跳，开始倒计时，3秒后 开始开始混伴奏，开始解除引擎mute，
-                EventBus.getDefault().post(new RoundInfoChangeEvent(true));
+                EventBus.getDefault().post(new RoundInfoChangeEvent(true,lastRoundInfoModel));
             } else {
                 // 别人唱，本人的引擎mute，取消本人心跳。监听他人的引擎是否 unmute,开始混制歌词
-                EventBus.getDefault().post(new RoundInfoChangeEvent(false));
+                EventBus.getDefault().post(new RoundInfoChangeEvent(false,lastRoundInfoModel));
             }
         }
     }

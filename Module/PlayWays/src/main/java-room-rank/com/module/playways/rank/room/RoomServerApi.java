@@ -100,4 +100,25 @@ public interface RoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/game/vote")
     Observable<ApiResult> getVoteResult(@Query("gameID") int gameID);
 
+
+    /**
+     * 上传机器人ai需要的相关音频资源
+     *
+     * {
+     * 	"gameID" : 20001505,
+     * 	"itemID" : 11,
+     * 	"sysScore" : 99,
+     * 	"audioURL" : "http://xxxxxx.com",
+     * 	"midiURL" : "http://yyyy.com",
+     * 	"timeMs" : 1545312998095,
+     * 	"sign" : "8b700ccc3c236d46b97d364c60febda9"
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/resource")
+    Observable<ApiResult> putGameResource(@Body RequestBody body);
+
+
 }

@@ -22,6 +22,7 @@ public class RoundInfoModel implements Serializable {
 
     private long startTs;// 开始时间，服务器的
     private long endTs;// 结束时间，服务器的
+    private int sysScore = 60;//本轮系统打分，先搞个默认60分
 
     public int getUserID() {
         return userID;
@@ -79,6 +80,14 @@ public class RoundInfoModel implements Serializable {
         this.endTs = endTs;
     }
 
+    public int getSysScore() {
+        return sysScore;
+    }
+
+    public void setSysScore(int sysScore) {
+        this.sysScore = sysScore;
+    }
+
     public void parse(RoundInfo roundInfo) {
         if (roundInfo == null) {
             MyLog.e("JsonRoundInfo RoundInfo == null");
@@ -122,6 +131,9 @@ public class RoundInfoModel implements Serializable {
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +
                 ", endTs=" + endTs +
+                ", sysScore=" + sysScore +
                 '}';
     }
+
+
 }

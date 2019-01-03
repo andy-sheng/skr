@@ -2,6 +2,7 @@ package com.module.playways.rank.room.model;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
@@ -126,7 +127,7 @@ public class RoomDataUtils {
                     return infoModel.getSongList().get(0);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             MyLog.e(e);
         }
 
@@ -154,7 +155,7 @@ public class RoomDataUtils {
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 
-    public static PlayerInfoModel getPlayerInfoById(RoomData roomData, long uid){
+    public static PlayerInfoModel getPlayerInfoById(RoomData roomData, long uid) {
         for (PlayerInfoModel playerInfo :
                 roomData.getPlayerInfoList()) {
             if (playerInfo.getUserInfo().getUserId() == uid) {
@@ -169,11 +170,16 @@ public class RoomDataUtils {
      * @param roundInfoModel
      * @return
      */
-    public static long getSongDuration(RoundInfoModel roundInfoModel){
-        if(roundInfoModel == null){
+    public static long getSongDuration(RoundInfoModel roundInfoModel) {
+        if (roundInfoModel == null) {
             return 0;
         }
 
         return roundInfoModel.getSingEndMs() - roundInfoModel.getSingBeginMs();
+    }
+
+    public static String getSaveAudioForAiFilePath() {
+        String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", RoomData.AUDIO_FOR_AI_PATH);
+        return saveAudioForAiFilePath;
     }
 }
