@@ -585,6 +585,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         mRoomData.setIsGameFinish(true);
         cancelHeartBeatTask("gameIsFinish");
         cancelSyncGameStateTask();
+        // 游戏结束，直接关闭引擎，节省计费
+        EngineManager.getInstance().destroy("rankingroom");
 
         if (!isConfirmRoundAndGameOver) {
             mGetVoteStateTask = HandlerTaskTimer.newBuilder()
