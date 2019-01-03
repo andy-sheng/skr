@@ -313,6 +313,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                 return;
             }
         }
+        /**
+         * 这里有个问题，就是如果是首页Activity 的Fragment 很可能走不到 super.onBackPressed() 因为被拦截了
+         * 所以首页 onBackPressedForActivity 自己特殊处理下
+         */
         if(onBackPressedForActivity()){
             // activity也消费掉了
             return;

@@ -173,7 +173,11 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public boolean onBackPressedForActivity() {
-        moveTaskToBack(true);
-        return true;
+        if(getSupportFragmentManager().getBackStackEntryCount()==0) {
+            moveTaskToBack(true);
+            return true;
+        }else{
+            return false;
+        }
     }
 }
