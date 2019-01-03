@@ -457,7 +457,7 @@ public class ManyLyricsView extends AbstractLrcView {
                 alpha = mMaxAlpha - (int) ((lineBottomY - (getHeight() - mShadeHeight)) * (mMaxAlpha - mMinAlpha) / mShadeHeight);
             }
 
-            MyLog.v(TAG, "alpha " + alpha);
+//            MyLog.v(TAG, "alpha " + alpha);
 //            alpha = (int) (Math.max(alpha, 0) * 0.8f);
             paint.setAlpha(alpha);
             paintHL.setAlpha(alpha);
@@ -478,7 +478,7 @@ public class ManyLyricsView extends AbstractLrcView {
                 long currentLineSpendTime = getCurPlayingTime() + getPlayerSpendTime() - (long) splitLyricsLineInfos.get(i).getStartTime();
                 //根据时间算出渐变文字大小
                 float drawHLTextPaintSize = LyricsUtils.getDrawDynamicTextPaintSize(currentLineSpendTime, paint.getTextSize(), paintHL.getTextSize());
-                MyLog.v("ManyLyricsView", "drawHLTextPaintSize " + drawHLTextPaintSize + " currentLineSpendTime " + currentLineSpendTime + ", paint.getTextSize" + paint.getTextSize() + ", paintHL text size " + paintHL.getTextSize());
+//                MyLog.v("ManyLyricsView", "drawHLTextPaintSize " + drawHLTextPaintSize + " currentLineSpendTime " + currentLineSpendTime + ", paint.getTextSize" + paint.getTextSize() + ", paintHL text size " + paintHL.getTextSize());
                 //先把原始的拿出来
                 float paintOriginalTextSize = paint.getTextSize();
                 float paintHLOriginalTextSize = paintHL.getTextSize();
