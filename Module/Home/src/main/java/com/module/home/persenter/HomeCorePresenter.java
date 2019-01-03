@@ -3,12 +3,14 @@ package com.module.home.persenter;
 import android.app.Activity;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.NetworkUtils;
@@ -177,6 +179,16 @@ public class HomeCorePresenter {
                 .create().show();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AccountEvent.SetAccountEvent event) {
+        // 账号已经设定
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
+                || MyUserInfoManager.getInstance().getSex() == 0
+                || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
+                    .greenChannel().navigation();
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.LogoffAccountEvent event) {
