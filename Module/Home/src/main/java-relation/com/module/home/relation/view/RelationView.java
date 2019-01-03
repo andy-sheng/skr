@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoModel;
 import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.home.R;
@@ -30,6 +31,8 @@ import static com.common.core.userinfo.event.RelationChangeEvent.UNFOLLOW_TYPE;
 
 public class RelationView extends RelativeLayout {
 
+    public final static String TAG = "RelationView";
+
     private int mMode = UserInfoManager.RELATION_FRIENDS;
     private int mOffset = 0; // 偏移量
     private int DEFAULT_COUNT = 30; // 每次拉去最大值
@@ -47,6 +50,10 @@ public class RelationView extends RelativeLayout {
     private void init(Context context, int mode) {
         inflate(context, R.layout.relation_view, this);
         this.mMode = mode;
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view);
         mRefreshLayout = (SmartRefreshLayout) this.findViewById(R.id.refreshLayout);
@@ -113,17 +120,7 @@ public class RelationView extends RelativeLayout {
         });
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    public void destroy() {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -131,87 +128,96 @@ public class RelationView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
-        if (event.type == FOLLOW_TYPE) {
-            // 粉丝,好友和关注都有影响
-            if (event.isFriend) {
-                // 变成好友
-                if (mMode == UserInfoManager.RELATION_FRIENDS) {
-                    // 必定未包含，新增好友
-                    event.userInfoModel.setFriend(true);
-                    mRelationAdapter.getData().add(0, event.userInfoModel);
-                    mRelationAdapter.notifyDataSetChanged();
-                } else if (mMode == UserInfoManager.RELATION_FANS) {
-                    // 必定已包含，更新视图
-                    mRelationAdapter.getData().remove(event.userInfoModel);
+        MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend + " old = " + event.userInfoModel.isFriend());
+        UserInfoModel userInfoModel = null;
+        try {
+            userInfoModel = (UserInfoModel) event.userInfoModel.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
 
-                    event.userInfoModel.setFriend(true);
-                    mRelationAdapter.getData().add(0, event.userInfoModel);
-                    mRelationAdapter.notifyDataSetChanged();
-                } else if (mMode == UserInfoManager.RELATION_FOLLOW) {
-                    // 必定未包含，新增关注
-                    event.userInfoModel.setFriend(true);
-                    mRelationAdapter.getData().add(0, event.userInfoModel);
+        if (mMode == UserInfoManager.RELATION_FRIENDS) {
+            if (event.type == FOLLOW_TYPE) {
+                if (event.isFriend) {
+                    userInfoModel.setFriend(true);
+                    mRelationAdapter.getData().add(0, userInfoModel);
                     mRelationAdapter.notifyDataSetChanged();
                 }
-            } else {
-                // 只有关注关系
-                if (mMode == UserInfoManager.RELATION_FRIENDS) {
-                    if (event.userInfoModel.isFriend()) {
-                        // 之前是好友，删除视图
-                        mRelationAdapter.getData().remove(event.userInfoModel);
-                        mRelationAdapter.notifyDataSetChanged();
-                    } else {
-                        // 之前非好友，donothing
+            } else if (event.type == UNFOLLOW_TYPE) {
+                if (event.userInfoModel.isFriend()) {
+                    UserInfoModel delModel = null;
+                    for (UserInfoModel model : mRelationAdapter.getData()) {
+                        if (model.getUserId() == event.userInfoModel.getUserId()) {
+                            delModel = model;
+                            break;
+                        }
                     }
-                } else if (mMode == UserInfoManager.RELATION_FANS) {
-                    if (event.userInfoModel.isFriend()) {
-                        // 之前是好友，更新视图
-                        mRelationAdapter.getData().remove(event.userInfoModel);
-
-                        event.userInfoModel.setFriend(false);
-                        mRelationAdapter.getData().add(0, event.userInfoModel);
-                        mRelationAdapter.notifyDataSetChanged();
-                    } else {
-                        // 之前非好友，donothing
-                    }
-                } else if (mMode == UserInfoManager.RELATION_FOLLOW) {
-                    if (event.userInfoModel.isFriend()) {
-                        // 之前是好友，更新视图
-                        mRelationAdapter.getData().remove(event.userInfoModel);
-
-                        event.userInfoModel.setFriend(false);
-                        mRelationAdapter.getData().add(0, event.userInfoModel);
-                        mRelationAdapter.notifyDataSetChanged();
-                    } else {
-                        // 之前非好友，新增关注
-                        event.userInfoModel.setFriend(false);
-                        mRelationAdapter.getData().add(0, event.userInfoModel);
+                    if (delModel != null) {
+                        mRelationAdapter.getData().remove(delModel);
                         mRelationAdapter.notifyDataSetChanged();
                     }
                 }
             }
-        } else if (event.type == UNFOLLOW_TYPE) {
-            // 取消关注
-            if (mMode == UserInfoManager.RELATION_FRIENDS) {
-                // 删除视图
-                mRelationAdapter.getData().remove(event.userInfoModel);
-                mRelationAdapter.notifyDataSetChanged();
-            } else if (mMode == UserInfoManager.RELATION_FANS) {
-                if (event.userInfoModel.isFriend()) {
-                    // 之前是好友，从互关变为未关注
-                    mRelationAdapter.getData().remove(event.userInfoModel);
+        } else if (mMode == UserInfoManager.RELATION_FANS) {
+            if (event.type == FOLLOW_TYPE) {
+                if (event.isFriend) {
+                    UserInfoModel delModel = null;
+                    for (UserInfoModel model : mRelationAdapter.getData()) {
+                        if (model.getUserId() == event.userInfoModel.getUserId()) {
+                            delModel = model;
+                            break;
+                        }
+                    }
+                    if (delModel != null) {
+                        mRelationAdapter.getData().remove(delModel);
+                    }
 
-                    event.userInfoModel.setFriend(false);
-                    mRelationAdapter.getData().add(0, event.userInfoModel);
+                    userInfoModel.setFriend(true);
+                    mRelationAdapter.getData().add(0, userInfoModel);
+                    mRelationAdapter.notifyDataSetChanged();
+                }
+            } else if (event.type == UNFOLLOW_TYPE) {
+                // 粉丝页面收到取关
+                if (event.userInfoModel.isFriend()) {
+                    UserInfoModel delModel = null;
+                    for (UserInfoModel model : mRelationAdapter.getData()) {
+                        if (model.getUserId() == event.userInfoModel.getUserId()) {
+                            delModel = model;
+                            break;
+                        }
+                    }
+                    if (delModel != null) {
+                        mRelationAdapter.getData().remove(delModel);
+                    }
+
+                    userInfoModel.setFriend(false);
+                    mRelationAdapter.getData().add(0, userInfoModel);
+                    mRelationAdapter.notifyDataSetChanged();
+                }
+            }
+        } else if (mMode == UserInfoManager.RELATION_FOLLOW) {
+            if (event.type == FOLLOW_TYPE) {
+                if (event.isFriend) {
+                    userInfoModel.setFriend(true);
+                    mRelationAdapter.getData().add(0, userInfoModel);
                     mRelationAdapter.notifyDataSetChanged();
                 } else {
-                    // 之前非好友，无影响
+                    userInfoModel.setFriend(false);
+                    mRelationAdapter.getData().add(0, userInfoModel);
+                    mRelationAdapter.notifyDataSetChanged();
                 }
-            } else if (mMode == UserInfoManager.RELATION_FOLLOW) {
-                // 之前非好友，删除该视图
-                // 之前是好友，删除该视图
-                mRelationAdapter.getData().remove(event.userInfoModel);
-                mRelationAdapter.notifyDataSetChanged();
+            } else if (event.type == UNFOLLOW_TYPE) {
+                UserInfoModel delModel = null;
+                for (UserInfoModel model : mRelationAdapter.getData()) {
+                    if (model.getUserId() == event.userInfoModel.getUserId()) {
+                        delModel = model;
+                        break;
+                    }
+                }
+                if (delModel != null) {
+                    mRelationAdapter.getData().remove(delModel);
+                    mRelationAdapter.notifyDataSetChanged();
+                }
 
             }
         }

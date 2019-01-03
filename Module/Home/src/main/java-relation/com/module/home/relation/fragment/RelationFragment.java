@@ -42,7 +42,7 @@ public class RelationFragment extends BaseFragment {
     PagerAdapter mTabPagerAdapter;
 
     List<String> mTabTitleList = new ArrayList<>();
-    HashMap<String, View> mTitleAndViewMap = new HashMap<>();
+    HashMap<String, RelationView> mTitleAndViewMap = new HashMap<>();
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
@@ -126,5 +126,15 @@ public class RelationFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mTitleAndViewMap != null) {
+            for (RelationView view : mTitleAndViewMap.values()) {
+                view.destroy();
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ import com.common.core.myinfo.Location;
 import java.io.Serializable;
 
 // TODO: 2019/1/2 该类会作为json来解析，不要改变量名 
-public class UserInfoModel implements Serializable {
+public class UserInfoModel implements Serializable, Cloneable {
 
     /**
      * userID : 11
@@ -110,6 +110,17 @@ public class UserInfoModel implements Serializable {
 
     public void setFriend(boolean friend) {
         isFriend = friend;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        UserInfoModel userInfoModel = null;
+        try {
+            userInfoModel = (UserInfoModel) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return userInfoModel;
     }
 
     public static UserInfoDB toUserInfoDB(UserInfoModel userInfModel) {

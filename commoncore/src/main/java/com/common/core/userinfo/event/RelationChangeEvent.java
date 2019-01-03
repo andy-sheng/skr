@@ -2,7 +2,7 @@ package com.common.core.userinfo.event;
 
 import com.common.core.userinfo.UserInfoModel;
 
-// 关系改变的event
+// 关系改变的event 都是我主动发起的事件
 public class RelationChangeEvent {
 
     public static final int FOLLOW_TYPE = 1;
