@@ -32,6 +32,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.imagepicker.ImagePicker;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -195,6 +196,27 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mDownLoadScoreFilePresenter.prepareRes();
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
+    }
+
+    /**
+     * 可以在此恢复数据
+     *
+     * @param savedInstanceState
+     */
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        mRoomData = (RoomData) savedInstanceState.getSerializable("roomData");
+    }
+
+    /**
+     * 当系统认为你的fragment存在被销毁的可能时，onSaveInstanceState 就会被调用
+     * 不包括用户主动退出fragment导致其被销毁，比如按BACK键后fragment被主动销毁
+     *
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("roomData", mRoomData);
     }
 
     public void playShowTurnCardAnimator(Runnable countDownRunnable) {
@@ -719,7 +741,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.initLrcData();
                 lyricsReader.cut(mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs());
                 mManyLyricsView.setLyricsReader(lyricsReader);
-                if(!play){
+                if (!play) {
                     mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
                     mManyLyricsView.pause();
                 }
@@ -732,9 +754,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.resetData();
                 mFloatLyricsView.setVisibility(View.VISIBLE);
                 mFloatLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getBeginMs(),mPlayingSongModel.getEndMs());
+                lyricsReader.cut(mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs());
                 mFloatLyricsView.setLyricsReader(lyricsReader);
-                if(!play){
+                if (!play) {
                     mFloatLyricsView.seekto(mPlayingSongModel.getBeginMs());
                     mFloatLyricsView.pause();
                 }

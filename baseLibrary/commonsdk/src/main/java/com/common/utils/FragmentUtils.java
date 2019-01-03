@@ -524,6 +524,12 @@ public class FragmentUtils {
                 return this;
             }
 
+            /**
+             * 注意这里数据只会在自己进程中，当
+             * @param dataType
+             * @param dataBeforeAdd
+             * @return
+             */
             public Builder addDataBeforeAdd(int dataType, Object dataBeforeAdd) {
                 mParams.addDataBeforeAdd(dataType, dataBeforeAdd);
                 return this;

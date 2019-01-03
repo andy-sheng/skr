@@ -11,9 +11,10 @@ import com.module.playways.rank.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RoomData {
+public class RoomData implements Serializable {
     public final static String TAG = "RoomData";
 
     public final static String READY_GO_WEBP_URL = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/ready_go4.webp";
