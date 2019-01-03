@@ -95,7 +95,7 @@ public class UserAccountManager {
             connectRongIM(account.getRongToken());
 
             EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
-            ScreenLogView.addInfo("用户id:"+account.getUid());
+            ScreenLogView.addInfo("用户id",account.getUid());
         } else {
 
         }

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
@@ -34,10 +35,10 @@ import okio.Sink;
 
 public class ScreenLogView extends RelativeLayout {
 
-    static String sUpInfo = "信息";
+    static HashMap<String, String> sUpInfoMap = new HashMap<>();
 
-    public static void addInfo(String info) {
-        sUpInfo += info;
+    public static void addInfo(String key, String info) {
+        sUpInfoMap.put(key, info);
     }
 
     ScrollView mScrollview;
@@ -86,7 +87,12 @@ public class ScreenLogView extends RelativeLayout {
         mSaveBtn = (ExTextView) this.findViewById(R.id.save_btn);
         mSelectColorBtn = (ExTextView) this.findViewById(R.id.select_color_btn);
         mUserInfoTv = (ExTextView) this.findViewById(R.id.user_info_tv);
-        mUserInfoTv.setText(sUpInfo);
+        StringBuilder sb = new StringBuilder();
+        for (String key : sUpInfoMap.keySet()) {
+            String value = sUpInfoMap.get(key);
+            sb.append(key).append(":").append(value).append("\n");
+        }
+        mUserInfoTv.setText(sb.toString());
 
         mCloseTv.setOnClickListener(new OnClickListener() {
             @Override

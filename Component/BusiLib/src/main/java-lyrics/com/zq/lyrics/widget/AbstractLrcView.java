@@ -1220,7 +1220,7 @@ public abstract class AbstractLrcView extends View {
             //获取分割后的歌词字索引
             mSplitLyricsWordIndex = LyricsUtils.getSplitLyricsWordIndex(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
             mLyricsWordHLTime = LyricsUtils.getDisWordsIndexLenTime(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
-            MyLog.v("LyricsView", " mLyricsWordHLTime is " + mLyricsWordHLTime);
+//            MyLog.v("LyricsView", " mLyricsWordHLTime is " + mLyricsWordHLTime);
         } else {
             //lrc歌词
             //获取分割后的索引
