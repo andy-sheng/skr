@@ -7,13 +7,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.core.account.UserAccountManager;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -21,7 +22,6 @@ import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -30,17 +30,17 @@ import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Common.ESex;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
-import static com.module.home.updateinfo.UploadAccountInfoActivity.UPLOAD_ACCOUNT_NICKNAME;
-import static com.module.home.updateinfo.UploadAccountInfoActivity.UPLOAD_ACCOUNT_SEX;
-
 //编辑性别
 public class EditInfoSexFragment extends BaseFragment {
 
-    String nickname; // 从完善个人信息进来记录名字
+    boolean isUpload = false; //当前是否是完善个人资料
 
     CommonTitleBar mTitlebar;
     ExImageView mMale;
@@ -120,7 +120,8 @@ public class EditInfoSexFragment extends BaseFragment {
             mTitlebar.getRightTextView().setClickable(false);
 
             mNextTv.setVisibility(View.VISIBLE);
-            nickname = bundle.getString(UPLOAD_ACCOUNT_NICKNAME);
+
+            isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
         }
     }
 
@@ -130,15 +131,9 @@ public class EditInfoSexFragment extends BaseFragment {
             return;
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putString(UPLOAD_ACCOUNT_NICKNAME, nickname);
-        bundle.putInt(UPLOAD_ACCOUNT_SEX, sex);
-
-        U.getFragmentUtils().addFragment(FragmentUtils
-                .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
-                .setBundle(bundle)
-                .setAddToBackStack(true)
-                .setHasAnimation(true)
+        // 昵称可用
+        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                .setSex(sex)
                 .build());
     }
 
@@ -249,6 +244,20 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        if (MyUserInfoManager.getInstance().getSex() != 0) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+            U.getFragmentUtils().addFragment(FragmentUtils
+                    .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                    .setBundle(bundle)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .build());
+        }
     }
 }

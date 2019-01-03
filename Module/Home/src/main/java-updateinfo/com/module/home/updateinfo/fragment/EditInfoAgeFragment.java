@@ -20,6 +20,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
+import com.module.home.updateinfo.UploadAccountInfoActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -27,14 +28,10 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
-import static com.module.home.updateinfo.UploadAccountInfoActivity.UPLOAD_ACCOUNT_NICKNAME;
-import static com.module.home.updateinfo.UploadAccountInfoActivity.UPLOAD_ACCOUNT_SEX;
 
 public class EditInfoAgeFragment extends BaseFragment {
 
     boolean isUpload = false; //当前是否是完善个人资料
-    String nickname;   // 保存完善个人资料传过来的昵称
-    int sex;    // 保存完善个人资料传过来的性别
 
     CommonTitleBar mTitlebar;
     FrameLayout mFrameLayout;
@@ -95,9 +92,7 @@ public class EditInfoAgeFragment extends BaseFragment {
             mTitlebar.getRightTextView().setClickable(false);
 
             mCompleteTv.setVisibility(View.VISIBLE);
-            isUpload = true;
-            nickname = bundle.getString(UPLOAD_ACCOUNT_NICKNAME);
-            sex = bundle.getInt(UPLOAD_ACCOUNT_SEX);
+            isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
         }
     }
 
@@ -132,8 +127,6 @@ public class EditInfoAgeFragment extends BaseFragment {
                     // 完善个人信息
                     String bir = U.getDateTimeUtils().formatDateString(date);
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                            .setNickName(nickname)
-                            .setSex(sex)
                             .setBirthday(bir)
                             .build());
                     getActivity().finish();

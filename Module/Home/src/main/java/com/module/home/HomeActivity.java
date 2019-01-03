@@ -4,16 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.text.TextUtils;
 import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
-import com.common.core.myinfo.MyUserInfoManager;
+
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
 import com.common.view.viewpager.NestViewPager;
@@ -28,6 +26,7 @@ import com.module.msg.IMsgService;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
+
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity {
@@ -133,9 +132,7 @@ public class HomeActivity extends BaseActivity {
                         mPersonInfoBtn.setSelected(true);
                     }
                 });
-
     }
-
 
 
     @Override
@@ -164,10 +161,10 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public boolean onBackPressedForActivity() {
-        if(getSupportFragmentManager().getBackStackEntryCount()==0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             moveTaskToBack(true);
             return true;
-        }else{
+        } else {
             return false;
         }
     }

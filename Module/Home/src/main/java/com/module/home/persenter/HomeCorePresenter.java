@@ -31,6 +31,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import static com.module.RouterConstants.ACTIVITY_UPLOAD;
+
 public class HomeCorePresenter {
 
     public final static String TAG = "HomePresenter";
@@ -182,11 +184,25 @@ public class HomeCorePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent event) {
         // 账号已经设定
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
-                || MyUserInfoManager.getInstance().getSex() == 0
-                || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
-                    .greenChannel().navigation();
+        MyLog.d(TAG, " AccountEvent " + " event=" + event);
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName()) || TextUtils.isEmpty(MyUserInfoManager.getInstance().getAvatar())) {
+            // 无头像，昵称，性别和生日都进到指定页面
+            ARouter.getInstance()
+                    .build(ACTIVITY_UPLOAD)
+                    .withInt("jump_to_foot", 1)
+                    .navigation();
+        } else if (MyUserInfoManager.getInstance().getSex() == 0) {
+            // 无性别，进到指定页面
+            ARouter.getInstance()
+                    .build(ACTIVITY_UPLOAD)
+                    .withInt("jump_to_foot", 2)
+                    .navigation();
+        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+            // 无生日，进到指定页面
+            ARouter.getInstance()
+                    .build(ACTIVITY_UPLOAD)
+                    .withInt("jump_to_foot", 3)
+                    .navigation();
         }
     }
 

@@ -55,17 +55,24 @@ public class LoginActivity extends BaseActivity {
         //登陆成功
         U.getToastUtil().showShort("登录成功");
         // 昵称不能为空
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
-            MyLog.d(TAG, "onEvent 用户昵称为空");
-            // 无头像或昵称
-            Bundle bundle = getIntent().getExtras();
-            if (bundle != null) {
-                // 跳转到上传资料页面
-                ARouter.getInstance()
-                        .build(ACTIVITY_UPLOAD)
-                        .with(bundle)
-                        .navigation();
-            }
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName()) || TextUtils.isEmpty(MyUserInfoManager.getInstance().getAvatar())) {
+            // 无头像，昵称，性别和生日都进到指定页面
+            ARouter.getInstance()
+                    .build(ACTIVITY_UPLOAD)
+                    .withInt("jump_to_foot", 1)
+                    .navigation();
+        } else if (MyUserInfoManager.getInstance().getSex() == 0) {
+            // 无性别，进到指定页面
+            ARouter.getInstance()
+                    .build(ACTIVITY_UPLOAD)
+                    .withInt("jump_to_foot", 2)
+                    .navigation();
+        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+            // 无生日，进到指定页面
+            ARouter.getInstance()
+                    .build(ACTIVITY_UPLOAD)
+                    .withInt("jump_to_foot", 3)
+                    .navigation();
         } else {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
