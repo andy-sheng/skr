@@ -585,7 +585,7 @@ public class Params implements Serializable {
                     .setEnableVideo(false)
                     .setEnableAudio(true)
                     .setUseCbEngine(false)
-                    .setStyleEnum(AudioEffectStyleEnum.POPULAR)
+                    .setStyleEnum(AudioEffectStyleEnum.ORIGINAL)
                     .build();
         }
     }
