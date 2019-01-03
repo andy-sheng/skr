@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
-import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 
 import io.rong.imkit.R;
@@ -21,7 +20,6 @@ public class ConversationActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation_activity);
-        U.getStatusBarUtil().setTransparentBar(this, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
 
         initData();
     }
