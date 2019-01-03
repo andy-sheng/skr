@@ -14,6 +14,11 @@ import retrofit2.http.Query;
  */
 public interface UserInfoServerApi {
 
+    /**
+     * 拿到某个人基本的信息
+     * @param userID
+     * @return
+     */
     @GET("v1/uprofile/information")
     Observable<ApiResult> getUserInfo(@Query("userID") int userID);
 

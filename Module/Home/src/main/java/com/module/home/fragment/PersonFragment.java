@@ -10,8 +10,10 @@ import com.common.base.BaseFragment;
 
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.BaseImageView;
 
 import com.common.upload.UploadCallback;
@@ -30,6 +32,9 @@ import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.model.RelationNumMode;
+import com.module.home.persenter.PersonCorePresenter;
+import com.module.home.view.IPersonView;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -41,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 
 
-public class PersonFragment extends BaseFragment {
+public class PersonFragment extends BaseFragment implements IPersonView {
 
     RelativeLayout mPersonMainContainner;
     BaseImageView mAvatarIv;
@@ -58,6 +63,8 @@ public class PersonFragment extends BaseFragment {
     RelativeLayout mMedalLayout;
     ExImageView mAuditionRoomTv;
     ExImageView mMusicTestTv;
+
+    PersonCorePresenter mPersonCorePresenter;
 
     @Override
     public int initView() {
@@ -83,6 +90,10 @@ public class PersonFragment extends BaseFragment {
         mMusicTestTv = (ExImageView) mRootView.findViewById(R.id.music_test_tv);
 
         initViewData();
+
+        mPersonCorePresenter = new PersonCorePresenter(this);
+        addPresent(mPersonCorePresenter);
+        mPersonCorePresenter.getRelationNum((int) MyUserInfoManager.getInstance().getUid());
 
         RxView.clicks(mFriends)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -264,4 +275,16 @@ public class PersonFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void showRelationNum(List<RelationNumMode> list) {
+        for (RelationNumMode mode : list) {
+            if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
+                mFriendsNumTv.setText(String.valueOf(mode.getCnt()));
+            } else if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                mFansNumTv.setText(String.valueOf(mode.getCnt()));
+            } else if (mode.getRelation() == UserInfoManager.RELATION_FOLLOW) {
+                mFollowsNumTv.setText(String.valueOf(mode.getCnt()));
+            }
+        }
+    }
 }
