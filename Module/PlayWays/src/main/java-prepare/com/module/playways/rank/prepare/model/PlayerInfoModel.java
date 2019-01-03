@@ -8,18 +8,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerInfo implements Serializable {
+public class PlayerInfoModel implements Serializable {
     UserInfoModel userInfo;
     List<SongModel> songList;
     //是否是机器人
     boolean isSkrer;
-    List<ResourceInfo> resourceInfoList;
+    List<ResourceInfoModel> resourceInfoList;
 
     public boolean isSkrer() {
         return isSkrer;
     }
 
-    public List<ResourceInfo> getResourceInfoList() {
+    public List<ResourceInfoModel> getResourceInfoList() {
         return resourceInfoList;
     }
 
@@ -53,7 +53,7 @@ public class PlayerInfo implements Serializable {
         }
         this.setSongList(list);
         this.isSkrer = playerInfo.isSkrer;
-        this.resourceInfoList = ResourceInfo.parse(playerInfo.getResourceList());
+        this.resourceInfoList = ResourceInfoModel.parse(playerInfo.getResourceList());
     }
 
     @Override

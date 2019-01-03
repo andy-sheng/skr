@@ -4,26 +4,26 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResourceInfo implements Serializable {
+public class ResourceInfoModel implements Serializable {
     int resourceID = 0;//资源id
     int itemID = 0;//音乐条目id
     String audioURL = "";//声音资源URL
     String midiURL = ""; //打分资源URL
 
-    public ResourceInfo(int resourceID, int itemID, String audioURL, String midiURL) {
+    public ResourceInfoModel(int resourceID, int itemID, String audioURL, String midiURL) {
         this.resourceID = resourceID;
         this.itemID = itemID;
         this.audioURL = audioURL;
         this.midiURL = midiURL;
     }
 
-    public static ResourceInfo parse(com.zq.live.proto.Common.ResourceInfo resourceInfo){
+    public static ResourceInfoModel parse(com.zq.live.proto.Common.ResourceInfo resourceInfo){
 
-        return new ResourceInfo(resourceInfo.resourceID, resourceInfo.itemID, resourceInfo.audioURL, resourceInfo.midiURL);
+        return new ResourceInfoModel(resourceInfo.resourceID, resourceInfo.itemID, resourceInfo.audioURL, resourceInfo.midiURL);
     }
 
-    public static List<ResourceInfo> parse(List<com.zq.live.proto.Common.ResourceInfo> resourceInfoList){
-        ArrayList<ResourceInfo> resourceInfos = new ArrayList<>(resourceInfoList.size());
+    public static List<ResourceInfoModel> parse(List<com.zq.live.proto.Common.ResourceInfo> resourceInfoList){
+        ArrayList<ResourceInfoModel> resourceInfos = new ArrayList<>(resourceInfoList.size());
 
         for (com.zq.live.proto.Common.ResourceInfo res :
                 resourceInfoList) {

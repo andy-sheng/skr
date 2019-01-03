@@ -11,7 +11,7 @@ public class PrepareData implements Serializable {
     private SongModel mSongModel;
     private int mGameId;
     private long mGameCreatMs;
-    private List<PlayerInfo> mPlayerInfoList;
+    private List<PlayerInfoModel> mPlayerInfoList;
     private GameReadyModel mGameReadyInfo;
     private int shiftTs;
 
@@ -55,11 +55,11 @@ public class PrepareData implements Serializable {
         return mGameCreatMs;
     }
 
-    public void setPlayerInfoList(List<PlayerInfo> playerInfoList) {
+    public void setPlayerInfoList(List<PlayerInfoModel> playerInfoList) {
         mPlayerInfoList = playerInfoList;
     }
 
-    public List<PlayerInfo> getPlayerInfoList() {
+    public List<PlayerInfoModel> getPlayerInfoList() {
         return mPlayerInfoList;
     }
 

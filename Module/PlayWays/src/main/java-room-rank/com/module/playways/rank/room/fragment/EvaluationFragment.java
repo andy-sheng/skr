@@ -18,7 +18,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.rank.R;
-import com.module.playways.rank.prepare.model.PlayerInfo;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.presenter.EndGamePresenter;
 import com.module.playways.rank.room.view.IVoteView;
@@ -51,8 +51,8 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     EndGamePresenter mPresenter;
 
-    PlayerInfo left;
-    PlayerInfo right;
+    PlayerInfoModel left;
+    PlayerInfoModel right;
 
     HandlerTaskTimer mVoteTimeTask;
 
@@ -155,7 +155,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         if (type == 0) {
             mRoomData = (RoomData) data;
             if (mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0) {
-                for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()) {
+                for (PlayerInfoModel playerInfo : mRoomData.getPlayerInfoList()) {
                     if (left != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
                         right = playerInfo;
                     } else if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {

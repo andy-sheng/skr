@@ -21,7 +21,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.playways.rank.prepare.model.GameReadyModel;
-import com.module.playways.rank.prepare.model.PlayerInfo;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.model.ReadyInfoModel;
 import com.module.playways.rank.prepare.view.IMatchSucessView;
@@ -46,8 +46,8 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     PrepareData mPrepareData;
 
-    PlayerInfo leftPlayer;
-    PlayerInfo rightPlayer;
+    PlayerInfoModel leftPlayer;
+    PlayerInfoModel rightPlayer;
 
     HandlerTaskTimer mReadyTimeTask;
 
@@ -71,7 +71,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         }
 
         if (mPrepareData.getPlayerInfoList() != null && mPrepareData.getPlayerInfoList().size() > 0) {
-            for (PlayerInfo playerInfo : mPrepareData.getPlayerInfoList()) {
+            for (PlayerInfoModel playerInfo : mPrepareData.getPlayerInfoList()) {
                 if (leftPlayer != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
                     rightPlayer = playerInfo;
                 } else if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {

@@ -15,7 +15,7 @@ import com.module.playways.rank.prepare.model.GameInfoModel;
 import com.module.playways.rank.prepare.model.GameReadyModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfo;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.model.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.song.model.SongModel;
@@ -98,9 +98,9 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         int gameId = joinActionMsg.getGameID();
         long gameCreateMs = joinActionMsg.getCreateTimeMs();
-        List<PlayerInfo> playerInfos = new ArrayList<>();
+        List<PlayerInfoModel> playerInfos = new ArrayList<>();
         for (com.zq.live.proto.Room.PlayerInfo player : joinActionMsg.getPlayersList()) {
-            PlayerInfo playerInfo = new PlayerInfo();
+            PlayerInfoModel playerInfo = new PlayerInfoModel();
             playerInfo.parse(player);
             playerInfos.add(playerInfo);
         }

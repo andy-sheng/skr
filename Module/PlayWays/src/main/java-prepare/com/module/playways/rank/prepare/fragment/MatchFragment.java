@@ -20,7 +20,7 @@ import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.rank.prepare.model.PlayerInfo;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.IMatchingView;
 import com.module.rank.R;
@@ -219,7 +219,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     @Override
-    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfo> playerInfoList, String avatar) {
+    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfoModel> playerInfoList, String avatar) {
         MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " playerInfoList=" + playerInfoList);
         mPrepareData.setGameId(gameId);
         mPrepareData.setSysAvatar(avatar);

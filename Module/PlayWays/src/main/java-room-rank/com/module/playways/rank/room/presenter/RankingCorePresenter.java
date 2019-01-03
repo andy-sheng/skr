@@ -24,7 +24,7 @@ import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfo;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
@@ -507,7 +507,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void checkMachineUser(long uid){
-        PlayerInfo playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+        PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         if(playerInfo == null){
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
             return;

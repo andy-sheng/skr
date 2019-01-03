@@ -4,7 +4,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.userinfo.UserInfoModel;
 import com.common.log.MyLog;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfo;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.song.model.SongModel;
@@ -51,7 +51,7 @@ public class RoomData {
 
     private List<OnlineInfoModel> mOnlineInfoList;//所有的用户在线信息
 
-    private List<PlayerInfo> mPlayerInfoList;//选手信息
+    private List<PlayerInfoModel> mPlayerInfoList;//选手信息
 
     private volatile boolean mIsGameFinish = false;
 
@@ -198,11 +198,11 @@ public class RoomData {
         mOnlineInfoList = onlineInfoList;
     }
 
-    public void setPlayerInfoList(List<PlayerInfo> playerInfoList) {
+    public void setPlayerInfoList(List<PlayerInfoModel> playerInfoList) {
         mPlayerInfoList = playerInfoList;
     }
 
-    public List<PlayerInfo> getPlayerInfoList() {
+    public List<PlayerInfoModel> getPlayerInfoList() {
         return mPlayerInfoList;
     }
 
@@ -213,7 +213,7 @@ public class RoomData {
         if (mPlayerInfoList == null) {
             return null;
         }
-        for (PlayerInfo playerInfo : mPlayerInfoList) {
+        for (PlayerInfoModel playerInfo : mPlayerInfoList) {
             if (playerInfo.getUserInfo().getUserId() == userID) {
                 return playerInfo.getUserInfo();
             }

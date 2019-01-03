@@ -17,7 +17,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rank.R;
-import com.module.playways.rank.prepare.model.PlayerInfo;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.model.RoomData;
 
@@ -57,11 +57,11 @@ public class TurnChangeCardView extends RelativeLayout {
         int curUid = mRoomData.getRealRoundInfo().getUserID();
         int seq = mRoomData.getRealRoundInfo().getRoundSeq();
 
-        PlayerInfo nexInfo = null;
-        PlayerInfo curInfo = null;
+        PlayerInfoModel nexInfo = null;
+        PlayerInfoModel curInfo = null;
         if (seq == 3) {
             nexInfo = null;
-            for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()) {
+            for (PlayerInfoModel playerInfo : mRoomData.getPlayerInfoList()) {
                 if (playerInfo.getUserInfo().getUserId() == curUid) {
                     curInfo = playerInfo;
                 }
@@ -75,7 +75,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 }
             }
 
-            for (PlayerInfo playerInfo : mRoomData.getPlayerInfoList()) {
+            for (PlayerInfoModel playerInfo : mRoomData.getPlayerInfoList()) {
                 if (playerInfo.getUserInfo().getUserId() == curUid) {
                     curInfo = playerInfo;
                 } else if (playerInfo.getUserInfo().getUserId() == nextUid) {
@@ -103,7 +103,7 @@ public class TurnChangeCardView extends RelativeLayout {
         mTurnNextInfoTv = (ExTextView) findViewById(R.id.turn_next_info_tv);
     }
 
-    public void bindData(PlayerInfo cur, PlayerInfo next) {
+    public void bindData(PlayerInfoModel cur, PlayerInfoModel next) {
         if (cur != null) {
             if (cur.getUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
                 mTurnChangeBgIv.setBackground(getResources().getDrawable(R.drawable.room_turn_card_bg_blue));

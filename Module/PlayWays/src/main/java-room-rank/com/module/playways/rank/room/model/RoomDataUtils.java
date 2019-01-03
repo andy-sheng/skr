@@ -2,7 +2,7 @@ package com.module.playways.rank.room.model;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.module.playways.rank.prepare.model.PlayerInfo;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 
@@ -119,9 +119,9 @@ public class RoomDataUtils {
      * @param uid
      * @return
      */
-    public static SongModel getPlayerInfoUserId(List<PlayerInfo> playerInfos, long uid) {
+    public static SongModel getPlayerInfoUserId(List<PlayerInfoModel> playerInfos, long uid) {
         try {
-            for (PlayerInfo infoModel : playerInfos) {
+            for (PlayerInfoModel infoModel : playerInfos) {
                 if (infoModel.getUserInfo().getUserId() == uid) {
                     return infoModel.getSongList().get(0);
                 }
@@ -154,8 +154,8 @@ public class RoomDataUtils {
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 
-    public static PlayerInfo getPlayerInfoById(RoomData roomData, long uid){
-        for (PlayerInfo playerInfo :
+    public static PlayerInfoModel getPlayerInfoById(RoomData roomData, long uid){
+        for (PlayerInfoModel playerInfo :
                 roomData.getPlayerInfoList()) {
             if (playerInfo.getUserInfo().getUserId() == uid) {
                 return playerInfo;
