@@ -135,6 +135,20 @@ public class EditInfoSexFragment extends BaseFragment {
         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                 .setSex(sex)
                 .build());
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+            // 无出生年月数据
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+            U.getFragmentUtils().addFragment(FragmentUtils
+                    .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                    .setBundle(bundle)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .build());
+        } else {
+            getActivity().finish();
+        }
+
     }
 
     private void clickComplete() {
@@ -244,20 +258,6 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return true;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        if (MyUserInfoManager.getInstance().getSex() != 0) {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-            U.getFragmentUtils().addFragment(FragmentUtils
-                    .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
-                    .setBundle(bundle)
-                    .setAddToBackStack(true)
-                    .setHasAnimation(true)
-                    .build());
-        }
+        return false;
     }
 }

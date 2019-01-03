@@ -178,10 +178,11 @@ public class UserInfoManager {
                 if (obj.getErrno() == 0) {
                     U.getToastUtil().showShort("关系处理请求成功");
                     final boolean isFriend = obj.getData().getBoolean("isFriend");
+                    final boolean isFollow = obj.getData().getBoolean("isFollow");
                     if (action == RA_BUILD) {
-                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userInfo, isFriend));
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userInfo, isFriend, isFollow));
                     } else if (action == RA_UNBUILD) {
-                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userInfo, isFriend));
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userInfo, isFriend, isFollow));
                     }
                 }
             }

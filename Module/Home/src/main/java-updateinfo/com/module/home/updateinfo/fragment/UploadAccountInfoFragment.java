@@ -190,14 +190,29 @@ public class UploadAccountInfoFragment extends BaseFragment {
                                 .setNickName(nickName)
                                 .build());
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-                        U.getFragmentUtils().addFragment(FragmentUtils
-                                .newAddParamsBuilder(getActivity(), EditInfoSexFragment.class)
-                                .setBundle(bundle)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
+                        if (MyUserInfoManager.getInstance().getSex() == 0) {
+                            // 无性别数据
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+                            U.getFragmentUtils().addFragment(FragmentUtils
+                                    .newAddParamsBuilder(getActivity(), EditInfoSexFragment.class)
+                                    .setBundle(bundle)
+                                    .setAddToBackStack(true)
+                                    .setHasAnimation(true)
+                                    .build());
+                        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+                            // 无出生年月数据
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+                            U.getFragmentUtils().addFragment(FragmentUtils
+                                    .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                                    .setBundle(bundle)
+                                    .setAddToBackStack(true)
+                                    .setHasAnimation(true)
+                                    .build());
+                        } else {
+                            getActivity().finish();
+                        }
                     } else {
                         // 昵称不可用
                         mNicknameHintTv.setVisibility(View.VISIBLE);

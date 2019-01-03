@@ -9,13 +9,15 @@ public class RelationChangeEvent {
     public static final int UNFOLLOW_TYPE = 2;
 
     public boolean isFriend;
+    public boolean isFollow;
     public UserInfoModel userInfoModel;
     public int type;
 
-    public RelationChangeEvent(int type, UserInfoModel userInfoModel, boolean isFriend) {
+    public RelationChangeEvent(int type, UserInfoModel userInfoModel, boolean isFriend, boolean isFollow) {
         this.type = type;
         this.userInfoModel = userInfoModel;
         this.isFriend = isFriend;
+        this.isFollow = isFollow;
     }
 
 }

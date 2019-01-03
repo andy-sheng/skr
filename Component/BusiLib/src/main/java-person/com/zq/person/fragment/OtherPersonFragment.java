@@ -167,8 +167,11 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     public void onEvent(RelationChangeEvent event) {
         if (event.userInfoModel.getUserId() == mUserInfoModel.getUserId()) {
             if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
-                // TODO: 2019/1/3 需要服务器完善接口
-                mFollowTv.setText("已关注");
+                if (event.isFriend) {
+                    mFollowTv.setText("互关");
+                } else if (event.isFollow) {
+                    mFollowTv.setText("已关注");
+                }
                 mFollowTv.setTag(RELATION_FOLLOWED);
             } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
                 mFollowTv.setText("关注TA");
