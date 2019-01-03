@@ -1,4 +1,4 @@
-package test.activity;
+package com.module.msg.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

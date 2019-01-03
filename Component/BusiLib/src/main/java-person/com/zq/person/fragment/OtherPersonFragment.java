@@ -22,6 +22,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.ModuleServiceManager;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.IOtherPersonView;
 

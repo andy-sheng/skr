@@ -1,6 +1,7 @@
 package com.module.msg;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;

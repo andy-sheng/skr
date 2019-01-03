@@ -14,8 +14,6 @@ public interface RouterConstants {
     String ACTIVITY_RANKINGMODE = "/rankingmode/RankingModeActivity";
     String ACTIVITY_RANKING_ROOM = "/rankingmode/RankingRoomActivity";
     String ACTIVITY_SINGEND_ROOM = "/rankingmode/SingEndRoomActivity";
-    String ACTIVITY_MESSAGE = "/imkit/MessageActivity";
-
 
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";

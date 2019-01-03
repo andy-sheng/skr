@@ -1,4 +1,4 @@
-package test.fragment;
+package com.module.msg.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
