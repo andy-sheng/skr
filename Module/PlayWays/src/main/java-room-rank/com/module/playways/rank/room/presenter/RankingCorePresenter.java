@@ -450,6 +450,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                 if (accFile != null && accFile.exists()) {
                                     EngineManager.getInstance().muteLocalAudioStream(false);
                                     EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
+                                    /**
+                                     * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
+                                     */
                                     EngineManager.getInstance().setAudioMixingPosition(0);
                                     // 还应开始播放歌词
                                     mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
@@ -701,6 +704,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             sendRoundOverInfo();
         } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             EngineEvent.MixMusicTimeInfo timeInfo = (EngineEvent.MixMusicTimeInfo) event.getObj();
+            //这个是唱的时间，先在按长度算时间
             if (timeInfo.getCurrent() >= mRoomData.getSongModel().getEndMs() - mRoomData.getSongModel().getBeginMs()) {
                 //可以发结束轮次的通知了
                 sendRoundOverInfo();
