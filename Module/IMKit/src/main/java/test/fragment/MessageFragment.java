@@ -11,14 +11,11 @@ import android.view.View;
 import com.common.base.BaseFragment;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExButton;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.msg.IMessageFragment;
-
-import java.util.ArrayList;
+import com.zq.relation.fragment.RelationFragment;
 import java.util.List;
 
-import io.rong.contacts.fragment.ContactsFragment;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
@@ -27,14 +24,9 @@ import io.rong.imlib.model.UserInfo;
 
 public class MessageFragment extends BaseFragment implements  RongIM.UserInfoProvider,IMessageFragment {
 
-    // todo 目前给两个账号用来测试通信，待账号完善接入
     CommonTitleBar commonTitleBar;
 
-    ExButton mTestMsg1;
-    ExButton mTestMsg2;
-
     List<UserInfo> list;
-    Uri testUri = Uri.parse("http://cms-bucket.nosdn.127.net/a2482c0b2b984dc88a479e6b7438da6020161219074944.jpeg");
 
     Fragment mConversationListFragment; //获取融云的会话列表对象
 
@@ -52,65 +44,36 @@ public class MessageFragment extends BaseFragment implements  RongIM.UserInfoPro
     public void initData(@Nullable Bundle savedInstanceState) {
         commonTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
-        mTestMsg1 = (ExButton) mRootView.findViewById(R.id.test_msg1);
-        mTestMsg2 = (ExButton) mRootView.findViewById(R.id.test_msg2);
-
-        initUserInfo();
-
         mConversationListFragment = initConversationList();
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.content,mConversationListFragment);
         transaction.commit();
 
+        RongIM.setUserInfoProvider(this,true);
 
-        mTestMsg1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (RongIM.getInstance() != null) {
-                    RongIM.getInstance().startPrivateChat(view.getContext(), "1001", "私人聊天");
-                }
-            }
-        });
-
-        mTestMsg2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (RongIM.getInstance() != null) {
-                    RongIM.getInstance().startPrivateChat(view.getContext(), "1002", "私人聊天");
-                }
-            }
-        });
-
-        commonTitleBar.getRightTextView().setOnClickListener(new View.OnClickListener() {
+        commonTitleBar.getRightCustomView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), ContactsFragment.class)
+                        FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
             }
         });
 
-        commonTitleBar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // todo 搜索再加
+        // TODO: 2019/1/3 暂时屏蔽搜索
+//        commonTitleBar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //                U.getFragmentUtils().addFragment(
 //                        FragmentUtils.newParamsBuilder(MessageActivity.this, SearchFragment.class)
 //                                .setAddToBackStack(true)
 //                                .setHasAnimation(true)
 //                                .build());
-            }
-        });
-    }
-
-    private void initUserInfo() {
-        list = new ArrayList<>();
-        list.add(new UserInfo("1001","帅哥",testUri));
-        list.add(new UserInfo("1002","美女",testUri));
-        RongIM.setUserInfoProvider(this,true);
+//            }
+//        });
     }
 
 

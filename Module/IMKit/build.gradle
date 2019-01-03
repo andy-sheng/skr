@@ -57,8 +57,8 @@ android {
             java.srcDirs += 'src/main/java-msg'
             res.srcDirs += 'src/main/res-msg'
 
-            java.srcDirs += 'src/main/java-contacts'
-            res.srcDirs += 'src/main/res-contacts'
+//            java.srcDirs += 'src/main/java-contacts'
+//            res.srcDirs += 'src/main/res-contacts'
 
             if (!useIMKitJar.toBoolean()) {
                 java.srcDirs += 'src/main/java-imkit'
@@ -74,6 +74,7 @@ dependencies {
     //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
     api project(":commoncore")
     api project(":Component:IMLib")
+    api project(":Component:BusiLib")
 
     if (useIMKitJar.toBoolean()) {
         api files('libs/Rong_IMKit.jar')

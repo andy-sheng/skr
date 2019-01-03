@@ -1,47 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:background="#F9F4F1">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="消息"
+        app:centerText="聊天"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
-        app:rightType="textView"
-        app:rightText="好友"
-        app:leftType="textView"
-        app:leftText="搜索"/>
+        app:rightCustomView="@layout/conversation_right_view"
+        app:rightType="customView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
 
-    <LinearLayout
-        android:id="@+id/test_2"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_3_dp"
         android:layout_below="@+id/titlebar"
-        android:orientation="horizontal">
-
-        <com.common.view.ex.ExButton
-            android:id="@+id/test_msg1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="向用户1发消息"/>
-
-        <com.common.view.ex.ExButton
-            android:id="@+id/test_msg2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="向用户2发消息"/>
-
-    </LinearLayout>
+        android:background="#0C2275" />
 
     <RelativeLayout
         android:id="@+id/content"
-        android:layout_below="@+id/test_2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginTop="@dimen/view_3_dp"></RelativeLayout>
 
 </RelativeLayout>
