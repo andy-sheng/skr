@@ -13,6 +13,7 @@ import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.log.MyLog;
+import com.common.log.screenlog.ScreenLogView;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -94,6 +95,7 @@ public class UserAccountManager {
             connectRongIM(account.getRongToken());
 
             EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
+            ScreenLogView.addInfo("用户id:"+account.getUid());
         } else {
 
         }

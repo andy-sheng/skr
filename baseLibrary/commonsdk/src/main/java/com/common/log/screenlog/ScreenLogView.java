@@ -34,6 +34,12 @@ import okio.Sink;
 
 public class ScreenLogView extends RelativeLayout {
 
+    static String sUpInfo = "信息";
+
+    public static void addInfo(String info) {
+        sUpInfo += info;
+    }
+
     ScrollView mScrollview;
     ExTextView mLogTv;
     ExTextView mCloseTv;
@@ -41,6 +47,8 @@ public class ScreenLogView extends RelativeLayout {
     ExTextView mTagSelectTv;
     ExTextView mSaveBtn;
     ExTextView mSelectColorBtn;
+    ExTextView mUserInfoTv;
+
 
     boolean mNeedScroll = true;
 
@@ -77,6 +85,8 @@ public class ScreenLogView extends RelativeLayout {
         mTagSelectTv = (ExTextView) this.findViewById(R.id.tag_select_tv);
         mSaveBtn = (ExTextView) this.findViewById(R.id.save_btn);
         mSelectColorBtn = (ExTextView) this.findViewById(R.id.select_color_btn);
+        mUserInfoTv = (ExTextView) this.findViewById(R.id.user_info_tv);
+        mUserInfoTv.setText(sUpInfo);
 
         mCloseTv.setOnClickListener(new OnClickListener() {
             @Override
