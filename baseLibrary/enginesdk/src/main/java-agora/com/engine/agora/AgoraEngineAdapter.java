@@ -863,7 +863,7 @@ public class AgoraEngineAdapter {
 
 
     public void setIFAudioEffectEngine(final AudioEffectStyleEnum styleEnum) {
-        if (styleEnum == null) {
+        if (styleEnum == null || styleEnum == AudioEffectStyleEnum.ORIGINAL) {
             mRtcEngine.registerAudioFrameObserver(null);
         } else {
             // 注册这玩意怎么会导致没有声音,return false 就会丢弃
