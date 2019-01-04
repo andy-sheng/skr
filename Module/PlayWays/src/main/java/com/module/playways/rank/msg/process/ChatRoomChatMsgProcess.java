@@ -21,7 +21,7 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess {
 
     @Override
     public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
-        MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType );
+        MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType);
         BasePushInfo info = BasePushInfo.parse(msg);
 
         if (messageType == ERoomMsgType.RM_COMMENT) {
@@ -62,8 +62,8 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess {
             return;
         }
 
-        int emojiId = specialEmojiMsg.getId();
-        EventBus.getDefault().post(new SpecialEmojiMsgEvent(info, SpecialEmojiMsgEvent.MSG_TYPE_RECE, emojiId));
+        EventBus.getDefault().post(new SpecialEmojiMsgEvent(info, SpecialEmojiMsgEvent.MSG_TYPE_RECE,
+                specialEmojiMsg.getEmojiType(), specialEmojiMsg.getEmojiAction(), specialEmojiMsg.getCount()));
     }
 
     // 动态表情消息

@@ -25,30 +25,57 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
 
   private static final long serialVersionUID = 0L;
 
-  public static final Integer DEFAULT_ID = 0;
+  public static final SpecialEmojiMsgType DEFAULT_EMOJITYPE = SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN;
+
+  public static final Integer DEFAULT_COUNT = 0;
+
+  public static final String DEFAULT_EMOJIACTION = "";
 
   /**
-   * 表情包id
+   * 表情
    */
   @WireField(
       tag = 1,
+      adapter = "com.zq.live.proto.Room.SpecialEmojiMsgType#ADAPTER"
+  )
+  public final SpecialEmojiMsgType emojiType;
+
+  /**
+   * 数量
+   */
+  @WireField(
+      tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer id;
+  public final Integer count;
 
-  public SpecialEmojiMsg(Integer id) {
-    this(id, ByteString.EMPTY);
+  /**
+   * 动作
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  public final String emojiAction;
+
+  public SpecialEmojiMsg(SpecialEmojiMsgType emojiType, Integer count, String emojiAction) {
+    this(emojiType, count, emojiAction, ByteString.EMPTY);
   }
 
-  public SpecialEmojiMsg(Integer id, ByteString unknownFields) {
+  public SpecialEmojiMsg(SpecialEmojiMsgType emojiType, Integer count, String emojiAction,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
-    this.id = id;
+    this.emojiType = emojiType;
+    this.count = count;
+    this.emojiAction = emojiAction;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
-    builder.id = id;
+    builder.emojiType = emojiType;
+    builder.count = count;
+    builder.emojiAction = emojiAction;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -59,7 +86,9 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
     if (!(other instanceof SpecialEmojiMsg)) return false;
     SpecialEmojiMsg o = (SpecialEmojiMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(id, o.id);
+        && Internal.equals(emojiType, o.emojiType)
+        && Internal.equals(count, o.count)
+        && Internal.equals(emojiAction, o.emojiAction);
   }
 
   @Override
@@ -67,7 +96,9 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
-      result = result * 37 + (id != null ? id.hashCode() : 0);
+      result = result * 37 + (emojiType != null ? emojiType.hashCode() : 0);
+      result = result * 37 + (count != null ? count.hashCode() : 0);
+      result = result * 37 + (emojiAction != null ? emojiAction.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -76,7 +107,9 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
+    if (emojiType != null) builder.append(", emojiType=").append(emojiType);
+    if (count != null) builder.append(", count=").append(count);
+    if (emojiAction != null) builder.append(", emojiAction=").append(emojiAction);
     return builder.replace(0, 2, "SpecialEmojiMsg{").append('}').toString();
   }
 
@@ -91,39 +124,93 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
   }
 
   /**
-   * 表情包id
+   * 表情
    */
-  public Integer getId() {
-    if(id==null){
-        return DEFAULT_ID;
+  public SpecialEmojiMsgType getEmojiType() {
+    if(emojiType==null){
+        return new SpecialEmojiMsgType.Builder().build();
     }
-    return id;
+    return emojiType;
   }
 
   /**
-   * 表情包id
+   * 数量
    */
-  public boolean hasId() {
-    return id!=null;
+  public Integer getCount() {
+    if(count==null){
+        return DEFAULT_COUNT;
+    }
+    return count;
+  }
+
+  /**
+   * 动作
+   */
+  public String getEmojiAction() {
+    if(emojiAction==null){
+        return DEFAULT_EMOJIACTION;
+    }
+    return emojiAction;
+  }
+
+  /**
+   * 表情
+   */
+  public boolean hasEmojiType() {
+    return emojiType!=null;
+  }
+
+  /**
+   * 数量
+   */
+  public boolean hasCount() {
+    return count!=null;
+  }
+
+  /**
+   * 动作
+   */
+  public boolean hasEmojiAction() {
+    return emojiAction!=null;
   }
 
   public static final class Builder extends Message.Builder<SpecialEmojiMsg, Builder> {
-    public Integer id;
+    public SpecialEmojiMsgType emojiType;
+
+    public Integer count;
+
+    public String emojiAction;
 
     public Builder() {
     }
 
     /**
-     * 表情包id
+     * 表情
      */
-    public Builder setId(Integer id) {
-      this.id = id;
+    public Builder setEmojiType(SpecialEmojiMsgType emojiType) {
+      this.emojiType = emojiType;
+      return this;
+    }
+
+    /**
+     * 数量
+     */
+    public Builder setCount(Integer count) {
+      this.count = count;
+      return this;
+    }
+
+    /**
+     * 动作
+     */
+    public Builder setEmojiAction(String emojiAction) {
+      this.emojiAction = emojiAction;
       return this;
     }
 
     @Override
     public SpecialEmojiMsg build() {
-      return new SpecialEmojiMsg(id, super.buildUnknownFields());
+      return new SpecialEmojiMsg(emojiType, count, emojiAction, super.buildUnknownFields());
     }
   }
 
@@ -134,13 +221,17 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
 
     @Override
     public int encodedSize(SpecialEmojiMsg value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.id)
+      return SpecialEmojiMsgType.ADAPTER.encodedSizeWithTag(1, value.emojiType)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.count)
+          + ProtoAdapter.STRING.encodedSizeWithTag(3, value.emojiAction)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, SpecialEmojiMsg value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.id);
+      SpecialEmojiMsgType.ADAPTER.encodeWithTag(writer, 1, value.emojiType);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.count);
+      ProtoAdapter.STRING.encodeWithTag(writer, 3, value.emojiAction);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -150,7 +241,16 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setId(ProtoAdapter.UINT32.decode(reader)); break;
+          case 1: {
+            try {
+              builder.setEmojiType(SpecialEmojiMsgType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 2: builder.setCount(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setEmojiAction(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

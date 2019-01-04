@@ -163,8 +163,18 @@ message PlayerInfo
 // 特殊表情消息
 message SpecialEmojiMsg
 {
-    uint32 id = 1; //表情包id
+    SpecialEmojiMsgType emojiType   = 1; // 表情
+    uint32 count                    = 2; // 数量
+    string emojiAction              = 3; // 动作
+
 }
+// 特殊表情类型
+enum SpecialEmojiMsgType {
+    SP_EMOJI_TYPE_UNKNOWN   = 0;
+    SP_EMOJI_TYPE_LIKE      = 1; // 喜欢
+    SP_EMOJI_TYPE_UNLIKE    = 2; // 不喜欢
+}
+
 
 // 动态表情消息
 message DynamicEmojiMsg
