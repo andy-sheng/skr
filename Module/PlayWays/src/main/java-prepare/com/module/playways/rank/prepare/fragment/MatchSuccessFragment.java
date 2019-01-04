@@ -157,13 +157,13 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
         //头部文字
         AnimatorSet animatorSet = new AnimatorSet();//组合动画
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mIvTop, "scaleX", 2.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mIvTop, "scaleY", 2.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mIvTop, "scaleX", 3.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mIvTop, "scaleY", 3.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
         scaleX.setInterpolator(new DecelerateInterpolator(1));
         scaleY.setInterpolator(new DecelerateInterpolator(1));
         scaleX.setDuration(3000);
         scaleY.setDuration(3000);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTop,"alpha",0.3f,1.0f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTop,"alpha",0.4f,1.0f);
         alpha.setDuration(1200);
         animatorSet.play(scaleX).with(scaleY).with(alpha);
         animatorSet.start();
