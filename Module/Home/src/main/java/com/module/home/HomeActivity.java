@@ -91,7 +91,7 @@ public class HomeActivity extends BaseActivity {
 
         mHomePresenter = new HomeCorePresenter();
 
-        mHomePresenter.checkUserInfo();
+        mHomePresenter.checkUserInfo("HomeActivity onCreate");
 
         RxView.clicks(mGameBtn)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)

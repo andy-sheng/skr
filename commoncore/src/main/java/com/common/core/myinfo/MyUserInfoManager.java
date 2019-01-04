@@ -34,6 +34,8 @@ public class MyUserInfoManager {
 
     private MyUserInfo mUser = new MyUserInfo();
 
+    private boolean mHasLoadFromDB = false;
+
     public void init() {
         load();
     }
@@ -58,6 +60,8 @@ public class MyUserInfoManager {
 //                        }
 //                    }
                 }
+                mHasLoadFromDB = true;
+                EventBus.getDefault().post(new MyUserInfoEvent.UserInfoLoadOkEvent());
                 emitter.onComplete();
             }
         })
@@ -140,7 +144,11 @@ public class MyUserInfoManager {
     }
 
     public long getUid() {
-        return mUser != null ? mUser.getUserId() : 0;
+        if(mUser!=null && mUser.getUserId()!=0){
+            return mUser.getUserId();
+        }else{
+            return UserAccountManager.getInstance().getUuidAsLong();
+        }
     }
 
     public String getNickName() {
@@ -174,6 +182,9 @@ public class MyUserInfoManager {
         return mUser.getLocation().getDesc();
     }
 
+    public boolean hasLoadFromDB() {
+        return mHasLoadFromDB;
+    }
 
     private static class MyUserInfoManagerHolder {
         private static final MyUserInfoManager INSTANCE = new MyUserInfoManager();

@@ -11,8 +11,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
@@ -30,8 +30,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-
-import static com.module.RouterConstants.ACTIVITY_UPLOAD;
 
 public class HomeCorePresenter {
 
@@ -184,7 +182,13 @@ public class HomeCorePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent event) {
         // 账号已经设定
-        checkUserInfo();
+        checkUserInfo("SetAccountEvent");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MyUserInfoEvent.UserInfoLoadOkEvent event) {
+        // 个人信息已经读取
+        checkUserInfo("UserInfoLoadOkEvent");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -195,18 +199,23 @@ public class HomeCorePresenter {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
     }
 
-    public void checkUserInfo() {
+    public void checkUserInfo(String from) {
+        MyLog.d(TAG,"checkUserInfo" + " from=" + from);
         if (UserAccountManager.getInstance().hasLoadAccountFromDB()) {
             if (!UserAccountManager.getInstance().hasAccount()) {
                 // 到时会有广告页或者启动页挡一下的，先不用管
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
             } else {
-                // 如果有账号了
-                if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
-                        || MyUserInfoManager.getInstance().getSex() == 0
-                        || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
-                            .greenChannel().navigation();
+                if (MyUserInfoManager.getInstance().hasLoadFromDB()) {
+                    // 如果有账号了
+                    if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
+                            || MyUserInfoManager.getInstance().getSex() == 0
+                            || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
+                                .greenChannel().navigation();
+                    }
+                } else {
+
                 }
             }
         }
