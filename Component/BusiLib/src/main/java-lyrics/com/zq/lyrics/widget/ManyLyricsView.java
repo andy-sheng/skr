@@ -368,7 +368,7 @@ public class ManyLyricsView extends AbstractLrcView {
 
         //画倒计时圆点
         if(getNeedCountDownLine().contains(lyricsLineNum)){
-            drawCountDownPoint(canvas);
+            drawCountDownPoint(canvas, lineBottomY);
         }
 
         //画额外歌词
@@ -408,7 +408,7 @@ public class ManyLyricsView extends AbstractLrcView {
         }
     }
 
-    private void drawCountDownPoint(Canvas canvas){
+    private void drawCountDownPoint(Canvas canvas, float y){
         int lyricsLineNum = getLyricsLineNum();
         LyricsLineInfo currentLine = getLrcLineInfos().get(lyricsLineNum);
         int splitLyricsLineNum = getSplitLyricsLineNum();
@@ -421,6 +421,14 @@ public class ManyLyricsView extends AbstractLrcView {
 
         long degree = startTime - lyricProgress;
 
+        float textWidth = LyricsUtils.getTextWidth(getPaintHL(), realInfo.getLineLyrics());
+        float textX = (getWidth() - textWidth) * 0.5f + 10;
+        int textHeight = LyricsUtils.getTextHeight(getPaintHL());
+
+        Paint circlePaint = new Paint();
+        circlePaint.setColor(getPaintHLColors()[0]);
+        MyLog.d(TAG, "degree " + degree);
+
         if(degree <= 0){
             MyLog.d(TAG, "倒计时 0");
             return;
@@ -428,16 +436,34 @@ public class ManyLyricsView extends AbstractLrcView {
 
         if(degree <= 1000){
             MyLog.d(TAG, "倒计时 1");
+            circlePaint.setColor(getPaintHLColors()[0]);
+            canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+            circlePaint.setColor(getSubPaintHLColor());
+            canvas.drawCircle( textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+            canvas.drawCircle( textX+ 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+
             return;
         }
 
         if(degree <= 2000){
             MyLog.d(TAG, "倒计时 2");
+            circlePaint.setColor(getPaintHLColors()[0]);
+            canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+
+            canvas.drawCircle( textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+            circlePaint.setColor(getSubPaintHLColor());
+            canvas.drawCircle( textX+ 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
             return;
         }
 
         if(degree <= 3000){
             MyLog.d(TAG, "倒计时 3");
+            circlePaint.setColor(getPaintHLColors()[0]);
+            canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+
+            canvas.drawCircle( textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+
+            canvas.drawCircle( textX+ 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
             return;
         }
     }
