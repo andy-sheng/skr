@@ -58,8 +58,9 @@ public class FragmentUtils {
         if (l.isEmpty()) {
             return null;
         }
-        if (l.get(l.size() - 1) instanceof BaseFragment) {
-            return (BaseFragment) l.get(l.size() - 1);
+        Fragment f = l.get(l.size() - 1);
+        if ( f instanceof BaseFragment) {
+            return (BaseFragment) f;
         }
 
         return null;
