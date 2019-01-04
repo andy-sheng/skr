@@ -34,7 +34,7 @@ public class UserInfoDB implements Serializable {
     private String birthday;      // 生日
     private String signature;     // 签名
     // 关系
-    private int relative = -1;  //0为双方未关注, 1为我关注该用户, 2为该用户关注我, 3为双方关注
+    private int relative = -1;  // 0,未关注  1,已关注  2,互相关注 (关注层面关系，粉丝不用管)
     private int block = -1;  // 是否拉黑,1为拉黑 0为没有
     private int isSystem = -1; // 是否是系统
 

@@ -19,8 +19,12 @@ import static com.common.core.userinfo.event.UserInfoDBChangeEvent.EVENT_INIT;
  * 操作本地关系数据库,提供给RelationManager使用
  */
 public class UserInfoLocalApi {
-    //Relation中的relative  0为默认值, 1为双方未关注, 2为我关注该用户, 3为该用户关注我, 4为双方关注
+    //Relation中的relative  0为未关注，1为已关注 2为互关
     private static final String TAG = "UserInfoLocalApi";
+
+    public static final int UN_FOLLOW = 0;    // 未关注
+    public static final int ONE_FOLLOW = 1;   // 已关注
+    public static final int INTER_FOLLOW = 2; //互相关注
 
     private static UserInfoDBDao getUserInfoDao() {
         return GreenDaoManager.getDaoSession().getUserInfoDBDao();

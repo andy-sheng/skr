@@ -8,6 +8,10 @@ import com.common.core.myinfo.Location;
 
 import java.io.Serializable;
 
+import static com.common.core.userinfo.UserInfoLocalApi.INTER_FOLLOW;
+import static com.common.core.userinfo.UserInfoLocalApi.ONE_FOLLOW;
+import static com.common.core.userinfo.UserInfoLocalApi.UN_FOLLOW;
+
 // TODO: 2019/1/2 该类会作为json来解析，不要改变量名 
 public class UserInfoModel implements Serializable, Cloneable {
 
@@ -31,6 +35,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private String letter;
     private int mIsSystem;
     private boolean isFriend;
+    private boolean isFollow;
 
     public int getUserId() {
         return userId;
@@ -112,6 +117,14 @@ public class UserInfoModel implements Serializable, Cloneable {
         isFriend = friend;
     }
 
+    public boolean isFollow() {
+        return isFollow;
+    }
+
+    public void setFollow(boolean follow) {
+        isFollow = follow;
+    }
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         UserInfoModel userInfoModel = null;
@@ -134,6 +147,14 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoDB.setSignature(userInfModel.getSignature());
             userInfoDB.setLetter(userInfModel.getLetter());
             userInfoDB.setIsSystem(userInfModel.getIsSystem());
+
+            if (userInfModel.isFriend()) {
+                userInfoDB.setRelative(INTER_FOLLOW);
+            } else if (userInfModel.isFollow()) {
+                userInfoDB.setRelative(ONE_FOLLOW);
+            } else {
+                userInfoDB.setRelative(UN_FOLLOW);
+            }
 
             JSONObject jsonObject = new JSONObject();
             Location location = userInfModel.getLocation();

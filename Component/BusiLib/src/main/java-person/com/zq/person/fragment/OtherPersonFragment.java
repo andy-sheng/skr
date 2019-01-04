@@ -139,7 +139,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         this.mUserInfoModel = model;
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(model.getAvatar())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.parseColor("#33A4E1"))

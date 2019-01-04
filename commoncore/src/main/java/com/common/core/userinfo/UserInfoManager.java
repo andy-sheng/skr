@@ -200,7 +200,7 @@ public class UserInfoManager {
      * @param limit
      * @param responseCallBack
      */
-    public void getRelationList(final int relation, int offset, int limit, final ResponseCallBack responseCallBack) {
+    public void getRelationList(final int relation, int offset, final int limit, final ResponseCallBack responseCallBack) {
         if (relation == 0) {
             MyLog.w(TAG, "getRelationList Illegal parameter");
             return;
@@ -210,13 +210,38 @@ public class UserInfoManager {
 
         Observable<ApiResult> apiResultObservable = userInfoServerApi.getRelationList(relation, offset, limit);
         ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
-
             @Override
-            public void process(ApiResult obj) {
+            public void process(final ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    if (responseCallBackWeakReference.get() != null) {
-                        responseCallBackWeakReference.get().onServerSucess(obj);
-                    }
+                    //写入数据库
+                    Observable.create(new ObservableOnSubscribe<ApiResult>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<ApiResult> emitter) throws Exception {
+                            // 写入数据库
+                            List<UserInfoModel> userInfoModels = JSON.parseArray(obj.getData().getString("users"), UserInfoModel.class);
+                            if (userInfoModels != null && userInfoModels.size() > 0) {
+                                UserInfoLocalApi.insertOrUpdate(userInfoModels);
+
+                                List<BuddyCache.BuddyCacheEntry> list = new ArrayList<>();
+                                for (UserInfoModel userInfoModel : userInfoModels) {
+                                    list.add(new BuddyCache.BuddyCacheEntry(userInfoModel));
+                                }
+                                BuddyCache.getInstance().putBuddyList(list);
+                            }
+                            emitter.onNext(obj);
+                            emitter.onComplete();
+                        }
+                    })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<ApiResult>() {
+                                @Override
+                                public void accept(ApiResult userInfo) throws Exception {
+                                    if (responseCallBackWeakReference.get() != null) {
+                                        responseCallBackWeakReference.get().onServerSucess(obj);
+                                    }
+                                }
+                            });
                 } else {
                     if (responseCallBackWeakReference.get() != null) {
                         responseCallBackWeakReference.get().onServerFailed();
@@ -225,42 +250,6 @@ public class UserInfoManager {
 
             }
         });
-
-//        List<UserInfoModel> local = UserInfoLocalApi.getFriendUserInfoList(relation, false);
-//        if (local == null || !resultCallback.onGetLocalDB(local)) {
-//            Observable<ApiResult> apiResultObservable = userInfoServerApi.getRelationList(relation, offset, limit);
-//            ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
-//                @Override
-//                public void process(ApiResult obj) {
-//                    if (obj.getErrno() == 0) {
-//                        U.getToastUtil().showShort("获取关系列表成功");
-//                        //写入数据库
-//                        Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
-//                            @Override
-//                            public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
-//                                // 写入数据库
-//                                UserInfoLocalApi.insertOrUpdate(jsonUserInfo, false, false);
-//                                UserInfoModel userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
-//
-//                                emitter.onNext(userInfo);
-//                                emitter.onComplete();
-//                            }
-//                        })
-//                                .subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(new Consumer<UserInfoModel>() {
-//                                    @Override
-//                                    public void accept(UserInfoModel userInfo) throws Exception {
-//                                        if (resultCallback != null) {
-//                                            resultCallback.onGetServer(userInfo);
-//                                        }
-//                                    }
-//                                });
-//                    }
-//                }
-//            });
-//        }
-
     }
 
 //    /**
