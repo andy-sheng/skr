@@ -22,6 +22,8 @@ import java.util.TreeMap;
 
 public class LyricsReader {
 
+    public final static String TAG = "LyricsReader";
+
     /**
      * 时间补偿值,其单位是毫秒，正值表示整体提前，负值相反。这是用于总体调整显示快慢的。
      */
@@ -137,10 +139,41 @@ public class LyricsReader {
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
+
             if(entry.getValue().getEndTime() > endTs){
                 it.remove();
+                continue;
+            }
+
+            if(entry.getValue().getEndTime() < startTs){
+                it.remove();
+                continue;
             }
         }
+
+        /**
+         * 生成新的歌词
+         */
+        Iterator<Map.Entry<Integer, LyricsLineInfo>> newIt = mLrcLineInfos.entrySet().iterator();
+        mLrcLineInfos = new TreeMap<>();
+
+        int index = 0;
+        while (newIt.hasNext()) {
+            Map.Entry<Integer, LyricsLineInfo> entry = newIt.next();
+            mLrcLineInfos.put(index++, entry.getValue());
+        }
+    }
+
+    public int getLineInfoIdByStartTs(long startTs) {
+        Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, LyricsLineInfo> entry = it.next();
+            if(entry.getValue().getEndTime() > startTs){
+                return entry.getKey();
+            }
+        }
+
+        return -1;
     }
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -68,7 +68,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -741,7 +743,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.initLrcData();
                 lyricsReader.cut(mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs());
                 mManyLyricsView.setLyricsReader(lyricsReader);
-                if (!play) {
+
+                Set<Integer> set = new HashSet<>();
+                set.add(lyricsReader.getLineInfoIdByStartTs(mPlayingSongModel.getBeginMs()));
+                mManyLyricsView.setNeedCountDownLine(set);
+
+                if(!play){
                     mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
                     mManyLyricsView.pause();
                 }

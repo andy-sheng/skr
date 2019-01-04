@@ -25,7 +25,9 @@ import com.zq.lyrics.utils.ColorUtils;
 import com.zq.lyrics.utils.LyricsUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -370,6 +372,11 @@ public abstract class AbstractLrcView extends View {
     protected boolean mEnableVerbatim = true;
 
     /**
+     * 需要倒计时的行
+     */
+    private Set<Integer> mNeedCountDownLine = new HashSet<>();
+
+    /**
      * 处理ui任务
      */
     private Handler mUIHandler = new Handler() {
@@ -390,6 +397,14 @@ public abstract class AbstractLrcView extends View {
             }
         }
     };
+
+    public Set<Integer> getNeedCountDownLine() {
+        return mNeedCountDownLine;
+    }
+
+    public void setNeedCountDownLine(Set<Integer> needCountDownLine) {
+        mNeedCountDownLine = needCountDownLine;
+    }
 
     private WeakReference<Context> mActivityWR;
 
@@ -551,7 +566,8 @@ public abstract class AbstractLrcView extends View {
                 float hlWidth = textWidth / 2;
                 float x = (getWidth() - textWidth) / 2;
                 float y = (getHeight() + textHeight) / 2;
-                LyricsUtils.drawOutline(canvas, mPaintOutline, defText, x, y);
+                // TODO: 2019/1/4 这个先注掉
+//                LyricsUtils.drawOutline(canvas, mPaintOutline, defText, x, y);
                 LyricsUtils.drawDynamicText(canvas, mPaint, mPaintHL, mPaintColors, mPaintHLColors, defText, hlWidth, x, y);
             } else if (mLrcStatus == LRCSTATUS_LOADING || mLrcStatus == LRCSTATUS_ERROR || mLrcStatus == LRCSTATUS_NONSUPPORT) {
                 //绘画加载中文本

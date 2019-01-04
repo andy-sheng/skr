@@ -365,6 +365,12 @@ public class ManyLyricsView extends AbstractLrcView {
                 .get(lyricsLineNum);
         List<LyricsLineInfo> splitLyricsLineInfos = lyricsLineInfo.getSplitLyricsLineInfos();
         float lineBottomY = drawDownLyrics(canvas, paint, paintHL, splitLyricsLineInfos, splitLyricsLineNum, splitLyricsWordIndex, spaceLineHeight, lyricsWordHLTime, mCentreY);
+
+        //画倒计时圆点
+        if(getNeedCountDownLine().contains(lyricsLineNum)){
+            drawCountDownPoint(canvas);
+        }
+
         //画额外歌词
         lineBottomY = drawDownExtraLyrics(canvas, extraLrcPaint, extraLrcPaintHL, lyricsLineNum, extraSplitLyricsLineNum, extraSplitLyricsWordIndex, extraLrcSpaceLineHeight, lyricsWordHLTime, translateLyricsWordHLTime, lineBottomY);
 
@@ -400,7 +406,40 @@ public class ManyLyricsView extends AbstractLrcView {
         if ((mIsTouchIntercept || mTouchEventStatus != TOUCHEVENTSTATUS_INIT) && mIsDrawIndicator) {
             drawIndicator(canvas);
         }
+    }
 
+    private void drawCountDownPoint(Canvas canvas){
+        int lyricsLineNum = getLyricsLineNum();
+        LyricsLineInfo currentLine = getLrcLineInfos().get(lyricsLineNum);
+        int splitLyricsLineNum = getSplitLyricsLineNum();
+        LyricsLineInfo realInfo = currentLine.getSplitLyricsLineInfos().get(splitLyricsLineNum);
+        MyLog.d(TAG, "lyricsLineNum " + lyricsLineNum + " 词:" + realInfo.getLineLyrics());
+
+        long startTime = realInfo.getStartTime();
+        long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
+        MyLog.d(TAG, "startTime " + startTime + " lyricProgress " + lyricProgress);
+
+        long degree = startTime - lyricProgress;
+
+        if(degree <= 0){
+            MyLog.d(TAG, "倒计时 0");
+            return;
+        }
+
+        if(degree <= 1000){
+            MyLog.d(TAG, "倒计时 1");
+            return;
+        }
+
+        if(degree <= 2000){
+            MyLog.d(TAG, "倒计时 2");
+            return;
+        }
+
+        if(degree <= 3000){
+            MyLog.d(TAG, "倒计时 3");
+            return;
+        }
     }
 
     /**
