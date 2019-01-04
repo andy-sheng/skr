@@ -8,7 +8,10 @@ import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.rxretrofit.interceptor.UserAgentInterceptor;
 import com.common.utils.U;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -35,6 +38,7 @@ public class ApiManager {
      */
     public static final String NO_LOG_TAG = "NO-LOG: true";
 
+
     private Retrofit mDefalutRetrofit;
 
     /**
@@ -48,16 +52,42 @@ public class ApiManager {
      */
     private LinkedHashSet<Interceptor> mOutInterceptors = new LinkedHashSet<>();
 
+    private HashMap<String, String> mStaging2Online = new HashMap<>();
+
+    private HashMap<String, String> mOnline2Staging = new HashMap<>();
+
     private static class HttpManagerHolder {
         private static final ApiManager INSTANCE = new ApiManager();
     }
 
     private ApiManager() {
-
+        List<HostPair> l = new ArrayList<>();
+        /**
+         * 测试环境与线上环境相关的ip添加到这
+         */
+        {
+            HostPair hostPair = new HostPair("aaaa", "bbbb");
+            l.add(hostPair);
+        }
+        {
+            HostPair hostPair = new HostPair("cccc", "dddd");
+            l.add(hostPair);
+        }
+        for (HostPair hp : l) {
+            mStaging2Online.put(hp.staging, hp.online);
+            mOnline2Staging.put(hp.online, hp.staging);
+        }
     }
 
     public static final ApiManager getInstance() {
         return HttpManagerHolder.INSTANCE;
+    }
+
+    public String findOnLineHostByStagingHost(String host) {
+        if (mStaging2Online.containsKey(host)) {
+            return mStaging2Online.get(host);
+        }
+        return host;
     }
 
     /**
@@ -127,4 +157,13 @@ public class ApiManager {
         mCookieJar.clear();
     }
 
+    static class HostPair {
+        String staging;
+        String online;
+
+        public HostPair(String staging, String online) {
+            this.staging = staging;
+            this.online = online;
+        }
+    }
 }

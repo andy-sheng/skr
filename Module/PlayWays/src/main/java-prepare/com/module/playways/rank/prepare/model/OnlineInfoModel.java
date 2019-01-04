@@ -3,7 +3,9 @@ package com.module.playways.rank.prepare.model;
 import com.common.log.MyLog;
 import com.zq.live.proto.Room.OnlineInfo;
 
-public class OnlineInfoModel {
+import java.io.Serializable;
+
+public class OnlineInfoModel implements Serializable {
     /**
      * userID : 16
      * isOnline : true

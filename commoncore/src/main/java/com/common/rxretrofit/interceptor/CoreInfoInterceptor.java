@@ -1,10 +1,11 @@
 package com.common.rxretrofit.interceptor;
 
-import com.common.core.account.UserAccountManager;
+import com.common.rxretrofit.ApiManager;
 import com.common.utils.U;
 
 import java.io.IOException;
 
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,8 +17,19 @@ public class CoreInfoInterceptor implements Interceptor {
         Request request = chain.request();
         // todo 标识设备的唯一ID
         request = request.newBuilder()
-                .addHeader("Inframe-Client-ID",U.getDeviceUtils().getDeviceID())
+                .addHeader("Inframe-Client-ID", U.getDeviceUtils().getDeviceID())
                 .build();
+        if (!U.getChannelUtils().isTestChannel()) {
+            // 如果是测试环境的话
+            HttpUrl httpUrl = request.url();
+            String host = httpUrl.host();
+            host = ApiManager.getInstance().findOnLineHostByStagingHost(host);
+            // 替换host
+            httpUrl = httpUrl.newBuilder().host(host).build();
+            request = request.newBuilder()
+                    .url(httpUrl)
+                    .build();
+        }
         //before
         Response response = chain.proceed(request);
         //after
