@@ -1,8 +1,5 @@
 package com.common.core.myinfo;
 
-
-import android.text.TextUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -47,6 +44,7 @@ public class MyUserInfoManager {
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
                     MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
+                    MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
                     MyLog.d(TAG, "load myUserInfo=" + userInfo);
                     if (userInfo != null) {
                         setMyUserInfo(userInfo);

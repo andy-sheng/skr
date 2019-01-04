@@ -125,7 +125,7 @@ public class UserInfoManager {
         }
 
         UserInfoModel local = UserInfoLocalApi.getUserInfoByUUid(uuid);
-        if (local == null || !resultCallback.onGetLocalDB(local)) {
+        if (local == null || resultCallback == null || (resultCallback != null && !resultCallback.onGetLocalDB(local))) {
             Observable<ApiResult> apiResultObservable = userInfoServerApi.getUserInfo(uuid);
             ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
                 @Override
