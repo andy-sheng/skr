@@ -2,7 +2,6 @@ package com.module.playways.rank.prepare.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -29,7 +28,7 @@ public class MatchSucessLeftView extends View {
     protected void onDraw(Canvas canvas) {
         Paint p = new Paint();
 
-        p.setColor(Color.BLUE);
+        p.setColor(0xffCA2C60);
         //实例化路径
         Path path = new Path();
         //第一个点
@@ -43,4 +42,6 @@ public class MatchSucessLeftView extends View {
         path.close(); // 使这些点构成封闭的多边形
         canvas.drawPath(path, p);
     }
+
+
 }

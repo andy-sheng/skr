@@ -2,9 +2,49 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/img_matching_bg"
+    android:background="@color/white"
     android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.module.playways.rank.prepare.view.MatchSucessBottomView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.common.view.ex.ExTextView
+            android:textSize="@dimen/textsize_24_dp"
+            android:layout_marginBottom="@dimen/view_16_dp"
+            android:layout_above="@+id/iv_prepare"
+            android:id="@+id/tv_ready_time"
+            android:textStyle="bold"
+            android:textColor="#0C2275"
+            android:text="10s"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/iv_prepare"
+            android:layout_width="@dimen/view_206_dp"
+            android:layout_height="@dimen/view_54_dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_70_dp"
+            android:background="@drawable/btn_pipeichenggong_normal" />
+    </RelativeLayout>
+
+    <com.module.playways.rank.prepare.view.MatchSucessLeftView
+        android:id="@+id/bg_left_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.module.playways.rank.prepare.view.MatchSucessRightView
+        android:id="@+id/bg_right_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_top"
@@ -14,48 +54,37 @@
         android:layout_marginTop="@dimen/view_29_dp"
         android:background="@drawable/img_top_pipeichenggong_bg" />
 
-    <com.common.view.ex.ExImageView
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_120_dp"
-        android:background="@drawable/img_notify_pipeishijian_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/tv_ready_time"
-        android:textStyle="bold"
-        android:textColor="#0C2275"
-        android:text="准备倒计时 10s"
-        android:layout_marginTop="@dimen/view_148_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <RelativeLayout
+    <FrameLayout
+        android:clipChildren="false"
         android:layout_width="@dimen/view_220_dp"
-        android:layout_height="@dimen/view_220_dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
+        <RelativeLayout
+            android:clipChildren="false"
+            android:layout_marginTop="@dimen/view_32_dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_220_dp">
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_icon1"
+                android:layout_width="@dimen/view_88_dp"
+                android:layout_height="@dimen/view_88_dp"
+                android:layout_alignParentLeft="true" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/sdv_icon1"
-            android:layout_width="@dimen/view_88_dp"
-            android:layout_height="@dimen/view_88_dp"
-            android:layout_alignParentLeft="true" />
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_icon2"
+                android:layout_width="@dimen/view_88_dp"
+                android:layout_height="@dimen/view_88_dp"
+                android:layout_alignParentRight="true" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/sdv_icon2"
-            android:layout_width="@dimen/view_88_dp"
-            android:layout_height="@dimen/view_88_dp"
-            android:layout_alignParentRight="true" />
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/sdv_icon3"
-            android:layout_width="@dimen/view_88_dp"
-            android:layout_height="@dimen/view_88_dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_icon3"
+                android:layout_width="@dimen/view_88_dp"
+                android:layout_height="@dimen/view_88_dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/iv_vs"
@@ -63,13 +92,4 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/img_pipeichenggong_enabled" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_prepare"
-        android:layout_width="@dimen/view_206_dp"
-        android:layout_height="@dimen/view_54_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_70_dp"
-        android:background="@drawable/btn_pipeichenggong_normal" />
 </RelativeLayout>

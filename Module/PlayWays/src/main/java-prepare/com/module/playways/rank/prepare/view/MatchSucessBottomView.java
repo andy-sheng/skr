@@ -2,7 +2,6 @@ package com.module.playways.rank.prepare.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -30,7 +29,7 @@ public class MatchSucessBottomView extends View {
     protected void onDraw(Canvas canvas) {
         Paint p = new Paint();
 
-        p.setColor(Color.BLACK);
+        p.setColor(0xFFFFED61);
         //实例化路径
         Path path = new Path();
         //第一个点
