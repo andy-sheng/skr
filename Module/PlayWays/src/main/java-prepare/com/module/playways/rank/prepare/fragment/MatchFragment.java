@@ -366,7 +366,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchSuccessFragment.class)
                 .setAddToBackStack(false)
                 .setNotifyHideFragment(MatchFragment.class)
-                .setHasAnimation(true)
+                .setHasAnimation(false)
                 .addDataBeforeAdd(0, mPrepareData)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override

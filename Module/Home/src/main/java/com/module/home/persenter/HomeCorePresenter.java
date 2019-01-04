@@ -212,7 +212,7 @@ public class HomeCorePresenter {
                     if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
                             || MyUserInfoManager.getInstance().getSex() == 0
                             || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-                        boolean isUpAc = U.getActivityUtils().getTopActivity() instanceof UploadAccountInfoActivity
+                        boolean isUpAc = U.getActivityUtils().getTopActivity() instanceof UploadAccountInfoActivity;
                         if (!isUpAc) {
                             // 顶层的不是这个activity
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
