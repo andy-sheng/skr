@@ -267,15 +267,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         countDownSet.play(countDownT).with(countDownA);
         countDownSet.start();
 
-        HandlerTaskTimer.newBuilder().delay(6000).start(new HandlerTaskTimer.ObserverW() {
-            @Override
-            public void onNext(Integer integer) {
-                mVoteLeftMie.setSelected(true);
-                mVoteLeftMie.setClickable(false);
-                mVoteRightMie.setClickable(false);
-                mVoteLeftShadowIv.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     /**
