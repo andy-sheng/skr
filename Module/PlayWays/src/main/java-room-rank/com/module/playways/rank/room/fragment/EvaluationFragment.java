@@ -153,7 +153,15 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         startTimeTask();
 
-        animationGo();
+        mRootView.setVisibility(View.INVISIBLE);
+        HandlerTaskTimer.newBuilder().delay(500).start(new HandlerTaskTimer.ObserverW() {
+            @Override
+            public void onNext(Integer integer) {
+                mRootView.setVisibility(View.VISIBLE);
+                animationGo();
+            }
+        });
+
     }
 
     private void animationGo(){
