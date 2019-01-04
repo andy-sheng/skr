@@ -58,7 +58,11 @@ public class FragmentUtils {
         if (l.isEmpty()) {
             return null;
         }
-        return (BaseFragment) l.get(l.size() - 1);
+        if (l.get(l.size() - 1) instanceof BaseFragment) {
+            return (BaseFragment) l.get(l.size() - 1);
+        }
+
+        return null;
     }
 
     public BaseFragment findFragment(FragmentActivity activity, Class<? extends Fragment> fragment) {
@@ -126,7 +130,7 @@ public class FragmentUtils {
                             fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         } else {
                             ft = fragmentManager.beginTransaction();
-                            if(params.hasAnimation){
+                            if (params.hasAnimation) {
                                 ft.setCustomAnimations(params.enterAnim, params.exitAnim, params.enterAnim, params.exitAnim);
                             }
                             ft = ft.remove(f);
@@ -149,7 +153,7 @@ public class FragmentUtils {
                             break;
                         } else {
                             // 然后从后往前把 back2Fragment之前都移除掉
-                            if(ft==null) {
+                            if (ft == null) {
                                 ft = fragmentManager.beginTransaction();
                             }
                             ft = ft.remove(f);
@@ -526,6 +530,7 @@ public class FragmentUtils {
 
             /**
              * 注意这里数据只会在自己进程中，当
+             *
              * @param dataType
              * @param dataBeforeAdd
              * @return
