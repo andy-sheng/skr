@@ -2,9 +2,14 @@ package com.module.msg;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.Uri;
 
 import com.alibaba.fastjson.JSONObject;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.cache.BuddyCache;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.common.ICallback;
 import com.module.msg.model.CustomChatRoomMsg;
@@ -17,10 +22,11 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.UserInfo;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
-public class RongMsgManager {
+public class RongMsgManager implements RongIM.UserInfoProvider {
 
     public final static String TAG = "RongMsgAdapter";
 
@@ -66,6 +72,7 @@ public class RongMsgManager {
     public void init(Application application) {
         if (!mIsInit) {
             RongIM.init(application);
+            RongIM.setUserInfoProvider(this, true);
             mIsInit = true;
             RongIM.registerMessageType(CustomChatRoomMsg.class);
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
@@ -103,6 +110,29 @@ public class RongMsgManager {
                 }
             });
         }
+    }
+
+    @Override
+    public UserInfo getUserInfo(String useId) {
+        MyLog.d(TAG, "getUserInfo" + " useId = " + useId );
+        if (MyUserInfoManager.getInstance().getUid() == Integer.valueOf(useId)) {
+            UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
+                    MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
+            RongIM.getInstance().refreshUserInfoCache(userInfo);
+            return userInfo;
+        }
+
+        HandlerTaskTimer.newBuilder().start(new HandlerTaskTimer.ObserverW() {
+            @Override
+            public void onNext(Integer integer) {
+                BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(useId), true);
+                if (buddyCacheEntry != null) {
+                    UserInfo userInfo = new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), buddyCacheEntry.getName(), Uri.parse(buddyCacheEntry.getAvatar()));
+                    RongIM.getInstance().refreshUserInfoCache(userInfo);
+                }
+            }
+        });
+        return null;
     }
 
     public synchronized void addMsgProcessor(IPushMsgProcess processor) {
@@ -218,7 +248,14 @@ public class RongMsgManager {
     }
 
     public void startPrivateChat(Context context, String targetId, String title) {
-            RongIM.getInstance().startPrivateChat(context, targetId, title);
+        RongIM.getInstance().startPrivateChat(context, targetId, title);
+    }
+
+    public void updateCurrentUserInfo(){
+        UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
+                MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
+        RongIM.getInstance().setCurrentUserInfo(userInfo);
+        RongIM.getInstance().refreshUserInfoCache(userInfo);
     }
 
 }

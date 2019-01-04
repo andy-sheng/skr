@@ -63,6 +63,11 @@ public class RongMsgServiceImpl implements IMsgService {
         RongMsgManager.getInstance().startPrivateChat(context, targetId, title);
     }
 
+    @Override
+    public void updateCurrentUserInfo() {
+        RongMsgManager.getInstance().updateCurrentUserInfo();
+    }
+
 
     @Override
     public void init(Context context) {

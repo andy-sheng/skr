@@ -12,6 +12,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.module.ModuleServiceManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -79,6 +80,7 @@ public class MyUserInfoManager {
     public void setMyUserInfo(MyUserInfo myUserInfo) {
         if (myUserInfo != null) {
             mUser = myUserInfo;
+            ModuleServiceManager.getInstance().getMsgService().updateCurrentUserInfo();
             //user信息设定成功了，发出eventbus
             EventBus.getDefault().post(new MyUserInfoEvent.UserInfoChangeEvent());
         }
@@ -144,9 +146,9 @@ public class MyUserInfoManager {
     }
 
     public long getUid() {
-        if(mUser!=null && mUser.getUserId()!=0){
+        if (mUser != null && mUser.getUserId() != 0) {
             return mUser.getUserId();
-        }else{
+        } else {
             return UserAccountManager.getInstance().getUuidAsLong();
         }
     }

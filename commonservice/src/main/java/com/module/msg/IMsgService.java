@@ -62,4 +62,9 @@ public interface IMsgService extends IProvider {
      * @param title
      */
     void startPrivateChat(Context context, String targetId, String title);
+
+    /**
+     * 在融云服务器上更新当前用户信息
+     */
+    void updateCurrentUserInfo();
 }

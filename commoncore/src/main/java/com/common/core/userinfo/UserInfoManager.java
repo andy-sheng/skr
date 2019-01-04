@@ -1,8 +1,10 @@
 package com.common.core.userinfo;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -138,6 +140,7 @@ public class UserInfoManager {
                                 // 写入数据库
                                 UserInfoLocalApi.insertOrUpdate(jsonUserInfo, false, false);
                                 UserInfoModel userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
+                                BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfo));
 
                                 emitter.onNext(userInfo);
                                 emitter.onComplete();
@@ -259,30 +262,6 @@ public class UserInfoManager {
 //        }
 
     }
-
-
-    public void getFriends(ResultCallback resultCallback) {
-        // 拿到本地存储所有好友关系
-        // 根据返回值判断是否去服务器查询
-        // todo 仅测试
-        Uri testUri = Uri.parse("http://cms-bucket.nosdn.127.net/a2482c0b2b984dc88a479e6b7438da6020161219074944.jpeg");
-
-        UserInfoModel friend1 = new UserInfoModel();
-        friend1.setUserId(1001);
-        friend1.setNickname("帅哥");
-
-        UserInfoModel friend2 = new UserInfoModel();
-        friend2.setUserId(1002);
-        friend2.setNickname("美女");
-
-        List<UserInfoModel> list = new ArrayList<>();
-        list.add(friend1);
-        list.add(friend2);
-        if (resultCallback != null) {
-            resultCallback.onGetLocalDB(list);
-        }
-    }
-
 
 //    /**
 //     * 个人信息回调接口
