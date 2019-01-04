@@ -9,15 +9,18 @@
             android:name="com.module.home.HomeConfiguration"
             android:value="ConfigModule" />
 
-        <activity android:name=".updateinfo.EditInfoActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".updateinfo.EditInfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".updateinfo.UploadAccountInfoActivity"
+        <activity
+            android:name=".updateinfo.UploadAccountInfoActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="true"
-            android:windowSoftInputMode="stateUnspecified|adjustPan"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateUnspecified|adjustPan" />
 
     </application>
 

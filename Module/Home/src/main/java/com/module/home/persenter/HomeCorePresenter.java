@@ -20,6 +20,7 @@ import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.module.home.view.PermissionTipsView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -200,7 +201,7 @@ public class HomeCorePresenter {
     }
 
     public void checkUserInfo(String from) {
-        MyLog.d(TAG,"checkUserInfo" + " from=" + from);
+        MyLog.d(TAG, "checkUserInfo" + " from=" + from);
         if (UserAccountManager.getInstance().hasLoadAccountFromDB()) {
             if (!UserAccountManager.getInstance().hasAccount()) {
                 // 到时会有广告页或者启动页挡一下的，先不用管
@@ -211,8 +212,12 @@ public class HomeCorePresenter {
                     if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
                             || MyUserInfoManager.getInstance().getSex() == 0
                             || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
-                                .greenChannel().navigation();
+                        boolean isUpAc = U.getActivityUtils().getTopActivity() instanceof UploadAccountInfoActivity
+                        if (!isUpAc) {
+                            // 顶层的不是这个activity
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
+                                    .greenChannel().navigation();
+                        }
                     }
                 } else {
 
