@@ -3,9 +3,11 @@ package com.common.core.account;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
+import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -261,6 +263,8 @@ public class UserAccountManager {
                             int sex = profileJO.getInteger("sex");
                             String birthday = profileJO.getString("birthday");
                             String avatar = profileJO.getString("avatar");
+                            String sign = profileJO.getString("signature");
+                            Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
 
                             boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
 
@@ -271,6 +275,8 @@ public class UserAccountManager {
                             myUserInfo.setSex(sex);
                             myUserInfo.setBirthday(birthday);
                             myUserInfo.setAvatar(avatar);
+                            myUserInfo.setSignature(sign);
+                            myUserInfo.setLocation(location);
                             MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
 
                             UserAccount userAccount = new UserAccount();
