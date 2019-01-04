@@ -56,11 +56,10 @@ public interface IMsgService extends IProvider {
     IMessageFragment getMessageFragment();
 
     /**
-     * 启动会话界面
+     * 打开私聊页面
      * @param context
-     * @param type
      * @param targetId
      * @param title
      */
-    void startConversation(Context context, int type, String targetId, String title);
+    void startPrivateChat(Context context, String targetId, String title);
 }

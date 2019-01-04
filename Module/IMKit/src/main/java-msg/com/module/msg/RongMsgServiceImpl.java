@@ -59,8 +59,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void startConversation(Context context, int type, String targetId, String title) {
-        RongMsgManager.getInstance().startConversation(context, type, targetId, title);
+    public void startPrivateChat(Context context, String targetId, String title) {
+        RongMsgManager.getInstance().startPrivateChat(context, targetId, title);
     }
 
 

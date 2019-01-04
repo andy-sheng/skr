@@ -23,7 +23,6 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
-import com.module.msg.ConversationType;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.IOtherPersonView;
 
@@ -124,7 +123,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        ModuleServiceManager.getInstance().getMsgService().startConversation(getContext(), ConversationType.PRIVATE,
+                        ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
                                 String.valueOf(mUserInfoModel.getUserId()), mUserInfoModel.getNickname());
                     }
                 });

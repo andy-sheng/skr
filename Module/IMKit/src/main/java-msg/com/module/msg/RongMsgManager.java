@@ -217,10 +217,8 @@ public class RongMsgManager {
         });
     }
 
-    public void startConversation(Context context, int type, String targetId, String title) {
-        if (type == ConversationType.PRIVATE) {
-            RongIM.getInstance().startConversation(context, Conversation.ConversationType.PRIVATE, targetId, title);
-        }
+    public void startPrivateChat(Context context, String targetId, String title) {
+            RongIM.getInstance().startPrivateChat(context, targetId, title);
     }
 
 }
