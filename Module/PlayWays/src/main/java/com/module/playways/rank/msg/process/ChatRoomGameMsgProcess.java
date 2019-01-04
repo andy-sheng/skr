@@ -27,6 +27,7 @@ import com.zq.live.proto.Room.ExitGameBeforePlayMsg;
 import com.zq.live.proto.Room.ExitGameOutRoundMsg;
 import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinNoticeMsg;
+import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomMsg;
@@ -74,6 +75,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processExitGameOutRound(basePushInfo, msg.getExitGameOutRoundMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_VOTE_RESULT) {
             processVoteResult(basePushInfo, msg.getVoteResultMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_MACHINE_SCORE){
+            processMachineScore(basePushInfo, msg.getMachineScore());
         }
     }
 
@@ -85,7 +88,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
                 ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY,
                 ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND,
-                ERoomMsgType.RM_VOTE_RESULT
+                ERoomMsgType.RM_VOTE_RESULT,ERoomMsgType.RM_ROUND_MACHINE_SCORE
         };
     }
 
@@ -300,6 +303,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
 
         EventBus.getDefault().post(new VoteResultEvent(basePushInfo, voteInfoModels, userScoreModels));
+    }
+
+    // 处理机器打分
+    private void processMachineScore(BasePushInfo basePushInfo, MachineScore machineScore) {
+        // TODO: 2019/1/4  完善再补充
     }
 
 }

@@ -35,6 +35,14 @@ message RoomMsg
     ExitGameAfterPlayMsg exitGameAfterPlayMsg   = 108; //游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
     ExitGameOutRoundMsg exitGameOutRoundMsg     = 109; //游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
     VoteResultMsg voteResultMsg                 = 110; //游戏投票结果消息
+    MachineScore machineScore                   = 111; //实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
+}
+
+message MachineScore
+{
+    uint32 userID   = 1; // 演唱者
+    uint32 itemID   = 2; // 演唱曲目
+    uint32 score    = 3; // 机器分数
 }
 
 // 投票结果
@@ -116,6 +124,7 @@ enum ERoomMsgType {
     RM_EXIT_GAME_AFTER_PLAY  = 108; //在完成游戏后退出
     RM_EXIT_GAME_OUT_ROUND   = 109; //在游戏中,但不再round时退出
     RM_VOTE_RESULT           = 110; //游戏投票结果消息
+    RM_ROUND_MACHINE_SCORE   = 111; //实时机器评分
 }
 
 // 准备并开始游戏通知消息
