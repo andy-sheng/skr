@@ -114,7 +114,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
     @Override
     public UserInfo getUserInfo(String useId) {
-        MyLog.d(TAG, "getUserInfo" + " useId = " + useId );
+        MyLog.d(TAG, "getUserInfo" + " useId = " + useId);
         if (MyUserInfoManager.getInstance().getUid() == Integer.valueOf(useId)) {
             UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
                     MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
@@ -220,9 +220,13 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     }
 
     public void sendChatRoomMessage(String roomId, int messageType, JSONObject contentJson, ICallback callback) {
+        sendChatRoomMessage(roomId, messageType, contentJson.toJSONString(), callback);
+    }
+
+    public void sendChatRoomMessage(String roomId, int messageType, String content, ICallback callback) {
         CustomChatRoomMsg customChatRoomMsg = new CustomChatRoomMsg();
         customChatRoomMsg.setMessageType(messageType);
-        customChatRoomMsg.setContentJsonStr(contentJson.toJSONString());
+        customChatRoomMsg.setContentJsonStr(content);
         Message msg = Message.obtain(roomId, Conversation.ConversationType.CHATROOM, customChatRoomMsg);
         RongIM.getInstance().sendMessage(msg, "pushContent", "pushData", new IRongCallback.ISendMessageCallback() {
             @Override
@@ -251,7 +255,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         RongIM.getInstance().startPrivateChat(context, targetId, title);
     }
 
-    public void updateCurrentUserInfo(){
+    public void updateCurrentUserInfo() {
         UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
                 MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
         RongIM.getInstance().setCurrentUserInfo(userInfo);

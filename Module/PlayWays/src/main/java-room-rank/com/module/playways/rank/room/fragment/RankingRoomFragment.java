@@ -35,6 +35,7 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
+import com.module.playways.rank.room.gift.GiftContinueViewGroup;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
@@ -165,6 +166,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         initTopView();
         initLyricsView();
         initTurnChangeView();
+        initGiftDisplayView();
 
         showReadyGoView();
 
@@ -198,6 +200,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
+
 
     /**
      * 可以在此恢复数据
@@ -430,6 +433,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initGiftDisplayView() {
+        GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
     }
 
     private void showReadyGoView() {
@@ -703,11 +710,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
         if (file == null) {
             MyLog.w(TAG, "playLyric is not in local file");
-
             fetchLyricTask(songModel, play);
         } else {
             MyLog.w(TAG, "playLyric is exist");
-
             final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
             parseLyrics(fileName, play);
         }
@@ -747,7 +752,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 set.add(lyricsReader.getLineInfoIdByStartTs(mPlayingSongModel.getBeginMs()));
                 mManyLyricsView.setNeedCountDownLine(set);
 
-                if(!play){
+                if (!play) {
                     mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
                     mManyLyricsView.pause();
                 }

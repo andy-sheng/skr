@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoDB;
+import com.zq.live.proto.Common.UserInfo;
 
 import java.io.Serializable;
 
@@ -133,6 +134,20 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel = (UserInfoModel) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
+        }
+        return userInfoModel;
+    }
+
+    public static UserInfoModel parseFromPB(UserInfo model) {
+        UserInfoModel userInfoModel = new UserInfoModel();
+        if (model != null) {
+            userInfoModel.setUserId(model.getUserID());
+            userInfoModel.setNickname(model.getNickName());
+            userInfoModel.setSex(model.getSex().getValue());
+            userInfoModel.setAvatar(model.getAvatar());
+            userInfoModel.setSignature(model.getDescription());
+            userInfoModel.setIsSystem(model.getIsSystem() ? 1 : 0);
+
         }
         return userInfoModel;
     }

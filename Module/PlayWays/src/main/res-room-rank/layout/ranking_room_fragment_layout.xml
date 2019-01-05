@@ -77,11 +77,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_5_dp" />
 
+    <com.module.playways.rank.room.gift.GiftContinueViewGroup
+        android:id="@+id/gift_continue_vg"
+        android:layout_above="@+id/comment_view"
+        android:layout_marginBottom="@dimen/view_5_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <com.module.playways.rank.room.view.TurnChangeCardView
         android:id="@+id/turn_change_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_container_view"
         android:layout_marginTop="@dimen/view_34_dp"
-        android:visibility="gone"></com.module.playways.rank.room.view.TurnChangeCardView>
+        android:visibility="gone"/>
 </RelativeLayout>

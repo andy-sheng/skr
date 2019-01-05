@@ -7,12 +7,12 @@ public class SpecialEmojiMsgEvent {
     public final static int MSG_TYPE_SEND = 0;
     public final static int MSG_TYPE_RECE = 1;
 
-    int type = -1;
-    SpecialEmojiMsgType emojiType = SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN;
-    String action;
-    int count;
+    public int type = -1;
+    public SpecialEmojiMsgType emojiType = SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN;
+    public String action;
+    public int count;
 
-    BasePushInfo info;
+    public BasePushInfo info;
 
     public SpecialEmojiMsgEvent(BasePushInfo info, int type, SpecialEmojiMsgType emojiType, String action, int count) {
         this.type = type;
@@ -21,5 +21,6 @@ public class SpecialEmojiMsgEvent {
         this.action = action;
         this.count = count;
     }
+
 
 }

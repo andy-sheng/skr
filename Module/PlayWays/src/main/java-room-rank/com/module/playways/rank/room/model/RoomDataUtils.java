@@ -6,6 +6,7 @@ import com.common.utils.U;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
+import com.zq.live.proto.Common.ESex;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -181,5 +182,9 @@ public class RoomDataUtils {
     public static String getSaveAudioForAiFilePath() {
         String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", RoomData.AUDIO_FOR_AI_PATH);
         return saveAudioForAiFilePath;
+    }
+
+    public static ESex getSex(int sex){
+        return  ESex.fromValue(sex);
     }
 }

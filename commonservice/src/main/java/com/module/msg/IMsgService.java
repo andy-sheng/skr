@@ -46,6 +46,8 @@ public interface IMsgService extends IProvider {
      */
     void sendChatRoomMessage(String roomId, int messageType, JSONObject contentJson, ICallback callback);
 
+    void sendChatRoomMessage(String roomId, int messageType, String content, ICallback callback);
+
     /**
      * 其他module设置自己的push处理模块
      *

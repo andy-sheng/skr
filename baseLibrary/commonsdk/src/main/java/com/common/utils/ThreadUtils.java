@@ -1,6 +1,9 @@
 package com.common.utils;
 
 import android.os.Looper;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,6 +19,8 @@ import io.reactivex.schedulers.Schedulers;
 public class ThreadUtils {
 
     ThreadPoolExecutor mUrgentIOThreadPool;
+
+    ThreadPoolExecutor mSingleThreadPool;
 
     ThreadUtils() {
     }
@@ -68,9 +73,9 @@ public class ThreadUtils {
      * @return
      */
     public ThreadPoolExecutor getUrgentIoThreadPool() {
-        if(mUrgentIOThreadPool==null){
-            synchronized (this){
-                if(mUrgentIOThreadPool==null){
+        if (mUrgentIOThreadPool == null) {
+            synchronized (this) {
+                if (mUrgentIOThreadPool == null) {
                     mUrgentIOThreadPool = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                             60L, TimeUnit.SECONDS,
                             new SynchronousQueue<Runnable>(), new CustomThreadFactory());
@@ -82,10 +87,34 @@ public class ThreadUtils {
 
     /**
      * 比一般的IO线程优先级高点的紧急IO线程池子
+     *
      * @return
      */
     public Scheduler urgentIO() {
         return Schedulers.from(getUrgentIoThreadPool());
+    }
+
+    public ThreadPoolExecutor getSingleThreadPool() {
+        if (mSingleThreadPool == null) {
+            synchronized (this) {
+                if (mSingleThreadPool == null) {
+                    mSingleThreadPool = new ThreadPoolExecutor(1, 1,
+                            0L, TimeUnit.MILLISECONDS,
+                            new LinkedBlockingQueue<Runnable>(), new CustomThreadFactory());
+
+                }
+            }
+        }
+        return mSingleThreadPool;
+    }
+
+    /**
+     * 单线程队列线程池
+     *
+     * @return
+     */
+    public Scheduler singleThreadPoll() {
+        return Schedulers.from(getSingleThreadPool());
     }
 
     private static class CustomThreadFactory implements ThreadFactory {
