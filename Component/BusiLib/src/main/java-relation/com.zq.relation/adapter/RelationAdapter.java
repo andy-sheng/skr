@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.zq.relation.view.RelationHolderView;

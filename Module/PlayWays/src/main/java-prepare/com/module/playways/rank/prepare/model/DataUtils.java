@@ -1,6 +1,6 @@
 package com.module.playways.rank.prepare.model;
 
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 
 public class DataUtils {
     public static UserInfoModel parse2UserInfo(com.zq.live.proto.Common.UserInfo pbUserInfo) {

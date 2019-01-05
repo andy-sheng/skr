@@ -8,14 +8,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.zq.live.proto.Common.UserInfo;
 
 // 个人信息卡片view
 public class PersonInfoDialogView extends RelativeLayout {

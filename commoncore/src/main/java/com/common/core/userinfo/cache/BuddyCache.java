@@ -6,7 +6,7 @@ import android.os.Build;
 import com.common.cache.LruCache;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 
 import java.util.List;

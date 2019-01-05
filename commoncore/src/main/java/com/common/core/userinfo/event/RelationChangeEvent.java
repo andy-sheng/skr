@@ -1,6 +1,6 @@
 package com.common.core.userinfo.event;
 
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 
 // 关系改变的event 都是我主动发起的事件
 public class RelationChangeEvent {

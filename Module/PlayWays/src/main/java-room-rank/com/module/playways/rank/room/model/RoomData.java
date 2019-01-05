@@ -1,7 +1,7 @@
 package com.module.playways.rank.room.model;
 
 import com.common.core.account.UserAccountManager;
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;

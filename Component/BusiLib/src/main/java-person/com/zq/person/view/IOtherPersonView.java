@@ -1,6 +1,6 @@
 package com.zq.person.view;
 
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 
 public interface IOtherPersonView {
 

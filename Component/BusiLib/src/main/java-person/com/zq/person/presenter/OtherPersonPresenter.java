@@ -1,8 +1,7 @@
 package com.zq.person.presenter;
 
-import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;

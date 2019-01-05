@@ -152,6 +152,27 @@
         android:layout_marginTop="@dimen/view_278_dp"
         android:background="@drawable/gerenzhongxin_zhanji_bg">
 
+        <com.common.view.ex.ExTextView
+            android:id="@+id/level_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_160_dp"
+            android:layout_marginTop="@dimen/view_44_dp"
+            android:text="佛系skierIII"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_24_dp" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/rank_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/level_tv"
+            android:layout_alignLeft="@+id/level_tv"
+            android:layout_marginTop="@dimen/view_3_dp"
+            android:text="昌平情歌榜22位"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_16_dp" />
+
     </RelativeLayout>
 
     <com.common.view.ex.ExImageView

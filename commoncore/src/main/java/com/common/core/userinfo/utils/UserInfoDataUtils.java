@@ -1,8 +1,9 @@
-package com.common.core.userinfo;
+package com.common.core.userinfo.utils;
 
 import android.text.TextUtils;
 
 import com.common.core.myinfo.MyUserInfo;
+import com.common.core.userinfo.model.UserInfoModel;
 
 public class UserInfoDataUtils {
     /**

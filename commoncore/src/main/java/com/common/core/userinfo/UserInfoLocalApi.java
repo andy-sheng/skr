@@ -3,6 +3,8 @@ package com.common.core.userinfo;
 import com.common.core.db.GreenDaoManager;
 import com.common.core.db.UserInfoDBDao;
 import com.common.core.userinfo.event.UserInfoDBChangeEvent;
+import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
 
 import org.greenrobot.eventbus.EventBus;

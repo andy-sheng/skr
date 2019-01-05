@@ -1,6 +1,6 @@
 package com.common.core.userinfo.event;
 
-import com.common.core.userinfo.UserInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 
 public class UserInfoDBChangeEvent {
 

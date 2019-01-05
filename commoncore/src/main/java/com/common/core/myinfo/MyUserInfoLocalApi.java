@@ -3,9 +3,7 @@ package com.common.core.myinfo;
 import com.common.core.db.GreenDaoManager;
 import com.common.core.db.UserInfoDBDao;
 import com.common.core.userinfo.UserInfoDB;
-import com.common.core.userinfo.UserInfoDataUtils;
-import com.common.core.userinfo.UserInfoModel;
-import com.common.core.userinfo.event.UserInfoDBChangeEvent;
+import com.common.core.userinfo.utils.UserInfoDataUtils;
 import com.common.log.MyLog;
 
 /**

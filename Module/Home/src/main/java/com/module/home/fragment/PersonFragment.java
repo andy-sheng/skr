@@ -34,7 +34,6 @@ import com.module.home.model.RelationNumMode;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
 import com.zq.level.view.NormalLevelView;
-import com.zq.person.fragment.OtherPersonFragment;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -60,7 +59,11 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     ExTextView mFansNumTv;
     RelativeLayout mFollows;
     ExTextView mFollowsNumTv;
+
     RelativeLayout mMedalLayout;
+    ExTextView mLevelTv;
+    ExTextView mRankTv;
+
     ExImageView mAuditionRoomTv;
     ExImageView mMusicTestTv;
 
@@ -88,6 +91,9 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     private void initMedalView() {
         mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mLevelTv = (ExTextView)mRootView.findViewById(R.id.level_tv);
+        mRankTv = (ExTextView)mRootView.findViewById(R.id.rank_tv);
+
         NormalLevelView view = new NormalLevelView(getContext(), 2, 3, 5, 3);
         RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(110));
         rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
