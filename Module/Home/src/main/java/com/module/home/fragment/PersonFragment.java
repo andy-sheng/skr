@@ -88,11 +88,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     private void initMedalView() {
         mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
-        NormalLevelView view = new NormalLevelView(getContext(), 2, 3, 6, 3);
+        NormalLevelView view = new NormalLevelView(getContext(), 2, 3, 5, 3);
         RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(110));
-        rl.addRule(RelativeLayout.CENTER_VERTICAL);
         rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        rl.setMargins(U.getDisplayUtils().dip2px(32), 0, 0, 0);
+        rl.setMargins(U.getDisplayUtils().dip2px(32), U.getDisplayUtils().dip2px(20), 0, U.getDisplayUtils().dip2px(18));
         view.setLayoutParams(rl);
         mMedalLayout.addView(view);
     }

@@ -57,32 +57,53 @@ public class NormalLevelView extends RelativeLayout {
     }
 
     private void initStart() {
-
         float widDis = starTotalWidth / (totalStats + 1); //横向间距
         float highDis = starTotalHeight / (totalStats - 1); //纵向间距
 
-        for (int i = 0; i < totalStats; i++) {
-            ImageView imageView = new ImageView(getContext());
-            RelativeLayout.LayoutParams rl;
+        for (int i = 0; i < totalStats / 2 + 1; i++) {
+
+            // 左边的星星
+            ImageView imageView1 = new ImageView(getContext());
+            RelativeLayout.LayoutParams rl1;
             int left = (int) (widDis * (i + 1) - widthStar / 2);
             int bottom = Math.abs(starTotalHeight / 2 - (int) (highDis * i));
             if (totalStats % 2 != 0 && i == totalStats / 2) {
-                rl = new RelativeLayout.LayoutParams(largeStarWidth, largeStarHeight);
+                rl1 = new RelativeLayout.LayoutParams(largeStarWidth, largeStarHeight);
                 left = left - (largeStarWidth - widthStar) / 2;
-                rl.setMargins(left, 0, 0, bottom);
+                rl1.setMargins(left, 0, 0, bottom);
             } else {
-                rl = new RelativeLayout.LayoutParams(widthStar, heightStar);
-                rl.setMargins(left, 0, 0, bottom);
+                rl1 = new RelativeLayout.LayoutParams(widthStar, heightStar);
+                rl1.setMargins(left, 0, 0, bottom);
             }
-            rl.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            imageView.setLayoutParams(rl);
+            rl1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            rl1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            imageView1.setLayoutParams(rl1);
             if (i < selecStats) {
-                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang));
+                imageView1.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang));
             } else {
-                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
+                imageView1.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
             }
-            starts.add(imageView);
+            starts.add(imageView1);
+
+            if (totalStats % 2 != 0 && i == totalStats / 2) {
+                // 如果是放大的中间的星星，已处理，直接返回
+                break;
+            }
+
+            // 与左边对称的星星
+            ImageView imageView2 = new ImageView(getContext());
+            RelativeLayout.LayoutParams rl2;
+            rl2 = new RelativeLayout.LayoutParams(widthStar, heightStar);
+            rl2.setMargins(0, 0, left, bottom);
+            rl2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            rl2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            imageView2.setLayoutParams(rl2);
+            if ((totalStats - 1 - i) < selecStats) {
+                imageView2.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang));
+            } else {
+                imageView2.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
+            }
+            starts.add(imageView2);
         }
     }
 
