@@ -16,6 +16,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 
+import com.common.log.MyLog;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
@@ -77,6 +78,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        MyLog.d(TAG, "initData" + " savedInstanceState=" + savedInstanceState);
         initTopView();
         initMedalView();
         initAudioView();
