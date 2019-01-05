@@ -29,6 +29,9 @@ android {
 
             java.srcDirs += 'src/main/java-person'
             res.srcDirs += 'src/main/res-person'
+
+            java.srcDirs += 'src/main/java-level'
+            res.srcDirs += 'src/main/res-level'
         }
     }
 }

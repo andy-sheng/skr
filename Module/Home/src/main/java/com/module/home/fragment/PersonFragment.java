@@ -33,6 +33,7 @@ import com.module.home.R;
 import com.module.home.model.RelationNumMode;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
+import com.zq.level.view.NormalLevelView;
 import com.zq.person.fragment.OtherPersonFragment;
 import com.zq.relation.fragment.RelationFragment;
 
@@ -70,8 +71,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         return R.layout.person_fragment_layout;
     }
 
-    @Override
-    public void initData(@Nullable Bundle savedInstanceState) {
+    private void initTopView() {
         mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
@@ -84,7 +84,24 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
         mFollows = (RelativeLayout) mRootView.findViewById(R.id.follows);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
+    }
+
+    private void initMedalView() {
         mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        NormalLevelView view = new NormalLevelView(getContext(), 2, 3, 6, 3);
+        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(110));
+        rl.addRule(RelativeLayout.CENTER_VERTICAL);
+        rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        rl.setMargins(U.getDisplayUtils().dip2px(32), 0, 0, 0);
+        view.setLayoutParams(rl);
+        mMedalLayout.addView(view);
+    }
+
+    @Override
+    public void initData(@Nullable Bundle savedInstanceState) {
+        initTopView();
+        initMedalView();
+
         mAuditionRoomTv = (ExImageView) mRootView.findViewById(R.id.audition_room_tv);
         mMusicTestTv = (ExImageView) mRootView.findViewById(R.id.music_test_tv);
 
@@ -165,11 +182,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), OtherPersonFragment.class)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
+
                     }
                 });
 
