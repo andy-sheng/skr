@@ -58,9 +58,6 @@ public class HomeActivity extends BaseActivity {
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
 
         mMainVp.setViewPagerCanScroll(false);
-        if (mMsgService != null) {
-            mMainVp.setOffscreenPageLimit(2);
-        }
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
