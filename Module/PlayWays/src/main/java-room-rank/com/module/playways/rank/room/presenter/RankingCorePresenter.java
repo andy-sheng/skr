@@ -99,12 +99,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         });
-
-        Params params = Params.getFromPref();
-        EngineManager.getInstance().init("rankingroom", params);
-        EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-        // 不发送本地音频
-        EngineManager.getInstance().muteLocalAudioStream(true);
+        if(mRoomData.getGameId()>0) {
+            Params params = Params.getFromPref();
+            EngineManager.getInstance().init("rankingroom", params);
+            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            // 不发送本地音频
+            EngineManager.getInstance().muteLocalAudioStream(true);
+        }
     }
 
     @Override

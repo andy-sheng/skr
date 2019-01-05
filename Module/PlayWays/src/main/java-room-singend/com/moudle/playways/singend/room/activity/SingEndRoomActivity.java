@@ -48,7 +48,9 @@ public class SingEndRoomActivity extends BaseActivity {
         } else {
 
         }
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SingEndRoomFragment.class)
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, RankingRoomFragment.class)
+//                FragmentUtils.newAddParamsBuilder(this, SingEndRoomFragment.class)
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0, mRoomData)
                 .build()

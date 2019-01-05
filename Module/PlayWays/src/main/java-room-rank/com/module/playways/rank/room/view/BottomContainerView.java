@@ -17,6 +17,8 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.model.RoomData;
@@ -32,10 +34,6 @@ import com.zq.live.proto.Room.SpecialEmojiMsgType;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 
 public class BottomContainerView extends RelativeLayout {
 
@@ -157,22 +155,24 @@ public class BottomContainerView extends RelativeLayout {
                 count = 1;
             }
 
+            UserInfo senderInfo = new UserInfo.Builder()
+                    .setUserID((int) MyUserInfoManager.getInstance().getUid())
+                    .setNickName(MyUserInfoManager.getInstance().getNickName())
+                    .setAvatar(MyUserInfoManager.getInstance().getAvatar())
+                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().getSex()))
+                    .setDescription("")
+                    .setIsSystem(false)
+                    .build();
+
             RoomMsg roomMsg = new RoomMsg.Builder()
                     .setTimeMs(ts)
                     .setMsgType(ERoomMsgType.RM_SPECIAL_EMOJI)
                     .setRoomID(mRoomData.getGameId())
                     .setNo(ts)
                     .setPosType(EMsgPosType.EPT_UNKNOWN)
-                    .setSender(new UserInfo.Builder()
-                            .setUserID((int) MyUserInfoManager.getInstance().getUid())
-                            .setNickName(MyUserInfoManager.getInstance().getNickName())
-                            .setAvatar(MyUserInfoManager.getInstance().getAvatar())
-                            .setSex(ESex.fromValue(MyUserInfoManager.getInstance().getSex()))
-                            .setDescription("")
-                            .setIsSystem(false)
-                            .build()
-                    )
+                    .setSender(senderInfo)
                     .setSpecialEmojiMsg(new SpecialEmojiMsg.Builder()
+                            // 得加个continueID 标识是哪次连送
                             .setEmojiType(type)
                             .setCount(count)
                             .setEmojiAction(actionDesc)
@@ -189,23 +189,31 @@ public class BottomContainerView extends RelativeLayout {
                     mHandler.removeMessages(CLEAR_CONTINUE_FLAG);
                     // 5秒后连送重置
                     mHandler.sendEmptyMessageDelayed(CLEAR_CONTINUE_FLAG, 5000);
+
+                    /**
+                     * 伪装成push过去
+                     */
+                    BasePushInfo basePushInfo = new BasePushInfo();
+                    basePushInfo.setRoomID(mRoomData.getGameId());
+                    basePushInfo.setSender(senderInfo);
+                    basePushInfo.setTimeMs(ts);
+                    basePushInfo.setNo(ts);
+
+                    SpecialEmojiMsgEvent specialEmojiMsgEvent = new SpecialEmojiMsgEvent(basePushInfo);
+                    specialEmojiMsgEvent.emojiType = type;
+                    specialEmojiMsgEvent.count = count;
+                    specialEmojiMsgEvent.action = actionDesc;
+
+                    EventBus.getDefault().post(specialEmojiMsgEvent);
                 }
 
                 @Override
                 public void onFailed(Object obj, int errcode, String message) {
-
+                    //TODO test 测试需要
+                        onSucess(obj);
                 }
             });
         }
-//        Observable.create(new ObservableOnSubscribe<Object>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-//
-//
-//            }
-//        })
-//                .subscribeOn(U.getThreadUtils().singleThreadPoll())
-//                .subscribe();
     }
 
     @Override

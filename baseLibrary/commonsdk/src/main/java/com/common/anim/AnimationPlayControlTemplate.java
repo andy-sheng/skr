@@ -14,7 +14,7 @@ import java.util.LinkedList;
  * 循环播放动画时的控制模板类，封装点亮、背景、大礼物等播放的基本队列逻辑
  * Created by chengsimin on 16/6/17.
  */
-public abstract class AnimationPlayControlTemplate<MODEL,CONSUMER> {
+public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
     public static final String MODELAG = "AnimationPlayControlMODELemplate";
 
     static final int MSG_SMODELARMODEL = 80;
@@ -50,8 +50,8 @@ public abstract class AnimationPlayControlTemplate<MODEL,CONSUMER> {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case MSG_SMODELARMODEL:
-                        Pair<MODEL,CONSUMER> pair = (Pair<MODEL, CONSUMER>) msg.obj;
-                        onStart(pair.first,pair.second);
+                        Pair<MODEL, CONSUMER> pair = (Pair<MODEL, CONSUMER>) msg.obj;
+                        onStart(pair.first, pair.second);
                         break;
                     case MSG_END:
                         onEnd((MODEL) msg.obj);
@@ -80,12 +80,14 @@ public abstract class AnimationPlayControlTemplate<MODEL,CONSUMER> {
         }
         MODEL cur = mQueue.peekFirst();
         CONSUMER consumer = accept(cur);
-        if (consumer!=null) {
+        if (consumer != null) {
             // 肯定有消费者，才会走到这
             cur = mQueue.poll();
-            //取出来一个
-            processInBackGround(cur);
-            onStartInside(cur,consumer);
+            if (cur != null) {
+                //取出来一个
+                processInBackGround(cur);
+                onStartInside(cur, consumer);
+            }
         }
     }
 
@@ -94,7 +96,7 @@ public abstract class AnimationPlayControlTemplate<MODEL,CONSUMER> {
      *
      * @param model
      */
-    private void onStartInside(MODEL model,CONSUMER consumer) {
+    private void onStartInside(MODEL model, CONSUMER consumer) {
         MyLog.d(MODELAG, "onStartInside model:" + model);
         if (++mCurConsumerNumber > mMaxConsumerNumber) {
             mCurConsumerNumber = mMaxConsumerNumber;
@@ -102,7 +104,7 @@ public abstract class AnimationPlayControlTemplate<MODEL,CONSUMER> {
             return;
         }
         Message msg = mUiHandler.obtainMessage(MSG_SMODELARMODEL);
-        msg.obj = new Pair<>(model,consumer);
+        msg.obj = new Pair<>(model, consumer);
         mUiHandler.sendMessage(msg);
     }
 

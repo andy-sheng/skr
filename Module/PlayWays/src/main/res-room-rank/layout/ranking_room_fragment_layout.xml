@@ -80,9 +80,10 @@
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
         android:layout_above="@+id/comment_view"
-        android:layout_marginBottom="@dimen/view_5_dp"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/view_75_dp"/>
 
     <com.module.playways.rank.room.view.TurnChangeCardView
         android:id="@+id/turn_change_view"

@@ -7,12 +7,14 @@
     <com.module.playways.rank.room.gift.GiftContinuousView
         android:id="@+id/gift_continue_v1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <com.module.playways.rank.room.gift.GiftContinuousView
         android:id="@+id/gift_continue_v2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/gift_continue_v1" />
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:visibility="gone" />
 
 </merge>

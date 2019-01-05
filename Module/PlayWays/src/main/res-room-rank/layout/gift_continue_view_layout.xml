@@ -2,24 +2,21 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/view_86_dp"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/info_container"
         android:layout_width="@dimen/view_191_dp"
         android:layout_height="@dimen/view_30_dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
+        android:layout_marginTop="@dimen/view_5_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#FFED61">
 
         <com.common.image.fresco.BaseImageView
             android:id="@+id/send_avatar_iv"
-            android:layout_width="@dimen/view_26_dp"
-            android:layout_height="@dimen/view_26_dp"
+            android:layout_width="@dimen/view_28_dp"
+            android:layout_height="@dimen/view_28_dp"
             android:layout_centerVertical="true" />
 
         <com.common.view.ex.ExTextView
@@ -36,21 +33,21 @@
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_14_dp" />
 
-        <com.common.image.fresco.BaseImageView
-            android:id="@+id/gift_img_iv"
-            android:layout_width="@dimen/view_35_dp"
-            android:layout_height="@dimen/view_35_dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/desc_tv" />
-
     </com.common.view.ex.ExRelativeLayout>
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/gift_img_iv"
+        android:layout_width="@dimen/view_35_dp"
+        android:layout_height="@dimen/view_35_dp"
+        android:layout_marginLeft="@dimen/view_145_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/gift_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_3_dp"
         android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
         android:layout_toRightOf="@+id/info_container"
         android:text="X3"
         android:textColor="#FFE36E"

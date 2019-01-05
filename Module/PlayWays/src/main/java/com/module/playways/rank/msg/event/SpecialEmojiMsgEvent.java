@@ -14,6 +14,10 @@ public class SpecialEmojiMsgEvent {
 
     public BasePushInfo info;
 
+    public SpecialEmojiMsgEvent(BasePushInfo info) {
+        this.info = info;
+    }
+
     public SpecialEmojiMsgEvent(BasePushInfo info, int type, SpecialEmojiMsgType emojiType, String action, int count) {
         this.type = type;
         this.info = info;

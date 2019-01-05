@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -13,6 +15,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.utils.U;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
@@ -28,6 +31,7 @@ public class GiftContinuousView extends RelativeLayout {
     static final int STATUS_STEP1 = 2;
     static final int STATUS_STEP2 = 3;
 
+    static final int MSG_DISPLAY_OVER = 10;
     int mId;
 
     ExRelativeLayout mInfoContainer;
@@ -44,6 +48,17 @@ public class GiftContinuousView extends RelativeLayout {
     int mCurStatus = STATUS_IDLE;
 
     Listener mListener;
+
+    Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_DISPLAY_OVER:
+                    onPlayOver();
+                    break;
+            }
+        }
+    };
 
     public GiftContinuousView(Context context) {
         super(context);
@@ -62,7 +77,6 @@ public class GiftContinuousView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.gift_continue_view_layout, this);
-
         mInfoContainer = (ExRelativeLayout) this.findViewById(R.id.info_container);
         mSendAvatarIv = (BaseImageView) this.findViewById(R.id.send_avatar_iv);
         mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
@@ -78,8 +92,8 @@ public class GiftContinuousView extends RelativeLayout {
         mCurGiftPlayModel = model;
         AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(model.getSender().getAvatar())
                 .setCircle(true)
-                .setBorderWidth(2)
-                .setBorderColor(Color.parseColor("#fd7ba9"))
+                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                .setBorderColor(Color.parseColor("#FF79A9"))
                 .build()
         );
         mDescTv.setText(model.getSender().getNickname() + model.getAction());
@@ -105,7 +119,7 @@ public class GiftContinuousView extends RelativeLayout {
         mCurStatus = STATUS_STEP1;
         this.setVisibility(VISIBLE);
         mStep1Animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -getWidth(), 0);
-        mStep1Animator.setDuration(1000);
+        mStep1Animator.setDuration(300);
         mStep1Animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animation) {
@@ -124,11 +138,15 @@ public class GiftContinuousView extends RelativeLayout {
     private void step2() {
         //目前没有
         mCurStatus = STATUS_STEP2;
-        onPlayOver();
+
+        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
     }
 
     private void onPlayOver() {
         mCurStatus = STATUS_IDLE;
+
+        this.setVisibility(GONE);
         if (mListener != null) {
             mListener.onPlayOver(this, mCurGiftPlayModel);
         }
@@ -143,6 +161,9 @@ public class GiftContinuousView extends RelativeLayout {
         super.onDetachedFromWindow();
         if (mStep1Animator != null) {
             mStep1Animator.cancel();
+        }
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
         }
     }
 

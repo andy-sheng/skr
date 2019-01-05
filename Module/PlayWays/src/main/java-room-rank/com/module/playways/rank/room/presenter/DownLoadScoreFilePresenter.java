@@ -27,8 +27,10 @@ public class DownLoadScoreFilePresenter extends RxLifeCyclePresenter {
     }
 
     public void prepareRes() {
+        if(mPlayerInfoModels==null){
+            return;
+        }
         LinkedList<UrlRes> songResList = new LinkedList<>();
-
         for (PlayerInfoModel playerInfo : mPlayerInfoModels) {
             if(playerInfo.isSkrer()){
                 String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
@@ -46,6 +48,8 @@ public class DownLoadScoreFilePresenter extends RxLifeCyclePresenter {
     @Override
     public void destroy() {
         super.destroy();
-        mZipUrlResourceManager.cancelAllTask();
+        if (mZipUrlResourceManager != null) {
+            mZipUrlResourceManager.cancelAllTask();
+        }
     }
 }
