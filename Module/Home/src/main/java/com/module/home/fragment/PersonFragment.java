@@ -13,6 +13,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 
 import com.common.upload.UploadCallback;
@@ -74,6 +75,21 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         return R.layout.person_fragment_layout;
     }
 
+    @Override
+    public void initData(@Nullable Bundle savedInstanceState) {
+        initTopView();
+        initMedalView();
+        initAudioView();
+        initMusicTest();
+
+        initViewData();
+
+        mPersonCorePresenter = new PersonCorePresenter(this);
+        addPresent(mPersonCorePresenter);
+        mPersonCorePresenter.getRelationNum((int) MyUserInfoManager.getInstance().getUid());
+        mPersonCorePresenter.getReginRank((int) MyUserInfoManager.getInstance().getUid());
+    }
+
     private void initTopView() {
         mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
@@ -87,86 +103,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
         mFollows = (RelativeLayout) mRootView.findViewById(R.id.follows);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
-    }
-
-    private void initMedalView() {
-        mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
-        mLevelTv = (ExTextView)mRootView.findViewById(R.id.level_tv);
-        mRankTv = (ExTextView)mRootView.findViewById(R.id.rank_tv);
-
-        NormalLevelView view = new NormalLevelView(getContext(), 2, 3, 5, 3);
-        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(110));
-        rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        rl.setMargins(U.getDisplayUtils().dip2px(32), U.getDisplayUtils().dip2px(20), 0, U.getDisplayUtils().dip2px(18));
-        view.setLayoutParams(rl);
-        mMedalLayout.addView(view);
-    }
-
-    @Override
-    public void initData(@Nullable Bundle savedInstanceState) {
-        initTopView();
-        initMedalView();
-
-        mAuditionRoomTv = (ExImageView) mRootView.findViewById(R.id.audition_room_tv);
-        mMusicTestTv = (ExImageView) mRootView.findViewById(R.id.music_test_tv);
-
-        initViewData();
-
-        mPersonCorePresenter = new PersonCorePresenter(this);
-        addPresent(mPersonCorePresenter);
-        mPersonCorePresenter.getRelationNum((int) MyUserInfoManager.getInstance().getUid());
-
-        RxView.clicks(mFriends)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 好友，双向关注
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FRIENDS);
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
-                                        .setBundle(bundle)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
-
-                    }
-                });
-
-        RxView.clicks(mFans)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 粉丝，我关注的
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FANS);
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
-                                        .setBundle(bundle)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
-                    }
-                });
-
-        RxView.clicks(mFollows)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 关注, 关注我的
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FOLLOW);
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
-                                        .setBundle(bundle)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
-                    }
-                });
 
         RxView.clicks(mSettingTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -178,31 +114,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                                         .setAddToBackStack(true)
                                         .setHasAnimation(true)
                                         .build());
-                    }
-                });
-
-
-        RxView.clicks(mMedalLayout)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-
-                    }
-                });
-
-
-        RxView.clicks(mMusicTestTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 暂时先不做
-//                        U.getFragmentUtils().addFragment(
-//                                FragmentUtils.newAddParamsBuilder(getActivity(), MusicTestFragment.class)
-//                                        .setAddToBackStack(true)
-//                                        .setHasAnimation(true)
-//                                        .build());
                     }
                 });
 
@@ -256,7 +167,74 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                     }
                 });
 
+        RxView.clicks(mFriends)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // 好友，双向关注
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FRIENDS);
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setBundle(bundle)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
 
+                    }
+                });
+
+        RxView.clicks(mFans)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // 粉丝，我关注的
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FANS);
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setBundle(bundle)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+                    }
+                });
+
+        RxView.clicks(mFollows)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // 关注, 关注我的
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FOLLOW);
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                                        .setBundle(bundle)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+                    }
+                });
+    }
+
+    private void initMedalView() {
+        mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
+        mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
+
+        NormalLevelView view = new NormalLevelView(getContext(), 2, 3, 5, 3);
+        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(110));
+        rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        rl.setMargins(U.getDisplayUtils().dip2px(32), U.getDisplayUtils().dip2px(20), 0, U.getDisplayUtils().dip2px(18));
+        view.setLayoutParams(rl);
+        mMedalLayout.addView(view);
+    }
+
+    private void initAudioView() {
+        mAuditionRoomTv = (ExImageView) mRootView.findViewById(R.id.audition_room_tv);
         RxView.clicks(mAuditionRoomTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
@@ -267,7 +245,23 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                                 .navigation();
                     }
                 });
+    }
 
+    private void initMusicTest() {
+        mMusicTestTv = (ExImageView) mRootView.findViewById(R.id.music_test_tv);
+        RxView.clicks(mMusicTestTv)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        // 暂时先不做
+//                        U.getFragmentUtils().addFragment(
+//                                FragmentUtils.newAddParamsBuilder(getActivity(), MusicTestFragment.class)
+//                                        .setAddToBackStack(true)
+//                                        .setHasAnimation(true)
+//                                        .build());
+                    }
+                });
     }
 
     private void initViewData() {
@@ -302,6 +296,24 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             } else if (mode.getRelation() == UserInfoManager.RELATION_FOLLOW) {
                 mFollowsNumTv.setText(String.valueOf(mode.getCnt()));
             }
+        }
+    }
+
+    @Override
+    public void showReginRank(List<UserRankModel> list) {
+        UserRankModel reginRankModel = new UserRankModel();
+        if (list != null && list.size() > 0) {
+            for (UserRankModel model : list) {
+                if (model.getCategoy() == UserRankModel.REGION) {
+                    reginRankModel = model;
+                }
+            }
+        }
+
+        if (reginRankModel != null) {
+            mRankTv.setText(reginRankModel.getRegionDesc() + String.valueOf(reginRankModel.getSeq()) + "位");
+        } else {
+            mRankTv.setText("您当前还没有排名信息哦～");
         }
     }
 }

@@ -128,7 +128,6 @@ public class UserInfoManager {
                 @Override
                 public void process(ApiResult obj) {
                     if (obj.getErrno() == 0) {
-                        U.getToastUtil().showShort("获取个人信息更新成功");
                         final UserInfoModel jsonUserInfo = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                         //写入数据库
                         Observable.create(new ObservableOnSubscribe<UserInfoModel>() {

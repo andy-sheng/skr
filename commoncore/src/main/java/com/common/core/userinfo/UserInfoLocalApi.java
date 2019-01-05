@@ -69,7 +69,7 @@ public class UserInfoLocalApi {
      * @return
      */
     public static int insertOrUpdate(UserInfoModel userInfoModel, boolean relationChange, boolean blockChange) {
-        MyLog.d(TAG, "insertOrUpdate");
+        MyLog.d(TAG, "insertOrUpdate" + userInfoModel);
         if (userInfoModel == null) {
             MyLog.w(TAG, "insertOrUpdate relation == null");
             return 0;
