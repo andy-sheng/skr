@@ -57,7 +57,7 @@ public class ScorePrograssBar2 extends View {
         w2 = mPrDrawable.getIntrinsicWidth();
         h2 = mPrDrawable.getIntrinsicHeight();
 
-        ty = (h1 - h2) / 2;
+        ty = (h1 - h2) / 2+2;
         tx = (w1 - w2) / 2;
 
         sx = w1 * 25 / 100.0f;

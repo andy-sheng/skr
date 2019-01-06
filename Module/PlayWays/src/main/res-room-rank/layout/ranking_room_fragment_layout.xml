@@ -8,8 +8,7 @@
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/top_voice_bg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_245_dp"
-        android:layout_marginTop="@dimen/view_90_dp" />
+        android:layout_height="match_parent" />
 
 
     <com.zq.lyrics.widget.ManyLyricsView

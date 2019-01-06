@@ -38,7 +38,7 @@ public class MoreOpView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.more_op_view_layout, this);
-        setBackgroundResource(R.drawable.downmenu);
+        setBackgroundResource(R.drawable.tuichufangjian);
 
         mMenuContainer = (LinearLayout) this.findViewById(R.id.menu_container);
         mQuitBtnContainer = (RelativeLayout) this.findViewById(R.id.quit_btn_container);
