@@ -36,14 +36,9 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
                     if (list != null && list.size() > 0) {
-                        // TODO: 2018/12/18 仅测试使用多点数据
-                        List<SongModel> data = new ArrayList<>();
-                        for (int i = 0; i < 21; i++) {
-                            data.addAll(list);
-                        }
                         int offset = result.getData().getIntValue("offset");
                         if (view != null) {
-                            view.loadSongsDetailItems(data, offset, true);
+                            view.loadSongsDetailItems(list, offset, true);
                         }
                     } else {
                         view.loadSongsDetailItems(null, offset, false);
@@ -71,14 +66,9 @@ public class SongTagDetailsPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
                     if (list != null && list.size() > 0) {
-                        // TODO: 2018/12/18 仅测试使用多点数据
-                        List<SongModel> data = new ArrayList<>();
-                        for (int i = 0; i < 21; i++) {
-                            data.addAll(list);
-                        }
                         int offset = result.getData().getIntValue("offset");
                         if (view != null) {
-                            view.loadSongsDetailItems(data, offset, true);
+                            view.loadSongsDetailItems(list, offset, true);
                         }
                     } else {
                         if (view != null) {
