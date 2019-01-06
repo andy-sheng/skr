@@ -1,0 +1,86 @@
+package com.module.playways.rank.room.adapter;
+
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.model.RankInfoModel;
+import com.common.utils.U;
+import com.common.view.ex.ExTextView;
+import com.common.view.recyclerview.DiffAdapter;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.rank.R;
+
+public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.ViewHolder> {
+
+    public static final int VIEW_HOLDER_TYPE_TEXT = 1;
+
+    public LeaderBoardAdapter() {
+
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (VIEW_HOLDER_TYPE_TEXT == viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.board_item_layout, parent, false);
+            RankInfoItemHolder viewHolder = new RankInfoItemHolder(view);
+            return viewHolder;
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        RankInfoModel model = mDataList.get(position);
+        if (holder instanceof RankInfoItemHolder) {
+            RankInfoItemHolder rankInfoItemHolder = (RankInfoItemHolder) holder;
+            rankInfoItemHolder.bind(model);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDataList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        return VIEW_HOLDER_TYPE_TEXT;
+    }
+
+    public static class RankInfoItemHolder extends RecyclerView.ViewHolder {
+        ExTextView mTvRank;
+        SimpleDraweeView mSdvIcon;
+        ExTextView mTvName;
+        ExTextView mTvSegment;
+        ExTextView mTvStar;
+
+        public RankInfoItemHolder(View itemView) {
+            super(itemView);
+            mTvRank = (ExTextView) itemView.findViewById(R.id.tv_rank);
+            mSdvIcon = (SimpleDraweeView) itemView.findViewById(R.id.sdv_icon);
+            mTvName = (ExTextView) itemView.findViewById(R.id.tv_name);
+            mTvSegment = (ExTextView) itemView.findViewById(R.id.tv_segment);
+            mTvStar = (ExTextView) itemView.findViewById(R.id.tv_star);
+        }
+
+        public void bind(RankInfoModel rankInfoModel) {
+            mTvRank.setText(rankInfoModel.getRankSeq() + "");
+            mTvName.setText(rankInfoModel.getNickname());
+            mTvSegment.setText(rankInfoModel.getLevelDesc());
+            mTvStar.setText("X" + rankInfoModel.getStarCnt());
+            AvatarUtils.loadAvatarByUrl(mSdvIcon,
+                    AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
+                            .setCircle(true)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                            .setBorderColor(Color.WHITE)
+                            .build());
+        }
+    }
+}
