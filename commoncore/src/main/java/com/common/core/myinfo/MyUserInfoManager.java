@@ -3,6 +3,9 @@ package com.common.core.myinfo;
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -13,14 +16,21 @@ import com.module.ModuleServiceManager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.http.Query;
 
 /**
  * 保存个人详细信息，我的信息的管理, 其实是对User的decorate
@@ -49,24 +59,14 @@ public class MyUserInfoManager {
                     if (userInfo != null) {
                         setMyUserInfo(userInfo);
                     }
-                    // 从服务器拉一次
-//                    GetOwnInfoRsp rsp = MyUserInfoServerApi.getOwnInfoRsp(UserAccountManager.getInstance().getUuidAsLong());
-//                    if (rsp != null) {
-//                        myUserInfo = MyUserInfo.loadFrom(rsp);
-//                        if (myUserInfo != null) {
-//                            UserInfoLocalApi.insertOrUpdate(myUserInfo.getUserInfo(), false, false);
-//                            setMyUserInfo(myUserInfo);
-//                        }
-//                    }
+                    // 从服务器同步个人信息
+                    syncMyInfoFromServer();
                 }
                 mHasLoadFromDB = true;
                 EventBus.getDefault().post(new MyUserInfoEvent.UserInfoLoadOkEvent());
                 emitter.onComplete();
             }
         })
-//                .doOnSubscribe()
-//                .doOnTerminate()
-//                .debounce()
                 .subscribeOn(Schedulers.io())
                 .subscribe();
     }
@@ -81,6 +81,26 @@ public class MyUserInfoManager {
             ModuleServiceManager.getInstance().getMsgService().updateCurrentUserInfo();
             //user信息设定成功了，发出eventbus
             EventBus.getDefault().post(new MyUserInfoEvent.UserInfoChangeEvent());
+        }
+    }
+
+    /**
+     * 从服务器同步个人信息
+     */
+    private void syncMyInfoFromServer() {
+        MyUserInfoServerApi api = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
+        Call<ApiResult> apiResultCall = api.getUserInfo((int) getUid());
+        try {
+            Response<ApiResult> resultResponse = apiResultCall.execute();
+            ApiResult obj = resultResponse.body();
+            if (obj.getErrno() == 0) {
+                final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
+                MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
+                MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
+                setMyUserInfo(myUserInfo);
+            }
+        } catch (IOException e) {
+            MyLog.d(e);
         }
     }
 

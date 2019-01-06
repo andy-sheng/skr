@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.userinfo.UserInfoDB;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 
 import java.io.Serializable;
@@ -122,6 +123,19 @@ public class MyUserInfo implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public static MyUserInfo parseFromUserInfoModel(UserInfoModel userInfoModel) {
+        MyUserInfo myUserInfo = new MyUserInfo();
+        myUserInfo.setUserId(userInfoModel.getUserId());
+        myUserInfo.setUserNickname(userInfoModel.getNickname());
+        myUserInfo.setAvatar(userInfoModel.getAvatar());
+        myUserInfo.setBirthday(userInfoModel.getBirthday());
+        myUserInfo.setLocation(userInfoModel.getLocation());
+        myUserInfo.setSex(userInfoModel.getSex());
+        myUserInfo.setSignature(userInfoModel.getSignature());
+        myUserInfo.setUserDisplayname(userInfoModel.getNickname());
+        return myUserInfo;
     }
 
     public static UserInfoDB toUserInfoDB(MyUserInfo myUserInfo) {
