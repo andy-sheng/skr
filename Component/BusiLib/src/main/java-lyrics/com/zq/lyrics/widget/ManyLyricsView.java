@@ -413,11 +413,11 @@ public class ManyLyricsView extends AbstractLrcView {
         LyricsLineInfo currentLine = getLrcLineInfos().get(lyricsLineNum);
         int splitLyricsLineNum = getSplitLyricsLineNum();
         LyricsLineInfo realInfo = currentLine.getSplitLyricsLineInfos().get(splitLyricsLineNum);
-        MyLog.v(TAG, "lyricsLineNum " + lyricsLineNum + " 词:" + realInfo.getLineLyrics());
+//        MyLog.v(TAG, "lyricsLineNum " + lyricsLineNum + " 词:" + realInfo.getLineLyrics());
 
         long startTime = realInfo.getStartTime();
         long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
-        MyLog.d(TAG, "startTime " + startTime + " lyricProgress " + lyricProgress);
+//        MyLog.d(TAG, "startTime " + startTime + " lyricProgress " + lyricProgress);
 
         long degree = startTime - lyricProgress;
 
@@ -427,15 +427,15 @@ public class ManyLyricsView extends AbstractLrcView {
 
         Paint circlePaint = new Paint();
         circlePaint.setColor(getPaintHLColors()[0]);
-        MyLog.v(TAG, "degree " + degree);
+//        MyLog.v(TAG, "degree " + degree);
 
         if(degree <= 0){
-            MyLog.v(TAG, "倒计时 0");
+//            MyLog.v(TAG, "倒计时 0");
             return;
         }
 
         if(degree <= 1000){
-            MyLog.v(TAG, "倒计时 1");
+//            MyLog.v(TAG, "倒计时 1");
             circlePaint.setColor(getPaintHLColors()[0]);
             canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
             circlePaint.setColor(getSubPaintHLColor());
@@ -446,7 +446,7 @@ public class ManyLyricsView extends AbstractLrcView {
         }
 
         if(degree <= 2000){
-            MyLog.v(TAG, "倒计时 2");
+//            MyLog.v(TAG, "倒计时 2");
             circlePaint.setColor(getPaintHLColors()[0]);
             canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
 
@@ -457,7 +457,7 @@ public class ManyLyricsView extends AbstractLrcView {
         }
 
         if(degree <= 3000){
-            MyLog.v(TAG, "倒计时 3");
+//            MyLog.v(TAG, "倒计时 3");
             circlePaint.setColor(getPaintHLColors()[0]);
             canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
 
