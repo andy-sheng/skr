@@ -1,27 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9F4F1">
-
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/gesture_svga"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:visibility="gone"
-        app:antiAlias="true"
-        app:source="gesture.svga" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_24_dp"
-        android:src="@drawable/img_top_miedeng_bg" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -238,5 +221,35 @@
         app:antiAlias="true"
         app:source="start.svga" />
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/gesture_svga"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_135_dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:source="gesture.svga" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mie_deng_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:src="@drawable/img_top_miedeng_bg"
+        android:visibility="gone" />
+
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:src="@drawable/img_top_miedeng_bg"
+        android:visibility="gone" />
 
 </RelativeLayout>

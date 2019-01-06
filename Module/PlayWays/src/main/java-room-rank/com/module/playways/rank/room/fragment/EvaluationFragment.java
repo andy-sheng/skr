@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
@@ -46,6 +48,9 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     RoomData mRoomData;
 
     RelativeLayout mMainActContainer;
+    ExImageView mMieDengIv;
+    ExImageView mIvTitle;
+    SVGAImageView mGestureSvga;
 
     // 左边视图
     RelativeLayout mRlLeftArea;
@@ -76,8 +81,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     ExRelativeLayout mRlRight;
     ImageView mIvBottom;
 
-    ExImageView mIvTitle;
-
     HandlerTaskTimer mVoteTimeTask;
 
     AnimatorSet mLeftVoteAnimationSet;
@@ -95,19 +98,20 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mIvTitle = (ExImageView) mRootView.findViewById(R.id.iv_title);
+        mMieDengIv = (ExImageView) mRootView.findViewById(R.id.mie_deng_iv);
+        mGestureSvga = (SVGAImageView) mRootView.findViewById(R.id.gesture_svga);
 
         mVoteDownTv = (ExTextView) mRootView.findViewById(R.id.vote_down_tv);
         mVoteVsIv = (ExImageView) mRootView.findViewById(R.id.vote_vs_iv);
         mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
 
-
-        mRlLeftArea = (RelativeLayout)mRootView.findViewById(R.id.rl_left_area);
+        mRlLeftArea = (RelativeLayout) mRootView.findViewById(R.id.rl_left_area);
         mVoteLeftIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_left_iv);
         mVoteLeftNameTv = (ExTextView) mRootView.findViewById(R.id.vote_left_name_tv);
         mVoteLeftSongTv = (ExTextView) mRootView.findViewById(R.id.vote_left_song_tv);
         mVoteLeftShadowIv = (ExImageView) mRootView.findViewById(R.id.vote_left_shadow_iv);
 
-        mRlRightArea = (RelativeLayout)mRootView.findViewById(R.id.rl_right_area);
+        mRlRightArea = (RelativeLayout) mRootView.findViewById(R.id.rl_right_area);
         mVoteRightIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_right_iv);
         mVoteRigntNameTv = (ExTextView) mRootView.findViewById(R.id.vote_rignt_name_tv);
         mVoteRightSongTv = (ExTextView) mRootView.findViewById(R.id.vote_right_song_tv);
@@ -302,8 +306,8 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         countDownSet.play(countDownT).with(countDownA);
         countDownSet.start();
 
+        // VS 动画
         mVsSvga.setVisibility(View.VISIBLE);
-        mVsSvga.setLoops(1);
         mVsSvga.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
@@ -312,12 +316,14 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
             @Override
             public void onFinished() {
+                mVsSvga.stopAnimation();
                 mVsSvga.setVisibility(View.GONE);
                 mVoteVsIv.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onRepeat() {
+                mVsSvga.stopAnimation();
                 mVsSvga.setVisibility(View.GONE);
                 mVoteVsIv.setVisibility(View.VISIBLE);
             }
@@ -328,6 +334,50 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             }
         });
 
+        // 手势动画
+        MyLog.d(TAG, "animationGo" + System.currentTimeMillis());
+        mGestureSvga.setVisibility(View.VISIBLE);
+        mGestureSvga.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                MyLog.d(TAG, "animationGo onFinished" + System.currentTimeMillis());
+                mGestureSvga.stopAnimation();
+                mGestureSvga.setVisibility(View.GONE);
+                mIvTitle.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onRepeat() {
+                MyLog.d(TAG, "animationGo onRepeat" + System.currentTimeMillis());
+                mGestureSvga.stopAnimation();
+                mGestureSvga.setVisibility(View.GONE);
+                mIvTitle.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
+
+        // 灭他灯动画
+        mMieDengIv.setVisibility(View.VISIBLE);
+        ObjectAnimator animatorMieDengX = ObjectAnimator.ofFloat(mMieDengIv, "scaleX", 1f, 0.8f, 1f);
+        ObjectAnimator animatorMieDengY = ObjectAnimator.ofFloat(mMieDengIv, "scaleY", 1f, 0.8f, 1f);
+
+        AnimatorSet set = new AnimatorSet();
+        animatorMieDengX.setRepeatMode(ValueAnimator.REVERSE);
+        animatorMieDengX.setInterpolator(new OvershootInterpolator());
+        animatorMieDengY.setRepeatMode(ValueAnimator.REVERSE);
+        animatorMieDengY.setInterpolator(new OvershootInterpolator());
+        set.setDuration(1200);
+        set.play(animatorMieDengX).with(animatorMieDengY);
+        set.start();
     }
 
     /**

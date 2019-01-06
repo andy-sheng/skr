@@ -228,8 +228,6 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         animatorThird.setInterpolator(new OvershootInterpolator());
         animatorThird.start();
 
-
-        mVsSvga.setLoops(1);
         mVsSvga.setVisibility(View.VISIBLE);
         mVsSvga.setCallback(new SVGACallback() {
             @Override
@@ -239,12 +237,14 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
             @Override
             public void onFinished() {
+                mVsSvga.stopAnimation();
                 mVsSvga.setVisibility(View.GONE);
                 mIvVs.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onRepeat() {
+                mVsSvga.stopAnimation();
                 mVsSvga.setVisibility(View.GONE);
                 mIvVs.setVisibility(View.VISIBLE);
             }
