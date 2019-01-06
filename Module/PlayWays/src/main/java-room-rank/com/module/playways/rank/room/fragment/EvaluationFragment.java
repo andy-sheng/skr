@@ -216,13 +216,13 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         ObjectAnimator animatorRight = ObjectAnimator.ofFloat(mRlRightArea, "translationX", 0, -U.getDisplayUtils().dip2px(20), 0);
 
         animatorLeft.setDuration(300);
-        animatorLeft.setStartDelay(750);
+        animatorLeft.setStartDelay(300);
         animatorLeft.setRepeatMode(ValueAnimator.REVERSE);
         animatorLeft.setInterpolator(new OvershootInterpolator());
         animatorLeft.start();
 
         animatorRight.setDuration(300);
-        animatorRight.setStartDelay(750);
+        animatorRight.setStartDelay(300);
         animatorRight.setRepeatMode(ValueAnimator.REVERSE);
         animatorRight.setInterpolator(new OvershootInterpolator());
         animatorRight.start();
