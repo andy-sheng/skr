@@ -129,16 +129,7 @@ public class CommentView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommentMsgEvent event) {
-        CommentModel commentModel = new CommentModel();
-        commentModel.setUserId(event.info.getSender().getUserID());
-        if (mRoomData != null) {
-            UserInfoModel sender = mRoomData.getUserInfo(event.info.getSender().getUserID());
-            if (sender != null) {
-                commentModel.setAvatar(sender.getAvatar());
-            }
-        }
-        commentModel.setText(event.text);
-        commentModel.setCommentType(CommentModel.TYPE_TEXT);
+        CommentModel commentModel = CommentModel.parseFromEvent(event,mRoomData);
         mCommentAdapter.getDataList().add(0, commentModel);
         if (!mOnBottom || mDraging) {
             mHasDataUpdate = true;
