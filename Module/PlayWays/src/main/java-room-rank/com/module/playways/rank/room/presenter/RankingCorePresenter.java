@@ -434,6 +434,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    HandlerTaskTimer testTask;
 
     /**
      * 轮次信息有更新
@@ -463,9 +464,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             if (mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
                                 // 开始开始混伴奏，开始解除引擎mute
                                 File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
+                                File midiFile = SongResUtils.getMIDIFileByUrl(mRoomData.getSongModel().getMidi());
+
                                 if (accFile != null && accFile.exists()) {
                                     EngineManager.getInstance().muteLocalAudioStream(false);
-                                    EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
+                                    EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath()
+                                            , midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
                                     /**
                                      * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
                                      */
@@ -480,6 +484,17 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                         // 需要上传音频伪装成机器人
                                         EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
                                     }
+
+                                    //TODO test
+                                    testTask = HandlerTaskTimer.newBuilder().interval(5000)
+                                            .start(new HandlerTaskTimer.ObserverW() {
+                                                @Override
+                                                public void onNext(Integer integer) {
+                                                    int score = EngineManager.getInstance().getLineScore();
+                                                    U.getToastUtil().showShort("score:" + score);
+                                                    mIGameRuleView.updateScrollBarProgress(score);
+                                                }
+                                            });
                                 }
                             }
                         }
@@ -491,6 +506,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             MyLog.w(TAG, "不是我的轮次，停止发心跳，停止混音，闭麦");
+
+            if (testTask != null) {
+                testTask.dispose();
+            }
 
             cancelHeartBeatTask("切换唱将");
 
@@ -704,24 +723,19 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
         if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
-            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-                if (event.getObj() != null) {
-                    List<EngineEvent.UserVolumeInfo> list = (List<EngineEvent.UserVolumeInfo>) event.getObj();
-                    for (EngineEvent.UserVolumeInfo info : list) {
-
-                        if (info.getUid() == UserAccountManager.getInstance().getUuidAsLong()
-                                || info.getUid() == 0) {
-                            mUiHanlder.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mIGameRuleView.updateScrollBarProgress(info.getVolume() / 3);
-                                }
-                            });
-                            break;
-                        }
-                    }
-                }
-            }
+//            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+//                if (event.getObj() != null) {
+//                    List<EngineEvent.UserVolumeInfo> list = (List<EngineEvent.UserVolumeInfo>) event.getObj();
+//                    for (EngineEvent.UserVolumeInfo info : list) {
+//
+//                        if (info.getUid() == UserAccountManager.getInstance().getUuidAsLong()
+//                                || info.getUid() == 0) {
+//
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
         } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {
             //伴奏播放结束了也发结束轮次的通知了
             sendRoundOverInfo();

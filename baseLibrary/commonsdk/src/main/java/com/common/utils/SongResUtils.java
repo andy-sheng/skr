@@ -35,28 +35,28 @@ public class SongResUtils {
 
     public static final File getZRCELyricFileByUrl(String resUrl) {
 
-        return getFile(LYRIC_DIR, resUrl, SUFF_ZRCE);
+        return getFile(LYRIC_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ZRCE));
     }
 
     public static final File getAccFileByUrl(String resUrl) {
 
-        return getFile(ACC_DIR, resUrl, SUFF_ACC);
+        return getFile(ACC_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ACC));
     }
 
     public static final File getORIFileByUrl(String resUrl) {
 
-        return getFile(ORI_DIR, resUrl, SUFF_ORI);
+        return getFile(ORI_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ORI));
     }
 
     public static final File getMIDIFileByUrl(String resUrl) {
 
-        return getFile(MIDI_DIR, resUrl, SUFF_MIDI);
+        return getFile(MIDI_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_MIDI));
     }
 
-    private static File getFile(String dir, String url, String suff){
+    private static File getFile(String dir, String url, String suff) {
         File file = new File(dir + File.separator + getFileNameWithMD5(url) + "." + suff);
 
-        if(file.exists()){
+        if (file.exists()) {
             return file;
         }
 
@@ -65,22 +65,23 @@ public class SongResUtils {
 
     /**
      * 跟去url生成文件名字，不带后缀
+     *
      * @param origen
      * @return
      */
-    public static String getFileNameWithMD5(String origen){
-        if(TextUtils.isEmpty(origen)){
+    public static String getFileNameWithMD5(String origen) {
+        if (TextUtils.isEmpty(origen)) {
             return "";
         }
 
         return U.getMD5Utils().MD5_16(origen);
     }
 
-    public static String createLyricFileName(String url){
+    public static String createLyricFileName(String url) {
         return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + SUFF_ZRCE;
     }
 
-    public static String createTempLyricFileName(String url){
+    public static String createTempLyricFileName(String url) {
         return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_ZRCE;
     }
 }

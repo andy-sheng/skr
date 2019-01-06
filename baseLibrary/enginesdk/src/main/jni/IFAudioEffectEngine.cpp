@@ -5,76 +5,114 @@
 #include "audio_effect_live_processor.h"
 #include "audio_effect_processor_factory.h"
 #include "CommonTools.h"
-
-#include "SMAudioEffectProcessor.h"
+#include "base_scoring.h"
+#include "pitch_scoring.h"
+#include "CCalcBaseband.h"
+#include "mel_chord_ana.h"
 
 #define LOG_TAG "IFAudioEffectEngine"
 
-//SMAudioEffectProcessor* effectProcessor = NULL;
-AudioEffectProcessor* effectProcessor = NULL;
-//FILE* sourcePCMFile = NULL;
-//FILE* targetPCMFile = NULL;
+
+AudioEffectProcessor *effectProcessor = NULL;
+BaseScoring* scoring = NULL;
 
 JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_initAudioEffect
-        (JNIEnv * env, jobject obj, jobject audioEffectJNI) {
+        (JNIEnv *env, jobject obj, jobject audioEffectJNI) {
     effectProcessor = AudioEffectProcessorFactory::GetInstance()->buildLiveAudioEffectProcessor();
-    AudioEffect* audioEffect = AudioEffectAdapter::GetInstance()->buildAudioEffect(audioEffectJNI, env);
+    AudioEffect *audioEffect = AudioEffectAdapter::GetInstance()->buildAudioEffect(audioEffectJNI,
+                                                                                   env);
     effectProcessor->init(audioEffect);
-//    sourcePCMFile = fopen("/mnt/sdcard/source.pcm", "wb+");
-    //targetPCMFile = fopen("/mnt/sdcard/target.pcm", "wb+");
 }
 
 JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_setAudioEffect
-        (JNIEnv * env, jobject obj, jobject audioEffectJNI) {
-    if(NULL != effectProcessor) {
-        AudioEffect* audioEffect = AudioEffectAdapter::GetInstance()->buildAudioEffect(audioEffectJNI, env);
+        (JNIEnv *env, jobject obj, jobject audioEffectJNI) {
+    if (NULL != effectProcessor) {
+        AudioEffect *audioEffect = AudioEffectAdapter::GetInstance()->buildAudioEffect(
+                audioEffectJNI, env);
         effectProcessor->setAudioEffect(audioEffect);
-//        effectProcessor->onEffectSelect(EFFECT_WARM);
     }
 }
 
 JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_processAudioFrames
-        (JNIEnv * env, jobject obj, jbyteArray samplesJni, jint numOfSamples, jint bytesPerSample, jint channels, jint sampleRate) {
-//    if(NULL == effectProcessor) {
-//        effectProcessor = new SMAudioEffectProcessor();
-//        effectProcessor->initEffect(sampleRate, channels, numOfSamples);
-//    }
-    if(NULL != effectProcessor) {
-        byte* data = (byte*)env->GetByteArrayElements(samplesJni, 0);
-        short* samples = (short*)data;
-        int length = numOfSamples * 2;
-//        fwrite(samples, sizeof(short), length, sourcePCMFile);
-        if(channels == 2) {
-            for(int i = 0; i < length / 2; i++) {
+        (JNIEnv *env, jobject obj, jbyteArray samplesJni, jint numOfSamples, jint bytesPerSample,
+         jint channels, jint sampleRate, jlong currentTimeMills) {
+    if (NULL != effectProcessor) {
+        byte *data = (byte *) env->GetByteArrayElements(samplesJni, 0);
+        short *samples = (short *) data;
+        //1:转换为单声道数据
+        int length = numOfSamples / sizeof(short);
+        if (channels == 2) {
+            for (int i = 0; i < length / 2; i++) {
                 samples[i] = samples[i * 2];
             }
         }
+        //2:送入打分处理器
+        if(NULL != scoring) {
+            scoring->doScoring(samples, length, currentTimeMills);
+        }
+        //3:送入音效处理器
         effectProcessor->process(samples, length, 0, 0);
-        //fwrite(samples, sizeof(short), length, targetPCMFile);
-//        float* bufferInFloat = new float[length];
-//        short_to_float(samples, bufferInFloat, length);
-//        effectProcessor->Process(bufferInFloat, length, 0);
-//        float_to_short(bufferInFloat, samples, length);
-//        if(bufferInFloat) {
-//            delete[] bufferInFloat;
-//        }
-        env->SetByteArrayRegion(samplesJni, 0, numOfSamples, (jbyte*)samples);
-        env->ReleaseByteArrayElements(samplesJni, (jbyte*)data, 0);
+        env->SetByteArrayRegion(samplesJni, 0, numOfSamples, (jbyte *) samples);
+        env->ReleaseByteArrayElements(samplesJni, (jbyte *) data, 0);
     }
 }
 
 
 JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_destroyAudioEffect
-        (JNIEnv * env, jobject obj){
-    if(NULL != effectProcessor) {
+        (JNIEnv *env, jobject obj) {
+    if (NULL != effectProcessor) {
         effectProcessor->destroy();
         delete effectProcessor;
         effectProcessor = NULL;
     }
-//    if(sourcePCMFile) {
-//        fclose(sourcePCMFile);
-//    }
-    //if(targetPCMFile) {
-      //  fclose(targetPCMFile);
-    //}
+}
+
+
+/*** Begin Score Processor ***/
+extern "C"
+JNIEXPORT jint JNICALL
+Java_media_ushow_score_ScoreProcessorService_init(JNIEnv *env, jobject instance, jint sampleRate,
+                                                  jint channels, jint sampleFormat,
+                                                  jint bufferSizeInShorts, jstring melFile_) {
+    const char *melFilePath = env->GetStringUTFChars(melFile_, 0);
+    scoring = new PitchScoring();
+    LOGI("before scoring->getMinBufferSize channels is %d bufferSizeInShorts is %d\n", channels, bufferSizeInShorts);
+    bufferSizeInShorts = scoring->getMinBufferSize(sampleRate, channels, sampleFormat, bufferSizeInShorts);
+    LOGI("bufferSizeInShorts is %d \n", bufferSizeInShorts);
+    scoring->init(sampleRate, channels, sampleFormat, (char*)melFilePath);
+    LOGI("after scoring->init \n");
+    env->ReleaseStringUTFChars(melFile_, melFilePath);
+    return bufferSizeInShorts;
+
+}
+
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_media_ushow_score_ScoreProcessorService_getScore(JNIEnv *env, jobject instance) {
+    int score = -1;
+    if (NULL != scoring) {
+        score = scoring->getScore();
+    }
+    return score;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_media_ushow_score_ScoreProcessorService_setDestroyScoreProcessorFlag(JNIEnv *env,
+                                                                          jobject instance,
+                                                                          jboolean destroyScoreProcessorFlag) {
+    if(NULL != scoring) {
+        scoring->setNeedDestroy(destroyScoreProcessorFlag);
+    }
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_media_ushow_score_ScoreProcessorService_destroy(JNIEnv *env, jobject instance) {
+    if(NULL != scoring) {
+        scoring->destroy();
+        delete scoring;
+        scoring = NULL;
+    }
 }

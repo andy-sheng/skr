@@ -80,6 +80,27 @@ public class FileUtils {
     }
 
     /**
+     * 传入一个文件路径，文件后缀入 http://www.baidu.com/a.jpg 返回 jpg
+     *
+     * @param path
+     * @return
+     */
+    public String getSuffixFromUrl(String path, String defaultExt) {
+        String extension = "";
+        if (!TextUtils.isEmpty(path)) {
+            int indexOfSlash = path.lastIndexOf('/');
+            int indexOfDot = path.lastIndexOf('.');
+            if (indexOfDot > indexOfSlash) {
+                extension = path.substring(indexOfDot + 1);
+            }
+        }
+        if (TextUtils.isEmpty(extension)) {
+            return defaultExt;
+        }
+        return extension;
+    }
+
+    /**
      * 传入一个文件路径，返回文件名  /sdcard/a.jpg 返回 a.jpg
      *
      * @param path

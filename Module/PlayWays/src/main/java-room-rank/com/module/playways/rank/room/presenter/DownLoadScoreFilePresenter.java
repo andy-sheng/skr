@@ -35,8 +35,8 @@ public class DownLoadScoreFilePresenter extends RxLifeCyclePresenter {
             if(playerInfo.isSkrer()){
                 String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
                 if (!TextUtils.isEmpty(midiUrl)) {
-                    UrlRes midi = new UrlRes(midiUrl, SongResUtils.getMIDIDir(), SongResUtils.SUFF_MIDI);
-                    songResList.add(midi);
+//                    UrlRes midi = new UrlRes(midiUrl, SongResUtils.getMIDIDir(), SongResUtils.SUFF_MIDI);
+//                    songResList.add(midi);
                 }
             }
         }

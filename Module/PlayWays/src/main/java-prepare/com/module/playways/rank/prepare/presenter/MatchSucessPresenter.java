@@ -9,6 +9,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
+import com.common.utils.U;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.ReadyNoticeEvent;
 import com.module.playways.rank.prepare.MatchServerApi;
@@ -64,7 +65,8 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         ArrayList<UrlRes> urlResArrayList = new ArrayList<>();
         Observable.fromIterable(prepareData.getPlayerInfoList())
                 .subscribe(playerInfo -> {
-                            UrlRes lyric = new UrlRes(playerInfo.getSongList().get(0).getLyric(), SongResUtils.getLyricDir(), SongResUtils.SUFF_ZRCE);
+                            String url = playerInfo.getSongList().get(0).getLyric();
+                            UrlRes lyric = new UrlRes(url, SongResUtils.getLyricDir(), U.getFileUtils().getSuffixFromUrl(url,SongResUtils.SUFF_ZRCE));
                             urlResArrayList.add(lyric);
                         }, throwable -> MyLog.e(TAG, throwable)
                         , () -> {

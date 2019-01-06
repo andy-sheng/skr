@@ -12,7 +12,6 @@ import media.ushow.audio_effect.IFAudioEffectEngine;
 public class CbEngineAdapter {
     public final static String TAG = "CbEngineAdapter";
 
-
     private static class CbEngineAdapterHolder {
         private static final CbEngineAdapter INSTANCE = new CbEngineAdapter();
     }
@@ -298,18 +297,30 @@ public class CbEngineAdapter {
     }
 
     public boolean processAudioFrames(byte[] samples,
-                                   int numOfSamples,
-                                   int bytesPerSample,
-                                   int channels,
-                                   int samplesPerSec) {
+                                      int numOfSamples,
+                                      int bytesPerSample,
+                                      int channels,
+                                      int samplesPerSec,
+                                      long ts,
+                                      String midiPath
+    ) {
         if (audioEffectEngine != null) {
-            audioEffectEngine.processAudioFrames(samples,
+            audioEffectEngine.processAudioBuffer(samples,
                     numOfSamples,
                     bytesPerSample,
                     channels,
-                    samplesPerSec);
+                    samplesPerSec, ts, midiPath);
             return true;
+        }else{
+            MyLog.d(TAG,"processAudioFrames audioEffectEngine==null");
+            return false;
         }
-        return false;
+    }
+
+    public int getLineScore() {
+        if (audioEffectEngine != null) {
+            return audioEffectEngine.getLineScore();
+        }
+        return 0;
     }
 }

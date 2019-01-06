@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_setAud
  * Signature: ([BIIII)V
  */
 JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_processAudioFrames
-  (JNIEnv *, jobject, jbyteArray, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jbyteArray, jint, jint, jint, jint, jlong);
 
 JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_destroyAudioEffect
         (JNIEnv *, jobject);

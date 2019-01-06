@@ -240,8 +240,6 @@ public class AgoraEngineAdapter {
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
 
-            setIFAudioEffectEngine(mConfig.getStyleEnum());
-
             // 设置onRecordFrame回调的数据
             setRecordingAudioFrameParameters(44100, 2, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
             setPlaybackAudioFrameParameters(44100, 2, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
@@ -862,9 +860,9 @@ public class AgoraEngineAdapter {
         mRtcEngine.setAudioMixingPosition(posMs);
     }
 
-
     public void setIFAudioEffectEngine(final AudioEffectStyleEnum styleEnum) {
-        if (styleEnum == null || styleEnum == AudioEffectStyleEnum.ORIGINAL) {
+        tryInitRtcEngine();
+        if (styleEnum == null) {
             mRtcEngine.registerAudioFrameObserver(null);
         } else {
             // 注册这玩意怎么会导致没有声音,return false 就会丢弃
@@ -875,13 +873,13 @@ public class AgoraEngineAdapter {
                                              int bytesPerSample,
                                              int channels,
                                              int samplesPerSec) {
-                    if (mConfig.getStyleEnum() != AudioEffectStyleEnum.ORIGINAL) {
-                        CbEngineAdapter.getInstance().processAudioFrames(samples,
-                                numOfSamples,
-                                bytesPerSample,
-                                channels,
-                                samplesPerSec);
-                    }
+                    CbEngineAdapter.getInstance().processAudioFrames(samples,
+                            numOfSamples,
+                            bytesPerSample,
+                            channels,
+                            samplesPerSec,
+                            getAudioMixingCurrentPosition() + mConfig.getMixMusicBeginOffset(),
+                            mConfig.getMidiPath());
                     return true;
                 }
 

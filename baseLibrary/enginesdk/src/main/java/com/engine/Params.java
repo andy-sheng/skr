@@ -95,6 +95,8 @@ public class Params implements Serializable {
     private AudioEffectStyleEnum styleEnum = null;// 混响style
     private boolean enableSpeakerphone = false;// 开启扬声器
     private String mMixMusicFilePath;// 伴奏路径
+    private String mMidiPath;// midi打分文件路径
+    private long mMixMusicBeginOffset;// midi文件起始偏移量
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -402,6 +404,22 @@ public class Params implements Serializable {
 
     public boolean isAllRemoteVideoStreamsMute() {
         return allRemoteVideoStreamsMute;
+    }
+
+    public void setMidiPath(String midiPath) {
+        mMidiPath = midiPath;
+    }
+
+    public String getMidiPath() {
+        return mMidiPath;
+    }
+
+    public void setMixMusicBeginOffset(long mixMusicBeginOffset) {
+        mMixMusicBeginOffset = mixMusicBeginOffset;
+    }
+
+    public long getMixMusicBeginOffset() {
+        return mMixMusicBeginOffset;
     }
 
     public static class Builder {
