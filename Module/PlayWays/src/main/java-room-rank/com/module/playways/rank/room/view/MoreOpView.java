@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -21,7 +22,7 @@ public class MoreOpView extends RelativeLayout {
     ExTextView mQuitBtn;
     RelativeLayout mVoiceControlBtnContainer;
     ExTextView mVoiceControlBtn;
-
+    View mDivideLine;
     PopupWindow mPopupWindow;
 
     Listener mListener;
@@ -44,6 +45,8 @@ public class MoreOpView extends RelativeLayout {
         mQuitBtn = (ExTextView) this.findViewById(R.id.quit_btn);
         mVoiceControlBtnContainer = (RelativeLayout) this.findViewById(R.id.voice_control_btn_container);
         mVoiceControlBtn = (ExTextView) this.findViewById(R.id.voice_control_btn);
+        mDivideLine = this.findViewById(R.id.divide_line);
+
         mQuitBtnContainer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,13 +66,13 @@ public class MoreOpView extends RelativeLayout {
                     if (mVoiceOpen) {
                         mVoiceControlBtn.setText("关闭声音");
                         Drawable drawableLeft = getResources().getDrawable(
-                                R.drawable.soundon);
+                                R.drawable.soundoff);
                         mVoiceControlBtn.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                                 null, null, null);
                     } else {
                         mVoiceControlBtn.setText("打开声音");
                         Drawable drawableLeft = getResources().getDrawable(
-                                R.drawable.soundoff);
+                                R.drawable.soundon);
                         mVoiceControlBtn.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                                 null, null, null);
                     }
@@ -81,7 +84,7 @@ public class MoreOpView extends RelativeLayout {
 
     public void showAt(View view) {
         if (mPopupWindow == null) {
-            mPopupWindow = new PopupWindow(this, U.getDisplayUtils().dip2px(118), U.getDisplayUtils().dip2px(115));
+            mPopupWindow = new PopupWindow(this, U.getDisplayUtils().dip2px(118), ViewGroup.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
             mPopupWindow.setOutsideTouchable(true);
         }
@@ -90,8 +93,10 @@ public class MoreOpView extends RelativeLayout {
         }
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             mVoiceControlBtnContainer.setVisibility(GONE);
+            mDivideLine.setVisibility(GONE);
         } else {
             mVoiceControlBtnContainer.setVisibility(VISIBLE);
+            mDivideLine.setVisibility(VISIBLE);
         }
     }
 

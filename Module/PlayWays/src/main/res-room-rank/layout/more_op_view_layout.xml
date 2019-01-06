@@ -31,6 +31,7 @@
 
 
         <View
+            android:id="@+id/divide_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1_dp"
             android:background="#2E3041" />

@@ -598,7 +598,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void showLastedTime(long wholeTile) {
+    public void showLeftTime(long wholeTile) {
         MyLog.d(TAG, "showLastedTime" + " wholeTile=" + wholeTile);
         if(mShowLastedTimeTask != null){
             mShowLastedTimeTask.dispose();

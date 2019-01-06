@@ -18,6 +18,7 @@ import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
@@ -49,7 +50,8 @@ import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_AFTER_P
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
 public class SingEndCorePresenter extends RxLifeCyclePresenter {
-    String TAG = "RankingCorePresenter";
+    public String TAG = "SingEndCorePresenter";
+
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;
 
@@ -390,7 +392,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                                     EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
                                     // 还应开始播放歌词
                                     mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-                                    mIGameRuleView.showLastedTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
+                                    mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
                                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
                                 }
                             }

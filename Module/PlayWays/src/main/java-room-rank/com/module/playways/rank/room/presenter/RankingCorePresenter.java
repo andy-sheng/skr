@@ -457,7 +457,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                     EngineManager.getInstance().setAudioMixingPosition(0);
                                     // 还应开始播放歌词
                                     mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-                                    mIGameRuleView.showLastedTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
+                                    mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
                                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
 
                                     //开始录制声音

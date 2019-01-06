@@ -166,8 +166,9 @@ message SpecialEmojiMsg
     SpecialEmojiMsgType emojiType   = 1; // 表情
     uint32 count                    = 2; // 数量
     string emojiAction              = 3; // 动作
-
+    uint64 continueId               = 4; // 用来标记属于哪一组连送，一般设置为 X1 的时间戳
 }
+
 // 特殊表情类型
 enum SpecialEmojiMsgType {
     SP_EMOJI_TYPE_UNKNOWN   = 0;

@@ -12,8 +12,11 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
+import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.quickmsg.QuickMsgView;
 import com.module.rank.R;
@@ -31,8 +34,11 @@ public class TopContainerView extends RelativeLayout {
     ScorePrograssBar2 mScoreProgressBar;
     BaseImageView mAvatarIv;
     MoreOpView mMoreOpView;
+    ExTextView mTvPassedTime;
     Listener mListener;
     RoomData mRoomData;
+
+    HandlerTaskTimer mShowLastedTimeTask;
 
     public TopContainerView(Context context) {
         super(context);
@@ -49,6 +55,7 @@ public class TopContainerView extends RelativeLayout {
         mAvatarIv = this.findViewById(R.id.avatar_iv);
         mMoreBtn = this.findViewById(R.id.more_btn);
         mScoreProgressBar = this.findViewById(R.id.score_progress_bar);
+        mTvPassedTime = (ExTextView) this.findViewById(R.id.tv_passed_time);
 
         mMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +111,7 @@ public class TopContainerView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
+        cancelShowLastedTimeTask();
     }
 
 
@@ -131,6 +139,42 @@ public class TopContainerView extends RelativeLayout {
 
     public void setRoomData(RoomData roomData) {
         mRoomData = roomData;
+    }
+
+    public void startPlayLeftTime(long wholeTile) {
+        if (mShowLastedTimeTask != null) {
+            mShowLastedTimeTask.dispose();
+        }
+
+        long lastedTime = wholeTile / 1000;
+
+        MyLog.d(TAG, "showLastedTime" + " lastedTime=" + lastedTime);
+
+        mShowLastedTimeTask = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take((int) lastedTime + 1)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        long lastTime = lastedTime + 1 - integer;
+
+                        if (lastTime < 0) {
+                            cancelShowLastedTimeTask();
+                            mTvPassedTime.setText("");
+                            return;
+                        }
+
+                        mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
+                    }
+                });
+    }
+
+    public void cancelShowLastedTimeTask() {
+        mTvPassedTime.setText("");
+        if (mShowLastedTimeTask != null) {
+            mShowLastedTimeTask.dispose();
+            mShowLastedTimeTask = null;
+        }
     }
 
     public interface Listener {

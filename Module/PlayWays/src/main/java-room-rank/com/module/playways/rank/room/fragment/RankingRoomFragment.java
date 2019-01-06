@@ -110,8 +110,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     FloatLyricsView mFloatLyricsView;
 
-    ExTextView mTvPassedTime;
-
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -148,8 +146,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     Runnable mPendingSelfCountDownRunnable;
 
     int mPendingRivalCountdownUid = -1;
-
-    HandlerTaskTimer mShowLastedTimeTask;
 
     @Override
     public int initView() {
@@ -370,7 +366,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void initTopView() {
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
-        mTvPassedTime = (ExTextView) mRootView.findViewById(R.id.tv_passed_time);
+        mTopContainerView.setRoomData(mRoomData);
+
 
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
@@ -546,7 +543,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void destroy() {
         super.destroy();
         mUiHanlder.removeCallbacksAndMessages(null);
-        cancelShowLastedTimeTask();
         mManyLyricsView.release();
         mFloatLyricsView.release();
     }
@@ -592,7 +588,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startRivalCountdown(int uid) {
-        cancelShowLastedTimeTask();
+        mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
             mPendingRivalCountdownUid = uid;
@@ -660,42 +656,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void showLastedTime(long wholeTile) {
+    public void showLeftTime(long wholeTile) {
         MyLog.d(TAG, "showLastedTime" + " wholeTile=" + wholeTile);
-        if (mShowLastedTimeTask != null) {
-            mShowLastedTimeTask.dispose();
-        }
-
-        long lastedTime = wholeTile / 1000;
-
-        MyLog.d(TAG, "showLastedTime" + " lastedTime=" + lastedTime);
-
-        mShowLastedTimeTask = HandlerTaskTimer.newBuilder()
-                .interval(1000)
-                .take((int) lastedTime + 1)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        long lastTime = lastedTime + 1 - integer;
-
-                        if (lastTime < 0) {
-                            cancelShowLastedTimeTask();
-                            mTvPassedTime.setText("");
-                            return;
-                        }
-
-                        mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
-                    }
-                });
-
-    }
-
-    private void cancelShowLastedTimeTask() {
-        mTvPassedTime.setText("");
-        if (mShowLastedTimeTask != null) {
-            mShowLastedTimeTask.dispose();
-            mShowLastedTimeTask = null;
-        }
+        mTopContainerView.startPlayLeftTime(wholeTile);
     }
 
     @Override
