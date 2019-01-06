@@ -96,8 +96,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                                .setActivity(getActivity())
+                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                 .setPopFragment(LoginByPhoneFragment.this)
                                 .setPopAbove(false)
                                 .setHasAnimation(true)
@@ -145,5 +144,16 @@ public class LoginByPhoneFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopFragment(LoginByPhoneFragment.this)
+                .setPopAbove(false)
+                .setHasAnimation(true)
+                .setNotifyShowFragment(LoginFragment.class)
+                .build());
+        return true;
     }
 }

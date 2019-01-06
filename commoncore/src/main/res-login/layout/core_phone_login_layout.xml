@@ -6,17 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:padding="@dimen/view_16_dp"
-        android:src="@drawable/img_back" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -118,5 +107,15 @@
         </RelativeLayout>
     </ScrollView>
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/img_back" />
 
 </RelativeLayout>
