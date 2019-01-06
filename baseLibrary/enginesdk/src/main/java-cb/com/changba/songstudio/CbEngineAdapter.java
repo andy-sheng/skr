@@ -279,7 +279,7 @@ public class CbEngineAdapter {
 //        }
 //        recordingStudio = null;
         if (audioEffectEngine != null) {
-            audioEffectEngine.destroyAudioEffect();
+            audioEffectEngine.destroy();
             audioEffectEngine = null;
         }
     }

@@ -2,6 +2,7 @@ package media.ushow.audio_effect;
 
 import com.changba.songstudio.audioeffect.AudioEffect;
 import com.changba.songstudio.audioeffect.AudioEffectParamController;
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import media.ushow.score.ScoreProcessor;
@@ -11,6 +12,8 @@ import media.ushow.score.ScoreProcessor;
  */
 
 public class IFAudioEffectEngine {
+    public final static String TAG = "IFAudioEffectEngine";
+
     private static volatile boolean isLoadResFlag = false;
 
     public static void load() {
@@ -28,6 +31,8 @@ public class IFAudioEffectEngine {
     private ScoreProcessor scoreProcessor;
 
     public void processAudioBuffer(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec, long currentTimeMills, String melpPath) {
+//        MyLog.d(TAG,"processAudioBuffer" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec + " currentTimeMills=" + currentTimeMills + " melpPath=" + melpPath);
+
         if (null == scoreProcessor && melpPath != null && melpPath.trim().length() > 0) {
             channels = 1;
             scoreProcessor = new ScoreProcessor(samplesPerSec, channels, bytesPerSample * 8, numOfSamples, melpPath);
@@ -50,5 +55,11 @@ public class IFAudioEffectEngine {
     public native void setAudioEffect(AudioEffect audioEffect);
 
 
-    public native void destroyAudioEffect();
+    public void destroy() {
+        if (null != scoreProcessor) {
+            scoreProcessor.destroy();
+        }
+        this.destroyAudioEffect();
+    }
+    private native void destroyAudioEffect();
 }

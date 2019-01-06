@@ -86,7 +86,7 @@ public class VoiceControlPanelView extends ScrollView {
                 if (checkedId == R.id.default_sbtn) {
                     EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ORIGINAL);
                 } else if (checkedId == R.id.dianyin_sbtn) {
-                    EngineManager.getInstance().setAudioEffectStyle(POPULAR);
+                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.POPULAR);
                 } else if (checkedId == R.id.kongling_sbtn) {
                     EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.GRAMOPHONE);
                 } else if (checkedId == R.id.ktv_sbtn) {

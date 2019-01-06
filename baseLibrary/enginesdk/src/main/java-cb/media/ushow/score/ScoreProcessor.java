@@ -19,4 +19,7 @@ public class ScoreProcessor {
         return lineScore;
     }
 
+    public void destroy() {
+        mScoreProcessorService.destroy();
+    }
 }

@@ -16,6 +16,8 @@ private:
 	pthread_t initBasebandThread;
 	static void* 			startInitBasebandThread(void* ptr);
 
+//	FILE* pcmFile;
+
 	//打分相关
 	std::vector<MelodyNote> mMelodyNotes;
 	int 					mNotesMaxLen;

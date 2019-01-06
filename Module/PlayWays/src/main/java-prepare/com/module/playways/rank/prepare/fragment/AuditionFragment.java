@@ -173,8 +173,9 @@ public class AuditionFragment extends BaseFragment {
 
         File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
 
+        File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
-            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, 1);
+            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
         }
     }
 
@@ -204,13 +205,12 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EngineEvent restartLrcEvent) {
         MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
-        if(restartLrcEvent.getType() == TYPE_MUSIC_PLAY_FINISH){
+        if (restartLrcEvent.getType() == TYPE_MUSIC_PLAY_FINISH) {
             File accFile = SongResUtils.getAccFileByUrl(mSongModel.getAcc());
             EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, 1);
             playLyrics(mSongModel);
         }
     }
-
 
 
     @Override

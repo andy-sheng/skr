@@ -52,6 +52,7 @@ void PitchScoring::onInit(int sampleRateParam, int channelNumParam, int bitParam
 	sampleRate = sampleRateParam;
 	channelNum = channelNumParam;
 	bitDepth = bitParam;
+//	pcmFile = fopen("/mnt/sdcard/test.pcm", "wb+");
 	//2:解密mel文件并且将note音符全部取出来
 	MelChordAna melChordAna(sampleRate * channelNum);
 	melChordAna.InitByMelFile(melFilePath, 0);
@@ -92,13 +93,14 @@ void PitchScoring::processRecordLevel(RecordLevel* recordLevel) {
 	if(singingIndex < 0) {
 		//没找到这句对应的音符位置，直接返回
 		mCurScore = 0;
-		LOGI("没找到这句对应的音符位置，直接返回");
+//		LOGI("没找到这句对应的音符位置，直接返回");
 		return;
 	}
 	float conf = 0.0;
 	float f0 = 0.0;
 	//2:计算基频
 	if (calBasebandUtil) {
+//		fwrite(recordLevel->getSamples(), 2, AUDIO_DATA_SAMPLE_FOR_SCORE, pcmFile);
 		calBasebandUtil->getFreqAndConf(recordLevel->getSamples(),
 				AUDIO_DATA_SAMPLE_FOR_SCORE, &f0, &conf);
 	}
@@ -109,7 +111,7 @@ void PitchScoring::processRecordLevel(RecordLevel* recordLevel) {
 		note = (float) (69000.5 + 12000 * (log10(f0 / 440.0) / log10(2)));
 		note = float((int) note % 12000) / 1000.0;
 	}
-	LOGI("conf is : %.3f note is %.2f", conf, note);
+//	LOGI("conf is : %.3f note is %.2f", conf, note);
 	//4:根据note计算score
 	if(note > -0.5) {
 		MelodyNote melodyNote = mMelodyNotes.at(singingIndex);
@@ -129,7 +131,7 @@ void PitchScoring::processRecordLevel(RecordLevel* recordLevel) {
 		mCurScore = 60;
 	}
 	mLastScore = mCurScore;
-	LOGI("mCurScore is : %d",mCurScore);
+//	LOGI("mCurScore is : %d",mCurScore);
 	//5:根据score进行计算统计数据
 	if (targetNote != -1) {
 		mCurrentLineLevelSum += mCurScore;
@@ -180,5 +182,6 @@ int PitchScoring::destroy() {
 		calBasebandUtil = NULL;
 		isInitialization = false;
 	}
+//	fclose(pcmFile);
 	return 0;
 }

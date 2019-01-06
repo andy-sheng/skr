@@ -594,16 +594,18 @@ public class Params implements Serializable {
     public static Params getFromPref() {
         String s = U.getPreferenceUtils().getSettingString("engine_pref_params", "");
         MyLog.w(EngineManager.TAG, "getFromPref " + s);
+        Params params;
         if (!TextUtils.isEmpty(s)) {
-            Params params = JSON.parseObject(s, Params.class);
-            return params;
+             params = JSON.parseObject(s, Params.class);
         } else {
-            return Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
+            params =  Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                     .setEnableVideo(false)
                     .setEnableAudio(true)
                     .setUseCbEngine(false)
                     .setStyleEnum(AudioEffectStyleEnum.ORIGINAL)
                     .build();
         }
+//        params.setAudioMixingVolume(0);
+        return params;
     }
 }

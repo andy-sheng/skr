@@ -15,12 +15,13 @@
 
 AudioEffectProcessor *effectProcessor = NULL;
 BaseScoring* scoring = NULL;
-
+//FILE* file;
 JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_initAudioEffect
         (JNIEnv *env, jobject obj, jobject audioEffectJNI) {
     effectProcessor = AudioEffectProcessorFactory::GetInstance()->buildLiveAudioEffectProcessor();
     AudioEffect *audioEffect = AudioEffectAdapter::GetInstance()->buildAudioEffect(audioEffectJNI,
                                                                                    env);
+//    file = fopen("/mnt/sdcard/raw.pcm", "wb+");
     effectProcessor->init(audioEffect);
 }
 
@@ -40,7 +41,8 @@ JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_proces
         byte *data = (byte *) env->GetByteArrayElements(samplesJni, 0);
         short *samples = (short *) data;
         //1:转换为单声道数据
-        int length = numOfSamples / sizeof(short);
+        int length = numOfSamples * 2;
+//        fwrite(samples, 2, length, file);
         if (channels == 2) {
             for (int i = 0; i < length / 2; i++) {
                 samples[i] = samples[i * 2];
@@ -48,7 +50,7 @@ JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_proces
         }
         //2:送入打分处理器
         if(NULL != scoring) {
-            scoring->doScoring(samples, length, currentTimeMills);
+            scoring->doScoring(samples, length / 2, currentTimeMills);
         }
         //3:送入音效处理器
         effectProcessor->process(samples, length, 0, 0);
@@ -65,6 +67,9 @@ JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_destro
         delete effectProcessor;
         effectProcessor = NULL;
     }
+//    if(file) {
+//        fclose(file);
+//    }
 }
 
 
