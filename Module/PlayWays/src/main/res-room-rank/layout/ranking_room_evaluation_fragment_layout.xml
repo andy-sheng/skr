@@ -43,6 +43,16 @@
                         android:layout_marginLeft="@dimen/view_29_dp"
                         android:layout_marginTop="@dimen/view_97_dp" />
 
+                    <com.opensource.svgaplayer.SVGAImageView
+                        android:id="@+id/start_left_svga"
+                        android:layout_width="@dimen/view_200_dp"
+                        android:layout_height="@dimen/view_200_dp"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="fitCenter"
+                        android:visibility="gone"
+                        app:antiAlias="true"
+                        app:source="start.svga" />
+
                     <com.common.view.ex.ExTextView
                         android:id="@+id/vote_left_name_tv"
                         android:layout_width="wrap_content"
@@ -99,6 +109,16 @@
                         android:layout_height="@dimen/view_116_dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/view_97_dp" />
+
+                    <com.opensource.svgaplayer.SVGAImageView
+                        android:id="@+id/start_right_svga"
+                        android:layout_width="@dimen/view_200_dp"
+                        android:layout_height="@dimen/view_200_dp"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="fitCenter"
+                        android:visibility="gone"
+                        app:antiAlias="true"
+                        app:source="start.svga" />
 
                     <com.common.view.ex.ExTextView
                         android:id="@+id/vote_rignt_name_tv"
@@ -211,15 +231,6 @@
         android:focusable="true"
         app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
         app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
-
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/start_svga"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:visibility="gone"
-        app:antiAlias="true"
-        app:source="start.svga" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/gesture_svga"

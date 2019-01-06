@@ -55,6 +55,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     // 左边视图
     RelativeLayout mRlLeftArea;
     SimpleDraweeView mVoteLeftIv;
+    SVGAImageView mStartLeftSvga;
     ExTextView mVoteLeftNameTv;
     ExTextView mVoteLeftSongTv;
     ExImageView mVoteLeftShadowIv;
@@ -63,6 +64,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     // 右边视图
     RelativeLayout mRlRightArea;
     SimpleDraweeView mVoteRightIv;
+    SVGAImageView mStartRightSvga;
     ExTextView mVoteRigntNameTv;
     ExTextView mVoteRightSongTv;
     ExImageView mVoteRightShadowIv;
@@ -107,12 +109,14 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         mRlLeftArea = (RelativeLayout) mRootView.findViewById(R.id.rl_left_area);
         mVoteLeftIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_left_iv);
+        mStartLeftSvga = (SVGAImageView)mRootView.findViewById(R.id.start_left_svga);
         mVoteLeftNameTv = (ExTextView) mRootView.findViewById(R.id.vote_left_name_tv);
         mVoteLeftSongTv = (ExTextView) mRootView.findViewById(R.id.vote_left_song_tv);
         mVoteLeftShadowIv = (ExImageView) mRootView.findViewById(R.id.vote_left_shadow_iv);
 
         mRlRightArea = (RelativeLayout) mRootView.findViewById(R.id.rl_right_area);
         mVoteRightIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_right_iv);
+        mStartRightSvga = (SVGAImageView)mRootView.findViewById(R.id.start_right_svga);
         mVoteRigntNameTv = (ExTextView) mRootView.findViewById(R.id.vote_rignt_name_tv);
         mVoteRightSongTv = (ExTextView) mRootView.findViewById(R.id.vote_right_song_tv);
         mVoteRightShadowIv = (ExImageView) mRootView.findViewById(R.id.vote_right_shadow_iv);
@@ -335,7 +339,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         });
 
         // 手势动画
-        MyLog.d(TAG, "animationGo" + System.currentTimeMillis());
         mGestureSvga.setVisibility(View.VISIBLE);
         mGestureSvga.setCallback(new SVGACallback() {
             @Override
@@ -345,7 +348,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
             @Override
             public void onFinished() {
-                MyLog.d(TAG, "animationGo onFinished" + System.currentTimeMillis());
                 mGestureSvga.stopAnimation();
                 mGestureSvga.setVisibility(View.GONE);
                 mIvTitle.setVisibility(View.VISIBLE);
@@ -353,7 +355,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
             @Override
             public void onRepeat() {
-                MyLog.d(TAG, "animationGo onRepeat" + System.currentTimeMillis());
                 mGestureSvga.stopAnimation();
                 mGestureSvga.setVisibility(View.GONE);
                 mIvTitle.setVisibility(View.VISIBLE);
@@ -427,7 +428,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     @Override
     public void voteSucess(long votedUserId) {
-        // TODO: 2018/12/18  可能要加上星星的特效
         mLeftVoteAnimationSet.cancel();
         HandlerTaskTimer.newBuilder().delay(250).start(new HandlerTaskTimer.ObserverW() {
             @Override
@@ -441,11 +441,61 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mVoteLeftMie.setClickable(false);
             mVoteRightMie.setClickable(false);
             mVoteLeftShadowIv.setVisibility(View.VISIBLE);
+            // 右边冒星星
+            mStartRightSvga.setVisibility(View.VISIBLE);
+            mStartRightSvga.setCallback(new SVGACallback() {
+                @Override
+                public void onPause() {
+
+                }
+
+                @Override
+                public void onFinished() {
+                    mStartRightSvga.stopAnimation();
+                    mStartRightSvga.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onRepeat() {
+                    mStartRightSvga.stopAnimation();
+                    mStartRightSvga.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onStep(int i, double v) {
+
+                }
+            });
         } else if (right.getUserInfo().getUserId() == votedUserId) {
             mVoteRightMie.setSelected(true);
             mVoteRightMie.setClickable(false);
             mVoteLeftMie.setClickable(false);
             mVoteRightShadowIv.setVisibility(View.VISIBLE);
+            // 左边冒星星
+            mStartLeftSvga.setVisibility(View.VISIBLE);
+            mStartLeftSvga.setCallback(new SVGACallback() {
+                @Override
+                public void onPause() {
+
+                }
+
+                @Override
+                public void onFinished() {
+                    mStartLeftSvga.stopAnimation();
+                    mStartLeftSvga.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onRepeat() {
+                    mStartLeftSvga.stopAnimation();
+                    mStartLeftSvga.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onStep(int i, double v) {
+
+                }
+            });
         }
     }
 
