@@ -27,6 +27,15 @@
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold" />
 
+    <com.zq.level.view.HorizonLevelView
+        android:id="@+id/horiz_level_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_below="@+id/name_tv"
+        android:layout_alignLeft="@+id/name_tv"
+        android:layout_marginTop="@dimen/view_1_dp">
+    </com.zq.level.view.HorizonLevelView>
+
     <com.common.view.ex.ExTextView
         android:id="@+id/report"
         android:layout_width="@dimen/view_58_dp"

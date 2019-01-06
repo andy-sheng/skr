@@ -28,6 +28,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.zq.level.view.HorizonLevelView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ public class PersonInfoDialogView extends RelativeLayout {
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
+    HorizonLevelView mHorizLevelView;
     ExTextView mSignTv;
     ExTextView mReport;
     TagFlowLayout mFlowlayout;
@@ -69,6 +71,7 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
+        mHorizLevelView = (HorizonLevelView)this.findViewById(R.id.horiz_level_view);
         mSignTv = (ExTextView) this.findViewById(R.id.sign_tv);
         mReport = (ExTextView) this.findViewById(R.id.report);
         mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
