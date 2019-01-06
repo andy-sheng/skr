@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 
 import com.common.anim.AnimationPlayControlTemplate;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
+import com.module.playways.rank.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
 import com.module.rank.R;
 
@@ -25,9 +26,23 @@ public class GiftContinueViewGroup extends RelativeLayout {
     public static String TAG = GiftContinueViewGroup.class.getSimpleName();
 
     private List<GiftContinuousView> mFeedGiftContinueViews = new ArrayList<>(2);
-    ;
 
-    AnimationPlayControlTemplate mGiftPlayControlTemplate = new AnimationPlayControlTemplate<GiftPlayModel, GiftContinuousView>(2) {
+    public GiftContinueViewGroup(Context context) {
+        super(context);
+        init(context);
+    }
+
+    public GiftContinueViewGroup(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public GiftContinueViewGroup(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(context);
+    }
+
+    GiftPlayControlTemplate mGiftPlayControlTemplate = new GiftPlayControlTemplate(2) {
         @Override
         protected GiftContinuousView accept(GiftPlayModel cur) {
             return isIdle();
@@ -47,21 +62,6 @@ public class GiftContinueViewGroup extends RelativeLayout {
         }
 
     };
-
-    public GiftContinueViewGroup(Context context) {
-        super(context);
-        init(context);
-    }
-
-    public GiftContinueViewGroup(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
-
-    public GiftContinueViewGroup(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context);
-    }
 
     public void init(Context context) {
         inflate(context, R.layout.gift_continue_view_group_layout, this);
@@ -116,6 +116,16 @@ public class GiftContinueViewGroup extends RelativeLayout {
     public void onEvent(SpecialEmojiMsgEvent event) {
         // 收到一条礼物消息,进入生产者队列
         GiftPlayModel playModel = GiftPlayModel.parseFromEvent(event);
+        // 如果消息能被当前忙碌的view接受
+        for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
+            if (!giftContinuousView.isIdle()) {
+                if (giftContinuousView.accept(playModel)) {
+                    // 被这个view接受了
+                    giftContinuousView.tryTriggerAnimation();
+                    return;
+                }
+            }
+        }
         mGiftPlayControlTemplate.add(playModel, false);
     }
 

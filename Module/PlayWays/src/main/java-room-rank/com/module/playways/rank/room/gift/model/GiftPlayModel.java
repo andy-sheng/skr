@@ -6,7 +6,6 @@ import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
 public class GiftPlayModel {
     private long continueId;//continueId相等的代表是同一次连送
-
     private long timeMs;          //房间消息产生时间，单位毫秒
     private int roomID;           //房间ID
     private UserInfoModel sender;      //发送者简要信息
@@ -18,6 +17,7 @@ public class GiftPlayModel {
 
     public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event){
         GiftPlayModel giftPlayModel = new GiftPlayModel();
+        giftPlayModel.setContinueId(event.coutinueId);
         giftPlayModel.setEmojiType(event.emojiType);
         giftPlayModel.setRoomID(event.info.getRoomID());
         giftPlayModel.setAction(event.action);

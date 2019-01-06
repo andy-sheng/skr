@@ -11,6 +11,7 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -30,6 +31,8 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
   public static final Integer DEFAULT_COUNT = 0;
 
   public static final String DEFAULT_EMOJIACTION = "";
+
+  public static final Long DEFAULT_CONTINUEID = 0L;
 
   /**
    * 表情
@@ -58,16 +61,27 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
   )
   public final String emojiAction;
 
-  public SpecialEmojiMsg(SpecialEmojiMsgType emojiType, Integer count, String emojiAction) {
-    this(emojiType, count, emojiAction, ByteString.EMPTY);
+  /**
+   * 用来标记属于哪一组连送，一般设置为 X1 的时间戳
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT64"
+  )
+  public final Long continueId;
+
+  public SpecialEmojiMsg(SpecialEmojiMsgType emojiType, Integer count, String emojiAction,
+      Long continueId) {
+    this(emojiType, count, emojiAction, continueId, ByteString.EMPTY);
   }
 
   public SpecialEmojiMsg(SpecialEmojiMsgType emojiType, Integer count, String emojiAction,
-      ByteString unknownFields) {
+      Long continueId, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.emojiType = emojiType;
     this.count = count;
     this.emojiAction = emojiAction;
+    this.continueId = continueId;
   }
 
   @Override
@@ -76,6 +90,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
     builder.emojiType = emojiType;
     builder.count = count;
     builder.emojiAction = emojiAction;
+    builder.continueId = continueId;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -88,7 +103,8 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(emojiType, o.emojiType)
         && Internal.equals(count, o.count)
-        && Internal.equals(emojiAction, o.emojiAction);
+        && Internal.equals(emojiAction, o.emojiAction)
+        && Internal.equals(continueId, o.continueId);
   }
 
   @Override
@@ -99,6 +115,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       result = result * 37 + (emojiType != null ? emojiType.hashCode() : 0);
       result = result * 37 + (count != null ? count.hashCode() : 0);
       result = result * 37 + (emojiAction != null ? emojiAction.hashCode() : 0);
+      result = result * 37 + (continueId != null ? continueId.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -110,6 +127,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
     if (emojiType != null) builder.append(", emojiType=").append(emojiType);
     if (count != null) builder.append(", count=").append(count);
     if (emojiAction != null) builder.append(", emojiAction=").append(emojiAction);
+    if (continueId != null) builder.append(", continueId=").append(continueId);
     return builder.replace(0, 2, "SpecialEmojiMsg{").append('}').toString();
   }
 
@@ -154,6 +172,16 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
   }
 
   /**
+   * 用来标记属于哪一组连送，一般设置为 X1 的时间戳
+   */
+  public Long getContinueId() {
+    if(continueId==null){
+        return DEFAULT_CONTINUEID;
+    }
+    return continueId;
+  }
+
+  /**
    * 表情
    */
   public boolean hasEmojiType() {
@@ -174,12 +202,21 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
     return emojiAction!=null;
   }
 
+  /**
+   * 用来标记属于哪一组连送，一般设置为 X1 的时间戳
+   */
+  public boolean hasContinueId() {
+    return continueId!=null;
+  }
+
   public static final class Builder extends Message.Builder<SpecialEmojiMsg, Builder> {
     public SpecialEmojiMsgType emojiType;
 
     public Integer count;
 
     public String emojiAction;
+
+    public Long continueId;
 
     public Builder() {
     }
@@ -208,9 +245,17 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       return this;
     }
 
+    /**
+     * 用来标记属于哪一组连送，一般设置为 X1 的时间戳
+     */
+    public Builder setContinueId(Long continueId) {
+      this.continueId = continueId;
+      return this;
+    }
+
     @Override
     public SpecialEmojiMsg build() {
-      return new SpecialEmojiMsg(emojiType, count, emojiAction, super.buildUnknownFields());
+      return new SpecialEmojiMsg(emojiType, count, emojiAction, continueId, super.buildUnknownFields());
     }
   }
 
@@ -224,6 +269,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       return SpecialEmojiMsgType.ADAPTER.encodedSizeWithTag(1, value.emojiType)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.count)
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.emojiAction)
+          + ProtoAdapter.UINT64.encodedSizeWithTag(4, value.continueId)
           + value.unknownFields().size();
     }
 
@@ -232,6 +278,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       SpecialEmojiMsgType.ADAPTER.encodeWithTag(writer, 1, value.emojiType);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.count);
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.emojiAction);
+      ProtoAdapter.UINT64.encodeWithTag(writer, 4, value.continueId);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -251,6 +298,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
           }
           case 2: builder.setCount(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setEmojiAction(ProtoAdapter.STRING.decode(reader)); break;
+          case 4: builder.setContinueId(ProtoAdapter.UINT64.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

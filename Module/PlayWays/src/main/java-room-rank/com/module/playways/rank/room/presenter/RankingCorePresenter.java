@@ -463,7 +463,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                     //开始录制声音
                                     if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                                         // 需要上传音频伪装成机器人
-                                        EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                                        EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
                                     }
                                 }
                             }

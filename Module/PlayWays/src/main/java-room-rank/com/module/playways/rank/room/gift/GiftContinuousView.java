@@ -2,6 +2,7 @@ package com.module.playways.rank.room.gift;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import com.common.image.model.ImageFactory;
 import com.common.utils.U;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.module.playways.rank.room.gift.model.GiftDataUtils;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
 import com.module.rank.R;
 
@@ -30,6 +32,7 @@ public class GiftContinuousView extends RelativeLayout {
     static final int STATUS_IDLE = 1;
     static final int STATUS_STEP1 = 2;
     static final int STATUS_STEP2 = 3;
+    static final int STATUS_WAIT_OVER = 4;
 
     static final int MSG_DISPLAY_OVER = 10;
     int mId;
@@ -40,6 +43,7 @@ public class GiftContinuousView extends RelativeLayout {
     BaseImageView mGiftImgIv;
     ExTextView mGiftNumTv;
     ObjectAnimator mStep1Animator;
+    AnimatorSet mStep2Animator;
 
     int mCurNum = 1;
 
@@ -109,8 +113,8 @@ public class GiftContinuousView extends RelativeLayout {
         FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newResImage(resId)
                 .build());
 
-        mCurNum = model.getBeginCount();
-        mGiftNumTv.setText("X" + mCurNum);
+//        mCurNum = model.getBeginCount();
+//        mGiftNumTv.setText("X" + mCurNum);
         step1();
         return true;
     }
@@ -118,8 +122,12 @@ public class GiftContinuousView extends RelativeLayout {
     private void step1() {
         mCurStatus = STATUS_STEP1;
         this.setVisibility(VISIBLE);
+        mGiftNumTv.setVisibility(GONE);
         mStep1Animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -getWidth(), 0);
         mStep1Animator.setDuration(300);
+
+        mStep1Animator.removeAllListeners();
+
         mStep1Animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animation) {
@@ -128,19 +136,45 @@ public class GiftContinuousView extends RelativeLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                step2();
-
+                step2(mCurGiftPlayModel.getBeginCount());
             }
         });
         mStep1Animator.start();
     }
 
-    private void step2() {
+    private void step2(int count) {
         //目前没有
         mCurStatus = STATUS_STEP2;
+        mCurNum = count;
+        mGiftNumTv.setVisibility(VISIBLE);
+        mGiftNumTv.setText("X" + count);
+        if (mStep2Animator == null) {
+            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mGiftNumTv, View.SCALE_X, 1.2f, 0.9f, 1);
+            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mGiftNumTv, View.SCALE_Y, 1.2f, 0.9f, 1);
+            mStep2Animator = new AnimatorSet();
+            mStep2Animator.playTogether(objectAnimator1, objectAnimator2);
+            mStep2Animator.setDuration(300);
+        }
 
-        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+        mStep2Animator.removeAllListeners();
+        mStep2Animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (count >= mCurGiftPlayModel.getEndCount()) {
+                    mCurStatus = STATUS_WAIT_OVER;
+                    mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+                    mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+                } else {
+                    step2(count + 1);
+                }
+            }
+        });
+        mStep2Animator.start();
     }
 
     private void onPlayOver() {
@@ -154,6 +188,32 @@ public class GiftContinuousView extends RelativeLayout {
 
     public boolean isIdle() {
         return mCurStatus == STATUS_IDLE;
+    }
+
+    public boolean accept(GiftPlayModel playModel) {
+        if (GiftDataUtils.sameContinueId(mCurGiftPlayModel, playModel)) {
+            int endCount = playModel.getEndCount();
+            if (endCount > mCurGiftPlayModel.getEndCount()) {
+                mCurGiftPlayModel.setEndCount(endCount);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void tryTriggerAnimation() {
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mCurStatus == STATUS_WAIT_OVER) {
+                    //等待结束
+                    if (mCurNum < mCurGiftPlayModel.getEndCount()) {
+                        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+                        step2(mCurNum + 1);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -174,6 +234,7 @@ public class GiftContinuousView extends RelativeLayout {
     public void setMyId(int id) {
         mId = id;
     }
+
 
     public interface Listener {
         void onPlayOver(GiftContinuousView giftContinuousView, GiftPlayModel giftPlayModel);

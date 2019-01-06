@@ -19,7 +19,7 @@ public class RoomData implements Serializable {
 
     public final static String READY_GO_WEBP_URL = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/ready_go4.webp";
     public final static String ROOM_VOICE_SVGA = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/room_voice1.svga";
-    public static final String AUDIO_FOR_AI_PATH = "audioforai.wav";
+    public static final String AUDIO_FOR_AI_PATH = "audioforai.aac";
 
     private int mGameType; // 游戏类型
 

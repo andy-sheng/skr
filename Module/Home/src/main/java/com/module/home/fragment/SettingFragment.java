@@ -43,7 +43,7 @@ public class SettingFragment extends BaseFragment {
     ExTextView mCacheSizeTv;
 
     static final String[] CACHE_CAN_DELETE = {
-            "fresco", "gif"
+            "fresco", "gif","upload"
     };
 
     @Override

@@ -62,8 +62,13 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess {
             return;
         }
 
-        EventBus.getDefault().post(new SpecialEmojiMsgEvent(info, SpecialEmojiMsgEvent.MSG_TYPE_RECE,
-                specialEmojiMsg.getEmojiType(), specialEmojiMsg.getEmojiAction(), specialEmojiMsg.getCount()));
+        SpecialEmojiMsgEvent specialEmojiMsgEvent = new SpecialEmojiMsgEvent(info);
+        specialEmojiMsgEvent.emojiType = specialEmojiMsg.getEmojiType();
+        specialEmojiMsgEvent.count = specialEmojiMsg.getCount();
+        specialEmojiMsgEvent.action = specialEmojiMsg.getEmojiAction();
+        specialEmojiMsgEvent.coutinueId = specialEmojiMsg.getContinueId();
+
+        EventBus.getDefault().post(specialEmojiMsgEvent);
     }
 
     // 动态表情消息

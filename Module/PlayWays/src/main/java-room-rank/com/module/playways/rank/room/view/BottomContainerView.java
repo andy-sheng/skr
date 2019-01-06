@@ -51,6 +51,7 @@ public class BottomContainerView extends RelativeLayout {
 
     SpecialEmojiMsgType mLastSendType = null;
     int mContinueCount = 1;
+    long mContinueId = 0L;
 
     Handler mHandler = new Handler() {
         @Override
@@ -153,6 +154,7 @@ public class BottomContainerView extends RelativeLayout {
                 count = mContinueCount + 1;
             } else {
                 count = 1;
+                mContinueId = System.currentTimeMillis();
             }
 
             UserInfo senderInfo = new UserInfo.Builder()
@@ -172,7 +174,7 @@ public class BottomContainerView extends RelativeLayout {
                     .setPosType(EMsgPosType.EPT_UNKNOWN)
                     .setSender(senderInfo)
                     .setSpecialEmojiMsg(new SpecialEmojiMsg.Builder()
-                            // 得加个continueID 标识是哪次连送
+                            .setContinueId(mContinueId)
                             .setEmojiType(type)
                             .setCount(count)
                             .setEmojiAction(actionDesc)
@@ -203,6 +205,7 @@ public class BottomContainerView extends RelativeLayout {
                     specialEmojiMsgEvent.emojiType = type;
                     specialEmojiMsgEvent.count = count;
                     specialEmojiMsgEvent.action = actionDesc;
+                    specialEmojiMsgEvent.coutinueId = mContinueId;
 
                     EventBus.getDefault().post(specialEmojiMsgEvent);
                 }

@@ -11,19 +11,12 @@ public class SpecialEmojiMsgEvent {
     public SpecialEmojiMsgType emojiType = SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN;
     public String action;
     public int count;
+    public long coutinueId;
 
     public BasePushInfo info;
 
     public SpecialEmojiMsgEvent(BasePushInfo info) {
         this.info = info;
-    }
-
-    public SpecialEmojiMsgEvent(BasePushInfo info, int type, SpecialEmojiMsgType emojiType, String action, int count) {
-        this.type = type;
-        this.info = info;
-        this.emojiType = emojiType;
-        this.action = action;
-        this.count = count;
     }
 
 
