@@ -99,7 +99,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         });
-        if(mRoomData.getGameId()>0) {
+        if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
             EngineManager.getInstance().init("rankingroom", params);
             EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
@@ -399,7 +399,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             if (gameOverTimeMs > mRoomData.getGameStartTs()) {
                 MyLog.w(TAG, "gameOverTimeMs ！= 0 游戏应该结束了");
                 // 游戏结束了
-                onGameOver("sync", gameOverTimeMs);
+                recvGameOverFromServer("sync", gameOverTimeMs);
             } else {
                 MyLog.w(TAG, "服务器结束时间不合法 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
             }
@@ -601,13 +601,18 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    private void onGameOver(String from, long gameOverTs) {
+    private void recvGameOverFromServer(String from, long gameOverTs) {
         MyLog.w(TAG, "游戏结束 gameOverTs=" + gameOverTs + " from:" + from);
         if (gameOverTs > mRoomData.getGameStartTs() && gameOverTs > mRoomData.getGameOverTs()) {
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
             mRoomData.checkRound();
         }
+    }
+
+
+    public void muteAllRemoteAudioStreams(boolean mute) {
+        EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
     }
 
     private void uploadResForAi(RoundInfoModel roundInfoModel) {
@@ -632,9 +637,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 });
     }
 
-
     /**
      * 上传机器人资源相关文件到服务器
+     *
      * @param roundInfoModel
      * @param audioUrl
      * @param midiUrl
@@ -795,7 +800,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             mGetVoteStateTask.dispose();
         }
 
-        onGameOver("push", roundAndGameOverEvent.roundOverTimeMs);
+        recvGameOverFromServer("push", roundAndGameOverEvent.roundOverTimeMs);
         cancelSyncGameStateTask();
 
         mGameFinishActionSubject.onNext(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mUserScoreModels));

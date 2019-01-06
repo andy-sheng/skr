@@ -1,15 +1,21 @@
 package com.module.playways.rank.room.view;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.rank.room.quickmsg.QuickMsgView;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.scorebar.ScorePrograssBar2;
@@ -21,11 +27,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class TopContainerView extends RelativeLayout {
     public final static String TAG = "TopContainerView";
-    ExImageView mCloseBtn;
+    ExImageView mMoreBtn;
     ScorePrograssBar2 mScoreProgressBar;
     BaseImageView mAvatarIv;
-
+    MoreOpView mMoreOpView;
     Listener mListener;
+    RoomData mRoomData;
 
     public TopContainerView(Context context) {
         super(context);
@@ -40,15 +47,33 @@ public class TopContainerView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.top_container_view_layout, this);
         mAvatarIv = this.findViewById(R.id.avatar_iv);
-        mCloseBtn = this.findViewById(R.id.close_btn);
+        mMoreBtn = this.findViewById(R.id.more_btn);
         mScoreProgressBar = this.findViewById(R.id.score_progress_bar);
 
-        mCloseBtn.setOnClickListener(new View.OnClickListener() {
+        mMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.closeBtnClick();
+                if (mMoreOpView == null) {
+                    mMoreOpView = new MoreOpView(getContext());
+                    mMoreOpView.setListener(new MoreOpView.Listener() {
+                        @Override
+                        public void onClostBtnClick() {
+                            if (mListener != null) {
+                                mListener.closeBtnClick();
+                            }
+                        }
+
+                        @Override
+                        public void onVoiceChange(boolean voiceOpen) {
+                            // 打开或者关闭声音 只是不听别人的声音
+                            if (mListener != null) {
+                                mListener.onVoiceChange(voiceOpen);
+                            }
+                        }
+                    });
+                    mMoreOpView.setRoomData(mRoomData);
                 }
+                mMoreOpView.showAt(mMoreBtn);
             }
         });
         initSparkPrograssBar();
@@ -96,14 +121,21 @@ public class TopContainerView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, params);
     }
 
-    public void setScoreProgress(int progress){
+    public void setScoreProgress(int progress) {
         mScoreProgressBar.setProgress(progress);
     }
+
     public void setListener(Listener l) {
         mListener = l;
     }
 
+    public void setRoomData(RoomData roomData) {
+        mRoomData = roomData;
+    }
+
     public interface Listener {
         void closeBtnClick();
+
+        void onVoiceChange(boolean voiceOpen);
     }
 }

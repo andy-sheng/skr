@@ -381,6 +381,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             public void closeBtnClick() {
                 getActivity().finish();
             }
+
+            @Override
+            public void onVoiceChange(boolean voiceOpen) {
+                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
+            }
         });
     }
 
