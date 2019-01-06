@@ -192,8 +192,8 @@ public class TestSdkActivity extends BaseActivity {
 
             @Override
             public void run() {
-                UploadParams.newBuilder("/sdcard/bbb.svga")
-                        .setFileName("room_voice1.svga")
+                UploadParams.newBuilder("/sdcard/aixin.svga")
+                        .setFileName("aixin1.svga")
                         .startUploadAsync(new UploadCallback() {
                             @Override
                             public void onProgress(long currentSize, long totalSize) {
@@ -211,6 +211,26 @@ public class TestSdkActivity extends BaseActivity {
 
                             }
                         });
+
+//                UploadParams.newBuilder("/sdcard/dabian.svga")
+//                        .setFileName("dabian1.svga")
+//                        .startUploadAsync(new UploadCallback() {
+//                            @Override
+//                            public void onProgress(long currentSize, long totalSize) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onSuccess(String url) {
+//                                MyLog.w(TAG, "onSuccess" + " url=" + url);
+//                                U.getToastUtil().showShort("url:" + url);
+//                            }
+//
+//                            @Override
+//                            public void onFailure(String msg) {
+//
+//                            }
+//                        });
             }
         }));
 

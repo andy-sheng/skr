@@ -35,6 +35,7 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
+import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
@@ -423,6 +424,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void initGiftDisplayView() {
         GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
+        giftContinueViewGroup.setRoomData(mRoomData);
+        GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
+        giftBigAnimationViewGroup.setRoomData(mRoomData);
     }
 
     private void showReadyGoView() {

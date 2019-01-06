@@ -1,0 +1,187 @@
+package com.module.playways.rank.room.gift;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.text.TextUtils;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import com.module.playways.rank.room.gift.model.GiftPlayModel;
+import com.module.playways.rank.room.model.RoomData;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
+
+import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class GiftBigAnimationView {
+    static final int MSG_FINISH = 91;
+
+    static final int STATUS_IDLE = 1;
+    static final int STATUS_PLAYING = 2;
+    int mStatus = STATUS_IDLE;
+    SVGAParser mSVGAParser;
+    Listener mListener;
+
+    SVGAImageView mSVGAImageView;
+    Context mContext;
+    GiftPlayModel mGiftPlayModel;
+
+    Handler mUiHanlder = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_FINISH) {
+                onFinish();
+            }
+        }
+    };
+
+    public GiftBigAnimationView(@Nullable Context context) {
+        mContext = context;
+        init();
+    }
+
+    private void init() {
+        mSVGAImageView = new SVGAImageView(mContext);
+        mSVGAParser = new SVGAParser(mContext);
+        mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
+            @Override
+            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder().url(url).get().build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                            complete.invoke(response.body().byteStream());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            failure.invoke(e);
+                        }
+                    }
+                }).start();
+            }
+        });
+    }
+
+    public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
+        if (parent.indexOfChild(mSVGAImageView) < 0) {
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+            parent.addView(mSVGAImageView, lp);
+        }
+        mStatus = STATUS_PLAYING;
+        mGiftPlayModel = giftPlayModel;
+        String url = null;
+        switch (giftPlayModel.getEmojiType()) {
+            case SP_EMOJI_TYPE_UNLIKE:
+                url = RoomData.ROOM_SPECAIL_EMOJI_DABIAN;
+                break;
+            case SP_EMOJI_TYPE_LIKE:
+                url = RoomData.ROOM_SPECAIL_EMOJI_AIXIN;
+                break;
+        }
+        load(url);
+        mUiHanlder.removeMessages(MSG_FINISH);
+        mUiHanlder.sendEmptyMessageDelayed(MSG_FINISH, 5000);
+    }
+
+    private void load(String url) {
+        if (TextUtils.isEmpty(url)) {
+            onFinish();
+            return;
+        }
+        try {
+            mSVGAParser.parse(new URL(url), new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(SVGAVideoEntity videoItem) {
+                    onLoadComplete(videoItem);
+                }
+
+                @Override
+                public void onError() {
+                    onFinish();
+                }
+            });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onLoadComplete(SVGAVideoEntity videoItem) {
+        SVGADrawable drawable = new SVGADrawable(videoItem);
+
+        mSVGAImageView.setImageDrawable(drawable);
+        mSVGAImageView.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                GiftBigAnimationView.this.onFinish();
+            }
+
+            @Override
+            public void onRepeat() {
+                GiftBigAnimationView.this.onFinish();
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
+        mSVGAImageView.startAnimation();
+    }
+
+
+    private void onFinish() {
+        if (mStatus == STATUS_PLAYING) {
+            mUiHanlder.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mListener != null) {
+                        mListener.onFinished(GiftBigAnimationView.this, mGiftPlayModel);
+                    }
+                    mStatus = STATUS_IDLE;
+                    ViewGroup vg = (ViewGroup) mSVGAImageView.getParent();
+                    if (vg != null) {
+                        vg.removeView(mSVGAImageView);
+                    }
+                    mUiHanlder.removeCallbacksAndMessages(MSG_FINISH);
+                }
+            });
+        }
+    }
+
+    public boolean isIdle() {
+        return mStatus == STATUS_IDLE;
+    }
+
+    public void setListener(Listener listener) {
+        mListener = listener;
+    }
+
+    public interface Listener {
+        void onFinished(GiftBigAnimationView animationView, GiftPlayModel giftPlayModel);
+    }
+}

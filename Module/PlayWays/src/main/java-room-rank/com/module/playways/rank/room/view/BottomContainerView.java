@@ -13,12 +13,14 @@ import android.widget.RelativeLayout;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
+import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.model.RoomData;
@@ -34,6 +36,10 @@ import com.zq.live.proto.Room.SpecialEmojiMsgType;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 
 public class BottomContainerView extends RelativeLayout {
 
@@ -128,24 +134,30 @@ public class BottomContainerView extends RelativeLayout {
             EventBus.getDefault().register(this);
         }
 
-        mEmoji1Btn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 发送动态表情，大便
-                sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE, "扔了粑粑");
-            }
-        });
+        RxView.clicks(mEmoji1Btn).throttleFirst(200, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        // 发送动态表情，爱心
+                        sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE, "扔了粑粑");
+                    }
+                });
 
-        mEmoji2Btn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 发送动态表情，爱心
-                sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE, "丢了爱心");
-            }
-        });
+        RxView.clicks(mEmoji2Btn).throttleFirst(200, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        // 发送动态表情，爱心
+                        sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE, "送出爱心");
+                    }
+                });
     }
 
     void sendSpecialEmojiMsg(SpecialEmojiMsgType type, String actionDesc) {
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            U.getToastUtil().showShort("暂时不能给自己送礼哦");
+            return;
+        }
         IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
         if (msgService != null) {
             long ts = System.currentTimeMillis();
@@ -213,7 +225,7 @@ public class BottomContainerView extends RelativeLayout {
                 @Override
                 public void onFailed(Object obj, int errcode, String message) {
                     //TODO test 测试需要
-                        onSucess(obj);
+                    onSucess(obj);
                 }
             });
         }
