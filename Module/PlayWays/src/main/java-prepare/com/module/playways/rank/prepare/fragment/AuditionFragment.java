@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -30,6 +31,7 @@ import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.lyrics.LyricsManager;
+import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.toast.CommonToastView;
@@ -177,6 +179,16 @@ public class AuditionFragment extends BaseFragment {
         if (accFile != null) {
             EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
         }
+
+//        HandlerTaskTimer.newBuilder().
+//                interval(4000)
+//                .start(new HandlerTaskTimer.ObserverW() {
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        int score = EngineManager.getInstance().getLineScore();
+//                        U.getToastUtil().showShort("score:" + score);
+//                    }
+//                });
     }
 
     private void playLyrics(SongModel songModel) {
@@ -212,6 +224,14 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LrcEvent.LineEndEvent event) {
+        //TODO
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        int score = EngineManager.getInstance().getLineScore();
+        U.getToastUtil().showShort("score:" + score);
+//        mIGameRuleView.updateScrollBarProgress(score);
+    }
 
     @Override
     protected boolean onBackPressed() {
@@ -265,4 +285,6 @@ public class AuditionFragment extends BaseFragment {
         EngineManager.getInstance().stopAudioMixing();
         mManyLyricsView.release();
     }
+
+
 }

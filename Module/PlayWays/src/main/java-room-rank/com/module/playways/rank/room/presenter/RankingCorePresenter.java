@@ -41,6 +41,8 @@ import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.playways.rank.room.model.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.view.IGameRuleView;
+import com.zq.lyrics.event.LrcEvent;
+import com.zq.lyrics.utils.LyricsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -434,8 +436,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    HandlerTaskTimer testTask;
-
     /**
      * 轮次信息有更新
      * 核心事件
@@ -486,15 +486,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                     }
 
                                     //TODO test
-                                    testTask = HandlerTaskTimer.newBuilder().interval(5000)
-                                            .start(new HandlerTaskTimer.ObserverW() {
-                                                @Override
-                                                public void onNext(Integer integer) {
-                                                    int score = EngineManager.getInstance().getLineScore();
-                                                    U.getToastUtil().showShort("score:" + score);
-                                                    mIGameRuleView.updateScrollBarProgress(score);
-                                                }
-                                            });
+
                                 }
                             }
                         }
@@ -506,10 +498,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             MyLog.w(TAG, "不是我的轮次，停止发心跳，停止混音，闭麦");
-
-            if (testTask != null) {
-                testTask.dispose();
-            }
 
             cancelHeartBeatTask("切换唱将");
 
@@ -879,4 +867,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LrcEvent.LineEndEvent event) {
+        int score = EngineManager.getInstance().getLineScore();
+        U.getToastUtil().showShort("score:" + score);
+        mIGameRuleView.updateScrollBarProgress(score);
+    }
 }

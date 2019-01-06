@@ -608,7 +608,7 @@ public abstract class AbstractLrcView extends View {
                 if(lyricProgress > endTime && mCurEndLineNum != lyricsLineNum){
                     mCurEndLineNum = lyricsLineNum;
                     EventBus.getDefault().post(new LrcEvent.LineEndEvent());
-                    U.getToastUtil().showShort("结束");
+                    U.getToastUtil().showShort("歌词结束");
                 }
             }
         }
