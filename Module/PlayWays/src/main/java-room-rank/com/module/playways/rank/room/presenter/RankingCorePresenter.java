@@ -21,6 +21,9 @@ import com.component.busilib.SkrConfig;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.google.common.util.concurrent.ServiceManager;
+import com.module.ModuleServiceManager;
+import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
@@ -89,7 +92,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public RankingCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
         mIGameRuleView = iGameRuleView;
         mRoomData = roomData;
-        TAG = "RankingCorePresenter";
+        TAG += hashCode();
 
         mGameFinishActionSubject
                 .observeOn(AndroidSchedulers.mainThread())
@@ -119,6 +122,16 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                if (msgService != null) {
+                    msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10,true, null);
+                }
+            }
+        },2000);
+
         mRoomData.checkRound();
         startSyncGameStateTask(sSyncStateTaskInterval);
     }

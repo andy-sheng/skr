@@ -172,7 +172,6 @@ public class Params implements Serializable {
         this.enableAudio = enableAudio;
     }
 
-    @JSONField()
     public Constants.AudioProfile getAudioProfile() {
         return audioProfile;
     }

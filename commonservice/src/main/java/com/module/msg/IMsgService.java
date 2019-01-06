@@ -48,6 +48,8 @@ public interface IMsgService extends IProvider {
 
     void sendChatRoomMessage(String roomId, int messageType, String content, ICallback callback);
 
+    void syncHistoryFromChatRoom(String roomId, int count,boolean reverse, ICallback callback);
+
     /**
      * 其他module设置自己的push处理模块
      *
@@ -59,6 +61,7 @@ public interface IMsgService extends IProvider {
 
     /**
      * 打开私聊页面
+     *
      * @param context
      * @param targetId
      * @param title

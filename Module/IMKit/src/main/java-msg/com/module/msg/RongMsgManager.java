@@ -16,6 +16,7 @@ import com.module.msg.model.CustomChatRoomMsg;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
@@ -66,6 +67,35 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
      */
     private HashMap<Integer, HashSet<IPushMsgProcess>> mProcessorMap = new HashMap<>();
 
+    RongIMClient.OnReceiveMessageListener mReceiveMessageListener = new RongIMClient.OnReceiveMessageListener() {
+
+        /**
+         * 收到消息的处理。
+         *
+         * @param message 收到的消息实体。
+         * @param left    剩余未拉取消息数目。
+         * @return 收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
+         */
+        @Override
+        public boolean onReceived(Message message, int left) {
+            MyLog.d(TAG, "onReceived" + " message=" + message + " left=" + left);
+            if (message.getContent() instanceof CustomChatRoomMsg) {
+                // 是自定义消息 其content即整个RoomMsg
+                CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) message.getContent();
+                byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
+
+                HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
+                if (processors != null) {
+                    for (IPushMsgProcess process : processors) {
+                        process.process(MSG_TYPE_ROOM, data);
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+    };
+
     // 是否初始化
     private boolean mIsInit = false;
 
@@ -81,34 +111,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
                 }
             });
-            RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
-
-                /**
-                 * 收到消息的处理。
-                 *
-                 * @param message 收到的消息实体。
-                 * @param left    剩余未拉取消息数目。
-                 * @return 收到消息是否处理完成，true 表示自己处理铃声和后台通知，false 走融云默认处理方式。
-                 */
-                @Override
-                public boolean onReceived(Message message, int left) {
-                    MyLog.d(TAG, "onReceived" + " message=" + message + " left=" + left);
-                    if (message.getContent() instanceof CustomChatRoomMsg) {
-                        // 是自定义消息 其content即整个RoomMsg
-                        CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) message.getContent();
-                        byte[] data = U.getBase64Utils().decode(customChatRoomMsg.getContentJsonStr());
-
-                        HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_ROOM);
-                        if (processors != null) {
-                            for (IPushMsgProcess process : processors) {
-                                process.process(MSG_TYPE_ROOM, data);
-                            }
-                        }
-                        return true;
-                    }
-                    return false;
-                }
-            });
+            RongIM.setOnReceiveMessageListener(mReceiveMessageListener);
         }
     }
 
@@ -210,7 +213,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         /**
          * 不拉之前的消息
          */
-        RongIM.getInstance().joinChatRoom(roomId, 0, mOperationCallback);
+        RongIM.getInstance().joinChatRoom(roomId, 10, mOperationCallback);
     }
 
 
@@ -246,6 +249,37 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 MyLog.d(TAG, "send msg onError errorCode=" + errorCode);
                 if (callback != null) {
                     callback.onFailed(message, errorCode.getValue(), errorCode.getMessage());
+                }
+            }
+        });
+    }
+
+    public void syncHistoryFromChatRoom(String roomId, int count, boolean reverse, ICallback callback) {
+        RongIM.getInstance().getHistoryMessages(Conversation.ConversationType.CHATROOM, roomId, Integer.MAX_VALUE, count, new RongIMClient.ResultCallback<List<Message>>() {
+            @Override
+            public void onSuccess(List<Message> messages) {
+                if (reverse) {
+                    for (int i = messages.size() - 1; i >= 0; i--) {
+                        Message message = messages.get(i);
+                        mReceiveMessageListener.onReceived(message, 0);
+                        if (callback != null) {
+                            callback.onSucess(message);
+                        }
+                    }
+                } else {
+                    for (Message message : messages) {
+                        mReceiveMessageListener.onReceived(message, 0);
+                        if (callback != null) {
+                            callback.onSucess(message);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                if (callback != null) {
+                    callback.onFailed(errorCode, errorCode.getValue(), errorCode.getMessage());
                 }
             }
         });

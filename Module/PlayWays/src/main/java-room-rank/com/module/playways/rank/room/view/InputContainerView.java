@@ -171,7 +171,7 @@ public class InputContainerView extends RelativeLayout {
 
     public void setRoomData(RoomData roomData) {
         mRoomData = roomData;
-        EventHelper.pretendCommentPush("请注意保持直播间和谐", mRoomData.getGameId());
+//        EventHelper.pretendCommentPush("请注意保持直播间和谐", mRoomData.getGameId());
     }
 
 

@@ -35,6 +35,8 @@ public class GiftContinuousView extends RelativeLayout {
     static final int STATUS_WAIT_OVER = 4;
 
     static final int MSG_DISPLAY_OVER = 10;
+
+    static final int MSG_DISPLAY_ENSUSE_OVER = 11;// 无法结束的容错逻辑
     int mId;
 
     ExRelativeLayout mInfoContainer;
@@ -58,6 +60,9 @@ public class GiftContinuousView extends RelativeLayout {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_DISPLAY_OVER:
+                    onPlayOver();
+                    break;
+                case MSG_DISPLAY_ENSUSE_OVER:
                     onPlayOver();
                     break;
             }
@@ -120,12 +125,18 @@ public class GiftContinuousView extends RelativeLayout {
     }
 
     private void step1() {
+        mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_ENSUSE_OVER, 5000);
+
         mCurStatus = STATUS_STEP1;
         this.setVisibility(VISIBLE);
         mGiftNumTv.setVisibility(GONE);
-        mStep1Animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -getWidth(), 0);
-        mStep1Animator.setDuration(300);
-
+        if (mStep1Animator == null) {
+            mStep1Animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -getWidth(), 0);
+            mStep1Animator.setDuration(300);
+        } else {
+            mStep1Animator.cancel();
+        }
         mStep1Animator.removeAllListeners();
 
         mStep1Animator.addListener(new AnimatorListenerAdapter() {
@@ -143,6 +154,8 @@ public class GiftContinuousView extends RelativeLayout {
     }
 
     private void step2(int count) {
+        mUiHandler.removeMessages(MSG_DISPLAY_ENSUSE_OVER);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_ENSUSE_OVER, 5000);
         //目前没有
         mCurStatus = STATUS_STEP2;
         mCurNum = count;
@@ -154,6 +167,8 @@ public class GiftContinuousView extends RelativeLayout {
             mStep2Animator = new AnimatorSet();
             mStep2Animator.playTogether(objectAnimator1, objectAnimator2);
             mStep2Animator.setDuration(300);
+        } else {
+            mStep2Animator.cancel();
         }
 
         mStep2Animator.removeAllListeners();
@@ -184,6 +199,7 @@ public class GiftContinuousView extends RelativeLayout {
         if (mListener != null) {
             mListener.onPlayOver(this, mCurGiftPlayModel);
         }
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     public boolean isIdle() {
@@ -234,7 +250,6 @@ public class GiftContinuousView extends RelativeLayout {
     public void setMyId(int id) {
         mId = id;
     }
-
 
     public interface Listener {
         void onPlayOver(GiftContinuousView giftContinuousView, GiftPlayModel giftPlayModel);
