@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="#F9F4F1">
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/gesture_svga"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:source="gesture.svga" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_title"
         android:layout_width="wrap_content"
@@ -37,9 +46,12 @@
                 app:bl_solid_color="#CA2C60"
                 app:bl_stroke_color="#0C2275"
                 app:bl_stroke_width="@dimen/view_3_dp">
+
                 <RelativeLayout
+                    android:id="@+id/rl_left_area"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/vote_left_iv"
                         android:layout_width="@dimen/view_116_dp"
@@ -70,14 +82,14 @@
                         android:textSize="@dimen/textsize_16_dp" />
 
                     <com.common.view.ex.ExImageView
-                        app:bl_corners_bottomLeftRadius="@dimen/view_20_dp"
-                        app:bl_corners_topLeftRadius="@dimen/view_15_dp"
                         android:id="@+id/vote_left_shadow_iv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:visibility="gone"
+                        app:bl_corners_bottomLeftRadius="@dimen/view_20_dp"
+                        app:bl_corners_topLeftRadius="@dimen/view_15_dp"
                         app:bl_selected_drawable="@color/black_trans_35"
-                        app:bl_unSelected_drawable="@color/black_trans_35"
-                        android:visibility="gone" />
+                        app:bl_unSelected_drawable="@color/black_trans_35" />
                 </RelativeLayout>
             </com.common.view.ex.ExRelativeLayout>
 
@@ -94,8 +106,10 @@
                 app:bl_stroke_width="@dimen/view_3_dp">
 
                 <RelativeLayout
+                    android:id="@+id/rl_right_area"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/vote_right_iv"
                         android:layout_width="@dimen/view_116_dp"
@@ -126,15 +140,15 @@
                         android:textSize="@dimen/textsize_16_dp" />
 
                     <com.common.view.ex.ExImageView
-                        app:bl_corners_bottomRightRadius="@dimen/view_20_dp"
-                        app:bl_corners_topRightRadius="@dimen/view_15_dp"
-                        app:bl_selected_drawable="@color/black_trans_35"
-                        app:bl_unSelected_drawable="@color/black_trans_35"
                         android:id="@+id/vote_right_shadow_iv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:visibility="gone"
+                        app:bl_corners_bottomRightRadius="@dimen/view_20_dp"
+                        app:bl_corners_topRightRadius="@dimen/view_15_dp"
+                        app:bl_selected_drawable="@color/black_trans_35"
 
-                        android:visibility="gone" />
+                        app:bl_unSelected_drawable="@color/black_trans_35" />
                 </RelativeLayout>
             </com.common.view.ex.ExRelativeLayout>
         </LinearLayout>
@@ -148,12 +162,13 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/rl_count_down_container"
-        android:layout_marginTop="@dimen/view_124_dp"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_124_dp"
+        android:visibility="gone">
+
         <com.common.view.ex.ExImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -175,33 +190,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_240_dp"
-        android:src="@drawable/img_pipeichenggong_enabled" />
+        android:layout_marginTop="@dimen/view_230_dp"
+        android:src="@drawable/img_pipeichenggong_enabled"
+        android:visibility="gone" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/vs_svga"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:translationY="@dimen/view_d_40_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:source="vs.svga" />
 
 
     <com.common.view.ex.ExImageView
-        android:layout_marginBottom="@dimen/view_62_dp"
-        android:layout_marginLeft="@dimen/view_42_dp"
         android:id="@+id/vote_left_mie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_42_dp"
+        android:layout_marginBottom="@dimen/view_62_dp"
         app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
         app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
 
 
     <com.common.view.ex.ExImageView
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/view_62_dp"
-        android:layout_marginRight="@dimen/view_42_dp"
         android:id="@+id/vote_right_mie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_42_dp"
+        android:layout_marginBottom="@dimen/view_62_dp"
         android:clickable="true"
         android:focusable="true"
         app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
         app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/start_svga"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:source="start.svga" />
 
 
 </RelativeLayout>

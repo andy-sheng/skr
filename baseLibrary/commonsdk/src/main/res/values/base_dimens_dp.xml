@@ -122,6 +122,7 @@
     <dimen name="view_39_33_dp">39.33dp</dimen>
     <dimen name="view_39_67_dp">39.67dp</dimen>
     <dimen name="view_40_dp">40dp</dimen>
+    <dimen name="view_d_40_dp">-40dp</dimen>
     <dimen name="view_40_33_dp">40.33dp</dimen>
     <dimen name="view_40_67_dp">40.67dp</dimen>
     <dimen name="view_41_dp">41dp</dimen>

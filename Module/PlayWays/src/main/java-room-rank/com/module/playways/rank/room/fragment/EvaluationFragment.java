@@ -35,6 +35,8 @@ import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.presenter.EndGamePresenter;
 import com.module.playways.rank.room.view.IVoteView;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGAImageView;
 
 import java.util.concurrent.TimeUnit;
 
@@ -46,6 +48,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     RelativeLayout mMainActContainer;
 
     // 左边视图
+    RelativeLayout mRlLeftArea;
     SimpleDraweeView mVoteLeftIv;
     ExTextView mVoteLeftNameTv;
     ExTextView mVoteLeftSongTv;
@@ -53,6 +56,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     ExImageView mVoteLeftMie;
 
     // 右边视图
+    RelativeLayout mRlRightArea;
     SimpleDraweeView mVoteRightIv;
     ExTextView mVoteRigntNameTv;
     ExTextView mVoteRightSongTv;
@@ -61,6 +65,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     ExTextView mVoteDownTv;
     ExImageView mVoteVsIv;
+    SVGAImageView mVsSvga;
 
     EndGamePresenter mPresenter;
 
@@ -89,16 +94,20 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void initData(@Nullable Bundle savedInstanceState) {
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mIvTitle = (ExImageView)mRootView.findViewById(R.id.iv_title);
+        mIvTitle = (ExImageView) mRootView.findViewById(R.id.iv_title);
 
         mVoteDownTv = (ExTextView) mRootView.findViewById(R.id.vote_down_tv);
         mVoteVsIv = (ExImageView) mRootView.findViewById(R.id.vote_vs_iv);
+        mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
 
+
+        mRlLeftArea = (RelativeLayout)mRootView.findViewById(R.id.rl_left_area);
         mVoteLeftIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_left_iv);
         mVoteLeftNameTv = (ExTextView) mRootView.findViewById(R.id.vote_left_name_tv);
         mVoteLeftSongTv = (ExTextView) mRootView.findViewById(R.id.vote_left_song_tv);
         mVoteLeftShadowIv = (ExImageView) mRootView.findViewById(R.id.vote_left_shadow_iv);
 
+        mRlRightArea = (RelativeLayout)mRootView.findViewById(R.id.rl_right_area);
         mVoteRightIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_right_iv);
         mVoteRigntNameTv = (ExTextView) mRootView.findViewById(R.id.vote_rignt_name_tv);
         mVoteRightSongTv = (ExTextView) mRootView.findViewById(R.id.vote_right_song_tv);
@@ -107,12 +116,11 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         mVoteLeftMie = (ExImageView) mRootView.findViewById(R.id.vote_left_mie);
         mVoteRightMie = (ExImageView) mRootView.findViewById(R.id.vote_right_mie);
 
-        mRlLeft = (ExRelativeLayout)mRootView.findViewById(R.id.rl_left);
-        mRlRight = (ExRelativeLayout)mRootView.findViewById(R.id.rl_right);
-        mIvBottom = (ImageView)mRootView.findViewById(R.id.iv_bottom);
+        mRlLeft = (ExRelativeLayout) mRootView.findViewById(R.id.rl_left);
+        mRlRight = (ExRelativeLayout) mRootView.findViewById(R.id.rl_right);
+        mIvBottom = (ImageView) mRootView.findViewById(R.id.iv_bottom);
 
-        mRlCountDownContainer = (RelativeLayout)mRootView.findViewById(R.id.rl_count_down_container);
-
+        mRlCountDownContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_count_down_container);
 
 
         if (left != null) {
@@ -164,15 +172,16 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     }
 
-    private void animationGo(){
-        TranslateAnimation animationLeft = new TranslateAnimation(Animation.RELATIVE_TO_SELF,-1.0f,Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
+    private void animationGo() {
+        // 平移动动画
+        TranslateAnimation animationLeft = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
 
-        TranslateAnimation animationRight= new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
+        TranslateAnimation animationRight = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
 
-        TranslateAnimation animationBottom= new TranslateAnimation(Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f);
+        TranslateAnimation animationBottom = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
 
         animationLeft.setDuration(300);
         animationLeft.setRepeatMode(Animation.REVERSE);
@@ -193,6 +202,24 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         mRlRight.startAnimation(animationRight);
         mIvBottom.startAnimation(animationBottom);
 
+
+        // 抖动动画
+        ObjectAnimator animatorLeft = ObjectAnimator.ofFloat(mRlLeftArea, "translationX", 0, U.getDisplayUtils().dip2px(20), 0);
+        ObjectAnimator animatorRight = ObjectAnimator.ofFloat(mRlRightArea, "translationX", 0, -U.getDisplayUtils().dip2px(20), 0);
+
+        animatorLeft.setDuration(300);
+        animatorLeft.setStartDelay(750);
+        animatorLeft.setRepeatMode(ValueAnimator.REVERSE);
+        animatorLeft.setInterpolator(new OvershootInterpolator());
+        animatorLeft.start();
+
+        animatorRight.setDuration(300);
+        animatorRight.setStartDelay(750);
+        animatorRight.setRepeatMode(ValueAnimator.REVERSE);
+        animatorRight.setInterpolator(new OvershootInterpolator());
+        animatorRight.start();
+
+        // 灭灯按钮动画
         ScaleAnimation scaleAnimationL = (ScaleAnimation) AnimationUtils.loadAnimation(getContext(), R.anim.match_sucess_title_anim);
         ScaleAnimation scaleAnimationR = (ScaleAnimation) AnimationUtils.loadAnimation(getContext(), R.anim.match_sucess_title_anim);
         scaleAnimationL.setDuration(250);
@@ -212,30 +239,30 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         scaleY.setInterpolator(new OvershootInterpolator(1));
         scaleX.setDuration(380);
         scaleY.setDuration(380);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTitle,"alpha",0.2f,1.0f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTitle, "alpha", 0.2f, 1.0f);
         alpha.setDuration(250);
         animatorSet.play(scaleX).with(scaleY).with(alpha);
         animatorSet.start();
 
         HandlerTaskTimer.newBuilder().delay(500)
                 .start(new HandlerTaskTimer.ObserverW() {
-            @Override
-            public void onNext(Integer integer) {
-                mLeftVoteAnimationSet = new AnimatorSet();//组合动画
+                    @Override
+                    public void onNext(Integer integer) {
+                        mLeftVoteAnimationSet = new AnimatorSet();//组合动画
 
-                ObjectAnimator scaleX = ObjectAnimator.ofFloat(mVoteLeftMie, "scaleX", 1.0f, 1.1f, 1.0f);
-                ObjectAnimator scaleY = ObjectAnimator.ofFloat(mVoteLeftMie, "scaleY", 1.0f, 1.1f, 1.0f);
+                        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mVoteLeftMie, "scaleX", 1.0f, 1.1f, 1.0f);
+                        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mVoteLeftMie, "scaleY", 1.0f, 1.1f, 1.0f);
 
-                scaleX.setRepeatCount(ValueAnimator.INFINITE);
-                scaleY.setRepeatCount(ValueAnimator.INFINITE);
+                        scaleX.setRepeatCount(ValueAnimator.INFINITE);
+                        scaleY.setRepeatCount(ValueAnimator.INFINITE);
 
-                scaleX.setDuration(500);
-                scaleY.setDuration(500);
+                        scaleX.setDuration(500);
+                        scaleY.setDuration(500);
 
-                mLeftVoteAnimationSet.play(scaleX).with(scaleY);
-                mLeftVoteAnimationSet.start();
-            }
-        });
+                        mLeftVoteAnimationSet.play(scaleX).with(scaleY);
+                        mLeftVoteAnimationSet.start();
+                    }
+                });
 
         HandlerTaskTimer.newBuilder().delay(750)
                 .start(new HandlerTaskTimer.ObserverW() {
@@ -274,6 +301,32 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         AnimatorSet countDownSet = new AnimatorSet();
         countDownSet.play(countDownT).with(countDownA);
         countDownSet.start();
+
+        mVsSvga.setVisibility(View.VISIBLE);
+        mVsSvga.setLoops(1);
+        mVsSvga.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                mVsSvga.setVisibility(View.GONE);
+                mVoteVsIv.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onRepeat() {
+                mVsSvga.setVisibility(View.GONE);
+                mVoteVsIv.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
 
     }
 
