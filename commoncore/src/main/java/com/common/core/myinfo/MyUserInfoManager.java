@@ -76,6 +76,7 @@ public class MyUserInfoManager {
     }
 
     public void setMyUserInfo(MyUserInfo myUserInfo) {
+        MyLog.d(TAG,"setMyUserInfo" + " myUserInfo=" + myUserInfo);
         if (myUserInfo != null) {
             mUser = myUserInfo;
             ModuleServiceManager.getInstance().getMsgService().updateCurrentUserInfo();

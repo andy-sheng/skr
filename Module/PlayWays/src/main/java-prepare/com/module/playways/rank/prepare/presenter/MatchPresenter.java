@@ -3,6 +3,7 @@ package com.module.playways.rank.prepare.presenter;
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.rx.RxRetryAssist;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -35,7 +36,7 @@ import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
 public class MatchPresenter extends RxLifeCyclePresenter {
-    public static final String TAG = "MatchingPresenter";
+    public final static String TAG = "MatchPresenter";
 
     IMatchingView mView;
     MatchServerApi mMatchServerApi;
@@ -113,7 +114,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
 
-        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retry(10), new ApiObserver<ApiResult>() {
+        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retryWhen(new RxRetryAssist(1,5,false)), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
@@ -127,7 +128,8 @@ public class MatchPresenter extends RxLifeCyclePresenter {
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, e);
-                startMatch(mCurrentMusicId, mGameType);
+                // 不能这么弄，会导致死循环
+//                startMatch(mCurrentMusicId, mGameType);
             }
         }, this);
     }
