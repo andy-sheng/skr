@@ -56,9 +56,9 @@ public class HorizonLevelView extends LinearLayout {
             RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(14), U.getDisplayUtils().dip2px(14));
             rl.setMargins(U.getDisplayUtils().dip2px(6), 0, 0, 0);
             if (i < selectStar) {
-                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang));
+                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yonghuxinxika_xingxing_liang));
             } else {
-                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
+                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yonghuxinxika_xingxing_an));
             }
             imageView.setLayoutParams(rl);
             addView(imageView);

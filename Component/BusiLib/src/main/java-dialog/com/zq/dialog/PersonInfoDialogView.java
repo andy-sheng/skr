@@ -65,6 +65,10 @@ public class PersonInfoDialogView extends RelativeLayout {
         initData(context, userID);
     }
 
+    public UserInfoModel getUserInfoModel(){
+        return mUserInfoModel;
+    }
+
 
     private void initView() {
         inflate(getContext(), R.layout.person_info_dialog_view, this);

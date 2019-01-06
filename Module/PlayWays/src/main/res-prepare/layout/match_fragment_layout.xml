@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
@@ -11,122 +11,122 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/view_16_dp"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_30_dp"
+        android:padding="@dimen/view_16_dp"
         android:src="@drawable/img_back" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_top"
-        android:background="@drawable/img_top_zhengzaiupipei_bg"
-        android:layout_marginTop="@dimen/view_29_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="@dimen/view_218_dp"
-        android:layout_height="@dimen/view_106_dp" />
-
     <RelativeLayout
-        android:layout_marginTop="@dimen/view_d_11_dp"
-        android:background="@drawable/img_kaishipipei_bg"
-        android:layout_marginBottom="@dimen/view_15_dp"
-        android:layout_below="@+id/iv_top"
-        android:layout_marginRight="@dimen/view_15_dp"
-        android:layout_marginLeft="@dimen/view_15_dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginTop="@dimen/view_124_dp"
+        android:layout_marginRight="@dimen/view_15_dp"
+        android:layout_marginBottom="@dimen/view_15_dp"
+        android:background="@drawable/img_kaishipipei_bg">
+
         <com.common.view.ex.ExImageView
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/img_notify_pipeishijian_bg"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/img_notify_pipeishijian_bg" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_matched_time"
-            android:textStyle="bold"
-            android:textColor="#0C2275"
-            android:text="已经匹配20s"
-            android:layout_marginTop="@dimen/view_28_dp"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_28_dp"
+            android:text="已经匹配20s"
+            android:textColor="#0C2275"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/rl_icon_container"
-            android:layout_marginTop="@dimen/view_142_dp"
-            android:layout_centerHorizontal="true"
             android:layout_width="@dimen/view_262_dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_142_dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_centerVertical="true"
                 android:id="@+id/sdv_icon3"
+                android:layout_width="@dimen/view_65_dp"
+                android:layout_height="@dimen/view_65_dp"
                 android:layout_alignParentRight="true"
-                android:layout_width="@dimen/view_65_dp"
-                android:layout_height="@dimen/view_65_dp" />
+                android:layout_centerVertical="true" />
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:visibility="invisible"
-                android:layout_centerVertical="true"
                 android:id="@+id/sdv_sub_icon1"
-                android:layout_alignParentLeft="true"
                 android:layout_width="@dimen/view_65_dp"
-                android:layout_height="@dimen/view_65_dp" />
+                android:layout_height="@dimen/view_65_dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:visibility="invisible" />
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_centerHorizontal="true"
                 android:id="@+id/sdv_icon2"
                 android:layout_width="@dimen/view_65_dp"
-                android:layout_height="@dimen/view_65_dp" />
+                android:layout_height="@dimen/view_65_dp"
+                android:layout_centerHorizontal="true" />
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:visibility="invisible"
-                android:layout_centerVertical="true"
                 android:id="@+id/sdv_sub_icon3"
-                android:layout_alignParentRight="true"
                 android:layout_width="@dimen/view_65_dp"
-                android:layout_height="@dimen/view_65_dp" />
+                android:layout_height="@dimen/view_65_dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:visibility="invisible" />
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_centerVertical="true"
                 android:id="@+id/sdv_icon1"
-                android:layout_alignParentLeft="true"
                 android:layout_width="@dimen/view_65_dp"
-                android:layout_height="@dimen/view_65_dp" />
+                android:layout_height="@dimen/view_65_dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true" />
         </RelativeLayout>
 
         <com.common.view.ex.ExTextView
-            android:gravity="center"
             android:id="@+id/tv_tip"
-            android:textSize="@dimen/textsize_16_dp"
-            android:textColor="#0C2275"
-            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/iv_cancel_match"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/view_121_dp"
-            android:layout_above="@+id/iv_cancel_match"
+            android:gravity="center"
             android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_16_dp"
+            android:textStyle="bold" />
 
         <!--<com.common.view.ex.ExTextView-->
-            <!--android:layout_marginRight="@dimen/view_77_dp"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginBottom="@dimen/view_96_dp"-->
-            <!--android:alpha="0.5"-->
-            <!--android:layout_above="@+id/iv_cancel_match"-->
-            <!--android:textSize="@dimen/textsize_12_dp"-->
-            <!--android:textColor="#0C2275"-->
-            <!--android:textStyle="bold"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:text="——撕歌语录"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:layout_marginRight="@dimen/view_77_dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginBottom="@dimen/view_96_dp"-->
+        <!--android:alpha="0.5"-->
+        <!--android:layout_above="@+id/iv_cancel_match"-->
+        <!--android:textSize="@dimen/textsize_12_dp"-->
+        <!--android:textColor="#0C2275"-->
+        <!--android:textStyle="bold"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:text="——撕歌语录"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_cancel_match"
-            android:layout_marginBottom="@dimen/view_56_dp"
-            android:background="@drawable/btn_kaishipipei_normal1"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
             android:layout_width="@dimen/view_200_dp"
-            android:layout_height="@dimen/view_48_dp" />
+            android:layout_height="@dimen/view_48_dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_56_dp"
+            android:background="@drawable/btn_kaishipipei_normal1" />
     </RelativeLayout>
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_top"
+        android:layout_width="@dimen/view_218_dp"
+        android:layout_height="@dimen/view_106_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_29_dp"
+        android:background="@drawable/img_top_zhengzaiupipei_bg" />
 </RelativeLayout>
