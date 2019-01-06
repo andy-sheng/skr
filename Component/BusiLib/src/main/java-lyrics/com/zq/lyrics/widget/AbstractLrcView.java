@@ -19,10 +19,13 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.utils.ColorUtils;
 import com.zq.lyrics.utils.LyricsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
@@ -360,6 +363,11 @@ public abstract class AbstractLrcView extends View {
     private long mRefreshTime = 20;
 
     /**
+     * 已经结束的行数
+     */
+    private int mCurEndLineNum = 0;
+
+    /**
      * 子线程用于执行耗时任务
      */
     private Handler mWorkerHandler;
@@ -591,6 +599,17 @@ public abstract class AbstractLrcView extends View {
                 drawGoToSearchBtn(canvas, mGotoSearchRectPaint, mGotoSearchTextPaint, btnText);
             } else if (mLrcStatus == LRCSTATUS_LRC) {
                 onDrawLrcView(canvas);
+                int lyricsLineNum = getLyricsLineNum();
+                LyricsLineInfo currentLine = getLrcLineInfos().get(lyricsLineNum);
+                int splitLyricsLineNum = getSplitLyricsLineNum();
+                LyricsLineInfo realInfo = currentLine.getSplitLyricsLineInfos().get(splitLyricsLineNum);
+                long endTime = realInfo.getEndTime();
+                long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
+                if(lyricProgress > endTime && mCurEndLineNum != lyricsLineNum){
+                    mCurEndLineNum = lyricsLineNum;
+                    EventBus.getDefault().post(new LrcEvent.LineEndEvent());
+                    U.getToastUtil().showShort("结束");
+                }
             }
         }
     }

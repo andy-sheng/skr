@@ -9,7 +9,7 @@ public class LrcEvent {
         }
     }
 
-    public static class RestartLrcEvent{
+    public static class LineEndEvent{
 
     }
 }
