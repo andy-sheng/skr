@@ -122,15 +122,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-                if (msgService != null) {
-                    msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10,true, null);
-                }
+        if (mRoomData.getGameId() > 0) {
+            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+            if (msgService != null) {
+                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
             }
-        },2000);
+        }
 
         mRoomData.checkRound();
         startSyncGameStateTask(sSyncStateTaskInterval);

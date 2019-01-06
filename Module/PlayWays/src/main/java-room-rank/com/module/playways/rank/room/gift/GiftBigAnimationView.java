@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.common.utils.U;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
 import com.module.playways.rank.room.model.RoomData;
 import com.opensource.svgaplayer.SVGACallback;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Random;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -41,6 +43,14 @@ public class GiftBigAnimationView {
     SVGAImageView mSVGAImageView;
     Context mContext;
     GiftPlayModel mGiftPlayModel;
+
+//    static SLocation[] mSLocations = new SLocation[]{
+//            new SLocation(0.8f, U.getDisplayUtils().dip2px(50), -U.getDisplayUtils().dip2px(50)),
+//            new SLocation(0.8f, -U.getDisplayUtils().dip2px(50), -U.getDisplayUtils().dip2px(50)),
+//            new SLocation(1f, 0, 0),
+//    };
+
+    Random mRandom = new Random();
 
     Handler mUiHanlder = new Handler(Looper.getMainLooper()) {
         @Override
@@ -83,9 +93,20 @@ public class GiftBigAnimationView {
 
     public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
         if (parent.indexOfChild(mSVGAImageView) < 0) {
+
+            int translateX = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
+            int translateY = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
+            SLocation l = new SLocation(0.67f + mRandom.nextFloat() / 3f, translateX, translateY);
+
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             lp.addRule(RelativeLayout.CENTER_IN_PARENT);
             parent.addView(mSVGAImageView, lp);
+
+            // 变化一下位置
+            mSVGAImageView.setScaleX(l.scale);
+            mSVGAImageView.setScaleY(l.scale);
+            mSVGAImageView.setTranslationX(l.translateX);
+            mSVGAImageView.setTranslationY(l.translateY);
         }
         mStatus = STATUS_PLAYING;
         mGiftPlayModel = giftPlayModel;
@@ -183,5 +204,17 @@ public class GiftBigAnimationView {
 
     public interface Listener {
         void onFinished(GiftBigAnimationView animationView, GiftPlayModel giftPlayModel);
+    }
+
+    public static class SLocation {
+        float scale = 1.0f;
+        float translateX = 0;
+        float translateY = 0;
+
+        public SLocation(float scale, float translateX, float translateY) {
+            this.scale = scale;
+            this.translateX = translateX;
+            this.translateY = translateY;
+        }
     }
 }

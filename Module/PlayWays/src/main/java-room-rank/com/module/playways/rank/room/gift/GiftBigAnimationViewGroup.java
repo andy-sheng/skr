@@ -26,7 +26,7 @@ import java.util.List;
 public class GiftBigAnimationViewGroup extends RelativeLayout {
     public static String TAG = GiftBigAnimationViewGroup.class.getSimpleName();
 
-    static final int MAX_CONSUMER_NUM = 5;
+    static final int MAX_CONSUMER_NUM = 6;
 
     private List<GiftBigAnimationView> mFeedGiftAnimationViews = new ArrayList<>(MAX_CONSUMER_NUM);
     private RoomData mRoomData;
