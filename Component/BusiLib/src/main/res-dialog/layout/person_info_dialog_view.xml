@@ -8,8 +8,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar_iv"
-        android:layout_width="@dimen/view_48_dp"
-        android:layout_height="@dimen/view_48_dp"
+        android:layout_width="@dimen/view_58_dp"
+        android:layout_height="@dimen/view_58_dp"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/view_26_dp"
         android:layout_marginTop="@dimen/view_33_dp" />
@@ -28,27 +28,6 @@
         android:textStyle="bold" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/sign_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_17_dp"
-        android:layout_below="@+id/name_tv"
-        android:layout_alignLeft="@+id/name_tv"
-        android:text="这个签名是撕哥送的"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_12_dp" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/level_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/name_tv"
-        android:layout_marginLeft="@dimen/view_7_dp"
-        android:layout_toRightOf="@+id/name_tv"
-        android:text="Lv3"
-        android:textColor="#FFB300"
-        android:textSize="@dimen/textsize_16_dp" />
-
-    <com.common.view.ex.ExTextView
         android:id="@+id/report"
         android:layout_width="@dimen/view_58_dp"
         android:layout_height="wrap_content"
@@ -61,14 +40,26 @@
         android:textColor="#800C2275"
         android:textSize="@dimen/textsize_12_dp" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sign_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_below="@+id/avatar_iv"
+        android:layout_alignLeft="@+id/avatar_iv"
+        android:layout_marginTop="@dimen/view_22_dp"
+        android:paddingLeft="@dimen/view_7_dp"
+        android:text="这个签名是撕哥送的"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_16_dp" />
+
     <com.common.flowlayout.TagFlowLayout
         android:id="@+id/flowlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/sign_tv"
         android:layout_marginLeft="@dimen/view_26_dp"
-        android:layout_marginTop="@dimen/view_100_dp"
-        android:layout_marginRight="@dimen/view_26_dp">
-    </com.common.flowlayout.TagFlowLayout>
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_26_dp"></com.common.flowlayout.TagFlowLayout>
 
 
     <com.common.view.ex.ExTextView

@@ -7,36 +7,40 @@ import java.io.Serializable;
 
 public class SongModel implements Serializable {
     /**
-     * itemID : 10
-     * itemName : 沙漠骆驼
-     * cover : http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/cover/song/smlt_cover.jpg
-     * owner : 展展与罗罗
-     * lyric : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/lrc/smlt.zrce
-     * ori : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/mp3/smlt_mp3.mp3
-     * acc : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/bgm/smlt_sound.mp3
+     * itemID : 44
+     * itemName : 过火
+     * cover : http://online-sound-bja.oss-cn-beijing.aliyuncs.com/cover/7b61e42c07746017d7b1c87b216ea797.jpg
+     * owner : 张信哲
+     * lyric : http://online-sound-bja.oss-cn-beijing.aliyuncs.com/lrc/bff5ca83193e760153b616cfdacaceb7.zrce
+     * ori : http://online-sound-bja.oss-cn-beijing.aliyuncs.com/mp3/60e41e6266d57555e075bde1671b009e.mp3
+     * acc : http://online-sound-bja.oss-cn-beijing.aliyuncs.com/bgm/ce09989528fb7e717e8d17462cd95737.mp3
      * midi :
-     * totalMs : 338000
-     * beginMs : 0
-     * endMs : 338000
-     * zip : http://sound-huabei-inframe.oss-cn-beijing.aliyuncs.com/mel/smlt_zbd.zip
+     * zip :
+     * rankBgm : http://online-sound-bja.oss-cn-beijing.aliyuncs.com/bgm/ce09989528fb7e717e8d17462cd95737.mp3
+     * beginMs : 23000
+     * endMs : 121000
+     * StandIntro :
+     * StandIntroBeginT : 0
+     * StandIntroEndT : 0
+     * totalMs : 98000
      */
 
     private int itemID;
     private String itemName;
     private String cover;
     private String owner;
-    //歌词
-    private String lyric;
-    //原唱
-    private String ori;
-    //伴奏
-    private String acc;
-    //midi文件，用来评分
-    private String midi;
-    private int totalMs;
+    private String lyric;   //歌词
+    private String ori;     //原唱
+    private String acc;     //伴奏
+    private String midi;    //midi文件
+    private String zip;
+    private String rankBgm;
     private int beginMs;
     private int endMs;
-    private String zip;
+    private String StandIntro;
+    private int StandIntroBeginT;
+    private int StandIntroEndT;
+    private int totalMs;
 
     public int getItemID() {
         return itemID;
@@ -102,12 +106,20 @@ public class SongModel implements Serializable {
         this.midi = midi;
     }
 
-    public int getTotalMs() {
-        return totalMs;
+    public String getZip() {
+        return zip;
     }
 
-    public void setTotalMs(int totalMs) {
-        this.totalMs = totalMs;
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getRankBgm() {
+        return rankBgm;
+    }
+
+    public void setRankBgm(String rankBgm) {
+        this.rankBgm = rankBgm;
     }
 
     public int getBeginMs() {
@@ -126,12 +138,36 @@ public class SongModel implements Serializable {
         this.endMs = endMs;
     }
 
-    public String getZip() {
-        return zip;
+    public String getStandIntro() {
+        return StandIntro;
     }
 
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setStandIntro(String StandIntro) {
+        this.StandIntro = StandIntro;
+    }
+
+    public int getStandIntroBeginT() {
+        return StandIntroBeginT;
+    }
+
+    public void setStandIntroBeginT(int StandIntroBeginT) {
+        this.StandIntroBeginT = StandIntroBeginT;
+    }
+
+    public int getStandIntroEndT() {
+        return StandIntroEndT;
+    }
+
+    public void setStandIntroEndT(int StandIntroEndT) {
+        this.StandIntroEndT = StandIntroEndT;
+    }
+
+    public int getTotalMs() {
+        return totalMs;
+    }
+
+    public void setTotalMs(int totalMs) {
+        this.totalMs = totalMs;
     }
 
     public void parse(MusicInfo musicInfo) {

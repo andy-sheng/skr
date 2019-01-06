@@ -11,7 +11,7 @@ import com.component.busilib.R;
 import java.util.ArrayList;
 import java.util.List;
 
-// 正常的段位 到铂金段位
+// 正常的段位 到铂金段位 星星是斜着排的
 public class NormalLevelView extends RelativeLayout {
 
     int starTotalWidth = U.getDisplayUtils().dip2px(100);   // 星星的横向排列的长度

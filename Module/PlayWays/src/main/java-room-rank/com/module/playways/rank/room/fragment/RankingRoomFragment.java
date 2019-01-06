@@ -299,21 +299,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             public void onItemClicked(View view, int position, Object model) {
                 if (model instanceof CommentModel) {
                     int userID = ((CommentModel) model).getUserId();
-                    UserInfoManager.getInstance().getUserInfoByUuid(userID, new UserInfoManager.ResultCallback<UserInfoModel>() {
-
-                        @Override
-                        public boolean onGetLocalDB(UserInfoModel userInfo) {
-                            // TODO: 2018/12/25  从数据库取数据
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onGetServer(UserInfoModel userInfo) {
-                            // TODO: 2018/12/25  从服务器取数据
-                            showPersonInfoView(userInfo);
-                            return false;
-                        }
-                    });
+                    showPersonInfoView(userID);
                 }
             }
         });
@@ -322,9 +308,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     boolean isReport = false;
 
-    private void showPersonInfoView(UserInfoModel userInfo) {
-        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext());
-        personInfoDialogView.setData(userInfo);
+    private void showPersonInfoView(int userID) {
+        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getActivity(), userID);
 
         DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(personInfoDialogView))
@@ -344,7 +329,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                             // 关注
                             U.getToastUtil().showShort("你点击了关注按钮");
 
-                            UserInfoManager.getInstance().mateRelation(userInfo, UserInfoManager.RA_BUILD);
+//                            UserInfoManager.getInstance().mateRelation(userInfo, UserInfoManager.RA_BUILD);
                         }
                     }
                 })
