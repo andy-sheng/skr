@@ -39,6 +39,8 @@ public class ScorePrograssBar2 extends View {
 
     Paint mPaintProgressBar;
 
+    float prgress2 = 100;
+
     public ScorePrograssBar2(Context context) {
         super(context);
         init();
@@ -61,8 +63,8 @@ public class ScorePrograssBar2 extends View {
         w2 = mPrDrawable.getIntrinsicWidth();
         h2 = mPrDrawable.getIntrinsicHeight();
 
-        ty = (h1 - h2) / 2 + 2;
-        tx = (w1 - w2) / 2;
+        ty = (h1 - h2) / 2.0f + U.getDisplayUtils().dip2px(3);
+        tx = (w1 - w2) / 2.0f + U.getDisplayUtils().dip2px(3);
 
         sx = w1 * 25 / 100.0f;
         px = (float) (Math.tan(Math.PI / 4) * h1);
@@ -74,27 +76,13 @@ public class ScorePrograssBar2 extends View {
         mPaintCircle.setAntiAlias(true);
         mPaintCircle.setDither(true);
 
-
-        mPaintProgressBar  = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintProgressBar = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintProgressBar.setDither(true);
         mPaintProgressBar.setStyle(Paint.Style.STROKE);//设置填充样式
         mPaintProgressBar.setAntiAlias(true);//抗锯齿功能
         mPaintProgressBar.setStrokeWidth(U.getDisplayUtils().dip2px(3));//设置画笔宽度
         mPaintProgressBar.setStrokeCap(Paint.Cap.SQUARE);
 
-//        int colors[] = new int[]{
-//                Color.parseColor("#169DDC"),
-//                Color.parseColor("#CA2C60"),
-//
-//        };
-
-        int colors[] = new int[]{
-                Color.parseColor("#ffffff"),
-                Color.parseColor("#000000"),
-
-        };
-        Shader shader = new SweepGradient(h1 / 2, h1 / 2, colors, new float[]{0,1});
-        mPaintProgressBar.setShader(shader);
 
 //
 //        mPaintProgressBar = new Paint();//这个是画矩形的画笔，方便大家理解这个圆弧
@@ -141,10 +129,20 @@ public class ScorePrograssBar2 extends View {
             canvas.drawCircle(cx, cy, r, mPaintCircle);
         }
 
-        // 画进度条
-        RectF rectF = new RectF(0, 0, h1, h1);
+        int colors[] = new int[]{
+                Color.parseColor("#169DDC"),
+                Color.parseColor("#CA2C60"),
 
-        canvas.drawArc(rectF, 0, 120, true, mPaintProgressBar);
+        };
+
+        Shader shader = new SweepGradient(h1 / 2, h1 / 2, colors, new float[]{0, prgress2 / 100.f});
+        mPaintProgressBar.setShader(shader);
+        mPaintProgressBar.setStrokeWidth(U.getDisplayUtils().dip2px((h1-h2)/2.0f));
+        // 画进度条
+        float a = (h1 - h2) / 2.0f;
+        RectF rectF = new RectF(tx, ty, h2, h2);
+
+        canvas.drawArc(rectF, 0, 360 * prgress2 / 100.0f, false, mPaintProgressBar);
 
     }
 

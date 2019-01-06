@@ -23,7 +23,7 @@
             android:layout_width="@dimen/view_47_dp"
             android:layout_height="@dimen/view_47_dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_7_dp" />
+            android:layout_marginLeft="@dimen/view_8_dp" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/more_btn"
