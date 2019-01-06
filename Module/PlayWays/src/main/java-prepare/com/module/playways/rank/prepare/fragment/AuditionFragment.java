@@ -16,6 +16,7 @@ import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
+import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -29,7 +30,6 @@ import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.toast.CommonToastView;
@@ -43,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.engine.EngineEvent.TYPE_MUSIC_PLAY_FINISH;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class AuditionFragment extends BaseFragment {
@@ -173,7 +174,7 @@ public class AuditionFragment extends BaseFragment {
         File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
 
         if (accFile != null) {
-            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, -1);
+            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, 1);
         }
     }
 
@@ -201,9 +202,16 @@ public class AuditionFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(LrcEvent.RestartLrcEvent restartLrcEvent) {
-        playLyrics(mSongModel);
+    public void onEventMainThread(EngineEvent restartLrcEvent) {
+        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
+        if(restartLrcEvent.getType() == TYPE_MUSIC_PLAY_FINISH){
+            File accFile = SongResUtils.getAccFileByUrl(mSongModel.getAcc());
+            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, 1);
+            playLyrics(mSongModel);
+        }
     }
+
+
 
     @Override
     protected boolean onBackPressed() {
