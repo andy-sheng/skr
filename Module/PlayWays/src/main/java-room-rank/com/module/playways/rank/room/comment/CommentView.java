@@ -109,11 +109,13 @@ public class CommentView extends RelativeLayout {
         mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
         mLinearLayoutManager.setStackFromEnd(true);
         mCommentRv.setLayoutManager(mLinearLayoutManager);
-        mCommentAdapter = new CommentAdapter(new RecyclerOnItemClickListener() {
+        mCommentAdapter = new CommentAdapter(new RecyclerOnItemClickListener<CommentModel>() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                if (mClickListener != null){
-                    mClickListener.onItemClicked(view, position, model);
+            public void onItemClicked(View view, int position, CommentModel model) {
+                if (mClickListener != null) {
+                    if (model.getUserId() != RoomData.SYSTEM_ID) {
+                        mClickListener.onItemClicked(view, position, model);
+                    }
                 }
             }
         });
@@ -129,7 +131,7 @@ public class CommentView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommentMsgEvent event) {
-        CommentModel commentModel = CommentModel.parseFromEvent(event,mRoomData);
+        CommentModel commentModel = CommentModel.parseFromEvent(event, mRoomData);
         mCommentAdapter.getDataList().add(0, commentModel);
         if (!mOnBottom || mDraging) {
             mHasDataUpdate = true;

@@ -24,7 +24,7 @@ public class CommentModel {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
-                if (sender.getUserId() == 1) {
+                if (sender.getUserId() == RoomData.SYSTEM_ID) {
                     // 系统消息
                     commentModel.setTextColor(Color.parseColor("#EF5E85"));
                 }
