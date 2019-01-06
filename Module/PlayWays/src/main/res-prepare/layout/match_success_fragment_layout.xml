@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -15,16 +16,16 @@
             android:layout_height="match_parent" />
 
         <com.common.view.ex.ExTextView
-            android:textSize="@dimen/textsize_24_dp"
-            android:layout_marginBottom="@dimen/view_16_dp"
-            android:layout_above="@+id/iv_prepare"
             android:id="@+id/tv_ready_time"
-            android:textStyle="bold"
-            android:textColor="#0C2275"
-            android:text="10s"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/iv_prepare"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_16_dp"
+            android:text="10s"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_24_dp"
+            android:textStyle="bold" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_prepare"
@@ -55,34 +56,39 @@
         android:background="@drawable/img_top_pipeichenggong_bg" />
 
     <FrameLayout
-        android:clipChildren="false"
-        android:layout_width="@dimen/view_220_dp"
+        android:layout_width="@dimen/view_260_dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:clipChildren="false">
+
         <RelativeLayout
-            android:clipChildren="false"
-            android:layout_marginTop="@dimen/view_32_dp"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_220_dp">
+            android:layout_height="@dimen/view_240_dp"
+            android:layout_marginTop="@dimen/view_32_dp"
+            android:clipChildren="false">
+
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/sdv_icon1"
                 android:layout_width="@dimen/view_88_dp"
                 android:layout_height="@dimen/view_88_dp"
-                android:layout_alignParentLeft="true" />
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/view_20_dp" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/sdv_icon2"
                 android:layout_width="@dimen/view_88_dp"
                 android:layout_height="@dimen/view_88_dp"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/view_20_dp" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/sdv_icon3"
                 android:layout_width="@dimen/view_88_dp"
                 android:layout_height="@dimen/view_88_dp"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/view_20_dp" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -91,5 +97,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/img_pipeichenggong_enabled" />
+        android:src="@drawable/img_pipeichenggong_enabled"
+        android:visibility="gone" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/vs_svga"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:source="vs.svga" />
+
 </RelativeLayout>

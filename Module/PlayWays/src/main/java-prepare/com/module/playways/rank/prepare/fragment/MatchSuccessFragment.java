@@ -2,6 +2,7 @@ package com.module.playways.rank.prepare.fragment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,6 +38,8 @@ import com.module.playways.rank.prepare.view.IMatchSucessView;
 import com.module.playways.rank.prepare.view.MatchSucessLeftView;
 import com.module.playways.rank.prepare.view.MatchSucessRightView;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGAImageView;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +51,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     SimpleDraweeView mSdvIcon2;
     SimpleDraweeView mSdvIcon3;
     ImageView mIvVs;
+    SVGAImageView mVsSvga;
     ExImageView mIvPrepare;
 
     View mBgLeftView;
@@ -79,10 +83,11 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
         mIvVs = (ImageView) mRootView.findViewById(R.id.iv_vs);
+        mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
         mIvPrepare = (ExImageView) mRootView.findViewById(R.id.iv_prepare);
-        mBgLeftView = (MatchSucessLeftView)mRootView.findViewById(R.id.bg_left_view);
-        mBgRightView = (MatchSucessRightView)mRootView.findViewById(R.id.bg_right_view);
-        mBottomContainer = (RelativeLayout)mRootView.findViewById(R.id.bottom_container);
+        mBgLeftView = (MatchSucessLeftView) mRootView.findViewById(R.id.bg_left_view);
+        mBgRightView = (MatchSucessRightView) mRootView.findViewById(R.id.bg_right_view);
+        mBottomContainer = (RelativeLayout) mRootView.findViewById(R.id.bottom_container);
 
         if (mMatchSucessPresenter != null) {
             mMatchSucessPresenter.destroy();
@@ -115,7 +120,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         animationGo();
     }
 
-    private void loadIcon(SimpleDraweeView simpleDraweeView){
+    private void loadIcon(SimpleDraweeView simpleDraweeView) {
         AvatarUtils.loadAvatarByUrl(simpleDraweeView,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
@@ -125,16 +130,16 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .build());
     }
 
-    private void animationGo(){
+    private void animationGo() {
         //三块颜色背景
-        TranslateAnimation animationLeft = new TranslateAnimation(Animation.RELATIVE_TO_SELF,-0.5f,Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,-0.5f,Animation.RELATIVE_TO_SELF,0.0f);
+        TranslateAnimation animationLeft = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
 
-        TranslateAnimation animationRight= new TranslateAnimation(Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,-0.5f,Animation.RELATIVE_TO_SELF,0.0f);
+        TranslateAnimation animationRight = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
 
-        TranslateAnimation animationBottom= new TranslateAnimation(Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.0f);
+        TranslateAnimation animationBottom = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
 
         animationLeft.setDuration(300);
         animationLeft.setRepeatMode(Animation.REVERSE);
@@ -163,17 +168,17 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         scaleY.setInterpolator(new DecelerateInterpolator(1));
         scaleX.setDuration(3000);
         scaleY.setDuration(3000);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTop,"alpha",0.4f,1.0f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTop, "alpha", 0.4f, 1.0f);
         alpha.setDuration(1200);
         animatorSet.play(scaleX).with(scaleY).with(alpha);
         animatorSet.start();
 
         //三个头像
-        TranslateAnimation animationIconOne = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth() / 2, 0,-U.getDisplayUtils().getScreenHeight() / 2, 0);
+        TranslateAnimation animationIconOne = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth() / 2, 0, -U.getDisplayUtils().getScreenHeight() / 2, 0);
 
-        TranslateAnimation animationIconSecond= new TranslateAnimation(U.getDisplayUtils().getScreenWidth(), 0, -U.getDisplayUtils().getScreenHeight() / 2, 0);
+        TranslateAnimation animationIconSecond = new TranslateAnimation(U.getDisplayUtils().getScreenWidth(), 0, -U.getDisplayUtils().getScreenHeight() / 2, 0);
 
-        TranslateAnimation animationIconThird= new TranslateAnimation(0,0, U.getDisplayUtils().getScreenHeight() / 2, 0);
+        TranslateAnimation animationIconThird = new TranslateAnimation(0, 0, U.getDisplayUtils().getScreenHeight() / 2, 0);
 
 
         animationIconOne.setDuration(300);
@@ -198,6 +203,57 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         mSdvIcon1.startAnimation(animationIconOne);
         mSdvIcon2.startAnimation(animationIconSecond);
         mSdvIcon3.startAnimation(animationIconThird);
+
+
+        //3个头像的抖动动画
+        ObjectAnimator animatorOne = ObjectAnimator.ofFloat(mSdvIcon1, "translationX", 0, U.getDisplayUtils().dip2px(20), 0);
+        ObjectAnimator animatorSecond = ObjectAnimator.ofFloat(mSdvIcon2, "translationX", 0, -U.getDisplayUtils().dip2px(20), 0);
+        ObjectAnimator animatorThird = ObjectAnimator.ofFloat(mSdvIcon3, "translationY", 0, -U.getDisplayUtils().dip2px(20), 0);
+
+        animatorOne.setDuration(300);
+        animatorOne.setStartDelay(750);
+        animatorOne.setRepeatMode(ValueAnimator.REVERSE);
+        animatorOne.setInterpolator(new OvershootInterpolator());
+        animatorOne.start();
+
+        animatorSecond.setDuration(300);
+        animatorSecond.setStartDelay(750);
+        animatorSecond.setRepeatMode(ValueAnimator.REVERSE);
+        animatorSecond.setInterpolator(new OvershootInterpolator());
+        animatorSecond.start();
+
+        animatorThird.setDuration(300);
+        animatorThird.setStartDelay(750);
+        animatorThird.setRepeatMode(ValueAnimator.REVERSE);
+        animatorThird.setInterpolator(new OvershootInterpolator());
+        animatorThird.start();
+
+
+        mVsSvga.setLoops(1);
+        mVsSvga.setVisibility(View.VISIBLE);
+        mVsSvga.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                mVsSvga.setVisibility(View.GONE);
+                mIvVs.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onRepeat() {
+                mVsSvga.setVisibility(View.GONE);
+                mIvVs.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
     }
 
 
@@ -343,7 +399,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     void goMatch(boolean otherEr) {
         // 如果已经准备了就从新开始匹配，没有准备就直接跳转到选择歌曲界面
         // 如果rematch的时候是因为别人退出房间的原因导致rematch直接跳转到match界面
-        if(isPrepared || otherEr){
+        if (isPrepared || otherEr) {
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
                     .setNotifyHideFragment(MatchSuccessFragment.class)
                     .setAddToBackStack(false)
