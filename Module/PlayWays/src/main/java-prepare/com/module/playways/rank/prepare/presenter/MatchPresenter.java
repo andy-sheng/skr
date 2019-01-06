@@ -103,7 +103,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
      * @param playbookItemID 选择歌曲itemID
      */
     private void startMatch(int playbookItemID, int gameType) {
-        MyLog.d(TAG, "startMatch");
+        MyLog.d(TAG, "startMatch" + " playbookItemID=" + playbookItemID + " gameType=" + gameType);
         disposeMatchTask();
         mMatchState = MatchState.Matching;
 

@@ -134,6 +134,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     BaseImageView mReadyGoView;
 
+    DialogPlus mDialogPlus;
+
     SongModel mPlayingSongModel;
 
     boolean mNeedScroll = true;
@@ -310,9 +312,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     boolean isReport = false;
 
     private void showPersonInfoView(int userID) {
-        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getActivity(), userID);
+        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext(), userID);
 
-        DialogPlus.newDialog(getContext())
+        mDialogPlus = DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(personInfoDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
@@ -342,7 +344,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         isReport = false;
                     }
                 })
-                .create().show();
+                .create();
+        mDialogPlus.show();
     }
 
     private void showReportView() {
@@ -595,6 +598,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void showRecordView(RecordData recordData) {
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+            mDialogPlus = null;
+        }
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
                 .setAddToBackStack(true)
                 .addDataBeforeAdd(0, recordData)
@@ -605,6 +612,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void showVoteView() {
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+            mDialogPlus = null;
+        }
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
                 .setAddToBackStack(true)
                 .addDataBeforeAdd(0, mRoomData)

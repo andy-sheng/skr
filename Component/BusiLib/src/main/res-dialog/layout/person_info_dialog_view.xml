@@ -55,7 +55,7 @@
         android:layout_height="@dimen/view_22_dp"
         android:layout_below="@+id/avatar_iv"
         android:layout_alignLeft="@+id/avatar_iv"
-        android:layout_marginTop="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
         android:paddingLeft="@dimen/view_7_dp"
         android:text="这个签名是撕哥送的"
         android:textColor="#0C2275"
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/sign_tv"
         android:layout_marginLeft="@dimen/view_26_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
         android:layout_marginRight="@dimen/view_26_dp"></com.common.flowlayout.TagFlowLayout>
 
 

@@ -574,7 +574,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
     }
 
     //轮次和游戏结束通知，除了已经结束状态，别的任何状态都要变成
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
         MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
         onGameOver("push", roundAndGameOverEvent.roundOverTimeMs);

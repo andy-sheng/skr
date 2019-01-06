@@ -49,6 +49,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.agora.rtc.Constants;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import okhttp3.MediaType;
@@ -88,17 +91,19 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         mRoomData = roomData;
         TAG = "RankingCorePresenter";
 
-        mGameFinishActionSubject.subscribe(new Consumer<RecordData>() {
-            @Override
-            public void accept(RecordData recordData) throws Exception {
-                if (recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
-                    //不需要跳转评论页,直接跳转战绩页
-                    mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mUserScoreModels));
-                } else {
-                    mIGameRuleView.showVoteView();
-                }
-            }
-        });
+        mGameFinishActionSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<RecordData>() {
+                    @Override
+                    public void accept(RecordData recordData) throws Exception {
+                        if (recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
+                            //不需要跳转评论页,直接跳转战绩页
+                            mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mUserScoreModels));
+                        } else {
+                            mIGameRuleView.showVoteView();
+                        }
+                    }
+                });
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
             EngineManager.getInstance().init("rankingroom", params);
