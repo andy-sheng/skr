@@ -11,9 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -103,7 +101,7 @@ public class AuditionFragment extends BaseFragment {
             public void onSigleTap(int progress) {
                 MyLog.d(TAG, "progress " + progress);
                 if (progress > 0) {
-                    EngineManager.getInstance().setAudioMixingPosition(progress);
+                    EngineManager.getInstance().setAudioMixingPosition(progress - mSongModel.getBeginMs());
                     mManyLyricsView.seekto(progress);
                 }
 
@@ -191,9 +189,10 @@ public class AuditionFragment extends BaseFragment {
                         MyLog.d(TAG, "playMusic, start play lyric");
                         mManyLyricsView.resetData();
                         mManyLyricsView.initLrcData();
+                        lyricsReader.cut(songModel.getBeginMs(), songModel.getEndMs());
                         mManyLyricsView.setLyricsReader(lyricsReader);
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(0);
+                            mManyLyricsView.play(songModel.getBeginMs());
                         }
                     }, throwable -> MyLog.e(throwable));
         } else {
