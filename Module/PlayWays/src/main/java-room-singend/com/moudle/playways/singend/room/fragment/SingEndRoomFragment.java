@@ -322,6 +322,12 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
             @Override
             public void closeBtnClick() {
                 getActivity().finish();
+
+            }
+
+            @Override
+            public void onVoiceChange(boolean voiceOpen) {
+//                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
             }
         });
     }
