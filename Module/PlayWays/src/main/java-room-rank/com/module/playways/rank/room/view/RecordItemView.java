@@ -138,7 +138,7 @@ public class RecordItemView extends RelativeLayout {
                     int voterId = voteInfoModel.getVoter().get(integer);
                     if (voterId == 1) {
                         AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
-                                AvatarUtils.newParamsBuilder("local")
+                                AvatarUtils.newParamsBuilder(mRoomData.getSysAvatar())
                                         .setCircle(true)
                                         .setGray(false)
                                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
