@@ -36,6 +36,7 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
+import com.module.playways.rank.room.event.LastTwoSecondEvent;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
@@ -88,6 +89,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     HandlerTaskTimer mSyncGameStateTask;
 
     HandlerTaskTimer mGetVoteStateTask;
+
+    HandlerTaskTimer mLastTwoSecondTask;
 
     PublishSubject<RecordData> mGameFinishActionSubject = PublishSubject.create();
 
@@ -175,6 +178,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mExoPlayer != null) {
             mExoPlayer.release();
             mExoPlayer = null;
+        }
+
+        if (mLastTwoSecondTask != null) {
+            mLastTwoSecondTask.dispose();
         }
     }
 
@@ -532,7 +539,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
                     // 上一轮是我的轮次，暂停录音
                     EngineManager.getInstance().stopAudioRecording();
-                    if (mRobotScoreHelper !=null && mRobotScoreHelper.isScoreEnough()) {
+                    if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {
                         uploadRes1ForAi(event.getLastRoundInfoModel());
                     }
                 }
@@ -820,6 +827,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             public void run() {
                                 MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
                                 mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+                                startLastTwoSecondTask();
                             }
                         });
                     } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
@@ -847,6 +855,30 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             }
         }
     }
+
+    private void startLastTwoSecondTask() {
+        if (mLastTwoSecondTask != null) {
+            mLastTwoSecondTask.dispose();
+        }
+
+        final RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+
+        if (roundInfoModel != null) {
+            mLastTwoSecondTask = HandlerTaskTimer.newBuilder()
+                    .delay(roundInfoModel.getSingEndMs() - roundInfoModel.getSingBeginMs() - 2000)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                        @Override
+                        public void onNext(Integer integer) {
+                            if (roundInfoModel == mRoomData.getRealRoundInfo()) {
+                                EventBus.getDefault().post(new LastTwoSecondEvent());
+                            }
+                        }
+                    });
+        } else {
+            MyLog.e(TAG, "startLastTwoSecondTask roundInfoModel 为 null, 为什么？？？？");
+        }
+    }
+
 
     // 游戏轮次结束的通知消息（在某人向服务器短连接成功后推送)
     @Subscribe(threadMode = ThreadMode.POSTING)
