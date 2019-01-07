@@ -132,24 +132,20 @@ public class GiftContinuousView extends RelativeLayout {
         this.setVisibility(VISIBLE);
         mGiftNumTv.setVisibility(GONE);
         if (mStep1Animator == null) {
-            mStep1Animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -getWidth(), 0);
+            mStep1Animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -U.getDisplayUtils().dip2px(150), 0);
             mStep1Animator.setDuration(300);
-        } else {
-            mStep1Animator.cancel();
+            mStep1Animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    onAnimationEnd(animation);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    step2(mCurGiftPlayModel.getBeginCount());
+                }
+            });
         }
-        mStep1Animator.removeAllListeners();
-
-        mStep1Animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                onAnimationEnd(animation);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                step2(mCurGiftPlayModel.getBeginCount());
-            }
-        });
         mStep1Animator.start();
     }
 
@@ -167,28 +163,24 @@ public class GiftContinuousView extends RelativeLayout {
             mStep2Animator = new AnimatorSet();
             mStep2Animator.playTogether(objectAnimator1, objectAnimator2);
             mStep2Animator.setDuration(300);
-        } else {
-            mStep2Animator.cancel();
-        }
-
-        mStep2Animator.removeAllListeners();
-        mStep2Animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                onAnimationEnd(animation);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (count >= mCurGiftPlayModel.getEndCount()) {
-                    mCurStatus = STATUS_WAIT_OVER;
-                    mUiHandler.removeMessages(MSG_DISPLAY_OVER);
-                    mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
-                } else {
-                    step2(count + 1);
+            mStep2Animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    onAnimationEnd(animation);
                 }
-            }
-        });
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (mCurNum >= mCurGiftPlayModel.getEndCount()) {
+                        mCurStatus = STATUS_WAIT_OVER;
+                        mUiHandler.removeMessages(MSG_DISPLAY_OVER);
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISPLAY_OVER, 1000);
+                    } else {
+                        step2(mCurNum + 1);
+                    }
+                }
+            });
+        }
         mStep2Animator.start();
     }
 
