@@ -146,6 +146,12 @@ public class EngineManager implements AgoraOutCallback {
             EngineEvent.UserVolumeInfo userVolumeInfo = new EngineEvent.UserVolumeInfo(info.uid, info.volume);
             l.add(userVolumeInfo);
         }
+        if (l.isEmpty()) {
+            return;
+        }
+        if (l.size() == 1 && l.get(0).uid == 0 && l.get(0).volume == 0) {
+            return;
+        }
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION, null);
         engineEvent.obj = l;
         EventBus.getDefault().post(engineEvent);
@@ -652,8 +658,8 @@ public class EngineManager implements AgoraOutCallback {
      *                 正整数：循环的次数
      *                 -1：无限循环
      */
-    public void startAudioMixing(String filePath, String midiPath,long mixMusicBeginOffset, boolean loopback, boolean replace, int cycle) {
-        MyLog.d(TAG,"startAudioMixing" + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+    public void startAudioMixing(String filePath, String midiPath, long mixMusicBeginOffset, boolean loopback, boolean replace, int cycle) {
+        MyLog.d(TAG, "startAudioMixing" + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
         mConfig.setMixMusicPlaying(true);
         mConfig.setMixMusicFilePath(filePath);
         mConfig.setMidiPath(midiPath);
@@ -666,7 +672,7 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
-        startAudioMixing(filePath,null,0,loopback,replace,cycle);
+        startAudioMixing(filePath, null, 0, loopback, replace, cycle);
     }
 
     /**
