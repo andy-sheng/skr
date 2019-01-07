@@ -363,9 +363,15 @@ public abstract class AbstractLrcView extends View {
     private long mRefreshTime = 20;
 
     /**
-     * 已经结束的行数
+     * 已经结束的行数，一个行可能有多个分割行
      */
     private int mCurEndLineNum = 0;
+
+
+    /**
+     * 已经结束的分割行行数
+     */
+    private int mCurSplitLyricsEndLineNum = 0;
 
     /**
      * 子线程用于执行耗时任务
@@ -446,15 +452,15 @@ public abstract class AbstractLrcView extends View {
         mNonsupportText = context.getString(R.string.nonsupport_text);
         mGotoSearchText = context.getString(R.string.goto_search_text);
 
-        if(typedArray.hasValue(R.styleable.lrc_view_ly_paint_color_from) && typedArray.hasValue(R.styleable.lrc_view_ly_paint_color_to)){
+        if (typedArray.hasValue(R.styleable.lrc_view_ly_paint_color_from) && typedArray.hasValue(R.styleable.lrc_view_ly_paint_color_to)) {
             mPaintColors = new int[]{typedArray.getColor(R.styleable.lrc_view_ly_paint_color_from, Color.BLUE), typedArray.getColor(R.styleable.lrc_view_ly_paint_color_to, Color.BLUE)};
         }
 
-        if(typedArray.hasValue(R.styleable.lrc_view_ly_high_light_paint_color_from) && typedArray.hasValue(R.styleable.lrc_view_ly_high_light_paint_color_to)){
+        if (typedArray.hasValue(R.styleable.lrc_view_ly_high_light_paint_color_from) && typedArray.hasValue(R.styleable.lrc_view_ly_high_light_paint_color_to)) {
             mPaintHLColors = new int[]{typedArray.getColor(R.styleable.lrc_view_ly_high_light_paint_color_from, Color.BLUE), typedArray.getColor(R.styleable.lrc_view_ly_high_light_paint_color_to, Color.BLUE)};
         }
 
-        if(typedArray.hasValue(R.styleable.lrc_view_ly_eable_verbatim)){
+        if (typedArray.hasValue(R.styleable.lrc_view_ly_eable_verbatim)) {
             mEnableVerbatim = typedArray.getBoolean(R.styleable.lrc_view_ly_eable_verbatim, true);
         }
         //默认画笔
@@ -603,16 +609,44 @@ public abstract class AbstractLrcView extends View {
                 LyricsLineInfo currentLine = getLrcLineInfos().get(lyricsLineNum);
                 int splitLyricsLineNum = getSplitLyricsLineNum();
                 LyricsLineInfo realInfo = currentLine.getSplitLyricsLineInfos().get(splitLyricsLineNum);
-                long endTime = realInfo.getEndTime();
-                long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
-                if(lyricProgress > endTime && mCurEndLineNum != lyricsLineNum){
+
+//                MyLog.d("AbstractLrcViewAbstractLrcView", "realInfo lyric is " + realInfo.getLineLyrics() + ", lyricsLineNum is " + lyricsLineNum + ", splitLyricsLineNum " + splitLyricsLineNum
+//                        + ", end time is " + endTime + ", lyricProgress " + lyricProgress);
+
+                if ((mCurEndLineNum != lyricsLineNum || mCurSplitLyricsEndLineNum != splitLyricsLineNum)) {
                     mCurEndLineNum = lyricsLineNum;
+                    mCurSplitLyricsEndLineNum = splitLyricsLineNum;
                     EventBus.getDefault().post(new LrcEvent.LineEndEvent());
-                    U.getToastUtil().showShort("歌词结束");
+                    MyLog.d("AbstractLrcViewAbstractLrcView", "结束");
+//                    U.getToastUtil().showShort("结束");
+                }
+
+                if (isLastLyricLine(lyricsLineNum, splitLyricsLineNum)) {
+                    long endTime = realInfo.getEndTime();
+                    long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
+                    if (endTime < lyricProgress) {
+                        EventBus.getDefault().post(new LrcEvent.LineEndEvent());
+                        mCurEndLineNum = lyricsLineNum;
+                        mCurSplitLyricsEndLineNum = splitLyricsLineNum;
+                        MyLog.d("AbstractLrcViewAbstractLrcView", "结束");
+//                        U.getToastUtil().showShort("结束");
+                    }
                 }
             }
         }
     }
+
+    //最后一行歌词
+    private boolean isLastLyricLine(int lyricsLineNum, int splitLyricsLineNum) {
+        try {
+            return lyricsLineNum == mLrcLineInfos.size() - 1 && mLrcLineInfos.get(lyricsLineNum).getSplitLyricsLineInfos().size() - 1 == splitLyricsLineNum;
+        }catch (Exception e){
+            MyLog.e(e);
+        }
+
+        return false;
+    }
+
 
     /**
      * 绘画去搜索歌词按钮
@@ -725,7 +759,7 @@ public abstract class AbstractLrcView extends View {
         }
     }
 
-    protected long getCurPlayingTime(){
+    protected long getCurPlayingTime() {
         return mCurPlayingTime;
     }
 
@@ -1296,7 +1330,7 @@ public abstract class AbstractLrcView extends View {
     public void release() {
         removeCallbacksAndMessages();
         //关闭线程
-        if (mWorkerHandler != null){
+        if (mWorkerHandler != null) {
             mWorkerHandler.removeCallbacksAndMessages(null);
         }
         mLrcPlayerStatus = LRCPLAYERSTATUS_INIT;
