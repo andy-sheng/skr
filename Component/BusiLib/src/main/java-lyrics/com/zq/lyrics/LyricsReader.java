@@ -140,6 +140,11 @@ public class LyricsReader {
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
 
+            if(entry.getValue().getEndTime() >= endTs && entry.getValue().getStartTime() < endTs){
+
+                continue;
+            }
+
             if(entry.getValue().getEndTime() > endTs){
                 it.remove();
                 continue;
