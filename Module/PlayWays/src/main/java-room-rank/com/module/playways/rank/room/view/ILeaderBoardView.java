@@ -8,7 +8,7 @@ import java.util.List;
 public interface ILeaderBoardView {
     void showFirstThreeRankInfo(List<RankInfoModel> rankInfoModel);
 
-    void showRankList(List<RankInfoModel> rankInfoModel);
+    void showRankList(List<RankInfoModel> rankInfoModel, boolean hasMore);
 
     void showOwnRankInfo(UserRankModel userRankModel);
 }

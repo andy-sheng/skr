@@ -2,6 +2,7 @@ package com.module.playways.rank.room.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,9 @@ import com.module.playways.rank.room.adapter.LeaderBoardAdapter;
 import com.module.playways.rank.room.presenter.LeaderboardPresenter;
 import com.module.playways.rank.room.view.ILeaderBoardView;
 import com.module.rank.R;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.List;
 
@@ -54,6 +58,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     LinearLayout mLlChampain;
     TextView mTvChanpianStart;
     TextView mTvSegmentName;
+
+    SmartRefreshLayout mRefreshLayout;
+    boolean mHasMore = true;
 
     ImageView mIvRankLeft;
     ImageView mIvRank;
@@ -93,11 +100,33 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvRankLeft = (ImageView) mRootView.findViewById(R.id.iv_rank_left);
         mIvRank = (ImageView) mRootView.findViewById(R.id.iv_rank);
         mIvRankRight = (ImageView) mRootView.findViewById(R.id.iv_rank_right);
+        mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
+        mRefreshLayout.setEnableRefresh(false);
+        mRefreshLayout.setEnableLoadMore(true);
+        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
+        mRefreshLayout.setEnableOverScrollDrag(false);
+        mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                if (mHasMore) {
+                    mLeaderboardPresenter.getLeaderBoardInfo();
+                } else {
+                    U.getToastUtil().showShort("没有更多数据了");
+                }
+            }
 
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mRefreshLayout.finishRefresh();
+            }
+        });
     }
 
     @Override
-    public void showRankList(List<RankInfoModel> rankInfoModel) {
+    public void showRankList(List<RankInfoModel> rankInfoModel, boolean hasMore) {
+        mRefreshLayout.setEnableLoadMore(hasMore);
+        mHasMore = hasMore;
+        mRefreshLayout.finishLoadMore();
         mLeaderBoardAdapter.setDataList(rankInfoModel);
     }
 

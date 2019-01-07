@@ -48,7 +48,7 @@
         android:layout_height="wrap_content" />
 
     <com.common.view.ex.ExImageView
-        android:background="@drawable/ic_dialog_normal"
+        android:background="@drawable/paihangbang_xingxing"
         android:layout_marginRight="@dimen/view_5_dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/tv_star"

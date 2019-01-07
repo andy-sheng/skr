@@ -41,19 +41,25 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<RankInfoModel> rankInfoModelList = JSON.parseArray(result.getData().getString("users"), RankInfoModel.class);
-                    if(mOffset == 0){
-                        List<RankInfoModel> threeInfo = null;
-                        for (int i = 0; i < (rankInfoModelList.size() >= 3 ? 3 : rankInfoModelList.size()); i++){
+                    if(rankInfoModelList != null && rankInfoModelList.size() > 0){
+                        if(mOffset == 0){
+                            List<RankInfoModel> threeInfo = null;
                             threeInfo = new ArrayList<>(3);
-                            threeInfo.add(rankInfoModelList.get(i));
+                            for (int i = 0; i < (rankInfoModelList.size() >= 3 ? 3 : rankInfoModelList.size()); i++){
+                                threeInfo.add(rankInfoModelList.get(i));
+                            }
+
+                            mILeaderBoardView.showFirstThreeRankInfo(threeInfo);
                         }
 
-                        mILeaderBoardView.showFirstThreeRankInfo(threeInfo);
+                        mRankInfoModelList.addAll(rankInfoModelList);
+                        mILeaderBoardView.showRankList(mRankInfoModelList, rankInfoModelList.size() == mLimit);
+                        mOffset += rankInfoModelList.size();
+                    }else {
+                        mILeaderBoardView.showRankList(new ArrayList<>(), false);
+                        mILeaderBoardView.showFirstThreeRankInfo(new ArrayList<>());
                     }
 
-                    mRankInfoModelList.addAll(rankInfoModelList);
-                    mILeaderBoardView.showRankList(mRankInfoModelList);
-                    mOffset += rankInfoModelList.size();
                 }
             }
         });
