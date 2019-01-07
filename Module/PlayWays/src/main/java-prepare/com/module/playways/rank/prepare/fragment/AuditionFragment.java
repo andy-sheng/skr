@@ -39,6 +39,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -203,6 +205,9 @@ public class AuditionFragment extends BaseFragment {
                         mManyLyricsView.resetData();
                         mManyLyricsView.initLrcData();
                         lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getEndMs());
+                        Set<Integer> set = new HashSet<>();
+                        set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
+                        mManyLyricsView.setNeedCountDownLine(set);
                         MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
                         mManyLyricsView.setLyricsReader(lyricsReader);
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
