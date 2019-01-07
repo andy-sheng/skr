@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/view_181_dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:clipChildren="false">
 
     <com.zq.level.view.NormalLevelView
         android:id="@+id/sdv_own_level"
@@ -33,11 +35,22 @@
         android:id="@+id/tv_song_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_140_dp"
         android:layout_marginTop="@dimen/view_135_dp"
-        android:text=""
+        android:text="《印第安老斑鸠》"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_16_dp" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:layout_width="@dimen/view_180_dp"
+        android:layout_height="@dimen/view_108_dp"
+        android:layout_marginTop="@dimen/view_95_dp"
+        android:layout_alignParentRight="true"
+        app:clearsAfterStop="false"
+        app:loopCount="1"
+        app:antiAlias="true"
+        app:source="sss.svga"/>
 
     <View
         android:layout_alignParentBottom="true"
