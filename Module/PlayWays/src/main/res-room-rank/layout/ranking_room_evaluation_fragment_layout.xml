@@ -200,9 +200,9 @@
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/vs_svga"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/view_400_dp"
+        android:layout_marginTop="@dimen/view_80_dp"
         android:scaleType="fitCenter"
-        android:translationY="@dimen/view_d_40_dp"
         android:visibility="gone"
         app:antiAlias="true"
         app:source="vs.svga" />
