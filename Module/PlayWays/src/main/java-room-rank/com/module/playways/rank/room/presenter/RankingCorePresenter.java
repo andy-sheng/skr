@@ -36,7 +36,6 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
-import com.module.playways.rank.room.event.LastTwoSecondEvent;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
@@ -871,7 +870,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         @Override
                         public void onNext(Integer integer) {
                             if (roundInfoModel == mRoomData.getRealRoundInfo()) {
-                                EventBus.getDefault().post(new LastTwoSecondEvent());
+                                mIGameRuleView.exitMainStage();
                             }
                         }
                     });

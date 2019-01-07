@@ -8,18 +8,28 @@
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/top_voice_bg"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_300_dp" />
+        android:layout_height="@dimen/view_300_dp"
+        android:layout_marginTop="@dimen/view_80_dp" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/ufo_bg"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/view_80_dp"
         android:layout_height="300dp"
+        android:layout_marginTop="@dimen/view_80_dp"
         android:scaleType="fitCenter"
         app:antiAlias="true"
         app:autoPlay="false"
         app:clearsAfterStop="false" />
+
+    <ImageView
+        android:id="@+id/end_round_hint"
+        android:layout_width="@dimen/view_78_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_alignBottom="@+id/top_voice_bg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:src="@drawable/btn_pipeichenggong_normal"
+        android:visibility="gone" />
 
     <com.zq.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"

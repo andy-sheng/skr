@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -23,6 +24,7 @@ import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
@@ -105,6 +107,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     SVGAImageView mTopVoiceBg;
 
     SVGAImageView mUfoBg;
+
+    ImageView mEndRoundHint;
 
     RankingCorePresenter mCorePresenter;
 
@@ -228,9 +232,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     public void playShowTurnCardAnimator(Runnable countDownRunnable) {
-        // TODO: 2019/1/7  仅仅作为测试放在后，后面会接结束前两秒的事件
-        playHideMainStageAnimator();
-
         mTopVoiceBg.setVisibility(View.GONE);
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardShowAnimator == null) {
@@ -413,6 +414,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTopVoiceBg.stopAnimation();
         mTopVoiceBg.setVisibility(View.GONE);
         // end卡片
+        mEndRoundHint.setVisibility(View.GONE);
     }
 
     private void initInputView() {
@@ -492,7 +494,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
         mTopContainerView.setRoomData(mRoomData);
 
-
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
         RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
@@ -520,6 +521,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     private void initTurnChangeView() {
         mTopVoiceBg = (SVGAImageView) mRootView.findViewById(R.id.top_voice_bg);
         mUfoBg = (SVGAImageView) mRootView.findViewById(R.id.ufo_bg);
+        mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
 
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
     }
@@ -757,6 +759,19 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void showLeftTime(long wholeTile) {
         MyLog.d(TAG, "showLastedTime" + " wholeTile=" + wholeTile);
         mTopContainerView.startPlayLeftTime(wholeTile);
+    }
+
+    @Override
+    public void exitMainStage() {
+        mEndRoundHint.setVisibility(View.VISIBLE);
+        HandlerTaskTimer.newBuilder()
+                .delay(500)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        playHideMainStageAnimator();
+                    }
+                });
     }
 
     @Override

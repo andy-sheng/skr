@@ -614,6 +614,11 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
 
     }
 
+    @Override
+    public void exitMainStage() {
+
+    }
+
     private void cancelShowLastedTimeTask() {
         mTvPassedTime.setText("");
         if (mShowLastedTimeTask != null) {
