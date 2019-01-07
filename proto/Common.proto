@@ -33,6 +33,7 @@ message MusicInfo {
     uint32 totalTimeMs  = 10; //共计多少毫秒
     uint32 beginTimeMs  = 11; //开始毫秒
     uint32 endTimeMs    = 12; //结束毫秒
+    uint32 rankLrcBeginT = 13; //匹配玩法第一句歌词开始时间,毫秒
 }
 
 enum ESex {
