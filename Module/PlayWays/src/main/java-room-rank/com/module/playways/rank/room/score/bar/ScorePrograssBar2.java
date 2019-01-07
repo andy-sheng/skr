@@ -31,8 +31,9 @@ public class ScorePrograssBar2 extends View {
     float sx = 0; // progress=0的位置
     float px = 0; // 角度产生的 x 轴，下面边的偏移量
     float extendX = 0;// 如果到100% ，斜边矩形是会往外延伸的
-    int speed = 1;// 速度
+    //    int speed = 1;// 速度
     int curProgress = 0;// 当前进度
+    int oldProgress = 0;// 之前的进度
     int progress = 0;// 目标进度
 
     Paint mPaintCircle;
@@ -137,7 +138,7 @@ public class ScorePrograssBar2 extends View {
 
         Shader shader = new SweepGradient(h1 / 2, h1 / 2, colors, new float[]{0, prgress2 / 100.f});
         mPaintProgressBar.setShader(shader);
-        mPaintProgressBar.setStrokeWidth(U.getDisplayUtils().dip2px((h1-h2)/2.0f));
+        mPaintProgressBar.setStrokeWidth(U.getDisplayUtils().dip2px((h1 - h2) / 2.0f));
         // 画进度条
         float a = (h1 - h2) / 2.0f;
         RectF rectF = new RectF(tx, ty, h2, h2);
@@ -152,14 +153,14 @@ public class ScorePrograssBar2 extends View {
             return false;
         }
         if (curProgress < progress) {
-            int np = curProgress + speed;
+            int np = curProgress + getSpeed();
             if (np > progress) {
                 np = progress;
             }
             curProgress = np;
         }
         if (curProgress > progress) {
-            int np = curProgress - speed;
+            int np = curProgress - getSpeed();
             if (np < progress) {
                 np = progress;
             }
@@ -169,7 +170,24 @@ public class ScorePrograssBar2 extends View {
         return true;
     }
 
+    int getSpeed() {
+//        oldProgress,progress,curProgress
+        int speed = (progress - curProgress) / 5;
+        if (curProgress > progress) {
+            if (speed <= 0) {
+                speed = 1;
+            }
+        } else {
+            if (speed >= 0) {
+                speed = -1;
+            }
+        }
+
+        return speed;
+    }
+
     public void setProgress(int p) {
+        this.oldProgress = progress;
         this.progress = p;
         tryPostInvalidateDelayed();
     }
