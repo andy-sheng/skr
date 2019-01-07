@@ -638,12 +638,17 @@ public abstract class AbstractLrcView extends View {
 
     //最后一行歌词
     private boolean isLastLyricLine(int lyricsLineNum, int splitLyricsLineNum) {
-        try {
-            return lyricsLineNum == mLrcLineInfos.size() - 1 && mLrcLineInfos.get(lyricsLineNum).getSplitLyricsLineInfos().size() - 1 == splitLyricsLineNum;
-        }catch (Exception e){
-            MyLog.e(e);
+        if (lyricsLineNum == mLrcLineInfos.size() - 1) {
+            LyricsLineInfo lineInfo = mLrcLineInfos.get(lyricsLineNum);
+            if (lineInfo != null) {
+                List<LyricsLineInfo> l = lineInfo.getSplitLyricsLineInfos();
+                if (l != null) {
+                    if (l.size() - 1 == splitLyricsLineNum) {
+                        return true;
+                    }
+                }
+            }
         }
-
         return false;
     }
 
