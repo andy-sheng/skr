@@ -10,9 +10,11 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
+import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.log.MyLog;
+import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
@@ -107,7 +109,7 @@ public class HomeCorePresenter {
                 @Override
                 public void onRequestPermissionSuccess() {
                     MyLog.d(TAG, "onRequestPermissionSuccess");
-                    onAgree();
+                    check3(activity);
                 }
 
                 @Override
@@ -123,6 +125,68 @@ public class HomeCorePresenter {
                 }
             }, activity);
         } else {
+            check3(activity);
+        }
+    }
+
+    void check3(Activity activity) {
+        if (!U.getPermissionUtils().checkLocation(activity)) {
+            U.getPermissionUtils().requestLocation(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    MyLog.d(TAG, "onRequestPermissionSuccess");
+                    U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
+                        @Override
+                        public void onReceive(LbsUtils.Location location) {
+                            MyLog.d(TAG, "onReceive" + " location=" + location);
+                            if (location != null && location.isValid()) {
+                                Location l = new Location();
+                                l.setProvince(location.getProvince());
+                                l.setCity(location.getCity());
+                                l.setDistrict(location.getDistrict());
+
+                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                                        .newMyInfoUpdateParamsBuilder()
+                                        .setLocation(l)
+                                        .build());
+                            }
+
+                        }
+                    });
+                    onAgree();
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
+                    onReject();
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
+                    onReject();
+                }
+            }, activity);
+        } else {
+            U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
+                @Override
+                public void onReceive(LbsUtils.Location location) {
+                    MyLog.d(TAG, "onReceive" + " location=" + location);
+                    if (location != null && location.isValid()) {
+                        Location l = new Location();
+                        l.setProvince(location.getProvince());
+                        l.setCity(location.getCity());
+                        l.setDistrict(location.getDistrict());
+
+                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                                .newMyInfoUpdateParamsBuilder()
+                                .setLocation(l)
+                                .build());
+                    }
+
+                }
+            });
             onAgree();
         }
     }
