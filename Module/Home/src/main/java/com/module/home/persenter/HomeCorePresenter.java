@@ -187,7 +187,7 @@ public class HomeCorePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MyUserInfoEvent.UserInfoLoadOkEvent event) {
+    public void onEvent(MyUserInfoEvent.UserInfoChangeEvent event) {
         // 个人信息已经读取
         checkUserInfo("UserInfoLoadOkEvent");
     }
@@ -197,7 +197,7 @@ public class HomeCorePresenter {
         if (event.reason == AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED) {
             MyLog.w(TAG, "LogoffAccountEvent" + " 账号已经过期，需要重新登录,跳到登录页面");
         }
-        if(!UserAccountManager.getInstance().hasAccount()) {
+        if (!UserAccountManager.getInstance().hasAccount()) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
         }
     }
@@ -209,7 +209,7 @@ public class HomeCorePresenter {
                 // 到时会有广告页或者启动页挡一下的，先不用管
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
             } else {
-                if (MyUserInfoManager.getInstance().hasLoadFromDB()) {
+                if (MyUserInfoManager.getInstance().hasMyUserInfo()) {
                     // 如果有账号了
                     if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
                             || MyUserInfoManager.getInstance().getSex() == 0

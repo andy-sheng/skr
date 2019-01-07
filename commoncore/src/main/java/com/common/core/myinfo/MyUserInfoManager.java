@@ -42,7 +42,7 @@ public class MyUserInfoManager {
 
     private MyUserInfo mUser = new MyUserInfo();
 
-    private boolean mHasLoadFromDB = false;
+//    private boolean mHasLoadFromDB = false;
 
     public void init() {
         load();
@@ -62,8 +62,8 @@ public class MyUserInfoManager {
                     // 从服务器同步个人信息
                     syncMyInfoFromServer();
                 }
-                mHasLoadFromDB = true;
-                EventBus.getDefault().post(new MyUserInfoEvent.UserInfoLoadOkEvent());
+//                mHasLoadFromDB = true;
+//                EventBus.getDefault().post(new MyUserInfoEvent.UserInfoLoadOkEvent());
                 emitter.onComplete();
             }
         })
@@ -205,9 +205,13 @@ public class MyUserInfoManager {
         return mUser.getLocation().getDesc();
     }
 
-    public boolean hasLoadFromDB() {
-        return mHasLoadFromDB;
+    public boolean hasMyUserInfo() {
+        return mUser != null && mUser.getUserId() > 0;
     }
+
+//    public boolean hasLoadFromDB() {
+//        return mHasLoadFromDB;
+//    }
 
     private static class MyUserInfoManagerHolder {
         private static final MyUserInfoManager INSTANCE = new MyUserInfoManager();
