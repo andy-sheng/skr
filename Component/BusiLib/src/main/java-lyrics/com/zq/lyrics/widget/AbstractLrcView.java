@@ -624,7 +624,7 @@ public abstract class AbstractLrcView extends View {
                 if (isLastLyricLine(lyricsLineNum, splitLyricsLineNum)) {
                     long endTime = realInfo.getEndTime();
                     long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
-                    if (endTime < lyricProgress) {
+                    if (endTime < lyricProgress && (mCurEndLineNum != lyricsLineNum || mCurSplitLyricsEndLineNum != splitLyricsLineNum)) {
                         EventBus.getDefault().post(new LrcEvent.LineEndEvent());
                         mCurEndLineNum = lyricsLineNum;
                         mCurSplitLyricsEndLineNum = splitLyricsLineNum;
