@@ -1,4 +1,4 @@
-package com.module.playways.rank.room.scorebar;
+package com.module.playways.rank.room.score.bar;
 
 import android.content.Context;
 import android.graphics.Canvas;

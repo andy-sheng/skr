@@ -24,7 +24,7 @@ public class RoomData implements Serializable {
     public final static String ROOM_SPECAIL_EMOJI_DABIAN = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/dabian1.svga";
     public final static String ROOM_SPECAIL_EMOJI_AIXIN = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/aixin1.svga";
     public static final String AUDIO_FOR_AI_PATH = "audioforai.aac";
-
+    public static final String MATCHING_SCORE_FOR_AI_PATH = "matchingscore.json";
 
     private int mGameType; // 游戏类型
 

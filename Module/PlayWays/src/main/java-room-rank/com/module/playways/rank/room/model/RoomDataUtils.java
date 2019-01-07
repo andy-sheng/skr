@@ -184,7 +184,8 @@ public class RoomDataUtils {
         return saveAudioForAiFilePath;
     }
 
-    public static ESex getSex(int sex){
-        return  ESex.fromValue(sex);
+    public static String getSaveMatchingSocreForAiFilePath() {
+        String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", RoomData.MATCHING_SCORE_FOR_AI_PATH);
+        return saveAudioForAiFilePath;
     }
 }

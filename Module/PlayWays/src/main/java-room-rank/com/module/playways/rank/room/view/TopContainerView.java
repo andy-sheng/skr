@@ -1,12 +1,9 @@
 package com.module.playways.rank.room.view;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -18,10 +15,9 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.rank.room.model.RoomData;
-import com.module.playways.rank.room.quickmsg.QuickMsgView;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.scorebar.ScorePrograssBar2;
+import com.module.playways.rank.room.score.bar.ScorePrograssBar2;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

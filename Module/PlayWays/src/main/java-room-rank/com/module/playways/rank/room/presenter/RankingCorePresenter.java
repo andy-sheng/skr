@@ -21,7 +21,6 @@ import com.component.busilib.SkrConfig;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
-import com.google.common.util.concurrent.ServiceManager;
 import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.event.AppSwapEvent;
@@ -40,9 +39,10 @@ import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.playways.rank.room.model.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
+import com.module.playways.rank.room.score.MachineScoreItem;
+import com.module.playways.rank.room.score.ScoreSaveHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.utils.LyricsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,10 +54,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.agora.rtc.Constants;
-import io.reactivex.Observer;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -90,6 +92,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     IGameRuleView mIGameRuleView;
 
     Handler mUiHanlder = new Handler();
+
+    ScoreSaveHelper mScoreSaveHelper;
 
     public RankingCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
         mIGameRuleView = iGameRuleView;
@@ -483,9 +487,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                     if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                                         // 需要上传音频伪装成机器人
                                         EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
+                                        mScoreSaveHelper = new ScoreSaveHelper();
                                     }
-
-                                    //TODO test
 
                                 }
                             }
@@ -506,9 +509,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
                     // 上一轮是我的轮次，暂停录音
                     EngineManager.getInstance().stopAudioRecording();
-                    boolean scoreEnough = true; // 分数满足
-                    if (scoreEnough) {
-                        uploadResForAi(event.getLastRoundInfoModel());
+                    if (mScoreSaveHelper.isScoreEnough()) {
+                        uploadRes1ForAi(event.getLastRoundInfoModel());
                     }
                 }
             }
@@ -637,26 +639,67 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
     }
 
-    private void uploadResForAi(RoundInfoModel roundInfoModel) {
-        //上传音频文件
-        UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
-                .setFileType(UploadParams.FileType.audioAi)
-                .startUploadAsync(new UploadCallback() {
-                    @Override
-                    public void onProgress(long currentSize, long totalSize) {
+    /**
+     * 上传音频文件用作机器人
+     * @param roundInfoModel
+     */
+    private void uploadRes1ForAi(RoundInfoModel roundInfoModel) {
+        if (mScoreSaveHelper != null && mScoreSaveHelper.vilid()) {
+            UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
+                    .setFileType(UploadParams.FileType.audioAi)
+                    .startUploadAsync(new UploadCallback() {
+                        @Override
+                        public void onProgress(long currentSize, long totalSize) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onSuccess(String url) {
-                        sendUploadRequest(roundInfoModel, url, "");
-                    }
+                        @Override
+                        public void onSuccess(String url) {
+                            uploadRes2ForAi(roundInfoModel, url);
+                        }
 
-                    @Override
-                    public void onFailure(String msg) {
+                        @Override
+                        public void onFailure(String msg) {
 
-                    }
-                });
+                        }
+                    });
+        }
+    }
+
+    /**
+     * 上传打分文件用作机器人
+     * @param roundInfoModel
+     * @param audioUrl
+     */
+    private void uploadRes2ForAi(RoundInfoModel roundInfoModel, String audioUrl) {
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                String path = RoomDataUtils.getSaveMatchingSocreForAiFilePath();
+                mScoreSaveHelper.save(path);
+
+                UploadParams.newBuilder(path)
+                        .setFileType(UploadParams.FileType.midiAi)
+                        .startUploadAsync(new UploadCallback() {
+                            @Override
+                            public void onProgress(long currentSize, long totalSize) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(String url) {
+                                sendUploadRequest(roundInfoModel, audioUrl, url);
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+
+                            }
+                        });
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     /**
@@ -869,8 +912,17 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineEndEvent event) {
-        int score = EngineManager.getInstance().getLineScore();
-        U.getToastUtil().showShort("score:" + score);
-        mIGameRuleView.updateScrollBarProgress(score);
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            int score = EngineManager.getInstance().getLineScore();
+            U.getToastUtil().showShort("score:" + score);
+            mIGameRuleView.updateScrollBarProgress(score);
+            if (mScoreSaveHelper != null) {
+                MachineScoreItem machineScoreItem = new MachineScoreItem();
+                machineScoreItem.setScore(score);
+                long ts = EngineManager.getInstance().getAudioMixingCurrentPosition() + mRoomData.getSongModel().getBeginMs();
+                machineScoreItem.setTs(ts);
+                mScoreSaveHelper.add(machineScoreItem);
+            }
+        }
     }
 }
