@@ -2,6 +2,7 @@ package com.zq.level.view;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -33,15 +34,18 @@ public class NormalLevelView extends RelativeLayout {
     int totalStats; //总星星数
     int selecStats; //亮着的星星
 
-    public NormalLevelView(Context context, int level, int subLevel, int totalStats, int selecStats) {
+    public NormalLevelView(Context context) {
         super(context);
+        init();
+    }
 
-        this.level = level;
-        this.subLevel = subLevel;
-        this.totalStats = totalStats;
-        this.selecStats = selecStats;
+    public NormalLevelView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
 
-        starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
+    public NormalLevelView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         init();
     }
 
@@ -49,6 +53,14 @@ public class NormalLevelView extends RelativeLayout {
         inflate(getContext(), R.layout.normal_level_view_layout, this);
         mLevelIv = (ImageView) this.findViewById(R.id.level_iv);
         mSubLeveIv = (ImageView) this.findViewById(R.id.sub_leve_iv);
+    }
+
+    public void bindData(int level, int subLevel, int totalStats, int selecStats) {
+        this.level = level;
+        this.subLevel = subLevel;
+        this.totalStats = totalStats;
+        this.selecStats = selecStats;
+        starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
 
         initStart();
         for (ImageView imageView : starts) {

@@ -65,6 +65,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     RelativeLayout mMedalLayout;
     ExTextView mLevelTv;
     ExTextView mRankTv;
+    NormalLevelView mLevelView;
 
     ExImageView mAuditionRoomTv;
     ExImageView mMusicTestTv;
@@ -226,13 +227,8 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
         mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
-
-        NormalLevelView view = new NormalLevelView(getContext(), 2, 3, 5, 3);
-        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(110));
-        rl.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        rl.setMargins(U.getDisplayUtils().dip2px(32), U.getDisplayUtils().dip2px(20), 0, U.getDisplayUtils().dip2px(18));
-        view.setLayoutParams(rl);
-        mMedalLayout.addView(view);
+        mLevelView = (NormalLevelView)mRootView.findViewById(R.id.level_view);
+        mLevelView.bindData(2, 3, 5, 3);
     }
 
     private void initAudioView() {
