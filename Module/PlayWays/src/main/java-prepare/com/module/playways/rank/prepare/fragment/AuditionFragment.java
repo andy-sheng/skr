@@ -220,9 +220,9 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(EngineEvent restartLrcEvent) {
-        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
+//        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
         if (restartLrcEvent.getType() == TYPE_MUSIC_PLAY_FINISH) {
             File accFile = SongResUtils.getAccFileByUrl(mSongModel.getAcc());
             EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, 1);
