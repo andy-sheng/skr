@@ -206,7 +206,7 @@ public class AuditionFragment extends BaseFragment {
                         MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
                         mManyLyricsView.setLyricsReader(lyricsReader);
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(0);
+                            mManyLyricsView.play(songModel.getBeginMs());
                             MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
                         }
                     }, throwable -> MyLog.e(throwable));
