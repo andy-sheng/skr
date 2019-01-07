@@ -13,10 +13,12 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.playways.rank.prepare.GameModeType;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.rank.R;
+import com.zq.level.view.NormalLevelView;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -28,6 +30,8 @@ public class RecordTitleView extends RelativeLayout {
     RecordData mRecordData;
 
     SimpleDraweeView mSdvOwnIcon;
+    NormalLevelView mSdvOwnLevel;
+
     ExTextView mTvOwnerName;
     ExImageView mIvOwnRecord;
     ExTextView mTvOwnRecord;
@@ -48,7 +52,7 @@ public class RecordTitleView extends RelativeLayout {
         mRoomData = roomData;
         mRecordData = recordData;
         //娱乐模式
-        if (true) {
+        if (mRoomData.getGameType() == GameModeType.GAME_MODE_FUNNY) {
             inflate(getContext(), R.layout.record_title_happy, this);
             mTvLightCount = (ExTextView) findViewById(R.id.tv_light_count);
             mIvLightCount = (ExImageView) findViewById(R.id.iv_light_count);
@@ -68,11 +72,13 @@ public class RecordTitleView extends RelativeLayout {
             mTvLightCount.setText("亮灯X" + recordData.getSelfVoteInfoModel().getVoter().size());
         } else {
             inflate(getContext(), R.layout.record_title_athletics, this);
+
+            mSdvOwnLevel = (NormalLevelView) findViewById(R.id.sdv_own_level);
+            mSdvOwnLevel.bindData(2, 3, 5, 4);
         }
 
         mTvSongName = (ExTextView) findViewById(R.id.tv_song_name);
         mIvOwnRecord = (ExImageView) findViewById(R.id.iv_own_record);
-
 
         mTvSongName.setText("《" + mRoomData.getSongModel().getItemName() + "》");
 

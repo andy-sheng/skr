@@ -4,12 +4,13 @@
     android:layout_height="@dimen/view_181_dp"
     android:orientation="vertical">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/sdv_own_icon"
-        android:layout_width="@dimen/view_65_dp"
-        android:layout_height="@dimen/view_65_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_13_dp" />
+    <com.zq.level.view.NormalLevelView
+        android:id="@+id/sdv_own_level"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_110_dp"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_centerHorizontal="true">
+    </com.zq.level.view.NormalLevelView>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_own_record"

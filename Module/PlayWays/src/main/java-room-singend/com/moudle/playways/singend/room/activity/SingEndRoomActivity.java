@@ -50,7 +50,7 @@ public class SingEndRoomActivity extends BaseActivity {
 
         }
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(this, RankingRoomFragment.class)
+                FragmentUtils.newAddParamsBuilder(this, EvaluationFragment.class)
 //                FragmentUtils.newAddParamsBuilder(this, SingEndRoomFragment.class)
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0, mRoomData)
