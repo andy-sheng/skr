@@ -8,12 +8,13 @@
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/top_voice_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_300_dp" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/ufo_bg"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/view_150_dp"
+        android:layout_marginTop="@dimen/view_80_dp"
         android:layout_height="300dp"
         android:scaleType="fitCenter"
         app:antiAlias="true"

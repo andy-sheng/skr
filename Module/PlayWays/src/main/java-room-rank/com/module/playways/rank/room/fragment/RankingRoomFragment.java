@@ -228,6 +228,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     public void playShowTurnCardAnimator(Runnable countDownRunnable) {
+        // TODO: 2019/1/7  仅仅作为测试放在后，后面会接结束前两秒的事件
+        playHideMainStageAnimator();
+
         mTopVoiceBg.setVisibility(View.GONE);
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardShowAnimator == null) {
@@ -276,12 +279,140 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 // TODO: 2018/12/29 先加一个保护 
                 if (mRoomData.getRealRoundInfo() != null) {
                     if (mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
-                        mTopVoiceBg.setVisibility(View.VISIBLE);
+                        playShowMainStageAnimator();
+//                        mTopVoiceBg.setVisibility(View.VISIBLE);
                     }
                 }
             }
         });
         mTurnChangeCardHideAnimator.start();
+    }
+
+    // 播放主舞台动画,入场和飞碟
+    private void playShowMainStageAnimator() {
+        //TODO 还要修改
+        mTopVoiceBg.setVisibility(View.VISIBLE);
+        SVGAParser parser = new SVGAParser(getActivity());
+        parser.setFileDownloader(new SVGAParser.FileDownloader() {
+            @Override
+            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder().url(url).get().build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                            complete.invoke(response.body().byteStream());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            failure.invoke(e);
+                        }
+                    }
+                }).start();
+            }
+        });
+        try {
+            parser.parse(new URL(RoomData.ROOM_VOICE_SVGA), new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mTopVoiceBg.setImageDrawable(drawable);
+                    mTopVoiceBg.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+                }
+            });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        //飞碟动画
+        SVGAParser ufoParse = new SVGAParser(getActivity());
+        ufoParse.parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                mUFOMode = 1;
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mUfoBg.setImageDrawable(drawable);
+                mUfoBg.startAnimation();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
+        mUfoBg.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (mUfoBg.isAnimating()) {
+                    mUfoBg.stopAnimation();
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mUFOMode == 1 && mUfoBg.isAnimating()) {
+                    mUfoBg.stopAnimation();
+                    ufoParse.parse("ufo_process.svga", new SVGAParser.ParseCompletion() {
+                        @Override
+                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                            mUFOMode = 2;
+                            SVGADrawable drawable = new SVGADrawable(videoItem);
+                            mUfoBg.setImageDrawable(drawable);
+                            mUfoBg.startAnimation();
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+                } else if (mUFOMode == 3 && mUfoBg.isAnimating()) {
+                    mUfoBg.stopAnimation();
+                    ufoParse.parse("ufo_leave.svga", new SVGAParser.ParseCompletion() {
+                        @Override
+                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                            mUFOMode = 4;
+                            SVGADrawable drawable = new SVGADrawable(videoItem);
+                            mUfoBg.setImageDrawable(drawable);
+                            mUfoBg.startAnimation();
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+                } else if (mUFOMode == 4 && mUfoBg.isAnimating()) {
+                    mUfoBg.stopAnimation();
+                }
+            }
+
+            @Override
+            public void onStep(int frame, double percentage) {
+
+            }
+        });
+    }
+
+    // 主舞台动画 退出动画
+    private void playHideMainStageAnimator() {
+        // 飞碟退出
+        mUFOMode = 3;
+        // 主场景淡出
+        mTopVoiceBg.stopAnimation();
+        mTopVoiceBg.setVisibility(View.GONE);
+        // end卡片
     }
 
     private void initInputView() {
@@ -391,120 +522,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mUfoBg = (SVGAImageView) mRootView.findViewById(R.id.ufo_bg);
 
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
-
-        //TODO 还要修改
-        SVGAParser parser = new SVGAParser(getActivity());
-        parser.setFileDownloader(new SVGAParser.FileDownloader() {
-            @Override
-            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        OkHttpClient client = new OkHttpClient();
-                        Request request = new Request.Builder().url(url).get().build();
-                        try {
-                            Response response = client.newCall(request).execute();
-                            complete.invoke(response.body().byteStream());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            failure.invoke(e);
-                        }
-                    }
-                }).start();
-            }
-        });
-        try {
-            parser.parse(new URL(RoomData.ROOM_VOICE_SVGA), new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mTopVoiceBg.setImageDrawable(drawable);
-                    mTopVoiceBg.startAnimation();
-                }
-
-                @Override
-                public void onError() {
-
-                }
-            });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        //飞碟动画
-        SVGAParser ufoParse = new SVGAParser(getActivity());
-        ufoParse.parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
-            @Override
-            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                mUFOMode = 1;
-                SVGADrawable drawable = new SVGADrawable(videoItem);
-                mUfoBg.setImageDrawable(drawable);
-                mUfoBg.startAnimation();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-
-        mUfoBg.setCallback(new SVGACallback() {
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onFinished() {
-                if (mUfoBg.isAnimating()) {
-                    mUfoBg.stopAnimation();
-                }
-            }
-
-            @Override
-            public void onRepeat() {
-                if (mUFOMode == 1 && mUfoBg.isAnimating()) {
-                    mUfoBg.stopAnimation();
-                    ufoParse.parse("ufo_process.svga", new SVGAParser.ParseCompletion() {
-                        @Override
-                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                            mUFOMode = 2;
-                            SVGADrawable drawable = new SVGADrawable(videoItem);
-                            mUfoBg.setImageDrawable(drawable);
-                            mUfoBg.startAnimation();
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
-                } else if (mUFOMode == 3 && mUfoBg.isAnimating()) {
-                    mUfoBg.stopAnimation();
-                    ufoParse.parse("ufo_leave.svga", new SVGAParser.ParseCompletion() {
-                        @Override
-                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                            mUFOMode = 4;
-                            SVGADrawable drawable = new SVGADrawable(videoItem);
-                            mUfoBg.setImageDrawable(drawable);
-                            mUfoBg.startAnimation();
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
-                } else if (mUFOMode == 4 && mUfoBg.isAnimating()) {
-                    mUfoBg.stopAnimation();
-                }
-            }
-
-            @Override
-            public void onStep(int frame, double percentage) {
-
-            }
-        });
     }
 
     private void initGiftDisplayView() {
