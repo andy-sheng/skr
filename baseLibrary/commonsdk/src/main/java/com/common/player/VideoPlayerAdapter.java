@@ -347,9 +347,7 @@ public class VideoPlayerAdapter {
      */
     public void play() {
         initPlayerIfNeed();
-        mPlayer.setVideoPath(mVideoPath);
-        mPlayer.prepare(true);
-        mPlayer.start();
+        mPlayer.startPlay(mVideoPath);
     }
 
     /**
@@ -458,9 +456,7 @@ public class VideoPlayerAdapter {
                 sPreStartPlayer = new ExoPlayer();
             }
         }
-        sPreStartPlayer.setVideoPath(url);
-        sPreStartPlayer.prepare(true);
-        sPreStartPlayer.start();
+        sPreStartPlayer.startPlay(url);
     }
 
 

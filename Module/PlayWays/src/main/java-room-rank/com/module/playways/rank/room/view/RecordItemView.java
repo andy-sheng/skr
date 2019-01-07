@@ -97,7 +97,7 @@ public class RecordItemView extends RelativeLayout {
         init();
 
         UserInfoModel playerInfo = roomData.getUserInfo(voteInfoModel.getUserID());
-        SongModel songModel = RoomDataUtils.getPlayerInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getUserID());
+        SongModel songModel = RoomDataUtils.getPlayerSongInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getUserID());
 
         AvatarUtils.loadAvatarByUrl(mSdvSingerIcon,
                 AvatarUtils.newParamsBuilder(playerInfo.getAvatar())

@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
+import com.common.player.event.PlayerEvent;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -46,6 +48,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
 /**
  * Created by chengsimin on 2017/6/1.
  */
@@ -76,6 +81,8 @@ public class ExoPlayer implements IPlayer {
     private View mView;
 
     private boolean mPreparedFlag = false;
+
+    HandlerTaskTimer mMusicTimePlayTimeListener;
 
     public ExoPlayer() {
         TAG += hashCode();
@@ -472,30 +479,18 @@ public class ExoPlayer implements IPlayer {
     }
 
     @Override
-    public void setVideoPath(String path) {
+    public void startPlay(String path) {
         if (path != null && !path.equals(mUrl)) {
             mUrl = path;
             mUrlChange = true;
             mMediaSource = buildMediaSource(Uri.parse(path), null);
         }
-    }
-
-    @Override
-    public void prepare(boolean realTime) {
         if (mUrlChange) {
             mUrlChange = false;
             mPlayer.prepare(mMediaSource, true, false);
-            mPlayer.setPlayWhenReady(true);
-        }
-    }
-
-    @Override
-    public void start() {
-        MyLog.d(TAG, "start");
-        if (mPlayer == null) {
-            return;
         }
         mPlayer.setPlayWhenReady(true);
+        startMusicPlayTimeListener();
     }
 
     @Override
@@ -505,6 +500,7 @@ public class ExoPlayer implements IPlayer {
             return;
         }
         mPlayer.setPlayWhenReady(false);
+        stopMusicPlayTimeListener();
     }
 
     @Override
@@ -513,6 +509,7 @@ public class ExoPlayer implements IPlayer {
         if (mPlayer != null) {
             mPlayer.setPlayWhenReady(true);
         }
+        startMusicPlayTimeListener();
     }
 
     @Override
@@ -522,6 +519,7 @@ public class ExoPlayer implements IPlayer {
             return;
         }
         mPlayer.stop();
+        stopMusicPlayTimeListener();
     }
 
     @Override
@@ -531,6 +529,7 @@ public class ExoPlayer implements IPlayer {
             return;
         }
         mPlayer.stop();
+        stopMusicPlayTimeListener();
     }
 
     @Override
@@ -546,6 +545,7 @@ public class ExoPlayer implements IPlayer {
         sExoPlayer = null;
         mCallback = null;
         mView = null;
+        stopMusicPlayTimeListener();
     }
 
     @Override
@@ -560,6 +560,49 @@ public class ExoPlayer implements IPlayer {
     @Override
     public void reconnect() {
 
+    }
+
+    private void startMusicPlayTimeListener() {
+        if (mMusicTimePlayTimeListener != null) {
+            mMusicTimePlayTimeListener.dispose();
+        }
+        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder().interval(1000)
+                .start(new Observer<Integer>() {
+                    long duration = -1;
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        long currentPostion = getCurrentPosition();
+                        if (duration < 0) {
+                            duration = getDuration();
+                        }
+                        PlayerEvent.TimeFly engineEvent = new PlayerEvent.TimeFly();
+                        engineEvent.totalDuration = duration;
+                        engineEvent.curPostion = currentPostion;
+                        EventBus.getDefault().post(engineEvent);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void stopMusicPlayTimeListener() {
+        if (mMusicTimePlayTimeListener != null) {
+            mMusicTimePlayTimeListener.dispose();
+        }
     }
 
 

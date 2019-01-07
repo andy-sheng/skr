@@ -45,11 +45,11 @@ public interface IPlayer {
 
     void setSurface(Surface surface);
 
-    void setVideoPath(String path);
+    void startPlay(String path);
 
-    void prepare(boolean realTime);
+//    void prepare(boolean realTime);
 
-    void start();
+//    void start();
 
     void pause();
 

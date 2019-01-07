@@ -18,7 +18,6 @@ import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
@@ -423,7 +422,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
 
-                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
+                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
 
                     }
                 });
@@ -519,7 +518,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
@@ -531,7 +530,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     }

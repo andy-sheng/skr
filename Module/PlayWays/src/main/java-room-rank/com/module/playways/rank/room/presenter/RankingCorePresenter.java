@@ -1,12 +1,15 @@
 package com.module.playways.rank.room.presenter;
 
 import android.os.Handler;
+import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.player.event.PlayerEvent;
+import com.common.player.exoplayer.ExoPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -40,7 +43,7 @@ import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.playways.rank.room.model.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
-import com.module.playways.rank.room.score.ScoreSaveHelper;
+import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.zq.lyrics.event.LrcEvent;
 
@@ -69,6 +72,10 @@ import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROU
 
 public class RankingCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankingCorePresenter";
+
+    static final int MSG_ROBOT_SING_BEGIN = 10;
+//    static final int MSG_ROBOT_SING_END = 11;
+
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;
 
@@ -91,9 +98,24 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     IGameRuleView mIGameRuleView;
 
-    Handler mUiHanlder = new Handler();
+    RobotScoreHelper mRobotScoreHelper;
 
-    ScoreSaveHelper mScoreSaveHelper;
+    ExoPlayer mExoPlayer;
+
+    Handler mUiHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_ROBOT_SING_BEGIN:
+                    robotSingBegin((PlayerInfoModel) msg.obj);
+                    break;
+//                case MSG_ROBOT_SING_END:
+//                    break;
+            }
+
+        }
+    };
 
     public RankingCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
         mIGameRuleView = iGameRuleView;
@@ -150,6 +172,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
         EngineManager.getInstance().destroy("rankingroom");
         mUiHanlder.removeCallbacksAndMessages(null);
+        if (mExoPlayer != null) {
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 
     /**
@@ -358,7 +384,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-
     // 同步游戏详情状态(检测不到长连接调用)
     public void syncGameStatus(int gameID) {
         ApiMethods.subscribe(mRoomServerApi.syncGameStatus(gameID), new ApiObserver<ApiResult>() {
@@ -449,7 +474,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "开始切换唱将 myturn=" + event.myturn);
         estimateOverTsThisRound();
         //以防万一
-        closeMachinePlayer();
+        tryStopRobotPlay();
         if (event.myturn) {
             // 轮到我唱了
             // 开始发心跳
@@ -487,14 +512,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                     if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                                         // 需要上传音频伪装成机器人
                                         EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
-                                        mScoreSaveHelper = new ScoreSaveHelper();
+                                        mRobotScoreHelper = new RobotScoreHelper();
                                     }
-
                                 }
                             }
                         }
                     });
-
                     MyLog.w(TAG, "演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
                             + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
                 }
@@ -509,7 +532,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
                     // 上一轮是我的轮次，暂停录音
                     EngineManager.getInstance().stopAudioRecording();
-                    if (mScoreSaveHelper.isScoreEnough()) {
+                    if (mRobotScoreHelper !=null && mRobotScoreHelper.isScoreEnough()) {
                         uploadRes1ForAi(event.getLastRoundInfoModel());
                     }
                 }
@@ -535,7 +558,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
 
-                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
+                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
 
                     }
                 });
@@ -558,6 +581,27 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    private void robotSingBegin(PlayerInfoModel playerInfo) {
+        String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
+        String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
+        if (mRobotScoreHelper == null) {
+            mRobotScoreHelper = new RobotScoreHelper();
+        }
+        mRobotScoreHelper.loadDataFromUrl(midiUrl, 0);
+        if (mExoPlayer == null) {
+            mExoPlayer = new ExoPlayer();
+        }
+        mExoPlayer.startPlay(skrerUrl);
+        //直接播放歌词
+        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), playerInfo.getUserInfo().getUserId()), true);
+    }
+
+    private void tryStopRobotPlay() {
+        if (mExoPlayer != null) {
+            mExoPlayer.stop();
+        }
+    }
+
     private void checkMachineUser(long uid) {
         PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         if (playerInfo == null) {
@@ -571,36 +615,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (playerInfo.isSkrer()) {
             MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
             //因为机器人没有逃跑，所以不需要加保护。这里的4000不写死，第一个人应该是7000
-            long delayTime = 4000l;
-            HandlerTaskTimer.newBuilder()
-                    .delay(delayTime)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
-                            // TODO: 2019/1/2 得分文件需要现下载
-                            String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
-                            // TODO: 2019/1/2 ExoPlayer播放音频文件
-                            //ExoPlayer.play
-                            //直接播放歌词
-                            mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), uid), true);
-                        }
-                    });
-
-            HandlerTaskTimer.newBuilder()
-                    .delay(delayTime + RoomDataUtils.getSongDuration(mRoomData.getRealRoundInfo()))
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            closeMachinePlayer();
-                        }
-                    });
+            long delayTime = 4000L;
+            //移除之前的要发生的机器人演唱
+            mUiHanlder.removeMessages(MSG_ROBOT_SING_BEGIN);
+            Message message = mUiHanlder.obtainMessage(MSG_ROBOT_SING_BEGIN);
+            message.obj = playerInfo;
+            mUiHanlder.sendMessageDelayed(message, delayTime);
         }
-    }
-
-    private void closeMachinePlayer() {
-        // TODO: 2019/1/2 关闭播放器
-        MyLog.d(TAG, "closeMachinePlayer");
     }
 
     /**
@@ -634,17 +655,17 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-
     public void muteAllRemoteAudioStreams(boolean mute) {
         EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
     }
 
     /**
      * 上传音频文件用作机器人
+     *
      * @param roundInfoModel
      */
     private void uploadRes1ForAi(RoundInfoModel roundInfoModel) {
-        if (mScoreSaveHelper != null && mScoreSaveHelper.vilid()) {
+        if (mRobotScoreHelper != null && mRobotScoreHelper.vilid()) {
             UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
                     .setFileType(UploadParams.FileType.audioAi)
                     .startUploadAsync(new UploadCallback() {
@@ -668,6 +689,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 上传打分文件用作机器人
+     *
      * @param roundInfoModel
      * @param audioUrl
      */
@@ -676,26 +698,27 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 String path = RoomDataUtils.getSaveMatchingSocreForAiFilePath();
-                mScoreSaveHelper.save(path);
+                if (mRobotScoreHelper != null) {
+                    mRobotScoreHelper.save(path);
+                    UploadParams.newBuilder(path)
+                            .setFileType(UploadParams.FileType.midiAi)
+                            .startUploadAsync(new UploadCallback() {
+                                @Override
+                                public void onProgress(long currentSize, long totalSize) {
 
-                UploadParams.newBuilder(path)
-                        .setFileType(UploadParams.FileType.midiAi)
-                        .startUploadAsync(new UploadCallback() {
-                            @Override
-                            public void onProgress(long currentSize, long totalSize) {
+                                }
 
-                            }
+                                @Override
+                                public void onSuccess(String url) {
+                                    sendUploadRequest(roundInfoModel, audioUrl, url);
+                                }
 
-                            @Override
-                            public void onSuccess(String url) {
-                                sendUploadRequest(roundInfoModel, audioUrl, url);
-                            }
+                                @Override
+                                public void onFailure(String msg) {
 
-                            @Override
-                            public void onFailure(String msg) {
-
-                            }
-                        });
+                                }
+                            });
+                }
                 emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
@@ -796,7 +819,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
@@ -808,7 +831,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     }
@@ -916,12 +939,26 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             int score = EngineManager.getInstance().getLineScore();
             U.getToastUtil().showShort("score:" + score);
             mIGameRuleView.updateScrollBarProgress(score);
-            if (mScoreSaveHelper != null) {
+            if (mRobotScoreHelper != null) {
                 MachineScoreItem machineScoreItem = new MachineScoreItem();
                 machineScoreItem.setScore(score);
-                long ts = EngineManager.getInstance().getAudioMixingCurrentPosition() + mRoomData.getSongModel().getBeginMs();
+                long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
                 machineScoreItem.setTs(ts);
-                mScoreSaveHelper.add(machineScoreItem);
+                mRobotScoreHelper.add(machineScoreItem);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PlayerEvent.TimeFly event) {
+        if (!RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            // 尝试算打分
+            if (mRobotScoreHelper != null) {
+                int score = mRobotScoreHelper.tryGetScoreByTs(event.curPostion);
+                if (score >= 0) {
+                    U.getToastUtil().showShort("score:" + score);
+                    mIGameRuleView.updateScrollBarProgress(score);
+                }
             }
         }
     }

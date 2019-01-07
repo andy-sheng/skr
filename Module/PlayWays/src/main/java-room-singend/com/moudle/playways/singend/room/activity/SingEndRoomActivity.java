@@ -13,11 +13,9 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.room.fragment.EvaluationFragment;
-import com.module.playways.rank.room.fragment.RankingRoomFragment;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.rank.R;
-import com.moudle.playways.singend.room.fragment.SingEndRoomFragment;
 
 @Route(path = RouterConstants.ACTIVITY_SINGEND_ROOM)
 public class SingEndRoomActivity extends BaseActivity {
@@ -45,7 +43,7 @@ public class SingEndRoomActivity extends BaseActivity {
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
-            mRoomData.setSongModel(RoomDataUtils.getPlayerInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
+            mRoomData.setSongModel(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
         } else {
 
         }
