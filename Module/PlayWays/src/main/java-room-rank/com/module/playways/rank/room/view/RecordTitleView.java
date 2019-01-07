@@ -40,6 +40,8 @@ public class RecordTitleView extends RelativeLayout {
     ExImageView mIvLightCount;
     ExTextView mTvSongName;
 
+    RecordCircleView mRecordCircleView;
+
     public RecordTitleView(Context context) {
         this(context, null);
     }
@@ -75,6 +77,8 @@ public class RecordTitleView extends RelativeLayout {
 
             mSdvOwnLevel = (NormalLevelView) findViewById(R.id.sdv_own_level);
             mSdvOwnLevel.bindData(2, 3, 5, 4);
+            mRecordCircleView = (RecordCircleView) findViewById(R.id.record_circle_view);
+            mRecordCircleView.setData(0, 900, 270, 750);
         }
 
         mTvSongName = (ExTextView) findViewById(R.id.tv_song_name);

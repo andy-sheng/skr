@@ -19,6 +19,7 @@ import android.graphics.SweepGradient;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import com.common.utils.U;
 import com.module.rank.R;
@@ -75,7 +76,7 @@ public class RecordCircleView extends View {
         super(context, attrs, defStyleAttr);
 
         init();
-        setCreditValueWithAnim(700);
+//        setCreditValueWithAnim(700);
     }
 
     private void init() {
@@ -327,6 +328,15 @@ public class RecordCircleView extends View {
         return ((float) mSweepAngle / ((float) mMax - (float) mMin)) * value;
     }
 
+    public void setData(int min, int max, int cur, int target){
+        mMin = min;
+        mMax = max;
+        mStart = cur;
+        mSolidCreditValue = target;
+
+        setCreditValueWithAnim(target);
+    }
+
     /**
      * 设置信用值并播放动画
      *
@@ -340,6 +350,7 @@ public class RecordCircleView extends View {
         mSolidCreditValue = creditValue;
 
         ValueAnimator creditValueAnimator = ValueAnimator.ofInt(mStart, mSolidCreditValue);
+        creditValueAnimator.setInterpolator(new DecelerateInterpolator());
         creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -352,6 +363,7 @@ public class RecordCircleView extends View {
         float degree = calculateRelativeAngleWithValue(mSolidCreditValue);
 
         ValueAnimator degreeValueAnimator = ValueAnimator.ofFloat(mStartAngle + calculateRelativeAngleWithValue(mStart), mStartAngle + degree);
+        degreeValueAnimator.setInterpolator(new DecelerateInterpolator());
         degreeValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
