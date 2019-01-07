@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.module.RouterConstants;
+import com.module.playways.rank.room.fragment.LeaderboardFragment;
 import com.module.rank.IRankingModeService;
 
 @Route(path = RouterConstants.SERVICE_RANKINGMODE, name = "测试服务")
@@ -18,6 +19,10 @@ public class PlayWaysServiceImpl implements IRankingModeService {
      */
     @Override
     public Object getData(int type, Object object) {
+        if(type == 0){
+            return LeaderboardFragment.class;
+        }
+
         return null;
     }
 

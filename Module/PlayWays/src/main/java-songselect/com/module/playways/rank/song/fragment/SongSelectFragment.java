@@ -129,16 +129,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     return;
                 }
 
-//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), LeaderboardFragment.class)
-//                        .setAddToBackStack(true)
-//                        .setFragmentDataListener(new FragmentDataListener() {
-//                            @Override
-//                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-//
-//                            }
-//                        })
-//                        .build());
-
                 if (getActivity() instanceof RankingModeActivity) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                             .setAddToBackStack(false)
