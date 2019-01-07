@@ -43,6 +43,9 @@
                     android:background="@drawable/ic_medal3_normal" />
 
                 <com.common.view.ex.ExTextView
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    android:textColor="#0C2275"
                     android:id="@+id/tv_right_chanpain_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -115,6 +118,9 @@
                     android:background="@drawable/ic_medal2_normal" />
 
                 <com.common.view.ex.ExTextView
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    android:textColor="#0C2275"
                     android:id="@+id/tv_left_chanpain_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,6 +196,9 @@
                 android:background="@drawable/ic_medal1_normal" />
 
             <com.common.view.ex.ExTextView
+                android:textStyle="bold"
+                android:alpha="0.8"
+                android:textColor="#0C2275"
                 android:id="@+id/tv_chanpain_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
