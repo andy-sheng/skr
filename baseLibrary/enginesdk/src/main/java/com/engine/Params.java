@@ -602,7 +602,7 @@ public class Params implements Serializable {
                     .setEnableVideo(false)
                     .setEnableAudio(true)
                     .setUseCbEngine(false)
-                    .setStyleEnum(AudioEffectStyleEnum.ORIGINAL)
+                    .setStyleEnum(AudioEffectStyleEnum.POPULAR)
                     .build();
         }
 //        params.setAudioMixingVolume(0);
