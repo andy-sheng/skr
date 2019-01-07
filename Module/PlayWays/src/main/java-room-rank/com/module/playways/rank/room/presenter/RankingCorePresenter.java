@@ -840,6 +840,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             public void run() {
                                 MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
                                 mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+                                startLastTwoSecondTask();
                             }
                         });
                     }
