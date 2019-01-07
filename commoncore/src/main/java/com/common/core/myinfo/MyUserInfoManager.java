@@ -76,7 +76,7 @@ public class MyUserInfoManager {
     }
 
     public void setMyUserInfo(MyUserInfo myUserInfo) {
-        MyLog.d(TAG,"setMyUserInfo" + " myUserInfo=" + myUserInfo);
+        MyLog.d(TAG, "setMyUserInfo" + " myUserInfo=" + myUserInfo);
         if (myUserInfo != null) {
             mUser = myUserInfo;
             ModuleServiceManager.getInstance().getMsgService().updateCurrentUserInfo();
@@ -99,6 +99,8 @@ public class MyUserInfoManager {
                 MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                 MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
                 setMyUserInfo(myUserInfo);
+            } else if (obj.getErrno() == 107) {
+                UserAccountManager.getInstance().notifyAccountExpired();
             }
         } catch (IOException e) {
             MyLog.d(e);

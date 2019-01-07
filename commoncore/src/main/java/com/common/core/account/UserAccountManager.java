@@ -320,6 +320,7 @@ public class UserAccountManager {
      * @param deleteAccount
      */
     private void logoff(final boolean deleteAccount, final int reason, boolean notifyServer) {
+        MyLog.w(TAG,"logoff" + " deleteAccount=" + deleteAccount + " reason=" + reason + " notifyServer=" + notifyServer);
         if (!UserAccountManager.getInstance().hasAccount()) {
             MyLog.w(TAG, "logoff but hasAccount = false");
             return;
@@ -342,13 +343,12 @@ public class UserAccountManager {
                 public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                     if (deleteAccount) {
                         UserAccountLocalApi.delete(mAccount);
-                        ApiManager.getInstance().clearCookies();
                     } else {
                         mAccount.setIsLogOff(true);
                         UserAccountLocalApi.insertOrReplace(mAccount);
-                        ApiManager.getInstance().clearCookies();
                     }
                     mAccount = null;
+                    ApiManager.getInstance().clearCookies();
                     UmengStatistics.onProfileSignOff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     emitter.onComplete();
