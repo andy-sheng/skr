@@ -6,6 +6,8 @@ import android.hardware.SensorEventListener;
 
 public class LogSensorEventListener implements SensorEventListener {
 
+    public static final int H = 40;
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         int type = event.sensor.getType();
@@ -17,8 +19,8 @@ public class LogSensorEventListener implements SensorEventListener {
             float y = values[1];
             float z = values[2];
 
-            if ((Math.abs(x) > 17 || Math.abs(y) > 17 || Math
-                    .abs(z) > 17) ) {
+            if ((Math.abs(x) > H || Math.abs(y) > H || Math
+                    .abs(z) > H)) {
                 ScreenLogView.showScreenLogView();
             }
         }
