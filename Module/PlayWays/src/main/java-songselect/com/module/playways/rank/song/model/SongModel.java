@@ -41,6 +41,15 @@ public class SongModel implements Serializable {
     private int StandIntroBeginT;
     private int StandIntroEndT;
     private int totalMs;
+    private int rankLrcBeginT;
+
+    public int getRankLrcBeginT() {
+        return rankLrcBeginT;
+    }
+
+    public void setRankLrcBeginT(int rankLrcBeginT) {
+        this.rankLrcBeginT = rankLrcBeginT;
+    }
 
     public int getItemID() {
         return itemID;
@@ -202,10 +211,15 @@ public class SongModel implements Serializable {
                 ", ori='" + ori + '\'' +
                 ", acc='" + acc + '\'' +
                 ", midi='" + midi + '\'' +
-                ", totalMs=" + totalMs +
+                ", zip='" + zip + '\'' +
+                ", rankBgm='" + rankBgm + '\'' +
                 ", beginMs=" + beginMs +
                 ", endMs=" + endMs +
-                ", zip='" + zip + '\'' +
+                ", StandIntro='" + StandIntro + '\'' +
+                ", StandIntroBeginT=" + StandIntroBeginT +
+                ", StandIntroEndT=" + StandIntroEndT +
+                ", totalMs=" + totalMs +
+                ", rankLrcBeginT=" + rankLrcBeginT +
                 '}';
     }
 }

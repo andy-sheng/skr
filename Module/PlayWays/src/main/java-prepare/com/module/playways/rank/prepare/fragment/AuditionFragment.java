@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -203,10 +202,12 @@ public class AuditionFragment extends BaseFragment {
                         MyLog.d(TAG, "playMusic, start play lyric");
                         mManyLyricsView.resetData();
                         mManyLyricsView.initLrcData();
-                        lyricsReader.cut(songModel.getBeginMs(), songModel.getEndMs());
+                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getEndMs());
+                        MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
                         mManyLyricsView.setLyricsReader(lyricsReader);
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(songModel.getBeginMs());
+                            mManyLyricsView.play(0);
+                            MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
                         }
                     }, throwable -> MyLog.e(throwable));
         } else {

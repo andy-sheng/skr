@@ -16,18 +16,15 @@ import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
@@ -712,11 +709,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mFloatLyricsView.resetData();
                 mManyLyricsView.setVisibility(View.VISIBLE);
                 mManyLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs());
+                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
                 mManyLyricsView.setLyricsReader(lyricsReader);
 
                 Set<Integer> set = new HashSet<>();
-                set.add(lyricsReader.getLineInfoIdByStartTs(mPlayingSongModel.getBeginMs()));
+                set.add(lyricsReader.getLineInfoIdByStartTs(mPlayingSongModel.getRankLrcBeginT()));
                 mManyLyricsView.setNeedCountDownLine(set);
 
                 if (!play) {
@@ -732,7 +729,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.resetData();
                 mFloatLyricsView.setVisibility(View.VISIBLE);
                 mFloatLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs());
+                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
                 mFloatLyricsView.setLyricsReader(lyricsReader);
                 if (!play) {
                     mFloatLyricsView.seekto(mPlayingSongModel.getBeginMs());
