@@ -109,14 +109,14 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         mRlLeftArea = (RelativeLayout) mRootView.findViewById(R.id.rl_left_area);
         mVoteLeftIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_left_iv);
-        mStartLeftSvga = (SVGAImageView)mRootView.findViewById(R.id.start_left_svga);
+        mStartLeftSvga = (SVGAImageView) mRootView.findViewById(R.id.start_left_svga);
         mVoteLeftNameTv = (ExTextView) mRootView.findViewById(R.id.vote_left_name_tv);
         mVoteLeftSongTv = (ExTextView) mRootView.findViewById(R.id.vote_left_song_tv);
         mVoteLeftShadowIv = (ExImageView) mRootView.findViewById(R.id.vote_left_shadow_iv);
 
         mRlRightArea = (RelativeLayout) mRootView.findViewById(R.id.rl_right_area);
         mVoteRightIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_right_iv);
-        mStartRightSvga = (SVGAImageView)mRootView.findViewById(R.id.start_right_svga);
+        mStartRightSvga = (SVGAImageView) mRootView.findViewById(R.id.start_right_svga);
         mVoteRigntNameTv = (ExTextView) mRootView.findViewById(R.id.vote_rignt_name_tv);
         mVoteRightSongTv = (ExTextView) mRootView.findViewById(R.id.vote_right_song_tv);
         mVoteRightShadowIv = (ExImageView) mRootView.findViewById(R.id.vote_right_shadow_iv);
@@ -312,6 +312,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         // VS 动画
         mVsSvga.setVisibility(View.VISIBLE);
+        mVsSvga.startAnimation();
         mVsSvga.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
@@ -320,14 +321,18 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
             @Override
             public void onFinished() {
-                mVsSvga.stopAnimation();
+                if (mVsSvga.isAnimating()){
+                    mVsSvga.stopAnimation();
+                }
                 mVsSvga.setVisibility(View.GONE);
                 mVoteVsIv.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onRepeat() {
-                mVsSvga.stopAnimation();
+                if (mVsSvga.isAnimating()){
+                    mVsSvga.stopAnimation();
+                }
                 mVsSvga.setVisibility(View.GONE);
                 mVoteVsIv.setVisibility(View.VISIBLE);
             }
@@ -340,29 +345,38 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         // 手势动画
         mGestureSvga.setVisibility(View.VISIBLE);
+        mGestureSvga.startAnimation();
         mGestureSvga.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
-
+                MyLog.d(TAG, " animationGo " + " onPause ");
             }
 
             @Override
             public void onFinished() {
-                mGestureSvga.stopAnimation();
+                MyLog.d(TAG, " animationGo " + " onFinished ");
+                if (mGestureSvga.isAnimating()){
+                    mGestureSvga.stopAnimation();
+                }
                 mGestureSvga.setVisibility(View.GONE);
+                mMieDengIv.setVisibility(View.GONE);
                 mIvTitle.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onRepeat() {
-                mGestureSvga.stopAnimation();
+                MyLog.d(TAG, " animationGo " + " onRepeat ");
+                if (mGestureSvga.isAnimating()){
+                    mGestureSvga.stopAnimation();
+                }
                 mGestureSvga.setVisibility(View.GONE);
+                mMieDengIv.setVisibility(View.GONE);
                 mIvTitle.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onStep(int i, double v) {
-
+                MyLog.d(TAG, " animationGo " + " onStep ");
             }
         });
 
@@ -520,8 +534,22 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void destroy() {
         super.destroy();
         stopTimeTask();
-        mLeftVoteAnimationSet.cancel();
-        mRightVoteAnimationSet.cancel();
+        if (mLeftVoteAnimationSet != null) {
+            mLeftVoteAnimationSet.cancel();
+        }
+        if (mRightVoteAnimationSet != null) {
+            mRightVoteAnimationSet.cancel();
+        }
+
+        if (mGestureSvga != null) {
+            mGestureSvga.stopAnimation();
+            mGestureSvga.clearAnimation();
+        }
+
+        if (mVsSvga != null){
+            mVsSvga.stopAnimation();
+            mVsSvga.clearAnimation();
+        }
     }
 
     @Override

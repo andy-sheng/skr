@@ -237,6 +237,7 @@
         android:layout_width="@dimen/view_120_dp"
         android:layout_height="@dimen/view_135_dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_2_dp"
         android:scaleType="fitCenter"
         android:visibility="gone"
         app:antiAlias="true"
@@ -248,8 +249,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_24_dp"
-        android:src="@drawable/img_top_miedeng_bg"
+        android:layout_marginTop="@dimen/view_65_dp"
+        android:src="@drawable/mietadeng_beijingzi"
         android:visibility="gone" />
 
 
