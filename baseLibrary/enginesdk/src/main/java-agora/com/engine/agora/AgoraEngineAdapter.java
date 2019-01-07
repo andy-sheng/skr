@@ -233,10 +233,6 @@ public class AgoraEngineAdapter {
             mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(mConfig.getAudioProfile())
                     , Constants.AudioScenario.getValue(mConfig.getAudioScenario()));
 
-            // 初始化各个音量
-            adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume());
-            adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
-
 
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
@@ -297,6 +293,9 @@ public class AgoraEngineAdapter {
      * 一些必须在频道内才能出事
      */
     private void initWhenInChannel() {
+        // 初始化各个音量
+        adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume());
+        adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
         adjustAudioMixingVolume(mConfig.getAudioMixingVolume());
     }
 
@@ -839,6 +838,7 @@ public class AgoraEngineAdapter {
     /**
      * 调节混音音量大小
      * 频道内调用
+     *
      * @param volume 1-100 默认100
      */
     public void adjustAudioMixingVolume(int volume) {

@@ -1,8 +1,9 @@
 package media.ushow.audio_effect;
 
+import android.text.TextUtils;
+
 import com.changba.songstudio.audioeffect.AudioEffect;
 import com.changba.songstudio.audioeffect.AudioEffectParamController;
-import com.common.log.MyLog;
 import com.common.utils.U;
 
 import media.ushow.score.ScoreProcessor;
@@ -28,21 +29,28 @@ public class IFAudioEffectEngine {
         this.initAudioEffect(audioEffect);
     }
 
-    private ScoreProcessor scoreProcessor;
+    private ScoreProcessor mScoreProcessor;
+
+    private String mLastMelpPath;
 
     public void processAudioBuffer(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec, long currentTimeMills, String melpPath) {
 //        MyLog.d(TAG,"processAudioBuffer" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec + " currentTimeMills=" + currentTimeMills + " melpPath=" + melpPath);
-
-        if (null == scoreProcessor && melpPath != null && melpPath.trim().length() > 0) {
-            channels = 1;
-            scoreProcessor = new ScoreProcessor(samplesPerSec, channels, bytesPerSample * 8, numOfSamples, melpPath);
+        if (null == mScoreProcessor ) {
+            mScoreProcessor = new ScoreProcessor();
         }
+
+        if(!TextUtils.isEmpty(melpPath) && !melpPath.equals(mLastMelpPath)){
+            channels = 1;
+            mScoreProcessor.init(samplesPerSec, channels, bytesPerSample * 8, numOfSamples, melpPath);
+            mLastMelpPath = melpPath;
+        }
+
         this.processAudioFrames(samples, numOfSamples, bytesPerSample, channels, samplesPerSec, currentTimeMills);
     }
 
     public int getLineScore() {
-        if (null != scoreProcessor) {
-            return scoreProcessor.getLineScore();
+        if (null != mScoreProcessor) {
+            return mScoreProcessor.getLineScore();
         }
         return -1;
     }
@@ -56,10 +64,12 @@ public class IFAudioEffectEngine {
 
 
     public void destroy() {
-        if (null != scoreProcessor) {
-            scoreProcessor.destroy();
+        if (null != mScoreProcessor) {
+            mScoreProcessor.destroy();
+            mScoreProcessor = null;
         }
         this.destroyAudioEffect();
     }
+
     private native void destroyAudioEffect();
 }

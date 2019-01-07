@@ -9,11 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
@@ -22,6 +27,7 @@ import com.engine.Params;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
+import com.module.playways.rank.room.score.bar.ScorePrograssBar2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -52,6 +58,14 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 public class AuditionFragment extends BaseFragment {
     public static final String TAG = "AuditionFragment";
 
+    RelativeLayout mTopContainerVg;
+
+    ScorePrograssBar2 mScoreProgressBar;
+
+    BaseImageView mAvatarIv;
+
+    ExImageView mSaveBtn;
+
     ManyLyricsView mManyLyricsView;
 
     ExTextView mTvDown;
@@ -76,8 +90,21 @@ public class AuditionFragment extends BaseFragment {
 
         mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
-
         mVoiceControlPanelView = mRootView.findViewById(R.id.voice_control_view);
+
+        mTopContainerVg = (RelativeLayout) mRootView.findViewById(R.id.top_container_vg);
+        // 加上状态栏的高度
+        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
+        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerVg.getLayoutParams();
+        topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+
+        mScoreProgressBar = (ScorePrograssBar2) mRootView.findViewById(R.id.score_progress_bar);
+        mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
+        mSaveBtn = (ExImageView) mRootView.findViewById(R.id.save_btn);
+
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                .setCircle(true)
+                .build());
 
         RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -88,6 +115,12 @@ public class AuditionFragment extends BaseFragment {
                 .subscribe(o -> {
                     showVoicePanelView(true);
                 });
+
+        RxView.clicks(mSaveBtn).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    onBackPressed();
+                });
+
 
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
 
@@ -236,7 +269,7 @@ public class AuditionFragment extends BaseFragment {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         int score = EngineManager.getInstance().getLineScore();
         U.getToastUtil().showShort("score:" + score);
-//        mIGameRuleView.updateScrollBarProgress(score);
+        mScoreProgressBar.setProgress((int) (Math.random()*100));
     }
 
     @Override

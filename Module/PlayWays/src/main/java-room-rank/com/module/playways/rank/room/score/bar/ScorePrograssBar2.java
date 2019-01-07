@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.rank.R;
 
@@ -152,41 +153,39 @@ public class ScorePrograssBar2 extends View {
         if (curProgress == progress) {
             return false;
         }
+        int speed = getSpeed();
         if (curProgress < progress) {
-            int np = curProgress + getSpeed();
+            int np = curProgress + speed;
             if (np > progress) {
                 np = progress;
             }
             curProgress = np;
         }
         if (curProgress > progress) {
-            int np = curProgress - getSpeed();
+            int np = curProgress - speed;
             if (np < progress) {
                 np = progress;
             }
             curProgress = np;
         }
+        MyLog.d(TAG, "tryPostInvalidateDelayed curProgress:" + curProgress);
+
         postInvalidateDelayed(30);
         return true;
     }
 
     int getSpeed() {
 //        oldProgress,progress,curProgress
-        int speed = (progress - curProgress) / 5;
-        if (curProgress > progress) {
-            if (speed <= 0) {
-                speed = 1;
-            }
-        } else {
-            if (speed >= 0) {
-                speed = -1;
-            }
+        int speed = Math.abs((progress - curProgress) / 4);
+        MyLog.d(TAG, "getSpeed progress=" + progress + " curProgress=" + curProgress + " speed=" + speed);
+        if (speed < 2) {
+            speed = 2;
         }
-
         return speed;
     }
 
     public void setProgress(int p) {
+        MyLog.d(TAG, "setProgress" + " p=" + p);
         this.oldProgress = progress;
         this.progress = p;
         tryPostInvalidateDelayed();

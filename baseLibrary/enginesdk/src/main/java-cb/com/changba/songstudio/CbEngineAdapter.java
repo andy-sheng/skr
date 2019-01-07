@@ -304,6 +304,7 @@ public class CbEngineAdapter {
                                       long ts,
                                       String midiPath
     ) {
+        // 晓凯底层可能不支持唱歌和回滚
         if (audioEffectEngine != null) {
             audioEffectEngine.processAudioBuffer(samples,
                     numOfSamples,

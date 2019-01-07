@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.player.exoplayer.ExoPlayer;
 import com.common.view.ex.ExImageView;
 
 import com.common.view.viewpager.NestViewPager;
@@ -128,6 +129,7 @@ public class HomeActivity extends BaseActivity {
                         mPersonInfoBtn.setSelected(true);
                     }
                 });
+
     }
 
 
@@ -135,6 +137,8 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         mHomePresenter.checkPermiss(this);
+//        ExoPlayer exoPlayer = new ExoPlayer();
+//        exoPlayer.startPlay("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/audios/56e25fc3bccff9b8.aac");
     }
 
     @Override
