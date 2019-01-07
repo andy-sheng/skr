@@ -39,21 +39,21 @@ public class PrepareAuditionResPresenter extends RxLifeCyclePresenter {
         //伴奏
         String accUrl = mSongModel.getAcc();
         if (!TextUtils.isEmpty(accUrl)) {
-            UrlRes acc = new UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(lyricUrl,SongResUtils.SUFF_ACC));
+            UrlRes acc = new UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(accUrl,SongResUtils.SUFF_ACC));
             songResList.add(acc);
         }
 
         //原唱
         String oriUrl = mSongModel.getOri();
         if (!TextUtils.isEmpty(oriUrl)) {
-            UrlRes acc = new UrlRes(oriUrl, SongResUtils.getORIDir(), U.getFileUtils().getSuffixFromUrl(lyricUrl,SongResUtils.SUFF_ORI));
+            UrlRes acc = new UrlRes(oriUrl, SongResUtils.getORIDir(), U.getFileUtils().getSuffixFromUrl(oriUrl,SongResUtils.SUFF_ORI));
             songResList.add(acc);
         }
 
         //评分文件
         String midiUrl = mSongModel.getMidi();
         if (!TextUtils.isEmpty(midiUrl)) {
-            UrlRes midi = new UrlRes(midiUrl, SongResUtils.getMIDIDir(), U.getFileUtils().getSuffixFromUrl(lyricUrl,SongResUtils.SUFF_MIDI));
+            UrlRes midi = new UrlRes(midiUrl, SongResUtils.getMIDIDir(), U.getFileUtils().getSuffixFromUrl(midiUrl,SongResUtils.SUFF_MIDI));
             songResList.add(midi);
         }
 
