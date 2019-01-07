@@ -133,6 +133,7 @@ public class AgoraEngineAdapter {
             if (mOutCallback != null) {
                 mOutCallback.onJoinChannelSuccess(channel, uid, elapsed);
             }
+            initWhenInChannel();
         }
 
         @Override
@@ -235,7 +236,7 @@ public class AgoraEngineAdapter {
             // 初始化各个音量
             adjustRecordingSignalVolume(mConfig.getRecordingSignalVolume());
             adjustPlaybackSignalVolume(mConfig.getPlaybackSignalVolume());
-            adjustAudioMixingVolume(mConfig.getAudioMixingVolume());
+
 
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
@@ -290,6 +291,13 @@ public class AgoraEngineAdapter {
                     true        // true为使用推送模式；false为拉取模式，但目前不支持
             );
         }
+    }
+
+    /**
+     * 一些必须在频道内才能出事
+     */
+    private void initWhenInChannel() {
+        adjustAudioMixingVolume(mConfig.getAudioMixingVolume());
     }
 
     /**
@@ -830,7 +838,7 @@ public class AgoraEngineAdapter {
 
     /**
      * 调节混音音量大小
-     *
+     * 频道内调用
      * @param volume 1-100 默认100
      */
     public void adjustAudioMixingVolume(int volume) {

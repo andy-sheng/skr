@@ -79,9 +79,9 @@ public class Params implements Serializable {
     private int bandGain = 0;// 子带增益
 
     private boolean mixMusicPlaying = false; // 混音在播放中
-    private int audioMixingVolume = 80; // 混音音量 0-100，默认是100
+    private int audioMixingVolume = 50; // 混音音量 0-100，默认是100
     private boolean enableInEarMonitoring = false;// 耳返
-    private int earMonitoringVolume = 100; // 耳返音量
+    private int earMonitoringVolume = 80; // 耳返音量
     private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流
 
     private HashMap<Integer, Integer> localVoiceReverb = new HashMap<>(); // 存混响参数
@@ -90,7 +90,7 @@ public class Params implements Serializable {
     private boolean localVideoStreamMute = false;// 本地视频流禁止
     private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
     private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
-    private int recordingSignalVolume = 100;// 0-400 默认100，最多放大4倍
+    private int recordingSignalVolume = 150;// 0-400 默认100，最多放大4倍
     private int selfUid; // 本人在引擎中的id
     private AudioEffectStyleEnum styleEnum = null;// 混响style
     private boolean enableSpeakerphone = false;// 开启扬声器

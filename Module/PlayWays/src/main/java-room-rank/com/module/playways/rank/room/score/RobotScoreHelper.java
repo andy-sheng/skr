@@ -1,8 +1,6 @@
 package com.module.playways.rank.room.score;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
@@ -11,8 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 import okio.BufferedSink;
 import okio.BufferedSource;
