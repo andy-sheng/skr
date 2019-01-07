@@ -25,7 +25,7 @@ public class AudioRoomActivity extends BaseActivity {
         if (selectSong) {
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SongSelectFragment.class)
                     .setAddToBackStack(false)
-                    .setHasAnimation(true)
+                    .setHasAnimation(false)
                     .build());
         }
     }
