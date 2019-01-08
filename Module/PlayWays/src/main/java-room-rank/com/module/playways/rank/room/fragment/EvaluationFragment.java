@@ -457,6 +457,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mVoteLeftShadowIv.setVisibility(View.VISIBLE);
             // 右边冒星星
             mStartRightSvga.setVisibility(View.VISIBLE);
+            mStartRightSvga.startAnimation();
             mStartRightSvga.setCallback(new SVGACallback() {
                 @Override
                 public void onPause() {
@@ -487,6 +488,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mVoteRightShadowIv.setVisibility(View.VISIBLE);
             // 左边冒星星
             mStartLeftSvga.setVisibility(View.VISIBLE);
+            mStartLeftSvga.startAnimation();
             mStartLeftSvga.setCallback(new SVGACallback() {
                 @Override
                 public void onPause() {
@@ -495,14 +497,19 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                 @Override
                 public void onFinished() {
-                    mStartLeftSvga.stopAnimation();
-                    mStartLeftSvga.setVisibility(View.GONE);
+                    if(mStartLeftSvga.isAnimating()){
+                        mStartLeftSvga.stopAnimation();
+                        mStartLeftSvga.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
                 public void onRepeat() {
-                    mStartLeftSvga.stopAnimation();
-                    mStartLeftSvga.setVisibility(View.GONE);
+                    if(mStartLeftSvga.isAnimating()){
+                        mStartLeftSvga.stopAnimation();
+                        mStartLeftSvga.setVisibility(View.GONE);
+                    }
+
                 }
 
                 @Override

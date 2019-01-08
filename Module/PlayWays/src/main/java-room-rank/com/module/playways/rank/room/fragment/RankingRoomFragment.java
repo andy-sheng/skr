@@ -289,6 +289,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     // 播放主舞台动画,入场和飞碟
     private void playShowMainStageAnimator() {
+        MyLog.d(TAG, "playShowMainStageAnimator" );
         //TODO 还要修改
         mTopVoiceBg.setVisibility(View.VISIBLE);
         SVGAParser parser = new SVGAParser(getActivity());
@@ -329,10 +330,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         }
 
         //飞碟动画
+        mUfoBg.setVisibility(View.VISIBLE);
         SVGAParser ufoParse = new SVGAParser(getActivity());
         ufoParse.parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                MyLog.d(TAG, "playUFOStageAnimator" );
                 mUFOMode = 1;
                 SVGADrawable drawable = new SVGADrawable(videoItem);
                 mUfoBg.setImageDrawable(drawable);
