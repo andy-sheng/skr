@@ -269,7 +269,8 @@ public class AuditionFragment extends BaseFragment {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         int score = EngineManager.getInstance().getLineScore();
         U.getToastUtil().showShort("score:" + score);
-        mScoreProgressBar.setProgress((int) (Math.random()*100));
+        score = (int) (Math.random()*100);
+        mScoreProgressBar.setProgress(score);
     }
 
     @Override

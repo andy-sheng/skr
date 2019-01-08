@@ -1,5 +1,8 @@
 package com.module.playways.rank.room.score.bar;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,6 +15,7 @@ import android.graphics.SweepGradient;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -33,9 +37,9 @@ public class ScorePrograssBar2 extends View {
     float px = 0; // 角度产生的 x 轴，下面边的偏移量
     float extendX = 0;// 如果到100% ，斜边矩形是会往外延伸的
     //    int speed = 1;// 速度
-    int curProgress = 0;// 当前进度
-    int oldProgress = 0;// 之前的进度
-    int progress = 0;// 目标进度
+    int mCurProgress = 0;// 当前进度
+    int mOldProgress = 0;// 之前的进度
+    int mProgress = 0;// 目标进度
 
     Paint mPaintCircle;
 
@@ -107,7 +111,7 @@ public class ScorePrograssBar2 extends View {
         mBgDrawable.draw(canvas);
 
         canvas.save();
-        float temp = curProgress * (w1 + extendX - sx) / 100.0f;
+        float temp = mCurProgress * (w1 + extendX - sx) / 100.0f;
 
         Path path = new Path();
         path.lineTo(temp + sx, 0);
@@ -120,7 +124,7 @@ public class ScorePrograssBar2 extends View {
         mPrDrawable.draw(canvas);
         canvas.restore();
 
-        if (tryPostInvalidateDelayed()) {
+        if (mCurProgress != mProgress) {
             float cx = temp + sx - px / 2;
             float cy = h1 / 2;
             float r = h1 / 2;
@@ -149,46 +153,75 @@ public class ScorePrograssBar2 extends View {
     }
 
 
-    boolean tryPostInvalidateDelayed() {
-        if (curProgress == progress) {
-            return false;
-        }
-        int speed = getSpeed();
-        if (curProgress < progress) {
-            int np = curProgress + speed;
-            if (np > progress) {
-                np = progress;
-            }
-            curProgress = np;
-        }
-        if (curProgress > progress) {
-            int np = curProgress - speed;
-            if (np < progress) {
-                np = progress;
-            }
-            curProgress = np;
-        }
-        MyLog.d(TAG, "tryPostInvalidateDelayed curProgress:" + curProgress);
+//    boolean tryPostInvalidateDelayed() {
+//        if (mCurProgress == mProgress) {
+//            return false;
+//        }
+//        int speed = getSpeed();
+//        if (mCurProgress < mProgress) {
+//            int np = mCurProgress + speed;
+//            if (np > mProgress) {
+//                np = mProgress;
+//            }
+//            mCurProgress = np;
+//        }
+//        if (mCurProgress > mProgress) {
+//            int np = mCurProgress - speed;
+//            if (np < mProgress) {
+//                np = mProgress;
+//            }
+//            mCurProgress = np;
+//        }
+//        MyLog.d(TAG, "tryPostInvalidateDelayed curProgress:" + mCurProgress);
+//
+//        postInvalidateDelayed(30);
+//        return true;
+//    }
 
-        postInvalidateDelayed(30);
-        return true;
-    }
+//    int getSpeed() {
+////        oldProgress,progress,curProgress
+//        int speed = Math.abs((mProgress - mCurProgress) / 4);
+//        MyLog.d(TAG, "getSpeed progress=" + mProgress + " curProgress=" + mCurProgress + " speed=" + speed);
+//        if (speed < 2) {
+//            speed = 2;
+//        }
+//        return speed;
+//    }
 
-    int getSpeed() {
-//        oldProgress,progress,curProgress
-        int speed = Math.abs((progress - curProgress) / 4);
-        MyLog.d(TAG, "getSpeed progress=" + progress + " curProgress=" + curProgress + " speed=" + speed);
-        if (speed < 2) {
-            speed = 2;
-        }
-        return speed;
-    }
+    ValueAnimator mValueAnimator;
 
     public void setProgress(int p) {
         MyLog.d(TAG, "setProgress" + " p=" + p);
-        this.oldProgress = progress;
-        this.progress = p;
-        tryPostInvalidateDelayed();
+        this.mOldProgress = mProgress;
+        this.mProgress = p;
+        if (mValueAnimator == null) {
+            mValueAnimator = ValueAnimator.ofInt(0, mProgress);
+            mValueAnimator.setInterpolator(new DecelerateInterpolator());
+            mValueAnimator.setDuration(500);
+            mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mCurProgress = (int) animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
+            mValueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    super.onAnimationCancel(animation);
+                    onAnimationEnd(animation);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                }
+            });
+        }
+        mValueAnimator.cancel();
+        mValueAnimator.setIntValues(0, mProgress);
+        mValueAnimator.start();
+//        tryPostInvalidateDelayed();
     }
 
 }
