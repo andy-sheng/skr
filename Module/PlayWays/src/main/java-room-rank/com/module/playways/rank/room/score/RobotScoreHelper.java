@@ -3,6 +3,7 @@ package com.module.playways.rank.room.score;
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
 import com.common.utils.HttpUtils;
+import com.common.utils.SongResUtils;
 import com.common.utils.U;
 
 import java.io.File;
@@ -60,8 +61,8 @@ public class RobotScoreHelper {
         if (deep > 5) {
             return;
         }
-        String fileName = U.getMD5Utils().MD5_16(midiUrl) + "." + U.getFileUtils().getSuffixFromUrl(midiUrl, "json");
-        String filePath = U.getAppInfoUtils().getFilePathInSubDir("score", fileName);
+        String fileName = U.getMD5Utils().MD5_16(midiUrl) + "." + U.getFileUtils().getSuffixFromUrl(midiUrl, SongResUtils.SUFF_JSON);
+        String filePath = SongResUtils.getScoreDir();
         File file = new File(filePath);
         if (file.exists() && file.length() > 10) {
             loadDataFromFile(filePath);

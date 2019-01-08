@@ -10,12 +10,14 @@ public class SongResUtils {
     public static final String SUFF_ACC = "mp3";
     public static final String SUFF_ORI = "mp3";
     public static final String SUFF_MIDI = "mid";
+    public static final String SUFF_JSON = "json";
 
     //存储目录
     private static final String LYRIC_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "lyrics";
     private static final String ACC_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "acc";
     private static final String ORI_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "ori";
     private static final String MIDI_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "midi";
+    private static final String SCORE_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "score";
 
     public static final String getLyricDir() {
         return LYRIC_DIR;
@@ -31,6 +33,10 @@ public class SongResUtils {
 
     public static final String getMIDIDir() {
         return MIDI_DIR;
+    }
+
+    public static final String getScoreDir(){
+        return SCORE_DIR;
     }
 
     public static final File getZRCELyricFileByUrl(String resUrl) {
@@ -51,6 +57,11 @@ public class SongResUtils {
     public static final File getMIDIFileByUrl(String resUrl) {
 
         return getFile(MIDI_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_MIDI));
+    }
+
+    public static final File getScoreFileByUrl(String resUrl) {
+
+        return getFile(SCORE_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_JSON));
     }
 
     private static File getFile(String dir, String url, String suff) {

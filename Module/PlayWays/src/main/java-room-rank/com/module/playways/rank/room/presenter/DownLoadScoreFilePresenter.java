@@ -2,9 +2,11 @@ package com.module.playways.rank.room.presenter;
 
 import android.text.TextUtils;
 
+import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
+import com.common.utils.U;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.zq.lyrics.model.UrlRes;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
@@ -15,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DownLoadScoreFilePresenter extends RxLifeCyclePresenter {
+    public final static String TAG = "DownLoadScoreFilePresenter";
     ZipUrlResourceManager mZipUrlResourceManager;
     HttpUtils.OnDownloadProgress mOnDownloadProgress;
 
@@ -34,13 +37,15 @@ public class DownLoadScoreFilePresenter extends RxLifeCyclePresenter {
         for (PlayerInfoModel playerInfo : mPlayerInfoModels) {
             if(playerInfo.isSkrer()){
                 String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
+
                 if (!TextUtils.isEmpty(midiUrl)) {
-//                    UrlRes midi = new UrlRes(midiUrl, SongResUtils.getMIDIDir(), SongResUtils.SUFF_MIDI);
-//                    songResList.add(midi);
+                    UrlRes midi = new UrlRes(midiUrl, SongResUtils.getScoreDir(), U.getFileUtils().getSuffixFromUrl(midiUrl, SongResUtils.SUFF_JSON));
+                    songResList.add(midi);
                 }
             }
         }
 
+        MyLog.d(TAG, "songResList size is " + songResList.size());
         mZipUrlResourceManager = new ZipUrlResourceManager(songResList, mOnDownloadProgress);
         mZipUrlResourceManager.go();
     }
