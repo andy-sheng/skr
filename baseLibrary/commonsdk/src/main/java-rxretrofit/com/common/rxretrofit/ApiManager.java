@@ -118,6 +118,8 @@ public class ApiManager {
                     /**
                      * 确保第三方的interceptor在靠后位置，以便可以覆盖默认的
                      */
+                    MyLog.d(TAG, "tryInit mOutInterceptors.size:" + mOutInterceptors.size());
+
                     for (Interceptor interceptor : mOutInterceptors) {
                         defaultClient.addInterceptor(interceptor);
                     }

@@ -53,7 +53,7 @@ public class ChannelUtils {
     }
 
     public boolean isTestChannel() {
-        return getChannel().equals(channelNameFromBuildConfig);
+        return getChannel().equals("TEST");
     }
 
 }
