@@ -13,7 +13,7 @@ import static com.umeng.socialize.utils.ContextUtil.getContext;
 
 public class SongCardHolder extends RecyclerView.ViewHolder {
 
-    RecyclerView mSongListView;
+    SongCardRecycleView mSongListView;
     SongSelectAdapter mSongSelectAdapter;
 
     public SongCardHolder(View itemView, RecyclerOnItemClickListener onItemClickListener) {
@@ -28,6 +28,8 @@ public class SongCardHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(int position, SongCardModel songCardModel) {
-        mSongSelectAdapter.setDataList(songCardModel.getList());
+        if (songCardModel != null) {
+            mSongSelectAdapter.setDataList(songCardModel.getList());
+        }
     }
 }

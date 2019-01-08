@@ -2,8 +2,7 @@ package com.module.playways.rank.song.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -20,19 +19,13 @@ import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.rank.RankingModeActivity;
 import com.module.playways.rank.prepare.fragment.AuditionPrepareResFragment;
 import com.module.playways.rank.prepare.fragment.PrepareResFragment;
-import com.module.playways.rank.song.adapter.SongCardsAdapter;
-import com.module.playways.rank.song.event.SwipCardEvent;
-import com.module.playways.rank.song.layoutmanager.CardConfig;
-import com.module.playways.rank.song.layoutmanager.OverLayCardLayoutManager;
-import com.module.playways.rank.song.layoutmanager.TanTanCallback;
+import com.module.playways.rank.song.adapter.SongCardSwipAdapter;
+import com.module.playways.rank.song.flingswipe.SwipeFlingAdapterView;
 import com.module.playways.rank.song.model.SongCardModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.playways.rank.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.rank.song.view.ISongTagDetailView;
 import com.module.rank.R;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,31 +33,28 @@ import java.util.concurrent.TimeUnit;
 
 import static com.module.playways.rank.RankingModeActivity.KEY_GAME_TYPE;
 
-public class SongSelectFragment extends BaseFragment implements ISongTagDetailView {
+public class SongSelectFragment extends BaseFragment implements ISongTagDetailView, SwipeFlingAdapterView.onFlingListener,
+        SwipeFlingAdapterView.OnItemClickListener {
 
     public static final int DEFAULT_FIRST_COUNT = 30; // 第一次从推荐页面拉去歌曲数
     public static final int DEFAULT_COUNT = 6;  // 从服务器拉去歌曲数
 
     RelativeLayout mMainActContainer;
 
+    SwipeFlingAdapterView mSwipeView;
+    SongCardSwipAdapter mSongCardSwipAdapter;
+
     ExImageView mSelectBack;
     ExImageView mSelectBackIv;
     ExImageView mSelectClickedIv;
 
-    RecyclerView mCardRecycleview;
-    SongCardsAdapter adapter;
-
     SongTagDetailsPresenter presenter;
 
-    List<SongCardModel> songCardModels; // 需要显示的数据
     List<SongCardModel> mDeleteList; // 已经滑走的数据
 
     int offset; //当前偏移量
     int mGameType;
     boolean hasMore = true; // 是否还有更多数据标记位
-
-    TanTanCallback callback;
-    OverLayCardLayoutManager mOverLayCardLayoutManager;
 
     @Override
     public int initView() {
@@ -74,10 +64,10 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mCardRecycleview = (RecyclerView) mRootView.findViewById(R.id.card_recycleview);
+
+        mSwipeView = (SwipeFlingAdapterView) mRootView.findViewById(R.id.swipe_view);
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mCardRecycleview = (RecyclerView) mRootView.findViewById(R.id.card_recycleview);
         mSelectBackIv = (ExImageView) mRootView.findViewById(R.id.select_back_iv);
         mSelectClickedIv = (ExImageView) mRootView.findViewById(R.id.select_clicked_iv);
         mSelectBack = (ExImageView) mRootView.findViewById(R.id.select_back);
@@ -106,10 +96,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 });
 
         mDeleteList = new ArrayList<>();
-        songCardModels = new ArrayList<>();
-        mOverLayCardLayoutManager = new OverLayCardLayoutManager();
-        mCardRecycleview.setLayoutManager(mOverLayCardLayoutManager);
-        adapter = new SongCardsAdapter(new RecyclerOnItemClickListener() {
+
+        mSongCardSwipAdapter = new SongCardSwipAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 SongModel songModel = (SongModel) model;
@@ -158,27 +146,26 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             }
         });
 
-        mCardRecycleview.setAdapter(adapter);
-
         // 默认推荐
         presenter = new SongTagDetailsPresenter(this);
         addPresent(presenter);
         presenter.getRcomdMusicItems(0, DEFAULT_FIRST_COUNT);
+
+        if (mSwipeView != null) {
+            mSwipeView.setIsNeedSwipe(true);
+            mSwipeView.setFlingListener(this);
+            mSwipeView.setOnItemClickListener(this);
+
+
+            mSwipeView.setAdapter(mSongCardSwipAdapter);
+        }
     }
 
     // 返回上一张选歌卡片
     private void backToLastCard() {
-        if (mDeleteList == null || mDeleteList.size() == 0) {
-            U.getToastUtil().showShort("没有更多了");
-            return;
-        }
-
-        SongCardModel songCardModel = mDeleteList.remove(0);
-
-        if (songCardModels != null) {
-            mOverLayCardLayoutManager.setDelete(true);
-            songCardModels.add(songCardModel);
-            adapter.notifyDataSetChanged();
+        if (mDeleteList != null && mDeleteList.size() != 0) {
+            mSongCardSwipAdapter.addData(0, mDeleteList.remove(0));
+            mSwipeView.swipeBack();
         }
     }
 
@@ -202,6 +189,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     public void loadSongsDetailItems(List<SongModel> list, int offset, boolean hasMore) {
         this.offset = offset; //保存当前偏移量
         this.hasMore = hasMore;
+        List<SongCardModel> songCardModels = new ArrayList<>();
         if (list != null && list.size() > 0) {
             SongCardModel songCardModel = new SongCardModel();
             for (int i = 0; i < list.size(); i++) {
@@ -211,22 +199,15 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 songCardModel.getList().add(list.get(i));
 
                 if ((i + 1) % SongCardModel.MAX_COUNT == 0) {
-                    songCardModels.add(0, songCardModel);
+                    songCardModels.add(songCardModel);
                     songCardModel = null;
                 }
             }
             if (songCardModel != null) {
-                songCardModels.add(0, songCardModel);
+                songCardModels.add(songCardModel);
             }
-
-            adapter.setmDataList(songCardModels);
-            CardConfig.initConfig(getContext());
-
-            callback = new TanTanCallback(mCardRecycleview, adapter, songCardModels, mDeleteList);
-
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-            itemTouchHelper.attachToRecyclerView(mCardRecycleview);
         }
+        mSongCardSwipAdapter.addAll(songCardModels);
     }
 
     @Override
@@ -241,18 +222,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public boolean useEventBus() {
-        return true;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(SwipCardEvent event) {
-        if (hasMore) {
-            presenter.getRcomdMusicItems(offset, DEFAULT_COUNT);
-        } else {
-            // TODO: 2019/1/3 考虑要不要将delte中的数据拿一点回来
-            U.getToastUtil().showShort("没有更多数据了");
-        }
-
+        return false;
     }
 
     @Override
@@ -265,5 +235,48 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
         mRootView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClicked(MotionEvent event, View v, Object dataObject) {
+        MyLog.d(TAG, "onItemClicked" + " event=" + event + " v=" + v + " dataObject=" + dataObject);
+    }
+
+    @Override
+    public void removeFirstObjectInAdapter() {
+        mSongCardSwipAdapter.remove(0);
+        presenter.getRcomdMusicItems(offset, DEFAULT_COUNT);
+        MyLog.d(TAG, "removeFirstObjectInAdapter");
+    }
+
+    @Override
+    public void onLeftCardExit(Object dataObject) {
+        MyLog.d(TAG, "onLeftCardExit" + " dataObject=" + dataObject);
+        if (dataObject instanceof SongCardModel) {
+            mDeleteList.add(0, (SongCardModel) dataObject);
+        }
+    }
+
+    @Override
+    public void onRightCardExit(Object dataObject) {
+        MyLog.d(TAG, "onRightCardExit" + " dataObject=" + dataObject);
+        if (dataObject instanceof SongCardModel) {
+            mDeleteList.add(0, (SongCardModel) dataObject);
+        }
+    }
+
+    @Override
+    public void onAdapterAboutToEmpty(int itemsInAdapter) {
+        MyLog.d(TAG, "onAdapterAboutToEmpty" + " itemsInAdapter=" + itemsInAdapter);
+    }
+
+    @Override
+    public void onScroll(float progress, float scrollXProgress) {
+        MyLog.d(TAG, "onScroll" + " progress=" + progress + " scrollXProgress=" + scrollXProgress);
+    }
+
+    @Override
+    public void onCardBack(Object dataObject) {
+        MyLog.d(TAG, "onCardBack" + " dataObject=" + dataObject);
     }
 }
