@@ -36,14 +36,26 @@ android {
             resValue("string", "channel_desc", '应用宝')
         }
 
+        channel_dev {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"DEV\"')
+            resValue("string", "channel_desc", '测试环境dev')
+        }
+
         channel_test {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"TEST\"')
-            resValue("string", "channel_desc", '测试环境')
+            resValue("string", "channel_desc", '测试环境test')
 
 //          applicationId "com.littlejie.multichannel.release "
 //          可以替换androidmanifest文件中的标签，可作为快速渠道打包替换渠道名的一种方式，也可以自定义标签用来替换需要的文本
 //          manifestPlaceholders = [UMENG_CHANNEL: "release "]
+        }
+
+        channel_sandbox {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"SANDBOX\"')
+            resValue("string", "channel_desc", '测试环境sandbox')
         }
     }
 

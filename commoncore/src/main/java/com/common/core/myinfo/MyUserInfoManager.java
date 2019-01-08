@@ -94,13 +94,17 @@ public class MyUserInfoManager {
         try {
             Response<ApiResult> resultResponse = apiResultCall.execute();
             ApiResult obj = resultResponse.body();
-            if (obj.getErrno() == 0) {
-                final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
-                MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
-                MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                setMyUserInfo(myUserInfo);
-            } else if (obj.getErrno() == 107) {
-                UserAccountManager.getInstance().notifyAccountExpired();
+            if (obj != null) {
+                if (obj.getErrno() == 0) {
+                    final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
+                    MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
+                    MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
+                    setMyUserInfo(myUserInfo);
+                } else if (obj.getErrno() == 107) {
+                    UserAccountManager.getInstance().notifyAccountExpired();
+                }
+            } else {
+                MyLog.w(TAG, "syncMyInfoFromServer obj==null");
             }
         } catch (IOException e) {
             MyLog.d(e);

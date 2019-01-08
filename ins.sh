@@ -103,11 +103,21 @@ if [[ $1 = "app" ]]; then
 		    	installApkForAllDevices app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
                 myandroidlog.sh  com.zq.live
 		fi
+	elif [[ $2 = "dev" ]]; then
+        echo "./gradlew :app:assemblechannel_devDebug"
+        echo "只编译test debug渠道"
+        ./gradlew :app:assemblechannel_devDebug
+        adb install -r app/build/outputs/apk/channel_dev/debug/app-channel_dev-debug.apk
 	elif [[ $2 = "test" ]]; then
 	   echo "./gradlew :app:assemblechannel_testDebug"
 	   echo "只编译test debug渠道"
        	./gradlew :app:assemblechannel_testDebug
        	adb install -r app/build/outputs/apk/channel_test/debug/app-channel_test-debug.apk
+    elif [[ $2 = "sandbox" ]]; then
+        echo "./gradlew :app:assemblechannel_sandboxDebug"
+        echo "只编译test debug渠道"
+        ./gradlew :app:assemblechannel_sandboxDebug
+        adb install -r app/build/outputs/apk/channel_sandbox/debug/app-channel_sandbox-debug.apk
 	else
 		echo "./gradlew :app:assemblechannel_defaultDebug"
 		echo "只编译default debug渠道"
