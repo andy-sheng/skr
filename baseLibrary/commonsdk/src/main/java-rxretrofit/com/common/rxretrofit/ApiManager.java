@@ -66,11 +66,11 @@ public class ApiManager {
          * 测试环境与线上环境相关的ip添加到这
          */
         {
-            HostPair hostPair = new HostPair("aaaa", "bbbb");
+            HostPair hostPair = new HostPair("test.api.inframe.mobi", "dev.api.inframe.mobi");
             l.add(hostPair);
         }
         {
-            HostPair hostPair = new HostPair("cccc", "dddd");
+            HostPair hostPair = new HostPair("test.game.inframe.mobi", "test.game.inframe.mobi");
             l.add(hostPair);
         }
         for (HostPair hp : l) {
