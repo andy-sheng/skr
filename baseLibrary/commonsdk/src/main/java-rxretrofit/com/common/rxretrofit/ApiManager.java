@@ -8,10 +8,7 @@ import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.rxretrofit.interceptor.UserAgentInterceptor;
 import com.common.utils.U;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -81,6 +78,16 @@ public class ApiManager {
                 return "test.game.inframe.mobi";
             } else if (U.getChannelUtils().isSandboxChannel()) {
                 return "sandbox.game.inframe.mobi";
+            } else {
+                // 说明是线下环境，暂时没给域名
+            }
+        } else if(host.endsWith("i.res.inframe.mobi")){
+            if (U.getChannelUtils().isDevChannel()) {
+                return "dev.i.res.inframe.mobi";
+            } else if (U.getChannelUtils().isTestChannel()) {
+                return "test.i.res.inframe.mobi";
+            } else if (U.getChannelUtils().isSandboxChannel()) {
+                return "sandbox.i.res.inframe.mobi";
             } else {
                 // 说明是线下环境，暂时没给域名
             }

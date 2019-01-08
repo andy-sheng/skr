@@ -8,7 +8,6 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
-import com.common.player.event.PlayerEvent;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -763,12 +762,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         map.put("midiURL", midiUrl);
         map.put("timeMs", timeMs);
         StringBuilder sb = new StringBuilder();
-        sb.append("skrer").append(mRoomData.getGameId())
-                .append(roundInfoModel.getPlaybookID())
-                .append(roundInfoModel.getSysScore())
-                .append(audioUrl)
-                .append(midiUrl)
-                .append(timeMs);
+        sb.append("skrer").append("|" + mRoomData.getGameId())
+                .append("|" +roundInfoModel.getPlaybookID())
+                .append("|" +roundInfoModel.getSysScore())
+                .append("|" +audioUrl)
+                .append("|" +midiUrl)
+                .append("|" +timeMs);
         String sign = U.getMD5Utils().MD5_32(sb.toString());
         map.put("sign", sign);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
