@@ -126,4 +126,13 @@
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/end_game_iv"
+        android:layout_width="@dimen/view_324_dp"
+        android:layout_height="@dimen/view_160_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_178_dp"
+        android:src="@drawable/img_top_duizhanjieshu_bg"
+        android:visibility="gone" />
 </RelativeLayout>

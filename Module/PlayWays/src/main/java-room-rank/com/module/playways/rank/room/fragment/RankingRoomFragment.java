@@ -1,6 +1,8 @@
 package com.module.playways.rank.room.fragment;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -106,6 +108,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     SVGAImageView mUfoBg;
 
     ImageView mEndRoundHint;
+
+    ImageView mEndGameIv;
 
     RankingCorePresenter mCorePresenter;
 
@@ -289,7 +293,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     // 播放主舞台动画,入场和飞碟
     private void playShowMainStageAnimator() {
-        MyLog.d(TAG, "playShowMainStageAnimator" );
+        MyLog.d(TAG, "playShowMainStageAnimator");
         //TODO 还要修改
         mTopVoiceBg.setVisibility(View.VISIBLE);
         SVGAParser parser = new SVGAParser(getActivity());
@@ -335,7 +339,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         ufoParse.parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                MyLog.d(TAG, "playUFOStageAnimator" );
+                MyLog.d(TAG, "playUFOStageAnimator");
                 mUFOMode = 1;
                 SVGADrawable drawable = new SVGADrawable(videoItem);
                 mUfoBg.setImageDrawable(drawable);
@@ -527,6 +531,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
 
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
+
+        mEndGameIv = (ImageView) mRootView.findViewById(R.id.end_game_iv);
     }
 
     private void initGiftDisplayView() {
@@ -730,12 +736,48 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mDialogPlus.dismiss();
             mDialogPlus = null;
         }
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(0, recordData)
-                .addDataBeforeAdd(1, mRoomData)
-                .build()
-        );
+
+        // TODO: 2019/1/8 加上了2秒的对战结束动画
+        mEndGameIv.setVisibility(View.VISIBLE);
+        ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, "scaleX", 0.3f, 1f);
+        ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, "scaleY", 0.3f, 1f);
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(750);
+        set.play(a1).with(a2);
+        set.start();
+
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                HandlerTaskTimer.newBuilder()
+                        .delay(1250)
+                        .start(new HandlerTaskTimer.ObserverW() {
+                            @Override
+                            public void onNext(Integer integer) {
+                                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+                                        .setAddToBackStack(true)
+                                        .addDataBeforeAdd(0, recordData)
+                                        .addDataBeforeAdd(1, mRoomData)
+                                        .build()
+                                );
+                            }
+                        });
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                onAnimationEnd(animator);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+
     }
 
     @Override
@@ -744,12 +786,51 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mDialogPlus.dismiss();
             mDialogPlus = null;
         }
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(0, mRoomData)
-                .build()
-        );
+
+        // TODO: 2019/1/8  加上2秒的对战结束动画
+        mEndGameIv.setVisibility(View.VISIBLE);
+        ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, "scaleX", 0.3f, 1f);
+        ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, "scaleY", 0.3f, 1f);
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(750);
+        set.play(a1).with(a2);
+        set.start();
+
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                HandlerTaskTimer.newBuilder()
+                        .delay(1250)
+                        .start(new HandlerTaskTimer.ObserverW() {
+                            @Override
+                            public void onNext(Integer integer) {
+
+                                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                                        .setAddToBackStack(true)
+                                        .addDataBeforeAdd(0, mRoomData)
+                                        .build()
+                                );
+
+                            }
+                        });
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                onAnimationEnd(animator);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+
     }
+
 
     @Override
     public void gameFinish() {

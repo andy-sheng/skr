@@ -321,7 +321,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
             @Override
             public void onFinished() {
-                if (mVsSvga.isAnimating()){
+                if (mVsSvga.isAnimating()) {
                     mVsSvga.stopAnimation();
                 }
                 mVsSvga.setVisibility(View.GONE);
@@ -330,7 +330,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
             @Override
             public void onRepeat() {
-                if (mVsSvga.isAnimating()){
+                if (mVsSvga.isAnimating()) {
                     mVsSvga.stopAnimation();
                 }
                 mVsSvga.setVisibility(View.GONE);
@@ -355,7 +355,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             @Override
             public void onFinished() {
                 MyLog.d(TAG, " animationGo " + " onFinished ");
-                if (mGestureSvga.isAnimating()){
+                if (mGestureSvga.isAnimating()) {
                     mGestureSvga.stopAnimation();
                 }
                 mGestureSvga.setVisibility(View.GONE);
@@ -366,7 +366,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             @Override
             public void onRepeat() {
                 MyLog.d(TAG, " animationGo " + " onRepeat ");
-                if (mGestureSvga.isAnimating()){
+                if (mGestureSvga.isAnimating()) {
                     mGestureSvga.stopAnimation();
                 }
                 mGestureSvga.setVisibility(View.GONE);
@@ -401,11 +401,11 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void startTimeTask() {
         mVoteTimeTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(12)
+                .take(10)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        mVoteDownTv.setText(String.format(U.app().getString(R.string.evaluation_time_info), 12 - integer));
+                        mVoteDownTv.setText(String.format(U.app().getString(R.string.evaluation_time_info), 10 - integer));
                         if (integer == 12) {
                             mPresenter.getVoteResult(mRoomData.getGameId());
                         }
@@ -497,7 +497,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                 @Override
                 public void onFinished() {
-                    if(mStartLeftSvga.isAnimating()){
+                    if (mStartLeftSvga.isAnimating()) {
                         mStartLeftSvga.stopAnimation();
                         mStartLeftSvga.setVisibility(View.GONE);
                     }
@@ -505,7 +505,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                 @Override
                 public void onRepeat() {
-                    if(mStartLeftSvga.isAnimating()){
+                    if (mStartLeftSvga.isAnimating()) {
                         mStartLeftSvga.stopAnimation();
                         mStartLeftSvga.setVisibility(View.GONE);
                     }
@@ -553,7 +553,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mGestureSvga.clearAnimation();
         }
 
-        if (mVsSvga != null){
+        if (mVsSvga != null) {
             mVsSvga.stopAnimation();
             mVsSvga.clearAnimation();
         }
