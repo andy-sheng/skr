@@ -594,14 +594,14 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             mRobotScoreHelper = new RobotScoreHelper();
         }
 
-        if(SongResUtils.getScoreFileByUrl(midiUrl) == null){
-            Observable.create(new ObservableOnSubscribe<Object>() {
-                @Override
-                public void subscribe(ObservableEmitter<Object> emitter) {
-                    mRobotScoreHelper.loadDataFromUrl(midiUrl, 0);
-                }
-            }).subscribeOn(Schedulers.io()).subscribe();
-        }
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) {
+                mRobotScoreHelper.loadDataFromUrl(midiUrl, 0);
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
 
         if (mExoPlayer != null) {
             mExoPlayer.release();
@@ -634,7 +634,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
             long delayTime = 4000l;
             //第一个人如果是机器人，需要deley6秒
-            if(roundInfoModel.getRoundSeq() == 1){
+            if (roundInfoModel.getRoundSeq() == 1) {
                 delayTime = 6000l;
             }
             //移除之前的要发生的机器人演唱

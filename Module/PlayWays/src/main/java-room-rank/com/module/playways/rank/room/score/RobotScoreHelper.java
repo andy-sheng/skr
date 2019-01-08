@@ -61,11 +61,9 @@ public class RobotScoreHelper {
         if (deep > 5) {
             return;
         }
-        String fileName = U.getMD5Utils().MD5_16(midiUrl) + "." + U.getFileUtils().getSuffixFromUrl(midiUrl, SongResUtils.SUFF_JSON);
-        String filePath = SongResUtils.getScoreDir();
-        File file = new File(filePath);
+        File file = SongResUtils.getScoreFileByUrl(midiUrl);
         if (file.exists() && file.length() > 10) {
-            loadDataFromFile(filePath);
+            loadDataFromFile(file.getAbsolutePath());
         } else {
             U.getHttpUtils().downloadFileSync(midiUrl, file, new HttpUtils.OnDownloadProgress() {
                 @Override
@@ -76,7 +74,7 @@ public class RobotScoreHelper {
                 @Override
                 public void onCompleted(String localPath) {
                     //success
-                    loadDataFromFile(filePath);
+                    loadDataFromFile(file.getAbsolutePath());
                 }
 
                 @Override
