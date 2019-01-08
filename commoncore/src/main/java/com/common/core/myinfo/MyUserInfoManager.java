@@ -1,5 +1,7 @@
 package com.common.core.myinfo;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -11,6 +13,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.LbsUtils;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 
@@ -39,6 +42,8 @@ import retrofit2.http.Query;
 public class MyUserInfoManager {
 
     public final static String TAG = "MyUserInfoManager";
+
+    static final String PREF_KEY_UPDATE_LACATION_TS = "update_location_ts";
 
     private MyUserInfo mUser = new MyUserInfo();
 
@@ -114,7 +119,7 @@ public class MyUserInfoManager {
     /**
      * 更新用户信息
      */
-    public void updateInfo(MyInfoUpdateParams updateParams) {
+    public void updateInfo(final MyInfoUpdateParams updateParams) {
 
         HashMap<String, Object> map = new HashMap<>();
         if (updateParams.nickName != null) {
@@ -159,6 +164,10 @@ public class MyUserInfoManager {
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
                                 setMyUserInfo(mUser);
+                            }
+                            if (updateParams.location != null) {
+                                // 有传地址位置
+                                U.getPreferenceUtils().setSettingLong(PREF_KEY_UPDATE_LACATION_TS, System.currentTimeMillis());
                             }
                             emitter.onComplete();
                         }
@@ -211,6 +220,44 @@ public class MyUserInfoManager {
 
     public boolean hasMyUserInfo() {
         return mUser != null && mUser.getUserId() > 0;
+    }
+
+    public boolean hasLocation() {
+        return mUser.getLocation() != null && mUser.getLocation().getDesc().length() > 0;
+    }
+
+    public void trySyncLocation() {
+        if (!MyUserInfoManager.getInstance().hasLocation()) {
+            // 没有地理位置
+            uploadLocation();
+        } else {
+            long lastUpdateLocationTs = U.getPreferenceUtils().getSettingLong(PREF_KEY_UPDATE_LACATION_TS, 0);
+            if (System.currentTimeMillis() - lastUpdateLocationTs > 3600 * 1000 * 6) {
+                uploadLocation();
+            }
+        }
+    }
+
+    /**
+     * 上传地理位置
+     */
+    public void uploadLocation() {
+        U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
+            @Override
+            public void onReceive(LbsUtils.Location location) {
+                MyLog.d(TAG, "onReceive" + " location=" + location);
+                if (location != null && location.isValid()) {
+                    Location l = new Location();
+                    l.setProvince(location.getProvince());
+                    l.setCity(location.getCity());
+                    l.setDistrict(location.getDistrict());
+                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                            .newMyInfoUpdateParamsBuilder()
+                            .setLocation(l)
+                            .build());
+                }
+            }
+        });
     }
 
 //    public boolean hasLoadFromDB() {

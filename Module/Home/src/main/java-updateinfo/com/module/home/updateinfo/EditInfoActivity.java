@@ -232,24 +232,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void onClickLocationRefresh() {
-        U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
-            @Override
-            public void onReceive(LbsUtils.Location location) {
-                MyLog.d(TAG, "onReceive" + " location=" + location);
-                if (location != null && location.isValid()) {
-                    Location l = new Location();
-                    l.setProvince(location.getProvince());
-                    l.setCity(location.getCity());
-                    l.setDistrict(location.getDistrict());
-
-                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
-                            .newMyInfoUpdateParamsBuilder()
-                            .setLocation(l)
-                            .build());
-                }
-
-            }
-        });
+        MyUserInfoManager.getInstance().uploadLocation();
     }
 
     @Override

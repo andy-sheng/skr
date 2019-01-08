@@ -135,24 +135,6 @@ public class HomeCorePresenter {
                 @Override
                 public void onRequestPermissionSuccess() {
                     MyLog.d(TAG, "onRequestPermissionSuccess");
-                    U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
-                        @Override
-                        public void onReceive(LbsUtils.Location location) {
-                            MyLog.d(TAG, "onReceive" + " location=" + location);
-                            if (location != null && location.isValid()) {
-                                Location l = new Location();
-                                l.setProvince(location.getProvince());
-                                l.setCity(location.getCity());
-                                l.setDistrict(location.getDistrict());
-
-                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
-                                        .newMyInfoUpdateParamsBuilder()
-                                        .setLocation(l)
-                                        .build());
-                            }
-
-                        }
-                    });
                     onAgree();
                 }
 
@@ -169,24 +151,6 @@ public class HomeCorePresenter {
                 }
             }, activity);
         } else {
-            U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
-                @Override
-                public void onReceive(LbsUtils.Location location) {
-                    MyLog.d(TAG, "onReceive" + " location=" + location);
-                    if (location != null && location.isValid()) {
-                        Location l = new Location();
-                        l.setProvince(location.getProvince());
-                        l.setCity(location.getCity());
-                        l.setDistrict(location.getDistrict());
-
-                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
-                                .newMyInfoUpdateParamsBuilder()
-                                .setLocation(l)
-                                .build());
-                    }
-
-                }
-            });
             onAgree();
         }
     }
@@ -217,7 +181,6 @@ public class HomeCorePresenter {
             mUiHandler.removeCallbacks(mNetworkChangeRunnable);
         }
     }
-
 
     private void showNetworkDisConnectDialog() {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
@@ -284,6 +247,8 @@ public class HomeCorePresenter {
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
                                     .greenChannel().navigation();
                         }
+                    } else {
+                        MyUserInfoManager.getInstance().trySyncLocation();
                     }
                 } else {
 
