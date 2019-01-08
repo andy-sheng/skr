@@ -10,6 +10,14 @@ public class LrcEvent {
     }
 
     public static class LineEndEvent{
+        int lineNum;
 
+        public LineEndEvent(int lineNum) {
+            this.lineNum = lineNum;
+        }
+
+        public int getLineNum() {
+            return lineNum;
+        }
     }
 }

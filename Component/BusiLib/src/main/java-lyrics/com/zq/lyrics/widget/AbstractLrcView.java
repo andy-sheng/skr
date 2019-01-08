@@ -614,10 +614,10 @@ public abstract class AbstractLrcView extends View {
 //                        + ", end time is " + endTime + ", lyricProgress " + lyricProgress);
 
                 if ((mCurEndLineNum != lyricsLineNum || mCurSplitLyricsEndLineNum != splitLyricsLineNum)) {
+                    EventBus.getDefault().post(new LrcEvent.LineEndEvent(mCurEndLineNum));
+                    MyLog.d("AbstractLrcViewAbstractLrcView", "结束 num is " + mCurEndLineNum);
                     mCurEndLineNum = lyricsLineNum;
                     mCurSplitLyricsEndLineNum = splitLyricsLineNum;
-                    EventBus.getDefault().post(new LrcEvent.LineEndEvent());
-                    MyLog.d("AbstractLrcViewAbstractLrcView", "结束");
 //                    U.getToastUtil().showShort("结束");
                 }
 
@@ -625,10 +625,10 @@ public abstract class AbstractLrcView extends View {
                     long endTime = realInfo.getEndTime();
                     long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
                     if (endTime < lyricProgress && (mCurEndLineNum != lyricsLineNum || mCurSplitLyricsEndLineNum != splitLyricsLineNum)) {
-                        EventBus.getDefault().post(new LrcEvent.LineEndEvent());
+                        EventBus.getDefault().post(new LrcEvent.LineEndEvent(lyricsLineNum));
                         mCurEndLineNum = lyricsLineNum;
                         mCurSplitLyricsEndLineNum = splitLyricsLineNum;
-                        MyLog.d("AbstractLrcViewAbstractLrcView", "结束");
+                        MyLog.d("AbstractLrcViewAbstractLrcView", "结束 num is " + lyricsLineNum);
 //                        U.getToastUtil().showShort("结束");
                     }
                 }
