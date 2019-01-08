@@ -41,7 +41,15 @@ import io.reactivex.schedulers.Schedulers;
 public class AgoraEngineAdapter {
     public final static String TAG = "AgoraEngineAdapter";
 
-    static final String APP_ID = "549ef854ebff41e8848dc288025039e7";
+    static final String APP_ID;
+
+    static {
+        if (U.getChannelUtils().isStaging()) {
+            APP_ID = "f23bd32ce6484113b02d14bd878e694c";
+        } else {
+            APP_ID = "2cceda2dbb2d46d28cab627f30c1a6f7";
+        }
+    }
 
     private static class AgoraEngineAdapterHolder {
         private static final AgoraEngineAdapter INSTANCE = new AgoraEngineAdapter();

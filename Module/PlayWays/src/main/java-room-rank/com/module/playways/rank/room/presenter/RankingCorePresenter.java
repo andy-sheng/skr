@@ -762,12 +762,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         map.put("midiURL", midiUrl);
         map.put("timeMs", timeMs);
         StringBuilder sb = new StringBuilder();
-        sb.append("skrer").append("|" + mRoomData.getGameId())
-                .append("|" +roundInfoModel.getPlaybookID())
-                .append("|" +roundInfoModel.getSysScore())
-                .append("|" +audioUrl)
-                .append("|" +midiUrl)
-                .append("|" +timeMs);
+        sb.append("skrer")
+                .append("|").append(mRoomData.getGameId())
+                .append("|").append(roundInfoModel.getPlaybookID())
+                .append("|").append(roundInfoModel.getSysScore())
+                .append("|").append(audioUrl)
+                .append("|").append(midiUrl)
+                .append("|").append(timeMs);
         String sign = U.getMD5Utils().MD5_32(sb.toString());
         map.put("sign", sign);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
