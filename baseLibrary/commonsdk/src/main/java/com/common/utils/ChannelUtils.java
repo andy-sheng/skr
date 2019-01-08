@@ -33,18 +33,30 @@ public class ChannelUtils {
      * @return
      */
     public String getChannel() {
+        if ("DEV".equals(channelNameFromBuildConfig)) {
+            return channelNameFromBuildConfig;
+        }
         if ("TEST".equals(channelNameFromBuildConfig)) {
-            return "TEST";
+            return channelNameFromBuildConfig;
+        }
+        if ("SANDBOX".equals(channelNameFromBuildConfig)) {
+            return channelNameFromBuildConfig;
         }
         if (TextUtils.isEmpty(channelNameFromPref)) {
+            //读一下 pref
             channelNameFromPref = U.getPreferenceUtils().getSettingString(PREF_KEY_CHANNEL, "DEFAULT");
         }
         if (!channelNameFromBuildConfig.equals(channelNameFromPref)) {
             if (channelNameFromBuildConfig.equals("DEFAULT")) {
-                // 如果是自升级渠道
-                return channelNameFromPref;
+                // 如果是自升级渠道，保持原来的channel
+                if (!TextUtils.isEmpty(channelNameFromPref)) {
+                    return channelNameFromPref;
+                } else {
+                    // 按理不会有这种情况
+                    return "DEFAULT";
+                }
             } else {
-                // 如果不是自升级渠道
+                // 如果不是自升级渠道,保存起来
                 channelNameFromPref = channelNameFromBuildConfig;
                 U.getPreferenceUtils().setSettingString(PREF_KEY_CHANNEL, channelNameFromPref);
             }
@@ -52,8 +64,19 @@ public class ChannelUtils {
         return channelNameFromPref;
     }
 
+    public boolean isStaging() {
+        return isDevChannel() || isTestChannel() || isSandboxChannel();
+    }
+
+    public boolean isDevChannel() {
+        return getChannel().equals("DEV");
+    }
+
     public boolean isTestChannel() {
         return getChannel().equals("TEST");
     }
 
+    public boolean isSandboxChannel() {
+        return getChannel().equals("SANDBOX");
+    }
 }

@@ -52,40 +52,38 @@ public class ApiManager {
      */
     private LinkedHashSet<Interceptor> mOutInterceptors = new LinkedHashSet<>();
 
-    private HashMap<String, String> mStaging2Online = new HashMap<>();
-
-    private HashMap<String, String> mOnline2Staging = new HashMap<>();
-
     private static class HttpManagerHolder {
         private static final ApiManager INSTANCE = new ApiManager();
     }
 
     private ApiManager() {
-        List<HostPair> l = new ArrayList<>();
-        /**
-         * 测试环境与线上环境相关的ip添加到这
-         */
-        {
-            HostPair hostPair = new HostPair("test.api.inframe.mobi", "dev.api.inframe.mobi");
-            l.add(hostPair);
-        }
-        {
-            HostPair hostPair = new HostPair("test.game.inframe.mobi", "test.game.inframe.mobi");
-            l.add(hostPair);
-        }
-        for (HostPair hp : l) {
-            mStaging2Online.put(hp.staging, hp.online);
-            mOnline2Staging.put(hp.online, hp.staging);
-        }
     }
 
     public static final ApiManager getInstance() {
         return HttpManagerHolder.INSTANCE;
     }
 
-    public String findOnLineHostByStagingHost(String host) {
-        if (mStaging2Online.containsKey(host)) {
-            return mStaging2Online.get(host);
+    public String findRealHostByChannel(String host) {
+        if (host.endsWith("api.inframe.mobi")) {
+            if (U.getChannelUtils().isDevChannel()) {
+                return "dev.api.inframe.mobi";
+            } else if (U.getChannelUtils().isTestChannel()) {
+                return "test.api.inframe.mobi";
+            } else if (U.getChannelUtils().isSandboxChannel()) {
+                return "sandbox.api.inframe.mobi";
+            } else {
+                // 说明是线下环境，暂时没给域名
+            }
+        } else if (host.endsWith("game.inframe.mobi")) {
+            if (U.getChannelUtils().isDevChannel()) {
+                return "dev.game.inframe.mobi";
+            } else if (U.getChannelUtils().isTestChannel()) {
+                return "test.game.inframe.mobi";
+            } else if (U.getChannelUtils().isSandboxChannel()) {
+                return "sandbox.game.inframe.mobi";
+            } else {
+                // 说明是线下环境，暂时没给域名
+            }
         }
         return host;
     }
@@ -160,11 +158,43 @@ public class ApiManager {
     }
 
     static class HostPair {
-        String staging;
+        String sandbox;
+        String dev;
+        String test;
         String online;
 
-        public HostPair(String staging, String online) {
-            this.staging = staging;
+        public HostPair() {
+        }
+
+        public String getSandbox() {
+            return sandbox;
+        }
+
+        public void setSandbox(String sandbox) {
+            this.sandbox = sandbox;
+        }
+
+        public String getDev() {
+            return dev;
+        }
+
+        public void setDev(String dev) {
+            this.dev = dev;
+        }
+
+        public String getTest() {
+            return test;
+        }
+
+        public void setTest(String test) {
+            this.test = test;
+        }
+
+        public String getOnline() {
+            return online;
+        }
+
+        public void setOnline(String online) {
             this.online = online;
         }
     }
