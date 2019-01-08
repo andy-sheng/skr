@@ -602,10 +602,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }).subscribeOn(Schedulers.io())
                 .subscribe();
 
-        if (mExoPlayer != null) {
-            mExoPlayer.release();
+        if (mExoPlayer == null) {
+            mExoPlayer = new ExoPlayer();
         }
-        mExoPlayer = new ExoPlayer();
+
         mExoPlayer.startPlay(skrerUrl);
         //直接播放歌词
         mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), playerInfo.getUserInfo().getUserId()), true);
@@ -613,7 +613,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     private void tryStopRobotPlay() {
         if (mExoPlayer != null) {
-            mExoPlayer.stop();
+            mExoPlayer.reset();
         }
     }
 

@@ -30,6 +30,14 @@ public class OnlineInfoModel implements Serializable {
         this.isOnline = isOnline;
     }
 
+    @Override
+    public String toString() {
+        return "OnlineInfoModel{" +
+                "userID=" + userID +
+                ", isOnline=" + isOnline +
+                '}';
+    }
+
     public void parse(OnlineInfo onlineInfo){
         if (onlineInfo == null){
             MyLog.e("JsonOnLineInfo OnlineInfo == null");

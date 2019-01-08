@@ -18,7 +18,7 @@
             android:scrollbarFadeDuration="2000"
             android:scrollbarStyle="insideOverlay"
             android:scrollbars="vertical"
-            android:textColor="@color/green" />
+            android:textColor="@color/white" />
     </ScrollView>
 
 

@@ -12,6 +12,8 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.player.exoplayer.ExoPlayer;
+import com.common.utils.HandlerTaskTimer;
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
 import com.common.view.viewpager.NestViewPager;
@@ -137,8 +139,19 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         mHomePresenter.checkPermiss(this);
+
+
 //        ExoPlayer exoPlayer = new ExoPlayer();
 //        exoPlayer.startPlay("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/audios/56e25fc3bccff9b8.aac");
+//
+//        HandlerTaskTimer.newBuilder().delay(10000).start(new HandlerTaskTimer.ObserverW() {
+//            @Override
+//            public void onNext(Integer integer) {
+//                U.getToastUtil().showShort("换首歌");
+//                exoPlayer.reset();
+//                exoPlayer.startPlay("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/audios/62366357537f356c.aac");
+//            }
+//        });
     }
 
     @Override
