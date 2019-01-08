@@ -3,6 +3,7 @@ package com.common.anim;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 
 public class ExObjectAnimator {
 
@@ -60,6 +61,10 @@ public class ExObjectAnimator {
         return exObjectAnimator;
     }
 
+    public void setInterpolator(TimeInterpolator value) {
+        mObjectAnimator.setInterpolator(value);
+    }
+
     public void setDuration(int i) {
         mObjectAnimator.setDuration(i);
     }
@@ -72,8 +77,9 @@ public class ExObjectAnimator {
         mObjectAnimator.start();
     }
 
-    public interface Listener{
+    public interface Listener {
         void onAnimationStart(Animator animator);
+
         void onAnimationEnd(Animator animator);
     }
 }

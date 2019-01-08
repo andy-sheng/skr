@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -658,6 +659,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         if (mUfoBg.isAnimating()) {
             mUfoBg.stopAnimation();
         }
+        mUfoBg.setVisibility(View.GONE);
+        mTopVoiceBg.setVisibility(View.GONE);
         // 确保演唱逻辑一定要执行
         Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
         msg.what = ENSURE_RUN;
@@ -693,6 +696,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         if (mUfoBg.isAnimating()) {
             mUfoBg.stopAnimation();
         }
+        mUfoBg.setVisibility(View.GONE);
+        mTopVoiceBg.setVisibility(View.GONE);
 
         mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {

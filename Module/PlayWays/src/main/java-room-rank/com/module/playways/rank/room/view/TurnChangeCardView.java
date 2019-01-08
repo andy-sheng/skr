@@ -20,6 +20,7 @@ import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.model.RoomData;
+import com.zq.live.proto.Common.ESex;
 
 public class TurnChangeCardView extends RelativeLayout {
 
@@ -29,9 +30,6 @@ public class TurnChangeCardView extends RelativeLayout {
     SimpleDraweeView mTurnCurrentIv;
     ExTextView mTurnNameTv;
     ExTextView mTurnSongTv;
-
-    SimpleDraweeView mTurnNextIv;
-    ExTextView mTurnNextInfoTv;
 
     public TurnChangeCardView(Context context) {
         super(context);
@@ -99,50 +97,59 @@ public class TurnChangeCardView extends RelativeLayout {
         mTurnCurrentIv = (SimpleDraweeView) findViewById(R.id.turn_current_iv);
         mTurnNameTv = (ExTextView) findViewById(R.id.turn_name_tv);
         mTurnSongTv = (ExTextView) findViewById(R.id.turn_song_tv);
-        mTurnNextIv = (SimpleDraweeView) findViewById(R.id.turn_next_iv);
-        mTurnNextInfoTv = (ExTextView) findViewById(R.id.turn_next_info_tv);
+
     }
 
     public void bindData(PlayerInfoModel cur, PlayerInfoModel next) {
         if (cur != null) {
             if (cur.getUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                mTurnChangeBgIv.setBackground(getResources().getDrawable(R.drawable.room_turn_card_bg_blue));
+                mTurnNameTv.setText("轮到你唱啦！");
+                mTurnSongTv.setText("《" + cur.getSongList().get(0).getItemName() + "》");
             } else {
-                mTurnChangeBgIv.setBackground(getResources().getDrawable(R.drawable.room_turn_card_bg_red));
+                mTurnNameTv.setText("《" + cur.getSongList().get(0).getItemName() + "》");
+                mTurnSongTv.setText("演唱：" + cur.getUserInfo().getNickname());
             }
-            AvatarUtils.loadAvatarByUrl(mTurnCurrentIv, AvatarUtils.newParamsBuilder(cur.getUserInfo().getAvatar())
-                    .setCircle(true)
-                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .setBorderColor(Color.WHITE)
-                    .build());
-            mTurnNameTv.setText(cur.getUserInfo().getNickname());
-            mTurnSongTv.setText(cur.getSongList().get(0).getItemName());
+
+            if (cur.getUserInfo().getSex() == ESex.SX_MALE.getValue()) {
+                AvatarUtils.loadAvatarByUrl(mTurnCurrentIv, AvatarUtils.newParamsBuilder(cur.getUserInfo().getAvatar())
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                        .setBorderColor(Color.parseColor("#33A4E1"))
+                        .build());
+            } else if (cur.getUserInfo().getSex() == ESex.SX_FEMALE.getValue()) {
+                AvatarUtils.loadAvatarByUrl(mTurnCurrentIv, AvatarUtils.newParamsBuilder(cur.getUserInfo().getAvatar())
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                        .setBorderColor(Color.parseColor("#FF79A9"))
+                        .build());
+            }
+
         }
 
-        if (next != null) {
-            AvatarUtils.loadAvatarByUrl(mTurnNextIv, AvatarUtils.newParamsBuilder(next.getUserInfo().getAvatar())
-                    .setCircle(true)
-                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                    .setBorderColor(Color.WHITE)
-                    .build());
-            SpannableStringBuilder ssb = new SpanUtils()
-                    .append("下一首由").append(next.getUserInfo().getNickname()).setClickSpan(new ClickableSpan() {
-                        @Override
-                        public void onClick(View widget) {
-                            U.getToastUtil().showShort("事件触发了");
-                        }
-
-                        @Override
-                        public void updateDrawState(TextPaint ds) {
-                            ds.setColor(Color.YELLOW);
-                            ds.setUnderlineText(false);
-                        }
-                    }).append("点击事件").create();
-            mTurnNextInfoTv.setText(ssb);
-        } else {
-            mTurnNextIv.setVisibility(GONE);
-            mTurnNextInfoTv.setVisibility(GONE);
-        }
+//        if (next != null) {
+//            AvatarUtils.loadAvatarByUrl(mTurnNextIv, AvatarUtils.newParamsBuilder(next.getUserInfo().getAvatar())
+//                    .setCircle(true)
+//                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
+//                    .setBorderColor(Color.WHITE)
+//                    .build());
+//            SpannableStringBuilder ssb = new SpanUtils()
+//                    .append("下一首由").append(next.getUserInfo().getNickname()).setClickSpan(new ClickableSpan() {
+//                        @Override
+//                        public void onClick(View widget) {
+//                            U.getToastUtil().showShort("事件触发了");
+//                        }
+//
+//                        @Override
+//                        public void updateDrawState(TextPaint ds) {
+//                            ds.setColor(Color.YELLOW);
+//                            ds.setUnderlineText(false);
+//                        }
+//                    }).append("点击事件").create();
+//            mTurnNextInfoTv.setText(ssb);
+//        } else {
+//            mTurnNextIv.setVisibility(GONE);
+//            mTurnNextInfoTv.setVisibility(GONE);
+//        }
     }
 
 }

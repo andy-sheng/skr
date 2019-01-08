@@ -108,6 +108,7 @@
         android:id="@+id/turn_change_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/top_container_view"
         android:layout_marginTop="@dimen/view_34_dp"
         android:visibility="gone" />
