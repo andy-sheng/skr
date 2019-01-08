@@ -156,6 +156,18 @@ public class RoomDataUtils {
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 
+    public static boolean isRobotRound(RoundInfoModel infoModel, List<PlayerInfoModel> playerInfoModels) {
+        if (infoModel != null) {
+            int uid = infoModel.getUserID();
+            for (PlayerInfoModel playerInfoModel : playerInfoModels) {
+                if (playerInfoModel.getUserInfo().getUserId() == uid) {
+                    return playerInfoModel.isSkrer();
+                }
+            }
+        }
+        return false;
+    }
+
     public static PlayerInfoModel getPlayerInfoById(RoomData roomData, long uid) {
         for (PlayerInfoModel playerInfo :
                 roomData.getPlayerInfoList()) {

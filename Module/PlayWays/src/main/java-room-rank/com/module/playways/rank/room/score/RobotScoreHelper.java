@@ -57,7 +57,6 @@ public class RobotScoreHelper {
 
     public void loadDataFromUrl(String midiUrl, int deep) {
         MyLog.d(TAG, "loadDataFromUrl" + " midiUrl=" + midiUrl + " deep=" + deep);
-
         if (deep > 5) {
             return;
         }
@@ -130,7 +129,16 @@ public class RobotScoreHelper {
      */
     public int tryGetScoreByTs(long curPostion) {
         MyLog.d(TAG, "tryGetScoreByTs" + " curPostion=" + curPostion + " size=" + mMachineScoreModel.getDataList().size());
-        MachineScoreItem machineScoreItem = mMachineScoreModel.findMatchingScoreItemBy(curPostion);
+        MachineScoreItem machineScoreItem = mMachineScoreModel.findMatchingScoreItemByTs(curPostion);
+        if (machineScoreItem != null) {
+            return machineScoreItem.getScore();
+        } else {
+            return -1;
+        }
+    }
+
+    public int tryGetScoreByLine(int lineNo) {
+        MachineScoreItem machineScoreItem = mMachineScoreModel.findMatchingScoreItemByNo(lineNo);
         if (machineScoreItem != null) {
             return machineScoreItem.getScore();
         } else {

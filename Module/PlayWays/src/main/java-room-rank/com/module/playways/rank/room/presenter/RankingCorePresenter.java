@@ -593,14 +593,14 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mRobotScoreHelper == null) {
             mRobotScoreHelper = new RobotScoreHelper();
         }
-
-
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) {
                 mRobotScoreHelper.loadDataFromUrl(midiUrl, 0);
+                emitter.onComplete();
             }
-        }).subscribeOn(Schedulers.io()).subscribe();
+        }).subscribeOn(Schedulers.io())
+                .subscribe();
 
         if (mExoPlayer != null) {
             mExoPlayer.release();
@@ -985,22 +985,34 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 machineScoreItem.setScore(score);
                 long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
                 machineScoreItem.setTs(ts);
+                machineScoreItem.setNo(event.getLineNum());
                 mRobotScoreHelper.add(machineScoreItem);
             }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(PlayerEvent.TimeFly event) {
-        if (!RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            // 尝试算打分
-            if (mRobotScoreHelper != null) {
-                int score = mRobotScoreHelper.tryGetScoreByTs(event.curPostion);
-                if (score >= 0) {
-                    U.getToastUtil().showShort("score:" + score);
-                    mIGameRuleView.updateScrollBarProgress(score);
+        } else {
+            if (!RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
+                // 尝试算打分
+                if (mRobotScoreHelper != null) {
+                    int score = mRobotScoreHelper.tryGetScoreByLine(event.getLineNum());
+                    if (score >= 0) {
+                        U.getToastUtil().showShort("score:" + score);
+                        mIGameRuleView.updateScrollBarProgress(score);
+                    }
                 }
             }
         }
     }
+
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(PlayerEvent.TimeFly event) {
+//        if (!RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+//            // 尝试算打分
+//            if (mRobotScoreHelper != null) {
+//                int score = mRobotScoreHelper.tryGetScoreByTs(event.curPostion);
+//                if (score >= 0) {
+//                    U.getToastUtil().showShort("score:" + score);
+//                    mIGameRuleView.updateScrollBarProgress(score);
+//                }
+//            }
+//        }
+//    }
 }
