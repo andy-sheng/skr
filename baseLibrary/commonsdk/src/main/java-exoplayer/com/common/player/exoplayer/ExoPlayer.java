@@ -480,7 +480,7 @@ public class ExoPlayer implements IPlayer {
 
     @Override
     public void startPlay(String path) {
-        MyLog.d(TAG,"startPlay" + " path=" + path);
+        MyLog.d(TAG, "startPlay" + " path=" + path);
         if (path != null && !path.equals(mUrl)) {
             mUrl = path;
             mUrlChange = true;
@@ -520,6 +520,7 @@ public class ExoPlayer implements IPlayer {
             return;
         }
         mPlayer.stop();
+        mUrl = null;
         stopMusicPlayTimeListener();
     }
 
@@ -530,6 +531,7 @@ public class ExoPlayer implements IPlayer {
             return;
         }
         mPlayer.stop();
+        mUrl = null;
         stopMusicPlayTimeListener();
     }
 
@@ -546,6 +548,7 @@ public class ExoPlayer implements IPlayer {
         sExoPlayer = null;
         mCallback = null;
         mView = null;
+        mUrl = null;
         stopMusicPlayTimeListener();
     }
 
