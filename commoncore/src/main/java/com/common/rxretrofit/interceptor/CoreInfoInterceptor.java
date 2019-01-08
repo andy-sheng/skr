@@ -24,7 +24,7 @@ public class CoreInfoInterceptor implements Interceptor {
             HttpUrl httpUrl = request.url();
             String host = httpUrl.host();
 //            host = ApiManager.getInstance().findOnLineHostByStagingHost(host);
-            if(host.equals("dev.api.inframe.mobi ")){
+            if(host.equals("dev.api.inframe.mobi")){
                 host = "test.api.inframe.mobi ";
             }else if(host.equals("dev.game.inframe.mobi")){
                 host = "test.game.inframe.mobi";
