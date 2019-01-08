@@ -33,7 +33,9 @@ public class ScoreProcessor {
     }
 
     public void destroy() {
-        mScoreProcessorService.destroy();
-        mScoreProcessorService = null;
+        if(mScoreProcessorService != null){
+            mScoreProcessorService.destroy();
+            mScoreProcessorService = null;
+        }
     }
 }

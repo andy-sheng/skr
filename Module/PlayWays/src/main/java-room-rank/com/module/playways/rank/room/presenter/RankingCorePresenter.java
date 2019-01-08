@@ -504,7 +504,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                 if (accFile != null && accFile.exists()) {
                                     EngineManager.getInstance().muteLocalAudioStream(false);
                                     EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath()
-                                            , midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
+                                            , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
                                     /**
                                      * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
                                      */
@@ -593,10 +593,19 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mRobotScoreHelper == null) {
             mRobotScoreHelper = new RobotScoreHelper();
         }
-        mRobotScoreHelper.loadDataFromUrl(midiUrl, 0);
-        if (mExoPlayer == null) {
-            mExoPlayer = new ExoPlayer();
+
+
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) {
+                mRobotScoreHelper.loadDataFromUrl(midiUrl, 0);
+            }
+        }).subscribeOn(Schedulers.io()).subscribe();
+
+        if (mExoPlayer != null) {
+            mExoPlayer.release();
         }
+        mExoPlayer = new ExoPlayer();
         mExoPlayer.startPlay(skrerUrl);
         //直接播放歌词
         mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), playerInfo.getUserInfo().getUserId()), true);

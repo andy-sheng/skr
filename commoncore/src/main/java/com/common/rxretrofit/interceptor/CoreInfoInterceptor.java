@@ -1,6 +1,5 @@
 package com.common.rxretrofit.interceptor;
 
-import com.common.rxretrofit.ApiManager;
 import com.common.utils.U;
 
 import java.io.IOException;
@@ -19,6 +18,8 @@ public class CoreInfoInterceptor implements Interceptor {
         request = request.newBuilder()
                 .addHeader("Inframe-Client-ID", U.getDeviceUtils().getDeviceID())
                 .build();
+
+
         if (!U.getChannelUtils().isTestChannel()) {
             // 如果是测试环境的话
             HttpUrl httpUrl = request.url();
