@@ -50,11 +50,11 @@ public class RankingModeActivity extends BaseActivity {
             showRoomFragment();
         }
 
-        //预加载ready_go.webp
-        FrescoWorker.preLoadImg((HttpImage) ImageFactory.newHttpImage(RoomData.READY_GO_WEBP_URL)
-                        .build(),
-                null,
-                false);
+//        //预加载ready_go.webp
+//        FrescoWorker.preLoadImg((HttpImage) ImageFactory.newHttpImage(RoomData.READY_GO_WEBP_URL)
+//                        .build(),
+//                null,
+//                false);
     }
 
     void showRoomFragment() {

@@ -6,6 +6,15 @@
     android:background="#2E3041">
 
     <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/ready_go_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_350_dp"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:scaleType="fitCenter"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
+    <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/top_voice_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_300_dp"
@@ -108,8 +117,8 @@
         android:id="@+id/turn_change_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/top_container_view"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_34_dp"
         android:visibility="gone" />
 

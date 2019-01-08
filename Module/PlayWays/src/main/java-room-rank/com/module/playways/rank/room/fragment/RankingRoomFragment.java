@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -19,9 +18,7 @@ import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.BaseImageView;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.fresco.IFrescoCallBack;
-import com.common.image.model.ImageFactory;
+
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
@@ -29,9 +26,7 @@ import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
-import com.facebook.fresco.animation.drawable.AnimationListener;
-import com.facebook.imagepipeline.image.ImageInfo;
+
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -104,6 +99,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     TopContainerView mTopContainerView;
 
+    SVGAImageView mReadyGoBg;
+
     SVGAImageView mTopVoiceBg;
 
     SVGAImageView mUfoBg;
@@ -168,6 +165,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     public void initData(@Nullable Bundle savedInstanceState) {
         // 请保证从下面的view往上面的view开始初始化
         mScrollView = mRootView.findViewById(R.id.scrollview);
+
         initInputView();
         initBottomView();
         initCommentView();
@@ -519,6 +517,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initTurnChangeView() {
+        mReadyGoBg = (SVGAImageView) mRootView.findViewById(R.id.ready_go_bg);
+
         mTopVoiceBg = (SVGAImageView) mRootView.findViewById(R.id.top_voice_bg);
         mUfoBg = (SVGAImageView) mRootView.findViewById(R.id.ufo_bg);
         mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
@@ -534,68 +534,73 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void showReadyGoView() {
-        if (mReadyGoView == null) {
-            mReadyGoView = new BaseImageView(getActivity());
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(188));
-            lp.topMargin = U.getDisplayUtils().dip2px(143);
-            ((RelativeLayout) mRootView).addView(mReadyGoView, lp);
-        }
+        // TODO: 2019/1/8 可能还要修改
+        mReadyGoBg.setVisibility(View.VISIBLE);
         mReadyGoPlaying = true;
-        FrescoWorker.loadImage(mReadyGoView, ImageFactory.newHttpImage(RoomData.READY_GO_WEBP_URL)
-                        .setCallBack(new IFrescoCallBack() {
-                            @Override
-                            public void processWithInfo(ImageInfo info, Animatable animatable) {
-                                if (animatable != null && animatable instanceof AnimatedDrawable2) {
-                                    ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
-                                        int curFrame = 0;
+        SVGAParser parser = new SVGAParser(getActivity());
+        parser.setFileDownloader(new SVGAParser.FileDownloader() {
+            @Override
+            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder().url(url).get().build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                            complete.invoke(response.body().byteStream());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            failure.invoke(e);
+                        }
+                    }
+                }).start();
+            }
+        });
+        try {
+            parser.parse(new URL(RoomData.READY_GO_SVGA_URL), new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mReadyGoBg.setImageDrawable(drawable);
+                    mReadyGoBg.startAnimation();
+                }
 
-                                        @Override
-                                        public void onAnimationStart(AnimatedDrawable2 drawable) {
-                                            MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                        }
+                @Override
+                public void onError() {
+                }
+            });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
-                                        @Override
-                                        public void onAnimationStop(AnimatedDrawable2 drawable) {
-                                            MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
-                                            onReadyGoOver();
-                                        }
+        mReadyGoBg.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
 
-                                        @Override
-                                        public void onAnimationReset(AnimatedDrawable2 drawable) {
-//                                    MyLog.d(TAG, "onAnimationReset" + " drawable=" + drawable);
-                                            onReadyGoOver();
-                                        }
+            }
 
-                                        @Override
-                                        public void onAnimationRepeat(AnimatedDrawable2 drawable) {
-//                                    MyLog.d(TAG, "onAnimationRepeat" + " drawable=" + drawable);
-                                            onReadyGoOver();
-                                        }
+            @Override
+            public void onFinished() {
+                if (mReadyGoBg.isAnimating()) {
+                    mReadyGoBg.stopAnimation();
+                    onReadyGoOver();
+                }
+            }
 
-                                        @Override
-                                        public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
-//                                    MyLog.d(TAG, "onAnimationFrame" + " drawable=" + drawable + " frameNumber=" + frameNumber);
-                                            // 按序列播放  0 1 2 3 4 5 循环再次到  5 - 0 时说明重复播放了
-                                            if (frameNumber < curFrame) {
-                                                onReadyGoOver();
-                                            }
-                                            curFrame = frameNumber;
-                                        }
-                                    });
-                                    animatable.start();
-                                } else {
-                                    onReadyGoOver();
-                                }
-                            }
+            @Override
+            public void onRepeat() {
+                if (mReadyGoBg.isAnimating()) {
+                    mReadyGoBg.stopAnimation();
+                    onReadyGoOver();
+                }
+            }
 
-                            @Override
-                            public void processWithFailure() {
-                                MyLog.d(TAG, "processWithFailure");
-                                onReadyGoOver();
-                            }
-                        })
-                        .build()
-        );
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
     }
 
     void onReadyGoOver() {

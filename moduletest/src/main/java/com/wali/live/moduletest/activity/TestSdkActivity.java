@@ -192,8 +192,8 @@ public class TestSdkActivity extends BaseActivity {
 
             @Override
             public void run() {
-                UploadParams.newBuilder("/sdcard/mainstagepeople.svga")
-                        .setFileName("mainstagepeople.svga")
+                UploadParams.newBuilder("/sdcard/ready_go.svga")
+                        .setFileName("ready_go.svga")
                         .startUploadAsync(new UploadCallback() {
                             @Override
                             public void onProgress(long currentSize, long totalSize) {

@@ -369,6 +369,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void showReadyGoView() {
+        // TODO: 2019/1/8 也可以用SVGA替换
         if (mReadyGoView == null) {
             mReadyGoView = new BaseImageView(getActivity());
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(188));
