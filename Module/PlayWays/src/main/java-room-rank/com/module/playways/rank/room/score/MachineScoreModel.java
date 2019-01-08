@@ -10,12 +10,37 @@ public class MachineScoreModel implements Serializable {
     @JSONField(name = "data")
     private List<MachineScoreItem> mDataList = new ArrayList<>();
 
+    @JSONField(name = "averageScore")
+    private int mAverageScore = -1;
+
+    @JSONField(name = "totalScore")
+    private int mTotalScore = -1;
+
     public List<MachineScoreItem> getDataList() {
         return mDataList;
     }
 
     public void setDataList(List<MachineScoreItem> dataList) {
         mDataList = dataList;
+    }
+
+    public int getAverageScore(){
+        return mAverageScore;
+    }
+
+    public void compute() {
+        if (mTotalScore < 0) {
+            int t = 0;
+            for (MachineScoreItem machineScoreItem : mDataList) {
+                t += machineScoreItem.score;
+            }
+            mTotalScore = t;
+            if (mDataList.size() > 0) {
+                mAverageScore = mTotalScore / mDataList.size();
+            } else {
+                mAverageScore = 0;
+            }
+        }
     }
 
     /**

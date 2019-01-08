@@ -23,11 +23,14 @@ public class RobotScoreHelper {
 
     MachineScoreModel mMachineScoreModel = new MachineScoreModel();
 
+    MachineScoreModel mRobotScoreModel = new MachineScoreModel();
+
     public void add(MachineScoreItem machineScoreItem) {
         mMachineScoreModel.getDataList().add(machineScoreItem);
     }
 
     public void save(String filePath) {
+        mMachineScoreModel.compute();
         String content = JSON.toJSONString(mMachineScoreModel);
         File file = new File(filePath);
         BufferedSink bufferedSink = null;
@@ -53,7 +56,10 @@ public class RobotScoreHelper {
     }
 
     public boolean isScoreEnough() {
-        return true;
+        int t = getAverageScore();
+        boolean e = t > 60;
+        MyLog.d(TAG, "isScoreEnough getAverageScore:" + t + " isScoreEnough:" + e);
+        return e;
     }
 
     public void loadDataFromUrl(String midiUrl, int deep) {
@@ -101,7 +107,7 @@ public class RobotScoreHelper {
 
             MachineScoreModel machineScoreModel = JSON.parseObject(content, MachineScoreModel.class);
             if (machineScoreModel != null) {
-                mMachineScoreModel = machineScoreModel;
+                mRobotScoreModel = machineScoreModel;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -127,8 +133,8 @@ public class RobotScoreHelper {
      * @return
      */
     public int tryGetScoreByTs(long curPostion) {
-        MyLog.d(TAG, "tryGetScoreByTs" + " curPostion=" + curPostion + " size=" + mMachineScoreModel.getDataList().size());
-        MachineScoreItem machineScoreItem = mMachineScoreModel.findMatchingScoreItemByTs(curPostion);
+        MyLog.d(TAG, "tryGetScoreByTs" + " curPostion=" + curPostion + " size=" + mRobotScoreModel.getDataList().size());
+        MachineScoreItem machineScoreItem = mRobotScoreModel.findMatchingScoreItemByTs(curPostion);
         if (machineScoreItem != null) {
             return machineScoreItem.getScore();
         } else {
@@ -137,11 +143,17 @@ public class RobotScoreHelper {
     }
 
     public int tryGetScoreByLine(int lineNo) {
-        MachineScoreItem machineScoreItem = mMachineScoreModel.findMatchingScoreItemByNo(lineNo);
+        MachineScoreItem machineScoreItem = mRobotScoreModel.findMatchingScoreItemByNo(lineNo);
         if (machineScoreItem != null) {
             return machineScoreItem.getScore();
         } else {
             return -1;
         }
     }
+
+    public int getAverageScore() {
+        mMachineScoreModel.compute();
+        return mMachineScoreModel.getAverageScore();
+    }
+
 }

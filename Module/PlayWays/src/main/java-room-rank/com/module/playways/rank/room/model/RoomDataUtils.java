@@ -200,4 +200,11 @@ public class RoomDataUtils {
         String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", RoomData.MATCHING_SCORE_FOR_AI_PATH);
         return saveAudioForAiFilePath;
     }
+
+    public static boolean isThisUserRound(RoundInfoModel infoModel,int userId) {
+        if(infoModel!=null && infoModel.getUserID() == userId){
+            return true;
+        }
+        return false;
+    }
 }

@@ -24,11 +24,16 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
+import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
+import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
+import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
@@ -44,6 +49,13 @@ import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
+import com.zq.live.proto.Common.ESex;
+import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Room.EMsgPosType;
+import com.zq.live.proto.Room.ERoomMsgType;
+import com.zq.live.proto.Room.MachineScore;
+import com.zq.live.proto.Room.RoomMsg;
+import com.zq.live.proto.Room.SpecialEmojiMsg;
 import com.zq.lyrics.event.LrcEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -542,8 +554,11 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
                     // 上一轮是我的轮次，暂停录音
                     EngineManager.getInstance().stopAudioRecording();
+                    RoundInfoModel myRoundInfoModel = event.getLastRoundInfoModel();
+
                     if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {
-                        uploadRes1ForAi(event.getLastRoundInfoModel());
+                        myRoundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
+                        uploadRes1ForAi(myRoundInfoModel);
                     }
                 }
             }
@@ -558,18 +573,14 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     public void run() {
                         int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
                         mIGameRuleView.startRivalCountdown(uid);
-
                         checkMachineUser(uid);
-
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
                                     + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
                         } else {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
-
                         mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
-
                     }
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {
@@ -597,7 +608,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mRobotScoreHelper == null) {
             mRobotScoreHelper = new RobotScoreHelper();
         }
-
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) {
@@ -882,6 +892,45 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 将自己的分数传给其他人
+     *
+     * @param machineScoreItem
+     */
+    private void sendScoreToOthers(MachineScoreItem machineScoreItem) {
+        // 后续加个优化，如果房间里两人都是机器人就不加了
+        IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+        if (msgService != null) {
+            long ts = System.currentTimeMillis();
+            UserInfo senderInfo = new UserInfo.Builder()
+                    .setUserID((int) MyUserInfoManager.getInstance().getUid())
+                    .setNickName(MyUserInfoManager.getInstance().getNickName())
+                    .setAvatar(MyUserInfoManager.getInstance().getAvatar())
+                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().getSex()))
+                    .setDescription("")
+                    .setIsSystem(false)
+                    .build();
+
+            RoomMsg roomMsg = new RoomMsg.Builder()
+                    .setTimeMs(ts)
+                    .setMsgType(ERoomMsgType.RM_ROUND_MACHINE_SCORE)
+                    .setRoomID(mRoomData.getGameId())
+                    .setNo(ts)
+                    .setPosType(EMsgPosType.EPT_UNKNOWN)
+                    .setSender(senderInfo)
+                    .setMachineScore(new MachineScore.Builder()
+                            .setUserID((int) MyUserInfoManager.getInstance().getUid())
+                            .setNo(machineScoreItem.getNo())
+                            .setScore(machineScoreItem.getScore())
+                            .setItemID(mRoomData.getSongModel().getItemID())
+                            .build()
+                    )
+                    .build();
+            String contnet = U.getBase64Utils().encode(roomMsg.toByteArray());
+            msgService.sendChatRoomMessage(String.valueOf(mRoomData.getGameId()), CustomMsgType.MSG_TYPE_ROOM, contnet, null);
+        }
+    }
+
     // 游戏轮次结束的通知消息（在某人向服务器短连接成功后推送)
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundOverEvent roundOverEvent) {
@@ -970,19 +1019,20 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             int score = EngineManager.getInstance().getLineScore();
             U.getToastUtil().showShort("score:" + score);
             mIGameRuleView.updateScrollBarProgress(score);
+
+            MachineScoreItem machineScoreItem = new MachineScoreItem();
+            machineScoreItem.setScore(score);
+            long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+            machineScoreItem.setTs(ts);
+            machineScoreItem.setNo(event.getLineNum());
+            // 打分信息传输给其他人
+            sendScoreToOthers(machineScoreItem);
             if (mRobotScoreHelper != null) {
-                MachineScoreItem machineScoreItem = new MachineScoreItem();
-                machineScoreItem.setScore(score);
-                long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
-                machineScoreItem.setTs(ts);
-                machineScoreItem.setNo(event.getLineNum());
                 mRobotScoreHelper.add(machineScoreItem);
             }
-            // 打分信息传输给其他人
-
         } else {
-            if (!RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
-                // 尝试算打分
+            if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
+                // 尝试算机器人的演唱得分
                 if (mRobotScoreHelper != null) {
                     int score = mRobotScoreHelper.tryGetScoreByLine(event.getLineNum());
                     if (score >= 0) {
@@ -990,7 +1040,17 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         mIGameRuleView.updateScrollBarProgress(score);
                     }
                 }
+            } else {
+                // 尝试拿其他人的演唱打分
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MachineScoreEvent event) {
+        //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
+        if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
+            mIGameRuleView.updateScrollBarProgress(event.score);
         }
     }
 
