@@ -3,7 +3,7 @@
     android:layout_marginTop="@dimen/view_124_dp"
     android:layout_width="@dimen/view_311_dp"
     android:layout_gravity="center_horizontal"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/view_479_dp"
     android:background="@drawable/img_kaishipipei_bg">
 
     <com.module.playways.rank.song.holder.SongCardRecycleView

@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -652,6 +651,13 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
+        // 加保护，确保当前主舞台一定被移除
+        if (mTopVoiceBg.isAnimating()) {
+            mTopVoiceBg.stopAnimation();
+        }
+        if (mUfoBg.isAnimating()) {
+            mUfoBg.stopAnimation();
+        }
         // 确保演唱逻辑一定要执行
         Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
         msg.what = ENSURE_RUN;
@@ -680,6 +686,14 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startRivalCountdown(int uid) {
+        // 加保护，确保当前主舞台一定被移除
+        if (mTopVoiceBg.isAnimating()) {
+            mTopVoiceBg.stopAnimation();
+        }
+        if (mUfoBg.isAnimating()) {
+            mUfoBg.stopAnimation();
+        }
+
         mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片

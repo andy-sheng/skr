@@ -28,7 +28,7 @@
         android:layout_alignBottom="@+id/top_voice_bg"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_20_dp"
-        android:src="@drawable/btn_pipeichenggong_normal"
+        android:src="@drawable/guanzhongjiemian_yanchangjieshu"
         android:visibility="gone" />
 
     <com.zq.lyrics.widget.ManyLyricsView
