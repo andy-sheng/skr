@@ -28,6 +28,8 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
 
   public static final Integer DEFAULT_SCORE = 0;
 
+  public static final Integer DEFAULT_NO = 0;
+
   /**
    * 演唱者
    */
@@ -55,15 +57,26 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   )
   public final Integer score;
 
-  public MachineScore(Integer userID, Integer itemID, Integer score) {
-    this(userID, itemID, score, ByteString.EMPTY);
+  /**
+   * 对应截断后的歌词行号
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer no;
+
+  public MachineScore(Integer userID, Integer itemID, Integer score, Integer no) {
+    this(userID, itemID, score, no, ByteString.EMPTY);
   }
 
-  public MachineScore(Integer userID, Integer itemID, Integer score, ByteString unknownFields) {
+  public MachineScore(Integer userID, Integer itemID, Integer score, Integer no,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.itemID = itemID;
     this.score = score;
+    this.no = no;
   }
 
   @Override
@@ -72,6 +85,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     builder.userID = userID;
     builder.itemID = itemID;
     builder.score = score;
+    builder.no = no;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -84,7 +98,8 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(itemID, o.itemID)
-        && Internal.equals(score, o.score);
+        && Internal.equals(score, o.score)
+        && Internal.equals(no, o.no);
   }
 
   @Override
@@ -95,6 +110,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
       result = result * 37 + (score != null ? score.hashCode() : 0);
+      result = result * 37 + (no != null ? no.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -106,6 +122,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     if (userID != null) builder.append(", userID=").append(userID);
     if (itemID != null) builder.append(", itemID=").append(itemID);
     if (score != null) builder.append(", score=").append(score);
+    if (no != null) builder.append(", no=").append(no);
     return builder.replace(0, 2, "MachineScore{").append('}').toString();
   }
 
@@ -150,6 +167,16 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   }
 
   /**
+   * 对应截断后的歌词行号
+   */
+  public Integer getNo() {
+    if(no==null){
+        return DEFAULT_NO;
+    }
+    return no;
+  }
+
+  /**
    * 演唱者
    */
   public boolean hasUserID() {
@@ -170,12 +197,21 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     return score!=null;
   }
 
+  /**
+   * 对应截断后的歌词行号
+   */
+  public boolean hasNo() {
+    return no!=null;
+  }
+
   public static final class Builder extends Message.Builder<MachineScore, Builder> {
     public Integer userID;
 
     public Integer itemID;
 
     public Integer score;
+
+    public Integer no;
 
     public Builder() {
     }
@@ -204,9 +240,17 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       return this;
     }
 
+    /**
+     * 对应截断后的歌词行号
+     */
+    public Builder setNo(Integer no) {
+      this.no = no;
+      return this;
+    }
+
     @Override
     public MachineScore build() {
-      return new MachineScore(userID, itemID, score, super.buildUnknownFields());
+      return new MachineScore(userID, itemID, score, no, super.buildUnknownFields());
     }
   }
 
@@ -220,6 +264,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.itemID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.score)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.no)
           + value.unknownFields().size();
     }
 
@@ -228,6 +273,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.itemID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.score);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.no);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -240,6 +286,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setScore(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: builder.setNo(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

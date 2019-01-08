@@ -43,6 +43,7 @@ message MachineScore
     uint32 userID   = 1; // 演唱者
     uint32 itemID   = 2; // 演唱曲目
     uint32 score    = 3; // 机器分数
+    uint32 no       = 4; // 对应截断后的歌词行号
 }
 
 // 投票结果

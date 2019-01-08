@@ -73,7 +73,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankingCorePresenter";
 
     static final int MSG_ROBOT_SING_BEGIN = 10;
-//    static final int MSG_ROBOT_SING_END = 11;
+    //    static final int MSG_ROBOT_SING_END = 11;
+    static final int MSG_GET_VOTE = 20;
+
+    static final int MSG_START_LAST_TWO_SECONDS_TASK = 30;
 
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;
@@ -85,10 +88,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     HandlerTaskTimer mHeartBeatTask;
 
     HandlerTaskTimer mSyncGameStateTask;
-
-    HandlerTaskTimer mGetVoteStateTask;
-
-    HandlerTaskTimer mLastTwoSecondTask;
 
     PublishSubject<RecordData> mGameFinishActionSubject = PublishSubject.create();
 
@@ -113,6 +112,15 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     break;
 //                case MSG_ROBOT_SING_END:
 //                    break;
+                case MSG_GET_VOTE:
+                    getVoteResult(mRoomData.getGameId());
+                    break;
+                case MSG_START_LAST_TWO_SECONDS_TASK:
+                    RoundInfoModel roundInfoModel = (RoundInfoModel) msg.obj;
+                    if (roundInfoModel != null && roundInfoModel == mRoomData.getRealRoundInfo()) {
+                        mIGameRuleView.exitMainStage();
+                    }
+                    break;
             }
 
         }
@@ -178,9 +186,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer = null;
         }
 
-        if (mLastTwoSecondTask != null) {
-            mLastTwoSecondTask.dispose();
-        }
     }
 
     /**
@@ -655,14 +660,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         EngineManager.getInstance().destroy("rankingroom");
 
         if (!isConfirmRoundAndGameOver) {
-            mGetVoteStateTask = HandlerTaskTimer.newBuilder()
-                    .delay(3000)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            getVoteResult(mRoomData.getGameId());
-                        }
-                    });
+            mUiHanlder.removeMessages(MSG_GET_VOTE);
+            mUiHanlder.sendEmptyMessageDelayed(MSG_GET_VOTE, 3000);
         }
     }
 
@@ -872,28 +871,16 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void startLastTwoSecondTask() {
-        if (mLastTwoSecondTask != null) {
-            mLastTwoSecondTask.dispose();
-        }
-
         final RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-
         if (roundInfoModel != null) {
-            mLastTwoSecondTask = HandlerTaskTimer.newBuilder()
-                    .delay(roundInfoModel.getSingEndMs() - roundInfoModel.getSingBeginMs() - 2000)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            if (roundInfoModel == mRoomData.getRealRoundInfo()) {
-                                mIGameRuleView.exitMainStage();
-                            }
-                        }
-                    });
+            mUiHanlder.removeMessages(MSG_START_LAST_TWO_SECONDS_TASK);
+            Message message = mUiHanlder.obtainMessage(MSG_START_LAST_TWO_SECONDS_TASK);
+            message.obj = roundInfoModel;
+            mUiHanlder.sendMessageDelayed(message, roundInfoModel.getSingEndMs() - roundInfoModel.getSingBeginMs() - 2000);
         } else {
             MyLog.e(TAG, "startLastTwoSecondTask roundInfoModel 为 null, 为什么？？？？");
         }
     }
-
 
     // 游戏轮次结束的通知消息（在某人向服务器短连接成功后推送)
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -926,10 +913,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
         isConfirmRoundAndGameOver = true;
 
-        if (mGetVoteStateTask != null) {
-            mGetVoteStateTask.dispose();
-        }
-
+        mUiHanlder.removeMessages(MSG_GET_VOTE);
         recvGameOverFromServer("push", roundAndGameOverEvent.roundOverTimeMs);
         cancelSyncGameStateTask();
 
@@ -994,6 +978,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 machineScoreItem.setNo(event.getLineNum());
                 mRobotScoreHelper.add(machineScoreItem);
             }
+            // 打分信息传输给其他人
+
         } else {
             if (!RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                 // 尝试算打分
