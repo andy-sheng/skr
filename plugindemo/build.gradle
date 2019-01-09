@@ -35,10 +35,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("../app/com.xiaomi.debug.keystore")
-            storePassword "XiaomiIs#1"
+            storeFile file("../app/zq.keystore")
+            storePassword "zq123456"
             keyAlias "release_key"
-            keyPassword "XiaomiIs#1"
+            keyPassword "zq123456"
             v2SigningEnabled false
         }
     }

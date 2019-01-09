@@ -54,6 +54,35 @@ Component
 shape src 属性化
 无侵入打点
 
+-------------------------------
+
+keytool -list -v  -keystore ~/dev/livesdk/livesdk/app/zq.keystore
+
+别名: zq_android_key
+创建日期: 2019-1-9
+条目类型: PrivateKeyEntry
+证书链长度: 1
+证书[1]:
+所有者: CN=chengsimin, OU=zhenqu, O=zhenqu, L=beijing, ST=beijing, C=86
+发布者: CN=chengsimin, OU=zhenqu, O=zhenqu, L=beijing, ST=beijing, C=86
+序列号: 45cfcac4
+有效期开始日期: Wed Jan 09 11:35:25 CST 2019, 截止日期: Sun Jan 03 11:35:25 CST 2044
+证书指纹:
+	 MD5: 9F:9F:7C:A2:CF:43:35:BE:73:1E:AC:1A:23:D3:BD:89
+	 SHA1: 5D:F4:53:66:7A:D4:64:0A:6C:67:63:41:C1:F1:15:3C:A1:46:5B:8E
+	 SHA256: 2B:13:4E:1A:7E:F4:EB:98:3A:36:8E:81:0E:FC:5B:D1:46:B5:D4:96:21:87:E6:A4:A4:A7:62:78:14:F7:0C:9F
+	 签名算法名称: SHA256withRSA
+	 版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: AD 0B B4 CC 08 2B B8 34   82 45 F8 B6 0E A6 EF 21  .....+.4.E.....!
+0010: CE C4 16 25                                        ...%
+]
+]
 
 
 
