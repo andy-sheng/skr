@@ -176,7 +176,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
                             .setCircle(true)
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                            .setBorderColor(Color.WHITE)
+                            .setBorderColor(0xFFFFD958)
                             .build());
 
             mTvChanpainName.setText(rankInfoModel.getNickname());
@@ -188,7 +188,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
                             .setCircle(true)
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                            .setBorderColor(Color.WHITE)
+                            .setBorderColor(0xFFA2C9DA)
                             .build());
 
             mTvRightChanpainName.setText(rankInfoModel.getNickname());
@@ -200,7 +200,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
                             .setCircle(true)
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                            .setBorderColor(Color.WHITE)
+                            .setBorderColor(0xFFEEB874)
                             .build());
 
             mTvLeftChanpainName.setText(rankInfoModel.getNickname());

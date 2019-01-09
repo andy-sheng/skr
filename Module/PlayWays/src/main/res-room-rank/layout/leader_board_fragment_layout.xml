@@ -11,6 +11,17 @@
         android:layout_height="@dimen/view_292_dp"
         android:background="@drawable/paihangbang_beijing">
 
+        <com.common.view.ex.ExImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/view_15_dp"
+            android:layout_marginTop="@dimen/view_15_dp"
+            android:padding="@dimen/view_16_dp"
+            android:src="@drawable/img_back" />
+
         <com.common.view.ex.ExFrameLayout
             android:layout_marginRight="-10dp"
             android:layout_toLeftOf="@+id/rl_center_container"
@@ -21,6 +32,81 @@
             android:layout_marginTop="1.5dp"
             android:background="@drawable/dierming_beijing">
 
+            <com.common.view.ex.ExRelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_left_champain_icon"
+                    android:layout_width="@dimen/view_58_dp"
+                    android:layout_height="@dimen/view_58_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_28_dp" />
+
+                <ImageView
+                    android:id="@+id/iv_rank_right"
+                    android:layout_width="@dimen/view_26_dp"
+                    android:layout_height="@dimen/view_26_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_12_dp"
+                    android:background="@drawable/ic_medal3_normal" />
+
+                <com.common.view.ex.ExTextView
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    android:textColor="#0C2275"
+                    android:id="@+id/tv_left_chanpain_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sdv_left_champain_icon"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_11_dp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_left_champain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_left_chanpain_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_7_dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:background="@drawable/paihangbang_xingxing"
+                        android:layout_width="@dimen/view_20_dp"
+                        android:layout_height="@dimen/view_20_dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_left_chanpian_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_14_dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_left_segment_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_left_champain"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_2_dp"
+                    android:alpha="0.4"
+                    android:textColor="#0C2275" />
+            </com.common.view.ex.ExRelativeLayout>
+        </com.common.view.ex.ExFrameLayout>
+
+        <com.common.view.ex.ExFrameLayout
+            android:layout_marginLeft="-10dp"
+            android:layout_toRightOf="@+id/rl_center_container"
+            android:layout_width="@dimen/view_109_dp"
+            android:layout_height="@dimen/view_192_dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/disanming_beijing">
             <com.common.view.ex.ExRelativeLayout
 
                 android:layout_width="match_parent"
@@ -40,7 +126,7 @@
                     android:layout_height="@dimen/view_26_dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/view_12_dp"
-                    android:background="@drawable/ic_medal3_normal" />
+                    android:background="@drawable/ic_medal2_normal" />
 
                 <com.common.view.ex.ExTextView
                     android:textStyle="bold"
@@ -85,82 +171,7 @@
                     android:alpha="0.4"
                     android:textColor="#0C2275" />
             </com.common.view.ex.ExRelativeLayout>
-        </com.common.view.ex.ExFrameLayout>
 
-        <com.common.view.ex.ExFrameLayout
-            android:layout_marginLeft="-10dp"
-            android:layout_toRightOf="@+id/rl_center_container"
-            android:layout_width="@dimen/view_109_dp"
-            android:layout_height="@dimen/view_192_dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/disanming_beijing">
-
-            <com.common.view.ex.ExRelativeLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-
-
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/sdv_left_champain_icon"
-                    android:layout_width="@dimen/view_58_dp"
-                    android:layout_height="@dimen/view_58_dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_28_dp" />
-
-                <ImageView
-                    android:id="@+id/iv_rank_right"
-                    android:layout_width="@dimen/view_26_dp"
-                    android:layout_height="@dimen/view_26_dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_12_dp"
-                    android:background="@drawable/ic_medal2_normal" />
-
-                <com.common.view.ex.ExTextView
-                    android:textStyle="bold"
-                    android:alpha="0.8"
-                    android:textColor="#0C2275"
-                    android:id="@+id/tv_left_chanpain_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sdv_left_champain_icon"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_11_dp" />
-
-                <LinearLayout
-                    android:id="@+id/ll_left_champain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_left_chanpain_name"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_7_dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:background="@drawable/paihangbang_xingxing"
-                        android:layout_width="@dimen/view_20_dp"
-                        android:layout_height="@dimen/view_20_dp"
-                         />
-
-                    <TextView
-                        android:id="@+id/tv_left_chanpian_start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#0C2275"
-                        android:textSize="@dimen/textsize_14_dp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_left_segment_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ll_left_champain"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_2_dp"
-                    android:alpha="0.4"
-                    android:textColor="#0C2275" />
-            </com.common.view.ex.ExRelativeLayout>
         </com.common.view.ex.ExFrameLayout>
 
         <com.common.view.ex.ExRelativeLayout
@@ -249,6 +260,7 @@
         android:layout_marginTop="@dimen/view_d_3_dp" />
     
     <View
+        android:layout_marginTop="@dimen/view_d_1_dp"
         android:background="#F9F4F1"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_5_dp"/>

@@ -3,6 +3,7 @@
     <dimen name="view_0_33_dp">0.33dp</dimen>
     <dimen name="view_0_67_dp">0.67dp</dimen>
     <dimen name="view_1_dp">1dp</dimen>
+    <dimen name="view_d_1_dp">-1dp</dimen>
     <dimen name="view_1_33_dp">1.33dp</dimen>
     <dimen name="view_1_67_dp">1.67dp</dimen>
     <dimen name="view_2_dp">2dp</dimen>
