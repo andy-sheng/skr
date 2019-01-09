@@ -65,7 +65,7 @@ public class PersonInfoDialogView extends RelativeLayout {
         initData(context, userID);
     }
 
-    public UserInfoModel getUserInfoModel(){
+    public UserInfoModel getUserInfoModel() {
         return mUserInfoModel;
     }
 
@@ -75,7 +75,7 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
-        mHorizLevelView = (HorizonLevelView)this.findViewById(R.id.horiz_level_view);
+        mHorizLevelView = (HorizonLevelView) this.findViewById(R.id.horiz_level_view);
         mSignTv = (ExTextView) this.findViewById(R.id.sign_tv);
         mReport = (ExTextView) this.findViewById(R.id.report);
         mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
@@ -165,7 +165,7 @@ public class PersonInfoDialogView extends RelativeLayout {
         }
 
         if (!TextUtils.isEmpty(userInfo.getBirthday())) {
-            mHashMap.put(AGE_TAG, userInfo.getBirthday());
+            mHashMap.put(AGE_TAG, String.format(U.app().getString(R.string.age_tag), userInfo.getAge()));
         }
 
         refreshTag();

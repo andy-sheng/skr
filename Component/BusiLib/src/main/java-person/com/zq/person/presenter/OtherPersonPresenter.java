@@ -27,36 +27,6 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
         this.mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
-    public void getUserInfo(int uid) {
-        UserInfoManager.getInstance().getUserInfoByUuid(uid, new UserInfoManager.ResultCallback<UserInfoModel>() {
-            @Override
-            public boolean onGetLocalDB(UserInfoModel model) {
-                view.showUserInfo(model);
-                return false;
-            }
-
-            @Override
-            public boolean onGetServer(UserInfoModel model) {
-                view.showUserInfo(model);
-                return false;
-            }
-        });
-    }
-
-    public void getRelation(int uid) {
-        ApiMethods.subscribe(mUserInfoServerApi.getRelation(uid), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    boolean isFriend = result.getData().getBoolean("isFriend");
-                    boolean isFollow = result.getData().getBoolean("isFollow");
-                    view.showUserRelation(isFriend, isFollow);
-                }
-            }
-        }, this);
-
-    }
-
     public void getHomePage(int userID) {
         ApiMethods.subscribe(mUserInfoServerApi.getHomePage(userID), new ApiObserver<ApiResult>() {
             @Override
@@ -68,6 +38,12 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
                     List<UserScoreModel> userScoreModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserScoreModel.class);
                     boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
+
+                    view.showUserInfo(userInfoModel);
+                    view.showRelationNum(relationNumModes);
+                    view.showUserScore(userScoreModels);
+                    view.showReginRank(userRankModels);
+                    view.showUserRelation(isFriend, isFollow);
                 }
             }
         }, this);

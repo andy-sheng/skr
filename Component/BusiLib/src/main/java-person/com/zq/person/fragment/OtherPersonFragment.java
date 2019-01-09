@@ -3,15 +3,18 @@ package com.zq.person.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.core.userinfo.model.UserRankModel;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
@@ -22,15 +25,21 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
+import com.zq.live.proto.Common.ESex;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.IOtherPersonView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
+import model.RelationNumMode;
+import model.UserScoreModel;
 
 
 public class OtherPersonFragment extends BaseFragment implements IOtherPersonView {
@@ -40,7 +49,14 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     public static final int RELATION_FOLLOWED = 1; // 已关注关系
     public static final int RELATION_UN_FOLLOW = 2; // 未关注关系
 
-    private String[] mVals = new String[]{"北京市/昌平", "22岁", "粉丝/345"};
+    private static final int LOCATION_TAG = 0;     //地区标签  省/市
+    private static final int AGE_TAG = 1;          //年龄标签
+    private static final int FANS_NUM_TAG = 2;     // 粉丝数标签
+
+    private List<String> mTags = new ArrayList<>();  //标签
+    private HashMap<Integer, String> mHashMap = new HashMap();
+
+    TagAdapter<String> mTagAdapter;
 
     RelativeLayout mPersonMainContainner;
     BaseImageView mAvatarIv;
@@ -80,12 +96,11 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         Bundle bundle = getArguments();
         if (bundle != null) {
             mUserInfoModel = (UserInfoModel) bundle.getSerializable(BUNDLE_USER_MODEL);
-            mOtherPersonPresenter.getUserInfo(mUserInfoModel.getUserId());
-            mOtherPersonPresenter.getRelation(mUserInfoModel.getUserId());
+            mOtherPersonPresenter.getHomePage(mUserInfoModel.getUserId());
         }
 
-        // TODO: 2018/12/26 可能会变，先写死
-        mFlowlayout.setAdapter(new TagAdapter<String>(mVals) {
+
+        mTagAdapter = new TagAdapter<String>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
                 ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.tag_textview,
@@ -93,7 +108,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                 tv.setText(o);
                 return tv;
             }
-        });
+        };
+        mFlowlayout.setAdapter(mTagAdapter);
 
         RxView.clicks(mBackIv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -137,14 +153,56 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     public void showUserInfo(UserInfoModel model) {
         this.mUserInfoModel = model;
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(model.getAvatar())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.parseColor("#33A4E1"))
-                        .build());
+        if (model.getSex() == ESex.SX_MALE.getValue()) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv,
+                    AvatarUtils.newParamsBuilder(model.getAvatar())
+                            .setCircle(true)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                            .setBorderColor(Color.parseColor("#33A4E1"))
+                            .build());
+        } else if (model.getSex() == ESex.SX_FEMALE.getValue()) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv,
+                    AvatarUtils.newParamsBuilder(model.getAvatar())
+                            .setCircle(true)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                            .setBorderColor(Color.parseColor("#FF75A2"))
+                            .build());
+        }
+
         mNameTv.setText(model.getNickname());
         mSignTv.setText(model.getSignature());
+
+        if (model.getLocation() != null) {
+            mHashMap.put(LOCATION_TAG, model.getLocation().getCity() + "/" + model.getLocation().getDistrict());
+        }
+
+        if (!TextUtils.isEmpty(model.getBirthday())) {
+            mHashMap.put(AGE_TAG, String.format(getString(R.string.age_tag), model.getAge()));
+        }
+
+        refreshTag();
+    }
+
+    @Override
+    public void showRelationNum(List<RelationNumMode> list) {
+        int fansNum = 0;
+        for (RelationNumMode mode : list) {
+            if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                fansNum = mode.getCnt();
+            }
+        }
+        mHashMap.put(FANS_NUM_TAG, String.format(getString(R.string.fans_num_tag), fansNum));
+        refreshTag();
+    }
+
+    @Override
+    public void showReginRank(List<UserRankModel> list) {
+
+    }
+
+    @Override
+    public void showUserScore(List<UserScoreModel> list) {
+
     }
 
     @Override
@@ -176,6 +234,25 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                 mFollowTv.setTag(RELATION_UN_FOLLOW);
             }
         }
+    }
+
+    private void refreshTag() {
+        mTags.clear();
+        if (mHashMap != null) {
+            if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
+                mTags.add(mHashMap.get(LOCATION_TAG));
+            }
+
+            if (!TextUtils.isEmpty(mHashMap.get(AGE_TAG))) {
+                mTags.add(mHashMap.get(AGE_TAG));
+            }
+
+            if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
+                mTags.add(mHashMap.get(FANS_NUM_TAG));
+            }
+        }
+        mTagAdapter.setTagDatas(mTags);
+        mTagAdapter.notifyDataChanged();
     }
 
 }

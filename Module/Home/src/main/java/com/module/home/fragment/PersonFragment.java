@@ -13,6 +13,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
+import model.UserScoreModel;
 
 
 public class PersonFragment extends BaseFragment implements IPersonView {
@@ -88,8 +90,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
         mPersonCorePresenter = new PersonCorePresenter(this);
         addPresent(mPersonCorePresenter);
-        mPersonCorePresenter.getRelationNum((int) MyUserInfoManager.getInstance().getUid());
-        mPersonCorePresenter.getReginRank((int) MyUserInfoManager.getInstance().getUid());
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid());
     }
 
@@ -304,6 +304,11 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
 
     @Override
+    public void showUserInfo(UserInfoModel userInfoModel) {
+
+    }
+
+    @Override
     public void showRelationNum(List<RelationNumMode> list) {
         for (RelationNumMode mode : list) {
             if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
@@ -332,5 +337,11 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         } else {
             mRankTv.setText("您当前还没有排名信息哦～");
         }
+    }
+
+    @Override
+    public void showUserScore(List<UserScoreModel> list) {
+        // 展示段位信息
+
     }
 }

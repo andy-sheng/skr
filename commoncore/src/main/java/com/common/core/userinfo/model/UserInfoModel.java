@@ -9,6 +9,7 @@ import com.common.core.userinfo.UserInfoDB;
 import com.zq.live.proto.Common.UserInfo;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 import static com.common.core.userinfo.UserInfoLocalApi.INTER_FOLLOW;
 import static com.common.core.userinfo.UserInfoLocalApi.ONE_FOLLOW;
@@ -125,6 +126,15 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public void setFollow(boolean follow) {
         isFollow = follow;
+    }
+
+    public int getAge() {
+        String[] array = this.birthday.split("-");
+        if (!TextUtils.isEmpty(array[0])){
+            int year = Integer.valueOf(array[0]);
+            return Calendar.getInstance().get(Calendar.YEAR) - year;
+        }
+        return 0;
     }
 
     @Override

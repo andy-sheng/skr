@@ -9,7 +9,9 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+
 import model.RelationNumMode;
+
 import com.module.home.view.IPersonView;
 
 import java.util.List;
@@ -26,31 +28,6 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
-    public void getRelationNum(int userID) {
-        ApiMethods.subscribe(userInfoServerApi.getRelationNum(userID), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<RelationNumMode> list = JSON.parseArray(result.getData().getString("cnt"), RelationNumMode.class);
-                    view.showRelationNum(list);
-                }
-            }
-        }, this);
-    }
-
-
-    public void getReginRank(int userID) {
-        ApiMethods.subscribe(userInfoServerApi.getReginRank(userID), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getString("seqInfo"), UserRankModel.class);
-                    view.showReginRank(userRankModels);
-                }
-            }
-        }, this);
-    }
-
     public void getHomePage(int userID) {
         ApiMethods.subscribe(userInfoServerApi.getHomePage(userID), new ApiObserver<ApiResult>() {
             @Override
@@ -62,6 +39,11 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     List<UserScoreModel> userScoreModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserScoreModel.class);
                     boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
+
+                    view.showUserInfo(userInfoModel);
+                    view.showReginRank(userRankModels);
+                    view.showRelationNum(relationNumModes);
+                    view.showUserScore(userScoreModels);
                 }
             }
         }, this);
