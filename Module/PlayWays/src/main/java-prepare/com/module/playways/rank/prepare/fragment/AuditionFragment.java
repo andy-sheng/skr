@@ -127,6 +127,8 @@ public class AuditionFragment extends BaseFragment {
 
     ValueAnimator mRecordAnimator;
 
+    DialogPlus mQuitTipsDialog;
+
     @Override
     public int initView() {
         return R.layout.audition_sence_layout;
@@ -529,47 +531,42 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                .setMessageTip("是否将这次调音设置应用到所有游戏对局中？")
-                .setConfirmTip("保存")
-                .setCancelTip("取消")
-                .build();
-
-        DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(tipsDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == R.id.confirm_tv) {
-                                dialog.dismiss();
-                                U.getFragmentUtils().popFragment(AuditionFragment.this);
-                                // 要保存
-                                Params.save2Pref(EngineManager.getInstance().getParams());
-                                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
-                                        .setImage(R.drawable.touxiangshezhichenggong_icon)
-                                        .setText("保存成功")
-                                        .build());
-                            }
-
-                            if (view.getId() == R.id.cancel_tv) {
-                                dialog.dismiss();
-                                U.getFragmentUtils().popFragment(AuditionFragment.this);
-                            }
+        if (mQuitTipsDialog == null) {
+            TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                    .setMessageTip("是否将这次调音设置应用到所有游戏对局中？")
+                    .setConfirmTip("保存")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mQuitTipsDialog.dismiss(false);
+                            U.getFragmentUtils().popFragment(AuditionFragment.this);
+                            // 要保存
+                            Params.save2Pref(EngineManager.getInstance().getParams());
+                            U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                                    .setImage(R.drawable.touxiangshezhichenggong_icon)
+                                    .setText("保存成功")
+                                    .build());
                         }
-                    }
-                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
+                    })
+                    .setCancelBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mQuitTipsDialog.dismiss(false);
+                            U.getFragmentUtils().popFragment(AuditionFragment.this);
+                        }
+                    })
+                    .build();
 
-                    }
-                })
-                .create().show();
+            mQuitTipsDialog = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create();
+        }
+        mQuitTipsDialog.show();
         return true;
     }
 

@@ -73,6 +73,20 @@ public class TipsDialogView extends RelativeLayout {
             return this;
         }
 
+        public Builder setOkBtnClickListener(OnClickListener l){
+            tipsDialogView.mOkBtn.setOnClickListener(l);
+            return this;
+        }
+
+        public Builder setConfirmBtnClickListener(OnClickListener l){
+            tipsDialogView.mConfirmTv.setOnClickListener(l);
+            return this;
+        }
+
+        public Builder setCancelBtnClickListener(OnClickListener l){
+            tipsDialogView.mCancelTv.setOnClickListener(l);
+            return this;
+        }
         public TipsDialogView build() {
             return tipsDialogView;
         }

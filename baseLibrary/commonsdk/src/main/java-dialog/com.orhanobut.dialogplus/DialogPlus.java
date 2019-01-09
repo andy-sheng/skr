@@ -153,37 +153,48 @@ public class DialogPlus {
      * Dismisses the displayed dialog.
      */
     public void dismiss() {
+       dismiss(true);
+    }
+
+    public void dismiss(boolean useAnimation) {
         if (isDismissing) {
             return;
         }
+        if (useAnimation) {
+            outAnim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
-        outAnim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+                }
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                decorView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        decorView.removeView(rootView);
-                        isDismissing = false;
-                        if (onDismissListener != null) {
-                            onDismissListener.onDismiss(DialogPlus.this);
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    decorView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            decorView.removeView(rootView);
+                            isDismissing = false;
+                            if (onDismissListener != null) {
+                                onDismissListener.onDismiss(DialogPlus.this);
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+                @Override
+                public void onAnimationRepeat(Animation animation) {
 
+                }
+            });
+            contentContainer.startAnimation(outAnim);
+            isDismissing = true;
+        } else {
+            decorView.removeView(rootView);
+            isDismissing = false;
+            if (onDismissListener != null) {
+                onDismissListener.onDismiss(DialogPlus.this);
             }
-        });
-        contentContainer.startAnimation(outAnim);
-        isDismissing = true;
+        }
     }
 
     /**
