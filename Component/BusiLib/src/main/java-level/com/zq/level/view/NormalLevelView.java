@@ -184,8 +184,8 @@ public class NormalLevelView extends RelativeLayout {
         } else {
             RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams((int) (U.getDisplayUtils().dip2px(134) * 0.9),
                     (int) (U.getDisplayUtils().dip2px(134) * 0.9));
-            rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((int) ((134 - 20) * 0.9 / 2)),
-                    Math.abs(location[1]) - U.getDisplayUtils().dip2px((int) ((134 - 20) * 0.9 / 2)), 0, 0);
+            rl.setMargins(Math.abs(location[0]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))),
+                    Math.abs(location[1]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))), 0, 0);
             starUp.setLayoutParams(rl);
         }
 
@@ -193,7 +193,7 @@ public class NormalLevelView extends RelativeLayout {
 
         SVGAParser parser = new SVGAParser(getContext());
         try {
-            parser.parse("start_up.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("star_up.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -212,8 +212,81 @@ public class NormalLevelView extends RelativeLayout {
         starUp.setCallback(callback);
     }
 
-    // 星星掉落动画
-    private void starDown() {
+    // 星星掉落动画 from 必须大与to
+    public void starLoss(final ViewGroup viewGroup, final int from, final int to) {
+        final int dis = from - to;
+        SVGACallback callback = new SVGACallback() {
+            @Override
+            public void onPause() {
 
+            }
+
+            @Override
+            public void onFinished() {
+                if (dis >= 0) {
+                    starLoss(viewGroup, from - 1, to);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        };
+        starLoss(viewGroup, from, callback);
+    }
+
+    private void starLoss(ViewGroup viewGroup, int index, SVGACallback callback) {
+        if (index < 0 || index >= totalStats) {
+            return;
+        }
+        final SVGAImageView starUp = new SVGAImageView(getContext());
+        starUp.setClearsAfterStop(false);   // 停在最后一帧
+        starUp.setLoops(1);  // 只播1次
+
+        ImageView imageView = starts.get(index);
+        int[] location = new int[2];
+        imageView.getLocationOnScreen(location);
+
+        if (totalStats % 2 != 0 && index == totalStats / 2) {
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(134), U.getDisplayUtils().dip2px(134));
+            rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((134 - 20) / 2),
+                    Math.abs(location[1]) - U.getDisplayUtils().dip2px((134 - 20) / 2), 0, 0);
+            starUp.setLayoutParams(rl);
+        } else {
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams((int) (U.getDisplayUtils().dip2px(134) * 0.9),
+                    (int) (U.getDisplayUtils().dip2px(134) * 0.9));
+            rl.setMargins(Math.abs(location[0]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))),
+                    Math.abs(location[1]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))), 0, 0);
+            starUp.setLayoutParams(rl);
+        }
+
+        imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
+        viewGroup.addView(starUp);
+
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("star_loss.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    starUp.setImageDrawable(drawable);
+                    starUp.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+        starUp.setCallback(callback);
     }
 }

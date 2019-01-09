@@ -359,5 +359,15 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             }
         }
         mLevelView.bindData(rank, subRank, starLimit, starNum);
+        // TODO: 2019/1/10 测试动画代码 
+//        mLevelView.bindData(1, 2, 5, 3);
+//        mLevelView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mLevelView.starUp(mPersonMainContainner, 1, 4);
+//                mLevelView.starLoss(mPersonMainContainner, 2, 0);
+//            }
+//        }, 100);
+
     }
 }
