@@ -9,13 +9,9 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
-import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.engine.EngineManager;
-import com.engine.Params;
 import com.module.rank.R;
-
-import static com.changba.songstudio.audioeffect.AudioEffectStyleEnum.POPULAR;
 
 public class VoiceControlPanelView extends ScrollView {
     public final static String TAG = "VoiceControlPanelView";
@@ -96,15 +92,9 @@ public class VoiceControlPanelView extends ScrollView {
                 }
             }
         });
+    }
 
-        if (!EngineManager.getInstance().isInit()) {
-            // 不能每次都初始化,播放伴奏
-            EngineManager.getInstance().init("prepare", Params.getFromPref());
-            EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-        } else {
-            EngineManager.getInstance().resumeAudioMixing();
-        }
-
+    public void bindData(){
         AudioEffectStyleEnum styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
 
         if (styleEnum == AudioEffectStyleEnum.POPULAR) {
@@ -118,7 +108,6 @@ public class VoiceControlPanelView extends ScrollView {
         } else {
             mScenesBtnGroup.check(R.id.default_sbtn);
         }
-
         mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
         mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getAudioMixingVolume());
     }
@@ -127,7 +116,7 @@ public class VoiceControlPanelView extends ScrollView {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         // 停止播放混音
-        EngineManager.getInstance().pauseAudioMixing();
+//        EngineManager.getInstance().pauseAudioMixing();
 
     }
 

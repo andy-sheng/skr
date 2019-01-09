@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
@@ -70,7 +71,7 @@ public class AuditionFragment extends BaseFragment {
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
 
-    static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(),"audition.aac").getAbsolutePath();
+    static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.aac").getAbsolutePath();
 
     RelativeLayout mTopContainerVg;
 
@@ -139,30 +140,39 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        if (!EngineManager.getInstance().isInit()) {
+            // 不能每次都初始化,播放伴奏
+            EngineManager.getInstance().init("prepare", Params.getFromPref());
+            EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+        } else {
+            EngineManager.getInstance().resumeAudioMixing();
+        }
+
         mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
         mVoiceControlPanelView = mRootView.findViewById(R.id.voice_control_view);
-        mFlProgressRoot = (FrameLayout)mRootView.findViewById(R.id.fl_progress_root);
+        mVoiceControlPanelView.bindData();
+        mFlProgressRoot = (FrameLayout) mRootView.findViewById(R.id.fl_progress_root);
         mPrgressBar = mRootView.findViewById(R.id.prgress_bar);
-        mTvRecordStop = (ExTextView)mRootView.findViewById(R.id.tv_record_stop);
-        mIvRecordStart = (ExImageView)mRootView.findViewById(R.id.iv_record_start);
-        mRlControlContainer = (RelativeLayout)mRootView.findViewById(R.id.rl_control_container);
+        mTvRecordStop = (ExTextView) mRootView.findViewById(R.id.tv_record_stop);
+        mIvRecordStart = (ExImageView) mRootView.findViewById(R.id.iv_record_start);
+        mRlControlContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_control_container);
         mTopContainerVg = (RelativeLayout) mRootView.findViewById(R.id.top_container_vg);
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
         RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerVg.getLayoutParams();
         topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
 
-        mFlProgressContainer = (FrameLayout)mRootView.findViewById(R.id.fl_progress_container);
+        mFlProgressContainer = (FrameLayout) mRootView.findViewById(R.id.fl_progress_container);
         mScoreProgressBar = (ScorePrograssBar2) mRootView.findViewById(R.id.score_progress_bar);
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mSaveBtn = (ExImageView) mRootView.findViewById(R.id.save_btn);
-        mLlResing = (LinearLayout)mRootView.findViewById(R.id.ll_resing);
-        mIvResing = (ExImageView)mRootView.findViewById(R.id.iv_resing);
-        mLlPlay = (LinearLayout)mRootView.findViewById(R.id.ll_play);
-        mIvPlay = (ExImageView)mRootView.findViewById(R.id.iv_play);
-        mLlSave = (LinearLayout)mRootView.findViewById(R.id.ll_save);
-        mIvSave = (ExImageView)mRootView.findViewById(R.id.iv_save);
+        mLlResing = (LinearLayout) mRootView.findViewById(R.id.ll_resing);
+        mIvResing = (ExImageView) mRootView.findViewById(R.id.iv_resing);
+        mLlPlay = (LinearLayout) mRootView.findViewById(R.id.ll_play);
+        mIvPlay = (ExImageView) mRootView.findViewById(R.id.iv_play);
+        mLlSave = (LinearLayout) mRootView.findViewById(R.id.ll_save);
+        mIvSave = (ExImageView) mRootView.findViewById(R.id.iv_save);
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
 
         mRlControlContainer.setVisibility(View.GONE);
@@ -221,9 +231,9 @@ public class AuditionFragment extends BaseFragment {
 
         RxView.clicks(mFlProgressContainer).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    if(isRecord){
+                    if (isRecord) {
                         stopRecord();
-                    }else {
+                    } else {
                         startRecord();
                     }
                 });
@@ -268,7 +278,7 @@ public class AuditionFragment extends BaseFragment {
         resendAutoLeaveChannelMsg();
     }
 
-    private void startRecord(){
+    private void startRecord() {
         isRecord = true;
         mStartRecordTs = System.currentTimeMillis();
         mIvRecordStart.setVisibility(View.GONE);
@@ -277,18 +287,18 @@ public class AuditionFragment extends BaseFragment {
         mIvPlay.setEnabled(true);
         EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
 
-        if(mRecordAnimator != null){
+        if (mRecordAnimator != null) {
             mRecordAnimator.cancel();
         }
 
         mPrgressBar.setMax(mSongModel.getTotalMs());
-        mRecordAnimator = ValueAnimator.ofInt(0, mSongModel.getTotalMs());
+        mRecordAnimator = ValueAnimator.ofInt(0, 360);
         mRecordAnimator.setDuration(mSongModel.getTotalMs());
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int value = (Integer) animation.getAnimatedValue();
-                mPrgressBar.setProgress(value);
+                mPrgressBar.setProgress(360 - value);
             }
         });
 
@@ -297,13 +307,18 @@ public class AuditionFragment extends BaseFragment {
             public void onAnimationEnd(Animator animation) {
                 stopRecord();
             }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                onAnimationEnd(animation);
+            }
         });
 
         mRecordAnimator.start();
     }
 
-    private void stopRecord(){
-        if(System.currentTimeMillis() - mStartRecordTs < 3000){
+    private void stopRecord() {
+        if (System.currentTimeMillis() - mStartRecordTs < 3000) {
             U.getToastUtil().showShort("太短啦，再唱几句吧");
             return;
         }
@@ -329,7 +344,7 @@ public class AuditionFragment extends BaseFragment {
     /**
      * 播放录音
      */
-    private void playRecord(){
+    private void playRecord() {
         if (mExoPlayer != null) {
             mExoPlayer.stop();
         }
@@ -469,7 +484,7 @@ public class AuditionFragment extends BaseFragment {
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> l = event.getObj();
             for (EngineEvent.UserVolumeInfo userVolumeInfo : l) {
-                if (userVolumeInfo.getUid() == 0 && userVolumeInfo.getVolume() >0) {
+                if (userVolumeInfo.getUid() == 0 && userVolumeInfo.getVolume() > 0) {
                     //如果自己在唱歌也延迟关闭
                     resendAutoLeaveChannelMsg();
                 }
@@ -537,19 +552,18 @@ public class AuditionFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        EngineManager.getInstance().stopAudioMixing();
-        EngineManager.getInstance().leaveChannel();
+        EngineManager.getInstance().destroy("prepare");
         mManyLyricsView.release();
-        if(mExoPlayer != null){
+        if (mExoPlayer != null) {
             mExoPlayer.release();
         }
 
-        if(mRecordAnimator != null){
+        if (mRecordAnimator != null) {
             mRecordAnimator.cancel();
         }
 
-        File recordFile = new File(Environment.getExternalStorageDirectory() + File.separator + "record.aac");
-        if(recordFile.exists()){
+        File recordFile = new File(AAC_SAVE_PATH);
+        if (recordFile.exists()) {
             recordFile.delete();
         }
         mUiHanlder.removeCallbacksAndMessages(null);
