@@ -113,8 +113,6 @@ public class AuditionFragment extends BaseFragment {
 
     VoiceControlPanelView mVoiceControlPanelView;
 
-    Handler mHandler;
-
     FrameLayout mFlProgressContainer;
 
     private boolean mIsVoiceShow = true;
@@ -123,17 +121,7 @@ public class AuditionFragment extends BaseFragment {
 
     ExoPlayer mExoPlayer;
 
-    Handler mUiHanlder = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == MSG_AUTO_LEAVE_CHANNEL) {
-                // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
-                U.getFragmentUtils().popFragment(AuditionFragment.this);
-                return;
-            }
-        }
-    };
+    Handler mUiHanlder;
 
     long mStartRecordTs = 0;
 
@@ -154,7 +142,17 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().resumeAudioMixing();
         }
 
-        mHandler = new Handler();
+        mUiHanlder = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == MSG_AUTO_LEAVE_CHANNEL) {
+                    // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
+                    U.getFragmentUtils().popFragment(AuditionFragment.this);
+                    return;
+                }
+            }
+        };
 
         mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
@@ -347,7 +345,7 @@ public class AuditionFragment extends BaseFragment {
         EngineManager.getInstance().stopAudioMixing();
 
         mManyLyricsView.seekto(mSongModel.getBeginMs());
-        mHandler.postDelayed(() -> {
+        mUiHanlder.postDelayed(() -> {
             mManyLyricsView.pause();
         }, 100);
 

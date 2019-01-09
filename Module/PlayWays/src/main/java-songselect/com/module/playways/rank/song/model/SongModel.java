@@ -1,8 +1,10 @@
 package com.module.playways.rank.song.model;
 
 import com.common.log.MyLog;
+import com.common.utils.SongResUtils;
 import com.zq.live.proto.Common.MusicInfo;
 
+import java.io.File;
 import java.io.Serializable;
 
 public class SongModel implements Serializable {
@@ -199,6 +201,34 @@ public class SongModel implements Serializable {
         this.setEndMs(musicInfo.getEndTimeMs());
         this.setRankLrcBeginT(musicInfo.getRankLrcBeginT());
         // todo PB缺两个现在，等服务器完善
+    }
+
+    public boolean isAllResExist(){
+        File lyricFile = SongResUtils.getZRCELyricFileByUrl(getLyric());
+
+        if(lyricFile == null){
+            return false;
+        }
+
+        File acc = SongResUtils.getAccFileByUrl(getAcc());
+
+        if(acc == null){
+            return false;
+        }
+
+        File ori = SongResUtils.getORIFileByUrl(getOri());
+
+        if(ori == null){
+            return false;
+        }
+
+        File midi = SongResUtils.getMIDIFileByUrl(getMidi());
+
+        if(midi == null){
+            return false;
+        }
+
+        return true;
     }
 
     @Override
