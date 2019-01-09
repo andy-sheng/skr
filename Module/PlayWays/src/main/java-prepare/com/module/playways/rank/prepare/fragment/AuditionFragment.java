@@ -291,7 +291,7 @@ public class AuditionFragment extends BaseFragment {
             mRecordAnimator.cancel();
         }
 
-        mPrgressBar.setMax(mSongModel.getTotalMs());
+//        mPrgressBar.setMax(mSongModel.getTotalMs());
         mRecordAnimator = ValueAnimator.ofInt(0, 360);
         mRecordAnimator.setDuration(mSongModel.getTotalMs());
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -299,7 +299,7 @@ public class AuditionFragment extends BaseFragment {
             public void onAnimationUpdate(ValueAnimator animation) {
                 MyLog.d(TAG,"onAnimationUpdate" + " animation=" + animation);
                 int value = (Integer) animation.getAnimatedValue();
-                mPrgressBar.setProgress(360 - value);
+                mPrgressBar.setProgress(value);
             }
         });
 
