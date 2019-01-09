@@ -3,8 +3,8 @@ package com.module.home.view;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 
-import model.RelationNumMode;
-import model.UserScoreModel;
+import model.RelationNumModel;
+import model.UserLevelModel;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ public interface IPersonView {
     void showUserInfo(UserInfoModel userInfoModel);
 
     // 展示好友，粉丝和关注数量
-    void showRelationNum(List<RelationNumMode> list);
+    void showRelationNum(List<RelationNumModel> list);
 
     // 展示地区排名
     void showReginRank(List<UserRankModel> list);
 
     // 展示段位信息
-    void showUserScore(List<UserScoreModel> list);
+    void showUserLevel(List<UserLevelModel> list);
 }

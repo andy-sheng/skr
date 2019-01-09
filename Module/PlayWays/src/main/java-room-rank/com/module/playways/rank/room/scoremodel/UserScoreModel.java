@@ -1,6 +1,6 @@
-package model;
+package com.module.playways.rank.room.scoremodel;
 
-import com.common.log.MyLog;
+import java.util.List;
 
 // 分值信息
 public class UserScoreModel {
@@ -18,6 +18,7 @@ public class UserScoreModel {
     private int scoreType;
     private int scoreNow;
     private int scoreBefore;
+    private List<UserScoreItem> items;
     private String scoreTypeDesc;
     private String scoreNowDesc;
     private String scoreBeforeDesc;
@@ -52,6 +53,14 @@ public class UserScoreModel {
 
     public void setScoreBefore(int scoreBefore) {
         this.scoreBefore = scoreBefore;
+    }
+
+    public List<UserScoreItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<UserScoreItem> items) {
+        this.items = items;
     }
 
     public String getScoreTypeDesc() {

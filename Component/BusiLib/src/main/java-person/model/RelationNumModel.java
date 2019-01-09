@@ -1,6 +1,6 @@
 package model;
 
-public class RelationNumMode {
+public class RelationNumModel {
     /**
      * relation : 1
      * cnt : 4

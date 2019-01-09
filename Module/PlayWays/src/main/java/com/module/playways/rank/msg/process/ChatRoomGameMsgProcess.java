@@ -18,7 +18,7 @@ import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 
-import model.UserScoreModel;
+import com.module.playways.rank.room.scoremodel.UserScoreModel;
 
 import com.module.playways.rank.room.model.UserScoreDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;

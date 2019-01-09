@@ -11,7 +11,7 @@ import com.common.utils.U;
 import com.module.playways.rank.msg.event.VoteResultEvent;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
-import model.UserScoreModel;
+import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.view.IVoteView;
 

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -20,8 +19,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import model.UserScoreModel;
 
 // 正常的段位 到铂金段位 星星是斜着排的
 public class NormalLevelView extends RelativeLayout {
@@ -134,7 +131,7 @@ public class NormalLevelView extends RelativeLayout {
     }
 
     // 升段动画，段位提升动画
-    public void levelUp(final ViewGroup viewGroup, List<UserScoreModel> userScoreModels) {
+    public void levelUp(final ViewGroup viewGroup) {
         // 根据解析UserScoreModel不同数据值，给SVGA指定的key
     }
 

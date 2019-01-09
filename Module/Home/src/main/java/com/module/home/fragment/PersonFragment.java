@@ -31,7 +31,9 @@ import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import model.RelationNumMode;
+
+import model.RelationNumModel;
+
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
 import com.module.rank.IRankingModeService;
@@ -45,8 +47,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
-import model.UserScoreModel;
-
+import model.UserLevelModel;
 
 public class PersonFragment extends BaseFragment implements IPersonView {
 
@@ -72,6 +73,11 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     ExImageView mMusicTestTv;
 
     PersonCorePresenter mPersonCorePresenter;
+
+    int rank = 0;           //当前父段位
+    int subRank = 0;        //当前子段位
+    int starNum = 0;        //当前星星
+    int starLimit = 0;      //当前星星上限
 
     @Override
     public int initView() {
@@ -228,7 +234,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
         mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
-        mLevelView.bindData(2, 3, 5, 3);
 
         RxView.clicks(mMedalLayout).subscribe(new Consumer<Object>() {
             @Override
@@ -309,8 +314,8 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     }
 
     @Override
-    public void showRelationNum(List<RelationNumMode> list) {
-        for (RelationNumMode mode : list) {
+    public void showRelationNum(List<RelationNumModel> list) {
+        for (RelationNumModel mode : list) {
             if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
                 mFriendsNumTv.setText(String.valueOf(mode.getCnt()));
             } else if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
@@ -340,8 +345,19 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     }
 
     @Override
-    public void showUserScore(List<UserScoreModel> list) {
+    public void showUserLevel(List<UserLevelModel> list) {
         // 展示段位信息
-
+        for (UserLevelModel userLevelModel : list) {
+            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                rank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                subRank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
+                starNum = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
+                starLimit = userLevelModel.getScore();
+            }
+        }
+        mLevelView.bindData(rank, subRank, starLimit, starNum);
     }
 }

@@ -1,7 +1,6 @@
 package com.zq.person.presenter;
 
 import com.alibaba.fastjson.JSON;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserRankModel;
@@ -14,8 +13,8 @@ import com.zq.person.view.IOtherPersonView;
 
 import java.util.List;
 
-import model.RelationNumMode;
-import model.UserScoreModel;
+import model.RelationNumModel;
+import model.UserLevelModel;
 
 public class OtherPersonPresenter extends RxLifeCyclePresenter {
 
@@ -34,14 +33,14 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
                     List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
-                    List<RelationNumMode> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumMode.class);
-                    List<UserScoreModel> userScoreModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserScoreModel.class);
+                    List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
+                    List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
                     boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
                     view.showUserInfo(userInfoModel);
                     view.showRelationNum(relationNumModes);
-                    view.showUserScore(userScoreModels);
+                    view.showUserLevel(userLevelModels);
                     view.showReginRank(userRankModels);
                     view.showUserRelation(isFriend, isFollow);
                 }

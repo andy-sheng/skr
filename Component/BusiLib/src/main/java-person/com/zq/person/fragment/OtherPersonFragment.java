@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.event.RelationChangeEvent;
@@ -38,8 +37,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
-import model.RelationNumMode;
-import model.UserScoreModel;
+import model.RelationNumModel;
+import model.UserLevelModel;
 
 
 public class OtherPersonFragment extends BaseFragment implements IOtherPersonView {
@@ -71,6 +70,11 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     OtherPersonPresenter mOtherPersonPresenter;
 
     UserInfoModel mUserInfoModel;
+
+    int rank = 0;           //当前父段位
+    int subRank = 0;        //当前子段位
+    int starNum = 0;        //当前星星
+    int starLimit = 0;      //当前星星上限
 
     @Override
     public int initView() {
@@ -184,9 +188,9 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     }
 
     @Override
-    public void showRelationNum(List<RelationNumMode> list) {
+    public void showRelationNum(List<RelationNumModel> list) {
         int fansNum = 0;
-        for (RelationNumMode mode : list) {
+        for (RelationNumModel mode : list) {
             if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
                 fansNum = mode.getCnt();
             }
@@ -201,7 +205,9 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     }
 
     @Override
-    public void showUserScore(List<UserScoreModel> list) {
+    public void showUserLevel(List<UserLevelModel> list) {
+
+
 
     }
 

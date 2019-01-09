@@ -10,13 +10,13 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
-import model.RelationNumMode;
+import model.RelationNumModel;
 
 import com.module.home.view.IPersonView;
 
 import java.util.List;
 
-import model.UserScoreModel;
+import model.UserLevelModel;
 
 public class PersonCorePresenter extends RxLifeCyclePresenter {
 
@@ -35,15 +35,15 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
                     List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
-                    List<RelationNumMode> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumMode.class);
-                    List<UserScoreModel> userScoreModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserScoreModel.class);
-                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
-                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
+                    List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
+                    List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
+//                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
+//                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
                     view.showUserInfo(userInfoModel);
                     view.showReginRank(userRankModels);
                     view.showRelationNum(relationNumModes);
-                    view.showUserScore(userScoreModels);
+                    view.showUserLevel(userLevelModels);
                 }
             }
         }, this);
