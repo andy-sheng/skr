@@ -3,14 +3,25 @@ package com.zq.level.view;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.UserScoreModel;
 
 // 正常的段位 到铂金段位 星星是斜着排的
 public class NormalLevelView extends RelativeLayout {
@@ -28,6 +39,8 @@ public class NormalLevelView extends RelativeLayout {
     ImageView mSubLeveIv;  // 子段位
 
     List<ImageView> starts = new ArrayList<>(); // 星星数
+
+    List<ImageView> rightStarts = new ArrayList<>(); // 右边的星星
 
     int level; //父段位
     int subLevel; //子段位
@@ -63,9 +76,6 @@ public class NormalLevelView extends RelativeLayout {
         starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
 
         initStart();
-        for (ImageView imageView : starts) {
-            addView(imageView);
-        }
     }
 
     private void initStart() {
@@ -73,7 +83,6 @@ public class NormalLevelView extends RelativeLayout {
         float highDis = starTotalHeight / (totalStats - 1); //纵向间距
 
         for (int i = 0; i < totalStats / 2 + 1; i++) {
-
             // 左边的星星
             ImageView imageView1 = new ImageView(getContext());
             RelativeLayout.LayoutParams rl1;
@@ -115,8 +124,99 @@ public class NormalLevelView extends RelativeLayout {
             } else {
                 imageView2.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
             }
-            starts.add(imageView2);
+            rightStarts.add(0, imageView2);
+        }
+
+        starts.addAll(rightStarts);
+        for (ImageView imageView : starts) {
+            addView(imageView);
         }
     }
 
+    // 升段动画，段位提升动画
+    public void levelUp(final ViewGroup viewGroup, List<UserScoreModel> userScoreModels) {
+        // 根据解析UserScoreModel不同数据值，给SVGA指定的key
+    }
+
+    // 星星增加动画,从第几颗星增加到几个行
+    public void starUp(final ViewGroup viewGroup, final int from, final int to) {
+        final int dis = to - from;
+        SVGACallback callback = new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (dis >= 0) {
+                    starUp(viewGroup, from + 1, to);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        };
+        starUp(viewGroup, from, callback);
+    }
+
+    private void starUp(ViewGroup viewGroup, int index, SVGACallback callback) {
+        if (index < 0 || index >= totalStats) {
+            return;
+        }
+        final SVGAImageView starUp = new SVGAImageView(getContext());
+        starUp.setClearsAfterStop(false);   // 停在最后一帧
+        starUp.setLoops(1);  // 只播1次
+
+        ImageView imageView = starts.get(index);
+        int[] location = new int[2];
+        imageView.getLocationOnScreen(location);
+
+        if (totalStats % 2 != 0 && index == totalStats / 2) {
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(134), U.getDisplayUtils().dip2px(134));
+            rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((134 - 20) / 2),
+                    Math.abs(location[1]) - U.getDisplayUtils().dip2px((134 - 20) / 2), 0, 0);
+            starUp.setLayoutParams(rl);
+        } else {
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams((int) (U.getDisplayUtils().dip2px(134) * 0.9),
+                    (int) (U.getDisplayUtils().dip2px(134) * 0.9));
+            rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((int) ((134 - 20) * 0.9 / 2)),
+                    Math.abs(location[1]) - U.getDisplayUtils().dip2px((int) ((134 - 20) * 0.9 / 2)), 0, 0);
+            starUp.setLayoutParams(rl);
+        }
+
+        viewGroup.addView(starUp);
+
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("start_up.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    starUp.setImageDrawable(drawable);
+                    starUp.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+        starUp.setCallback(callback);
+    }
+
+    // 星星掉落动画
+    private void starDown() {
+
+    }
 }
