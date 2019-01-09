@@ -46,12 +46,14 @@ public class AuditionPrepareResFragment extends BaseFragment {
             onBack();
         });
 
+        mTvSongName.setText("《" + mPrepareData.getSongModel().getItemName() + "》");
+
         mPrepareAuditionResPresenter = new PrepareAuditionResPresenter(new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
                 long progress = (downloaded * 100) / totalLength;
                 mHandler.post(() -> {
-                    mTvResProgress.setText(progress + "%歌曲加载中");
+                    mTvResProgress.setText(progress + "%歌曲加载中...");
                 });
             }
 
