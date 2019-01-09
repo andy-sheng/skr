@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/view_120_dp"
+        android:layout_marginTop="@dimen/view_80_dp"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
         app:ly_high_light_paint_color_from="#EF5E85"
@@ -107,10 +107,11 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/tv_record_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="点击结束试音演唱"
+            android:text="点击开始试音演唱"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_14_dp" />
     </FrameLayout>

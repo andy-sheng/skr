@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
@@ -86,6 +86,7 @@ public class AuditionFragment extends BaseFragment {
     ExTextView mTvDown;
 
     ExTextView mTvUp;
+    TextView mTvRecordTip;
 
     SendGiftCircleCountDownView mPrgressBar;
     ExTextView mTvRecordStop;
@@ -108,6 +109,8 @@ public class AuditionFragment extends BaseFragment {
     SongModel mSongModel;
 
     VoiceControlPanelView mVoiceControlPanelView;
+
+    Handler mHandler;
 
     FrameLayout mFlProgressContainer;
 
@@ -148,6 +151,8 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().resumeAudioMixing();
         }
 
+        mHandler = new Handler();
+
         mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
         mVoiceControlPanelView = mRootView.findViewById(R.id.voice_control_view);
@@ -174,6 +179,8 @@ public class AuditionFragment extends BaseFragment {
         mLlSave = (LinearLayout) mRootView.findViewById(R.id.ll_save);
         mIvSave = (ExImageView) mRootView.findViewById(R.id.iv_save);
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
+        mTvRecordTip = (TextView) mRootView.findViewById(R.id.tv_record_tip);
+
 
         mRlControlContainer.setVisibility(View.GONE);
 
@@ -203,15 +210,16 @@ public class AuditionFragment extends BaseFragment {
                     mPrgressBar.setMax(360);
                     mPrgressBar.setProgress(0);
                     mFlProgressRoot.setVisibility(View.VISIBLE);
-                    playMusic(mSongModel);
-                    playLyrics(mSongModel);
                     mVoiceControlPanelView.setVisibility(View.VISIBLE);
                     mRlControlContainer.setVisibility(View.GONE);
                     mIvRecordStart.setVisibility(View.VISIBLE);
                     mTvRecordStop.setVisibility(View.GONE);
+
                     if (mExoPlayer != null) {
                         mExoPlayer.stop();
                     }
+
+                    startRecord();
                 });
 
         RxView.clicks(mIvPlay).throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -269,7 +277,6 @@ public class AuditionFragment extends BaseFragment {
 
         mSongModel = mPrepareData.getSongModel();
 
-        playMusic(mSongModel);
         playLyrics(mSongModel);
 
         mPrgressBar.setMax(360);
@@ -280,10 +287,15 @@ public class AuditionFragment extends BaseFragment {
 
     private void startRecord() {
         isRecord = true;
+
+        playLyrics(mSongModel);
+        playMusic(mSongModel);
+
         mStartRecordTs = System.currentTimeMillis();
         mIvRecordStart.setVisibility(View.GONE);
         mTvRecordStop.setVisibility(View.VISIBLE);
         mRlControlContainer.setVisibility(View.GONE);
+        mTvRecordTip.setText("点击结束试音演唱");
         mIvPlay.setEnabled(true);
         EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
 
@@ -297,7 +309,7 @@ public class AuditionFragment extends BaseFragment {
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                MyLog.d(TAG,"onAnimationUpdate" + " animation=" + animation);
+                MyLog.d(TAG, "onAnimationUpdate" + " animation=" + animation);
                 int value = (Integer) animation.getAnimatedValue();
                 mPrgressBar.setProgress(value);
             }
@@ -306,7 +318,9 @@ public class AuditionFragment extends BaseFragment {
         mRecordAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                stopRecord();
+                if (isRecord) {
+                    stopRecord();
+                }
             }
 
             @Override
@@ -330,7 +344,10 @@ public class AuditionFragment extends BaseFragment {
         EngineManager.getInstance().stopAudioMixing();
 
         mManyLyricsView.seekto(mSongModel.getBeginMs());
-        mManyLyricsView.pause();
+        mHandler.postDelayed(() -> {
+            mManyLyricsView.pause();
+        }, 100);
+
         mRecordAnimator.cancel();
         mIvRecordStart.setVisibility(View.VISIBLE);
         mTvRecordStop.setVisibility(View.GONE);
@@ -469,6 +486,10 @@ public class AuditionFragment extends BaseFragment {
                             mManyLyricsView.play(songModel.getBeginMs());
                             MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
                         }
+
+                        if (!isRecord) {
+                            mManyLyricsView.pause();
+                        }
                     }, throwable -> MyLog.e(throwable));
         } else {
             MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
@@ -478,10 +499,11 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(EngineEvent event) {
 //        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
+
         if (event.getType() == TYPE_MUSIC_PLAY_FINISH) {
-            File accFile = SongResUtils.getAccFileByUrl(mSongModel.getAcc());
-            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, 1);
-            playLyrics(mSongModel);
+            if (isRecord) {
+                stopRecord();
+            }
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> l = event.getObj();
             for (EngineEvent.UserVolumeInfo userVolumeInfo : l) {
