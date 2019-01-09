@@ -1,7 +1,6 @@
-package com.module.playways.rank.room.model;
+package model;
 
 import com.common.log.MyLog;
-import com.zq.live.proto.Room.UserScoreRecord;
 
 // 分值信息
 public class UserScoreModel {
@@ -77,22 +76,5 @@ public class UserScoreModel {
 
     public void setScoreBeforeDesc(String scoreBeforeDesc) {
         this.scoreBeforeDesc = scoreBeforeDesc;
-    }
-
-    public void parse(UserScoreRecord userScoreRecord) {
-        if (userScoreRecord == null) {
-            MyLog.e("UserScoreRecord userScoreRecord == null");
-            return;
-        }
-
-        this.setUserID(userScoreRecord.getUserID());
-        this.setScoreType(userScoreRecord.getScoreType().getValue());
-        this.setScoreNow(userScoreRecord.getScoreNow());
-        this.setScoreBefore(userScoreRecord.getScoreBefore());
-        this.setScoreTypeDesc(userScoreRecord.getScoreTypeDesc());
-        this.setScoreNowDesc(userScoreRecord.getScoreNowDesc());
-        this.setScoreBeforeDesc(userScoreRecord.getScoreBeforeDesc());
-
-        return;
     }
 }

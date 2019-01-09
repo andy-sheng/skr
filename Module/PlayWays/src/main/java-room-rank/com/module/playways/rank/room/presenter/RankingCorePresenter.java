@@ -44,7 +44,7 @@ import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
-import com.module.playways.rank.room.model.UserScoreModel;
+import model.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;

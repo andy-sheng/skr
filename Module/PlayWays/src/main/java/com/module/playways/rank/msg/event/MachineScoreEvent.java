@@ -1,10 +1,6 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
-import com.module.playways.rank.room.model.UserScoreModel;
-import com.module.playways.rank.room.model.VoteInfoModel;
-
-import java.util.List;
 
 public class MachineScoreEvent {
 

@@ -1,4 +1,4 @@
-package com.module.home.model;
+package model;
 
 public class RelationNumMode {
     /**

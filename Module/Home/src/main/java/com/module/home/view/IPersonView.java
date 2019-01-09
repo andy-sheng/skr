@@ -1,7 +1,7 @@
 package com.module.home.view;
 
 import com.common.core.userinfo.model.UserRankModel;
-import com.module.home.model.RelationNumMode;
+import model.RelationNumMode;
 
 import java.util.List;
 

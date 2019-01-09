@@ -17,7 +17,10 @@ import com.module.playways.rank.prepare.model.GameReadyModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.room.model.UserScoreModel;
+
+import model.UserScoreModel;
+
+import com.module.playways.rank.room.model.UserScoreDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
@@ -198,7 +201,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         List<UserScoreModel> userScoreModels = new ArrayList<>();
         for (UserScoreRecord userScoreRecord : roundAndGameOverMsg.getUserScoreRecordList()) {
             UserScoreModel userScoreModel = new UserScoreModel();
-            userScoreModel.parse(userScoreRecord);
+            UserScoreDataUtils.transform(userScoreModel, userScoreRecord);
             userScoreModels.add(userScoreModel);
         }
 
@@ -299,7 +302,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         List<UserScoreModel> userScoreModels = new ArrayList<>();
         for (UserScoreRecord userScoreRecord : voteResultMsg.getUserScoreRecordList()) {
             UserScoreModel userScoreModel = new UserScoreModel();
-            userScoreModel.parse(userScoreRecord);
+            UserScoreDataUtils.transform(userScoreModel, userScoreRecord);
             userScoreModels.add(userScoreModel);
         }
 

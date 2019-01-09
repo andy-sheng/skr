@@ -30,7 +30,7 @@ import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.model.RelationNumMode;
+import model.RelationNumMode;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
 import com.module.rank.IRankingModeService;
@@ -90,6 +90,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         addPresent(mPersonCorePresenter);
         mPersonCorePresenter.getRelationNum((int) MyUserInfoManager.getInstance().getUid());
         mPersonCorePresenter.getReginRank((int) MyUserInfoManager.getInstance().getUid());
+        mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid());
     }
 
     private void initTopView() {
@@ -233,7 +234,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             @Override
             public void accept(Object o) {
                 IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                Class<BaseFragment> baseFragment = (Class<BaseFragment>)iRankingModeService.getData(0, null);
+                Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getData(0, null);
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)

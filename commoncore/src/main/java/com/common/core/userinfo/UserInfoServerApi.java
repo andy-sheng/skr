@@ -25,6 +25,16 @@ public interface UserInfoServerApi {
 
 
     /**
+     * 拿到某个人的个人主页
+     *
+     * @param userID
+     * @return
+     */
+    @GET("/v1/skr/homepage")
+    Observable<ApiResult> getHomePage(@Query("userID") int userID);
+
+
+    /**
      * 处理关系
      *
      * @param body "toUserID" : 关系被动接受者id
