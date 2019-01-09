@@ -14,44 +14,59 @@ public enum EScoreType implements WireEnum {
   ST_UNKNOWN(0),
 
   /**
-   * 段位
+   * 主段位
    */
-  ST_LEVEL(1),
+  ST_RANKING(1),
 
   /**
-   * 晋级赛
+   * 子段位
    */
-  ST_UP_LEVEL_GAME(2),
+  ST_SUB_RANKING(2),
 
   /**
-   * 总星星数
+   * 子段位当前星星数
    */
-  ST_TOTAL_STAR(3),
+  ST_SUB_RANKING_STAR(3),
 
   /**
-   * 子段位星星数
+   * 子段位星星数上限
    */
-  ST_SUB_LEVEL_STAR(4),
+  ST_SUB_RANKING_TOTAL_STAR(4),
 
   /**
-   * 晋级赛星星数
+   * 晋级赛段位
    */
-  ST_UP_LEVEL_STAR(5),
+  ST_RANKING_UPGRADE(5),
 
   /**
-   * 战力值
+   * 晋级赛实际星星数
    */
-  ST_BATTLE_INDEX(6),
+  ST_RANKING_UPGRADE_STAR(6),
 
   /**
-   * 总战力值
+   * 晋级赛星星数上限
    */
-  ST_BATTLE_INDEX_TOTAL(7),
+  ST_RANKING_UPGRADE_TOTAL_STAR(7),
+
+  /**
+   * 实际战力值
+   */
+  ST_BATTLE_INDEX_REAL(8),
+
+  /**
+   * 战力值上限
+   */
+  ST_BATTLE_INDEX_TOTAL(9),
 
   /**
    * 战斗评价, sss or ss or s or a...
    */
-  ST_BATTLE_RATING(8);
+  ST_BATTLE_RATING(10),
+
+  /**
+   * 星星数
+   */
+  ST_STAR(11);
 
   public static final ProtoAdapter<EScoreType> ADAPTER = new ProtoAdapter_EScoreType();
 
@@ -67,14 +82,17 @@ public enum EScoreType implements WireEnum {
   public static EScoreType fromValue(int value) {
     switch (value) {
       case 0: return ST_UNKNOWN;
-      case 1: return ST_LEVEL;
-      case 2: return ST_UP_LEVEL_GAME;
-      case 3: return ST_TOTAL_STAR;
-      case 4: return ST_SUB_LEVEL_STAR;
-      case 5: return ST_UP_LEVEL_STAR;
-      case 6: return ST_BATTLE_INDEX;
-      case 7: return ST_BATTLE_INDEX_TOTAL;
-      case 8: return ST_BATTLE_RATING;
+      case 1: return ST_RANKING;
+      case 2: return ST_SUB_RANKING;
+      case 3: return ST_SUB_RANKING_STAR;
+      case 4: return ST_SUB_RANKING_TOTAL_STAR;
+      case 5: return ST_RANKING_UPGRADE;
+      case 6: return ST_RANKING_UPGRADE_STAR;
+      case 7: return ST_RANKING_UPGRADE_TOTAL_STAR;
+      case 8: return ST_BATTLE_INDEX_REAL;
+      case 9: return ST_BATTLE_INDEX_TOTAL;
+      case 10: return ST_BATTLE_RATING;
+      case 11: return ST_STAR;
       default: return null;
     }
   }

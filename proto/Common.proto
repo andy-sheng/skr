@@ -38,9 +38,9 @@ message MusicInfo {
 
 enum ESex {
     SX_UNKNOWN = 0; // 未知
-    SX_MALE = 1; //男性
-    SX_FEMALE = 2; // 女性
-    SX_SECRET = 3; //保密
+    SX_MALE = 1;    //男性
+    SX_FEMALE = 2;  // 女性
+    SX_SECRET = 3;  //保密
 }
 
 message ResourceInfo
@@ -49,5 +49,6 @@ message ResourceInfo
     uint32 itemID     = 2; //音乐条目id
     string audioURL   = 3; //声音资源URL
     string midiURL    = 4; //打分资源URL
+    sint32 sysScore   = 5; //系统打分分值
 }
 

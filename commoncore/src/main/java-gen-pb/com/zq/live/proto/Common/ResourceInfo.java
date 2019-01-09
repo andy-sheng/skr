@@ -30,6 +30,8 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
 
   public static final String DEFAULT_MIDIURL = "";
 
+  public static final Integer DEFAULT_SYSSCORE = 0;
+
   /**
    * 资源id
    */
@@ -66,17 +68,28 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
   )
   public final String midiURL;
 
-  public ResourceInfo(Integer resourceID, Integer itemID, String audioURL, String midiURL) {
-    this(resourceID, itemID, audioURL, midiURL, ByteString.EMPTY);
+  /**
+   * 系统打分分值
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#SINT32"
+  )
+  public final Integer sysScore;
+
+  public ResourceInfo(Integer resourceID, Integer itemID, String audioURL, String midiURL,
+      Integer sysScore) {
+    this(resourceID, itemID, audioURL, midiURL, sysScore, ByteString.EMPTY);
   }
 
   public ResourceInfo(Integer resourceID, Integer itemID, String audioURL, String midiURL,
-      ByteString unknownFields) {
+      Integer sysScore, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.resourceID = resourceID;
     this.itemID = itemID;
     this.audioURL = audioURL;
     this.midiURL = midiURL;
+    this.sysScore = sysScore;
   }
 
   @Override
@@ -86,6 +99,7 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
     builder.itemID = itemID;
     builder.audioURL = audioURL;
     builder.midiURL = midiURL;
+    builder.sysScore = sysScore;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -99,7 +113,8 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
         && Internal.equals(resourceID, o.resourceID)
         && Internal.equals(itemID, o.itemID)
         && Internal.equals(audioURL, o.audioURL)
-        && Internal.equals(midiURL, o.midiURL);
+        && Internal.equals(midiURL, o.midiURL)
+        && Internal.equals(sysScore, o.sysScore);
   }
 
   @Override
@@ -111,6 +126,7 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
       result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
       result = result * 37 + (audioURL != null ? audioURL.hashCode() : 0);
       result = result * 37 + (midiURL != null ? midiURL.hashCode() : 0);
+      result = result * 37 + (sysScore != null ? sysScore.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -123,6 +139,7 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
     if (itemID != null) builder.append(", itemID=").append(itemID);
     if (audioURL != null) builder.append(", audioURL=").append(audioURL);
     if (midiURL != null) builder.append(", midiURL=").append(midiURL);
+    if (sysScore != null) builder.append(", sysScore=").append(sysScore);
     return builder.replace(0, 2, "ResourceInfo{").append('}').toString();
   }
 
@@ -177,6 +194,16 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
   }
 
   /**
+   * 系统打分分值
+   */
+  public Integer getSysScore() {
+    if(sysScore==null){
+        return DEFAULT_SYSSCORE;
+    }
+    return sysScore;
+  }
+
+  /**
    * 资源id
    */
   public boolean hasResourceID() {
@@ -204,6 +231,13 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
     return midiURL!=null;
   }
 
+  /**
+   * 系统打分分值
+   */
+  public boolean hasSysScore() {
+    return sysScore!=null;
+  }
+
   public static final class Builder extends Message.Builder<ResourceInfo, Builder> {
     public Integer resourceID;
 
@@ -212,6 +246,8 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
     public String audioURL;
 
     public String midiURL;
+
+    public Integer sysScore;
 
     public Builder() {
     }
@@ -248,9 +284,17 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
       return this;
     }
 
+    /**
+     * 系统打分分值
+     */
+    public Builder setSysScore(Integer sysScore) {
+      this.sysScore = sysScore;
+      return this;
+    }
+
     @Override
     public ResourceInfo build() {
-      return new ResourceInfo(resourceID, itemID, audioURL, midiURL, super.buildUnknownFields());
+      return new ResourceInfo(resourceID, itemID, audioURL, midiURL, sysScore, super.buildUnknownFields());
     }
   }
 
@@ -265,6 +309,7 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.itemID)
           + ProtoAdapter.STRING.encodedSizeWithTag(3, value.audioURL)
           + ProtoAdapter.STRING.encodedSizeWithTag(4, value.midiURL)
+          + ProtoAdapter.SINT32.encodedSizeWithTag(5, value.sysScore)
           + value.unknownFields().size();
     }
 
@@ -274,6 +319,7 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.itemID);
       ProtoAdapter.STRING.encodeWithTag(writer, 3, value.audioURL);
       ProtoAdapter.STRING.encodeWithTag(writer, 4, value.midiURL);
+      ProtoAdapter.SINT32.encodeWithTag(writer, 5, value.sysScore);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -287,6 +333,7 @@ public final class ResourceInfo extends Message<ResourceInfo, ResourceInfo.Build
           case 2: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setAudioURL(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.setMidiURL(ProtoAdapter.STRING.decode(reader)); break;
+          case 5: builder.setSysScore(ProtoAdapter.SINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
