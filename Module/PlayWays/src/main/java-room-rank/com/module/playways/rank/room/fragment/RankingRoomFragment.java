@@ -648,6 +648,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void destroy() {
         super.destroy();
+        MyLog.d(TAG, "destroy");
+        destroyAnimation();
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+            mDialogPlus = null;
+        }
         mUiHanlder.removeCallbacksAndMessages(null);
         mManyLyricsView.release();
         mFloatLyricsView.release();
@@ -732,11 +738,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void showRecordView(RecordData recordData) {
-        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
-            mDialogPlus = null;
-        }
-
+        destroyAnimation();
         // TODO: 2019/1/8 加上了2秒的对战结束动画
         mEndGameIv.setVisibility(View.VISIBLE);
         ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, "scaleX", 0.3f, 1f);
@@ -782,11 +784,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void showVoteView() {
-        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
-            mDialogPlus = null;
-        }
-
+        destroyAnimation();
         // TODO: 2019/1/8  加上2秒的对战结束动画
         mEndGameIv.setVisibility(View.VISIBLE);
         ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, "scaleX", 0.3f, 1f);
@@ -831,6 +829,24 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     }
 
+    private void destroyAnimation() {
+        if (mTopVoiceBg != null && mTopVoiceBg.isAnimating()) {
+            mTopVoiceBg.stopAnimation();
+            mTopVoiceBg.setVisibility(View.GONE);
+        }
+
+        if (mUfoBg != null && mUfoBg.isAnimating()) {
+            mUfoBg.stopAnimation();
+            mUfoBg.setVisibility(View.GONE);
+        }
+
+        if (mReadyGoBg != null && mReadyGoBg.isAnimating()) {
+            mReadyGoBg.stopAnimation();
+            mReadyGoBg.setVisibility(View.GONE);
+        }
+
+    }
+
 
     @Override
     public void gameFinish() {
@@ -872,14 +888,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void exitMainStage() {
         mEndRoundHint.setVisibility(View.VISIBLE);
-        HandlerTaskTimer.newBuilder()
-                .delay(500)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        playHideMainStageAnimator();
-                    }
-                });
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                playHideMainStageAnimator();
+            }
+        }, 500);
     }
 
     @Override
