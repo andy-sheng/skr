@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RadialGradient;
@@ -43,9 +44,10 @@ public class ScorePrograssBar2 extends View {
 
     Paint mPaintCircle;
 
-    Paint mPaintProgressBar;
+    Paint mPaintCircleBar;
+    RectF mRectF;
+    float mPrgress2 = 90;
 
-    float prgress2 = 100;
 
     public ScorePrograssBar2(Context context) {
         super(context);
@@ -82,15 +84,29 @@ public class ScorePrograssBar2 extends View {
         mPaintCircle.setAntiAlias(true);
         mPaintCircle.setDither(true);
 
-        mPaintProgressBar = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintProgressBar.setDither(true);
-        mPaintProgressBar.setStyle(Paint.Style.STROKE);//设置填充样式
-        mPaintProgressBar.setAntiAlias(true);//抗锯齿功能
-        mPaintProgressBar.setStrokeWidth(U.getDisplayUtils().dip2px(3));//设置画笔宽度
-        mPaintProgressBar.setStrokeCap(Paint.Cap.SQUARE);
+        mPaintCircleBar = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintCircleBar.setDither(true);
+        mPaintCircleBar.setStyle(Paint.Style.STROKE);//设置填充样式
+        mPaintCircleBar.setAntiAlias(true);//抗锯齿功能
+        mPaintCircleBar.setStrokeCap(Paint.Cap.SQUARE);
+        Matrix matrix = new Matrix();
 
+        int colors[] = new int[]{
+                Color.parseColor("#169DDC"),
+                Color.parseColor("#CA2C60"),
 
-//
+        };
+        float strokeWidth = U.getDisplayUtils().dip2px(10);
+        mPaintCircleBar.setStrokeWidth(strokeWidth);//设置画笔宽度
+        float cx = h1 / 2;
+        float cy = h1 / 2;
+        Shader shader = new SweepGradient(cx, cy, colors, null);
+        matrix.setRotate(90, cx, cy);
+        shader.setLocalMatrix(matrix);
+        mPaintCircleBar.setShader(shader);
+
+        float r = h2 / 2.0f - strokeWidth/2.0f;
+        mRectF = new RectF(cx - r, cy - r, cx + r, cy + r);
 //        mPaintProgressBar = new Paint();//这个是画矩形的画笔，方便大家理解这个圆弧
 //        mPaintProgressBar.setStyle(Paint.Style.STROKE);
 //        mPaintProgressBar.setColor(Color.RED);
@@ -135,21 +151,10 @@ public class ScorePrograssBar2 extends View {
             canvas.drawCircle(cx, cy, r, mPaintCircle);
         }
 
-        int colors[] = new int[]{
-                Color.parseColor("#169DDC"),
-                Color.parseColor("#CA2C60"),
-
-        };
-
-        Shader shader = new SweepGradient(h1 / 2, h1 / 2, colors, new float[]{0, prgress2 / 100.f});
-        mPaintProgressBar.setShader(shader);
-        mPaintProgressBar.setStrokeWidth(U.getDisplayUtils().dip2px((h1 - h2) / 2.0f));
-        // 画进度条
-        float a = (h1 - h2) / 2.0f;
-        RectF rectF = new RectF(tx, ty, h2, h2);
-
-        canvas.drawArc(rectF, 0, 360 * prgress2 / 100.0f, false, mPaintProgressBar);
-
+        if (mPrgress2 > 0) {
+            // 画进度条
+            canvas.drawArc(mRectF, 80, -360 * mPrgress2 / 100.0f, false, mPaintCircleBar);
+        }
     }
 
 
@@ -190,7 +195,7 @@ public class ScorePrograssBar2 extends View {
 
     ValueAnimator mValueAnimator;
 
-    public void setProgress(int p) {
+    public void setProgress1(int p) {
         MyLog.d(TAG, "setProgress" + " p=" + p);
         this.mOldProgress = mProgress;
         this.mProgress = p;
@@ -224,4 +229,8 @@ public class ScorePrograssBar2 extends View {
 //        tryPostInvalidateDelayed();
     }
 
+    public void setProgress2(int p) {
+        mPrgress2 = p;
+        invalidate();
+    }
 }

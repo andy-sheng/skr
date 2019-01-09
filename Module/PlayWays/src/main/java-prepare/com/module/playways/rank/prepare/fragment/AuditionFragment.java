@@ -60,6 +60,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import io.agora.rtc.Constants;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -523,7 +526,7 @@ public class AuditionFragment extends BaseFragment {
         int score = EngineManager.getInstance().getLineScore();
         U.getToastUtil().showShort("score:" + score);
 //        score = (int) (Math.random() * 100);
-        mScoreProgressBar.setProgress(score);
+        mScoreProgressBar.setProgress1(score);
     }
 
     @Override
@@ -575,7 +578,7 @@ public class AuditionFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        EngineManager.getInstance().destroy("prepare");
+
         mManyLyricsView.release();
         if (mExoPlayer != null) {
             mExoPlayer.release();
@@ -585,10 +588,19 @@ public class AuditionFragment extends BaseFragment {
             mRecordAnimator.cancel();
         }
 
-        File recordFile = new File(AAC_SAVE_PATH);
-        if (recordFile.exists()) {
-            recordFile.delete();
-        }
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                File recordFile = new File(AAC_SAVE_PATH);
+                if (recordFile.exists()) {
+                    recordFile.delete();
+                }
+                EngineManager.getInstance().destroy("prepare");
+                emitter.onComplete();
+            }
+        }).observeOn(Schedulers.io())
+                .subscribe();
+
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 }

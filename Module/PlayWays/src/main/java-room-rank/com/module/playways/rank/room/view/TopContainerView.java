@@ -86,11 +86,11 @@ public class TopContainerView extends RelativeLayout {
     }
 
     private void initSparkPrograssBar() {
-        mScoreProgressBar.setProgress(100);
+        mScoreProgressBar.setProgress1(100);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mScoreProgressBar.setProgress(50);
+                mScoreProgressBar.setProgress1(50);
             }
         }, 4000);
     }
@@ -126,7 +126,7 @@ public class TopContainerView extends RelativeLayout {
     }
 
     public void setScoreProgress(int progress) {
-        mScoreProgressBar.setProgress(progress);
+        mScoreProgressBar.setProgress1(progress);
     }
 
     public void setListener(Listener l) {
@@ -153,13 +153,14 @@ public class TopContainerView extends RelativeLayout {
                     @Override
                     public void onNext(Integer integer) {
                         long lastTime = lastedTime + 1 - integer;
-
                         if (lastTime < 0) {
                             cancelShowLastedTimeTask();
                             mTvPassedTime.setText("");
+                            mScoreProgressBar.setProgress2(0);
                             return;
                         }
-
+                        int p = (int) ((lastedTime+1 - integer) * 100 / lastedTime);
+                        mScoreProgressBar.setProgress2(p);
                         mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
                     }
                 });
