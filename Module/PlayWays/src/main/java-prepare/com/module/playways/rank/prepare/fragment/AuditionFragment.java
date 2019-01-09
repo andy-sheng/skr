@@ -6,6 +6,8 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -52,6 +54,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -64,6 +67,10 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class AuditionFragment extends BaseFragment {
     public static final String TAG = "AuditionFragment";
+
+    static final int MSG_AUTO_LEAVE_CHANNEL = 9;
+
+    static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(),"audition.aac").getAbsolutePath();
 
     RelativeLayout mTopContainerVg;
 
@@ -109,6 +116,22 @@ public class AuditionFragment extends BaseFragment {
 
     ExoPlayer mExoPlayer;
 
+    Handler mUiHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_AUTO_LEAVE_CHANNEL) {
+                // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
+                U.getFragmentUtils().popFragment(AuditionFragment.this);
+                return;
+            }
+        }
+    };
+
+    long mStartRecordTs = 0;
+
+    ValueAnimator mRecordAnimator;
+
     @Override
     public int initView() {
         return R.layout.audition_sence_layout;
@@ -150,11 +173,13 @@ public class AuditionFragment extends BaseFragment {
 
         RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-//                    showVoicePanelView(false);
+                    resendAutoLeaveChannelMsg();
+                    showVoicePanelView(false);
                 });
 
         RxView.clicks(mTvUp).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    resendAutoLeaveChannelMsg();
                     showVoicePanelView(true);
                 });
 
@@ -239,10 +264,10 @@ public class AuditionFragment extends BaseFragment {
 
         mPrgressBar.setMax(360);
         mPrgressBar.setProgress(0);
+
+        resendAutoLeaveChannelMsg();
     }
 
-    long mStartRecordTs = 0;
-    ValueAnimator mRecordAnimator;
     private void startRecord(){
         isRecord = true;
         mStartRecordTs = System.currentTimeMillis();
@@ -250,7 +275,7 @@ public class AuditionFragment extends BaseFragment {
         mTvRecordStop.setVisibility(View.VISIBLE);
         mRlControlContainer.setVisibility(View.GONE);
         mIvPlay.setEnabled(true);
-        EngineManager.getInstance().startAudioRecording(Environment.getExternalStorageDirectory() + File.separator + "record.aac", Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
+        EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
 
         if(mRecordAnimator != null){
             mRecordAnimator.cancel();
@@ -308,42 +333,48 @@ public class AuditionFragment extends BaseFragment {
         if (mExoPlayer != null) {
             mExoPlayer.stop();
         }
+        if (mExoPlayer == null) {
+            mExoPlayer = new ExoPlayer();
+            mExoPlayer.setCallback(new IPlayerCallback() {
+                @Override
+                public void onPrepared() {
 
-        mExoPlayer = new ExoPlayer();
-        mExoPlayer.startPlay(Environment.getExternalStorageDirectory() + File.separator + "record.aac");
+                }
+
+                @Override
+                public void onCompletion() {
+                    mIvPlay.setEnabled(true);
+                }
+
+                @Override
+                public void onSeekComplete() {
+
+                }
+
+                @Override
+                public void onVideoSizeChanged(int width, int height) {
+
+                }
+
+                @Override
+                public void onError(int what, int extra) {
+
+                }
+
+                @Override
+                public void onInfo(int what, int extra) {
+
+                }
+            });
+        }
+
+        mExoPlayer.startPlay(AAC_SAVE_PATH);
         mIvPlay.setEnabled(false);
+    }
 
-        mExoPlayer.setCallback(new IPlayerCallback() {
-            @Override
-            public void onPrepared() {
-
-            }
-
-            @Override
-            public void onCompletion() {
-                mIvPlay.setEnabled(true);
-            }
-
-            @Override
-            public void onSeekComplete() {
-
-            }
-
-            @Override
-            public void onVideoSizeChanged(int width, int height) {
-
-            }
-
-            @Override
-            public void onError(int what, int extra) {
-
-            }
-
-            @Override
-            public void onInfo(int what, int extra) {
-
-            }
-        });
+    private void resendAutoLeaveChannelMsg() {
+        mUiHanlder.removeMessages(MSG_AUTO_LEAVE_CHANNEL);
+        mUiHanlder.sendEmptyMessageDelayed(MSG_AUTO_LEAVE_CHANNEL, 60 * 1000 * 10);
     }
 
     private void showVoicePanelView(boolean show) {
@@ -398,16 +429,6 @@ public class AuditionFragment extends BaseFragment {
         if (accFile != null) {
             EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
         }
-
-//        HandlerTaskTimer.newBuilder().
-//                interval(4000)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        int score = EngineManager.getInstance().getLineScore();
-//                        U.getToastUtil().showShort("score:" + score);
-//                    }
-//                });
     }
 
     private void playLyrics(SongModel songModel) {
@@ -439,13 +460,22 @@ public class AuditionFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEventMainThread(EngineEvent restartLrcEvent) {
+    public void onEventMainThread(EngineEvent event) {
 //        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
-        if (restartLrcEvent.getType() == TYPE_MUSIC_PLAY_FINISH) {
+        if (event.getType() == TYPE_MUSIC_PLAY_FINISH) {
             File accFile = SongResUtils.getAccFileByUrl(mSongModel.getAcc());
             EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), true, false, 1);
             playLyrics(mSongModel);
+        } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
+            List<EngineEvent.UserVolumeInfo> l = event.getObj();
+            for (EngineEvent.UserVolumeInfo userVolumeInfo : l) {
+                if (userVolumeInfo.getUid() == 0 && userVolumeInfo.getVolume() >0) {
+                    //如果自己在唱歌也延迟关闭
+                    resendAutoLeaveChannelMsg();
+                }
+            }
         }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -454,7 +484,7 @@ public class AuditionFragment extends BaseFragment {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         int score = EngineManager.getInstance().getLineScore();
         U.getToastUtil().showShort("score:" + score);
-        score = (int) (Math.random()*100);
+//        score = (int) (Math.random() * 100);
         mScoreProgressBar.setProgress(score);
     }
 
@@ -508,6 +538,7 @@ public class AuditionFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         EngineManager.getInstance().stopAudioMixing();
+        EngineManager.getInstance().leaveChannel();
         mManyLyricsView.release();
         if(mExoPlayer != null){
             mExoPlayer.release();
@@ -521,5 +552,6 @@ public class AuditionFragment extends BaseFragment {
         if(recordFile.exists()){
             recordFile.delete();
         }
+        mUiHanlder.removeCallbacksAndMessages(null);
     }
 }

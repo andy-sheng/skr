@@ -202,6 +202,13 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     /**
+     * 离开房间
+     */
+    public void leaveChannel() {
+        AgoraEngineAdapter.getInstance().leaveChannel();
+    }
+
+    /**
      * 销毁所有
      */
     public void destroy(String from) {

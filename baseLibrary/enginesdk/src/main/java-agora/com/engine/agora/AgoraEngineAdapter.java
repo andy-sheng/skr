@@ -308,6 +308,15 @@ public class AgoraEngineAdapter {
     }
 
     /**
+     * 离开房间
+     */
+    public void leaveChannel() {
+        if (mRtcEngine != null) {
+            mRtcEngine.leaveChannel();
+        }
+    }
+
+    /**
      * 不是做模式切换一般不用销毁所有
      */
     public void destroy(boolean destroyAll) {

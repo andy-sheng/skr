@@ -51,8 +51,8 @@ public class EngineEvent {
         this.userStatus = userStatus;
     }
 
-    public Object getObj() {
-        return obj;
+    public <T> T getObj() {
+        return (T)obj;
     }
 
     public void setObj(Object obj) {
