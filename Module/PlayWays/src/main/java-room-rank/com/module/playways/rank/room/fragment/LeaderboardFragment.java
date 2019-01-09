@@ -58,6 +58,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     LinearLayout mLlChampain;
     TextView mTvChanpianStart;
     TextView mTvSegmentName;
+    TextView mTvArea;
 
     SmartRefreshLayout mRefreshLayout;
     boolean mHasMore = true;
@@ -101,6 +102,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvRank = (ImageView) mRootView.findViewById(R.id.iv_rank);
         mIvRankRight = (ImageView) mRootView.findViewById(R.id.iv_rank_right);
         mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
+        mTvArea = (ExTextView)mRootView.findViewById(R.id.tv_area);
+
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
@@ -148,6 +151,12 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.WHITE)
                         .build());
+
+        if(MyUserInfoManager.getInstance().hasLocation()){
+            mTvArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
+        }else {
+            mTvArea.setText("全国榜");
+        }
     }
 
     @Override

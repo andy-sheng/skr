@@ -22,6 +22,16 @@
             android:padding="@dimen/view_16_dp"
             android:src="@drawable/img_back" />
 
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_area"
+            android:layout_marginTop="@dimen/view_25_dp"
+            android:text=""
+            android:textSize="@dimen/textsize_20_dp"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <com.common.view.ex.ExFrameLayout
             android:layout_marginRight="-10dp"
             android:layout_toLeftOf="@+id/rl_center_container"
