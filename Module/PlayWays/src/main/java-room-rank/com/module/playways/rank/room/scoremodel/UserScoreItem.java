@@ -1,5 +1,8 @@
 package com.module.playways.rank.room.scoremodel;
 
+import com.common.log.MyLog;
+import com.zq.live.proto.Room.ScoreItem;
+
 public class UserScoreItem {
     /**
      * why : 段位提升了
@@ -23,5 +26,15 @@ public class UserScoreItem {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void parse(ScoreItem scoreItem) {
+        if (scoreItem == null) {
+            MyLog.e("ScoreItem == null");
+            return;
+        }
+
+        this.setWhy(scoreItem.getWhy());
+        this.setScore(scoreItem.getScore());
     }
 }

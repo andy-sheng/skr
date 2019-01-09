@@ -1,5 +1,10 @@
 package com.module.playways.rank.room.scoremodel;
 
+import com.common.log.MyLog;
+import com.zq.live.proto.Room.ScoreItem;
+import com.zq.live.proto.Room.UserScoreRecord;
+
+import java.util.ArrayList;
 import java.util.List;
 
 // 分值信息
@@ -85,5 +90,28 @@ public class UserScoreModel {
 
     public void setScoreBeforeDesc(String scoreBeforeDesc) {
         this.scoreBeforeDesc = scoreBeforeDesc;
+    }
+
+    public void parse(UserScoreRecord userScoreRecord) {
+        if (userScoreRecord == null) {
+            MyLog.e("UserScoreRecord == null");
+            return;
+        }
+
+        this.setUserID(userScoreRecord.getUserID());
+        this.setScoreType(userScoreRecord.getScoreType().getValue());
+        this.setScoreNow(userScoreRecord.getScoreNow());
+        this.setScoreBefore(userScoreRecord.getScoreBefore());
+        this.setScoreTypeDesc(userScoreRecord.getScoreTypeDesc());
+        this.setScoreNowDesc(userScoreRecord.getScoreNowDesc());
+        this.setScoreBeforeDesc(userScoreRecord.getScoreBeforeDesc());
+        List<UserScoreItem> userScoreItemList = new ArrayList<>();
+        for (ScoreItem scoreItem : userScoreRecord.getItemsList()) {
+            UserScoreItem userScoreItem = new UserScoreItem();
+            userScoreItem.parse(scoreItem);
+            userScoreItemList.add(userScoreItem);
+        }
+        this.setItems(userScoreItemList);
+
     }
 }

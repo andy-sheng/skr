@@ -1,5 +1,9 @@
 package com.module.playways.rank.room.scoremodel;
 
+import com.common.log.MyLog;
+
+import java.util.List;
+
 public class ScoreDetailModel {
 
     private RankLevelModel mRankScore;           //主段位
@@ -93,5 +97,80 @@ public class ScoreDetailModel {
         mBattleRatingScore = battleRatingScore;
     }
 
+    // 处理将服务器给的一堆list中有效数据提取出来
+    public void parse(List<UserScoreModel> list) {
+        if (list == null || list.size() == 0) {
+            MyLog.e("List<UserScoreModel> == null");
+            return;
+        }
+
+        for (UserScoreModel userScoreModel : list) {
+            switch (userScoreModel.getScoreType()) {
+                case ScoreType.ST_UNKNOWN:
+                    break;
+                case ScoreType.ST_RANKING: {
+                    RankLevelModel rankLevelModel = new RankLevelModel();
+                    rankLevelModel.setLevelNow(userScoreModel.getScoreNow());
+                    rankLevelModel.setLevelBefore(userScoreModel.getScoreBefore());
+                    rankLevelModel.setLevelNowDesc(userScoreModel.getScoreNowDesc());
+                    rankLevelModel.setLevelBeforeDesc(userScoreModel.getScoreBeforeDesc());
+                    this.setRankScore(rankLevelModel);
+                    break;
+                }
+                case ScoreType.ST_SUB_RANKING: {
+                    RankLevelModel rankLevelModel = new RankLevelModel();
+                    rankLevelModel.setLevelNow(userScoreModel.getScoreNow());
+                    rankLevelModel.setLevelBefore(userScoreModel.getScoreBefore());
+                    rankLevelModel.setLevelNowDesc(userScoreModel.getScoreNowDesc());
+                    rankLevelModel.setLevelBeforeDesc(userScoreModel.getScoreBeforeDesc());
+                    this.setSubRankScore(rankLevelModel);
+                    break;
+                }
+                case ScoreType.ST_SUB_RANKING_STAR: {
+                    this.setRankStarScore(userScoreModel);
+                    break;
+                }
+                case ScoreType.ST_SUB_RANKING_TOTAL_STAR: {
+                    TotalLimit limit = new TotalLimit();
+                    limit.setLimitNow(userScoreModel.getScoreNow());
+                    limit.setLimitBefore(userScoreModel.getScoreBefore());
+                    this.setTotalStarLimit(limit);
+                    break;
+                }
+                case ScoreType.ST_RANKING_UPGRADE: {
+                    this.setUpgradeScore(userScoreModel);
+                    break;
+                }
+                case ScoreType.ST_RANKING_UPGRADE_STAR: {
+                    this.setUpgradeStarScore(userScoreModel);
+                    break;
+                }
+                case ScoreType.ST_RANKING_UPGRADE_TOTAL_STAR: {
+                    TotalLimit limit = new TotalLimit();
+                    limit.setLimitNow(userScoreModel.getScoreNow());
+                    limit.setLimitBefore(userScoreModel.getScoreBefore());
+                    this.setTotalStarLimit(limit);
+                    break;
+                }
+                case ScoreType.ST_BATTLE_INDEX_REAL: {
+                    this.setBattleRealScore(userScoreModel);
+                    break;
+                }
+                case ScoreType.ST_BATTLE_INDEX_TOTAL: {
+                    TotalLimit limit = new TotalLimit();
+                    limit.setLimitNow(userScoreModel.getScoreNow());
+                    limit.setLimitBefore(userScoreModel.getScoreBefore());
+                    this.setTotalStarLimit(limit);
+                    break;
+                }
+                case ScoreType.ST_BATTLE_RATING: {
+                    this.setBattleRatingScore(userScoreModel.getScoreNow());
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    }
 
 }

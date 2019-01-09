@@ -1,4 +1,4 @@
-package model;
+package com.module.playways.rank.room.scoremodel;
 
 public class ScoreType {
     /**
