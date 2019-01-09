@@ -5,10 +5,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
@@ -16,6 +19,8 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.player.IPlayerCallback;
+import com.common.player.exoplayer.ExoPlayer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -26,6 +31,7 @@ import com.engine.EngineManager;
 import com.engine.Params;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
+import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.room.score.bar.ScorePrograssBar2;
 import com.module.playways.rank.song.model.SongModel;
@@ -49,6 +55,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import io.agora.rtc.Constants;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -72,13 +79,35 @@ public class AuditionFragment extends BaseFragment {
 
     ExTextView mTvUp;
 
+    SendGiftCircleCountDownView mPrgressBar;
+    ExTextView mTvRecordStop;
+    ExImageView mIvRecordStart;
+
+    LinearLayout mLlResing;
+    LinearLayout mLlPlay;
+    LinearLayout mLlSave;
+
+    ExImageView mIvResing;
+    ExImageView mIvPlay;
+    ExImageView mIvSave;
+
+    RelativeLayout mRlControlContainer;
+
+    FrameLayout mFlProgressRoot;
+
     PrepareData mPrepareData;
 
     SongModel mSongModel;
 
     VoiceControlPanelView mVoiceControlPanelView;
 
+    FrameLayout mFlProgressContainer;
+
     private boolean mIsVoiceShow = true;
+
+    private volatile boolean isRecord = false;
+
+    ExoPlayer mExoPlayer;
 
     @Override
     public int initView() {
@@ -87,20 +116,33 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
         mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
         mVoiceControlPanelView = mRootView.findViewById(R.id.voice_control_view);
-
+        mFlProgressRoot = (FrameLayout)mRootView.findViewById(R.id.fl_progress_root);
+        mPrgressBar = mRootView.findViewById(R.id.prgress_bar);
+        mTvRecordStop = (ExTextView)mRootView.findViewById(R.id.tv_record_stop);
+        mIvRecordStart = (ExImageView)mRootView.findViewById(R.id.iv_record_start);
+        mRlControlContainer = (RelativeLayout)mRootView.findViewById(R.id.rl_control_container);
         mTopContainerVg = (RelativeLayout) mRootView.findViewById(R.id.top_container_vg);
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
         RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerVg.getLayoutParams();
         topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
 
+        mFlProgressContainer = (FrameLayout)mRootView.findViewById(R.id.fl_progress_container);
         mScoreProgressBar = (ScorePrograssBar2) mRootView.findViewById(R.id.score_progress_bar);
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mSaveBtn = (ExImageView) mRootView.findViewById(R.id.save_btn);
+        mLlResing = (LinearLayout)mRootView.findViewById(R.id.ll_resing);
+        mIvResing = (ExImageView)mRootView.findViewById(R.id.iv_resing);
+        mLlPlay = (LinearLayout)mRootView.findViewById(R.id.ll_play);
+        mIvPlay = (ExImageView)mRootView.findViewById(R.id.iv_play);
+        mLlSave = (LinearLayout)mRootView.findViewById(R.id.ll_save);
+        mIvSave = (ExImageView)mRootView.findViewById(R.id.iv_save);
+        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
+
+        mRlControlContainer.setVisibility(View.GONE);
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                 .setCircle(true)
@@ -108,7 +150,7 @@ public class AuditionFragment extends BaseFragment {
 
         RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    showVoicePanelView(false);
+//                    showVoicePanelView(false);
                 });
 
         RxView.clicks(mTvUp).throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -121,8 +163,45 @@ public class AuditionFragment extends BaseFragment {
                     onBackPressed();
                 });
 
+        RxView.clicks(mIvResing).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    mPrgressBar.setMax(360);
+                    mPrgressBar.setProgress(0);
+                    mFlProgressRoot.setVisibility(View.VISIBLE);
+                    playMusic(mSongModel);
+                    playLyrics(mSongModel);
+                    mVoiceControlPanelView.setVisibility(View.VISIBLE);
+                    mRlControlContainer.setVisibility(View.GONE);
+                    mIvRecordStart.setVisibility(View.VISIBLE);
+                    mTvRecordStop.setVisibility(View.GONE);
+                    if (mExoPlayer != null) {
+                        mExoPlayer.stop();
+                    }
+                });
 
-        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
+        RxView.clicks(mIvPlay).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    playRecord();
+                });
+
+        RxView.clicks(mIvSave).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                            .setImage(R.drawable.touxiangshezhichenggong_icon)
+                            .setText("保存设置成功\n已应用到所有对局")
+                            .build());
+
+                    U.getFragmentUtils().popFragment(AuditionFragment.this);
+                });
+
+        RxView.clicks(mFlProgressContainer).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    if(isRecord){
+                        stopRecord();
+                    }else {
+                        startRecord();
+                    }
+                });
 
         mManyLyricsView.setOnLyricViewTapListener(new ManyLyricsView.OnLyricViewTapListener() {
             @Override
@@ -158,7 +237,113 @@ public class AuditionFragment extends BaseFragment {
         playMusic(mSongModel);
         playLyrics(mSongModel);
 
+        mPrgressBar.setMax(360);
+        mPrgressBar.setProgress(0);
+    }
 
+    long mStartRecordTs = 0;
+    ValueAnimator mRecordAnimator;
+    private void startRecord(){
+        isRecord = true;
+        mStartRecordTs = System.currentTimeMillis();
+        mIvRecordStart.setVisibility(View.GONE);
+        mTvRecordStop.setVisibility(View.VISIBLE);
+        mRlControlContainer.setVisibility(View.GONE);
+        mIvPlay.setEnabled(true);
+        EngineManager.getInstance().startAudioRecording(Environment.getExternalStorageDirectory() + File.separator + "record.aac", Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
+
+        if(mRecordAnimator != null){
+            mRecordAnimator.cancel();
+        }
+
+        mPrgressBar.setMax(mSongModel.getTotalMs());
+        mRecordAnimator = ValueAnimator.ofInt(0, mSongModel.getTotalMs());
+        mRecordAnimator.setDuration(mSongModel.getTotalMs());
+        mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value = (Integer) animation.getAnimatedValue();
+                mPrgressBar.setProgress(value);
+            }
+        });
+
+        mRecordAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                stopRecord();
+            }
+        });
+
+        mRecordAnimator.start();
+    }
+
+    private void stopRecord(){
+        if(System.currentTimeMillis() - mStartRecordTs < 3000){
+            U.getToastUtil().showShort("太短啦，再唱几句吧");
+            return;
+        }
+
+        isRecord = false;
+
+        EngineManager.getInstance().stopAudioRecording();
+        EngineManager.getInstance().stopAudioMixing();
+
+        mManyLyricsView.seekto(mSongModel.getBeginMs());
+        mManyLyricsView.pause();
+        mRecordAnimator.cancel();
+        mIvRecordStart.setVisibility(View.VISIBLE);
+        mTvRecordStop.setVisibility(View.GONE);
+        mRlControlContainer.setVisibility(View.VISIBLE);
+        mFlProgressRoot.setVisibility(View.GONE);
+        mVoiceControlPanelView.setVisibility(View.GONE);
+        mIvPlay.setEnabled(false);
+
+        playRecord();
+    }
+
+    /**
+     * 播放录音
+     */
+    private void playRecord(){
+        if (mExoPlayer != null) {
+            mExoPlayer.stop();
+        }
+
+        mExoPlayer = new ExoPlayer();
+        mExoPlayer.startPlay(Environment.getExternalStorageDirectory() + File.separator + "record.aac");
+        mIvPlay.setEnabled(false);
+
+        mExoPlayer.setCallback(new IPlayerCallback() {
+            @Override
+            public void onPrepared() {
+
+            }
+
+            @Override
+            public void onCompletion() {
+                mIvPlay.setEnabled(true);
+            }
+
+            @Override
+            public void onSeekComplete() {
+
+            }
+
+            @Override
+            public void onVideoSizeChanged(int width, int height) {
+
+            }
+
+            @Override
+            public void onError(int what, int extra) {
+
+            }
+
+            @Override
+            public void onInfo(int what, int extra) {
+
+            }
+        });
     }
 
     private void showVoicePanelView(boolean show) {
@@ -324,7 +509,17 @@ public class AuditionFragment extends BaseFragment {
         super.destroy();
         EngineManager.getInstance().stopAudioMixing();
         mManyLyricsView.release();
+        if(mExoPlayer != null){
+            mExoPlayer.release();
+        }
+
+        if(mRecordAnimator != null){
+            mRecordAnimator.cancel();
+        }
+
+        File recordFile = new File(Environment.getExternalStorageDirectory() + File.separator + "record.aac");
+        if(recordFile.exists()){
+            recordFile.delete();
+        }
     }
-
-
 }

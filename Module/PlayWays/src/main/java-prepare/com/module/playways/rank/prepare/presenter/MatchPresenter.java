@@ -14,7 +14,6 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.msg.event.JoinNoticeEvent;
-import com.module.playways.rank.prepare.GameModeType;
 import com.module.playways.rank.prepare.MatchServerApi;
 import com.module.playways.rank.prepare.model.GameInfoModel;
 import com.module.playways.rank.prepare.model.MatchingUserIconListInfo;
@@ -110,7 +109,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("mode", gameType);
         map.put("playbookItemID", playbookItemID);
-        map.put("platform", 2);   // 代表是android平台
+        map.put("platform", 20);   // 代表是android平台
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
 

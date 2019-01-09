@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_11_dp"
-        android:drawableRight="@drawable/ic_arrow_back"
         android:text="调音"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_20_dp"
