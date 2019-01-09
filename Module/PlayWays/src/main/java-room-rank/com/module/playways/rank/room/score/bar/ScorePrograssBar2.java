@@ -26,13 +26,15 @@ public class ScorePrograssBar2 extends View {
 
     public final static String TAG = "ScorePrograssBar2";
 
+    DrawableWithLocation mLevelDrawables[];
+
     Drawable mBgDrawable = U.app().getResources().getDrawable(R.drawable.xuecao);
     int w1, h1;
 
     Drawable mPrDrawable = U.app().getResources().getDrawable(R.drawable.xueye);
     int w2, h2;
 
-    float tx, ty;
+    int tx, ty;
 
     float sx = 0; // progress=0的位置
     float px = 0; // 角度产生的 x 轴，下面边的偏移量
@@ -71,8 +73,8 @@ public class ScorePrograssBar2 extends View {
         w2 = mPrDrawable.getIntrinsicWidth();
         h2 = mPrDrawable.getIntrinsicHeight();
 
-        ty = (h1 - h2) / 2.0f + U.getDisplayUtils().dip2px(3);
-        tx = (w1 - w2) / 2.0f + U.getDisplayUtils().dip2px(3);
+        ty = (h1 - h2) / 2;
+        tx = (w1 - w2) / 2;
 
         sx = w1 * 25 / 100.0f;
         px = (float) (Math.tan(Math.PI / 4) * h1);
@@ -105,7 +107,7 @@ public class ScorePrograssBar2 extends View {
         shader.setLocalMatrix(matrix);
         mPaintCircleBar.setShader(shader);
 
-        float r = h2 / 2.0f - strokeWidth/2.0f;
+        float r = h2 / 2.0f - strokeWidth / 2.0f;
         mRectF = new RectF(cx - r, cy - r, cx + r, cy + r);
 //        mPaintProgressBar = new Paint();//这个是画矩形的画笔，方便大家理解这个圆弧
 //        mPaintProgressBar.setStyle(Paint.Style.STROKE);
@@ -116,8 +118,19 @@ public class ScorePrograssBar2 extends View {
 //        mPaintProgressBar.setStrokeWidth(20);
 //        mPaintProgressBar.setColor(Color.CYAN);
 
+        mLevelDrawables = new DrawableWithLocation[]{
+                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_a), getXByProgress(50), 50),
+                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_s), getXByProgress(65), 65),
+                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_ss), getXByProgress(80), 80),
+                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_sss), getXByProgress(95), 95),
+        };
+
     }
 
+    private int getXByProgress(int p) {
+        float temp = p * (w1 + extendX - sx) / 100.0f + sx;
+        return (int) temp;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -136,7 +149,7 @@ public class ScorePrograssBar2 extends View {
         path.close();
         canvas.clipPath(path);
 //        canvas.drawColor(Color.RED);
-        mPrDrawable.setBounds((int) tx, (int) ty, w2, h2);
+        mPrDrawable.setBounds(tx, ty, w2 + tx, h2 + ty);
         mPrDrawable.draw(canvas);
         canvas.restore();
 
@@ -155,9 +168,28 @@ public class ScorePrograssBar2 extends View {
             // 画进度条
             canvas.drawArc(mRectF, 80, -360 * mPrgress2 / 100.0f, false, mPaintCircleBar);
         }
+
+        // 画level图标
+        for (int i = 0; i < mLevelDrawables.length; i++) {
+            DrawableWithLocation drawableW = mLevelDrawables[i];
+
+            int oy = 0;
+            Drawable drawable = drawableW.getDrawable();
+            int ox = drawableW.getTransLateX() - drawable.getIntrinsicWidth() / 2;
+            drawable.setBounds(ox, oy, ox + drawable.getIntrinsicWidth(), oy + drawable.getIntrinsicHeight());
+            drawable.draw(canvas);
+        }
     }
 
-
+    public int getStarXByScore(int p) {
+        for (int i = mLevelDrawables.length - 1; i >= 0; i--) {
+            DrawableWithLocation drawableW = mLevelDrawables[i];
+            if (p > drawableW.score) {
+                return drawableW.transLateX - drawableW.mDrawable.getIntrinsicWidth() / 2;
+            }
+        }
+        return -1;
+    }
 //    boolean tryPostInvalidateDelayed() {
 //        if (mCurProgress == mProgress) {
 //            return false;
@@ -214,12 +246,12 @@ public class ScorePrograssBar2 extends View {
                 @Override
                 public void onAnimationCancel(Animator animation) {
                     super.onAnimationCancel(animation);
-                    onAnimationEnd(animation);
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
+
                 }
             });
         }
@@ -232,5 +264,30 @@ public class ScorePrograssBar2 extends View {
     public void setProgress2(int p) {
         mPrgress2 = p;
         invalidate();
+    }
+
+    static class DrawableWithLocation {
+        Drawable mDrawable;
+        int transLateX;
+        int score;
+
+        public DrawableWithLocation(Drawable drawable, int transLateX, int score) {
+            mDrawable = drawable;
+            this.transLateX = transLateX;
+            this.score = score;
+        }
+
+        public Drawable getDrawable() {
+            return mDrawable;
+        }
+
+        public int getTransLateX() {
+            return transLateX;
+        }
+
+        public int getScore() {
+            return score;
+        }
+
     }
 }

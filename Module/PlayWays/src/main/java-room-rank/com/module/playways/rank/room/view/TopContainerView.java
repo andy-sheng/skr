@@ -15,6 +15,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.rank.room.score.bar.ScoreProgressBarWithSvga;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.score.bar.ScorePrograssBar2;
@@ -27,7 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class TopContainerView extends RelativeLayout {
     public final static String TAG = "TopContainerView";
     ExImageView mMoreBtn;
-    ScorePrograssBar2 mScoreProgressBar;
+    ScoreProgressBarWithSvga mScoreProgressBar;
     BaseImageView mAvatarIv;
     MoreOpView mMoreOpView;
     ExTextView mTvPassedTime;
@@ -51,7 +52,7 @@ public class TopContainerView extends RelativeLayout {
         mAvatarIv = this.findViewById(R.id.avatar_iv);
         mMoreBtn = this.findViewById(R.id.more_btn);
         mScoreProgressBar = this.findViewById(R.id.score_progress_bar);
-        mTvPassedTime = (ExTextView) this.findViewById(R.id.tv_passed_time);
+        mTvPassedTime =  this.findViewById(R.id.tv_passed_time);
 
         mMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +91,7 @@ public class TopContainerView extends RelativeLayout {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mScoreProgressBar.setProgress1(50);
+                mScoreProgressBar.setProgress1(90);
             }
         }, 4000);
     }

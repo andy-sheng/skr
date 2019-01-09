@@ -1,6 +1,7 @@
 package com.common.utils;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
 
 /**
  * 每个工具类都必须由U引用来调用，以防止工具类混乱难以管理的问题，
@@ -317,5 +318,9 @@ public class U {
 
     public static int getColor(int colorId){
         return U.app().getResources().getColor(colorId);
+    }
+
+    public static Drawable getDrawable(int drawableId){
+        return U.app().getResources().getDrawable(drawableId);
     }
 }

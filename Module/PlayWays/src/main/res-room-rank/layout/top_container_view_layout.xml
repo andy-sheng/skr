@@ -12,7 +12,7 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_height="@dimen/view_62_dp">
 
-        <com.module.playways.rank.room.score.bar.ScorePrograssBar2
+        <com.module.playways.rank.room.score.bar.ScoreProgressBarWithSvga
             android:id="@+id/score_progress_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
