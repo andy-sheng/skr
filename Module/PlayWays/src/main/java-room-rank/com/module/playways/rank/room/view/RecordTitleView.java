@@ -141,7 +141,6 @@ public class RecordTitleView extends RelativeLayout {
         // 展示之前的段位
         mSdvOwnLevel.bindData(scoreDetailModel.getRankScore().getLevelBefore(), scoreDetailModel.getSubRankScore().getLevelBefore()
                 , scoreDetailModel.getTotalStarLimit().getLimitBefore(), scoreDetailModel.getRankStarScore().getScoreBefore());
-
         mSdvOwnLevel.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -157,7 +156,7 @@ public class RecordTitleView extends RelativeLayout {
             if (mScoreDetailModel.getRankStarScore().getScoreBefore() == mScoreDetailModel.getTotalStarLimit().getLimitBefore()) {
                 // 之前就满星， 播放段位改变的动画
                 mSdvOwnLevel.levelChange(mViewGroup, mScoreDetailModel.getRankScore().getLevelBefore(), mScoreDetailModel.getSubRankScore().getLevelBefore(),
-                        mScoreDetailModel.getRankScore().getLevelNow(), mScoreDetailModel.getSubRankScore().getLevelNow(), new NormalLevelView.SVGAListener() {
+                        mScoreDetailModel.getRankScore().getLevelNow(), mScoreDetailModel.getSubRankScore().getLevelNow(), mScoreDetailModel.getTotalStarLimit().getLimitNow(), new NormalLevelView.SVGAListener() {
                             @Override
                             public void onFinish() {
                                 // 播放段位改变后砸星星动画
@@ -166,20 +165,22 @@ public class RecordTitleView extends RelativeLayout {
 
                                 } else {
                                     // 还有星星，播加星动画
-                                    mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreNow() - 1,
-                                            mScoreDetailModel.getTotalStarLimit().getLimitNow() - 1, null);
+                                    mSdvOwnLevel.starUp(mViewGroup, 0,
+                                            mScoreDetailModel.getRankStarScore().getScoreNow() - 1, null);
                                 }
                             }
                         });
             } else {
                 // 播放星星砸满的动画
-                mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore() - 1,
+                mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
                         mScoreDetailModel.getTotalStarLimit().getLimitBefore() - 1, new NormalLevelView.SVGAListener() {
                             @Override
                             public void onFinish() {
                                 // 播放段位改变的动画
                                 mSdvOwnLevel.levelChange(mViewGroup, mScoreDetailModel.getRankScore().getLevelBefore(), mScoreDetailModel.getSubRankScore().getLevelBefore(),
-                                        mScoreDetailModel.getRankScore().getLevelNow(), mScoreDetailModel.getSubRankScore().getLevelNow(), new NormalLevelView.SVGAListener() {
+                                        mScoreDetailModel.getRankScore().getLevelNow(), mScoreDetailModel.getSubRankScore().getLevelNow(),
+                                        mScoreDetailModel.getTotalStarLimit().getLimitNow(),
+                                        new NormalLevelView.SVGAListener() {
                                             @Override
                                             public void onFinish() {
                                                 // 判断当前星星状态
@@ -187,8 +188,8 @@ public class RecordTitleView extends RelativeLayout {
                                                     // 没有星，判断分数是否变化，播放分数动画(先不做)
                                                 } else {
                                                     // 还有星星，播加星动画
-                                                    mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreNow() - 1,
-                                                            mScoreDetailModel.getTotalStarLimit().getLimitNow() - 1, null);
+                                                    mSdvOwnLevel.starUp(mViewGroup, 0,
+                                                            mScoreDetailModel.getRankStarScore().getScoreNow() - 1, null);
                                                 }
                                             }
                                         });
@@ -197,11 +198,11 @@ public class RecordTitleView extends RelativeLayout {
             }
         } else if (mScoreDetailModel.getStarChange() > 0) {
             // TODO: 2019/1/10 无段位变化，星星增加
-            mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore() - 1,
+            mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
                     mScoreDetailModel.getRankStarScore().getScoreNow() - 1, null);
         } else if (mScoreDetailModel.getStarChange() < 0) {
             // TODO: 2019/1/10 无段位变化，星星减少
-            mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore() - 1,
+            mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
                     mScoreDetailModel.getRankStarScore().getScoreNow() - 1, null);
         }
     }

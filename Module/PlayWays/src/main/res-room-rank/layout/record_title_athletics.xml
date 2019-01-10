@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:clipChildren="false">
+    android:clipChildren="false"
+    android:orientation="vertical">
 
     <com.zq.level.view.NormalLevelView
         android:id="@+id/sdv_own_level"
         android:layout_width="@dimen/view_100_dp"
         android:layout_height="@dimen/view_110_dp"
-        android:layout_marginTop="@dimen/view_24_dp"
-        android:layout_centerHorizontal="true">
-    </com.zq.level.view.NormalLevelView>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_24_dp"></com.zq.level.view.NormalLevelView>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_own_record"
@@ -25,37 +24,26 @@
 
     <com.module.playways.rank.room.view.RecordCircleView
         android:id="@+id/record_circle_view"
-        android:layout_marginRight="@dimen/view_34_dp"
-        android:layout_marginTop="@dimen/view_51_dp"
         android:layout_width="@dimen/view_50_dp"
         android:layout_height="@dimen/view_50_dp"
         android:layout_alignParentRight="true"
-         />
+        android:layout_marginTop="@dimen/view_51_dp"
+        android:layout_marginRight="@dimen/view_34_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_song_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_140_dp"
         android:layout_marginTop="@dimen/view_135_dp"
+        android:layout_marginRight="@dimen/view_140_dp"
         android:text="《印第安老斑鸠》"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_16_dp" />
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:layout_width="@dimen/view_180_dp"
-        android:layout_height="@dimen/view_108_dp"
-        android:layout_marginTop="@dimen/view_95_dp"
-        android:layout_alignParentRight="true"
-        app:clearsAfterStop="false"
-        app:loopCount="1"
-        app:antiAlias="true"
-        app:source="sss.svga"/>
-
     <View
-        android:layout_alignParentBottom="true"
-        android:background="@color/white_trans_10"
         android:layout_width="match_parent"
-        android:layout_height="1px"/>
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white_trans_10" />
 </RelativeLayout>

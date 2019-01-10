@@ -78,6 +78,14 @@ public class NormalLevelView extends RelativeLayout {
         initStart();
     }
 
+    private void bindStarData(int totalStats, int selecStats) {
+        this.totalStats = totalStats;
+        this.selecStats = selecStats;
+        starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
+
+        initStart();
+    }
+
     private void initStart() {
         // 先清除所有的星星
         if (starts != null) {
@@ -151,7 +159,12 @@ public class NormalLevelView extends RelativeLayout {
      * @param levelNow       现在的父段位
      * @param sublevelNow    现在的子段位
      */
-    public void levelChange(final ViewGroup viewGroup, final int levelBefore, final int subLevelBefore, final int levelNow, final int sublevelNow, final SVGAListener listener) {
+    public void levelChange(final ViewGroup viewGroup, final int levelBefore, final int subLevelBefore, final int levelNow, final int sublevelNow,
+                            int totalStatsNow,
+                            final SVGAListener listener) {
+        // 段位下星星
+        bindStarData(totalStatsNow, 0);
+        // 播放段位动画
         final SVGAImageView levelChange = new SVGAImageView(getContext());
         levelChange.setClearsAfterStop(false);   // 停在最后一帧
         levelChange.setLoops(1);  // 只播1次
