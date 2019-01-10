@@ -1,25 +1,23 @@
 package com.common.core.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
-import com.common.core.login.fragment.LoginByPhoneFragment;
+import com.common.core.account.event.AccountEvent;
 import com.common.core.login.fragment.LoginFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
-import com.common.view.ex.ExTextView;
-import com.module.RouterConstants;
-import com.common.core.account.event.AccountEvent;
 import com.common.utils.U;
+import com.module.RouterConstants;
+import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -101,6 +99,24 @@ public class LoginActivity extends BaseActivity {
         } else {
             return false;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
+        UMShareAPI.get(this).release();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        UMShareAPI.get(this).onSaveInstanceState(outState);
     }
 
     @Override

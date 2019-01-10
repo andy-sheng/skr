@@ -300,6 +300,61 @@ public class UserAccountManager {
 
     }
 
+    // 微信登录
+    public void loginByWX(String verifyCode) {
+        UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
+        // 1 为手机登录
+        userAccountServerApi.loginWX(3, verifyCode)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult obj) {
+                        if (obj.getErrno() == 0) {
+                            String secretToken = obj.getData().getJSONObject("token").getString("T");
+                            String serviceToken = obj.getData().getJSONObject("token").getString("S");
+                            String rongToken = obj.getData().getJSONObject("token").getString("RC");
+                            com.alibaba.fastjson.JSONObject profileJO = obj.getData().getJSONObject("profile");
+                            long userID = profileJO.getLong("userID");
+                            String nickName = profileJO.getString("nickname");
+                            int sex = profileJO.getInteger("sex");
+                            String birthday = profileJO.getString("birthday");
+                            String avatar = profileJO.getString("avatar");
+                            String sign = profileJO.getString("signature");
+                            Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
+
+                            boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
+
+                            // 设置个人信息
+                            MyUserInfo myUserInfo = new MyUserInfo();
+                            myUserInfo.setUserId(userID);
+                            myUserInfo.setUserNickname(nickName);
+                            myUserInfo.setSex(sex);
+                            myUserInfo.setBirthday(birthday);
+                            myUserInfo.setAvatar(avatar);
+                            myUserInfo.setSignature(sign);
+                            myUserInfo.setLocation(location);
+                            MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
+
+                            UserAccount userAccount = new UserAccount();
+//                            userAccount.setPhoneNum(phoneNum);
+                            userAccount.setServiceToken(serviceToken);
+                            userAccount.setSecretToken(secretToken);
+                            userAccount.setRongToken(rongToken);
+                            userAccount.setUid(String.valueOf(userID));
+                            userAccount.setNickName(nickName);
+                            userAccount.setSex(sex);
+                            userAccount.setBirthday(birthday);
+                            userAccount.setNeedEditUserInfo(isFirstLogin);
+                            userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
+                            onLoginResult(userAccount);
+                            UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
+                        } else {
+                            EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
+                        }
+                    }
+                });
+
+    }
     /**
      * 用户主动退出登录
      */
