@@ -6,9 +6,10 @@
     android:layout_height="@dimen/view_80_dp">
 
     <com.common.view.ex.ExTextView
+        android:textSize="@dimen/textsize_14_dp"
+        android:alpha="0.5"
+        android:textColor="#0C2275"
         android:id="@+id/tv_rank"
-        android:text="3"
-        android:textColor="@color/black"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_width="wrap_content"
@@ -22,6 +23,9 @@
         android:layout_height="@dimen/view_42_dp" />
 
     <com.common.view.ex.ExTextView
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        android:textColor="#0C2275"
         android:id="@+id/tv_name"
         android:layout_toRightOf="@+id/sdv_icon"
         android:layout_marginTop="@dimen/view_25_dp"
@@ -30,6 +34,9 @@
         android:layout_height="wrap_content" />
 
     <com.common.view.ex.ExTextView
+        android:textSize="@dimen/textsize_14_dp"
+        android:alpha="0.5"
+        android:textColor="#0C2275"
         android:id="@+id/tv_segment"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/sdv_icon"
@@ -39,9 +46,11 @@
         android:layout_height="wrap_content" />
 
     <com.common.view.ex.ExTextView
+        android:textSize="@dimen/textsize_14_dp"
+        android:textColor="#0C2275"
         android:id="@+id/tv_star"
         android:layout_centerVertical="true"
-        android:text="X12"
+        android:text=""
         android:layout_marginRight="@dimen/view_25_dp"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"

@@ -78,8 +78,8 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
             AvatarUtils.loadAvatarByUrl(mSdvIcon,
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
                             .setCircle(true)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                            .setBorderColor(Color.WHITE)
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setBorderColor(Color.parseColor("#85EAFF"))
                             .build());
         }
     }

@@ -148,8 +148,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         AvatarUtils.loadAvatarByUrl(sdvIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setBorderColor(Color.parseColor("#FF79A9"))
                         .build());
 
         if(MyUserInfoManager.getInstance().hasLocation()){
