@@ -221,40 +221,54 @@ public class NormalLevelView extends RelativeLayout {
 
     // 星星增加动画,从第几颗星增加到几个行
     // TODO: 2019/1/10 from 和 to都是从0开始计算
-    public void starUp(final ViewGroup viewGroup, final int from, final int to, final SVGAListener listener) {
-        final int dis = to - from;
-        starUp(viewGroup, from, new SVGACallback() {
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onFinished() {
-                if (dis > 0) {
-                    starUp(viewGroup, from + 1, to, listener);
-                } else {
-                    if (listener != null) {
-                        listener.onFinish();
-                    }
+    public void starUp(final ViewGroup viewGroup, int from, final int to, final SVGAListener listener) {
+        for (int postion = from; postion <= to; postion++) {
+            final int finalPostion = postion;
+            mLevelIv.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    starUp(viewGroup, finalPostion, new StarListener() {
+                        @Override
+                        public void onFinish(int index) {
+                            if (index == to) {
+                                if (listener != null) {
+                                    listener.onFinish();
+                                }
+                            }
+                        }
+                    });
                 }
-                ImageView imageView = starts.get(from);
-                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang));
-            }
+            }, 300 * postion);
 
-            @Override
-            public void onRepeat() {
+        }
 
-            }
-
-            @Override
-            public void onStep(int i, double v) {
-
-            }
-        });
     }
 
-    private void starUp(ViewGroup viewGroup, int index, SVGACallback callback) {
+    // 星星掉落动画 from必须大于to，表示从第几颗星星掉落
+    // TODO: 2019/1/10 from 和 to都是从0开始计算
+    public void starLoss(final ViewGroup viewGroup, final int from, final int to, final SVGAListener listener) {
+        for (int postion = from; postion >= to; postion--) {
+            final int finalPostion = postion;
+            mLevelIv.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    starLoss(viewGroup, finalPostion, new StarListener() {
+                        @Override
+                        public void onFinish(int index) {
+                            if (index == to) {
+                                if (listener != null) {
+                                    listener.onFinish();
+                                }
+                            }
+                        }
+                    });
+                }
+            }, 300 * (from - postion));
+
+        }
+    }
+
+    private void starUp(ViewGroup viewGroup, final int index, final StarListener starListener) {
         if (index < 0 || index >= totalStats) {
             return;
         }
@@ -298,14 +312,8 @@ public class NormalLevelView extends RelativeLayout {
         } catch (Exception e) {
             System.out.print(true);
         }
-        starUp.setCallback(callback);
-    }
 
-    // 星星掉落动画 from必须大于to，表示从第几颗星星掉落
-    // TODO: 2019/1/10 from 和 to都是从0开始计算
-    public void starLoss(final ViewGroup viewGroup, final int from, final int to, final SVGAListener listener) {
-        final int dis = from - to;
-        starLoss(viewGroup, from, new SVGACallback() {
+        starUp.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -313,12 +321,10 @@ public class NormalLevelView extends RelativeLayout {
 
             @Override
             public void onFinished() {
-                if (dis > 0) {
-                    starLoss(viewGroup, from - 1, to, listener);
-                } else {
-                    if (listener != null) {
-                        listener.onFinish();
-                    }
+                ImageView imageView = starts.get(index);
+                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang));
+                if (starListener != null) {
+                    starListener.onFinish(index);
                 }
             }
 
@@ -334,7 +340,7 @@ public class NormalLevelView extends RelativeLayout {
         });
     }
 
-    private void starLoss(ViewGroup viewGroup, int index, SVGACallback callback) {
+    private void starLoss(ViewGroup viewGroup, final int index, final StarListener starListener) {
         if (index < 0 || index >= totalStats) {
             return;
         }
@@ -380,10 +386,36 @@ public class NormalLevelView extends RelativeLayout {
         } catch (Exception e) {
             System.out.print(true);
         }
-        starLoss.setCallback(callback);
+        starLoss.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (starListener != null) {
+                    starListener.onFinish(index);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
     }
 
     public interface SVGAListener {
         void onFinish();
+    }
+
+    public interface StarListener {
+        void onFinish(int index);
     }
 }
