@@ -1,7 +1,5 @@
 package com.module.playways.rank.room.scoremodel;
 
-import android.widget.Toast;
-
 import com.common.log.MyLog;
 
 import java.util.List;

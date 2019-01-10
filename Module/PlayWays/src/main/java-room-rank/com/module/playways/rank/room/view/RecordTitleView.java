@@ -3,8 +3,10 @@ package com.module.playways.rank.room.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -19,6 +21,7 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
+import com.module.playways.rank.room.utils.ScoreConfigUtils;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView;
 
@@ -46,6 +49,7 @@ public class RecordTitleView extends RelativeLayout {
     ExTextView mTvLightCount;
     ExImageView mIvLightCount;
     ExTextView mTvSongName;
+    ExImageView mTvSongScore;
 
     RecordCircleView mRecordCircleView;
 
@@ -92,9 +96,13 @@ public class RecordTitleView extends RelativeLayout {
         }
 
         mTvSongName = (ExTextView) findViewById(R.id.tv_song_name);
+        mTvSongScore = (ExImageView) findViewById(R.id.tv_song_score);
+
         mIvOwnRecord = (ExImageView) findViewById(R.id.iv_own_record);
 
         mTvSongName.setText("《" + mRoomData.getSongModel().getItemName() + "》");
+
+        mTvSongScore.setBackground(getResources().getDrawable(ScoreConfigUtils.getImageResoucesScore(mRecordData.mScoreDetailModel.getBattleRatingScore())));
 
         Observable.fromIterable(mRecordData.mVoteInfoModels)
                 .filter(new Predicate<VoteInfoModel>() {
