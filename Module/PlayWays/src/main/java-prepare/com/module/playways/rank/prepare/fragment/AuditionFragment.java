@@ -7,7 +7,6 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
@@ -40,8 +39,6 @@ import com.module.playways.rank.room.score.bar.ScorePrograssBar2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.lyrics.LyricsManager;
@@ -321,9 +318,9 @@ public class AuditionFragment extends BaseFragment {
         mRecordAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (isRecord) {
+                mUiHanlder.post(()->{
                     stopRecord();
-                }
+                });
             }
 
             @Override
@@ -336,6 +333,10 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void stopRecord() {
+        if(!isRecord){
+            return;
+        }
+
         if (System.currentTimeMillis() - mStartRecordTs < 3000) {
             U.getToastUtil().showShort("太短啦，再唱几句吧");
             return;
@@ -504,9 +505,9 @@ public class AuditionFragment extends BaseFragment {
 //        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
 
         if (event.getType() == TYPE_MUSIC_PLAY_FINISH) {
-            if (isRecord) {
+            mUiHanlder.post(()->{
                 stopRecord();
-            }
+            });
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> l = event.getObj();
             for (EngineEvent.UserVolumeInfo userVolumeInfo : l) {

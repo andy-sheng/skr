@@ -1040,6 +1040,8 @@ public abstract class AbstractLrcView extends View {
      */
     public void seekto(int playProgress) {
         synchronized (lock) {
+            mCurEndLineNum = mLyricsReader.getLineInfoIdByStartTs(playProgress);
+            mCurSplitLyricsEndLineNum = 0;
             if (mLrcPlayerStatus == LRCPLAYERSTATUS_PLAY) {
                 play(playProgress);
             } else {
@@ -1189,6 +1191,9 @@ public abstract class AbstractLrcView extends View {
         mExtraLyricsWordIndex = -1;
         mExtraSplitLyricsWordIndex = -1;
         mTranslateLyricsWordHLTime = 0;
+
+        mCurEndLineNum = 0;
+        mCurSplitLyricsEndLineNum = 0;
 
         //无额外歌词回调
         if (mExtraLyricsListener != null) {
