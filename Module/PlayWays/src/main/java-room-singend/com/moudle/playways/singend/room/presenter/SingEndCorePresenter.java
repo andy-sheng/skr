@@ -581,7 +581,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
 
         if (roundAndGameOverEvent.mVoteInfoModels != null && roundAndGameOverEvent.mVoteInfoModels.size() > 0) {
             //不需要跳转评论页,直接跳转战绩页
-            mIGameRuleView.showRecordView(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mUserScoreModels));
+            mIGameRuleView.showRecordView(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mScoreDetailModel));
         } else {
             mIGameRuleView.showVoteView();
         }

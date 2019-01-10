@@ -11,6 +11,7 @@ import com.common.utils.U;
 import com.module.playways.rank.msg.event.VoteResultEvent;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
+import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
 import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.view.IVoteView;
@@ -100,7 +101,9 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
                     List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
                     U.getToastUtil().showShort("获取投票结果成功");
 
-                    view.showRecordView(new RecordData(voteInfoModelList, userScoreModelList));
+                    ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
+                    scoreDetailModel.parse(userScoreModelList);
+                    view.showRecordView(new RecordData(voteInfoModelList, scoreDetailModel));
                 } else {
                     MyLog.e(TAG, "getVoteResult result errno is " + result.getErrmsg());
                 }
@@ -116,6 +119,6 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(VoteResultEvent event) {
         MyLog.d(TAG, "VoteResultEvent" + " event=" + event);
-        view.showRecordView(new RecordData(event.mVoteInfoModels, event.mUserScoreModels));
+        view.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreDetailModel));
     }
 }

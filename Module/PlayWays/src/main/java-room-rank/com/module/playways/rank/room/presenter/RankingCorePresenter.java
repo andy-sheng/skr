@@ -44,6 +44,7 @@ import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
 import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
@@ -149,7 +150,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     public void accept(RecordData recordData) throws Exception {
                         if (recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
                             //不需要跳转评论页,直接跳转战绩页
-                            mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mUserScoreModels));
+                            mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mScoreDetailModel));
                         } else {
                             mIGameRuleView.showVoteView();
                         }
@@ -414,9 +415,11 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
                     List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
-                    U.getToastUtil().showShort("获取投票结果成功");
+                    ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
+                    scoreDetailModel.parse(userScoreModelList);
 
-                    mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, userScoreModelList));
+                    U.getToastUtil().showShort("获取投票结果成功");
+                    mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, scoreDetailModel));
                     mGameFinishActionSubject.onComplete();
 
                 } else {
@@ -991,7 +994,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         recvGameOverFromServer("push", roundAndGameOverEvent.roundOverTimeMs);
         cancelSyncGameStateTask();
 
-        mGameFinishActionSubject.onNext(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mUserScoreModels));
+        mGameFinishActionSubject.onNext(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mScoreDetailModel));
         mGameFinishActionSubject.onComplete();
     }
 

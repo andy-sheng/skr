@@ -204,9 +204,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             userScoreModel.parse(userScoreRecord);
             userScoreModels.add(userScoreModel);
         }
-
         MyLog.d(TAG, " processRoundAndGameOverMsg " + "roundOverTimeMs" + roundOverTimeMs);
-        EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs, voteInfoModels, userScoreModels));
+
+        ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
+        scoreDetailModel.parse(userScoreModels);
+        EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs, voteInfoModels, scoreDetailModel));
     }
 
     //app进程后台通知
@@ -306,7 +308,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             userScoreModels.add(userScoreModel);
         }
 
-        EventBus.getDefault().post(new VoteResultEvent(basePushInfo, voteInfoModels, userScoreModels));
+        ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
+        scoreDetailModel.parse(userScoreModels);
+
+        EventBus.getDefault().post(new VoteResultEvent(basePushInfo, voteInfoModels, scoreDetailModel));
     }
 
     // 处理机器打分

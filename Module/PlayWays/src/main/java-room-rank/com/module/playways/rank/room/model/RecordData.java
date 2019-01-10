@@ -1,17 +1,18 @@
 package com.module.playways.rank.room.model;
 
 import com.common.core.myinfo.MyUserInfoManager;
+import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
 import com.module.playways.rank.room.scoremodel.UserScoreModel;
 
 import java.util.List;
 
 public class RecordData {
     public List<VoteInfoModel> mVoteInfoModels;
-    public List<UserScoreModel> mUserScoreModels;
+    public ScoreDetailModel mScoreDetailModel;
 
-    public RecordData(List<VoteInfoModel> mVoteInfoModels, List<UserScoreModel> mUserScoreModels) {
+    public RecordData(List<VoteInfoModel> mVoteInfoModels, ScoreDetailModel mScoreDetailModel) {
         this.mVoteInfoModels = mVoteInfoModels;
-        this.mUserScoreModels = mUserScoreModels;
+        this.mScoreDetailModel = mScoreDetailModel;
     }
 
     public VoteInfoModel getSelfVoteInfoModel(){
