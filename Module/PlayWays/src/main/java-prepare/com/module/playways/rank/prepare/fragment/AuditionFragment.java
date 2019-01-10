@@ -297,7 +297,7 @@ public class AuditionFragment extends BaseFragment {
         mRlControlContainer.setVisibility(View.GONE);
         mTvRecordTip.setText("点击结束试音演唱");
         mIvPlay.setEnabled(true);
-        EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_MEDIUM);
+        EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH);
 
         if (mRecordAnimator != null) {
             mRecordAnimator.cancel();
