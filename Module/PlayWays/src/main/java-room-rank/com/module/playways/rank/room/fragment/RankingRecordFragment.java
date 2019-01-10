@@ -68,9 +68,9 @@ public class RankingRecordFragment extends BaseFragment {
 
         try {
             mRecordTitleView.setData(mRankingRecord, mRecordData, mRoomData);
-            mRecordItemOne.setData(mRoomData, mRecordData.mVoteInfoModels.get(0));
-            mRecordItemTwo.setData(mRoomData, mRecordData.mVoteInfoModels.get(1));
-            mRecordItemThree.setData(mRoomData, mRecordData.mVoteInfoModels.get(2));
+            mRecordItemOne.setData(mRoomData, mRecordData, 0, 0xFFFF79A9);
+            mRecordItemTwo.setData(mRoomData, mRecordData, 1, 0xFF85EAFF);
+            mRecordItemThree.setData(mRoomData, mRecordData,2, 0xFF85EAFF);
         }catch (Exception e){
             MyLog.e(TAG, e);
         }

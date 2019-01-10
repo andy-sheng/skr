@@ -233,28 +233,28 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         if(num != 1){
             iconListIndex += 1;
             int index1 = iconListIndex % (mAvatarURL.size() - 1);
-            loadIconInImage(mAvatarURL.get(index1), mSdvIcon1);
-            loadIconInImage(mAvatarURL.get(index1), mSdvSubIcon1);
+            loadIconInImage(mAvatarURL.get(index1), mSdvIcon1, 0xFF85EAFF);
+            loadIconInImage(mAvatarURL.get(index1), mSdvSubIcon1, 0xFF85EAFF);
         }
 
         iconListIndex += 1;
         int index2 = iconListIndex % (mAvatarURL.size() - 1);
-        loadIconInImage(mAvatarURL.get(index2), mSdvIcon2);
+        loadIconInImage(mAvatarURL.get(index2), mSdvIcon2, 0xFFFF79A9);
 
         if(num != 3){
             iconListIndex += 1;
             int index3 = iconListIndex % (mAvatarURL.size() - 1);
-            loadIconInImage(mAvatarURL.get(index3), mSdvIcon3);
-            loadIconInImage(mAvatarURL.get(index3), mSdvSubIcon3);
+            loadIconInImage(mAvatarURL.get(index3), mSdvIcon3, 0xFF85EAFF);
+            loadIconInImage(mAvatarURL.get(index3), mSdvSubIcon3, 0xFF85EAFF);
         }
     }
 
-    private void loadIconInImage(String url, SimpleDraweeView simpleDraweeView) {
+    private void loadIconInImage(String url, SimpleDraweeView simpleDraweeView, int color) {
         AvatarUtils.loadAvatarByUrl(simpleDraweeView,
                 AvatarUtils.newParamsBuilder(url)
                         .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setBorderColor(color)
                         .build());
     }
 

@@ -1,11 +1,11 @@
 package com.module.playways.rank.room.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -13,6 +13,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.prepare.GameModeType;
+import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
@@ -23,7 +24,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
 public class RecordItemView extends RelativeLayout {
-
+    public final static String TAG = "RecordItemView";
     SimpleDraweeView mSdvSingerIcon;
     ExImageView mIvRanking;
     ExTextView mTvSingerName;
@@ -41,6 +42,8 @@ public class RecordItemView extends RelativeLayout {
     ExTextView mTvSongName;
 
     RoomData mRoomData;
+
+    RecordData mRecordData;
 
     public RecordItemView(Context context) {
         super(context);
@@ -76,23 +79,19 @@ public class RecordItemView extends RelativeLayout {
         mExImageViews[0] = mIvLightOne;
         mExImageViews[1] = mIvLightTwo;
         mExImageViews[2] = mIvLightThree;
-
-
-        AvatarUtils.loadAvatarByUrl(mSdvSingerIcon,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setCircle(true)
-                        .setGray(false)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(0xFF85EAFF)
-                        .build());
     }
 
-    public void setData(RoomData roomData, VoteInfoModel voteInfoModel) {
-        if (voteInfoModel == null) {
+    public void setData(RoomData roomData, RecordData recordData, int index, int strokeColor) {
+        if (recordData == null || recordData.mVoteInfoModels == null || recordData.mVoteInfoModels.get(index) == null) {
+            MyLog.e(TAG, "setData data 为 null");
             return;
         }
 
+        VoteInfoModel voteInfoModel = recordData.mVoteInfoModels.get(index);
+
         mRoomData = roomData;
+
+        mRecordData = recordData;
 
         init();
 
@@ -104,7 +103,7 @@ public class RecordItemView extends RelativeLayout {
                         .setCircle(true)
                         .setGray(false)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(0xFF85EAFF)
+                        .setBorderColor(strokeColor)
                         .build());
 
         mTvSingerName.setText(playerInfo.getNickname());
@@ -142,20 +141,32 @@ public class RecordItemView extends RelativeLayout {
                                         .setCircle(true)
                                         .setGray(false)
                                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                        .setBorderColor(0xFF85EAFF)
+                                        .setBorderColor(Color.WHITE)
                                         .build());
                     } else {
+                        int borderColor = getUserIndex(voterId);
                         UserInfoModel playerInfo = roomData.getUserInfo(voterId);
                         AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
                                 AvatarUtils.newParamsBuilder(playerInfo.getAvatar())
                                         .setCircle(true)
                                         .setGray(false)
                                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                        .setBorderColor(0xFF85EAFF)
+                                        .setBorderColor(borderColor == 0 ? 0xFFFF79A9 : 0xFF85EAFF)
                                         .build());
                     }
                 }
             }, throwable -> MyLog.e(throwable));
         }
+    }
+
+    private int getUserIndex(long voterId){
+        for (int i = 0; i < mRecordData.mVoteInfoModels.size(); i++){
+            VoteInfoModel voteInfoModel = mRecordData.mVoteInfoModels.get(i);
+            if(voteInfoModel.getUserID() == voterId){
+                return i;
+            }
+        }
+
+        return 0;
     }
 }
