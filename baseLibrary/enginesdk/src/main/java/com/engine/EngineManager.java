@@ -2,7 +2,7 @@ package com.engine;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.os.UserManager;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.changba.songstudio.CbEngineAdapter;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
+import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
@@ -30,8 +31,12 @@ import java.util.HashSet;
 import java.util.List;
 
 import io.agora.rtc.IRtcEngineEventHandler;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 关于音视频引擎的都放在这个类里
@@ -39,9 +44,13 @@ import io.reactivex.disposables.Disposable;
 public class EngineManager implements AgoraOutCallback {
 
     public final static String TAG = "EngineManager";
-
+    static final int STATUS_UNINIT = 0;
+    static final int STATUS_INITING = 1;
+    static final int STATUS_INITED = 2;
     private Params mConfig = null;
-    private boolean mIsInit = false;
+    private Object mLock = new Object();
+
+    private int mStatus = STATUS_UNINIT;// 0未初始化 1 初始ing 2 初始化
     /**
      * 存储该房间所有用户在引擎中的状态的，
      * key为在引擎中的用户 id
@@ -52,6 +61,8 @@ public class EngineManager implements AgoraOutCallback {
     private HandlerTaskTimer mMusicTimePlayTimeListener;
 
     private String mInitFrom;
+
+    private CustomHandlerThread mCustomHandlerThread;
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -180,56 +191,112 @@ public class EngineManager implements AgoraOutCallback {
         return EngineManagerHolder.INSTANCE;
     }
 
-    public void init(String from, Params params) {
-        mInitFrom = from;
-        destroy(from);
-        mConfig = params;
-        AgoraEngineAdapter.getInstance().init(mConfig);
-        CbEngineAdapter.getInstance().init(mConfig);
-        mIsInit = true;
-        setAudioEffectStyle(mConfig.getStyleEnum());
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
+    public void init(final String from, final Params params) {
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.destroy();
         }
+        mCustomHandlerThread = new CustomHandlerThread(TAG) {
+            @Override
+            protected void processMessage(Message var1) {
+
+            }
+        };
+        final int oldStatus = mStatus;
+        mStatus = STATUS_INITING;
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.d(TAG, "init" + " from=" + from + " params=" + params);
+                destroyInner(oldStatus);
+                mStatus = STATUS_INITED;
+                mInitFrom = from;
+                mConfig = params;
+                synchronized (mLock) {
+                    mLock.notifyAll();
+                }
+                AgoraEngineAdapter.getInstance().init(mConfig);
+                CbEngineAdapter.getInstance().init(mConfig);
+                setAudioEffectStyle(mConfig.getStyleEnum());
+                if (!EventBus.getDefault().isRegistered(EngineManager.this)) {
+                    EventBus.getDefault().register(EngineManager.this);
+                }
+            }
+        });
+
     }
 
     public boolean isInit() {
-        return mIsInit;
+        return mStatus == STATUS_INITED;
     }
 
     public Params getParams() {
-        return mConfig;
+        if (mStatus == STATUS_INITED) {
+            return mConfig;
+        } else if (mStatus == STATUS_UNINIT) {
+            return null;
+        } else if (mStatus == STATUS_INITING) {
+            synchronized (mLock) {
+                try {
+                    mLock.wait();
+                } catch (InterruptedException e) {
+                }
+            }
+            return mConfig;
+        }
+        return null;
     }
 
     /**
      * 离开房间
      */
     public void leaveChannel() {
-        AgoraEngineAdapter.getInstance().leaveChannel();
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                AgoraEngineAdapter.getInstance().leaveChannel();
+            }
+        });
     }
 
     /**
      * 销毁所有
      */
-    public void destroy(String from) {
+    public void destroy(final String from) {
+        MyLog.d(TAG, "destroy" + " from=" + from + " status=" + mStatus);
         if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
                 return;
             }
         }
-        mIsInit = false;
-        if (mMusicTimePlayTimeListener != null) {
-            mMusicTimePlayTimeListener.dispose();
+        if (mStatus == STATUS_INITED) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (from.equals(mInitFrom)) {
+                        destroyInner(mStatus);
+                        mCustomHandlerThread.destroy();
+                        mStatus = STATUS_UNINIT;
+                    }
+                }
+            });
         }
-        AgoraEngineAdapter.getInstance().destroy(true);
-        CbEngineAdapter.getInstance().destroy();
-        mUserStatusMap.clear();
-        mRemoteViewCache.clear();
-        mUiHandler.removeCallbacksAndMessages(null);
-        mConfig = null;
-        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
+    }
+
+    private void destroyInner(int status) {
+        if (status == STATUS_INITED) {
+            if (mMusicTimePlayTimeListener != null) {
+                mMusicTimePlayTimeListener.dispose();
+            }
+            AgoraEngineAdapter.getInstance().destroy(true);
+            CbEngineAdapter.getInstance().destroy();
+            mUserStatusMap.clear();
+            mRemoteViewCache.clear();
+            mUiHandler.removeCallbacksAndMessages(null);
+            mConfig = null;
+            EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
+            if (EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().unregister(this);
+            }
         }
     }
 
@@ -249,26 +316,29 @@ public class EngineManager implements AgoraOutCallback {
      * @param isAnchor 是否以主播的身份
      *                 不是主播只看不能说
      */
-    public void joinRoom(String roomid, int userId, boolean isAnchor) {
-        MyLog.w(TAG, "joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor);
-        if (userId <= 0) {
-            userId = 0;
-        }
-        if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
-            if (isAnchor) {
-                AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
-            } else {
-                AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
+    public void joinRoom(final String roomid, final int userId, final boolean isAnchor) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.w(TAG, "joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor);
+                if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
+                    if (isAnchor) {
+                        AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
+                    } else {
+                        AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
+                    }
+                }
+                AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
+                if (U.getDeviceUtils().getHeadsetPlugOn()) {
+                    setEnableSpeakerphone(false);
+                    enableInEarMonitoring(true);
+                } else {
+                    setEnableSpeakerphone(true);
+                    enableInEarMonitoring(false);
+                }
             }
-        }
-        AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
-        if (U.getDeviceUtils().getHeadsetPlugOn()) {
-            setEnableSpeakerphone(false);
-            enableInEarMonitoring(true);
-        } else {
-            setEnableSpeakerphone(true);
-            enableInEarMonitoring(false);
-        }
+        });
+
     }
 
     public void setClientRole(boolean isAnchor) {
@@ -504,14 +574,24 @@ public class EngineManager implements AgoraOutCallback {
      *
      * @param muted
      */
-    public void muteAllRemoteVideoStreams(boolean muted) {
-        mConfig.setAllRemoteVideoStreamsMute(muted);
-        AgoraEngineAdapter.getInstance().muteAllRemoteVideoStreams(muted);
+    public void muteAllRemoteVideoStreams(final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setAllRemoteVideoStreamsMute(muted);
+                AgoraEngineAdapter.getInstance().muteAllRemoteVideoStreams(muted);
+            }
+        });
     }
 
-    public void setEnableSpeakerphone(boolean enableSpeakerphone) {
-        mConfig.setEnableSpeakerphone(enableSpeakerphone);
-        AgoraEngineAdapter.getInstance().setEnableSpeakerphone(enableSpeakerphone);
+    public void setEnableSpeakerphone(final boolean enableSpeakerphone) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setEnableSpeakerphone(enableSpeakerphone);
+                AgoraEngineAdapter.getInstance().setEnableSpeakerphone(enableSpeakerphone);
+            }
+        });
     }
 
     /**
@@ -540,18 +620,29 @@ public class EngineManager implements AgoraOutCallback {
      *
      * @param muted
      */
-    public void muteLocalAudioStream(boolean muted) {
-        mConfig.setLocalAudioStreamMute(muted);
-        AgoraEngineAdapter.getInstance().muteLocalAudioStream(muted);
+    public void muteLocalAudioStream(final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setLocalAudioStreamMute(muted);
+                AgoraEngineAdapter.getInstance().muteLocalAudioStream(muted);
+            }
+        });
     }
 
     /**
      * 接收/停止接收所有音频流。
      * 适用于 A 在唱歌，B C 能互相聊天，但不能打扰到 A 的场景
      */
-    public void muteAllRemoteAudioStreams(boolean muted) {
-        mConfig.setAllRemoteAudioStreamsMute(muted);
-        AgoraEngineAdapter.getInstance().muteAllRemoteAudioStreams(muted);
+    public void muteAllRemoteAudioStreams(final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setAllRemoteAudioStreamsMute(muted);
+                AgoraEngineAdapter.getInstance().muteAllRemoteAudioStreams(muted);
+            }
+        });
+
     }
 
     /**
@@ -665,17 +756,22 @@ public class EngineManager implements AgoraOutCallback {
      *                 正整数：循环的次数
      *                 -1：无限循环
      */
-    public void startAudioMixing(String filePath, String midiPath, long mixMusicBeginOffset, boolean loopback, boolean replace, int cycle) {
-        MyLog.d(TAG, "startAudioMixing" + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
-        mConfig.setMixMusicPlaying(true);
-        mConfig.setMixMusicFilePath(filePath);
-        mConfig.setMidiPath(midiPath);
-        mConfig.setMixMusicBeginOffset(mixMusicBeginOffset);
+    public void startAudioMixing(final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                MyLog.d(TAG, "startAudioMixing" + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+                mConfig.setMixMusicPlaying(true);
+                mConfig.setMixMusicFilePath(filePath);
+                mConfig.setMidiPath(midiPath);
+                mConfig.setMixMusicBeginOffset(mixMusicBeginOffset);
 
-        startMusicPlayTimeListener();
-        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
-        EventBus.getDefault().post(engineEvent);
-        AgoraEngineAdapter.getInstance().startAudioMixing(filePath, loopback, replace, cycle);
+                startMusicPlayTimeListener();
+                EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
+                EventBus.getDefault().post(engineEvent);
+                AgoraEngineAdapter.getInstance().startAudioMixing(filePath, loopback, replace, cycle);
+            }
+        });
     }
 
     public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
@@ -687,42 +783,59 @@ public class EngineManager implements AgoraOutCallback {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
-        if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
-            mConfig.setMixMusicPlaying(false);
-            mConfig.setMixMusicFilePath(null);
-            mConfig.setMidiPath(null);
-            mConfig.setMixMusicBeginOffset(0);
-            stopMusicPlayTimeListener();
-            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
-            EventBus.getDefault().post(engineEvent);
-            AgoraEngineAdapter.getInstance().stopAudioMixing();
-        }
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+                    mConfig.setMixMusicPlaying(false);
+                    mConfig.setMixMusicFilePath(null);
+                    mConfig.setMidiPath(null);
+                    mConfig.setMixMusicBeginOffset(0);
+                    stopMusicPlayTimeListener();
+                    EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_STOP);
+                    EventBus.getDefault().post(engineEvent);
+                    AgoraEngineAdapter.getInstance().stopAudioMixing();
+                }
+            }
+        });
+
     }
 
     /**
      * 继续播放混音
      */
     public void resumeAudioMixing() {
-        if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
-            mConfig.setMixMusicPlaying(true);
-            startMusicPlayTimeListener();
-            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
-            EventBus.getDefault().post(engineEvent);
-            AgoraEngineAdapter.getInstance().resumeAudioMixing();
-        }
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+                    mConfig.setMixMusicPlaying(true);
+                    startMusicPlayTimeListener();
+                    EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
+                    EventBus.getDefault().post(engineEvent);
+                    AgoraEngineAdapter.getInstance().resumeAudioMixing();
+                }
+            }
+        });
     }
 
     /**
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
-        if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
-            mConfig.setMixMusicPlaying(false);
-            stopMusicPlayTimeListener();
-            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_PAUSE);
-            EventBus.getDefault().post(engineEvent);
-            AgoraEngineAdapter.getInstance().pauseAudioMixing();
-        }
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                if (!TextUtils.isEmpty(mConfig.getMixMusicFilePath())) {
+                    mConfig.setMixMusicPlaying(false);
+                    stopMusicPlayTimeListener();
+                    EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_PAUSE);
+                    EventBus.getDefault().post(engineEvent);
+                    AgoraEngineAdapter.getInstance().pauseAudioMixing();
+                }
+            }
+        });
+
     }
 
     private void startMusicPlayTimeListener() {
@@ -772,9 +885,15 @@ public class EngineManager implements AgoraOutCallback {
      *
      * @param volume 1-100 默认100
      */
-    public void adjustAudioMixingVolume(int volume) {
-        mConfig.setAudioMixingVolume(volume);
-        AgoraEngineAdapter.getInstance().adjustAudioMixingVolume(volume);
+    public void adjustAudioMixingVolume(final int volume) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setAudioMixingVolume(volume);
+                AgoraEngineAdapter.getInstance().adjustAudioMixingVolume(volume);
+            }
+        });
+
     }
 
     /**
