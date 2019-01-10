@@ -62,7 +62,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
     }
 
     public void setProgress1(int progress) {
-        progress = 100;
+//        progress = 100;
         mScoreProgressBar.setProgress1(progress);
         int tx = mScoreProgressBar.getStarXByScore(progress);
         MyLog.d(TAG, "setProgress1" + " progress=" + progress + " star_tx=" + tx);
