@@ -2,6 +2,7 @@ package com.module.playways.rank.room.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -19,6 +20,8 @@ import com.module.rank.R;
 import java.util.concurrent.TimeUnit;
 
 public class RankingRecordFragment extends BaseFragment {
+    RelativeLayout mRankingRecord;
+
     ExImageView mIvTopImg;
     RecordItemView mRecordItemOne;
     RecordItemView mRecordItemTwo;
@@ -38,6 +41,7 @@ public class RankingRecordFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mRankingRecord = (RelativeLayout)mRootView.findViewById(R.id.ranking_record);
         mIvTopImg = (ExImageView) mRootView.findViewById(R.id.iv_top_img);
         mRecordItemOne = (RecordItemView) mRootView.findViewById(R.id.record_item_one);
         mRecordItemTwo = (RecordItemView) mRootView.findViewById(R.id.record_item_two);
@@ -63,7 +67,7 @@ public class RankingRecordFragment extends BaseFragment {
                 });
 
         try {
-            mRecordTitleView.setData(mRecordData, mRoomData);
+            mRecordTitleView.setData(mRankingRecord, mRecordData, mRoomData);
             mRecordItemOne.setData(mRoomData, mRecordData.mVoteInfoModels.get(0));
             mRecordItemTwo.setData(mRoomData, mRecordData.mVoteInfoModels.get(1));
             mRecordItemThree.setData(mRoomData, mRecordData.mVoteInfoModels.get(2));

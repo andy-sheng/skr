@@ -27,7 +27,7 @@ public class ScoreType {
     public static final int ST_SUB_RANKING_TOTAL_STAR = 4;
 
     /**
-     * 晋级赛段位
+     * 晋级赛开启状态值。可看作布尔值，scoreNow不为0表示处于某种晋级赛当中
      */
     public static final int ST_RANKING_UPGRADE = 5;
 
@@ -55,5 +55,16 @@ public class ScoreType {
      * 战斗评价, sss or ss or s or a...
      */
     public static final int ST_BATTLE_RATING = 10;
+
+    /**
+     * 掉段保护需要的战力值。用作阈值，用scoreNow表示大小
+     */
+    public static final int ST_RANKING_PROTECT_TOTAL_BATTLE_INDEX = 11;
+
+    /**
+     * 总星星数
+     */
+    public static final int ST_STAR = 12;
+
 
 }

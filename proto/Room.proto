@@ -67,18 +67,19 @@ message UserScoreRecord
 }
 
 enum EScoreType {
-    ST_UNKNOWN                    = 0; //未知
-    ST_RANKING                    = 1; //主段位
-    ST_SUB_RANKING                = 2; //子段位
-    ST_SUB_RANKING_STAR           = 3; //子段位当前星星数
-    ST_SUB_RANKING_TOTAL_STAR     = 4; //子段位星星数上限
-    ST_RANKING_UPGRADE            = 5; //晋级赛段位
-    ST_RANKING_UPGRADE_STAR       = 6; //晋级赛实际星星数
-    ST_RANKING_UPGRADE_TOTAL_STAR = 7; //晋级赛星星数上限
-    ST_BATTLE_INDEX_REAL          = 8; //实际战力值
-    ST_BATTLE_INDEX_TOTAL         = 9; //战力值上限
-    ST_BATTLE_RATING              = 10; //战斗评价, sss or ss or s or a...
-    ST_STAR                       = 11; //星星数
+    ST_UNKNOWN                            = 0; //未知
+    ST_RANKING                            = 1; //主段位
+    ST_SUB_RANKING                        = 2; //子段位
+    ST_SUB_RANKING_STAR                   = 3; //子段位当前星星数
+    ST_SUB_RANKING_TOTAL_STAR             = 4; //子段位星星数上限
+    ST_RANKING_UPGRADE                    = 5; //晋级赛开启状态值。可看作布尔值，scoreNow不为0表示处于某种晋级赛当中
+    ST_RANKING_UPGRADE_STAR               = 6; //晋级赛当前星星数
+    ST_RANKING_UPGRADE_TOTAL_STAR         = 7; //晋级赛星星数上限
+    ST_BATTLE_INDEX_REAL                  = 8; //当前战力值
+    ST_BATTLE_INDEX_TOTAL                 = 9; //战力值上限
+    ST_BATTLE_RATING                      = 10; //战斗评价, sss or ss or s or a...
+    ST_RANKING_PROTECT_TOTAL_BATTLE_INDEX = 11; //掉段保护需要的战力值。用作阈值，用scoreNow表示大小
+    ST_STAR                               = 12; //总星星数
 }
 
 // 分值变动条目

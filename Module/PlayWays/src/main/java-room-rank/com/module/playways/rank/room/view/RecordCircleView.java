@@ -328,7 +328,7 @@ public class RecordCircleView extends View {
         return ((float) mSweepAngle / ((float) mMax - (float) mMin)) * value;
     }
 
-    public void setData(int min, int max, int cur, int target){
+    public void setData(int min, int max, int cur, int target, int protectBefore, int protectNow){
         mMin = min;
         mMax = max;
         mStart = cur;

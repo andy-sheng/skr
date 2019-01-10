@@ -34,12 +34,12 @@ public enum EScoreType implements WireEnum {
   ST_SUB_RANKING_TOTAL_STAR(4),
 
   /**
-   * 晋级赛段位
+   * 晋级赛开启状态值。可看作布尔值，scoreNow不为0表示处于某种晋级赛当中
    */
   ST_RANKING_UPGRADE(5),
 
   /**
-   * 晋级赛实际星星数
+   * 晋级赛当前星星数
    */
   ST_RANKING_UPGRADE_STAR(6),
 
@@ -49,7 +49,7 @@ public enum EScoreType implements WireEnum {
   ST_RANKING_UPGRADE_TOTAL_STAR(7),
 
   /**
-   * 实际战力值
+   * 当前战力值
    */
   ST_BATTLE_INDEX_REAL(8),
 
@@ -64,9 +64,14 @@ public enum EScoreType implements WireEnum {
   ST_BATTLE_RATING(10),
 
   /**
-   * 星星数
+   * 掉段保护需要的战力值。用作阈值，用scoreNow表示大小
    */
-  ST_STAR(11);
+  ST_RANKING_PROTECT_TOTAL_BATTLE_INDEX(11),
+
+  /**
+   * 总星星数
+   */
+  ST_STAR(12);
 
   public static final ProtoAdapter<EScoreType> ADAPTER = new ProtoAdapter_EScoreType();
 
@@ -92,7 +97,8 @@ public enum EScoreType implements WireEnum {
       case 8: return ST_BATTLE_INDEX_REAL;
       case 9: return ST_BATTLE_INDEX_TOTAL;
       case 10: return ST_BATTLE_RATING;
-      case 11: return ST_STAR;
+      case 11: return ST_RANKING_PROTECT_TOTAL_BATTLE_INDEX;
+      case 12: return ST_STAR;
       default: return null;
     }
   }
