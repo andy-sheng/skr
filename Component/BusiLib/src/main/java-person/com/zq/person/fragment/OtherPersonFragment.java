@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
-import model.UserLevelModel;
+import com.zq.level.mode.UserLevelModel;
 
 
 public class OtherPersonFragment extends BaseFragment implements IOtherPersonView {

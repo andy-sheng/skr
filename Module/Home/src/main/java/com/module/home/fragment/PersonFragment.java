@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
-import model.UserLevelModel;
+import com.zq.level.mode.UserLevelModel;
 
 public class PersonFragment extends BaseFragment implements IPersonView {
 
@@ -359,7 +359,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             }
         }
         mLevelView.bindData(rank, subRank, starLimit, starNum);
-        // TODO: 2019/1/10 测试动画代码 
+        // TODO: 2019/1/10 测试动画代码
 //        mLevelView.bindData(1, 2, 5, 3);
 //        mLevelView.postDelayed(new Runnable() {
 //            @Override

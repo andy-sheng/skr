@@ -1,4 +1,4 @@
-package model;
+package com.zq.level.mode;
 
 public class UserLevelType {
     public static final int SKRER_1_BUDDHA = 1;    //佛系skrer

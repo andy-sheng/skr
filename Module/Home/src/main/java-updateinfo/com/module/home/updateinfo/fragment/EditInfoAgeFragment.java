@@ -15,12 +15,17 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -119,22 +124,11 @@ public class EditInfoAgeFragment extends BaseFragment {
         pvCustomLunar = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
-                if (!isUpload) {
-                    // 修改个人信息
-                    String bir = U.getDateTimeUtils().formatDateString(date);
-                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                            .setBirthday(bir)
-                            .build());
-                    U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
-                } else {
-                    // 完善个人信息
-                    String bir = U.getDateTimeUtils().formatDateString(date);
-                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                            .setBirthday(bir)
-                            .build());
-                    getActivity().finish();
-                }
-
+                // 修改个人信息
+                String bir = U.getDateTimeUtils().formatDateString(date);
+                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                        .setBirthday(bir)
+                        .build());
             }
         })
                 .setDate(selectedDate)
@@ -199,6 +193,18 @@ public class EditInfoAgeFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+            if (isUpload) {
+                getActivity().finish();
+            } else {
+                U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+            }
+
+        }
     }
 }

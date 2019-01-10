@@ -16,7 +16,7 @@ import com.module.home.view.IPersonView;
 
 import java.util.List;
 
-import model.UserLevelModel;
+import com.zq.level.mode.UserLevelModel;
 
 public class PersonCorePresenter extends RxLifeCyclePresenter {
 

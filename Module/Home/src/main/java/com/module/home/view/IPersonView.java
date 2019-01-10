@@ -4,7 +4,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 
 import model.RelationNumModel;
-import model.UserLevelModel;
+import com.zq.level.mode.UserLevelModel;
 
 import java.util.List;
 

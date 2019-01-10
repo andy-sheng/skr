@@ -6,7 +6,7 @@ import com.common.core.userinfo.model.UserRankModel;
 import java.util.List;
 
 import model.RelationNumModel;
-import model.UserLevelModel;
+import com.zq.level.mode.UserLevelModel;
 
 public interface IOtherPersonView {
 

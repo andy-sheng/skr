@@ -14,7 +14,7 @@ import com.zq.person.view.IOtherPersonView;
 import java.util.List;
 
 import model.RelationNumModel;
-import model.UserLevelModel;
+import com.zq.level.mode.UserLevelModel;
 
 public class OtherPersonPresenter extends RxLifeCyclePresenter {
 

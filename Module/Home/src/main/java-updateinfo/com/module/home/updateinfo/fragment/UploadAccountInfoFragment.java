@@ -190,29 +190,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
                                 .setNickName(nickName)
                                 .build());
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        if (MyUserInfoManager.getInstance().getSex() == 0) {
-                            // 无性别数据
-                            Bundle bundle = new Bundle();
-                            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-                            U.getFragmentUtils().addFragment(FragmentUtils
-                                    .newAddParamsBuilder(getActivity(), EditInfoSexFragment.class)
-                                    .setBundle(bundle)
-                                    .setAddToBackStack(true)
-                                    .setHasAnimation(true)
-                                    .build());
-                        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-                            // 无出生年月数据
-                            Bundle bundle = new Bundle();
-                            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-                            U.getFragmentUtils().addFragment(FragmentUtils
-                                    .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
-                                    .setBundle(bundle)
-                                    .setAddToBackStack(true)
-                                    .setHasAnimation(true)
-                                    .build());
-                        } else {
-                            getActivity().finish();
-                        }
                     } else {
                         // 昵称不可用
                         mNicknameHintTv.setVisibility(View.VISIBLE);
@@ -233,6 +210,35 @@ public class UploadAccountInfoFragment extends BaseFragment {
                 .setBorderColor(Color.parseColor("#0C2275"))
                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
                 .build());
+
+        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getAvatar()) && !TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+            if (MyUserInfoManager.getInstance().getSex() == 0) {
+                // 无性别数据
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newAddParamsBuilder(getActivity(), EditInfoSexFragment.class)
+                        .setBundle(bundle)
+                        .setNotifyHideFragment(UploadAccountInfoFragment.class)
+                        .setAddToBackStack(false)
+                        .setHasAnimation(true)
+                        .build());
+            } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+                // 无出生年月数据
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                        .setNotifyHideFragment(UploadAccountInfoFragment.class)
+                        .setBundle(bundle)
+                        .setAddToBackStack(false)
+                        .setHasAnimation(true)
+                        .build());
+            } else {
+                getActivity().finish();
+            }
+        }
+
     }
 
 

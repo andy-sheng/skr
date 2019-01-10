@@ -35,24 +35,23 @@ public class UploadAccountInfoActivity extends BaseActivity {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, UploadAccountInfoFragment.class)
                     .setBundle(bundle)
-                    .setAddToBackStack(true)
+                    .setAddToBackStack(false)
                     .setHasAnimation(true)
                     .build());
         } else if (MyUserInfoManager.getInstance().getSex() == 0) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, EditInfoSexFragment.class)
                     .setBundle(bundle)
-                    .setAddToBackStack(true)
+                    .setAddToBackStack(false)
                     .setHasAnimation(true)
                     .build());
         } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, EditInfoAgeFragment.class)
                     .setBundle(bundle)
-                    .setAddToBackStack(true)
+                    .setAddToBackStack(false)
                     .setHasAnimation(true)
                     .build());
-
         }
     }
 

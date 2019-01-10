@@ -136,8 +136,12 @@ public class NormalLevelView extends RelativeLayout {
     }
 
     // 星星增加动画,从第几颗星增加到几个行
+    // TODO: 2019/1/10 from 和 to都是从0开始计算
     public void starUp(final ViewGroup viewGroup, final int from, final int to) {
         final int dis = to - from;
+        if (dis < 0) {
+            return;
+        }
         SVGACallback callback = new SVGACallback() {
             @Override
             public void onPause() {
@@ -212,9 +216,13 @@ public class NormalLevelView extends RelativeLayout {
         starUp.setCallback(callback);
     }
 
-    // 星星掉落动画 from 必须大与to
+    // 星星掉落动画 from必须大于to，表示从第几颗星星掉落
+    // TODO: 2019/1/10 from 和 to都是从0开始计算
     public void starLoss(final ViewGroup viewGroup, final int from, final int to) {
         final int dis = from - to;
+        if (dis < 0) {
+            return;
+        }
         SVGACallback callback = new SVGACallback() {
             @Override
             public void onPause() {
