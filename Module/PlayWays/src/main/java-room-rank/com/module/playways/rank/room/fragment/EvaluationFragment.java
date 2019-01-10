@@ -406,9 +406,11 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     @Override
                     public void onNext(Integer integer) {
                         mVoteDownTv.setText(String.format(U.app().getString(R.string.evaluation_time_info), 10 - integer));
-                        if (integer == 12) {
-                            mPresenter.getVoteResult(mRoomData.getGameId());
-                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mPresenter.getVoteResult(mRoomData.getGameId());
                     }
                 });
     }
