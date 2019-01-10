@@ -93,6 +93,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     RoomData mRoomData;
 
+    RelativeLayout mRankingContainer;
+
     InputContainerView mInputContainerView;
 
     BottomContainerView mBottomContainerView;
@@ -136,11 +138,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     Disposable mPrepareLyricTask;
 
-    ScrollView mScrollView;
-
     TurnChangeCardView mTurnChangeView;
-
-    BaseImageView mReadyGoView;
 
     DialogPlus mDialogPlus;
 
@@ -160,6 +158,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
 
+    SVGAParser mSVGAParser;
+
+    AnimatorSet mGameEndAnimation;
+
     @Override
     public int initView() {
         return R.layout.ranking_room_fragment_layout;
@@ -168,8 +170,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         // 请保证从下面的view往上面的view开始初始化
-        mScrollView = mRootView.findViewById(R.id.scrollview);
-
+        mRankingContainer = mRootView.findViewById(R.id.ranking_container);
         initInputView();
         initBottomView();
         initCommentView();
@@ -296,31 +297,17 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.d(TAG, "playShowMainStageAnimator");
         //TODO 还要修改
         mTopVoiceBg.setVisibility(View.VISIBLE);
-        SVGAParser parser = new SVGAParser(getActivity());
-        parser.setFileDownloader(new SVGAParser.FileDownloader() {
-            @Override
-            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        OkHttpClient client = new OkHttpClient();
-                        Request request = new Request.Builder().url(url).get().build();
-                        try {
-                            Response response = client.newCall(request).execute();
-                            complete.invoke(response.body().byteStream());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            failure.invoke(e);
-                        }
-                    }
-                }).start();
-            }
-        });
+        URL url = null;
         try {
-            parser.parse(new URL(RoomData.ROOM_VOICE_SVGA), new SVGAParser.ParseCompletion() {
+            url = new URL(RoomData.ROOM_VOICE_SVGA);
+        } catch (MalformedURLException e) {
+        }
+        if (url != null) {
+            getSVGAParser().parse(, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mTopVoiceBg.stopAnimation(true);
                     mTopVoiceBg.setImageDrawable(drawable);
                     mTopVoiceBg.startAnimation();
                 }
@@ -329,18 +316,18 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 public void onError() {
                 }
             });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         }
-
+        if (mUfoBg == null) {
+            return;
+        }
         //飞碟动画
         mUfoBg.setVisibility(View.VISIBLE);
-        SVGAParser ufoParse = new SVGAParser(getActivity());
-        ufoParse.parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
+        getSVGAParser().parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 MyLog.d(TAG, "playUFOStageAnimator");
                 mUFOMode = 1;
+                mUfoBg.stopAnimation(true);
                 SVGADrawable drawable = new SVGADrawable(videoItem);
                 mUfoBg.setImageDrawable(drawable);
                 mUfoBg.startAnimation();
@@ -368,12 +355,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             @Override
             public void onRepeat() {
                 if (mUFOMode == 1 && mUfoBg.isAnimating()) {
-                    mUfoBg.stopAnimation();
-                    ufoParse.parse("ufo_process.svga", new SVGAParser.ParseCompletion() {
+                    getSVGAParser().parse("ufo_process.svga", new SVGAParser.ParseCompletion() {
                         @Override
                         public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                             mUFOMode = 2;
                             SVGADrawable drawable = new SVGADrawable(videoItem);
+                            mUfoBg.stopAnimation(true);
                             mUfoBg.setImageDrawable(drawable);
                             mUfoBg.startAnimation();
                         }
@@ -384,12 +371,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         }
                     });
                 } else if (mUFOMode == 3 && mUfoBg.isAnimating()) {
-                    mUfoBg.stopAnimation();
-                    ufoParse.parse("ufo_leave.svga", new SVGAParser.ParseCompletion() {
+                    getSVGAParser().parse("ufo_leave.svga", new SVGAParser.ParseCompletion() {
                         @Override
                         public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                             mUFOMode = 4;
                             SVGADrawable drawable = new SVGADrawable(videoItem);
+                            mUfoBg.stopAnimation(true);
                             mUfoBg.setImageDrawable(drawable);
                             mUfoBg.startAnimation();
                         }
@@ -399,8 +386,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
                         }
                     });
-                } else if (mUFOMode == 4 && mUfoBg.isAnimating()) {
-                    mUfoBg.stopAnimation();
                 }
             }
 
@@ -542,35 +527,43 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         giftBigAnimationViewGroup.setRoomData(mRoomData);
     }
 
+    private SVGAParser getSVGAParser() {
+        if (mSVGAParser == null) {
+            mSVGAParser = new SVGAParser(getActivity());
+            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
+                @Override
+                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            OkHttpClient client = new OkHttpClient();
+                            Request request = new Request.Builder().url(url).get().build();
+                            try {
+                                Response response = client.newCall(request).execute();
+                                complete.invoke(response.body().byteStream());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                failure.invoke(e);
+                            }
+                        }
+                    }).start();
+                }
+            });
+        }
+        return mSVGAParser;
+    }
+
     private void showReadyGoView() {
-        // TODO: 2019/1/8 可能还要修改
         mReadyGoBg.setVisibility(View.VISIBLE);
         mReadyGoPlaying = true;
-        SVGAParser parser = new SVGAParser(getActivity());
-        parser.setFileDownloader(new SVGAParser.FileDownloader() {
-            @Override
-            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        OkHttpClient client = new OkHttpClient();
-                        Request request = new Request.Builder().url(url).get().build();
-                        try {
-                            Response response = client.newCall(request).execute();
-                            complete.invoke(response.body().byteStream());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            failure.invoke(e);
-                        }
-                    }
-                }).start();
-            }
-        });
+
+
         try {
-            parser.parse(new URL(RoomData.READY_GO_SVGA_URL), new SVGAParser.ParseCompletion() {
+            getSVGAParser().parse(new URL(RoomData.READY_GO_SVGA_URL), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mReadyGoBg.stopAnimation(true);
                     mReadyGoBg.setImageDrawable(drawable);
                     mReadyGoBg.startAnimation();
                 }
@@ -617,9 +610,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         if (mReadyGoPlaying) {
             mReadyGoPlaying = false;
             // 移除 readyGoView
-            if (mReadyGoView != null) {
-                ((RelativeLayout) mRootView).removeView(mReadyGoView);
-            }
             // 轮到自己演唱了，倒计时因为播放readyGo没播放
             if (mPendingSelfCountDownRunnable != null) {
                 startSelfCountdown(mPendingSelfCountDownRunnable);
@@ -630,6 +620,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 startRivalCountdown(mPendingRivalCountdownUid);
                 mPendingRivalCountdownUid = -1;
             }
+            mRankingContainer.removeView(mReadyGoBg);
         }
     }
 
@@ -657,6 +648,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mUiHanlder.removeCallbacksAndMessages(null);
         mManyLyricsView.release();
         mFloatLyricsView.release();
+        if (mGameEndAnimation != null) {
+            mGameEndAnimation.cancel();
+        }
     }
 
     @Override
@@ -787,14 +781,15 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         destroyAnimation();
         // TODO: 2019/1/8  加上2秒的对战结束动画
         mEndGameIv.setVisibility(View.VISIBLE);
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, "scaleX", 0.3f, 1f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, "scaleY", 0.3f, 1f);
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(750);
-        set.play(a1).with(a2);
-        set.start();
-
-        set.addListener(new Animator.AnimatorListener() {
+        ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_X, 0.3f, 1f);
+        ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_Y, 0.3f, 1f);
+        if (mGameEndAnimation != null) {
+            mGameEndAnimation.cancel();
+        }
+        mGameEndAnimation = new AnimatorSet();
+        mGameEndAnimation.setDuration(750);
+        mGameEndAnimation.playTogether(a1, a2);
+        mGameEndAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
             }
@@ -826,36 +821,39 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             public void onAnimationRepeat(Animator animator) {
             }
         });
-
+        mGameEndAnimation.start();
     }
 
     private void destroyAnimation() {
-        if (mTopVoiceBg != null && mTopVoiceBg.isAnimating()) {
+        if (mTopVoiceBg != null) {
             mTopVoiceBg.stopAnimation();
             mTopVoiceBg.setVisibility(View.GONE);
+            mRankingContainer.removeView(mTopVoiceBg);
+            mTopVoiceBg = null;
         }
 
-        if (mUfoBg != null && mUfoBg.isAnimating()) {
+        if (mUfoBg != null) {
             mUfoBg.stopAnimation();
             mUfoBg.setVisibility(View.GONE);
+            mRankingContainer.removeView(mUfoBg);
+            mUfoBg = null;
         }
 
-        if (mReadyGoBg != null && mReadyGoBg.isAnimating()) {
+        if (mReadyGoBg != null) {
             mReadyGoBg.stopAnimation();
             mReadyGoBg.setVisibility(View.GONE);
+            mRankingContainer.removeView(mReadyGoBg);
+            mReadyGoBg = null;
         }
-
     }
 
 
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
-
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
         }
-
         mFloatLyricsView.setVisibility(View.GONE);
         mFloatLyricsView.release();
         mManyLyricsView.setVisibility(View.GONE);
