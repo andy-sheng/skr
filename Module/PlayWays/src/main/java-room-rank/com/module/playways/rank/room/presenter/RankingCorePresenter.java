@@ -29,7 +29,6 @@ import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
-import com.module.playways.rank.msg.event.EventHelper;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
@@ -44,11 +43,11 @@ import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
-import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
-import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
+import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
+import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
@@ -150,9 +149,11 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void accept(RecordData recordData) throws Exception {
                         if (recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
+                            MyLog.w(TAG, "accept 1");
                             //不需要跳转评论页,直接跳转战绩页
                             mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mScoreDetailModel));
                         } else {
+                            MyLog.w(TAG, "accept 1");
                             mIGameRuleView.showVoteView();
                         }
                     }
@@ -223,6 +224,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mExoPlayer != null) {
             mExoPlayer.release();
             mExoPlayer = null;
+        }
+
+        if(mGameFinishActionSubject != null){
+            mGameFinishActionSubject.onComplete();
         }
 
     }
@@ -410,6 +415,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      * @param gameID
      */
     public void getVoteResult(int gameID) {
+        MyLog.w(TAG, "getVoteResult" + " gameID=" + gameID);
         ApiMethods.subscribe(mRoomServerApi.getVoteResult(gameID), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -420,17 +426,18 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     scoreDetailModel.parse(userScoreModelList);
 
                     U.getToastUtil().showShort("获取投票结果成功");
+                    MyLog.w(TAG, "getVoteResult" + " result=" + result);
                     mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, scoreDetailModel));
                     mGameFinishActionSubject.onComplete();
 
                 } else {
-                    MyLog.e(TAG, "getVoteResult result errno is " + result.getErrmsg());
+                    MyLog.e(TAG, "getVoteResult result failed, msg is " + result.getErrmsg());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                MyLog.e(TAG, e);
+                MyLog.e(TAG, "getVoteResult error " + e);
             }
         }, this);
     }

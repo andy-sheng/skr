@@ -33,9 +33,9 @@
             android:layout_height="wrap_content" />
 
         <com.common.view.ex.ExFrameLayout
-            android:layout_marginRight="-10dp"
+            android:layout_marginRight="-12dp"
             android:layout_toLeftOf="@+id/rl_center_container"
-            android:layout_width="@dimen/view_109_dp"
+            android:layout_width="@dimen/view_112_dp"
             android:layout_height="@dimen/view_192_dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="1.3dp"
@@ -111,9 +111,9 @@
         </com.common.view.ex.ExFrameLayout>
 
         <com.common.view.ex.ExFrameLayout
-            android:layout_marginLeft="-10dp"
+            android:layout_marginLeft="-12dp"
             android:layout_toRightOf="@+id/rl_center_container"
-            android:layout_width="@dimen/view_109_dp"
+            android:layout_width="@dimen/view_112_dp"
             android:layout_height="@dimen/view_192_dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/disanming_beijing">
@@ -190,7 +190,7 @@
             android:layout_height="@dimen/view_206_dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/diyiming_beijing">
+            android:background="@drawable/paihangbang_diyimingbeijing">
 
 
             <com.facebook.drawee.view.SimpleDraweeView
