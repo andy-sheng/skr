@@ -145,8 +145,17 @@ public class ScoreDetailModel {
         return total;
     }
 
-    public boolean hasBattleChange() {
-        return true;
+    // 分数变化 0 没变化  大于0 增加战力值  小于0 减少战力值
+    public int getBattleChange() {
+        if (mBattleRealScore.getItems() == null || mBattleRealScore.getItems().size() == 0) {
+            return 0;
+        }
+
+        int total = 0;
+        for (UserScoreItem userScoreItem : mBattleRealScore.getItems()) {
+            total = total + userScoreItem.getScore();
+        }
+        return total;
     }
 
     // 处理将服务器给的一堆list中有效数据提取出来

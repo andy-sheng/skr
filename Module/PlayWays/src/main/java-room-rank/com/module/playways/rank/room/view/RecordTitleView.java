@@ -1,5 +1,7 @@
 package com.module.playways.rank.room.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -153,7 +155,7 @@ public class RecordTitleView extends RelativeLayout {
         RankLevelModel rankLevelModel = scoreDetailModel.getRankScore();
         TotalLimit totalLimit = scoreDetailModel.getTotalStarLimit();
         UserScoreModel userScoreModel = scoreDetailModel.getRankStarScore();
-        if(rankLevelModel!=null && totalLimit!=null && userScoreModel!=null) {
+        if (rankLevelModel != null && totalLimit != null && userScoreModel != null) {
             mSdvOwnLevel.bindData(rankLevelModel.getLevelBefore(), rankLevelModel.getLevelBefore()
                     , totalLimit.getLimitBefore(), userScoreModel.getScoreBefore());
             mSdvOwnLevel.postDelayed(new Runnable() {
@@ -224,10 +226,70 @@ public class RecordTitleView extends RelativeLayout {
     }
 
     private void battleAnimationGo() {
-        if (mScoreDetailModel.hasBattleChange()) {
+        if (mScoreDetailModel.getBattleChange() > 0) {
+            // 加分，三段动画
+            if (mScoreDetailModel.getBattleChange() >= (mScoreDetailModel.getBattleTotalLimit().getLimitBefore() - mScoreDetailModel.getBattleRealScore().getScoreBefore())) {
+                // 之前的表盘要走到头，然后从头开始算,三段动画，满，清空，再加
+                mRecordCircleView.setData(0, mScoreDetailModel.getBattleTotalLimit().getLimitBefore(),
+                        mScoreDetailModel.getBattleRealScore().getScoreBefore(), mScoreDetailModel.getBattleTotalLimit().getLimitBefore(),
+                        mScoreDetailModel.getRankProtect().getLimitBefore(), new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                // 清空动画
+                                step1();
+                            }
+                        });
+            } else {
+                // 当前表盘即可显示整个动画
+                mRecordCircleView.setData(0, mScoreDetailModel.getBattleTotalLimit().getLimitBefore(),
+                        mScoreDetailModel.getBattleRealScore().getScoreBefore(), mScoreDetailModel.getBattleRealScore().getScoreNow(),
+                        mScoreDetailModel.getRankProtect().getLimitBefore(), null);
+            }
+        } else if (mScoreDetailModel.getBattleChange() < 0) {
+            // 减分
+            if (Math.abs(mScoreDetailModel.getBattleChange()) > mScoreDetailModel.getBattleRealScore().getScoreBefore()) {
+                // 分数清零
+                mRecordCircleView.setData(0, mScoreDetailModel.getBattleTotalLimit().getLimitBefore(),
+                        mScoreDetailModel.getBattleRealScore().getScoreBefore(), 0,
+                        mScoreDetailModel.getRankProtect().getLimitBefore(), new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                // TODO: 2019/1/11 产品确认换表盘逻辑 
+                            }
+                        });
+
+            } else {
+                // 一个表盘
+                mRecordCircleView.setData(0, mScoreDetailModel.getBattleTotalLimit().getLimitBefore(),
+                        mScoreDetailModel.getBattleRealScore().getScoreBefore(), mScoreDetailModel.getBattleRealScore().getScoreNow(),
+                        mScoreDetailModel.getRankProtect().getLimitBefore(), null);
+            }
+        }
+    }
+
+
+    private void step1() {
+        mRecordCircleView.setData(0, mScoreDetailModel.getBattleTotalLimit().getLimitBefore(),
+                mScoreDetailModel.getBattleTotalLimit().getLimitBefore(), 0, mScoreDetailModel.getRankProtect().getLimitBefore(), new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation, boolean isReverse) {
+                        // 判断是否还会有动画
+                        step2();
+                    }
+                });
+    }
+
+    private void step2() {
+        if (mScoreDetailModel.getBattleRealScore().getScoreNow() == 0) {
+            // 战力值为0
+            // TODO: 2019/1/11  产品确认
+
+        } else {
+            // 还有分要显示, 最后一段动画
             mRecordCircleView.setData(0, mScoreDetailModel.getBattleTotalLimit().getLimitNow(),
-                    mScoreDetailModel.getBattleRealScore().getScoreBefore(), mScoreDetailModel.getBattleRealScore().getScoreNow()
-                    , mScoreDetailModel.getRankProtect().getLimitBefore());
+                    0, mScoreDetailModel.getBattleRealScore().getScoreNow(), mScoreDetailModel.getRankProtect().getLimitNow(), null);
         }
     }
 }

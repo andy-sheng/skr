@@ -401,11 +401,11 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void startTimeTask() {
         mVoteTimeTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(10)
+                .take(12)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        mVoteDownTv.setText(String.format(U.app().getString(R.string.evaluation_time_info), 10 - integer));
+                        mVoteDownTv.setText(String.format(U.app().getString(R.string.evaluation_time_info), 12 - integer));
                     }
 
                     @Override

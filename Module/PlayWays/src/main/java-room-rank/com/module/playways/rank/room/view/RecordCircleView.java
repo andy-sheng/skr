@@ -83,10 +83,6 @@ public class RecordCircleView extends View {
         init();
     }
 
-    public void setAnimatorListenerAdapter(AnimatorListenerAdapter animatorListenerAdapter) {
-        mAnimatorListenerAdapter = animatorListenerAdapter;
-    }
-
     private void init() {
         mProgressWidth = U.getDisplayUtils().dip2px(8);
         mCalibrationWidth = dp2px(10);
@@ -339,13 +335,14 @@ public class RecordCircleView extends View {
         return ((float) mSweepAngle / ((float) mMax - (float) mMin)) * value;
     }
 
-    public void setData(int min, int max, int cur, int target, int protect){
+    public void setData(int min, int max, int cur, int target, int protect, AnimatorListenerAdapter animatorListenerAdapter) {
         mMin = 0;
         mMax = max;
         mStart = cur;
         mSolidCreditValue = target;
         mProtect = protect;
 
+        mAnimatorListenerAdapter = animatorListenerAdapter;
         setCreditValueWithAnim(target);
     }
 
@@ -395,7 +392,7 @@ public class RecordCircleView extends View {
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 isAnimFinish = false;
-                if(mAnimatorListenerAdapter != null){
+                if (mAnimatorListenerAdapter != null) {
                     mAnimatorListenerAdapter.onAnimationStart(animation);
                 }
             }
@@ -404,7 +401,7 @@ public class RecordCircleView extends View {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isAnimFinish = true;
-                if(mAnimatorListenerAdapter != null){
+                if (mAnimatorListenerAdapter != null) {
                     mAnimatorListenerAdapter.onAnimationEnd(animation);
                 }
             }
@@ -412,8 +409,9 @@ public class RecordCircleView extends View {
             @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
+                onAnimationEnd(animation);
                 isAnimFinish = true;
-                if(mAnimatorListenerAdapter != null){
+                if (mAnimatorListenerAdapter != null) {
                     mAnimatorListenerAdapter.onAnimationCancel(animation);
                 }
             }
