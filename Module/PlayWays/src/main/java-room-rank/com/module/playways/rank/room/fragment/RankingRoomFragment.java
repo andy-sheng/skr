@@ -303,7 +303,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         } catch (MalformedURLException e) {
         }
         if (url != null) {
-            getSVGAParser().parse(, new SVGAParser.ParseCompletion() {
+            getSVGAParser().parse(url, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -386,6 +386,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
                         }
                     });
+                } else if (mUFOMode == 4) {
+                    mUfoBg.stopAnimation(true);
                 }
             }
 
