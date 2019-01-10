@@ -24,11 +24,13 @@ public class CommentModel {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
-                if (sender.getUserId() == RoomData.SYSTEM_ID) {
-                    // 系统消息
-                    commentModel.setTextColor(Color.parseColor("#EF5E85"));
-                }
+            }else{
+                commentModel.setAvatar(event.info.getSender().getAvatar());
             }
+        }
+        if (commentModel.getUserId() == RoomData.SYSTEM_ID) {
+            // 系统消息
+            commentModel.setTextColor(Color.parseColor("#EF5E85"));
         }
         commentModel.setText(event.text);
         commentModel.setCommentType(CommentModel.TYPE_TEXT);
