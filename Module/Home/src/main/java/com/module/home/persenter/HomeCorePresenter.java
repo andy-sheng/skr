@@ -236,7 +236,7 @@ public class HomeCorePresenter {
                 // 到时会有广告页或者启动页挡一下的，先不用管
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
             } else {
-                if (MyUserInfoManager.getInstance().hasMyUserInfo()) {
+                if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
                     // 如果有账号了
                     if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
                             || MyUserInfoManager.getInstance().getSex() == 0

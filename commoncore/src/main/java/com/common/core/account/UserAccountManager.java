@@ -350,6 +350,7 @@ public class UserAccountManager {
                     mAccount = null;
                     ApiManager.getInstance().clearCookies();
                     UmengStatistics.onProfileSignOff();
+                    MyUserInfoManager.getInstance().logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     emitter.onComplete();
                 }

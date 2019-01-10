@@ -46,7 +46,7 @@ public class MyUserInfoManager {
     static final String PREF_KEY_UPDATE_LACATION_TS = "update_location_ts";
 
     private MyUserInfo mUser = new MyUserInfo();
-
+    private boolean mUserInfoFromServer = false;
 //    private boolean mHasLoadFromDB = false;
 
     public void init() {
@@ -62,7 +62,7 @@ public class MyUserInfoManager {
                     MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
                     MyLog.d(TAG, "load myUserInfo=" + userInfo);
                     if (userInfo != null) {
-                        setMyUserInfo(userInfo);
+                        setMyUserInfo(userInfo,false);
                     }
                     // 从服务器同步个人信息
                     syncMyInfoFromServer();
@@ -76,18 +76,34 @@ public class MyUserInfoManager {
                 .subscribe();
     }
 
+    public void logoff() {
+        mUser = new MyUserInfo();
+        mUserInfoFromServer = false;
+    }
+
     public MyUserInfo getMyUserInfo() {
         return mUser;
     }
 
-    public void setMyUserInfo(MyUserInfo myUserInfo) {
+    public void setMyUserInfo(MyUserInfo myUserInfo,boolean fromServer) {
         MyLog.d(TAG, "setMyUserInfo" + " myUserInfo=" + myUserInfo);
         if (myUserInfo != null) {
             mUser = myUserInfo;
+            if(!mUserInfoFromServer) {
+                mUserInfoFromServer = fromServer;
+            }
             ModuleServiceManager.getInstance().getMsgService().updateCurrentUserInfo();
             //user信息设定成功了，发出eventbus
             EventBus.getDefault().post(new MyUserInfoEvent.UserInfoChangeEvent());
         }
+    }
+
+    /**
+     * 当前的 mUser 信息是从服务器同步过的么，标记下
+     * @return
+     */
+    public boolean isUserInfoFromServer(){
+        return mUserInfoFromServer;
     }
 
     /**
@@ -104,7 +120,7 @@ public class MyUserInfoManager {
                     final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                    setMyUserInfo(myUserInfo);
+                    setMyUserInfo(myUserInfo,true);
                 } else if (obj.getErrno() == 107) {
                     UserAccountManager.getInstance().notifyAccountExpired();
                 }
@@ -163,7 +179,7 @@ public class MyUserInfoManager {
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                setMyUserInfo(mUser);
+                                setMyUserInfo(mUser,true);
                             }
                             if (updateParams.location != null) {
                                 // 有传地址位置
@@ -259,6 +275,7 @@ public class MyUserInfoManager {
             }
         });
     }
+
 
 //    public boolean hasLoadFromDB() {
 //        return mHasLoadFromDB;

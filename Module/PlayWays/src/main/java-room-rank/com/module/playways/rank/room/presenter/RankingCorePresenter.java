@@ -162,14 +162,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             // 不发送本地音频
             EngineManager.getInstance().muteLocalAudioStream(true);
         }
-    }
 
-    @Override
-    public void start() {
-        super.start();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
         if (mRoomData.getGameId() > 0) {
             // 伪装评论消息
             for (int i = 0; i < mRoomData.getPlayerInfoList().size(); i++) {
@@ -190,7 +183,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             basePushInfo.setRoomID(mRoomData.getGameId());
             basePushInfo.setSender(new UserInfo.Builder()
                     .setUserID(1)
-                    .setAvatar("")
+                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/avatar_default_1.png")
                     .setNickName("系统消息")
                     .setSex(ESex.fromValue(0))
                     .build());
@@ -202,7 +195,14 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 //                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
 //            }
         }
+    }
 
+    @Override
+    public void start() {
+        super.start();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         mRoomData.checkRound();
         startSyncGameStateTask(sSyncStateTaskInterval);
     }
