@@ -24,7 +24,7 @@ import io.rong.imlib.model.MessageContent;
  * <p>
  * MessageTag.NONE 表示不落存储
  */
-@MessageTag(value = "SKR:CustomMsg", flag = MessageTag.ISPERSISTED)
+@MessageTag(value = "SKR:CustomMsg", flag = MessageTag.NONE)
 public class CustomChatRoomMsg extends MessageContent {
     public final static String TAG = "CustomChatRoomMsg";
 
