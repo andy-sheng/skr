@@ -5,7 +5,7 @@
 
     <ImageView
         android:id="@+id/level_iv"
-        android:layout_width="@dimen/view_100_dp"
+        android:layout_width="@dimen/view_99_dp"
         android:layout_height="@dimen/view_86_dp"
         android:layout_alignParentTop="true"
         android:src="@drawable/dazhanji" />

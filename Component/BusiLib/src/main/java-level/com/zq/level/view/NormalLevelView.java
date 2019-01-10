@@ -1,6 +1,7 @@
 package com.zq.level.view;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -11,9 +12,11 @@ import com.common.utils.U;
 import com.component.busilib.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
+import com.zq.level.utils.LevelConfigUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -130,9 +133,57 @@ public class NormalLevelView extends RelativeLayout {
         }
     }
 
-    // 升段动画，段位提升动画
-    public void levelUp(final ViewGroup viewGroup) {
-        // 根据解析UserScoreModel不同数据值，给SVGA指定的key
+    /**
+     * 段位变换动画
+     *
+     * @param viewGroup      承载动画的容器
+     * @param levelBefore    之前的父段位
+     * @param subLevelBefore 之前的子段位
+     * @param levelNow       现在的父段位
+     * @param sublevelNow    现在的子段位
+     */
+    public void levelChange(final ViewGroup viewGroup, final int levelBefore, final int subLevelBefore, final int levelNow, final int sublevelNow) {
+        final SVGAImageView levelChange = new SVGAImageView(getContext());
+        levelChange.setClearsAfterStop(false);   // 停在最后一帧
+        levelChange.setLoops(1);  // 只播1次
+
+        int[] location = new int[2];
+        mLevelIv.getLocationOnScreen(location);
+
+        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(220), U.getDisplayUtils().dip2px(200));
+        rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((220 - 99) / 2),
+                Math.abs(location[1]) - U.getDisplayUtils().dip2px((200 - 86) / 2), 0, 0);
+        levelChange.setLayoutParams(rl);
+        viewGroup.addView(levelChange);
+
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("duanwei_change.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(levelBefore, subLevelBefore, levelNow, sublevelNow));
+                    levelChange.setImageDrawable(drawable);
+                    levelChange.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+
+    }
+
+    private SVGADynamicEntity requestDynamicBitmapItem(int levelBefore, int subLevelBefore, int levelNow, int sublevelNow) {
+        SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
+        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(subLevelBefore)), "keyLevelBefore");
+        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelBefore)), "keyMedalBefore");
+        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(sublevelNow)), "keyLevelNew");
+        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelNow)), "keyMedalNew");
+        return dynamicEntity;
     }
 
     // 星星增加动画,从第几颗星增加到几个行
