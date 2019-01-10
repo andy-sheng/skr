@@ -23,7 +23,7 @@ public class ChatRoomMsgManager {
      */
     private HashMap<ERoomMsgType, HashSet<IPushChatRoomMsgProcess>> mProcessorMap = new HashMap<>();
 
-    private List<PushMsgFilter> pushMsgFilterList = new ArrayList<>();
+    private HashSet<PushMsgFilter> mPushMsgFilterList = new HashSet<>();
 
     private static class ChatRoomMsgAdapterHolder {
         private static final ChatRoomMsgManager INSTANCE = new ChatRoomMsgManager();
@@ -49,28 +49,33 @@ public class ChatRoomMsgManager {
         }
     }
 
+    public void addFilter(PushMsgFilter pushMsgFilter) {
+        mPushMsgFilterList.add(pushMsgFilter);
+    }
+
+    public void removeFilter(PushMsgFilter pushMsgFilter) {
+        mPushMsgFilterList.remove(pushMsgFilter);
+    }
+
     /**
      * 处理消息分发
      *
      * @param msg
      */
     public void processRoomMsg(RoomMsg msg) {
-        boolean flag = true;  //是否放行的flag
-        for (PushMsgFilter filter : pushMsgFilterList) {
-            if (filter.processType() != null && filter.processType().contains(msg.getMsgType())) {
-                flag = filter.doFilter(msg);
-                if (!flag) {
-                    break;
-                }
+        boolean canGo = true;  //是否放行的flag
+        for (PushMsgFilter filter : mPushMsgFilterList) {
+            canGo = filter.doFilter(msg);
+            if (!canGo) {
+                MyLog.d(TAG, "processRoomMsg " + msg + "被拦截");
+                return;
             }
         }
 
-        if (flag) {
-            HashSet<IPushChatRoomMsgProcess> processors = mProcessorMap.get(msg.getMsgType());
-            if (processors != null) {
-                for (IPushChatRoomMsgProcess process : processors) {
-                    process.processRoomMsg(msg.getMsgType(), msg);
-                }
+        HashSet<IPushChatRoomMsgProcess> processors = mProcessorMap.get(msg.getMsgType());
+        if (processors != null) {
+            for (IPushChatRoomMsgProcess process : processors) {
+                process.processRoomMsg(msg.getMsgType(), msg);
             }
         }
     }

@@ -12,6 +12,4 @@ public interface PushMsgFilter {
 
     boolean doFilter(RoomMsg msg);   // true 表示放行,false表示不放行
 
-    List<ERoomMsgType> processType();
-
 }

@@ -34,6 +34,8 @@ import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
+import com.module.playways.rank.msg.filter.PushMsgFilter;
+import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
@@ -113,6 +115,16 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     ExoPlayer mExoPlayer;
 
+    PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
+        @Override
+        public boolean doFilter(RoomMsg msg) {
+            if (msg.roomID == mRoomData.getGameId()) {
+                return true;
+            }
+            return false;
+        }
+    };
+
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -124,7 +136,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 //                case MSG_ROBOT_SING_END:
 //                    break;
                 case MSG_GET_VOTE:
-                    MyLog.d(TAG,"handleMessage MSG_GET_VOTE");
+                    MyLog.d(TAG, "handleMessage MSG_GET_VOTE");
                     getVoteResult(mRoomData.getGameId());
                     break;
                 case MSG_START_LAST_TWO_SECONDS_TASK:
@@ -164,9 +176,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
             // 不发送本地音频
             EngineManager.getInstance().muteLocalAudioStream(true);
-        }
-
-        if (mRoomData.getGameId() > 0) {
             // 伪装评论消息
             for (int i = 0; i < mRoomData.getPlayerInfoList().size(); i++) {
                 PlayerInfoModel playerInfoModel = mRoomData.getPlayerInfoList().get(i);
@@ -197,6 +206,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 //            if (msgService != null) {
 //                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
 //            }
+            ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
         }
     }
 
@@ -226,10 +236,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer = null;
         }
 
-        if(mGameFinishActionSubject != null){
+        if (mGameFinishActionSubject != null) {
             mGameFinishActionSubject.onComplete();
         }
-
+        ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
     }
 
     /**
