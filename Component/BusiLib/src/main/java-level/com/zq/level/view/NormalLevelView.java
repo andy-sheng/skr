@@ -142,7 +142,7 @@ public class NormalLevelView extends RelativeLayout {
      * @param levelNow       现在的父段位
      * @param sublevelNow    现在的子段位
      */
-    public void levelChange(final ViewGroup viewGroup, final int levelBefore, final int subLevelBefore, final int levelNow, final int sublevelNow) {
+    public void levelChange(final ViewGroup viewGroup, final int levelBefore, final int subLevelBefore, final int levelNow, final int sublevelNow, final SVGAListener listener) {
         final SVGAImageView levelChange = new SVGAImageView(getContext());
         levelChange.setClearsAfterStop(false);   // 停在最后一帧
         levelChange.setLoops(1);  // 只播1次
@@ -175,6 +175,30 @@ public class NormalLevelView extends RelativeLayout {
             System.out.print(true);
         }
 
+        levelChange.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (listener != null) {
+                    listener.onFinish();
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
+
     }
 
     private SVGADynamicEntity requestDynamicBitmapItem(int levelBefore, int subLevelBefore, int levelNow, int sublevelNow) {
@@ -188,12 +212,9 @@ public class NormalLevelView extends RelativeLayout {
 
     // 星星增加动画,从第几颗星增加到几个行
     // TODO: 2019/1/10 from 和 to都是从0开始计算
-    public void starUp(final ViewGroup viewGroup, final int from, final int to) {
+    public void starUp(final ViewGroup viewGroup, final int from, final int to, final SVGAListener listener) {
         final int dis = to - from;
-        if (dis < 0) {
-            return;
-        }
-        SVGACallback callback = new SVGACallback() {
+        starUp(viewGroup, from, new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -201,9 +222,15 @@ public class NormalLevelView extends RelativeLayout {
 
             @Override
             public void onFinished() {
-                if (dis >= 0) {
-                    starUp(viewGroup, from + 1, to);
+                if (dis > 0) {
+                    starUp(viewGroup, from + 1, to, listener);
+                } else {
+                    if (listener != null) {
+                        listener.onFinish();
+                    }
                 }
+                ImageView imageView = starts.get(from);
+                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang));
             }
 
             @Override
@@ -215,8 +242,7 @@ public class NormalLevelView extends RelativeLayout {
             public void onStep(int i, double v) {
 
             }
-        };
-        starUp(viewGroup, from, callback);
+        });
     }
 
     private void starUp(ViewGroup viewGroup, int index, SVGACallback callback) {
@@ -224,7 +250,6 @@ public class NormalLevelView extends RelativeLayout {
             return;
         }
         final SVGAImageView starUp = new SVGAImageView(getContext());
-        starUp.setClearsAfterStop(false);   // 停在最后一帧
         starUp.setLoops(1);  // 只播1次
 
         ImageView imageView = starts.get(index);
@@ -269,12 +294,9 @@ public class NormalLevelView extends RelativeLayout {
 
     // 星星掉落动画 from必须大于to，表示从第几颗星星掉落
     // TODO: 2019/1/10 from 和 to都是从0开始计算
-    public void starLoss(final ViewGroup viewGroup, final int from, final int to) {
+    public void starLoss(final ViewGroup viewGroup, final int from, final int to, final SVGAListener listener) {
         final int dis = from - to;
-        if (dis < 0) {
-            return;
-        }
-        SVGACallback callback = new SVGACallback() {
+        starLoss(viewGroup, from, new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -282,8 +304,12 @@ public class NormalLevelView extends RelativeLayout {
 
             @Override
             public void onFinished() {
-                if (dis >= 0) {
-                    starLoss(viewGroup, from - 1, to);
+                if (dis > 0) {
+                    starLoss(viewGroup, from - 1, to, listener);
+                } else {
+                    if (listener != null) {
+                        listener.onFinish();
+                    }
                 }
             }
 
@@ -296,19 +322,18 @@ public class NormalLevelView extends RelativeLayout {
             public void onStep(int i, double v) {
 
             }
-        };
-        starLoss(viewGroup, from, callback);
+        });
     }
 
     private void starLoss(ViewGroup viewGroup, int index, SVGACallback callback) {
         if (index < 0 || index >= totalStats) {
             return;
         }
-        final SVGAImageView starUp = new SVGAImageView(getContext());
-        starUp.setClearsAfterStop(false);   // 停在最后一帧
-        starUp.setLoops(1);  // 只播1次
+        final SVGAImageView starLoss = new SVGAImageView(getContext());
+        starLoss.setClearsAfterStop(false);
+        starLoss.setLoops(1);  // 只播1次
 
-        ImageView imageView = starts.get(index);
+        final ImageView imageView = starts.get(index);
         int[] location = new int[2];
         imageView.getLocationOnScreen(location);
 
@@ -316,17 +341,16 @@ public class NormalLevelView extends RelativeLayout {
             RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(134), U.getDisplayUtils().dip2px(134));
             rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((134 - 20) / 2),
                     Math.abs(location[1]) - U.getDisplayUtils().dip2px((134 - 20) / 2), 0, 0);
-            starUp.setLayoutParams(rl);
+            starLoss.setLayoutParams(rl);
         } else {
             RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams((int) (U.getDisplayUtils().dip2px(134) * 0.9),
                     (int) (U.getDisplayUtils().dip2px(134) * 0.9));
             rl.setMargins(Math.abs(location[0]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))),
                     Math.abs(location[1]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))), 0, 0);
-            starUp.setLayoutParams(rl);
+            starLoss.setLayoutParams(rl);
         }
 
-        imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
-        viewGroup.addView(starUp);
+        viewGroup.addView(starLoss);
 
         SVGAParser parser = new SVGAParser(getContext());
         try {
@@ -334,8 +358,9 @@ public class NormalLevelView extends RelativeLayout {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
-                    starUp.setImageDrawable(drawable);
-                    starUp.startAnimation();
+                    imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
+                    starLoss.setImageDrawable(drawable);
+                    starLoss.startAnimation();
                 }
 
                 @Override
@@ -346,6 +371,10 @@ public class NormalLevelView extends RelativeLayout {
         } catch (Exception e) {
             System.out.print(true);
         }
-        starUp.setCallback(callback);
+        starLoss.setCallback(callback);
+    }
+
+    public interface SVGAListener {
+        void onFinish();
     }
 }
