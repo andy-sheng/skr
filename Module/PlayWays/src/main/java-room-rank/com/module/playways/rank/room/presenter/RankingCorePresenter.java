@@ -125,6 +125,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 //                case MSG_ROBOT_SING_END:
 //                    break;
                 case MSG_GET_VOTE:
+                    MyLog.d(TAG,"handleMessage MSG_GET_VOTE");
                     getVoteResult(mRoomData.getGameId());
                     break;
                 case MSG_START_LAST_TWO_SECONDS_TASK:

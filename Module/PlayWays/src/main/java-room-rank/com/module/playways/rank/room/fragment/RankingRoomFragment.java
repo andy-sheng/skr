@@ -734,89 +734,75 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void showRecordView(RecordData recordData) {
-        destroyAnimation();
-        // TODO: 2019/1/8 加上了2秒的对战结束动画
-        mEndGameIv.setVisibility(View.VISIBLE);
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, "scaleX", 0.3f, 1f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, "scaleY", 0.3f, 1f);
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(750);
-        set.play(a1).with(a2);
-        set.start();
-
-        set.addListener(new Animator.AnimatorListener() {
+        MyLog.d(TAG, "showRecordView" + " recordData=" + recordData);
+        startGameEndAniamtion(new Runnable() {
             @Override
-            public void onAnimationStart(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                HandlerTaskTimer.newBuilder()
-                        .delay(1250)
-                        .start(new HandlerTaskTimer.ObserverW() {
-                            @Override
-                            public void onNext(Integer integer) {
-                                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
-                                        .setAddToBackStack(true)
-                                        .addDataBeforeAdd(0, recordData)
-                                        .addDataBeforeAdd(1, mRoomData)
-                                        .build()
-                                );
-                            }
-                        });
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                onAnimationEnd(animator);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
+            public void run() {
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+                                .setAddToBackStack(true)
+                                .addDataBeforeAdd(0, mRoomData)
+                                .build()
+                        );
+                    }
+                }, 1250);
             }
         });
-
     }
 
     @Override
     public void showVoteView() {
+        MyLog.d(TAG, "showVoteView");
+        startGameEndAniamtion(new Runnable() {
+            @Override
+            public void run() {
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                                .setAddToBackStack(true)
+                                .addDataBeforeAdd(0, mRoomData)
+                                .build()
+                        );
+                    }
+                }, 1250);
+            }
+        });
+    }
+
+    private void startGameEndAniamtion(Runnable endRunable) {
         destroyAnimation();
-        // TODO: 2019/1/8  加上2秒的对战结束动画
+        // TODO: 2019/1/8 加上了2秒的对战结束动画
         mEndGameIv.setVisibility(View.VISIBLE);
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_X, 0.3f, 1f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_Y, 0.3f, 1f);
-        if (mGameEndAnimation != null) {
-            mGameEndAnimation.cancel();
+        if (mGameEndAnimation == null) {
+            ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_X, 0.3f, 1f);
+            ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_Y, 0.3f, 1f);
+            mGameEndAnimation = new AnimatorSet();
+            mGameEndAnimation.setDuration(750);
+            mGameEndAnimation.playTogether(a1, a2);
         }
-        mGameEndAnimation = new AnimatorSet();
-        mGameEndAnimation.setDuration(750);
-        mGameEndAnimation.playTogether(a1, a2);
+        mGameEndAnimation.removeAllListeners();
         mGameEndAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
+                MyLog.d(TAG, "onAnimationStart mGameEndAnimation");
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                HandlerTaskTimer.newBuilder()
-                        .delay(1250)
-                        .start(new HandlerTaskTimer.ObserverW() {
-                            @Override
-                            public void onNext(Integer integer) {
+                MyLog.d(TAG, "onAnimationEnd mGameEndAnimation");
+                if (endRunable != null) {
 
-                                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                                        .setAddToBackStack(true)
-                                        .addDataBeforeAdd(0, mRoomData)
-                                        .build()
-                                );
+                }
+                endRunable.run();
 
-                            }
-                        });
             }
 
             @Override
             public void onAnimationCancel(Animator animator) {
-                onAnimationEnd(animator);
+                MyLog.d(TAG, "onAnimationCancel mGameEndAnimation");
             }
 
             @Override
@@ -828,21 +814,21 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void destroyAnimation() {
         if (mTopVoiceBg != null) {
-            mTopVoiceBg.stopAnimation();
+            mTopVoiceBg.stopAnimation(true);
             mTopVoiceBg.setVisibility(View.GONE);
             mRankingContainer.removeView(mTopVoiceBg);
             mTopVoiceBg = null;
         }
 
         if (mUfoBg != null) {
-            mUfoBg.stopAnimation();
+            mUfoBg.stopAnimation(true);
             mUfoBg.setVisibility(View.GONE);
             mRankingContainer.removeView(mUfoBg);
             mUfoBg = null;
         }
 
         if (mReadyGoBg != null) {
-            mReadyGoBg.stopAnimation();
+            mReadyGoBg.stopAnimation(true);
             mReadyGoBg.setVisibility(View.GONE);
             mRankingContainer.removeView(mReadyGoBg);
             mReadyGoBg = null;
