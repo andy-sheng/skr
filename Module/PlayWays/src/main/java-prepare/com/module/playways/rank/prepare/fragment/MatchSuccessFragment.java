@@ -286,7 +286,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
+                        .setBorderColor(0xFF85EAFF)
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon2,
@@ -294,7 +294,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
+                        .setBorderColor(0xFF85EAFF)
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon3,
@@ -302,7 +302,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
+                        .setBorderColor(0xFFFF79A9)
                         .build());
     }
 
@@ -342,7 +342,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColor(Color.WHITE)
+                                .setBorderColor(0xFF85EAFF)
                                 .build());
             }
 
@@ -352,7 +352,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColor(Color.WHITE)
+                                .setBorderColor(0xFF85EAFF)
                                 .build());
             }
 
@@ -362,7 +362,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColor(Color.WHITE)
+                                .setBorderColor(0xFFFF79A9)
                                 .build());
             }
         }
