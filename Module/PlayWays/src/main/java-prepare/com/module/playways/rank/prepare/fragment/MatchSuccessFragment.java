@@ -65,8 +65,9 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     PrepareData mPrepareData;
 
-    PlayerInfoModel leftPlayer;
-    PlayerInfoModel rightPlayer;
+    PlayerInfoModel mLeftPlayer;
+
+    PlayerInfoModel mRightPlayer;
 
     HandlerTaskTimer mReadyTimeTask;
 
@@ -95,10 +96,10 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
         if (mPrepareData.getPlayerInfoList() != null && mPrepareData.getPlayerInfoList().size() > 0) {
             for (PlayerInfoModel playerInfo : mPrepareData.getPlayerInfoList()) {
-                if (leftPlayer != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
-                    rightPlayer = playerInfo;
+                if (mLeftPlayer != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
+                    mRightPlayer = playerInfo;
                 } else if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
-                    leftPlayer = playerInfo;
+                    mLeftPlayer = playerInfo;
                 }
             }
         }
@@ -281,7 +282,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     private void initAvatar(boolean isGray) {
         AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                AvatarUtils.newParamsBuilder(leftPlayer.getUserInfo().getAvatar())
+                AvatarUtils.newParamsBuilder(mLeftPlayer.getUserInfo().getAvatar())
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -289,7 +290,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                AvatarUtils.newParamsBuilder(rightPlayer.getUserInfo().getAvatar())
+                AvatarUtils.newParamsBuilder(mRightPlayer.getUserInfo().getAvatar())
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -335,9 +336,9 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         }
 
         for (ReadyInfoModel jsonReadyInfo : readyInfos) {
-            if (jsonReadyInfo.getUserID() == leftPlayer.getUserInfo().getUserId()) {
+            if (jsonReadyInfo.getUserID() == mLeftPlayer.getUserInfo().getUserId()) {
                 AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                        AvatarUtils.newParamsBuilder(leftPlayer.getUserInfo().getAvatar())
+                        AvatarUtils.newParamsBuilder(mLeftPlayer.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -345,9 +346,9 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                                 .build());
             }
 
-            if (jsonReadyInfo.getUserID() == rightPlayer.getUserInfo().getUserId()) {
+            if (jsonReadyInfo.getUserID() == mRightPlayer.getUserInfo().getUserId()) {
                 AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                        AvatarUtils.newParamsBuilder(rightPlayer.getUserInfo().getAvatar())
+                        AvatarUtils.newParamsBuilder(mRightPlayer.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
