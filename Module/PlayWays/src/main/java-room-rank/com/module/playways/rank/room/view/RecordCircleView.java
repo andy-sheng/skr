@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -36,7 +37,7 @@ public class RecordCircleView extends View {
     private int mSweepAngle = 300; // 绘制角度
     //最外面边框的大小
     private int mStrokeWidth = U.getDisplayUtils().dip2px(2);
-    private int mArrowHeight = 0;
+    private int mArrowHeight = 10;
     private int mMin = 0; // 最小值
     private int mMax = 900; // 最大值
     //从哪里开始转
@@ -58,6 +59,8 @@ public class RecordCircleView extends View {
     private Path mPath;
     private Rect mRectText;
 
+    private int mProtect;
+
     AnimatorListenerAdapter mAnimatorListenerAdapter;
     /**
      * 由于真实的芝麻信用界面信用值不是线性排布，所以播放动画时若以信用值为参考，则会出现忽慢忽快
@@ -78,7 +81,6 @@ public class RecordCircleView extends View {
         super(context, attrs, defStyleAttr);
 
         init();
-//        setCreditValueWithAnim(700);
     }
 
     public void setAnimatorListenerAdapter(AnimatorListenerAdapter animatorListenerAdapter) {
@@ -181,11 +183,11 @@ public class RecordCircleView extends View {
 
 //            canvas.save();
 //            canvas.rotate(mAngleWhenAnim + 90, mCenterX, mCenterY);
-//            Drawable d = getResources().getDrawable(R.drawable.btn_return_xuanzegequ_normal);
+//            Drawable d = getResources().getDrawable(R.drawable.zhanji_sanjiaoxing);
 //            int startX = (int) mCenterX - 10;
 //            int startY = 0;
 //            int width = (int) mCenterX + 10;
-//            int height = 100;
+//            int height = 20;
 //            d.setBounds(startX, startY, width, height);
 //            d.draw(canvas);
 //            canvas.restore();
@@ -207,17 +209,20 @@ public class RecordCircleView extends View {
 //            mPaint.setShader(generateRadialGradient(point[0], point[1]));
 //            canvas.drawCircle(point[0], point[1], mSparkleWidth / 2f, mPaint);
 
-//            canvas.save();
-//            canvas.rotate(mAngleWhenAnim + 90, mCenterX, mCenterY);
-//            Drawable d = getResources().getDrawable(R.drawable.btn_return_xuanzegequ_normal);
-//            int startX = (int) mCenterX - 10;
-//            int startY = 0;
-//            int width = (int) mCenterX + 10;
-//            int height = 100;
-//            d.setBounds(startX, startY, width, height);
-//            d.draw(canvas);
-//            canvas.restore();
         }
+
+        float degree = calculateRelativeAngleWithValue(mSolidCreditValue) + mStartAngle;
+        canvas.save();
+        canvas.rotate(degree + 90, mCenterX, mCenterY);
+        Drawable d = getResources().getDrawable(R.drawable.zhanji_sanjiaoxing);
+        int startX = (int) mCenterX - 10;
+        int startY = 0;
+        int width = (int) mCenterX + 10;
+        int height = 20;
+        d.setBounds(startX, startY, width, height);
+        d.draw(canvas);
+        canvas.restore();
+
 
         /**
          * 画实时度数值
@@ -334,11 +339,12 @@ public class RecordCircleView extends View {
         return ((float) mSweepAngle / ((float) mMax - (float) mMin)) * value;
     }
 
-    public void setData(int min, int max, int cur, int target, int protectBefore, int protectNow){
-        mMin = min;
+    public void setData(int min, int max, int cur, int target, int protect){
+        mMin = 0;
         mMax = max;
         mStart = cur;
         mSolidCreditValue = target;
+        mProtect = protect;
 
         setCreditValueWithAnim(target);
     }
@@ -352,6 +358,8 @@ public class RecordCircleView extends View {
         if (creditValue < mMin || creditValue > mMax || !isAnimFinish) {
             return;
         }
+
+        setVisibility(VISIBLE);
 
         mSolidCreditValue = creditValue;
 

@@ -211,7 +211,7 @@ public class RecordTitleView extends RelativeLayout {
         if (mScoreDetailModel.hasBattleChange()) {
             mRecordCircleView.setData(0, mScoreDetailModel.getBattleTotalLimit().getLimitNow(),
                     mScoreDetailModel.getBattleRealScore().getScoreBefore(), mScoreDetailModel.getBattleRealScore().getScoreNow()
-                    , mScoreDetailModel.getRankProtect().getLimitBefore(), mScoreDetailModel.getRankProtect().getLimitNow());
+                    , mScoreDetailModel.getRankProtect().getLimitBefore());
         }
     }
 }

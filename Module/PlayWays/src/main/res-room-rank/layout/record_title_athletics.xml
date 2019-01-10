@@ -24,8 +24,8 @@
 
     <com.module.playways.rank.room.view.RecordCircleView
         android:id="@+id/record_circle_view"
-        android:layout_width="@dimen/view_50_dp"
-        android:layout_height="@dimen/view_50_dp"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_60_dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_51_dp"
         android:layout_marginRight="@dimen/view_34_dp" />
