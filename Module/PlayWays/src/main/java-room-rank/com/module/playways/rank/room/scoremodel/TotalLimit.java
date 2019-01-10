@@ -6,6 +6,14 @@ public class TotalLimit {
     int limitBefore;  // 之前的上限值
     int limitNow;     // 现在的上限值
 
+    @Override
+    public String toString() {
+        return "TotalLimit{" +
+                "limitBefore=" + limitBefore +
+                ", limitNow=" + limitNow +
+                '}';
+    }
+
     public int getLimitBefore() {
         return limitBefore;
     }

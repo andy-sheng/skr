@@ -20,7 +20,10 @@ import com.module.playways.rank.prepare.GameModeType;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.VoteInfoModel;
+import com.module.playways.rank.room.scoremodel.RankLevelModel;
 import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
+import com.module.playways.rank.room.scoremodel.TotalLimit;
+import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.utils.ScoreConfigUtils;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView;
@@ -147,15 +150,20 @@ public class RecordTitleView extends RelativeLayout {
         this.mScoreDetailModel = scoreDetailModel;
 
         // 展示之前的段位
-        mSdvOwnLevel.bindData(scoreDetailModel.getRankScore().getLevelBefore(), scoreDetailModel.getSubRankScore().getLevelBefore()
-                , scoreDetailModel.getTotalStarLimit().getLimitBefore(), scoreDetailModel.getRankStarScore().getScoreBefore());
-        mSdvOwnLevel.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                battleAnimationGo();
-                scoreAnimationGo();
-            }
-        }, 1000);
+        RankLevelModel rankLevelModel = scoreDetailModel.getRankScore();
+        TotalLimit totalLimit = scoreDetailModel.getTotalStarLimit();
+        UserScoreModel userScoreModel = scoreDetailModel.getRankStarScore();
+        if(rankLevelModel!=null && totalLimit!=null && userScoreModel!=null) {
+            mSdvOwnLevel.bindData(rankLevelModel.getLevelBefore(), rankLevelModel.getLevelBefore()
+                    , totalLimit.getLimitBefore(), userScoreModel.getScoreBefore());
+            mSdvOwnLevel.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    battleAnimationGo();
+                    scoreAnimationGo();
+                }
+            }, 1000);
+        }
     }
 
     private void scoreAnimationGo() {

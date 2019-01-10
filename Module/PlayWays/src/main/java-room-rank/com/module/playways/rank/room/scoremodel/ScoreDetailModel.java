@@ -19,6 +19,23 @@ public class ScoreDetailModel {
 
     private TotalLimit mRankProtect;             //掉段保护
 
+    @Override
+    public String toString() {
+        return "ScoreDetailModel{" +
+                "mRankScore=" + mRankScore +
+                ", mSubRankScore=" + mSubRankScore +
+                ", mRankStarScore=" + mRankStarScore +
+                ", mTotalStarLimit=" + mTotalStarLimit +
+                ", mUpgradeScore=" + mUpgradeScore +
+                ", mUpgradeStarScore=" + mUpgradeStarScore +
+                ", mUpTotalStarLimit=" + mUpTotalStarLimit +
+                ", mBattleRealScore=" + mBattleRealScore +
+                ", mBattleTotalLimit=" + mBattleTotalLimit +
+                ", mBattleRatingScore=" + mBattleRatingScore +
+                ", mRankProtect=" + mRankProtect +
+                '}';
+    }
+
     public RankLevelModel getRankScore() {
         return mRankScore;
     }

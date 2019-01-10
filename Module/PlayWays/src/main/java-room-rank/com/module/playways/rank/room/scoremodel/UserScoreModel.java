@@ -92,6 +92,20 @@ public class UserScoreModel {
         this.scoreBeforeDesc = scoreBeforeDesc;
     }
 
+    @Override
+    public String toString() {
+        return "UserScoreModel{" +
+                "userID=" + userID +
+                ", scoreType=" + scoreType +
+                ", scoreNow=" + scoreNow +
+                ", scoreBefore=" + scoreBefore +
+                ", items=" + items +
+                ", scoreTypeDesc='" + scoreTypeDesc + '\'' +
+                ", scoreNowDesc='" + scoreNowDesc + '\'' +
+                ", scoreBeforeDesc='" + scoreBeforeDesc + '\'' +
+                '}';
+    }
+
     public void parse(UserScoreRecord userScoreRecord) {
         if (userScoreRecord == null) {
             MyLog.e("UserScoreRecord == null");

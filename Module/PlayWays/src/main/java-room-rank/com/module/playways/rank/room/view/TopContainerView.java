@@ -190,6 +190,8 @@ public class TopContainerView extends RelativeLayout {
 
     public void cancelShowLastedTimeTask() {
         mTvPassedTime.setText("");
+        mScoreProgressBar.setProgress2(0);
+        mLastItem = null;
         if (mShowLastedTimeTask != null) {
             mShowLastedTimeTask.dispose();
             mShowLastedTimeTask = null;

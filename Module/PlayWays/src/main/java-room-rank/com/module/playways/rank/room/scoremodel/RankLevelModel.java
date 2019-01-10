@@ -41,5 +41,13 @@ public class RankLevelModel {
         this.levelBeforeDesc = levelBeforeDesc;
     }
 
-
+    @Override
+    public String toString() {
+        return "RankLevelModel{" +
+                "levelNow=" + levelNow +
+                ", levelBefore=" + levelBefore +
+                ", levelNowDesc='" + levelNowDesc + '\'' +
+                ", levelBeforeDesc='" + levelBeforeDesc + '\'' +
+                '}';
+    }
 }
