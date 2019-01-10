@@ -57,6 +57,8 @@ public class RecordCircleView extends View {
     private RectF mRectFTextArc;
     private Path mPath;
     private Rect mRectText;
+
+    AnimatorListenerAdapter mAnimatorListenerAdapter;
     /**
      * 由于真实的芝麻信用界面信用值不是线性排布，所以播放动画时若以信用值为参考，则会出现忽慢忽快
      * 的情况（开始以为是卡顿）。因此，先计算出最终到达角度，以扫过的角度为线性参考，动画就流畅了
@@ -77,6 +79,10 @@ public class RecordCircleView extends View {
 
         init();
 //        setCreditValueWithAnim(700);
+    }
+
+    public void setAnimatorListenerAdapter(AnimatorListenerAdapter animatorListenerAdapter) {
+        mAnimatorListenerAdapter = animatorListenerAdapter;
     }
 
     private void init() {
@@ -381,18 +387,27 @@ public class RecordCircleView extends View {
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 isAnimFinish = false;
+                if(mAnimatorListenerAdapter != null){
+                    mAnimatorListenerAdapter.onAnimationStart(animation);
+                }
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isAnimFinish = true;
+                if(mAnimatorListenerAdapter != null){
+                    mAnimatorListenerAdapter.onAnimationEnd(animation);
+                }
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
                 isAnimFinish = true;
+                if(mAnimatorListenerAdapter != null){
+                    mAnimatorListenerAdapter.onAnimationCancel(animation);
+                }
             }
         });
         animatorSet.start();
