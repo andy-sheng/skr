@@ -79,6 +79,15 @@ public class NormalLevelView extends RelativeLayout {
     }
 
     private void initStart() {
+        // 先清除所有的星星
+        if (starts != null) {
+            for (ImageView imageView : starts) {
+                removeView(imageView);
+            }
+            starts.clear();
+            rightStarts.clear();
+        }
+
         float widDis = starTotalWidth / (totalStats + 1); //横向间距
         float highDis = starTotalHeight / (totalStats - 1); //纵向间距
 
