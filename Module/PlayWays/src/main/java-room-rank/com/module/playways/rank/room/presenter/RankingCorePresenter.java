@@ -26,7 +26,10 @@ import com.engine.Params;
 import com.module.ModuleServiceManager;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AppSwapEvent;
+import com.module.playways.rank.msg.event.CommentMsgEvent;
+import com.module.playways.rank.msg.event.EventHelper;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
@@ -168,10 +171,36 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             EventBus.getDefault().register(this);
         }
         if (mRoomData.getGameId() > 0) {
-            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-            if (msgService != null) {
-                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
+            // 伪装评论消息
+            for (int i = 0; i < mRoomData.getPlayerInfoList().size(); i++) {
+                PlayerInfoModel playerInfoModel = mRoomData.getPlayerInfoList().get(i);
+                BasePushInfo basePushInfo = new BasePushInfo();
+                basePushInfo.setRoomID(mRoomData.getGameId());
+                basePushInfo.setSender(new UserInfo.Builder()
+                        .setUserID(playerInfoModel.getUserInfo().getUserId())
+                        .setAvatar(playerInfoModel.getUserInfo().getAvatar())
+                        .setNickName(playerInfoModel.getUserInfo().getNickname())
+                        .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
+                        .build());
+                String text = String.format("我第%s个唱", i + 1);
+                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+                EventBus.getDefault().post(msgEvent);
             }
+            BasePushInfo basePushInfo = new BasePushInfo();
+            basePushInfo.setRoomID(mRoomData.getGameId());
+            basePushInfo.setSender(new UserInfo.Builder()
+                    .setUserID(1)
+                    .setAvatar("")
+                    .setNickName("系统消息")
+                    .setSex(ESex.fromValue(0))
+                    .build());
+            String text = "提示：撕歌倡导文明游戏， 遇到恶意演唱、低俗评论的 用户，平台将给予相应惩罚";
+            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+            EventBus.getDefault().post(msgEvent);
+//            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+//            if (msgService != null) {
+//                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
+//            }
         }
 
         mRoomData.checkRound();

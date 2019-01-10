@@ -96,7 +96,7 @@
         <!-- 百度地图以及相关授权 确保 应用名称 包名 以及 sha1 都正确-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="KewAUXjF0fhUhHL5Xp4Qm3GV5t3pjmsY" />
+            android:value="qGGgGhF4PONiUOOa3YGdhMtLAkk0G6G9" />
         <!-- 百度地图定位需要的service -->
         <service
             android:name="com.baidu.location.f"
