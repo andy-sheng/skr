@@ -76,9 +76,9 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
         AvatarUtils.loadAvatarByUrl(mSongIcon,
                 AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
-                        .setCircle(true)
+                        .setBorderColor(Color.parseColor("#0C2275"))
+                        .setCornerRadius(U.getDisplayUtils().dip2px(6))
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
                         .build());
 
         mTvDuration.setText(U.getDateTimeUtils().formatTimeStringForDate(mPrepareData.getSongModel().getTotalMs(), "mm:ss"));
