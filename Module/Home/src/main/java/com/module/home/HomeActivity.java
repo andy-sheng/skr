@@ -117,6 +117,7 @@ public class HomeActivity extends BaseActivity {
                         mGameBtn.setSelected(false);
                         mMessageBtn.setSelected(true);
                         mPersonInfoBtn.setSelected(false);
+                        U.getSoundUtils().play("Home",R.raw.test2);
                     }
                 });
 
@@ -129,9 +130,11 @@ public class HomeActivity extends BaseActivity {
                         mGameBtn.setSelected(false);
                         mMessageBtn.setSelected(false);
                         mPersonInfoBtn.setSelected(true);
+                        U.getSoundUtils().play("Home",R.raw.test1);
                     }
                 });
 
+        U.getSoundUtils().preLoad("Home",R.raw.test1,R.raw.test2);
     }
 
 
@@ -160,6 +163,7 @@ public class HomeActivity extends BaseActivity {
         if (mHomePresenter != null) {
             mHomePresenter.destroy();
         }
+        U.getSoundUtils().release("Home");
     }
 
     @Override

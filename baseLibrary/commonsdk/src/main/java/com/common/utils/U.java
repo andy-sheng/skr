@@ -72,6 +72,8 @@ public class U {
 
     private static ReflectUtils reflectUtils;
 
+    private static SoundUtils soundUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -272,25 +274,32 @@ public class U {
         return lbsUtils;
     }
 
-    public static ZipUtils getZipUtils(){
-        if(zipUtils==null){
+    public static ZipUtils getZipUtils() {
+        if (zipUtils == null) {
             zipUtils = new ZipUtils();
         }
         return zipUtils;
     }
 
-    public static UriUtils getUriUtils(){
-        if(uriUtils==null){
+    public static UriUtils getUriUtils() {
+        if (uriUtils == null) {
             uriUtils = new UriUtils();
         }
         return uriUtils;
     }
 
-    public static ReflectUtils getReflectUtils(){
-        if(reflectUtils==null){
+    public static ReflectUtils getReflectUtils() {
+        if (reflectUtils == null) {
             reflectUtils = new ReflectUtils();
         }
         return reflectUtils;
+    }
+
+    public static SoundUtils getSoundUtils() {
+        if (soundUtils == null) {
+            soundUtils = new SoundUtils();
+        }
+        return soundUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;
@@ -316,11 +325,11 @@ public class U {
         return sCoreProcess;
     }
 
-    public static int getColor(int colorId){
+    public static int getColor(int colorId) {
         return U.app().getResources().getColor(colorId);
     }
 
-    public static Drawable getDrawable(int drawableId){
+    public static Drawable getDrawable(int drawableId) {
         return U.app().getResources().getDrawable(drawableId);
     }
 }
