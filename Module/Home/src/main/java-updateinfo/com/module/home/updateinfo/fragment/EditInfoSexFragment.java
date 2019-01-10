@@ -138,10 +138,30 @@ public class EditInfoSexFragment extends BaseFragment {
         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                 .setSex(sex)
                 .build());
+
+        if (isUpload) {
+            if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+                // 无出生年月数据
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+                U.getFragmentUtils().addFragment(FragmentUtils
+                        .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                        .setBundle(bundle)
+                        .setNotifyHideFragment(EditInfoSexFragment.class)
+                        .setAddToBackStack(false)
+                        .setHasAnimation(true)
+                        .build());
+            } else {
+                getActivity().finish();
+            }
+        }
     }
 
     private void clickComplete() {
         if (this.sex == 0) {
+            U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+            return;
+        } else if (this.sex == MyUserInfoManager.getInstance().getSex()) {
             U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
             return;
         } else {
@@ -247,27 +267,6 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return true;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        if (isUpload) {
-            if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-                // 无出生年月数据
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-                U.getFragmentUtils().addFragment(FragmentUtils
-                        .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
-                        .setBundle(bundle)
-                        .setNotifyHideFragment(EditInfoSexFragment.class)
-                        .setAddToBackStack(false)
-                        .setHasAnimation(true)
-                        .build());
-            } else {
-                getActivity().finish();
-            }
-        }
-
+        return false;
     }
 }

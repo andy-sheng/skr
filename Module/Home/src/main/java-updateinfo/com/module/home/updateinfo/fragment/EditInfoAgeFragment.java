@@ -124,11 +124,25 @@ public class EditInfoAgeFragment extends BaseFragment {
         pvCustomLunar = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
-                // 修改个人信息
-                String bir = U.getDateTimeUtils().formatDateString(date);
-                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                        .setBirthday(bir)
-                        .build());
+                if (isUpload) {
+                    // 修改个人信息
+                    String bir = U.getDateTimeUtils().formatDateString(date);
+                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                            .setBirthday(bir)
+                            .build());
+                    getActivity().finish();
+                } else {
+                    // 修改个人信息
+                    String bir = U.getDateTimeUtils().formatDateString(date);
+                    if (bir.equals(MyUserInfoManager.getInstance().getBirthday())) {
+                        // 无任何变化
+                    } else {
+                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                .setBirthday(bir)
+                                .build());
+                    }
+                    U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+                }
             }
         })
                 .setDate(selectedDate)
@@ -193,18 +207,6 @@ public class EditInfoAgeFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return true;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-            if (isUpload) {
-                getActivity().finish();
-            } else {
-                U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
-            }
-
-        }
+        return false;
     }
 }
