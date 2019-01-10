@@ -48,7 +48,7 @@ public class ScorePrograssBar2 extends View {
 
     Paint mPaintCircleBar;
     RectF mRectF;
-    float mPrgress2 = 90;
+    float mPrgress2 = 0;
 
 
     public ScorePrograssBar2(Context context) {
