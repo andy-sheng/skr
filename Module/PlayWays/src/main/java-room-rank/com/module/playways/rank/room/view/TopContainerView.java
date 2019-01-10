@@ -16,6 +16,8 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.score.bar.ScoreProgressBarWithSvga;
+import com.module.playways.rank.room.score.bar.ScoreTipsView;
+import com.module.playways.rank.room.score.bar.ScoreTipsView2;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.score.bar.ScorePrograssBar2;
@@ -32,6 +34,7 @@ public class TopContainerView extends RelativeLayout {
     BaseImageView mAvatarIv;
     MoreOpView mMoreOpView;
     ExTextView mTvPassedTime;
+
     Listener mListener;
     RoomData mRoomData;
 
@@ -52,7 +55,7 @@ public class TopContainerView extends RelativeLayout {
         mAvatarIv = this.findViewById(R.id.avatar_iv);
         mMoreBtn = this.findViewById(R.id.more_btn);
         mScoreProgressBar = this.findViewById(R.id.score_progress_bar);
-        mTvPassedTime =  this.findViewById(R.id.tv_passed_time);
+        mTvPassedTime = this.findViewById(R.id.tv_passed_time);
 
         mMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,11 +90,11 @@ public class TopContainerView extends RelativeLayout {
     }
 
     private void initSparkPrograssBar() {
-        mScoreProgressBar.setProgress1(100);
+        setScoreProgress(100);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mScoreProgressBar.setProgress1(90);
+                setScoreProgress(90);
             }
         }, 4000);
     }
@@ -126,8 +129,25 @@ public class TopContainerView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, params);
     }
 
+    ScoreTipsView.Item mLastItem;
+
     public void setScoreProgress(int progress) {
         mScoreProgressBar.setProgress1(progress);
+        ScoreTipsView.Item item = new ScoreTipsView.Item();
+        if (progress > 90) {
+            item.setLevel(ScoreTipsView.Level.Perfect);
+        } else if (progress > 70) {
+            item.setLevel(ScoreTipsView.Level.Good);
+        } else if (progress > 50) {
+            item.setLevel(ScoreTipsView.Level.Ok);
+        } else {
+            item.setLevel(ScoreTipsView.Level.Bad);
+        }
+        if (mLastItem != null && item.getLevel() == mLastItem.getLevel()) {
+            item.setNum(mLastItem.getNum() + 1);
+        }
+        mLastItem = item;
+        ScoreTipsView.play(this, item);
     }
 
     public void setListener(Listener l) {
@@ -158,9 +178,10 @@ public class TopContainerView extends RelativeLayout {
                             cancelShowLastedTimeTask();
                             mTvPassedTime.setText("");
                             mScoreProgressBar.setProgress2(0);
+                            mLastItem = null;
                             return;
                         }
-                        int p = (int) ((lastedTime+1 - integer) * 100 / lastedTime);
+                        int p = (int) ((lastedTime + 1 - integer) * 100 / lastedTime);
                         mScoreProgressBar.setProgress2(p);
                         mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
                     }

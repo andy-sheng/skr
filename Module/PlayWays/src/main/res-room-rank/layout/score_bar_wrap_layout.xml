@@ -17,4 +17,5 @@
         android:layout_centerVertical="true"
         android:visibility="gone"
         app:source="star.svga" />
+
 </merge>

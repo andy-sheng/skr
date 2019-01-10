@@ -102,7 +102,7 @@
     <com.module.playways.rank.room.view.TopContainerView
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_100_dp"
         android:layout_marginTop="@dimen/view_5_dp" />
 
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
@@ -117,9 +117,8 @@
         android:id="@+id/turn_change_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top_container_view"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_34_dp"
+        android:layout_marginTop="@dimen/view_130_dp"
         android:visibility="gone" />
 
     <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup

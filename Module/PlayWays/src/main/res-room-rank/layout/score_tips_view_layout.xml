@@ -1,0 +1,28 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <ImageView
+        android:id="@+id/level_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/yanchangjiemian_perfect" />
+
+    <ImageView
+        android:id="@+id/jihao_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/level_iv"
+        android:src="@drawable/yanchangjiemian_jiahao" />
+
+    <ImageView
+        android:id="@+id/num_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/jihao_iv"
+        android:src="@drawable/yanchangjiemian_1" />
+</merge>

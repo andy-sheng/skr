@@ -22,30 +22,38 @@ android {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"DEFAULT\"')
             resValue("string", "channel_desc", '这是default demo')
+            // 生产环境
+//            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
+            // TODO 默认显示测试环境
+            manifestPlaceholders = [RC_KEY: "0vnjpoad03v7z"]
         }
 
         channel_mishop {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"MI_SHOP\"')
             resValue("string", "channel_desc", '小米应用商店')
+            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
         }
 
         channel_yyb {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"YYB_SHOP\"')
             resValue("string", "channel_desc", '应用宝')
+            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
         }
 
         channel_dev {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"DEV\"')
             resValue("string", "channel_desc", '测试环境dev')
+            manifestPlaceholders = ["RC_KEY": "0vnjpoad03v7z"]
         }
 
         channel_test {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"TEST\"')
             resValue("string", "channel_desc", '测试环境test')
+            manifestPlaceholders = [RC_KEY: "0vnjpoad03v7z"]
 
 //          applicationId "com.littlejie.multichannel.release "
 //          可以替换androidmanifest文件中的标签，可作为快速渠道打包替换渠道名的一种方式，也可以自定义标签用来替换需要的文本
@@ -56,6 +64,7 @@ android {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"SANDBOX\"')
             resValue("string", "channel_desc", '测试环境sandbox')
+            manifestPlaceholders = [RC_KEY: "0vnjpoad03v7z"]
         }
     }
 

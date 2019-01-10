@@ -25,6 +25,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.facebook.drawee.drawable.ScalingUtils;
 
@@ -216,6 +217,8 @@ public class RongIM {
                 try {
                     ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
                     appKey = applicationInfo.metaData.getString("RONG_CLOUD_APP_KEY");
+                    MyLog.w(TAG, "rong appkey:" + appKey);
+                    U.getToastUtil().showShort("appKey:" + appKey);
                     if (TextUtils.isEmpty(appKey)) {
                         throw new IllegalArgumentException("can't find RONG_CLOUD_APP_KEY in AndroidManifest.xml.");
                     }
@@ -2114,9 +2117,9 @@ public class RongIM {
     }
 
     public void downloadMedia(String imageUrl, final DownloadMediaCallback callback) {
-        BaseImage image =  ImageFactory.newHttpImage(imageUrl)
+        BaseImage image = ImageFactory.newHttpImage(imageUrl)
                 .build();
-        FrescoWorker.preLoadImg((HttpImage) image, new FrescoWorker.ImageLoadCallBack(){
+        FrescoWorker.preLoadImg((HttpImage) image, new FrescoWorker.ImageLoadCallBack() {
 
             @Override
             public void loadSuccess(Bitmap bitmap) {
@@ -2139,7 +2142,7 @@ public class RongIM {
                 }
 
             }
-        },true);
+        }, true);
     }
 
     public void getConversationNotificationStatus(final ConversationType conversationType, final String targetId, final ResultCallback<ConversationNotificationStatus> callback) {
