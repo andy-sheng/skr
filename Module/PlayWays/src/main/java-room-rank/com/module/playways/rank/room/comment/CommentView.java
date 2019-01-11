@@ -154,6 +154,7 @@ public class CommentView extends RelativeLayout {
         LayoutParams lp = (LayoutParams) this.getLayoutParams();
         if (event.show) {
             lp.addRule(RelativeLayout.ABOVE, R.id.input_container_view);
+            setOnBottom("InputBoardEvent", true);
         } else {
             lp.addRule(RelativeLayout.ABOVE, R.id.bottom_container_view);
         }
