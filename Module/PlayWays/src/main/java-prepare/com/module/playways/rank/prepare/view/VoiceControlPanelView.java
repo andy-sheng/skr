@@ -43,7 +43,7 @@ public class VoiceControlPanelView extends ScrollView {
         mPeopleVoiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                EngineManager.getInstance().adjustPlaybackSignalVolume(progress);
+//                EngineManager.getInstance().adjustPlaybackSignalVolume(progress);
                 EngineManager.getInstance().adjustRecordingSignalVolume(progress);
             }
 
