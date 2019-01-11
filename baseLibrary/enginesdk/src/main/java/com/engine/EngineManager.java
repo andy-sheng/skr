@@ -953,7 +953,10 @@ public class EngineManager implements AgoraOutCallback {
 
     public int getLineScore() {
         int score = CbEngineAdapter.getInstance().getLineScore();
-        return (int) (Math.sqrt(score) * 10);
+        for (int i = 0; i < 2; i++) {
+            score = (int) (Math.sqrt(score) * 10);
+        }
+        return score;
     }
     /*音频高级扩展结束*/
 }
