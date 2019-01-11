@@ -121,8 +121,8 @@ public class ScorePrograssBar2 extends View {
         mLevelDrawables = new DrawableWithLocation[]{
                 new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_a), getXByProgress(60), 60),
                 new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_s), getXByProgress(70), 70),
-                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_ss), getXByProgress(90), 90),
-                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_sss), getXByProgress(95), 95),
+                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_ss), getXByProgress(82), 82),
+                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_sss), getXByProgress(97), 97),
         };
 
     }
