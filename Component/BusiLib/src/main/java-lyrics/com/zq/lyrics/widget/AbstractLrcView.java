@@ -386,6 +386,11 @@ public abstract class AbstractLrcView extends View {
     protected boolean mEnableVerbatim = true;
 
     /**
+     * 是不是已经抛出最后一行结束事件
+     */
+    protected volatile boolean mHasPostLastLineEndEvent = false;
+
+    /**
      * 需要倒计时的行
      */
     private Set<Integer> mNeedCountDownLine = new HashSet<>();
@@ -624,13 +629,16 @@ public abstract class AbstractLrcView extends View {
                 if (isLastLyricLine(lyricsLineNum, splitLyricsLineNum)) {
                     long endTime = realInfo.getEndTime();
                     long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
-                    if (endTime < lyricProgress && (mCurEndLineNum != lyricsLineNum || mCurSplitLyricsEndLineNum != splitLyricsLineNum)) {
+                    if (endTime < lyricProgress && !mHasPostLastLineEndEvent) {
+                        mHasPostLastLineEndEvent = true;
                         EventBus.getDefault().post(new LrcEvent.LineEndEvent(lyricsLineNum));
                         mCurEndLineNum = lyricsLineNum;
                         mCurSplitLyricsEndLineNum = splitLyricsLineNum;
                         MyLog.d("AbstractLrcViewAbstractLrcView", "结束 num is " + lyricsLineNum);
 //                        U.getToastUtil().showShort("结束");
                     }
+                }else {
+                    mHasPostLastLineEndEvent = false;
                 }
             }
         }
