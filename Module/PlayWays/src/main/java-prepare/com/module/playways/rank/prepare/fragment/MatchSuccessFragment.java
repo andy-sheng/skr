@@ -1,6 +1,5 @@
 package com.module.playways.rank.prepare.fragment;
 
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
@@ -9,10 +8,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -38,19 +35,18 @@ import com.module.playways.rank.prepare.view.IMatchSucessView;
 import com.module.playways.rank.prepare.view.MatchSucessLeftView;
 import com.module.playways.rank.prepare.view.MatchSucessRightView;
 import com.module.rank.R;
-import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGAImageView;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MatchSuccessFragment extends BaseFragment implements IMatchSucessView {
-    ExImageView mIvTop;
+
     ExTextView mTvReadyTime;
     SimpleDraweeView mSdvIcon1;
     SimpleDraweeView mSdvIcon2;
     SimpleDraweeView mSdvIcon3;
-    ImageView mIvVs;
+
     SVGAImageView mVsSvga;
     ExImageView mIvPrepare;
 
@@ -78,12 +74,11 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
         mTvReadyTime = (ExTextView) mRootView.findViewById(R.id.tv_ready_time);
         mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
         mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
-        mIvVs = (ImageView) mRootView.findViewById(R.id.iv_vs);
+
         mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
         mIvPrepare = (ExImageView) mRootView.findViewById(R.id.iv_prepare);
         mBgLeftView = (MatchSucessLeftView) mRootView.findViewById(R.id.bg_left_view);
@@ -162,17 +157,17 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         mBottomContainer.startAnimation(animationBottom);
 
         //头部文字
-        AnimatorSet animatorSet = new AnimatorSet();//组合动画
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mIvTop, "scaleX", 3.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mIvTop, "scaleY", 3.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
-        scaleX.setInterpolator(new DecelerateInterpolator(1));
-        scaleY.setInterpolator(new DecelerateInterpolator(1));
-        scaleX.setDuration(3000);
-        scaleY.setDuration(3000);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTop, "alpha", 0.4f, 1.0f);
-        alpha.setDuration(1200);
-        animatorSet.play(scaleX).with(scaleY).with(alpha);
-        animatorSet.start();
+//        AnimatorSet animatorSet = new AnimatorSet();//组合动画
+//        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mIvTop, "scaleX", 3.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
+//        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mIvTop, "scaleY", 3.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
+//        scaleX.setInterpolator(new DecelerateInterpolator(1));
+//        scaleY.setInterpolator(new DecelerateInterpolator(1));
+//        scaleX.setDuration(3000);
+//        scaleY.setDuration(3000);
+//        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTop, "alpha", 0.4f, 1.0f);
+//        alpha.setDuration(1200);
+//        animatorSet.play(scaleX).with(scaleY).with(alpha);
+//        animatorSet.start();
 
         //三个头像
         TranslateAnimation animationIconOne = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth() / 2, 0, -U.getDisplayUtils().getScreenHeight() / 2, 0);
@@ -228,33 +223,6 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         animatorThird.setRepeatMode(ValueAnimator.REVERSE);
         animatorThird.setInterpolator(new OvershootInterpolator());
         animatorThird.start();
-
-        mVsSvga.setVisibility(View.VISIBLE);
-        mVsSvga.setCallback(new SVGACallback() {
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onFinished() {
-                mVsSvga.stopAnimation();
-                mVsSvga.setVisibility(View.GONE);
-                mIvVs.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onRepeat() {
-                mVsSvga.stopAnimation();
-                mVsSvga.setVisibility(View.GONE);
-                mIvVs.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onStep(int i, double v) {
-
-            }
-        });
     }
 
 

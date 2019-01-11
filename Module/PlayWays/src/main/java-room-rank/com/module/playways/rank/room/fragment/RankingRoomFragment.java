@@ -290,23 +290,25 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
         // 舞台人的动画
-        mStagePeopleBg.setVisibility(View.VISIBLE);
-        try {
-            getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_SVGA), new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mStagePeopleBg.setImageDrawable(drawable);
-                    mStagePeopleBg.startAnimation();
-                }
+        if (mStagePeopleBg != null){
+            mStagePeopleBg.setVisibility(View.VISIBLE);
+            try {
+                getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_SVGA), new SVGAParser.ParseCompletion() {
+                    @Override
+                    public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                        SVGADrawable drawable = new SVGADrawable(videoItem);
+                        mStagePeopleBg.setImageDrawable(drawable);
+                        mStagePeopleBg.startAnimation();
+                    }
 
-                @Override
-                public void onError() {
+                    @Override
+                    public void onError() {
 
-                }
-            });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+                    }
+                });
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
 
         //飞碟动画
