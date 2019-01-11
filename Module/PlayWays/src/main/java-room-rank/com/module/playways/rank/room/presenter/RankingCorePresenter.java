@@ -673,7 +673,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mExoPlayer == null) {
             mExoPlayer = new ExoPlayer();
         }
-        if (EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
+        if (!EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
             mExoPlayer.startPlay(skrerUrl);
         } else {
             MyLog.d(TAG, "静音状态，不播放音乐");
