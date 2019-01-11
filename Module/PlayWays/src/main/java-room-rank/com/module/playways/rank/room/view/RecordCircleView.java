@@ -382,7 +382,7 @@ public class RecordCircleView extends View {
             }
         });
 
-        long delay = 5 * (creditValue - mStart);
+        long delay = 5 * Math.abs(creditValue - mStart);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet
                 .setDuration(delay)
