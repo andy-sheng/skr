@@ -11,4 +11,6 @@ public interface ILeaderBoardView {
     void showRankList(List<RankInfoModel> rankInfoModel, boolean hasMore);
 
     void showOwnRankInfo(UserRankModel userRankModel);
+
+    void clear();
 }

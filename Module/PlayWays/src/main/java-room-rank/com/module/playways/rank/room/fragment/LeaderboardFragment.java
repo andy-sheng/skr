@@ -1,11 +1,13 @@
 package com.module.playways.rank.room.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.room.adapter.LeaderBoardAdapter;
 import com.module.playways.rank.room.presenter.LeaderboardPresenter;
 import com.module.playways.rank.room.view.ILeaderBoardView;
@@ -28,6 +31,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -60,6 +64,10 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     TextView mTvSegmentName;
     TextView mTvArea;
 
+    LinearLayout mLlAreaContainer;
+    ExTextView mTvCurArea;
+    ExTextView mTvCountry;
+
     SmartRefreshLayout mRefreshLayout;
     boolean mHasMore = true;
 
@@ -80,9 +88,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mRecyclerView.setAdapter(mLeaderBoardAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mLeaderboardPresenter.getLeaderBoardInfo();
-        mLeaderboardPresenter.getOwnInfo();
-
         mSdvRightChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_right_champain_icon);
         mTvRightChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_right_chanpain_name);
         mLlRightChampain = (LinearLayout) mRootView.findViewById(R.id.ll_right_champain);
@@ -102,7 +107,11 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvRank = (ImageView) mRootView.findViewById(R.id.iv_rank);
         mIvRankRight = (ImageView) mRootView.findViewById(R.id.iv_rank_right);
         mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
-        mTvArea = (ExTextView)mRootView.findViewById(R.id.tv_area);
+        mTvArea = (ExTextView) mRootView.findViewById(R.id.tv_area);
+
+        mLlAreaContainer = (LinearLayout) mRootView.findViewById(R.id.ll_area_container);
+        mTvCurArea = (ExTextView) mRootView.findViewById(R.id.tv_cur_area);
+        mTvCountry = (ExTextView) mRootView.findViewById(R.id.tv_country);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
@@ -123,6 +132,73 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 mRefreshLayout.finishRefresh();
             }
         });
+
+        RxView.clicks(mTvArea)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        mLlAreaContainer.setVisibility(mLlAreaContainer.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                        Drawable drawable = null;
+
+                        if (mLlAreaContainer.getVisibility() == View.VISIBLE) {
+                            drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon_down);
+                            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                        } else {
+                            drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
+                            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                        }
+
+                        mTvArea.setCompoundDrawables(null, null, drawable, null);
+
+                        if ("全国榜".equals(mTvArea.getText().toString())) {
+                            mTvCountry.setSelected(true);
+                            mTvCurArea.setSelected(false);
+                        } else {
+                            mTvCountry.setSelected(false);
+                            mTvCurArea.setSelected(true);
+                        }
+                    }
+                });
+
+        RxView.clicks(mTvCurArea)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        mTvArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
+                        mLlAreaContainer.setVisibility(View.GONE);
+                        Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
+                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                        mTvArea.setCompoundDrawables(null, null, drawable, null);
+                        mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
+                    }
+                });
+
+        RxView.clicks(mTvCountry)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        mTvArea.setText("全国榜");
+                        mLlAreaContainer.setVisibility(View.GONE);
+                        Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
+                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                        mTvArea.setCompoundDrawables(null, null, drawable, null);
+                        mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
+                    }
+                });
+
+        if (MyUserInfoManager.getInstance().hasLocation()) {
+            mTvArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
+            mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
+            mTvCurArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
+            mTvCountry.setText("全国榜");
+        } else {
+            mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
+            mTvArea.setCompoundDrawables(null, null, null, null);
+            mTvArea.setText("全国榜");
+        }
     }
 
     @Override
@@ -134,12 +210,17 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     }
 
     @Override
+    public void clear() {
+        mLeaderBoardAdapter.getDataList().clear();
+    }
+
+    @Override
     public void showOwnRankInfo(UserRankModel userRankModel) {
-        ExTextView tvRank = (ExTextView)mRootView.findViewById(R.id.tv_rank);
-        SimpleDraweeView sdvIcon = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_icon);
-        ExTextView tvName = (ExTextView)mRootView.findViewById(R.id.tv_name);
-        ExTextView tvSegment = (ExTextView)mRootView.findViewById(R.id.tv_segment);
-        ExTextView tvStar = (ExTextView)mRootView.findViewById(R.id.tv_star);
+        ExTextView tvRank = (ExTextView) mRootView.findViewById(R.id.tv_rank);
+        SimpleDraweeView sdvIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon);
+        ExTextView tvName = (ExTextView) mRootView.findViewById(R.id.tv_name);
+        ExTextView tvSegment = (ExTextView) mRootView.findViewById(R.id.tv_segment);
+        ExTextView tvStar = (ExTextView) mRootView.findViewById(R.id.tv_star);
 
         tvRank.setText(userRankModel.getSeq() + "");
         tvName.setText(MyUserInfoManager.getInstance().getNickName());
@@ -151,12 +232,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .setBorderColor(Color.parseColor("#FF79A9"))
                         .build());
-
-        if(MyUserInfoManager.getInstance().hasLocation()){
-            mTvArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
-        }else {
-            mTvArea.setText("全国榜");
-        }
     }
 
     @Override

@@ -27,6 +27,8 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
 
     private int mLimit = 20;
 
+    int mRankMode = UserRankModel.COUNTRY;
+
     List<RankInfoModel> mRankInfoModelList;
 
     public LeaderboardPresenter(ILeaderBoardView ILeaderBoardView) {
@@ -35,8 +37,18 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
         this.mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
+    public void setRankMode(int rankMode){
+        mOffset = 0;
+        mRankMode = rankMode;
+        mILeaderBoardView.clear();
+        mRankInfoModelList.clear();
+
+        getLeaderBoardInfo();
+        getOwnInfo();
+    }
+
     public void getLeaderBoardInfo() {
-        ApiMethods.subscribe(mUserInfoServerApi.getReginRankList(UserRankModel.REGION, mOffset, mLimit), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getReginRankList(mRankMode, mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
