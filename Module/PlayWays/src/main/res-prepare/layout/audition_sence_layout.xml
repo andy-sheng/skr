@@ -6,38 +6,24 @@
     android:background="@color/black"
     android:orientation="vertical">
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_34_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/view_5_dp"
+        android:src="@drawable/img_back" />
 
-    <RelativeLayout
-        android:id="@+id/top_container_vg"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_62_dp"
-        android:layout_marginLeft="@dimen/view_16_dp">
-
-        <com.module.playways.rank.room.score.bar.ScorePrograssBar2
-            android:id="@+id/score_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true" />
-
-        <com.common.image.fresco.BaseImageView
-            android:id="@+id/avatar_iv"
-            android:layout_width="@dimen/view_47_dp"
-            android:layout_height="@dimen/view_47_dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_8_dp" />
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_12_dp"
-            android:paddingLeft="@dimen/view_12_dp"
-            android:paddingRight="@dimen/view_12_dp"
-            android:scaleType="centerInside"
-            app:src_unPressed_drawable="@drawable/shiyinfang_tuichu" />
-    </RelativeLayout>
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_song_name"
+        android:textSize="@dimen/textsize_20_dp"
+        android:layout_marginTop="@dimen/view_36_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:textColor="@color/white" />
 
     <!--正在唱的人的歌词-->
     <com.zq.lyrics.widget.ManyLyricsView
@@ -132,7 +118,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_20_dp"
-        android:drawableBottom="@drawable/ic_arrow_back"
+        android:drawableBottom="@drawable/dakaishiyinmianban"
         android:text="调音"
         android:textColor="#FFED61"
         android:textSize="@dimen/textsize_20_dp"

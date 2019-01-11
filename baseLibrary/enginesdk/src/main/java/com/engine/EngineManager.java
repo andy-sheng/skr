@@ -551,9 +551,14 @@ public class EngineManager implements AgoraOutCallback {
      *
      * @param muted
      */
-    public void muteLocalVideoStream(boolean muted) {
-        mConfig.setLocalVideoStreamMute(muted);
-        AgoraEngineAdapter.getInstance().muteLocalVideoStream(muted);
+    public void muteLocalVideoStream(final boolean muted) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setLocalVideoStreamMute(muted);
+                AgoraEngineAdapter.getInstance().muteLocalVideoStream(muted);
+            }
+        });
     }
 
     /**
@@ -649,9 +654,14 @@ public class EngineManager implements AgoraOutCallback {
      * 开启或者关闭🎧耳返
      * 默认关闭
      */
-    public void enableInEarMonitoring(boolean enable) {
-        mConfig.setEnableInEarMonitoring(enable);
-        AgoraEngineAdapter.getInstance().enableInEarMonitoring(enable);
+    public void enableInEarMonitoring(final boolean enable) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setEnableInEarMonitoring(enable);
+                AgoraEngineAdapter.getInstance().enableInEarMonitoring(enable);
+            }
+        });
     }
 
     /**
@@ -659,9 +669,14 @@ public class EngineManager implements AgoraOutCallback {
      *
      * @param volume 默认100
      */
-    public void setInEarMonitoringVolume(int volume) {
-        mConfig.setInEarMonitoringVolume(volume);
-        AgoraEngineAdapter.getInstance().setInEarMonitoringVolume(volume);
+    public void setInEarMonitoringVolume(final int volume) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setInEarMonitoringVolume(volume);
+                AgoraEngineAdapter.getInstance().setInEarMonitoringVolume(volume);
+            }
+        });
     }
 
     /**
@@ -669,9 +684,14 @@ public class EngineManager implements AgoraOutCallback {
      *
      * @param volume
      */
-    public void adjustRecordingSignalVolume(int volume) {
-        mConfig.setRecordingSignalVolume(volume);
-        AgoraEngineAdapter.getInstance().adjustRecordingSignalVolume(volume);
+    public void adjustRecordingSignalVolume(final int volume) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setRecordingSignalVolume(volume);
+                AgoraEngineAdapter.getInstance().adjustRecordingSignalVolume(volume);
+            }
+        });
     }
 
     /**
@@ -679,9 +699,14 @@ public class EngineManager implements AgoraOutCallback {
      *
      * @param volume
      */
-    public void adjustPlaybackSignalVolume(int volume) {
-        mConfig.setPlaybackSignalVolume(volume);
-        AgoraEngineAdapter.getInstance().adjustPlaybackSignalVolume(volume);
+    public void adjustPlaybackSignalVolume(final int volume) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setPlaybackSignalVolume(volume);
+                AgoraEngineAdapter.getInstance().adjustPlaybackSignalVolume(volume);
+            }
+        });
     }
 
     /*音频基础结束*/

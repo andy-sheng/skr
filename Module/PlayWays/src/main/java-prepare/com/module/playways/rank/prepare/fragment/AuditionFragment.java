@@ -73,13 +73,8 @@ public class AuditionFragment extends BaseFragment {
 
     static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.aac").getAbsolutePath();
 
-    RelativeLayout mTopContainerVg;
-
-    ScorePrograssBar2 mScoreProgressBar;
-
-    BaseImageView mAvatarIv;
-
-    ExImageView mSaveBtn;
+    ExImageView mIvBack;
+    ExTextView mTvSongName;
 
     ManyLyricsView mManyLyricsView;
 
@@ -152,6 +147,8 @@ public class AuditionFragment extends BaseFragment {
                 }
             }
         };
+        mIvBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
+        mTvSongName = (ExTextView)mRootView.findViewById(R.id.tv_song_name);
 
         mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
@@ -162,16 +159,7 @@ public class AuditionFragment extends BaseFragment {
         mTvRecordStop = (ExTextView) mRootView.findViewById(R.id.tv_record_stop);
         mIvRecordStart = (ExImageView) mRootView.findViewById(R.id.iv_record_start);
         mRlControlContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_control_container);
-        mTopContainerVg = (RelativeLayout) mRootView.findViewById(R.id.top_container_vg);
-        // 加上状态栏的高度
-        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
-        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerVg.getLayoutParams();
-        topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-
         mFlProgressContainer = (FrameLayout) mRootView.findViewById(R.id.fl_progress_container);
-        mScoreProgressBar = (ScorePrograssBar2) mRootView.findViewById(R.id.score_progress_bar);
-        mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
-        mSaveBtn = (ExImageView) mRootView.findViewById(R.id.save_btn);
         mLlResing = (LinearLayout) mRootView.findViewById(R.id.ll_resing);
         mIvResing = (ExImageView) mRootView.findViewById(R.id.iv_resing);
         mLlPlay = (LinearLayout) mRootView.findViewById(R.id.ll_play);
@@ -180,13 +168,13 @@ public class AuditionFragment extends BaseFragment {
         mIvSave = (ExImageView) mRootView.findViewById(R.id.iv_save);
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
         mTvRecordTip = (TextView) mRootView.findViewById(R.id.tv_record_tip);
-
-
         mRlControlContainer.setVisibility(View.GONE);
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                .setCircle(true)
-                .build());
+
+        RxView.clicks(mIvBack).throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    onBackPressed();
+                });
 
         RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -200,10 +188,6 @@ public class AuditionFragment extends BaseFragment {
                     showVoicePanelView(true);
                 });
 
-        RxView.clicks(mSaveBtn).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    onBackPressed();
-                });
 
         RxView.clicks(mIvResing).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -276,7 +260,7 @@ public class AuditionFragment extends BaseFragment {
         });
 
         mSongModel = mPrepareData.getSongModel();
-
+        mTvSongName.setText("《" + mSongModel.getItemName() + "》");
         playLyrics(mSongModel);
 
         mPrgressBar.setMax(360);
@@ -527,7 +511,6 @@ public class AuditionFragment extends BaseFragment {
         int score = EngineManager.getInstance().getLineScore();
         U.getToastUtil().showShort("score:" + score);
 //        score = (int) (Math.random() * 100);
-        mScoreProgressBar.setProgress1(score);
     }
 
     @Override

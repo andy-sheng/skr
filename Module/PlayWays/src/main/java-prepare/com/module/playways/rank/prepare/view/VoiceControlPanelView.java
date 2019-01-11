@@ -36,8 +36,9 @@ public class VoiceControlPanelView extends ScrollView {
         mPeopleVoiceSeekbar = (SeekBar) this.findViewById(R.id.people_voice_seekbar);
         mMusicVoiceSeekbar = (SeekBar) this.findViewById(R.id.music_voice_seekbar);
 
-        mPeopleVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
-        mMusicVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
+
+//        mPeopleVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
+//        mMusicVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
 
         mPeopleVoiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

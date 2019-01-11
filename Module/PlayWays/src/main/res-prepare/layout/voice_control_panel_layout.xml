@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_11_dp"
+        android:drawableRight="@drawable/shouqishiyinmianban"
+        android:drawablePadding="@dimen/view_1_dp"
         android:text="调音"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_20_dp"
@@ -41,12 +43,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:max="100"
-            android:maxHeight="@dimen/view_5_dp"
+            android:maxHeight="@dimen/view_7_dp"
             android:min="0"
             android:minHeight="@dimen/view_2_dp"
             android:paddingLeft="@dimen/view_10_dp"
             android:paddingRight="@dimen/view_10_dp"
-            android:progressDrawable="@drawable/voice_control_panel_seekbar_bg" />
+            android:progressDrawable="@drawable/voice_control_panel_seekbar_bg"
+            android:thumb="@drawable/shiyinmianban_huakuai" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,12 +75,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:max="100"
-            android:maxHeight="@dimen/view_5_dp"
+            android:maxHeight="@dimen/view_7_dp"
             android:min="0"
             android:minHeight="@dimen/view_2_dp"
             android:paddingLeft="@dimen/view_10_dp"
             android:paddingRight="@dimen/view_10_dp"
-            android:progressDrawable="@drawable/voice_control_panel_seekbar_bg" />
+            android:progressDrawable="@drawable/voice_control_panel_seekbar_bg"
+            android:thumb="@drawable/shiyinmianban_huakuai" />
     </LinearLayout>
 
     <RadioGroup
