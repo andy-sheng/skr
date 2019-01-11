@@ -142,7 +142,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 case MSG_START_LAST_TWO_SECONDS_TASK:
                     RoundInfoModel roundInfoModel = (RoundInfoModel) msg.obj;
                     if (roundInfoModel != null && roundInfoModel == mRoomData.getRealRoundInfo()) {
-                        mIGameRuleView.exitMainStage();
+                        mIGameRuleView.hideMainStage();
                     }
                     break;
             }

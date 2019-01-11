@@ -32,6 +32,6 @@ public interface IGameRuleView {
     // 显示演唱剩余时间倒计时
     void showLeftTime(long wholeTile);
 
-    // 主舞台退出
-    void exitMainStage();
+    // 主舞台离开（开始主舞台消失动画）
+    void hideMainStage();
 }

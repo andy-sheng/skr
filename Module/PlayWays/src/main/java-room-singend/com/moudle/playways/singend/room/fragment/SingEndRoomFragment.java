@@ -616,7 +616,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void exitMainStage() {
+    public void hideMainStage() {
 
     }
 

@@ -3,6 +3,7 @@ package com.module.playways.rank.room.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -85,6 +87,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static android.view.View.ALPHA;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
@@ -281,7 +284,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 if (mRoomData.getRealRoundInfo() != null) {
                     if (mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
                         playShowMainStageAnimator();
-//                        mTopVoiceBg.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -289,7 +291,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTurnChangeCardHideAnimator.start();
     }
 
-    // 播放主舞台动画,入场和飞碟
+    // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
         if (mStageBg == null) {
@@ -359,10 +361,15 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                             @Override
                             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                                 mUFOMode = 4;
+                                // 主舞台消失动画
                                 SVGADrawable drawable = new SVGADrawable(videoItem);
                                 mStageBg.stopAnimation(true);
                                 mStageBg.setImageDrawable(drawable);
                                 mStageBg.startAnimation();
+                                // end小卡片，做一个满满消失的动画
+                                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
+                                objectAnimator.setDuration(1000);
+                                objectAnimator.start();
                             }
 
                             @Override
@@ -383,14 +390,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
             }
         });
-    }
-
-    // 主舞台动画 退出动画
-    private void playHideMainStageAnimator() {
-        // 飞碟退出, 主场景淡出
-        mUFOMode = 3;
-        // end卡片
-        mEndRoundHint.setVisibility(View.GONE);
     }
 
     private void initInputView() {
@@ -840,14 +839,16 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void exitMainStage() {
+    public void hideMainStage() {
+        // 显示end小卡片
         mEndRoundHint.setVisibility(View.VISIBLE);
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
-                playHideMainStageAnimator();
+                // 模式改为3，自动播放主舞台退出的svga动画
+                mUFOMode = 3;
             }
-        }, 500);
+        }, 800);
     }
 
     @Override
