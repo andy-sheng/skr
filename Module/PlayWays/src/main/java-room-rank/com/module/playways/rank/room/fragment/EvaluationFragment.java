@@ -87,7 +87,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     AnimatorSet mLeftVoteAnimationSet;
     AnimatorSet mRightVoteAnimationSet;
 
-    RelativeLayout mRlCountDownContainer;
+//    RelativeLayout mRlCountDownContainer;
 
     @Override
     public int initView() {
@@ -127,7 +127,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         mRlRight = (ExRelativeLayout) mRootView.findViewById(R.id.rl_right);
         mIvBottom = (ImageView) mRootView.findViewById(R.id.iv_bottom);
 
-        mRlCountDownContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_count_down_container);
+//        mRlCountDownContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_count_down_container);
 
 
         if (left != null) {
@@ -291,23 +291,23 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     }
                 });
 
-        ObjectAnimator countDownT = ObjectAnimator.ofFloat(mRlCountDownContainer, "translationY", -200, 0.0f);
-        ObjectAnimator countDownA = ObjectAnimator.ofFloat(mRlCountDownContainer, "alpha", 0.5f, 1.0f);
-        countDownT.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                mRlCountDownContainer.setVisibility(View.VISIBLE);
-            }
-        });
+//        ObjectAnimator countDownT = ObjectAnimator.ofFloat(mRlCountDownContainer, "translationY", -200, 0.0f);
+//        ObjectAnimator countDownA = ObjectAnimator.ofFloat(mRlCountDownContainer, "alpha", 0.5f, 1.0f);
+//        countDownT.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                mRlCountDownContainer.setVisibility(View.VISIBLE);
+//            }
+//        });
 
-        countDownT.setStartDelay(300);
-        countDownA.setStartDelay(300);
-        countDownT.setDuration(200);
-        countDownA.setDuration(200);
-
-        AnimatorSet countDownSet = new AnimatorSet();
-        countDownSet.play(countDownT).with(countDownA);
-        countDownSet.start();
+//        countDownT.setStartDelay(300);
+//        countDownA.setStartDelay(300);
+//        countDownT.setDuration(200);
+//        countDownA.setDuration(200);
+//
+//        AnimatorSet countDownSet = new AnimatorSet();
+//        countDownSet.play(countDownT).with(countDownA);
+//        countDownSet.start();
 
         // VS 动画
         mVsSvga.setVisibility(View.VISIBLE);

@@ -113,6 +113,7 @@ if [[ $1 = "app" ]]; then
 	   echo "只编译test debug渠道"
        	./gradlew :app:assemblechannel_testDebug
        	installApkForAllDevices app/build/outputs/apk/channel_test/debug/app-channel_test-debug.apk
+       	myandroidlog.sh  com.zq.live
     elif [[ $2 = "sandbox" ]]; then
         echo "./gradlew :app:assemblechannel_sandboxDebug"
         echo "只编译test debug渠道"

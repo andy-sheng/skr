@@ -580,7 +580,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mReadyGoBg.setVisibility(View.VISIBLE);
         mReadyGoPlaying = true;
 
-
         try {
             getSVGAParser().parse(new URL(RoomData.READY_GO_SVGA_URL), new SVGAParser.ParseCompletion() {
                 @Override
@@ -628,7 +627,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         });
     }
 
-    void onReadyGoOver() {
+    private void onReadyGoOver() {
         MyLog.w(TAG, "onReadyGoOver");
         if (mReadyGoPlaying) {
             mReadyGoPlaying = false;

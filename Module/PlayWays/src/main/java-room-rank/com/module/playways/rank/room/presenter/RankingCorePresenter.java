@@ -177,8 +177,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             // 不发送本地音频
             EngineManager.getInstance().muteLocalAudioStream(true);
             // 伪装评论消息
-            for (int i = 0; i < mRoomData.getPlayerInfoList().size(); i++) {
-                PlayerInfoModel playerInfoModel = mRoomData.getPlayerInfoList().get(i);
+            for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
+                RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
+                PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, roundInfoModel.getUserID());
                 BasePushInfo basePushInfo = new BasePushInfo();
                 basePushInfo.setRoomID(mRoomData.getGameId());
                 basePushInfo.setSender(new UserInfo.Builder()

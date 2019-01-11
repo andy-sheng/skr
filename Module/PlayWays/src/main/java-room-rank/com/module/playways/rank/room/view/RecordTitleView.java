@@ -105,7 +105,9 @@ public class RecordTitleView extends RelativeLayout {
 
         mIvOwnRecord = (ExImageView) findViewById(R.id.iv_own_record);
 
-        mTvSongName.setText("《" + mRoomData.getSongModel().getItemName() + "》");
+        if(mRoomData.getSongModel()!=null) {
+            mTvSongName.setText("《" + mRoomData.getSongModel().getItemName() + "》");
+        }
 
         if (mRecordData.mScoreDetailModel != null) {
             int resId = ScoreConfigUtils.getImageResoucesScore(mRecordData.mScoreDetailModel.getBattleRatingScore());

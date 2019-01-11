@@ -13,6 +13,7 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.rank.prepare.model.PrepareData;
 
+import com.module.playways.rank.room.fragment.EvaluationFragment;
 import com.module.playways.rank.room.fragment.RankingRoomFragment;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
@@ -49,7 +50,7 @@ public class SingEndRoomActivity extends BaseActivity {
 
         }
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(this, RankingRoomFragment.class)
+                FragmentUtils.newAddParamsBuilder(this, EvaluationFragment.class)
 //                FragmentUtils.newAddParamsBuilder(this, SingEndRoomFragment.class)
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0, mRoomData)

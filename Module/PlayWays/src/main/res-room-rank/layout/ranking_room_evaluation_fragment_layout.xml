@@ -16,6 +16,7 @@
         android:paddingBottom="@dimen/view_14_dp">
 
         <LinearLayout
+            android:id="@+id/bg_left_right_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -162,31 +163,23 @@
             android:layout_height="@dimen/view_230_dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/pipeichenggongbeijing" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_count_down_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_124_dp"
-        android:visibility="gone">
-
-        <com.common.view.ex.ExImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/img_notify_pipeishijian_bg" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/vote_down_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/iv_bottom"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_28_dp"
-            android:text="灭灯倒计时 12s"
+            android:layout_marginBottom="-20dp"
+            android:background="@drawable/miedeng_daojishi_beijingban"
+            android:gravity="center"
+            android:text="10s"
             android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_24_dp"
             android:textStyle="bold" />
+
     </RelativeLayout>
+
 
     <com.common.view.ex.ExImageView
         android:id="@+id/vote_vs_iv"
@@ -207,7 +200,6 @@
         app:antiAlias="true"
         app:source="vs.svga" />
 
-
     <com.common.view.ex.ExImageView
         android:id="@+id/vote_left_mie"
         android:layout_width="wrap_content"
@@ -216,8 +208,7 @@
         android:layout_marginLeft="@dimen/view_42_dp"
         android:layout_marginBottom="@dimen/view_62_dp"
         app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
-        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
-
+        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal_left" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/vote_right_mie"
@@ -230,7 +221,7 @@
         android:clickable="true"
         android:focusable="true"
         app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
-        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
+        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal_right" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/gesture_svga"
@@ -253,7 +244,6 @@
         android:src="@drawable/mietadeng_beijingzi"
         android:visibility="gone" />
 
-
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_title"
         android:layout_width="wrap_content"
@@ -263,5 +253,6 @@
         android:layout_marginTop="@dimen/view_24_dp"
         android:src="@drawable/img_top_miedeng_bg"
         android:visibility="gone" />
+
 
 </RelativeLayout>
