@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ranking_container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ranking_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2E3041">
@@ -14,11 +14,21 @@
         android:scaleType="fitCenter"
         app:antiAlias="true"
         app:autoPlay="false" />
-    
+
     <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/stage_bg"
+        android:id="@+id/stage_people_bg"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:scaleType="fitCenter"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:clearsAfterStop="false" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/stage_ufo_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_300_dp"
         android:layout_marginTop="@dimen/view_80_dp"
         android:scaleType="fitCenter"
         app:antiAlias="true"
@@ -29,7 +39,7 @@
         android:id="@+id/end_round_hint"
         android:layout_width="@dimen/view_78_dp"
         android:layout_height="@dimen/view_40_dp"
-        android:layout_alignBottom="@+id/top_voice_bg"
+        android:layout_alignBottom="@+id/stage_people_bg"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_20_dp"
         android:src="@drawable/guanzhongjiemian_yanchangjieshu"

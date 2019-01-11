@@ -19,13 +19,9 @@ public class RoomData implements Serializable {
 
     public static final int SYSTEM_ID = 1;
 
-    public final static String ROOM_STAGE_ENTER_SVGA = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/main_stage_enter.svga";
-    public final static String ROOM_STAGE_PROCESS_SVGA = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/main_stage_process.svga";
-    public final static String ROOM_STAGE_LEAVE_SVGA = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/main_stage_leave.svga";
-
     public final static String READY_GO_WEBP_URL = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/ready_go4.webp";
     public final static String READY_GO_SVGA_URL = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/ready_go.svga";
-    public final static String ROOM_VOICE_SVGA = " http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/mainstagepeople.svga";
+    public final static String ROOM_STAGE_SVGA = " http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/mainstagepeople.svga";
     public final static String ROOM_SPECAIL_EMOJI_DABIAN = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/dabian1.svga";
     public final static String ROOM_SPECAIL_EMOJI_AIXIN = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/aixin1.svga";
     public static final String AUDIO_FOR_AI_PATH = "audioforai.aac";

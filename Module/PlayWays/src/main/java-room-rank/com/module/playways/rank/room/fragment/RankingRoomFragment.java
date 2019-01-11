@@ -63,6 +63,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -99,7 +100,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     SVGAImageView mReadyGoBg;
 
-    SVGAImageView mStageBg;
+    SVGAImageView mStagePeopleBg;
+
+    SVGAImageView mStageUfoBg;
 
     ImageView mEndRoundHint;
 
@@ -154,6 +157,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     AnimatorSet mGameEndAnimation;
 
+    List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
+
     @Override
     public int initView() {
         return R.layout.ranking_room_fragment_layout;
@@ -203,7 +208,6 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
-
 
     /**
      * 可以在此恢复数据
@@ -285,21 +289,15 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
-        if (mStageBg == null) {
-            return;
-        }
-        //飞碟动画
-        mStageBg.setVisibility(View.VISIBLE);
+        // 舞台人的动画
+        mStagePeopleBg.setVisibility(View.VISIBLE);
         try {
-            getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_ENTER_SVGA), new SVGAParser.ParseCompletion() {
+            getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_SVGA), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    MyLog.d(TAG, "playUFOStageAnimator");
-                    mUFOMode = 1;
-                    mStageBg.stopAnimation(true);
                     SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mStageBg.setImageDrawable(drawable);
-                    mStageBg.startAnimation();
+                    mStagePeopleBg.setImageDrawable(drawable);
+                    mStagePeopleBg.startAnimation();
                 }
 
                 @Override
@@ -311,7 +309,37 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             e.printStackTrace();
         }
 
-        mStageBg.setCallback(new SVGACallback() {
+        //飞碟动画
+        if (mStageUfoBg == null) {
+            return;
+        }
+        mStageUfoBg.setVisibility(View.VISIBLE);
+        getSVGAParser().parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                MyLog.d(TAG, "playUFOStageAnimator");
+                mUFOMode = 1;
+                // 飞碟入场
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mStageUfoBg.stopAnimation(true);
+                mStageUfoBg.setLoops(1); // 播一次
+                mStageUfoBg.setImageDrawable(drawable);
+                mStageUfoBg.startAnimation();
+                // 舞台入场,淡入
+                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mStagePeopleBg, View.ALPHA, 0f, 1f);
+                objectAnimator.setDuration(1000);
+                objectAnimator.start();
+                mAnimatorList.add(objectAnimator);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
+
+        mStageUfoBg.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -319,60 +347,74 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
             @Override
             public void onFinished() {
-                if (mStageBg.isAnimating()) {
-                    mStageBg.stopAnimation();
+                if (mUFOMode == 1) {
+                    if (mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(true);
+                    }
+                    getSVGAParser().parse("ufo_process.svga", new SVGAParser.ParseCompletion() {
+                        @Override
+                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                            mUFOMode = 2;
+                            SVGADrawable drawable = new SVGADrawable(videoItem);
+                            mStageUfoBg.setLoops(0);// 循环播放
+                            mStageUfoBg.setImageDrawable(drawable);
+                            mStageUfoBg.startAnimation();
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+                } else if (mUFOMode == 3) {
+                    if (mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(true);
+                    }
+                    getSVGAParser().parse("ufo_leave.svga", new SVGAParser.ParseCompletion() {
+                        @Override
+                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                            mUFOMode = 4;
+                            // 主舞台消失动画
+                            SVGADrawable drawable = new SVGADrawable(videoItem);
+                            mStageUfoBg.setLoops(1); // 播一次
+                            mStageUfoBg.setImageDrawable(drawable);
+                            mStageUfoBg.startAnimation();
+                            // end小卡片，做一个满满消失的动画
+                            ObjectAnimator objectAnimatorEnd = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
+                            objectAnimatorEnd.setDuration(1000);
+                            objectAnimatorEnd.start();
+                            mAnimatorList.add(objectAnimatorEnd);
+                            // 舞台退出，淡出
+                            ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStagePeopleBg, View.ALPHA, 1f, 0f);
+                            objectAnimatorStage.setDuration(1000);
+                            objectAnimatorStage.start();
+                            mAnimatorList.add(objectAnimatorStage);
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+                } else if (mUFOMode == 4) {
+                    mStageUfoBg.stopAnimation(true);
                 }
             }
 
             @Override
             public void onRepeat() {
-                if (mUFOMode == 1 && mStageBg.isAnimating()) {
-                    try {
-                        getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_PROCESS_SVGA), new SVGAParser.ParseCompletion() {
-                            @Override
-                            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                                mUFOMode = 2;
-                                SVGADrawable drawable = new SVGADrawable(videoItem);
-                                mStageBg.stopAnimation(true);
-                                mStageBg.setImageDrawable(drawable);
-                                mStageBg.startAnimation();
-                            }
-
-                            @Override
-                            public void onError() {
-
-                            }
-                        });
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                if (mUFOMode == 1) {
+                    if (mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(false);
                     }
-                } else if (mUFOMode == 3 && mStageBg.isAnimating()) {
-                    try {
-                        getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_LEAVE_SVGA), new SVGAParser.ParseCompletion() {
-                            @Override
-                            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                                mUFOMode = 4;
-                                // 主舞台消失动画
-                                SVGADrawable drawable = new SVGADrawable(videoItem);
-                                mStageBg.stopAnimation(true);
-                                mStageBg.setImageDrawable(drawable);
-                                mStageBg.startAnimation();
-                                // end小卡片，做一个满满消失的动画
-                                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
-                                objectAnimator.setDuration(1000);
-                                objectAnimator.start();
-                            }
-
-                            @Override
-                            public void onError() {
-
-                            }
-                        });
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                } else if (mUFOMode == 3) {
+                    if (mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(false);
                     }
                 } else if (mUFOMode == 4) {
-                    mStageBg.stopAnimation(true);
+                    if (mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(false);
+                    }
                 }
             }
 
@@ -487,7 +529,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     private void initTurnChangeView() {
         mReadyGoBg = (SVGAImageView) mRootView.findViewById(R.id.ready_go_bg);
 
-        mStageBg = (SVGAImageView) mRootView.findViewById(R.id.stage_bg);
+        mStagePeopleBg = (SVGAImageView) mRootView.findViewById(R.id.stage_people_bg);
+        mStageUfoBg = (SVGAImageView) mRootView.findViewById(R.id.stage_ufo_bg);
+
         mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
 
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
@@ -626,6 +670,14 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         if (mGameEndAnimation != null) {
             mGameEndAnimation.cancel();
         }
+        if (mAnimatorList != null) {
+            for (Animator animator : mAnimatorList) {
+                if (animator != null) {
+                    animator.cancel();
+                }
+            }
+            mAnimatorList.clear();
+        }
     }
 
     @Override
@@ -642,10 +694,15 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
         // 加保护，确保当前主舞台一定被移除
-        if (mStageBg.isAnimating()) {
-            mStageBg.stopAnimation();
+        if (mStagePeopleBg.isAnimating()) {
+            mStagePeopleBg.stopAnimation(false);
         }
-        mStageBg.setVisibility(View.GONE);
+        if (mStageUfoBg.isAnimating()) {
+            mStageUfoBg.stopAnimation();
+        }
+        mStagePeopleBg.setVisibility(View.GONE);
+        mStageUfoBg.setVisibility(View.GONE);
+
         // 确保演唱逻辑一定要执行
         Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
         msg.what = ENSURE_RUN;
@@ -675,10 +732,14 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void startRivalCountdown(int uid) {
         // 加保护，确保当前主舞台一定被移除
-        if (mStageBg.isAnimating()) {
-            mStageBg.stopAnimation();
+        if (mStagePeopleBg.isAnimating()) {
+            mStagePeopleBg.stopAnimation(false);
         }
-        mStageBg.setVisibility(View.GONE);
+        if (mStageUfoBg.isAnimating()) {
+            mStageUfoBg.stopAnimation();
+        }
+        mStagePeopleBg.setVisibility(View.GONE);
+        mStageUfoBg.setVisibility(View.GONE);
 
         mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
@@ -778,11 +839,18 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void destroyAnimation() {
-        if (mStageBg != null) {
-            mStageBg.stopAnimation(true);
-            mStageBg.setVisibility(View.GONE);
-            mRankingContainer.removeView(mStageBg);
-            mStageBg = null;
+        if (mStagePeopleBg != null) {
+            mStagePeopleBg.stopAnimation(true);
+            mStagePeopleBg.setVisibility(View.GONE);
+            mRankingContainer.removeView(mStagePeopleBg);
+            mStagePeopleBg = null;
+        }
+
+        if (mStageUfoBg != null) {
+            mStageUfoBg.stopAnimation(true);
+            mStageUfoBg.setVisibility(View.GONE);
+            mRankingContainer.removeView(mStageUfoBg);
+            mStageUfoBg = null;
         }
 
         if (mReadyGoBg != null) {
@@ -831,6 +899,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void hideMainStage() {
+        MyLog.d(TAG, "hideMainStage" );
         // 显示end小卡片
         mEndRoundHint.setVisibility(View.VISIBLE);
         mUiHanlder.postDelayed(new Runnable() {

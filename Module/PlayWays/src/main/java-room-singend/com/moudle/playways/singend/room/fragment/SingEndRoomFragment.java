@@ -350,7 +350,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
             }
         });
         try {
-            parser.parse(new URL(RoomData.ROOM_VOICE_SVGA), new SVGAParser.ParseCompletion() {
+            parser.parse(new URL(RoomData.ROOM_STAGE_SVGA), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
