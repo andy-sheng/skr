@@ -180,24 +180,15 @@
 
     </RelativeLayout>
 
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/vote_vs_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_230_dp"
-        android:src="@drawable/img_pipeichenggong_enabled"
-        android:visibility="gone" />
-
     <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/vs_svga"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_400_dp"
-        android:layout_marginTop="@dimen/view_80_dp"
+        android:layout_width="@dimen/view_180_dp"
+        android:layout_height="@dimen/view_180_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_189_dp"
         android:scaleType="fitCenter"
-        android:visibility="gone"
         app:antiAlias="true"
+        app:clearsAfterStop="false"
+        app:loopCount="1"
         app:source="vs.svga" />
 
     <com.common.view.ex.ExImageView
@@ -224,35 +215,14 @@
         app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal_right" />
 
     <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/gesture_svga"
-        android:layout_width="@dimen/view_120_dp"
-        android:layout_height="@dimen/view_135_dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_200_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_2_dp"
         android:scaleType="fitCenter"
-        android:visibility="gone"
         app:antiAlias="true"
-        app:source="gesture.svga" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/mie_deng_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_65_dp"
-        android:src="@drawable/mietadeng_beijingzi"
-        android:visibility="gone" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_24_dp"
-        android:src="@drawable/img_top_miedeng_bg"
-        android:visibility="gone" />
-
+        app:clearsAfterStop="false"
+        app:loopCount="1"
+        app:source="mie_deng.svga" />
 
 </RelativeLayout>

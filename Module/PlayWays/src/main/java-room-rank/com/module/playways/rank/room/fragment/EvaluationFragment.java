@@ -47,9 +47,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     RoomData mRoomData;
 
     RelativeLayout mMainActContainer;
-    ExImageView mMieDengIv;
-    ExImageView mIvTitle;
-    SVGAImageView mGestureSvga;
 
     // 左边视图
     RelativeLayout mRlLeftArea;
@@ -70,8 +67,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     ExImageView mVoteRightMie;
 
     ExTextView mVoteDownTv;
-    ExImageView mVoteVsIv;
-    SVGAImageView mVsSvga;
 
     EndGamePresenter mPresenter;
 
@@ -98,13 +93,8 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void initData(@Nullable Bundle savedInstanceState) {
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mIvTitle = (ExImageView) mRootView.findViewById(R.id.iv_title);
-        mMieDengIv = (ExImageView) mRootView.findViewById(R.id.mie_deng_iv);
-        mGestureSvga = (SVGAImageView) mRootView.findViewById(R.id.gesture_svga);
 
         mVoteDownTv = (ExTextView) mRootView.findViewById(R.id.vote_down_tv);
-        mVoteVsIv = (ExImageView) mRootView.findViewById(R.id.vote_vs_iv);
-        mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
 
         mRlLeftArea = (RelativeLayout) mRootView.findViewById(R.id.rl_left_area);
         mVoteLeftIv = (SimpleDraweeView) mRootView.findViewById(R.id.vote_left_iv);
@@ -238,19 +228,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         mVoteLeftMie.startAnimation(scaleAnimationL);
         mVoteRightMie.startAnimation(scaleAnimationR);
 
-//        ScaleAnimation scaleAnimationTop = new ScaleAnimation(4.0f, 1.0f, 4.0f, 1.0f);
-        AnimatorSet animatorSet = new AnimatorSet();//组合动画
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mIvTitle, "scaleX", 3.0f, 1.0f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mIvTitle, "scaleY", 3.0f, 1.0f);
-        scaleX.setInterpolator(new OvershootInterpolator(1));
-        scaleY.setInterpolator(new OvershootInterpolator(1));
-        scaleX.setDuration(380);
-        scaleY.setDuration(380);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTitle, "alpha", 0.2f, 1.0f);
-        alpha.setDuration(250);
-        animatorSet.play(scaleX).with(scaleY).with(alpha);
-        animatorSet.start();
-
         HandlerTaskTimer.newBuilder().delay(500)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
@@ -308,90 +285,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 //        AnimatorSet countDownSet = new AnimatorSet();
 //        countDownSet.play(countDownT).with(countDownA);
 //        countDownSet.start();
-
-        // VS 动画
-        mVsSvga.setVisibility(View.VISIBLE);
-        mVsSvga.startAnimation();
-        mVsSvga.setCallback(new SVGACallback() {
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onFinished() {
-                if (mVsSvga.isAnimating()) {
-                    mVsSvga.stopAnimation();
-                }
-                mVsSvga.setVisibility(View.GONE);
-                mVoteVsIv.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onRepeat() {
-                if (mVsSvga.isAnimating()) {
-                    mVsSvga.stopAnimation();
-                }
-                mVsSvga.setVisibility(View.GONE);
-                mVoteVsIv.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onStep(int i, double v) {
-
-            }
-        });
-
-        // 手势动画
-        mGestureSvga.setVisibility(View.VISIBLE);
-        mGestureSvga.startAnimation();
-        mGestureSvga.setCallback(new SVGACallback() {
-            @Override
-            public void onPause() {
-                MyLog.d(TAG, " animationGo " + " onPause ");
-            }
-
-            @Override
-            public void onFinished() {
-                MyLog.d(TAG, " animationGo " + " onFinished ");
-                if (mGestureSvga.isAnimating()) {
-                    mGestureSvga.stopAnimation();
-                }
-                mGestureSvga.setVisibility(View.GONE);
-                mMieDengIv.setVisibility(View.GONE);
-                mIvTitle.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onRepeat() {
-                MyLog.d(TAG, " animationGo " + " onRepeat ");
-                if (mGestureSvga.isAnimating()) {
-                    mGestureSvga.stopAnimation();
-                }
-                mGestureSvga.setVisibility(View.GONE);
-                mMieDengIv.setVisibility(View.GONE);
-                mIvTitle.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onStep(int i, double v) {
-                MyLog.d(TAG, " animationGo " + " onStep ");
-            }
-        });
-
-        // 灭他灯动画
-        mMieDengIv.setVisibility(View.VISIBLE);
-        ObjectAnimator animatorMieDengX = ObjectAnimator.ofFloat(mMieDengIv, "scaleX", 1f, 0.8f, 1f);
-        ObjectAnimator animatorMieDengY = ObjectAnimator.ofFloat(mMieDengIv, "scaleY", 1f, 0.8f, 1f);
-
-        AnimatorSet set = new AnimatorSet();
-        animatorMieDengX.setRepeatMode(ValueAnimator.REVERSE);
-        animatorMieDengX.setInterpolator(new OvershootInterpolator());
-        animatorMieDengY.setRepeatMode(ValueAnimator.REVERSE);
-        animatorMieDengY.setInterpolator(new OvershootInterpolator());
-        set.setDuration(1200);
-        set.play(animatorMieDengX).with(animatorMieDengY);
-        set.start();
     }
 
     /**
@@ -570,16 +463,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         }
         if (mRightVoteAnimationSet != null) {
             mRightVoteAnimationSet.cancel();
-        }
-
-        if (mGestureSvga != null) {
-            mGestureSvga.stopAnimation();
-            mGestureSvga.clearAnimation();
-        }
-
-        if (mVsSvga != null) {
-            mVsSvga.stopAnimation();
-            mVsSvga.clearAnimation();
         }
     }
 
