@@ -108,7 +108,10 @@ public class RecordTitleView extends RelativeLayout {
         mTvSongName.setText("《" + mRoomData.getSongModel().getItemName() + "》");
 
         if (mRecordData.mScoreDetailModel != null) {
-            mTvSongScore.setBackground(getResources().getDrawable(ScoreConfigUtils.getImageResoucesScore(mRecordData.mScoreDetailModel.getBattleRatingScore())));
+            int resId = ScoreConfigUtils.getImageResoucesScore(mRecordData.mScoreDetailModel.getBattleRatingScore());
+            if (resId != 0) {
+                mTvSongScore.setBackground(getResources().getDrawable(resId));
+            }
         }
 
         Observable.fromIterable(mRecordData.mVoteInfoModels)
