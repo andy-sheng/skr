@@ -476,8 +476,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                             U.getToastUtil().showShort("你点击了举报按钮");
                         } else if (view.getId() == R.id.follow_tv) {
                             // 关注
-                            U.getToastUtil().showShort("你点击了关注按钮");
-                            UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel(), UserInfoManager.RA_BUILD);
+                            if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
+                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel(), UserInfoManager.RA_UNBUILD);
+                            } else {
+                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel(), UserInfoManager.RA_BUILD);
+                            }
+
                         }
                     }
                 })
@@ -899,7 +903,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void hideMainStage() {
-        MyLog.d(TAG, "hideMainStage" );
+        MyLog.d(TAG, "hideMainStage");
         // 显示end小卡片
         mEndRoundHint.setVisibility(View.VISIBLE);
         mUiHanlder.postDelayed(new Runnable() {

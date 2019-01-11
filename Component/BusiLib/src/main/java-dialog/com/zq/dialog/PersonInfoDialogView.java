@@ -12,8 +12,10 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.flowlayout.FlowLayout;
@@ -29,6 +31,10 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.level.view.HorizonLevelView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,12 +69,22 @@ public class PersonInfoDialogView extends RelativeLayout {
         super(context);
         initView();
         initData(context, userID);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     public UserInfoModel getUserInfoModel() {
         return mUserInfoModel;
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 
     private void initView() {
         inflate(getContext(), R.layout.person_info_dialog_view, this);
@@ -94,7 +110,6 @@ public class PersonInfoDialogView extends RelativeLayout {
             }
         };
         mFlowlayout.setAdapter(mTagAdapter);
-
     }
 
     private void initData(Context context, int userID) {
@@ -160,6 +175,10 @@ public class PersonInfoDialogView extends RelativeLayout {
         mNameTv.setText(userInfo.getNickname());
         mSignTv.setText(userInfo.getSignature());
 
+        if (userInfo.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+            mFollowTv.setVisibility(GONE);
+        }
+
         if (userInfo.getLocation() != null) {
             mHashMap.put(LOCATION_TAG, userInfo.getLocation().getCity());
         }
@@ -174,6 +193,7 @@ public class PersonInfoDialogView extends RelativeLayout {
     private void showRelation(boolean isFriend, boolean isFollow) {
         this.mUserInfoModel.setFriend(isFriend);
         this.mUserInfoModel.setFollow(isFollow);
+
         if (isFriend) {
             mFollowTv.setText("互关");
         } else if (isFollow) {
@@ -217,5 +237,23 @@ public class PersonInfoDialogView extends RelativeLayout {
         }
         mTagAdapter.setTagDatas(mTags);
         mTagAdapter.notifyDataChanged();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RelationChangeEvent event) {
+        if (event.userInfoModel.getUserId() == mUserInfoModel.getUserId()) {
+            mUserInfoModel.setFollow(event.isFollow);
+            mUserInfoModel.setFriend(event.isFriend);
+            if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
+                if (event.isFriend) {
+                    mFollowTv.setText("互关");
+                } else if (event.isFollow) {
+                    mFollowTv.setText("已关注");
+                }
+            } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
+                mFollowTv.setText("关注TA");
+            }
+        }
     }
 }
