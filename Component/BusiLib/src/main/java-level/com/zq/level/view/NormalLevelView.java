@@ -75,6 +75,16 @@ public class NormalLevelView extends RelativeLayout {
         this.selecStats = selecStats;
         starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
 
+        // 主段位
+        if (LevelConfigUtils.getImageResoucesLevel(level) != 0) {
+            mLevelIv.setBackgroundResource(LevelConfigUtils.getImageResoucesLevel(level));
+        }
+
+        // 子段位
+        if (LevelConfigUtils.getImageResoucesSubLevel(subLevel) != 0) {
+            mSubLeveIv.setBackgroundResource(LevelConfigUtils.getImageResoucesSubLevel(subLevel));
+        }
+
         initStart();
     }
 
@@ -225,10 +235,20 @@ public class NormalLevelView extends RelativeLayout {
 
     private SVGADynamicEntity requestDynamicBitmapItem(int levelBefore, int subLevelBefore, int levelNow, int sublevelNow) {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(subLevelBefore)), "keyLevelBefore");
-        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelBefore)), "keyMedalBefore");
-        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(sublevelNow)), "keyLevelNew");
-        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelNow)), "keyMedalNew");
+        if (LevelConfigUtils.getImageResoucesSubLevel(subLevelBefore) != 0) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(subLevelBefore)), "keyLevelBefore");
+        }
+        if (LevelConfigUtils.getImageResoucesLevel(levelBefore) != 0) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelBefore)), "keyMedalBefore");
+        }
+
+        if (LevelConfigUtils.getImageResoucesSubLevel(sublevelNow) != 0) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(sublevelNow)), "keyLevelNew");
+        }
+
+        if (LevelConfigUtils.getImageResoucesLevel(levelNow) != 0) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelNow)), "keyMedalNew");
+        }
         return dynamicEntity;
     }
 

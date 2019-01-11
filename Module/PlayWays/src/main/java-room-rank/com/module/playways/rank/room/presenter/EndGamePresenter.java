@@ -1,6 +1,7 @@
 package com.module.playways.rank.room.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
@@ -118,7 +119,9 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(VoteResultEvent event) {
-        MyLog.d(TAG, "VoteResultEvent" + " event=" + event);
+        MyLog.d(TAG, "VoteResultEvent" + " event TimeMs = " + event.mBasePushInfo.getTimeMs());
+        MyLog.d(TAG, "VoteResultEvent" + " event = " + event.mScoreDetailModel.toString());
+        MyLog.d(TAG, "VoteResultEvent" + " event = " + event.mVoteInfoModels.toString());
         view.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreDetailModel));
     }
 }

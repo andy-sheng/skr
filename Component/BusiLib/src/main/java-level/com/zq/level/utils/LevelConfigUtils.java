@@ -1,9 +1,12 @@
 package com.zq.level.utils;
 
+import com.common.log.MyLog;
 import com.component.busilib.R;
 import com.zq.level.mode.UserLevelType;
 
 public class LevelConfigUtils {
+
+    public final static String TAG = "LevelConfigUtils";
 
     // 父段位资源
     public static int getImageResoucesLevel(int level) {
@@ -21,6 +24,7 @@ public class LevelConfigUtils {
             case UserLevelType.SKRER_6_KING:
                 return R.drawable.dazhanji;
             default:
+                MyLog.w(TAG, "getImageResoucesLevel null" + " level = " + level);
                 return 0;
         }
     }
@@ -35,6 +39,7 @@ public class LevelConfigUtils {
             case 3:
                 return R.drawable.zhanji_sanji;
             default:
+                MyLog.w(TAG, "getImageResoucesSubLevel null" + " subLevel = " + subLevel);
                 return 0;
         }
     }
