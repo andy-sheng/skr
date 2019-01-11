@@ -57,7 +57,7 @@ public class RobotScoreHelper {
 
     public boolean isScoreEnough() {
         int t = getAverageScore();
-        boolean e = t > 60;
+        boolean e = t > 10;
         MyLog.d(TAG, "isScoreEnough getAverageScore:" + t + " isScoreEnough:" + e);
         return e;
     }
