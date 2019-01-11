@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.common.base.BaseFragment;
 import com.common.core.R;
+import com.common.core.account.UserAccountManager;
 import com.common.core.share.ShareManager;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -75,15 +75,17 @@ public class LoginFragment extends BaseFragment {
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            Toast.makeText(getContext(), "成功了", Toast.LENGTH_LONG).show();
-            for (Map.Entry<String, String> entry : data.entrySet()) {
-                MyLog.e("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+            if(platform == SHARE_MEDIA.WEIXIN){
+                Toast.makeText(getContext(), "微信授权成功", Toast.LENGTH_LONG).show();
+                String accessToken = data.get("accessToken");
+                String openid = data.get("openid");
+                loginWithWX(accessToken, openid);
             }
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            Toast.makeText(getContext(), "失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "微信授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -91,6 +93,10 @@ public class LoginFragment extends BaseFragment {
 
         }
     };
+
+    private void loginWithWX(String accessToken, String openId) {
+        UserAccountManager.getInstance().loginByWX(accessToken, openId);
+    }
 
     @Override
     public boolean useEventBus() {

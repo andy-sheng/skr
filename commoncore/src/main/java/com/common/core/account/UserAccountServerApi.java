@@ -32,15 +32,16 @@ public interface UserAccountServerApi {
                                 @Query("code") String verifyCode);
 
     /**
-     * 微信登陆
-     *
+     * 微信登录
      * @param loginType
-     * @param verifyCode
+     * @param accessToken
+     * @param openID
      * @return
      */
     @GET("v1/passport/login")
     Observable<ApiResult> loginWX(@Query("mode") int loginType,
-                                @Query("code") String verifyCode);
+                                  @Query("accessToken") String accessToken,
+                                  @Query("openID") String openID);
 
     /**
      * 获取IMToken
