@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -457,6 +456,17 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mVoteLeftMie.setClickable(false);
             mVoteRightMie.setClickable(false);
             mVoteLeftShadowIv.setVisibility(View.VISIBLE);
+            HandlerTaskTimer.newBuilder()
+                    .delay(200)
+                    .interval(50)
+                    .take(5)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                @Override
+                public void onNext(Integer integer) {
+                    mVoteLeftShadowIv.setVisibility(integer % 2 == 1 ? View.VISIBLE : View.GONE);
+                }
+            });
+
             // 右边冒星星
             mStartRightSvga.setVisibility(View.VISIBLE);
             mStartRightSvga.startAnimation();
@@ -488,6 +498,18 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mVoteRightMie.setClickable(false);
             mVoteLeftMie.setClickable(false);
             mVoteRightShadowIv.setVisibility(View.VISIBLE);
+
+            HandlerTaskTimer.newBuilder()
+                    .delay(200)
+                    .interval(50)
+                    .take(5)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                        @Override
+                        public void onNext(Integer integer) {
+                            mVoteRightShadowIv.setVisibility(integer % 2 == 1 ? View.VISIBLE : View.GONE);
+                        }
+                    });
+
             // 左边冒星星
             mStartLeftSvga.setVisibility(View.VISIBLE);
             mStartLeftSvga.startAnimation();
