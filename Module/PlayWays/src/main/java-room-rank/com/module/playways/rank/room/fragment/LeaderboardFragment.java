@@ -175,7 +175,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        mTvArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
+                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
                         mLlAreaContainer.setVisibility(View.GONE);
                         Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
@@ -215,15 +215,22 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     private void setRankMode(){
         if (MyUserInfoManager.getInstance().hasLocation()) {
-            mTvArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
+            mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
             mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
-            mTvCurArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
+            mTvCurArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
             mTvCountry.setText("全国榜");
         } else {
             mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
             mTvArea.setCompoundDrawables(null, null, null, null);
             mTvArea.setText("全国榜");
         }
+    }
+
+    private String getAreaFromLocation(String location){
+        String[] strs = location.split("-");
+        String area = strs[strs.length - 1];
+
+        return area;
     }
 
     private void tryGetLocation() {
