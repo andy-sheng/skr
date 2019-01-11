@@ -115,6 +115,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     ExoPlayer mExoPlayer;
 
+    long mRobotBeginTs = 0;
+
     PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
         @Override
         public boolean doFilter(RoomMsg msg) {
@@ -188,7 +190,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         .setNickName(playerInfoModel.getUserInfo().getNickname())
                         .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
                         .build());
-                String text = String.format("我第%s个唱", i + 1);
+                String text = String.format("%s第%s个唱", playerInfoModel.getUserInfo().getNickname(), i + 1);
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
                 EventBus.getDefault().post(msgEvent);
             }
@@ -671,8 +673,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mExoPlayer == null) {
             mExoPlayer = new ExoPlayer();
         }
-
-        mExoPlayer.startPlay(skrerUrl);
+        if (EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
+            mExoPlayer.startPlay(skrerUrl);
+        } else {
+            MyLog.d(TAG, "静音状态，不播放音乐");
+        }
+        mRobotBeginTs = System.currentTimeMillis();
         //直接播放歌词
         mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), playerInfo.getUserInfo().getUserId()), true);
     }
@@ -737,6 +743,35 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     public void muteAllRemoteAudioStreams(boolean mute) {
         EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
+        // 如果是机器人的话
+
+        if (mute) {
+            // 如果是静音
+            boolean b = RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList());
+            // 如果是机器人
+            if (b) {
+                if (mExoPlayer != null) {
+                    mExoPlayer.pause();
+                }
+            }
+        } else {
+            // 如果打开静音
+            boolean b = RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList());
+            // 如果是机器人
+            if (b) {
+                if (mExoPlayer != null) {
+                    // 关键的来了，直接跳到应该的位置
+                    PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID());
+                    if (playerInfo != null) {
+                        String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
+                        mExoPlayer.startPlay(skrerUrl);
+                        if (mRobotBeginTs > 0) {
+                            mExoPlayer.seekTo(System.currentTimeMillis() - mRobotBeginTs);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
