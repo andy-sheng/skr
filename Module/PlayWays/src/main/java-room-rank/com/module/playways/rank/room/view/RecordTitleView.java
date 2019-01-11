@@ -174,59 +174,144 @@ public class RecordTitleView extends RelativeLayout {
     }
 
     private void scoreAnimationGo() {
-        if (mScoreDetailModel.hasLevelChange()) {
-            // TODO: 2019/1/10  段位变化
-            if (mScoreDetailModel.getRankStarScore().getScoreBefore() == mScoreDetailModel.getTotalStarLimit().getLimitBefore()) {
-                // 之前就满星， 播放段位改变的动画
-                mSdvOwnLevel.levelChange(mViewGroup, mScoreDetailModel.getRankScore().getLevelBefore(), mScoreDetailModel.getSubRankScore().getLevelBefore(),
-                        mScoreDetailModel.getRankScore().getLevelNow(), mScoreDetailModel.getSubRankScore().getLevelNow(), mScoreDetailModel.getTotalStarLimit().getLimitNow(), new NormalLevelView.SVGAListener() {
-                            @Override
-                            public void onFinish() {
-                                // 播放段位改变后砸星星动画
-                                if (mScoreDetailModel.getRankStarScore().getScoreNow() == 0) {
-                                    // 没有星，判断是否有分数，变动播放分数动画(先不做)
+        // 星星和段位的动画，可以分为3段动画，星星动画，段位动画和星星动画3部分
+        starAnimationFirst(new AnimationListener() {
+            @Override
+            public void onFinish() {
+                levelAnimation(new AnimationListener() {
+                    @Override
+                    public void onFinish() {
+                        starAnimationEnd(null);
+                    }
+                });
+            }
+        });
+    }
 
-                                } else {
-                                    // 还有星星，播加星动画
-                                    mSdvOwnLevel.starUp(mViewGroup, 0,
-                                            mScoreDetailModel.getRankStarScore().getScoreNow() - 1, null);
-                                }
-                            }
-                        });
+    public interface AnimationListener {
+        void onFinish();
+    }
+
+    // 段位的第一段动画，星星
+    private void starAnimationFirst(AnimationListener listener) {
+        if (listener == null) {
+            return;
+        }
+        if (mScoreDetailModel.getLevelChange() == 0) {
+            // 无段位变化，则无第一段动画
+            listener.onFinish();
+        } else if (mScoreDetailModel.getLevelChange() > 0) {
+            // 升段
+            if (mScoreDetailModel.getRankStarScore().getScoreBefore() == mScoreDetailModel.getTotalStarLimit().getLimitBefore()) {
+                // 满星星, 则无第一段动画
+                listener.onFinish();
             } else {
-                // 播放星星砸满的动画
+                // 星星砸满
                 mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
                         mScoreDetailModel.getTotalStarLimit().getLimitBefore() - 1, new NormalLevelView.SVGAListener() {
                             @Override
                             public void onFinish() {
-                                // 播放段位改变的动画
-                                mSdvOwnLevel.levelChange(mViewGroup, mScoreDetailModel.getRankScore().getLevelBefore(), mScoreDetailModel.getSubRankScore().getLevelBefore(),
-                                        mScoreDetailModel.getRankScore().getLevelNow(), mScoreDetailModel.getSubRankScore().getLevelNow(),
-                                        mScoreDetailModel.getTotalStarLimit().getLimitNow(),
-                                        new NormalLevelView.SVGAListener() {
-                                            @Override
-                                            public void onFinish() {
-                                                // 判断当前星星状态
-                                                if (mScoreDetailModel.getRankStarScore().getScoreNow() == 0) {
-                                                    // 没有星，判断分数是否变化，播放分数动画(先不做)
-                                                } else {
-                                                    // 还有星星，播加星动画
-                                                    mSdvOwnLevel.starUp(mViewGroup, 0,
-                                                            mScoreDetailModel.getRankStarScore().getScoreNow() - 1, null);
-                                                }
-                                            }
-                                        });
+                                // 第一段动画播放完成
+                                listener.onFinish();
                             }
                         });
             }
+        } else if (mScoreDetailModel.getLevelChange() < 0) {
+            // 降段
+            if (mScoreDetailModel.getRankStarScore().getScoreBefore() == 0) {
+                // 之前无星，则无第一段动画
+                listener.onFinish();
+            } else {
+                // 星星掉到0
+                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
+                        0, new NormalLevelView.SVGAListener() {
+                            @Override
+                            public void onFinish() {
+                                // 第一段动画播放完成
+                                listener.onFinish();
+                            }
+                        });
+            }
+        }
+    }
+
+    // 段位的第二段动画，段位
+    private void levelAnimation(AnimationListener listener) {
+        if (listener == null) {
+            return;
+        }
+        if (mScoreDetailModel.getLevelChange() == 0) {
+            // 无段位变化，则无第二段动画
+            listener.onFinish();
+        } else {
+            // 有段位变化
+            mSdvOwnLevel.levelChange(mViewGroup, mScoreDetailModel.getRankScore().getLevelBefore(), mScoreDetailModel.getSubRankScore().getLevelBefore(),
+                    mScoreDetailModel.getRankScore().getLevelNow(), mScoreDetailModel.getSubRankScore().getLevelNow(),
+                    mScoreDetailModel.getTotalStarLimit().getLimitNow(), new NormalLevelView.SVGAListener() {
+                        @Override
+                        public void onFinish() {
+                            listener.onFinish();
+                        }
+                    });
+        }
+    }
+
+    // 段位的第三段动画，星星
+    private void starAnimationEnd(AnimationListener listener) {
+        if (mScoreDetailModel.getStarChange() == 0) {
+            // 无星星变化，则无第三段动画
+            if (listener != null) {
+                listener.onFinish();
+            }
         } else if (mScoreDetailModel.getStarChange() > 0) {
-            // TODO: 2019/1/10 无段位变化，星星增加
-            mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
-                    mScoreDetailModel.getRankStarScore().getScoreNow() - 1, null);
+            // 星星增加
+            if (mScoreDetailModel.getStarChange() > mScoreDetailModel.getRankStarScore().getScoreNow()) {
+                // 增幅超过现在有的星星数,第三段从0涨到现在
+                mSdvOwnLevel.starUp(mViewGroup, 0, mScoreDetailModel.getRankStarScore().getScoreNow() - 1, new NormalLevelView.SVGAListener() {
+                    @Override
+                    public void onFinish() {
+                        if (listener != null) {
+                            listener.onFinish();
+                        }
+                    }
+                });
+            } else {
+                // 增幅不超过现在有的星星数,第三段从之前涨到现在
+                mSdvOwnLevel.starUp(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(), mScoreDetailModel.getRankStarScore().getScoreNow() - 1, new NormalLevelView.SVGAListener() {
+                    @Override
+                    public void onFinish() {
+                        if (listener != null) {
+                            listener.onFinish();
+                        }
+                    }
+                });
+            }
         } else if (mScoreDetailModel.getStarChange() < 0) {
-            // TODO: 2019/1/10 无段位变化，星星减少
-            mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
-                    mScoreDetailModel.getRankStarScore().getScoreNow() - 1, null);
+            // 星星减少
+            if (Math.abs(mScoreDetailModel.getStarChange()) > mScoreDetailModel.getRankStarScore().getScoreBefore()) {
+                // 减少的幅度超过之前,第三段现在的满掉到now
+                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getTotalStarLimit().getLimitNow(),
+                        mScoreDetailModel.getRankStarScore().getScoreNow() - 1, new NormalLevelView.SVGAListener() {
+                            @Override
+                            public void onFinish() {
+                                if (listener != null) {
+                                    listener.onFinish();
+                                }
+                            }
+                        });
+            } else {
+                // 减少的幅度不超过之前,第三段现在的之前掉到now
+                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
+                        mScoreDetailModel.getRankStarScore().getScoreNow() - 1, new NormalLevelView.SVGAListener() {
+                            @Override
+                            public void onFinish() {
+                                if (listener != null) {
+                                    listener.onFinish();
+                                }
+                            }
+                        });
+            }
+
         }
     }
 

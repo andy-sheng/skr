@@ -124,12 +124,21 @@ public class ScoreDetailModel {
         mRankProtect = rankProtect;
     }
 
-    // 段位是否改变
-    public boolean hasLevelChange() {
-        if (mRankScore.getLevelBefore() == mRankScore.getLevelNow() && mSubRankScore.getLevelBefore() == mSubRankScore.getLevelNow()) {
-            return false;
+    // 段位的变化 0 没变化， 大于0 升段位  小于0 降段位
+    public int getLevelChange() {
+        if (mRankScore.getLevelNow() > mRankScore.getLevelBefore()) {
+            return 1;
+        } else if (mRankScore.getLevelNow() < mRankScore.getLevelBefore()) {
+            return -1;
+        } else {
+            if (mSubRankScore.getLevelNow() > mSubRankScore.getLevelBefore()) {
+                return 1;
+            } else if (mSubRankScore.getLevelNow() < mSubRankScore.getLevelBefore()) {
+                return -1;
+            } else {
+                return 0;
+            }
         }
-        return true;
     }
 
     // 星星数是否改变 0没变化  大于0 增加星星  小于0 减少星星
