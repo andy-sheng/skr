@@ -198,7 +198,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             basePushInfo.setRoomID(mRoomData.getGameId());
             basePushInfo.setSender(new UserInfo.Builder()
                     .setUserID(1)
-                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/avatar_default_1.png")
+                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
                     .setNickName("系统消息")
                     .setSex(ESex.fromValue(0))
                     .build());

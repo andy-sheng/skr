@@ -55,6 +55,8 @@ shape src 属性化
 无侵入打点
 
 -------------------------------
+阿里云
+zhenqukeji qwert12345
 
 keytool -list -v  -keystore ~/dev/livesdk/livesdk/app/zq.keystore
 
