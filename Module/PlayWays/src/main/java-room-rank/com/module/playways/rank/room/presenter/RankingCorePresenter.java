@@ -442,12 +442,16 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
                 } else {
                     MyLog.e(TAG, "getVoteResult result failed, msg is " + result.getErrmsg());
+                    mUiHanlder.removeMessages(MSG_GET_VOTE);
+                    mUiHanlder.sendEmptyMessageDelayed(MSG_GET_VOTE, 100);
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, "getVoteResult error " + e);
+                mUiHanlder.removeMessages(MSG_GET_VOTE);
+                mUiHanlder.sendEmptyMessageDelayed(MSG_GET_VOTE, 100);
             }
         }, this);
     }

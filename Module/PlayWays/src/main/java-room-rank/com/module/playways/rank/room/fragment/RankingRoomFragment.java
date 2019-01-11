@@ -3,8 +3,6 @@ package com.module.playways.rank.room.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,25 +10,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.image.fresco.BaseImageView;
-
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -87,7 +79,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static android.view.View.ALPHA;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
@@ -721,7 +712,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                                 .build()
                         );
                     }
-                }, 1250);
+                }, 2250);
             }
         });
     }
@@ -741,7 +732,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                                 .build()
                         );
                     }
-                }, 1250);
+                }, 2250);
             }
         });
     }
