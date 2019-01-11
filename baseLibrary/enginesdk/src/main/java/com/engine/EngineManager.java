@@ -329,9 +329,10 @@ public class EngineManager implements AgoraOutCallback {
                     }
                 }
                 AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
+                //TODO 临时关闭耳返
                 if (U.getDeviceUtils().getHeadsetPlugOn()) {
                     setEnableSpeakerphone(false);
-                    enableInEarMonitoring(true);
+                    enableInEarMonitoring(false);
                 } else {
                     setEnableSpeakerphone(true);
                     enableInEarMonitoring(false);
@@ -608,7 +609,7 @@ public class EngineManager implements AgoraOutCallback {
     public void onEvent(DeviceUtils.HeadsetPlugEvent event) {
         if (event.on) {
             setEnableSpeakerphone(false);
-            enableInEarMonitoring(true);
+            enableInEarMonitoring(false);
         } else {
             setEnableSpeakerphone(true);
             enableInEarMonitoring(false);
