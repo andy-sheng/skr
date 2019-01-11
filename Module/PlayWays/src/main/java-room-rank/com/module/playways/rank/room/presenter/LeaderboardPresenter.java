@@ -83,10 +83,14 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getString("seqInfo"), UserRankModel.class);
-                    mILeaderBoardView.showOwnRankInfo(userRankModels.get(0));
+                    for (UserRankModel userRankModel :
+                            userRankModels) {
+                        if (mRankMode == userRankModel.getCategory()){
+                            mILeaderBoardView.showOwnRankInfo(userRankModel);
+                        }
+                    }
                 }
             }
         });
     }
-
 }
