@@ -2,10 +2,12 @@ package com.module.playways.rank.song.holder;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -37,6 +39,14 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
                 if (recyclerOnItemClickListener != null) {
                     recyclerOnItemClickListener.onItemClicked(itemView, position, mSongModel);
                 }
+            }
+        });
+
+        // TODO: 2019/1/11 该代码是为了解决选歌页面不断抖动，引起选歌无效的问题 
+        mSongSelectTv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return false;
             }
         });
     }
