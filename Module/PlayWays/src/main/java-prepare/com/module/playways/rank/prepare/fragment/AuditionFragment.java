@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
@@ -122,6 +123,18 @@ public class AuditionFragment extends BaseFragment {
     DialogPlus mQuitTipsDialog;
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("mPrepareData", mPrepareData);
+    }
+
+    @Override
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mPrepareData = (PrepareData) savedInstanceState.getSerializable("mPrepareData");
+    }
+
+    @Override
     public int initView() {
         return R.layout.audition_sence_layout;
     }
@@ -147,8 +160,8 @@ public class AuditionFragment extends BaseFragment {
                 }
             }
         };
-        mIvBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
-        mTvSongName = (ExTextView)mRootView.findViewById(R.id.tv_song_name);
+        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
 
         mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
@@ -302,7 +315,7 @@ public class AuditionFragment extends BaseFragment {
         mRecordAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                mUiHanlder.post(()->{
+                mUiHanlder.post(() -> {
                     stopRecord();
                 });
             }
@@ -317,7 +330,7 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void stopRecord() {
-        if(!isRecord){
+        if (!isRecord) {
             return;
         }
 
@@ -489,7 +502,7 @@ public class AuditionFragment extends BaseFragment {
 //        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
 
         if (event.getType() == TYPE_MUSIC_PLAY_FINISH) {
-            mUiHanlder.post(()->{
+            mUiHanlder.post(() -> {
                 stopRecord();
             });
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
