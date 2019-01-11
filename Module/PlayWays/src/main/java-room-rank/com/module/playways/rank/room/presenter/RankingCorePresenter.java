@@ -673,10 +673,11 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mExoPlayer == null) {
             mExoPlayer = new ExoPlayer();
         }
+        mExoPlayer.startPlay(skrerUrl);
         if (!EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
-            mExoPlayer.startPlay(skrerUrl);
+            mExoPlayer.setVolume(1);
         } else {
-            MyLog.d(TAG, "静音状态，不播放音乐");
+            mExoPlayer.setVolume(0);
         }
         mRobotBeginTs = System.currentTimeMillis();
         //直接播放歌词
@@ -747,29 +748,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
         if (mute) {
             // 如果是静音
-            boolean b = RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList());
-            // 如果是机器人
-            if (b) {
-                if (mExoPlayer != null) {
-                    mExoPlayer.pause();
-                }
+            if (mExoPlayer != null) {
+                mExoPlayer.setVolume(0);
             }
         } else {
             // 如果打开静音
-            boolean b = RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList());
-            // 如果是机器人
-            if (b) {
-                if (mExoPlayer != null) {
-                    // 关键的来了，直接跳到应该的位置
-                    PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID());
-                    if (playerInfo != null) {
-                        String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
-                        mExoPlayer.startPlay(skrerUrl);
-                        if (mRobotBeginTs > 0) {
-                            mExoPlayer.seekTo(System.currentTimeMillis() - mRobotBeginTs);
-                        }
-                    }
-                }
+            if (mExoPlayer != null) {
+                mExoPlayer.setVolume(1f);
             }
         }
     }
