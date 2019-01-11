@@ -23,8 +23,11 @@ public class XiaoMiStatistics {
 
     public final static String TAG = "XiaoMiStatistics";
 
-    static final String MI_STAT_APP_ID = "2882303761517890001";
-    static final String MI_STAT_APP_KEY = "5671789084001";
+//    static final String MI_STAT_APP_ID = "2882303761517890001";
+//    static final String MI_STAT_APP_KEY = "5671789084001";
+
+    static final String MI_STAT_APP_ID = "2882303761517932750";
+    static final String MI_STAT_APP_KEY = "5701793259750";
 
     static boolean hasInited = false;
 
