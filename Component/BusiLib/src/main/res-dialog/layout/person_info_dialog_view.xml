@@ -4,6 +4,7 @@
     android:layout_width="@dimen/view_344_dp"
     android:layout_height="@dimen/view_281_dp"
     android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/view_17_dp"
     android:background="@drawable/img_bg1">
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -33,8 +34,7 @@
         android:layout_height="@dimen/view_26_dp"
         android:layout_below="@+id/name_tv"
         android:layout_alignLeft="@+id/name_tv"
-        android:layout_marginTop="@dimen/view_1_dp">
-    </com.zq.level.view.HorizonLevelView>
+        android:layout_marginTop="@dimen/view_1_dp"></com.zq.level.view.HorizonLevelView>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/report"

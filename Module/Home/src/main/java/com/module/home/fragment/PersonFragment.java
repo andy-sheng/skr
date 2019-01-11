@@ -332,7 +332,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         UserRankModel reginRankModel = new UserRankModel();
         if (list != null && list.size() > 0) {
             for (UserRankModel model : list) {
-                if (model.getCategoy() == UserRankModel.REGION) {
+                if (model.getCategory() == UserRankModel.REGION) {
                     reginRankModel = model;
                 }
             }

@@ -187,7 +187,7 @@ public class PersonInfoDialogView extends RelativeLayout {
         UserRankModel reginRankModel = new UserRankModel();
         if (userRankModels != null && userRankModels.size() > 0) {
             for (UserRankModel model : userRankModels) {
-                if (model.getCategoy() == UserRankModel.REGION) {
+                if (model.getCategory() == UserRankModel.REGION) {
                     reginRankModel = model;
                 }
             }

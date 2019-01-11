@@ -225,7 +225,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         tvRank.setText(userRankModel.getSeq() + "");
         tvName.setText(MyUserInfoManager.getInstance().getNickName());
         tvSegment.setText(userRankModel.getRegionDesc());
-        tvStar.setText("X" + userRankModel.getCategoy());
+        tvStar.setText("X" + userRankModel.getCategory());
         AvatarUtils.loadAvatarByUrl(sdvIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)

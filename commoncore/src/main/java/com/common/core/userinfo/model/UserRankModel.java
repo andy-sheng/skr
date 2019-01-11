@@ -13,16 +13,16 @@ public class UserRankModel {
      * regionDesc : 全国
      */
 
-    private int categoy;
+    private int category;
     private int seq;
     private String regionDesc;
 
-    public int getCategoy() {
-        return categoy;
+    public int getCategory() {
+        return category;
     }
 
-    public void setCategoy(int categoy) {
-        this.categoy = categoy;
+    public void setCategory(int category) {
+        this.category = category;
     }
 
     public int getSeq() {
