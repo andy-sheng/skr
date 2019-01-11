@@ -11,6 +11,7 @@ import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -105,7 +106,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
                     U.getToastUtil().showShort("试音房");
-                    if(songModel.isAllResExist()){
+                    if (songModel.isAllResExist()) {
                         PrepareData prepareData = new PrepareData();
                         prepareData.setSongModel(songModel);
 
@@ -125,7 +126,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                                         .build());
                             }
                         });
-                    }else {
+                    } else {
                         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), AuditionPrepareResFragment.class)
                                 .setAddToBackStack(false)
                                 .setHasAnimation(true)
@@ -183,6 +184,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
             mSwipeView.setAdapter(mSongCardSwipAdapter);
         }
+
     }
 
     // 返回上一张选歌卡片

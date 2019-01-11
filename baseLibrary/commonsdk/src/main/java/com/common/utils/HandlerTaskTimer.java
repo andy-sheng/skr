@@ -4,10 +4,18 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.common.base.BaseActivity;
+import com.common.base.BaseFragment;
 import com.common.log.MyLog;
+import com.common.mvp.PresenterEvent;
+import com.common.mvp.RxLifeCyclePresenter;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Handler 定时器 用于倒计时 、延迟执行、循环执行 任务
@@ -32,8 +40,8 @@ public final class HandlerTaskTimer {
                     if (consumer != null) {
                         try {
                             consumer.onNext(times);
-                        }catch (Exception e){
-                            MyLog.e("HandlerTaskTimer",e);
+                        } catch (Exception e) {
+                            MyLog.e("HandlerTaskTimer", e);
                         }
                     }
                     // 如果已经取消了
@@ -41,7 +49,7 @@ public final class HandlerTaskTimer {
                         if (consumer != null) {
                             try {
                                 consumer.onComplete();
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 MyLog.e("HandlerTaskTimer", e);
                             }
                         }
@@ -54,8 +62,8 @@ public final class HandlerTaskTimer {
                             if (consumer != null) {
                                 try {
                                     consumer.onComplete();
-                                }catch (Exception e){
-                                    MyLog.e("HandlerTaskTimer",e);
+                                } catch (Exception e) {
+                                    MyLog.e("HandlerTaskTimer", e);
                                 }
                             }
                         } else {
@@ -68,8 +76,8 @@ public final class HandlerTaskTimer {
                                 // 没有设置时间间隔
                                 try {
                                     consumer.onComplete();
-                                }catch (Exception e){
-                                    MyLog.e("HandlerTaskTimer",e);
+                                } catch (Exception e) {
+                                    MyLog.e("HandlerTaskTimer", e);
                                 }
                             }
                         }
@@ -84,8 +92,8 @@ public final class HandlerTaskTimer {
                             // 没有设置时间间隔
                             try {
                                 consumer.onComplete();
-                            }catch (Exception e){
-                                MyLog.e("HandlerTaskTimer",e);
+                            } catch (Exception e) {
+                                MyLog.e("HandlerTaskTimer", e);
                             }
                         }
                     }
@@ -140,6 +148,42 @@ public final class HandlerTaskTimer {
 
         public Builder take(int take) {
             mHandlerTaskTimer.take = take;
+            return this;
+        }
+
+        public Builder compose(BaseActivity baseActivity) {
+            baseActivity.provideLifecycleSubject().subscribe(new Consumer<ActivityEvent>() {
+                @Override
+                public void accept(ActivityEvent activityEvent) throws Exception {
+                    if (activityEvent == ActivityEvent.DESTROY) {
+                        mHandlerTaskTimer.dispose();
+                    }
+                }
+            });
+            return this;
+        }
+
+        public Builder compose(BaseFragment baseFragment) {
+            baseFragment.provideLifecycleSubject().subscribe(new Consumer<FragmentEvent>() {
+                @Override
+                public void accept(FragmentEvent fragmentEvent) throws Exception {
+                    if (fragmentEvent == FragmentEvent.DESTROY) {
+                        mHandlerTaskTimer.dispose();
+                    }
+                }
+            });
+            return this;
+        }
+
+        public Builder compose(RxLifeCyclePresenter presenter) {
+            presenter.provideLifecycleSubject().subscribe(new Consumer<PresenterEvent>() {
+                @Override
+                public void accept(PresenterEvent fragmentEvent) throws Exception {
+                    if (fragmentEvent == PresenterEvent.DESTROY) {
+                        mHandlerTaskTimer.dispose();
+                    }
+                }
+            });
             return this;
         }
 
