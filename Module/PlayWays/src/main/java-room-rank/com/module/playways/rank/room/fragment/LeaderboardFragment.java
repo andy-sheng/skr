@@ -15,10 +15,13 @@ import android.widget.TextView;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
+import com.common.utils.PermissionUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -29,6 +32,9 @@ import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -63,6 +69,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     TextView mTvChanpianStart;
     TextView mTvSegmentName;
     TextView mTvArea;
+    ExImageView mIvBack;
 
     LinearLayout mLlAreaContainer;
     ExTextView mTvCurArea;
@@ -108,6 +115,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvRankRight = (ImageView) mRootView.findViewById(R.id.iv_rank_right);
         mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
         mTvArea = (ExTextView) mRootView.findViewById(R.id.tv_area);
+        mIvBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
+
 
         mLlAreaContainer = (LinearLayout) mRootView.findViewById(R.id.ll_area_container);
         mTvCurArea = (ExTextView) mRootView.findViewById(R.id.tv_cur_area);
@@ -189,6 +198,22 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     }
                 });
 
+        RxView.clicks(mIvBack)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        finish();
+                    }
+                });
+
+        setRankMode();
+        if(!MyUserInfoManager.getInstance().hasLocation()){
+            tryGetLocation();
+        }
+    }
+
+    private void setRankMode(){
         if (MyUserInfoManager.getInstance().hasLocation()) {
             mTvArea.setText(MyUserInfoManager.getInstance().getLocationDesc());
             mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
@@ -201,7 +226,40 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         }
     }
 
+    private void tryGetLocation() {
+        boolean hasLocationPermmistion = U.getPermissionUtils().checkLocation(getActivity());
+
+        if (!hasLocationPermmistion) {
+            U.getPermissionUtils().requestLocation(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    MyUserInfoManager.getInstance().uploadLocation();
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+
+                }
+            }, getActivity());
+        } else {
+            MyUserInfoManager.getInstance().uploadLocation();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        if(MyUserInfoManager.getInstance().hasLocation()){
+            setRankMode();
+        }
+    }
+
     @Override
+
     public void showRankList(List<RankInfoModel> rankInfoModel, boolean hasMore) {
         mRefreshLayout.setEnableLoadMore(hasMore);
         mHasMore = hasMore;
@@ -298,6 +356,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 }
