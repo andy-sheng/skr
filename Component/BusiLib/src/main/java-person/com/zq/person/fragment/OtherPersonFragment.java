@@ -24,6 +24,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
+import com.zq.level.view.NormalLevelView;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.IOtherPersonView;
@@ -38,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
+
 import com.zq.level.mode.UserLevelModel;
 
 
@@ -62,8 +64,12 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     ExImageView mBackIv;
     ExTextView mShareTv;
     ExTextView mNameTv;
+    ExTextView mUseridTv;
     ExTextView mSignTv;
     TagFlowLayout mFlowlayout;
+    RelativeLayout mMedalLayout;
+    NormalLevelView mLevelView;
+    ExTextView mRankTv;
     ExTextView mFollowTv;
     ExTextView mMessageTv;
 
@@ -83,14 +89,17 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
         mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mBackIv = (ExImageView) mRootView.findViewById(R.id.back_iv);
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
+        mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
+        mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
+        mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
         mFollowTv = (ExTextView) mRootView.findViewById(R.id.follow_tv);
         mMessageTv = (ExTextView) mRootView.findViewById(R.id.message_tv);
 
@@ -201,14 +210,37 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
     @Override
     public void showReginRank(List<UserRankModel> list) {
+        UserRankModel reginRankModel = new UserRankModel();
+        if (list != null && list.size() > 0) {
+            for (UserRankModel model : list) {
+                if (model.getCategory() == UserRankModel.REGION) {
+                    reginRankModel = model;
+                }
+            }
+        }
 
+        if (reginRankModel != null) {
+            mRankTv.setText(reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getSeq()) + "位");
+        } else {
+            mRankTv.setText("您当前还没有排名信息哦～");
+        }
     }
 
     @Override
     public void showUserLevel(List<UserLevelModel> list) {
-
-
-
+        // 展示段位信息
+        for (UserLevelModel userLevelModel : list) {
+            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                rank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                subRank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
+                starNum = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
+                starLimit = userLevelModel.getScore();
+            }
+        }
+        mLevelView.bindData(rank, subRank, starLimit, starNum, U.getDisplayUtils().dip2px(114));
     }
 
     @Override

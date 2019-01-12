@@ -11,7 +11,7 @@
         android:layout_width="@dimen/view_72_dp"
         android:layout_height="@dimen/view_72_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_40_dp" />
+        android:layout_marginTop="@dimen/view_38_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/share_tv"
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/avatar_iv"
-        android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="center"
         android:minWidth="@dimen/view_100_dp"
         android:text="赤木晴子"
@@ -46,11 +46,21 @@
         android:textSize="@dimen/textsize_24_dp" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/sign_tv"
+        android:id="@+id/userid_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_tv"
-        android:layout_marginTop="@dimen/view_4_dp"
+        android:gravity="center"
+        android:text="撕歌号: 21433642"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_15_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sign_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userid_tv"
+        android:layout_marginTop="@dimen/view_9_dp"
         android:gravity="center"
         android:minWidth="@dimen/view_100_dp"
         android:text="哥就是那个KTV里最跑调的孩子"
@@ -61,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sign_tv"
-        android:layout_marginTop="@dimen/view_26_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
         android:orientation="horizontal">
 
         <RelativeLayout

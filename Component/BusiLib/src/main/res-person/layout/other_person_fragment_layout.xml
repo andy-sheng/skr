@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
     android:background="#FFED61">
 
-
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_72_dp"
         android:layout_height="@dimen/view_72_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_40_dp" />
+        android:layout_marginTop="@dimen/view_38_dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/back_iv"
@@ -29,6 +28,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/textsize_23_dp"
+        android:visibility="gone"
         android:text="分享" />
 
     <com.common.view.ex.ExTextView
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/avatar_iv"
-        android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="center"
         android:minWidth="@dimen/view_100_dp"
         android:text="赤木晴子"
@@ -44,11 +44,21 @@
         android:textSize="@dimen/textsize_24_dp" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/sign_tv"
+        android:id="@+id/userid_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_tv"
-        android:layout_marginTop="@dimen/view_4_dp"
+        android:gravity="center"
+        android:text="撕歌号: 21433642"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_15_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/sign_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userid_tv"
+        android:layout_marginTop="@dimen/view_9_dp"
         android:gravity="center"
         android:minWidth="@dimen/view_100_dp"
         android:text="哥就是那个KTV里最跑调的孩子"
@@ -62,7 +72,46 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_14_dp"
         android:layout_marginTop="@dimen/view_212_dp"
-        android:layout_marginRight="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>
+        android:layout_marginRight="@dimen/view_14_dp">
+    </com.common.flowlayout.TagFlowLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/medal_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_258_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_14_dp"
+        android:layout_marginTop="@dimen/view_278_dp"
+        android:layout_marginRight="@dimen/view_14_dp"
+        android:background="@drawable/gerenzhongxin_zhanji_bg">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_130_dp"
+            android:layout_marginTop="@dimen/view_13_dp"
+            android:background="@drawable/gerenxinxika_huizhangbeijing" />
+
+        <com.zq.level.view.NormalLevelView
+            android:id="@+id/level_view"
+            android:layout_width="@dimen/view_114_dp"
+            android:layout_height="@dimen/view_114_dp"
+            android:layout_marginTop="@dimen/view_21_dp"
+            android:layout_marginLeft="@dimen/view_18_dp">
+        </com.zq.level.view.NormalLevelView>
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/rank_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_61_dp"
+            android:layout_toRightOf="@+id/level_view"
+            android:gravity="center"
+            android:text="昌平情歌榜22位"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_22_dp" />
+
+    </RelativeLayout>
 
 
     <LinearLayout

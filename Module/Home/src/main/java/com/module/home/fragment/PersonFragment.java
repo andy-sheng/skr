@@ -57,6 +57,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     ExTextView mShareTv;
     ExTextView mSettingTv;
     ExTextView mNameTv;
+    ExTextView mUseridTv;
     ExTextView mSignTv;
     RelativeLayout mFriends;
     ExTextView mFriendsNumTv;
@@ -106,6 +107,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
         mSettingTv = (ExTextView) mRootView.findViewById(R.id.setting_tv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
+        mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFriends = (RelativeLayout) mRootView.findViewById(R.id.friends);
         mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
@@ -295,6 +297,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
                 .build());
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+        mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
     }
 
