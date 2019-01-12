@@ -127,13 +127,17 @@ public class ScoreDetailModel {
     // 段位的变化 0 没变化， 大于0 升段位  小于0 降段位
     public int getLevelChange() {
         if (mRankScore.getLevelNow() > mRankScore.getLevelBefore()) {
+            // 父段位现在比之前高
             return 1;
         } else if (mRankScore.getLevelNow() < mRankScore.getLevelBefore()) {
+            // 父段位现在比之前低
             return -1;
         } else {
-            if (mSubRankScore.getLevelNow() > mSubRankScore.getLevelBefore()) {
+            if (mSubRankScore.getLevelNow() < mSubRankScore.getLevelBefore()) {
+                // 子段位现在比之前高
                 return 1;
-            } else if (mSubRankScore.getLevelNow() < mSubRankScore.getLevelBefore()) {
+            } else if (mSubRankScore.getLevelNow() > mSubRankScore.getLevelBefore()) {
+                // 子段位现在比之前低
                 return -1;
             } else {
                 return 0;

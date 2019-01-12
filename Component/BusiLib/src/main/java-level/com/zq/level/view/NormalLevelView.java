@@ -172,7 +172,10 @@ public class NormalLevelView extends RelativeLayout {
     public void levelChange(final ViewGroup viewGroup, final int levelBefore, final int subLevelBefore, final int levelNow, final int sublevelNow,
                             int totalStatsNow,
                             final SVGAListener listener) {
-        // 段位下星星
+        // 先隐藏之前的静态段位
+        mLevelIv.setVisibility(GONE);
+        mSubLeveIv.setVisibility(GONE);
+        // 现在段位下星星，并全变灰
         bindStarData(totalStatsNow, 0);
         // 播放段位动画
         final SVGAImageView levelChange = new SVGAImageView(getContext());
