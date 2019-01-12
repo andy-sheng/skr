@@ -140,7 +140,7 @@ public class EditInfoSexFragment extends BaseFragment {
                 .build());
 
         if (isUpload) {
-            if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+            if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getUploadUser().getBirthday())) {
                 // 无出生年月数据
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);

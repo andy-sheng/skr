@@ -31,21 +31,21 @@ public class UploadAccountInfoActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putBoolean(BUNDLE_IS_UPLOAD, true);
 
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName()) || TextUtils.isEmpty(MyUserInfoManager.getInstance().getAvatar())) {
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getUploadUser().getUserNickname()) || TextUtils.isEmpty(MyUserInfoManager.getInstance().getUploadUser().getAvatar())) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, UploadAccountInfoFragment.class)
                     .setBundle(bundle)
                     .setAddToBackStack(false)
                     .setHasAnimation(true)
                     .build());
-        } else if (MyUserInfoManager.getInstance().getSex() == 0) {
+        } else if (MyUserInfoManager.getInstance().getUploadUser().getSex() == 0) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, EditInfoSexFragment.class)
                     .setBundle(bundle)
                     .setAddToBackStack(false)
                     .setHasAnimation(true)
                     .build());
-        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getUploadUser().getBirthday())) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, EditInfoAgeFragment.class)
                     .setBundle(bundle)
