@@ -139,31 +139,29 @@ public class MyUserInfoManager {
     public void updateInfo(final MyInfoUpdateParams updateParams) {
 
         HashMap<String, Object> map = new HashMap<>();
-        final MyUserInfo userInfo = new MyUserInfo();
-        userInfo.setUserId(getUid());
         if (updateParams.nickName != null) {
             map.put("nickname", updateParams.nickName);
-            userInfo.setUserNickname(updateParams.nickName);
+            mUser.setUserNickname(updateParams.nickName);
         }
         if (updateParams.sex != -1) {
             map.put("sex", updateParams.sex);
-            userInfo.setSex(updateParams.sex);
+            mUser.setSex(updateParams.sex);
         }
         if (updateParams.birthday != null) {
             map.put("birthday", updateParams.birthday);
-            userInfo.setBirthday(updateParams.birthday);
+            mUser.setBirthday(updateParams.birthday);
         }
         if (updateParams.avatar != null) {
             map.put("avatar", updateParams.avatar);
-            userInfo.setAvatar(updateParams.avatar);
+            mUser.setAvatar(updateParams.avatar);
         }
         if (updateParams.sign != null) {
             map.put("signature", updateParams.sign);
-            userInfo.setSignature(updateParams.sign);
+            mUser.setSignature(updateParams.sign);
         }
         if (updateParams.location != null) {
             map.put("location", updateParams.location);
-            userInfo.setLocation(updateParams.location);
+            mUser.setLocation(updateParams.location);
         }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
@@ -178,7 +176,7 @@ public class MyUserInfoManager {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                            MyUserInfoLocalApi.insertOrUpdate(userInfo);
+                            MyUserInfoLocalApi.insertOrUpdate(mUser);
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
