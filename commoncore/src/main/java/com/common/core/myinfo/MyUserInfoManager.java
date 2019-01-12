@@ -62,7 +62,7 @@ public class MyUserInfoManager {
                     MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
                     MyLog.d(TAG, "load myUserInfo=" + userInfo);
                     if (userInfo != null) {
-                        setMyUserInfo(userInfo,false);
+                        setMyUserInfo(userInfo, false);
                     }
                     // 从服务器同步个人信息
                     syncMyInfoFromServer();
@@ -85,11 +85,11 @@ public class MyUserInfoManager {
         return mUser;
     }
 
-    public void setMyUserInfo(MyUserInfo myUserInfo,boolean fromServer) {
+    public void setMyUserInfo(MyUserInfo myUserInfo, boolean fromServer) {
         MyLog.d(TAG, "setMyUserInfo" + " myUserInfo=" + myUserInfo);
         if (myUserInfo != null) {
             mUser = myUserInfo;
-            if(!mUserInfoFromServer) {
+            if (!mUserInfoFromServer) {
                 mUserInfoFromServer = fromServer;
             }
             ModuleServiceManager.getInstance().getMsgService().updateCurrentUserInfo();
@@ -100,9 +100,10 @@ public class MyUserInfoManager {
 
     /**
      * 当前的 mUser 信息是从服务器同步过的么，标记下
+     *
      * @return
      */
-    public boolean isUserInfoFromServer(){
+    public boolean isUserInfoFromServer() {
         return mUserInfoFromServer;
     }
 
@@ -120,7 +121,7 @@ public class MyUserInfoManager {
                     final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                    setMyUserInfo(myUserInfo,true);
+                    setMyUserInfo(myUserInfo, true);
                 } else if (obj.getErrno() == 107) {
                     UserAccountManager.getInstance().notifyAccountExpired();
                 }
@@ -138,29 +139,31 @@ public class MyUserInfoManager {
     public void updateInfo(final MyInfoUpdateParams updateParams) {
 
         HashMap<String, Object> map = new HashMap<>();
+        final MyUserInfo userInfo = new MyUserInfo();
+        userInfo.setUserId(getUid());
         if (updateParams.nickName != null) {
             map.put("nickname", updateParams.nickName);
-            mUser.setUserNickname(updateParams.nickName);
+            userInfo.setUserNickname(updateParams.nickName);
         }
         if (updateParams.sex != -1) {
             map.put("sex", updateParams.sex);
-            mUser.setSex(updateParams.sex);
+            userInfo.setSex(updateParams.sex);
         }
         if (updateParams.birthday != null) {
             map.put("birthday", updateParams.birthday);
-            mUser.setBirthday(updateParams.birthday);
+            userInfo.setBirthday(updateParams.birthday);
         }
         if (updateParams.avatar != null) {
             map.put("avatar", updateParams.avatar);
-            mUser.setAvatar(updateParams.avatar);
+            userInfo.setAvatar(updateParams.avatar);
         }
         if (updateParams.sign != null) {
             map.put("signature", updateParams.sign);
-            mUser.setSignature(updateParams.sign);
+            userInfo.setSignature(updateParams.sign);
         }
         if (updateParams.location != null) {
             map.put("location", updateParams.location);
-            mUser.setLocation(updateParams.location);
+            userInfo.setLocation(updateParams.location);
         }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
@@ -175,11 +178,11 @@ public class MyUserInfoManager {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                            MyUserInfoLocalApi.insertOrUpdate(mUser);
+                            MyUserInfoLocalApi.insertOrUpdate(userInfo);
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                setMyUserInfo(mUser,true);
+                                setMyUserInfo(mUser, true);
                             }
                             if (updateParams.location != null) {
                                 // 有传地址位置
