@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -25,6 +26,8 @@ import java.util.List;
 
 // 正常的段位 到铂金段位 星星是斜着排的
 public class NormalLevelView extends RelativeLayout {
+
+    public final static String TAG = "NormalLevelView";
 
     int starTotalWidth = U.getDisplayUtils().dip2px(100);   // 星星的横向排列的长度
     int starTotalHeight;    //  星星的纵向排列的高度,每增加一颗星星就加6dp
@@ -85,6 +88,11 @@ public class NormalLevelView extends RelativeLayout {
             mSubLeveIv.setBackgroundResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
         }
 
+        if (totalStats == 0 || totalStats < selecStats) {
+            MyLog.e(TAG, "bindData exception" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
+            return;
+        }
+        
         initStart();
     }
 
