@@ -108,8 +108,8 @@ public class EditInfoNameFragment extends BaseFragment {
         } else {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                     .setMessageTip(String.format(getString(R.string.edit_nickname_confim_tips), nickName))
-                    .setConfirmTip("取消")
-                    .setCancelTip("确认修改")
+                    .setConfirmTip("确认修改")
+                    .setCancelTip("取消")
                     .build();
 
             DialogPlus.newDialog(getContext())
@@ -124,14 +124,14 @@ public class EditInfoNameFragment extends BaseFragment {
                             if (view instanceof ExTextView) {
                                 if (view.getId() == R.id.confirm_tv) {
                                     dialog.dismiss();
-                                }
-
-                                if (view.getId() == R.id.cancel_tv) {
-                                    dialog.dismiss();
                                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                             .setNickName(nickName)
                                             .build());
                                     U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
+                                }
+
+                                if (view.getId() == R.id.cancel_tv) {
+                                    dialog.dismiss();
                                 }
                             }
                         }
