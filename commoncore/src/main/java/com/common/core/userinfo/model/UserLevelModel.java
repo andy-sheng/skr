@@ -1,4 +1,4 @@
-package com.zq.level.mode;
+package com.common.core.userinfo.model;
 
 public class UserLevelModel {
     public static int RANKING_TYPE = 1;

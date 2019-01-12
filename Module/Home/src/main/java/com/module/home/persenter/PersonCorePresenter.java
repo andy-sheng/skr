@@ -2,6 +2,7 @@ package com.module.home.persenter;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.mvp.RxLifeCyclePresenter;
@@ -16,7 +17,7 @@ import com.module.home.view.IPersonView;
 
 import java.util.List;
 
-import com.zq.level.mode.UserLevelModel;
+import com.common.core.userinfo.model.UserLevelModel;
 
 public class PersonCorePresenter extends RxLifeCyclePresenter {
 
@@ -37,6 +38,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
                     List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
+                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
 //                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
 //                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
@@ -44,6 +46,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     view.showReginRank(userRankModels);
                     view.showRelationNum(relationNumModes);
                     view.showUserLevel(userLevelModels);
+                    view.showGameStatic(userGameStatisModels);
                 }
             }
         }, this);

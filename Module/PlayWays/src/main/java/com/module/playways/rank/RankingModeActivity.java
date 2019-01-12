@@ -6,17 +6,13 @@ import android.support.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.model.HttpImage;
-import com.common.image.model.ImageFactory;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
-import com.module.playways.rank.prepare.GameModeType;
 import com.module.rank.R;
 import com.module.playways.rank.room.fragment.PkRoomFragment;
-import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
 
 @Route(path = RouterConstants.ACTIVITY_RANKINGMODE)

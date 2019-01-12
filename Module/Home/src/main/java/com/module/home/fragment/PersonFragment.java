@@ -13,6 +13,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
@@ -34,10 +35,12 @@ import com.module.home.R;
 
 import model.RelationNumModel;
 
+import com.component.busilib.constans.GameModeType;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
 import com.module.rank.IRankingModeService;
 import com.zq.level.view.NormalLevelView;
+import com.zq.live.proto.Common.ESex;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -48,7 +51,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
-import com.zq.level.mode.UserLevelModel;
+import com.common.core.userinfo.model.UserLevelModel;
 
 public class PersonFragment extends BaseFragment implements IPersonView {
 
@@ -70,6 +73,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     ExTextView mLevelTv;
     ExTextView mRankTv;
     NormalLevelView mLevelView;
+
+    ExTextView mRankNumTv;
+    ExTextView mFunnyNumTv;
+    ExTextView mSingendNumTv;
 
     ExImageView mAuditionRoomTv;
     ExImageView mMusicTestTv;
@@ -115,6 +122,11 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
         mFollows = (RelativeLayout) mRootView.findViewById(R.id.follows);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
+
+        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
+        mFunnyNumTv = (ExTextView) mRootView.findViewById(R.id.funny_num_tv);
+        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
+
 
         RxView.clicks(mSettingTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -290,12 +302,22 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     }
 
     private void initViewData() {
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
-                .getAvatar())
-                .setCircle(true)
-                .setBorderColor(Color.parseColor("#33A4E1"))
-                .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                .build());
+        if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
+                    .getAvatar())
+                    .setCircle(true)
+                    .setBorderColor(Color.parseColor("#33A4E1"))
+                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                    .build());
+        } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
+                    .getAvatar())
+                    .setCircle(true)
+                    .setBorderColor(Color.parseColor("#FF75A2"))
+                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                    .build());
+
+        }
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
@@ -363,5 +385,18 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             }
         }
         mLevelView.bindData(rank, subRank, starLimit, starNum, U.getDisplayUtils().dip2px(108));
+    }
+
+    @Override
+    public void showGameStatic(List<GameStatisModel> list) {
+        for (GameStatisModel gameStatisModel : list) {
+            if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+                mRankNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_FUNNY) {
+                mFunnyNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_SING_END) {
+                mSingendNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+            }
+        }
     }
 }

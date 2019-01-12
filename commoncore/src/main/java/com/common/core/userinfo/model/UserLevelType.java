@@ -1,4 +1,4 @@
-package com.zq.level.mode;
+package com.common.core.userinfo.model;
 
 public class UserLevelType {
     public static final int SKRER_LEVEL_POTENTIAL = 1; //潜力新秀

@@ -10,7 +10,9 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserRankModel;
@@ -22,6 +24,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.component.busilib.constans.GameModeType;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.zq.level.view.NormalLevelView;
@@ -40,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
 
-import com.zq.level.mode.UserLevelModel;
+import com.common.core.userinfo.model.UserLevelModel;
 
 
 public class OtherPersonFragment extends BaseFragment implements IOtherPersonView {
@@ -73,6 +76,10 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     ExTextView mFollowTv;
     ExTextView mMessageTv;
 
+    ExTextView mRankNumTv;
+    ExTextView mFunnyNumTv;
+    ExTextView mSingendNumTv;
+
     OtherPersonPresenter mOtherPersonPresenter;
 
     UserInfoModel mUserInfoModel;
@@ -102,6 +109,10 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
         mFollowTv = (ExTextView) mRootView.findViewById(R.id.follow_tv);
         mMessageTv = (ExTextView) mRootView.findViewById(R.id.message_tv);
+
+        mRankNumTv = (ExTextView)mRootView.findViewById(R.id.rank_num_tv);
+        mFunnyNumTv = (ExTextView)mRootView.findViewById(R.id.funny_num_tv);
+        mSingendNumTv = (ExTextView)mRootView.findViewById(R.id.singend_num_tv);
 
         mOtherPersonPresenter = new OtherPersonPresenter(this);
         addPresent(mOtherPersonPresenter);
@@ -183,6 +194,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         }
 
         mNameTv.setText(model.getNickname());
+        mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
         mSignTv.setText(model.getSignature());
 
         if (model.getLocation() != null) {
@@ -255,6 +267,20 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
             mFollowTv.setText("关注TA");
             mFollowTv.setTag(RELATION_UN_FOLLOW);
         }
+    }
+
+    @Override
+    public void showGameStatic(List<GameStatisModel> list) {
+        for (GameStatisModel gameStatisModel : list) {
+            if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+                mRankNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_FUNNY) {
+                mFunnyNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_SING_END) {
+                mSingendNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+            }
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

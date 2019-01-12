@@ -1,4 +1,4 @@
-package com.module.playways.rank.prepare;
+package com.component.busilib.constans;
 
 public class GameModeType {
 

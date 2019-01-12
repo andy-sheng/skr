@@ -1,12 +1,13 @@
 package com.zq.person.view;
 
+import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 
 import java.util.List;
 
 import model.RelationNumModel;
-import com.zq.level.mode.UserLevelModel;
+import com.common.core.userinfo.model.UserLevelModel;
 
 public interface IOtherPersonView {
 
@@ -24,4 +25,7 @@ public interface IOtherPersonView {
 
     // 和自己的关系
     void showUserRelation(boolean isFriend, boolean isFollow);
+
+    // 展示游戏数据
+    void showGameStatic(List<GameStatisModel> list);
 }

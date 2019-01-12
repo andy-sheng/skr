@@ -1,10 +1,12 @@
 package com.module.home.view;
 
+import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 
 import model.RelationNumModel;
-import com.zq.level.mode.UserLevelModel;
+
+import com.common.core.userinfo.model.UserLevelModel;
 
 import java.util.List;
 
@@ -20,4 +22,7 @@ public interface IPersonView {
 
     // 展示段位信息
     void showUserLevel(List<UserLevelModel> list);
+
+    // 展示游戏数据
+    void showGameStatic(List<GameStatisModel> list);
 }

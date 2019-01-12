@@ -2,7 +2,7 @@ package com.zq.level.utils;
 
 import com.common.log.MyLog;
 import com.component.busilib.R;
-import com.zq.level.mode.UserLevelType;
+import com.common.core.userinfo.model.UserLevelType;
 
 public class LevelConfigUtils {
 
