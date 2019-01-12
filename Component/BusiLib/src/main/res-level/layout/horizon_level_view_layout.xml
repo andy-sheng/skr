@@ -11,8 +11,7 @@
         <ImageView
             android:id="@+id/level_iv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/dazhanji" />
+            android:layout_height="match_parent" />
 
         <ImageView
             android:id="@+id/sub_leve_iv"
@@ -20,8 +19,7 @@
             android:layout_height="@dimen/view_4_dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/view_1_dp"
-            android:src="@drawable/zhanji_sanji" />
+            android:layout_marginBottom="@dimen/view_1_dp" />
     </RelativeLayout>
 
     <com.common.view.ex.ExTextView

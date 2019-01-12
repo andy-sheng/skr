@@ -81,8 +81,8 @@ public class NormalLevelView extends RelativeLayout {
         }
 
         // 子段位
-        if (LevelConfigUtils.getImageResoucesSubLevel(subLevel) != 0) {
-            mSubLeveIv.setBackgroundResource(LevelConfigUtils.getImageResoucesSubLevel(subLevel));
+        if (LevelConfigUtils.getImageResoucesSubLevel(level, subLevel) != 0) {
+            mSubLeveIv.setBackgroundResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
         }
 
         initStart();
@@ -235,15 +235,15 @@ public class NormalLevelView extends RelativeLayout {
 
     private SVGADynamicEntity requestDynamicBitmapItem(int levelBefore, int subLevelBefore, int levelNow, int sublevelNow) {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        if (LevelConfigUtils.getImageResoucesSubLevel(subLevelBefore) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(subLevelBefore)), "keyLevelBefore");
+        if (LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore) != 0) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(levelBefore, subLevelBefore)), "keyLevelBefore");
         }
         if (LevelConfigUtils.getImageResoucesLevel(levelBefore) != 0) {
             dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesLevel(levelBefore)), "keyMedalBefore");
         }
 
-        if (LevelConfigUtils.getImageResoucesSubLevel(sublevelNow) != 0) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(sublevelNow)), "keyLevelNew");
+        if (LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow) != 0) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), LevelConfigUtils.getImageResoucesSubLevel(levelNow, sublevelNow)), "keyLevelNew");
         }
 
         if (LevelConfigUtils.getImageResoucesLevel(levelNow) != 0) {
