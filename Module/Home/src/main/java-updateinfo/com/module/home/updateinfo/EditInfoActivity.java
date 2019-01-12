@@ -232,6 +232,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void onClickLocationRefresh() {
+        mLocationTv.setText("获取位置中");
         MyUserInfoManager.getInstance().uploadLocation();
     }
 

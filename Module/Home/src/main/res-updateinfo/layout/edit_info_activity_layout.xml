@@ -269,8 +269,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_17_dp"
-            android:src="@drawable/diqudingwei_shuaxin" />
+            android:paddingRight="@dimen/view_17_dp"
+            android:src="@drawable/refresh_bg" />
 
         <View
             android:layout_width="match_parent"
