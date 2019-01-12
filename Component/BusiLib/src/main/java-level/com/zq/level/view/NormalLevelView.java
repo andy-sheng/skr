@@ -72,10 +72,15 @@ public class NormalLevelView extends RelativeLayout {
     }
 
     public void bindData(int level, int subLevel, int totalStats, int selecStats) {
+        bindData(level, subLevel, totalStats, selecStats, starTotalWidth);
+    }
+
+    public void bindData(int level, int subLevel, int totalStats, int selecStats, int starTotalWidth) {
         this.level = level;
         this.subLevel = subLevel;
         this.totalStats = totalStats;
         this.selecStats = selecStats;
+        this.starTotalWidth = starTotalWidth;
         starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
 
         // 主段位
@@ -92,7 +97,7 @@ public class NormalLevelView extends RelativeLayout {
             MyLog.e(TAG, "bindData exception" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
             return;
         }
-        
+
         initStart();
     }
 

@@ -359,6 +359,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 starLimit = userLevelModel.getScore();
             }
         }
-        mLevelView.bindData(rank, subRank, starLimit, starNum);
+        mLevelView.bindData(rank, subRank, starLimit, starNum, U.getDisplayUtils().dip2px(108));
     }
 }
