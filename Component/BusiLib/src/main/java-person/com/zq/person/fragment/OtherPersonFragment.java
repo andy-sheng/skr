@@ -223,18 +223,24 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     @Override
     public void showReginRank(List<UserRankModel> list) {
         UserRankModel reginRankModel = new UserRankModel();
+        UserRankModel countryRankModel = new UserRankModel();
         if (list != null && list.size() > 0) {
             for (UserRankModel model : list) {
                 if (model.getCategory() == UserRankModel.REGION) {
                     reginRankModel = model;
                 }
+                if (model.getCategory() == UserRankModel.COUNTRY) {
+                    countryRankModel = model;
+                }
             }
         }
 
-        if (reginRankModel != null) {
+        if (reginRankModel != null && reginRankModel.getSeq() != 0) {
             mRankTv.setText(reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getSeq()) + "位");
+        } else if (countryRankModel != null && countryRankModel.getSeq() != 0) {
+            mRankTv.setText(countryRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(countryRankModel.getSeq()) + "位");
         } else {
-            mRankTv.setText("您当前还没有排名信息哦～");
+            mRankTv.setText("无排位数据");
         }
     }
 

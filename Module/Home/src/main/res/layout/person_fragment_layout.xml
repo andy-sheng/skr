@@ -187,7 +187,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/view_41_dp"
             android:layout_toRightOf="@+id/level_view"
+            android:ellipsize="end"
             android:gravity="center"
+            android:maxLines="1"
             android:text="昌平情歌榜22位"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_16_dp" />
@@ -196,7 +198,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rank_tv"
-            android:layout_marginTop="@dimen/view_11_dp"
+            android:layout_marginTop="@dimen/view_13_dp"
             android:layout_marginRight="@dimen/view_6_dp"
             android:layout_toRightOf="@+id/level_view"
             android:orientation="horizontal">
