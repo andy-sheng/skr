@@ -116,7 +116,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        // TODO: 2018/12/26 用户评价
+                        U.getChannelUtils().gotoMarketDetail(getActivity());
                     }
                 });
 

@@ -84,8 +84,9 @@ public class ChannelUtils {
     }
 
     public void gotoMarketDetail(Activity activity){
-        String appPkg = U.getAppInfoUtils().getPackageName();
-        String marketPkg = getMarketPackageByChannel();
+//        String appPkg = U.getAppInfoUtils().getPackageName();
+        String appPkg = "com.wali.live";
+        String marketPkg = RomUtils.getRomMarketPkgName();
         try {
             Uri uri = Uri.parse("market://details?id=" + appPkg);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -98,9 +99,5 @@ public class ChannelUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public String getMarketPackageByChannel(){
-        return "com.xiaomi.market";
     }
 }
