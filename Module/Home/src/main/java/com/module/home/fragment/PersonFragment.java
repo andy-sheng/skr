@@ -175,7 +175,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                                                             U.getToastUtil().showShort("上传成功 url:" + url);
                                                             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                                                     .setAvatar(url)
-                                                                    .build());
+                                                                    .build(), false);
                                                         }
 
                                                         @Override

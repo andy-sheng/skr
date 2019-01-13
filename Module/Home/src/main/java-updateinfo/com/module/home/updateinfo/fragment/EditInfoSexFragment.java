@@ -137,7 +137,7 @@ public class EditInfoSexFragment extends BaseFragment {
         // 昵称可用
         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                 .setSex(sex)
-                .build());
+                .build(), true);
 
         if (isUpload) {
             if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
@@ -185,7 +185,7 @@ public class EditInfoSexFragment extends BaseFragment {
                                     dialog.dismiss();
                                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                             .setSex(sex)
-                                            .build());
+                                            .build(), false);
                                     U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
                                 }
 

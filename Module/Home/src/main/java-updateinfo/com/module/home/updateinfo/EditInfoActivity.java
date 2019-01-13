@@ -180,7 +180,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                                             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
                                                     .newMyInfoUpdateParamsBuilder()
                                                     .setAvatar(url)
-                                                    .build());
+                                                    .build(), false);
                                         }
 
                                         @Override

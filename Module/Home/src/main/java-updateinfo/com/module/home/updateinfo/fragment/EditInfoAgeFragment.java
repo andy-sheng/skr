@@ -125,11 +125,11 @@ public class EditInfoAgeFragment extends BaseFragment {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 if (isUpload) {
-                    // 修改个人信息
+                    // 上传个人信息
                     String bir = U.getDateTimeUtils().formatDateString(date);
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                             .setBirthday(bir)
-                            .build());
+                            .build(), true);
                     getActivity().finish();
                 } else {
                     // 修改个人信息
@@ -139,7 +139,7 @@ public class EditInfoAgeFragment extends BaseFragment {
                     } else {
                         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                 .setBirthday(bir)
-                                .build());
+                                .build(), false);
                     }
                     U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
                 }

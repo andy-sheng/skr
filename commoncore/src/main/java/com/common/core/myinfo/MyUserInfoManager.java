@@ -136,15 +136,6 @@ public class MyUserInfoManager {
 
     /**
      * 更新用户信息
-     *
-     * @param updateParams
-     */
-    public void updateInfo(final MyInfoUpdateParams updateParams) {
-        updateInfo(updateParams, true);
-    }
-
-    /**
-     * 更新用户信息
      */
     public void updateInfo(final MyInfoUpdateParams updateParams, boolean updateLocalIfServerFailed) {
 

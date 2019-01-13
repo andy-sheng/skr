@@ -126,7 +126,7 @@ public class EditInfoNameFragment extends BaseFragment {
                                     dialog.dismiss();
                                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                             .setNickName(nickName)
-                                            .build());
+                                            .build(), false);
                                     U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
                                 }
 

@@ -114,7 +114,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                                                     U.getToastUtil().showShort("上传成功 url:" + url);
                                                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                                             .setAvatar(url)
-                                                            .build());
+                                                            .build(), true);
                                                 }
 
                                                 @Override
@@ -188,7 +188,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                         // 昵称可用
                         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                 .setNickName(nickName)
-                                .build());
+                                .build(), true);
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         if (MyUserInfoManager.getInstance().getSex() == 0) {
                             // 无性别数据
