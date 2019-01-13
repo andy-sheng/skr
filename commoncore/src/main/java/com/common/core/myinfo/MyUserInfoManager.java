@@ -134,6 +134,9 @@ public class MyUserInfoManager {
         }
     }
 
+    public void updateInfo(final MyInfoUpdateParams updateParams) {
+        updateInfo(updateParams,true);
+    }
     /**
      * 更新用户信息
      */

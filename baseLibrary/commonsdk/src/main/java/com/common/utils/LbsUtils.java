@@ -177,7 +177,7 @@ public class LbsUtils {
 
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
-                    mOneTimeCallback.onReceive(null);
+                    callback.onReceive(null);
                     if (MyLog.isDebugLogOpen()) {
                         U.getToastUtil().showShort("定位权限请求失败");
                     }
@@ -185,7 +185,7 @@ public class LbsUtils {
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-                    mOneTimeCallback.onReceive(null);
+                    callback.onReceive(null);
                     if (MyLog.isDebugLogOpen()) {
                         U.getToastUtil().showShort("定位权限请求失败,不再询问");
                     }
