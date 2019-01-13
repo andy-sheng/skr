@@ -33,8 +33,11 @@
             android:layout_marginTop="@dimen/view_92_dp" />
 
         <com.common.view.ex.ExTextView
+            android:layout_marginRight="@dimen/view_30_dp"
+            android:layout_marginLeft="@dimen/view_30_dp"
+            android:gravity="center"
             android:id="@+id/song_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/song_icon"
             android:layout_centerHorizontal="true"
