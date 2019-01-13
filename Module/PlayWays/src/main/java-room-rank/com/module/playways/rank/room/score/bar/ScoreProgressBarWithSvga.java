@@ -90,6 +90,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
             public void onFinished() {
                 mScoreAnimationIv.stopAnimation();
                 mScoreAnimationIv.setVisibility(GONE);
+                mScoreProgressBar.clearHideDrawable();
             }
 
             @Override
@@ -114,13 +115,13 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
             mStarIv.startAnimation();
 
             if (progress > 97) {
-                startScoreAnimation("score_sss.svga", tx);
+                startScoreAnimation("score_sss.svga", tx, R.drawable.ycjm_jdt_sss);
             } else if (progress > 82) {
-                startScoreAnimation("score_ss.svga", tx);
+                startScoreAnimation("score_ss.svga", tx, R.drawable.ycjm_jdt_ss);
             } else if (progress > 70) {
-                startScoreAnimation("score_s.svga", tx);
+                startScoreAnimation("score_s.svga", tx, R.drawable.ycjm_jdt_s);
             } else if (progress > 60) {
-                startScoreAnimation("score_a.svga", tx);
+                startScoreAnimation("score_a.svga", tx, R.drawable.ycjm_jdt_a);
             }
         }
     }
@@ -129,7 +130,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
         mScoreProgressBar.setProgress2(progress);
     }
 
-    private void startScoreAnimation(String assetsName, int tx) {
+    private void startScoreAnimation(String assetsName, int tx, int drawableId) {
 
         getSVGAParser().parse(assetsName, new SVGAParser.ParseCompletion() {
             @Override
@@ -139,12 +140,13 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
 //                mScoreAnimationIv.setLayoutParams(lp);
 
                 mScoreAnimationIv.setTranslationX(-getWidth() / 2 + tx);
-                mScoreAnimationIv.setTranslationY(-getHeight() / 2+U.getDisplayUtils().dip2px(7));
+                mScoreAnimationIv.setTranslationY(-getHeight() / 2 + U.getDisplayUtils().dip2px(8));
 
                 mScoreAnimationIv.setVisibility(VISIBLE);
                 mScoreAnimationIv.stopAnimation(true);
                 mScoreAnimationIv.setImageDrawable(drawable);
                 mScoreAnimationIv.startAnimation();
+                mScoreProgressBar.hideLevelDrawable(drawableId);
             }
 
             @Override

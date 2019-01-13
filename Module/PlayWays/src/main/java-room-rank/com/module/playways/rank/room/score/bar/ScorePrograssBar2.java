@@ -49,7 +49,7 @@ public class ScorePrograssBar2 extends View {
     Paint mPaintCircleBar;
     RectF mRectF;
     float mPrgress2 = 0;
-
+    int mHideDrawableId = 0;
 
     public ScorePrograssBar2(Context context) {
         super(context);
@@ -119,10 +119,10 @@ public class ScorePrograssBar2 extends View {
 //        mPaintProgressBar.setColor(Color.CYAN);
 
         mLevelDrawables = new DrawableWithLocation[]{
-                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_a), getXByProgress(60), 60),
-                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_s), getXByProgress(70), 70),
-                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_ss), getXByProgress(82), 82),
-                new DrawableWithLocation(U.getDrawable(R.drawable.ycjm_jdt_sss), getXByProgress(97), 97),
+                new DrawableWithLocation(R.drawable.ycjm_jdt_a, getXByProgress(60), 60),
+                new DrawableWithLocation(R.drawable.ycjm_jdt_s, getXByProgress(70), 70),
+                new DrawableWithLocation(R.drawable.ycjm_jdt_ss, getXByProgress(82), 82),
+                new DrawableWithLocation(R.drawable.ycjm_jdt_sss, getXByProgress(97), 97),
         };
 
     }
@@ -172,7 +172,11 @@ public class ScorePrograssBar2 extends View {
         // 画level图标
         for (int i = 0; i < mLevelDrawables.length; i++) {
             DrawableWithLocation drawableW = mLevelDrawables[i];
-
+            MyLog.d(TAG,"onDraw" + " drawableWId=" + drawableW.getDrawableId());
+            if (drawableW.getDrawableId() == mHideDrawableId) {
+                MyLog.d(TAG,"不画");
+                continue;
+            }
             int oy = 0;
             Drawable drawable = drawableW.getDrawable();
             int ox = drawableW.getTransLateX() - drawable.getIntrinsicWidth() / 2;
@@ -266,19 +270,31 @@ public class ScorePrograssBar2 extends View {
         invalidate();
     }
 
+    public void clearHideDrawable() {
+        mHideDrawableId = 0;
+        invalidate();
+    }
+
+    public void hideLevelDrawable(int drawableId) {
+        MyLog.d(TAG,"hideLevelDrawable" + " drawableId=" + drawableId);
+        mHideDrawableId = drawableId;
+    }
+
     static class DrawableWithLocation {
-        Drawable mDrawable;
+        int drawableId;
+        Drawable drawable;
         int transLateX;
         int score;
 
-        public DrawableWithLocation(Drawable drawable, int transLateX, int score) {
-            mDrawable = drawable;
+        public DrawableWithLocation(int id, int transLateX, int score) {
+            this.drawableId = id;
+            this.drawable = U.getDrawable(this.drawableId);
             this.transLateX = transLateX;
             this.score = score;
         }
 
         public Drawable getDrawable() {
-            return mDrawable;
+            return drawable;
         }
 
         public int getTransLateX() {
@@ -289,5 +305,12 @@ public class ScorePrograssBar2 extends View {
             return score;
         }
 
+        public int getDrawableId() {
+            return drawableId;
+        }
+
+        public void setDrawableId(int drawableId) {
+            this.drawableId = drawableId;
+        }
     }
 }
