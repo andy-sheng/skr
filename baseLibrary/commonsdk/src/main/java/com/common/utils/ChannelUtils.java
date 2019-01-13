@@ -1,5 +1,8 @@
 package com.common.utils;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.pgyersdk.crash.PgyCrashManager;
@@ -78,5 +81,26 @@ public class ChannelUtils {
 
     public boolean isSandboxChannel() {
         return getChannel().equals("SANDBOX");
+    }
+
+    public void gotoMarketDetail(Activity activity){
+        String appPkg = U.getAppInfoUtils().getPackageName();
+        String marketPkg = getMarketPackageByChannel();
+        try {
+            Uri uri = Uri.parse("market://details?id=" + appPkg);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (!TextUtils.isEmpty(marketPkg)) {
+                intent.setPackage(marketPkg);
+            }
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getMarketPackageByChannel(){
+        return "com.xiaomi.market";
     }
 }
