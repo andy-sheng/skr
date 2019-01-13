@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -70,6 +71,8 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
     HandlerTaskTimer mReadyTimeTask;
 
+    Handler mUiHandler = new Handler();
+
     @Override
     public int initView() {
         return R.layout.match_success_fragment_layout;
@@ -118,6 +121,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
         U.getSoundUtils().preLoad(TAG, R.raw.pregame_animation, R.raw.pregame_ready, R.raw.general_countdown);
 
+
         startTimeTask();
         animationGo();
     }
@@ -133,14 +137,12 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     }
 
     private void animationGo() {
-        HandlerTaskTimer.newBuilder().delay(500)
-                .compose(this)
-                .start(new HandlerTaskTimer.ObserverW() {
+        mUiHandler.postDelayed(new Runnable() {
             @Override
-            public void onNext(Integer integer) {
+            public void run() {
                 U.getSoundUtils().play(TAG, R.raw.pregame_animation);
             }
-        });
+        }, 500);
 
         //三块颜色背景
         TranslateAnimation animationLeft = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f,
