@@ -84,7 +84,7 @@ import okhttp3.Response;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
-    
+
     public final static String TAG = "RankingRoomFragment";
 
     static final int ENSURE_RUN = 99;
@@ -366,9 +366,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                             mUFOMode = 2;
                             SVGADrawable drawable = new SVGADrawable(videoItem);
-                            mStageUfoBg.setLoops(0);// 循环播放
-                            mStageUfoBg.setImageDrawable(drawable);
-                            mStageUfoBg.startAnimation();
+                            if (mStageUfoBg != null) {
+                                mStageUfoBg.setLoops(0);// 循环播放
+                                mStageUfoBg.setImageDrawable(drawable);
+                                mStageUfoBg.startAnimation();
+                            }
                         }
 
                         @Override
@@ -386,9 +388,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                             mUFOMode = 4;
                             // 主舞台消失动画
                             SVGADrawable drawable = new SVGADrawable(videoItem);
-                            mStageUfoBg.setLoops(1); // 播一次
-                            mStageUfoBg.setImageDrawable(drawable);
-                            mStageUfoBg.startAnimation();
+                            if (mStageUfoBg != null) {
+                                mStageUfoBg.setLoops(1); // 播一次
+                                mStageUfoBg.setImageDrawable(drawable);
+                                mStageUfoBg.startAnimation();
+                            }
                             // end小卡片，做一个满满消失的动画
                             ObjectAnimator objectAnimatorEnd = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
                             objectAnimatorEnd.setDuration(1000);
@@ -407,22 +411,24 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         }
                     });
                 } else if (mUFOMode == 4) {
-                    mStageUfoBg.stopAnimation(true);
+                    if (mStageUfoBg != null) {
+                        mStageUfoBg.stopAnimation(true);
+                    }
                 }
             }
 
             @Override
             public void onRepeat() {
                 if (mUFOMode == 1) {
-                    if (mStageUfoBg.isAnimating()) {
+                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
                         mStageUfoBg.stopAnimation(false);
                     }
                 } else if (mUFOMode == 3) {
-                    if (mStageUfoBg.isAnimating()) {
+                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
                         mStageUfoBg.stopAnimation(false);
                     }
                 } else if (mUFOMode == 4) {
-                    if (mStageUfoBg.isAnimating()) {
+                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
                         mStageUfoBg.stopAnimation(false);
                     }
                 }
@@ -692,7 +698,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             }
             mAnimatorList.clear();
         }
-        
+
         U.getSoundUtils().release(TAG);
     }
 

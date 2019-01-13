@@ -185,6 +185,8 @@ public class NormalLevelView extends RelativeLayout {
     public void levelChange(final ViewGroup viewGroup, final int levelBefore, final int subLevelBefore, final int levelNow, final int sublevelNow,
                             int totalStatsNow,
                             final SVGAListener listener) {
+        // 播放音效
+        U.getSoundUtils().play(TAG, R.raw.song_pairbutton);
         // 先隐藏之前的静态段位
         mLevelIv.setVisibility(GONE);
         mSubLeveIv.setVisibility(GONE);
@@ -321,6 +323,7 @@ public class NormalLevelView extends RelativeLayout {
         if (index < 0 || index >= totalStats) {
             return;
         }
+        U.getSoundUtils().play(TAG, R.raw.result_addstar);
         final SVGAImageView starUp = new SVGAImageView(getContext());
         starUp.setLoops(1);  // 只播1次
 
@@ -396,6 +399,9 @@ public class NormalLevelView extends RelativeLayout {
         final SVGAImageView starLoss = new SVGAImageView(getContext());
         starLoss.setClearsAfterStop(false);
         starLoss.setLoops(1);  // 只播1次
+
+        // 音效
+        U.getSoundUtils().play(TAG, R.raw.result_deductstar);
 
         final ImageView imageView = starts.get(index);
         int[] location = new int[2];

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -13,6 +14,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.playways.rank.room.fragment.RankingRecordFragment;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.playways.rank.room.model.RoomDataUtils;
@@ -122,6 +124,13 @@ public class RecordItemView extends RelativeLayout {
         }
 
         //这里需要判读是娱乐还是竞技
+        if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (voteInfoModel.getVoter().size() > 0) {
+                U.getSoundUtils().play(RankingRecordFragment.TAG, R.raw.result_win);
+            } else {
+                U.getSoundUtils().play(RankingRecordFragment.TAG, R.raw.result_lose);
+            }
+        }
 
         Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
             @Override
@@ -158,10 +167,10 @@ public class RecordItemView extends RelativeLayout {
         }
     }
 
-    private int getUserIndex(long voterId){
-        for (int i = 0; i < mRecordData.mVoteInfoModels.size(); i++){
+    private int getUserIndex(long voterId) {
+        for (int i = 0; i < mRecordData.mVoteInfoModels.size(); i++) {
             VoteInfoModel voteInfoModel = mRecordData.mVoteInfoModels.get(i);
-            if(voteInfoModel.getUserID() == voterId){
+            if (voteInfoModel.getUserID() == voterId) {
                 return i;
             }
         }
