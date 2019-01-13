@@ -172,7 +172,6 @@ public class ScorePrograssBar2 extends View {
         // 画level图标
         for (int i = 0; i < mLevelDrawables.length; i++) {
             DrawableWithLocation drawableW = mLevelDrawables[i];
-            MyLog.d(TAG,"onDraw" + " drawableWId=" + drawableW.getDrawableId());
             if (drawableW.getDrawableId() == mHideDrawableId) {
                 MyLog.d(TAG,"不画");
                 continue;
@@ -276,7 +275,6 @@ public class ScorePrograssBar2 extends View {
     }
 
     public void hideLevelDrawable(int drawableId) {
-        MyLog.d(TAG,"hideLevelDrawable" + " drawableId=" + drawableId);
         mHideDrawableId = drawableId;
     }
 
