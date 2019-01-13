@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoDB;
+import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 
 import java.io.Serializable;
@@ -58,6 +59,10 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public int getSex() {
         return sex;
+    }
+
+    public boolean getIsMale() {
+        return sex == ESex.SX_MALE.getValue();
     }
 
     public void setSex(int sex) {

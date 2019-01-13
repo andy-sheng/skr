@@ -283,6 +283,11 @@ public class AvatarUtils {
                 return this;
             }
 
+            public Builder setBorderColorBySex(boolean isMan) {
+                mUploadParams.setBorderColor(isMan ? U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+                return this;
+            }
+
             public Builder setCornerRadius(float cornerRadius) {
                 mUploadParams.setCornerRadius(cornerRadius);
                 return this;

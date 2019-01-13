@@ -60,4 +60,6 @@
     <color name="color_14b9c7_trans_60">#9914b9c7</color>
     <color name="color_e5aa1e_trans_50">#80e5aa1e</color>
 
+    <color name="color_man_stroke_color">#85EAFF</color>
+    <color name="color_woman_stroke_color">#FF79A9</color>
 </resources>

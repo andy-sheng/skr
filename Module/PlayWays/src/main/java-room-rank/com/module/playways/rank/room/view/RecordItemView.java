@@ -103,7 +103,7 @@ public class RecordItemView extends RelativeLayout {
                         .setCircle(true)
                         .setGray(false)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(strokeColor)
+                        .setBorderColorBySex(playerInfo.getIsMale())
                         .build());
 
         mTvSingerName.setText(playerInfo.getNickname());
@@ -144,14 +144,13 @@ public class RecordItemView extends RelativeLayout {
                                         .setBorderColor(Color.WHITE)
                                         .build());
                     } else {
-                        int borderColor = getUserIndex(voterId);
                         UserInfoModel playerInfo = roomData.getUserInfo(voterId);
                         AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
                                 AvatarUtils.newParamsBuilder(playerInfo.getAvatar())
                                         .setCircle(true)
                                         .setGray(false)
                                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                        .setBorderColor(borderColor == 0 ? 0xFFFF79A9 : 0xFF85EAFF)
+                                        .setBorderColorBySex(playerInfo.getIsMale())
                                         .build());
                     }
                 }

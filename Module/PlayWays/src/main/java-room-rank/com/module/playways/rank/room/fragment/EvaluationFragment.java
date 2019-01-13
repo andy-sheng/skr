@@ -1,11 +1,8 @@
 package com.module.playways.rank.room.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -21,7 +18,6 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
@@ -124,7 +120,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             AvatarUtils.loadAvatarByUrl(mVoteLeftIv, AvatarUtils.newParamsBuilder(left.getUserInfo().getAvatar())
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .setBorderColor(Color.parseColor("#33A4E1"))
+                    .setBorderColorBySex(left.getUserInfo().getIsMale())
                     .build());
             mVoteLeftNameTv.setText(left.getUserInfo().getNickname());
             mVoteLeftSongTv.setText(left.getSongList().get(0).getItemName());
@@ -134,7 +130,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             AvatarUtils.loadAvatarByUrl(mVoteRightIv, AvatarUtils.newParamsBuilder(right.getUserInfo().getAvatar())
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .setBorderColor(Color.parseColor("#FF75A2"))
+                    .setBorderColorBySex(right.getUserInfo().getIsMale())
                     .build());
             mVoteRigntNameTv.setText(right.getUserInfo().getNickname());
             mVoteRightSongTv.setText(right.getSongList().get(0).getItemName());

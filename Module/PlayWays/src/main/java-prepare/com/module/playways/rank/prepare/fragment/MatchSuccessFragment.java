@@ -36,6 +36,7 @@ import com.module.playways.rank.prepare.view.MatchSucessLeftView;
 import com.module.playways.rank.prepare.view.MatchSucessRightView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGAImageView;
+import com.zq.live.proto.Common.ESex;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -254,7 +255,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(0xFF85EAFF)
+                        .setBorderColorBySex(mLeftPlayer.getUserInfo().getIsMale())
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon2,
@@ -262,7 +263,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(0xFF85EAFF)
+                        .setBorderColorBySex(mRightPlayer.getUserInfo().getIsMale())
                         .build());
 
         AvatarUtils.loadAvatarByUrl(mSdvIcon3,
@@ -270,7 +271,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                         .setCircle(true)
                         .setGray(isGray)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(0xFFFF79A9)
+                        .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue())
                         .build());
     }
 
@@ -310,7 +311,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColor(0xFF85EAFF)
+                                .setBorderColorBySex(mLeftPlayer.getUserInfo().getIsMale())
                                 .build());
             }
 
@@ -320,7 +321,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColor(0xFF85EAFF)
+                                .setBorderColorBySex(mRightPlayer.getUserInfo().getIsMale())
                                 .build());
             }
 
@@ -330,7 +331,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                                 .setCircle(true)
                                 .setGray(false)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColor(0xFFFF79A9)
+                                .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue())
                                 .build());
             }
         }
