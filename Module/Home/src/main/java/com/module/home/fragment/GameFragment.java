@@ -96,12 +96,12 @@ public class GameFragment extends BaseFragment {
 
     private void initLevel() {
         if (MyUserInfoManager.getInstance().getUid() != 0) {
-            hasInit = true;
             UserInfoServerApi mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
             ApiMethods.subscribe(mUserInfoServerApi.getScoreDetail((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
+                        hasInit = true ;
                         List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getString("userScore"), UserLevelModel.class);
                         // 展示段位信息
                         for (UserLevelModel userLevelModel : userLevelModels) {
