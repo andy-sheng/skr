@@ -17,6 +17,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -42,6 +43,8 @@ public class LoginByPhoneFragment extends BaseFragment {
 
     String mPhoneNumber; //发送验证码的电话号码
     String mCode; //验证码
+
+    HandlerTaskTimer mTaskTimer; // 倒计时验证码
 
     @Override
     public int initView() {
@@ -122,9 +125,41 @@ public class LoginByPhoneFragment extends BaseFragment {
                     // 发送验证码成功
                     mGetCodeTv.setSelected(true);
                     mGetCodeTv.setClickable(false);
+                    startTimeTask();
+
                 }
             }
         }, this);
+    }
+
+
+    /**
+     * 更新准备时间倒计时
+     */
+    public void startTimeTask() {
+        mTaskTimer = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(60)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        mGetCodeTv.setText("倒计时:" + (60 - integer) + "s");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        mGetCodeTv.setText("获取验证码");
+                        mGetCodeTv.setSelected(false);
+                        mGetCodeTv.setClickable(true);
+                    }
+                });
+    }
+
+    public void stopTimeTask() {
+        if (mTaskTimer != null) {
+            mTaskTimer.dispose();
+        }
     }
 
     /**
@@ -147,7 +182,14 @@ public class LoginByPhoneFragment extends BaseFragment {
     }
 
     @Override
+    public void destroy() {
+        super.destroy();
+        stopTimeTask();
+    }
+
+    @Override
     protected boolean onBackPressed() {
+        stopTimeTask();
         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                 .setPopFragment(LoginByPhoneFragment.this)
                 .setPopAbove(false)
