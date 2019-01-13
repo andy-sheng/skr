@@ -1,6 +1,9 @@
+uploadFile=$1
+if [[ x$uploadFile = x"" ]]; then
+	uploadFile=app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
+fi
 time=$(date "+%Y%m%d-%H:%M:%S")
 apiKey=3dd7d2a8ab6591ca44fb8cbbe1333785
-uploadFile=app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
 echo apiKey=$apiKey
 echo uploadFile=$uploadFile
 echo $time
