@@ -68,6 +68,8 @@ public class LevelConfigUtils {
                         return R.drawable.jinpaigeshou_two;
                     case 3:
                         return R.drawable.jinpaigeshou_three;
+                    case 4:
+                        return R.drawable.jinpaigeshou_four;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
@@ -83,6 +85,8 @@ public class LevelConfigUtils {
                         return R.drawable.bojinchangjiang_two;
                     case 3:
                         return R.drawable.bojinchangjiang_three;
+                    case 4:
+                        return R.drawable.bojinchangjiang_four;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
@@ -98,6 +102,10 @@ public class LevelConfigUtils {
                         return R.drawable.zuanshijuxing_two;
                     case 3:
                         return R.drawable.zuanshijuxing_three;
+                    case 4:
+                        return R.drawable.zuanshijuxing_four;
+                    case 5:
+                        return R.drawable.zuanshijuxing_five;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
