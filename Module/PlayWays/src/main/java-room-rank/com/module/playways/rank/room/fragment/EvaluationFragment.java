@@ -145,14 +145,12 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         RxView.clicks(mVoteLeftMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.select_dislikebutton);
                     mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
                 });
 
         RxView.clicks(mVoteRightMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.select_dislikebutton);
                     mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
                 });
 
@@ -305,7 +303,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                     @Override
                     public void onComplete() {
-                        mPresenter.getVoteResult(mRoomData.getGameId(),1);
+                        mPresenter.getVoteResult(mRoomData.getGameId(), 1);
                     }
                 });
     }
@@ -340,6 +338,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     @Override
     public void voteSucess(long votedUserId) {
         mLeftVoteAnimationSet.cancel();
+        U.getSoundUtils().play(TAG, R.raw.select_dislikebutton);
         HandlerTaskTimer.newBuilder().delay(250).start(new HandlerTaskTimer.ObserverW() {
             @Override
             public void onNext(Integer integer) {
