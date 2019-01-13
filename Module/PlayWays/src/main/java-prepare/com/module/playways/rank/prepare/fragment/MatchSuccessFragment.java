@@ -42,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 
 public class MatchSuccessFragment extends BaseFragment implements IMatchSucessView {
 
+    public final static String TAG = "MatchSuccessFragment";
+
     ExTextView mTvReadyTime;
     SimpleDraweeView mSdvIcon1;
     SimpleDraweeView mSdvIcon2;
@@ -102,6 +104,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
         RxView.clicks(mIvPrepare)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.pregame_ready);
                     mIvPrepare.setBackground(getResources().getDrawable(R.drawable.btn_pipeichenggong_pressed));
                     mIvPrepare.setClickable(false);
                     mMatchSucessPresenter.prepare(!isPrepared);
@@ -111,6 +114,8 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
         mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId(), mPrepareData);
         addPresent(mMatchSucessPresenter);
+
+        U.getSoundUtils().preLoad(TAG, R.raw.pregame_animation, R.raw.pregame_ready, R.raw.general_countdown);
 
         startTimeTask();
         animationGo();
@@ -127,6 +132,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     }
 
     private void animationGo() {
+        U.getSoundUtils().play(TAG, R.raw.pregame_animation);
         //三块颜色背景
         TranslateAnimation animationLeft = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
@@ -236,6 +242,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
+                        U.getSoundUtils().play(TAG, R.raw.general_countdown);
                         mTvReadyTime.setText(String.format(U.app().getString(R.string.ready_time_info), 10 - integer));
                     }
                 });
@@ -397,6 +404,12 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                     .setNotifyShowFragment(PrepareResFragment.class)
                     .build());
         }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override
