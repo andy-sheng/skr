@@ -252,7 +252,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
         // TODO: 2018/12/27 机器评分先写死，都给90分
         long timeMs = System.currentTimeMillis();
-        int sysScore = 90;
+        int sysScore = 0;
+        if(mRobotScoreHelper!=null){
+            sysScore = mRobotScoreHelper.getAverageScore();
+        }
         String sign = U.getMD5Utils().MD5_32("skrer|" +
                 String.valueOf(mRoomData.getGameId()) + "|" +
                 String.valueOf(sysScore) + "|" +
@@ -585,8 +588,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                     if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                                         // 需要上传音频伪装成机器人
                                         EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
-                                        mRobotScoreHelper = new RobotScoreHelper();
                                     }
+                                    mRobotScoreHelper = new RobotScoreHelper();
                                 }
                             }
                         }
@@ -600,9 +603,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
             cancelHeartBeatTask("切换唱将");
 
-            if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
-                //属于需要上传音频文件的状态
-                if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
+            if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
+                if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+                    //属于需要上传音频文件的状态
                     // 上一轮是我的轮次，暂停录音
                     EngineManager.getInstance().stopAudioRecording();
                     RoundInfoModel myRoundInfoModel = event.getLastRoundInfoModel();
@@ -1093,7 +1096,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             int score = EngineManager.getInstance().getLineScore();
             U.getToastUtil().showShort("score:" + score);
-            MyLog.d(TAG,"onEvent" + " 得分=" + score);
+            MyLog.d(TAG, "onEvent" + " 得分=" + score);
             mIGameRuleView.updateScrollBarProgress(score);
 
             MachineScoreItem machineScoreItem = new MachineScoreItem();
