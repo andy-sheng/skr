@@ -736,6 +736,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
         // 加保护，确保当前主舞台一定被移除
+        mManyLyricsView.setVisibility(View.GONE);
+        mFloatLyricsView.setVisibility(View.GONE);
         if (mStagePeopleBg.isAnimating()) {
             mStagePeopleBg.stopAnimation(false);
         }
