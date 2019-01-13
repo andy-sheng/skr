@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.module.RouterConstants;
+import com.module.home.fragment.PersonFragment;
 
 @Route(path = RouterConstants.SERVICE_HOME, name = "测试服务")
 public class HomeServiceImpl implements IHomeService {
@@ -17,6 +18,9 @@ public class HomeServiceImpl implements IHomeService {
      */
     @Override
     public Object getData(int type, Object object) {
+        if(0 == type){
+            return PersonFragment.class;
+        }
         return null;
     }
 

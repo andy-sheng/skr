@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -17,8 +19,10 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.model.RankInfoModel;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
+import com.common.utils.FragmentUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -32,6 +36,7 @@ import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.person.fragment.OtherPersonFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -84,6 +89,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     PopupWindow mPopupWindow;
 
+    View mOwnInfoItem;
+
     @Override
     public int initView() {
         return R.layout.leader_board_fragment_layout;
@@ -97,6 +104,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mRecyclerView.setAdapter(mLeaderBoardAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        mOwnInfoItem = mRootView.findViewById(R.id.own_info_item);
         mSdvRightChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_right_champain_icon);
         mTvRightChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_right_chanpain_name);
         mLlRightChampain = (LinearLayout) mRootView.findViewById(R.id.ll_right_champain);
@@ -144,6 +152,13 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mRefreshLayout.finishRefresh();
+            }
+        });
+
+        RxView.clicks(mOwnInfoItem).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) {
+
             }
         });
 
@@ -341,6 +356,16 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             .setBorderColor(0xFFFFD958)
                             .build());
 
+            RxView.clicks(mSdvChampainIcon).subscribe(new Consumer<Object>() {
+                @Override
+                public void accept(Object o) {
+                    if(MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()){
+                        return;
+                    }
+
+                    gotoPersonFragment(rankInfoModel.getUserID());
+                }
+            });
             mTvChanpainName.setText(rankInfoModel.getNickname());
 
             mTvChanpianStart.setText("X" + rankInfoModel.getStarCnt());
@@ -353,6 +378,16 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             .setBorderColor(0xFFA2C9DA)
                             .build());
 
+            RxView.clicks(mSdvRightChampainIcon).subscribe(new Consumer<Object>() {
+                @Override
+                public void accept(Object o) {
+                    if(MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()){
+                        return;
+                    }
+
+                    gotoPersonFragment(rankInfoModel.getUserID());
+                }
+            });
             mTvRightChanpainName.setText(rankInfoModel.getNickname());
 
             mTvRightChanpianStart.setText("X" + rankInfoModel.getStarCnt());
@@ -365,13 +400,34 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             .setBorderColor(0xFFEEB874)
                             .build());
 
+            RxView.clicks(mSdvLeftChampainIcon).subscribe(new Consumer<Object>() {
+                @Override
+                public void accept(Object o) {
+                    if(MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()){
+                        return;
+                    }
+
+                    gotoPersonFragment(rankInfoModel.getUserID());
+                }
+            });
             mTvLeftChanpainName.setText(rankInfoModel.getNickname());
 
             mTvLeftChanpianStart.setText("X" + rankInfoModel.getStarCnt());
             mTvLeftSegmentName.setText(rankInfoModel.getLevelDesc());
         }
+    }
 
-
+    public void gotoPersonFragment(int uid){
+        UserInfoModel userInfoModel = new UserInfoModel();
+        userInfoModel.setUserId(uid);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
+        U.getFragmentUtils().addFragment(FragmentUtils
+                .newAddParamsBuilder((FragmentActivity) getActivity(), OtherPersonFragment.class)
+                .setBundle(bundle)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .build());
     }
 
     @Override
