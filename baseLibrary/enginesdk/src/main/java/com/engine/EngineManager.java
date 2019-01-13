@@ -941,8 +941,14 @@ public class EngineManager implements AgoraOutCallback {
      *
      * @param posMs
      */
-    public void setAudioMixingPosition(int posMs) {
-        AgoraEngineAdapter.getInstance().setAudioMixingPosition(posMs);
+    public void setAudioMixingPosition(final int posMs) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                AgoraEngineAdapter.getInstance().setAudioMixingPosition(posMs);
+            }
+        });
+
     }
 
     /**
@@ -954,18 +960,23 @@ public class EngineManager implements AgoraOutCallback {
      * .aac：文件小，有一定的音质保真度损失
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
-    public void startAudioRecording(String saveAudioForAiFilePath, int audioRecordingQualityHigh) {
-        File file = new File(saveAudioForAiFilePath);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        if (file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
+    public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                File file = new File(saveAudioForAiFilePath);
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                if (file.exists()) {
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e) {
+                    }
+                }
+                AgoraEngineAdapter.getInstance().startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh);
             }
-        }
-        AgoraEngineAdapter.getInstance().startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh);
+        });
     }
 
     /**
@@ -974,7 +985,12 @@ public class EngineManager implements AgoraOutCallback {
      * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
-        AgoraEngineAdapter.getInstance().stopAudioRecording();
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                AgoraEngineAdapter.getInstance().stopAudioRecording();
+            }
+        });
     }
 
     public int getLineScore() {
