@@ -31,6 +31,9 @@
         android:layout_marginRight="@dimen/view_34_dp" />
 
     <com.common.view.ex.ExTextView
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_160_dp"
+        android:maxLines="1"
         android:id="@+id/tv_song_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
