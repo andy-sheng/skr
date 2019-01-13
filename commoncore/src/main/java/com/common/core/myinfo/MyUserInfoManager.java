@@ -137,7 +137,7 @@ public class MyUserInfoManager {
     /**
      * 更新用户信息
      */
-    public void updateInfo(final MyInfoUpdateParams updateParams, boolean updateLocalIfServerFailed) {
+    public void updateInfo(final MyInfoUpdateParams updateParams, final boolean updateLocalIfServerFailed) {
 
         HashMap<String, Object> map = new HashMap<>();
         if (updateParams.nickName != null) {
@@ -189,6 +189,26 @@ public class MyUserInfoManager {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                            if (!updateLocalIfServerFailed) {
+                                if (updateParams.nickName != null) {
+                                    mUser.setUserNickname(updateParams.nickName);
+                                }
+                                if (updateParams.sex != -1) {
+                                    mUser.setSex(updateParams.sex);
+                                }
+                                if (updateParams.birthday != null) {
+                                    mUser.setBirthday(updateParams.birthday);
+                                }
+                                if (updateParams.avatar != null) {
+                                    mUser.setAvatar(updateParams.avatar);
+                                }
+                                if (updateParams.sign != null) {
+                                    mUser.setSignature(updateParams.sign);
+                                }
+                                if (updateParams.location != null) {
+                                    mUser.setLocation(updateParams.location);
+                                }
+                            }
                             MyUserInfoLocalApi.insertOrUpdate(mUser);
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
