@@ -2,6 +2,9 @@ package com.common.utils;
 
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +16,25 @@ import java.util.List;
  */
 public class SoundUtils {
 
+    static final int MSG_RELEASE_TAG = 1;
     HashMap<String, Holder> mSoundPoolMap = new HashMap<>();
+
+    private String mPreventReleaseTag;
+
+    private long mPreventReleaseTime;
+
+    private String mPendingReleaseTag;
+
+    Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_RELEASE_TAG) {
+                release((String) msg.obj);
+                mPendingReleaseTag = null;
+            }
+        }
+    };
 
     SoundUtils() {
 
@@ -35,6 +56,9 @@ public class SoundUtils {
         }
         Holder h = new Holder(soundPool, itemList);
         mSoundPoolMap.put(key, h);
+        if(key.equals(mPreventReleaseTag)){
+            mUiHandler.removeMessages(MSG_RELEASE_TAG);
+        }
     }
 
     /**
@@ -44,19 +68,32 @@ public class SoundUtils {
      * @param key
      */
     public void release(String key) {
-        Holder holder = mSoundPoolMap.get(key);
-        if (holder != null) {
-            holder.soundPool.release();
-            mSoundPoolMap.remove(key);
+        if (key.equals(mPreventReleaseTag) && System.currentTimeMillis() < mPreventReleaseTime) {
+            // 有音效阻止release，所以延迟release
+            long delay = mPreventReleaseTime - System.currentTimeMillis();
+            mPendingReleaseTag = key;
+            Message msg = mUiHandler.obtainMessage(MSG_RELEASE_TAG);
+            msg.obj = mPendingReleaseTag;
+            mUiHandler.sendMessageDelayed(msg,delay);
+        } else {
+            Holder holder = mSoundPoolMap.get(key);
+            if (holder != null) {
+                holder.soundPool.release();
+                mSoundPoolMap.remove(key);
+            }
         }
     }
 
-    public void play(String key, int rawId) {
+    public void play(String key, int rawId, int inteceptorReleaseTs) {
         Holder holder = mSoundPoolMap.get(key);
         if (holder != null) {
             for (Item item : holder.mItemList) {
                 if (item.rawId == rawId) {
                     holder.soundPool.play(item.seq, 1, 1, 0, 0, 1);
+                    if (inteceptorReleaseTs > 0) {
+                        mPreventReleaseTime = System.currentTimeMillis() + inteceptorReleaseTs;
+                        mPreventReleaseTag = key;
+                    }
                     return;
                 }
             }
@@ -65,8 +102,12 @@ public class SoundUtils {
         } else {
             // 做个容错，忘记加载了，就自动加载下
             preLoad(key, rawId);
-            play(key, rawId);
+            play(key, rawId, -1);
         }
+    }
+
+    public void play(String key, int rawId) {
+        play(key, rawId, -1);
     }
 
     static class Holder {

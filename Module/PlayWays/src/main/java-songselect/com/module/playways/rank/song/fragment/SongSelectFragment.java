@@ -99,7 +99,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         RxView.clicks(mSelectBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.general_back);
+                    U.getSoundUtils().play(TAG, R.raw.general_back, 500);
                     getActivity().finish();
                 });
 
