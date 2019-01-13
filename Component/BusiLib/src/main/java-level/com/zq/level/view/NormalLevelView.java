@@ -122,7 +122,14 @@ public class NormalLevelView extends RelativeLayout {
         float widDis = starTotalWidth / (totalStats + 1); //横向间距
         float highDis = starTotalHeight / (totalStats - 1); //纵向间距
 
-        for (int i = 0; i < totalStats / 2 + 1; i++) {
+        int mid = 0;
+        if (totalStats % 2 == 0) {
+            mid = totalStats / 2;
+        } else {
+            mid = totalStats / 2 + 1;
+        }
+
+        for (int i = 0; i < mid; i++) {
             // 左边的星星
             ImageView imageView1 = new ImageView(getContext());
             RelativeLayout.LayoutParams rl1;
