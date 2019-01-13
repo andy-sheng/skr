@@ -63,9 +63,10 @@ public class UserInfoTitleView extends RelativeLayout {
         EventBus.getDefault().register(this);
 
         mFlRankRoot = (FrameLayout) findViewById(R.id.fl_rank_root);
-        mFlRankRoot.setVisibility(GONE);
+        mFlRankRoot.setVisibility(INVISIBLE);
 
         setData();
+        getOwnInfo();
     }
 
     public void setData() {
