@@ -133,7 +133,15 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     }
 
     private void animationGo() {
-        U.getSoundUtils().play(TAG, R.raw.pregame_animation);
+        HandlerTaskTimer.newBuilder().delay(500)
+                .compose(this)
+                .start(new HandlerTaskTimer.ObserverW() {
+            @Override
+            public void onNext(Integer integer) {
+                U.getSoundUtils().play(TAG, R.raw.pregame_animation);
+            }
+        });
+
         //三块颜色背景
         TranslateAnimation animationLeft = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
