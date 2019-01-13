@@ -359,4 +359,5 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         Log.d("OOOOOOO","setVisibility" + " visibility=" + visibility);
 
     }
+
 }

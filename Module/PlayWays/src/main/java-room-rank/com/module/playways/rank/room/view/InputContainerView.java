@@ -77,6 +77,7 @@ public class InputContainerView extends RelativeLayout {
          * 点击小表情自动添加到该 mEtContent 中
          */
         mElEmotion.attachEditText(mEtContent);
+
         mElEmotion.setEmotionAddVisiable(true);
         mElEmotion.setEmotionSettingVisiable(true);
         mElEmotion.setShowSticker(true);
