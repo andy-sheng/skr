@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/iv_cancel_match"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/view_121_dp"
+            android:layout_marginBottom="@dimen/view_30_dp"
             android:gravity="center"
             android:text=""
             android:textColor="#0C2275"
