@@ -113,13 +113,13 @@ public class RecordItemView extends RelativeLayout {
 
         switch (voteInfoModel.getRank()) {
             case 1:
-                mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal1_normal));
+                mIvRanking.setBackground(getResources().getDrawable(R.drawable.diyiming_huizhang));
                 break;
             case 2:
-                mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal2_normal));
+                mIvRanking.setBackground(getResources().getDrawable(R.drawable.dierming_huizhang));
                 break;
             case 3:
-                mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal3_normal));
+                mIvRanking.setBackground(getResources().getDrawable(R.drawable.disanming_huizhang));
                 break;
         }
 

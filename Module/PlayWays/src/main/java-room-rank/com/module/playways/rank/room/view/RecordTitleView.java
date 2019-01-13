@@ -128,15 +128,15 @@ public class RecordTitleView extends RelativeLayout {
                         String str = "";
                         switch (voteInfoModel.getRank()) {
                             case 1:
-                                drawable = getResources().getDrawable(R.drawable.ic_medal1_normal);
+                                drawable = getResources().getDrawable(R.drawable.diyiming_huizhang);
                                 str = "冠军";
                                 break;
                             case 2:
-                                drawable = getResources().getDrawable(R.drawable.ic_medal2_normal);
+                                drawable = getResources().getDrawable(R.drawable.dierming_huizhang);
                                 str = "亚军";
                                 break;
                             case 3:
-                                drawable = getResources().getDrawable(R.drawable.ic_medal3_normal);
+                                drawable = getResources().getDrawable(R.drawable.disanming_huizhang);
                                 str = "季军";
                                 break;
                         }

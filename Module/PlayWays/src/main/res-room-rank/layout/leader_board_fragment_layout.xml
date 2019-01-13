@@ -73,7 +73,7 @@
                     android:layout_height="@dimen/view_26_dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/view_12_dp"
-                    android:background="@drawable/ic_medal3_normal" />
+                    android:background="@drawable/disanming_huizhang" />
 
                 <com.common.view.ex.ExTextView
                     android:textStyle="bold"
@@ -147,7 +147,7 @@
                     android:layout_height="@dimen/view_26_dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/view_12_dp"
-                    android:background="@drawable/ic_medal2_normal" />
+                    android:background="@drawable/dierming_huizhang" />
 
                 <com.common.view.ex.ExTextView
                     android:textStyle="bold"
@@ -225,7 +225,7 @@
                 android:layout_height="@dimen/view_32_dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_12_dp"
-                android:background="@drawable/ic_medal1_normal" />
+                android:background="@drawable/diyiming_huizhang" />
 
             <com.common.view.ex.ExTextView
                 android:textStyle="bold"
