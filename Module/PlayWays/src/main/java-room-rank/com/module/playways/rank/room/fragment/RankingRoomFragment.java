@@ -469,6 +469,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             }
         });
         mCommentView.setRoomData(mRoomData);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
+        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
+
     }
 
     boolean isReport = false;

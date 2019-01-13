@@ -96,10 +96,9 @@
         android:layout_marginBottom="@dimen/view_22_dp" />
 
     <com.module.playways.rank.room.comment.CommentView
-        android:layout_marginTop="@dimen/view_430_dp"
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_250_dp"
         android:layout_above="@+id/bottom_container_view"
         android:layout_marginRight="@dimen/view_128_dp"
         android:paddingLeft="@dimen/view_18_dp"
