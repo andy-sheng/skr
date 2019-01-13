@@ -2,9 +2,8 @@ package com.common.core.login.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,11 +34,9 @@ public class LoginFragment extends BaseFragment {
     ExTextView mWeixinLoginTv;
     ExTextView mPhoneLoginTv;
     ExTextView mWeiboLoginTv;
-    CheckBox mCheckBox;
 
     TextView mTvUserAgree;
 
-    boolean mAgree = false;
     @Override
     public int initView() {
         return R.layout.core_login_fragment_layout;
@@ -53,19 +50,13 @@ public class LoginFragment extends BaseFragment {
         mWeixinLoginTv = (ExTextView) mRootView.findViewById(R.id.weixin_login_tv);
         mPhoneLoginTv = (ExTextView) mRootView.findViewById(R.id.phone_login_tv);
         mWeiboLoginTv = (ExTextView) mRootView.findViewById(R.id.weibo_login_tv);
-        mCheckBox = (CheckBox)mRootView.findViewById(R.id.check_box);
         mTvUserAgree = (TextView)mRootView.findViewById(R.id.tv_user_agree);
-
+        mTvUserAgree.setText(Html.fromHtml("<u>"+"《用户协议》"+"</u>"));
 
         mPhoneLoginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
-
-                if(!mAgree){
-                    U.getToastUtil().showShort("请勾选用户服务协议");
                     return;
                 }
 
@@ -77,20 +68,9 @@ public class LoginFragment extends BaseFragment {
             }
         });
 
-        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mAgree = isChecked;
-            }
-        });
-
         RxView.clicks(mWeixinLoginTv).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) {
-                if(!mAgree){
-                    U.getToastUtil().showShort("请勾选用户服务协议");
-                    return;
-                }
                 UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
             }
         });

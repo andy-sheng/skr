@@ -58,9 +58,9 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <CheckBox
-            android:checked="false"
-            android:id="@+id/check_box"
+        <TextView
+            android:text="登录注册即表示同意撕歌的"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
