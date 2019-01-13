@@ -24,9 +24,6 @@ import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
-import com.engine.EngineManager;
-import com.engine.Params;
-import com.module.playways.rank.prepare.fragment.AuditionFragment;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -59,7 +56,6 @@ import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.toast.CommonToastView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -296,6 +292,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
+        mFloatLyricsView.setVisibility(View.VISIBLE);
         // 舞台人的动画
         if (mStagePeopleBg != null) {
             mStagePeopleBg.setVisibility(View.VISIBLE);
@@ -1028,7 +1025,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             } else {
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();
-                mFloatLyricsView.setVisibility(View.VISIBLE);
+//                mFloatLyricsView.setVisibility(View.VISIBLE);
                 mFloatLyricsView.initLrcData();
                 lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
                 mFloatLyricsView.setLyricsReader(lyricsReader);
