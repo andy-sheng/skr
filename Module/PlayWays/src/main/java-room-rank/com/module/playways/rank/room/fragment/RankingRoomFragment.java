@@ -89,6 +89,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     static final int ENSURE_RUN = 99;
 
+    static final int SHOW_RIVAL_LYRIC = 10;
+
     RoomData mRoomData;
 
     RelativeLayout mRankingContainer;
@@ -132,6 +134,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                     mPendingSelfCountDownRunnable = null;
                 }
                 onReadyGoOver();
+            }else if(SHOW_RIVAL_LYRIC == msg.what){
+                mFloatLyricsView.setVisibility(View.VISIBLE);
             }
         }
     };
@@ -785,6 +789,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             }
         }
 
+        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
     }
 
     /**
@@ -814,6 +819,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 playShowTurnCardAnimator(null);
             }
         }
+
+        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
+        Message showLyricMsg = new Message();
+        showLyricMsg.what = SHOW_RIVAL_LYRIC;
+        mUiHanlder.sendMessageDelayed(showLyricMsg, 3000);
     }
 
     @Override
