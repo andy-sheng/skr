@@ -44,7 +44,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(model.getAvatar())
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .setBorderColor(U.app().getResources().getColor(R.color.white))
+                .setBorderColor(model.getAvatarColor())
                 .build());
         mCommentTv.setText(model.getText());
         mCommentTv.setTextColor(model.getTextColor());

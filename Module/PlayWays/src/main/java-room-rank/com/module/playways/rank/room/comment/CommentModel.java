@@ -7,6 +7,7 @@ import com.common.utils.U;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.room.model.RoomData;
 import com.module.rank.R;
+import com.zq.live.proto.Common.ESex;
 
 public class CommentModel {
     public static final int TYPE_TEXT = 1;
@@ -15,6 +16,7 @@ public class CommentModel {
     private int userId;
     private String avatar;
     private String text;
+    private int avatarColor;
     private int textColor = U.getColor(R.color.white_trans_80);
 
     public static CommentModel parseFromEvent(CommentMsgEvent event, RoomData roomData) {
@@ -24,8 +26,16 @@ public class CommentModel {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
-            }else{
+                if (sender.getSex() == ESex.SX_MALE.getValue()) {
+                    commentModel.setAvatarColor(Color.parseColor("#33A4E1"));
+                } else if (sender.getSex() == ESex.SX_FEMALE.getValue()) {
+                    commentModel.setAvatarColor(Color.parseColor("#FF75A2"));
+                } else {
+                    commentModel.setAvatarColor(Color.WHITE);
+                }
+            } else {
                 commentModel.setAvatar(event.info.getSender().getAvatar());
+                commentModel.setAvatarColor(Color.WHITE);
             }
         }
         if (commentModel.getUserId() == RoomData.SYSTEM_ID) {
@@ -75,5 +85,13 @@ public class CommentModel {
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
+    }
+
+    public int getAvatarColor() {
+        return avatarColor;
+    }
+
+    public void setAvatarColor(int avatarColor) {
+        this.avatarColor = avatarColor;
     }
 }
