@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
@@ -76,11 +77,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                if (hasMore) {
-                    presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT);
-                } else {
-                    U.getToastUtil().showShort("没有更多数据了");
-                }
+                presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT);
             }
 
             @Override
@@ -106,6 +103,10 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     public void loadSongsDetailItems(List<SongModel> list, int offset, boolean hasMore) {
         this.offset = offset;
         this.hasMore = hasMore;
+        if (!hasMore) {
+            mRefreshLayout.finishLoadMore();
+            return;
+        }
         if (datas == null) {
             datas = new ArrayList<>();
         }
