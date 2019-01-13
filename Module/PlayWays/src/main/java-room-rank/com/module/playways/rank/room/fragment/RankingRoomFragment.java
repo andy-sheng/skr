@@ -786,7 +786,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mStagePeopleBg.setVisibility(View.GONE);
         mStageUfoBg.setVisibility(View.GONE);
 
-        mTopContainerView.cancelShowLastedTimeTask();
+//        mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
             mPendingRivalCountdownUid = uid;
@@ -911,6 +911,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
+        mTopContainerView.cancelShowLastedTimeTask();
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
         }

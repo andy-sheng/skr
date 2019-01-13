@@ -115,8 +115,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     ExoPlayer mExoPlayer;
 
-    long mRobotBeginTs = 0;
-
     PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
         @Override
         public boolean doFilter(RoomMsg msg) {
@@ -608,7 +606,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     // 上一轮是我的轮次，暂停录音
                     EngineManager.getInstance().stopAudioRecording();
                     RoundInfoModel myRoundInfoModel = event.getLastRoundInfoModel();
-
                     if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {
                         myRoundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
                         uploadRes1ForAi(myRoundInfoModel);
@@ -679,9 +676,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         } else {
             mExoPlayer.setVolume(0);
         }
-        mRobotBeginTs = System.currentTimeMillis();
         //直接播放歌词
-        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), playerInfo.getUserInfo().getUserId()), true);
+        othersBeginSinging();
     }
 
     private void tryStopRobotPlay() {
@@ -920,21 +916,19 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
-                                startLastTwoSecondTask();
+                                othersBeginSinging();
                             }
                         });
                     } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
                         // 假设演唱的轮次在当前轮次后面，说明本地滞后了
                         MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
-                        mRoomData.setExpectRoundInfo(infoModel);
-                        mRoomData.checkRound();
+                        // 直接设置最新轮次，什么专场动画都不要了，都异常了，还要这些干嘛
+                        mRoomData.setRealRoundInfo(infoModel);
                         mUiHanlder.post(new Runnable() {
                             @Override
                             public void run() {
                                 MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
-                                startLastTwoSecondTask();
+                                othersBeginSinging();
                             }
                         });
                     }
@@ -949,6 +943,16 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 MyLog.w(TAG, "引擎监测到有人有人闭麦了，id是" + muteUserId);
             }
         }
+    }
+
+    /**
+     * 其他用户真正开始演唱了
+     */
+    private void othersBeginSinging() {
+        RoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
+        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
+        startLastTwoSecondTask();
     }
 
     private void startLastTwoSecondTask() {
