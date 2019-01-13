@@ -10,6 +10,7 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
@@ -24,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 
 public class GameFragment extends BaseFragment {
+
+    public final static String TAG = "GameFragment";
+
     UserInfoTitleView userTitleView;
 
     public static final int GAME_MODE_CLASSIC_RANK = 1; // 经典排位模式
@@ -70,10 +74,13 @@ public class GameFragment extends BaseFragment {
                     }
                 });
 
+        U.getSoundUtils().preLoad(TAG, R.raw.home_game);
     }
 
     // 点击缩放动画
     public void clickAnimation(View view) {
+        U.getSoundUtils().play(TAG, R.raw.home_game);
+
         ObjectAnimator a1 = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f);
         ObjectAnimator a2 = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f);
         ObjectAnimator a3 = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f);
@@ -119,7 +126,12 @@ public class GameFragment extends BaseFragment {
 
             }
         });
+    }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -39,6 +39,8 @@ import static com.module.playways.rank.RankingModeActivity.KEY_GAME_TYPE;
 public class SongSelectFragment extends BaseFragment implements ISongTagDetailView, SwipeFlingAdapterView.onFlingListener,
         SwipeFlingAdapterView.OnItemClickListener {
 
+    public final static String TAG = "SongSelectFragment";
+
     public static final int DEFAULT_FIRST_COUNT = 30; // 第一次从推荐页面拉去歌曲数
     public static final int DEFAULT_COUNT = 6;  // 从服务器拉去歌曲数
 
@@ -83,26 +85,32 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         RxView.clicks(mSelectBackIv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.general_back);
                     backToLastCard();
                 });
 
         RxView.clicks(mSelectClickedIv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.general_button);
                     switchToClicked();
                 });
 
         RxView.clicks(mSelectBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.general_back);
                     getActivity().finish();
                 });
+
+        U.getSoundUtils().preLoad(TAG, R.raw.general_button, R.raw.general_back);
 
         mDeleteList = new ArrayList<>();
 
         mSongCardSwipAdapter = new SongCardSwipAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
+                U.getSoundUtils().play(TAG, R.raw.general_button);
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
                     U.getToastUtil().showShort("试音房");
@@ -242,13 +250,14 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public boolean useEventBus() {
+        return false;
     }
 
     @Override
-    public boolean useEventBus() {
-        return false;
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override
