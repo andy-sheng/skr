@@ -354,11 +354,11 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     .interval(50)
                     .take(5)
                     .start(new HandlerTaskTimer.ObserverW() {
-                @Override
-                public void onNext(Integer integer) {
-                    mVoteLeftShadowIv.setVisibility(integer % 2 == 1 ? View.VISIBLE : View.GONE);
-                }
-            });
+                        @Override
+                        public void onNext(Integer integer) {
+                            mVoteLeftShadowIv.setVisibility(integer % 2 == 1 ? View.VISIBLE : View.GONE);
+                        }
+                    });
 
             // 右边冒星星
             mStartRightSvga.setVisibility(View.VISIBLE);
@@ -371,14 +371,15 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                 @Override
                 public void onFinished() {
-                    mStartRightSvga.stopAnimation();
+                    mStartRightSvga.stopAnimation(true);
                     mStartRightSvga.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onRepeat() {
-                    mStartRightSvga.stopAnimation();
-                    mStartRightSvga.setVisibility(View.GONE);
+                    if (mStartRightSvga.isAnimating()) {
+                        mStartRightSvga.stopAnimation(false);
+                    }
                 }
 
                 @Override
@@ -414,17 +415,14 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                 @Override
                 public void onFinished() {
-                    if (mStartLeftSvga.isAnimating()) {
-                        mStartLeftSvga.stopAnimation();
-                        mStartLeftSvga.setVisibility(View.GONE);
-                    }
+                    mStartLeftSvga.stopAnimation(true);
+                    mStartLeftSvga.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onRepeat() {
                     if (mStartLeftSvga.isAnimating()) {
-                        mStartLeftSvga.stopAnimation();
-                        mStartLeftSvga.setVisibility(View.GONE);
+                        mStartLeftSvga.stopAnimation(false);
                     }
 
                 }
@@ -463,6 +461,14 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         }
         if (mRightVoteAnimationSet != null) {
             mRightVoteAnimationSet.cancel();
+        }
+
+        if (mStartLeftSvga != null) {
+            mStartLeftSvga.stopAnimation(true);
+        }
+
+        if (mStartRightSvga != null) {
+            mStartRightSvga.stopAnimation(true);
         }
     }
 

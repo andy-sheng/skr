@@ -52,7 +52,7 @@
                         android:scaleType="fitCenter"
                         android:visibility="gone"
                         app:antiAlias="true"
-                        app:source="start.svga" />
+                        app:source="star.svga" />
 
                     <com.common.view.ex.ExTextView
                         android:id="@+id/vote_left_name_tv"
@@ -119,7 +119,7 @@
                         android:scaleType="fitCenter"
                         android:visibility="gone"
                         app:antiAlias="true"
-                        app:source="start.svga" />
+                        app:source="star.svga" />
 
                     <com.common.view.ex.ExTextView
                         android:id="@+id/vote_rignt_name_tv"
