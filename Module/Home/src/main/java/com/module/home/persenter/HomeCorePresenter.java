@@ -176,7 +176,7 @@ public class HomeCorePresenter {
             mPerTipsDialogPlus = DialogPlus.newDialog(activity)
                     .setContentHolder(new ViewHolder(mTipsDialogView))
                     .setGravity(Gravity.BOTTOM)
-                    .setCancelable(false)
+//                    .setCancelable(false)
                     .setContentBackgroundResource(R.color.transparent)
                     .setOverlayBackgroundResource(R.color.black_trans_80)
                     .setExpanded(false)

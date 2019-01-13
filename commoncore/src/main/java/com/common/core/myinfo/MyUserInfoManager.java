@@ -291,10 +291,13 @@ public class MyUserInfoManager {
         }
     }
 
+    public void uploadLocation() {
+       uploadLocation(null);
+    }
     /**
      * 上传地理位置
      */
-    public void uploadLocation() {
+    public void uploadLocation(final LbsUtils.Callback callback) {
         U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
             @Override
             public void onReceive(LbsUtils.Location location) {
@@ -308,6 +311,9 @@ public class MyUserInfoManager {
                             .newMyInfoUpdateParamsBuilder()
                             .setLocation(l)
                             .build(), true);
+                    if (callback != null) {
+                        callback.onReceive(location);
+                    }
                 }
             }
         });
