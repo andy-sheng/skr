@@ -183,7 +183,12 @@ public class UploadTask {
                     String serverCallbackReturnJson = result.getServerCallbackReturnBody();
                     MyLog.w(TAG, "serverCallbackReturnJson:" + serverCallbackReturnJson);
                     JSONObject jo = JSON.parseObject(serverCallbackReturnJson);
-                    uploadCallback.onSuccess(jo.getString("url"));
+                    String url = jo.getString("url");
+                    if (!TextUtils.isEmpty(url)) {
+                        uploadCallback.onSuccess(url);
+                    } else {
+                        uploadCallback.onFailure("上传失败");
+                    }
                 }
             }
 

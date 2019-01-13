@@ -1093,6 +1093,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             int score = EngineManager.getInstance().getLineScore();
             U.getToastUtil().showShort("score:" + score);
+            MyLog.d(TAG,"onEvent" + " 得分=" + score);
             mIGameRuleView.updateScrollBarProgress(score);
 
             MachineScoreItem machineScoreItem = new MachineScoreItem();

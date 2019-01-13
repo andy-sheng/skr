@@ -1,12 +1,14 @@
 package com.module.playways.rank.room.score;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.common.log.MyLog;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MachineScoreModel implements Serializable {
+    public final static String TAG = "MachineScoreModel";
     @JSONField(name = "data")
     private List<MachineScoreItem> mDataList = new ArrayList<>();
 
@@ -32,6 +34,7 @@ public class MachineScoreModel implements Serializable {
         if (mTotalScore < 0) {
             int t = 0;
             for (MachineScoreItem machineScoreItem : mDataList) {
+                MyLog.d(TAG,"compute 行数:"+machineScoreItem.no+" 得分:"+machineScoreItem.score);
                 t += machineScoreItem.score;
             }
             mTotalScore = t;
@@ -40,6 +43,7 @@ public class MachineScoreModel implements Serializable {
             } else {
                 mAverageScore = 0;
             }
+            MyLog.d(TAG,"平均分:"+ mAverageScore);
         }
     }
 
