@@ -41,14 +41,13 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
-
-        // TODO: 2019/1/11 该代码是为了解决选歌页面不断抖动，引起选歌无效的问题 
-        mSongSelectTv.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return false;
-            }
-        });
+//        mSongSelectTv.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                return false;
+//            }
+//        });
+//        mSongSelectTv.getParent().requestDisallowInterceptTouchEvent(true);
     }
 
     public void bind(int position, SongModel songModel) {
@@ -57,7 +56,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
 
         mSongNameTv.setText(mSongModel.getItemName());
         mSongOwnerTv.setText(mSongModel.getOwner());
-        FrescoWorker.loadImage(mSongCoverIv,ImageFactory.newHttpImage(mSongModel.getCover())
+        FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newHttpImage(mSongModel.getCover())
                 .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .setBorderColor(Color.parseColor("#0C2275")).build());
     }
