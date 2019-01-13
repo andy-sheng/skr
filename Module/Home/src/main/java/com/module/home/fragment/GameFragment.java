@@ -47,6 +47,8 @@ public class GameFragment extends BaseFragment {
     int starNum = 0;        //当前星星
     int starLimit = 0;      //当前星星上限
 
+    boolean hasInit = false;
+
     @Override
     public int initView() {
         return R.layout.game_fragment_layout;
@@ -93,28 +95,33 @@ public class GameFragment extends BaseFragment {
     }
 
     private void initLevel() {
-        UserInfoServerApi mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-        ApiMethods.subscribe(mUserInfoServerApi.getScoreDetail((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getString("userScore"), UserLevelModel.class);
-                    // 展示段位信息
-                    for (UserLevelModel userLevelModel : userLevelModels) {
-                        if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                            rank = userLevelModel.getScore();
-                        } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                            subRank = userLevelModel.getScore();
-                        } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
-                            starNum = userLevelModel.getScore();
-                        } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
-                            starLimit = userLevelModel.getScore();
+        if (MyUserInfoManager.getInstance().getUid() != 0) {
+            hasInit = true;
+            UserInfoServerApi mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+            ApiMethods.subscribe(mUserInfoServerApi.getScoreDetail((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getString("userScore"), UserLevelModel.class);
+                        // 展示段位信息
+                        for (UserLevelModel userLevelModel : userLevelModels) {
+                            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                                rank = userLevelModel.getScore();
+                            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                                subRank = userLevelModel.getScore();
+                            } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
+                                starNum = userLevelModel.getScore();
+                            } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
+                                starLimit = userLevelModel.getScore();
+                            }
                         }
+                        mLevelView.bindData(rank, subRank, starLimit, starNum, U.getDisplayUtils().dip2px(100));
+                        mLevelView.setScaleX(0.8f);
+                        mLevelView.setScaleY(0.8f);
                     }
-                    mLevelView.bindData(rank, subRank, starLimit, starNum, U.getDisplayUtils().dip2px(100));
                 }
-            }
-        });
+            });
+        }
     }
 
     // 点击缩放动画
@@ -177,7 +184,10 @@ public class GameFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        userTitleView.setData();
+        if (!hasInit) {
+            userTitleView.setData();
+            initLevel();
+        }
     }
 
     @Override

@@ -90,7 +90,7 @@ public class NormalLevelView extends RelativeLayout {
 
         // 子段位
         if (LevelConfigUtils.getImageResoucesSubLevel(level, subLevel) != 0) {
-            mSubLeveIv.setBackgroundResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
+            mSubLeveIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
         }
 
         if (totalStats == 0 || totalStats < selecStats) {
