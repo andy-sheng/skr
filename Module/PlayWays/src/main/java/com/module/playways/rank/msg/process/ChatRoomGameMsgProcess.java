@@ -1,5 +1,6 @@
 package com.module.playways.rank.msg.process;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
@@ -303,9 +304,11 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         List<UserScoreModel> userScoreModels = new ArrayList<>();
         for (UserScoreRecord userScoreRecord : voteResultMsg.getUserScoreRecordList()) {
-            UserScoreModel userScoreModel = new UserScoreModel();
-            userScoreModel.parse(userScoreRecord);
-            userScoreModels.add(userScoreModel);
+            if (userScoreRecord.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                UserScoreModel userScoreModel = new UserScoreModel();
+                userScoreModel.parse(userScoreRecord);
+                userScoreModels.add(userScoreModel);
+            }
         }
 
         ScoreDetailModel scoreDetailModel = new ScoreDetailModel();

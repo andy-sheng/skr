@@ -84,6 +84,8 @@ import okhttp3.Response;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
+    
+    public final static String TAG = "RankingRoomFragment";
 
     static final int ENSURE_RUN = 99;
 
@@ -208,6 +210,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
+
+        U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
@@ -594,6 +598,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                     mReadyGoBg.stopAnimation(true);
                     mReadyGoBg.setImageDrawable(drawable);
                     mReadyGoBg.startAnimation();
+                    U.getSoundUtils().play(TAG, R.raw.stage_readygo);
                 }
 
                 @Override
@@ -687,6 +692,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             }
             mAnimatorList.clear();
         }
+        
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

@@ -31,6 +31,9 @@ import java.util.concurrent.TimeUnit;
  * 准备资源界面
  */
 public class PrepareResFragment extends BaseFragment implements IPrepareResView {
+
+    public final static String TAG = "PrepareResFragment";
+
     ExImageView mIvTop;
     SimpleDraweeView mSongIcon;
     ExTextView mSongName;
@@ -141,6 +144,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         RxView.clicks(mIvStartMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.song_pairbutton);
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
                             .setNotifyHideFragment(PrepareResFragment.class)
                             .setAddToBackStack(false)
@@ -158,6 +162,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         RxView.clicks(mIvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.general_back);
                     U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                             .setPopFragment(PrepareResFragment.this)
                             .setNotifyShowFragment(SongSelectFragment.class)
@@ -172,6 +177,13 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         addPresent(mPrepareSongPresenter);
         mPrepareSongPresenter.prepareRes();
 
+        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.song_pairbutton);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

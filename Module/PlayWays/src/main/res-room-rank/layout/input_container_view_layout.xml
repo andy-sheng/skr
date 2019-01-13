@@ -34,14 +34,18 @@
             android:id="@+id/ivEmo"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:visibility="gone"
+            android:layout_gravity="center_vertical"
             android:layout_margin="5dp"
-            android:src="@drawable/emoji_btn" />
+            android:src="@drawable/emoji_btn"
+            android:visibility="gone" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/send_msg_btn"
             android:layout_width="@dimen/view_56_dp"
             android:layout_height="@dimen/view_32_dp"
+            android:layout_marginTop="@dimen/view_10_dp"
+            android:layout_marginBottom="@dimen/view_8_dp"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="发送"
             android:textSize="@dimen/view_14_dp"

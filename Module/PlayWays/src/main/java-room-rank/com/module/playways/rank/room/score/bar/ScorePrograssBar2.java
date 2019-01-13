@@ -173,7 +173,6 @@ public class ScorePrograssBar2 extends View {
         for (int i = 0; i < mLevelDrawables.length; i++) {
             DrawableWithLocation drawableW = mLevelDrawables[i];
             if (drawableW.getDrawableId() == mHideDrawableId) {
-                MyLog.d(TAG,"不画");
                 continue;
             }
             int oy = 0;

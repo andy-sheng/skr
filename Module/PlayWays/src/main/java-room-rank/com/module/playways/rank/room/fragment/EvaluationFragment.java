@@ -40,6 +40,8 @@ import java.util.concurrent.TimeUnit;
 // 游戏结束页
 public class EvaluationFragment extends BaseFragment implements IVoteView {
 
+    public final static String TAG = "EvaluationFragment";
+
     RoomData mRoomData;
 
     RelativeLayout mMainActContainer;
@@ -143,12 +145,14 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         RxView.clicks(mVoteLeftMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.select_dislikebutton);
                     mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
                 });
 
         RxView.clicks(mVoteRightMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.select_dislikebutton);
                     mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
                 });
 
@@ -159,9 +163,11 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             @Override
             public void onNext(Integer integer) {
                 mRootView.setVisibility(View.VISIBLE);
+                U.getSoundUtils().play(TAG, R.raw.select_animation);
                 animationGo();
             }
         });
+        U.getSoundUtils().preLoad(TAG, R.raw.select_animation, R.raw.select_dislikebutton, R.raw.general_countdown);
 
     }
 
@@ -293,6 +299,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
+                        U.getSoundUtils().play(TAG, R.raw.general_countdown);
                         mVoteDownTv.setText(String.format(U.app().getString(R.string.evaluation_time_info), 12 - integer));
                     }
 
