@@ -26,6 +26,7 @@ import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.MatchPresenter;
@@ -34,6 +35,7 @@ import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.live.proto.Common.ESex;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -233,28 +235,28 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         if(num != 1){
             iconListIndex += 1;
             int index1 = iconListIndex % (mAvatarURL.size() - 1);
-            loadIconInImage(mAvatarURL.get(index1), mSdvIcon1, 0xFF85EAFF);
-            loadIconInImage(mAvatarURL.get(index1), mSdvSubIcon1, 0xFF85EAFF);
+            loadIconInImage(mAvatarURL.get(index1).getAvatarURL(), mSdvIcon1, mAvatarURL.get(index1).getSex() == ESex.SX_MALE.getValue());
+            loadIconInImage(mAvatarURL.get(index1).getAvatarURL(), mSdvSubIcon1, mAvatarURL.get(index1).getSex() == ESex.SX_MALE.getValue());
         }
 
         iconListIndex += 1;
         int index2 = iconListIndex % (mAvatarURL.size() - 1);
-        loadIconInImage(mAvatarURL.get(index2), mSdvIcon2, 0xFFFF79A9);
+        loadIconInImage(mAvatarURL.get(index2).getAvatarURL(), mSdvIcon2, mAvatarURL.get(index2).getSex() == ESex.SX_MALE.getValue());
 
         if(num != 3){
             iconListIndex += 1;
             int index3 = iconListIndex % (mAvatarURL.size() - 1);
-            loadIconInImage(mAvatarURL.get(index3), mSdvIcon3, 0xFF85EAFF);
-            loadIconInImage(mAvatarURL.get(index3), mSdvSubIcon3, 0xFF85EAFF);
+            loadIconInImage(mAvatarURL.get(index3).getAvatarURL(), mSdvIcon3, mAvatarURL.get(index3).getSex() == ESex.SX_MALE.getValue());
+            loadIconInImage(mAvatarURL.get(index3).getAvatarURL(), mSdvSubIcon3, mAvatarURL.get(index3).getSex() == ESex.SX_MALE.getValue());
         }
     }
 
-    private void loadIconInImage(String url, SimpleDraweeView simpleDraweeView, int color) {
+    private void loadIconInImage(String url, SimpleDraweeView simpleDraweeView, boolean isMale) {
         AvatarUtils.loadAvatarByUrl(simpleDraweeView,
                 AvatarUtils.newParamsBuilder(url)
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(color)
+                        .setBorderColorBySex(isMale)
                         .build());
     }
 
@@ -387,10 +389,10 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     private int iconListIndex = 0;
 
-    List<String> mAvatarURL = null;
+    List<MatchIconModel> mAvatarURL = null;
 
     @Override
-    public void showUserIconList(List<String> avatarURL) {
+    public void showUserIconList(List<MatchIconModel> avatarURL) {
         if (avatarURL == null || avatarURL.size() == 0) {
             return;
         }

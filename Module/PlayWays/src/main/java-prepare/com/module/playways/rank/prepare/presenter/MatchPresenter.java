@@ -260,7 +260,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     MyLog.d(TAG, "getMatchingUserIconList result =  " + result.getErrno() + " traceId = " + result.getTraceId());
                     MatchingUserIconListInfo matchingUserIconListInfo = JSON.parseObject(result.getData().toString(), MatchingUserIconListInfo.class);
-                    mView.showUserIconList(matchingUserIconListInfo.getAvatarURL());
+                    mView.showUserIconList(matchingUserIconListInfo.getPlayers());
                 } else {
                     MyLog.w(TAG, "getMatchingUserIconList result =  " + result.getErrno() + " traceId = " + result.getTraceId());
                 }

@@ -4,13 +4,13 @@ import java.util.List;
 
 public class MatchingUserIconListInfo {
 
-    private List<String> avatarURL;
+    private List<MatchIconModel> players;
 
-    public List<String> getAvatarURL() {
-        return avatarURL;
+    public List<MatchIconModel> getPlayers() {
+        return players;
     }
 
-    public void setAvatarURL(List<String> avatarURL) {
-        this.avatarURL = avatarURL;
+    public void setPlayers(List<MatchIconModel> players) {
+        this.players = players;
     }
 }
