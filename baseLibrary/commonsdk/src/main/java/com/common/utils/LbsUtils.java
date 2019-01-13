@@ -1,5 +1,6 @@
 package com.common.utils;
 
+import android.app.Activity;
 import android.text.TextUtils;
 
 import com.baidu.location.Address;
@@ -159,7 +160,14 @@ public class LbsUtils {
      * @return
      */
     private void getLocationInner(Callback callback) {
-        if (!U.getPermissionUtils().checkLocation(U.getActivityUtils().getTopActivity())) {
+        Activity activity = U.getActivityUtils().getTopActivity();
+        if(activity == null){
+            if (callback != null) {
+                callback.onReceive(null);
+            }
+            return;
+        }
+        if (!U.getPermissionUtils().checkLocation(activity)) {
             U.getPermissionUtils().requestLocation(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {

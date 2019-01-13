@@ -64,7 +64,8 @@ public class PermissionUtils {
     }
 
     public boolean checkLocation(Activity activity) {
-        return checkPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+        return checkPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) &&
+                checkPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
     public boolean checkPermission(Activity activity, String permission) {

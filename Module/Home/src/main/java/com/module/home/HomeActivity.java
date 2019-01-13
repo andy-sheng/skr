@@ -12,6 +12,8 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.player.exoplayer.ExoPlayer;
+import com.common.utils.ActivityUtils;
+import com.common.utils.AppInfoUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -24,6 +26,9 @@ import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.msg.IMsgService;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +45,7 @@ public class HomeActivity extends BaseActivity {
     NestViewPager mMainVp;
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
-
+    boolean mFromCreate = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,16 +136,17 @@ public class HomeActivity extends BaseActivity {
                         mPersonInfoBtn.setSelected(true);
                     }
                 });
-
+        mFromCreate = true;
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        mHomePresenter.checkPermiss(this);
-
-
+        if(mFromCreate){
+            mHomePresenter.checkPermiss(this);
+        }
+        mFromCreate = false;
 //        ExoPlayer exoPlayer = new ExoPlayer();
 //        exoPlayer.startPlay("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/audios/56e25fc3bccff9b8.aac");
 //
@@ -162,6 +168,14 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange foreOrBackgroundChange){
+        if(foreOrBackgroundChange.foreground){
+            // 后台到前台了
+            mHomePresenter.checkPermiss(this);
+        }
+    }
+
     @Override
     public boolean canSlide() {
         return false;
@@ -169,7 +183,7 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override

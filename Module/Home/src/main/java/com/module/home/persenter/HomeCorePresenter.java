@@ -74,6 +74,8 @@ public class HomeCorePresenter {
              */
             mLastCheckTs = now;
             check1(activity);
+        }else{
+            MyLog.d(TAG, "checkPermiss too many times，return");
         }
     }
 
