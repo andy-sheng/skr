@@ -205,9 +205,12 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     // TODO: 2018/12/17  切换到已点界面, 要不要保存当前记录的数据，取决从已点回来的逻辑 
     private void switchToClicked() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_GAME_TYPE, mGameType);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
+                .setBundle(bundle)
                 .setEnterAnim(R.anim.slide_in_bottom)
                 .setExitAnim(R.anim.slide_out_bottom)
                 .setFragmentDataListener(new FragmentDataListener() {
