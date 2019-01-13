@@ -271,44 +271,6 @@
                 android:textColor="#0C2275" />
         </com.common.view.ex.ExRelativeLayout>
 
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/ll_area_container"
-            android:orientation="vertical"
-            android:layout_below="@+id/tv_area"
-            android:layout_alignLeft="@+id/tv_area"
-            android:layout_alignRight="@+id/tv_area"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <com.common.view.ex.ExTextView
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_18_dp"
-                app:bl_selected_drawable="#F36588"
-                app:bl_unSelected_drawable="#B51A4D"
-                app:bl_corners_topRightRadius="@dimen/view_6_dp"
-                app:bl_corners_topLeftRadius="@dimen/view_6_dp"
-                android:id="@+id/tv_cur_area"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_48_dp" />
-
-            <com.common.view.ex.ExTextView
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_18_dp"
-                app:bl_selected_drawable="#F36588"
-                app:bl_unSelected_drawable="#B51A4D"
-                app:bl_corners_bottomRightRadius="@dimen/view_6_dp"
-                app:bl_corners_bottomLeftRadius="@dimen/view_6_dp"
-                android:layout_height="@dimen/view_48_dp"
-                android:id="@+id/tv_country"
-                android:layout_width="match_parent"
-                />
-        </LinearLayout>
     </RelativeLayout>
 
     <include

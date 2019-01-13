@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.common.view.ex.ExTextView
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        app:bl_selected_drawable="#F36588"
+        app:bl_unSelected_drawable="#B51A4D"
+        app:bl_corners_topRightRadius="@dimen/view_6_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_6_dp"
+        android:id="@+id/tv_cur_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_48_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp"
+        app:bl_selected_drawable="#F36588"
+        app:bl_unSelected_drawable="#B51A4D"
+        app:bl_corners_bottomRightRadius="@dimen/view_6_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_6_dp"
+        android:layout_height="@dimen/view_48_dp"
+        android:id="@+id/tv_country"
+        android:layout_width="match_parent"
+        />
+</LinearLayout>

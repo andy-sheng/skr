@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
@@ -82,6 +82,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     ImageView mIvRank;
     ImageView mIvRankRight;
 
+    PopupWindow mPopupWindow;
+
     @Override
     public int initView() {
         return R.layout.leader_board_fragment_layout;
@@ -118,10 +120,13 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
 
 
-        mLlAreaContainer = (LinearLayout) mRootView.findViewById(R.id.ll_area_container);
-        mTvCurArea = (ExTextView) mRootView.findViewById(R.id.tv_cur_area);
-        mTvCountry = (ExTextView) mRootView.findViewById(R.id.tv_country);
 
+        mLlAreaContainer = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_select_popup_window_layout, null);
+        mTvCurArea = (ExTextView) mLlAreaContainer.findViewById(R.id.tv_cur_area);
+        mTvCountry = (ExTextView) mLlAreaContainer.findViewById(R.id.tv_country);
+
+        mPopupWindow = new PopupWindow(mLlAreaContainer);
+        mPopupWindow.setOutsideTouchable(true);
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
@@ -147,10 +152,18 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        mLlAreaContainer.setVisibility(mLlAreaContainer.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                        if(mPopupWindow.isShowing()){
+                            mPopupWindow.dismiss();
+                        }else {
+                            mPopupWindow.setWidth(mTvArea.getMeasuredWidth());
+                            mPopupWindow.setHeight(300);
+                            mPopupWindow.showAsDropDown(mTvArea);
+                        }
+
+//                        mLlAreaContainer.setVisibility(mLlAreaContainer.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                         Drawable drawable = null;
 
-                        if (mLlAreaContainer.getVisibility() == View.VISIBLE) {
+                        if (mPopupWindow.isShowing()) {
                             drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon_down);
                             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                         } else {
@@ -176,7 +189,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     @Override
                     public void accept(Object o) {
                         mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
-                        mLlAreaContainer.setVisibility(View.GONE);
+                        mPopupWindow.dismiss();
                         Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                         mTvArea.setCompoundDrawables(null, null, drawable, null);
@@ -190,7 +203,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     @Override
                     public void accept(Object o) {
                         mTvArea.setText("全国榜");
-                        mLlAreaContainer.setVisibility(View.GONE);
+                        mPopupWindow.dismiss();
                         Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                         mTvArea.setCompoundDrawables(null, null, drawable, null);
@@ -359,6 +372,12 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         }
 
 
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mPopupWindow.dismiss();
     }
 
     @Override
