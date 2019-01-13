@@ -5,40 +5,42 @@
     android:layout_height="match_parent">
 
     <com.common.view.ex.ExTextView
+        android:layout_marginTop="@dimen/view_137_dp"
         android:id="@+id/logo_tv"
-        android:layout_width="@dimen/view_dimen_500"
-        android:layout_height="@dimen/view_dimen_500"
+        android:layout_width="@dimen/view_104_dp"
+        android:layout_height="@dimen/view_104_dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="logo"
+        android:background="@drawable/logo"
         android:textSize="80dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_dimen_300"
+        android:layout_marginBottom="@dimen/view_135_dp"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
             android:id="@+id/weixin_login_tv"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/view_66_67_dp"
-            android:layout_weight="1"
+            android:layout_width="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_64_dp"
             android:gravity="center"
-            android:text="微信"
+            android:background="@drawable/kaipingye_weixin"
             android:textColor="@color/black" />
 
         <com.common.view.ex.ExTextView
+            android:layout_marginLeft="@dimen/view_50_dp"
+            android:background="@drawable/kaipingye_zhuce"
             android:id="@+id/phone_login_tv"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/view_66_67_dp"
-            android:layout_weight="1"
+            android:layout_width="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_64_dp"
             android:gravity="center"
-            android:text="手机"
             android:textColor="@color/black" />
 
         <com.common.view.ex.ExTextView
+            android:visibility="gone"
             android:id="@+id/weibo_login_tv"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_66_67_dp"
@@ -49,4 +51,25 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_marginBottom="@dimen/view_90_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:checked="false"
+            android:id="@+id/check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_user_agree"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textColor="#011F7D"
+            android:text="《用户协议》"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </RelativeLayout>

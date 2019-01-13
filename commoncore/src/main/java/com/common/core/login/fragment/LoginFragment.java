@@ -3,9 +3,13 @@ package com.common.core.login.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
@@ -14,11 +18,13 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
@@ -29,7 +35,11 @@ public class LoginFragment extends BaseFragment {
     ExTextView mWeixinLoginTv;
     ExTextView mPhoneLoginTv;
     ExTextView mWeiboLoginTv;
+    CheckBox mCheckBox;
 
+    TextView mTvUserAgree;
+
+    boolean mAgree = false;
     @Override
     public int initView() {
         return R.layout.core_login_fragment_layout;
@@ -43,11 +53,19 @@ public class LoginFragment extends BaseFragment {
         mWeixinLoginTv = (ExTextView) mRootView.findViewById(R.id.weixin_login_tv);
         mPhoneLoginTv = (ExTextView) mRootView.findViewById(R.id.phone_login_tv);
         mWeiboLoginTv = (ExTextView) mRootView.findViewById(R.id.weibo_login_tv);
+        mCheckBox = (CheckBox)mRootView.findViewById(R.id.check_box);
+        mTvUserAgree = (TextView)mRootView.findViewById(R.id.tv_user_agree);
+
 
         mPhoneLoginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (U.getCommonUtils().isFastDoubleClick()) {
+                    return;
+                }
+
+                if(!mAgree){
+                    U.getToastUtil().showShort("请勾选用户服务协议");
                     return;
                 }
 
@@ -59,10 +77,32 @@ public class LoginFragment extends BaseFragment {
             }
         });
 
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mAgree = isChecked;
+            }
+        });
+
         RxView.clicks(mWeixinLoginTv).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) {
+                if(!mAgree){
+                    U.getToastUtil().showShort("请勾选用户服务协议");
+                    return;
+                }
                 UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
+            }
+        });
+
+        RxView.clicks(mTvUserAgree)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", "https://api.inframe.mobi/user-agreement.html")
+                        .greenChannel().navigation();
             }
         });
     }
