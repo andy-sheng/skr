@@ -23,6 +23,10 @@ import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.dialog.view.TipsDialogView;
+import com.engine.EngineManager;
+import com.engine.Params;
+import com.module.playways.rank.prepare.fragment.AuditionFragment;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -55,6 +59,7 @@ import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
+import com.zq.toast.CommonToastView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -115,6 +120,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     ManyLyricsView mManyLyricsView;
 
     FloatLyricsView mFloatLyricsView;
+
+    DialogPlus mQuitTipsDialog;
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -290,7 +297,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
         // 舞台人的动画
-        if (mStagePeopleBg != null){
+        if (mStagePeopleBg != null) {
             mStagePeopleBg.setVisibility(View.VISIBLE);
             try {
                 getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_SVGA), new SVGAParser.ParseCompletion() {
@@ -515,7 +522,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mTopContainerView.setListener(new TopContainerView.Listener() {
             @Override
             public void closeBtnClick() {
-                getActivity().finish();
+                quitGame();
             }
 
             @Override
@@ -690,7 +697,40 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         if (mInputContainerView.onBackPressed()) {
             return true;
         }
-        return super.onBackPressed();
+        quitGame();
+        return true;
+    }
+
+    private void quitGame() {
+        if (mQuitTipsDialog == null) {
+            TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                    .setMessageTip("提前退出会破坏其他玩家的对局体验，确定退出么？")
+                    .setConfirmTip("取消")
+                    .setCancelTip("确定")
+                    .setConfirmBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mQuitTipsDialog.dismiss(false);
+                        }
+                    })
+                    .setCancelBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mQuitTipsDialog.dismiss(false);
+                            getActivity().finish();
+                        }
+                    })
+                    .build();
+
+            mQuitTipsDialog = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create();
+        }
+        mQuitTipsDialog.show();
     }
 
     /**
