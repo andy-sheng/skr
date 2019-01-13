@@ -18,9 +18,6 @@ import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
-import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.player.IPlayerCallback;
 import com.common.player.exoplayer.ExoPlayer;
@@ -36,7 +33,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
-import com.module.playways.rank.room.score.bar.ScorePrograssBar2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -47,6 +43,7 @@ import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.toast.CommonToastView;
+import com.zq.toast.NoImageCommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -335,7 +332,9 @@ public class AuditionFragment extends BaseFragment {
         }
 
         if (System.currentTimeMillis() - mStartRecordTs < 3000) {
-            U.getToastUtil().showShort("太短啦，再唱几句吧");
+            U.getToastUtil().showSkrCustomShort(new NoImageCommonToastView.Builder(getContext())
+                    .setText("太短啦\n再唱几句吧~")
+                    .build());
             return;
         }
 
