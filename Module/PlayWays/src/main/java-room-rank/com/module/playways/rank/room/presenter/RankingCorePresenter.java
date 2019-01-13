@@ -2,6 +2,7 @@ package com.module.playways.rank.room.presenter;
 
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.util.Pair;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
@@ -125,7 +126,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    Handler mUiHanlder = new Handler() {
+    Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -137,7 +138,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 //                    break;
                 case MSG_GET_VOTE:
                     MyLog.d(TAG, "handleMessage MSG_GET_VOTE");
-                    getVoteResult(mRoomData.getGameId());
+                    Pair<Integer, Integer> pair = (Pair<Integer, Integer>) msg.obj;
+                    getVoteResult(pair.first, pair.second);
                     break;
                 case MSG_START_LAST_TWO_SECONDS_TASK:
                     RoundInfoModel roundInfoModel = (RoundInfoModel) msg.obj;
@@ -231,7 +233,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             EventBus.getDefault().unregister(this);
         }
         EngineManager.getInstance().destroy("rankingroom");
-        mUiHanlder.removeCallbacksAndMessages(null);
+        mUiHandler.removeCallbacksAndMessages(null);
         if (mExoPlayer != null) {
             mExoPlayer.release();
             mExoPlayer = null;
@@ -253,7 +255,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         // TODO: 2018/12/27 机器评分先写死，都给90分
         long timeMs = System.currentTimeMillis();
         int sysScore = 0;
-        if(mRobotScoreHelper!=null){
+        if (mRobotScoreHelper != null) {
             sysScore = mRobotScoreHelper.getAverageScore();
         }
         String sign = U.getMD5Utils().MD5_32("skrer|" +
@@ -428,34 +430,48 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      *
      * @param gameID
      */
-    public void getVoteResult(int gameID) {
+    public void getVoteResult(int gameID, int deep) {
         MyLog.w(TAG, "getVoteResult" + " gameID=" + gameID);
+        if (deep > 3) {
+            MyLog.d(TAG, "拉了 5次都没数据，过分了。getVoteResult" + " gameID=" + gameID + " deep=" + deep);
+            return;
+        }
         ApiMethods.subscribe(mRoomServerApi.getVoteResult(gameID), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
                     List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
-                    ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
-                    scoreDetailModel.parse(userScoreModelList);
 
-                    U.getToastUtil().showShort("获取投票结果成功");
-                    MyLog.w(TAG, "getVoteResult" + " result=" + result);
-                    mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, scoreDetailModel));
-                    mGameFinishActionSubject.onComplete();
-
+                    if (userScoreModelList != null && userScoreModelList.size() > 0) {
+                        ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
+                        scoreDetailModel.parse(userScoreModelList);
+                        U.getToastUtil().showShort("获取投票结果成功");
+                        MyLog.w(TAG, "getVoteResult" + " result=" + result);
+                        mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, scoreDetailModel));
+                        mGameFinishActionSubject.onComplete();
+                    } else {
+                        mUiHandler.removeMessages(MSG_GET_VOTE);
+                        Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
+                        message.obj = new Pair<>(gameID, deep + 1);
+                        mUiHandler.sendMessageDelayed(message, 1000*deep);
+                    }
                 } else {
                     MyLog.e(TAG, "getVoteResult result failed, msg is " + result.getErrmsg());
-                    mUiHanlder.removeMessages(MSG_GET_VOTE);
-                    mUiHanlder.sendEmptyMessageDelayed(MSG_GET_VOTE, 100);
+                    mUiHandler.removeMessages(MSG_GET_VOTE);
+                    Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
+                    message.obj = new Pair<>(gameID, deep + 1);
+                    mUiHandler.sendMessageDelayed(message, 1000*deep);
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, "getVoteResult error " + e);
-                mUiHanlder.removeMessages(MSG_GET_VOTE);
-                mUiHanlder.sendEmptyMessageDelayed(MSG_GET_VOTE, 100);
+                mUiHandler.removeMessages(MSG_GET_VOTE);
+                Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
+                message.obj = new Pair<Integer, Integer>(gameID, deep + 1);
+                mUiHandler.sendMessageDelayed(message, 1000*deep);
             }
         }, this);
     }
@@ -558,7 +574,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 startHeartBeatTask();
             }
 
-            mUiHanlder.post(new Runnable() {
+            mUiHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     // 开始倒计时 3 2 1
@@ -621,7 +637,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             // 收到其他的人onMute消息 开始播放其他人的歌的歌词，应该提前下载好
             if (mRoomData.getRealRoundInfo() != null) {
                 // 其他人演唱
-                mUiHanlder.post(new Runnable() {
+                mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
@@ -641,7 +657,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     // 取消轮询
                     cancelSyncGameStateTask();
                     // 游戏结束了,处理相应的ui逻辑
-                    mUiHanlder.post(new Runnable() {
+                    mUiHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             mIGameRuleView.gameFinish();
@@ -709,10 +725,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 delayTime = 6000l;
             }
             //移除之前的要发生的机器人演唱
-            mUiHanlder.removeMessages(MSG_ROBOT_SING_BEGIN);
-            Message message = mUiHanlder.obtainMessage(MSG_ROBOT_SING_BEGIN);
+            mUiHandler.removeMessages(MSG_ROBOT_SING_BEGIN);
+            Message message = mUiHandler.obtainMessage(MSG_ROBOT_SING_BEGIN);
             message.obj = playerInfo;
-            mUiHanlder.sendMessageDelayed(message, delayTime);
+            mUiHandler.sendMessageDelayed(message, delayTime);
         }
     }
 
@@ -727,8 +743,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         EngineManager.getInstance().destroy("rankingroom");
 
         if (!isConfirmRoundAndGameOver) {
-            mUiHanlder.removeMessages(MSG_GET_VOTE);
-            mUiHanlder.sendEmptyMessageDelayed(MSG_GET_VOTE, 3000);
+            mUiHandler.removeMessages(MSG_GET_VOTE);
+            Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
+            message.obj = new Pair<>(mRoomData.getGameId(), 1);
+            mUiHandler.sendMessageDelayed(message, 3000);
         }
     }
 
@@ -915,7 +933,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     if (RoomDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
                         //正好相等，没问题,放歌词
                         MyLog.w(TAG, "是当前轮次，没问题,放歌词");
-                        mUiHanlder.post(new Runnable() {
+                        mUiHandler.post(new Runnable() {
                             @Override
                             public void run() {
                                 MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
@@ -927,7 +945,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
                         // 直接设置最新轮次，什么专场动画都不要了，都异常了，还要这些干嘛
                         mRoomData.setRealRoundInfo(infoModel);
-                        mUiHanlder.post(new Runnable() {
+                        mUiHandler.post(new Runnable() {
                             @Override
                             public void run() {
                                 MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
@@ -961,10 +979,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     private void startLastTwoSecondTask() {
         final RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
         if (roundInfoModel != null) {
-            mUiHanlder.removeMessages(MSG_START_LAST_TWO_SECONDS_TASK);
-            Message message = mUiHanlder.obtainMessage(MSG_START_LAST_TWO_SECONDS_TASK);
+            mUiHandler.removeMessages(MSG_START_LAST_TWO_SECONDS_TASK);
+            Message message = mUiHandler.obtainMessage(MSG_START_LAST_TWO_SECONDS_TASK);
             message.obj = roundInfoModel;
-            mUiHanlder.sendMessageDelayed(message, roundInfoModel.getSingEndMs() - roundInfoModel.getSingBeginMs() - 2000);
+            mUiHandler.sendMessageDelayed(message, roundInfoModel.getSingEndMs() - roundInfoModel.getSingBeginMs() - 2000);
         } else {
             MyLog.e(TAG, "startLastTwoSecondTask roundInfoModel 为 null, 为什么？？？？");
         }
@@ -1040,7 +1058,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
         isConfirmRoundAndGameOver = true;
 
-        mUiHanlder.removeMessages(MSG_GET_VOTE);
+        mUiHandler.removeMessages(MSG_GET_VOTE);
         recvGameOverFromServer("push", roundAndGameOverEvent.roundOverTimeMs);
         cancelSyncGameStateTask();
 

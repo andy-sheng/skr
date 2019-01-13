@@ -1,7 +1,10 @@
 package com.module.playways.rank.room.presenter;
 
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.util.Pair;
+
 import com.alibaba.fastjson.JSON;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
@@ -31,12 +34,25 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
 
     public final static String TAG = "EndGamePresenter";
 
+    final static int MSG_GET_VOTE = 1;
+
     RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
-    IVoteView view;
+    IVoteView mView;
+
+    Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_GET_VOTE) {
+                Pair<Integer, Integer> pair = (Pair<Integer, Integer>) msg.obj;
+                getVoteResult(pair.first, pair.second);
+            }
+        }
+    };
 
     public EndGamePresenter(IVoteView view) {
-        this.view = view;
+        this.mView = view;
     }
 
     @Override
@@ -53,6 +69,7 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     /**
@@ -74,10 +91,10 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("投票成功");
-                    view.voteSucess(pickUserID);
+                    mView.voteSucess(pickUserID);
                 } else {
                     MyLog.e(TAG, "vote result errno is " + result.getErrmsg());
-                    view.voteFailed();
+                    mView.voteFailed();
                 }
             }
 
@@ -93,20 +110,35 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
      *
      * @param gameID
      */
-    public void getVoteResult(int gameID) {
+    public void getVoteResult(int gameID, int deep) {
+        if (deep > 3) {
+            MyLog.d(TAG, "拉了 5次都没数据，过分了。getVoteResult" + " gameID=" + gameID + " deep=" + deep);
+            return;
+        }
         ApiMethods.subscribe(mRoomServerApi.getVoteResult(gameID), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
                     List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
-                    U.getToastUtil().showShort("获取投票结果成功");
 
-                    ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
-                    scoreDetailModel.parse(userScoreModelList);
-                    view.showRecordView(new RecordData(voteInfoModelList, scoreDetailModel));
+                    if (voteInfoModelList != null && voteInfoModelList.size() > 0) {
+                        U.getToastUtil().showShort("获取投票结果成功");
+                        ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
+                        scoreDetailModel.parse(userScoreModelList);
+                        mView.showRecordView(new RecordData(voteInfoModelList, scoreDetailModel));
+                    } else {
+                        mUiHandler.removeMessages(MSG_GET_VOTE);
+                        Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
+                        message.obj = new Pair<Integer, Integer>(gameID, deep + 1);
+                        mUiHandler.sendMessageDelayed(message, 1000*deep);
+                    }
                 } else {
                     MyLog.e(TAG, "getVoteResult result errno is " + result.getErrmsg());
+                    mUiHandler.removeMessages(MSG_GET_VOTE);
+                    Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
+                    message.obj = new Pair<Integer, Integer>(gameID, deep + 1);
+                    mUiHandler.sendMessageDelayed(message, 1000*deep);
                 }
             }
 
@@ -122,6 +154,6 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "VoteResultEvent" + " event TimeMs = " + event.mBasePushInfo.getTimeMs());
         MyLog.d(TAG, "VoteResultEvent" + " event = " + event.mScoreDetailModel.toString());
         MyLog.d(TAG, "VoteResultEvent" + " event = " + event.mVoteInfoModels.toString());
-        view.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreDetailModel));
+        mView.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreDetailModel));
     }
 }

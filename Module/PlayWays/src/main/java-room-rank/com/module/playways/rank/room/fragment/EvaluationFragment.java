@@ -305,7 +305,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                     @Override
                     public void onComplete() {
-                        mPresenter.getVoteResult(mRoomData.getGameId());
+                        mPresenter.getVoteResult(mRoomData.getGameId(),1);
                     }
                 });
     }
