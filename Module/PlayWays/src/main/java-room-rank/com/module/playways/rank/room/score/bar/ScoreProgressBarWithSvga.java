@@ -6,16 +6,35 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.common.utils.DisplayUtils;
+import com.common.utils.U;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class ScoreProgressBarWithSvga extends RelativeLayout {
 
     public final static String TAG = "ScoreProgressBarWithSvga";
 
     ScorePrograssBar2 mScoreProgressBar;
+    SVGAImageView mScoreAnimationIv;
     SVGAImageView mStarIv;
+    SVGAParser mSVGAParser;
 
     public ScoreProgressBarWithSvga(Context context) {
         super(context);
@@ -36,6 +55,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.score_bar_wrap_layout, this);
         mScoreProgressBar = this.findViewById(R.id.score_progress_bar2);
+        mScoreAnimationIv = this.findViewById(R.id.score_animation_iv);
         mStarIv = this.findViewById(R.id.star_iv);
         mStarIv.setCallback(new SVGACallback() {
             @Override
@@ -59,6 +79,29 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
 
             }
         });
+
+        mScoreAnimationIv.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                mScoreAnimationIv.stopAnimation();
+                mScoreAnimationIv.setVisibility(GONE);
+            }
+
+            @Override
+            public void onRepeat() {
+                onFinished();
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
     }
 
     public void setProgress1(int progress) {
@@ -67,13 +110,74 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
         MyLog.d(TAG, "setProgress1" + " progress=" + progress + " star_tx=" + tx);
         if (tx > 0) {
             mStarIv.setVisibility(VISIBLE);
-            mStarIv.setTranslationX(-getWidth()/2+tx);
+            mStarIv.setTranslationX(-getWidth() / 2 + tx);
             mStarIv.startAnimation();
+
+            if (progress > 97) {
+                startScoreAnimation("score_sss.svga", tx);
+            } else if (progress > 82) {
+                startScoreAnimation("score_ss.svga", tx);
+            } else if (progress > 70) {
+                startScoreAnimation("score_s.svga", tx);
+            } else if (progress > 60) {
+                startScoreAnimation("score_a.svga", tx);
+            }
         }
     }
 
     public void setProgress2(int progress) {
         mScoreProgressBar.setProgress2(progress);
+    }
+
+    private void startScoreAnimation(String assetsName, int tx) {
+
+        getSVGAParser().parse(assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+//                LayoutParams lp = new LayoutParams(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+//                mScoreAnimationIv.setLayoutParams(lp);
+
+                mScoreAnimationIv.setTranslationX(-getWidth() / 2 + tx);
+                mScoreAnimationIv.setTranslationY(-getHeight() / 2+U.getDisplayUtils().dip2px(7));
+
+                mScoreAnimationIv.setVisibility(VISIBLE);
+                mScoreAnimationIv.stopAnimation(true);
+                mScoreAnimationIv.setImageDrawable(drawable);
+                mScoreAnimationIv.startAnimation();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
+    private SVGAParser getSVGAParser() {
+        if (mSVGAParser == null) {
+            mSVGAParser = new SVGAParser(getContext());
+            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
+                @Override
+                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            OkHttpClient client = new OkHttpClient();
+                            Request request = new Request.Builder().url(url).get().build();
+                            try {
+                                Response response = client.newCall(request).execute();
+                                complete.invoke(response.body().byteStream());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                failure.invoke(e);
+                            }
+                        }
+                    }).start();
+                }
+            });
+        }
+        return mSVGAParser;
     }
 }
 

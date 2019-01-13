@@ -9,6 +9,13 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true" />
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/score_animation_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        app:source="score_a.svga" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/star_iv"

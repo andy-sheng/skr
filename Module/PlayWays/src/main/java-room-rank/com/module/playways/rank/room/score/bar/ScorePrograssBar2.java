@@ -185,7 +185,7 @@ public class ScorePrograssBar2 extends View {
         for (int i = mLevelDrawables.length - 1; i >= 0; i--) {
             DrawableWithLocation drawableW = mLevelDrawables[i];
             if (p > drawableW.score) {
-                return drawableW.transLateX - drawableW.mDrawable.getIntrinsicWidth() / 2;
+                return drawableW.transLateX;
             }
         }
         return -1;

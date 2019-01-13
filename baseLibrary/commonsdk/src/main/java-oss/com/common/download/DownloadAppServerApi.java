@@ -14,7 +14,7 @@ public interface DownloadAppServerApi {
      *
      * @return
      */
-    @GET("http://dev.i.res.inframe.mobi/v1/getSTSToken/picture")
+    @GET("http://dev.res.inframe.mobi/v1/getSTSToken/picture")
     Observable<JSONObject> getSTSToken();
 
 

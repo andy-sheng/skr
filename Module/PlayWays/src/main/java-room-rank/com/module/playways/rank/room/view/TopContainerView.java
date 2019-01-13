@@ -90,13 +90,13 @@ public class TopContainerView extends RelativeLayout {
     }
 
     private void initSparkPrograssBar() {
-//        setScoreProgress(100);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                setScoreProgress(90);
-//            }
-//        }, 4000);
+        setScoreProgress(100);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setScoreProgress(90);
+            }
+        }, 4000);
     }
 
     @Override

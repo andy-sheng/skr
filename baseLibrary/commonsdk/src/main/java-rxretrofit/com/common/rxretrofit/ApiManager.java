@@ -70,6 +70,7 @@ public class ApiManager {
                 return "sandbox.api.inframe.mobi";
             } else {
                 // 说明是线下环境，暂时没给域名
+                return "api.inframe.mobi";
             }
         } else if (host.endsWith("game.inframe.mobi")) {
             if (U.getChannelUtils().isDevChannel()) {
@@ -80,16 +81,18 @@ public class ApiManager {
                 return "sandbox.game.inframe.mobi";
             } else {
                 // 说明是线下环境，暂时没给域名
+                return "game.inframe.mobi";
             }
-        } else if(host.endsWith("i.res.inframe.mobi")){
+        } else if (host.endsWith("res.inframe.mobi")) {
             if (U.getChannelUtils().isDevChannel()) {
-                return "dev.i.res.inframe.mobi";
+                return "dev.res.inframe.mobi";
             } else if (U.getChannelUtils().isTestChannel()) {
-                return "test.i.res.inframe.mobi";
+                return "test.res.inframe.mobi";
             } else if (U.getChannelUtils().isSandboxChannel()) {
-                return "sandbox.i.res.inframe.mobi";
+                return "sandbox.res.inframe.mobi";
             } else {
                 // 说明是线下环境，暂时没给域名
+                return "res.inframe.mobi";
             }
         }
         return host;
