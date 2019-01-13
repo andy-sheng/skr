@@ -311,9 +311,9 @@ public class MyUserInfoManager {
                             .newMyInfoUpdateParamsBuilder()
                             .setLocation(l)
                             .build(), true);
-                    if (callback != null) {
-                        callback.onReceive(location);
-                    }
+                }
+                if (callback != null) {
+                    callback.onReceive(location);
                 }
             }
         });
