@@ -152,7 +152,6 @@
             android:layout_height="@dimen/view_1_dp"
             android:layout_alignParentBottom="true"
             android:background="#D8D8D8" />
-
     </RelativeLayout>
 
 

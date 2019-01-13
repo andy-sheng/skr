@@ -3,11 +3,13 @@ package com.module.home.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
@@ -142,6 +144,15 @@ public class SettingFragment extends BaseFragment {
         }
 
         mVersionTv.setText("当前版本:"+U.getAppInfoUtils().getVersionName());
+
+        mVersionTv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                MyLog.setForceOpenFlag(true);
+                U.getToastUtil().showShort("日志已开");
+                return false;
+            }
+        });
     }
 
 
