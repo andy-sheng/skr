@@ -39,9 +39,8 @@
         android:id="@+id/end_round_hint"
         android:layout_width="@dimen/view_78_dp"
         android:layout_height="@dimen/view_40_dp"
-        android:layout_alignBottom="@+id/stage_people_bg"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_300_dp"
         android:src="@drawable/guanzhongjiemian_yanchangjieshu"
         android:visibility="gone" />
 
