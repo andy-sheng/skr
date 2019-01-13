@@ -158,10 +158,11 @@ public class RecordTitleView extends RelativeLayout {
 
         // 展示之前的段位
         RankLevelModel rankLevelModel = scoreDetailModel.getRankScore();
+        RankLevelModel subLevelModel = scoreDetailModel.getSubRankScore();
         TotalLimit totalLimit = scoreDetailModel.getTotalStarLimit();
         UserScoreModel userScoreModel = scoreDetailModel.getRankStarScore();
         if (rankLevelModel != null && totalLimit != null && userScoreModel != null) {
-            mSdvOwnLevel.bindData(rankLevelModel.getLevelBefore(), rankLevelModel.getLevelBefore()
+            mSdvOwnLevel.bindData(rankLevelModel.getLevelBefore(), subLevelModel.getLevelBefore()
                     , totalLimit.getLimitBefore(), userScoreModel.getScoreBefore());
             mSdvOwnLevel.postDelayed(new Runnable() {
                 @Override
