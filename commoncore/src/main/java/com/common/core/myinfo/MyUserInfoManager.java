@@ -9,6 +9,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.rx.RxRetryAssist;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -45,10 +46,7 @@ public class MyUserInfoManager {
 
     static final String PREF_KEY_UPDATE_LACATION_TS = "update_location_ts";
 
-    private MyUserInfo mUser = new MyUserInfo();// 真实的与服务器同步的数据
-
-    private MyUserInfo mUploadUser = new MyUserInfo(); //用户想要上传的数据,可能数据有问题，只用来做上传资料校验
-
+    private MyUserInfo mUser = new MyUserInfo();
     private boolean mUserInfoFromServer = false;
 //    private boolean mHasLoadFromDB = false;
 
@@ -81,7 +79,6 @@ public class MyUserInfoManager {
 
     public void logoff() {
         mUser = new MyUserInfo();
-        mUploadUser = new MyUserInfo();
         mUserInfoFromServer = false;
     }
 
@@ -93,7 +90,6 @@ public class MyUserInfoManager {
         MyLog.d(TAG, "setMyUserInfo" + " myUserInfo=" + myUserInfo);
         if (myUserInfo != null) {
             mUser = myUserInfo;
-            initUploadUser(myUserInfo);
             if (!mUserInfoFromServer) {
                 mUserInfoFromServer = fromServer;
             }
@@ -101,20 +97,6 @@ public class MyUserInfoManager {
             //user信息设定成功了，发出eventbus
             EventBus.getDefault().post(new MyUserInfoEvent.UserInfoChangeEvent());
         }
-    }
-
-    private void initUploadUser(MyUserInfo myUserInfo) {
-        if (myUserInfo == null || mUploadUser == null) {
-            return;
-        }
-
-        mUploadUser.setUserId(myUserInfo.getUserId());
-        mUploadUser.setUserNickname(myUserInfo.getUserNickname());
-        mUploadUser.setAvatar(myUserInfo.getAvatar());
-        mUploadUser.setSex(myUserInfo.getSex());
-        mUploadUser.setBirthday(myUserInfo.getBirthday());
-        mUploadUser.setSignature(myUserInfo.getSignature());
-        mUploadUser.setLocation(myUserInfo.getLocation());
     }
 
     /**
@@ -154,39 +136,60 @@ public class MyUserInfoManager {
 
     /**
      * 更新用户信息
+     *
+     * @param updateParams
      */
     public void updateInfo(final MyInfoUpdateParams updateParams) {
+        updateInfo(updateParams, true);
+    }
+
+    /**
+     * 更新用户信息
+     */
+    public void updateInfo(final MyInfoUpdateParams updateParams, boolean updateLocalIfServerFailed) {
 
         HashMap<String, Object> map = new HashMap<>();
         if (updateParams.nickName != null) {
             map.put("nickname", updateParams.nickName);
-            mUploadUser.setUserNickname(updateParams.nickName);
+            if (updateLocalIfServerFailed) {
+                mUser.setUserNickname(updateParams.nickName);
+            }
         }
         if (updateParams.sex != -1) {
             map.put("sex", updateParams.sex);
-            mUploadUser.setSex(updateParams.sex);
+            if (updateLocalIfServerFailed) {
+                mUser.setSex(updateParams.sex);
+            }
         }
         if (updateParams.birthday != null) {
             map.put("birthday", updateParams.birthday);
-            mUploadUser.setBirthday(updateParams.birthday);
+            if (updateLocalIfServerFailed) {
+                mUser.setBirthday(updateParams.birthday);
+            }
         }
         if (updateParams.avatar != null) {
             map.put("avatar", updateParams.avatar);
-            mUploadUser.setAvatar(updateParams.avatar);
+            if (updateLocalIfServerFailed) {
+                mUser.setAvatar(updateParams.avatar);
+            }
         }
         if (updateParams.sign != null) {
             map.put("signature", updateParams.sign);
-            mUploadUser.setSignature(updateParams.sign);
+            if (updateLocalIfServerFailed) {
+                mUser.setSignature(updateParams.sign);
+            }
         }
         if (updateParams.location != null) {
             map.put("location", updateParams.location);
-            mUploadUser.setLocation(updateParams.location);
+            if (updateLocalIfServerFailed) {
+                mUser.setLocation(updateParams.location);
+            }
         }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(map));
         MyUserInfoServerApi myUserAccountServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
         Observable<ApiResult> apiResultObservable = myUserAccountServerApi.updateInfo(body);
-        ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(apiResultObservable.retryWhen(new RxRetryAssist(2, 5, true)), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
@@ -195,11 +198,11 @@ public class MyUserInfoManager {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                            MyUserInfoLocalApi.insertOrUpdate(mUploadUser);
+                            MyUserInfoLocalApi.insertOrUpdate(mUser);
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
                             if (userInfo != null) {
-                                setMyUserInfo(userInfo, true);
+                                setMyUserInfo(mUser, true);
                             }
                             if (updateParams.location != null) {
                                 // 有传地址位置
@@ -262,14 +265,6 @@ public class MyUserInfoManager {
         return mUser.getLocation() != null && mUser.getLocation().getDesc().length() > 0;
     }
 
-    public MyUserInfo getUploadUser() {
-        return mUploadUser;
-    }
-
-    public void setUploadUser(MyUserInfo uploadUser) {
-        mUploadUser = uploadUser;
-    }
-
     public void trySyncLocation() {
         if (!MyUserInfoManager.getInstance().hasLocation()) {
             // 没有地理位置
@@ -298,7 +293,7 @@ public class MyUserInfoManager {
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
                             .newMyInfoUpdateParamsBuilder()
                             .setLocation(l)
-                            .build());
+                            .build(), true);
                 }
             }
         });
