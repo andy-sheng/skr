@@ -21,10 +21,20 @@ public class CoreInfoInterceptor implements Interceptor {
                 .build();
         // 如果是测试环境的话
         HttpUrl httpUrl = request.url();
+        String scheme = httpUrl.scheme();
+        if (U.getChannelUtils().isStaging()) {
+            if (scheme.equals("https")) {
+                scheme = "http";
+            }
+        } else {
+            if (scheme.equals("http")) {
+                scheme = "https";
+            }
+        }
         String host = httpUrl.host();
         host = ApiManager.getInstance().findRealHostByChannel(host);
         // 替换host
-        httpUrl = httpUrl.newBuilder().host(host).build();
+        httpUrl = httpUrl.newBuilder().scheme(scheme).host(host).build();
         request = request.newBuilder()
                 .url(httpUrl)
                 .build();
