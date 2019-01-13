@@ -16,6 +16,15 @@ public class UserRankModel {
     private int category;
     private int seq;
     private String regionDesc;
+    private int starCnt;
+
+    public int getStarCnt() {
+        return starCnt;
+    }
+
+    public void setStarCnt(int starCnt) {
+        this.starCnt = starCnt;
+    }
 
     public int getCategory() {
         return category;
