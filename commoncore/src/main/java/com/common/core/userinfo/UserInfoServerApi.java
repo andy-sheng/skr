@@ -84,6 +84,16 @@ public interface UserInfoServerApi {
 
 
     /**
+     * 获取某人具体的分数
+     *
+     * @param userID
+     * @return
+     */
+    @GET("/v1/score/detail")
+    Observable<ApiResult> getScoreDetail(@Query("userID") int userID);
+
+
+    /**
      * 获取地域排行榜列表
      * (包含自己的)
      *
