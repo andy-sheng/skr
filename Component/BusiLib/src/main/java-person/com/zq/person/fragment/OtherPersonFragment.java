@@ -127,7 +127,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mTagAdapter = new TagAdapter<String>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
-                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.tag_textview,
+                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_tag_textview,
                         mFlowlayout, false);
                 tv.setText(o);
                 return tv;

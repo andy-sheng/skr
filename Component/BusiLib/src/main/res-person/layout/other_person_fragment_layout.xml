@@ -96,7 +96,9 @@
             android:layout_width="@dimen/view_114_dp"
             android:layout_height="@dimen/view_114_dp"
             android:layout_marginLeft="@dimen/view_18_dp"
-            android:layout_marginTop="@dimen/view_21_dp"></com.zq.level.view.NormalLevelView>
+            android:layout_marginTop="@dimen/view_21_dp"
+            android:paddingBottom="@dimen/view_5_dp">
+        </com.zq.level.view.NormalLevelView>
 
         <com.common.view.ex.ExTextView
             android:id="@+id/rank_tv"
@@ -114,6 +116,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:layout_marginLeft="@dimen/view_13_dp"
             android:layout_marginTop="@dimen/view_170_dp"
             android:orientation="horizontal">
 
