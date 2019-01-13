@@ -156,12 +156,27 @@ public class HomeCorePresenter {
     }
 
     public void onReject() {
+
         if (mPerTipsDialogPlus == null) {
             Activity activity = U.getActivityUtils().getTopActivity();
+            TipsDialogView tipsDialogView = new TipsDialogView.Builder(activity)
+                    .setMessageTip("请开启存储读写，录音，定位等权限，保证应用正常使用")
+                    .setOkBtnTip("去设置")
+                    .setOkBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            U.getPermissionUtils().goToPermissionManager(activity);
+                        }
+                    })
+                    .build();
+
             mPerTipsDialogPlus = DialogPlus.newDialog(activity)
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
                     .setCancelable(false)
-                    .setGravity(Gravity.CENTER)
-                    .setContentHolder(new ViewHolder(new PermissionTipsView(activity)))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
                     .create();
         }
         mPerTipsDialogPlus.show();
