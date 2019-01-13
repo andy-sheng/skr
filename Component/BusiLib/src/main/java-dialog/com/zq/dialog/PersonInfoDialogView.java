@@ -17,6 +17,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
@@ -31,6 +32,8 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.level.view.HorizonLevelView;
+
+import junit.framework.Test;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -152,6 +155,15 @@ public class PersonInfoDialogView extends RelativeLayout {
             }
         }, (BaseActivity) context);
 
+        ApiMethods.subscribe(mUserInfoServerApi.getScoreDetail(userID), new ApiObserver<ApiResult>() {
+
+            @Override
+            public void process(ApiResult result) {
+                List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getString("userScore"), UserLevelModel.class);
+                showUserLevel(userLevelModels);
+            }
+
+        }, (BaseActivity) context);
 
     }
 
@@ -179,8 +191,10 @@ public class PersonInfoDialogView extends RelativeLayout {
             mFollowTv.setVisibility(GONE);
         }
 
-        if (userInfo.getLocation() != null) {
+        if (!TextUtils.isEmpty(userInfo.getLocation().getCity())) {
             mHashMap.put(LOCATION_TAG, userInfo.getLocation().getCity());
+        } else {
+            mHashMap.put(LOCATION_TAG, "未知星球");
         }
 
         if (!TextUtils.isEmpty(userInfo.getBirthday())) {
@@ -215,9 +229,37 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         // TODO: 2019/1/6 必须加上策略，比如没有位置信息
         if (reginRankModel != null) {
-            mHashMap.put(RANK_TAG, reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getSeq()) + "位");
-            refreshTag();
+            if (reginRankModel.getSeq() != 0) {
+                mHashMap.put(RANK_TAG, reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getSeq()) + "位");
+            } else {
+                mHashMap.put(RANK_TAG, "暂无排名");
+            }
+        } else {
+            mHashMap.put(RANK_TAG, "暂无排名");
         }
+        refreshTag();
+    }
+
+    public void showUserLevel(List<UserLevelModel> list) {
+        // 展示段位信息
+        int rank = 0;           //当前父段位
+        String rankDesc = "";   //父段位描述
+        int subRank = 0;        //当前子段位
+        int starNum = 0;        //当前星星
+        int starLimit = 0;      //当前星星上限
+        for (UserLevelModel userLevelModel : list) {
+            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                rank = userLevelModel.getScore();
+                rankDesc = userLevelModel.getDesc();
+            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                subRank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
+                starNum = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
+                starLimit = userLevelModel.getScore();
+            }
+        }
+        mHorizLevelView.bindData(rank, subRank, rankDesc, starLimit, starNum);
     }
 
     private void refreshTag() {

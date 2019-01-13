@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.zq.level.utils.LevelConfigUtils;
 
 
 // 横排的等级和星星
@@ -21,6 +22,7 @@ public class HorizonLevelView extends LinearLayout {
     ImageView mLevelIv;
     ImageView mSubLeveIv;
     ExTextView mLevelTv;
+    ExTextView mStarTv;
 
     public HorizonLevelView(Context context) {
         super(context);
@@ -45,12 +47,30 @@ public class HorizonLevelView extends LinearLayout {
         mLevelIv = (ImageView) this.findViewById(R.id.level_iv);
         mSubLeveIv = (ImageView) this.findViewById(R.id.sub_leve_iv);
         mLevelTv = (ExTextView) this.findViewById(R.id.level_tv);
-
-        bindData(4, 3);
+        mStarTv = (ExTextView) this.findViewById(R.id.star_tv);
     }
 
-    public void bindData(int totalStar, int selectStar) {
-        for (int i = 0; i < totalStar ; i++) {
+    public void bindData(int level, int subLevel, String leveDesc, int totalStar, int selectStar) {
+        // 主段位
+        if (LevelConfigUtils.getImageResoucesLevel(level) != 0) {
+            mLevelIv.setImageResource(LevelConfigUtils.getImageResoucesLevel(level));
+        }
+
+        // 子段位
+        if (LevelConfigUtils.getImageResoucesSubLevel(level, subLevel) != 0) {
+            mSubLeveIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
+        }
+
+        mLevelTv.setText(leveDesc + "");
+
+        if (totalStar == 0 || totalStar > 6) {
+            mStarTv.setVisibility(VISIBLE);
+            mStarTv.setText("x" + selectStar);
+            mStarTv.setCompoundDrawables(ContextCompat.getDrawable(U.app(), R.drawable.yonghuxinxika_xingxing_liang), null, null, null);
+            return;
+        }
+
+        for (int i = 0; i < totalStar; i++) {
             // 左边的星星
             ImageView imageView = new ImageView(getContext());
             RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(14), U.getDisplayUtils().dip2px(14));
