@@ -39,6 +39,7 @@ public class HomeCorePresenter {
     public final static String TAG = "HomePresenter";
 
     DialogPlus mPerTipsDialogPlus;
+    TipsDialogView mTipsDialogView;
 
     long mLastCheckTs = 0;
 
@@ -74,7 +75,7 @@ public class HomeCorePresenter {
              */
             mLastCheckTs = now;
             check1(activity);
-        }else{
+        } else {
             MyLog.d(TAG, "checkPermiss too many times，return");
         }
     }
@@ -91,13 +92,13 @@ public class HomeCorePresenter {
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onReject();
+                    onReject("请开启存储权限，保证应用正常使用");
                 }
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
-                    onReject();
+                    onReject("请开启存储权限，保证应用正常使用");
                 }
             }, activity);
         } else {
@@ -117,13 +118,13 @@ public class HomeCorePresenter {
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onReject();
+                    onReject("请开启录音权限，保证应用正常使用");
                 }
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
-                    onReject();
+                    onReject("请开启录音权限，保证应用正常使用");
                 }
             }, activity);
         } else {
@@ -143,13 +144,13 @@ public class HomeCorePresenter {
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onReject();
+                    onReject("请开启定位权限，保证应用正常使用");
                 }
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onReject();
+                    onReject("请开启定位权限，保证应用正常使用");
                 }
             }, activity);
         } else {
@@ -157,12 +158,12 @@ public class HomeCorePresenter {
         }
     }
 
-    public void onReject() {
+    public void onReject(String text) {
 
         if (mPerTipsDialogPlus == null) {
             Activity activity = U.getActivityUtils().getTopActivity();
-            TipsDialogView tipsDialogView = new TipsDialogView.Builder(activity)
-                    .setMessageTip("请开启存储读写，录音，定位等权限，保证应用正常使用")
+            mTipsDialogView = new TipsDialogView.Builder(activity)
+                    .setMessageTip(text)
                     .setOkBtnTip("去设置")
                     .setOkBtnClickListener(new View.OnClickListener() {
                         @Override
@@ -173,7 +174,7 @@ public class HomeCorePresenter {
                     .build();
 
             mPerTipsDialogPlus = DialogPlus.newDialog(activity)
-                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setContentHolder(new ViewHolder(mTipsDialogView))
                     .setGravity(Gravity.BOTTOM)
                     .setCancelable(false)
                     .setContentBackgroundResource(R.color.transparent)
@@ -181,6 +182,7 @@ public class HomeCorePresenter {
                     .setExpanded(false)
                     .create();
         }
+        mTipsDialogView.mMessageTv.setText(text);
         mPerTipsDialogPlus.show();
     }
 
