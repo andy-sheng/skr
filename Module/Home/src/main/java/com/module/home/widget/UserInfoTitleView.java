@@ -101,7 +101,7 @@ public class UserInfoTitleView extends RelativeLayout {
                                     mFlRankRoot.setVisibility(VISIBLE);
                                 } else {
                                     mArea.setText("暂无排名");
-                                    mFlRankRoot.setVisibility(GONE);
+                                    mFlRankRoot.setVisibility(VISIBLE);
                                 }
                                 break;
                             }
@@ -112,7 +112,7 @@ public class UserInfoTitleView extends RelativeLayout {
                                 mFlRankRoot.setVisibility(VISIBLE);
                             } else {
                                 mArea.setText("暂无排名");
-                                mFlRankRoot.setVisibility(GONE);
+                                mFlRankRoot.setVisibility(VISIBLE);
                             }
                             break;
                         }

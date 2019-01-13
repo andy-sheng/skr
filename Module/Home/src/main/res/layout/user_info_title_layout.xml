@@ -60,7 +60,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/view_dimen_10"
                 android:textColor="#F5A623"
-                android:text="566"
+                android:text=""
                 android:textSize="@dimen/textsize_22_dp"
                 android:id="@+id/tv_user_level"
                 android:layout_width="wrap_content"
