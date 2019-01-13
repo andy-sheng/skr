@@ -84,6 +84,14 @@ public class SoundUtils {
         }
     }
 
+    /**
+     *
+     * @param key
+     * @param rawId
+     * @param inteceptorReleaseTs
+     * 是否要挂起release，比如 inteceptorReleaseTs = 500，在500ms内，这个key下资源不会被释放
+     * 一般用于返回键的音效播放，因为返回键一般伴随着destroy方法
+     */
     public void play(String key, int rawId, int inteceptorReleaseTs) {
         Holder holder = mSoundPoolMap.get(key);
         if (holder != null) {
