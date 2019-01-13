@@ -3,7 +3,7 @@
     android:id="@+id/person_main_containner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFED61">
+    android:background="@drawable/gerenzhongxin_bg">
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
@@ -70,7 +70,7 @@
         android:id="@+id/flowlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_14_dp"
+        android:layout_marginLeft="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_212_dp"
         android:layout_marginRight="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>
 
@@ -144,7 +144,7 @@
                     android:gravity="center"
                     android:text="-排位赛-"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/view_14_dp" />
+                    android:textSize="@dimen/view_13_dp" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/rank_num_tv"
@@ -181,7 +181,7 @@
                     android:gravity="center"
                     android:text="-娱乐赛-"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/view_14_dp" />
+                    android:textSize="@dimen/view_13_dp" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/funny_num_tv"
@@ -218,7 +218,7 @@
                     android:gravity="center"
                     android:text="-一唱到底-"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/view_14_dp" />
+                    android:textSize="@dimen/view_13_dp" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/singend_num_tv"

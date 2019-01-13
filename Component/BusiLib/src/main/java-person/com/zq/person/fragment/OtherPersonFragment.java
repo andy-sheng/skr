@@ -199,6 +199,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
         if (model.getLocation() != null) {
             mHashMap.put(LOCATION_TAG, model.getLocation().getCity() + "/" + model.getLocation().getDistrict());
+        }else {
+            mHashMap.put(LOCATION_TAG, "未知星球");
         }
 
         if (!TextUtils.isEmpty(model.getBirthday())) {
