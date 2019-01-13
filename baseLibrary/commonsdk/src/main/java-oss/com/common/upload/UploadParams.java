@@ -7,7 +7,7 @@ public class UploadParams {
 
     private boolean needCompress = false;
 
-    private FileType fileType = FileType.normal;
+    private FileType fileType = FileType.picture;
 
     UploadParams() {
     }
@@ -53,7 +53,7 @@ public class UploadParams {
     }
 
     public enum FileType{
-        normal(""),audioAi("audios/"),midiAi("midis/");
+        picture("picture"),audioAi("audio"),midiAi("midi"),log("androidLog");
 
         private String ossSavaDir;
         FileType(String d) {

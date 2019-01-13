@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.feedback.FeedbackManager;
 import com.module.home.updateinfo.EditInfoActivity;
@@ -108,6 +110,9 @@ public class SettingFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         // TODO: 2018/12/26 用户服务协议
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString(RouterConstants.KEY_WEB_URL,"https://api.inframe.mobi/user-agreement.html")
+                                .navigation();
                     }
                 });
 

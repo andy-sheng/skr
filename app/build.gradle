@@ -23,9 +23,9 @@ android {
             buildConfigField("String", "CHANNEL_NAME", '\"DEFAULT\"')
             resValue("string", "channel_desc", '这是default demo')
             // 生产环境
-//            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
-            // TODO 默认显示测试环境
-            manifestPlaceholders = [RC_KEY: "0vnjpoad03v7z"]
+            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
+//            // TODO 默认显示测试环境
+//            manifestPlaceholders = [RC_KEY: "0vnjpoad03v7z"]
         }
 
         channel_mishop {

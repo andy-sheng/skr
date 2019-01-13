@@ -45,7 +45,7 @@ public class UploadTask {
 
     private UploadParams mUploadParams;
     private String mBucketName;
-    private String mDir;
+    private String mDir = "";
     private String mCallbackUrl;
     private String mCallbackBody;
     private String mCallbackBodyType;
@@ -58,15 +58,15 @@ public class UploadTask {
 
     public UploadTask startUpload(UploadCallback uploadCallback) {
         File file = new File(mUploadParams.getFilePath());
-        if(file!=null && file.exists()){
-            MyLog.w(TAG,"startUpload fileLength:"+file.length());
-        }else{
-            MyLog.e(TAG,"file==null 或者 文件不存在");
+        if (file != null && file.exists()) {
+            MyLog.w(TAG, "startUpload fileLength:" + file.length());
+        } else {
+            MyLog.e(TAG, "file==null 或者 文件不存在");
             return this;
         }
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
         UploadAppServerApi uploadAppServerApi = ApiManager.getInstance().createService(UploadAppServerApi.class);
-        uploadAppServerApi.getSTSToken().subscribeOn(Schedulers.io())
+        uploadAppServerApi.getSTSToken(mUploadParams.getFileType().getOssSavaDir()).subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<JSONObject>() {
                     @Override
                     public void accept(JSONObject data) throws Exception {
@@ -203,16 +203,19 @@ public class UploadTask {
      */
     private PutObjectRequest createRequest(String filePath) {
         String mObjectId;
+        if (mDir.length() > 0 && !mDir.endsWith("/")) {
+            mDir += "/";
+        }
         if (TextUtils.isEmpty(mUploadParams.getFileName())) {
             String ext = U.getFileUtils().getSuffixFromFilePath(filePath);
             String fileName = U.getMD5Utils().MD5_16(System.currentTimeMillis() + filePath);
             if (TextUtils.isEmpty(mDir)) {
-                mObjectId = mUploadParams.getFileType().getOssSavaDir()  + fileName + "." + ext;
+                mObjectId = mUploadParams.getFileType().getOssSavaDir() + fileName + "." + ext;
             } else {
                 mObjectId = mDir + fileName + "." + ext;
             }
         } else {
-            mObjectId = mUploadParams.getFileType().getOssSavaDir() + mUploadParams.getFileName();
+            mObjectId = mDir + mUploadParams.getFileName();
         }
         // 构造上传请求
         PutObjectRequest put = new PutObjectRequest(mBucketName, mObjectId, filePath);
