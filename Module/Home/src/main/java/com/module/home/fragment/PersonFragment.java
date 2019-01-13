@@ -372,7 +372,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         } else if (countryRankModel != null && countryRankModel.getSeq() != 0) {
             mRankTv.setText(countryRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(countryRankModel.getSeq()) + "位");
         } else {
-            mRankTv.setText("无排位数据");
+            mRankTv.setText("暂无排名");
         }
     }
 

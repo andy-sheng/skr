@@ -95,18 +95,26 @@ public class UserInfoTitleView extends RelativeLayout {
                             userRankModels) {
                         if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getLocationDesc())) {
                             if (userRankModel.getCategory() == REGION) {
-                                mArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()) + "排名");
-                                mTvUserLevel.setText(userRankModel.getSeq() + "");
-                                mFlRankRoot.setVisibility(VISIBLE);
+                                if (userRankModel.getSeq() != 0) {
+                                    mArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()) + "排名");
+                                    mTvUserLevel.setText(userRankModel.getSeq() + "");
+                                    mFlRankRoot.setVisibility(VISIBLE);
+                                } else {
+                                    mArea.setText("暂无排名");
+                                    mFlRankRoot.setVisibility(GONE);
+                                }
                                 break;
                             }
                         } else {
-                            if (userRankModel.getCategory() == COUNTRY) {
+                            if (userRankModel.getCategory() == COUNTRY && userRankModel.getSeq() != 0) {
                                 mArea.setText("全国" + "排名");
                                 mTvUserLevel.setText(userRankModel.getSeq() + "");
                                 mFlRankRoot.setVisibility(VISIBLE);
-                                break;
+                            } else {
+                                mArea.setText("暂无排名");
+                                mFlRankRoot.setVisibility(GONE);
                             }
+                            break;
                         }
                     }
                 }
