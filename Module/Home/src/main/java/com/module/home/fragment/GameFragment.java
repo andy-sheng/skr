@@ -132,6 +132,7 @@ public class GameFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
+        userTitleView.destroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -29,14 +29,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <com.common.view.ex.ExTextView
-        android:alpha="0.5"
+
+    <FrameLayout
+        android:id="@+id/fl_rank_root"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tv_user_name"
-        android:textColor="#0C2275"
-        android:text="Lv3"
-        android:textSize="@dimen/textsize_16_dp"
-        android:id="@+id/tv_user_level"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <com.common.view.ex.ExLinearLayout
+            android:paddingRight="@dimen/view_12_dp"
+            app:bl_solid_color="#C90C2275"
+            app:bl_corners_radius="@dimen/view_16_dp"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_32_dp">
+            <com.common.view.ex.ExTextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/view_dimen_70"
+                android:textColor="@color/white"
+                android:text="昌平"
+                android:textSize="@dimen/textsize_16_dp"
+                android:id="@+id/area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.common.view.ex.ExTextView
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/view_dimen_10"
+                android:textColor="#F5A623"
+                android:text="566"
+                android:textSize="@dimen/textsize_22_dp"
+                android:id="@+id/tv_user_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.common.view.ex.ExLinearLayout>
+
+        <com.common.view.ex.ExImageView
+            android:background="@drawable/paihang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
 </RelativeLayout>
