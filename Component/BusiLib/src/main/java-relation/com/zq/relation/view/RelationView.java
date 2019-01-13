@@ -116,10 +116,6 @@ public class RelationView extends RelativeLayout {
     }
 
     public void loadData(int mode, int offset, int limit) {
-        if (!hasMore) {
-            U.getToastUtil().showShort("没有更多数据了");
-            return;
-        }
         UserInfoManager.getInstance().getRelationList(mode, offset, limit, new UserInfoManager.ResponseCallBack<ApiResult>() {
             @Override
             public void onServerSucess(ApiResult result) {
@@ -131,6 +127,7 @@ public class RelationView extends RelativeLayout {
                     hasMore = true;
                 } else {
                     hasMore = false;
+                    mRefreshLayout.finishLoadMore();
                 }
             }
 
