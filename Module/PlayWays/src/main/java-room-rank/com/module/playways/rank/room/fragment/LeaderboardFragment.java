@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.model.RankInfoModel;
@@ -23,6 +25,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.LbsUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -213,7 +216,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             return;
                         }
 
-                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
+                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
                         mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
                     }
                 });
@@ -249,9 +252,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     private void setRankMode(){
         if (MyUserInfoManager.getInstance().hasLocation()) {
-            mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
+            mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
             mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
-            mTvCurArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
+            mTvCurArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
             mTvCountry.setText("全国榜");
         } else {
             mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
@@ -262,11 +265,12 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         }
     }
 
-    private String getAreaFromLocation(String location){
-        String[] strs = location.split("-");
-        String area = strs[strs.length - 1];
-
-        return area;
+    private String getAreaFromLocation(Location location){
+        if(!TextUtils.isEmpty(location.getDistrict())){
+            return location.getDistrict();
+        }else{
+            return "未知位置";
+        }
     }
 
     private void tryGetLocation() {
@@ -302,7 +306,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     }
 
     @Override
-
     public void showRankList(List<RankInfoModel> rankInfoModel, boolean hasMore) {
         mRefreshLayout.setEnableLoadMore(hasMore);
         mHasMore = hasMore;
@@ -375,7 +378,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 }
             });
             mTvChanpainName.setText(rankInfoModel.getNickname());
-
             mTvChanpianStart.setText("X" + rankInfoModel.getStarCnt());
             mTvSegmentName.setText(rankInfoModel.getLevelDesc());
         } else if (rankInfoModel.getRankSeq() == 2) {
@@ -392,12 +394,10 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     if(MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()){
                         return;
                     }
-
                     gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
             mTvRightChanpainName.setText(rankInfoModel.getNickname());
-
             mTvRightChanpianStart.setText("X" + rankInfoModel.getStarCnt());
             mTvRightSegmentName.setText(rankInfoModel.getLevelDesc());
         } else if (rankInfoModel.getRankSeq() == 3) {
@@ -419,7 +419,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 }
             });
             mTvLeftChanpainName.setText(rankInfoModel.getNickname());
-
             mTvLeftChanpianStart.setText("X" + rankInfoModel.getStarCnt());
             mTvLeftSegmentName.setText(rankInfoModel.getLevelDesc());
         }
