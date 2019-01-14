@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -16,6 +15,7 @@ import com.common.core.myinfo.event.ScoreDetailChangeEvent;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
@@ -26,6 +26,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GameModeType;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.fragment.ImagePickerFragment;
 import com.imagepicker.model.ImageItem;
@@ -33,13 +34,8 @@ import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
-
-import model.RelationNumModel;
-
-import com.component.busilib.constans.GameModeType;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
-import com.module.rank.IRankingModeService;
 import com.zq.level.view.NormalLevelView;
 import com.zq.live.proto.Common.ESex;
 import com.zq.relation.fragment.RelationFragment;
@@ -51,8 +47,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
-
-import com.common.core.userinfo.model.UserLevelModel;
+import model.RelationNumModel;
 
 public class PersonFragment extends BaseFragment implements IPersonView {
 
@@ -247,24 +242,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
         mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
-
-        RxView.clicks(mMedalLayout).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getData(0, null);
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
-                        .build());
-            }
-        });
 
     }
 

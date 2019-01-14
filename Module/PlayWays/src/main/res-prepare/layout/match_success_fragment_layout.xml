@@ -16,6 +16,8 @@
             android:layout_height="match_parent" />
 
         <com.common.view.ex.ExTextView
+            android:gravity="center"
+            android:background="@drawable/miedeng_daojishi_beijingban"
             android:id="@+id/tv_ready_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
