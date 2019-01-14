@@ -40,6 +40,8 @@ public class TopContainerView extends RelativeLayout {
 
     HandlerTaskTimer mShowLastedTimeTask;
 
+    ScoreTipsView.Item mLastItem;
+
     public TopContainerView(Context context) {
         super(context);
         init();
@@ -129,8 +131,6 @@ public class TopContainerView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, params);
     }
 
-    ScoreTipsView.Item mLastItem;
-
     public void setScoreProgress(int progress) {
         for (int i = 0; i < 2; i++) {
             progress = (int) (Math.sqrt(progress) * 10);
@@ -175,29 +175,33 @@ public class TopContainerView extends RelativeLayout {
 
         mShowLastedTimeTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take((int) lastedTime + 1)
+                .take((int) lastedTime )
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        long lastTime = lastedTime + 1 - integer;
-                        if (lastTime < 0) {
-                            cancelShowLastedTimeTask();
-                            mTvPassedTime.setText("");
-                            mScoreProgressBar.setProgress2(0);
-                            mLastItem = null;
-                            return;
-                        }
-                        int p = (int) ((lastedTime + 1 - integer) * 100 / lastedTime);
+                        long lastTime = lastedTime - integer;
+                        int p = (int) ((lastedTime - integer) * 100 / lastedTime);
                         mScoreProgressBar.setProgress2(p);
                         mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        reset();
                     }
                 });
     }
 
-    public void cancelShowLastedTimeTask() {
+    void reset(){
         mTvPassedTime.setText("");
+        mScoreProgressBar.setProgress1(0);
         mScoreProgressBar.setProgress2(0);
         mLastItem = null;
+    }
+
+    public void cancelShowLastedTimeTask() {
+       reset();
         if (mShowLastedTimeTask != null) {
             mShowLastedTimeTask.dispose();
             mShowLastedTimeTask = null;
