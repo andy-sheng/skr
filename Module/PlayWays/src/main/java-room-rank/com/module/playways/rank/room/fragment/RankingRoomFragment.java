@@ -986,6 +986,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             public void run() {
                 // 模式改为3，自动播放主舞台退出的svga动画
                 mUFOMode = 3;
+                mFloatLyricsView.setVisibility(View.GONE);
+                mManyLyricsView.setVisibility(View.GONE);
             }
         }, 800);
     }
