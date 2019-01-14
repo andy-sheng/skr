@@ -31,12 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import io.agora.rtc.IRtcEngineEventHandler;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 关于音视频引擎的都放在这个类里
@@ -133,7 +129,7 @@ public class EngineManager implements AgoraOutCallback {
     public void onClientRoleChanged(int oldRole, int newRole) {
         // 只有切换时才会触发
         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_USER_ROLE_CHANGE);
-        EngineEvent.RoleChangeInfo roleChangeInfo = new EngineEvent.RoleChangeInfo(oldRole,newRole);
+        EngineEvent.RoleChangeInfo roleChangeInfo = new EngineEvent.RoleChangeInfo(oldRole, newRole);
         engineEvent.obj = roleChangeInfo;
         EventBus.getDefault().post(engineEvent);
     }
@@ -297,6 +293,7 @@ public class EngineManager implements AgoraOutCallback {
             mRemoteViewCache.clear();
             mUiHandler.removeCallbacksAndMessages(null);
             mConfig = null;
+            mPendingStartMixAudioParams = null;
             EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
             if (EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().unregister(this);
@@ -788,6 +785,12 @@ public class EngineManager implements AgoraOutCallback {
         AgoraEngineAdapter.getInstance().setLocalVoiceReverb(reverbKey, value);
     }
 
+    PendingStartMixAudioParams mPendingStartMixAudioParams;
+
+    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
+        startAudioMixing(filePath, null, 0, loopback, replace, cycle);
+    }
+
     /**
      * 开始播放音乐文件及混音。
      * 播放伴奏结束后，会收到 onAudioMixingFinished 回调
@@ -804,25 +807,81 @@ public class EngineManager implements AgoraOutCallback {
      *                 -1：无限循环
      */
     public void startAudioMixing(final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
+        startAudioMixing(0, filePath, midiPath, mixMusicBeginOffset, loopback, replace, cycle);
+    }
+
+    public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                MyLog.w(TAG, "startAudioMixing" + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
-                mConfig.setMixMusicPlaying(true);
-                mConfig.setMixMusicFilePath(filePath);
-                mConfig.setMidiPath(midiPath);
-                mConfig.setMixMusicBeginOffset(mixMusicBeginOffset);
+                MyLog.w(TAG, "startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+                boolean canGo = false;
+                if (uid <= 0) {
+                    canGo = true;
+                } else {
+                    UserStatus userStatus = mUserStatusMap.get(uid);
+                    if (userStatus == null) {
+                        MyLog.w(TAG, "该用户还未在频道中，播伴奏挂起");
+                        canGo = false;
+                    } else {
+                        canGo = true;
+                    }
+                }
+                if (canGo) {
+                    mConfig.setMixMusicPlaying(true);
+                    mConfig.setMixMusicFilePath(filePath);
+                    mConfig.setMidiPath(midiPath);
+                    mConfig.setMixMusicBeginOffset(mixMusicBeginOffset);
 
-                startMusicPlayTimeListener();
-                EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
-                EventBus.getDefault().post(engineEvent);
-                AgoraEngineAdapter.getInstance().startAudioMixing(filePath, loopback, replace, cycle);
+                    startMusicPlayTimeListener();
+                    EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
+                    EventBus.getDefault().post(engineEvent);
+                    AgoraEngineAdapter.getInstance().startAudioMixing(filePath, loopback, replace, cycle);
+                } else {
+                    mPendingStartMixAudioParams = new PendingStartMixAudioParams();
+                    mPendingStartMixAudioParams.uid = uid;
+                    mPendingStartMixAudioParams.filePath = filePath;
+                    mPendingStartMixAudioParams.midiPath = midiPath;
+                    mPendingStartMixAudioParams.mixMusicBeginOffset = mixMusicBeginOffset;
+                    mPendingStartMixAudioParams.loopback = loopback;
+                    mPendingStartMixAudioParams.replace = replace;
+                    mPendingStartMixAudioParams.cycle = cycle;
+                }
             }
         });
     }
 
-    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
-        startAudioMixing(filePath, null, 0, loopback, replace, cycle);
+    public static class PendingStartMixAudioParams {
+        int uid;
+        String filePath;
+        String midiPath;
+        long mixMusicBeginOffset;
+        boolean loopback;
+        boolean replace;
+        int cycle;
+    }
+
+    /**
+     * 监听耳机插拔
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onEvent(EngineEvent event) {
+        if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
+            if (mPendingStartMixAudioParams != null) {
+                if (event.getUserStatus().getUserId() == mPendingStartMixAudioParams.uid) {
+                    MyLog.w(TAG, "播放之前挂起的伴奏 uid=" + mPendingStartMixAudioParams.uid);
+                    startAudioMixing(mPendingStartMixAudioParams.uid,
+                            mPendingStartMixAudioParams.filePath,
+                            mPendingStartMixAudioParams.midiPath,
+                            mPendingStartMixAudioParams.mixMusicBeginOffset,
+                            mPendingStartMixAudioParams.loopback,
+                            mPendingStartMixAudioParams.replace,
+                            mPendingStartMixAudioParams.cycle);
+                }
+            }
+        }
     }
 
     /**
@@ -843,6 +902,7 @@ public class EngineManager implements AgoraOutCallback {
                     EventBus.getDefault().post(engineEvent);
                     AgoraEngineAdapter.getInstance().stopAudioMixing();
                 }
+                mPendingStartMixAudioParams = null;
             }
         });
 
