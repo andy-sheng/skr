@@ -158,6 +158,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         mRoomData = roomData;
         TAG += hashCode();
 
+        MyLog.w(TAG, "player info is " + mRoomData.toString());
+
         mGameFinishActionSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<RecordData>() {

@@ -230,4 +230,25 @@ public class RoomData implements Serializable {
 
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "RoomData{" +
+                "mGameType=" + mGameType +
+                ", mGameId=" + mGameId +
+                ", mSysAvatar='" + mSysAvatar + '\'' +
+                ", mShiftTs=" + mShiftTs +
+                ", mGameCreateTs=" + mGameCreateTs +
+                ", mGameStartTs=" + mGameStartTs +
+                ", mGameOverTs=" + mGameOverTs +
+                ", mLastSyncTs=" + mLastSyncTs +
+                ", mSongModel=" + mSongModel +
+                ", mRoundInfoModelList=" + mRoundInfoModelList +
+                ", mExpectRoundInfo=" + mExpectRoundInfo +
+                ", mRealRoundInfo=" + mRealRoundInfo +
+                ", mOnlineInfoList=" + mOnlineInfoList +
+                ", mPlayerInfoList=" + mPlayerInfoList +
+                ", mIsGameFinish=" + mIsGameFinish +
+                '}';
+    }
 }
