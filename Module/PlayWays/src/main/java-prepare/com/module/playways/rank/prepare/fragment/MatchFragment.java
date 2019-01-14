@@ -37,6 +37,8 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Common.ESex;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -61,7 +63,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     MatchPresenter mMatchPresenter;
     PrepareData mPrepareData;
 
-    String[] mQuotationsArray;
+    List<String> mQuotationsArray;
 
     HandlerTaskTimer mMatchTimeTask;
 
@@ -86,7 +88,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
 
         Resources res = getResources();
-        mQuotationsArray = res.getStringArray(R.array.match_quotations);
+        mQuotationsArray = Arrays.asList(res.getStringArray(R.array.match_quotations));
 
         RxView.clicks(mIvCancelMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
@@ -211,9 +213,12 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     private void changeQuotation(Integer integer) {
-        int size = mQuotationsArray.length;
+        int size = mQuotationsArray.size();
+        if(integer % size == 0){
+            Collections.shuffle(mQuotationsArray);
+        }
         int index = integer % (size - 1);
-        String string = mQuotationsArray[index];
+        String string = mQuotationsArray.get(index);
         String rString = "";
 
         while (string.length() > 15) {
