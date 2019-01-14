@@ -508,6 +508,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
                     if (currentInfo == null && nextInfo == null) {
                         cancelSyncGameStateTask();
+                        recvGameOverFromServer("", gameOverTimeMs);
                         return;
                     }
                     updatePlayerState(gameOverTimeMs, syncStatusTimes, onlineInfos, currentInfo, nextInfo);
