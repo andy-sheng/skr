@@ -118,7 +118,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .build());
         mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
-        mAgeTv.setText("18-22岁");
+        mAgeTv.setText(String.format(U.app().getString(com.component.busilib.R.string.age_tag), MyUserInfoManager.getInstance().getAge()));
         String sex = "未知";
         if (MyUserInfoManager.getInstance().getSex() == 1) {
             sex = "男";

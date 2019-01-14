@@ -166,7 +166,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/view_15_dp"
-            android:text="年龄段"
+            android:text="年龄"
             android:textColor="#0C2275" />
 
         <com.common.view.ex.ExTextView

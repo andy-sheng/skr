@@ -21,6 +21,7 @@ import com.module.ModuleServiceManager;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import io.reactivex.Observable;
@@ -135,8 +136,9 @@ public class MyUserInfoManager {
     }
 
     public void updateInfo(final MyInfoUpdateParams updateParams) {
-        updateInfo(updateParams,true);
+        updateInfo(updateParams, true);
     }
+
     /**
      * 更新用户信息
      */
@@ -244,6 +246,17 @@ public class MyUserInfoManager {
         return mUser != null ? mUser.getUserNickname() : "";
     }
 
+    public int getAge() {
+        if (mUser != null) {
+            String[] array = mUser.getBirthday().split("-");
+            if (!TextUtils.isEmpty(array[0])) {
+                int year = Integer.valueOf(array[0]);
+                return Calendar.getInstance().get(Calendar.YEAR) - year;
+            }
+        }
+        return 0;
+    }
+
     public String getAvatar() {
         return mUser != null ? mUser.getAvatar() : "";
     }
@@ -292,8 +305,9 @@ public class MyUserInfoManager {
     }
 
     public void uploadLocation() {
-       uploadLocation(null);
+        uploadLocation(null);
     }
+
     /**
      * 上传地理位置
      */

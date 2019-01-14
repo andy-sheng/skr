@@ -126,7 +126,7 @@ public class NormalLevelView extends RelativeLayout {
         }
 
         if (totalStats < selecStats) {
-            MyLog.e(TAG, "bindData exception" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
+            MyLog.e(TAG, "bindStarData" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
             return;
         }
 
