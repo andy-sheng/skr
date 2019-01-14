@@ -346,8 +346,13 @@ public class EngineManager implements AgoraOutCallback {
 
     }
 
-    public void setClientRole(boolean isAnchor) {
-        AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
+    public void setClientRole(final boolean isAnchor) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
+            }
+        });
     }
 
 
@@ -718,17 +723,29 @@ public class EngineManager implements AgoraOutCallback {
 
     /*音频高级扩展开始*/
 
-    public void setAudioEffectStyle(AudioEffectStyleEnum styleEnum) {
-        mConfig.setStyleEnum(styleEnum);
-        CbEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
-        AgoraEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
+    public void setAudioEffectStyle(final AudioEffectStyleEnum styleEnum) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                mConfig.setStyleEnum(styleEnum);
+                CbEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
+                AgoraEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
+            }
+        });
+
     }
 
     /**
      * 播放音效
      */
-    public void playEffects(EffectModel effectModel) {
-        AgoraEngineAdapter.getInstance().playEffects(effectModel);
+    public void playEffects(final EffectModel effectModel) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                AgoraEngineAdapter.getInstance().playEffects(effectModel);
+            }
+        });
+
     }
 
     public List<EffectModel> getAllEffects() {

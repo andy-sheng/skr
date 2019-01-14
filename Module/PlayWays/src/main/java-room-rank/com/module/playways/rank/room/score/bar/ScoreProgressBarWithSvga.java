@@ -114,13 +114,13 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
             mStarIv.setTranslationX(-getWidth() / 2 + tx);
             mStarIv.startAnimation();
 
-            if (progress > 97) {
+            if (progress > 90) {
                 startScoreAnimation("score_sss.svga", tx, R.drawable.ycjm_jdt_sss);
-            } else if (progress > 82) {
+            } else if (progress > 75) {
                 startScoreAnimation("score_ss.svga", tx, R.drawable.ycjm_jdt_ss);
-            } else if (progress > 70) {
-                startScoreAnimation("score_s.svga", tx, R.drawable.ycjm_jdt_s);
             } else if (progress > 60) {
+                startScoreAnimation("score_s.svga", tx, R.drawable.ycjm_jdt_s);
+            } else if (progress > 45) {
                 startScoreAnimation("score_a.svga", tx, R.drawable.ycjm_jdt_a);
             }
         }

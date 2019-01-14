@@ -119,10 +119,10 @@ public class ScorePrograssBar2 extends View {
 //        mPaintProgressBar.setColor(Color.CYAN);
 
         mLevelDrawables = new DrawableWithLocation[]{
-                new DrawableWithLocation(R.drawable.ycjm_jdt_a, getXByProgress(50), 50),
-                new DrawableWithLocation(R.drawable.ycjm_jdt_s, getXByProgress(65), 65),
-                new DrawableWithLocation(R.drawable.ycjm_jdt_ss, getXByProgress(80), 80),
-                new DrawableWithLocation(R.drawable.ycjm_jdt_sss, getXByProgress(95), 95),
+                new DrawableWithLocation(R.drawable.ycjm_jdt_a, getXByProgress(45), 45),
+                new DrawableWithLocation(R.drawable.ycjm_jdt_s, getXByProgress(60), 60),
+                new DrawableWithLocation(R.drawable.ycjm_jdt_ss, getXByProgress(75), 75),
+                new DrawableWithLocation(R.drawable.ycjm_jdt_sss, getXByProgress(90), 90),
         };
 
     }

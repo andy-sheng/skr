@@ -597,7 +597,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
                                 if (accFile != null && accFile.exists()) {
                                     EngineManager.getInstance().setClientRole(true);
-                                    EngineManager.getInstance().muteLocalAudioStream(false);
+//                                    EngineManager.getInstance().muteLocalAudioStream(false);
                                     EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath()
                                             , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
                                     /**
@@ -643,7 +643,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
             EngineManager.getInstance().stopAudioMixing();
             EngineManager.getInstance().setClientRole(false);
-            EngineManager.getInstance().muteLocalAudioStream(true);
+//            EngineManager.getInstance().muteLocalAudioStream(true);
             // 收到其他的人onMute消息 开始播放其他人的歌的歌词，应该提前下载好
             if (mRoomData.getRealRoundInfo() != null) {
                 // 其他人演唱

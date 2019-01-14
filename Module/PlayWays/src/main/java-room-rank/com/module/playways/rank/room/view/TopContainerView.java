@@ -138,16 +138,16 @@ public class TopContainerView extends RelativeLayout {
 
         mScoreProgressBar.setProgress1(progress);
         ScoreTipsView.Item item = new ScoreTipsView.Item();
-        if (progress >= 95) {
+        if (progress >= 90) {
             item.setLevel(ScoreTipsView.Level.Perfect);
-        } else if (progress >= 90) {
+        } else if (progress >= 75) {
             item.setLevel(ScoreTipsView.Level.Good);
-        } else if (progress > 70) {
+        } else if (progress >= 60) {
             item.setLevel(ScoreTipsView.Level.Ok);
-        } else if(progress<40){
+        } else if (progress < 40) {
             item.setLevel(ScoreTipsView.Level.Bad);
         }
-        if(item.getLevel()!=null) {
+        if (item.getLevel() != null) {
             if (mLastItem != null && item.getLevel() == mLastItem.getLevel()) {
                 item.setNum(mLastItem.getNum() + 1);
             }
