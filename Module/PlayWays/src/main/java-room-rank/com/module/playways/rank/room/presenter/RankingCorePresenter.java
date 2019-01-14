@@ -7,6 +7,7 @@ import android.support.v4.util.Pair;
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.player.exoplayer.ExoPlayer;
@@ -454,14 +455,14 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         mUiHandler.removeMessages(MSG_GET_VOTE);
                         Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
                         message.obj = new Pair<>(gameID, deep + 1);
-                        mUiHandler.sendMessageDelayed(message, 1000*deep);
+                        mUiHandler.sendMessageDelayed(message, 1000 * deep);
                     }
                 } else {
                     MyLog.e(TAG, "getVoteResult result failed, msg is " + result.getErrmsg());
                     mUiHandler.removeMessages(MSG_GET_VOTE);
                     Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
                     message.obj = new Pair<>(gameID, deep + 1);
-                    mUiHandler.sendMessageDelayed(message, 1000*deep);
+                    mUiHandler.sendMessageDelayed(message, 1000 * deep);
                 }
             }
 
@@ -471,7 +472,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 mUiHandler.removeMessages(MSG_GET_VOTE);
                 Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
                 message.obj = new Pair<Integer, Integer>(gameID, deep + 1);
-                mUiHandler.sendMessageDelayed(message, 1000*deep);
+                mUiHandler.sendMessageDelayed(message, 1000 * deep);
             }
         }, this);
     }
@@ -641,12 +642,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void run() {
                         int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
-                        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData,uid);
+                        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
                         String avatar = "";
                         if (playerInfoModel != null) {
                             avatar = playerInfoModel.getUserInfo().getAvatar();
                         }
-                        mIGameRuleView.startRivalCountdown(uid,avatar);
+                        mIGameRuleView.startRivalCountdown(uid, avatar);
                         checkMachineUser(uid);
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
@@ -1097,6 +1098,19 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             U.getToastUtil().showShort("游戏结束后，某一个人退出了");
         } else if (exitGameEvent.type == EXIT_GAME_OUT_ROUND) {   //我是观众，有一个人退出
             U.getToastUtil().showShort("游戏中，某一个人退出了");
+
+            UserInfoModel userInfo = mRoomData.getUserInfo(exitGameEvent.exitUserID);
+            BasePushInfo basePushInfo = new BasePushInfo();
+            basePushInfo.setRoomID(mRoomData.getGameId());
+            basePushInfo.setSender(new UserInfo.Builder()
+                    .setUserID(1)
+                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
+                    .setNickName("系统消息")
+                    .setSex(ESex.fromValue(0))
+                    .build());
+            String text = userInfo.getNickname() + "偷偷溜走啦～";
+            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+            EventBus.getDefault().post(msgEvent);
         }
     }
 

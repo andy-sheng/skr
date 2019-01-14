@@ -125,7 +125,7 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
                     if (voteInfoModelList != null && voteInfoModelList.size() > 0) {
                         ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
                         scoreDetailModel.parse(userScoreModelList);
-                        MyLog.d(TAG, " getVoteResult " + " scoreDetailModel " +  scoreDetailModel.toString());
+                        MyLog.d(TAG, " getVoteResult " + " voteInfoModelList " +  voteInfoModelList.toString());
                         MyLog.d(TAG, " getVoteResult " + " scoreDetailModel " +  scoreDetailModel.toString());
                         mView.showRecordView(new RecordData(voteInfoModelList, scoreDetailModel));
                     } else {
