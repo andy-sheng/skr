@@ -230,7 +230,7 @@ public class RecordTitleView extends RelativeLayout {
                 listener.onFinish();
             } else {
                 // 星星掉到0
-                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
+                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore() - 1,
                         0, new NormalLevelView.SVGAListener() {
                             @Override
                             public void onFinish() {
@@ -303,8 +303,8 @@ public class RecordTitleView extends RelativeLayout {
                 mSdvOwnLevel.bindStarData(mScoreDetailModel.getTotalStarLimit().getLimitNow(), mScoreDetailModel.getRankStarScore().getScoreNow());
             } else if (Math.abs(mScoreDetailModel.getStarChange()) > mScoreDetailModel.getRankStarScore().getScoreBefore()) {
                 // 减少的幅度超过之前,第三段现在的满掉到now
-                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getTotalStarLimit().getLimitNow(),
-                        mScoreDetailModel.getRankStarScore().getScoreNow() - 1, new NormalLevelView.SVGAListener() {
+                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getTotalStarLimit().getLimitNow() - 1,
+                        mScoreDetailModel.getRankStarScore().getScoreNow(), new NormalLevelView.SVGAListener() {
                             @Override
                             public void onFinish() {
                                 if (listener != null) {
@@ -314,8 +314,8 @@ public class RecordTitleView extends RelativeLayout {
                         });
             } else {
                 // 减少的幅度不超过之前,第三段现在的之前掉到now
-                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore(),
-                        mScoreDetailModel.getRankStarScore().getScoreNow() - 1, new NormalLevelView.SVGAListener() {
+                mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getRankStarScore().getScoreBefore() - 1,
+                        mScoreDetailModel.getRankStarScore().getScoreNow(), new NormalLevelView.SVGAListener() {
                             @Override
                             public void onFinish() {
                                 if (listener != null) {
