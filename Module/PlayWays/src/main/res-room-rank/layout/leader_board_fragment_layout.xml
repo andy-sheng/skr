@@ -76,6 +76,9 @@
                     android:background="@drawable/disanming_huizhang" />
 
                 <com.common.view.ex.ExTextView
+                    android:maxWidth="@dimen/view_90_dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textStyle="bold"
                     android:alpha="0.8"
                     android:textColor="#0C2275"
@@ -150,6 +153,9 @@
                     android:background="@drawable/dierming_huizhang" />
 
                 <com.common.view.ex.ExTextView
+                    android:maxWidth="@dimen/view_90_dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textStyle="bold"
                     android:alpha="0.8"
                     android:textColor="#0C2275"
@@ -228,6 +234,9 @@
                 android:background="@drawable/diyiming_huizhang" />
 
             <com.common.view.ex.ExTextView
+                android:maxWidth="@dimen/view_90_dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textStyle="bold"
                 android:alpha="0.8"
                 android:textColor="#0C2275"
