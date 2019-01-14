@@ -329,6 +329,9 @@ public class LbsUtils {
         }
 
         public static Location parseFromJsonStr(String str) {
+            if (str == null && "".equals(str)){
+                return null;
+            }
 
             try {
                 JSONObject jsonObject = new JSONObject(str);
