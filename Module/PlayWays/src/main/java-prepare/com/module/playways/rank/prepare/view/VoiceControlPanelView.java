@@ -1,8 +1,6 @@
 package com.module.playways.rank.prepare.view;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -10,6 +8,7 @@ import android.widget.SeekBar;
 
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.engine.EngineManager;
 import com.module.rank.R;
 
@@ -19,6 +18,11 @@ public class VoiceControlPanelView extends ScrollView {
     SeekBar mPeopleVoiceSeekbar;
     SeekBar mMusicVoiceSeekbar;
     RadioGroup mScenesBtnGroup;
+    ScenesSelectBtn mDefaultSbtn;
+    ScenesSelectBtn mKtvSbtn;
+    ScenesSelectBtn mRockSbtn;
+    ScenesSelectBtn mDianyinSbtn;
+    ScenesSelectBtn mKonglingSbtn;
 
     public VoiceControlPanelView(Context context) {
         super(context);
@@ -36,6 +40,19 @@ public class VoiceControlPanelView extends ScrollView {
         mPeopleVoiceSeekbar = (SeekBar) this.findViewById(R.id.people_voice_seekbar);
         mMusicVoiceSeekbar = (SeekBar) this.findViewById(R.id.music_voice_seekbar);
 
+        mDefaultSbtn = (ScenesSelectBtn)this.findViewById(R.id.default_sbtn);
+        mKtvSbtn = (ScenesSelectBtn)this.findViewById(R.id.ktv_sbtn);
+        mRockSbtn = (ScenesSelectBtn)this.findViewById(R.id.rock_sbtn);
+        mDianyinSbtn = (ScenesSelectBtn)this.findViewById(R.id.dianyin_sbtn);
+        mKonglingSbtn = (ScenesSelectBtn)this.findViewById(R.id.kongling_sbtn);
+
+        int marginLeft = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(53 * 5);
+        marginLeft = marginLeft / 6;
+
+        setMarginLeft(mKtvSbtn, marginLeft);
+        setMarginLeft(mRockSbtn, marginLeft);
+        setMarginLeft(mDianyinSbtn, marginLeft);
+        setMarginLeft(mKonglingSbtn, marginLeft);
 
 //        mPeopleVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
 //        mMusicVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
@@ -93,6 +110,11 @@ public class VoiceControlPanelView extends ScrollView {
                 }
             }
         });
+    }
+
+    private void setMarginLeft(ScenesSelectBtn scenesSelectBtn, int marginLeft){
+        RadioGroup.LayoutParams layoutParams = (RadioGroup.LayoutParams) scenesSelectBtn.getLayoutParams();
+        layoutParams.setMargins(marginLeft, 0,0,0);
     }
 
     public void bindData(){
