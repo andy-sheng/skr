@@ -447,7 +447,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
             }
             // 轮到他人唱了，倒计时因为播放readyGo没播放
             if (mPendingRivalCountdownUid != -1) {
-                startRivalCountdown(mPendingRivalCountdownUid, "");
+                startRivalCountdown(mPendingRivalCountdownUid,"");
                 mPendingRivalCountdownUid = -1;
             }
         }
