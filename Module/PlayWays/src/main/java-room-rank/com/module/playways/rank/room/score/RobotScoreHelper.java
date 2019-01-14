@@ -113,6 +113,8 @@ public class RobotScoreHelper {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            MyLog.e(e);
         } finally {
             try {
                 bufferedSource.close();
