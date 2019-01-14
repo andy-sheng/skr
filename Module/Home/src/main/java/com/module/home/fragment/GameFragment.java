@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.myinfo.event.ScoreDetailChangeEvent;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.rxretrofit.ApiManager;
@@ -101,7 +102,7 @@ public class GameFragment extends BaseFragment {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
-                        hasInit = true ;
+                        hasInit = true;
                         List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getString("userScore"), UserLevelModel.class);
                         // 展示段位信息
                         for (UserLevelModel userLevelModel : userLevelModels) {
@@ -188,6 +189,12 @@ public class GameFragment extends BaseFragment {
             mUserTitleView.setData();
             initLevel();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvnet(ScoreDetailChangeEvent scoreDetailChangeEvent) {
+        mLevelView.bindData(scoreDetailChangeEvent.level, scoreDetailChangeEvent.subLevel,
+                scoreDetailChangeEvent.totalStats, scoreDetailChangeEvent.selecStats, U.getDisplayUtils().dip2px(100));
     }
 
     @Override

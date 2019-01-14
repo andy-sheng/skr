@@ -12,6 +12,7 @@ import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.myinfo.event.ScoreDetailChangeEvent;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -324,6 +325,12 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid());
         initViewData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvnet(ScoreDetailChangeEvent scoreDetailChangeEvent) {
+        mLevelView.bindData(scoreDetailChangeEvent.level, scoreDetailChangeEvent.subLevel,
+                scoreDetailChangeEvent.totalStats, scoreDetailChangeEvent.selecStats, U.getDisplayUtils().dip2px(108));
     }
 
     @Override

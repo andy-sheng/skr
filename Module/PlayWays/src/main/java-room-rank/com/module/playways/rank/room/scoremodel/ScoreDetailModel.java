@@ -1,6 +1,9 @@
 package com.module.playways.rank.room.scoremodel;
 
 import com.common.log.MyLog;
+import com.common.core.myinfo.event.ScoreDetailChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -258,6 +261,16 @@ public class ScoreDetailModel {
                 default:
                     break;
             }
+        }
+
+        if (mRankScore.getLevelBefore() == mRankScore.getLevelNow()
+                && mSubRankScore.getLevelBefore() == mSubRankScore.getLevelNow()
+                && mRankStarScore.getScoreBefore() == mRankStarScore.getScoreNow()) {
+            // 段位无变化
+        } else {
+            // 最新段位
+            EventBus.getDefault().post(new ScoreDetailChangeEvent(mRankScore.getLevelNow(),
+                    mSubRankScore.getLevelNow(), mTotalStarLimit.getLimitNow(), mRankStarScore.getScoreNow()));
         }
     }
 
