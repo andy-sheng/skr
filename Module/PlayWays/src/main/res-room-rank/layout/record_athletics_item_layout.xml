@@ -82,13 +82,14 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_singer_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_28_dp"
         android:layout_marginTop="@dimen/view_22_dp"
         android:layout_toLeftOf="@+id/ll_star_container"
         android:layout_toRightOf="@+id/sdv_singer_icon"
         android:ellipsize="end"
+        android:gravity="left"
         android:maxLines="1"
         android:text="酒彪子"
         android:textColor="@color/white"

@@ -203,7 +203,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     .setNickName("系统消息")
                     .setSex(ESex.fromValue(0))
                     .build());
-            String text = "提示：撕歌倡导文明游戏， 遇到恶意演唱、低俗评论的 用户，平台将给予相应惩罚";
+            String text = "提示：撕哥一声吼：请文明参赛，发现坏蛋请用力举报！";
             CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
             EventBus.getDefault().post(msgEvent);
 //            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
