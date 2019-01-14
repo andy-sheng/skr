@@ -24,6 +24,7 @@ import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
@@ -414,7 +415,12 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void run() {
                         int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
-                        mIGameRuleView.startRivalCountdown(uid);
+                        String avatar = "";
+                        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+                        if(playerInfoModel != null && playerInfoModel.getUserInfo() != null){
+                            avatar = playerInfoModel.getUserInfo().getAvatar();
+                        }
+                        mIGameRuleView.startRivalCountdown(uid, avatar);
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
                                     + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
