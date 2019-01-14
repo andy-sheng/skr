@@ -11,4 +11,12 @@ public class VerifyCodeErrorEvent {
         this.errno = errno;
         this.errmsg = errmsg;
     }
+
+    public int getErrno() {
+        return errno;
+    }
+
+    public String getErrmsg() {
+        return errmsg;
+    }
 }

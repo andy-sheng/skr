@@ -1,16 +1,15 @@
 package com.common.core.login.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.common.base.BaseFragment;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
+import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -18,12 +17,14 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.jakewharton.rxbinding2.view.RxView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -109,6 +110,14 @@ public class LoginByPhoneFragment extends BaseFragment {
                 });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(VerifyCodeErrorEvent event) {
+        MyLog.d(TAG, "onEventMainThread" + " event=" + event);
+        if(event.getErrno() == 101){
+            U.getToastUtil().showShort("验证码错误");
+        }
+    }
+
 
     private void sendSmsVerifyCode(final String phoneNumber) {
         MyLog.d(TAG, "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);
@@ -178,7 +187,7 @@ public class LoginByPhoneFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override
