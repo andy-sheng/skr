@@ -9,7 +9,7 @@ import java.util.List;
 public interface IGameRuleView {
     void startSelfCountdown(Runnable countDownOver);
 
-    void startRivalCountdown(int uid);
+    void startRivalCountdown(int uid,String avatar);
 
     void userExit();
 

@@ -641,7 +641,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                     @Override
                     public void run() {
                         int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
-                        mIGameRuleView.startRivalCountdown(uid);
+                        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData,uid);
+                        String avatar = "";
+                        if (playerInfoModel != null) {
+                            avatar = playerInfoModel.getUserInfo().getAvatar();
+                        }
+                        mIGameRuleView.startRivalCountdown(uid,avatar);
                         checkMachineUser(uid);
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")

@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
@@ -158,7 +159,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     Runnable mPendingSelfCountDownRunnable;
 
-    int mPendingRivalCountdownUid = -1;
+    PendingRivalData mPendingRivalCountdown;
 
     int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
 
@@ -663,9 +664,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mPendingSelfCountDownRunnable = null;
             }
             // 轮到他人唱了，倒计时因为播放readyGo没播放
-            if (mPendingRivalCountdownUid != -1) {
-                startRivalCountdown(mPendingRivalCountdownUid);
-                mPendingRivalCountdownUid = -1;
+            if (mPendingRivalCountdown != null) {
+                startRivalCountdown(mPendingRivalCountdown.uid,mPendingRivalCountdown.avatar);
+                mPendingRivalCountdown = null;
             }
             mRankingContainer.removeView(mReadyGoBg);
         }
@@ -756,6 +757,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
+        mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+        .build());
         mManyLyricsView.setVisibility(View.GONE);
         mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
@@ -796,7 +799,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      * 保证在主线程
      */
     @Override
-    public void startRivalCountdown(int uid) {
+    public void startRivalCountdown(int uid,String avatar) {
+        mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
         mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
@@ -812,7 +816,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 //        mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
-            mPendingRivalCountdownUid = uid;
+            mPendingRivalCountdown = new PendingRivalData(uid,avatar);
         } else {
             MyLog.w(TAG, "用户" + uid + "的演唱开始了");
             if (mTurnChangeView.setData(mRoomData)) {
@@ -1111,4 +1115,13 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 });
     }
 
+    static class PendingRivalData{
+        int uid;
+        String avatar;
+
+        public PendingRivalData(int uid, String avatar) {
+            this.uid = uid;
+            this.avatar = avatar;
+        }
+    }
 }
