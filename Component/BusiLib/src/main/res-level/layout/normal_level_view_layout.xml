@@ -18,4 +18,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_70_dp" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/star_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/level_iv"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFED61"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone" />
+
 </merge>

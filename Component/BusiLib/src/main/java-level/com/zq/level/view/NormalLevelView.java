@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -40,6 +41,7 @@ public class NormalLevelView extends RelativeLayout {
 
     ImageView mLevelIv; // 大段位
     ImageView mSubLeveIv;  // 子段位
+    ExTextView mStarTv;   // 超过星星数限制
 
     List<ImageView> starts = new ArrayList<>(); // 星星数
 
@@ -69,6 +71,8 @@ public class NormalLevelView extends RelativeLayout {
         inflate(getContext(), R.layout.normal_level_view_layout, this);
         mLevelIv = (ImageView) this.findViewById(R.id.level_iv);
         mSubLeveIv = (ImageView) this.findViewById(R.id.sub_leve_iv);
+        mStarTv = (ExTextView) this.findViewById(R.id.star_tv);
+
     }
 
     public void bindData(int level, int subLevel, int totalStats, int selecStats) {
@@ -93,7 +97,14 @@ public class NormalLevelView extends RelativeLayout {
             mSubLeveIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
         }
 
-        if (totalStats == 0 || totalStats < selecStats) {
+        if (totalStats == 0 || totalStats > 6) {
+            mStarTv.setVisibility(VISIBLE);
+            mStarTv.setText("x" + selecStats);
+            mStarTv.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang), null, null, null);
+            return;
+        }
+
+        if (totalStats < selecStats) {
             MyLog.e(TAG, "bindData exception" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
             return;
         }
