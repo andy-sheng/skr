@@ -139,7 +139,7 @@ public class ApiManager {
                         @Override
                         public void log(String message) {
                             if (MyLog.isDebugLogOpen()) {
-                                MyLog.d(TAG, message);
+                                MyLog.w(TAG, message);
                             }
                         }
                     });
