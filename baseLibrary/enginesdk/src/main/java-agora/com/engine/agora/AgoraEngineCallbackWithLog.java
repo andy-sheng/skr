@@ -58,7 +58,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-        MyLog.d(TAG, "onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
+        MyLog.w(TAG, "onJoinChannelSuccess" + " channel=" + channel + " uid=" + uid + " elapsed=" + elapsed);
         super.onJoinChannelSuccess(channel, uid, elapsed);
     }
 
@@ -70,25 +70,25 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onLeaveChannel(RtcStats stats) {
-        MyLog.d(TAG, "onLeaveChannel" + " stats=" + stats);
+        MyLog.w(TAG, "onLeaveChannel" + " stats=" + stats);
         super.onLeaveChannel(stats);
     }
 
     @Override
     public void onClientRoleChanged(int oldRole, int newRole) {
-        MyLog.d(TAG, "onClientRoleChanged" + " oldRole=" + oldRole + " newRole=" + newRole);
+        MyLog.w(TAG, "onClientRoleChanged" + " oldRole=" + oldRole + " newRole=" + newRole);
         super.onClientRoleChanged(oldRole, newRole);
     }
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
-        MyLog.d(TAG, "onUserJoined" + " uid=" + uid + " elapsed=" + elapsed);
+        MyLog.w(TAG, "onUserJoined" + " uid=" + uid + " elapsed=" + elapsed);
         super.onUserJoined(uid, elapsed);
     }
 
     @Override
     public void onUserOffline(int uid, int reason) {
-        MyLog.d(TAG, "onUserOffline" + " uid=" + uid + " reason=" + reason);
+        MyLog.w(TAG, "onUserOffline" + " uid=" + uid + " reason=" + reason);
         super.onUserOffline(uid, reason);
     }
 

@@ -824,6 +824,7 @@ public class EngineManager implements AgoraOutCallback {
                         MyLog.w(TAG, "该用户还未在频道中，播伴奏挂起");
                         canGo = false;
                     } else {
+                        MyLog.w(TAG, "用户已经在频道中继续走起");
                         canGo = true;
                     }
                 }

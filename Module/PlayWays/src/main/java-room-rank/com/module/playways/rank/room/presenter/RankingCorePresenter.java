@@ -591,31 +591,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         public void run() {
                             //再次确认
                             if (mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                                // 开始开始混伴奏，开始解除引擎mute
-                                File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
-                                File midiFile = SongResUtils.getMIDIFileByUrl(mRoomData.getSongModel().getMidi());
-
-                                if (accFile != null && accFile.exists()) {
-                                    EngineManager.getInstance().setClientRole(true);
-//                                    EngineManager.getInstance().muteLocalAudioStream(false);
-                                    EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(),accFile.getAbsolutePath()
-                                            , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
-                                    /**
-                                     * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
-                                     */
-                                    EngineManager.getInstance().setAudioMixingPosition(0);
-                                    // 还应开始播放歌词
-                                    mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-                                    mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
-                                    MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
-
-                                    //开始录制声音
-                                    if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
-                                        // 需要上传音频伪装成机器人
-                                        EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
-                                    }
-                                    mRobotScoreHelper = new RobotScoreHelper();
-                                }
+                                EngineManager.getInstance().setClientRole(true);
+                                // 等待角色变换成功回调
                             }
                         }
                     });
@@ -912,6 +889,40 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
             int userId = event.getUserStatus().getUserId();
             onUserSpeakFromEngine("TYPE_USER_JOIN", userId);
+        } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+            EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
+            if(roleChangeInfo.getNewRole() == 1){
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 开始开始混伴奏，开始解除引擎mute
+                        File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
+                        File midiFile = SongResUtils.getMIDIFileByUrl(mRoomData.getSongModel().getMidi());
+
+                        if (accFile != null && accFile.exists()) {
+
+//                                    EngineManager.getInstance().muteLocalAudioStream(false);
+                            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(),accFile.getAbsolutePath()
+                                    , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
+                            /**
+                             * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
+                             */
+                            EngineManager.getInstance().setAudioMixingPosition(0);
+                            // 还应开始播放歌词
+                            mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
+                            mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
+                            MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
+
+                            //开始录制声音
+                            if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+                                // 需要上传音频伪装成机器人
+                                EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                            }
+                            mRobotScoreHelper = new RobotScoreHelper();
+                        }
+                    }
+                });
+            }
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
 //            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
 //                if (event.getObj() != null) {
@@ -936,8 +947,6 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 //可以发结束轮次的通知了
                 sendRoundOverInfo();
             }
-        } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
-
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
             int muteUserId = event.getUserStatus().getUserId();
             if (!event.getUserStatus().isAudioMute()) {
