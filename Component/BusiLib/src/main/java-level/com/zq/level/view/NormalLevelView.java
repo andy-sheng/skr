@@ -97,22 +97,10 @@ public class NormalLevelView extends RelativeLayout {
             mSubLeveIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
         }
 
-        if (totalStats == 0 || totalStats > 6) {
-            mStarTv.setVisibility(VISIBLE);
-            mStarTv.setText("x" + selecStats);
-            mStarTv.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang), null, null, null);
-            return;
-        }
-
-        if (totalStats < selecStats) {
-            MyLog.e(TAG, "bindData exception" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
-            return;
-        }
-
         initStart();
     }
 
-    private void bindStarData(int totalStats, int selecStats) {
+    public void bindStarData(int totalStats, int selecStats) {
         this.totalStats = totalStats;
         this.selecStats = selecStats;
         starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
@@ -128,6 +116,18 @@ public class NormalLevelView extends RelativeLayout {
             }
             starts.clear();
             rightStarts.clear();
+        }
+
+        if (totalStats == 0 || totalStats > 6) {
+            mStarTv.setVisibility(VISIBLE);
+            mStarTv.setText("x" + selecStats);
+            mStarTv.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang), null, null, null);
+            return;
+        }
+
+        if (totalStats < selecStats) {
+            MyLog.e(TAG, "bindData exception" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
+            return;
         }
 
         float widDis = starTotalWidth / (totalStats + 1); //横向间距
@@ -208,8 +208,13 @@ public class NormalLevelView extends RelativeLayout {
         // 先隐藏之前的静态段位
         mLevelIv.setVisibility(GONE);
         mSubLeveIv.setVisibility(GONE);
-        // 现在段位下星星，并全变灰
-        bindStarData(totalStatsNow, 0);
+        if (totalStatsNow == 0 || totalStatsNow > 6) {
+            // 星星超过限制，不用动
+        } else {
+            // 现在段位下星星，并全变灰
+            bindStarData(totalStatsNow, 0);
+        }
+
         // 播放段位动画
         final SVGAImageView levelChange = new SVGAImageView(getContext());
         levelChange.setClearsAfterStop(false);   // 停在最后一帧
