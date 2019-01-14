@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -23,6 +24,8 @@ import com.just.agentweb.AgentWebSettingsImpl;
 import com.just.agentweb.AgentWebUIControllerImplBase;
 import com.just.agentweb.MiddlewareWebChromeBase;
 import com.just.agentweb.MiddlewareWebClientBase;
+
+import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
 
 @Route(path = "/common/WebViewActivity")
 public class AgentWebActivity extends BaseActivity {
@@ -77,6 +80,15 @@ public class AgentWebActivity extends BaseActivity {
         mTitlebar = (CommonTitleBar) this.findViewById(R.id.titlebar);
         mContentContainer = (RelativeLayout) this.findViewById(R.id.content_container);
         buildAgentWeb();
+
+        mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
+            @Override
+            public void onClicked(View v, int action, String extra) {
+                if(action == ACTION_LEFT_TEXT){
+                    finish();
+                }
+            }
+        });
     }
 
     /**

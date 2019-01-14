@@ -7,6 +7,9 @@
 
 
     <com.common.view.titlebar.CommonTitleBar
+        app:leftType="textView"
+        app:leftTextColor="@color/black"
+        app:leftDrawable="@drawable/shadow_left"
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
