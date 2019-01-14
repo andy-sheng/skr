@@ -1,6 +1,8 @@
 package com.common.core.userinfo.model;
 
-public class UserRankModel {
+import java.io.Serializable;
+
+public class UserRankModel implements Serializable {
 
     public static final int COUNTRY = 1;     //国家
     public static final int PROVINCIAL = 2;  //省会

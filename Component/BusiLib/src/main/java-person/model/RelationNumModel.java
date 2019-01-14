@@ -1,6 +1,8 @@
 package model;
 
-public class RelationNumModel {
+import java.io.Serializable;
+
+public class RelationNumModel implements Serializable {
     /**
      * relation : 1
      * cnt : 4

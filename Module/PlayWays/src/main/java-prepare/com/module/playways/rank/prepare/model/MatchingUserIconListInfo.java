@@ -1,8 +1,9 @@
 package com.module.playways.rank.prepare.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MatchingUserIconListInfo {
+public class MatchingUserIconListInfo implements Serializable {
 
     private List<MatchIconModel> players;
 

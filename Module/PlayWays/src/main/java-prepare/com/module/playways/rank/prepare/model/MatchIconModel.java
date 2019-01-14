@@ -1,6 +1,8 @@
 package com.module.playways.rank.prepare.model;
 
-public class MatchIconModel {
+import java.io.Serializable;
+
+public class MatchIconModel implements Serializable {
     int sex;
     String avatarURL;
 

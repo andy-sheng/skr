@@ -3,10 +3,11 @@ package com.module.playways.rank.room.model;
 import com.common.log.MyLog;
 import com.zq.live.proto.Room.VoteInfo;
 
+import java.io.Serializable;
 import java.util.List;
 
 // 投票打分信息
-public class VoteInfoModel {
+public class VoteInfoModel implements Serializable {
     /**
      * userID : 122
      * itemID : 1

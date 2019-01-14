@@ -4,11 +4,12 @@ import com.common.log.MyLog;
 import com.zq.live.proto.Room.ScoreItem;
 import com.zq.live.proto.Room.UserScoreRecord;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 // 分值信息
-public class UserScoreModel {
+public class UserScoreModel implements Serializable {
     /**
      * userID : 123
      * scoreType : 1

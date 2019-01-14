@@ -1,7 +1,9 @@
 package com.common.core.userinfo.model;
 
+import java.io.Serializable;
+
 // 用来解析排位信息的类
-public class RankInfoModel {
+public class RankInfoModel implements Serializable {
     /**
      * userID : 1000166
      * rankSeq : 1

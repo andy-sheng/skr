@@ -1,7 +1,9 @@
 package com.common.core.userinfo.model;
 
+import java.io.Serializable;
+
 // 统计用户胜率
-public class GameStatisModel {
+public class GameStatisModel implements Serializable {
     /**
      * mode : 1
      * totalTimes : 1

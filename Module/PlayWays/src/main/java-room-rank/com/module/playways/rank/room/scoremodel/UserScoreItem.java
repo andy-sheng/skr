@@ -3,7 +3,9 @@ package com.module.playways.rank.room.scoremodel;
 import com.common.log.MyLog;
 import com.zq.live.proto.Room.ScoreItem;
 
-public class UserScoreItem {
+import java.io.Serializable;
+
+public class UserScoreItem implements Serializable {
     /**
      * why : 段位提升了
      * score : 40

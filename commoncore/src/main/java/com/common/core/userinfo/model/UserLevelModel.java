@@ -1,6 +1,8 @@
 package com.common.core.userinfo.model;
 
-public class UserLevelModel {
+import java.io.Serializable;
+
+public class UserLevelModel implements Serializable {
     public static int RANKING_TYPE = 1;
     public static int SUB_RANKING_TYPE = 2;
     public static int TOTAL_RANKING_STAR_TYPE = 3;
