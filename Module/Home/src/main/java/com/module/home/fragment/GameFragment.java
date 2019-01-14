@@ -39,13 +39,13 @@ public class GameFragment extends BaseFragment {
 
     public final static String TAG = "GameFragment";
 
-    UserInfoTitleView userTitleView;
+    UserInfoTitleView mUserTitleView;
     NormalLevelView mLevelView;
 
-    int rank = 0;           //当前父段位
-    int subRank = 0;        //当前子段位
-    int starNum = 0;        //当前星星
-    int starLimit = 0;      //当前星星上限
+    int mRank = 0;           //当前父段位
+    int mSubRank = 0;        //当前子段位
+    int mStarNum = 0;        //当前星星
+    int mStarLimit = 0;      //当前星星上限
 
     boolean hasInit = false;
 
@@ -59,7 +59,7 @@ public class GameFragment extends BaseFragment {
         ExImageView ivAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
         ExImageView ivNormalPk = (ExImageView) mRootView.findViewById(R.id.iv_yule_game);
         ExImageView mIvYulePk = (ExImageView) mRootView.findViewById(R.id.iv_singend_game);
-        userTitleView = (UserInfoTitleView) mRootView.findViewById(R.id.user_title_view);
+        mUserTitleView = (UserInfoTitleView) mRootView.findViewById(R.id.user_title_view);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
 
         initLevel();
@@ -106,16 +106,16 @@ public class GameFragment extends BaseFragment {
                         // 展示段位信息
                         for (UserLevelModel userLevelModel : userLevelModels) {
                             if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                                rank = userLevelModel.getScore();
+                                mRank = userLevelModel.getScore();
                             } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                                subRank = userLevelModel.getScore();
+                                mSubRank = userLevelModel.getScore();
                             } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
-                                starNum = userLevelModel.getScore();
+                                mStarNum = userLevelModel.getScore();
                             } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
-                                starLimit = userLevelModel.getScore();
+                                mStarLimit = userLevelModel.getScore();
                             }
                         }
-                        mLevelView.bindData(rank, subRank, starLimit, starNum, U.getDisplayUtils().dip2px(100));
+                        mLevelView.bindData(mRank, mSubRank, mStarLimit, mStarNum, U.getDisplayUtils().dip2px(100));
                         mLevelView.setScaleX(0.8f);
                         mLevelView.setScaleY(0.8f);
                     }
@@ -179,13 +179,13 @@ public class GameFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
-        userTitleView.destroy();
+        mUserTitleView.destroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         if (!hasInit) {
-            userTitleView.setData();
+            mUserTitleView.setData();
             initLevel();
         }
     }

@@ -8,6 +8,7 @@ public interface RouterConstants {
     String ACTIVITY_HOME = "/home/HomeActivity";
     String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
     String ACTIVITY_LOGIN = "/core/LoginActivity";
+    String ACTIVITY_SETTING = "/home/SettingActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
 
     String ACTIVITY_AUDIOROOM = "/rankingmode/AudioRoomActivity";

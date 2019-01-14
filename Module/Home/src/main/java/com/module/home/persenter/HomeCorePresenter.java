@@ -23,6 +23,7 @@ import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
+import com.module.home.view.IHomeActivity;
 import com.module.home.view.PermissionTipsView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -45,6 +46,8 @@ public class HomeCorePresenter {
 
     Handler mUiHandler = new Handler();
 
+    IHomeActivity mView;
+
     private Runnable mNetworkChangeRunnable = new Runnable() {
         @Override
         public void run() {
@@ -52,7 +55,8 @@ public class HomeCorePresenter {
         }
     };
 
-    public HomeCorePresenter() {
+    public HomeCorePresenter(IHomeActivity view) {
+        mView = view;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -245,6 +249,7 @@ public class HomeCorePresenter {
         }
         if (!UserAccountManager.getInstance().hasAccount()) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+            mView.onLogoff();
         }
     }
 

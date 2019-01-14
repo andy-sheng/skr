@@ -83,21 +83,5 @@ public class ChannelUtils {
         return getChannel().equals("SANDBOX");
     }
 
-    public void gotoMarketDetail(Activity activity){
-//        String appPkg = U.getAppInfoUtils().getPackageName();
-        String appPkg = "com.wali.live";
-        String marketPkg = RomUtils.getRomMarketPkgName();
-        try {
-            Uri uri = Uri.parse("market://details?id=" + appPkg);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            if (!TextUtils.isEmpty(marketPkg)) {
-                intent.setPackage(marketPkg);
-            }
 
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

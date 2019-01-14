@@ -82,6 +82,7 @@ public class UserInfoTitleView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        setData();
         getOwnInfo();
     }
 

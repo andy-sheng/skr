@@ -133,11 +133,8 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SETTING)
+                                .navigation();
                     }
                 });
 

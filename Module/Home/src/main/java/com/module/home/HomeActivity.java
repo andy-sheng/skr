@@ -25,6 +25,7 @@ import com.module.RouterConstants;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.home.persenter.HomeCorePresenter;
+import com.module.home.view.IHomeActivity;
 import com.module.msg.IMsgService;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -36,7 +37,7 @@ import io.reactivex.functions.Consumer;
 
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     LinearLayout mBottomContainer;
     ExImageView mGameBtn;
@@ -70,9 +71,9 @@ public class HomeActivity extends BaseActivity {
             @Override
             public Fragment getItem(int position) {
                 MyLog.d(TAG, "getItem" + " position=" + position);
-                if (position == 0) {
+                if (position == 1) {
                     return new GameFragment();
-                } else if (position == 1) {
+                } else if (position == 0) {
                     if (mMsgService == null) {
                         return new PersonFragment();
                     } else {
@@ -97,7 +98,7 @@ public class HomeActivity extends BaseActivity {
         mMainVp.setAdapter(fragmentPagerAdapter);
         mGameBtn.setSelected(true);
 
-        mHomePresenter = new HomeCorePresenter();
+        mHomePresenter = new HomeCorePresenter(this);
 
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
 
@@ -106,7 +107,7 @@ public class HomeActivity extends BaseActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        mMainVp.setCurrentItem(0, false);
+                        mMainVp.setCurrentItem(1, false);
                         mGameBtn.setSelected(true);
                         mMessageBtn.setSelected(false);
                         mPersonInfoBtn.setSelected(false);
@@ -118,7 +119,7 @@ public class HomeActivity extends BaseActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        mMainVp.setCurrentItem(1, false);
+                        mMainVp.setCurrentItem(0, false);
                         mGameBtn.setSelected(false);
                         mMessageBtn.setSelected(true);
                         mPersonInfoBtn.setSelected(false);
@@ -136,6 +137,7 @@ public class HomeActivity extends BaseActivity {
                         mPersonInfoBtn.setSelected(true);
                     }
                 });
+        mMainVp.setCurrentItem(1, false);
         mFromCreate = true;
     }
 
@@ -194,5 +196,10 @@ public class HomeActivity extends BaseActivity {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void onLogoff() {
+        mMainVp.setCurrentItem(1, false);
     }
 }

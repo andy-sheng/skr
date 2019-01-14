@@ -1,8 +1,11 @@
 package com.module.home.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -10,6 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.utils.RomUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
@@ -47,7 +51,7 @@ public class SettingFragment extends BaseFragment {
     ExTextView mCacheSizeTv;
 
     static final String[] CACHE_CAN_DELETE = {
-            "fresco", "gif","upload"
+            "fresco", "gif", "upload"
     };
 
     @Override
@@ -113,7 +117,7 @@ public class SettingFragment extends BaseFragment {
                     public void accept(Object o) {
                         // TODO: 2018/12/26 用户服务协议
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                .withString(RouterConstants.KEY_WEB_URL,"https://api.inframe.mobi/user-agreement.html")
+                                .withString(RouterConstants.KEY_WEB_URL, "https://api.inframe.mobi/user-agreement.html")
                                 .navigation();
                     }
                 });
@@ -123,7 +127,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getChannelUtils().gotoMarketDetail(getActivity());
+                        gotoMarketDetail(getActivity());
                     }
                 });
 
@@ -133,6 +137,7 @@ public class SettingFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         UserAccountManager.getInstance().logoff();
+                        onBackPressed();
                     }
                 });
         long cacheSize = U.getPreferenceUtils().getSettingLong("key_cache_size", 0);
@@ -143,7 +148,7 @@ public class SettingFragment extends BaseFragment {
             computeCache();
         }
 
-        mVersionTv.setText("当前版本:"+U.getAppInfoUtils().getVersionName());
+        mVersionTv.setText("当前版本:" + U.getAppInfoUtils().getVersionName());
 
         mVersionTv.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -232,6 +237,25 @@ public class SettingFragment extends BaseFragment {
         mCacheSizeTv.setText(s);
     }
 
+    void gotoMarketDetail(Activity activity) {
+//        String appPkg = U.getAppInfoUtils().getPackageName();
+        String appPkg = "com.wali.live";
+        String marketPkg = RomUtils.getRomMarketPkgName();
+        try {
+            Uri uri = Uri.parse("market://details?id=" + appPkg);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (!TextUtils.isEmpty(marketPkg)) {
+                intent.setPackage(marketPkg);
+            }
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public boolean useEventBus() {
         return false;
@@ -239,7 +263,7 @@ public class SettingFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        U.getFragmentUtils().popFragment(SettingFragment.this);
+        getActivity().finish();
         return true;
     }
 }
