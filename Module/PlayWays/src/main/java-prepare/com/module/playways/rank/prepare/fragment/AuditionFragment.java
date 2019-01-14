@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.player.IPlayerCallback;
 import com.common.player.exoplayer.ExoPlayer;
@@ -471,7 +472,7 @@ public class AuditionFragment extends BaseFragment {
 
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
-            EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
+            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(),accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
         }
     }
 

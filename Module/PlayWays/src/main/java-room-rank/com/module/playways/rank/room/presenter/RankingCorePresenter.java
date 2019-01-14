@@ -598,7 +598,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                 if (accFile != null && accFile.exists()) {
                                     EngineManager.getInstance().setClientRole(true);
 //                                    EngineManager.getInstance().muteLocalAudioStream(false);
-                                    EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath()
+                                    EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(),accFile.getAbsolutePath()
                                             , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
                                     /**
                                      * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
