@@ -228,7 +228,10 @@ public class AuditionFragment extends BaseFragment {
                             .setText("保存设置成功\n已应用到所有对局")
                             .build());
 
-                    U.getFragmentUtils().popFragment(AuditionFragment.this);
+                    mUiHanlder.postDelayed(() -> {
+                        getActivity().finish();
+                    }, 2000);
+//                    U.getFragmentUtils().popFragment(AuditionFragment.this);
                 });
 
         RxView.clicks(mFlProgressContainer).throttleFirst(500, TimeUnit.MILLISECONDS)
