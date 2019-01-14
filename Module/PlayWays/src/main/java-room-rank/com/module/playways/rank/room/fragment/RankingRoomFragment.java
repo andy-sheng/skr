@@ -135,7 +135,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                     mPendingSelfCountDownRunnable = null;
                 }
                 onReadyGoOver();
-            }else if(SHOW_RIVAL_LYRIC == msg.what){
+            } else if (SHOW_RIVAL_LYRIC == msg.what) {
                 mFloatLyricsView.setVisibility(View.VISIBLE);
             }
         }
@@ -665,7 +665,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             }
             // 轮到他人唱了，倒计时因为播放readyGo没播放
             if (mPendingRivalCountdown != null) {
-                startRivalCountdown(mPendingRivalCountdown.uid,mPendingRivalCountdown.avatar);
+                startRivalCountdown(mPendingRivalCountdown.uid, mPendingRivalCountdown.avatar);
                 mPendingRivalCountdown = null;
             }
             mRankingContainer.removeView(mReadyGoBg);
@@ -758,7 +758,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-        .build());
+                .build());
         mManyLyricsView.setVisibility(View.GONE);
         mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
@@ -799,7 +799,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
      * 保证在主线程
      */
     @Override
-    public void startRivalCountdown(int uid,String avatar) {
+    public void startRivalCountdown(int uid, String avatar) {
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
         mFloatLyricsView.setVisibility(View.GONE);
@@ -816,7 +816,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 //        mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
-            mPendingRivalCountdown = new PendingRivalData(uid,avatar);
+            mPendingRivalCountdown = new PendingRivalData(uid, avatar);
         } else {
             MyLog.w(TAG, "用户" + uid + "的演唱开始了");
             if (mTurnChangeView.setData(mRoomData)) {
@@ -838,6 +838,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void showRecordView(RecordData recordData) {
         MyLog.d(TAG, "showRecordView" + " recordData=" + recordData);
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+        }
         startGameEndAniamtion(new Runnable() {
             @Override
             public void run() {
@@ -859,6 +862,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void showVoteView() {
         MyLog.d(TAG, "showVoteView");
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+        }
         startGameEndAniamtion(new Runnable() {
             @Override
             public void run() {
@@ -1117,7 +1123,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 });
     }
 
-    static class PendingRivalData{
+    static class PendingRivalData {
         int uid;
         String avatar;
 

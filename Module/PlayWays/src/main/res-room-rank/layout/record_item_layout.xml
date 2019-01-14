@@ -1,82 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_86_dp">
+    android:layout_height="@dimen/view_86_dp"
+    android:orientation="vertical">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdv_singer_icon"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_21_dp"
         android:layout_width="@dimen/view_49_dp"
-        android:layout_height="@dimen/view_49_dp" />
+        android:layout_height="@dimen/view_49_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_21_dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_ranking"
-        android:layout_marginTop="@dimen/view_13_dp"
-        android:layout_marginLeft="@dimen/view_60_dp"
         android:layout_width="@dimen/view_28_dp"
-        android:layout_height="@dimen/view_28_dp" />
-
-    <com.common.view.ex.ExTextView
-        android:layout_marginTop="@dimen/view_22_dp"
-        android:layout_marginLeft="@dimen/view_28_dp"
-        android:layout_toRightOf="@+id/sdv_singer_icon"
-        android:text="酒彪子"
-        android:textSize="@dimen/textsize_16_dp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:id="@+id/tv_singer_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.common.view.ex.ExTextView
-        android:maxLines="1"
-        android:gravity="left"
-        android:ellipsize="end"
-        android:layout_toLeftOf="@+id/ll_star_container"
-        android:layout_marginBottom="@dimen/view_50_dp"
-        android:id="@+id/tv_song_name"
-        android:layout_alignLeft="@+id/tv_singer_name"
-        android:text=""
-        android:textSize="@dimen/textsize_12_dp"
-        android:textStyle="bold"
-        android:textColor="@color/white_trans_50"
-        android:layout_below="@+id/tv_singer_name"
-        android:layout_marginTop="@dimen/view_1_dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/view_28_dp"
+        android:layout_marginLeft="@dimen/view_60_dp"
+        android:layout_marginTop="@dimen/view_13_dp" />
 
     <LinearLayout
         android:id="@+id/ll_star_container"
-        android:orientation="horizontal"
-        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:orientation="horizontal">
+
         <com.common.view.ex.ExImageView
-            app:bl_selected_drawable="@drawable/record_light_enable"
-            app:bl_unSelected_drawable="@drawable/record_light_disable"
             android:id="@+id/iv_light_one"
             android:layout_width="@dimen/view_22_dp"
-            android:layout_height="@dimen/view_20_dp" />
+            android:layout_height="@dimen/view_20_dp"
+            app:bl_selected_drawable="@drawable/record_light_enable"
+            app:bl_unSelected_drawable="@drawable/record_light_disable" />
 
         <com.common.view.ex.ExImageView
-            app:bl_selected_drawable="@drawable/record_light_enable"
-            app:bl_unSelected_drawable="@drawable/record_light_disable"
-            android:layout_marginLeft="@dimen/view_7_dp"
             android:id="@+id/iv_light_two"
             android:layout_width="@dimen/view_22_dp"
-            android:layout_height="@dimen/view_20_dp" />
+            android:layout_height="@dimen/view_20_dp"
+            android:layout_marginLeft="@dimen/view_7_dp"
+            app:bl_selected_drawable="@drawable/record_light_enable"
+            app:bl_unSelected_drawable="@drawable/record_light_disable" />
 
         <com.common.view.ex.ExImageView
-            app:bl_selected_drawable="@drawable/record_light_enable"
-            app:bl_unSelected_drawable="@drawable/record_light_disable"
-            android:layout_marginLeft="@dimen/view_7_dp"
             android:id="@+id/iv_light_three"
             android:layout_width="@dimen/view_22_dp"
-            android:layout_height="@dimen/view_20_dp" />
+            android:layout_height="@dimen/view_20_dp"
+            android:layout_marginLeft="@dimen/view_7_dp"
+            app:bl_selected_drawable="@drawable/record_light_enable"
+            app:bl_unSelected_drawable="@drawable/record_light_disable" />
     </LinearLayout>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_singer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_28_dp"
+        android:layout_marginTop="@dimen/view_22_dp"
+        android:layout_toLeftOf="@+id/ll_star_container"
+        android:layout_toRightOf="@+id/sdv_singer_icon"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="酒彪子"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_song_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_singer_name"
+        android:layout_alignLeft="@+id/tv_singer_name"
+        android:layout_marginTop="@dimen/view_1_dp"
+        android:layout_marginBottom="@dimen/view_50_dp"
+        android:layout_toLeftOf="@+id/ll_star_container"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:maxLines="1"
+        android:text=""
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textStyle="bold" />
 </RelativeLayout>
