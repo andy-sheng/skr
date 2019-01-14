@@ -49,7 +49,7 @@ public class TipsDialogView extends RelativeLayout {
             tipsDialogView = new TipsDialogView(context);
         }
 
-        public Builder setMessageTip(String text) {
+        public Builder setMessageTip(CharSequence text) {
             tipsDialogView.mMessageTv.setText(text);
             tipsDialogView.mMessageTv.setVisibility(VISIBLE);
             return this;

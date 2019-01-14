@@ -1,9 +1,11 @@
 package com.module.home.updateinfo.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -11,6 +13,7 @@ import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
@@ -106,8 +109,13 @@ public class EditInfoNameFragment extends BaseFragment {
             // 昵称一样,没改
             U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
         } else {
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append("确认将昵称修改为")
+                    .append(nickName).setBold().setForegroundColor(Color.parseColor("#0288D0"))
+                    .append("吗?\n三个月以后才能再次修改喔～")
+                    .create();
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                    .setMessageTip(String.format(getString(R.string.edit_nickname_confim_tips), nickName))
+                    .setMessageTip(stringBuilder)
                     .setConfirmTip("确认修改")
                     .setCancelTip("取消")
                     .build();
