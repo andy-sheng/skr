@@ -125,19 +125,21 @@ public class RecordItemView extends RelativeLayout {
 
         //这里需要判读是娱乐还是竞技
         if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-            if (voteInfoModel.getVoter().size() > 0) {
+            if (voteInfoModel.getVoter() != null && voteInfoModel.getVoter().size() > 0) {
                 U.getSoundUtils().play(RankingRecordFragment.TAG, R.raw.result_win);
             } else {
                 U.getSoundUtils().play(RankingRecordFragment.TAG, R.raw.result_lose);
             }
         }
 
-        Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
-            @Override
-            public void accept(Integer integer) throws Exception {
-                mExImageViews[integer].setSelected(true);
-            }
-        }, throwable -> MyLog.e(throwable));
+        if (voteInfoModel.getVoter() != null) {
+            Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
+                @Override
+                public void accept(Integer integer) throws Exception {
+                    mExImageViews[integer].setSelected(true);
+                }
+            }, throwable -> MyLog.e(throwable));
+        }
 
         if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {

@@ -123,9 +123,10 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
                     List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
 
                     if (voteInfoModelList != null && voteInfoModelList.size() > 0) {
-                        U.getToastUtil().showShort("获取投票结果成功");
                         ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
                         scoreDetailModel.parse(userScoreModelList);
+                        MyLog.d(TAG, " getVoteResult " + " scoreDetailModel " +  scoreDetailModel.toString());
+                        MyLog.d(TAG, " getVoteResult " + " scoreDetailModel " +  scoreDetailModel.toString());
                         mView.showRecordView(new RecordData(voteInfoModelList, scoreDetailModel));
                     } else {
                         mUiHandler.removeMessages(MSG_GET_VOTE);
