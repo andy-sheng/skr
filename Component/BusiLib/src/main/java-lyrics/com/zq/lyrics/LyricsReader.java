@@ -2,6 +2,7 @@ package com.zq.lyrics;
 
 import android.util.Base64;
 
+import com.common.log.MyLog;
 import com.zq.lyrics.formats.LyricsFileReader;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
@@ -126,6 +127,9 @@ public class LyricsReader {
         }
         //默认歌词行
         mLrcLineInfos = lyricsInfo.getLyricsLineInfoTreeMap();
+        if(mLrcLineInfos == null){
+            MyLog.e(TAG, "mLrcLineInfos 为null");
+        }
         //翻译歌词集合
         if (lyricsInfo.getTranslateLrcLineInfos() != null)
             mTranslateLrcLineInfos = LyricsUtils.getTranslateLrc(mLyricsType, mLrcLineInfos, lyricsInfo.getTranslateLrcLineInfos());

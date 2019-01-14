@@ -42,7 +42,7 @@ import java.util.TreeMap;
  * @date: 2018-04-21 9:06
  */
 public abstract class AbstractLrcView extends View {
-
+    public final static String TAG = "AbstractLrcView";
     /**
      * 初始
      */
@@ -1124,6 +1124,9 @@ public abstract class AbstractLrcView extends View {
             if (mLyricsReader.getLyricsType() == LyricsInfo.LRC) {
                 //lrc歌词
                 mLrcLineInfos = LyricsUtils.getSplitLrcLyrics(mLyricsReader.getLrcLineInfos(), mTextMaxWidth, mPaint);
+                if(mLrcLineInfos == null){
+                    MyLog.e(TAG, "mLrcLineInfos 1 为 null");
+                }
                 //翻译歌词
                 mTranslateLrcLineInfos = LyricsUtils.getSplitLrcExtraLyrics(mLyricsReader.getTranslateLrcLineInfos(), mTextMaxWidth, mExtraLrcPaint);
                 //该lrc歌词不支持音译歌词
@@ -1131,6 +1134,9 @@ public abstract class AbstractLrcView extends View {
                 //动感歌词
                 //默认歌词
                 mLrcLineInfos = LyricsUtils.getSplitDynamicLyrics(mLyricsReader.getLrcLineInfos(), mTextMaxWidth, mPaint);
+                if(mLrcLineInfos == null){
+                    MyLog.e(TAG, "mLrcLineInfos 2 为 null");
+                }
                 //翻译歌词
                 mTranslateLrcLineInfos = LyricsUtils.getSplitDynamicExtraLyrics(mLyricsReader.getTranslateLrcLineInfos(), mTextMaxWidth, mExtraLrcPaint);
                 //音译歌词
