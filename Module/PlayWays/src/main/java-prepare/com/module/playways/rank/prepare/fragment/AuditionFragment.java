@@ -552,13 +552,17 @@ public class AuditionFragment extends BaseFragment {
                         @Override
                         public void onClick(View v) {
                             mQuitTipsDialog.dismiss(false);
-                            U.getFragmentUtils().popFragment(AuditionFragment.this);
                             // 要保存
                             Params.save2Pref(EngineManager.getInstance().getParams());
                             U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
                                     .setImage(R.drawable.touxiangshezhichenggong_icon)
-                                    .setText("保存成功")
+                                    .setText("保存设置成功\n已应用到所有对局")
                                     .build());
+
+                            mUiHanlder.postDelayed(() -> {
+                                getActivity().finish();
+                            }, 2000);
+
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {
