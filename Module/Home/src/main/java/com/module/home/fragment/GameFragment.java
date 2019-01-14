@@ -156,8 +156,9 @@ public class GameFragment extends BaseFragment {
                             .withBoolean("selectSong", true)
                             .navigation();
                 } else if (view.getId() == R.id.iv_singend_game) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SINGEND_ROOM)
-                            .navigation();
+                    // TODO: 2019/1/15 暂时屏蔽一唱到底入口
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SINGEND_ROOM)
+//                            .navigation();
                 }
             }
 
