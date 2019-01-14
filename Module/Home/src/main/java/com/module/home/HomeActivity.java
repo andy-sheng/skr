@@ -201,5 +201,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     @Override
     public void onLogoff() {
         mMainVp.setCurrentItem(1, false);
+        mGameBtn.setSelected(true);
+        mMessageBtn.setSelected(false);
+        mPersonInfoBtn.setSelected(false);
     }
 }
