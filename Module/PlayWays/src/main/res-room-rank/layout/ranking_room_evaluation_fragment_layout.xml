@@ -212,7 +212,7 @@
         android:clickable="true"
         android:focusable="true"
         app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
-        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal_right" />
+        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal_left" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:layout_width="match_parent"
