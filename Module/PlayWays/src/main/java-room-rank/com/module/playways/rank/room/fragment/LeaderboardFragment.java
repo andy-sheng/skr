@@ -203,11 +203,17 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
                         mPopupWindow.dismiss();
                         Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                         mTvArea.setCompoundDrawables(null, null, drawable, null);
+
+                        if(!MyUserInfoManager.getInstance().hasLocation()){
+                            tryGetLocation();
+                            return;
+                        }
+
+                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocationDesc()));
                         mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
                     }
                 });
@@ -250,6 +256,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         } else {
             mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
             mTvArea.setCompoundDrawables(null, null, null, null);
+            mTvCurArea.setText("地域榜");
+            mTvCountry.setText("全国榜");
             mTvArea.setText("全国榜");
         }
     }
