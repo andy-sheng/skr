@@ -807,7 +807,7 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                MyLog.d(TAG, "startAudioMixing" + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+                MyLog.w(TAG, "startAudioMixing" + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
                 mConfig.setMixMusicPlaying(true);
                 mConfig.setMixMusicFilePath(filePath);
                 mConfig.setMidiPath(midiPath);
