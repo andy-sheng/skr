@@ -60,9 +60,9 @@ public class Params implements Serializable {
      */
     private VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
 
-    private Constants.AudioProfile audioProfile = Constants.AudioProfile.MUSIC_HIGH_QUALITY ; // 默认 最牛逼的 音乐编码 双声道 192kbps
+    private Constants.AudioProfile audioProfile = Constants.AudioProfile.MUSIC_STANDARD_STEREO ; // 默认 最牛逼的 音乐编码 双声道 192kbps
 
-    private Constants.AudioScenario audioScenario = Constants.AudioScenario.GAME_STREAMING; // 秀场场景
+    private Constants.AudioScenario audioScenario = Constants.AudioScenario.SHOWROOM; // 秀场场景
 
     private boolean enableAudioQualityIndication = true;// 开启音量提示
 

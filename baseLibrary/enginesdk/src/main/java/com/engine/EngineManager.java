@@ -132,6 +132,10 @@ public class EngineManager implements AgoraOutCallback {
     @Override
     public void onClientRoleChanged(int oldRole, int newRole) {
         // 只有切换时才会触发
+        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_USER_ROLE_CHANGE);
+        EngineEvent.RoleChangeInfo roleChangeInfo = new EngineEvent.RoleChangeInfo(oldRole,newRole);
+        engineEvent.obj = roleChangeInfo;
+        EventBus.getDefault().post(engineEvent);
     }
 
     @Override
@@ -995,9 +999,6 @@ public class EngineManager implements AgoraOutCallback {
 
     public int getLineScore() {
         int score = CbEngineAdapter.getInstance().getLineScore();
-        for (int i = 0; i < 2; i++) {
-            score = (int) (Math.sqrt(score) * 10);
-        }
         return score;
     }
     /*音频高级扩展结束*/

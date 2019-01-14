@@ -132,6 +132,10 @@ public class TopContainerView extends RelativeLayout {
     ScoreTipsView.Item mLastItem;
 
     public void setScoreProgress(int progress) {
+        for (int i = 0; i < 2; i++) {
+            progress = (int) (Math.sqrt(progress) * 10);
+        }
+
         mScoreProgressBar.setProgress1(progress);
         ScoreTipsView.Item item = new ScoreTipsView.Item();
         if (progress >= 95) {

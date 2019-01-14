@@ -111,6 +111,32 @@ public class EngineEvent {
         }
     }
 
+    public static class RoleChangeInfo {
+        int oldRole;
+        int newRole;
+
+        public RoleChangeInfo(int oldRole, int newRole) {
+            this.oldRole = oldRole;
+            this.newRole = newRole;
+        }
+
+        public int getOldRole() {
+            return oldRole;
+        }
+
+        public void setOldRole(int oldRole) {
+            this.oldRole = oldRole;
+        }
+
+        public int getNewRole() {
+            return newRole;
+        }
+
+        public void setNewRole(int newRole) {
+            this.newRole = newRole;
+        }
+    }
+
     @Override
     public String toString() {
         return "EngineEvent{" +

@@ -178,9 +178,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
             EngineManager.getInstance().init("rankingroom", params);
-            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            boolean isAnchor = false;
+//            if(RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())){
+//                isAnchor = true;
+//            }
+            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
             // 不发送本地音频
-            EngineManager.getInstance().muteLocalAudioStream(true);
+//            EngineManager.getInstance().muteLocalAudioStream(true);
             // 伪装评论消息
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
                 RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
@@ -592,6 +596,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                 File midiFile = SongResUtils.getMIDIFileByUrl(mRoomData.getSongModel().getMidi());
 
                                 if (accFile != null && accFile.exists()) {
+                                    EngineManager.getInstance().setClientRole(true);
                                     EngineManager.getInstance().muteLocalAudioStream(false);
                                     EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath()
                                             , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
@@ -637,6 +642,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             }
 
             EngineManager.getInstance().stopAudioMixing();
+            EngineManager.getInstance().setClientRole(false);
             EngineManager.getInstance().muteLocalAudioStream(true);
             // 收到其他的人onMute消息 开始播放其他人的歌的歌词，应该提前下载好
             if (mRoomData.getRealRoundInfo() != null) {
@@ -903,7 +909,10 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
-        if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
+        if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
+            int userId = event.getUserStatus().getUserId();
+            onUserSpeakFromEngine("TYPE_USER_JOIN", userId);
+        } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
 //            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
 //                if (event.getObj() != null) {
 //                    List<EngineEvent.UserVolumeInfo> list = (List<EngineEvent.UserVolumeInfo>) event.getObj();
@@ -927,44 +936,13 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 //可以发结束轮次的通知了
                 sendRoundOverInfo();
             }
+        } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
             int muteUserId = event.getUserStatus().getUserId();
-            RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
             if (!event.getUserStatus().isAudioMute()) {
                 MyLog.w(TAG, "EngineEvent muteUserId=" + muteUserId + "解麦了");
-                /**
-                 * 用户开始解开mute了，说明某个用户自己认为轮到自己唱了
-                 * 这里考虑下要不要加个判断，如果当前轮次是这个用户，才播放他的歌词
-                 * 就是是自己状态对，还是别人状态对的问题，这里先认为自己状态对.
-                 * 状态依赖服务器
-                 */
-                if (infoModel != null) {
-                    if (RoomDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
-                        //正好相等，没问题,放歌词
-                        MyLog.w(TAG, "是当前轮次，没问题,放歌词");
-                        mUiHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
-                                othersBeginSinging();
-                            }
-                        });
-                    } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
-                        // 假设演唱的轮次在当前轮次后面，说明本地滞后了
-                        MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
-                        // 直接设置最新轮次，什么专场动画都不要了，都异常了，还要这些干嘛
-                        mRoomData.setRealRoundInfo(infoModel);
-                        mUiHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
-                                othersBeginSinging();
-                            }
-                        });
-                    }
-                } else {
-                    MyLog.w(TAG, "引擎监测到有人开始唱了， 找不到该人的轮次信息？？？为什么？？？");
-                }
+                onUserSpeakFromEngine("TYPE_USER_MUTE_AUDIO", muteUserId);
             } else {
                 /**
                  * 有人闭麦了，可以考虑加个逻辑，如果闭麦的人是当前演唱的人
@@ -972,6 +950,49 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                  */
                 MyLog.w(TAG, "引擎监测到有人有人闭麦了，id是" + muteUserId);
             }
+        }
+    }
+
+
+    private void onUserSpeakFromEngine(String from, int muteUserId) {
+        MyLog.w(TAG, "onUserSpeakFromEngine muteUserId=" + muteUserId + "解麦了,from:" + from);
+        RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
+        if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            MyLog.d(TAG, "onUserSpeakFromEngine" + " 解麦的是本人，忽略");
+            return;
+        }
+        /**
+         * 用户开始解开mute了，说明某个用户自己认为轮到自己唱了
+         * 这里考虑下要不要加个判断，如果当前轮次是这个用户，才播放他的歌词
+         * 就是是自己状态对，还是别人状态对的问题，这里先认为自己状态对.
+         * 状态依赖服务器
+         */
+        if (infoModel != null && infoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
+            if (RoomDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
+                //正好相等，没问题,放歌词
+                MyLog.w(TAG, "是当前轮次，没问题,放歌词");
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
+                        othersBeginSinging();
+                    }
+                });
+            } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
+                // 假设演唱的轮次在当前轮次后面，说明本地滞后了
+                MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
+                // 直接设置最新轮次，什么专场动画都不要了，都异常了，还要这些干嘛
+                mRoomData.setRealRoundInfo(infoModel);
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
+                        othersBeginSinging();
+                    }
+                });
+            }
+        } else {
+            MyLog.w(TAG, "引擎监测到有人开始唱了， 找不到该人的轮次信息？？？为什么？？？");
         }
     }
 
