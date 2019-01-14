@@ -322,6 +322,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid());
         initViewData();
     }
 
