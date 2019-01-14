@@ -48,8 +48,6 @@ public class GameFragment extends BaseFragment {
     int mStarNum = 0;        //当前星星
     int mStarLimit = 0;      //当前星星上限
 
-    boolean hasInit = false;
-
     @Override
     public int initView() {
         return R.layout.game_fragment_layout;
@@ -102,7 +100,6 @@ public class GameFragment extends BaseFragment {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
-                        hasInit = true;
                         List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getString("userScore"), UserLevelModel.class);
                         // 展示段位信息
                         for (UserLevelModel userLevelModel : userLevelModels) {
@@ -185,10 +182,8 @@ public class GameFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        if (!hasInit) {
-            mUserTitleView.setData();
-            initLevel();
-        }
+        mUserTitleView.setData();
+        initLevel();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
