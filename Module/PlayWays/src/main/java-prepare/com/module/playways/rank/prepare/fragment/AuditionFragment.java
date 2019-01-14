@@ -186,11 +186,11 @@ public class AuditionFragment extends BaseFragment {
                     onBackPressed();
                 });
 
-        RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    resendAutoLeaveChannelMsg();
-                    showVoicePanelView(false);
-                });
+//        RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
+//                .subscribe(o -> {
+//                    resendAutoLeaveChannelMsg();
+//                    showVoicePanelView(false);
+//                });
 
         RxView.clicks(mTvUp).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -271,7 +271,7 @@ public class AuditionFragment extends BaseFragment {
 
         mSongModel = mPrepareData.getSongModel();
         mTvSongName.setText("《" + mSongModel.getItemName() + "》");
-        playLyrics(mSongModel);
+        playLyrics(mSongModel, false);
 
         mPrgressBar.setMax(360);
         mPrgressBar.setProgress(0);
@@ -282,7 +282,7 @@ public class AuditionFragment extends BaseFragment {
     private void startRecord() {
         isRecord = true;
 
-        playLyrics(mSongModel);
+        playLyrics(mSongModel, true);
         playMusic(mSongModel);
 
         mStartRecordTs = System.currentTimeMillis();
@@ -331,7 +331,7 @@ public class AuditionFragment extends BaseFragment {
             return;
         }
 
-        if (System.currentTimeMillis() - mStartRecordTs < 3000) {
+        if (System.currentTimeMillis() - mStartRecordTs < 5000) {
             U.getToastUtil().showSkrCustomShort(new NoImageCommonToastView.Builder(getContext())
                     .setText("太短啦\n再唱几句吧~")
                     .build());
@@ -343,10 +343,11 @@ public class AuditionFragment extends BaseFragment {
         EngineManager.getInstance().stopAudioRecording();
         EngineManager.getInstance().stopAudioMixing();
 
-        mManyLyricsView.seekto(mSongModel.getBeginMs());
-        mUiHanlder.postDelayed(() -> {
-            mManyLyricsView.pause();
-        }, 100);
+        playLyrics(mSongModel, true);
+//        mManyLyricsView.seekto(mSongModel.getBeginMs());
+//        mUiHanlder.postDelayed(() -> {
+//            mManyLyricsView.pause();
+//        }, 100);
 
         mRecordAnimator.cancel();
         mIvRecordStart.setVisibility(View.VISIBLE);
@@ -377,6 +378,13 @@ public class AuditionFragment extends BaseFragment {
                 @Override
                 public void onCompletion() {
                     mIvPlay.setEnabled(true);
+                    mManyLyricsView.seekto(mSongModel.getBeginMs());
+                    mUiHanlder.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mManyLyricsView.pause();
+                        }
+                    }, 100);
                 }
 
                 @Override
@@ -464,7 +472,7 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
-    private void playLyrics(SongModel songModel) {
+    private void playLyrics(SongModel songModel, boolean play) {
         final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
 
         if (lyricFile != null) {
@@ -477,9 +485,14 @@ public class AuditionFragment extends BaseFragment {
                         mManyLyricsView.resetData();
                         mManyLyricsView.initLrcData();
                         lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getEndMs());
-                        Set<Integer> set = new HashSet<>();
-                        set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
-                        mManyLyricsView.setNeedCountDownLine(set);
+                        if(isRecord){
+                            Set<Integer> set = new HashSet<>();
+                            set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
+                            mManyLyricsView.setNeedCountDownLine(set);
+                        }else {
+                            Set<Integer> set = new HashSet<>();
+                            mManyLyricsView.setNeedCountDownLine(set);
+                        }
                         MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
                         mManyLyricsView.setLyricsReader(lyricsReader);
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
@@ -487,7 +500,7 @@ public class AuditionFragment extends BaseFragment {
                             MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
                         }
 
-                        if (!isRecord) {
+                        if (!play) {
                             mManyLyricsView.pause();
                         }
                     }, throwable -> MyLog.e(throwable));

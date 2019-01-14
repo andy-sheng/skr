@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_11_dp"
-        android:drawableRight="@drawable/shouqishiyinmianban"
+
         android:drawablePadding="@dimen/view_1_dp"
         android:text="调音"
         android:textColor="@color/black"
