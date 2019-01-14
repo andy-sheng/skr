@@ -841,22 +841,38 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         if (mDialogPlus != null && mDialogPlus.isShowing()) {
             mDialogPlus.dismiss();
         }
-        startGameEndAniamtion(new Runnable() {
-            @Override
-            public void run() {
-                mUiHanlder.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
-                                .setAddToBackStack(true)
-                                .addDataBeforeAdd(0, recordData)
-                                .addDataBeforeAdd(1, mRoomData)
-                                .build()
-                        );
-                    }
-                }, 2250);
-            }
-        });
+
+        if (mEndGameIv.getVisibility() == View.VISIBLE) {
+            mUiHanlder.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+                            .setAddToBackStack(true)
+                            .addDataBeforeAdd(0, recordData)
+                            .addDataBeforeAdd(1, mRoomData)
+                            .build()
+                    );
+                }
+            }, 3000);
+        } else {
+            // 之前的动画没有播放
+            startGameEndAniamtion(new Runnable() {
+                @Override
+                public void run() {
+                    mUiHanlder.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+                                    .setAddToBackStack(true)
+                                    .addDataBeforeAdd(0, recordData)
+                                    .addDataBeforeAdd(1, mRoomData)
+                                    .build()
+                            );
+                        }
+                    }, 2250);
+                }
+            });
+        }
     }
 
     @Override
@@ -865,26 +881,42 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         if (mDialogPlus != null && mDialogPlus.isShowing()) {
             mDialogPlus.dismiss();
         }
-        startGameEndAniamtion(new Runnable() {
-            @Override
-            public void run() {
-                mUiHanlder.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                                .setAddToBackStack(true)
-                                .addDataBeforeAdd(0, mRoomData)
-                                .build()
-                        );
-                    }
-                }, 2250);
-            }
-        });
+
+        if (mEndGameIv.getVisibility() == View.VISIBLE) {
+            // 3秒后进入下个场景
+            mUiHanlder.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                            .setAddToBackStack(true)
+                            .addDataBeforeAdd(0, mRoomData)
+                            .build()
+                    );
+                }
+            }, 3000);
+        } else {
+            // 之前的动画没有播放
+            startGameEndAniamtion(new Runnable() {
+                @Override
+                public void run() {
+                    mUiHanlder.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                                    .setAddToBackStack(true)
+                                    .addDataBeforeAdd(0, mRoomData)
+                                    .build()
+                            );
+                        }
+                    }, 2250);
+                }
+            });
+        }
     }
 
     private void startGameEndAniamtion(Runnable endRunable) {
         destroyAnimation();
-        // TODO: 2019/1/8 加上了2秒的对战结束动画
+        // 对战结束动画
         mEndGameIv.setVisibility(View.VISIBLE);
         if (mGameEndAnimation == null) {
             ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_X, 0.3f, 1f);
@@ -904,10 +936,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             public void onAnimationEnd(Animator animator) {
                 MyLog.d(TAG, "onAnimationEnd mGameEndAnimation");
                 if (endRunable != null) {
-
+                    endRunable.run();
                 }
-                endRunable.run();
-
             }
 
             @Override
@@ -996,6 +1026,16 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.setVisibility(View.GONE);
             }
         }, 800);
+
+        if (mRoomData.getRealRoundInfo().getRoundSeq() == 3) {
+            // 最后一轮
+            mUiHanlder.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startGameEndAniamtion(null);
+                }
+            }, 2000);
+        }
     }
 
     @Override

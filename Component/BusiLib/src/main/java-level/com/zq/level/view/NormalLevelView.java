@@ -129,6 +129,8 @@ public class NormalLevelView extends RelativeLayout {
             MyLog.e(TAG, "bindStarData" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
             return;
         }
+        
+        mStarTv.setVisibility(GONE);
 
         float widDis = starTotalWidth / (totalStats + 1); //横向间距
         float highDis = starTotalHeight / (totalStats - 1); //纵向间距
