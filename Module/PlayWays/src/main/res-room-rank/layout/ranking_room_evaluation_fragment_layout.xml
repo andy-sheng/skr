@@ -151,7 +151,6 @@
                         app:bl_corners_bottomRightRadius="@dimen/view_20_dp"
                         app:bl_corners_topRightRadius="@dimen/view_15_dp"
                         app:bl_selected_drawable="@color/black_trans_35"
-
                         app:bl_unSelected_drawable="@color/black_trans_35" />
                 </RelativeLayout>
             </com.common.view.ex.ExRelativeLayout>
@@ -199,7 +198,7 @@
         android:layout_marginLeft="@dimen/view_42_dp"
         android:layout_marginBottom="@dimen/view_62_dp"
         app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
-        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal_left" />
+        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/vote_right_mie"
@@ -212,7 +211,7 @@
         android:clickable="true"
         android:focusable="true"
         app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
-        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal_left" />
+        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:layout_width="match_parent"

@@ -14,6 +14,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.zq.live.proto.Common.ESex;
 
 public class RelationHolderView extends RecyclerView.ViewHolder {
     RelativeLayout mContent;
@@ -61,7 +62,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(Color.parseColor("#FF79A9"))
+                        .setBorderColorBySex(userInfoModel.getIsMale())
                         .build());
         mNameTv.setText(userInfoModel.getNickname());
         mUseridTv.setText("ID: " + String.valueOf(userInfoModel.getUserId()));
@@ -74,13 +75,13 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 mFollowTv.setText("互关");
                 mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.followed_bg));
             } else {
-                mFollowTv.setText("未关注");
+                mFollowTv.setText("关注");
                 mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.unfollow_bg));
             }
         } else if (mode == UserInfoManager.RELATION_FOLLOW) {
-            if (userInfoModel.isFriend()){
+            if (userInfoModel.isFriend()) {
                 mFollowTv.setText("互关");
-            }else {
+            } else {
                 mFollowTv.setText("已关注");
             }
             mFollowTv.setTextColor(Color.parseColor("#787B8E"));

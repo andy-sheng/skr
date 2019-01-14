@@ -213,7 +213,7 @@ public class PersonInfoDialogView extends RelativeLayout {
         } else if (isFollow) {
             mFollowTv.setText("已关注");
         } else {
-            mFollowTv.setText("未关注");
+            mFollowTv.setText("关注");
         }
     }
 
