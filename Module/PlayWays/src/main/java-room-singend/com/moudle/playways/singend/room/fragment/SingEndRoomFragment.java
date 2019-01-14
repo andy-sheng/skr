@@ -15,8 +15,6 @@ import android.widget.ScrollView;
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
@@ -449,7 +447,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
             }
             // 轮到他人唱了，倒计时因为播放readyGo没播放
             if (mPendingRivalCountdownUid != -1) {
-                startRivalCountdown(mPendingRivalCountdownUid);
+                startRivalCountdown(mPendingRivalCountdownUid, "");
                 mPendingRivalCountdownUid = -1;
             }
         }
@@ -516,7 +514,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
      * 保证在主线程
      */
     @Override
-    public void startRivalCountdown(int uid) {
+    public void startRivalCountdown(int uid,String avatar) {
         cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
