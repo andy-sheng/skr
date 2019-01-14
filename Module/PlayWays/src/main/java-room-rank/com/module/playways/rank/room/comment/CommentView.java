@@ -149,17 +149,17 @@ public class CommentView extends RelativeLayout {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(InputBoardEvent event) {
-        LayoutParams lp = (LayoutParams) this.getLayoutParams();
-        if (event.show) {
-            lp.addRule(RelativeLayout.ABOVE, R.id.input_container_view);
-            setOnBottom("InputBoardEvent", true);
-        } else {
-            lp.addRule(RelativeLayout.ABOVE, R.id.bottom_container_view);
-        }
-        setLayoutParams(lp);
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(InputBoardEvent event) {
+//        LayoutParams lp lp= (LayoutParams) this.getLayoutParams();
+//        if (event.show) {
+//            lp.addRule(RelativeLayout.ABOVE, R.id.input_container_view);
+//            setOnBottom("InputBoardEvent", true);
+//        } else {
+//            lp.addRule(RelativeLayout.ABOVE, R.id.bottom_container_view);
+//        }
+//        setLayoutParams(lp);
+//    }
 
     public void setRoomData(RoomData roomData) {
         this.mRoomData = roomData;

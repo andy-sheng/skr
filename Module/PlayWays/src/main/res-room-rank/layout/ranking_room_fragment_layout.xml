@@ -80,11 +80,6 @@
         app:ly_paint_color_to="@color/white_trans_50"
         app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
-    <com.module.playways.rank.room.view.InputContainerView
-        android:id="@+id/input_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
@@ -98,10 +93,17 @@
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_250_dp"
-        android:layout_above="@+id/bottom_container_view"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_66_dp"
         android:layout_marginRight="@dimen/view_128_dp"
         android:paddingLeft="@dimen/view_18_dp"
         android:paddingBottom="@dimen/view_7_dp" />
+
+    <com.module.playways.rank.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
     <com.module.playways.rank.room.view.TopContainerView
         android:id="@+id/top_container_view"

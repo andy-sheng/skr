@@ -10,4 +10,11 @@
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
         android:overScrollMode="never" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/cover_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-3dp"
+        android:src="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 </merge>
