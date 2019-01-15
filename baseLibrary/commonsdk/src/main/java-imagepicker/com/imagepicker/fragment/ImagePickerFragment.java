@@ -24,11 +24,11 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.imagepicker.loader.ImageDataSource;
+import com.imagepicker.loader.ResDataSource;
 import com.imagepicker.ImagePicker;
 import com.imagepicker.adapter.ImageFolderAdapter;
 import com.imagepicker.adapter.ImageRecyclerAdapter;
-import com.imagepicker.model.ImageFolder;
+import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.FolderPopUpWindow;
 import com.imagepicker.view.GridSpacingItemDecoration;
@@ -36,7 +36,7 @@ import com.imagepicker.view.GridSpacingItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagePickerFragment extends ImageBaseFragment implements ImagePicker.OnImageSelectedListener, ImageDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
+public class ImagePickerFragment extends ImageBaseFragment implements ImagePicker.OnImageSelectedListener, ResDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
 
     public static final String EXTRAS_TAKE_PICKERS = "TAKE";
     public static final String EXTRAS_IMAGES = "IMAGES";
@@ -58,7 +58,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
     ImageFolderAdapter mImageFolderAdapter; //图片文件夹的适配器
     ImageRecyclerAdapter mImageRecyclerAdapter; //图片适配器
 
-    ImageDataSource mImageDataSource;
+    ResDataSource mImageDataSource;
 
     @Override
     public int initView() {
@@ -173,14 +173,14 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
 
         onImageSelectedChange(0, null, false);
 
-        mImageDataSource = new ImageDataSource(this, this);
+        mImageDataSource = new ResDataSource(this, this);
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             if (!U.getPermissionUtils().checkExternalStorage(getActivity())) {
                 U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
                     @Override
                     public void onRequestPermissionSuccess() {
-                        mImageDataSource.load();
+                        mImageDataSource.loadPhotoAlbum();
                     }
 
                     @Override
@@ -194,10 +194,10 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
                     }
                 }, getActivity());
             } else {
-                mImageDataSource.load();
+                mImageDataSource.loadPhotoAlbum();
             }
         } else {
-            mImageDataSource.load();
+            mImageDataSource.loadPhotoAlbum();
         }
     }
 
@@ -212,7 +212,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
                 mImageFolderAdapter.setSelectIndex(position);
                 mImagePicker.setCurrentImageFolderPosition(position);
                 mFolderPopupWindow.dismiss();
-                ImageFolder imageFolder = (ImageFolder) adapterView.getAdapter().getItem(position);
+                ResFolder imageFolder = (ResFolder) adapterView.getAdapter().getItem(position);
                 if (null != imageFolder) {
 //                    mImageGridAdapter.refreshData(imageFolder.images);
                     mImageRecyclerAdapter.refreshData(imageFolder.getImages());
@@ -303,7 +303,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
     }
 
     @Override
-    public void onImagesLoaded(List<ImageFolder> imageFolders) {
+    public void onImagesLoaded(List<ResFolder> imageFolders) {
         mImagePicker.setImageFolders(imageFolders);
         if (imageFolders.size() == 0) {
             mImageRecyclerAdapter.refreshData(null);

@@ -15,7 +15,7 @@ import java.util.Objects;
  * 修订历史：
  * ================================================
  */
-public class ImageItem implements Serializable, Parcelable {
+public class ImageItem extends ResItem implements Serializable, Parcelable {
 
     String name;       //图片的名字
     String path;       //图片的路径
@@ -82,6 +82,11 @@ public class ImageItem implements Serializable, Parcelable {
     }
 
     @Override
+    public int getType() {
+        return RES_IMAGE;
+    }
+
+    @Override
     public int hashCode() {
         return path.hashCode();
     }
@@ -140,4 +145,6 @@ public class ImageItem implements Serializable, Parcelable {
             return new ImageItem[size];
         }
     };
+
+
 }

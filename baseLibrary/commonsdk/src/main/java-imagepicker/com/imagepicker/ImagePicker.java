@@ -13,12 +13,10 @@ import android.support.v4.content.FileProvider;
 
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
-import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.ImageFactory;
 import com.common.utils.U;
-import com.facebook.imagepipeline.image.ImageInfo;
 import com.imagepicker.loader.ImageLoader;
-import com.imagepicker.model.ImageFolder;
+import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 
@@ -40,7 +38,7 @@ public class ImagePicker {
     private Params mParams = new Params(); // 配置的参数
 
     private boolean mIsOrigin = false; // 是否需要原图标记
-    private ArrayList<ImageFolder> mImageFolders = new ArrayList<>();      //所有的图片文件夹
+    private ArrayList<ResFolder> mImageFolders = new ArrayList<>();      //所有的图片文件夹
     private ArrayList<ImageItem> mSelectedImages = new ArrayList<>();   //选中的图片集合
     private List<OnImageSelectedListener> mImageSelectedListeners = new ArrayList<>(); //图片选中的监听回调
     private int mCurrentImageFolderPosition = 0;  //当前选中的文件夹位置 0表示所有图片
@@ -86,7 +84,7 @@ public class ImagePicker {
         mCurrentImageFolderPosition = position;
     }
 
-    public void setImageFolders(List<ImageFolder> imageFolders) {
+    public void setImageFolders(List<ResFolder> imageFolders) {
         if (imageFolders != null) {
             mImageFolders.clear();
             mImageFolders.addAll(imageFolders);
@@ -125,7 +123,7 @@ public class ImagePicker {
         mIsOrigin = isOrigin;
     }
 
-    public ArrayList<ImageFolder> getImageFolders() {
+    public ArrayList<ResFolder> getImageFolders() {
         return mImageFolders;
     }
 
