@@ -275,7 +275,7 @@ public class RecordTitleView extends RelativeLayout {
             if (mScoreDetailModel.getTotalStarLimit().getLimitNow() == 0 || mScoreDetailModel.getTotalStarLimit().getLimitNow() > 6) {
                 // 星星限制已经取消,直接显示几颗星即可
                 mSdvOwnLevel.bindStarData(mScoreDetailModel.getTotalStarLimit().getLimitNow(), mScoreDetailModel.getRankStarScore().getScoreNow());
-            } else if (mScoreDetailModel.getStarChange() > mScoreDetailModel.getRankStarScore().getScoreNow()) {
+            } else if (mScoreDetailModel.getStarChange() >= mScoreDetailModel.getRankStarScore().getScoreNow()) {
                 // 增幅超过现在有的星星数,第三段从0涨到现在
                 mSdvOwnLevel.starUp(mViewGroup, 0, mScoreDetailModel.getRankStarScore().getScoreNow() - 1, new NormalLevelView.SVGAListener() {
                     @Override
@@ -301,7 +301,7 @@ public class RecordTitleView extends RelativeLayout {
             if (mScoreDetailModel.getTotalStarLimit().getLimitNow() == 0 || mScoreDetailModel.getTotalStarLimit().getLimitNow() > 6) {
                 // 星星限制已经取消,直接显示几颗星即可
                 mSdvOwnLevel.bindStarData(mScoreDetailModel.getTotalStarLimit().getLimitNow(), mScoreDetailModel.getRankStarScore().getScoreNow());
-            } else if (Math.abs(mScoreDetailModel.getStarChange()) > mScoreDetailModel.getRankStarScore().getScoreBefore()) {
+            } else if (Math.abs(mScoreDetailModel.getStarChange()) >= mScoreDetailModel.getRankStarScore().getScoreBefore()) {
                 // 减少的幅度超过之前,第三段现在的满掉到now
                 mSdvOwnLevel.starLoss(mViewGroup, mScoreDetailModel.getTotalStarLimit().getLimitNow() - 1,
                         mScoreDetailModel.getRankStarScore().getScoreNow(), new NormalLevelView.SVGAListener() {
