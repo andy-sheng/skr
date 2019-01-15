@@ -435,7 +435,7 @@ public static java.lang.String TABLENAME;
 
 -keep class com.linkedin.** { *; }
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
--keepattributes Signature
+
 -keep class com.umeng.** {*;}
 
 -keepclassmembers class * {
