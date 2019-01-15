@@ -138,7 +138,8 @@ public class LoginByPhoneFragment extends BaseFragment {
                     mCodeInputTv.setFocusableInTouchMode(true);
                     mCodeInputTv.requestFocus();
                     startTimeTask();
-
+                } else {
+                    U.getToastUtil().showShort(result.getErrmsg());
                 }
             }
         }, this);
@@ -183,6 +184,8 @@ public class LoginByPhoneFragment extends BaseFragment {
         if (!TextUtils.isEmpty(phoneNumber) && TextUtils.isDigitsOnly(phoneNumber)
                 && phoneNumber.length() == 11 && phoneNumber.startsWith("1")) {
             return true;
+        } else {
+            U.getToastUtil().showShort("手机号有误");
         }
 
         return false;
