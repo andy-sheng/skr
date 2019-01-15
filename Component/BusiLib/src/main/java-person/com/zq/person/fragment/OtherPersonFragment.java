@@ -110,9 +110,9 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mFollowTv = (ExTextView) mRootView.findViewById(R.id.follow_tv);
         mMessageTv = (ExTextView) mRootView.findViewById(R.id.message_tv);
 
-        mRankNumTv = (ExTextView)mRootView.findViewById(R.id.rank_num_tv);
-        mFunnyNumTv = (ExTextView)mRootView.findViewById(R.id.funny_num_tv);
-        mSingendNumTv = (ExTextView)mRootView.findViewById(R.id.singend_num_tv);
+        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
+        mFunnyNumTv = (ExTextView) mRootView.findViewById(R.id.funny_num_tv);
+        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
 
         mOtherPersonPresenter = new OtherPersonPresenter(this);
         addPresent(mOtherPersonPresenter);
@@ -197,9 +197,9 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
         mSignTv.setText(model.getSignature());
 
-        if (model.getLocation() != null) {
+        if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity()) && !TextUtils.isEmpty(model.getLocation().getDistrict())) {
             mHashMap.put(LOCATION_TAG, model.getLocation().getCity() + "/" + model.getLocation().getDistrict());
-        }else {
+        } else {
             mHashMap.put(LOCATION_TAG, "未知星球");
         }
 
