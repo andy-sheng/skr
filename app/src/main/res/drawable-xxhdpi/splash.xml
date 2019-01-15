@@ -3,5 +3,5 @@
     <item android:drawable="@android:color/white" />
     <item
         android:drawable="@drawable/kaipingye"
-        android:gravity="fill" />
+         />
 </layer-list>
