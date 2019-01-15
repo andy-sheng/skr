@@ -23,7 +23,7 @@ public class ImageItem extends ResItem implements Serializable, Parcelable {
     int width;         //图片的宽度
     int height;        //图片的高度
     String mimeType;   //图片的类型
-    long addTime;      //图片的创建时间
+
 
     public String getName() {
         return name;
@@ -71,10 +71,6 @@ public class ImageItem extends ResItem implements Serializable, Parcelable {
 
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
-    }
-
-    public long getAddTime() {
-        return addTime;
     }
 
     public void setAddTime(long addTime) {

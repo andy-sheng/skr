@@ -12,10 +12,21 @@ import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.model.ResItem;
 import com.imagepicker.model.VideoItem;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class ResDataSource {
@@ -74,12 +85,46 @@ public class ResDataSource {
     }
 
     private void loadRes() {
-        ArrayList<ResFolder> resFolders = new ArrayList<>();
-        List<ImageItem> imageItemList = loadPhotoAlbum();
-        List<VideoItem> videoList = loadVideo();
-        List<ResItem> total = new ArrayList<>();
-        total.add((ResItem) imageItemList);
-        total.add((ResItem) videoList);
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                ArrayList<ResFolder> resFolders = new ArrayList<>();
+                List<ImageItem> imageItemList = loadPhotoAlbum();
+                List<VideoItem> videoList = loadVideo();
+                List<ResItem> totalList = new ArrayList<>();
+                totalList.add((ResItem) imageItemList);
+                totalList.add((ResItem) videoList);
+                Collections.sort(totalList, new Comparator<ResItem>() {
+                    @Override
+                    public int compare(ResItem o1, ResItem o2) {
+                        if(o2.getAddTime() > o1.getAddTime()){
+                            return 1;
+                        }else{
+                            return -1;
+                        }
+                    }
+                });
+                for(ResItem resItem:totalList){
+//TODO
+                }
+                emitter.onNext(resFolders);
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .compose(mFragment.bindUntilEvent(FragmentEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
 
     }
 
