@@ -79,7 +79,26 @@ public class ImageDataSource {
         Observable.create(new ObservableOnSubscribe<ArrayList<ImageFolder>>() {
             @Override
             public void subscribe(ObservableEmitter<ArrayList<ImageFolder>> emitter) throws Exception {
-                Cursor data = photoAlbumContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_PROJECTION, null, null, IMAGE_PROJECTION[6] + " DESC");
+                String selections = null;
+                String[] selectionArgs = null;
+                if (ImagePicker.getInstance().getParams().isIncludeGif()) {
+
+                } else {
+                    // 不要gif
+                    selections = new StringBuilder()
+                            .append(MediaStore.Images.Media.MIME_TYPE)
+                            .append("!=?")
+//                            .append(" or ")
+//                            .append(MediaStore.Images.Media.MIME_TYPE)
+//                            .append("=?")
+                            .toString();
+                    selectionArgs = new String[]{
+                            "image/gif",
+//                            "image/png"
+                    };
+                }
+
+                Cursor data = photoAlbumContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_PROJECTION, selections, selectionArgs, IMAGE_PROJECTION[6] + " DESC");
                 ArrayList<ImageFolder> imageFolders = new ArrayList<>();
                 if (data != null) {
                     ArrayList<ImageItem> allImages = new ArrayList<>();   //所有图片的集合,不分文件夹

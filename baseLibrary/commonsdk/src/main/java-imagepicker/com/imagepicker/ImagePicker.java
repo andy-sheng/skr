@@ -270,6 +270,7 @@ public class ImagePicker {
         private int focusHeight = U.getDisplayUtils().dip2px(280);        //焦点框的高度
         private boolean isSaveRectangle = true;  //裁剪后的图片是否是矩形，否者跟随裁剪框的形状
         private CropImageView.Style cropStyle = CropImageView.Style.RECTANGLE; //裁剪框的形状
+        private boolean includeGif = false;  //图片选取时，是否包括gif，默认不包括
 
         private Params() {
 
@@ -355,6 +356,14 @@ public class ImagePicker {
             this.cropStyle = cropStyle;
         }
 
+        public boolean isIncludeGif() {
+            return includeGif;
+        }
+
+        public void setIncludeGif(boolean includeGif) {
+            this.includeGif = includeGif;
+        }
+
         public static class Builder {
             Params mParams = new Params();
 
@@ -408,6 +417,11 @@ public class ImagePicker {
 
             public Builder setCropStyle(CropImageView.Style cropStyle) {
                 mParams.setCropStyle(cropStyle);
+                return this;
+            }
+
+            public Builder setIncludeGif(boolean includeGif) {
+                mParams.setIncludeGif(includeGif);
                 return this;
             }
 
