@@ -7,8 +7,11 @@ import com.common.utils.U;
 import com.elvishew.xlog.LogLevel;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 
 public class LogListContainer {
 
@@ -20,8 +23,6 @@ public class LogListContainer {
     public static final int MAX_COUNT = 10000;
 
     HashMap<String, Integer> mTagNumMap = new HashMap<>();
-
-    MyFlattener mMyFlattener;
 
     Node mHead;// 队列头
 
@@ -44,8 +45,6 @@ public class LogListContainer {
         mTail = mHead;
         mLength = 1;
         mLastInput = mTail;
-        mMyFlattener = new MyFlattener();
-        mMyFlattener.setShowyyyyMMdd(false);
     }
 
     public void addLog(LogModel logModel) {
@@ -78,7 +77,7 @@ public class LogListContainer {
                     while (mLastInput != null) {
                         LogModel l = mLastInput.mLogModel;
                         if (mListener.accept(l.tag)) {
-                            sb.append(mMyFlattener.flatten(l.level, l.tag, l.msg)).append("\n");
+                            sb.append(flatten(l)).append("\n");
                         }
                         mLastInput = mLastInput.next;
                     }
@@ -96,12 +95,21 @@ public class LogListContainer {
             while (mLastInput != null) {
                 if (set == null || set.contains(mLastInput.mLogModel.tag)) {
                     LogModel l = mLastInput.mLogModel;
-                    sb.append(mMyFlattener.flatten(l.level, l.tag, l.msg)).append("\n");
+                    sb.append(flatten(l)).append("\n");
                 }
                 mLastInput = mLastInput.next;
             }
         }
         return sb.toString();
+    }
+
+    public CharSequence flatten(LogModel l) {
+        String formattedNow = U.getDateTimeUtils().formatTimeStringForDate(l.ts);
+        return formattedNow
+                + '|' + Thread.currentThread().getId()
+                + '|' + LogLevel.getShortLevelName(l.level)
+                + '|' + l.tag
+                + "| " + l.msg;
     }
 
     public HashMap<String, Integer> getTagMap() {
