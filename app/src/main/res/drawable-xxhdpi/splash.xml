@@ -2,6 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@android:color/white" />
     <item
-        android:drawable="@drawable/tostartpage_bg_cn"
+        android:drawable="@drawable/kaipingye"
         android:gravity="fill" />
 </layer-list>
