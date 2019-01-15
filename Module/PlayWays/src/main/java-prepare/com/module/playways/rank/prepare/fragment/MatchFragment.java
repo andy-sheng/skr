@@ -67,6 +67,8 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     HandlerTaskTimer mMatchTimeTask;
 
+    DialogPlus mExitDialog;
+
     @Override
     public int initView() {
         return R.layout.match_fragment_layout;
@@ -133,7 +135,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     private void doAnimation(final Integer integer) {
-        if(mIconAnimatorSet != null && mIconAnimatorSet.isRunning()){
+        if (mIconAnimatorSet != null && mIconAnimatorSet.isRunning()) {
             mIconAnimatorSet.cancel();
         }
 
@@ -214,7 +216,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     private void changeQuotation(Integer integer) {
         int size = mQuotationsArray.size();
-        if(integer % size == 0){
+        if (integer % size == 0) {
             Collections.shuffle(mQuotationsArray);
         }
         int index = integer % (size - 1);
@@ -237,7 +239,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         }
 
 
-        if(num != 1){
+        if (num != 1) {
             iconListIndex += 1;
             int index1 = iconListIndex % (mAvatarURL.size() - 1);
             loadIconInImage(mAvatarURL.get(index1).getAvatarURL(), mSdvIcon1, mAvatarURL.get(index1).getSex() == ESex.SX_MALE.getValue());
@@ -248,7 +250,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         int index2 = iconListIndex % (mAvatarURL.size() - 1);
         loadIconInImage(mAvatarURL.get(index2).getAvatarURL(), mSdvIcon2, mAvatarURL.get(index2).getSex() == ESex.SX_MALE.getValue());
 
-        if(num != 3){
+        if (num != 3) {
             iconListIndex += 1;
             int index3 = iconListIndex % (mAvatarURL.size() - 1);
             loadIconInImage(mAvatarURL.get(index3).getAvatarURL(), mSdvIcon3, mAvatarURL.get(index3).getSex() == ESex.SX_MALE.getValue());
@@ -302,6 +304,9 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void destroy() {
         super.destroy();
+        if (mExitDialog != null && mExitDialog.isShowing()) {
+            mExitDialog.dismiss();
+        }
     }
 
     @Override
@@ -314,7 +319,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
             mControlTask.dispose();
         }
 
-        if(mIconAnimatorSet != null && mIconAnimatorSet.isRunning()){
+        if (mIconAnimatorSet != null && mIconAnimatorSet.isRunning()) {
             mIconAnimatorSet.cancel();
         }
     }
@@ -326,7 +331,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                 .setConfirmTip("继续匹配")
                 .build();
 
-        DialogPlus.newDialog(getContext())
+        mExitDialog = DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(tipsDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
@@ -355,7 +360,8 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                         }
                     }
                 })
-                .create().show();
+                .create();
+        mExitDialog.show();
 
     }
 
@@ -424,6 +430,9 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
      */
     @Override
     public void notifyToHide() {
+        if (mExitDialog != null && mExitDialog.isShowing()) {
+            mExitDialog.dismiss();
+        }
         mRootView.setVisibility(View.GONE);
 //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
 //                .setPopFragment(this)
