@@ -125,22 +125,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
             }
         };
 
-        RxView.longClicks(mIvStartMatch)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .addDataBeforeAdd(0, mPrepareData)
-                            .setFragmentDataListener(new FragmentDataListener() {
-                                @Override
-                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                }
-                            })
-                            .build());
-                });
-
         RxView.clicks(mIvStartMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
