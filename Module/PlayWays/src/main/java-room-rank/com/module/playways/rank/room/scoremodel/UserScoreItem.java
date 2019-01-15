@@ -39,4 +39,12 @@ public class UserScoreItem implements Serializable {
         this.setWhy(scoreItem.getWhy());
         this.setScore(scoreItem.getScore());
     }
+
+    @Override
+    public String toString() {
+        return "UserScoreModel{" +
+                "why=" + why +
+                ", score=" + score +
+                '}';
+    }
 }
