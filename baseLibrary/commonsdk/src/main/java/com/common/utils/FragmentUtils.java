@@ -114,7 +114,7 @@ public class FragmentUtils {
     public boolean popFragment(PopParams params) {
         FragmentManager fragmentManager = null;
         FragmentTransaction ft = null;
-        if (params.popFragment != null) {
+        if (params.popFragment != null && params.popFragment.getActivity() != null) {
             fragmentManager = params.popFragment.getActivity().getSupportFragmentManager();
             if (fragmentManager != null) {
                 for (Fragment f : fragmentManager.getFragments()) {
