@@ -1018,6 +1018,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retry(10)
                 .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(lyricsReader -> {
                     drawLyric(fileName.hashCode() + "", lyricsReader, play);

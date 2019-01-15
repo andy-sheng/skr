@@ -170,6 +170,7 @@ public class LyricsManager {
      */
     public void loadLyricsUtil(final String fileName, final String keyword, final String hash) {
         loadLyricsObserable(fileName, hash).subscribeOn(Schedulers.io())
+                .retry(10)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LyricsReader>() {
                     @Override

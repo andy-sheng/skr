@@ -97,6 +97,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
         final String fileName = SongResUtils.getFileNameWithMD5(mSongModel.getLyric());
         LyricsManager.getLyricsManager(U.app()).loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.computation())
+                .retry(10)
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Consumer<LyricsReader>() {

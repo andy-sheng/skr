@@ -658,6 +658,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
         mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
+                .retry(10)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lyricsReader -> {
                     drawLyric(fileName.hashCode() + "", lyricsReader, play);

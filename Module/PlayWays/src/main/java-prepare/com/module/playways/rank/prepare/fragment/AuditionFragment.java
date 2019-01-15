@@ -482,6 +482,7 @@ public class AuditionFragment extends BaseFragment {
         if (lyricFile != null) {
             LyricsManager.getLyricsManager(U.app()).loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
                     .subscribeOn(Schedulers.io())
+                    .retry(10)
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(bindUntilEvent(FragmentEvent.DESTROY))
                     .subscribe(lyricsReader -> {
