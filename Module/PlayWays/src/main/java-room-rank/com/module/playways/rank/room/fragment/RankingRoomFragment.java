@@ -169,6 +169,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
+    boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
+
     @Override
     public int initView() {
         return R.layout.ranking_room_fragment_layout;
@@ -696,9 +698,12 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mUiHanlder.removeCallbacksAndMessages(null);
         mManyLyricsView.release();
         mFloatLyricsView.release();
+
+        isGameEndAniamtionShow = false;
         if (mGameEndAnimation != null) {
             mGameEndAnimation.cancel();
         }
+
         if (mAnimatorList != null) {
             for (Animator animator : mAnimatorList) {
                 if (animator != null) {
@@ -842,37 +847,18 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mDialogPlus.dismiss();
         }
 
-        if (mEndGameIv.getVisibility() == View.VISIBLE) {
-            mUiHanlder.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
-                            .setAddToBackStack(true)
-                            .addDataBeforeAdd(0, recordData)
-                            .addDataBeforeAdd(1, mRoomData)
-                            .build()
-                    );
-                }
-            }, 3000);
-        } else {
-            // 之前的动画没有播放
-            startGameEndAniamtion(new Runnable() {
-                @Override
-                public void run() {
-                    mUiHanlder.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
-                                    .setAddToBackStack(true)
-                                    .addDataBeforeAdd(0, recordData)
-                                    .addDataBeforeAdd(1, mRoomData)
-                                    .build()
-                            );
-                        }
-                    }, 2250);
-                }
-            });
-        }
+        startGameEndAniamtion();
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+                        .setAddToBackStack(true)
+                        .addDataBeforeAdd(0, recordData)
+                        .addDataBeforeAdd(1, mRoomData)
+                        .build()
+                );
+            }
+        }, 3000);
     }
 
     @Override
@@ -882,39 +868,25 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mDialogPlus.dismiss();
         }
 
-        if (mEndGameIv.getVisibility() == View.VISIBLE) {
-            // 3秒后进入下个场景
-            mUiHanlder.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                            .setAddToBackStack(true)
-                            .addDataBeforeAdd(0, mRoomData)
-                            .build()
-                    );
-                }
-            }, 3000);
-        } else {
-            // 之前的动画没有播放
-            startGameEndAniamtion(new Runnable() {
-                @Override
-                public void run() {
-                    mUiHanlder.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                                    .setAddToBackStack(true)
-                                    .addDataBeforeAdd(0, mRoomData)
-                                    .build()
-                            );
-                        }
-                    }, 2250);
-                }
-            });
-        }
+        startGameEndAniamtion();
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                        .setAddToBackStack(true)
+                        .addDataBeforeAdd(0, mRoomData)
+                        .build()
+                );
+            }
+        }, 3000);
     }
 
-    private void startGameEndAniamtion(Runnable endRunable) {
+    private void startGameEndAniamtion() {
+        if (isGameEndAniamtionShow) {
+            return;
+        }
+        isGameEndAniamtionShow = true;
+
         destroyAnimation();
         // 对战结束动画
         mEndGameIv.setVisibility(View.VISIBLE);
@@ -925,31 +897,8 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mGameEndAnimation.setDuration(750);
             mGameEndAnimation.playTogether(a1, a2);
         }
-        mGameEndAnimation.removeAllListeners();
-        mGameEndAnimation.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-                MyLog.d(TAG, "onAnimationStart mGameEndAnimation");
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                MyLog.d(TAG, "onAnimationEnd mGameEndAnimation");
-                if (endRunable != null) {
-                    endRunable.run();
-                }
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                MyLog.d(TAG, "onAnimationCancel mGameEndAnimation");
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        });
         mGameEndAnimation.start();
+
     }
 
     private void destroyAnimation() {
@@ -1032,7 +981,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startGameEndAniamtion(null);
+                    startGameEndAniamtion();
                 }
             }, 2000);
         }
