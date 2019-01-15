@@ -113,7 +113,7 @@ public class LoginByPhoneFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(VerifyCodeErrorEvent event) {
         MyLog.d(TAG, "onEventMainThread" + " event=" + event);
-        if(event.getErrno() == 101){
+        if (event.getErrno() == 101) {
             U.getToastUtil().showShort("验证码错误");
         }
     }
@@ -134,6 +134,9 @@ public class LoginByPhoneFragment extends BaseFragment {
                     // 发送验证码成功
                     mGetCodeTv.setSelected(true);
                     mGetCodeTv.setClickable(false);
+                    mCodeInputTv.setFocusable(true);
+                    mCodeInputTv.setFocusableInTouchMode(true);
+                    mCodeInputTv.requestFocus();
                     startTimeTask();
 
                 }
