@@ -14,7 +14,6 @@ import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
@@ -29,10 +28,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.agora.rtc.IRtcEngineEventHandler;
-import io.reactivex.Observer;
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 关于音视频引擎的都放在这个类里
@@ -54,7 +56,7 @@ public class EngineManager implements AgoraOutCallback {
     private HashMap<Integer, UserStatus> mUserStatusMap = new HashMap<>();
     private HashSet<View> mRemoteViewCache = new HashSet<>();
     private Handler mUiHandler = new Handler();
-    private HandlerTaskTimer mMusicTimePlayTimeListener;
+    private Disposable mMusicTimePlayTimeListener;
 
     private String mInitFrom;
 
@@ -284,7 +286,7 @@ public class EngineManager implements AgoraOutCallback {
 
     private void destroyInner(int status) {
         if (status == STATUS_INITED) {
-            if (mMusicTimePlayTimeListener != null) {
+            if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
                 mMusicTimePlayTimeListener.dispose();
             }
             AgoraEngineAdapter.getInstance().destroy(true);
@@ -947,20 +949,18 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     private void startMusicPlayTimeListener() {
-        if (mMusicTimePlayTimeListener != null) {
+        if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
             mMusicTimePlayTimeListener.dispose();
         }
-        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder().interval(1000)
-                .start(new Observer<Integer>() {
+
+        mMusicTimePlayTimeListener = Observable
+                .interval(1000, TimeUnit.MILLISECONDS)
+                .observeOn(Schedulers.io())
+                .subscribe(new Consumer<Long>() {
                     int duration = -1;
 
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
+                    public void accept(Long aLong) throws Exception {
                         int currentPostion = getAudioMixingCurrentPosition();
                         if (duration < 0) {
                             duration = getAudioMixingDuration();
@@ -969,21 +969,16 @@ public class EngineManager implements AgoraOutCallback {
                         engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPostion, duration);
                         EventBus.getDefault().post(engineEvent);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                    public void accept(Throwable throwable) throws Exception {
+                        MyLog.w(TAG, throwable.getMessage());
                     }
                 });
     }
 
     private void stopMusicPlayTimeListener() {
-        if (mMusicTimePlayTimeListener != null) {
+        if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
             mMusicTimePlayTimeListener.dispose();
         }
     }
