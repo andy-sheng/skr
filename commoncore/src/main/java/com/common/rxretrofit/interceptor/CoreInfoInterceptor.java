@@ -1,9 +1,11 @@
 package com.common.rxretrofit.interceptor;
 
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.utils.U;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -11,6 +13,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class CoreInfoInterceptor implements Interceptor {
+    public final static String TAG = "CoreInfoInterceptor";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -39,7 +42,16 @@ public class CoreInfoInterceptor implements Interceptor {
                 .url(httpUrl)
                 .build();
         //before
-        Response response = chain.proceed(request);
+        Response response = null;
+        try {
+            response = chain.proceed(request);
+        } catch (SocketTimeoutException exception) {
+            String log = new StringBuilder().append("请求超时").append(exception.getMessage())
+                    .append("\n")
+                    .append("url=").append(httpUrl.toString())
+                    .toString();
+            MyLog.w(TAG, log);
+        }
         //after
         return response;
     }
