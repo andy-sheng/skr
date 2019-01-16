@@ -16,6 +16,7 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -117,13 +118,18 @@ public class EditInfoAgeFragment extends BaseFragment {
             selectedDate.set(year, month - 1, date);
         }
         Calendar startDate = Calendar.getInstance();
-        startDate.set(1900, 1, 1);
+        startDate.set(1900, 0, 1);
         Calendar endDate = Calendar.getInstance();
 
         //时间选择器 ，自定义布局
         pvCustomLunar = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
+                MyLog.d(TAG, "onTimeSelect" + " date = " + date + " v=" + v);
+                if (!checkBirthday(date)) {
+                    U.getToastUtil().showShort("当前选择的出生年月无效");
+                    return;
+                }
                 if (isUpload) {
                     // 上传个人信息
                     String bir = U.getDateTimeUtils().formatDateString(date);
@@ -203,6 +209,18 @@ public class EditInfoAgeFragment extends BaseFragment {
 
         pvCustomLunar.setKeyBackCancelable(false); //系统返回键监听屏蔽掉
         pvCustomLunar.show();
+    }
+
+    private boolean checkBirthday(Date date) {
+        if (date == null) {
+            return false;
+        }
+
+        Date now = Calendar.getInstance().getTime();
+        if (now.getTime() < date.getTime()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
