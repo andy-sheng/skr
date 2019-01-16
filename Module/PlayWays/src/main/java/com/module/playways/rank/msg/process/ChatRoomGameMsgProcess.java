@@ -2,6 +2,7 @@ package com.module.playways.rank.msg.process;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.module.playways.rank.msg.event.AccBeginEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
@@ -82,6 +83,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processVoteResult(basePushInfo, msg.getVoteResultMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_MACHINE_SCORE) {
             processMachineScore(basePushInfo, msg.getMachineScore());
+        }else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_ACC_BEGIN) {
+            processAccBeigin(basePushInfo);
         }
     }
 
@@ -93,7 +96,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
                 ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY,
                 ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND,
-                ERoomMsgType.RM_VOTE_RESULT, ERoomMsgType.RM_ROUND_MACHINE_SCORE
+                ERoomMsgType.RM_VOTE_RESULT, ERoomMsgType.RM_ROUND_MACHINE_SCORE,
+                ERoomMsgType.RM_ROUND_ACC_BEGIN
         };
     }
 
@@ -324,4 +328,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         EventBus.getDefault().post(machineScoreEvent);
     }
 
+    private void processAccBeigin(BasePushInfo basePushInfo) {
+        AccBeginEvent machineScoreEvent = new AccBeginEvent(basePushInfo, basePushInfo.getSender().getUserID());
+        EventBus.getDefault().post(machineScoreEvent);
+    }
 }

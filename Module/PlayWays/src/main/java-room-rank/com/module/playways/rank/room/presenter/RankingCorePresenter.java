@@ -25,15 +25,18 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.msg.event.AccBeginEvent;
 import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
+import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
@@ -58,6 +61,7 @@ import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
+import com.zq.live.proto.Room.SpecialEmojiMsg;
 import com.zq.lyrics.event.LrcEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -898,6 +902,11 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(AccBeginEvent event) {
+        onUserSpeakFromEngine("AccBeginEvent", event.userId);
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
         if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
             int userId = event.getUserStatus().getUserId();
@@ -932,6 +941,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                                 EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
                             }
                             mRobotScoreHelper = new RobotScoreHelper();
+                            //尝试再用融云通知对端
+                            sendUserSpeakEventToOthers();
                         }
                     }
                 });
@@ -975,6 +986,32 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    private void sendUserSpeakEventToOthers(){
+        IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+        if (msgService != null) {
+            long ts = System.currentTimeMillis();
+            UserInfo senderInfo = new UserInfo.Builder()
+                    .setUserID((int) MyUserInfoManager.getInstance().getUid())
+                    .setNickName(MyUserInfoManager.getInstance().getNickName())
+                    .setAvatar(MyUserInfoManager.getInstance().getAvatar())
+                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().getSex()))
+                    .setDescription("")
+                    .setIsSystem(false)
+                    .build();
+
+            RoomMsg roomMsg = new RoomMsg.Builder()
+                    .setTimeMs(ts)
+                    .setMsgType(ERoomMsgType.RM_ROUND_ACC_BEGIN)
+                    .setRoomID(mRoomData.getGameId())
+                    .setNo(ts)
+                    .setPosType(EMsgPosType.EPT_UNKNOWN)
+                    .setSender(senderInfo)
+                    .build();
+
+            String contnet = U.getBase64Utils().encode(roomMsg.toByteArray());
+            msgService.sendChatRoomMessage(String.valueOf(mRoomData.getGameId()), CustomMsgType.MSG_TYPE_ROOM, contnet, null);
+        }
+    }
 
     private void onUserSpeakFromEngine(String from, int muteUserId) {
         MyLog.w(TAG, "onUserSpeakFromEngine muteUserId=" + muteUserId + "解麦了,from:" + from);
@@ -1023,9 +1060,12 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      */
     private void othersBeginSinging() {
         RoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
-        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
-        startLastTwoSecondTask();
+        if(infoModel!=null && !infoModel.isHasSing()) {
+            infoModel.setHasSing(true);
+            mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
+            mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
+            startLastTwoSecondTask();
+        }
     }
 
     private void startLastTwoSecondTask() {

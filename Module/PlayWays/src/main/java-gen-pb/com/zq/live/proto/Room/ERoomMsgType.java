@@ -89,7 +89,12 @@ public enum ERoomMsgType implements WireEnum {
   /**
    * 实时机器评分
    */
-  RM_ROUND_MACHINE_SCORE(111);
+  RM_ROUND_MACHINE_SCORE(111),
+
+  /**
+   * 告知伴奏开始
+   */
+  RM_ROUND_ACC_BEGIN(190);
 
   public static final ProtoAdapter<ERoomMsgType> ADAPTER = new ProtoAdapter_ERoomMsgType();
 
@@ -120,6 +125,7 @@ public enum ERoomMsgType implements WireEnum {
       case 109: return RM_EXIT_GAME_OUT_ROUND;
       case 110: return RM_VOTE_RESULT;
       case 111: return RM_ROUND_MACHINE_SCORE;
+      case 190: return RM_ROUND_ACC_BEGIN;
       default: return null;
     }
   }

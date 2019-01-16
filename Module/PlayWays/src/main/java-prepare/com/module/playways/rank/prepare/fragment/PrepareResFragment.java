@@ -91,7 +91,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mOnDownloadProgress = new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
-                MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);
+//                MyLog.d(TAG, "onDownloaded" + " downloaded=" + downloaded + " totalLength=" + totalLength);
                 mUiHandler.post(() -> {
                     int progress = (int) ((((float) downloaded / (float) totalLength)) * 100);
                     songResProgressbar.setProgress(progress);
@@ -192,7 +192,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
             mPrepareData.setGameType((int) data);
         }
     }
-
 
     @Override
     protected boolean onBackPressed() {

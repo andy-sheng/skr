@@ -22,7 +22,9 @@ public class RoundInfoModel implements Serializable {
 
     private long startTs;// 开始时间，服务器的
     private long endTs;// 结束时间，服务器的
-    private int sysScore = 60;//本轮系统打分，先搞个默认60分
+    private int sysScore;//本轮系统打分，先搞个默认60分
+
+    private boolean hasSing = false;
 
     public int getUserID() {
         return userID;
@@ -86,6 +88,14 @@ public class RoundInfoModel implements Serializable {
 
     public void setSysScore(int sysScore) {
         this.sysScore = sysScore;
+    }
+
+    public boolean isHasSing() {
+        return hasSing;
+    }
+
+    public void setHasSing(boolean hasSing) {
+        this.hasSing = hasSing;
     }
 
     public void parse(RoundInfo roundInfo) {

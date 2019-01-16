@@ -349,6 +349,7 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                MyLog.w(TAG,"setClientRole" + " isAnchor=" + isAnchor);
                 AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
             }
         });
