@@ -379,6 +379,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     // 上报心跳，只有当前演唱者上报 2s一次
     public void sendHeartBeat() {
+        MyLog.w(TAG, "sendHeartBeat");
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         map.put("userID", MyUserInfoManager.getInstance().getUid());
