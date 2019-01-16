@@ -464,7 +464,8 @@ public class UserAccountManager {
             ModuleServiceManager.getInstance().getMsgService().connectRongIM(rongToken, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
-                    U.getToastUtil().showShort("与融云服务器连接成功");
+//                    U.getToastUtil().showShort("与服务器连接成功");
+                    MyLog.e(TAG,"与融云服务器连接成功");
                 }
 
                 @Override
