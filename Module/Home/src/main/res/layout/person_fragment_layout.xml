@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/textsize_23_dp"
-        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_28_dp"
         android:drawableTop="@drawable/gerenzhuye_fenxiangicon"
         android:text="分享"
         android:visibility="invisible" />
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_28_dp"
         android:layout_marginRight="@dimen/textsize_23_dp"
         android:drawableTop="@drawable/gerenzhuye_shezhiicon"
         android:text="设置" />
