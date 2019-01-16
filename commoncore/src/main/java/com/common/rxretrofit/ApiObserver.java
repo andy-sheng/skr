@@ -1,5 +1,6 @@
 package com.common.rxretrofit;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -46,7 +47,9 @@ public abstract class ApiObserver<T> implements Observer<T> {
     public void onError(Throwable e) {
         if (MyLog.isDebugLogOpen()) {
             String log = Log.getStackTraceString(e);
-            U.getToastUtil().showShort(log);
+            if (!TextUtils.isEmpty(log)) {
+                U.getToastUtil().showShort(log);
+            }
         }
         MyLog.e(API_TAG, e);
     }
