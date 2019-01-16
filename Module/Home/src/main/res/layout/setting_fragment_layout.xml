@@ -186,6 +186,36 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/log_update"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_63_dp"
+        android:layout_below="@id/comment">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_15_dp"
+            android:text="日志上传"
+            android:textColor="#0C2275" />
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_17_dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_back"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_alignParentBottom="true"
+            android:background="#D8D8D8" />
+
+    </RelativeLayout>
+
     <!--退出登录-->
     <com.common.view.ex.ExTextView
         android:id="@+id/exit_login"
