@@ -207,7 +207,7 @@ public class HomeCorePresenter {
 
     private void showNetworkDisConnectDialog() {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                .setMessageTip("网络连接失败\n请检查网络异常，请检查网络")
+                .setMessageTip("网络异常\n请检查网络连接后重试")
                 .setOkBtnTip("确认")
                 .build();
 
