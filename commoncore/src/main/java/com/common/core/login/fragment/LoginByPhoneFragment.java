@@ -119,8 +119,12 @@ public class LoginByPhoneFragment extends BaseFragment {
 
     private void sendSmsVerifyCode(final String phoneNumber) {
         MyLog.d(TAG, "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);
+        if (!U.getNetworkUtils().hasNetwork()) {
+            U.getToastUtil().showShort("网络异常，请检查网络后重试!");
+            return;
+        }
+
         if (TextUtils.isEmpty(phoneNumber)) {
-            MyLog.d(TAG, "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);
             return;
         }
 
