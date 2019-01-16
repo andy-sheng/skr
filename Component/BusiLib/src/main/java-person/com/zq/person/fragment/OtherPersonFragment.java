@@ -301,13 +301,17 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
             if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
                 if (event.isFriend) {
                     mFollowTv.setText("互关");
+                    mUserInfoModel.setFriend(true);
                 } else if (event.isFollow) {
                     mFollowTv.setText("已关注");
+                    mUserInfoModel.setFollow(true);
                 }
                 mFollowTv.setTag(RELATION_FOLLOWED);
             } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
                 mFollowTv.setText("关注TA");
                 mFollowTv.setTag(RELATION_UN_FOLLOW);
+                mUserInfoModel.setFriend(false);
+                mUserInfoModel.setFriend(false);
             }
         }
     }
