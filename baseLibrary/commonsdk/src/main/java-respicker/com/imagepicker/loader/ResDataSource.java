@@ -33,7 +33,7 @@ public class ResDataSource {
     public final static String TAG = "ImageDataSource";
 
     private BaseFragment mFragment;
-    private OnImagesLoadedListener loadedListener;                     //图片加载完成的回调接口
+    private OnImagesLoadedListener mLoadedListener;                     //图片加载完成的回调接口
     private ContentResolver mPhotoAlbumContentResolver;
 
     private ContentObserver mPhotoAlbumContentObserver = new ContentObserver(new Handler()) {
@@ -60,7 +60,7 @@ public class ResDataSource {
      */
     public ResDataSource(BaseFragment fragment, OnImagesLoadedListener loadedListener) {
         this.mFragment = fragment;
-        this.loadedListener = loadedListener;
+        this.mLoadedListener = loadedListener;
     }
 
     public void destroy() {
@@ -68,7 +68,7 @@ public class ResDataSource {
     }
 
     public ContentResolver getPhotoAlbumResolver() {
-        if (mPhotoAlbumContentResolver != null) {
+        if (mPhotoAlbumContentResolver == null) {
             mPhotoAlbumContentResolver = mFragment.getContext().getContentResolver();
             mPhotoAlbumContentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, mPhotoAlbumContentObserver);
         }
@@ -76,7 +76,7 @@ public class ResDataSource {
     }
 
     public ContentResolver getVideoResolver() {
-        if (mVideoContentResolver != null) {
+        if (mVideoContentResolver == null) {
             mVideoContentResolver = mFragment.getContext().getContentResolver();
             mVideoContentResolver.registerContentObserver(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, false, mVideoContentObserver);
         }
@@ -84,9 +84,9 @@ public class ResDataSource {
     }
 
     public void loadRes() {
-        Observable.create(new ObservableOnSubscribe<Object>() {
+        Observable.create(new ObservableOnSubscribe<ArrayList<ResFolder>>() {
             @Override
-            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<ArrayList<ResFolder>> emitter) throws Exception {
                 ArrayList<ResFolder> resFolders = new ArrayList<>();
                 List<ImageItem> imageItemList = loadPhotoAlbum();
                 List<VideoItem> videoList = loadVideo();
@@ -138,10 +138,12 @@ public class ResDataSource {
                 .subscribeOn(Schedulers.io())
                 .compose(mFragment.bindUntilEvent(FragmentEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Object>() {
+                .subscribe(new Consumer<ArrayList<ResFolder>>() {
                     @Override
-                    public void accept(Object o) throws Exception {
-
+                    public void accept(ArrayList<ResFolder> res) throws Exception {
+                        if (mLoadedListener != null) {
+                            mLoadedListener.onImagesLoaded(res);
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -282,10 +284,10 @@ public class ResDataSource {
                         thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID
                                 + "=" + videoId, null, null);
                 if (thumbCursor.moveToFirst()) {
-                    int j0 = thumbCursor.getColumnIndexOrThrow(video_projection[0]);
-                    int j1 = thumbCursor.getColumnIndexOrThrow(video_projection[1]);
-                    int j2 = thumbCursor.getColumnIndexOrThrow(video_projection[2]);
-                    int j3 = thumbCursor.getColumnIndexOrThrow(video_projection[3]);
+                    int j0 = thumbCursor.getColumnIndexOrThrow(thumbColumns[0]);
+                    int j1 = thumbCursor.getColumnIndexOrThrow(thumbColumns[1]);
+                    int j2 = thumbCursor.getColumnIndexOrThrow(thumbColumns[2]);
+                    int j3 = thumbCursor.getColumnIndexOrThrow(thumbColumns[3]);
 
                     ImageItem imageItem = new ImageItem();
                     imageItem.setPath(thumbCursor.getString(j0));
