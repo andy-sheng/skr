@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.provider.MediaStore;
 
 import com.common.base.BaseFragment;
+import com.common.base.R;
+import com.common.log.MyLog;
+import com.common.utils.U;
 import com.imagepicker.ResPicker;
 import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ImageItem;
@@ -88,9 +91,9 @@ public class ResDataSource {
             @Override
             public void subscribe(ObservableEmitter<ArrayList<ResFolder>> emitter) throws Exception {
                 ArrayList<ResFolder> resFolders = new ArrayList<>();
-                List<ImageItem> imageItemList = loadPhotoAlbum();
-                List<VideoItem> videoList = loadVideo();
-                List<ResItem> totalList = new ArrayList<>();
+                ArrayList<ImageItem> imageItemList = loadPhotoAlbum();
+                ArrayList<VideoItem> videoList = loadVideo();
+                ArrayList<ResItem> totalList = new ArrayList<>();
                 totalList.addAll(imageItemList);
                 totalList.addAll(videoList);
                 Collections.sort(totalList, new Comparator<ResItem>() {
@@ -131,6 +134,23 @@ public class ResDataSource {
                     }
                 }
 
+                //防止没有图片报异常
+                if (totalList.size() > 0) {
+                    //构造所有图片的集合
+                    ResFolder allImagesFolder = new ResFolder();
+                    allImagesFolder.setName(U.app().getResources().getString(R.string.ip_all_images));
+                    allImagesFolder.setPath("/");
+                    ResItem resItem = totalList.get(0);
+                    if (resItem instanceof ImageItem) {
+                        allImagesFolder.setCover((ImageItem) resItem);
+                    } else if (resItem instanceof VideoItem) {
+                        VideoItem videoItem = (VideoItem) resItem;
+                        allImagesFolder.setCover(videoItem.getThumb());
+                    }
+                    allImagesFolder.setResItems(totalList);
+                    resFolders.add(0, allImagesFolder);  //确保第一条是所有图片
+                }
+
                 emitter.onNext(resFolders);
                 emitter.onComplete();
             }
@@ -140,21 +160,22 @@ public class ResDataSource {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ArrayList<ResFolder>>() {
                     @Override
-                    public void accept(ArrayList<ResFolder> res) throws Exception {
+                    public void accept(ArrayList<ResFolder> resFolders) throws Exception {
                         if (mLoadedListener != null) {
-                            mLoadedListener.onImagesLoaded(res);
+                            ResPicker.getInstance().setResFolders(resFolders);
+                            mLoadedListener.onImagesLoaded(resFolders);
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        MyLog.e(throwable);
                     }
                 });
 
     }
 
-    private List<ImageItem> loadPhotoAlbum() {
+    private ArrayList<ImageItem> loadPhotoAlbum() {
         String[] image_projection = {     //查询图片需要的数据列
                 MediaStore.Images.Media.DISPLAY_NAME,   //图片的显示名称  aaa.jpg
                 MediaStore.Images.Media.DATA,           //图片的真实路径  /storage/emulated/0/pp/downloader/wallpaper/aaa.jpg
@@ -220,7 +241,7 @@ public class ResDataSource {
         return allImages;
     }
 
-    private List<VideoItem> loadVideo() {
+    private ArrayList<VideoItem> loadVideo() {
         String[] video_projection = {     //查询视频需要的数据列
                 MediaStore.Video.Media.DISPLAY_NAME,   //视频的显示名称  aaa.jpg
                 MediaStore.Video.Media.DATA,           //视频的真实路径  /storage/emulated/0/pp/downloader/wallpaper/aaa.jpg
