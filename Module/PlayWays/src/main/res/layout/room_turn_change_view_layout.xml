@@ -21,25 +21,32 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/turn_name_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_below="@+id/turn_current_iv"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_16_dp"
-        android:text="《将爱情进行到底》"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_24_dp"
         android:textStyle="bold" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/turn_song_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/turn_name_tv"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_8_dp"
-        android:text="演唱者：KTV酒彪子"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
