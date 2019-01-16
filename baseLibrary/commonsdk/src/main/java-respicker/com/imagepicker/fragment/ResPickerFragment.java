@@ -30,6 +30,7 @@ import com.imagepicker.adapter.ImageFolderAdapter;
 import com.imagepicker.adapter.ResRecyclerAdapter;
 import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ImageItem;
+import com.imagepicker.model.ResItem;
 import com.imagepicker.view.FolderPopUpWindow;
 import com.imagepicker.view.GridSpacingItemDecoration;
 
@@ -180,7 +181,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
                 U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
                     @Override
                     public void onRequestPermissionSuccess() {
-                        mImageDataSource.loadPhotoAlbum();
+                        mImageDataSource.loadRes();
                     }
 
                     @Override
@@ -224,16 +225,16 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
     }
 
     @Override
-    public void onResSelectedAdd(int position, ImageItem item) {
+    public void onResSelectedAdd(int position, ResItem item) {
         onImageSelectedChange(position, item, true);
     }
 
     @Override
-    public void onResSelectedRemove(int position, ImageItem item) {
+    public void onResSelectedRemove(int position, ResItem item) {
         onImageSelectedChange(position, item, false);
     }
 
-    public void onImageSelectedChange(int position, ImageItem item, boolean isAdd) {
+    public void onImageSelectedChange(int position, ResItem item, boolean isAdd) {
         int selectedImageSize = mImagePicker.getSelectedResList().size();
         if (selectedImageSize > 0) {
             mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getParams().getSelectLimit()));
@@ -284,8 +285,8 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
             ImageItem imageItem = new ImageItem();
             imageItem.setPath(path);
 
-            mImagePicker.clearSelectedImages();
-            mImagePicker.addSelectedImageItem(0, imageItem);
+            mImagePicker.clearSelectedRes();
+            mImagePicker.addSelectedResItem(0, imageItem);
 
             if (mImagePicker.getParams().isCrop()) {
                 gotoCrop();
@@ -308,13 +309,13 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
         if (imageFolders.size() == 0) {
             mImageRecyclerAdapter.refreshData(null);
         } else {
-            mImageRecyclerAdapter.refreshData(imageFolders.get(0).getImages());
+            mImageRecyclerAdapter.refreshData(imageFolders.get(0).getResItems());
         }
         mImageFolderAdapter.refreshData(imageFolders);
     }
 
     @Override
-    public void onImageItemClick(View view, ImageItem imageItem, int position) {
+    public void onImageItemClick(View view, ResItem imageItem, int position) {
         //根据是否有相机按钮确定位置
         position = mImagePicker.getParams().isShowCamera() ? position - 1 : position;
         if (mImagePicker.getParams().isMultiMode()) {
@@ -333,8 +334,8 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
                     .build());
         } else {
             // 单选，要么跳裁剪，要么跳返回结果
-            mImagePicker.clearSelectedImages();
-            mImagePicker.addSelectedImageItem(position, mImagePicker.getCurrentResFolderItems().get(position));
+            mImagePicker.clearSelectedRes();
+            mImagePicker.addSelectedResItem(position, mImagePicker.getCurrentResFolderItems().get(position));
             if (mImagePicker.getParams().isCrop()) {
                 gotoCrop();
             } else {

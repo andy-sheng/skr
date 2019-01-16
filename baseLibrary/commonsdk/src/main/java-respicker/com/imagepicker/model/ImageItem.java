@@ -12,7 +12,7 @@ import android.os.Parcelable;
  * 修订历史：
  * ================================================
  */
-public class ResItem extends ResItem {
+public class ImageItem extends ResItem {
 
     public ImageItem(){
 

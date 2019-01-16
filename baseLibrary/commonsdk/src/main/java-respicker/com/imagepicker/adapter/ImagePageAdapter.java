@@ -9,6 +9,7 @@ import com.common.utils.U;
 import com.imagebrowse.ImageBrowseView;
 import com.imagepicker.ResPicker;
 import com.imagepicker.model.ImageItem;
+import com.imagepicker.model.ResItem;
 
 import java.util.ArrayList;
 
@@ -27,11 +28,11 @@ public class ImagePageAdapter extends PagerAdapter {
     private int screenWidth;
     private int screenHeight;
     private ResPicker imagePicker;
-    private ArrayList<ImageItem> images = new ArrayList<>();
+    private ArrayList<ResItem> images = new ArrayList<>();
     private Activity mActivity;
     public PhotoViewClickListener listener;
 
-    public ImagePageAdapter(Activity activity, ArrayList<ImageItem> images) {
+    public ImagePageAdapter(Activity activity, ArrayList<ResItem> images) {
         this.mActivity = activity;
         this.images = images;
 
@@ -40,7 +41,7 @@ public class ImagePageAdapter extends PagerAdapter {
         imagePicker = ResPicker.getInstance();
     }
 
-    public void setData(ArrayList<ImageItem> images) {
+    public void setData(ArrayList<ResItem> images) {
         this.images = images;
     }
 
@@ -51,8 +52,7 @@ public class ImagePageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ImageBrowseView imageBrowseView = new ImageBrowseView(mActivity);
-        ImageItem imageItem = images.get(position);
-
+        ResItem imageItem = images.get(position);
         imageBrowseView.load(imageItem.getPath());
 
 //        photoView.setOnPhotoTapListener(new OnPhotoTapListener() {

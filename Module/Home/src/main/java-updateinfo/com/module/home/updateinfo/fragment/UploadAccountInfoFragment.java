@@ -98,32 +98,29 @@ public class UploadAccountInfoFragment extends BaseFragment {
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                                List<ImageItem> list = ResPicker.getInstance().getSelectedResList();
-                                if (list.size() > 0) {
-                                    ImageItem imageItem = list.get(0);
-                                    UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
-                                            .setNeedCompress(true)
-                                            .startUploadAsync(new UploadCallback() {
-                                                @Override
-                                                public void onProgress(long currentSize, long totalSize) {
+                                ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
+                                UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+                                        .setNeedCompress(true)
+                                        .startUploadAsync(new UploadCallback() {
+                                            @Override
+                                            public void onProgress(long currentSize, long totalSize) {
 
-                                                }
+                                            }
 
-                                                @Override
-                                                public void onSuccess(String url) {
-                                                    U.getToastUtil().showShort("上传成功 url:" + url);
-                                                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                                            .setAvatar(url)
-                                                            .build(), true);
-                                                }
+                                            @Override
+                                            public void onSuccess(String url) {
+                                                U.getToastUtil().showShort("上传成功 url:" + url);
+                                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                                        .setAvatar(url)
+                                                        .build(), true);
+                                            }
 
-                                                @Override
-                                                public void onFailure(String msg) {
+                                            @Override
+                                            public void onFailure(String msg) {
 
-                                                }
+                                            }
 
-                                            });
-                                }
+                                        });
                             }
                         })
                         .build());

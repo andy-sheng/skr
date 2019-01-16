@@ -90,7 +90,7 @@ public class ImageFolderAdapter extends BaseAdapter {
 
         ResFolder folder = getItem(position);
         holder.folderName.setText(folder.getName());
-        holder.imageCount.setText(mActivity.getString(R.string.ip_folder_image_count, folder.getImages().size()));
+        holder.imageCount.setText(mActivity.getString(R.string.ip_folder_image_count, folder.getResItems().size()));
         imagePicker.getImageLoader().displayImage(mActivity, folder.getCover().getPath(), holder.cover, mImageSize, mImageSize);
 
         if (lastSelected == position) {

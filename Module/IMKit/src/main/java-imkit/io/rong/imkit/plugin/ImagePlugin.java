@@ -72,7 +72,7 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
                         if (extension != null && extension.getExtensionClickListener() != null) {
-                            ArrayList<ImageItem> imageItems = ResPicker.getInstance().getSelectedResList();
+                            ArrayList<ImageItem> imageItems = ResPicker.getInstance().getSelectedImageList();
                             ArrayList<Uri> list = new ArrayList<>();
                             for (ImageItem imageItem : imageItems) {
                                 // todo 原来PictureSelectorActivity中uri 是这样生成的

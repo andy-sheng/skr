@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.utils.U;
 import com.imagepicker.loader.ImageLoader;
+import com.imagepicker.model.ImageItem;
 import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ResItem;
 import com.imagepicker.view.CropImageView;
@@ -114,6 +116,19 @@ public class ResPicker {
         return mSelectedResList;
     }
 
+    public ArrayList<ImageItem> getSelectedImageList() {
+        ArrayList<ImageItem> imageItemList = new ArrayList<>();
+        for (ResItem resItem : mSelectedResList) {
+            if (resItem instanceof ImageItem) {
+                imageItemList.add((ImageItem) resItem);
+            }
+        }
+        return imageItemList;
+    }
+
+    public ImageItem getSingleSelectedImage() {
+        return (ImageItem) mSelectedResList.get(0);
+    }
 
     public boolean isOrigin() {
         return mIsOrigin;
@@ -181,21 +196,21 @@ public class ResPicker {
         activity.startActivityForResult(takePictureIntent, requestCode);
     }
 
-    public void addSelectedImageItem(int position, ImageItem imageItem) {
+    public void addSelectedResItem(int position, ResItem imageItem) {
         mSelectedResList.add(imageItem);
         for (OnResSelectedListener l : mResSelectedListeners) {
             l.onResSelectedAdd(position, imageItem);
         }
     }
 
-    public void removeSelectedImageItem(int position, ImageItem imageItem) {
+    public void removeSelectedResItem(int position, ResItem imageItem) {
         mSelectedResList.remove(imageItem);
         for (OnResSelectedListener l : mResSelectedListeners) {
             l.onResSelectedRemove(position, imageItem);
         }
     }
 
-    public void clearSelectedImages() {
+    public void clearSelectedRes() {
         if (mSelectedResList != null) {
             mSelectedResList.clear();
         }
@@ -213,9 +228,9 @@ public class ResPicker {
      * 图片选中的监听
      */
     public interface OnResSelectedListener {
-        void onResSelectedAdd(int position, ImageItem item);
+        void onResSelectedAdd(int position, ResItem item);
 
-        void onResSelectedRemove(int position, ImageItem item);
+        void onResSelectedRemove(int position, ResItem item);
     }
 
     public void addOnResSelectedListener(OnResSelectedListener l) {
@@ -244,7 +259,7 @@ public class ResPicker {
         }
         takeImageFile = (File) bunlde.getSerializable("takeImageFile");
         mCropCacheFolder = (File) bunlde.getSerializable("cropCacheFolder");
-        List<ImageItem> selectedImages = (ArrayList<ImageItem>) bunlde.getSerializable("mSelectedImages");
+        List<ResItem> selectedImages = (ArrayList<ResItem>) bunlde.getSerializable("mSelectedImages");
         if (selectedImages != null && !selectedImages.isEmpty()) {
             mSelectedResList.clear();
             mSelectedResList.addAll(selectedImages);

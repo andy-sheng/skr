@@ -160,9 +160,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                        List<ImageItem> list = ResPicker.getInstance().getSelectedResList();
-                        if (list.size() > 0) {
-                            ImageItem imageItem = list.get(0);
+                            ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
                             UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
                                     .setNeedCompress(true)
                                     .startUploadAsync(new UploadCallback() {
@@ -187,7 +185,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
                                     });
                         }
-                    }
                 })
                 .build());
     }

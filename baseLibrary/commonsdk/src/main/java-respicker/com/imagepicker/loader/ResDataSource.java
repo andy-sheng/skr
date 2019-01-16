@@ -10,6 +10,7 @@ import com.common.base.BaseFragment;
 import com.imagepicker.ResPicker;
 import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ImageItem;
+import com.imagepicker.model.ResItem;
 import com.imagepicker.model.VideoItem;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 

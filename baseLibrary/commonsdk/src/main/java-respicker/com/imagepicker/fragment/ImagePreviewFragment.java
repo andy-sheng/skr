@@ -21,6 +21,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.imagepicker.ResPicker;
 import com.imagepicker.adapter.ImagePageAdapter;
 import com.imagepicker.model.ImageItem;
+import com.imagepicker.model.ResItem;
 import com.imagepicker.view.SuperCheckBox;
 
 import java.util.ArrayList;
@@ -40,9 +41,9 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
 
     ResPicker mImagePicker;
 
-    ArrayList<ImageItem> mImageItems;      //跳转进ImagePreviewFragment的图片文件夹
+    ArrayList<ResItem> mImageItems;      //跳转进ImagePreviewFragment的图片文件夹
     int mCurrentPosition = 0;              //跳转进ImagePreviewFragment时的序号，第几个图片
-    ArrayList<ImageItem> mSelectedImages;   //所有已经选中的图片
+    ArrayList<ResItem> mSelectedImages;   //所有已经选中的图片
 
     ImagePageAdapter mImagePageAdapter;
 
@@ -83,8 +84,8 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
                 if (mImagePicker.getSelectedResList().size() == 0) {
                     // 表示选中了这张
                     mCbCheck.setChecked(true);
-                    ImageItem imageItem = mImageItems.get(mCurrentPosition);
-                    mImagePicker.addSelectedImageItem(mCurrentPosition, imageItem);
+                    ResItem imageItem = mImageItems.get(mCurrentPosition);
+                    mImagePicker.addSelectedResItem(mCurrentPosition, imageItem);
                 }
                 deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
@@ -118,8 +119,9 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     long size = 0;
-                    for (ImageItem item : mSelectedImages)
+                    for (ResItem item : mSelectedImages) {
                         size += item.getSize();
+                    }
                     String fileSize = Formatter.formatFileSize(getContext(), size);
                     mImagePicker.setOrigin(true);
                     mCbOrigin.setText(getString(R.string.ip_origin_size, fileSize));
@@ -134,16 +136,16 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
         mCbCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageItem imageItem = mImageItems.get(mCurrentPosition);
+                ResItem imageItem = mImageItems.get(mCurrentPosition);
                 int selectLimit = mImagePicker.getParams().getSelectLimit();
                 if (mCbCheck.isChecked() && mSelectedImages.size() >= selectLimit) {
                     U.getToastUtil().showShort(getString(R.string.ip_select_limit, selectLimit));
                     mCbCheck.setChecked(false);
                 } else {
                     if (mCbCheck.isChecked()) {
-                        mImagePicker.addSelectedImageItem(mCurrentPosition, imageItem);
+                        mImagePicker.addSelectedResItem(mCurrentPosition, imageItem);
                     } else {
-                        mImagePicker.removeSelectedImageItem(mCurrentPosition, imageItem);
+                        mImagePicker.removeSelectedResItem(mCurrentPosition, imageItem);
                     }
 
                 }
@@ -155,7 +157,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
             @Override
             public void onPageSelected(int position) {
                 mCurrentPosition = position;
-                ImageItem item = mImageItems.get(mCurrentPosition);
+                ResItem item = mImageItems.get(mCurrentPosition);
                 boolean isSelected = mImagePicker.getSelectedResList().contains(item);
                 mCbCheck.setChecked(isSelected);
                 mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mImageItems.size()));
@@ -219,17 +221,17 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
     @Override
     public void setData(int type, @Nullable Object data) {
         if (type == 1) {
-            mImageItems = (ArrayList<ImageItem>) data;
+            mImageItems = (ArrayList<ResItem>) data;
         }
     }
 
     @Override
-    public void onResSelectedAdd(int position, ImageItem item) {
+    public void onResSelectedAdd(int position, ResItem item) {
         onImageSelected(position, item, true);
     }
 
     @Override
-    public void onResSelectedRemove(int position, ImageItem item) {
+    public void onResSelectedRemove(int position, ResItem item) {
         onImageSelected(position, item, false);
     }
 
@@ -237,7 +239,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
      * 图片添加成功后，修改当前图片的选中数量
      * 当调用 addSelectedImageItem 或 deleteSelectedImageItem 都会触发当前回调
      */
-    public void onImageSelected(int position, ImageItem item, boolean isAdd) {
+    public void onImageSelected(int position, ResItem item, boolean isAdd) {
         int selectedImageSize = mImagePicker.getSelectedResList().size();
         if (selectedImageSize > 0) {
             mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getParams().getSelectLimit()));
@@ -247,7 +249,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
 
         if (mCbOrigin.isChecked()) {
             long size = 0;
-            for (ImageItem imageItem : mSelectedImages) {
+            for (ResItem imageItem : mSelectedImages) {
                 size += imageItem.getSize();
             }
             String fileSize = Formatter.formatFileSize(getContext(), size);

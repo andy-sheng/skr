@@ -13,6 +13,7 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.imagepicker.ResPicker;
 import com.imagepicker.model.ImageItem;
+import com.imagepicker.model.ResItem;
 import com.imagepicker.view.CropImageView;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class ImageCropFragment extends ImageBaseFragment {
     Bitmap mBitmap;
 
     ResPicker mImagePicker;
-    ArrayList<ImageItem> mImageItems;
+    ArrayList<ResItem> mImageItems;
 
     /**
      * 参数太多一层层往里传确实太麻烦
