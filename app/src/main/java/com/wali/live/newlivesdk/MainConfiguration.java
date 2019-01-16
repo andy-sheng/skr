@@ -24,6 +24,7 @@ import android.util.Log;
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.base.ConfigModule;
+import com.common.blockmoniter.BlockDetectByPrinter;
 
 import java.util.List;
 
@@ -72,6 +73,9 @@ public class MainConfiguration implements ConfigModule {
 
             }
         });
+
+        BlockDetectByPrinter.start();
+
     }
 
     @Override
