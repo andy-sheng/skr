@@ -85,7 +85,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         RxView.clicks(mSelectBackIv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.general_back);
                     backToLastCard();
                 });
 
@@ -198,8 +197,11 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     // 返回上一张选歌卡片
     private void backToLastCard() {
         if (mDeleteList != null && mDeleteList.size() != 0) {
+            U.getSoundUtils().play(TAG, R.raw.general_back);
             mSongCardSwipAdapter.addData(0, mDeleteList.remove(0));
             mSwipeView.swipeBack();
+        }else {
+            U.getToastUtil().showShort("没有更多返回了");
         }
     }
 
