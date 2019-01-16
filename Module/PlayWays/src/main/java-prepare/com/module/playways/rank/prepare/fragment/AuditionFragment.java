@@ -307,7 +307,7 @@ public class AuditionFragment extends BaseFragment {
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                MyLog.d(TAG, "onAnimationUpdate" + " animation=" + animation);
+//                MyLog.d(TAG, "onAnimationUpdate" + " animation=" + animation);
                 int value = (Integer) animation.getAnimatedValue();
                 mPrgressBar.setProgress(value);
             }

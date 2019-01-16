@@ -125,7 +125,9 @@ public class ScreenLogView extends RelativeLayout {
                 if (mTagSelectView == null) {
                     mTagSelectView = new TagSelectView(getContext());
                 }
-                addView(mTagSelectView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+                if(ScreenLogView.this.indexOfChild(mTagSelectView)==-1) {
+                    addView(mTagSelectView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+                }
                 mTagSelectView.setListener(new TagSelectView.Listener() {
                                                @Override
                                                public void onResult(HashSet<String> set) {
