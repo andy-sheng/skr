@@ -30,7 +30,9 @@ public class KeyBoardUtils {
     public void hideSoftInputKeyBoard(Activity context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if (context.getCurrentFocus() != null) {
+            imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     public void showSoftInputKeyBoard(Context context, View focusView) {
