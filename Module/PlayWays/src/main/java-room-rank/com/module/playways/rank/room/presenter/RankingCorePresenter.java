@@ -1184,20 +1184,20 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             U.getToastUtil().showShort("游戏结束后，某一个人退出了");
         } else if (exitGameEvent.type == EXIT_GAME_OUT_ROUND) {   //我是观众，有一个人退出
             U.getToastUtil().showShort("游戏中，某一个人退出了");
-
-            UserInfoModel userInfo = mRoomData.getUserInfo(exitGameEvent.exitUserID);
-            BasePushInfo basePushInfo = new BasePushInfo();
-            basePushInfo.setRoomID(mRoomData.getGameId());
-            basePushInfo.setSender(new UserInfo.Builder()
-                    .setUserID(1)
-                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
-                    .setNickName("系统消息")
-                    .setSex(ESex.fromValue(0))
-                    .build());
-            String text = userInfo.getNickname() + "偷偷溜走啦～";
-            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-            EventBus.getDefault().post(msgEvent);
         }
+        
+        UserInfoModel userInfo = mRoomData.getUserInfo(exitGameEvent.exitUserID);
+        BasePushInfo basePushInfo = new BasePushInfo();
+        basePushInfo.setRoomID(mRoomData.getGameId());
+        basePushInfo.setSender(new UserInfo.Builder()
+                .setUserID(1)
+                .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
+                .setNickName("系统消息")
+                .setSex(ESex.fromValue(0))
+                .build());
+        String text = userInfo.getNickname() + "偷偷溜走啦～";
+        CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+        EventBus.getDefault().post(msgEvent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
