@@ -35,6 +35,8 @@ import io.reactivex.functions.Consumer;
  */
 public class LoginByPhoneFragment extends BaseFragment {
 
+    public static final String PREF_KEY_PHONE_NUM = "pref_key_phone_num";
+
     RelativeLayout mMainActContainer;
     ExImageView mIvBack;
     NoLeakEditText mPhoneInputTv;
@@ -60,6 +62,8 @@ public class LoginByPhoneFragment extends BaseFragment {
         mCodeInputTv = (NoLeakEditText) mRootView.findViewById(R.id.code_input_tv);
         mGetCodeTv = (ExTextView) mRootView.findViewById(R.id.get_code_tv);
         mLoginTv = (ExTextView) mRootView.findViewById(R.id.login_tv);
+
+        mPhoneInputTv.setText(U.getPreferenceUtils().getSettingString(PREF_KEY_PHONE_NUM, ""));
 
         RxView.clicks(mGetCodeTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -139,6 +143,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                 if (result.getErrno() == 0) {
                     // 发送验证码成功
                     U.getToastUtil().showShort("验证码发送成功");
+                    U.getPreferenceUtils().setSettingString(PREF_KEY_PHONE_NUM, phoneNumber);
                     mGetCodeTv.setSelected(true);
                     mGetCodeTv.setClickable(false);
                     mCodeInputTv.setFocusable(true);
