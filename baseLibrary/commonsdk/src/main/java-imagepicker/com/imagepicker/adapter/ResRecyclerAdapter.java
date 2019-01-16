@@ -15,7 +15,7 @@ import com.common.image.model.ImageFactory;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.imagebrowse.EnhancedImageView;
-import com.imagepicker.ImagePicker;
+import com.imagepicker.ResPicker;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.SuperCheckBox;
 
@@ -36,15 +36,15 @@ import java.util.List;
  * Date: 2017-04-05  10:04
  */
 
-public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     private static final int ITEM_TYPE_CAMERA = 0;  //第一个条目是相机
     private static final int ITEM_TYPE_NORMAL = 1;  //第一个条目不是相机
-    private ImagePicker mImagePicker;
+    private ResPicker mImagePicker;
     private Activity mActivity;
-    private ArrayList<ImageItem> images = new ArrayList<>();       //当前需要显示的所有的图片数据
-    private ArrayList<ImageItem> mSelectedImages; //全局保存的已经选中的图片数据
+    private ArrayList<ResItem> images = new ArrayList<>();       //当前需要显示的所有的图片数据
+    private ArrayList<ResItem> mSelectedImages; //全局保存的已经选中的图片数据
     private boolean isShowCamera;         //是否显示拍照按钮
     private int mImageSize;               //每个条目的大小
     private LayoutInflater mInflater;
@@ -53,7 +53,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * 构造方法
      */
-    public ImageRecyclerAdapter(Activity activity) {
+    public ResRecyclerAdapter(Activity activity) {
         this.mActivity = activity;
 
         // 算出每个图片的大小
@@ -64,9 +64,9 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         int columnSpace = (int) (2 * activity.getResources().getDisplayMetrics().density); // 间距
         mImageSize = (screenWidth - columnSpace * (cols - 1)) / cols;
 
-        mImagePicker = ImagePicker.getInstance();
+        mImagePicker = ResPicker.getInstance();
         isShowCamera = mImagePicker.getParams().isShowCamera();
-        mSelectedImages = mImagePicker.getSelectedImages();
+        mSelectedImages = mImagePicker.getSelectedResList();
         mInflater = LayoutInflater.from(activity);
     }
 
@@ -74,7 +74,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.listener = listener;
     }
 
-    public void refreshData(ArrayList<ImageItem> images) {
+    public void refreshData(ArrayList<ResItem> images) {
         if (images == null || images.size() == 0) {
             this.images = new ArrayList<>();
         } else {
@@ -224,7 +224,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                         U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
                             @Override
                             public void onRequestPermissionSuccess() {
-                                mImagePicker.takePicture(mActivity, ImagePicker.REQUEST_CODE_TAKE);
+                                mImagePicker.takePicture(mActivity, ResPicker.REQUEST_CODE_TAKE);
                             }
 
                             @Override
@@ -238,7 +238,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                             }
                         }, mActivity);
                     } else {
-                        mImagePicker.takePicture(mActivity, ImagePicker.REQUEST_CODE_TAKE);
+                        mImagePicker.takePicture(mActivity, ResPicker.REQUEST_CODE_TAKE);
                     }
                 }
             });

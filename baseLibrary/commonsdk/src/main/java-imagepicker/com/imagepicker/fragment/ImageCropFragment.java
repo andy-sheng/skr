@@ -8,11 +8,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
-import com.common.base.BaseFragment;
 import com.common.base.R;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.imagepicker.ImagePicker;
+import com.imagepicker.ResPicker;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 
@@ -30,7 +29,7 @@ public class ImageCropFragment extends ImageBaseFragment {
     CropImageView mCropImageView;
     Bitmap mBitmap;
 
-    ImagePicker mImagePicker;
+    ResPicker mImagePicker;
     ArrayList<ImageItem> mImageItems;
 
     /**
@@ -51,7 +50,7 @@ public class ImageCropFragment extends ImageBaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mImagePicker = ImagePicker.getInstance();
+        mImagePicker = ResPicker.getInstance();
         mTitleBar = mRootView.findViewById(R.id.titlebar);
         mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +84,7 @@ public class ImageCropFragment extends ImageBaseFragment {
                 /**
                  * 数据从这里返回
                  */
-                deliverResult(ImagePicker.RESULT_CODE_ITEMS,Activity.RESULT_OK,null);
+                deliverResult(ResPicker.RESULT_CODE_ITEMS,Activity.RESULT_OK,null);
             }
 
             @Override
@@ -98,7 +97,7 @@ public class ImageCropFragment extends ImageBaseFragment {
         mCropImageView.setFocusWidth(mImagePicker.getParams().getFocusWidth());
         mCropImageView.setFocusHeight(mImagePicker.getParams().getFocusHeight());
 
-        mImageItems = mImagePicker.getSelectedImages();
+        mImageItems = mImagePicker.getSelectedResList();
         String imagePath = mImageItems.get(0).getPath();
 
         //缩放图片

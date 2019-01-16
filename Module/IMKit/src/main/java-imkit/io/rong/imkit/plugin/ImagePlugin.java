@@ -17,12 +17,11 @@ import android.support.v4.content.ContextCompat;
 import com.common.base.FragmentDataListener;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.imagepicker.ImagePicker;
-import com.imagepicker.fragment.ImagePickerFragment;
+import com.imagepicker.ResPicker;
+import com.imagepicker.fragment.ResPickerFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import io.rong.imkit.R;
@@ -60,12 +59,12 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
 
     private void openSelectPictureFragment(Fragment fragment, RongExtension extension) {
         Bundle bundle = new Bundle();
-        ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
+        ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
                 .setSelectLimit(8)
                 .setCropStyle(CropImageView.Style.CIRCLE)
                 .build()
         );
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(fragment.getActivity(), ImagePickerFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(fragment.getActivity(), ResPickerFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
                 .setBundle(bundle)
@@ -73,7 +72,7 @@ public class ImagePlugin implements IPluginModule, IPluginRequestPermissionResul
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
                         if (extension != null && extension.getExtensionClickListener() != null) {
-                            ArrayList<ImageItem> imageItems = ImagePicker.getInstance().getSelectedImages();
+                            ArrayList<ImageItem> imageItems = ResPicker.getInstance().getSelectedResList();
                             ArrayList<Uri> list = new ArrayList<>();
                             for (ImageItem imageItem : imageItems) {
                                 // todo 原来PictureSelectorActivity中uri 是这样生成的

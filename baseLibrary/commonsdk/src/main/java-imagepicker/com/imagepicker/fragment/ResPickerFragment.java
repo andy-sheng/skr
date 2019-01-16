@@ -25,9 +25,9 @@ import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.imagepicker.loader.ResDataSource;
-import com.imagepicker.ImagePicker;
+import com.imagepicker.ResPicker;
 import com.imagepicker.adapter.ImageFolderAdapter;
-import com.imagepicker.adapter.ImageRecyclerAdapter;
+import com.imagepicker.adapter.ResRecyclerAdapter;
 import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.FolderPopUpWindow;
@@ -36,13 +36,13 @@ import com.imagepicker.view.GridSpacingItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagePickerFragment extends ImageBaseFragment implements ImagePicker.OnImageSelectedListener, ResDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
+public class ResPickerFragment extends ImageBaseFragment implements ResPicker.OnResSelectedListener, ResDataSource.OnImagesLoadedListener, ResRecyclerAdapter.OnImageItemClickListener {
 
     public static final String EXTRAS_TAKE_PICKERS = "TAKE";
     public static final String EXTRAS_IMAGES = "IMAGES";
 
     private boolean mDirectPhoto = false; // 默认不是直接调取相机
-    private ImagePicker mImagePicker;
+    private ResPicker mImagePicker;
 
     LinearLayout mContent;
     RecyclerView mRecyclerView;
@@ -56,7 +56,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
     FolderPopUpWindow mFolderPopupWindow;  //ImageSet的PopupWindow
 
     ImageFolderAdapter mImageFolderAdapter; //图片文件夹的适配器
-    ImageRecyclerAdapter mImageRecyclerAdapter; //图片适配器
+    ResRecyclerAdapter mImageRecyclerAdapter; //图片适配器
 
     ResDataSource mImageDataSource;
 
@@ -67,9 +67,9 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mImagePicker = ImagePicker.getInstance();
+        mImagePicker = ResPicker.getInstance();
         mImagePicker.reset();
-        mImagePicker.addOnImageSelectedListener(this);
+        mImagePicker.addOnResSelectedListener(this);
         mContent = (LinearLayout) mRootView.findViewById(R.id.content);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mFooterBar = (RelativeLayout) mRootView.findViewById(R.id.footer_bar);
@@ -87,7 +87,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
                     U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
                         @Override
                         public void onRequestPermissionSuccess() {
-                            mImagePicker.takePicture(getActivity(), ImagePicker.REQUEST_CODE_TAKE);
+                            mImagePicker.takePicture(getActivity(), ResPicker.REQUEST_CODE_TAKE);
                         }
 
                         @Override
@@ -101,26 +101,26 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
                         }
                     }, getActivity());
                 } else {
-                    mImagePicker.takePicture(getActivity(), ImagePicker.REQUEST_CODE_TAKE);
+                    mImagePicker.takePicture(getActivity(), ResPicker.REQUEST_CODE_TAKE);
                 }
             }
             // 进选择器前已经选择的 image
             ArrayList<ImageItem> images = data.getParcelableArrayList(EXTRAS_IMAGES);
             if (images != null) {
-                mImagePicker.getSelectedImages().addAll(images);
+                mImagePicker.getSelectedResList().addAll(images);
             }
         }
         mTitlebar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                U.getFragmentUtils().popFragment(ImagePickerFragment.this);
+                U.getFragmentUtils().popFragment(ResPickerFragment.this);
             }
         });
         mBtnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 返回结果
-                deliverResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
+                deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
         });
         mBtnPreview.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +128,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             public void onClick(View v) {
                 // 跳到预览
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePreviewFragment.class)
-                        .addDataBeforeAdd(1, new ArrayList<>(mImagePicker.getSelectedImages()))
+                        .addDataBeforeAdd(1, new ArrayList<>(mImagePicker.getSelectedResList()))
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
@@ -143,7 +143,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             public void onClick(View v) {
                 //点击文件夹按钮
                 createPopupFolderList();
-                mImageFolderAdapter.refreshData(mImagePicker.getImageFolders());  //刷新数据
+                mImageFolderAdapter.refreshData(mImagePicker.getResFolders());  //刷新数据
                 if (mFolderPopupWindow.isShowing()) {
                     mFolderPopupWindow.dismiss();
                 } else {
@@ -164,7 +164,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
         }
 
         mImageFolderAdapter = new ImageFolderAdapter(getActivity());
-        mImageRecyclerAdapter = new ImageRecyclerAdapter(getActivity());
+        mImageRecyclerAdapter = new ResRecyclerAdapter(getActivity());
 
         mImageRecyclerAdapter.setOnImageItemClickListener(this);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -194,10 +194,10 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
                     }
                 }, getActivity());
             } else {
-                mImageDataSource.loadPhotoAlbum();
+                mImageDataSource.loadRes();
             }
         } else {
-            mImageDataSource.loadPhotoAlbum();
+            mImageDataSource.loadRes();
         }
     }
 
@@ -210,12 +210,12 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 mImageFolderAdapter.setSelectIndex(position);
-                mImagePicker.setCurrentImageFolderPosition(position);
+                mImagePicker.setCurrentResFolderPosition(position);
                 mFolderPopupWindow.dismiss();
                 ResFolder imageFolder = (ResFolder) adapterView.getAdapter().getItem(position);
                 if (null != imageFolder) {
 //                    mImageGridAdapter.refreshData(imageFolder.images);
-                    mImageRecyclerAdapter.refreshData(imageFolder.getImages());
+                    mImageRecyclerAdapter.refreshData(imageFolder.getResItems());
                     mTvDir.setText(imageFolder.getName());
                 }
             }
@@ -224,17 +224,17 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
     }
 
     @Override
-    public void onImageSelectedAdd(int position, ImageItem item) {
+    public void onResSelectedAdd(int position, ImageItem item) {
         onImageSelectedChange(position, item, true);
     }
 
     @Override
-    public void onImageSelectedRemove(int position, ImageItem item) {
+    public void onResSelectedRemove(int position, ImageItem item) {
         onImageSelectedChange(position, item, false);
     }
 
     public void onImageSelectedChange(int position, ImageItem item, boolean isAdd) {
-        int selectedImageSize = mImagePicker.getSelectedImages().size();
+        int selectedImageSize = mImagePicker.getSelectedResList().size();
         if (selectedImageSize > 0) {
             mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getParams().getSelectLimit()));
             mBtnOk.setEnabled(true);
@@ -262,7 +262,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
     @Override
     public void destroy() {
         super.destroy();
-        mImagePicker.removeOnImageSelectedListener(this);
+        mImagePicker.removeOnResSelectedListener(this);
         if (mImageDataSource != null) {
             mImageDataSource.destroy();
         }
@@ -276,7 +276,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
     @Override
     public boolean onActivityResultReal(int requestCode, int resultCode, Intent data) {
         MyLog.d(TAG, "onActivityResult" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
-        if (resultCode == FragmentActivity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_TAKE) {
+        if (resultCode == FragmentActivity.RESULT_OK && requestCode == ResPicker.REQUEST_CODE_TAKE) {
             // 拍照结果返回
             U.getImageUtils().notifyGalleryChangeByBroadcast(mImagePicker.getTakeImageFile());
             String path = mImagePicker.getTakeImageFile().getAbsolutePath();
@@ -304,7 +304,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
 
     @Override
     public void onImagesLoaded(List<ResFolder> imageFolders) {
-        mImagePicker.setImageFolders(imageFolders);
+        mImagePicker.setResFolders(imageFolders);
         if (imageFolders.size() == 0) {
             mImageRecyclerAdapter.refreshData(null);
         } else {
@@ -320,7 +320,7 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
         if (mImagePicker.getParams().isMultiMode()) {
             // 多选就去大图浏览界面
             Bundle bundle = new Bundle();
-            bundle.putInt(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
+            bundle.putInt(ResPicker.EXTRA_SELECTED_IMAGE_POSITION, position);
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePreviewFragment.class)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
@@ -334,11 +334,11 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
         } else {
             // 单选，要么跳裁剪，要么跳返回结果
             mImagePicker.clearSelectedImages();
-            mImagePicker.addSelectedImageItem(position, mImagePicker.getCurrentImageFolderItems().get(position));
+            mImagePicker.addSelectedImageItem(position, mImagePicker.getCurrentResFolderItems().get(position));
             if (mImagePicker.getParams().isCrop()) {
                 gotoCrop();
             } else {
-                deliverResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
+                deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
         }
     }
@@ -366,6 +366,6 @@ public class ImagePickerFragment extends ImageBaseFragment implements ImagePicke
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
             mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle,null);
         }
-        U.getFragmentUtils().popFragment(ImagePickerFragment.this);
+        U.getFragmentUtils().popFragment(ResPickerFragment.this);
     }
 }

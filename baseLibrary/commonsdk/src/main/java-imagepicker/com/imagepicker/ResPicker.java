@@ -17,7 +17,7 @@ import com.common.image.model.ImageFactory;
 import com.common.utils.U;
 import com.imagepicker.loader.ImageLoader;
 import com.imagepicker.model.ResFolder;
-import com.imagepicker.model.ImageItem;
+import com.imagepicker.model.ResItem;
 import com.imagepicker.view.CropImageView;
 
 import java.io.File;
@@ -25,30 +25,30 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagePicker {
+public class ResPicker {
     public static final int REQUEST_CODE_TAKE = 1001; // 照相
     public static final int RESULT_CODE_ITEMS = 1004;
 
     public static final String EXTRA_SELECTED_IMAGE_POSITION = "selected_image_position";
 
-    private ImageLoader imageLoader;     //图片加载器
+    private ImageLoader mImageLoader;     //图片加载器
     private File takeImageFile; // 拍照保存路径
-    private File cropCacheFolder; // 裁剪保存路径
+    private File mCropCacheFolder; // 裁剪保存路径
 
     private Params mParams = new Params(); // 配置的参数
 
     private boolean mIsOrigin = false; // 是否需要原图标记
-    private ArrayList<ResFolder> mImageFolders = new ArrayList<>();      //所有的图片文件夹
-    private ArrayList<ImageItem> mSelectedImages = new ArrayList<>();   //选中的图片集合
-    private List<OnImageSelectedListener> mImageSelectedListeners = new ArrayList<>(); //图片选中的监听回调
-    private int mCurrentImageFolderPosition = 0;  //当前选中的文件夹位置 0表示所有图片
+    private ArrayList<ResFolder> mResFolders = new ArrayList<>();      //所有的资源文件夹
+    private ArrayList<ResItem> mSelectedResList = new ArrayList<>();   //选中的资源集合
+    private List<OnResSelectedListener> mResSelectedListeners = new ArrayList<>(); //资源选中的监听回调
+    private int mCurrentResFolderPosition = 0;  //当前选中的文件夹位置 0表示所有图片
 
-    private static class ImagePickerHolder {
-        private static final ImagePicker INSTANCE = new ImagePicker();
+    private static class ResPickerHolder {
+        private static final ResPicker INSTANCE = new ResPicker();
     }
 
-    private ImagePicker() {
-        imageLoader = new ImageLoader() {
+    private ResPicker() {
+        mImageLoader = new ImageLoader() {
             @Override
             public void displayImage(Activity activity, String path, BaseImageView imageView, int width, int height) {
                 FrescoWorker.loadImage(imageView, ImageFactory.newLocalImage(path)
@@ -72,30 +72,30 @@ public class ImagePicker {
         };
     }
 
-    public static final ImagePicker getInstance() {
-        return ImagePickerHolder.INSTANCE;
+    public static final ResPicker getInstance() {
+        return ResPickerHolder.INSTANCE;
     }
 
     public ImageLoader getImageLoader() {
-        return imageLoader;
+        return mImageLoader;
     }
 
-    public void setCurrentImageFolderPosition(int position) {
-        mCurrentImageFolderPosition = position;
+    public void setCurrentResFolderPosition(int position) {
+        mCurrentResFolderPosition = position;
     }
 
-    public void setImageFolders(List<ResFolder> imageFolders) {
+    public void setResFolders(List<ResFolder> imageFolders) {
         if (imageFolders != null) {
-            mImageFolders.clear();
-            mImageFolders.addAll(imageFolders);
+            mResFolders.clear();
+            mResFolders.addAll(imageFolders);
         }
     }
 
     public File getCropCacheFolder() {
-        if (cropCacheFolder == null) {
-            cropCacheFolder = new File(U.app().getCacheDir() + "/ImagePicker/cropTemp/");
+        if (mCropCacheFolder == null) {
+            mCropCacheFolder = new File(U.app().getCacheDir() + "/ImagePicker/cropTemp/");
         }
-        return cropCacheFolder;
+        return mCropCacheFolder;
     }
 
     public File getTakeImageFile() {
@@ -110,8 +110,8 @@ public class ImagePicker {
         return mParams;
     }
 
-    public ArrayList<ImageItem> getSelectedImages() {
-        return mSelectedImages;
+    public ArrayList<ResItem> getSelectedResList() {
+        return mSelectedResList;
     }
 
 
@@ -123,16 +123,16 @@ public class ImagePicker {
         mIsOrigin = isOrigin;
     }
 
-    public ArrayList<ResFolder> getImageFolders() {
-        return mImageFolders;
+    public ArrayList<ResFolder> getResFolders() {
+        return mResFolders;
     }
 
-    public ArrayList<ImageItem> getCurrentImageFolderItems() {
+    public ArrayList<ResItem> getCurrentResFolderItems() {
         /**
          * 内存回收时 这里会空指针
          */
-        if (mCurrentImageFolderPosition < mImageFolders.size()) {
-            return mImageFolders.get(mCurrentImageFolderPosition).getImages();
+        if (mCurrentResFolderPosition < mResFolders.size()) {
+            return mResFolders.get(mCurrentResFolderPosition).getResItems();
         } else {
             return new ArrayList<>();
         }
@@ -182,58 +182,59 @@ public class ImagePicker {
     }
 
     public void addSelectedImageItem(int position, ImageItem imageItem) {
-        mSelectedImages.add(imageItem);
-        for (OnImageSelectedListener l : mImageSelectedListeners) {
-            l.onImageSelectedAdd(position, imageItem);
+        mSelectedResList.add(imageItem);
+        for (OnResSelectedListener l : mResSelectedListeners) {
+            l.onResSelectedAdd(position, imageItem);
         }
     }
 
     public void removeSelectedImageItem(int position, ImageItem imageItem) {
-        mSelectedImages.remove(imageItem);
-        for (OnImageSelectedListener l : mImageSelectedListeners) {
-            l.onImageSelectedRemove(position, imageItem);
+        mSelectedResList.remove(imageItem);
+        for (OnResSelectedListener l : mResSelectedListeners) {
+            l.onResSelectedRemove(position, imageItem);
         }
     }
 
     public void clearSelectedImages() {
-        if (mSelectedImages != null) {
-            mSelectedImages.clear();
+        if (mSelectedResList != null) {
+            mSelectedResList.clear();
         }
     }
 
     public void reset() {
-        mImageSelectedListeners.clear();
-        mImageFolders.clear();
-        mSelectedImages.clear();
-        mCurrentImageFolderPosition = 0;
+        mResSelectedListeners.clear();
+        mResFolders.clear();
+        mSelectedResList.clear();
+        mCurrentResFolderPosition = 0;
     }
 
 
     /**
      * 图片选中的监听
      */
-    public interface OnImageSelectedListener {
-        void onImageSelectedAdd(int position, ImageItem item);
+    public interface OnResSelectedListener {
+        void onResSelectedAdd(int position, ImageItem item);
 
-        void onImageSelectedRemove(int position, ImageItem item);
+        void onResSelectedRemove(int position, ImageItem item);
     }
 
-    public void addOnImageSelectedListener(OnImageSelectedListener l) {
-        mImageSelectedListeners.add(l);
+    public void addOnResSelectedListener(OnResSelectedListener l) {
+        mResSelectedListeners.add(l);
     }
 
-    public void removeOnImageSelectedListener(OnImageSelectedListener l) {
-        if (mImageSelectedListeners == null) return;
-        mImageSelectedListeners.remove(l);
+    public void removeOnResSelectedListener(OnResSelectedListener l) {
+        if (mResSelectedListeners == null) {
+            return;
+        }
+        mResSelectedListeners.remove(l);
     }
-
 
     //低内存时保存状态
     public void onSaveInstanceState(Bundle bunlde) {
         bunlde.putSerializable("params", mParams);
         bunlde.putSerializable("takeImageFile", takeImageFile);
-        bunlde.putSerializable("cropCacheFolder", cropCacheFolder);
-        bunlde.putSerializable("mSelectedImages", mSelectedImages);
+        bunlde.putSerializable("cropCacheFolder", mCropCacheFolder);
+        bunlde.putSerializable("mSelectedImages", mSelectedResList);
     }
 
     public void onRestoreInstanceState(Bundle bunlde) {
@@ -242,11 +243,11 @@ public class ImagePicker {
             mParams = params;
         }
         takeImageFile = (File) bunlde.getSerializable("takeImageFile");
-        cropCacheFolder = (File) bunlde.getSerializable("cropCacheFolder");
+        mCropCacheFolder = (File) bunlde.getSerializable("cropCacheFolder");
         List<ImageItem> selectedImages = (ArrayList<ImageItem>) bunlde.getSerializable("mSelectedImages");
         if (selectedImages != null && !selectedImages.isEmpty()) {
-            mSelectedImages.clear();
-            mSelectedImages.addAll(selectedImages);
+            mSelectedResList.clear();
+            mSelectedResList.addAll(selectedImages);
         }
     }
 

@@ -9,11 +9,8 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.Location;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.log.MyLog;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
@@ -24,8 +21,8 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.imagepicker.ImagePicker;
-import com.imagepicker.fragment.ImagePickerFragment;
+import com.imagepicker.ResPicker;
+import com.imagepicker.fragment.ResPickerFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -151,19 +148,19 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     //修改头像
     private void onClickAvatarContainer() {
-        ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
+        ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
                 .setSelectLimit(1)
                 .setCropStyle(CropImageView.Style.CIRCLE)
                 .build()
         );
 
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ImagePickerFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ResPickerFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                        List<ImageItem> list = ImagePicker.getInstance().getSelectedImages();
+                        List<ImageItem> list = ResPicker.getInstance().getSelectedResList();
                         if (list.size() > 0) {
                             ImageItem imageItem = list.get(0);
                             UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())

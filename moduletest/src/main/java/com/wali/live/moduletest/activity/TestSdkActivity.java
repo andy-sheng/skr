@@ -1,11 +1,8 @@
 package com.wali.live.moduletest.activity;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -13,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +18,12 @@ import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.share.ShareManager;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
-import com.common.utils.CommonReceiver;
-import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
@@ -55,14 +47,12 @@ import com.example.qrcode.QrcodeTestFragment;
 import com.example.rxretrofit.fragment.RxRetrofitFragment;
 import com.example.smartrefresh.SmartRefreshFragment;
 import com.example.wxcontact.PickContactFragment;
-import com.imagepicker.ImagePicker;
-import com.imagepicker.fragment.ImagePickerFragment;
+import com.imagepicker.ResPicker;
+import com.imagepicker.fragment.ResPickerFragment;
 import com.imagepicker.fragment.ImagePreviewFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.module.home.IHomeService;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.pgyersdk.crash.PgyCrashManager;
 import com.pgyersdk.feedback.PgyerFeedbackManager;
 import com.pgyersdk.update.DownloadFileListener;
@@ -74,8 +64,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.wali.live.moduletest.H;
 import com.wali.live.moduletest.R;
 import com.wali.live.moduletest.TestViewHolder;
-import com.wali.live.moduletest.fastjson.AA;
-import com.wali.live.moduletest.fastjson.CC;
 import com.wali.live.moduletest.fragment.ShowTextViewFragment;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
@@ -605,19 +593,19 @@ public class TestSdkActivity extends BaseActivity {
             @Override
             public void run() {
                 Bundle bundle = new Bundle();
-                ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
+                ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
                         .setSelectLimit(8)
                         .setCropStyle(CropImageView.Style.CIRCLE)
                         .build()
                 );
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, ImagePickerFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(TestSdkActivity.this, ResPickerFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .setBundle(bundle)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                                List<ImageItem> list = ImagePicker.getInstance().getSelectedImages();
+                                List<ImageItem> list = ResPicker.getInstance().getSelectedResList();
 
                                 U.getToastUtil().showShort("拿到数据 size:" + list.size());
                                 if (list.size() > 0) {
@@ -682,7 +670,7 @@ public class TestSdkActivity extends BaseActivity {
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                                U.getToastUtil().showShort("拿到数据 size:" + ImagePicker.getInstance().getSelectedImages().size());
+                                U.getToastUtil().showShort("拿到数据 size:" + ResPicker.getInstance().getSelectedResList().size());
                             }
                         })
                         .build());

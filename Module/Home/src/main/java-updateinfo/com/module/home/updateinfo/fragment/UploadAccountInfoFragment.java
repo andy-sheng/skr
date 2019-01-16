@@ -28,8 +28,8 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
-import com.imagepicker.ImagePicker;
-import com.imagepicker.fragment.ImagePickerFragment;
+import com.imagepicker.ResPicker;
+import com.imagepicker.fragment.ResPickerFragment;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -86,19 +86,19 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
-                ImagePicker.getInstance().setParams(ImagePicker.newParamsBuilder()
+                ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
                         .setSelectLimit(1)
                         .setCropStyle(CropImageView.Style.CIRCLE)
                         .build()
                 );
 
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePickerFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ResPickerFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                                List<ImageItem> list = ImagePicker.getInstance().getSelectedImages();
+                                List<ImageItem> list = ResPicker.getInstance().getSelectedResList();
                                 if (list.size() > 0) {
                                     ImageItem imageItem = list.get(0);
                                     UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())

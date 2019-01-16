@@ -7,10 +7,9 @@ import android.os.Handler;
 import android.provider.MediaStore;
 
 import com.common.base.BaseFragment;
-import com.imagepicker.ImagePicker;
+import com.imagepicker.ResPicker;
 import com.imagepicker.model.ResFolder;
 import com.imagepicker.model.ImageItem;
-import com.imagepicker.model.ResItem;
 import com.imagepicker.model.VideoItem;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
@@ -23,7 +22,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -84,7 +82,7 @@ public class ResDataSource {
         return mVideoContentResolver;
     }
 
-    private void loadRes() {
+    public void loadRes() {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
@@ -92,21 +90,46 @@ public class ResDataSource {
                 List<ImageItem> imageItemList = loadPhotoAlbum();
                 List<VideoItem> videoList = loadVideo();
                 List<ResItem> totalList = new ArrayList<>();
-                totalList.add((ResItem) imageItemList);
-                totalList.add((ResItem) videoList);
+                totalList.addAll(imageItemList);
+                totalList.addAll(videoList);
                 Collections.sort(totalList, new Comparator<ResItem>() {
                     @Override
                     public int compare(ResItem o1, ResItem o2) {
-                        if(o2.getAddTime() > o1.getAddTime()){
+                        if (o2.getAddTime() > o1.getAddTime()) {
                             return 1;
-                        }else{
+                        } else {
                             return -1;
                         }
                     }
                 });
-                for(ResItem resItem:totalList){
-//TODO
+
+                for (ResItem resItem : totalList) {
+                    String path = resItem.getPath();
+                    File imageFile = new File(path);
+                    File imageParentFile = imageFile.getParentFile();
+
+                    ResFolder resFolder = new ResFolder();
+                    resFolder.setName(imageParentFile.getName());
+                    resFolder.setPath(imageParentFile.getAbsolutePath());
+
+                    if (!resFolders.contains(resFolder)) {
+                        ArrayList<ResItem> resItems = new ArrayList<>();
+                        resItems.add(resItem);
+                        if (resItem instanceof ImageItem) {
+                            resFolder.setCover((ImageItem) resItem);
+                        } else if (resItem instanceof VideoItem) {
+                            VideoItem videoItem = (VideoItem) resItem;
+                            resFolder.setCover(videoItem.getThumb());
+                        }
+                        resFolder.setResItems(resItems);
+                        resFolders.add(resFolder);
+                    } else {
+                        int index = resFolders.indexOf(resFolder);
+                        resFolder = resFolders.get(index);
+                        resFolder.getResItems().add(resItem);
+                    }
                 }
+
                 emitter.onNext(resFolders);
                 emitter.onComplete();
             }
@@ -140,7 +163,7 @@ public class ResDataSource {
         };
         String selections = null;
         String[] selectionArgs = null;
-        if (ImagePicker.getInstance().getParams().isIncludeGif()) {
+        if (ResPicker.getInstance().getParams().isIncludeGif()) {
 
         } else {
             // 不要gif

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
 import com.common.utils.U;
-import com.imagepicker.ImagePicker;
+import com.imagepicker.ResPicker;
 import com.imagepicker.model.ResFolder;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class ImageFolderAdapter extends BaseAdapter {
 
-    private ImagePicker imagePicker;
+    private ResPicker imagePicker;
     private Activity mActivity;
     private LayoutInflater mInflater;
     private int mImageSize;
@@ -40,7 +40,7 @@ public class ImageFolderAdapter extends BaseAdapter {
     public ImageFolderAdapter(Activity activity) {
         mActivity = activity;
 
-        imagePicker = ImagePicker.getInstance();
+        imagePicker = ResPicker.getInstance();
 
         // 算出每个图片的大小
         int screenWidth = U.getDisplayUtils().getScreenWidth();

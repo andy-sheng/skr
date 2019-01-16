@@ -1,21 +1,15 @@
 package com.imagepicker.adapter;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.common.image.model.BaseImage;
-import com.common.image.model.ImageFactory;
 import com.common.utils.U;
-import com.common.view.photodraweeview.OnPhotoTapListener;
-import com.common.view.photodraweeview.PhotoDraweeView;
 import com.imagebrowse.ImageBrowseView;
-import com.imagepicker.ImagePicker;
+import com.imagepicker.ResPicker;
 import com.imagepicker.model.ImageItem;
 
-import java.io.File;
 import java.util.ArrayList;
 
 
@@ -32,7 +26,7 @@ public class ImagePageAdapter extends PagerAdapter {
 
     private int screenWidth;
     private int screenHeight;
-    private ImagePicker imagePicker;
+    private ResPicker imagePicker;
     private ArrayList<ImageItem> images = new ArrayList<>();
     private Activity mActivity;
     public PhotoViewClickListener listener;
@@ -43,7 +37,7 @@ public class ImagePageAdapter extends PagerAdapter {
 
         screenWidth = U.getDisplayUtils().getScreenWidth();
         screenHeight = U.getDisplayUtils().getScreenHeight();
-        imagePicker = ImagePicker.getInstance();
+        imagePicker = ResPicker.getInstance();
     }
 
     public void setData(ArrayList<ImageItem> images) {

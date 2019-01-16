@@ -1,38 +1,31 @@
 package com.imagepicker.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatImageView;
 import android.text.format.Formatter;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.common.base.BaseFragment;
 import com.common.base.R;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
-import com.imagepicker.ImagePicker;
+import com.imagepicker.ResPicker;
 import com.imagepicker.adapter.ImagePageAdapter;
 import com.imagepicker.model.ImageItem;
 import com.imagepicker.view.SuperCheckBox;
 
 import java.util.ArrayList;
 
-public class ImagePreviewFragment extends ImageBaseFragment implements ImagePicker.OnImageSelectedListener {
+public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker.OnResSelectedListener {
 
     RelativeLayout mContent;
     NestViewPager mViewpager;
@@ -45,7 +38,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
     TextView mBtnOk;
     TextView mTvDes;
 
-    ImagePicker mImagePicker;
+    ResPicker mImagePicker;
 
     ArrayList<ImageItem> mImageItems;      //跳转进ImagePreviewFragment的图片文件夹
     int mCurrentPosition = 0;              //跳转进ImagePreviewFragment时的序号，第几个图片
@@ -71,29 +64,29 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
         mBtnOk = (TextView) mTitleBar.getRightCustomView();
         mTvDes = mTitleBar.getCenterTextView();
 
-        mImagePicker = ImagePicker.getInstance();
+        mImagePicker = ResPicker.getInstance();
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mCurrentPosition = bundle.getInt(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, 0);
+            mCurrentPosition = bundle.getInt(ResPicker.EXTRA_SELECTED_IMAGE_POSITION, 0);
 
         }
         if (mImageItems == null) {
-            mImageItems = mImagePicker.getCurrentImageFolderItems();
+            mImageItems = mImagePicker.getCurrentResFolderItems();
         }
-        mSelectedImages = mImagePicker.getSelectedImages();
+        mSelectedImages = mImagePicker.getSelectedResList();
 
         mBtnOk.setVisibility(View.VISIBLE);
         mBtnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mImagePicker.getSelectedImages().size() == 0) {
+                if (mImagePicker.getSelectedResList().size() == 0) {
                     // 表示选中了这张
                     mCbCheck.setChecked(true);
                     ImageItem imageItem = mImageItems.get(mCurrentPosition);
                     mImagePicker.addSelectedImageItem(mCurrentPosition, imageItem);
                 }
-                deliverResult(ImagePicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
+                deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
         });
         mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
@@ -116,7 +109,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
         //初始化当前页面的状态
         mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mImageItems.size()));
 
-        mImagePicker.addOnImageSelectedListener(this);
+        mImagePicker.addOnResSelectedListener(this);
         mBottomBar.setVisibility(View.VISIBLE);
         mCbOrigin.setText(getString(R.string.ip_origin));
         mCbOrigin.setChecked(mImagePicker.isOrigin());
@@ -163,7 +156,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
             public void onPageSelected(int position) {
                 mCurrentPosition = position;
                 ImageItem item = mImageItems.get(mCurrentPosition);
-                boolean isSelected = mImagePicker.getSelectedImages().contains(item);
+                boolean isSelected = mImagePicker.getSelectedResList().contains(item);
                 mCbCheck.setChecked(isSelected);
                 mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mImageItems.size()));
             }
@@ -185,7 +178,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
     @Override
     public void destroy() {
         super.destroy();
-        mImagePicker.removeOnImageSelectedListener(this);
+        mImagePicker.removeOnResSelectedListener(this);
     }
 
     /**
@@ -231,12 +224,12 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
     }
 
     @Override
-    public void onImageSelectedAdd(int position, ImageItem item) {
+    public void onResSelectedAdd(int position, ImageItem item) {
         onImageSelected(position, item, true);
     }
 
     @Override
-    public void onImageSelectedRemove(int position, ImageItem item) {
+    public void onResSelectedRemove(int position, ImageItem item) {
         onImageSelected(position, item, false);
     }
 
@@ -245,7 +238,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ImagePick
      * 当调用 addSelectedImageItem 或 deleteSelectedImageItem 都会触发当前回调
      */
     public void onImageSelected(int position, ImageItem item, boolean isAdd) {
-        int selectedImageSize = mImagePicker.getSelectedImages().size();
+        int selectedImageSize = mImagePicker.getSelectedResList().size();
         if (selectedImageSize > 0) {
             mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getParams().getSelectLimit()));
         } else {
