@@ -83,7 +83,11 @@ public class LoginByPhoneFragment extends BaseFragment {
                         mCode = mCodeInputTv.getText().toString().trim();
                         if (checkPhoneNumber(mPhoneNumber)) {
                             if (!TextUtils.isEmpty(mCode)) {
-                                UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode);
+                                if (!U.getNetworkUtils().hasNetwork()) {
+                                    U.getToastUtil().showShort("网络异常，请检查网络之后重试！");
+                                } else {
+                                    UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode);
+                                }
                             } else {
                                 U.getToastUtil().showShort("验证码为空");
                             }
@@ -134,6 +138,7 @@ public class LoginByPhoneFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     // 发送验证码成功
+                    U.getToastUtil().showShort("验证码发送成功");
                     mGetCodeTv.setSelected(true);
                     mGetCodeTv.setClickable(false);
                     mCodeInputTv.setFocusable(true);
