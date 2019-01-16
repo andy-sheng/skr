@@ -128,8 +128,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvRankRight = (ImageView) mRootView.findViewById(R.id.iv_rank_right);
         mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
         mTvArea = (ExTextView) mRootView.findViewById(R.id.tv_area);
-        mIvBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
-
+        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
 
         mLlAreaContainer = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_select_popup_window_layout, null);
@@ -170,9 +169,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        if(mPopupWindow.isShowing()){
+                        if (mPopupWindow.isShowing()) {
                             mPopupWindow.dismiss();
-                        }else {
+                        } else {
                             mPopupWindow.setWidth(mTvArea.getMeasuredWidth());
                             mPopupWindow.setHeight(300);
                             mPopupWindow.showAsDropDown(mTvArea);
@@ -211,7 +210,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                         mTvArea.setCompoundDrawables(null, null, drawable, null);
 
-                        if(!MyUserInfoManager.getInstance().hasLocation()){
+                        if (!MyUserInfoManager.getInstance().hasLocation()) {
                             tryGetLocation();
                             return;
                         }
@@ -245,12 +244,12 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 });
 
         setRankMode();
-        if(!MyUserInfoManager.getInstance().hasLocation()){
+        if (!MyUserInfoManager.getInstance().hasLocation()) {
             tryGetLocation();
         }
     }
 
-    private void setRankMode(){
+    private void setRankMode() {
         if (MyUserInfoManager.getInstance().hasLocation()) {
             mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
             mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
@@ -265,10 +264,10 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         }
     }
 
-    private String getAreaFromLocation(Location location){
-        if(!TextUtils.isEmpty(location.getDistrict())){
+    private String getAreaFromLocation(Location location) {
+        if (!TextUtils.isEmpty(location.getDistrict())) {
             return location.getDistrict();
-        }else{
+        } else {
             return "未知位置";
         }
     }
@@ -300,7 +299,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        if(MyUserInfoManager.getInstance().hasLocation()){
+        if (MyUserInfoManager.getInstance().hasLocation()) {
             setRankMode();
         }
     }
@@ -370,11 +369,11 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    if(MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()){
+                    if (MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()) {
                         return;
                     }
 
-                    gotoPersonFragment(rankInfoModel.getUserID());
+                    gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
                 }
             });
             mTvChanpainName.setText(rankInfoModel.getNickname());
@@ -391,10 +390,10 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvRightChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    if(MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()){
+                    if (MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()) {
                         return;
                     }
-                    gotoPersonFragment(rankInfoModel.getUserID());
+                    gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
                 }
             });
             mTvRightChanpainName.setText(rankInfoModel.getNickname());
@@ -411,11 +410,11 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvLeftChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    if(MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()){
+                    if (MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()) {
                         return;
                     }
 
-                    gotoPersonFragment(rankInfoModel.getUserID());
+                    gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
                 }
             });
             mTvLeftChanpainName.setText(rankInfoModel.getNickname());
@@ -424,9 +423,10 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         }
     }
 
-    public void gotoPersonFragment(int uid){
+    public void gotoPersonFragment(int uid, String nickName, String avatar) {
         UserInfoModel userInfoModel = new UserInfoModel();
         userInfoModel.setUserId(uid);
+        userInfoModel.setNickname(nickName);
         Bundle bundle = new Bundle();
         bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
         U.getFragmentUtils().addFragment(FragmentUtils

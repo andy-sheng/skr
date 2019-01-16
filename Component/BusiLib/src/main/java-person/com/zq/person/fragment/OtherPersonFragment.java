@@ -149,6 +149,10 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        if (!U.getNetworkUtils().hasNetwork()) {
+                            U.getToastUtil().showShort("网络异常，请检查网络后重试!");
+                            return;
+                        }
                         if ((int) mFollowTv.getTag() == RELATION_FOLLOWED) {
                             UserInfoManager.getInstance().mateRelation(mUserInfoModel, UserInfoManager.RA_UNBUILD);
                         } else if ((int) mFollowTv.getTag() == RELATION_UN_FOLLOW) {
