@@ -3,7 +3,8 @@ package com.common.blockmoniter;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.util.Log;
+
+import com.common.log.MyLog;
 
 public class LogMonitor {
     private static final String TAG = "LogMonitor";
@@ -28,7 +29,7 @@ public class LogMonitor {
                 sb.append(s.toString());
                 sb.append("\n");
             }
-            Log.e(TAG, sb.toString());
+            MyLog.e(TAG, sb.toString());
         }
     };
 
