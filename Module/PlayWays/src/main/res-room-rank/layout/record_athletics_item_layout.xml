@@ -19,6 +19,19 @@
         android:layout_marginLeft="@dimen/view_60_dp"
         android:layout_marginTop="@dimen/view_13_dp" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_hint_flag"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_17_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_6_dp"
+        android:background="@drawable/zhanji_jingshi"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/ll_star_container"
         android:layout_width="wrap_content"

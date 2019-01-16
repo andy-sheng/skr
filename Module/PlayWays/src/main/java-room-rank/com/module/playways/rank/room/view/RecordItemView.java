@@ -27,9 +27,14 @@ import io.reactivex.functions.Consumer;
 
 public class RecordItemView extends RelativeLayout {
     public final static String TAG = "RecordItemView";
+
     SimpleDraweeView mSdvSingerIcon;
     ExImageView mIvRanking;
+    ExTextView mTvHintFlag;
+
     ExTextView mTvSingerName;
+    ExTextView mTvSongName;
+
     ExImageView mIvLightOne;
     ExImageView mIvLightTwo;
     ExImageView mIvLightThree;
@@ -40,8 +45,6 @@ public class RecordItemView extends RelativeLayout {
 
     ExImageView[] mExImageViews = new ExImageView[3];
     SimpleDraweeView[] mSimpleDraweeViews = new SimpleDraweeView[3];
-
-    ExTextView mTvSongName;
 
     RoomData mRoomData;
 
@@ -74,6 +77,8 @@ public class RecordItemView extends RelativeLayout {
 
         mSdvSingerIcon = (SimpleDraweeView) findViewById(R.id.sdv_singer_icon);
         mIvRanking = (ExImageView) findViewById(R.id.iv_ranking);
+        mTvHintFlag = (ExTextView) findViewById(R.id.tv_hint_flag);
+
         mTvSingerName = (ExTextView) findViewById(R.id.tv_singer_name);
         mIvLightOne = (ExImageView) findViewById(R.id.iv_light_one);
         mIvLightTwo = (ExImageView) findViewById(R.id.iv_light_two);
@@ -96,6 +101,17 @@ public class RecordItemView extends RelativeLayout {
         mRecordData = recordData;
 
         init();
+
+        if (recordData.hasEscape()) {
+            // 有人逃跑，显示有人逃跑
+            if (voteInfoModel.isIsEscape()) {
+                mTvHintFlag.setVisibility(VISIBLE);
+                mTvHintFlag.setText("逃跑");
+            }
+        } else if (!recordData.hasVote(voteInfoModel.getUserID())) {
+            mTvHintFlag.setVisibility(VISIBLE);
+            mTvHintFlag.setText("未投票");
+        }
 
         UserInfoModel playerInfo = roomData.getUserInfo(voteInfoModel.getUserID());
         SongModel songModel = RoomDataUtils.getPlayerSongInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getUserID());
