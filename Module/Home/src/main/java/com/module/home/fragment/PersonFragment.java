@@ -13,6 +13,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.myinfo.event.ScoreDetailChangeEvent;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
@@ -83,6 +84,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     int subRank = 0;        //当前子段位
     int starNum = 0;        //当前星星
     int starLimit = 0;      //当前星星上限
+
+    int mFriendNum = 0;  // 好友数
+    int mFansNum = 0;    // 粉丝数
+    int mFocusNum = 0;   // 关注数
 
     @Override
     public int initView() {
@@ -306,6 +311,28 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 scoreDetailChangeEvent.totalStats, scoreDetailChangeEvent.selecStats, U.getDisplayUtils().dip2px(108));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RelationChangeEvent event) {
+        if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
+            if (event.isFriend) {
+                // 新增好友,好友数加1
+                mFriendNum = mFriendNum + 1;
+            } else if (event.isFollow) {
+                // 新增关注,关注数加1
+                mFocusNum = mFocusNum + 1;
+            }
+        } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
+            if (event.userInfoModel.isFriend()) {
+                // 之前是好友,好友数减1
+                mFriendNum = mFriendNum - 1;
+            }
+            // 关注数减1
+            mFocusNum = mFocusNum - 1;
+        }
+
+        refreshRelationNum();
+    }
+
     @Override
     public boolean useEventBus() {
         return true;
@@ -321,13 +348,22 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     public void showRelationNum(List<RelationNumModel> list) {
         for (RelationNumModel mode : list) {
             if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
-                mFriendsNumTv.setText(String.valueOf(mode.getCnt()));
+                mFriendNum = mode.getCnt();
             } else if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
-                mFansNumTv.setText(String.valueOf(mode.getCnt()));
+                mFansNum = mode.getCnt();
             } else if (mode.getRelation() == UserInfoManager.RELATION_FOLLOW) {
-                mFollowsNumTv.setText(String.valueOf(mode.getCnt()));
+                mFocusNum = mode.getCnt();
             }
         }
+
+        refreshRelationNum();
+
+    }
+
+    private void refreshRelationNum() {
+        mFriendsNumTv.setText(String.valueOf(mFriendNum));
+        mFansNumTv.setText(String.valueOf(mFansNum));
+        mFollowsNumTv.setText(String.valueOf(mFocusNum));
     }
 
     @Override
