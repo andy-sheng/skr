@@ -25,7 +25,6 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.ModuleServiceManager;
-import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.BasePushInfo;
@@ -36,7 +35,6 @@ import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
-import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
@@ -61,7 +59,6 @@ import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
-import com.zq.live.proto.Room.SpecialEmojiMsg;
 import com.zq.lyrics.event.LrcEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -365,7 +362,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public void startHeartBeatTask() {
         cancelHeartBeatTask("startHeartBeatTask");
         mHeartBeatTask = Observable
-                .interval(sHeartBeatTaskInterval, TimeUnit.MILLISECONDS)
+                .interval(0, sHeartBeatTaskInterval, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .subscribe(new Consumer<Long>() {
             @Override
@@ -420,8 +417,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
 
         mSyncGameStateTask = Observable
-                .timer(delayTime, TimeUnit.MILLISECONDS)
-                .interval(sSyncStateTaskInterval, TimeUnit.MILLISECONDS)
+                .interval(delayTime, sSyncStateTaskInterval, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .subscribe(new Consumer<Long>() {
             @Override

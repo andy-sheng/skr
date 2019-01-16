@@ -955,7 +955,7 @@ public class EngineManager implements AgoraOutCallback {
         }
 
         mMusicTimePlayTimeListener = Observable
-                .interval(1000, TimeUnit.MILLISECONDS)
+                .interval(0,1000, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .subscribe(new Consumer<Long>() {
                     int duration = -1;
