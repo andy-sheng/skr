@@ -267,11 +267,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                     @Override
                     public void accept(Object o) {
                         // 暂时先不做
-//                        U.getFragmentUtils().addFragment(
-//                                FragmentUtils.newAddParamsBuilder(getActivity(), MusicTestFragment.class)
-//                                        .setAddToBackStack(true)
-//                                        .setHasAnimation(true)
-//                                        .build());
+                        U.getToastUtil().showShort("正在开发中，敬请期待");
                     }
                 });
     }

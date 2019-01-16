@@ -157,8 +157,7 @@ public class GameFragment extends BaseFragment {
                             .navigation();
                 } else if (view.getId() == R.id.iv_singend_game) {
                     // TODO: 2019/1/15 暂时屏蔽一唱到底入口
-//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SINGEND_ROOM)
-//                            .navigation();
+                    U.getToastUtil().showShort("正在开发中，敬请期待");
                 }
             }
 

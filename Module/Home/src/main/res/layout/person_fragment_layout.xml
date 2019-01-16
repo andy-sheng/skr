@@ -14,6 +14,7 @@
         android:layout_marginTop="@dimen/view_38_dp" />
 
     <com.common.view.ex.ExTextView
+        android:visibility="invisible"
         android:id="@+id/share_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
