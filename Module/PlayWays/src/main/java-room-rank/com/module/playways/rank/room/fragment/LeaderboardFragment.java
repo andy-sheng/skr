@@ -313,11 +313,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     }
 
     @Override
-    public void clear() {
-        mLeaderBoardAdapter.getDataList().clear();
-    }
-
-    @Override
     public void showOwnRankInfo(UserRankModel userRankModel) {
         ExTextView tvRank = (ExTextView) mRootView.findViewById(R.id.tv_rank);
         SimpleDraweeView sdvIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon);

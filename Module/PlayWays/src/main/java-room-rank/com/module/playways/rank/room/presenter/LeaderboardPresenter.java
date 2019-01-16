@@ -40,7 +40,6 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
     public void setRankMode(int rankMode){
         mOffset = 0;
         mRankMode = rankMode;
-        mILeaderBoardView.clear();
         mRankInfoModelList.clear();
 
         getLeaderBoardInfo();
