@@ -14,7 +14,6 @@
         android:layout_marginTop="@dimen/view_38_dp" />
 
     <com.common.view.ex.ExTextView
-        android:visibility="invisible"
         android:id="@+id/share_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +21,8 @@
         android:layout_marginLeft="@dimen/textsize_23_dp"
         android:layout_marginTop="@dimen/view_40_dp"
         android:drawableTop="@drawable/gerenzhuye_fenxiangicon"
-        android:text="分享" />
+        android:text="分享"
+        android:visibility="invisible" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/setting_tv"
@@ -42,7 +42,6 @@
         android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="center"
         android:minWidth="@dimen/view_100_dp"
-        android:text="赤木晴子"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_24_dp" />
 
@@ -52,7 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_tv"
         android:gravity="center"
-        android:text="撕歌号: 21433642"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_15_dp" />
 
@@ -64,7 +62,6 @@
         android:layout_marginTop="@dimen/view_9_dp"
         android:gravity="center"
         android:minWidth="@dimen/view_100_dp"
-        android:text="哥就是那个KTV里最跑调的孩子"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
@@ -191,7 +188,6 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:text="昌平情歌榜22位"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_16_dp" />
 
@@ -235,7 +231,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/view_8_dp"
                     android:gravity="center"
-                    android:text="100场"
                     android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_14_dp" />
 
@@ -272,7 +267,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/view_8_dp"
                     android:gravity="center"
-                    android:text="94场"
                     android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_14_dp" />
 
@@ -309,7 +303,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/view_8_dp"
                     android:gravity="center"
-                    android:text="82场"
                     android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_14_dp" />
 
