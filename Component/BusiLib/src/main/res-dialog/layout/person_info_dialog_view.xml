@@ -5,7 +5,7 @@
     android:layout_height="@dimen/view_281_dp"
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="@dimen/view_17_dp"
-    android:background="@drawable/img_bg1">
+    android:background="@drawable/img_dialog_bg">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar_iv"
