@@ -87,10 +87,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                             } else {
                                 U.getToastUtil().showShort("验证码为空");
                             }
-                        } else {
-                            U.getToastUtil().showShort("手机号有误");
                         }
-
                     }
                 });
 
@@ -100,6 +97,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                 .setPopFragment(LoginByPhoneFragment.this)
                                 .setPopAbove(false)
