@@ -185,8 +185,9 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
             //根据是否多选，显示或隐藏checkbox
             if (mImagePicker.getParams().isMultiMode()) {
                 if (resItem instanceof VideoItem) {
-                    cbCheck.setVisibility(View.GONE);
+                    checkView.setVisibility(View.GONE);
                 } else {
+                    checkView.setVisibility(View.VISIBLE);
                     cbCheck.setVisibility(View.VISIBLE);
                 }
                 boolean checked = mSelectedImages.contains(resItem);

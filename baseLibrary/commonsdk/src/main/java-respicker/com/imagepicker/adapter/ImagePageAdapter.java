@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.common.utils.U;
 import com.imagebrowse.ImageBrowseView;
 import com.imagepicker.ResPicker;
-import com.imagepicker.model.ImageItem;
 import com.imagepicker.model.ResItem;
 
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public class ImagePageAdapter extends PagerAdapter {
 //                }
 //            }
 //        });
-        imageBrowseView.setViewLongClickListener(new View.OnLongClickListener() {
+        imageBrowseView.setLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 U.getToastUtil().showShort("长按事件");
