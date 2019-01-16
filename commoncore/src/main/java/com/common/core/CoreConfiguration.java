@@ -27,6 +27,7 @@ import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
+import com.common.rxretrofit.interceptor.TimeOutInterceptor;
 import com.module.ModuleServiceManager;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public class CoreConfiguration implements ConfigModule {
                 Log.d(TAG, "application onCreate");
                 // todo 服务器暂时无人对接，先屏蔽
                 ApiManager.getInstance().addInterceptor(new CoreInfoInterceptor());
+                ApiManager.getInstance().addInterceptor(new TimeOutInterceptor());
                 ModuleServiceManager.getInstance().getMsgService().initRongIM(application);
                 UserAccountManager.getInstance().init();
             }
