@@ -18,7 +18,6 @@ import com.common.rxretrofit.ApiResult;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
@@ -69,12 +68,14 @@ import org.greenrobot.greendao.annotation.NotNull;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.agora.rtc.Constants;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
@@ -100,9 +101,9 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
-    HandlerTaskTimer mHeartBeatTask;
+    Disposable mHeartBeatTask;
 
-    HandlerTaskTimer mSyncGameStateTask;
+    Disposable mSyncGameStateTask;
 
     PublishSubject<RecordData> mGameFinishActionSubject = PublishSubject.create();
 
@@ -359,20 +360,20 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      */
     public void startHeartBeatTask() {
         cancelHeartBeatTask("startHeartBeatTask");
-        mHeartBeatTask = HandlerTaskTimer.newBuilder()
-                .interval(sHeartBeatTaskInterval)
-                .take(-1)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        sendHeartBeat();
-                    }
-                });
+        mHeartBeatTask = Observable
+                .interval(sHeartBeatTaskInterval, TimeUnit.MILLISECONDS)
+                .observeOn(Schedulers.io())
+                .subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                sendHeartBeat();
+            }
+        });
     }
 
     public void cancelHeartBeatTask(String from) {
         MyLog.w(TAG, "取消心跳，是从 " + from);
-        if (mHeartBeatTask != null) {
+        if (mHeartBeatTask != null && !mHeartBeatTask.isDisposed()) {
             mHeartBeatTask.dispose();
         }
     }
@@ -414,21 +415,32 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        mSyncGameStateTask = HandlerTaskTimer.newBuilder()
-                .delay(delayTime)
-                .interval(sSyncStateTaskInterval)
-                .take(-1)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        MyLog.w(TAG, "12秒钟的 syncGameTask 去更新状态了");
-                        syncGameStatus(mRoomData.getGameId());
-                    }
-                });
+        mSyncGameStateTask = Observable
+                .timer(delayTime, TimeUnit.MILLISECONDS)
+                .interval(sSyncStateTaskInterval, TimeUnit.MILLISECONDS)
+                .observeOn(Schedulers.io())
+                .subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                MyLog.w(TAG, "12秒钟的 syncGameTask 去更新状态了");
+                syncGameStatus(mRoomData.getGameId());
+            }
+        }, throwable -> MyLog.w(TAG, throwable + ""));
+//        mSyncGameStateTask = HandlerTaskTimer.newBuilder()
+//                .delay(delayTime)
+//                .interval(sSyncStateTaskInterval)
+//                .take(-1)
+//                .start(new HandlerTaskTimer.ObserverW() {
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        MyLog.w(TAG, "12秒钟的 syncGameTask 去更新状态了");
+//                        syncGameStatus(mRoomData.getGameId());
+//                    }
+//                });
     }
 
     public void cancelSyncGameStateTask() {
-        if (mSyncGameStateTask != null) {
+        if (mSyncGameStateTask != null && !mSyncGameStateTask.isDisposed()) {
             mSyncGameStateTask.dispose();
         }
     }
