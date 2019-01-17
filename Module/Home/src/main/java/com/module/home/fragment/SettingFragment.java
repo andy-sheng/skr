@@ -318,7 +318,7 @@ public class SettingFragment extends BaseFragment {
 
     void gotoMarketDetail(Activity activity) {
 //        String appPkg = U.getAppInfoUtils().getPackageName();
-        String appPkg = "com.wali.live";
+        String appPkg = "com.zq.live";
         String marketPkg = RomUtils.getRomMarketPkgName();
         try {
             Uri uri = Uri.parse("market://details?id=" + appPkg);
