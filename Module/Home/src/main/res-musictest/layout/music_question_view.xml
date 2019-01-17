@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/question_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_42_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_18_dp" />
+
+
+    <com.common.flowlayout.TagFlowLayout
+        android:id="@+id/options_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question_tv"
+        android:layout_marginLeft="@dimen/view_7_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        zhy:max_select="-1"></com.common.flowlayout.TagFlowLayout>
+
+
+</merge>
