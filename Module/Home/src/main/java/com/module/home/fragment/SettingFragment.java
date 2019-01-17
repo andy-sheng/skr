@@ -12,9 +12,8 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.upload.UploadCallback;
-import com.common.upload.UploadParams;
 import com.common.utils.RomUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -27,7 +26,6 @@ import com.module.home.updateinfo.EditInfoActivity;
 import com.zq.toast.CommonToastView;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -115,68 +113,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        if(uploadLogTask != null && !uploadLogTask.isDisposed()){
-                            return;
-                        }
-
-                        uploadLogTask = Observable.create(new ObservableOnSubscribe<File>() {
-                            @Override
-                            public void subscribe(ObservableEmitter<File> emitter) {
-                                File logDir = new File(U.getAppInfoUtils().getMainDir() + File.separator + "logs/");
-                                if (logDir == null) {
-                                    emitter.onError(new Throwable("没有log文件夹"));
-                                }
-
-                                String zipFile = U.getAppInfoUtils().getMainDir() + File.separator + "logs/" + "log.zip";
-                                File filez = new File(zipFile);
-                                if (filez.exists()) {
-                                    filez.delete();
-                                }
-
-                                try {
-                                    filez.createNewFile();
-                                } catch (Exception e) {
-                                    emitter.onError(new Throwable("文件创建失败" + e.getMessage()));
-                                }
-
-                                boolean success = false;
-                                try {
-                                    success = U.getZipUtils().zip(U.getAppInfoUtils().getMainDir() + File.separator + "logs", filez.getAbsolutePath());
-                                } catch (IOException e) {
-                                    emitter.onError(new Throwable("文件压缩失败" + e.getMessage()));
-                                }
-
-                                if(!success){
-                                    emitter.onError(new Throwable("文件压缩没成功"));
-                                }
-
-                                emitter.onNext(filez);
-                                emitter.onComplete();
-                            }
-                        }).subscribeOn(Schedulers.io()).subscribe(new Consumer<File>() {
-                            @Override
-                            public void accept(File file) throws Exception {
-                                UploadParams.newBuilder(file.getAbsolutePath())
-                                        .setFileType(UploadParams.FileType.log)
-                                        .startUploadAsync(new UploadCallback() {
-                                            @Override
-                                            public void onProgress(long currentSize, long totalSize) {
-
-                                            }
-
-                                            @Override
-                                            public void onSuccess(String url) {
-                                                MyLog.w(TAG, "日志上传成功");
-                                            }
-
-                                            @Override
-                                            public void onFailure(String msg) {
-                                                MyLog.e(TAG, msg);
-                                            }
-                                        });
-                            }
-                        }, throwable -> {MyLog.e(TAG, throwable);});
-
+                        U.LogUploadUtils.upload(MyUserInfoManager.getInstance().getUid());
                     }
                 });
 

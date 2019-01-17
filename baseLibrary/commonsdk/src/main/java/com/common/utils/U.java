@@ -74,6 +74,8 @@ public class U {
 
     private static SoundUtils soundUtils;
 
+    public static LogUploadUtils LogUploadUtils;
+
     public static void setApp(Application app) {
         application = app;
 

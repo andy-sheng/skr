@@ -43,37 +43,68 @@ public class ZipUtils {
 
     }
 
-    public static boolean zip(String src,String dest) throws IOException {
+    public static boolean zip(String src, String dest) throws IOException {
         //定义压缩输出流
         ZipOutputStream out = null;
         try {
             //传入源文件
-            File outFile= new File(dest);
-            File fileOrDirectory= new File(src);
+            File outFile = new File(dest);
+            File fileOrDirectory = new File(src);
             //传入压缩输出流
             out = new ZipOutputStream(new FileOutputStream(outFile));
             //判断是否是一个文件或目录
             //如果是文件则压缩
-            if (fileOrDirectory.isFile()){
-                zipFileOrDirectory(out,fileOrDirectory, "");
+            if (fileOrDirectory.isFile()) {
+                zipFileOrDirectory(out, fileOrDirectory, "");
             } else {
                 //否则列出目录中的所有文件递归进行压缩
                 File[] entries = fileOrDirectory.listFiles();
-                for (int i= 0; i < entries.length;i++) {
-                    zipFileOrDirectory(out,entries[i],"");
+                for (int i = 0; i < entries.length; i++) {
+                    zipFileOrDirectory(out, entries[i], "");
                 }
             }
-        }catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
             return false;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return false;
-        }finally{
-            if (out!= null){
+        } finally {
+            if (out != null) {
                 try {
                     out.close();
-                }catch(IOException ex) {
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean zip(List<String> fileList, String dest) throws IOException {
+        //定义压缩输出流
+        ZipOutputStream out = null;
+        try {
+            //传入源文件
+            File outFile = new File(dest);
+            //传入压缩输出流
+            out = new ZipOutputStream(new FileOutputStream(outFile));
+            //判断是否是一个文件或目录
+            for (int i = 0; i < fileList.size(); i++) {
+                zipFileOrDirectory(out, new File(fileList.get(i)), "");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
