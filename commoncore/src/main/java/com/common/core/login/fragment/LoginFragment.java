@@ -59,20 +59,24 @@ public class LoginFragment extends BaseFragment {
         mTvUserAgree.setText(Html.fromHtml("<u>"+"《用户协议》"+"</u>"));
         mProgressBar = (ProgressBar)mRootView.findViewById(R.id.progress_bar);
 
-        mPhoneLoginTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
-
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
-                        .setNotifyHideFragment(LoginFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
-            }
-        });
+        RxView.clicks(mPhoneLoginTv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .filter(new Predicate<Object>() {
+                    @Override
+                    public boolean test(Object o) {
+                        return !isWaitOss;
+                    }
+                })
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
+                                .setNotifyHideFragment(LoginFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+                    }
+                });
 
         RxView.clicks(mWeixinLoginTv)
                 .filter(new Predicate<Object>() {
@@ -91,6 +95,12 @@ public class LoginFragment extends BaseFragment {
 
         RxView.clicks(mTvUserAgree)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .filter(new Predicate<Object>() {
+                    @Override
+                    public boolean test(Object o) {
+                        return !isWaitOss;
+                    }
+                })
                 .subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) {
