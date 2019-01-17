@@ -26,7 +26,8 @@ import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
-import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.grab.room.inter.IGrebView;
+import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.EvaluationFragment;
@@ -35,9 +36,7 @@ import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
-import com.module.playways.rank.room.presenter.RankCorePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
-import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.rank.room.view.TopContainerView;
 import com.module.playways.rank.room.view.TurnChangeCardView;
@@ -86,7 +85,7 @@ import okhttp3.Response;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
-public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
+public class GrabRoomFragment extends BaseFragment implements IGrebView {
 
     public final static String TAG = "RankingRoomFragment";
 
@@ -116,7 +115,7 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
     ImageView mEndGameIv;
 
-    RankCorePresenter mCorePresenter;
+    GrabCorePresenter mCorePresenter;
 
     DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
@@ -192,7 +191,7 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
         showReadyGoView();
 
-        mCorePresenter = new RankCorePresenter(this, mRoomData);
+        mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
         mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
@@ -557,7 +556,7 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
             @Override
             public void onVoiceChange(boolean voiceOpen) {
-                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
+//                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
             }
         });
     }
@@ -737,6 +736,41 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
         return true;
     }
 
+    @Override
+    public void showSongInfo(SongModel songModel) {
+
+    }
+
+    @Override
+    public void startRivalCountdown(long uid) {
+
+    }
+
+    @Override
+    public void lightVieUser(long uid) {
+
+    }
+
+    @Override
+    public void lightSingUser(long uid) {
+
+    }
+
+    @Override
+    public void noOneWantSing() {
+
+    }
+
+    @Override
+    public void challengeSuccess() {
+
+    }
+
+    @Override
+    public void challengeFaild() {
+
+    }
+
     private void quitGame() {
         if (mQuitTipsDialog == null) {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
@@ -815,7 +849,7 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
     /**
      * 保证在主线程
      */
-    @Override
+//    @Override
     public void startRivalCountdown(int uid, String avatar) {
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
@@ -847,10 +881,6 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
         mUiHanlder.sendMessageDelayed(showLyricMsg, 3000);
     }
 
-    @Override
-    public void userExit() {
-
-    }
 
     @Override
     public void showRecordView(RecordData recordData) {
@@ -873,7 +903,6 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
         }, 3000);
     }
 
-    @Override
     public void showVoteView() {
         MyLog.d(TAG, "showVoteView");
         if (mDialogPlus != null && mDialogPlus.isShowing()) {
@@ -951,29 +980,6 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList) {
-        if (jsonOnLineInfoList == null) {
-            return;
-        }
-        for (OnlineInfoModel onLineInfoModel : jsonOnLineInfoList) {
-            if (!onLineInfoModel.isIsOnline()) {
-                MyLog.w(TAG, "用户" + onLineInfoModel.getUserID() + "处于离线状态");
-            }
-        }
-    }
-
-    @Override
-    public void updateScrollBarProgress(int volume) {
-        mTopContainerView.setScoreProgress(volume);
-    }
-
-    @Override
-    public void showLeftTime(long wholeTile) {
-        MyLog.d(TAG, "showLastedTime" + " wholeTile=" + wholeTile);
-        mTopContainerView.startPlayLeftTime(wholeTile);
-    }
-
-    @Override
     public void hideMainStage() {
         MyLog.d(TAG, "hideMainStage");
         // 显示end小卡片
@@ -998,32 +1004,6 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
             }, 2000);
         }
     }
-
-    @Override
-    public void playLyric(SongModel songModel, boolean play) {
-        MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
-        if (songModel == null) {
-            MyLog.d(TAG, "songModel 是空的");
-            return;
-        }
-        mPlayingSongModel = songModel;
-
-        if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
-            mPrepareLyricTask.dispose();
-        }
-
-        File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
-
-        if (file == null) {
-            MyLog.w(TAG, "playLyric is not in local file");
-            fetchLyricTask(songModel, play);
-        } else {
-            MyLog.w(TAG, "playLyric is exist");
-            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-            parseLyrics(fileName, play);
-        }
-    }
-
 
     private void parseLyrics(String fileName, boolean play) {
         MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);

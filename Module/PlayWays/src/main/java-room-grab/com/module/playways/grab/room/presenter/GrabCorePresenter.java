@@ -18,6 +18,8 @@ import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.module.playways.RoomData;
+import com.module.playways.grab.room.inter.IGrebView;
 import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
@@ -29,10 +31,8 @@ import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
-import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.RankDataUtils;
-import com.module.playways.RoomData;
-import com.module.playways.rank.room.view.IGameRuleView;
+import com.module.playways.rank.room.model.RecordData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,12 +63,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     HandlerTaskTimer mSyncGameStateTask;
 
-    IGameRuleView mIGameRuleView;
+    IGrebView mIGameRuleView;
 
     Handler mUiHanlder = new Handler();
 
-    public GrabCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
-        mIGameRuleView = iGameRuleView;
+    public GrabCorePresenter(@NotNull IGrebView iGrebView, @NotNull RoomData roomData) {
+        mIGameRuleView = iGrebView;
         mRoomData = roomData;
         TAG = "RankingCorePresenter";
         Params params = Params.getFromPref();
@@ -86,6 +86,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         mRoomData.checkRound();
         startSyncGameStateTask(sSyncStateTaskInterval);
+    }
+
+
+    public void vie() {
+
+    }
+
+    public void lightsOff() {
+
     }
 
     @Override
@@ -333,7 +342,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
             mRoomData.setOnlineInfoList(onlineInfos);
-            mIGameRuleView.updateUserState(onlineInfos);
+//            mIGameRuleView.updateUserState(onlineInfos);
         }
         if (gameOverTimeMs != 0) {
             if (gameOverTimeMs > mRoomData.getGameStartTs()) {
@@ -391,8 +400,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                     EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
                                     EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
                                     // 还应开始播放歌词
-                                    mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-                                    mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
+//                                    mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
+//                                    mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
                                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
                                 }
                             }
@@ -420,7 +429,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         if(playerInfoModel != null && playerInfoModel.getUserInfo() != null){
                             avatar = playerInfoModel.getUserInfo().getAvatar();
                         }
-                        mIGameRuleView.startRivalCountdown(uid, avatar);
+//                        mIGameRuleView.startRivalCountdown(uid, avatar);
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
                                     + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
@@ -428,7 +437,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
 
-                        mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
+//                        mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
 
                     }
                 });
@@ -488,7 +497,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             mUiHanlder.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mIGameRuleView.updateScrollBarProgress(info.getVolume() / 3);
+//                                    mIGameRuleView.updateScrollBarProgress(info.getVolume() / 3);
                                 }
                             });
                             break;
@@ -524,7 +533,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+//                                mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     } else if (RankDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
@@ -536,7 +545,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+//                                mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     }
@@ -589,7 +598,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             //不需要跳转评论页,直接跳转战绩页
             mIGameRuleView.showRecordView(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mScoreDetailModel));
         } else {
-            mIGameRuleView.showVoteView();
+//            mIGameRuleView.showVoteView();
         }
     }
 
