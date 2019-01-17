@@ -45,7 +45,7 @@ public class EngineManager implements AgoraOutCallback {
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
-    private Params mConfig = null;
+    private Params mConfig = new Params(); // 为了防止崩溃
     private Object mLock = new Object();
 
     private int mStatus = STATUS_UNINIT;// 0未初始化 1 初始ing 2 初始化
@@ -235,7 +235,7 @@ public class EngineManager implements AgoraOutCallback {
         if (mStatus == STATUS_INITED) {
             return mConfig;
         } else if (mStatus == STATUS_UNINIT) {
-            return null;
+            return mConfig;
         } else if (mStatus == STATUS_INITING) {
             synchronized (mLock) {
                 try {
@@ -294,7 +294,7 @@ public class EngineManager implements AgoraOutCallback {
             mUserStatusMap.clear();
             mRemoteViewCache.clear();
             mUiHandler.removeCallbacksAndMessages(null);
-            mConfig = null;
+            mConfig = new Params();
             mPendingStartMixAudioParams = null;
             EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_ENGINE_DESTROY, null));
             if (EventBus.getDefault().isRegistered(this)) {
