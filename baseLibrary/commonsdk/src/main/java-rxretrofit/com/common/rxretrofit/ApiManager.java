@@ -34,7 +34,7 @@ public class ApiManager {
      * 比如 心跳日志就不打印 太多了
      */
     public static final String NO_LOG_TAG = "NO-LOG: true";
-
+    public static final String NO_NEED_LOGIN_TAG = "NO_NEED_LOGIN: yes";
 
     private Retrofit mDefalutRetrofit;
 
