@@ -28,6 +28,8 @@ import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.inter.IGrebView;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
+import com.module.playways.grab.room.top.GrabTopContainerView;
+import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.EvaluationFragment;
@@ -103,7 +105,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrebView {
 
     CommentView mCommentView;
 
-    TopContainerView mTopContainerView;
+    GrabTopContainerView mTopContainerView;
 
     SVGAImageView mReadyGoBg;
 
@@ -548,7 +550,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrebView {
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
         RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
         topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-        mTopContainerView.setListener(new TopContainerView.Listener() {
+        mTopContainerView.setListener(new GrabTopContainerView.Listener() {
             @Override
             public void closeBtnClick() {
                 quitGame();
@@ -808,8 +810,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrebView {
      */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
-        mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                .build());
         mManyLyricsView.setVisibility(View.GONE);
         mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
@@ -851,7 +851,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrebView {
      */
 //    @Override
     public void startRivalCountdown(int uid, String avatar) {
-        mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
         mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
@@ -969,7 +968,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrebView {
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
-        mTopContainerView.cancelShowLastedTimeTask();
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
         }

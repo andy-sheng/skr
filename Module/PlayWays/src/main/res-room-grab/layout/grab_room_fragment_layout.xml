@@ -80,7 +80,6 @@
         app:ly_paint_color_to="@color/white_trans_50"
         app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
-
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
         android:id="@+id/bottom_container_view"
@@ -113,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
-    <com.module.playways.rank.room.view.TopContainerView
+    <com.module.playways.grab.room.top.GrabTopContainerView
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_100_dp"
