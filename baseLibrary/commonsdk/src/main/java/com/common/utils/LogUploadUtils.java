@@ -75,6 +75,7 @@ public class LogUploadUtils {
                             @Override
                             public void onSuccess(String url) {
                                 MyLog.w(TAG, "日志上传成功");
+                                U.getToastUtil().showShort("反馈成功");
                                 file.delete();
                             }
 
