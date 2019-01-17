@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
 import com.common.utils.U;
-import com.imagepicker.ImagePicker;
-import com.imagepicker.model.ImageFolder;
+import com.imagepicker.ResPicker;
+import com.imagepicker.model.ResFolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,17 +30,17 @@ import java.util.List;
  */
 public class ImageFolderAdapter extends BaseAdapter {
 
-    private ImagePicker imagePicker;
+    private ResPicker imagePicker;
     private Activity mActivity;
     private LayoutInflater mInflater;
     private int mImageSize;
-    private List<ImageFolder> mImageFolders = new ArrayList<>();
+    private List<ResFolder> mImageFolders = new ArrayList<>();
     private int lastSelected = 0;
 
     public ImageFolderAdapter(Activity activity) {
         mActivity = activity;
 
-        imagePicker = ImagePicker.getInstance();
+        imagePicker = ResPicker.getInstance();
 
         // 算出每个图片的大小
         int screenWidth = U.getDisplayUtils().getScreenWidth();
@@ -54,7 +54,7 @@ public class ImageFolderAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void refreshData(List<ImageFolder> folders) {
+    public void refreshData(List<ResFolder> folders) {
         if (folders != null && folders.size() > 0) {
             mImageFolders = folders;
         } else {
@@ -69,7 +69,7 @@ public class ImageFolderAdapter extends BaseAdapter {
     }
 
     @Override
-    public ImageFolder getItem(int position) {
+    public ResFolder getItem(int position) {
         return mImageFolders.get(position);
     }
 
@@ -88,9 +88,9 @@ public class ImageFolderAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ImageFolder folder = getItem(position);
+        ResFolder folder = getItem(position);
         holder.folderName.setText(folder.getName());
-        holder.imageCount.setText(mActivity.getString(R.string.ip_folder_image_count, folder.getImages().size()));
+        holder.imageCount.setText(mActivity.getString(R.string.ip_folder_image_count, folder.getResItems().size()));
         imagePicker.getImageLoader().displayImage(mActivity, folder.getCover().getPath(), holder.cover, mImageSize, mImageSize);
 
         if (lastSelected == position) {

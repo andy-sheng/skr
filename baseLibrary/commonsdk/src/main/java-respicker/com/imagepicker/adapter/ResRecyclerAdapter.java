@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.common.base.R;
@@ -15,8 +16,9 @@ import com.common.image.model.ImageFactory;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.imagebrowse.EnhancedImageView;
-import com.imagepicker.ImagePicker;
-import com.imagepicker.model.ImageItem;
+import com.imagepicker.ResPicker;
+import com.imagepicker.model.ResItem;
+import com.imagepicker.model.VideoItem;
 import com.imagepicker.view.SuperCheckBox;
 
 import java.util.ArrayList;
@@ -36,15 +38,15 @@ import java.util.List;
  * Date: 2017-04-05  10:04
  */
 
-public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     private static final int ITEM_TYPE_CAMERA = 0;  //第一个条目是相机
     private static final int ITEM_TYPE_NORMAL = 1;  //第一个条目不是相机
-    private ImagePicker mImagePicker;
+    private ResPicker mImagePicker;
     private Activity mActivity;
-    private ArrayList<ImageItem> images = new ArrayList<>();       //当前需要显示的所有的图片数据
-    private ArrayList<ImageItem> mSelectedImages; //全局保存的已经选中的图片数据
+    private ArrayList<ResItem> images = new ArrayList<>();       //当前需要显示的所有的图片数据
+    private ArrayList<ResItem> mSelectedImages; //全局保存的已经选中的图片数据
     private boolean isShowCamera;         //是否显示拍照按钮
     private int mImageSize;               //每个条目的大小
     private LayoutInflater mInflater;
@@ -53,7 +55,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * 构造方法
      */
-    public ImageRecyclerAdapter(Activity activity) {
+    public ResRecyclerAdapter(Activity activity) {
         this.mActivity = activity;
 
         // 算出每个图片的大小
@@ -64,9 +66,9 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         int columnSpace = (int) (2 * activity.getResources().getDisplayMetrics().density); // 间距
         mImageSize = (screenWidth - columnSpace * (cols - 1)) / cols;
 
-        mImagePicker = ImagePicker.getInstance();
+        mImagePicker = ResPicker.getInstance();
         isShowCamera = mImagePicker.getParams().isShowCamera();
-        mSelectedImages = mImagePicker.getSelectedImages();
+        mSelectedImages = mImagePicker.getSelectedResList();
         mInflater = LayoutInflater.from(activity);
     }
 
@@ -74,7 +76,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.listener = listener;
     }
 
-    public void refreshData(ArrayList<ImageItem> images) {
+    public void refreshData(ArrayList<ResItem> images) {
         if (images == null || images.size() == 0) {
             this.images = new ArrayList<>();
         } else {
@@ -118,7 +120,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         return isShowCamera ? images.size() + 1 : images.size();
     }
 
-    public ImageItem getItem(int position) {
+    public ResItem getItem(int position) {
         if (isShowCamera) {
             if (position == 0) return null;
             return images.get(position - 1);
@@ -134,7 +136,8 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         View mask;
         View checkView;
         SuperCheckBox cbCheck;
-        ImageItem imageItem;
+        ImageView playBtn;
+        ResItem resItem;
         int position;
 
         ImageViewHolder(View itemView) {
@@ -144,13 +147,14 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
             mask = itemView.findViewById(R.id.mask);
             checkView = itemView.findViewById(R.id.checkView);
             cbCheck = (SuperCheckBox) itemView.findViewById(R.id.cb_check);
+            playBtn = itemView.findViewById(R.id.play_btn);
             itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageSize)); //让图片是个正方形
 
             ivThumb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        listener.onImageItemClick(rootView, imageItem, position);
+                        listener.onImageItemClick(rootView, resItem, position);
                     }
                 }
             });
@@ -166,9 +170,9 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                         mask.setVisibility(View.GONE);
                     } else {
                         if (cbCheck.isChecked()) {
-                            mImagePicker.addSelectedImageItem(position, imageItem);
-                        }else{
-                            mImagePicker.removeSelectedImageItem(position, imageItem);
+                            mImagePicker.addSelectedResItem(position, resItem);
+                        } else {
+                            mImagePicker.removeSelectedResItem(position, resItem);
                         }
                         mask.setVisibility(View.VISIBLE);
                     }
@@ -179,12 +183,17 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         void bind(final int position) {
             this.position = position;
-            this.imageItem = getItem(position);
+            this.resItem = getItem(position);
 
             //根据是否多选，显示或隐藏checkbox
             if (mImagePicker.getParams().isMultiMode()) {
-                cbCheck.setVisibility(View.VISIBLE);
-                boolean checked = mSelectedImages.contains(imageItem);
+                if (resItem instanceof VideoItem) {
+                    checkView.setVisibility(View.GONE);
+                } else {
+                    checkView.setVisibility(View.VISIBLE);
+                    cbCheck.setVisibility(View.VISIBLE);
+                }
+                boolean checked = mSelectedImages.contains(resItem);
                 if (checked) {
                     mask.setVisibility(View.VISIBLE);
                     cbCheck.setChecked(true);
@@ -195,10 +204,21 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
             } else {
                 cbCheck.setVisibility(View.GONE);
             }
-            BaseImage baseImage = ImageFactory.newLocalImage(imageItem.getPath())
-                    .setWidth(300)
-                    .setHeight(300)
-            .build();
+            BaseImage baseImage;
+            if (resItem instanceof VideoItem) {
+                VideoItem videoItem = (VideoItem) resItem;
+                baseImage = ImageFactory.newLocalImage(videoItem.getThumb().getPath())
+                        .setWidth(300)
+                        .setHeight(300)
+                        .build();
+                playBtn.setVisibility(View.VISIBLE);
+            } else {
+                baseImage = ImageFactory.newLocalImage(resItem.getPath())
+                        .setWidth(300)
+                        .setHeight(300)
+                        .build();
+                playBtn.setVisibility(View.GONE);
+            }
             ivThumb.load(baseImage);
 //            mImagePicker.getImageLoader().displayImage(mActivity,, ivThumb, mImageSize, mImageSize); //显示图片
         }
@@ -224,7 +244,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                         U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
                             @Override
                             public void onRequestPermissionSuccess() {
-                                mImagePicker.takePicture(mActivity, ImagePicker.REQUEST_CODE_TAKE);
+                                mImagePicker.takePicture(mActivity, ResPicker.REQUEST_CODE_TAKE);
                             }
 
                             @Override
@@ -238,7 +258,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                             }
                         }, mActivity);
                     } else {
-                        mImagePicker.takePicture(mActivity, ImagePicker.REQUEST_CODE_TAKE);
+                        mImagePicker.takePicture(mActivity, ResPicker.REQUEST_CODE_TAKE);
                     }
                 }
             });
@@ -246,6 +266,6 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public interface OnImageItemClickListener {
-        void onImageItemClick(View view, ImageItem imageItem, int position);
+        void onImageItemClick(View view, ResItem imageItem, int position);
     }
 }

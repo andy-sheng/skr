@@ -2,10 +2,9 @@ package com.imagepicker.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.common.base.BaseFragment;
-import com.imagepicker.ImagePicker;
+import com.imagepicker.ResPicker;
 
 public abstract class ImageBaseFragment extends BaseFragment {
 
@@ -14,7 +13,7 @@ public abstract class ImageBaseFragment extends BaseFragment {
      * @param savedInstanceState
      */
     public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        ImagePicker.getInstance().onRestoreInstanceState(savedInstanceState);
+        ResPicker.getInstance().onRestoreInstanceState(savedInstanceState);
     }
 
     /**
@@ -25,6 +24,6 @@ public abstract class ImageBaseFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        ImagePicker.getInstance().onSaveInstanceState(outState);
+        ResPicker.getInstance().onSaveInstanceState(outState);
     }
 }

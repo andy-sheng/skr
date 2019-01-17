@@ -300,7 +300,7 @@ public class PicturePagerActivity extends RongBaseNoActionbarActivity implements
             holder.progressText = (TextView) result.findViewById(R.id.rc_txt);
             ImageBrowseView imageBrowseView = new ImageBrowseView(result.getContext());
             holder.photoView = (ImageBrowseView) result.findViewById(R.id.rc_photoView);
-            holder.photoView.setViewLongClickListener(PicturePagerActivity.this);
+            holder.photoView.setLongClickListener(PicturePagerActivity.this);
             result.setTag(holder);
             return result;
         }

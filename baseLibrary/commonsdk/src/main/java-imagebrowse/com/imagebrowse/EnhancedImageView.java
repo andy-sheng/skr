@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -48,7 +49,8 @@ public class EnhancedImageView extends RelativeLayout {
     protected GifDrawable mGifFromFile;
     protected SubsamplingScaleImageView mSubsamplingScaleImageView;
 
-    protected OnLongClickListener longClickListener; //长按事件的监听
+    protected OnLongClickListener mLongClickListener; //长按事件的监听
+    protected OnClickListener mClickListener; //点击事件的监听
 
     protected Handler mUiHandler = new Handler();
 
@@ -75,8 +77,18 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     // 设置图片长按事件的监听
-    public void setViewLongClickListener(OnLongClickListener longClickListener) {
-        this.longClickListener = longClickListener;
+    public void setLongClickListener(OnLongClickListener longClickListener) {
+        this.mLongClickListener = longClickListener;
+    }
+
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        this.mClickListener = l;
+    }
+
+    @Override
+    public void setOnLongClickListener(@Nullable OnLongClickListener l) {
+        super.setOnLongClickListener(l);
     }
 
     @Override
@@ -161,8 +173,9 @@ public class EnhancedImageView extends RelativeLayout {
             createFrescoView();
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(mPhotoDraweeView, 0, lp);
+            mPhotoDraweeView.setOnLongClickListener(this.mLongClickListener);
+            mPhotoDraweeView.setOnClickListener(this.mClickListener);
         }
-        mPhotoDraweeView.setOnLongClickListener(this.longClickListener);
         mPhotoDraweeView.setVisibility(VISIBLE);
     }
 
@@ -174,6 +187,8 @@ public class EnhancedImageView extends RelativeLayout {
             mGifImageView = new GifImageView(getContext());
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(mGifImageView, 0, lp);
+            mGifImageView.setOnLongClickListener(this.mLongClickListener);
+            mGifImageView.setOnClickListener(this.mClickListener);
         }
 
         mGifImageView.setVisibility(VISIBLE);
@@ -187,9 +202,9 @@ public class EnhancedImageView extends RelativeLayout {
             mSubsamplingScaleImageView = new SubsamplingScaleImageView(getContext());
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(mSubsamplingScaleImageView, 0, lp);
+            mSubsamplingScaleImageView.setOnLongClickListener(this.mLongClickListener);
+            mSubsamplingScaleImageView.setOnClickListener(this.mClickListener);
         }
-
-        mSubsamplingScaleImageView.setOnLongClickListener(this.longClickListener);
         mSubsamplingScaleImageView.setVisibility(VISIBLE);
     }
 

@@ -62,8 +62,8 @@ android {
 //            res.srcDirs += 'src/main/res-paginate'
 
             // 直接引入支持下拉加载 recyclerView
-            java.srcDirs += 'src/main/java-imagepicker'
-            res.srcDirs += 'src/main/res-imagepicker'
+            java.srcDirs += 'src/main/java-respicker'
+            res.srcDirs += 'src/main/res-respicker'
 
             // 提供图片缩放浏览能力，支持渐变式，支持loading页，支持超大图，超大Gif
             java.srcDirs += 'src/main/java-imagebrowse'
