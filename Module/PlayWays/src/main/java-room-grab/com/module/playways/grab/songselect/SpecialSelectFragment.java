@@ -63,4 +63,8 @@ public class SpecialSelectFragment extends BaseFragment {
         mSpecialSelectAdapter.setDataList(list);
     }
 
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
 }
