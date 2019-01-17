@@ -1,7 +1,8 @@
 package com.moudle.playways.grab.room.fragment;
 
 import android.animation.Animator;
-import android.graphics.drawable.Animatable;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,33 +10,32 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.image.fresco.BaseImageView;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.fresco.IFrescoCallBack;
-import com.common.image.model.ImageFactory;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
-import com.common.utils.HandlerTaskTimer;
+import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
-import com.facebook.fresco.animation.drawable.AnimationListener;
-import com.facebook.imagepipeline.image.ImageInfo;
+import com.dialog.view.TipsDialogView;
+import com.module.playways.RoomData;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.EvaluationFragment;
 import com.module.playways.rank.room.fragment.RankRecordFragment;
+import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
+import com.module.playways.rank.room.gift.GiftContinueViewGroup;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.RoomData;
+import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
+import com.module.playways.rank.room.presenter.RankCorePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
@@ -43,7 +43,7 @@ import com.module.playways.rank.room.view.TopContainerView;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.moudle.playways.grab.room.presenter.GrabCorePresenter;
+import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -52,6 +52,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.dialog.PersonInfoDialogView;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
@@ -59,12 +60,17 @@ import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -82,9 +88,15 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
+    public final static String TAG = "RankingRoomFragment";
+
     static final int ENSURE_RUN = 99;
 
+    static final int SHOW_RIVAL_LYRIC = 10;
+
     RoomData mRoomData;
+
+    RelativeLayout mRankingContainer;
 
     InputContainerView mInputContainerView;
 
@@ -94,15 +106,25 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
     TopContainerView mTopContainerView;
 
-    SVGAImageView mTopVoiceBg;
+    SVGAImageView mReadyGoBg;
 
-    GrabCorePresenter mCorePresenter;
+    SVGAImageView mStagePeopleBg;
+
+    SVGAImageView mStageUfoBg;
+
+    ImageView mEndRoundHint;
+
+    ImageView mEndGameIv;
+
+    RankCorePresenter mCorePresenter;
+
+    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
     ManyLyricsView mManyLyricsView;
 
     FloatLyricsView mFloatLyricsView;
 
-    ExTextView mTvPassedTime;
+    DialogPlus mQuitTipsDialog;
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -115,17 +137,17 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
                     mPendingSelfCountDownRunnable = null;
                 }
                 onReadyGoOver();
+            } else if (SHOW_RIVAL_LYRIC == msg.what) {
+                mFloatLyricsView.setVisibility(View.VISIBLE);
             }
         }
     };
 
     Disposable mPrepareLyricTask;
 
-    ScrollView mScrollView;
-
     TurnChangeCardView mTurnChangeView;
 
-    BaseImageView mReadyGoView;
+    DialogPlus mDialogPlus;
 
     SongModel mPlayingSongModel;
 
@@ -139,37 +161,92 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
     Runnable mPendingSelfCountDownRunnable;
 
-    int mPendingRivalCountdownUid = -1;
+    PendingRivalData mPendingRivalCountdown;
 
-    HandlerTaskTimer mShowLastedTimeTask;
+    int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
+
+    SVGAParser mSVGAParser;
+
+    AnimatorSet mGameEndAnimation;
+
+    List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
+
+    boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
     @Override
     public int initView() {
-        return R.layout.singend_room_fragment_layout;
+        return R.layout.grab_room_fragment_layout;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        U.getToastUtil().showShort("一唱到底");
         // 请保证从下面的view往上面的view开始初始化
-        mScrollView = mRootView.findViewById(R.id.scrollview);
+        mRankingContainer = mRootView.findViewById(R.id.ranking_container);
         initInputView();
         initBottomView();
         initCommentView();
         initTopView();
         initLyricsView();
         initTurnChangeView();
+        initGiftDisplayView();
 
         showReadyGoView();
 
-        mCorePresenter = new GrabCorePresenter(this, mRoomData);
+        mCorePresenter = new RankCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
+
+        mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
+            @Override
+            public void onDownloaded(long downloaded, long totalLength) {
+
+            }
+
+            @Override
+            public void onCompleted(String localPath) {
+                MyLog.d(TAG, "机器人打分文件下载就绪");
+            }
+
+            @Override
+            public void onCanceled() {
+
+            }
+
+            @Override
+            public void onFailed() {
+
+            }
+        }, mRoomData.getPlayerInfoList());
+
+        addPresent(mDownLoadScoreFilePresenter);
+        mDownLoadScoreFilePresenter.prepareRes();
+
+        U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
 
+    /**
+     * 可以在此恢复数据
+     *
+     * @param savedInstanceState
+     */
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        mRoomData = (RoomData) savedInstanceState.getSerializable("roomData");
+    }
+
+    /**
+     * 当系统认为你的fragment存在被销毁的可能时，onSaveInstanceState 就会被调用
+     * 不包括用户主动退出fragment导致其被销毁，比如按BACK键后fragment被主动销毁
+     *
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("roomData", mRoomData);
+    }
+
     public void playShowTurnCardAnimator(Runnable countDownRunnable) {
-        mTopVoiceBg.setVisibility(View.GONE);
         mTurnChangeView.setVisibility(View.VISIBLE);
         if (mTurnChangeCardShowAnimator == null) {
             mTurnChangeCardShowAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0.08f * U.getDisplayUtils().getScreenWidth(), 0);
@@ -214,12 +291,163 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
                     countDownRunnable.run();
                     mUiHanlder.removeMessages(ENSURE_RUN);
                 }
-                if (mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
-                    mTopVoiceBg.setVisibility(View.VISIBLE);
+                // TODO: 2018/12/29 先加一个保护 
+                if (mRoomData.getRealRoundInfo() != null) {
+                    if (mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
+                        playShowMainStageAnimator();
+                    }
                 }
             }
         });
         mTurnChangeCardHideAnimator.start();
+    }
+
+    // 播放主舞台动画,入场、循环的离场
+    private void playShowMainStageAnimator() {
+        MyLog.d(TAG, "playShowMainStageAnimator");
+        mFloatLyricsView.setVisibility(View.VISIBLE);
+        // 舞台人的动画
+        if (mStagePeopleBg != null) {
+            mStagePeopleBg.setVisibility(View.VISIBLE);
+            try {
+                getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_SVGA), new SVGAParser.ParseCompletion() {
+                    @Override
+                    public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                        SVGADrawable drawable = new SVGADrawable(videoItem);
+                        mStagePeopleBg.setImageDrawable(drawable);
+                        mStagePeopleBg.startAnimation();
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //飞碟动画
+        if (mStageUfoBg == null) {
+            return;
+        }
+        mStageUfoBg.setVisibility(View.VISIBLE);
+        getSVGAParser().parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                MyLog.d(TAG, "playUFOStageAnimator");
+                mUFOMode = 1;
+                // 飞碟入场
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mStageUfoBg.stopAnimation(true);
+                mStageUfoBg.setLoops(1); // 播一次
+                mStageUfoBg.setImageDrawable(drawable);
+                mStageUfoBg.startAnimation();
+                // 舞台入场,淡入
+                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mStagePeopleBg, View.ALPHA, 0f, 1f);
+                objectAnimator.setDuration(1000);
+                objectAnimator.start();
+                mAnimatorList.add(objectAnimator);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
+
+        mStageUfoBg.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (mUFOMode == 1) {
+                    if (mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(true);
+                    }
+                    getSVGAParser().parse("ufo_process.svga", new SVGAParser.ParseCompletion() {
+                        @Override
+                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                            mUFOMode = 2;
+                            SVGADrawable drawable = new SVGADrawable(videoItem);
+                            if (mStageUfoBg != null) {
+                                mStageUfoBg.setLoops(0);// 循环播放
+                                mStageUfoBg.setImageDrawable(drawable);
+                                mStageUfoBg.startAnimation();
+                            }
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+                } else if (mUFOMode == 3) {
+                    if (mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(true);
+                    }
+                    getSVGAParser().parse("ufo_leave.svga", new SVGAParser.ParseCompletion() {
+                        @Override
+                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                            mUFOMode = 4;
+                            // 主舞台消失动画
+                            SVGADrawable drawable = new SVGADrawable(videoItem);
+                            if (mStageUfoBg != null) {
+                                mStageUfoBg.setLoops(1); // 播一次
+                                mStageUfoBg.setImageDrawable(drawable);
+                                mStageUfoBg.startAnimation();
+                            }
+                            // end小卡片，做一个满满消失的动画
+                            ObjectAnimator objectAnimatorEnd = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
+                            objectAnimatorEnd.setDuration(1000);
+                            objectAnimatorEnd.start();
+                            mAnimatorList.add(objectAnimatorEnd);
+                            // 舞台退出，淡出
+                            ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStagePeopleBg, View.ALPHA, 1f, 0f);
+                            objectAnimatorStage.setDuration(1000);
+                            objectAnimatorStage.start();
+                            mAnimatorList.add(objectAnimatorStage);
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+                } else if (mUFOMode == 4) {
+                    if (mStageUfoBg != null) {
+                        mStageUfoBg.stopAnimation(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mUFOMode == 1) {
+                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(false);
+                    }
+                } else if (mUFOMode == 3) {
+                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(false);
+                    }
+                } else if (mUFOMode == 4) {
+                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
+                        mStageUfoBg.stopAnimation(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onStep(int frame, double percentage) {
+
+            }
+        });
     }
 
     private void initInputView() {
@@ -232,6 +460,9 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
+                if (mDialogPlus != null && mDialogPlus.isShowing()) {
+                    mDialogPlus.dismiss();
+                }
                 mInputContainerView.showSoftInput();
             }
         });
@@ -250,14 +481,23 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
             }
         });
         mCommentView.setRoomData(mRoomData);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
+        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
+
     }
 
     boolean isReport = false;
 
     private void showPersonInfoView(int userID) {
-        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getActivity(), userID);
+        if (!U.getNetworkUtils().hasNetwork()) {
+            U.getToastUtil().showShort("网络异常，请检查网络后重试!");
+            return;
+        }
+        mInputContainerView.hideSoftInput();
+        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext(), userID);
 
-        DialogPlus.newDialog(getActivity())
+        mDialogPlus = DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(personInfoDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
@@ -273,7 +513,14 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
                             U.getToastUtil().showShort("你点击了举报按钮");
                         } else if (view.getId() == R.id.follow_tv) {
                             // 关注
-                            U.getToastUtil().showShort("你点击了关注按钮");
+                            if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
+                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
+                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
+                            } else {
+                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
+                                        UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
+                            }
+
                         }
                     }
                 })
@@ -286,7 +533,8 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
                         isReport = false;
                     }
                 })
-                .create().show();
+                .create();
+        mDialogPlus.show();
     }
 
     private void showReportView() {
@@ -295,7 +543,7 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void initTopView() {
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
-        mTvPassedTime = (ExTextView) mRootView.findViewById(R.id.tv_passed_time);
+        mTopContainerView.setRoomData(mRoomData);
 
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
@@ -304,13 +552,12 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
         mTopContainerView.setListener(new TopContainerView.Listener() {
             @Override
             public void closeBtnClick() {
-                getActivity().finish();
-
+                quitGame();
             }
 
             @Override
             public void onVoiceChange(boolean voiceOpen) {
-//                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
+                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
             }
         });
     }
@@ -323,133 +570,119 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initTurnChangeView() {
-        mTopVoiceBg = (SVGAImageView) mRootView.findViewById(R.id.top_voice_bg);
+        mReadyGoBg = (SVGAImageView) mRootView.findViewById(R.id.ready_go_bg);
+
+        mStagePeopleBg = (SVGAImageView) mRootView.findViewById(R.id.stage_people_bg);
+        mStageUfoBg = (SVGAImageView) mRootView.findViewById(R.id.stage_ufo_bg);
+
+        mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
+
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
 
-        //TODO 还要修改
-        SVGAParser parser = new SVGAParser(getActivity());
-        parser.setFileDownloader(new SVGAParser.FileDownloader() {
-            @Override
-            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        OkHttpClient client = new OkHttpClient();
-                        Request request = new Request.Builder().url(url).get().build();
-                        try {
-                            Response response = client.newCall(request).execute();
-                            complete.invoke(response.body().byteStream());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            failure.invoke(e);
+        mEndGameIv = (ImageView) mRootView.findViewById(R.id.end_game_iv);
+    }
+
+    private void initGiftDisplayView() {
+        GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
+        giftContinueViewGroup.setRoomData(mRoomData);
+        GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
+        giftBigAnimationViewGroup.setRoomData(mRoomData);
+    }
+
+    private SVGAParser getSVGAParser() {
+        if (mSVGAParser == null) {
+            mSVGAParser = new SVGAParser(getActivity());
+            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
+                @Override
+                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            OkHttpClient client = new OkHttpClient();
+                            Request request = new Request.Builder().url(url).get().build();
+                            try {
+                                Response response = client.newCall(request).execute();
+                                complete.invoke(response.body().byteStream());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                failure.invoke(e);
+                            }
                         }
-                    }
-                }).start();
-            }
-        });
+                    }).start();
+                }
+            });
+        }
+        return mSVGAParser;
+    }
+
+    private void showReadyGoView() {
+        mReadyGoBg.setVisibility(View.VISIBLE);
+        mReadyGoPlaying = true;
+
         try {
-            parser.parse(new URL(RoomData.ROOM_STAGE_SVGA), new SVGAParser.ParseCompletion() {
+            getSVGAParser().parse(new URL(RoomData.READY_GO_SVGA_URL), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mTopVoiceBg.setImageDrawable(drawable);
-                    mTopVoiceBg.startAnimation();
+                    mReadyGoBg.stopAnimation(true);
+                    mReadyGoBg.setImageDrawable(drawable);
+                    mReadyGoBg.startAnimation();
+                    U.getSoundUtils().play(TAG, R.raw.stage_readygo);
                 }
 
                 @Override
                 public void onError() {
-
                 }
             });
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+        mReadyGoBg.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (mReadyGoBg.isAnimating()) {
+                    mReadyGoBg.stopAnimation();
+                    onReadyGoOver();
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mReadyGoBg.isAnimating()) {
+                    mReadyGoBg.stopAnimation();
+                    onReadyGoOver();
+                }
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
     }
 
-    private void showReadyGoView() {
-        // TODO: 2019/1/8 也可以用SVGA替换
-        if (mReadyGoView == null) {
-            mReadyGoView = new BaseImageView(getActivity());
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(188));
-            lp.topMargin = U.getDisplayUtils().dip2px(143);
-            ((RelativeLayout) mRootView).addView(mReadyGoView, lp);
-        }
-        mReadyGoPlaying = true;
-        FrescoWorker.loadImage(mReadyGoView, ImageFactory.newHttpImage(RoomData.READY_GO_WEBP_URL)
-                        .setCallBack(new IFrescoCallBack() {
-                            @Override
-                            public void processWithInfo(ImageInfo info, Animatable animatable) {
-                                if (animatable != null && animatable instanceof AnimatedDrawable2) {
-                                    ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
-                                        int curFrame = 0;
-
-                                        @Override
-                                        public void onAnimationStart(AnimatedDrawable2 drawable) {
-                                            MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                        }
-
-                                        @Override
-                                        public void onAnimationStop(AnimatedDrawable2 drawable) {
-                                            MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
-                                            onReadyGoOver();
-                                        }
-
-                                        @Override
-                                        public void onAnimationReset(AnimatedDrawable2 drawable) {
-//                                    MyLog.d(TAG, "onAnimationReset" + " drawable=" + drawable);
-                                            onReadyGoOver();
-                                        }
-
-                                        @Override
-                                        public void onAnimationRepeat(AnimatedDrawable2 drawable) {
-//                                    MyLog.d(TAG, "onAnimationRepeat" + " drawable=" + drawable);
-                                            onReadyGoOver();
-                                        }
-
-                                        @Override
-                                        public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
-//                                    MyLog.d(TAG, "onAnimationFrame" + " drawable=" + drawable + " frameNumber=" + frameNumber);
-                                            // 按序列播放  0 1 2 3 4 5 循环再次到  5 - 0 时说明重复播放了
-                                            if (frameNumber < curFrame) {
-                                                onReadyGoOver();
-                                            }
-                                            curFrame = frameNumber;
-                                        }
-                                    });
-                                    animatable.start();
-                                } else {
-                                    onReadyGoOver();
-                                }
-                            }
-
-                            @Override
-                            public void processWithFailure() {
-                                MyLog.d(TAG, "processWithFailure");
-                                onReadyGoOver();
-                            }
-                        })
-                        .build()
-        );
-    }
-
-    void onReadyGoOver() {
+    private void onReadyGoOver() {
         MyLog.w(TAG, "onReadyGoOver");
         if (mReadyGoPlaying) {
             mReadyGoPlaying = false;
             // 移除 readyGoView
-            if (mReadyGoView != null) {
-                ((RelativeLayout) mRootView).removeView(mReadyGoView);
-            }
             // 轮到自己演唱了，倒计时因为播放readyGo没播放
             if (mPendingSelfCountDownRunnable != null) {
                 startSelfCountdown(mPendingSelfCountDownRunnable);
                 mPendingSelfCountDownRunnable = null;
             }
             // 轮到他人唱了，倒计时因为播放readyGo没播放
-            if (mPendingRivalCountdownUid != -1) {
-                startRivalCountdown(mPendingRivalCountdownUid,"");
-                mPendingRivalCountdownUid = -1;
+            if (mPendingRivalCountdown != null) {
+                startRivalCountdown(mPendingRivalCountdown.uid, mPendingRivalCountdown.avatar);
+                mPendingRivalCountdown = null;
             }
+            mRankingContainer.removeView(mReadyGoBg);
         }
     }
 
@@ -468,10 +701,31 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void destroy() {
         super.destroy();
+        MyLog.d(TAG, "destroy");
+        destroyAnimation();
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+            mDialogPlus = null;
+        }
         mUiHanlder.removeCallbacksAndMessages(null);
-        cancelShowLastedTimeTask();
         mManyLyricsView.release();
         mFloatLyricsView.release();
+
+        isGameEndAniamtionShow = false;
+        if (mGameEndAnimation != null) {
+            mGameEndAnimation.cancel();
+        }
+
+        if (mAnimatorList != null) {
+            for (Animator animator : mAnimatorList) {
+                if (animator != null) {
+                    animator.cancel();
+                }
+            }
+            mAnimatorList.clear();
+        }
+
+        U.getSoundUtils().release(TAG);
     }
 
     @Override
@@ -479,7 +733,40 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
         if (mInputContainerView.onBackPressed()) {
             return true;
         }
-        return super.onBackPressed();
+        quitGame();
+        return true;
+    }
+
+    private void quitGame() {
+        if (mQuitTipsDialog == null) {
+            TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                    .setMessageTip("提前退出会破坏其他玩家的对局体验，确定退出么？")
+                    .setConfirmTip("取消")
+                    .setCancelTip("确定")
+                    .setConfirmBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mQuitTipsDialog.dismiss(false);
+                        }
+                    })
+                    .setCancelBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mQuitTipsDialog.dismiss(false);
+                            getActivity().finish();
+                        }
+                    })
+                    .build();
+
+            mQuitTipsDialog = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create();
+        }
+        mQuitTipsDialog.show();
     }
 
     /**
@@ -487,6 +774,20 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
+        mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                .build());
+        mManyLyricsView.setVisibility(View.GONE);
+        mFloatLyricsView.setVisibility(View.GONE);
+        // 加保护，确保当前主舞台一定被移除
+        if (mStagePeopleBg.isAnimating()) {
+            mStagePeopleBg.stopAnimation(false);
+        }
+        if (mStageUfoBg.isAnimating()) {
+            mStageUfoBg.stopAnimation();
+        }
+        mStagePeopleBg.setVisibility(View.GONE);
+        mStageUfoBg.setVisibility(View.GONE);
+
         // 确保演唱逻辑一定要执行
         Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
         msg.what = ENSURE_RUN;
@@ -508,23 +809,42 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
             }
         }
 
+        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
     }
 
     /**
      * 保证在主线程
      */
     @Override
-    public void startRivalCountdown(int uid,String avatar) {
-        cancelShowLastedTimeTask();
+    public void startRivalCountdown(int uid, String avatar) {
+        mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
+        mManyLyricsView.setVisibility(View.GONE);
+        mFloatLyricsView.setVisibility(View.GONE);
+        // 加保护，确保当前主舞台一定被移除
+        if (mStagePeopleBg.isAnimating()) {
+            mStagePeopleBg.stopAnimation(false);
+        }
+        if (mStageUfoBg.isAnimating()) {
+            mStageUfoBg.stopAnimation();
+        }
+        mStagePeopleBg.setVisibility(View.GONE);
+        mStageUfoBg.setVisibility(View.GONE);
+
+//        mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
             // 正在播放readyGo动画，保存参数，延迟播放卡片
-            mPendingRivalCountdownUid = uid;
+            mPendingRivalCountdown = new PendingRivalData(uid, avatar);
         } else {
             MyLog.w(TAG, "用户" + uid + "的演唱开始了");
             if (mTurnChangeView.setData(mRoomData)) {
                 playShowTurnCardAnimator(null);
             }
         }
+
+        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
+        Message showLyricMsg = new Message();
+        showLyricMsg.what = SHOW_RIVAL_LYRIC;
+        mUiHanlder.sendMessageDelayed(showLyricMsg, 3000);
     }
 
     @Override
@@ -534,31 +854,96 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void showRecordView(RecordData recordData) {
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(0, recordData)
-                .addDataBeforeAdd(1, mRoomData)
-                .build()
-        );
+        MyLog.d(TAG, "showRecordView" + " recordData=" + recordData);
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+        }
+
+        startGameEndAniamtion();
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
+                        .setAddToBackStack(true)
+                        .addDataBeforeAdd(0, recordData)
+                        .addDataBeforeAdd(1, mRoomData)
+                        .build()
+                );
+            }
+        }, 3000);
     }
 
     @Override
     public void showVoteView() {
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(0, mRoomData)
-                .build()
-        );
+        MyLog.d(TAG, "showVoteView");
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+        }
+
+        startGameEndAniamtion();
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                        .setAddToBackStack(true)
+                        .addDataBeforeAdd(0, mRoomData)
+                        .build()
+                );
+            }
+        }, 3000);
     }
+
+    private void startGameEndAniamtion() {
+        if (isGameEndAniamtionShow) {
+            return;
+        }
+        isGameEndAniamtionShow = true;
+
+        destroyAnimation();
+        // 对战结束动画
+        mEndGameIv.setVisibility(View.VISIBLE);
+        if (mGameEndAnimation == null) {
+            ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_X, 0.3f, 1f);
+            ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_Y, 0.3f, 1f);
+            mGameEndAnimation = new AnimatorSet();
+            mGameEndAnimation.setDuration(750);
+            mGameEndAnimation.playTogether(a1, a2);
+        }
+        mGameEndAnimation.start();
+
+    }
+
+    private void destroyAnimation() {
+        if (mStagePeopleBg != null) {
+            mStagePeopleBg.stopAnimation(true);
+            mStagePeopleBg.setVisibility(View.GONE);
+            mRankingContainer.removeView(mStagePeopleBg);
+            mStagePeopleBg = null;
+        }
+
+        if (mStageUfoBg != null) {
+            mStageUfoBg.stopAnimation(true);
+            mStageUfoBg.setVisibility(View.GONE);
+            mRankingContainer.removeView(mStageUfoBg);
+            mStageUfoBg = null;
+        }
+
+        if (mReadyGoBg != null) {
+            mReadyGoBg.stopAnimation(true);
+            mReadyGoBg.setVisibility(View.GONE);
+            mRankingContainer.removeView(mReadyGoBg);
+            mReadyGoBg = null;
+        }
+    }
+
 
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
-
+        mTopContainerView.cancelShowLastedTimeTask();
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
         }
-
         mFloatLyricsView.setVisibility(View.GONE);
         mFloatLyricsView.release();
         mManyLyricsView.setVisibility(View.GONE);
@@ -585,44 +970,32 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void showLeftTime(long wholeTile) {
         MyLog.d(TAG, "showLastedTime" + " wholeTile=" + wholeTile);
-        if (mShowLastedTimeTask != null) {
-            mShowLastedTimeTask.dispose();
-        }
-
-        long lastedTime = wholeTile / 1000;
-
-        MyLog.d(TAG, "showLastedTime" + " lastedTime=" + lastedTime);
-
-        mShowLastedTimeTask = HandlerTaskTimer.newBuilder()
-                .interval(1000)
-                .take((int) lastedTime + 1)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        long lastTime = lastedTime + 1 - integer;
-
-                        if (lastTime < 0) {
-                            cancelShowLastedTimeTask();
-                            mTvPassedTime.setText("");
-                            return;
-                        }
-
-                        mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
-                    }
-                });
-
+        mTopContainerView.startPlayLeftTime(wholeTile);
     }
 
     @Override
     public void hideMainStage() {
+        MyLog.d(TAG, "hideMainStage");
+        // 显示end小卡片
+        mEndRoundHint.setVisibility(View.VISIBLE);
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 模式改为3，自动播放主舞台退出的svga动画
+                mUFOMode = 3;
+                mFloatLyricsView.setVisibility(View.GONE);
+                mManyLyricsView.setVisibility(View.GONE);
+            }
+        }, 800);
 
-    }
-
-    private void cancelShowLastedTimeTask() {
-        mTvPassedTime.setText("");
-        if (mShowLastedTimeTask != null) {
-            mShowLastedTimeTask.dispose();
-            mShowLastedTimeTask = null;
+        if (mRoomData.getRealRoundInfo().getRoundSeq() == 3) {
+            // 最后一轮
+            mUiHanlder.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startGameEndAniamtion();
+                }
+            }, 2000);
         }
     }
 
@@ -643,11 +1016,9 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
         if (file == null) {
             MyLog.w(TAG, "playLyric is not in local file");
-
             fetchLyricTask(songModel, play);
         } else {
             MyLog.w(TAG, "playLyric is exist");
-
             final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
             parseLyrics(fileName, play);
         }
@@ -658,8 +1029,9 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
         mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
-                .retry(10)
                 .observeOn(AndroidSchedulers.mainThread())
+                .retry(10)
+                .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(lyricsReader -> {
                     drawLyric(fileName.hashCode() + "", lyricsReader, play);
                 }, throwable -> {
@@ -680,7 +1052,17 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
                 mFloatLyricsView.resetData();
                 mManyLyricsView.setVisibility(View.VISIBLE);
                 mManyLyricsView.initLrcData();
+                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
                 mManyLyricsView.setLyricsReader(lyricsReader);
+
+                Set<Integer> set = new HashSet<>();
+                set.add(lyricsReader.getLineInfoIdByStartTs(mPlayingSongModel.getRankLrcBeginT()));
+                mManyLyricsView.setNeedCountDownLine(set);
+
+                if (!play) {
+                    mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
+                    mManyLyricsView.pause();
+                }
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
@@ -688,9 +1070,14 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
             } else {
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();
-                mFloatLyricsView.setVisibility(View.VISIBLE);
+//                mFloatLyricsView.setVisibility(View.VISIBLE);
                 mFloatLyricsView.initLrcData();
+                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
                 mFloatLyricsView.setLyricsReader(lyricsReader);
+                if (!play) {
+                    mFloatLyricsView.seekto(mPlayingSongModel.getBeginMs());
+                    mFloatLyricsView.pause();
+                }
                 if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mFloatLyricsView.play(mPlayingSongModel.getBeginMs());
@@ -728,6 +1115,8 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retry(1000)
+                .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(file -> {
                     final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
                     parseLyrics(fileName, play);
@@ -736,4 +1125,13 @@ public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
                 });
     }
 
+    static class PendingRivalData {
+        int uid;
+        String avatar;
+
+        public PendingRivalData(int uid, String avatar) {
+            this.uid = uid;
+            this.avatar = avatar;
+        }
+    }
 }

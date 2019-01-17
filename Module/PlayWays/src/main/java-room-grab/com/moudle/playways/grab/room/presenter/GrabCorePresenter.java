@@ -50,7 +50,7 @@ import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_AFTER_P
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
 public class GrabCorePresenter extends RxLifeCyclePresenter {
-    public String TAG = "SingEndCorePresenter";
+    public String TAG = "GrabCorePresenter";
 
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;

@@ -173,7 +173,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public int initView() {
-        return R.layout.ranking_room_fragment_layout;
+        return R.layout.rank_room_fragment_layout;
     }
 
     @Override
