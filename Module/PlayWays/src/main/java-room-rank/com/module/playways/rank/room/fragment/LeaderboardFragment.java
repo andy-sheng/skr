@@ -1,6 +1,5 @@
 package com.module.playways.rank.room.fragment;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,7 +24,6 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
-import com.common.utils.LbsUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -39,6 +37,7 @@ import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.live.proto.Common.ESex;
 import com.zq.person.fragment.OtherPersonFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -328,7 +327,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColor(Color.parseColor("#FF79A9"))
+                        .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue())
                         .build());
     }
 
