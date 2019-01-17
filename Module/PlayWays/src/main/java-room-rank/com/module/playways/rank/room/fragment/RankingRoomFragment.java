@@ -458,6 +458,9 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
+                if (mDialogPlus != null && mDialogPlus.isShowing()) {
+                    mDialogPlus.dismiss();
+                }
                 mInputContainerView.showSoftInput();
             }
         });
@@ -485,6 +488,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     boolean isReport = false;
 
     private void showPersonInfoView(int userID) {
+        mInputContainerView.hideSoftInput();
         PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext(), userID);
 
         mDialogPlus = DialogPlus.newDialog(getContext())

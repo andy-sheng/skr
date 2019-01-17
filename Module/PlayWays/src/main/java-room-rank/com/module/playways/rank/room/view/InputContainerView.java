@@ -162,6 +162,10 @@ public class InputContainerView extends RelativeLayout {
         mEmotionKeyboard.showSoftInput();
     }
 
+    public void hideSoftInput() {
+        mEmotionKeyboard.hideSoftInput();
+    }
+
     public boolean onBackPressed() {
         if (mEmotionKeyboard.isEmotionShown()) {
             mEmotionKeyboard.hideEmotionLayout(false);
