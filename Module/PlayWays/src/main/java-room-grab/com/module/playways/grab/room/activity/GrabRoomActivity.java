@@ -33,20 +33,20 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
-        if (prepareData != null) {
-            mRoomData.setGameId(prepareData.getGameId());
-            mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
-            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
-            mRoomData.setShiftTs(prepareData.getShiftTs());
-
-            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
-            mRoomData.setExpectRoundInfo(RankDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
-            MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
-            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
-            mRoomData.setSongModel(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
-        } else {
-
-        }
+//        if (prepareData != null) {
+//            mRoomData.setGameId(prepareData.getGameId());
+//            mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
+//            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
+//            mRoomData.setShiftTs(prepareData.getShiftTs());
+//
+//            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
+//            mRoomData.setExpectRoundInfo(RankDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
+//            MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
+//            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
+//            mRoomData.setSongModel(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
+//        } else {
+//
+//        }
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
                 .setAddToBackStack(false)

@@ -1,16 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ranking_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2E3041">
 
     <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/top_voice_bg"
+        android:id="@+id/ready_go_bg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_245_dp"
-        android:layout_marginTop="@dimen/view_90_dp" />
+        android:layout_height="@dimen/view_350_dp"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:scaleType="fitCenter"
+        app:antiAlias="true"
+        app:autoPlay="false" />
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/stage_people_bg"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:scaleType="fitCenter"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:clearsAfterStop="false" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/stage_ufo_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_300_dp"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:scaleType="fitCenter"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:clearsAfterStop="false" />
+
+    <ImageView
+        android:id="@+id/end_round_hint"
+        android:layout_width="@dimen/view_78_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_300_dp"
+        android:src="@drawable/guanzhongjiemian_yanchangjieshu"
+        android:visibility="gone" />
 
     <com.zq.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
@@ -24,17 +56,18 @@
         app:ly_high_light_paint_color_from="#EF5E85"
         app:ly_high_light_paint_color_to="#EF5E85"
         app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
-        app:ly_high_light_sub_paint_color="@color/white"
+        app:ly_high_light_sub_paint_color="#EF5E85"
         app:ly_outline_paint_color="@color/black"
         app:ly_paint_color_from="@color/white_trans_50"
         app:ly_paint_color_to="@color/white_trans_50"
-        app:ly_paint_text_size="@dimen/textsize_dimen_16" />
+        app:ly_paint_text_size="@dimen/textsize_dimen_16"
+        app:ly_top_line_num="2" />
 
     <com.zq.lyrics.widget.FloatLyricsView
         android:id="@+id/float_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_60_dp"
-        android:layout_marginTop="@dimen/view_320_dp"
+        android:layout_marginTop="@dimen/view_370_dp"
         android:visibility="gone"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="false"
@@ -47,11 +80,6 @@
         app:ly_paint_color_to="@color/white_trans_50"
         app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
-    <com.module.playways.rank.room.view.InputContainerView
-        android:id="@+id/input_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
@@ -64,23 +92,60 @@
     <com.module.playways.rank.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_250_dp"
-        android:layout_above="@+id/bottom_container_view"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/float_lyrics_view"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_128_dp"
+        android:layout_marginBottom="@dimen/view_66_dp"
         android:paddingLeft="@dimen/view_18_dp"
         android:paddingBottom="@dimen/view_7_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/cover_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/comment_view"
+        android:src="@drawable/zhengzaiyanchang_duihua_zhezhao" />
+
+    <com.module.playways.rank.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
     <com.module.playways.rank.room.view.TopContainerView
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_100_dp"
         android:layout_marginTop="@dimen/view_5_dp" />
+
+    <com.module.playways.rank.room.gift.GiftContinueViewGroup
+        android:id="@+id/gift_continue_vg"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_75_dp"
+        android:layout_above="@+id/comment_view"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginBottom="@dimen/view_10_dp" />
 
     <com.module.playways.rank.room.view.TurnChangeCardView
         android:id="@+id/turn_change_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top_container_view"
-        android:layout_marginTop="@dimen/view_34_dp"
-        android:visibility="gone"></com.module.playways.rank.room.view.TurnChangeCardView>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_130_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup
+        android:id="@+id/gift_big_animation_vg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/end_game_iv"
+        android:layout_width="@dimen/view_324_dp"
+        android:layout_height="@dimen/view_160_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_178_dp"
+        android:src="@drawable/img_top_duizhanjieshu_bg"
+        android:visibility="gone" />
 </RelativeLayout>

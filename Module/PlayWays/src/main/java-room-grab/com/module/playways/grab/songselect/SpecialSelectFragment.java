@@ -13,6 +13,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
+import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class SpecialSelectFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, SpecialModel model) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                        .withSerializable("prepare_data",new PrepareData())
                         .navigation();
             }
         });
