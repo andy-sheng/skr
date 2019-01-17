@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
@@ -26,10 +25,9 @@ import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
-import com.module.playways.grab.room.inter.IGrebView;
+import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
-import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.EvaluationFragment;
@@ -40,7 +38,6 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.InputContainerView;
-import com.module.playways.rank.room.view.TopContainerView;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -87,7 +84,7 @@ import okhttp3.Response;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
-public class GrabRoomFragment extends BaseFragment implements IGrebView {
+public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     public final static String TAG = "RankingRoomFragment";
 

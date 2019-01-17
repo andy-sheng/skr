@@ -3,7 +3,7 @@ package com.module.playways.grab.room.inter;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
 
-public interface IGrebView {
+public interface IGrabView {
     /**
      * 展示要唱的歌儿
      * @param songModel

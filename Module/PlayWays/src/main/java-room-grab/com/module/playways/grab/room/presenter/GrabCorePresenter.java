@@ -19,7 +19,7 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.playways.RoomData;
-import com.module.playways.grab.room.inter.IGrebView;
+import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
@@ -63,11 +63,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     HandlerTaskTimer mSyncGameStateTask;
 
-    IGrebView mIGameRuleView;
+    IGrabView mIGameRuleView;
 
     Handler mUiHanlder = new Handler();
 
-    public GrabCorePresenter(@NotNull IGrebView iGrebView, @NotNull RoomData roomData) {
+    public GrabCorePresenter(@NotNull IGrabView iGrebView, @NotNull RoomData roomData) {
         mIGameRuleView = iGrebView;
         mRoomData = roomData;
         TAG = "RankingCorePresenter";
