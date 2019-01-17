@@ -2,6 +2,7 @@ package com.module.playways;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -28,6 +29,9 @@ public class PlayWaysActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
+        RelativeLayout mainActContainer = (RelativeLayout)findViewById(R.id.main_act_container);
+
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
         int gameType = getIntent().getIntExtra(KEY_GAME_TYPE, GameModeType.GAME_MODE_CLASSIC_RANK);
         if (gameType == GameModeType.GAME_MODE_CLASSIC_RANK || gameType == GameModeType.GAME_MODE_FUNNY) {
@@ -41,6 +45,7 @@ public class PlayWaysActivity extends BaseActivity {
                         .build());
             }
         } else if (gameType == GameModeType.GAME_MODE_GRAB) {
+            mainActContainer.setBackground(null);
             // 一唱到底抢唱模式,
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SpecialSelectFragment.class)
                     .setAddToBackStack(false)

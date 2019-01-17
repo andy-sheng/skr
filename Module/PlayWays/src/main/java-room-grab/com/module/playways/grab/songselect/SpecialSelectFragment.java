@@ -29,7 +29,7 @@ public class SpecialSelectFragment extends BaseFragment {
 
     @Override
     public int initView() {
-        return R.layout.specail_select_fragment_layout;
+        return R.layout.special_select_fragment_layout;
     }
 
     @Override

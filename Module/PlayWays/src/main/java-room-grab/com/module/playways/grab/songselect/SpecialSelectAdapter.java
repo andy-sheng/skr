@@ -20,7 +20,7 @@ public class SpecialSelectAdapter extends DiffAdapter<SpecialModel, SpecialCardV
     @NonNull
     @Override
     public SpecialCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.specail_view_holder_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.special_view_holder_layout, parent, false);
         SpecialCardViewHolder itemHolder = new SpecialCardViewHolder(view);
         itemHolder.setItemClickListener(mItemClickListener);
         return itemHolder;
