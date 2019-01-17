@@ -10,6 +10,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
 import com.module.playways.rank.room.view.ILeaderBoardView;
 
 import java.util.ArrayList;
@@ -47,6 +48,11 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
     }
 
     public void getLeaderBoardInfo() {
+        if(!U.getNetworkUtils().hasNetwork()){
+            mILeaderBoardView.noNetWork();
+            return;
+        }
+
         ApiMethods.subscribe(mUserInfoServerApi.getReginRankList(mRankMode, mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -77,6 +83,11 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
     }
 
     public void getOwnInfo(){
+        if(!U.getNetworkUtils().hasNetwork()){
+            mILeaderBoardView.noNetWork();
+            return;
+        }
+
         ApiMethods.subscribe(mUserInfoServerApi.getReginRank((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

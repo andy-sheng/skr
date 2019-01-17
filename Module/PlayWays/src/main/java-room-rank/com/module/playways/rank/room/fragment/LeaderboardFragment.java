@@ -214,6 +214,11 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             return;
                         }
 
+                        if(!U.getNetworkUtils().hasNetwork()){
+                            noNetWork();
+                            return;
+                        }
+
                         mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
                         mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
                     }
@@ -224,11 +229,17 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        mTvArea.setText("全国榜");
                         mPopupWindow.dismiss();
                         Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
                         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                         mTvArea.setCompoundDrawables(null, null, drawable, null);
+
+                        if(!U.getNetworkUtils().hasNetwork()){
+                            noNetWork();
+                            return;
+                        }
+
+                        mTvArea.setText("全国榜");
                         mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
                     }
                 });
@@ -350,6 +361,11 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 }, throwable -> MyLog.e(throwable));
     }
 
+    @Override
+    public void noNetWork() {
+        U.getToastUtil().showShort("网络异常");
+        mRefreshLayout.finishLoadMore();
+    }
 
     private void setTopThreeInfo(RankInfoModel rankInfoModel) {
         if (rankInfoModel.getRankSeq() == 1) {
