@@ -52,32 +52,7 @@ public class LoginActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent setAccountEvent) {
         //登陆成功
-        if (UserAccountManager.getInstance().hasAccount()) {
-            U.getToastUtil().showShort("登录成功");
-            // 昵称不能为空
-            if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
-                MyLog.d(TAG, "onEvent 用户昵称为空");
-                // 无头像或昵称
-                Bundle bundle = getIntent().getExtras();
-                if (bundle != null) {
-                    // 跳转到上传资料页面
-                    ARouter.getInstance()
-                            .build(ACTIVITY_UPLOAD)
-                            .with(bundle)
-                            .navigation();
-                }
-            } else {
-                Bundle bundle = getIntent().getExtras();
-                if (bundle != null) {
-                    String path = bundle.getString(KEY_ORIGIN_PATH);
-                    if (!TextUtils.isEmpty(path)) {
-                        // 跳转到原页面，并带上参数
-                        ARouter.getInstance().build(path).with(bundle).navigation();
-                    }
-                }
-            }
-            finish();
-        }
+        finish();
     }
 
 
