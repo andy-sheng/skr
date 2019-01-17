@@ -1,4 +1,4 @@
-package com.moudle.playways.grab.room.fragment;
+package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

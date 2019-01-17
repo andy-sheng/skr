@@ -1,4 +1,4 @@
-package com.moudle.playways.grab.room.activity;
+package com.module.playways.grab.room.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +16,7 @@ import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.room.model.RankDataUtils;
 import com.module.playways.RoomData;
 import com.module.rank.R;
-import com.moudle.playways.grab.room.fragment.GrabRoomFragment;
+import com.module.playways.grab.room.fragment.GrabRoomFragment;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_ROOM)
 public class GrabRoomActivity extends BaseActivity {

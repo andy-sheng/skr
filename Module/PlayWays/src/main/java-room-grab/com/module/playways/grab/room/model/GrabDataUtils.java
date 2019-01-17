@@ -1,4 +1,4 @@
-package com.moudle.playways.grab.room.model;
+package com.module.playways.grab.room.model;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
