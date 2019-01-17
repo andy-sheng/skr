@@ -23,34 +23,34 @@
             android:src="@drawable/img_back" />
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/tv_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_25_dp"
+            android:drawableRight="@drawable/paihangbang_xuanzediquxialaicon"
+            android:drawablePadding="@dimen/view_10_dp"
             android:ellipsize="marquee"
-            android:singleLine="true"
             android:maxWidth="@dimen/view_180_dp"
-            android:paddingBottom="@dimen/view_5_dp"
+            android:paddingLeft="@dimen/view_18_dp"
             android:paddingTop="@dimen/view_5_dp"
             android:paddingRight="@dimen/view_18_dp"
-            android:paddingLeft="@dimen/view_18_dp"
-            app:bl_solid_color="#B51A4D"
-            android:drawablePadding="@dimen/view_10_dp"
-            android:drawableRight="@drawable/paihangbang_xuanzediquxialaicon"
-            app:bl_corners_radius="@dimen/view_6_dp"
-            android:id="@+id/tv_area"
-            android:layout_marginTop="@dimen/view_25_dp"
+            android:paddingBottom="@dimen/view_5_dp"
+            android:singleLine="true"
             android:text=""
-            android:textSize="@dimen/textsize_20_dp"
             android:textColor="@color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="@dimen/textsize_20_dp"
+            app:bl_corners_radius="@dimen/view_6_dp"
+            app:bl_solid_color="#B51A4D" />
 
         <com.common.view.ex.ExFrameLayout
-            android:layout_marginRight="-12dp"
-            android:layout_toLeftOf="@+id/rl_center_container"
             android:layout_width="@dimen/view_112_dp"
             android:layout_height="@dimen/view_192_dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="1.3dp"
             android:layout_marginTop="1.5dp"
+            android:layout_marginRight="-12dp"
+            android:layout_toLeftOf="@+id/rl_center_container"
             android:background="@drawable/dierming_beijing">
 
             <com.common.view.ex.ExRelativeLayout
@@ -76,18 +76,18 @@
                     android:background="@drawable/disanming_huizhang" />
 
                 <com.common.view.ex.ExTextView
-                    android:maxWidth="@dimen/view_90_dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textStyle="bold"
-                    android:alpha="0.8"
-                    android:textColor="#0C2275"
                     android:id="@+id/tv_left_chanpain_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/sdv_left_champain_icon"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_11_dp" />
+                    android:layout_marginTop="@dimen/view_11_dp"
+                    android:alpha="0.8"
+                    android:ellipsize="end"
+                    android:maxWidth="@dimen/view_90_dp"
+                    android:maxLines="1"
+                    android:textColor="#0C2275"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/ll_left_champain"
@@ -99,10 +99,9 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:background="@drawable/paihangbang_xingxing"
                         android:layout_width="@dimen/view_20_dp"
                         android:layout_height="@dimen/view_20_dp"
-                        />
+                        android:background="@drawable/paihangbang_xingxing" />
 
                     <TextView
                         android:id="@+id/tv_left_chanpian_start"
@@ -125,12 +124,13 @@
         </com.common.view.ex.ExFrameLayout>
 
         <com.common.view.ex.ExFrameLayout
-            android:layout_marginLeft="-12dp"
-            android:layout_toRightOf="@+id/rl_center_container"
             android:layout_width="@dimen/view_112_dp"
             android:layout_height="@dimen/view_192_dp"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="-12dp"
+            android:layout_toRightOf="@+id/rl_center_container"
             android:background="@drawable/disanming_beijing">
+
             <com.common.view.ex.ExRelativeLayout
 
                 android:layout_width="match_parent"
@@ -153,18 +153,18 @@
                     android:background="@drawable/dierming_huizhang" />
 
                 <com.common.view.ex.ExTextView
-                    android:maxWidth="@dimen/view_90_dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textStyle="bold"
-                    android:alpha="0.8"
-                    android:textColor="#0C2275"
                     android:id="@+id/tv_right_chanpain_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/sdv_right_champain_icon"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_11_dp" />
+                    android:layout_marginTop="@dimen/view_11_dp"
+                    android:alpha="0.8"
+                    android:ellipsize="end"
+                    android:maxWidth="@dimen/view_90_dp"
+                    android:maxLines="1"
+                    android:textColor="#0C2275"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/ll_right_champain"
@@ -176,9 +176,9 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:background="@drawable/paihangbang_xingxing"
                         android:layout_width="@dimen/view_20_dp"
-                        android:layout_height="@dimen/view_20_dp" />
+                        android:layout_height="@dimen/view_20_dp"
+                        android:background="@drawable/paihangbang_xingxing" />
 
                     <TextView
                         android:id="@+id/tv_right_chanpian_start"
@@ -218,12 +218,12 @@
                 android:layout_marginTop="@dimen/view_34_dp" />
 
             <View
-                android:layout_marginRight="@dimen/view_12_dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_100_dp"
                 android:layout_marginLeft="@dimen/view_12_dp"
                 android:layout_marginTop="@dimen/view_20_dp"
-                android:background="@drawable/guanjun_xingxing"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_100_dp"/>
+                android:layout_marginRight="@dimen/view_12_dp"
+                android:background="@drawable/guanjun_xingxing" />
 
             <ImageView
                 android:id="@+id/iv_rank"
@@ -234,18 +234,18 @@
                 android:background="@drawable/diyiming_huizhang" />
 
             <com.common.view.ex.ExTextView
-                android:maxWidth="@dimen/view_90_dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textStyle="bold"
-                android:alpha="0.8"
-                android:textColor="#0C2275"
                 android:id="@+id/tv_chanpain_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/sdv_champain_icon"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_11_dp" />
+                android:layout_marginTop="@dimen/view_11_dp"
+                android:alpha="0.8"
+                android:ellipsize="end"
+                android:maxWidth="@dimen/view_90_dp"
+                android:maxLines="1"
+                android:textColor="#0C2275"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/ll_champain"
@@ -288,12 +288,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_80_dp"
         android:layout_marginTop="@dimen/view_d_3_dp" />
-    
+
     <View
-        android:layout_marginTop="@dimen/view_d_1_dp"
-        android:background="#F9F4F1"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_5_dp"/>
+        android:layout_height="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_d_1_dp"
+        android:background="#F9F4F1" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
