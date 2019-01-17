@@ -16,6 +16,7 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rank.R;
@@ -162,12 +163,15 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mPrepareSongPresenter.prepareRes();
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.song_pairbutton);
+
+        BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getOri(), mPrepareData.getSongModel().getRankLrcBeginT());
     }
 
     @Override
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
+        BgMusicManager.getInstance().destory();
     }
 
     @Override
@@ -206,6 +210,9 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     @Override
     public void notifyToShow() {
+        if (!BgMusicManager.getInstance().isPlaying()) {
+            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getOri(), mPrepareData.getSongModel().getRankLrcBeginT());
+        }
         MyLog.d(TAG, "toStaskTop");
         mRootView.setVisibility(View.VISIBLE);
     }

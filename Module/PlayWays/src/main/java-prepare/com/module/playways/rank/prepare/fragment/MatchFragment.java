@@ -23,6 +23,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -118,6 +119,10 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         startTimeTask();
         startMatchQuotationTask();
         mMatchPresenter.getMatchingUserIconList();
+
+        if (!BgMusicManager.getInstance().isPlaying()) {
+            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getOri(), mPrepareData.getSongModel().getRankLrcBeginT());
+        }
     }
 
     private HandlerTaskTimer mControlTask;
@@ -374,6 +379,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mPrepareData.setPlayerInfoList(playerInfoList);
 
         stopTimeTask();
+        BgMusicManager.getInstance().destory();
 
         //先添加成功界面面
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchSuccessFragment.class)
@@ -422,6 +428,9 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
+        if (!BgMusicManager.getInstance().isPlaying()) {
+            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getOri(), mPrepareData.getSongModel().getRankLrcBeginT());
+        }
         mRootView.setVisibility(View.VISIBLE);
     }
 
