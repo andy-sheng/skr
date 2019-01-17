@@ -1,4 +1,4 @@
-package com.imagepicker.adapter;
+package com.respicker.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
 import com.common.utils.U;
-import com.imagepicker.ResPicker;
-import com.imagepicker.model.ResFolder;
+import com.respicker.ResPicker;
+import com.respicker.model.ResFolder;
 
 import java.util.ArrayList;
 import java.util.List;

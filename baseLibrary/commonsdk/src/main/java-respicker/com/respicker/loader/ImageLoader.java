@@ -1,7 +1,6 @@
-package com.imagepicker.loader;
+package com.respicker.loader;
 
 import android.app.Activity;
-import android.widget.ImageView;
 
 import com.common.image.fresco.BaseImageView;
 

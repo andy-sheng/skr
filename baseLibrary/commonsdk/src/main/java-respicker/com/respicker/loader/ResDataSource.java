@@ -1,4 +1,4 @@
-package com.imagepicker.loader;
+package com.respicker.loader;
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
@@ -10,11 +10,11 @@ import com.common.base.BaseFragment;
 import com.common.base.R;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.imagepicker.ResPicker;
-import com.imagepicker.model.ResFolder;
-import com.imagepicker.model.ImageItem;
-import com.imagepicker.model.ResItem;
-import com.imagepicker.model.VideoItem;
+import com.respicker.ResPicker;
+import com.respicker.model.ResFolder;
+import com.respicker.model.ImageItem;
+import com.respicker.model.ResItem;
+import com.respicker.model.VideoItem;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import java.io.File;
@@ -91,11 +91,13 @@ public class ResDataSource {
             @Override
             public void subscribe(ObservableEmitter<ArrayList<ResFolder>> emitter) throws Exception {
                 ArrayList<ResFolder> resFolders = new ArrayList<>();
-                ArrayList<ImageItem> imageItemList = loadPhotoAlbum();
-                ArrayList<VideoItem> videoList = loadVideo();
                 ArrayList<ResItem> totalList = new ArrayList<>();
+                ArrayList<ImageItem> imageItemList = loadPhotoAlbum();
                 totalList.addAll(imageItemList);
-                totalList.addAll(videoList);
+                if(ResPicker.getInstance().getParams().isIncludeVideo()) {
+                    ArrayList<VideoItem> videoList = loadVideo();
+                    totalList.addAll(videoList);
+                }
                 Collections.sort(totalList, new Comparator<ResItem>() {
                     @Override
                     public int compare(ResItem o1, ResItem o2) {
@@ -117,20 +119,23 @@ public class ResDataSource {
                     resFolder.setPath(imageParentFile.getAbsolutePath());
 
                     if (!resFolders.contains(resFolder)) {
-                        ArrayList<ResItem> resItems = new ArrayList<>();
-                        resItems.add(resItem);
                         if (resItem instanceof ImageItem) {
                             resFolder.setCover((ImageItem) resItem);
                         } else if (resItem instanceof VideoItem) {
                             VideoItem videoItem = (VideoItem) resItem;
                             resFolder.setCover(videoItem.getThumb());
                         }
-                        resFolder.setResItems(resItems);
                         resFolders.add(resFolder);
                     } else {
                         int index = resFolders.indexOf(resFolder);
                         resFolder = resFolders.get(index);
-                        resFolder.getResItems().add(resItem);
+                    }
+                    resFolder.getResItems().add(resItem);
+                    if (resItem instanceof ImageItem) {
+                        resFolder.getImageItems().add((ImageItem) resItem);
+                    } else if (resItem instanceof VideoItem) {
+                        VideoItem videoItem = (VideoItem) resItem;
+                        resFolder.getVideoItems().add(videoItem);
                     }
                 }
 
@@ -147,7 +152,14 @@ public class ResDataSource {
                         VideoItem videoItem = (VideoItem) resItem;
                         allImagesFolder.setCover(videoItem.getThumb());
                     }
-                    allImagesFolder.setResItems(totalList);
+                    allImagesFolder.getResItems().addAll(totalList);
+                    for (ResItem r : totalList) {
+                        if (r instanceof ImageItem) {
+                            allImagesFolder.getImageItems().add((ImageItem) r);
+                        } else if (r instanceof VideoItem) {
+                            allImagesFolder.getVideoItems().add((VideoItem) r);
+                        }
+                    }
                     resFolders.add(0, allImagesFolder);  //确保第一条是所有图片
                 }
 
@@ -194,13 +206,13 @@ public class ResDataSource {
             selections = new StringBuilder()
                     .append(MediaStore.Images.Media.MIME_TYPE)
                     .append("!=?")
-//                            .append(" or ")
-//                            .append(MediaStore.Images.Media.MIME_TYPE)
-//                            .append("=?")
+                    .append(" and ")
+                    .append(MediaStore.Images.Media.MIME_TYPE)
+                    .append("!=?")
                     .toString();
             selectionArgs = new String[]{
                     "image/gif",
-//                            "image/png"
+                    "image/webp"
             };
         }
         Cursor data = getPhotoAlbumResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image_projection, selections, selectionArgs, image_projection[6] + " DESC");

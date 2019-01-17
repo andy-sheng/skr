@@ -28,10 +28,10 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
-import com.imagepicker.ResPicker;
-import com.imagepicker.fragment.ResPickerFragment;
-import com.imagepicker.model.ImageItem;
-import com.imagepicker.view.CropImageView;
+import com.respicker.ResPicker;
+import com.respicker.fragment.ResPickerFragment;
+import com.respicker.model.ImageItem;
+import com.respicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
@@ -39,7 +39,6 @@ import com.module.home.updateinfo.UploadAccountInfoActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;

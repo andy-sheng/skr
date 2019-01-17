@@ -1,0 +1,21 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/preview_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/play_btn"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_100_dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/play_btn" />
+
+    <TextureView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</merge>

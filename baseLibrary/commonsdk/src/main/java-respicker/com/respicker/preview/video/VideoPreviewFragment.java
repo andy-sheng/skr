@@ -1,4 +1,4 @@
-package com.imagepicker.fragment;
+package com.respicker.preview.video;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -18,21 +18,23 @@ import com.common.base.R;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
-import com.imagepicker.ResPicker;
-import com.imagepicker.adapter.ImagePageAdapter;
-import com.imagepicker.model.ImageItem;
-import com.imagepicker.model.ResItem;
-import com.imagepicker.view.SuperCheckBox;
+import com.respicker.ResPicker;
+import com.respicker.fragment.ImageBaseFragment;
+import com.respicker.model.VideoItem;
+import com.respicker.preview.image.ImagePageAdapter;
+import com.respicker.model.ImageItem;
+import com.respicker.model.ResItem;
+import com.respicker.view.SuperCheckBox;
 
 import java.util.ArrayList;
 
-public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker.OnResSelectedListener {
+public class VideoPreviewFragment extends ImageBaseFragment implements ResPicker.OnResSelectedListener {
+
+    public static final String EXTRA_SELECTED_VIDEO_POSITION = "selected_video_position";
 
     RelativeLayout mContent;
     NestViewPager mViewpager;
     LinearLayout mBottomBar;
-    SuperCheckBox mCbOrigin;
-    SuperCheckBox mCbCheck;
     View mMarginBottom;
 
     CommonTitleBar mTitleBar;
@@ -41,15 +43,15 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
 
     ResPicker mImagePicker;
 
-    ArrayList<ResItem> mImageItems;      //跳转进ImagePreviewFragment的图片文件夹
+    ArrayList<VideoItem> mVideoItems;      //可被选择的视频
     int mCurrentPosition = 0;              //跳转进ImagePreviewFragment时的序号，第几个图片
-    ArrayList<ResItem> mSelectedImages;   //所有已经选中的图片
+    ArrayList<VideoItem> mSelectedVideos;   //所有已经选中的视频
 
-    ImagePageAdapter mImagePageAdapter;
+    VideoPageAdapter mVideoPageAdapter;
 
     @Override
     public int initView() {
-        return R.layout.fragment_preivew_image_layout;
+        return R.layout.fragment_preivew_video_layout;
     }
 
     @Override
@@ -57,8 +59,6 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
         mContent = (RelativeLayout) mRootView.findViewById(R.id.content);
         mViewpager = (NestViewPager) mRootView.findViewById(R.id.viewpager);
         mBottomBar = (LinearLayout) mRootView.findViewById(R.id.bottom_bar);
-        mCbOrigin = (SuperCheckBox) mRootView.findViewById(R.id.cb_origin);
-        mCbCheck = (SuperCheckBox) mRootView.findViewById(R.id.cb_check);
         mMarginBottom = (View) mRootView.findViewById(R.id.margin_bottom);
 
         mTitleBar = mRootView.findViewById(R.id.titlebar);
@@ -69,23 +69,22 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mCurrentPosition = bundle.getInt(ResPicker.EXTRA_SELECTED_IMAGE_POSITION, 0);
+            mCurrentPosition = bundle.getInt(EXTRA_SELECTED_VIDEO_POSITION, 0);
 
         }
-        if (mImageItems == null) {
-            mImageItems = mImagePicker.getCurrentResFolderItems();
+        if (mVideoItems == null) {
+            mVideoItems = mImagePicker.getCurrentResFolderVideoItems();
         }
-        mSelectedImages = mImagePicker.getSelectedResList();
+        mSelectedVideos = mImagePicker.getSelectedVideoList();
 
         mBtnOk.setVisibility(View.VISIBLE);
         mBtnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mImagePicker.getSelectedResList().size() == 0) {
+                if (mImagePicker.getSelectedVideoList().size() == 0) {
                     // 表示选中了这张
-                    mCbCheck.setChecked(true);
-                    ResItem imageItem = mImageItems.get(mCurrentPosition);
-                    mImagePicker.addSelectedResItem(mCurrentPosition, imageItem);
+                    VideoItem videoItem = mVideoItems.get(mCurrentPosition);
+                    mImagePicker.addSelectedResItem(mCurrentPosition, videoItem);
                 }
                 deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
@@ -96,82 +95,82 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
                 onBackPressed();
             }
         });
-        mImagePageAdapter = new ImagePageAdapter(getActivity(), mImageItems);
+        mVideoPageAdapter = new VideoPageAdapter(getActivity(), mVideoItems);
 
-        mImagePageAdapter.setPhotoViewClickListener(new ImagePageAdapter.PhotoViewClickListener() {
-            @Override
-            public void OnPhotoTapListener(View view, float v, float v1) {
-                onImageSingleTap();
-            }
-        });
-        mViewpager.setAdapter(mImagePageAdapter);
+//        mVideoPageAdapter.setPhotoViewClickListener(new ImagePageAdapter.PhotoViewClickListener() {
+//            @Override
+//            public void OnPhotoTapListener(View view, float v, float v1) {
+//                onImageSingleTap();
+//            }
+//        });
+        mViewpager.setAdapter(mVideoPageAdapter);
         mViewpager.setCurrentItem(mCurrentPosition, false);
 
         //初始化当前页面的状态
-        mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mImageItems.size()));
+        mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mVideoItems.size()));
 
         mImagePicker.addOnResSelectedListener(this);
         mBottomBar.setVisibility(View.VISIBLE);
-        mCbOrigin.setText(getString(R.string.ip_origin));
-        mCbOrigin.setChecked(mImagePicker.isOrigin());
-        mCbOrigin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    long size = 0;
-                    for (ResItem item : mSelectedImages) {
-                        size += item.getSize();
-                    }
-                    String fileSize = Formatter.formatFileSize(getContext(), size);
-                    mImagePicker.setOrigin(true);
-                    mCbOrigin.setText(getString(R.string.ip_origin_size, fileSize));
-                } else {
-                    mImagePicker.setOrigin(false);
-                    mCbOrigin.setText(getString(R.string.ip_origin));
-                }
-            }
-        });
+//        mCbOrigin.setText(getString(R.string.ip_origin));
+//        mCbOrigin.setChecked(mImagePicker.isOrigin());
+//        mCbOrigin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    long size = 0;
+//                    for (ResItem item : mSelectedVideos) {
+//                        size += item.getSize();
+//                    }
+//                    String fileSize = Formatter.formatFileSize(getContext(), size);
+//                    mImagePicker.setOrigin(true);
+//                    mCbOrigin.setText(getString(R.string.ip_origin_size, fileSize));
+//                } else {
+//                    mImagePicker.setOrigin(false);
+//                    mCbOrigin.setText(getString(R.string.ip_origin));
+//                }
+//            }
+//        });
 
         //当点击当前选中按钮的时候，需要根据当前的选中状态添加和移除图片
-        mCbCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ResItem imageItem = mImageItems.get(mCurrentPosition);
-                int selectLimit = mImagePicker.getParams().getSelectLimit();
-                if (mCbCheck.isChecked() && mSelectedImages.size() >= selectLimit) {
-                    U.getToastUtil().showShort(getString(R.string.ip_select_limit, selectLimit));
-                    mCbCheck.setChecked(false);
-                } else {
-                    if (mCbCheck.isChecked()) {
-                        mImagePicker.addSelectedResItem(mCurrentPosition, imageItem);
-                    } else {
-                        mImagePicker.removeSelectedResItem(mCurrentPosition, imageItem);
-                    }
-
-                }
-            }
-        });
+//        mCbCheck.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                VideoItem imageItem = mVideoItems.get(mCurrentPosition);
+//                int selectLimit = mImagePicker.getParams().getSelectLimit();
+//                if (mCbCheck.isChecked() && mSelectedVideos.size() >= selectLimit) {
+//                    U.getToastUtil().showShort(getString(R.string.ip_select_limit, selectLimit));
+//                    mCbCheck.setChecked(false);
+//                } else {
+//                    if (mCbCheck.isChecked()) {
+//                        mImagePicker.addSelectedResItem(mCurrentPosition, imageItem);
+//                    } else {
+//                        mImagePicker.removeSelectedResItem(mCurrentPosition, imageItem);
+//                    }
+//
+//                }
+//            }
+//        });
 
         //滑动ViewPager的时候，根据外界的数据改变当前的选中状态和当前的图片的位置描述文本
         mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 mCurrentPosition = position;
-                ResItem item = mImageItems.get(mCurrentPosition);
-                boolean isSelected = mImagePicker.getSelectedResList().contains(item);
-                mCbCheck.setChecked(isSelected);
-                mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mImageItems.size()));
+                VideoItem item = mVideoItems.get(mCurrentPosition);
+                boolean isSelected = mImagePicker.getSelectedVideoList().contains(item);
+//                mCbCheck.setChecked(isSelected);
+                mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mVideoItems.size()));
             }
         });
         //初始化当前页面的状态
         onImageSelected(0, null, false);
 
         // 防止在低内存重建时，一些数据都没了，这里直接结束这个fragment
-        if (mImageItems == null || mImageItems.isEmpty()) {
+        if (mVideoItems == null || mVideoItems.isEmpty()) {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    U.getFragmentUtils().popFragment(ImagePreviewFragment.this);
+                    U.getFragmentUtils().popFragment(VideoPreviewFragment.this);
                 }
             });
         }
@@ -209,7 +208,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
 
     @Override
     protected boolean onBackPressed() {
-        U.getFragmentUtils().popFragment(ImagePreviewFragment.this);
+        U.getFragmentUtils().popFragment(VideoPreviewFragment.this);
         return true;
     }
 
@@ -221,7 +220,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
     @Override
     public void setData(int type, @Nullable Object data) {
         if (type == 1) {
-            mImageItems = (ArrayList<ResItem>) data;
+            mVideoItems = (ArrayList<VideoItem>) data;
         }
     }
 
@@ -240,20 +239,11 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
      * 当调用 addSelectedImageItem 或 deleteSelectedImageItem 都会触发当前回调
      */
     public void onImageSelected(int position, ResItem item, boolean isAdd) {
-        int selectedImageSize = mImagePicker.getSelectedResList().size();
+        int selectedImageSize = mImagePicker.getSelectedVideoList().size();
         if (selectedImageSize > 0) {
             mBtnOk.setText(getString(R.string.ip_select_complete, selectedImageSize, mImagePicker.getParams().getSelectLimit()));
         } else {
             mBtnOk.setText(getString(R.string.ip_complete));
-        }
-
-        if (mCbOrigin.isChecked()) {
-            long size = 0;
-            for (ResItem imageItem : mSelectedImages) {
-                size += imageItem.getSize();
-            }
-            String fileSize = Formatter.formatFileSize(getContext(), size);
-            mCbOrigin.setText(getString(R.string.ip_origin_size, fileSize));
         }
     }
 

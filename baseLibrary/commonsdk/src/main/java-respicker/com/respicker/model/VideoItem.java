@@ -1,4 +1,4 @@
-package com.imagepicker.model;
+package com.respicker.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

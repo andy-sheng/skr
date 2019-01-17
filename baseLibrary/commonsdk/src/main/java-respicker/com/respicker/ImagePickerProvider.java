@@ -1,4 +1,4 @@
-package com.imagepicker;
+package com.respicker;
 
 import android.support.v4.content.FileProvider;
 

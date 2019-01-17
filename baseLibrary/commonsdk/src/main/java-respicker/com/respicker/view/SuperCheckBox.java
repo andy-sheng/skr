@@ -1,4 +1,4 @@
-package com.imagepicker.view;
+package com.respicker.view;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatCheckBox;

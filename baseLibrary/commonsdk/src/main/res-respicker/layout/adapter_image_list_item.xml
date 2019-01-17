@@ -48,7 +48,7 @@
         android:paddingRight="10dp"
         android:paddingBottom="24dp">
 
-        <com.imagepicker.view.SuperCheckBox
+        <com.respicker.view.SuperCheckBox
             android:id="@+id/cb_check"
             style="@style/SuperCheckboxTheme"
             android:layout_width="wrap_content"

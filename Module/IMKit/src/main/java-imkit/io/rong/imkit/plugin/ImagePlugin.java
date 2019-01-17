@@ -17,10 +17,10 @@ import android.support.v4.content.ContextCompat;
 import com.common.base.FragmentDataListener;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.imagepicker.ResPicker;
-import com.imagepicker.fragment.ResPickerFragment;
-import com.imagepicker.model.ImageItem;
-import com.imagepicker.view.CropImageView;
+import com.respicker.ResPicker;
+import com.respicker.fragment.ResPickerFragment;
+import com.respicker.model.ImageItem;
+import com.respicker.view.CropImageView;
 
 import java.util.ArrayList;
 

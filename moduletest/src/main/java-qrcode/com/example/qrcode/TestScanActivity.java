@@ -13,9 +13,9 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
-import com.imagepicker.ResPicker;
-import com.imagepicker.fragment.ResPickerFragment;
-import com.imagepicker.model.ImageItem;
+import com.respicker.ResPicker;
+import com.respicker.fragment.ResPickerFragment;
+import com.respicker.model.ImageItem;
 import com.wali.live.moduletest.R;
 
 import java.util.ArrayList;

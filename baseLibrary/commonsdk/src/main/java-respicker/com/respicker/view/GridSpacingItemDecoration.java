@@ -1,4 +1,4 @@
-package com.imagepicker.view;
+package com.respicker.view;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

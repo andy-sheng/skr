@@ -1,10 +1,9 @@
-package com.imagepicker;
+package com.respicker;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,11 +15,12 @@ import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.utils.U;
-import com.imagepicker.loader.ImageLoader;
-import com.imagepicker.model.ImageItem;
-import com.imagepicker.model.ResFolder;
-import com.imagepicker.model.ResItem;
-import com.imagepicker.view.CropImageView;
+import com.respicker.loader.ImageLoader;
+import com.respicker.model.ImageItem;
+import com.respicker.model.ResFolder;
+import com.respicker.model.ResItem;
+import com.respicker.model.VideoItem;
+import com.respicker.view.CropImageView;
 
 import java.io.File;
 import java.io.Serializable;
@@ -31,7 +31,6 @@ public class ResPicker {
     public static final int REQUEST_CODE_TAKE = 1001; // 照相
     public static final int RESULT_CODE_ITEMS = 1004;
 
-    public static final String EXTRA_SELECTED_IMAGE_POSITION = "selected_image_position";
 
     private ImageLoader mImageLoader;     //图片加载器
     private File takeImageFile; // 拍照保存路径
@@ -112,6 +111,8 @@ public class ResPicker {
         return mParams;
     }
 
+
+    /**当前已选择的文件夹开始 begin**/
     public ArrayList<ResItem> getSelectedResList() {
         return mSelectedResList;
     }
@@ -127,8 +128,25 @@ public class ResPicker {
     }
 
     public ImageItem getSingleSelectedImage() {
-        return (ImageItem) mSelectedResList.get(0);
+        return (ImageItem) getSelectedImageList().get(0);
     }
+
+
+    public ArrayList<VideoItem> getSelectedVideoList() {
+        ArrayList<VideoItem> itemList = new ArrayList<>();
+        for (ResItem resItem : mSelectedResList) {
+            if (resItem instanceof VideoItem) {
+                itemList.add((VideoItem) resItem);
+            }
+        }
+        return itemList;
+    }
+
+    public VideoItem getSingleSelectedVideo() {
+        return (VideoItem) getSelectedVideoList().get(0);
+    }
+
+    /**当前已选择的文件夹开始 end**/
 
     public boolean isOrigin() {
         return mIsOrigin;
@@ -142,6 +160,8 @@ public class ResPicker {
         return mResFolders;
     }
 
+
+    /**当前可选择的文件 begin**/
     public ArrayList<ResItem> getCurrentResFolderItems() {
         /**
          * 内存回收时 这里会空指针
@@ -152,6 +172,23 @@ public class ResPicker {
             return new ArrayList<>();
         }
     }
+
+    public ArrayList<ImageItem> getCurrentResFolderImageItems() {
+        if (mCurrentResFolderPosition < mResFolders.size()) {
+            return mResFolders.get(mCurrentResFolderPosition).getImageItems();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public ArrayList<VideoItem> getCurrentResFolderVideoItems() {
+        if (mCurrentResFolderPosition < mResFolders.size()) {
+            return mResFolders.get(mCurrentResFolderPosition).getVideoItems();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+    /**当前可选择的文件 end**/
 
     /**
      * 拍照的方法
@@ -284,7 +321,9 @@ public class ResPicker {
         private int focusHeight = U.getDisplayUtils().dip2px(280);        //焦点框的高度
         private boolean isSaveRectangle = true;  //裁剪后的图片是否是矩形，否者跟随裁剪框的形状
         private CropImageView.Style cropStyle = CropImageView.Style.RECTANGLE; //裁剪框的形状
-        private boolean includeGif = false;  //图片选取时，是否包括gif，默认不包括
+        private boolean includeImage = true;  //是否选取图片
+        private boolean includeGif = false;  //图片选取时，是否包括gif，webp等，默认不包括
+        private boolean includeVideo = false;  //是否包括视频
 
         private Params() {
 
@@ -378,6 +417,22 @@ public class ResPicker {
             this.includeGif = includeGif;
         }
 
+        public boolean isIncludeImage() {
+            return includeImage;
+        }
+
+        public void setIncludeImage(boolean includeImage) {
+            this.includeImage = includeImage;
+        }
+
+        public boolean isIncludeVideo() {
+            return includeVideo;
+        }
+
+        public void setIncludeVideo(boolean includeVideo) {
+            this.includeVideo = includeVideo;
+        }
+
         public static class Builder {
             Params mParams = new Params();
 
@@ -436,6 +491,16 @@ public class ResPicker {
 
             public Builder setIncludeGif(boolean includeGif) {
                 mParams.setIncludeGif(includeGif);
+                return this;
+            }
+
+            public Builder setIncludeImage(boolean includeImage) {
+                mParams.setIncludeImage(includeImage);
+                return this;
+            }
+
+            public Builder setIncludeVideo(boolean includeVideo) {
+                mParams.setIncludeVideo(includeVideo);
                 return this;
             }
 

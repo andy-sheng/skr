@@ -1,4 +1,4 @@
-package com.imagepicker.adapter;
+package com.respicker.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
@@ -16,10 +16,10 @@ import com.common.image.model.ImageFactory;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.imagebrowse.EnhancedImageView;
-import com.imagepicker.ResPicker;
-import com.imagepicker.model.ResItem;
-import com.imagepicker.model.VideoItem;
-import com.imagepicker.view.SuperCheckBox;
+import com.respicker.ResPicker;
+import com.respicker.model.ResItem;
+import com.respicker.model.VideoItem;
+import com.respicker.view.SuperCheckBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
     private boolean isShowCamera;         //是否显示拍照按钮
     private int mImageSize;               //每个条目的大小
     private LayoutInflater mInflater;
-    private OnImageItemClickListener listener;   //图片被点击的监听
+    private OnResItemClickListener listener;   //图片被点击的监听
 
     /**
      * 构造方法
@@ -72,7 +72,7 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         mInflater = LayoutInflater.from(activity);
     }
 
-    public void setOnImageItemClickListener(OnImageItemClickListener listener) {
+    public void setOnImageItemClickListener(OnResItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -154,7 +154,7 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        listener.onImageItemClick(rootView, resItem, position);
+                        listener.onResItemClick(rootView, resItem, position);
                     }
                 }
             });
@@ -265,7 +265,7 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
     }
 
-    public interface OnImageItemClickListener {
-        void onImageItemClick(View view, ResItem imageItem, int position);
+    public interface OnResItemClickListener {
+        void onResItemClick(View view, ResItem imageItem, int position);
     }
 }

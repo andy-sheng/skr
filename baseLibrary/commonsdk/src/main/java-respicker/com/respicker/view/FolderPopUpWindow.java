@@ -1,4 +1,4 @@
-package com.imagepicker.view;
+package com.respicker.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

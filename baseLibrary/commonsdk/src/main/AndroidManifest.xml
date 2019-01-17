@@ -109,7 +109,7 @@
             android:value="ConfigModule_0" />
 
         <provider
-            android:name="com.imagepicker.ImagePickerProvider"
+            android:name="com.respicker.ImagePickerProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">

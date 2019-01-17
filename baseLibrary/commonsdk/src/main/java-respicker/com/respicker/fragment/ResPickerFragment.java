@@ -1,4 +1,4 @@
-package com.imagepicker.fragment;
+package com.respicker.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,20 +24,23 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.imagepicker.loader.ResDataSource;
-import com.imagepicker.ResPicker;
-import com.imagepicker.adapter.ImageFolderAdapter;
-import com.imagepicker.adapter.ResRecyclerAdapter;
-import com.imagepicker.model.ResFolder;
-import com.imagepicker.model.ImageItem;
-import com.imagepicker.model.ResItem;
-import com.imagepicker.view.FolderPopUpWindow;
-import com.imagepicker.view.GridSpacingItemDecoration;
+import com.respicker.loader.ResDataSource;
+import com.respicker.ResPicker;
+import com.respicker.adapter.ImageFolderAdapter;
+import com.respicker.adapter.ResRecyclerAdapter;
+import com.respicker.model.ResFolder;
+import com.respicker.model.ImageItem;
+import com.respicker.model.ResItem;
+import com.respicker.model.VideoItem;
+import com.respicker.preview.image.ImagePreviewFragment;
+import com.respicker.preview.video.VideoPreviewFragment;
+import com.respicker.view.FolderPopUpWindow;
+import com.respicker.view.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResPickerFragment extends ImageBaseFragment implements ResPicker.OnResSelectedListener, ResDataSource.OnImagesLoadedListener, ResRecyclerAdapter.OnImageItemClickListener {
+public class ResPickerFragment extends ImageBaseFragment implements ResPicker.OnResSelectedListener, ResDataSource.OnImagesLoadedListener, ResRecyclerAdapter.OnResItemClickListener {
 
     public static final String EXTRAS_TAKE_PICKERS = "TAKE";
     public static final String EXTRAS_IMAGES = "IMAGES";
@@ -315,32 +318,47 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
     }
 
     @Override
-    public void onImageItemClick(View view, ResItem imageItem, int position) {
+    public void onResItemClick(View view, ResItem resItem, int position) {
         //根据是否有相机按钮确定位置
-        position = mImagePicker.getParams().isShowCamera() ? position - 1 : position;
-        if (mImagePicker.getParams().isMultiMode()) {
-            // 多选就去大图浏览界面
+        if(resItem instanceof ImageItem) {
+            position = mImagePicker.getParams().isShowCamera() ? position - 1 : position;
+            if (mImagePicker.getParams().isMultiMode()) {
+                // 多选就去大图浏览界面
+                Bundle bundle = new Bundle();
+                int p = mImagePicker.getCurrentResFolderImageItems().indexOf(resItem);
+                bundle.putInt(ImagePreviewFragment.EXTRA_SELECTED_IMAGE_POSITION, p);
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePreviewFragment.class)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                                deliverResult(requestCode, resultCode, bundle);
+                            }
+                        })
+                        .setBundle(bundle)
+                        .build());
+            } else {
+                // 单选，要么跳裁剪，要么跳返回结果
+                mImagePicker.clearSelectedRes();
+                mImagePicker.addSelectedResItem(position, mImagePicker.getCurrentResFolderItems().get(position));
+                if (mImagePicker.getParams().isCrop()) {
+                    gotoCrop();
+                } else {
+                    deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
+                }
+            }
+        }else if(resItem instanceof VideoItem){
+            int p = mImagePicker.getCurrentResFolderVideoItems().indexOf(resItem);
             Bundle bundle = new Bundle();
-            bundle.putInt(ResPicker.EXTRA_SELECTED_IMAGE_POSITION, position);
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ImagePreviewFragment.class)
+            bundle.putInt(VideoPreviewFragment.EXTRA_SELECTED_VIDEO_POSITION, p);
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), VideoPreviewFragment.class)
                     .setFragmentDataListener(new FragmentDataListener() {
                         @Override
                         public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
                             deliverResult(requestCode, resultCode, bundle);
                         }
-
                     })
                     .setBundle(bundle)
                     .build());
-        } else {
-            // 单选，要么跳裁剪，要么跳返回结果
-            mImagePicker.clearSelectedRes();
-            mImagePicker.addSelectedResItem(position, mImagePicker.getCurrentResFolderItems().get(position));
-            if (mImagePicker.getParams().isCrop()) {
-                gotoCrop();
-            } else {
-                deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
-            }
         }
     }
 

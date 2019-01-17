@@ -1,4 +1,4 @@
-package com.imagepicker.fragment;
+package com.respicker.fragment;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -11,10 +11,10 @@ import android.widget.TextView;
 import com.common.base.R;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.imagepicker.ResPicker;
-import com.imagepicker.model.ImageItem;
-import com.imagepicker.model.ResItem;
-import com.imagepicker.view.CropImageView;
+import com.respicker.ResPicker;
+import com.respicker.model.ImageItem;
+import com.respicker.model.ResItem;
+import com.respicker.view.CropImageView;
 
 import java.io.File;
 import java.util.ArrayList;

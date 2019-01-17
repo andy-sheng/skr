@@ -1,4 +1,4 @@
-package com.imagepicker.model;
+package com.respicker.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,7 +8,10 @@ public class ResFolder implements Serializable {
     String name;  //当前文件夹的名字
     String path;  //当前文件夹的路径
     ImageItem cover;   //当前文件夹需要要显示的缩略图，默认为最近的一次图片
-    ArrayList<ResItem> resItems;  //当前文件夹下所有图片的集合
+    ArrayList<ResItem> resItems = new ArrayList<>();  //当前文件夹下所有资源的集合
+
+    ArrayList<ImageItem> imageItems =new ArrayList<>();  //当前文件夹下所有图片的集合
+    ArrayList<VideoItem> videoItems= new ArrayList<>();  //当前文件夹下所有视频的集合
 
     public String getName() {
         return name;
@@ -38,8 +41,12 @@ public class ResFolder implements Serializable {
         return resItems;
     }
 
-    public void setResItems(ArrayList<ResItem> resItems) {
-        this.resItems = resItems;
+    public ArrayList<ImageItem> getImageItems() {
+        return imageItems;
+    }
+
+    public ArrayList<VideoItem> getVideoItems() {
+        return videoItems;
     }
 
     /**

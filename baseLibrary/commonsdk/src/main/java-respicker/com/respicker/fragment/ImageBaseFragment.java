@@ -1,10 +1,10 @@
-package com.imagepicker.fragment;
+package com.respicker.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.common.base.BaseFragment;
-import com.imagepicker.ResPicker;
+import com.respicker.ResPicker;
 
 public abstract class ImageBaseFragment extends BaseFragment {
 
