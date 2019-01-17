@@ -149,6 +149,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        MyLog.w(TAG, "onCreateView");
         int layoutId = initView();
         if (layoutId != 0) {
             mRootView = inflater.inflate(layoutId, container, false);
