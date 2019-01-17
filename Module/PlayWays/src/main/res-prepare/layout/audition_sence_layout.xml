@@ -40,7 +40,7 @@
         app:ly_high_light_paint_color_from="#EF5E85"
         app:ly_high_light_paint_color_to="#EF5E85"
         app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
-        app:ly_high_light_sub_paint_color="@color/white"
+        app:ly_high_light_sub_paint_color="#EF5E85"
         app:ly_outline_paint_color="@color/black"
         app:ly_paint_color_from="@color/white_trans_50"
         app:ly_paint_color_to="@color/white_trans_50"

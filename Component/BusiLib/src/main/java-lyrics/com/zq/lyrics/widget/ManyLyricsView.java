@@ -24,7 +24,6 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
-import com.common.log.MyLog;
 import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsInfo;
@@ -438,10 +437,6 @@ public class ManyLyricsView extends AbstractLrcView {
 //            MyLog.v(TAG, "倒计时 1");
             circlePaint.setColor(getPaintHLColors()[0]);
             canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-            circlePaint.setColor(getSubPaintHLColor());
-            canvas.drawCircle( textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-            canvas.drawCircle( textX+ 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-
             return;
         }
 
@@ -449,10 +444,8 @@ public class ManyLyricsView extends AbstractLrcView {
 //            MyLog.v(TAG, "倒计时 2");
             circlePaint.setColor(getPaintHLColors()[0]);
             canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-
             canvas.drawCircle( textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
             circlePaint.setColor(getSubPaintHLColor());
-            canvas.drawCircle( textX+ 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
             return;
         }
 
@@ -460,9 +453,7 @@ public class ManyLyricsView extends AbstractLrcView {
 //            MyLog.v(TAG, "倒计时 3");
             circlePaint.setColor(getPaintHLColors()[0]);
             canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-
             canvas.drawCircle( textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-
             canvas.drawCircle( textX+ 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
             return;
         }
