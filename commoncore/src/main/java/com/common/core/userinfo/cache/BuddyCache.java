@@ -184,10 +184,18 @@ public class BuddyCache {
             this.avatar = avatar;
         }
 
-        public BuddyCacheEntry(UserInfoModel userInfoModel){
+        public BuddyCacheEntry(UserInfoModel userInfoModel) {
             this.uuid = userInfoModel.getUserId();
             this.name = userInfoModel.getNickname();
             this.avatar = userInfoModel.getAvatar();
+        }
+
+        public UserInfoModel parseUserInfoMode() {
+            UserInfoModel userInfoModel = new UserInfoModel();
+            userInfoModel.setNickname(name);
+            userInfoModel.setUserId(uuid);
+            userInfoModel.setAvatar(avatar);
+            return userInfoModel;
         }
 
         @Override

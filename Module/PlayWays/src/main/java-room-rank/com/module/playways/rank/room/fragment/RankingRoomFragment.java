@@ -504,9 +504,11 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
                         } else if (view.getId() == R.id.follow_tv) {
                             // 关注
                             if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel(), UserInfoManager.RA_UNBUILD);
+                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
+                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
                             } else {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel(), UserInfoManager.RA_BUILD);
+                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
+                                        UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
                             }
 
                         }

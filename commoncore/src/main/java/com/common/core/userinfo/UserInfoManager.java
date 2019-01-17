@@ -161,12 +161,12 @@ public class UserInfoManager {
     /**
      * 处理关系
      *
-     * @param userInfo
+     * @param userId
      * @param action
      */
-    public void mateRelation(final UserInfoModel userInfo, final int action) {
+    public void mateRelation(final int userId, final int action, final boolean isOldFriend) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("toUserID", userInfo.getUserId());
+        map.put("toUserID", userId);
         map.put("action", action);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
@@ -179,9 +179,18 @@ public class UserInfoManager {
                     final boolean isFriend = obj.getData().getBoolean("isFriend");
                     final boolean isFollow = obj.getData().getBoolean("isFollow");
                     if (action == RA_BUILD) {
-                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userInfo, isFriend, isFollow));
+                        if (isOldFriend) {
+                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, true, isFriend, isFollow));
+                        } else {
+                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, false, isFriend, isFollow));
+                        }
                     } else if (action == RA_UNBUILD) {
-                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userInfo, isFriend, isFollow));
+                        if (isOldFriend) {
+                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, true, isFriend, isFollow));
+                        } else {
+                            EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, false, isFriend, isFollow));
+                        }
+
                     }
                 }
             }

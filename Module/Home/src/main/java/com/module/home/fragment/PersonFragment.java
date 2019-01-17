@@ -317,17 +317,18 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             if (event.isFriend) {
                 // 新增好友,好友数加1
                 mFriendNum = mFriendNum + 1;
+                mFocusNum = mFocusNum + 1;
             } else if (event.isFollow) {
                 // 新增关注,关注数加1
                 mFocusNum = mFocusNum + 1;
             }
         } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
-            if (event.userInfoModel.isFriend()) {
-                // 之前是好友,好友数减1
-                mFriendNum = mFriendNum - 1;
-            }
             // 关注数减1
             mFocusNum = mFocusNum - 1;
+            // TODO: 2019/1/17 怎么判断之前也是好友
+            if (event.isOldFriend) {
+                mFriendNum = mFriendNum - 1;
+            }
         }
 
         refreshRelationNum();

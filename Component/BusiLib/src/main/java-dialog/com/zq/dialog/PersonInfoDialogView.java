@@ -284,7 +284,7 @@ public class PersonInfoDialogView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
-        if (event.userInfoModel.getUserId() == mUserInfoModel.getUserId()) {
+        if (event.useId == mUserInfoModel.getUserId()) {
             mUserInfoModel.setFollow(event.isFollow);
             mUserInfoModel.setFriend(event.isFriend);
             if (event.type == RelationChangeEvent.FOLLOW_TYPE) {

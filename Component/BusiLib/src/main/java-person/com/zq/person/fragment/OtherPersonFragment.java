@@ -154,9 +154,9 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                             return;
                         }
                         if ((int) mFollowTv.getTag() == RELATION_FOLLOWED) {
-                            UserInfoManager.getInstance().mateRelation(mUserInfoModel, UserInfoManager.RA_UNBUILD);
+                            UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
                         } else if ((int) mFollowTv.getTag() == RELATION_UN_FOLLOW) {
-                            UserInfoManager.getInstance().mateRelation(mUserInfoModel, UserInfoManager.RA_BUILD);
+                            UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
                         }
                     }
                 });
@@ -269,6 +269,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
     @Override
     public void showUserRelation(boolean isFriend, boolean isFollow) {
+        mUserInfoModel.setFriend(isFriend);
+        mUserInfoModel.setFollow(isFollow);
         if (isFriend) {
             mFollowTv.setText("互关");
             mFollowTv.setTag(RELATION_FOLLOWED);
@@ -297,21 +299,20 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
-        if (event.userInfoModel.getUserId() == mUserInfoModel.getUserId()) {
+        if (event.useId == mUserInfoModel.getUserId()) {
+            mUserInfoModel.setFriend(event.isFriend);
+            mUserInfoModel.setFollow(event.isFollow);
             if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
                 if (event.isFriend) {
                     mFollowTv.setText("互关");
-                    mUserInfoModel.setFriend(true);
                 } else if (event.isFollow) {
                     mFollowTv.setText("已关注");
-                    mUserInfoModel.setFollow(true);
                 }
                 mFollowTv.setTag(RELATION_FOLLOWED);
             } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
                 mFollowTv.setText("关注TA");
                 mFollowTv.setTag(RELATION_UN_FOLLOW);
-                mUserInfoModel.setFriend(false);
-                mUserInfoModel.setFriend(false);
+
             }
         }
     }
