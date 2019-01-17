@@ -29,7 +29,7 @@ public class LogMonitor {
                 sb.append(s.toString());
                 sb.append("\n");
             }
-            MyLog.e(TAG, sb.toString());
+            MyLog.w(TAG, sb.toString());
         }
     };
 
