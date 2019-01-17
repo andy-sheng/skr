@@ -12,6 +12,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
+import com.module.playways.grab.songselect.SpecialSelectFragment;
 import com.module.rank.R;
 import com.module.playways.rank.room.fragment.PkRoomFragment;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
@@ -37,29 +38,15 @@ public class PlayWaysActivity extends BaseActivity {
                         .setAddToBackStack(false)
                         .setHasAnimation(false)
                         .setBundle(bundle)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-                                showRoomFragment();
-                            }
-                        })
                         .build());
-            } else {
-                showRoomFragment();
             }
-        }else if(gameType == GameModeType.GAME_MODE_GRAB){
+        } else if (gameType == GameModeType.GAME_MODE_GRAB) {
             // 一唱到底抢唱模式,
-            // TODO 只是测试，后面先跳到选歌页面
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                    .navigation();
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SpecialSelectFragment.class)
+                    .setAddToBackStack(false)
+                    .setHasAnimation(false)
+                    .build());
         }
-    }
-
-    void showRoomFragment() {
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, PkRoomFragment.class)
-                .setAddToBackStack(false)
-                .setHasAnimation(false)
-                .build());
     }
 
     @Override

@@ -1,0 +1,11 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_act_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/special_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0288D0"
+        app:leftImageResource="@drawable/img_back"
+        app:statusBarColor="#0288D0" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_logo_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:src="@drawable/img_top_xuanzegequ_bg" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/content_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/select_logo_iv"
+        android:layout_centerHorizontal="true"
+        swipe:max_visible="4"
+        swipe:min_adapter_stack="4"
+        swipe:y_offset_step="28dp" />
+
+
+</RelativeLayout>
