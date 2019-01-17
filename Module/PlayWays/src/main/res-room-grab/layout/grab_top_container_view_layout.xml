@@ -10,10 +10,17 @@
         android:layout_height="@dimen/view_62_dp"
         android:layout_marginLeft="@dimen/view_16_dp">
 
-        <android.support.v7.widget.RecyclerView
+        <com.module.playways.grab.room.top.GrabTopRv
             android:id="@+id/top_content_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_marginRight="@dimen/view_16_dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        </com.module.playways.grab.room.top.GrabTopRv>
 
         <com.common.view.ex.ExImageView
             android:id="@+id/more_btn"

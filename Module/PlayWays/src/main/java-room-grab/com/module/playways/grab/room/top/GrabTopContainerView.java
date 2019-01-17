@@ -1,8 +1,6 @@
 package com.module.playways.grab.room.top;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -19,15 +17,16 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 
 public class GrabTopContainerView extends RelativeLayout {
     public final static String TAG = "GrapTopContainerView";
 
     RelativeLayout mRelativeLayoutIconContainer;
-    RecyclerView mTopContentRv;
+    GrabTopRv mTopContentRv;
     ExImageView mMoreBtn;
     ExTextView mSongIndexTv;
-
     MoreOpView mMoreOpView;
 
     Listener mListener;
@@ -35,7 +34,7 @@ public class GrabTopContainerView extends RelativeLayout {
 
     ScoreTipsView.Item mLastItem;
 
-    GrabTopAdapter mGrabTopAdapter;
+//    GrabTopAdapter mGrabTopAdapter;
 
     public GrabTopContainerView(Context context) {
         super(context);
@@ -49,14 +48,15 @@ public class GrabTopContainerView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_top_container_view_layout, this);
-        mRelativeLayoutIconContainer = (RelativeLayout)this.findViewById(R.id.relativeLayout_icon_container);
-        mTopContentRv = (RecyclerView)this.findViewById(R.id.top_content_rv);
-        mMoreBtn = (ExImageView)this.findViewById(R.id.more_btn);
-        mSongIndexTv = (ExTextView)this.findViewById(R.id.song_index_tv);
+        mRelativeLayoutIconContainer = (RelativeLayout) this.findViewById(R.id.relativeLayout_icon_container);
+        mTopContentRv =  this.findViewById(R.id.top_content_rv);
 
-        mTopContentRv.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        mGrabTopAdapter = new GrabTopAdapter();
-        mTopContentRv.setAdapter(mGrabTopAdapter);
+        mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
+        mSongIndexTv = (ExTextView) this.findViewById(R.id.song_index_tv);
+
+//        mTopContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+//        mGrabTopAdapter = new GrabTopAdapter();
+//        mTopContentRv.setAdapter(mGrabTopAdapter);
 
         mMoreBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -84,8 +84,20 @@ public class GrabTopContainerView extends RelativeLayout {
                 mMoreOpView.showAt(mMoreBtn);
             }
         });
+        test();
     }
 
+    void test() {
+        ArrayList<GrabTopModel> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            GrabTopModel grabTopModel = new GrabTopModel(i);
+            grabTopModel.setUserId(i);
+            grabTopModel.setSex((int) (Math.random() * 2));
+            grabTopModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+            list.add(grabTopModel);
+        }
+        mTopContentRv.initData(list);
+    }
 
     @Override
     protected void onAttachedToWindow() {
@@ -100,7 +112,6 @@ public class GrabTopContainerView extends RelativeLayout {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InputBoardEvent event) {
@@ -119,11 +130,9 @@ public class GrabTopContainerView extends RelativeLayout {
         mRoomData = roomData;
     }
 
-
-    void reset(){
+    void reset() {
         mLastItem = null;
     }
-
 
     public interface Listener {
         void closeBtnClick();

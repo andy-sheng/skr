@@ -8,4 +8,10 @@
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_40_dp"
         android:layout_height="@dimen/view_40_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/desc_tv"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
