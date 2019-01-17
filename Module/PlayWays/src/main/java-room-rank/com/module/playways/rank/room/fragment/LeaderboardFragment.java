@@ -24,6 +24,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -320,6 +321,15 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mHasMore = hasMore;
         mRefreshLayout.finishLoadMore();
         mLeaderBoardAdapter.setDataList(rankInfoModel);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(NetworkUtils.NetworkChangeEvent event) {
+        if(event.type != -1){
+            if(mLeaderBoardAdapter.getDataList() == null && mLeaderBoardAdapter.getDataList().size() == 0){
+                setRankMode();
+            }
+        }
     }
 
     @Override
