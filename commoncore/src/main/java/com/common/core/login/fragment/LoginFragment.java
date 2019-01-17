@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 public class LoginFragment extends BaseFragment {
 
@@ -34,8 +36,11 @@ public class LoginFragment extends BaseFragment {
     ExTextView mWeixinLoginTv;
     ExTextView mPhoneLoginTv;
     ExTextView mWeiboLoginTv;
+    ProgressBar mProgressBar;
 
     TextView mTvUserAgree;
+
+    volatile boolean isWaitOss = false;
 
     @Override
     public int initView() {
@@ -52,6 +57,7 @@ public class LoginFragment extends BaseFragment {
         mWeiboLoginTv = (ExTextView) mRootView.findViewById(R.id.weibo_login_tv);
         mTvUserAgree = (TextView)mRootView.findViewById(R.id.tv_user_agree);
         mTvUserAgree.setText(Html.fromHtml("<u>"+"《用户协议》"+"</u>"));
+        mProgressBar = (ProgressBar)mRootView.findViewById(R.id.progress_bar);
 
         mPhoneLoginTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +74,17 @@ public class LoginFragment extends BaseFragment {
             }
         });
 
-        RxView.clicks(mWeixinLoginTv).subscribe(new Consumer<Object>() {
+        RxView.clicks(mWeixinLoginTv)
+                .filter(new Predicate<Object>() {
+                    @Override
+                    public boolean test(Object o) {
+                        return !isWaitOss;
+                    }
+                })
+                .subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) {
+                showLoginingBar(true);
                 UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
             }
         });
@@ -95,6 +109,7 @@ public class LoginFragment extends BaseFragment {
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            showLoginingBar(false);
             if(platform == SHARE_MEDIA.WEIXIN){
                 Toast.makeText(getContext(), "微信授权成功", Toast.LENGTH_LONG).show();
                 String accessToken = data.get("accessToken");
@@ -105,14 +120,20 @@ public class LoginFragment extends BaseFragment {
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            showLoginingBar(false);
             Toast.makeText(getContext(), "微信授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
-
+            showLoginingBar(false);
         }
     };
+
+    private void showLoginingBar(boolean show){
+        isWaitOss = show;
+        mProgressBar.setVisibility(isWaitOss ? View.VISIBLE : View.GONE);
+    }
 
     private void loginWithWX(String accessToken, String openId) {
         UserAccountManager.getInstance().loginByWX(accessToken, openId);
