@@ -80,7 +80,7 @@ public class UserInfoTitleView extends RelativeLayout {
             @Override
             public void accept(Object o) {
                 IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getData(0, null);
+                Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
@@ -150,6 +150,13 @@ public class UserInfoTitleView extends RelativeLayout {
                 }
             }
         });
+    }
+
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        destroy();
     }
 
     public void destroy() {

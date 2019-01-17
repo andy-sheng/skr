@@ -1,18 +1,21 @@
-package com.module.playways.rank.room.model;
+package com.moudle.playways.grab.room.model;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.playways.RoomData;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
-import com.zq.live.proto.Common.ESex;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class RoomDataUtils {
+/**
+ * 抢唱模式的数据处理
+ */
+public class GrabDataUtils {
     /**
      * 找到首轮演唱的轮次
      *

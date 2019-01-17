@@ -28,7 +28,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.module.playways.rank.room.presenter.EndGamePresenter;
 import com.module.playways.rank.room.view.IVoteView;
 import com.module.rank.R;
@@ -445,7 +445,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     @Override
     public void showRecordView(RecordData recordData) {
         stopTimeTask();
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
                 .setAddToBackStack(true)
                 .addDataBeforeAdd(0, recordData)
                 .addDataBeforeAdd(1, mRoomData)

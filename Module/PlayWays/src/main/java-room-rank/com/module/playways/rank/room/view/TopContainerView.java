@@ -1,7 +1,6 @@
 package com.module.playways.rank.room.view;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -14,13 +13,11 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.module.playways.rank.room.score.bar.ScoreProgressBarWithSvga;
 import com.module.playways.rank.room.score.bar.ScoreTipsView;
-import com.module.playways.rank.room.score.bar.ScoreTipsView2;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.score.bar.ScorePrograssBar2;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -49,7 +49,7 @@
                         android:layout_height="3dp" />
 
                     <com.common.view.ex.ExImageView
-                        android:id="@+id/iv_singend_game"
+                        android:id="@+id/iv_grab_game"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"

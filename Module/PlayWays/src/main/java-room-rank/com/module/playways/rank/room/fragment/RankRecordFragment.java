@@ -13,7 +13,7 @@ import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.module.playways.rank.room.view.RecordItemView;
 import com.module.playways.rank.room.view.RecordTitleView;
 import com.module.rank.R;
@@ -21,7 +21,7 @@ import com.zq.level.view.NormalLevelView;
 
 import java.util.concurrent.TimeUnit;
 
-public class RankingRecordFragment extends BaseFragment {
+public class RankRecordFragment extends BaseFragment {
 
     public final static String TAG = "RankingRecordFragment";
 
@@ -66,7 +66,7 @@ public class RankingRecordFragment extends BaseFragment {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     getActivity().finish();
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                             .withInt("key_game_type", mRoomData.getGameType())
                             .withBoolean("selectSong", true)
                             .navigation();

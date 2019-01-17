@@ -366,7 +366,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
 
         initAvatar(false);
 
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKING_ROOM)
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_RANK_ROOM)
                 .withSerializable("prepare_data", mPrepareData)
                 .navigation();
 

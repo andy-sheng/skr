@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.utils.U;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;

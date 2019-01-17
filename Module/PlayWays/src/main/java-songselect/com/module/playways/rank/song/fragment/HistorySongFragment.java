@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -20,7 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.audioroom.AudioRoomActivity;
-import com.module.playways.rank.RankingModeActivity;
+import com.module.playways.PlayWaysActivity;
 import com.module.playways.rank.prepare.fragment.AuditionFragment;
 import com.module.playways.rank.prepare.fragment.AuditionPrepareResFragment;
 import com.module.playways.rank.prepare.fragment.PrepareResFragment;
@@ -38,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.module.playways.rank.RankingModeActivity.KEY_GAME_TYPE;
+import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 
 public class HistorySongFragment extends BaseFragment implements ISongTagDetailView {
 
@@ -119,7 +118,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
                     return;
                 }
 
-                if (getActivity() instanceof RankingModeActivity) {
+                if (getActivity() instanceof PlayWaysActivity) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                             .setAddToBackStack(false)
                             .setNotifyHideFragment(SongSelectFragment.class)

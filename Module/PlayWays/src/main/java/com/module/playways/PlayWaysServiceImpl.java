@@ -19,11 +19,12 @@ public class PlayWaysServiceImpl implements IRankingModeService {
      */
     @Override
     public Object getData(int type, Object object) {
-        if(type == 0){
-            return LeaderboardFragment.class;
-        }
-
         return null;
+    }
+
+    @Override
+    public Class getLeaderboardFragmentClass() {
+        return LeaderboardFragment.class;
     }
 
     @Override

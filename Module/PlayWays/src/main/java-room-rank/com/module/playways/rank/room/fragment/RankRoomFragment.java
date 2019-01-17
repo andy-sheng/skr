@@ -31,9 +31,9 @@ import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
-import com.module.playways.rank.room.presenter.RankingCorePresenter;
+import com.module.playways.rank.room.presenter.RankCorePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
@@ -84,7 +84,7 @@ import okhttp3.Response;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
-public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
+public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     public final static String TAG = "RankingRoomFragment";
 
@@ -114,7 +114,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
     ImageView mEndGameIv;
 
-    RankingCorePresenter mCorePresenter;
+    RankCorePresenter mCorePresenter;
 
     DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
@@ -190,7 +190,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
 
         showReadyGoView();
 
-        mCorePresenter = new RankingCorePresenter(this, mRoomData);
+        mCorePresenter = new RankCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
         mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
@@ -861,7 +861,7 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
                         .setAddToBackStack(true)
                         .addDataBeforeAdd(0, recordData)
                         .addDataBeforeAdd(1, mRoomData)

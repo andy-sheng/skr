@@ -1,4 +1,4 @@
-package com.moudle.playways.singend.room.fragment;
+package com.moudle.playways.grab.room.fragment;
 
 import android.animation.Animator;
 import android.graphics.drawable.Animatable;
@@ -33,9 +33,9 @@ import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.EvaluationFragment;
-import com.module.playways.rank.room.fragment.RankingRecordFragment;
+import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
@@ -43,7 +43,7 @@ import com.module.playways.rank.room.view.TopContainerView;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.moudle.playways.singend.room.presenter.SingEndCorePresenter;
+import com.moudle.playways.grab.room.presenter.GrabCorePresenter;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -80,7 +80,7 @@ import okhttp3.Response;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
-public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
+public class GrabRoomFragment extends BaseFragment implements IGameRuleView {
 
     static final int ENSURE_RUN = 99;
 
@@ -96,7 +96,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
 
     SVGAImageView mTopVoiceBg;
 
-    SingEndCorePresenter mCorePresenter;
+    GrabCorePresenter mCorePresenter;
 
     ManyLyricsView mManyLyricsView;
 
@@ -162,7 +162,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
 
         showReadyGoView();
 
-        mCorePresenter = new SingEndCorePresenter(this, mRoomData);
+        mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
@@ -534,7 +534,7 @@ public class SingEndRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void showRecordView(RecordData recordData) {
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankingRecordFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
                 .setAddToBackStack(true)
                 .addDataBeforeAdd(0, recordData)
                 .addDataBeforeAdd(1, mRoomData)

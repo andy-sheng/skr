@@ -1,4 +1,4 @@
-package com.module.playways.rank.room.activity;
+package com.moudle.playways.grab.room.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,14 +11,15 @@ import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
-import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.room.fragment.RankingRoomFragment;
-import com.module.playways.rank.room.model.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
 
-@Route(path = RouterConstants.ACTIVITY_RANKING_ROOM)
-public class RankingRoomActivity extends BaseActivity {
+import com.module.playways.rank.room.model.RankDataUtils;
+import com.module.playways.RoomData;
+import com.module.rank.R;
+import com.moudle.playways.grab.room.fragment.GrabRoomFragment;
+
+@Route(path = RouterConstants.ACTIVITY_GRAB_ROOM)
+public class GrabRoomActivity extends BaseActivity {
 
     /**
      * 存起该房间一些状态信息
@@ -26,29 +27,28 @@ public class RankingRoomActivity extends BaseActivity {
     RoomData mRoomData = new RoomData();
 
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.ranking_room_activity_layout;
+        return R.layout.grab_room_activity_layout;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData != null) {
-            mRoomData.setGameType(prepareData.getGameType());
             mRoomData.setGameId(prepareData.getGameId());
-            mRoomData.setSysAvatar(prepareData.getSysAvatar());
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
             mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
 
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
-            mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
+            mRoomData.setExpectRoundInfo(RankDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
-            mRoomData.setSongModel(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
+            mRoomData.setSongModel(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
         } else {
 
         }
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, RankingRoomFragment.class)
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0, mRoomData)
                 .build()

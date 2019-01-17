@@ -4,11 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.common.anim.AnimationPlayControlTemplate;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;

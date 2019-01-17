@@ -1,4 +1,4 @@
-package com.moudle.playways.singend.room.presenter;
+package com.moudle.playways.grab.room.presenter;
 
 import android.os.Handler;
 
@@ -30,8 +30,8 @@ import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.model.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.rank.room.model.RankDataUtils;
+import com.module.playways.RoomData;
 import com.module.playways.rank.room.view.IGameRuleView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,7 +49,7 @@ import okhttp3.RequestBody;
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
-public class SingEndCorePresenter extends RxLifeCyclePresenter {
+public class GrabCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "SingEndCorePresenter";
 
     private static long sHeartBeatTaskInterval = 3000;
@@ -67,7 +67,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
 
     Handler mUiHanlder = new Handler();
 
-    public SingEndCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
+    public GrabCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
         mIGameRuleView = iGameRuleView;
         mRoomData = roomData;
         TAG = "RankingCorePresenter";
@@ -347,7 +347,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
             // 没结束 current 不应该为null
             if (currentInfo != null) {
                 // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-                if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
+                if (RankDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(currentInfo);
@@ -414,9 +414,9 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                 mUiHanlder.post(new Runnable() {
                     @Override
                     public void run() {
-                        int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
+                        int uid = RankDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
                         String avatar = "";
-                        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+                        PlayerInfoModel playerInfoModel = RankDataUtils.getPlayerInfoById(mRoomData, uid);
                         if(playerInfoModel != null && playerInfoModel.getUserInfo() != null){
                             avatar = playerInfoModel.getUserInfo().getAvatar();
                         }
@@ -428,7 +428,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
 
-                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
+                        mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
 
                     }
                 });
@@ -470,7 +470,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
     }
 
     private int estimateOverTsThisRound() {
-        int pt = RoomDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
+        int pt = RankDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
         return pt;
     }
@@ -478,7 +478,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
         if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
-            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            if (RankDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
                 if (event.getObj() != null) {
                     List<EngineEvent.UserVolumeInfo> list = (List<EngineEvent.UserVolumeInfo>) event.getObj();
                     for (EngineEvent.UserVolumeInfo info : list) {
@@ -507,7 +507,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
             int muteUserId = event.getUserStatus().getUserId();
-            RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
+            RoundInfoModel infoModel = RankDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
             if (!event.getUserStatus().isAudioMute()) {
                 MyLog.w(TAG, "EngineEvent muteUserId=" + muteUserId + "解麦了");
                 /**
@@ -517,17 +517,17 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                  * 状态依赖服务器
                  */
                 if (infoModel != null) {
-                    if (RoomDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
+                    if (RankDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
                         //正好相等，没问题,放歌词
                         MyLog.w(TAG, "是当前轮次，没问题,放歌词");
                         mUiHanlder.post(new Runnable() {
                             @Override
                             public void run() {
                                 MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+                                mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
-                    } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
+                    } else if (RankDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
                         // 假设演唱的轮次在当前轮次后面，说明本地滞后了
                         MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
                         mRoomData.setExpectRoundInfo(infoModel);
@@ -536,7 +536,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
-                                mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+                                mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     }
@@ -558,7 +558,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(RoundOverEvent roundOverEvent) {
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + roundOverEvent.currenRound.getUserID()
                 + ", exitUserID 是 " + roundOverEvent.exitUserID + " timets 是" + roundOverEvent.info.getTimeMs());
-        if (RoomDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
+        if (RankDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
             // 确实等于当前轮次
             if (mRoomData.getRealRoundInfo() != null) {
                 MyLog.w(TAG, "确实是当前轮次结束了");
@@ -566,7 +566,7 @@ public class SingEndCorePresenter extends RxLifeCyclePresenter {
             }
         }
         // 游戏轮次结束
-        if (RoomDataUtils.roundSeqLarger(roundOverEvent.nextRound, mRoomData.getExpectRoundInfo())) {
+        if (RankDataUtils.roundSeqLarger(roundOverEvent.nextRound, mRoomData.getExpectRoundInfo())) {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
             mRoomData.setExpectRoundInfo(roundOverEvent.nextRound);

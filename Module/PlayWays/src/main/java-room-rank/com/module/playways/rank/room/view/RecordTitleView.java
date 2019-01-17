@@ -18,7 +18,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.scoremodel.RankLevelModel;
 import com.module.playways.rank.room.scoremodel.ScoreDetailModel;

@@ -12,9 +12,9 @@ public interface RouterConstants {
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
 
     String ACTIVITY_AUDIOROOM = "/rankingmode/AudioRoomActivity";
-    String ACTIVITY_RANKINGMODE = "/rankingmode/RankingModeActivity";
-    String ACTIVITY_RANKING_ROOM = "/rankingmode/RankingRoomActivity";
-    String ACTIVITY_SINGEND_ROOM = "/rankingmode/SingEndRoomActivity";
+    String ACTIVITY_PLAY_WAYS = "/rankingmode/PlayWaysActivity";
+    String ACTIVITY_RANK_ROOM = "/rankingmode/RankRoomActivity";
+    String ACTIVITY_GRAB_ROOM = "/rankingmode/GrabRoomActivity";
 
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";

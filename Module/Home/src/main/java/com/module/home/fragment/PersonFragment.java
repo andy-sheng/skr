@@ -412,7 +412,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 mRankNumTv.setText(gameStatisModel.getTotalTimes() + "场");
             } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_FUNNY) {
                 mFunnyNumTv.setText(gameStatisModel.getTotalTimes() + "场");
-            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_SING_END) {
+            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
                 mSingendNumTv.setText(gameStatisModel.getTotalTimes() + "场");
             }
         }

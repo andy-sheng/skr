@@ -25,7 +25,7 @@ import com.module.rank.R;
 import com.module.playways.rank.msg.event.EventHelper;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 
 import org.greenrobot.eventbus.EventBus;
 

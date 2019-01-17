@@ -2,16 +2,11 @@ package com.module.playways.rank.room.view;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.SpannableStringBuilder;
-import android.text.TextPaint;
-import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -19,7 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.zq.live.proto.Common.ESex;
 
 public class TurnChangeCardView extends RelativeLayout {

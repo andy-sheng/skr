@@ -14,10 +14,10 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.rank.room.fragment.RankingRecordFragment;
+import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.model.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.RoomData;
+import com.module.playways.rank.room.model.RankDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -114,7 +114,7 @@ public class RecordItemView extends RelativeLayout {
         }
 
         UserInfoModel playerInfo = roomData.getUserInfo(voteInfoModel.getUserID());
-        SongModel songModel = RoomDataUtils.getPlayerSongInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getUserID());
+        SongModel songModel = RankDataUtils.getPlayerSongInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getUserID());
 
         AvatarUtils.loadAvatarByUrl(mSdvSingerIcon,
                 AvatarUtils.newParamsBuilder(playerInfo.getAvatar())
@@ -142,9 +142,9 @@ public class RecordItemView extends RelativeLayout {
         //这里需要判读是娱乐还是竞技
         if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             if (voteInfoModel.getVoter() != null && voteInfoModel.getVoter().size() > 0) {
-                U.getSoundUtils().play(RankingRecordFragment.TAG, R.raw.result_win);
+                U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.result_win);
             } else {
-                U.getSoundUtils().play(RankingRecordFragment.TAG, R.raw.result_lose);
+                U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.result_lose);
             }
         }
 

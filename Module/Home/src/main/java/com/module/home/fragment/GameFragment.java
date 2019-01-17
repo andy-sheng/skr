@@ -15,6 +15,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.myinfo.event.ScoreDetailChangeEvent;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserLevelModel;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -57,7 +58,7 @@ public class GameFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         ExImageView ivAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
         ExImageView ivNormalPk = (ExImageView) mRootView.findViewById(R.id.iv_yule_game);
-        ExImageView mIvYulePk = (ExImageView) mRootView.findViewById(R.id.iv_singend_game);
+        ExImageView mIvYulePk = (ExImageView) mRootView.findViewById(R.id.iv_grab_game);
         mUserTitleView = (UserInfoTitleView) mRootView.findViewById(R.id.user_title_view);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
 
@@ -146,18 +147,25 @@ public class GameFragment extends BaseFragment {
             @Override
             public void onAnimationEnd(Animator animator) {
                 if (view.getId() == R.id.iv_athletics_pk) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                             .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
                             .withBoolean("selectSong", true)
                             .navigation();
                 } else if (view.getId() == R.id.iv_yule_game) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKINGMODE)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                             .withInt("key_game_type", GameModeType.GAME_MODE_FUNNY)
                             .withBoolean("selectSong", true)
                             .navigation();
-                } else if (view.getId() == R.id.iv_singend_game) {
+                } else if (view.getId() == R.id.iv_grab_game) {
                     // TODO: 2019/1/15 暂时屏蔽一唱到底入口
-                    U.getToastUtil().showShort("正在开发中，敬请期待");
+                    if(MyLog.isDebugLogOpen()){
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                                .withInt("key_game_type", GameModeType.GAME_MODE_GRAB)
+                                .withBoolean("selectSong", false)
+                                .navigation();
+                    }else{
+                        U.getToastUtil().showShort("正在开发中，敬请期待");
+                    }
                 }
             }
 

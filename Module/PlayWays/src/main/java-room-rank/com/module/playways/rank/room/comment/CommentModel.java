@@ -5,7 +5,7 @@ import android.graphics.Color;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
-import com.module.playways.rank.room.model.RoomData;
+import com.module.playways.RoomData;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 

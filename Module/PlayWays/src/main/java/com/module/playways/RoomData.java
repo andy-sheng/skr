@@ -1,4 +1,4 @@
-package com.module.playways.rank.room.model;
+package com.module.playways;
 
 import com.common.core.account.UserAccountManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -7,6 +7,7 @@ import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
+import com.module.playways.rank.room.model.RankDataUtils;
 import com.module.playways.rank.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -14,6 +15,11 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Serializable;
 import java.util.List;
 
+
+/**
+ * 房间内所有数据的聚合类
+ * 每种模式的房间内状态信息都由其存储
+ */
 public class RoomData implements Serializable {
     public final static String TAG = "RoomData";
 
@@ -81,7 +87,7 @@ public class RoomData implements Serializable {
             }
             return;
         }
-        if (!RoomDataUtils.roundInfoEqual(mExpectRoundInfo, mRealRoundInfo)) {
+        if (!RankDataUtils.roundInfoEqual(mExpectRoundInfo, mRealRoundInfo)) {
             // 轮次需要更新了
             RoundInfoModel lastRoundInfoModel = mRealRoundInfo;
             mRealRoundInfo = mExpectRoundInfo;

@@ -45,8 +45,8 @@ import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.model.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.RoomData;
+import com.module.playways.rank.room.model.RankDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
@@ -86,8 +86,8 @@ import okhttp3.RequestBody;
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
-public class RankingCorePresenter extends RxLifeCyclePresenter {
-    String TAG = "RankingCorePresenter";
+public class RankCorePresenter extends RxLifeCyclePresenter {
+    String TAG = "RankCorePresenter";
 
     static final int MSG_ROBOT_SING_BEGIN = 10;
     //    static final int MSG_ROBOT_SING_END = 11;
@@ -155,7 +155,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public RankingCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
+    public RankCorePresenter(@NotNull IGameRuleView iGameRuleView, @NotNull RoomData roomData) {
         mIGameRuleView = iGameRuleView;
         mRoomData = roomData;
         TAG += hashCode();
@@ -190,7 +190,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             // 伪装评论消息
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
                 RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
-                PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, roundInfoModel.getUserID());
+                PlayerInfoModel playerInfoModel = RankDataUtils.getPlayerInfoById(mRoomData, roundInfoModel.getUserID());
                 BasePushInfo basePushInfo = new BasePushInfo();
                 basePushInfo.setRoomID(mRoomData.getGameId());
                 basePushInfo.setSender(new UserInfo.Builder()
@@ -566,7 +566,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             // 没结束 current 不应该为null
             if (currentInfo != null) {
                 // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-                if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
+                if (RankDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(currentInfo);
@@ -618,7 +618,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
             cancelHeartBeatTask("切换唱将");
 
-            if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
+            if (RankDataUtils.isMyRound(event.getLastRoundInfoModel())) {
                 if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                     //属于需要上传音频文件的状态
                     // 上一轮是我的轮次，暂停录音
@@ -640,8 +640,8 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
-                        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+                        int uid = RankDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
+                        PlayerInfoModel playerInfoModel = RankDataUtils.getPlayerInfoById(mRoomData, uid);
                         String avatar = "";
                         if (playerInfoModel != null) {
                             avatar = playerInfoModel.getUserInfo().getAvatar();
@@ -654,7 +654,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         } else {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
-                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
+                        mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
                     }
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {
@@ -711,7 +711,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void checkMachineUser(long uid) {
-        PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+        PlayerInfoModel playerInfo = RankDataUtils.getPlayerInfoById(mRoomData, uid);
         if (playerInfo == null) {
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
             return;
@@ -788,7 +788,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
      */
     private void uploadRes1ForAi(RoundInfoModel roundInfoModel) {
         if (mRobotScoreHelper != null && mRobotScoreHelper.vilid()) {
-            UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
+            UploadParams.newBuilder(RankDataUtils.getSaveAudioForAiFilePath())
                     .setFileType(UploadParams.FileType.audioAi)
                     .startUploadAsync(new UploadCallback() {
                         @Override
@@ -819,7 +819,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                String path = RoomDataUtils.getSaveMatchingSocreForAiFilePath();
+                String path = RankDataUtils.getSaveMatchingSocreForAiFilePath();
                 if (mRobotScoreHelper != null) {
                     mRobotScoreHelper.save(path);
                     UploadParams.newBuilder(path)
@@ -892,7 +892,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     }
 
     private int estimateOverTsThisRound() {
-        int pt = RoomDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
+        int pt = RankDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
         return pt;
     }
@@ -934,7 +934,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                             //开始录制声音
                             if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                                 // 需要上传音频伪装成机器人
-                                EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                                EngineManager.getInstance().startAudioRecording(RankDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
                             }
                             mRobotScoreHelper = new RobotScoreHelper();
                             //尝试再用融云通知对端
@@ -1011,7 +1011,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     private void onUserSpeakFromEngine(String from, int muteUserId) {
         MyLog.w(TAG, "onUserSpeakFromEngine muteUserId=" + muteUserId + "解麦了,from:" + from);
-        RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
+        RoundInfoModel infoModel = RankDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
         if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             MyLog.d(TAG, "onUserSpeakFromEngine" + " 解麦的是本人，忽略");
             return;
@@ -1023,7 +1023,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
          * 状态依赖服务器
          */
         if (infoModel != null && infoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
-            if (RoomDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
+            if (RankDataUtils.roundInfoEqual(infoModel, mRoomData.getRealRoundInfo())) {
                 //正好相等，没问题,放歌词
                 MyLog.w(TAG, "是当前轮次，没问题,放歌词");
                 mUiHandler.post(new Runnable() {
@@ -1033,7 +1033,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                         othersBeginSinging();
                     }
                 });
-            } else if (RoomDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
+            } else if (RankDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
                 // 假设演唱的轮次在当前轮次后面，说明本地滞后了
                 MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
                 // 直接设置最新轮次，什么专场动画都不要了，都异常了，还要这些干嘛
@@ -1059,7 +1059,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
         if(infoModel!=null && !infoModel.isHasSing()) {
             infoModel.setHasSing(true);
             mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
-            mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
+            mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
             startLastTwoSecondTask();
         }
     }
@@ -1120,7 +1120,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(RoundOverEvent roundOverEvent) {
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + roundOverEvent.currenRound.getUserID()
                 + ", exitUserID 是 " + roundOverEvent.exitUserID + " timets 是" + roundOverEvent.info.getTimeMs());
-        if (RoomDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
+        if (RankDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
             // 确实等于当前轮次
             if (mRoomData.getRealRoundInfo() != null) {
                 MyLog.w(TAG, "确实是当前轮次结束了");
@@ -1128,7 +1128,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
             }
         }
         // 游戏轮次结束
-        if (RoomDataUtils.roundSeqLarger(roundOverEvent.nextRound, mRoomData.getExpectRoundInfo())) {
+        if (RankDataUtils.roundSeqLarger(roundOverEvent.nextRound, mRoomData.getExpectRoundInfo())) {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
             mRoomData.setExpectRoundInfo(roundOverEvent.nextRound);
@@ -1212,7 +1212,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineEndEvent event) {
-        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+        if (RankDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             int score = EngineManager.getInstance().getLineScore();
             U.getToastUtil().showShort("score:" + score);
             MyLog.d(TAG, "onEvent" + " 得分=" + score);
@@ -1229,7 +1229,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
                 mRobotScoreHelper.add(machineScoreItem);
             }
         } else {
-            if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
+            if (RankDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                 // 尝试算机器人的演唱得分
                 if (mRobotScoreHelper != null) {
                     int score = mRobotScoreHelper.tryGetScoreByLine(event.getLineNum());
@@ -1247,7 +1247,7 @@ public class RankingCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MachineScoreEvent event) {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
-        if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
+        if (RankDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
             mIGameRuleView.updateScrollBarProgress(event.score);
         }
     }

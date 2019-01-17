@@ -74,8 +74,8 @@ android {
             java.srcDirs += 'src/main/java-room-rank'
             res.srcDirs += 'src/main/res-room-rank'
 
-            java.srcDirs += 'src/main/java-room-singend'
-            res.srcDirs += 'src/main/res-room-singend'
+            java.srcDirs += 'src/main/java-room-grab'
+            res.srcDirs += 'src/main/res-room-grab'
         }
     }
 }
