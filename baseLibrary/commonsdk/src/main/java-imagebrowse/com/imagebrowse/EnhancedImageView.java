@@ -335,6 +335,8 @@ public class EnhancedImageView extends RelativeLayout {
             }
         });
         //竖长图
+//        MyLog.d(TAG,"loadBySubSampleView degree=" + U.getBitmapUtils().getBitmapDegree(localFilePath)+ " localFilePath:"+localFilePath);
+        mSubsamplingScaleImageView.setOrientation(U.getBitmapUtils().getBitmapDegree(localFilePath));
         mSubsamplingScaleImageView.setImage(ImageSource.uri(localFilePath));
     }
 

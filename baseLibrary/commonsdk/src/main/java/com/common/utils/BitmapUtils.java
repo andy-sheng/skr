@@ -49,7 +49,7 @@ public class BitmapUtils {
                     break;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            MyLog.e(e);
         }
         return degree;
     }
