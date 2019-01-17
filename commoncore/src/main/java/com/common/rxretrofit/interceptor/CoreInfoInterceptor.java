@@ -1,5 +1,9 @@
 package com.common.rxretrofit.interceptor;
 
+import android.text.TextUtils;
+
+import com.common.core.account.UserAccountManager;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.utils.U;
 
@@ -12,9 +16,21 @@ import okhttp3.Response;
 
 public class CoreInfoInterceptor implements Interceptor {
 
+    public final static String TAG = "CoreInfoInterceptor";
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
+
+        String noNeedLogin = request.header("NO_NEED_LOGIN");
+        if (!TextUtils.isEmpty(noNeedLogin)) {
+            request = request.newBuilder().removeHeader("NO_NEED_LOGIN").build();
+        } else {
+            if (!UserAccountManager.getInstance().hasAccount()) {
+                MyLog.e(TAG,"未登录前不能发送该请求");
+                return null;
+            }
+        }
         // todo 标识设备的唯一ID
         request = request.newBuilder()
                 .addHeader("Inframe-Client-ID", U.getDeviceUtils().getDeviceID())

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.common.base.R;
@@ -135,6 +136,7 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         View mask;
         View checkView;
         SuperCheckBox cbCheck;
+        ImageView playBtn;
         ResItem resItem;
         int position;
 
@@ -145,6 +147,7 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
             mask = itemView.findViewById(R.id.mask);
             checkView = itemView.findViewById(R.id.checkView);
             cbCheck = (SuperCheckBox) itemView.findViewById(R.id.cb_check);
+            playBtn = itemView.findViewById(R.id.play_btn);
             itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageSize)); //让图片是个正方形
 
             ivThumb.setOnClickListener(new View.OnClickListener() {
@@ -208,11 +211,13 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
                         .setWidth(300)
                         .setHeight(300)
                         .build();
+                playBtn.setVisibility(View.VISIBLE);
             } else {
                 baseImage = ImageFactory.newLocalImage(resItem.getPath())
                         .setWidth(300)
                         .setHeight(300)
                         .build();
+                playBtn.setVisibility(View.GONE);
             }
             ivThumb.load(baseImage);
 //            mImagePicker.getImageLoader().displayImage(mActivity,, ivThumb, mImageSize, mImageSize); //显示图片
