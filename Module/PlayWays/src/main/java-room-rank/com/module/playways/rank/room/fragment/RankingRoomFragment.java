@@ -488,6 +488,10 @@ public class RankingRoomFragment extends BaseFragment implements IGameRuleView {
     boolean isReport = false;
 
     private void showPersonInfoView(int userID) {
+        if (!U.getNetworkUtils().hasNetwork()) {
+            U.getToastUtil().showShort("网络异常，请检查网络后重试!");
+            return;
+        }
         mInputContainerView.hideSoftInput();
         PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext(), userID);
 

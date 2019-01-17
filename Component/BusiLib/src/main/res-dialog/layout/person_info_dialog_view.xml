@@ -23,7 +23,6 @@
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginTop="@dimen/view_5_dp"
         android:layout_toRightOf="@+id/avatar_iv"
-        android:text="金嗓子元宝"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold" />
@@ -57,7 +56,6 @@
         android:layout_alignLeft="@+id/avatar_iv"
         android:layout_marginTop="@dimen/view_4_dp"
         android:paddingLeft="@dimen/view_7_dp"
-        android:text="这个签名是撕哥送的"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
@@ -68,7 +66,8 @@
         android:layout_below="@+id/sign_tv"
         android:layout_marginLeft="@dimen/view_26_dp"
         android:layout_marginTop="@dimen/view_4_dp"
-        android:layout_marginRight="@dimen/view_26_dp"></com.common.flowlayout.TagFlowLayout>
+        android:layout_marginRight="@dimen/view_26_dp">
+    </com.common.flowlayout.TagFlowLayout>
 
 
     <com.common.view.ex.ExTextView
