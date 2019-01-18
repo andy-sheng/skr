@@ -20,7 +20,6 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
-import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
@@ -50,47 +49,29 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.dialog.PersonInfoDialogView;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.widget.AbstractLrcView;
-import com.zq.lyrics.widget.FloatLyricsView;
-import com.zq.lyrics.widget.ManyLyricsView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
-
 public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     public final static String TAG = "RankingRoomFragment";
 
-    static final int ENSURE_RUN = 99;
-
-    static final int SHOW_RIVAL_LYRIC = 10;
+    public static final int MSG_ENSURE_READYGO_OVER = 1;
 
     RoomData mRoomData;
 
@@ -118,28 +99,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
-    ManyLyricsView mManyLyricsView;
-
-    FloatLyricsView mFloatLyricsView;
-
     DialogPlus mQuitTipsDialog;
-
-    Handler mUiHanlder = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == ENSURE_RUN) {
-                Runnable runnable = (Runnable) msg.obj;
-                if (runnable != null) {
-                    runnable.run();
-                    mPendingSelfCountDownRunnable = null;
-                }
-                onReadyGoOver();
-            } else if (SHOW_RIVAL_LYRIC == msg.what) {
-                mFloatLyricsView.setVisibility(View.VISIBLE);
-            }
-        }
-    };
 
     Disposable mPrepareLyricTask;
 
@@ -151,15 +111,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     boolean mNeedScroll = true;
 
-    boolean mReadyGoPlaying = false;
-
     ExObjectAnimator mTurnChangeCardShowAnimator;
 
     ExObjectAnimator mTurnChangeCardHideAnimator;
-
-    Runnable mPendingSelfCountDownRunnable;
-
-    PendingRivalData mPendingRivalCountdown;
 
     int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
 
@@ -170,6 +124,18 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
     boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
+
+    Handler mUiHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_ENSURE_READYGO_OVER:
+                    onReadyGoOver();
+                    break;
+            }
+        }
+    };
 
     @Override
     public int initView() {
@@ -184,10 +150,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         initBottomView();
         initCommentView();
         initTopView();
-        initLyricsView();
         initTurnChangeView();
         initGiftDisplayView();
-
         showReadyGoView();
 
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
@@ -287,7 +251,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 mTurnChangeView.setVisibility(View.GONE);
                 if (countDownRunnable != null) {
                     countDownRunnable.run();
-                    mUiHanlder.removeMessages(ENSURE_RUN);
                 }
                 // TODO: 2018/12/29 先加一个保护 
                 if (mRoomData.getRealRoundInfo() != null) {
@@ -303,7 +266,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
-        mFloatLyricsView.setVisibility(View.VISIBLE);
         // 舞台人的动画
         if (mStagePeopleBg != null) {
             mStagePeopleBg.setVisibility(View.VISIBLE);
@@ -560,13 +522,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         });
     }
 
-    private void initLyricsView() {
-        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
-        mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
-        mFloatLyricsView = mRootView.findViewById(R.id.float_lyrics_view);
-        mFloatLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
-    }
-
     private void initTurnChangeView() {
         mReadyGoBg = (SVGAImageView) mRootView.findViewById(R.id.ready_go_bg);
 
@@ -614,8 +569,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void showReadyGoView() {
+        //  播放readgo动画
         mReadyGoBg.setVisibility(View.VISIBLE);
-        mReadyGoPlaying = true;
+        // 防止readygo出现问题导致流程不能继续
+        mUiHanlder.removeMessages(MSG_ENSURE_READYGO_OVER);
+        mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_READYGO_OVER, 2000);
 
         try {
             getSVGAParser().parse(new URL(RoomData.READY_GO_SVGA_URL), new SVGAParser.ParseCompletion() {
@@ -644,18 +602,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
             @Override
             public void onFinished() {
-                if (mReadyGoBg.isAnimating()) {
-                    mReadyGoBg.stopAnimation();
-                    onReadyGoOver();
-                }
+                onReadyGoOver();
             }
 
             @Override
             public void onRepeat() {
-                if (mReadyGoBg.isAnimating()) {
-                    mReadyGoBg.stopAnimation();
-                    onReadyGoOver();
-                }
+                onReadyGoOver();
             }
 
             @Override
@@ -667,20 +619,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     private void onReadyGoOver() {
         MyLog.w(TAG, "onReadyGoOver");
-        if (mReadyGoPlaying) {
-            mReadyGoPlaying = false;
-            // 移除 readyGoView
-            // 轮到自己演唱了，倒计时因为播放readyGo没播放
-            if (mPendingSelfCountDownRunnable != null) {
-                startSelfCountdown(mPendingSelfCountDownRunnable);
-                mPendingSelfCountDownRunnable = null;
-            }
-            // 轮到他人唱了，倒计时因为播放readyGo没播放
-            if (mPendingRivalCountdown != null) {
-                startRivalCountdown(mPendingRivalCountdown.uid, mPendingRivalCountdown.avatar);
-                mPendingRivalCountdown = null;
-            }
+        mUiHanlder.removeMessages(MSG_ENSURE_READYGO_OVER);
+        if (mReadyGoBg != null) {
             mRankingContainer.removeView(mReadyGoBg);
+            mReadyGoBg.stopAnimation(true);
+            mReadyGoBg = null;
+            mCorePresenter.onOpeningAnimationOver();
         }
     }
 
@@ -706,8 +650,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             mDialogPlus = null;
         }
         mUiHanlder.removeCallbacksAndMessages(null);
-        mManyLyricsView.release();
-        mFloatLyricsView.release();
 
         isGameEndAniamtionShow = false;
         if (mGameEndAnimation != null) {
@@ -807,8 +749,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
      */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
-        mManyLyricsView.setVisibility(View.GONE);
-        mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
         if (mStagePeopleBg.isAnimating()) {
             mStagePeopleBg.stopAnimation(false);
@@ -820,27 +760,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mStageUfoBg.setVisibility(View.GONE);
 
         // 确保演唱逻辑一定要执行
-        Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
-        msg.what = ENSURE_RUN;
-        msg.obj = countDownOver;
-
-        if (mReadyGoPlaying) {
-            // 正在播放readyGo动画，保存参数，延迟播放卡片
-            mPendingSelfCountDownRunnable = countDownOver;
-            // 目前 readyGo动画3秒 + 卡片动画4秒，按理7秒后一定执行，这里容错，允许延迟1秒
-            mUiHanlder.removeMessages(ENSURE_RUN);
-            mUiHanlder.sendMessageDelayed(msg, 8000);
+        if (mTurnChangeView.setData(mRoomData)) {
+            playShowTurnCardAnimator(countDownOver);
         } else {
-            if (mTurnChangeView.setData(mRoomData)) {
-                playShowTurnCardAnimator(countDownOver);
-                mUiHanlder.removeMessages(ENSURE_RUN);
-                mUiHanlder.sendMessageDelayed(msg, 5000);
-            } else {
-                countDownOver.run();
-            }
+            countDownOver.run();
         }
-
-        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
     }
 
     /**
@@ -848,8 +772,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
      */
 //    @Override
     public void startRivalCountdown(int uid, String avatar) {
-        mManyLyricsView.setVisibility(View.GONE);
-        mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
         if (mStagePeopleBg.isAnimating()) {
             mStagePeopleBg.stopAnimation(false);
@@ -861,20 +783,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mStageUfoBg.setVisibility(View.GONE);
 
 //        mTopContainerView.cancelShowLastedTimeTask();
-        if (mReadyGoPlaying) {
-            // 正在播放readyGo动画，保存参数，延迟播放卡片
-            mPendingRivalCountdown = new PendingRivalData(uid, avatar);
-        } else {
-            MyLog.w(TAG, "用户" + uid + "的演唱开始了");
-            if (mTurnChangeView.setData(mRoomData)) {
-                playShowTurnCardAnimator(null);
-            }
+        // 正在播放readyGo动画，保存参数，延迟播放卡片
+        MyLog.w(TAG, "用户" + uid + "的演唱开始了");
+        if (mTurnChangeView.setData(mRoomData)) {
+            playShowTurnCardAnimator(null);
         }
 
-        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
-        Message showLyricMsg = new Message();
-        showLyricMsg.what = SHOW_RIVAL_LYRIC;
-        mUiHanlder.sendMessageDelayed(showLyricMsg, 3000);
     }
 
 
@@ -968,10 +882,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
         }
-        mFloatLyricsView.setVisibility(View.GONE);
-        mFloatLyricsView.release();
-        mManyLyricsView.setVisibility(View.GONE);
-        mManyLyricsView.release();
     }
 
     @Override
@@ -984,8 +894,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             public void run() {
                 // 模式改为3，自动播放主舞台退出的svga动画
                 mUFOMode = 3;
-                mFloatLyricsView.setVisibility(View.GONE);
-                mManyLyricsView.setVisibility(View.GONE);
             }
         }, 800);
 
@@ -1000,105 +908,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
     }
 
-    private void parseLyrics(String fileName, boolean play) {
-        MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
-        mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retry(10)
-                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(lyricsReader -> {
-                    drawLyric(fileName.hashCode() + "", lyricsReader, play);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
-    }
-
-
-    private void drawLyric(String fileNameHash, LyricsReader lyricsReader, boolean play) {
-        MyLog.w(TAG, "drawLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
-        if (lyricsReader != null) {
-            lyricsReader.setHash(fileNameHash);
-
-            //自己
-            if (mRoomData.getRealRoundInfo().getUserID()
-                    == MyUserInfoManager.getInstance().getUid()) {
-                mFloatLyricsView.setVisibility(View.GONE);
-                mFloatLyricsView.resetData();
-                mManyLyricsView.setVisibility(View.VISIBLE);
-                mManyLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
-                mManyLyricsView.setLyricsReader(lyricsReader);
-
-                Set<Integer> set = new HashSet<>();
-                set.add(lyricsReader.getLineInfoIdByStartTs(mPlayingSongModel.getRankLrcBeginT()));
-                mManyLyricsView.setNeedCountDownLine(set);
-
-                if (!play) {
-                    mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
-                    mManyLyricsView.pause();
-                }
-                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
-                    MyLog.w(TAG, "onEventMainThread " + "play");
-                    mManyLyricsView.play(mPlayingSongModel.getBeginMs());
-                }
-            } else {
-                mManyLyricsView.setVisibility(View.GONE);
-                mManyLyricsView.resetData();
-//                mFloatLyricsView.setVisibility(View.VISIBLE);
-                mFloatLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
-                mFloatLyricsView.setLyricsReader(lyricsReader);
-                if (!play) {
-                    mFloatLyricsView.seekto(mPlayingSongModel.getBeginMs());
-                    mFloatLyricsView.pause();
-                }
-                if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
-                    MyLog.w(TAG, "onEventMainThread " + "play");
-                    mFloatLyricsView.play(mPlayingSongModel.getBeginMs());
-                }
-            }
-        }
-    }
-
-
-    private void fetchLyricTask(SongModel songModel, boolean play) {
-        MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
-        mPrepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
-            @Override
-            public void subscribe(ObservableEmitter<File> emitter) {
-                File tempFile = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
-
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getLyric(), tempFile, null);
-
-                File oldName = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
-                File newName = new File(SongResUtils.createLyricFileName(songModel.getLyric()));
-
-                if (isSuccess) {
-                    if (oldName.renameTo(newName)) {
-                        MyLog.w(TAG, "已重命名");
-                    } else {
-                        MyLog.w(TAG, "Error");
-                        emitter.onError(new Throwable("重命名错误"));
-                    }
-                } else {
-                    emitter.onError(new Throwable("下载失败"));
-                }
-
-                emitter.onNext(newName);
-                emitter.onComplete();
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retry(1000)
-                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(file -> {
-                    final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-                    parseLyrics(fileName, play);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
-    }
 
     static class PendingRivalData {
         int uid;

@@ -75,11 +75,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mIGameRuleView = iGrebView;
         mRoomData = roomData;
         TAG = "RankingCorePresenter";
-        Params params = Params.getFromPref();
-        EngineManager.getInstance().init("rankingroom", params);
-        EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
-        // 不发送本地音频
-        EngineManager.getInstance().muteLocalAudioStream(true);
+        if (mRoomData.getGameId() > 0) {
+            Params params = Params.getFromPref();
+            EngineManager.getInstance().init("rankingroom", params);
+            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            // 不发送本地音频
+            EngineManager.getInstance().muteLocalAudioStream(true);
+        }
     }
 
     @Override
@@ -88,10 +90,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+    }
+
+    /**
+     * 由ui层告知
+     * 开场动画结束
+     */
+    public void onOpeningAnimationOver() {
+        // 触发轮次变化
         mRoomData.checkRound();
         startSyncGameStateTask(sSyncStateTaskInterval);
     }
-
 
     public void vie() {
 
@@ -325,25 +334,32 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QExitGameMsgEvent event) {}
+    public void onEvent(QExitGameMsgEvent event) {
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QGetSingChanceMsgEvent event) {}
+    public void onEvent(QGetSingChanceMsgEvent event) {
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QNoPassSingMsgEvent event) {}
+    public void onEvent(QNoPassSingMsgEvent event) {
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QRoundAndGameOverMsgEvent event) {}
+    public void onEvent(QRoundAndGameOverMsgEvent event) {
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QRoundOverMsgEvent event) {}
+    public void onEvent(QRoundOverMsgEvent event) {
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QSyncStatusMsgEvent event) {}
+    public void onEvent(QSyncStatusMsgEvent event) {
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QWantSingChanceMsgEvent event) {}
+    public void onEvent(QWantSingChanceMsgEvent event) {
+    }
 
     /**
      * 轮次信息有更新
@@ -395,7 +411,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         int uid = RankDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
                         String avatar = "";
                         PlayerInfoModel playerInfoModel = RankDataUtils.getPlayerInfoById(mRoomData, uid);
-                        if(playerInfoModel != null && playerInfoModel.getUserInfo() != null){
+                        if (playerInfoModel != null && playerInfoModel.getUserInfo() != null) {
                             avatar = playerInfoModel.getUserInfo().getAvatar();
                         }
 //                        mIGameRuleView.startRivalCountdown(uid, avatar);
@@ -601,4 +617,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
         }
     }
+
+
 }

@@ -44,42 +44,6 @@
         android:src="@drawable/guanzhongjiemian_yanchangjieshu"
         android:visibility="gone" />
 
-    <com.zq.lyrics.widget.ManyLyricsView
-        android:id="@+id/many_lyrics_view"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/view_50_dp"
-        android:visibility="gone"
-        app:ly_eable_scroll="false"
-        app:ly_eable_verbatim="true"
-        app:ly_high_light_paint_color_from="#EF5E85"
-        app:ly_high_light_paint_color_to="#EF5E85"
-        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
-        app:ly_high_light_sub_paint_color="#EF5E85"
-        app:ly_outline_paint_color="@color/black"
-        app:ly_paint_color_from="@color/white_trans_50"
-        app:ly_paint_color_to="@color/white_trans_50"
-        app:ly_paint_text_size="@dimen/textsize_dimen_16"
-        app:ly_top_line_num="2" />
-
-    <com.zq.lyrics.widget.FloatLyricsView
-        android:id="@+id/float_lyrics_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_60_dp"
-        android:layout_marginTop="@dimen/view_370_dp"
-        android:visibility="gone"
-        app:ly_eable_scroll="false"
-        app:ly_eable_verbatim="false"
-        app:ly_high_light_paint_color_from="@color/white"
-        app:ly_high_light_paint_color_to="@color/white"
-        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
-        app:ly_high_light_sub_paint_color="@color/white"
-        app:ly_outline_paint_color="@color/black"
-        app:ly_paint_color_from="@color/white_trans_50"
-        app:ly_paint_color_to="@color/white_trans_50"
-        app:ly_paint_text_size="@dimen/textsize_dimen_16" />
-
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
         android:id="@+id/bottom_container_view"
