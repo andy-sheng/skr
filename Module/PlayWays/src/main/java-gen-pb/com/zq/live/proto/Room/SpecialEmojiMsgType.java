@@ -7,9 +7,6 @@ import com.squareup.wire.ProtoAdapter;
 import com.squareup.wire.WireEnum;
 import java.lang.Override;
 
-/**
- * 特殊表情类型
- */
 public enum SpecialEmojiMsgType implements WireEnum {
   SP_EMOJI_TYPE_UNKNOWN(0),
 

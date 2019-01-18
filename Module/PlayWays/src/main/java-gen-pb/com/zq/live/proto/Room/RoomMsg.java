@@ -22,6 +22,7 @@ import okio.ByteString;
 /**
  * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
  * --proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ Room.proto
+ * 房间消息：此结构会通过pb编码后，通过聊天室通道到达客户端
  */
 public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   public static final ProtoAdapter<RoomMsg> ADAPTER = new ProtoAdapter_RoomMsg();
@@ -210,7 +211,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   public final ExitGameOutRoundMsg exitGameOutRoundMsg;
 
   /**
-   * 游戏投票结果消息
+   * 游戏投票结果消息 msgType == RM_VOTE_RESULT
    */
   @WireField(
       tag = 110,
@@ -227,6 +228,69 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   )
   public final MachineScore machineScore;
 
+  /**
+   * 一唱到底：想唱消息,即抢唱
+   */
+  @WireField(
+      tag = 112,
+      adapter = "com.zq.live.proto.Room.QWantSingChanceMsg#ADAPTER"
+  )
+  public final QWantSingChanceMsg qWantSingChanceMsg;
+
+  /**
+   * 一唱到底：获得轮次机会,即抢唱成功
+   */
+  @WireField(
+      tag = 113,
+      adapter = "com.zq.live.proto.Room.QGetSingChanceMsg#ADAPTER"
+  )
+  public final QGetSingChanceMsg qGetSingChanceMsg;
+
+  /**
+   * 一唱到底：同步状态
+   */
+  @WireField(
+      tag = 114,
+      adapter = "com.zq.live.proto.Room.QSyncStatusMsg#ADAPTER"
+  )
+  public final QSyncStatusMsg qSyncStatusMsg;
+
+  /**
+   * 一唱到底：轮次结束
+   */
+  @WireField(
+      tag = 115,
+      adapter = "com.zq.live.proto.Room.QRoundOverMsg#ADAPTER"
+  )
+  public final QRoundOverMsg qRoundOverMsg;
+
+  /**
+   * 一唱到底：最后轮次结束，即游戏结束，游戏结果数据
+   */
+  @WireField(
+      tag = 116,
+      adapter = "com.zq.live.proto.Room.QRoundAndGameOverMsg#ADAPTER"
+  )
+  public final QRoundAndGameOverMsg qRoundAndGameOverMsg;
+
+  /**
+   * 一唱到底：演唱不通过，即灭灯
+   */
+  @WireField(
+      tag = 117,
+      adapter = "com.zq.live.proto.Room.QNoPassSingMsg#ADAPTER"
+  )
+  public final QNoPassSingMsg qNoPassSingMsg;
+
+  /**
+   * 一唱到底：退出游戏
+   */
+  @WireField(
+      tag = 118,
+      adapter = "com.zq.live.proto.Room.QExitGameMsg#ADAPTER"
+  )
+  public final QExitGameMsg qExitGameMsg;
+
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
@@ -234,8 +298,11 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       RoundAndGameOverMsg roundAndGameOverMsg, AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg,
       ExitGameBeforePlayMsg exitGameBeforePlayMsg, ExitGameAfterPlayMsg exitGameAfterPlayMsg,
       ExitGameOutRoundMsg exitGameOutRoundMsg, VoteResultMsg voteResultMsg,
-      MachineScore machineScore) {
-    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, ByteString.EMPTY);
+      MachineScore machineScore, QWantSingChanceMsg qWantSingChanceMsg,
+      QGetSingChanceMsg qGetSingChanceMsg, QSyncStatusMsg qSyncStatusMsg,
+      QRoundOverMsg qRoundOverMsg, QRoundAndGameOverMsg qRoundAndGameOverMsg,
+      QNoPassSingMsg qNoPassSingMsg, QExitGameMsg qExitGameMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, ByteString.EMPTY);
   }
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
@@ -245,7 +312,10 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       RoundAndGameOverMsg roundAndGameOverMsg, AppSwapMsg appSwapMsg, SyncStatusMsg syncStatusMsg,
       ExitGameBeforePlayMsg exitGameBeforePlayMsg, ExitGameAfterPlayMsg exitGameAfterPlayMsg,
       ExitGameOutRoundMsg exitGameOutRoundMsg, VoteResultMsg voteResultMsg,
-      MachineScore machineScore, ByteString unknownFields) {
+      MachineScore machineScore, QWantSingChanceMsg qWantSingChanceMsg,
+      QGetSingChanceMsg qGetSingChanceMsg, QSyncStatusMsg qSyncStatusMsg,
+      QRoundOverMsg qRoundOverMsg, QRoundAndGameOverMsg qRoundAndGameOverMsg,
+      QNoPassSingMsg qNoPassSingMsg, QExitGameMsg qExitGameMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -268,6 +338,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     this.exitGameOutRoundMsg = exitGameOutRoundMsg;
     this.voteResultMsg = voteResultMsg;
     this.machineScore = machineScore;
+    this.qWantSingChanceMsg = qWantSingChanceMsg;
+    this.qGetSingChanceMsg = qGetSingChanceMsg;
+    this.qSyncStatusMsg = qSyncStatusMsg;
+    this.qRoundOverMsg = qRoundOverMsg;
+    this.qRoundAndGameOverMsg = qRoundAndGameOverMsg;
+    this.qNoPassSingMsg = qNoPassSingMsg;
+    this.qExitGameMsg = qExitGameMsg;
   }
 
   @Override
@@ -294,6 +371,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     builder.exitGameOutRoundMsg = exitGameOutRoundMsg;
     builder.voteResultMsg = voteResultMsg;
     builder.machineScore = machineScore;
+    builder.qWantSingChanceMsg = qWantSingChanceMsg;
+    builder.qGetSingChanceMsg = qGetSingChanceMsg;
+    builder.qSyncStatusMsg = qSyncStatusMsg;
+    builder.qRoundOverMsg = qRoundOverMsg;
+    builder.qRoundAndGameOverMsg = qRoundAndGameOverMsg;
+    builder.qNoPassSingMsg = qNoPassSingMsg;
+    builder.qExitGameMsg = qExitGameMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -324,7 +408,14 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         && Internal.equals(exitGameAfterPlayMsg, o.exitGameAfterPlayMsg)
         && Internal.equals(exitGameOutRoundMsg, o.exitGameOutRoundMsg)
         && Internal.equals(voteResultMsg, o.voteResultMsg)
-        && Internal.equals(machineScore, o.machineScore);
+        && Internal.equals(machineScore, o.machineScore)
+        && Internal.equals(qWantSingChanceMsg, o.qWantSingChanceMsg)
+        && Internal.equals(qGetSingChanceMsg, o.qGetSingChanceMsg)
+        && Internal.equals(qSyncStatusMsg, o.qSyncStatusMsg)
+        && Internal.equals(qRoundOverMsg, o.qRoundOverMsg)
+        && Internal.equals(qRoundAndGameOverMsg, o.qRoundAndGameOverMsg)
+        && Internal.equals(qNoPassSingMsg, o.qNoPassSingMsg)
+        && Internal.equals(qExitGameMsg, o.qExitGameMsg);
   }
 
   @Override
@@ -353,6 +444,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       result = result * 37 + (exitGameOutRoundMsg != null ? exitGameOutRoundMsg.hashCode() : 0);
       result = result * 37 + (voteResultMsg != null ? voteResultMsg.hashCode() : 0);
       result = result * 37 + (machineScore != null ? machineScore.hashCode() : 0);
+      result = result * 37 + (qWantSingChanceMsg != null ? qWantSingChanceMsg.hashCode() : 0);
+      result = result * 37 + (qGetSingChanceMsg != null ? qGetSingChanceMsg.hashCode() : 0);
+      result = result * 37 + (qSyncStatusMsg != null ? qSyncStatusMsg.hashCode() : 0);
+      result = result * 37 + (qRoundOverMsg != null ? qRoundOverMsg.hashCode() : 0);
+      result = result * 37 + (qRoundAndGameOverMsg != null ? qRoundAndGameOverMsg.hashCode() : 0);
+      result = result * 37 + (qNoPassSingMsg != null ? qNoPassSingMsg.hashCode() : 0);
+      result = result * 37 + (qExitGameMsg != null ? qExitGameMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -382,6 +480,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     if (exitGameOutRoundMsg != null) builder.append(", exitGameOutRoundMsg=").append(exitGameOutRoundMsg);
     if (voteResultMsg != null) builder.append(", voteResultMsg=").append(voteResultMsg);
     if (machineScore != null) builder.append(", machineScore=").append(machineScore);
+    if (qWantSingChanceMsg != null) builder.append(", qWantSingChanceMsg=").append(qWantSingChanceMsg);
+    if (qGetSingChanceMsg != null) builder.append(", qGetSingChanceMsg=").append(qGetSingChanceMsg);
+    if (qSyncStatusMsg != null) builder.append(", qSyncStatusMsg=").append(qSyncStatusMsg);
+    if (qRoundOverMsg != null) builder.append(", qRoundOverMsg=").append(qRoundOverMsg);
+    if (qRoundAndGameOverMsg != null) builder.append(", qRoundAndGameOverMsg=").append(qRoundAndGameOverMsg);
+    if (qNoPassSingMsg != null) builder.append(", qNoPassSingMsg=").append(qNoPassSingMsg);
+    if (qExitGameMsg != null) builder.append(", qExitGameMsg=").append(qExitGameMsg);
     return builder.replace(0, 2, "RoomMsg{").append('}').toString();
   }
 
@@ -586,7 +691,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 游戏投票结果消息
+   * 游戏投票结果消息 msgType == RM_VOTE_RESULT
    */
   public VoteResultMsg getVoteResultMsg() {
     if(voteResultMsg==null){
@@ -603,6 +708,76 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         return new MachineScore.Builder().build();
     }
     return machineScore;
+  }
+
+  /**
+   * 一唱到底：想唱消息,即抢唱
+   */
+  public QWantSingChanceMsg getQWantSingChanceMsg() {
+    if(qWantSingChanceMsg==null){
+        return new QWantSingChanceMsg.Builder().build();
+    }
+    return qWantSingChanceMsg;
+  }
+
+  /**
+   * 一唱到底：获得轮次机会,即抢唱成功
+   */
+  public QGetSingChanceMsg getQGetSingChanceMsg() {
+    if(qGetSingChanceMsg==null){
+        return new QGetSingChanceMsg.Builder().build();
+    }
+    return qGetSingChanceMsg;
+  }
+
+  /**
+   * 一唱到底：同步状态
+   */
+  public QSyncStatusMsg getQSyncStatusMsg() {
+    if(qSyncStatusMsg==null){
+        return new QSyncStatusMsg.Builder().build();
+    }
+    return qSyncStatusMsg;
+  }
+
+  /**
+   * 一唱到底：轮次结束
+   */
+  public QRoundOverMsg getQRoundOverMsg() {
+    if(qRoundOverMsg==null){
+        return new QRoundOverMsg.Builder().build();
+    }
+    return qRoundOverMsg;
+  }
+
+  /**
+   * 一唱到底：最后轮次结束，即游戏结束，游戏结果数据
+   */
+  public QRoundAndGameOverMsg getQRoundAndGameOverMsg() {
+    if(qRoundAndGameOverMsg==null){
+        return new QRoundAndGameOverMsg.Builder().build();
+    }
+    return qRoundAndGameOverMsg;
+  }
+
+  /**
+   * 一唱到底：演唱不通过，即灭灯
+   */
+  public QNoPassSingMsg getQNoPassSingMsg() {
+    if(qNoPassSingMsg==null){
+        return new QNoPassSingMsg.Builder().build();
+    }
+    return qNoPassSingMsg;
+  }
+
+  /**
+   * 一唱到底：退出游戏
+   */
+  public QExitGameMsg getQExitGameMsg() {
+    if(qExitGameMsg==null){
+        return new QExitGameMsg.Builder().build();
+    }
+    return qExitGameMsg;
   }
 
   /**
@@ -739,7 +914,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 游戏投票结果消息
+   * 游戏投票结果消息 msgType == RM_VOTE_RESULT
    */
   public boolean hasVoteResultMsg() {
     return voteResultMsg!=null;
@@ -750,6 +925,55 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
    */
   public boolean hasMachineScore() {
     return machineScore!=null;
+  }
+
+  /**
+   * 一唱到底：想唱消息,即抢唱
+   */
+  public boolean hasQWantSingChanceMsg() {
+    return qWantSingChanceMsg!=null;
+  }
+
+  /**
+   * 一唱到底：获得轮次机会,即抢唱成功
+   */
+  public boolean hasQGetSingChanceMsg() {
+    return qGetSingChanceMsg!=null;
+  }
+
+  /**
+   * 一唱到底：同步状态
+   */
+  public boolean hasQSyncStatusMsg() {
+    return qSyncStatusMsg!=null;
+  }
+
+  /**
+   * 一唱到底：轮次结束
+   */
+  public boolean hasQRoundOverMsg() {
+    return qRoundOverMsg!=null;
+  }
+
+  /**
+   * 一唱到底：最后轮次结束，即游戏结束，游戏结果数据
+   */
+  public boolean hasQRoundAndGameOverMsg() {
+    return qRoundAndGameOverMsg!=null;
+  }
+
+  /**
+   * 一唱到底：演唱不通过，即灭灯
+   */
+  public boolean hasQNoPassSingMsg() {
+    return qNoPassSingMsg!=null;
+  }
+
+  /**
+   * 一唱到底：退出游戏
+   */
+  public boolean hasQExitGameMsg() {
+    return qExitGameMsg!=null;
   }
 
   public static final class Builder extends Message.Builder<RoomMsg, Builder> {
@@ -794,6 +1018,20 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     public VoteResultMsg voteResultMsg;
 
     public MachineScore machineScore;
+
+    public QWantSingChanceMsg qWantSingChanceMsg;
+
+    public QGetSingChanceMsg qGetSingChanceMsg;
+
+    public QSyncStatusMsg qSyncStatusMsg;
+
+    public QRoundOverMsg qRoundOverMsg;
+
+    public QRoundAndGameOverMsg qRoundAndGameOverMsg;
+
+    public QNoPassSingMsg qNoPassSingMsg;
+
+    public QExitGameMsg qExitGameMsg;
 
     public Builder() {
     }
@@ -951,7 +1189,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     }
 
     /**
-     * 游戏投票结果消息
+     * 游戏投票结果消息 msgType == RM_VOTE_RESULT
      */
     public Builder setVoteResultMsg(VoteResultMsg voteResultMsg) {
       this.voteResultMsg = voteResultMsg;
@@ -966,9 +1204,65 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       return this;
     }
 
+    /**
+     * 一唱到底：想唱消息,即抢唱
+     */
+    public Builder setQWantSingChanceMsg(QWantSingChanceMsg qWantSingChanceMsg) {
+      this.qWantSingChanceMsg = qWantSingChanceMsg;
+      return this;
+    }
+
+    /**
+     * 一唱到底：获得轮次机会,即抢唱成功
+     */
+    public Builder setQGetSingChanceMsg(QGetSingChanceMsg qGetSingChanceMsg) {
+      this.qGetSingChanceMsg = qGetSingChanceMsg;
+      return this;
+    }
+
+    /**
+     * 一唱到底：同步状态
+     */
+    public Builder setQSyncStatusMsg(QSyncStatusMsg qSyncStatusMsg) {
+      this.qSyncStatusMsg = qSyncStatusMsg;
+      return this;
+    }
+
+    /**
+     * 一唱到底：轮次结束
+     */
+    public Builder setQRoundOverMsg(QRoundOverMsg qRoundOverMsg) {
+      this.qRoundOverMsg = qRoundOverMsg;
+      return this;
+    }
+
+    /**
+     * 一唱到底：最后轮次结束，即游戏结束，游戏结果数据
+     */
+    public Builder setQRoundAndGameOverMsg(QRoundAndGameOverMsg qRoundAndGameOverMsg) {
+      this.qRoundAndGameOverMsg = qRoundAndGameOverMsg;
+      return this;
+    }
+
+    /**
+     * 一唱到底：演唱不通过，即灭灯
+     */
+    public Builder setQNoPassSingMsg(QNoPassSingMsg qNoPassSingMsg) {
+      this.qNoPassSingMsg = qNoPassSingMsg;
+      return this;
+    }
+
+    /**
+     * 一唱到底：退出游戏
+     */
+    public Builder setQExitGameMsg(QExitGameMsg qExitGameMsg) {
+      this.qExitGameMsg = qExitGameMsg;
+      return this;
+    }
+
     @Override
     public RoomMsg build() {
-      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, super.buildUnknownFields());
+      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, super.buildUnknownFields());
     }
   }
 
@@ -1000,6 +1294,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           + ExitGameOutRoundMsg.ADAPTER.encodedSizeWithTag(109, value.exitGameOutRoundMsg)
           + VoteResultMsg.ADAPTER.encodedSizeWithTag(110, value.voteResultMsg)
           + MachineScore.ADAPTER.encodedSizeWithTag(111, value.machineScore)
+          + QWantSingChanceMsg.ADAPTER.encodedSizeWithTag(112, value.qWantSingChanceMsg)
+          + QGetSingChanceMsg.ADAPTER.encodedSizeWithTag(113, value.qGetSingChanceMsg)
+          + QSyncStatusMsg.ADAPTER.encodedSizeWithTag(114, value.qSyncStatusMsg)
+          + QRoundOverMsg.ADAPTER.encodedSizeWithTag(115, value.qRoundOverMsg)
+          + QRoundAndGameOverMsg.ADAPTER.encodedSizeWithTag(116, value.qRoundAndGameOverMsg)
+          + QNoPassSingMsg.ADAPTER.encodedSizeWithTag(117, value.qNoPassSingMsg)
+          + QExitGameMsg.ADAPTER.encodedSizeWithTag(118, value.qExitGameMsg)
           + value.unknownFields().size();
     }
 
@@ -1026,6 +1327,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       ExitGameOutRoundMsg.ADAPTER.encodeWithTag(writer, 109, value.exitGameOutRoundMsg);
       VoteResultMsg.ADAPTER.encodeWithTag(writer, 110, value.voteResultMsg);
       MachineScore.ADAPTER.encodeWithTag(writer, 111, value.machineScore);
+      QWantSingChanceMsg.ADAPTER.encodeWithTag(writer, 112, value.qWantSingChanceMsg);
+      QGetSingChanceMsg.ADAPTER.encodeWithTag(writer, 113, value.qGetSingChanceMsg);
+      QSyncStatusMsg.ADAPTER.encodeWithTag(writer, 114, value.qSyncStatusMsg);
+      QRoundOverMsg.ADAPTER.encodeWithTag(writer, 115, value.qRoundOverMsg);
+      QRoundAndGameOverMsg.ADAPTER.encodeWithTag(writer, 116, value.qRoundAndGameOverMsg);
+      QNoPassSingMsg.ADAPTER.encodeWithTag(writer, 117, value.qNoPassSingMsg);
+      QExitGameMsg.ADAPTER.encodeWithTag(writer, 118, value.qExitGameMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1070,6 +1378,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           case 109: builder.setExitGameOutRoundMsg(ExitGameOutRoundMsg.ADAPTER.decode(reader)); break;
           case 110: builder.setVoteResultMsg(VoteResultMsg.ADAPTER.decode(reader)); break;
           case 111: builder.setMachineScore(MachineScore.ADAPTER.decode(reader)); break;
+          case 112: builder.setQWantSingChanceMsg(QWantSingChanceMsg.ADAPTER.decode(reader)); break;
+          case 113: builder.setQGetSingChanceMsg(QGetSingChanceMsg.ADAPTER.decode(reader)); break;
+          case 114: builder.setQSyncStatusMsg(QSyncStatusMsg.ADAPTER.decode(reader)); break;
+          case 115: builder.setQRoundOverMsg(QRoundOverMsg.ADAPTER.decode(reader)); break;
+          case 116: builder.setQRoundAndGameOverMsg(QRoundAndGameOverMsg.ADAPTER.decode(reader)); break;
+          case 117: builder.setQNoPassSingMsg(QNoPassSingMsg.ADAPTER.decode(reader)); break;
+          case 118: builder.setQExitGameMsg(QExitGameMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1100,6 +1415,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       if (builder.exitGameOutRoundMsg != null) builder.exitGameOutRoundMsg = ExitGameOutRoundMsg.ADAPTER.redact(builder.exitGameOutRoundMsg);
       if (builder.voteResultMsg != null) builder.voteResultMsg = VoteResultMsg.ADAPTER.redact(builder.voteResultMsg);
       if (builder.machineScore != null) builder.machineScore = MachineScore.ADAPTER.redact(builder.machineScore);
+      if (builder.qWantSingChanceMsg != null) builder.qWantSingChanceMsg = QWantSingChanceMsg.ADAPTER.redact(builder.qWantSingChanceMsg);
+      if (builder.qGetSingChanceMsg != null) builder.qGetSingChanceMsg = QGetSingChanceMsg.ADAPTER.redact(builder.qGetSingChanceMsg);
+      if (builder.qSyncStatusMsg != null) builder.qSyncStatusMsg = QSyncStatusMsg.ADAPTER.redact(builder.qSyncStatusMsg);
+      if (builder.qRoundOverMsg != null) builder.qRoundOverMsg = QRoundOverMsg.ADAPTER.redact(builder.qRoundOverMsg);
+      if (builder.qRoundAndGameOverMsg != null) builder.qRoundAndGameOverMsg = QRoundAndGameOverMsg.ADAPTER.redact(builder.qRoundAndGameOverMsg);
+      if (builder.qNoPassSingMsg != null) builder.qNoPassSingMsg = QNoPassSingMsg.ADAPTER.redact(builder.qNoPassSingMsg);
+      if (builder.qExitGameMsg != null) builder.qExitGameMsg = QExitGameMsg.ADAPTER.redact(builder.qExitGameMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

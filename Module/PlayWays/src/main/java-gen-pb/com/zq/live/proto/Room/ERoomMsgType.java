@@ -92,6 +92,41 @@ public enum ERoomMsgType implements WireEnum {
   RM_ROUND_MACHINE_SCORE(111),
 
   /**
+   * 一唱到底：想唱消息
+   */
+  RM_Q_WANT_SING_CHANCE(112),
+
+  /**
+   * 一唱到底：获得轮次机会
+   */
+  RM_Q_GET_SING_CHANCE(113),
+
+  /**
+   * 一唱到底：同步状态
+   */
+  RM_Q_SYNC_STATUS(114),
+
+  /**
+   * 一唱到底：轮次结束
+   */
+  RM_Q_ROUND_OVER(115),
+
+  /**
+   * 一唱到底：最后轮次结束，即游戏结束，游戏结果数据
+   */
+  RM_Q_ROUND_AND_GAME_OVER(116),
+
+  /**
+   * 一唱到底：演唱不通过，即灭灯
+   */
+  RM_Q_NO_PASS_SING(117),
+
+  /**
+   * 一唱到底：退出游戏
+   */
+  RM_Q_EXIT_GAME(118),
+
+  /**
    * 告知伴奏开始
    */
   RM_ROUND_ACC_BEGIN(190);
@@ -125,6 +160,13 @@ public enum ERoomMsgType implements WireEnum {
       case 109: return RM_EXIT_GAME_OUT_ROUND;
       case 110: return RM_VOTE_RESULT;
       case 111: return RM_ROUND_MACHINE_SCORE;
+      case 112: return RM_Q_WANT_SING_CHANCE;
+      case 113: return RM_Q_GET_SING_CHANCE;
+      case 114: return RM_Q_SYNC_STATUS;
+      case 115: return RM_Q_ROUND_OVER;
+      case 116: return RM_Q_ROUND_AND_GAME_OVER;
+      case 117: return RM_Q_NO_PASS_SING;
+      case 118: return RM_Q_EXIT_GAME;
       case 190: return RM_ROUND_ACC_BEGIN;
       default: return null;
     }
