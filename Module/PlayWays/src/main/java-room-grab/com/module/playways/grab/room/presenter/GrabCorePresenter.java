@@ -19,16 +19,22 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.playways.RoomData;
+import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.inter.IGrabView;
-import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
+import com.module.playways.rank.msg.event.QExitGameMsgEvent;
+import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
+import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
+import com.module.playways.rank.msg.event.QRoundAndGameOverMsgEvent;
+import com.module.playways.rank.msg.event.QRoundOverMsgEvent;
+import com.module.playways.rank.msg.event.QSyncStatusMsgEvent;
+import com.module.playways.rank.msg.event.QWantSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RankDataUtils;
@@ -57,9 +63,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     RoomData mRoomData;
 
-    RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
-
-    HandlerTaskTimer mHeartBeatTask;
+    GrabRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
 
     HandlerTaskTimer mSyncGameStateTask;
 
@@ -101,7 +105,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void destroy() {
         super.destroy();
         exitGame();
-        cancelHeartBeatTask("destroy");
+
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -140,27 +144,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         int finalRoundSeq = roundSeq;
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    MyLog.w(TAG, "演唱结束上报成功 traceid is " + result.getTraceId());
-                    // 尝试自己切换到下一个轮次
-//                    if (finalRoundSeq >= 0) {
-//                        RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
-//                        mRoomData.setExpectRoundInfo(roundInfoModel);
-//                        mRoomData.checkRound();
-//                    }
-                } else {
-                    MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.w(TAG, "sendRoundOverInfo" + " error " + e);
-            }
-        }, this);
+//        ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                if (result.getErrno() == 0) {
+//                    MyLog.w(TAG, "演唱结束上报成功 traceid is " + result.getTraceId());
+//                    // 尝试自己切换到下一个轮次
+////                    if (finalRoundSeq >= 0) {
+////                        RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
+////                        mRoomData.setExpectRoundInfo(roundInfoModel);
+////                        mRoomData.checkRound();
+////                    }
+//                } else {
+//                    MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.getTraceId());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                MyLog.w(TAG, "sendRoundOverInfo" + " error " + e);
+//            }
+//        }, this);
     }
 
     /**
@@ -204,54 +208,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void onError(Throwable e) {
                 MyLog.e(TAG, "swapGame error " + e);
-            }
-        }, this);
-    }
-
-    /**
-     * 心跳相关
-     */
-    public void startHeartBeatTask() {
-        cancelHeartBeatTask("startHeartBeatTask");
-        mHeartBeatTask = HandlerTaskTimer.newBuilder()
-                .interval(sHeartBeatTaskInterval)
-                .take(-1)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        sendHeartBeat();
-                    }
-                });
-    }
-
-    public void cancelHeartBeatTask(String from) {
-        MyLog.w(TAG, "取消心跳，是从 " + from);
-        if (mHeartBeatTask != null) {
-            mHeartBeatTask.dispose();
-        }
-    }
-
-    // 上报心跳，只有当前演唱者上报 2s一次
-    public void sendHeartBeat() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mRoomData.getGameId());
-        map.put("userID", MyUserInfoManager.getInstance().getUid());
-
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.sendHeartBeat(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    // TODO: 2018/12/13  当前postman返回的为空 待补充
-                    MyLog.w(TAG, "心跳ok, traceid is " + result.getTraceId());
-                } else {
-                    MyLog.w(TAG, "心跳失败 traceid is " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.w(TAG, "心跳错误" + e);
             }
         }, this);
     }
@@ -368,6 +324,26 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QExitGameMsgEvent event) {}
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QGetSingChanceMsgEvent event) {}
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QNoPassSingMsgEvent event) {}
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QRoundAndGameOverMsgEvent event) {}
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QRoundOverMsgEvent event) {}
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QSyncStatusMsgEvent event) {}
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QWantSingChanceMsgEvent event) {}
 
     /**
      * 轮次信息有更新
@@ -378,12 +354,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "开始切换唱将 myturn=" + event.myturn);
         estimateOverTsThisRound();
         if (event.myturn) {
-            // 轮到我唱了
-            // 开始发心跳
-            if (U.getActivityUtils().isAppForeground()) {
-                startHeartBeatTask();
-            }
-
             mUiHanlder.post(new Runnable() {
                 @Override
                 public void run() {
@@ -414,7 +384,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             MyLog.w(TAG, "不是我的轮次，停止发心跳，停止混音，闭麦");
-            cancelHeartBeatTask("切换唱将");
             EngineManager.getInstance().stopAudioMixing();
             EngineManager.getInstance().muteLocalAudioStream(true);
             // 收到其他的人onMute消息 开始播放其他人的歌的歌词，应该提前下载好
@@ -465,7 +434,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private void gameIsFinish() {
         mRoomData.setIsGameFinish(true);
-        cancelHeartBeatTask("gameIsFinish");
         cancelSyncGameStateTask();
     }
 
@@ -602,12 +570,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    // 应用进程切到后台通知
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(AppSwapEvent appSwapEvent) {
-        MyLog.w(TAG, "onEventMainThread syncStatusEvent");
-    }
-
     // 长连接 状态同步信令， 以11秒为单位检测
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SyncStatusEvent syncStatusEvent) {
@@ -637,12 +599,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         swapGame(!event.foreground, event.foreground);
         if (mRoomData.getRealRoundInfo() != null
                 && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
-            if (event.foreground) {
-                startHeartBeatTask();
-            } else {
-                cancelHeartBeatTask("前后台切换");
-            }
         }
     }
-
 }

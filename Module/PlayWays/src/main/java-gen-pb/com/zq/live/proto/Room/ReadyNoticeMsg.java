@@ -78,19 +78,31 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
   )
   public final GameStartInfo gameStartInfo;
 
+  /**
+   * 一场到底轮次信息
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<QRoundInfo> qRoundInfo;
+
   public ReadyNoticeMsg(List<ReadyInfo> readyInfo, Integer hasReadyedUserCnt, Boolean isGameStart,
-      List<RoundInfo> roundInfo, GameStartInfo gameStartInfo) {
-    this(readyInfo, hasReadyedUserCnt, isGameStart, roundInfo, gameStartInfo, ByteString.EMPTY);
+      List<RoundInfo> roundInfo, GameStartInfo gameStartInfo, List<QRoundInfo> qRoundInfo) {
+    this(readyInfo, hasReadyedUserCnt, isGameStart, roundInfo, gameStartInfo, qRoundInfo, ByteString.EMPTY);
   }
 
   public ReadyNoticeMsg(List<ReadyInfo> readyInfo, Integer hasReadyedUserCnt, Boolean isGameStart,
-      List<RoundInfo> roundInfo, GameStartInfo gameStartInfo, ByteString unknownFields) {
+      List<RoundInfo> roundInfo, GameStartInfo gameStartInfo, List<QRoundInfo> qRoundInfo,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.readyInfo = Internal.immutableCopyOf("readyInfo", readyInfo);
     this.hasReadyedUserCnt = hasReadyedUserCnt;
     this.isGameStart = isGameStart;
     this.roundInfo = Internal.immutableCopyOf("roundInfo", roundInfo);
     this.gameStartInfo = gameStartInfo;
+    this.qRoundInfo = Internal.immutableCopyOf("qRoundInfo", qRoundInfo);
   }
 
   @Override
@@ -101,6 +113,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     builder.isGameStart = isGameStart;
     builder.roundInfo = Internal.copyOf("roundInfo", roundInfo);
     builder.gameStartInfo = gameStartInfo;
+    builder.qRoundInfo = Internal.copyOf("qRoundInfo", qRoundInfo);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -115,7 +128,8 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
         && Internal.equals(hasReadyedUserCnt, o.hasReadyedUserCnt)
         && Internal.equals(isGameStart, o.isGameStart)
         && roundInfo.equals(o.roundInfo)
-        && Internal.equals(gameStartInfo, o.gameStartInfo);
+        && Internal.equals(gameStartInfo, o.gameStartInfo)
+        && qRoundInfo.equals(o.qRoundInfo);
   }
 
   @Override
@@ -128,6 +142,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       result = result * 37 + (isGameStart != null ? isGameStart.hashCode() : 0);
       result = result * 37 + roundInfo.hashCode();
       result = result * 37 + (gameStartInfo != null ? gameStartInfo.hashCode() : 0);
+      result = result * 37 + qRoundInfo.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -141,6 +156,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     if (isGameStart != null) builder.append(", isGameStart=").append(isGameStart);
     if (!roundInfo.isEmpty()) builder.append(", roundInfo=").append(roundInfo);
     if (gameStartInfo != null) builder.append(", gameStartInfo=").append(gameStartInfo);
+    if (!qRoundInfo.isEmpty()) builder.append(", qRoundInfo=").append(qRoundInfo);
     return builder.replace(0, 2, "ReadyNoticeMsg{").append('}').toString();
   }
 
@@ -205,6 +221,16 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
   }
 
   /**
+   * 一场到底轮次信息
+   */
+  public List<QRoundInfo> getQRoundInfoList() {
+    if(qRoundInfo==null){
+        return new java.util.ArrayList<QRoundInfo>();
+    }
+    return qRoundInfo;
+  }
+
+  /**
    * 准备信息
    */
   public boolean hasReadyInfoList() {
@@ -239,6 +265,13 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
     return gameStartInfo!=null;
   }
 
+  /**
+   * 一场到底轮次信息
+   */
+  public boolean hasQRoundInfoList() {
+    return qRoundInfo!=null;
+  }
+
   public static final class Builder extends Message.Builder<ReadyNoticeMsg, Builder> {
     public List<ReadyInfo> readyInfo;
 
@@ -250,9 +283,12 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
 
     public GameStartInfo gameStartInfo;
 
+    public List<QRoundInfo> qRoundInfo;
+
     public Builder() {
       readyInfo = Internal.newMutableList();
       roundInfo = Internal.newMutableList();
+      qRoundInfo = Internal.newMutableList();
     }
 
     /**
@@ -297,9 +333,18 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       return this;
     }
 
+    /**
+     * 一场到底轮次信息
+     */
+    public Builder addAllQRoundInfo(List<QRoundInfo> qRoundInfo) {
+      Internal.checkElementsNotNull(qRoundInfo);
+      this.qRoundInfo = qRoundInfo;
+      return this;
+    }
+
     @Override
     public ReadyNoticeMsg build() {
-      return new ReadyNoticeMsg(readyInfo, hasReadyedUserCnt, isGameStart, roundInfo, gameStartInfo, super.buildUnknownFields());
+      return new ReadyNoticeMsg(readyInfo, hasReadyedUserCnt, isGameStart, roundInfo, gameStartInfo, qRoundInfo, super.buildUnknownFields());
     }
   }
 
@@ -315,6 +360,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
           + ProtoAdapter.BOOL.encodedSizeWithTag(3, value.isGameStart)
           + RoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.roundInfo)
           + GameStartInfo.ADAPTER.encodedSizeWithTag(5, value.gameStartInfo)
+          + QRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(6, value.qRoundInfo)
           + value.unknownFields().size();
     }
 
@@ -325,6 +371,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       ProtoAdapter.BOOL.encodeWithTag(writer, 3, value.isGameStart);
       RoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.roundInfo);
       GameStartInfo.ADAPTER.encodeWithTag(writer, 5, value.gameStartInfo);
+      QRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.qRoundInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -339,6 +386,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
           case 3: builder.setIsGameStart(ProtoAdapter.BOOL.decode(reader)); break;
           case 4: builder.roundInfo.add(RoundInfo.ADAPTER.decode(reader)); break;
           case 5: builder.setGameStartInfo(GameStartInfo.ADAPTER.decode(reader)); break;
+          case 6: builder.qRoundInfo.add(QRoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -356,6 +404,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       Internal.redactElements(builder.readyInfo, ReadyInfo.ADAPTER);
       Internal.redactElements(builder.roundInfo, RoundInfo.ADAPTER);
       if (builder.gameStartInfo != null) builder.gameStartInfo = GameStartInfo.ADAPTER.redact(builder.gameStartInfo);
+      Internal.redactElements(builder.qRoundInfo, QRoundInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

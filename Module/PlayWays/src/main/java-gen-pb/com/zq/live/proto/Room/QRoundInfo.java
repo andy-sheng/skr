@@ -22,9 +22,9 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
   private static final long serialVersionUID = 0L;
 
-  public static final Integer DEFAULT_USERID = 0;
+  public static final EQRoundStatus DEFAULT_STATUS = EQRoundStatus.QRS_UNKNOWN;
 
-  public static final Integer DEFAULT_PLAYBOOKID = 0;
+  public static final Integer DEFAULT_USERID = 0;
 
   public static final Integer DEFAULT_ROUNDSEQ = 0;
 
@@ -37,22 +37,22 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   public static final Integer DEFAULT_SINGENDMS = 0;
 
   /**
-   * 玩家id
+   * 轮次状态
    */
   @WireField(
       tag = 1,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.zq.live.proto.Room.EQRoundStatus#ADAPTER"
   )
-  public final Integer userID;
+  public final EQRoundStatus status;
 
   /**
-   * 曲库id
+   * 玩家id
    */
   @WireField(
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer playbookID;
+  public final Integer userID;
 
   /**
    * 轮次顺序
@@ -99,16 +99,16 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   )
   public final Integer singEndMs;
 
-  public QRoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer introBeginMs,
+  public QRoundInfo(EQRoundStatus status, Integer userID, Integer roundSeq, Integer introBeginMs,
       Integer introEndMs, Integer singBeginMs, Integer singEndMs) {
-    this(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, ByteString.EMPTY);
+    this(status, userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, ByteString.EMPTY);
   }
 
-  public QRoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer introBeginMs,
+  public QRoundInfo(EQRoundStatus status, Integer userID, Integer roundSeq, Integer introBeginMs,
       Integer introEndMs, Integer singBeginMs, Integer singEndMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
+    this.status = status;
     this.userID = userID;
-    this.playbookID = playbookID;
     this.roundSeq = roundSeq;
     this.introBeginMs = introBeginMs;
     this.introEndMs = introEndMs;
@@ -119,8 +119,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
+    builder.status = status;
     builder.userID = userID;
-    builder.playbookID = playbookID;
     builder.roundSeq = roundSeq;
     builder.introBeginMs = introBeginMs;
     builder.introEndMs = introEndMs;
@@ -136,8 +136,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     if (!(other instanceof QRoundInfo)) return false;
     QRoundInfo o = (QRoundInfo) other;
     return unknownFields().equals(o.unknownFields())
+        && Internal.equals(status, o.status)
         && Internal.equals(userID, o.userID)
-        && Internal.equals(playbookID, o.playbookID)
         && Internal.equals(roundSeq, o.roundSeq)
         && Internal.equals(introBeginMs, o.introBeginMs)
         && Internal.equals(introEndMs, o.introEndMs)
@@ -150,8 +150,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     int result = super.hashCode;
     if (result == 0) {
       result = unknownFields().hashCode();
+      result = result * 37 + (status != null ? status.hashCode() : 0);
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
-      result = result * 37 + (playbookID != null ? playbookID.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
       result = result * 37 + (introBeginMs != null ? introBeginMs.hashCode() : 0);
       result = result * 37 + (introEndMs != null ? introEndMs.hashCode() : 0);
@@ -165,8 +165,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
+    if (status != null) builder.append(", status=").append(status);
     if (userID != null) builder.append(", userID=").append(userID);
-    if (playbookID != null) builder.append(", playbookID=").append(playbookID);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (introBeginMs != null) builder.append(", introBeginMs=").append(introBeginMs);
     if (introEndMs != null) builder.append(", introEndMs=").append(introEndMs);
@@ -186,6 +186,16 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
+   * 轮次状态
+   */
+  public EQRoundStatus getStatus() {
+    if(status==null){
+        return new EQRoundStatus.Builder().build();
+    }
+    return status;
+  }
+
+  /**
    * 玩家id
    */
   public Integer getUserID() {
@@ -193,16 +203,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
         return DEFAULT_USERID;
     }
     return userID;
-  }
-
-  /**
-   * 曲库id
-   */
-  public Integer getPlaybookID() {
-    if(playbookID==null){
-        return DEFAULT_PLAYBOOKID;
-    }
-    return playbookID;
   }
 
   /**
@@ -256,17 +256,17 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
+   * 轮次状态
+   */
+  public boolean hasStatus() {
+    return status!=null;
+  }
+
+  /**
    * 玩家id
    */
   public boolean hasUserID() {
     return userID!=null;
-  }
-
-  /**
-   * 曲库id
-   */
-  public boolean hasPlaybookID() {
-    return playbookID!=null;
   }
 
   /**
@@ -305,9 +305,9 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<QRoundInfo, Builder> {
-    public Integer userID;
+    public EQRoundStatus status;
 
-    public Integer playbookID;
+    public Integer userID;
 
     public Integer roundSeq;
 
@@ -323,18 +323,18 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     }
 
     /**
-     * 玩家id
+     * 轮次状态
      */
-    public Builder setUserID(Integer userID) {
-      this.userID = userID;
+    public Builder setStatus(EQRoundStatus status) {
+      this.status = status;
       return this;
     }
 
     /**
-     * 曲库id
+     * 玩家id
      */
-    public Builder setPlaybookID(Integer playbookID) {
-      this.playbookID = playbookID;
+    public Builder setUserID(Integer userID) {
+      this.userID = userID;
       return this;
     }
 
@@ -380,7 +380,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
     @Override
     public QRoundInfo build() {
-      return new QRoundInfo(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, super.buildUnknownFields());
+      return new QRoundInfo(status, userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, super.buildUnknownFields());
     }
   }
 
@@ -391,8 +391,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
     @Override
     public int encodedSize(QRoundInfo value) {
-      return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.playbookID)
+      return EQRoundStatus.ADAPTER.encodedSizeWithTag(1, value.status)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.roundSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.introBeginMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.introEndMs)
@@ -403,8 +403,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
     @Override
     public void encode(ProtoWriter writer, QRoundInfo value) throws IOException {
-      ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.playbookID);
+      EQRoundStatus.ADAPTER.encodeWithTag(writer, 1, value.status);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.roundSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.introBeginMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.introEndMs);
@@ -419,8 +419,15 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
-          case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setPlaybookID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 1: {
+            try {
+              builder.setStatus(EQRoundStatus.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 2: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.setIntroBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.setIntroEndMs(ProtoAdapter.UINT32.decode(reader)); break;

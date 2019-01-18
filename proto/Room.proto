@@ -87,8 +87,9 @@ message QWantSingChanceMsg
 
 message QGetSingChanceMsg
 {
-    uint32 userID   = 1; // 用户id
-    uint32 roundSeq = 2; // 轮次顺序
+    uint32 userID           = 1; // 用户id
+    uint32 roundSeq         = 2; // 轮次顺序
+    QRoundInfo currentRound = 3; //当前轮次信息
 }
 
 message QSyncStatusMsg
@@ -101,21 +102,32 @@ message QSyncStatusMsg
 
 message QRoundOverMsg
 {
-    sint64 roundOverTimeMs      = 1; //本轮次结束的毫秒时间戳
-    uint32 exitUserID           = 2; //退出用户的ID
-    QRoundOverReason overReason = 3; //切换轮次原因
-    QRoundInfo nextRound        = 4; //下个轮次信息
+    sint64 roundOverTimeMs       = 1; //本轮次结束的毫秒时间戳
+    uint32 exitUserID            = 2; //退出用户的ID
+    EQRoundOverReason overReason = 3; //切换轮次原因
+    EQRoundResultType resultType = 4; //演唱结果信息
+    QRoundInfo nextRound         = 5; //下个轮次信息
 }
 
 message QRoundAndGameOverMsg
 {
     sint64 roundOverTimeMs          = 1; //本轮次结束的毫秒时间戳
     uint32 exitUserID               = 2; //退出用户的ID
-    QRoundOverReason overReason     = 3; //切换轮次原因
-    repeated QResultInfo resultInfo = 4; //结果信息
+    EQRoundOverReason overReason    = 3; //切换轮次原因
+    EQRoundResultType resultType    = 4; //演唱结果信息
+    repeated QResultInfo resultInfo = 5; //最终结果信息
 }
 
-enum QRoundOverReason {
+enum EQRoundResultType {
+    ROT_UNKNOWN = 0; //未知
+    ROT_TYPE_1  = 1; //有种结束叫刚刚开始（t<30%）
+    ROT_TYPE_2  = 2; //有份悲伤叫都没及格(30%<=t <60%)
+    ROT_TYPE_3  = 3; //有种遗憾叫明明可以（60%<=t<90%）
+    ROT_TYPE_4  = 4; //有种可惜叫我觉得你行（90%<=t<=100%)
+    ROT_TYPE_5  = 5; //有种优秀叫一唱到底（全部唱完）
+}
+
+enum EQRoundOverReason {
     ROR_UNKNOWN              = 0; //未知
     ROR_LAST_ROUND_OVER      = 1; //上个轮次结束
     ROR_NO_ONE_SING          = 2; //没人抢唱
@@ -294,15 +306,21 @@ message RoundInfo
     uint32 singEndMs   = 5; //演唱结束相对时间（相对于startTimeMs时间）
 }
 
+enum EQRoundStatus {
+    QRS_UNKNOWN = 0; //轮次状态位置
+    QRS_INTRO   = 1; //轮次进入导唱阶段
+    QRS_SING    = 2; //轮次进入演唱阶段
+}
+
 message QRoundInfo
 {
-    uint32 userID       = 1; //玩家id
-    uint32 playbookID   = 2; //曲库id
-    uint32 roundSeq     = 3; //轮次顺序
-    uint32 introBeginMs = 4; //导唱开始相对时间（相对于startTimeMs时间）
-    uint32 introEndMs   = 5; //导唱结束相对时间（相对于startTimeMs时间）
-    uint32 singBeginMs  = 6; //演唱开始相对时间（相对于startTimeMs时间）
-    uint32 singEndMs    = 7; //演唱结束相对时间（相对于startTimeMs时间）
+    EQRoundStatus status = 1; //轮次状态
+    uint32 userID        = 2; //玩家id
+    uint32 roundSeq      = 3; //轮次顺序
+    uint32 introBeginMs  = 4; //导唱开始相对时间（相对于startTimeMs时间）
+    uint32 introEndMs    = 5; //导唱结束相对时间（相对于startTimeMs时间）
+    uint32 singBeginMs   = 6; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs     = 7; //演唱结束相对时间（相对于startTimeMs时间）
 }
 
 message ReadyInfo
@@ -327,11 +345,12 @@ message GameStartInfo
 // 准备游戏通知消息
 message ReadyNoticeMsg
 {
-    repeated ReadyInfo readyInfo = 1; //准备信息
-    sint32 hasReadyedUserCnt     = 2; //已经准备人数
-    bool isGameStart             = 3; //游戏是否开始
-    repeated RoundInfo roundInfo = 4; //轮次信息
-    GameStartInfo gameStartInfo  = 5; // 游戏信息
+    repeated ReadyInfo readyInfo   = 1; //准备信息
+    sint32 hasReadyedUserCnt       = 2; //已经准备人数
+    bool isGameStart               = 3; //游戏是否开始
+    repeated RoundInfo roundInfo   = 4; //轮次信息
+    GameStartInfo gameStartInfo    = 5; //游戏信息
+    repeated QRoundInfo qRoundInfo = 6; //一场到底轮次信息
 }
 
 // 游戏轮次结束通知消息

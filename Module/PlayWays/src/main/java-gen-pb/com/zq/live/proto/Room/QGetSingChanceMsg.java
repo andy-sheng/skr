@@ -44,14 +44,25 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
   )
   public final Integer roundSeq;
 
-  public QGetSingChanceMsg(Integer userID, Integer roundSeq) {
-    this(userID, roundSeq, ByteString.EMPTY);
+  /**
+   * 当前轮次信息
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
+  )
+  public final QRoundInfo currentRound;
+
+  public QGetSingChanceMsg(Integer userID, Integer roundSeq, QRoundInfo currentRound) {
+    this(userID, roundSeq, currentRound, ByteString.EMPTY);
   }
 
-  public QGetSingChanceMsg(Integer userID, Integer roundSeq, ByteString unknownFields) {
+  public QGetSingChanceMsg(Integer userID, Integer roundSeq, QRoundInfo currentRound,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.roundSeq = roundSeq;
+    this.currentRound = currentRound;
   }
 
   @Override
@@ -59,6 +70,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
     Builder builder = new Builder();
     builder.userID = userID;
     builder.roundSeq = roundSeq;
+    builder.currentRound = currentRound;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -70,7 +82,8 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
     QGetSingChanceMsg o = (QGetSingChanceMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
-        && Internal.equals(roundSeq, o.roundSeq);
+        && Internal.equals(roundSeq, o.roundSeq)
+        && Internal.equals(currentRound, o.currentRound);
   }
 
   @Override
@@ -80,6 +93,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
+      result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -90,6 +104,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
+    if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     return builder.replace(0, 2, "QGetSingChanceMsg{").append('}').toString();
   }
 
@@ -124,6 +139,16 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
   }
 
   /**
+   * 当前轮次信息
+   */
+  public QRoundInfo getCurrentRound() {
+    if(currentRound==null){
+        return new QRoundInfo.Builder().build();
+    }
+    return currentRound;
+  }
+
+  /**
    * 用户id
    */
   public boolean hasUserID() {
@@ -137,10 +162,19 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
     return roundSeq!=null;
   }
 
+  /**
+   * 当前轮次信息
+   */
+  public boolean hasCurrentRound() {
+    return currentRound!=null;
+  }
+
   public static final class Builder extends Message.Builder<QGetSingChanceMsg, Builder> {
     public Integer userID;
 
     public Integer roundSeq;
+
+    public QRoundInfo currentRound;
 
     public Builder() {
     }
@@ -161,9 +195,17 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
       return this;
     }
 
+    /**
+     * 当前轮次信息
+     */
+    public Builder setCurrentRound(QRoundInfo currentRound) {
+      this.currentRound = currentRound;
+      return this;
+    }
+
     @Override
     public QGetSingChanceMsg build() {
-      return new QGetSingChanceMsg(userID, roundSeq, super.buildUnknownFields());
+      return new QGetSingChanceMsg(userID, roundSeq, currentRound, super.buildUnknownFields());
     }
   }
 
@@ -176,6 +218,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
     public int encodedSize(QGetSingChanceMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roundSeq)
+          + QRoundInfo.ADAPTER.encodedSizeWithTag(3, value.currentRound)
           + value.unknownFields().size();
     }
 
@@ -183,6 +226,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
     public void encode(ProtoWriter writer, QGetSingChanceMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roundSeq);
+      QRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.currentRound);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -194,6 +238,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setCurrentRound(QRoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -208,6 +253,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
     @Override
     public QGetSingChanceMsg redact(QGetSingChanceMsg value) {
       Builder builder = value.newBuilder();
+      if (builder.currentRound != null) builder.currentRound = QRoundInfo.ADAPTER.redact(builder.currentRound);
       builder.clearUnknownFields();
       return builder.build();
     }

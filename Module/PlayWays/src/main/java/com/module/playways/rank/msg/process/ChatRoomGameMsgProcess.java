@@ -2,28 +2,33 @@ package com.module.playways.rank.msg.process;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.module.playways.rank.msg.event.AccBeginEvent;
-import com.module.playways.rank.msg.event.ExitGameEvent;
-import com.module.playways.rank.msg.event.MachineScoreEvent;
-import com.module.playways.rank.msg.event.SyncStatusEvent;
-import com.module.playways.rank.msg.event.VoteResultEvent;
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.msg.event.AccBeginEvent;
 import com.module.playways.rank.msg.event.AppSwapEvent;
+import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.msg.event.JoinNoticeEvent;
+import com.module.playways.rank.msg.event.MachineScoreEvent;
+import com.module.playways.rank.msg.event.QExitGameMsgEvent;
+import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
+import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
+import com.module.playways.rank.msg.event.QRoundAndGameOverMsgEvent;
+import com.module.playways.rank.msg.event.QRoundOverMsgEvent;
+import com.module.playways.rank.msg.event.QSyncStatusMsgEvent;
+import com.module.playways.rank.msg.event.QWantSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.ReadyNoticeEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
+import com.module.playways.rank.msg.event.SyncStatusEvent;
+import com.module.playways.rank.msg.event.VoteResultEvent;
 import com.module.playways.rank.prepare.model.GameInfoModel;
 import com.module.playways.rank.prepare.model.GameReadyModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-
+import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
 import com.module.playways.rank.room.scoremodel.UserScoreModel;
-
-import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
@@ -35,6 +40,13 @@ import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinNoticeMsg;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.OnlineInfo;
+import com.zq.live.proto.Room.QExitGameMsg;
+import com.zq.live.proto.Room.QGetSingChanceMsg;
+import com.zq.live.proto.Room.QNoPassSingMsg;
+import com.zq.live.proto.Room.QRoundAndGameOverMsg;
+import com.zq.live.proto.Room.QRoundOverMsg;
+import com.zq.live.proto.Room.QSyncStatusMsg;
+import com.zq.live.proto.Room.QWantSingChanceMsg;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
@@ -85,6 +97,20 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processMachineScore(basePushInfo, msg.getMachineScore());
         }else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_ACC_BEGIN) {
             processAccBeigin(basePushInfo);
+        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_WANT_SING_CHANCE) {
+            processQWantSingChanceMsg(basePushInfo, msg.getQWantSingChanceMsg());
+        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_GET_SING_CHANCE) {
+            processQGetSingChanceMsg(basePushInfo, msg.getQGetSingChanceMsg());
+        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_SYNC_STATUS) {
+            processQSyncStatusMsg(basePushInfo, msg.getQSyncStatusMsg());
+        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_ROUND_OVER) {
+            processQRoundOverMsg(basePushInfo, msg.getQRoundOverMsg());
+        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER) {
+            processQRoundAndGameOverMsg(basePushInfo, msg.getQRoundAndGameOverMsg());
+        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_NO_PASS_SING) {
+            processQNoPassSingMsg(basePushInfo, msg.getQNoPassSingMsg());
+        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_EXIT_GAME) {
+            processQExitGameMsg(basePushInfo, msg.getQExitGameMsg());
         }
     }
 
@@ -327,6 +353,49 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         MachineScoreEvent machineScoreEvent = new MachineScoreEvent(basePushInfo, machineScore.userID, machineScore.no, machineScore.score);
         EventBus.getDefault().post(machineScoreEvent);
     }
+
+    private void processQWantSingChanceMsg(BasePushInfo basePushInfo, QWantSingChanceMsg qWantSingChanceMsg) {
+
+        QWantSingChanceMsgEvent machineScoreEvent = new QWantSingChanceMsgEvent(basePushInfo, qWantSingChanceMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
+    private void processQGetSingChanceMsg(BasePushInfo basePushInfo, QGetSingChanceMsg qGetSingChanceMsg) {
+
+        QGetSingChanceMsgEvent machineScoreEvent = new QGetSingChanceMsgEvent(basePushInfo, qGetSingChanceMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
+    private void processQSyncStatusMsg(BasePushInfo basePushInfo, QSyncStatusMsg qSyncStatusMsg) {
+
+        QSyncStatusMsgEvent machineScoreEvent = new QSyncStatusMsgEvent(basePushInfo, qSyncStatusMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
+    private void processQRoundOverMsg(BasePushInfo basePushInfo, QRoundOverMsg qRoundOverMsg) {
+
+        QRoundOverMsgEvent machineScoreEvent = new QRoundOverMsgEvent(basePushInfo, qRoundOverMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
+    private void processQRoundAndGameOverMsg(BasePushInfo basePushInfo, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
+
+        QRoundAndGameOverMsgEvent machineScoreEvent = new QRoundAndGameOverMsgEvent(basePushInfo, qRoundAndGameOverMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
+    private void processQNoPassSingMsg(BasePushInfo basePushInfo, QNoPassSingMsg qNoPassSingMsg) {
+
+        QNoPassSingMsgEvent machineScoreEvent = new QNoPassSingMsgEvent(basePushInfo, qNoPassSingMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
+    private void processQExitGameMsg(BasePushInfo basePushInfo, QExitGameMsg qExitGameMsg) {
+
+        QExitGameMsgEvent machineScoreEvent = new QExitGameMsgEvent(basePushInfo, qExitGameMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
 
     private void processAccBeigin(BasePushInfo basePushInfo) {
         AccBeginEvent machineScoreEvent = new AccBeginEvent(basePushInfo, basePushInfo.getSender().getUserID());

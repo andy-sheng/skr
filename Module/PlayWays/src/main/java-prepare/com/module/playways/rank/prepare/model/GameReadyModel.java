@@ -1,6 +1,7 @@
 package com.module.playways.rank.prepare.model;
 
 import com.common.log.MyLog;
+import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.ReadyInfo;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
 import com.zq.live.proto.Room.RoundInfo;
@@ -23,6 +24,16 @@ public class GameReadyModel implements Serializable {
     private GameStartInfoModel jsonGameStartInfo;
     private List<ReadyInfoModel> jsonReadyInfo;
     private List<RoundInfoModel> jsonRoundInfo;
+
+    private List<QRoundInfo> qRoundInfo;
+
+    public List<QRoundInfo> getqRoundInfo() {
+        return qRoundInfo;
+    }
+
+    public void setqRoundInfo(List<QRoundInfo> qRoundInfo) {
+        this.qRoundInfo = qRoundInfo;
+    }
 
     public int getHasReadyedUserCnt() {
         return HasReadyedUserCnt;
@@ -84,6 +95,7 @@ public class GameReadyModel implements Serializable {
             jsonReadyInfos.add(jsonReadyInfo);
         }
         this.setJsonReadyInfo(jsonReadyInfos);
+        this.setqRoundInfo(msg.getQRoundInfoList());
 
         List<RoundInfoModel> jsonRoundInfos = new ArrayList<>();
         for (RoundInfo roundInfo : msg.getRoundInfoList()) {
