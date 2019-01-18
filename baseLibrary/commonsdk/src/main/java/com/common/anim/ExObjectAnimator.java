@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
+import android.util.Property;
 
 public class ExObjectAnimator {
 
@@ -60,6 +61,14 @@ public class ExObjectAnimator {
         ExObjectAnimator exObjectAnimator = new ExObjectAnimator(oa);
         return exObjectAnimator;
     }
+
+    public static <T> ExObjectAnimator ofFloat(T target, Property<T, Float> property,
+                                               float... values) {
+        ObjectAnimator oa = ObjectAnimator.ofFloat(target, property, values);
+        ExObjectAnimator exObjectAnimator = new ExObjectAnimator(oa);
+        return exObjectAnimator;
+    }
+
 
     public void setInterpolator(TimeInterpolator value) {
         mObjectAnimator.setInterpolator(value);

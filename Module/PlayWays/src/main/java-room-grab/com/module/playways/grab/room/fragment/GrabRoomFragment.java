@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -21,6 +23,7 @@ import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
@@ -103,6 +106,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     Disposable mPrepareLyricTask;
 
+    ExImageView mTurnSongSeqIv;
     TurnChangeCardView mTurnChangeView;
 
     DialogPlus mDialogPlus;
@@ -124,6 +128,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
     boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
+
+    PendingPlaySongCardData mPendingPlaySongCardData;
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -522,6 +528,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         });
     }
 
+    /**
+     * 转场动画相关初始化
+     */
     private void initTurnChangeView() {
         mReadyGoBg = (SVGAImageView) mRootView.findViewById(R.id.ready_go_bg);
 
@@ -530,6 +539,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
         mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
 
+        mTurnSongSeqIv = mRootView.findViewById(R.id.turn_change_song_seq_iv);
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
 
         mEndGameIv = (ImageView) mRootView.findViewById(R.id.end_game_iv);
@@ -629,6 +639,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     @Override
+    public void showSongInfoCard(int seq, SongModel songModel, Runnable onFinished) {
+        mPendingPlaySongCardData = new PendingPlaySongCardData(seq,songModel,onFinished);
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTurnSongSeqIv,View.TRANSLATION_X,-1000f,0f);
+        objectAnimator1.setDuration(500);
+        objectAnimator1.setInterpolator(new OvershootInterpolator());
+
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mTurnSongSeqIv,View.TRANSLATION_X,-1000f,0f);
+        objectAnimator1.setDuration(500);
+        objectAnimator1.setInterpolator(new OvershootInterpolator());
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(objectAnimator1,objectAnimator2);
+    }
+
+    @Override
     public boolean useEventBus() {
         return false;
     }
@@ -677,10 +702,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         return true;
     }
 
-    @Override
-    public void showSongInfo(SongModel songModel) {
-
-    }
 
     @Override
     public void startRivalCountdown(long uid) {
@@ -908,6 +929,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
     }
 
+    static class PendingPlaySongCardData {
+        int seq;
+        SongModel songModel;
+        Runnable onFinished;
+
+        public PendingPlaySongCardData(int seq, SongModel songModel, Runnable onFinished) {
+            this.seq = seq;
+            this.songModel = songModel;
+            this.onFinished = onFinished;
+        }
+    }
 
     static class PendingRivalData {
         int uid;

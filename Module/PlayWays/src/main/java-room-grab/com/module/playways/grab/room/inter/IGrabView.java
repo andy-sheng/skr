@@ -5,10 +5,13 @@ import com.module.playways.rank.song.model.SongModel;
 
 public interface IGrabView {
     /**
-     * 展示要唱的歌儿
-     * @param songModel
+     * 抢唱阶段
+     * 展示要唱的歌儿,《下一首》《东西》
+     * @param seq 当前轮次的序号
+     * @param songModel 要唱的歌信息
+     * @param onFinished 动画执行完毕时，要执行的逻辑
      */
-    void showSongInfo(SongModel songModel);
+    void showSongInfoCard(int seq,SongModel songModel,Runnable onFinished);
 
     /**
      * 自己抢到
