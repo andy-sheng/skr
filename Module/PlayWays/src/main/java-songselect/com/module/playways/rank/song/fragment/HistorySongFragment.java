@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -18,6 +19,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.rank.prepare.fragment.AuditionFragment;
@@ -25,6 +29,9 @@ import com.module.playways.rank.prepare.fragment.AuditionPrepareResFragment;
 import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.song.adapter.SongSelectAdapter;
+import com.module.playways.rank.song.callback.SongEmptyCallback;
+import com.module.playways.rank.song.callback.SongErrorCallback;
+import com.module.playways.rank.song.callback.SongLoadingCallback;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.module.playways.rank.song.presenter.SongTagDetailsPresenter;
@@ -55,6 +62,8 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     SongTagDetailsPresenter presenter;
 
     int mGameType;
+
+    LoadService mLoadService;
 
     @Override
     public int initView() {
@@ -175,6 +184,18 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
                     U.getFragmentUtils().popFragment(this);
                 });
 
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new SongEmptyCallback())
+                .addCallback(new SongErrorCallback())
+                .addCallback(new SongLoadingCallback())
+                .setDefaultCallback(SongLoadingCallback.class)
+                .build();
+        mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT);
+            }
+        });
     }
 
     @Override
@@ -188,12 +209,16 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         this.hasMore = hasMore;
         if (!hasMore) {
             mRefreshLayout.finishLoadMore();
+            if (datas == null || datas.size() == 0) {
+                mLoadService.showCallback(SongEmptyCallback.class);
+            }
             return;
         }
         if (datas == null) {
             datas = new ArrayList<>();
         }
         if (songSelectAdapter != null && list != null) {
+            mLoadService.showSuccess();
             datas.addAll(list);
             songSelectAdapter.setDataList(list);
             songSelectAdapter.notifyDataSetChanged();
@@ -202,6 +227,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     @Override
     public void loadSongsDetailItemsFail() {
-
+        mLoadService.showCallback(SongErrorCallback.class);
     }
 }
