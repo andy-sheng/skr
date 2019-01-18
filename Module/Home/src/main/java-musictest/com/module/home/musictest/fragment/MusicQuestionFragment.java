@@ -2,17 +2,24 @@ package com.module.home.musictest.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.busilib.callback.EmptyCallback;
+import com.component.busilib.callback.ErrorCallback;
+import com.component.busilib.callback.LoadingCallback;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.home.R;
 import com.module.home.musictest.model.Answer;
 import com.module.home.musictest.model.Question;
-import com.module.home.musictest.presenter.MusicTestPresenter;
+import com.module.home.musictest.presenter.MusicQuestionPresenter;
 import com.module.home.musictest.view.IQuestionView;
 import com.module.home.musictest.view.QuestionView;
 
@@ -31,11 +38,13 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
     CommonTitleBar mTitlebar;
     RelativeLayout mQuestionArea;
 
-    MusicTestPresenter mMusicTestPresenter;
+    MusicQuestionPresenter mMusicTestPresenter;
 
     List<Question> mQuestions = new ArrayList<>();                         // 问题
     Map<String, Answer> mAnswerHashMap = new HashMap<String, Answer>();    // 答案
     Map<String, Set<Integer>> mSetMap = new HashMap<String, Set<Integer>>();                   //记录问题的答案
+
+    LoadService mLoadService;
 
     @Override
     public int initView() {
@@ -61,10 +70,23 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
                     }
                 });
 
-        mMusicTestPresenter = new MusicTestPresenter(this);
+        mMusicTestPresenter = new MusicQuestionPresenter(this);
         addPresent(mMusicTestPresenter);
 
         mMusicTestPresenter.getQuestionList();
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new LoadingCallback(R.drawable.wufensi, "数据真的在加载中..."))
+                .addCallback(new EmptyCallback(R.drawable.wufensi, "数据空了"))
+                .addCallback(new ErrorCallback(R.drawable.wufensi, "请求出错了"))
+                .setDefaultCallback(LoadingCallback.class)
+                .build();
+        mLoadService = mLoadSir.register(mQuestionArea, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                mMusicTestPresenter.getQuestionList();
+            }
+        });
     }
 
     @Override
@@ -75,7 +97,12 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
     @Override
     public void loadQuestionsData(List<Question> questionList) {
         this.mQuestions = questionList;
+        if (mQuestions == null || mQuestions.size() == 0) {
+            mLoadService.showCallback(EmptyCallback.class);
+            return;
+        }
 
+        mLoadService.showSuccess();
         QuestionView quesetionView = new QuestionView(getContext());
         quesetionView.setMaxNum(mQuestions.size());
         quesetionView.setData(questionList.get(0), 0, null);
@@ -118,6 +145,11 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
             }
         });
         mQuestionArea.addView(quesetionView);
+    }
+
+    @Override
+    public void loadQuestionsDataFail() {
+        mLoadService.showCallback(ErrorCallback.class);
     }
 
     @Override

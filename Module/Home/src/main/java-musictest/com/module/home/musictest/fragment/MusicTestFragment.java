@@ -2,10 +2,8 @@ package com.module.home.musictest.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 
 import com.common.base.BaseFragment;
-import com.common.flowlayout.TagFlowLayout;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -17,8 +15,6 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.musictest.MusicTestServerApi;
-import com.module.home.musictest.presenter.MusicTestPresenter;
-import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,8 +25,6 @@ public class MusicTestFragment extends BaseFragment {
 
     CommonTitleBar mTitlebar;
     ExTextView mStartTv;
-
-    MusicTestPresenter mMusicTestPresenter;
 
     @Override
     public int initView() {

@@ -20,12 +20,12 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class MusicTestPresenter extends RxLifeCyclePresenter {
+public class MusicQuestionPresenter extends RxLifeCyclePresenter {
 
     IQuestionView mView;
     MusicTestServerApi mMusicTestServerApi;
 
-    public MusicTestPresenter(IQuestionView view) {
+    public MusicQuestionPresenter(IQuestionView view) {
         mMusicTestServerApi = ApiManager.getInstance().createService(MusicTestServerApi.class);
         this.mView = view;
     }
@@ -38,6 +38,8 @@ public class MusicTestPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     List<Question> questions = JSON.parseArray(result.getData().getString("list"), Question.class);
                     mView.loadQuestionsData(questions);
+                }else {
+                    mView.loadQuestionsDataFail();
                 }
             }
         }, this);
