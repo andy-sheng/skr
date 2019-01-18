@@ -11,4 +11,12 @@ public class QExitGameMsgEvent {
         this.info = info;
         this.userID = qExitGameMsg.getUserID();
     }
+
+    public BasePushInfo getInfo() {
+        return info;
+    }
+
+    public Integer getUserID() {
+        return userID;
+    }
 }

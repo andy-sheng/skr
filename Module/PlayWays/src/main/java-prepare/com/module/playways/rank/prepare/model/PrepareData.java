@@ -15,6 +15,9 @@ public class PrepareData implements Serializable {
     private GameReadyModel mGameReadyInfo;
     private int shiftTs;
 
+    //一场到低所有歌曲
+    private List<SongModel> mSongModelList;
+
     public int getGameType() {
         return mGameType;
     }
@@ -49,6 +52,14 @@ public class PrepareData implements Serializable {
 
     public void setGameCreatMs(long gameCreatMs) {
         mGameCreatMs = gameCreatMs;
+    }
+
+    public List<SongModel> getSongModelList() {
+        return mSongModelList;
+    }
+
+    public void setSongModelList(List<SongModel> songModelList) {
+        mSongModelList = songModelList;
     }
 
     public long getGameCreatMs() {

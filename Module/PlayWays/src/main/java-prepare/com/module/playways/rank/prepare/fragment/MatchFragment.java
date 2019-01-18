@@ -32,6 +32,7 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.MatchPresenter;
 import com.module.playways.rank.prepare.view.IMatchingView;
+import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -371,13 +372,13 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     @Override
-    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfoModel> playerInfoList, String avatar) {
+    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfoModel> playerInfoList, String avatar, List<SongModel> songModels) {
         MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " playerInfoList=" + playerInfoList);
         mPrepareData.setGameId(gameId);
         mPrepareData.setSysAvatar(avatar);
         mPrepareData.setGameCreatMs(gameCreatMs);
         mPrepareData.setPlayerInfoList(playerInfoList);
-
+        mPrepareData.setSongModelList(songModels);
         stopTimeTask();
         BgMusicManager.getInstance().destory();
 

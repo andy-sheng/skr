@@ -1,12 +1,14 @@
 package com.module.playways.grab.room.presenter;
 
 import android.os.Handler;
+import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.player.exoplayer.ExoPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -29,16 +31,15 @@ import com.module.playways.rank.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.rank.msg.event.QRoundOverMsgEvent;
 import com.module.playways.rank.msg.event.QSyncStatusMsgEvent;
 import com.module.playways.rank.msg.event.QWantSingChanceMsgEvent;
-import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
-import com.module.playways.rank.msg.event.RoundOverEvent;
-import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RankDataUtils;
-import com.module.playways.rank.room.model.RecordData;
+import com.module.playways.rank.room.score.RobotScoreHelper;
+import com.zq.live.proto.Room.EQRoundOverReason;
+import com.zq.live.proto.Room.EQRoundResultType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,8 +59,8 @@ import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROU
 public class GrabCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "GrabCorePresenter";
 
-    private static long sHeartBeatTaskInterval = 3000;
-    private static long sSyncStateTaskInterval = 12000;
+    private static long sSyncStateTaskInterval = 3500;
+    static final int MSG_ROBOT_SING_BEGIN = 10;
 
     RoomData mRoomData;
 
@@ -67,12 +68,26 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     HandlerTaskTimer mSyncGameStateTask;
 
-    IGrabView mIGameRuleView;
+    IGrabView mIGrabView;
 
-    Handler mUiHanlder = new Handler();
+    RobotScoreHelper mRobotScoreHelper;
+
+    ExoPlayer mExoPlayer;
+
+    Handler mUiHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_ROBOT_SING_BEGIN:
+                    robotSingBegin((PlayerInfoModel) msg.obj);
+                    break;
+            }
+        }
+    };
 
     public GrabCorePresenter(@NotNull IGrabView iGrebView, @NotNull RoomData roomData) {
-        mIGameRuleView = iGrebView;
+        mIGrabView = iGrebView;
         mRoomData = roomData;
         TAG = "RankingCorePresenter";
         if (mRoomData.getGameId() > 0) {
@@ -102,12 +117,75 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         startSyncGameStateTask(sSyncStateTaskInterval);
     }
 
+    /**
+     * 抢唱歌权
+     */
     public void vie() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("roundSeq", "");
 
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.e(TAG, "vie erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
+                if (result.getErrno() == 0) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, "vie error " + e);
+
+            }
+        }, this);
     }
 
     public void lightsOff() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("roundSeq", "");
 
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.lightOff(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.e(TAG, "lightsOff erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
+                if (result.getErrno() == 0) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, "lightsOff error " + e);
+
+            }
+        }, this);
+    }
+
+    private void robotSingBegin(PlayerInfoModel playerInfo) {
+        String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
+        String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
+        if (mRobotScoreHelper == null) {
+            mRobotScoreHelper = new RobotScoreHelper();
+        }
+
+        if (mExoPlayer == null) {
+            mExoPlayer = new ExoPlayer();
+        }
+        mExoPlayer.startPlay(skrerUrl);
+        if (!EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
+            mExoPlayer.setVolume(1);
+        } else {
+            mExoPlayer.setVolume(0);
+        }
     }
 
     @Override
@@ -119,7 +197,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        EngineManager.getInstance().destroy("rankingroom");
+
+        EngineManager.getInstance().destroy("grabroom");
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
@@ -239,7 +318,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        MyLog.w(TAG, "12秒钟的 syncGameTask 去更新状态了");
+                        MyLog.w(TAG, "4秒钟的 syncGameTask 去更新状态了");
                         syncGameStatus(mRoomData.getGameId());
                     }
                 });
@@ -250,7 +329,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mSyncGameStateTask.dispose();
         }
     }
-
 
     // 同步游戏详情状态(检测不到长连接调用)
     public void syncGameStatus(int gameID) {
@@ -263,7 +341,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
-                    RoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), RoundInfoModel.class); //下个轮次信息
 
                     String msg = "";
                     if (currentInfo != null) {
@@ -272,20 +349,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         msg = "syncGameStatus成功了, currentRound 是 null";
                     }
 
-                    if (nextInfo != null) {
-                        msg = msg + ", nextRound 是 " + nextInfo.getUserID();
-                    } else {
-                        msg = msg + ", nextRound 是 null";
-                    }
-
                     msg = msg + ",traceid is " + result.getTraceId();
                     MyLog.w(TAG, msg);
 
-                    if (currentInfo == null && nextInfo == null) {
+                    if (currentInfo == null) {
                         cancelSyncGameStateTask();
+                        onGameOver("syncGameStatus", gameOverTimeMs);
                         return;
                     }
-                    updatePlayerState(gameOverTimeMs, syncStatusTimes, onlineInfos, currentInfo, nextInfo);
+
+                    updatePlayerState(gameOverTimeMs, syncStatusTimes, onlineInfos, currentInfo);
                 } else {
                     MyLog.w(TAG, "syncGameStatus失败 traceid is " + result.getTraceId());
                     estimateOverTsThisRound();
@@ -302,29 +375,32 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 根据时间戳更新选手状态,目前就只有两个入口，SyncStatusEvent push了sycn，不写更多入口
      */
-    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, List<OnlineInfoModel> onlineInfos, RoundInfoModel currentInfo, RoundInfoModel nextInfo) {
-        MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + currentInfo + " nextInfo=" + nextInfo);
+    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, List<OnlineInfoModel> onlineInfos, RoundInfoModel newRoundInfo) {
+        MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + newRoundInfo.getRoundSeq());
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
             mRoomData.setOnlineInfoList(onlineInfos);
-//            mIGameRuleView.updateUserState(onlineInfos);
+            mIGrabView.updateUserState(onlineInfos);
         }
+
+        //??????
         if (gameOverTimeMs != 0) {
             if (gameOverTimeMs > mRoomData.getGameStartTs()) {
                 MyLog.w(TAG, "gameOverTimeMs ！= 0 游戏应该结束了");
                 // 游戏结束了
                 onGameOver("sync", gameOverTimeMs);
+
             } else {
                 MyLog.w(TAG, "服务器结束时间不合法 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
             }
         } else {
             // 没结束 current 不应该为null
-            if (currentInfo != null) {
+            if (newRoundInfo != null) {
                 // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-                if (RankDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
+                if (RankDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getExpectRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
-                    mRoomData.setExpectRoundInfo(currentInfo);
+                    mRoomData.setExpectRoundInfo(newRoundInfo);
                     mRoomData.checkRound();
                 }
             } else {
@@ -335,30 +411,93 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
+        MyLog.w(TAG, "有人退出了：userID is " + event.getUserID());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QGetSingChanceMsgEvent event) {
+        if (RankDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
+            MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
+            mIGrabView.lightSingUser(event.getUserID());
+        } else {
+            MyLog.w(TAG, "抢到唱歌权,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QNoPassSingMsgEvent event) {
+        if (RankDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
+            MyLog.w(TAG, "有人灭灯了：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
+            mIGrabView.lightOffUser(event.getUserID());
+        } else {
+            MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundAndGameOverMsgEvent event) {
+        cancelSyncGameStateTask();
+        mRoomData.setExpectRoundInfo(null);
+        mRoomData.checkRound();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundOverMsgEvent event) {
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是" + event.exitUserID + ", timets 是" + event.info.getTimeMs());
+
+        if (mRoomData.getLastSyncTs() >= event.getInfo().getTimeMs()) {
+            MyLog.w(TAG, "但是是个旧数据");
+            return;
+        }
+
+        //当前轮次是对的
+        if (RankDataUtils.roundInfoEqual(event.nextRound, mRoomData.getRealRoundInfo())) {
+            if (mRoomData.getRealRoundInfo() != null) {
+                MyLog.w(TAG, "确实是当前轮次");
+                mRoomData.getRealRoundInfo().setEndTs(event.roundOverTimeMs);
+            }
+        }
+
+        // 游戏轮次结束
+        if (RankDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
+            // 轮次确实比当前的高，可以切换
+            MyLog.w(TAG, "轮次确实比当前的高，可以切换");
+            mRoomData.setExpectRoundInfo(event.nextRound);
+            mRoomData.checkRound();
+        }
+    }
+
+    private void roundOverReason(EQRoundOverReason eqRoundOverReason, EQRoundResultType eqRoundResultType){
+        switch (eqRoundOverReason){
+            case ROR_IN_ROUND_PLAYER_EXIT:
+                mIGrabView.exitInRound();
+                break;
+            case ROR_LAST_ROUND_OVER:
+                mIGrabView.challengeSuccess(eqRoundResultType);
+                break;
+            case ROR_NO_ONE_SING:
+                mIGrabView.noOneWantSing();
+                break;
+            case ROR_MULTI_NO_PASS:
+                mIGrabView.challengeFaild(eqRoundResultType);
+                break;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QSyncStatusMsgEvent event) {
+        MyLog.w(TAG, "收到服务器更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timets 是" + event.info.getTimeMs());
+        updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getOnlineInfo(), event.getCurrentRound());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QWantSingChanceMsgEvent event) {
+        if (RankDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
+            MyLog.w(TAG, "有人想唱：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
+            mIGrabView.lightVieUser(event.getUserID());
+        } else {
+            MyLog.w(TAG, "有人想唱,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
     }
 
     /**
@@ -369,25 +508,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(RoundInfoChangeEvent event) {
         MyLog.w(TAG, "开始切换唱将 myturn=" + event.myturn);
         estimateOverTsThisRound();
+        roundOverReason(null, null);
+
         if (event.myturn) {
             mUiHanlder.post(new Runnable() {
                 @Override
                 public void run() {
                     // 开始倒计时 3 2 1
-                    mIGameRuleView.startSelfCountdown(new Runnable() {
+                    mIGrabView.startSelfCountdown(new Runnable() {
                         @Override
                         public void run() {
                             //再次确认
                             if (mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
                                 // 开始开始混伴奏，开始解除引擎mute
-                                File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
-                                if (accFile != null && accFile.exists()) {
+                                File standFile = SongResUtils.getStandFileByUrl(RankDataUtils.getCurRoundSongModel(mRoomData.getRealRoundSeq(), mRoomData).getStandIntro());
+                                if (standFile != null && standFile.exists()) {
                                     EngineManager.getInstance().muteLocalAudioStream(false);
-                                    EngineManager.getInstance().startAudioMixing(accFile.getAbsolutePath(), false, false, 1);
+                                    EngineManager.getInstance().startAudioMixing(standFile.getAbsolutePath(), false, false, 1);
                                     EngineManager.getInstance().setAudioMixingPosition(mRoomData.getSongModel().getBeginMs());
                                     // 还应开始播放歌词
-//                                    mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-//                                    mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
+//                                    mIGrabView.playLyric(mRoomData.getSongModel(), true);
+//                                    mIGrabView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
                                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
                                 }
                             }
@@ -414,16 +555,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         if (playerInfoModel != null && playerInfoModel.getUserInfo() != null) {
                             avatar = playerInfoModel.getUserInfo().getAvatar();
                         }
-//                        mIGameRuleView.startRivalCountdown(uid, avatar);
+                        mIGrabView.startRivalCountdown(uid);
+                        checkMachineUser(uid);
                         if (mRoomData.getRealRoundInfo() != null) {
-                            MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
+                            MyLog.w(TAG, uid + "开始唱了，演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")
                                     + "--" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingEndMs(), "HH:mm:ss:SSS"));
                         } else {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
-
-//                        mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
-
                     }
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {
@@ -434,7 +573,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     mUiHanlder.post(new Runnable() {
                         @Override
                         public void run() {
-                            mIGameRuleView.gameFinish();
+                            mIGrabView.gameFinish();
                             gameIsFinish();
                         }
                     });
@@ -462,6 +601,34 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+
+    private void checkMachineUser(long uid) {
+        PlayerInfoModel playerInfo = RankDataUtils.getPlayerInfoById(mRoomData, uid);
+        if (playerInfo == null) {
+            MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
+            return;
+        }
+
+        /**
+         * 机器人
+         */
+        if (playerInfo.isSkrer()) {
+            MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
+            //因为机器人没有逃跑，所以不需要加保护。这里的4000不写死，第一个人应该是7000
+            RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            long delayTime = 4000l;
+            //第一个人如果是机器人，需要deley6秒
+            if (roundInfoModel.getRoundSeq() == 1) {
+                delayTime = 6000l;
+            }
+            //移除之前的要发生的机器人演唱
+            mUiHanlder.removeMessages(MSG_ROBOT_SING_BEGIN);
+            Message message = mUiHanlder.obtainMessage(MSG_ROBOT_SING_BEGIN);
+            message.obj = playerInfo;
+            mUiHanlder.sendMessageDelayed(message, delayTime);
+        }
+    }
+
     private int estimateOverTsThisRound() {
         int pt = RankDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
@@ -481,7 +648,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             mUiHanlder.post(new Runnable() {
                                 @Override
                                 public void run() {
-//                                    mIGameRuleView.updateScrollBarProgress(info.getVolume() / 3);
+//                                    mIGrabView.updateScrollBarProgress(info.getVolume() / 3);
                                 }
                             });
                             break;
@@ -517,7 +684,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.d(TAG, "引擎监测到有人开始唱了，正好是当前的人，播放歌词 这个人的id是" + muteUserId);
-//                                mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+//                                mIGrabView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     } else if (RankDataUtils.roundSeqLarger(infoModel, mRoomData.getExpectRoundInfo())) {
@@ -529,7 +696,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void run() {
                                 MyLog.w(TAG, "引擎监测到有人开始唱了，演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词  这个人的id是" + muteUserId);
-//                                mIGameRuleView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
+//                                mIGrabView.playLyric(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), muteUserId), true);
                             }
                         });
                     }
@@ -544,58 +711,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 MyLog.w(TAG, "引擎监测到有人有人闭麦了，id是" + muteUserId);
             }
         }
-    }
-
-    // 游戏轮次结束的通知消息（在某人向服务器短连接成功后推送)
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEventMainThread(RoundOverEvent roundOverEvent) {
-        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + roundOverEvent.currenRound.getUserID()
-                + ", exitUserID 是 " + roundOverEvent.exitUserID + " timets 是" + roundOverEvent.info.getTimeMs());
-        if (RankDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
-            // 确实等于当前轮次
-            if (mRoomData.getRealRoundInfo() != null) {
-                MyLog.w(TAG, "确实是当前轮次结束了");
-                mRoomData.getRealRoundInfo().setEndTs(roundOverEvent.roundOverTimeMs);
-            }
-        }
-        // 游戏轮次结束
-        if (RankDataUtils.roundSeqLarger(roundOverEvent.nextRound, mRoomData.getExpectRoundInfo())) {
-            // 轮次确实比当前的高，可以切换
-            MyLog.w(TAG, "轮次确实比当前的高，可以切换");
-            mRoomData.setExpectRoundInfo(roundOverEvent.nextRound);
-            mRoomData.checkRound();
-        }
-
-        if (roundOverEvent.exitUserID != 0) {
-            // TODO: 2018/12/18 有人退出了
-        }
-    }
-
-    //轮次和游戏结束通知，除了已经结束状态，别的任何状态都要变成
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
-        MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
-        onGameOver("push", roundAndGameOverEvent.roundOverTimeMs);
-        cancelSyncGameStateTask();
-
-        if (roundAndGameOverEvent.mVoteInfoModels != null && roundAndGameOverEvent.mVoteInfoModels.size() > 0) {
-            //不需要跳转评论页,直接跳转战绩页
-            mIGameRuleView.showRecordView(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mScoreDetailModel));
-        } else {
-//            mIGameRuleView.showVoteView();
-        }
-    }
-
-    // 长连接 状态同步信令， 以11秒为单位检测
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(SyncStatusEvent syncStatusEvent) {
-        String msg = "收到服务器更新状态的push了, currentRound 是 ";
-        msg = msg + (syncStatusEvent.currentInfo == null ? "null" : syncStatusEvent.currentInfo.getUserID() + "");
-        msg = msg + ", nextInfo 是 " + (syncStatusEvent.nextInfo == null ? "null" : syncStatusEvent.nextInfo.getUserID() + "");
-        msg = msg + ", timeMs" + syncStatusEvent.info.getTimeMs();
-        MyLog.w(TAG, msg);
-        startSyncGameStateTask(sSyncStateTaskInterval);
-        updatePlayerState(syncStatusEvent.gameOverTimeMs, syncStatusEvent.syncStatusTimes, syncStatusEvent.onlineInfos, syncStatusEvent.currentInfo, syncStatusEvent.nextInfo);
     }
 
     // TODO: 2018/12/18 退出游戏了

@@ -71,6 +71,7 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/game/stand-exit")
     Observable<ApiResult> exitGame(@Body RequestBody body);
 
+
     @GET("http://dev.game.inframe.mobi/v1/game/stand-result")
     Observable<ApiResult> getStandResult(@Query("gameID") int gameID);
 }

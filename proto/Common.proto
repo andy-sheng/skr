@@ -34,6 +34,11 @@ message MusicInfo {
     uint32 beginTimeMs  = 11; //开始毫秒
     uint32 endTimeMs    = 12; //结束毫秒
     uint32 rankLrcBeginT = 13; //匹配玩法第一句歌词开始时间,毫秒
+    string standIntro       = 14; //一唱到底的导唱
+    uint32 standIntroBeginT = 15; //一唱到底导唱的开始毫秒
+    uint32 standIntroEndT   = 16; //一唱到底导唱的结束毫秒
+    uint32 standLrcBeginT   = 17; //一唱到底第一句歌词的开始毫秒
+    uint32 standLrcEndT     = 18; //一唱到底歌词的结束毫秒
 }
 
 enum ESex {

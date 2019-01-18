@@ -29,4 +29,20 @@ public final class QGetSingChanceMsgEvent  {
     this.roundSeq = qGetSingChanceMsg.getRoundSeq();
     this.currentRound = qGetSingChanceMsg.getCurrentRound();
   }
+
+  public BasePushInfo getInfo() {
+    return info;
+  }
+
+  public Integer getUserID() {
+    return userID;
+  }
+
+  public Integer getRoundSeq() {
+    return roundSeq;
+  }
+
+  public QRoundInfo getCurrentRound() {
+    return currentRound;
+  }
 }

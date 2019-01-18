@@ -3,10 +3,12 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.zq.live.proto.Room.OnlineInfo;
-import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.QSyncStatusMsg;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class QSyncStatusMsgEvent {
@@ -25,18 +27,44 @@ public final class QSyncStatusMsgEvent {
   /**
    * 在线状态
    */
-  public List<OnlineInfo> onlineInfo;
+  public List<OnlineInfoModel> onlineInfo;
 
   /**
    * 当前轮次信息
    */
-  public QRoundInfo currentRound;
+  public RoundInfoModel currentRound;
 
   public QSyncStatusMsgEvent(BasePushInfo info, QSyncStatusMsg qSyncStatusMsg) {
     this.info = info;
     this.syncStatusTimeMs = qSyncStatusMsg.getSyncStatusTimeMs();
     this.gameOverTimeMs = qSyncStatusMsg.getGameOverTimeMs();
-    this.onlineInfo = qSyncStatusMsg.getOnlineInfoList();
-    this.currentRound = qSyncStatusMsg.getCurrentRound();
+    List<OnlineInfoModel> onLineInfos = new ArrayList<>();
+    for (OnlineInfo onlineInfo : qSyncStatusMsg.getOnlineInfoList()) {
+      OnlineInfoModel jsonOnLineInfo = new OnlineInfoModel();
+      jsonOnLineInfo.parse(onlineInfo);
+      onLineInfos.add(jsonOnLineInfo);
+    }
+    this.onlineInfo = onLineInfos;
+    this.currentRound = RoundInfoModel.parseFromQRoundInfo(qSyncStatusMsg.getCurrentRound());
+  }
+
+  public BasePushInfo getInfo() {
+    return info;
+  }
+
+  public Long getSyncStatusTimeMs() {
+    return syncStatusTimeMs;
+  }
+
+  public Long getGameOverTimeMs() {
+    return gameOverTimeMs;
+  }
+
+  public List<OnlineInfoModel> getOnlineInfo() {
+    return onlineInfo;
+  }
+
+  public RoundInfoModel getCurrentRound() {
+    return currentRound;
   }
 }

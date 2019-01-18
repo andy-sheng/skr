@@ -1,7 +1,11 @@
 package com.module.playways.grab.room.inter;
 
+import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
+import com.zq.live.proto.Room.EQRoundResultType;
+
+import java.util.List;
 
 public interface IGrabView {
     /**
@@ -30,11 +34,19 @@ public interface IGrabView {
      */
     void lightVieUser(long uid);
 
+    void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
+
     /**
      * 抢到唱歌权的人亮灯
      * @param uid
      */
     void lightSingUser(long uid);
+
+    /**
+     * 灭灯用户
+     * @param uid
+     */
+    void lightOffUser(long uid);
 
     /**
      * 没人想唱
@@ -44,12 +56,18 @@ public interface IGrabView {
     /**
      * 挑战成功，一场到底了
      */
-    void challengeSuccess();
+    void challengeSuccess(EQRoundResultType eqRoundResultType);
 
     /**
      * 中途被灭灯，挑战失败
      */
-    void challengeFaild();
+    void challengeFaild(EQRoundResultType eqRoundResultType);
+
+    /**
+     * 中途跑了
+     */
+    void exitInRound();
+
 
     void gameFinish();
 

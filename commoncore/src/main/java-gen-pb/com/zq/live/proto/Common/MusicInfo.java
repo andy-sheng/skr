@@ -51,6 +51,16 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
   public static final Integer DEFAULT_RANKLRCBEGINT = 0;
 
+  public static final String DEFAULT_STANDINTRO = "";
+
+  public static final Integer DEFAULT_STANDINTROBEGINT = 0;
+
+  public static final Integer DEFAULT_STANDINTROENDT = 0;
+
+  public static final Integer DEFAULT_STANDLRCBEGINT = 0;
+
+  public static final Integer DEFAULT_STANDLRCENDT = 0;
+
   /**
    * 音乐条目标识
    */
@@ -168,15 +178,63 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   )
   public final Integer rankLrcBeginT;
 
+  /**
+   * 一唱到底的导唱
+   */
+  @WireField(
+      tag = 14,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  public final String standIntro;
+
+  /**
+   * 一唱到底导唱的开始毫秒
+   */
+  @WireField(
+      tag = 15,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer standIntroBeginT;
+
+  /**
+   * 一唱到底导唱的结束毫秒
+   */
+  @WireField(
+      tag = 16,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer standIntroEndT;
+
+  /**
+   * 一唱到底第一句歌词的开始毫秒
+   */
+  @WireField(
+      tag = 17,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer standLrcBeginT;
+
+  /**
+   * 一唱到底歌词的结束毫秒
+   */
+  @WireField(
+      tag = 18,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer standLrcEndT;
+
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
-      Integer endTimeMs, Integer rankLrcBeginT) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, ByteString.EMPTY);
+      Integer endTimeMs, Integer rankLrcBeginT, String standIntro, Integer standIntroBeginT,
+      Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
-      Integer endTimeMs, Integer rankLrcBeginT, ByteString unknownFields) {
+      Integer endTimeMs, Integer rankLrcBeginT, String standIntro, Integer standIntroBeginT,
+      Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -191,6 +249,11 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.beginTimeMs = beginTimeMs;
     this.endTimeMs = endTimeMs;
     this.rankLrcBeginT = rankLrcBeginT;
+    this.standIntro = standIntro;
+    this.standIntroBeginT = standIntroBeginT;
+    this.standIntroEndT = standIntroEndT;
+    this.standLrcBeginT = standLrcBeginT;
+    this.standLrcEndT = standLrcEndT;
   }
 
   @Override
@@ -209,6 +272,11 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.beginTimeMs = beginTimeMs;
     builder.endTimeMs = endTimeMs;
     builder.rankLrcBeginT = rankLrcBeginT;
+    builder.standIntro = standIntro;
+    builder.standIntroBeginT = standIntroBeginT;
+    builder.standIntroEndT = standIntroEndT;
+    builder.standLrcBeginT = standLrcBeginT;
+    builder.standLrcEndT = standLrcEndT;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -231,7 +299,12 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(totalTimeMs, o.totalTimeMs)
         && Internal.equals(beginTimeMs, o.beginTimeMs)
         && Internal.equals(endTimeMs, o.endTimeMs)
-        && Internal.equals(rankLrcBeginT, o.rankLrcBeginT);
+        && Internal.equals(rankLrcBeginT, o.rankLrcBeginT)
+        && Internal.equals(standIntro, o.standIntro)
+        && Internal.equals(standIntroBeginT, o.standIntroBeginT)
+        && Internal.equals(standIntroEndT, o.standIntroEndT)
+        && Internal.equals(standLrcBeginT, o.standLrcBeginT)
+        && Internal.equals(standLrcEndT, o.standLrcEndT);
   }
 
   @Override
@@ -252,6 +325,11 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (beginTimeMs != null ? beginTimeMs.hashCode() : 0);
       result = result * 37 + (endTimeMs != null ? endTimeMs.hashCode() : 0);
       result = result * 37 + (rankLrcBeginT != null ? rankLrcBeginT.hashCode() : 0);
+      result = result * 37 + (standIntro != null ? standIntro.hashCode() : 0);
+      result = result * 37 + (standIntroBeginT != null ? standIntroBeginT.hashCode() : 0);
+      result = result * 37 + (standIntroEndT != null ? standIntroEndT.hashCode() : 0);
+      result = result * 37 + (standLrcBeginT != null ? standLrcBeginT.hashCode() : 0);
+      result = result * 37 + (standLrcEndT != null ? standLrcEndT.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -273,6 +351,11 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (beginTimeMs != null) builder.append(", beginTimeMs=").append(beginTimeMs);
     if (endTimeMs != null) builder.append(", endTimeMs=").append(endTimeMs);
     if (rankLrcBeginT != null) builder.append(", rankLrcBeginT=").append(rankLrcBeginT);
+    if (standIntro != null) builder.append(", standIntro=").append(standIntro);
+    if (standIntroBeginT != null) builder.append(", standIntroBeginT=").append(standIntroBeginT);
+    if (standIntroEndT != null) builder.append(", standIntroEndT=").append(standIntroEndT);
+    if (standLrcBeginT != null) builder.append(", standLrcBeginT=").append(standLrcBeginT);
+    if (standLrcEndT != null) builder.append(", standLrcEndT=").append(standLrcEndT);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -417,6 +500,56 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 一唱到底的导唱
+   */
+  public String getStandIntro() {
+    if(standIntro==null){
+        return DEFAULT_STANDINTRO;
+    }
+    return standIntro;
+  }
+
+  /**
+   * 一唱到底导唱的开始毫秒
+   */
+  public Integer getStandIntroBeginT() {
+    if(standIntroBeginT==null){
+        return DEFAULT_STANDINTROBEGINT;
+    }
+    return standIntroBeginT;
+  }
+
+  /**
+   * 一唱到底导唱的结束毫秒
+   */
+  public Integer getStandIntroEndT() {
+    if(standIntroEndT==null){
+        return DEFAULT_STANDINTROENDT;
+    }
+    return standIntroEndT;
+  }
+
+  /**
+   * 一唱到底第一句歌词的开始毫秒
+   */
+  public Integer getStandLrcBeginT() {
+    if(standLrcBeginT==null){
+        return DEFAULT_STANDLRCBEGINT;
+    }
+    return standLrcBeginT;
+  }
+
+  /**
+   * 一唱到底歌词的结束毫秒
+   */
+  public Integer getStandLrcEndT() {
+    if(standLrcEndT==null){
+        return DEFAULT_STANDLRCENDT;
+    }
+    return standLrcEndT;
+  }
+
+  /**
    * 音乐条目标识
    */
   public boolean hasItemID() {
@@ -507,6 +640,41 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     return rankLrcBeginT!=null;
   }
 
+  /**
+   * 一唱到底的导唱
+   */
+  public boolean hasStandIntro() {
+    return standIntro!=null;
+  }
+
+  /**
+   * 一唱到底导唱的开始毫秒
+   */
+  public boolean hasStandIntroBeginT() {
+    return standIntroBeginT!=null;
+  }
+
+  /**
+   * 一唱到底导唱的结束毫秒
+   */
+  public boolean hasStandIntroEndT() {
+    return standIntroEndT!=null;
+  }
+
+  /**
+   * 一唱到底第一句歌词的开始毫秒
+   */
+  public boolean hasStandLrcBeginT() {
+    return standLrcBeginT!=null;
+  }
+
+  /**
+   * 一唱到底歌词的结束毫秒
+   */
+  public boolean hasStandLrcEndT() {
+    return standLrcEndT!=null;
+  }
+
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
     public Integer itemID;
 
@@ -533,6 +701,16 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     public Integer endTimeMs;
 
     public Integer rankLrcBeginT;
+
+    public String standIntro;
+
+    public Integer standIntroBeginT;
+
+    public Integer standIntroEndT;
+
+    public Integer standLrcBeginT;
+
+    public Integer standLrcEndT;
 
     public Builder() {
     }
@@ -641,9 +819,49 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       return this;
     }
 
+    /**
+     * 一唱到底的导唱
+     */
+    public Builder setStandIntro(String standIntro) {
+      this.standIntro = standIntro;
+      return this;
+    }
+
+    /**
+     * 一唱到底导唱的开始毫秒
+     */
+    public Builder setStandIntroBeginT(Integer standIntroBeginT) {
+      this.standIntroBeginT = standIntroBeginT;
+      return this;
+    }
+
+    /**
+     * 一唱到底导唱的结束毫秒
+     */
+    public Builder setStandIntroEndT(Integer standIntroEndT) {
+      this.standIntroEndT = standIntroEndT;
+      return this;
+    }
+
+    /**
+     * 一唱到底第一句歌词的开始毫秒
+     */
+    public Builder setStandLrcBeginT(Integer standLrcBeginT) {
+      this.standLrcBeginT = standLrcBeginT;
+      return this;
+    }
+
+    /**
+     * 一唱到底歌词的结束毫秒
+     */
+    public Builder setStandLrcEndT(Integer standLrcEndT) {
+      this.standLrcEndT = standLrcEndT;
+      return this;
+    }
+
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, super.buildUnknownFields());
     }
   }
 
@@ -667,6 +885,11 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(11, value.beginTimeMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(12, value.endTimeMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(13, value.rankLrcBeginT)
+          + ProtoAdapter.STRING.encodedSizeWithTag(14, value.standIntro)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(15, value.standIntroBeginT)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(16, value.standIntroEndT)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(17, value.standLrcBeginT)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(18, value.standLrcEndT)
           + value.unknownFields().size();
     }
 
@@ -685,6 +908,11 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 11, value.beginTimeMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 12, value.endTimeMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 13, value.rankLrcBeginT);
+      ProtoAdapter.STRING.encodeWithTag(writer, 14, value.standIntro);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 15, value.standIntroBeginT);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 16, value.standIntroEndT);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 17, value.standLrcBeginT);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 18, value.standLrcEndT);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -707,6 +935,11 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 11: builder.setBeginTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 12: builder.setEndTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 13: builder.setRankLrcBeginT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 14: builder.setStandIntro(ProtoAdapter.STRING.decode(reader)); break;
+          case 15: builder.setStandIntroBeginT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 16: builder.setStandIntroEndT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 17: builder.setStandLrcBeginT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 18: builder.setStandLrcEndT(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

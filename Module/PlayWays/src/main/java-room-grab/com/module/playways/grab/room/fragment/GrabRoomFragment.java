@@ -14,7 +14,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -30,6 +29,7 @@ import com.module.playways.RoomData;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
+import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.EvaluationFragment;
@@ -53,16 +53,14 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.PersonInfoDialogView;
-
+import com.zq.live.proto.Room.EQRoundResultType;
 import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.disposables.Disposable;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -724,12 +722,27 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     @Override
-    public void challengeSuccess() {
+    public void lightOffUser(long uid) {
 
     }
 
     @Override
-    public void challengeFaild() {
+    public void challengeSuccess(EQRoundResultType eqRoundResultType) {
+
+    }
+
+    @Override
+    public void challengeFaild(EQRoundResultType eqRoundResultType) {
+
+    }
+
+    @Override
+    public void exitInRound() {
+
+    }
+
+    @Override
+    public void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList) {
 
     }
 

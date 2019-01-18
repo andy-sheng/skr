@@ -18,6 +18,7 @@ import com.module.playways.rank.prepare.MatchServerApi;
 import com.module.playways.rank.prepare.model.GameInfoModel;
 import com.module.playways.rank.prepare.model.MatchingUserIconListInfo;
 import com.module.playways.rank.prepare.view.IMatchingView;
+import com.module.playways.rank.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,6 +52,8 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     int mGameType; // 当前游戏类型
 
     GameInfoModel mJsonGameInfo;
+
+    private List<SongModel> mSongModelList;
 
     volatile MatchState mMatchState = MatchState.IDLE;
     private List<String> avatarURL;
@@ -163,6 +166,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                 disposeMatchTask();
                 this.mCurrentGameId = joinActionEvent.gameId;
                 this.mGameCreateTime = joinActionEvent.gameCreateMs;
+                this.mSongModelList = joinActionEvent.songModelList;
                 joinRoom();
             }
         }
@@ -182,7 +186,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                         mCheckJoinStateTask.dispose();
                     }
 
-                    mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar());
+                    mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar(), joinActionEvent.songModelList);
                 }
             }
         }
@@ -298,7 +302,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                                             mMatchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
-                                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar());
+                                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar(), joinActionEvent.songModelList);
                                         } else {
                                             MyLog.d(TAG, "3 秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
@@ -339,7 +343,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                             mMatchState = MatchState.JoinGameSuccess;
                             mJsonGameInfo = jsonGameInfo;
-                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar());
+                            mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar(), joinActionEvent.songModelList);
                         }
                     } else {
                         MyLog.d(TAG, "process updateUserListState else");

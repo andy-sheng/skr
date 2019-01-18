@@ -3,9 +3,9 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
-import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.QRoundOverMsg;
 
 public final class QRoundOverMsgEvent {
@@ -33,7 +33,7 @@ public final class QRoundOverMsgEvent {
   /**
    * 下个轮次信息
    */
-  public   QRoundInfo nextRound;
+  public RoundInfoModel nextRound;
 
   public QRoundOverMsgEvent(BasePushInfo info, QRoundOverMsg qRoundOverMsg) {
     this.info = info;
@@ -41,6 +41,30 @@ public final class QRoundOverMsgEvent {
     this.exitUserID = qRoundOverMsg.getExitUserID();
     this.overReason = qRoundOverMsg.getOverReason();
     this.resultType = qRoundOverMsg.getResultType();
-    this.nextRound = qRoundOverMsg.getNextRound();
+    this.nextRound = RoundInfoModel.parseFromQRoundInfo(qRoundOverMsg.nextRound);
+  }
+
+  public BasePushInfo getInfo() {
+    return info;
+  }
+
+  public Long getRoundOverTimeMs() {
+    return roundOverTimeMs;
+  }
+
+  public Integer getExitUserID() {
+    return exitUserID;
+  }
+
+  public EQRoundOverReason getOverReason() {
+    return overReason;
+  }
+
+  public EQRoundResultType getResultType() {
+    return resultType;
+  }
+
+  public RoundInfoModel getNextRound() {
+    return nextRound;
   }
 }

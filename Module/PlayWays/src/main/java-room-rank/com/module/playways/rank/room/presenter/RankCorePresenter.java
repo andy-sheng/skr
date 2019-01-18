@@ -1120,6 +1120,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(RoundOverEvent roundOverEvent) {
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + roundOverEvent.currenRound.getUserID()
                 + ", exitUserID 是 " + roundOverEvent.exitUserID + " timets 是" + roundOverEvent.info.getTimeMs());
+        if(mRoomData.getLastSyncTs() > roundOverEvent.info.getTimeMs()){
+            MyLog.w(TAG, "但是是旧数据");
+            return;
+        }
+
         if (RankDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
             // 确实等于当前轮次
             if (mRoomData.getRealRoundInfo() != null) {
@@ -1133,10 +1138,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
             mRoomData.setExpectRoundInfo(roundOverEvent.nextRound);
             mRoomData.checkRound();
-        }
-
-        if (roundOverEvent.exitUserID != 0) {
-            // TODO: 2018/12/18 有人退出了
         }
     }
 
@@ -1172,7 +1173,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         updatePlayerState(syncStatusEvent.gameOverTimeMs, syncStatusEvent.syncStatusTimes, syncStatusEvent.onlineInfos, syncStatusEvent.currentInfo, syncStatusEvent.nextInfo);
     }
 
-    // TODO: 2018/12/18 退出游戏了
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ExitGameEvent exitGameEvent) {
         MyLog.w(TAG, "收到一个人退出的push了，type是" + exitGameEvent.type + ",timeMs是" + exitGameEvent.info.getTimeMs());

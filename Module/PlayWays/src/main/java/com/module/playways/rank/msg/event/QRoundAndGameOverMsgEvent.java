@@ -47,4 +47,28 @@ public final class QRoundAndGameOverMsgEvent {
     this.resultType = qRoundAndGameOverMsg.getResultType();
     this.resultInfo = qRoundAndGameOverMsg.getResultInfoList();
   }
+
+  public BasePushInfo getInfo() {
+    return info;
+  }
+
+  public Long getRoundOverTimeMs() {
+    return roundOverTimeMs;
+  }
+
+  public Integer getExitUserID() {
+    return exitUserID;
+  }
+
+  public EQRoundOverReason getOverReason() {
+    return overReason;
+  }
+
+  public EQRoundResultType getResultType() {
+    return resultType;
+  }
+
+  public List<QResultInfo> getResultInfo() {
+    return resultInfo;
+  }
 }

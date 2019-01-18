@@ -210,4 +210,26 @@ public class RankDataUtils {
         }
         return false;
     }
+
+    public static boolean isCurrentRoundEvent(int eventSeq, RoomData roomData) {
+        if(roomData != null){
+            if(roomData.getRealRoundInfo() == null){
+                return false;
+            }
+
+            if(roomData.getRealRoundInfo().getRoundSeq() == eventSeq){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static SongModel getCurRoundSongModel(int seq, RoomData roomData) {
+        if(seq >=0 && seq < roomData.getSongModelList().size()){
+            return roomData.getSongModelList().get(seq);
+        }
+
+        return null;
+    }
 }

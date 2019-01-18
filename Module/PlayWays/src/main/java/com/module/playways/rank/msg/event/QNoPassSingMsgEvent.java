@@ -23,4 +23,16 @@ public final class QNoPassSingMsgEvent {
     this.userID = qNoPassSingMsg.getUserID();
     this.roundSeq = qNoPassSingMsg.getRoundSeq();
   }
+
+  public BasePushInfo getInfo() {
+    return info;
+  }
+
+  public Integer getUserID() {
+    return userID;
+  }
+
+  public Integer getRoundSeq() {
+    return roundSeq;
+  }
 }

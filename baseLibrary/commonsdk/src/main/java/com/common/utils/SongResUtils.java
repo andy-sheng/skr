@@ -9,6 +9,7 @@ public class SongResUtils {
     public static final String SUFF_ZRCE = "zrce";
     public static final String SUFF_ACC = "mp3";
     public static final String SUFF_ORI = "mp3";
+    public static final String SUFF_STAND = "mp3";
     public static final String SUFF_MIDI = "mid";
     public static final String SUFF_JSON = "json";
 
@@ -18,6 +19,7 @@ public class SongResUtils {
     private static final String ORI_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "ori";
     private static final String MIDI_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "midi";
     private static final String SCORE_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "score";
+    private static final String STAND_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "stand";
 
     public static final String getLyricDir() {
         return LYRIC_DIR;
@@ -37,6 +39,10 @@ public class SongResUtils {
 
     public static final String getScoreDir(){
         return SCORE_DIR;
+    }
+
+    public static final String getStandDir(){
+        return STAND_DIR;
     }
 
     public static final File getZRCELyricFileByUrl(String resUrl) {
@@ -62,6 +68,11 @@ public class SongResUtils {
     public static final File getScoreFileByUrl(String resUrl) {
 
         return getFile(SCORE_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_JSON));
+    }
+
+    public static final File getStandFileByUrl(String resUrl) {
+
+        return getFile(STAND_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_STAND));
     }
 
     private static File getFile(String dir, String url, String suff) {

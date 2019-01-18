@@ -67,6 +67,8 @@ public class RoomData implements Serializable {
 
     private List<PlayerInfoModel> mPlayerInfoList;//选手信息
 
+    private List<SongModel> mSongModelList;//选手信息
+
     private volatile boolean mIsGameFinish = false;
 
     /**
@@ -99,6 +101,14 @@ public class RoomData implements Serializable {
                 EventBus.getDefault().post(new RoundInfoChangeEvent(false, lastRoundInfoModel));
             }
         }
+    }
+
+    public List<SongModel> getSongModelList() {
+        return mSongModelList;
+    }
+
+    public void setSongModelList(List<SongModel> songModelList) {
+        mSongModelList = songModelList;
     }
 
     public void setIsGameFinish(boolean isGameFinish) {
@@ -237,6 +247,13 @@ public class RoomData implements Serializable {
         return null;
     }
 
+    public int getRealRoundSeq(){
+        if(mRealRoundInfo != null){
+            return mRealRoundInfo.getRoundSeq();
+        }
+
+        return -1;
+    }
     @Override
     public String toString() {
         return "RoomData{" +

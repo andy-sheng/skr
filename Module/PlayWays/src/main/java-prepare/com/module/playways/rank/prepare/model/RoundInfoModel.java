@@ -1,6 +1,7 @@
 package com.module.playways.rank.prepare.model;
 
 import com.common.log.MyLog;
+import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.RoundInfo;
 
 import java.io.Serializable;
@@ -15,7 +16,7 @@ public class RoundInfoModel implements Serializable {
      */
 
     private int userID;
-    private int playbookID;
+    private int playbookID;   //songModelId
     private int roundSeq;
     private int singBeginMs;
     private int singEndMs;
@@ -106,6 +107,26 @@ public class RoundInfoModel implements Serializable {
 
         this.setUserID(roundInfo.getUserID());
         this.setPlaybookID(roundInfo.getPlaybookID());
+        this.setRoundSeq(roundInfo.getRoundSeq());
+        this.setSingBeginMs(roundInfo.getSingBeginMs());
+        this.setSingEndMs(roundInfo.getSingEndMs());
+        return;
+    }
+
+    public static RoundInfoModel parseFromQRoundInfo(QRoundInfo roundInfo){
+        RoundInfoModel roundInfoModel = new RoundInfoModel();
+        roundInfoModel.parse(roundInfo);
+
+        return roundInfoModel;
+    }
+
+    public void parse(QRoundInfo roundInfo) {
+        if (roundInfo == null) {
+            MyLog.e("JsonRoundInfo RoundInfo == null");
+            return;
+        }
+
+        this.setUserID(roundInfo.getUserID());
         this.setRoundSeq(roundInfo.getRoundSeq());
         this.setSingBeginMs(roundInfo.getSingBeginMs());
         this.setSingEndMs(roundInfo.getSingEndMs());
