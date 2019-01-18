@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IQuestionView {
     void loadQuestionsData(List<Question> questionList);
+
+    void onComplete();
 }

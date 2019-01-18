@@ -59,11 +59,10 @@ public class MusicTestFragment extends BaseFragment {
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), MusicQuestionFragment.class)
                                         .setAddToBackStack(true)
-                                        .setHasAnimation(true)
+                                        .setHasAnimation(false)
                                         .build());
 
-                        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                                .setActivity(getActivity())
+                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                 .setPopFragment(MusicTestFragment.this)
                                 .setPopAbove(false)
                                 .setHasAnimation(false)

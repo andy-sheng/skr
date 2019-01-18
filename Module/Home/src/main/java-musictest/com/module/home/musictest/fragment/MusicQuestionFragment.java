@@ -5,16 +5,25 @@ import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
-import com.common.flowlayout.TagFlowLayout;
-import com.common.view.ex.ExTextView;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
+import com.module.home.musictest.model.Answer;
 import com.module.home.musictest.model.Question;
 import com.module.home.musictest.presenter.MusicTestPresenter;
 import com.module.home.musictest.view.IQuestionView;
-import com.module.home.musictest.view.QuesetionView;
+import com.module.home.musictest.view.QuestionView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 
 // 音乐问题页面
 public class MusicQuestionFragment extends BaseFragment implements IQuestionView {
@@ -24,7 +33,9 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
 
     MusicTestPresenter mMusicTestPresenter;
 
-    List<Question> mQuestions;
+    List<Question> mQuestions = new ArrayList<>();                         // 问题
+    Map<String, Answer> mAnswerHashMap = new HashMap<String, Answer>();    // 答案
+    Map<String, Set<Integer>> mSetMap = new HashMap<String, Set<Integer>>();                   //记录问题的答案
 
     @Override
     public int initView() {
@@ -36,6 +47,19 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
 
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mQuestionArea = (RelativeLayout) mRootView.findViewById(R.id.question_area);
+
+        RxView.clicks(mTitlebar.getLeftTextView())
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                                .setPopFragment(MusicQuestionFragment.this)
+                                .setPopAbove(false)
+                                .setHasAnimation(true)
+                                .build());
+                    }
+                });
 
         mMusicTestPresenter = new MusicTestPresenter(this);
         addPresent(mMusicTestPresenter);
@@ -52,8 +76,56 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
     public void loadQuestionsData(List<Question> questionList) {
         this.mQuestions = questionList;
 
-        QuesetionView quesetionView = new QuesetionView(getContext());
-        quesetionView.setData(questionList.get(0));
+        QuestionView quesetionView = new QuestionView(getContext());
+        quesetionView.setMaxNum(mQuestions.size());
+        quesetionView.setData(questionList.get(0), 0, null);
+        mTitlebar.getRightTextView().setText("1/" + mQuestions.size());
+        quesetionView.setListener(new QuestionView.OnClickListener() {
+            @Override
+            public void nextQuestion(Answer answer, int next, Set<Integer> selectList) {
+                if (answer != null && answer.getAnswerIDs() != null && answer.getAnswerIDs().size() > 0) {
+                    mTitlebar.getRightTextView().setText(String.valueOf(next + 1) + "/" + mQuestions.size());
+                    mAnswerHashMap.put(answer.getQuestionID(), answer);
+                    mSetMap.put(answer.getQuestionID(), selectList);
+                    if (mSetMap.containsKey(questionList.get(next).getQuestionID())) {
+                        quesetionView.setData(questionList.get(next), next, mSetMap.get(questionList.get(next).getQuestionID()));
+                    } else {
+                        quesetionView.setData(questionList.get(next), next, null);
+                    }
+                } else {
+                    U.getToastUtil().showShort("至少选一个喔~");
+                }
+            }
+
+            @Override
+            public void lastQuestion(int last) {
+                mTitlebar.getRightTextView().setText(String.valueOf(last + 1) + "/" + mQuestions.size());
+                if (mSetMap.containsKey(questionList.get(last).getQuestionID())) {
+                    quesetionView.setData(questionList.get(last), last, mSetMap.get(questionList.get(last).getQuestionID()));
+                } else {
+                    quesetionView.setData(questionList.get(last), last, null);
+                }
+            }
+
+            @Override
+            public void onCompletion(Answer answer) {
+                if (answer != null && answer.getAnswerIDs() != null && answer.getAnswerIDs().size() > 0) {
+                    mAnswerHashMap.put(answer.getQuestionID(), answer);
+                    mMusicTestPresenter.reportAnswer(mAnswerHashMap);
+                } else {
+                    U.getToastUtil().showShort("至少选一个喔~");
+                }
+            }
+        });
         mQuestionArea.addView(quesetionView);
+    }
+
+    @Override
+    public void onComplete() {
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopFragment(MusicQuestionFragment.this)
+                .setPopAbove(false)
+                .setHasAnimation(true)
+                .build());
     }
 }

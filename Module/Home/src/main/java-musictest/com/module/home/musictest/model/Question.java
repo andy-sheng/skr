@@ -5,14 +5,21 @@ import java.util.List;
 
 // 问题
 public class Question implements Serializable {
+
     /**
      * questionID : 1
-     * questionTitle : 最爱唱哪些风格的歌曲呢？
-     * questionOptionArr : [{"optionID":"a","optionVal":"流行"},{"optionID":"b","optionVal":"摇滚"},{"optionID":"c","optionVal":"民谣"},{"optionID":"d","optionVal":"嘻哈"},{"optionID":"e","optionVal":"乡村"},{"optionID":"f","optionVal":"民谣"},{"optionID":"g","optionVal":"R&B"},{"optionID":"h","optionVal":"民歌"}]
+     * questionTitle : Q1:最爱唱哪些风格的歌呢（支持多选）
+     * questionOptionArr : [{"optionID":"a","optionVal":"流行"},{"optionID":"b","optionVal":"民歌"},{"optionID":"c","optionVal":"民谣"},{"optionID":"d","optionVal":"嘻哈"},{"optionID":"e","optionVal":"R&B"},{"optionID":"f","optionVal":"摇滚"}]
+     * selectType : 2
+     * minSelectNum : 1
+     * maxSelectNum : 3
      */
 
     private String questionID;
     private String questionTitle;
+    private int selectType;
+    private int minSelectNum;
+    private int maxSelectNum;
     private List<QuestionOptionArr> questionOptionArr;
 
     public String getQuestionID() {
@@ -29,6 +36,30 @@ public class Question implements Serializable {
 
     public void setQuestionTitle(String questionTitle) {
         this.questionTitle = questionTitle;
+    }
+
+    public int getSelectType() {
+        return selectType;
+    }
+
+    public void setSelectType(int selectType) {
+        this.selectType = selectType;
+    }
+
+    public int getMinSelectNum() {
+        return minSelectNum;
+    }
+
+    public void setMinSelectNum(int minSelectNum) {
+        this.minSelectNum = minSelectNum;
+    }
+
+    public int getMaxSelectNum() {
+        return maxSelectNum;
+    }
+
+    public void setMaxSelectNum(int maxSelectNum) {
+        this.maxSelectNum = maxSelectNum;
     }
 
     public List<QuestionOptionArr> getQuestionOptionArr() {
