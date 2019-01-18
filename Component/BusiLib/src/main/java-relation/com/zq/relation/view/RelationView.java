@@ -20,11 +20,16 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.person.fragment.OtherPersonFragment;
 import com.zq.relation.adapter.RelationAdapter;
+import com.zq.relation.callback.FansEmptyCallback;
+import com.zq.relation.callback.FriendsEmptyCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,6 +51,8 @@ public class RelationView extends RelativeLayout {
 
     RecyclerView mRecyclerView;
     SmartRefreshLayout mRefreshLayout;
+
+    LoadService mLoadService;
 
     RelationAdapter mRelationAdapter;
 
@@ -113,22 +120,44 @@ public class RelationView extends RelativeLayout {
             }
         });
 
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new FriendsEmptyCallback())
+                .addCallback(new FansEmptyCallback())
+                .build();
+        mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                loadData(mMode, mOffset, DEFAULT_COUNT);
+            }
+        });
+
         loadData(mMode, mOffset, DEFAULT_COUNT);
     }
 
-    public void loadData(int mode, int offset, int limit) {
+    public void loadData(final int mode, final int offset, int limit) {
         UserInfoManager.getInstance().getRelationList(mode, offset, limit, new UserInfoManager.ResponseCallBack<ApiResult>() {
             @Override
             public void onServerSucess(ApiResult result) {
                 mOffset = result.getData().getIntValue("offset");
                 List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("users"), UserInfoModel.class);
                 if (userInfoModels != null && userInfoModels.size() != 0) {
+                    mLoadService.showSuccess();
                     mRelationAdapter.addData(userInfoModels);
                     mRelationAdapter.notifyDataSetChanged();
                     hasMore = true;
                 } else {
                     hasMore = false;
                     mRefreshLayout.finishLoadMore();
+                    if (offset == 0) {
+                        // 第一次拉数据
+                        if (mode == UserInfoManager.RELATION_FRIENDS) {
+                            mLoadService.showCallback(FriendsEmptyCallback.class);
+                        } else if (mode == UserInfoManager.RELATION_FANS) {
+                            mLoadService.showCallback(FansEmptyCallback.class);
+                        }
+
+                    }
                 }
             }
 
@@ -237,6 +266,16 @@ public class RelationView extends RelativeLayout {
                     mRelationAdapter.notifyDataSetChanged();
                 }
 
+            }
+        }
+
+        if (mRelationAdapter.getData() != null && mRelationAdapter.getData().size() > 0) {
+            mLoadService.showSuccess();
+        } else {
+            if (mMode == UserInfoManager.RELATION_FRIENDS) {
+                mLoadService.showCallback(FriendsEmptyCallback.class);
+            } else if (mMode == UserInfoManager.RELATION_FANS) {
+                mLoadService.showCallback(FansEmptyCallback.class);
             }
         }
     }
