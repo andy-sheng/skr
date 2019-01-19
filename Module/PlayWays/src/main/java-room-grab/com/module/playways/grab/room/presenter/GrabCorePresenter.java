@@ -138,7 +138,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void beginSing() {
         // 打开引擎，变为主播
-        EngineManager.getInstance().setClientRole(true);
+        if (mRoomData.getGameId() > 0) {
+            EngineManager.getInstance().setClientRole(true);
+        }
         //开始录制声音
         if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
             // 需要上传音频伪装成机器人
@@ -545,7 +547,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void closeEngine() {
-        EngineManager.getInstance().setClientRole(false);
+        if (mRoomData.getGameId() > 0) {
+            EngineManager.getInstance().setClientRole(false);
+        }
     }
 
     /**

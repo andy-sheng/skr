@@ -45,7 +45,7 @@ public class SpecialSelectFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, SpecialModel model) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                        .withSerializable("prepare_data",new PrepareData())
+//                        .withSerializable("prepare_data",new PrepareData())
                         .navigation();
             }
         });

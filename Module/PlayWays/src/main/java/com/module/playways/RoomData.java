@@ -121,7 +121,7 @@ public class RoomData implements Serializable {
             }
             return;
         }
-        if (RoomDataUtils.roundSeqLarger(mExpectRoundInfo, mRealRoundInfo)) {
+        if (RoomDataUtils.roundSeqLarger(mExpectRoundInfo, mRealRoundInfo) || mRealRoundInfo == null) {
             // 轮次大于，才切换
             RoundInfoModel lastRoundInfoModel = mRealRoundInfo;
             mRealRoundInfo = mExpectRoundInfo;
