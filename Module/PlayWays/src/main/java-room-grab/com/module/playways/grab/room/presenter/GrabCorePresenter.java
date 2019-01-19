@@ -35,7 +35,7 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
-import com.module.playways.rank.room.model.RankDataUtils;
+import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
@@ -420,10 +420,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 没结束 current 不应该为null
             if (newRoundInfo != null) {
                 // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-                if (RankDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getExpectRoundInfo())) {
+                if (RoomDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getExpectRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
-                    mRoomData.setExpectRoundInfo(RankDataUtils.getRoundInfoFromRoundInfoList(mRoomData, newRoundInfo));
+                    mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoList(mRoomData, newRoundInfo));
                     mRoomData.checkRound();
                 }else {
                     /**
@@ -451,7 +451,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QGetSingChanceMsgEvent event) {
-        if (RankDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
 
             if(event.getUserID() == MyUserInfoManager.getInstance().getUid()){
@@ -471,7 +471,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QNoPassSingMsgEvent event) {
-        if (RankDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人灭灯了：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
             mIGrabView.lightOffUser(event.getUserID());
             RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
@@ -501,7 +501,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         //当前轮次是对的
-        if (RankDataUtils.roundInfoEqual(event.nextRound, mRoomData.getRealRoundInfo())) {
+        if (RoomDataUtils.roundInfoEqual(event.nextRound, mRoomData.getRealRoundInfo())) {
             if (mRoomData.getRealRoundInfo() != null) {
                 MyLog.w(TAG, "确实是当前轮次");
                 mRoomData.getRealRoundInfo().setEndTs(event.roundOverTimeMs);
@@ -509,11 +509,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
 
         // 游戏轮次结束
-        if (RankDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
+        if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
             // 轮次确实比当前的高，可以切换
             roundOverReason(event.overReason, event.resultType);
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
-            mRoomData.setExpectRoundInfo(RankDataUtils.getRoundInfoFromRoundInfoList(mRoomData, event.nextRound));
+            mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoList(mRoomData, event.nextRound));
             mRoomData.checkRound();
         }
     }
@@ -543,7 +543,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QWantSingChanceMsgEvent event) {
-        if (RankDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRoundEvent(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人想唱：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
             mIGrabView.lightVieUser(event.getUserID());
             RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
@@ -597,9 +597,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHanlder.post(new Runnable() {
                     @Override
                     public void run() {
-                        int uid = RankDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
+                        int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
                         String avatar = "";
-                        PlayerInfoModel playerInfoModel = RankDataUtils.getPlayerInfoById(mRoomData, uid);
+                        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
                         if (playerInfoModel != null && playerInfoModel.getUserInfo() != null) {
                             avatar = playerInfoModel.getUserInfo().getAvatar();
                         }
@@ -651,7 +651,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
 
     public void checkMachineUser(long uid) {
-        PlayerInfoModel playerInfo = RankDataUtils.getPlayerInfoById(mRoomData, uid);
+        PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         if (playerInfo == null) {
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
             return;
@@ -678,7 +678,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private int estimateOverTsThisRound() {
-        int pt = RankDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
+        int pt = RoomDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
         return pt;
     }
@@ -686,7 +686,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
         if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
-            if (RankDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
                 if (event.getObj() != null) {
                     List<EngineEvent.UserVolumeInfo> list = (List<EngineEvent.UserVolumeInfo>) event.getObj();
                     for (EngineEvent.UserVolumeInfo info : list) {

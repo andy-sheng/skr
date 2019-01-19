@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.RankDataUtils;
+import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.rank.R;
 
 public class MoreOpView extends RelativeLayout {
@@ -91,7 +91,7 @@ public class MoreOpView extends RelativeLayout {
         if (!mPopupWindow.isShowing()) {
             mPopupWindow.showAsDropDown(view, -U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(5));
         }
-        if (RankDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             mVoiceControlBtnContainer.setVisibility(GONE);
             mDivideLine.setVisibility(GONE);
         } else {

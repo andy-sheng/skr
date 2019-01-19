@@ -6,15 +6,14 @@ import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.rank.prepare.model.PrepareData;
 
-import com.module.playways.rank.room.model.RankDataUtils;
 import com.module.playways.RoomData;
+import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.rank.R;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 
@@ -33,20 +32,20 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
-//        if (prepareData != null) {
-//            mRoomData.setGameId(prepareData.getGameId());
-//            mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
-//            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
-//            mRoomData.setShiftTs(prepareData.getShiftTs());
-//
-//            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
-//            mRoomData.setExpectRoundInfo(RankDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
-//            MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
-//            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
-//            mRoomData.setSongModel(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
-//        } else {
-//
-//        }
+        if (prepareData != null) {
+            mRoomData.setGameId(prepareData.getGameId());
+            mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
+            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
+            mRoomData.setShiftTs(prepareData.getShiftTs());
+
+            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
+            mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
+            MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
+            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
+        } else {
+
+        }
+
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
                 .setAddToBackStack(false)

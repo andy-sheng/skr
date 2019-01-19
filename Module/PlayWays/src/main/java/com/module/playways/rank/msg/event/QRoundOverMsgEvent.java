@@ -41,7 +41,7 @@ public final class QRoundOverMsgEvent {
     this.exitUserID = qRoundOverMsg.getExitUserID();
     this.overReason = qRoundOverMsg.getOverReason();
     this.resultType = qRoundOverMsg.getResultType();
-    this.nextRound = RoundInfoModel.parseFromQRoundInfo(qRoundOverMsg.nextRound);
+    this.nextRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.nextRound);
   }
 
   public BasePushInfo getInfo() {

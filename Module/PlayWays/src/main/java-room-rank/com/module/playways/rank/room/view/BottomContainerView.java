@@ -20,7 +20,7 @@ import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
-import com.module.playways.rank.room.model.RankDataUtils;
+import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.RoomData;
@@ -154,7 +154,7 @@ public class BottomContainerView extends RelativeLayout {
     }
 
     void sendSpecialEmojiMsg(SpecialEmojiMsgType type, String actionDesc) {
-        if (RankDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             U.getToastUtil().showShort("暂时不能给自己送礼哦");
             return;
         }

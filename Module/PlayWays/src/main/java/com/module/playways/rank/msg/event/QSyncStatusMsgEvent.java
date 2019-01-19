@@ -45,7 +45,7 @@ public final class QSyncStatusMsgEvent {
       onLineInfos.add(jsonOnLineInfo);
     }
     this.onlineInfo = onLineInfos;
-    this.currentRound = RoundInfoModel.parseFromQRoundInfo(qSyncStatusMsg.getCurrentRound());
+    this.currentRound = RoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getCurrentRound());
   }
 
   public BasePushInfo getInfo() {

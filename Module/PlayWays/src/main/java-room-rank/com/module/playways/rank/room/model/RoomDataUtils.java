@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 针对排位模式的数据处理
  */
-public class RankDataUtils {
+public class RoomDataUtils {
     /**
      * 找到首轮演唱的轮次
      *

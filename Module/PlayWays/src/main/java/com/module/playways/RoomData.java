@@ -7,7 +7,7 @@ import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
-import com.module.playways.rank.room.model.RankDataUtils;
+import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.playways.rank.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -90,7 +90,7 @@ public class RoomData implements Serializable {
             }
             return;
         }
-        if (!RankDataUtils.roundInfoEqual(mExpectRoundInfo, mRealRoundInfo)) {
+        if (!RoomDataUtils.roundInfoEqual(mExpectRoundInfo, mRealRoundInfo)) {
             // 轮次需要更新了
             RoundInfoModel lastRoundInfoModel = mRealRoundInfo;
             mRealRoundInfo = mExpectRoundInfo;

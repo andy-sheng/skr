@@ -8,7 +8,7 @@ import com.common.anim.AnimationPlayControlTemplate;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
 import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.RankDataUtils;
+import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,7 +55,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
 
         @Override
         public void onStart(GiftPlayModel model, GiftBigAnimationView giftBigAnimationView) {
-            if (RankDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
                 mGiftPlayControlTemplate.endCurrent(model);
                 return;
             }
@@ -117,7 +117,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(SpecialEmojiMsgEvent event) {
-        if (RankDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             return;
         }
         // 收到一条礼物消息,进入生产者队列

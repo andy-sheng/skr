@@ -203,11 +203,9 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         long roundOverTimeMs = roundOverMsgr.getRoundOverTimeMs();
 
-        RoundInfoModel currentRound = new RoundInfoModel();
-        currentRound.parse(roundOverMsgr.getCurrentRound());
+        RoundInfoModel currentRound = RoundInfoModel.parseFromRoundInfo(roundOverMsgr.getCurrentRound());
 
-        RoundInfoModel nextRound = new RoundInfoModel();
-        nextRound.parse(roundOverMsgr.getNextRound());
+        RoundInfoModel nextRound = RoundInfoModel.parseFromRoundInfo(roundOverMsgr.getNextRound());
 
         EventBus.getDefault().post(new RoundOverEvent(info, roundOverTimeMs, currentRound, nextRound, roundOverMsgr.getExitUserID()));
     }
@@ -274,11 +272,9 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             onLineInfos.add(jsonOnLineInfo);
         }
 
-        RoundInfoModel currentInfo = new RoundInfoModel();
-        currentInfo.parse(syncStatusMsg.getCurrentRound());
+        RoundInfoModel currentInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getCurrentRound());
 
-        RoundInfoModel nextInfo = new RoundInfoModel();
-        nextInfo.parse(syncStatusMsg.getNextRound());
+        RoundInfoModel nextInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getNextRound());
 
         MyLog.d(TAG, " processSyncStatusMsg " + "gameOverTimeMs =" + gameOverTimeMs);
         EventBus.getDefault().post(new SyncStatusEvent(info, syncStatusTimes, gameOverTimeMs, onLineInfos, currentInfo, nextInfo));

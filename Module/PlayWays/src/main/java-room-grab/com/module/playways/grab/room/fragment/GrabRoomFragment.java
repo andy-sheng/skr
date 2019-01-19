@@ -877,17 +877,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
 
     @Override
-    public void startRivalCountdown(long uid) {
-
-    }
-
-    @Override
     public void lightVieUser(long uid) {
-
-    }
-
-    @Override
-    public void lightSingUser(long uid) {
 
     }
 
@@ -953,13 +943,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mQuitTipsDialog.show();
     }
 
-    /**
-     * 保证在主线程
-     */
-    @Override
-    public void startSelfCountdown(Runnable countDownOver) {
-        // 加保护，确保当前主舞台一定被移除
-    }
 
     /**
      * 保证在主线程

@@ -25,16 +25,6 @@ public class GameReadyModel implements Serializable {
     private List<ReadyInfoModel> jsonReadyInfo;
     private List<RoundInfoModel> jsonRoundInfo;
 
-    private List<QRoundInfo> qRoundInfo;
-
-    public List<QRoundInfo> getqRoundInfo() {
-        return qRoundInfo;
-    }
-
-    public void setqRoundInfo(List<QRoundInfo> qRoundInfo) {
-        this.qRoundInfo = qRoundInfo;
-    }
-
     public int getHasReadyedUserCnt() {
         return HasReadyedUserCnt;
     }
@@ -95,12 +85,14 @@ public class GameReadyModel implements Serializable {
             jsonReadyInfos.add(jsonReadyInfo);
         }
         this.setJsonReadyInfo(jsonReadyInfos);
-        this.setqRoundInfo(msg.getQRoundInfoList());
 
         List<RoundInfoModel> jsonRoundInfos = new ArrayList<>();
         for (RoundInfo roundInfo : msg.getRoundInfoList()) {
-            RoundInfoModel jsonRoundInfo = new RoundInfoModel();
-            jsonRoundInfo.parse(roundInfo);
+            RoundInfoModel jsonRoundInfo = RoundInfoModel.parseFromRoundInfo(roundInfo);
+            jsonRoundInfos.add(jsonRoundInfo);
+        }
+        for (QRoundInfo roundInfo : msg.getQRoundInfoList()) {
+            RoundInfoModel jsonRoundInfo = RoundInfoModel.parseFromRoundInfo(roundInfo);
             jsonRoundInfos.add(jsonRoundInfo);
         }
         this.setJsonRoundInfo(jsonRoundInfos);

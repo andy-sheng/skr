@@ -15,7 +15,7 @@ import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.room.fragment.RankRoomFragment;
 import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.RankDataUtils;
+import com.module.playways.rank.room.model.RoomDataUtils;
 
 @Route(path = RouterConstants.ACTIVITY_RANK_ROOM)
 public class RankRoomActivity extends BaseActivity {
@@ -41,10 +41,10 @@ public class RankRoomActivity extends BaseActivity {
             mRoomData.setShiftTs(prepareData.getShiftTs());
 
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
-            mRoomData.setExpectRoundInfo(RankDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
+            mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
-            mRoomData.setSongModel(RankDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
+            mRoomData.setSongModel(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
         } else {
 
         }

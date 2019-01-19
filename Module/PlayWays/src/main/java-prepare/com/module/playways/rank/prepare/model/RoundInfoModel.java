@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Set;
 
 public class RoundInfoModel implements Serializable {
+    public static final int TYPE_RANK = 1;
+    public static final int TYPE_GRAB = 2;
     /**
      * userID : 7
      * playbookID : 1
@@ -16,7 +18,7 @@ public class RoundInfoModel implements Serializable {
      * singBeginMs : 3000
      * singEndMs : 341000
      */
-
+    private int type = TYPE_RANK;
     private int userID;
     private int playbookID;   //songModelId
     private int roundSeq;
@@ -33,8 +35,20 @@ public class RoundInfoModel implements Serializable {
     //已经灭灯的人
     private Set<Integer> hasLightOffUserSet;
 
-    //本轮次要唱的歌儿
+    //本轮次要唱的歌儿的详细信息
     private SongModel songModel;
+
+    public RoundInfoModel(int type) {
+        this.type = type;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public SongModel getSongModel() {
         return songModel;
@@ -132,18 +146,23 @@ public class RoundInfoModel implements Serializable {
         this.hasSing = hasSing;
     }
 
-    public void parse(RoundInfo roundInfo) {
-        if (roundInfo == null) {
-            MyLog.e("JsonRoundInfo RoundInfo == null");
-            return;
-        }
+    public static RoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
+        RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_RANK);
+        roundInfoModel.setUserID(roundInfo.getUserID());
+        roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
+        roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
+        roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
+        roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
+        return roundInfoModel;
+    }
 
-        this.setUserID(roundInfo.getUserID());
-        this.setPlaybookID(roundInfo.getPlaybookID());
-        this.setRoundSeq(roundInfo.getRoundSeq());
-        this.setSingBeginMs(roundInfo.getSingBeginMs());
-        this.setSingEndMs(roundInfo.getSingEndMs());
-        return;
+    public static RoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
+        RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_GRAB);
+        roundInfoModel.setUserID(roundInfo.getUserID());
+        roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
+        roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
+        roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
+        return roundInfoModel;
     }
 
     public void update(RoundInfoModel roundInfo) {
@@ -160,43 +179,26 @@ public class RoundInfoModel implements Serializable {
         return;
     }
 
-    public static RoundInfoModel parseFromQRoundInfo(QRoundInfo roundInfo){
-        RoundInfoModel roundInfoModel = new RoundInfoModel();
-        roundInfoModel.parse(roundInfo);
-
-        return roundInfoModel;
-    }
-
-    public void parse(QRoundInfo roundInfo) {
-        if (roundInfo == null) {
-            MyLog.e("JsonRoundInfo RoundInfo == null");
-            return;
-        }
-
-        this.setUserID(roundInfo.getUserID());
-        this.setRoundSeq(roundInfo.getRoundSeq());
-        this.setSingBeginMs(roundInfo.getSingBeginMs());
-        this.setSingEndMs(roundInfo.getSingEndMs());
-        return;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
         RoundInfoModel that = (RoundInfoModel) o;
-
-        if (userID != that.userID) return false;
-        if (playbookID != that.playbookID) return false;
+        if (this.type != that.type) {
+            return false;
+        }
+        if (roundSeq != that.roundSeq) {
+            return false;
+        }
+        if (playbookID != that.playbookID) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = userID;
-        result = 31 * result + playbookID;
+        int result = type;
         result = 31 * result + roundSeq;
+        result = 31 * result + playbookID;
         return result;
     }
 
