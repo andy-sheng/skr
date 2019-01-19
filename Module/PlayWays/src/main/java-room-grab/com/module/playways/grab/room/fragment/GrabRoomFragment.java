@@ -28,7 +28,6 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
@@ -40,6 +39,7 @@ import com.module.playways.grab.room.view.SelfSingCardView;
 import com.module.playways.grab.room.view.SingBeginTipsCardView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.EvaluationFragment;
@@ -70,10 +70,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
@@ -626,7 +624,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     @Override
-    public void grabByOthers() {
+    public void grabByOthers(long uid) {
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
@@ -1005,6 +1003,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 }
             }, 2000);
         }
+    }
+
+    @Override
+    public void updateWholeStatus(RoundInfoModel roundInfoModel) {
+
     }
 
     static class PendingPlaySongCardData {

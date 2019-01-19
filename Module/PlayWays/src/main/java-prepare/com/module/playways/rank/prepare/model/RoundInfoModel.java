@@ -1,10 +1,12 @@
 package com.module.playways.rank.prepare.model;
 
 import com.common.log.MyLog;
+import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.RoundInfo;
 
 import java.io.Serializable;
+import java.util.Set;
 
 public class RoundInfoModel implements Serializable {
     /**
@@ -25,6 +27,38 @@ public class RoundInfoModel implements Serializable {
     private int sysScore;//本轮系统打分，先搞个默认60分
     private boolean hasSing = false;
 
+    //已经抢了的人
+    private Set<Integer> hasGrabUserSet;
+
+    //已经灭灯的人
+    private Set<Integer> hasLightOffUserSet;
+
+    //本轮次要唱的歌儿
+    private SongModel songModel;
+
+    public SongModel getSongModel() {
+        return songModel;
+    }
+
+    public void setSongModel(SongModel songModel) {
+        this.songModel = songModel;
+    }
+
+    public Set<Integer> getHasGrabUserSet() {
+        return hasGrabUserSet;
+    }
+
+    public void setHasGrabUserSet(Set<Integer> hasGrabUserSet) {
+        this.hasGrabUserSet = hasGrabUserSet;
+    }
+
+    public Set<Integer> getHasLightOffUserSet() {
+        return hasLightOffUserSet;
+    }
+
+    public void setHasLightOffUserSet(Set<Integer> hasLightOffUserSet) {
+        this.hasLightOffUserSet = hasLightOffUserSet;
+    }
 
     public int getUserID() {
         return userID;
@@ -112,6 +146,20 @@ public class RoundInfoModel implements Serializable {
         return;
     }
 
+    public void update(RoundInfoModel roundInfo) {
+        if (roundInfo == null) {
+            MyLog.e("JsonRoundInfo RoundInfo == null");
+            return;
+        }
+
+        this.setUserID(roundInfo.getUserID());
+        this.setPlaybookID(roundInfo.getPlaybookID());
+        this.setRoundSeq(roundInfo.getRoundSeq());
+        this.setSingBeginMs(roundInfo.getSingBeginMs());
+        this.setSingEndMs(roundInfo.getSingEndMs());
+        return;
+    }
+
     public static RoundInfoModel parseFromQRoundInfo(QRoundInfo roundInfo){
         RoundInfoModel roundInfoModel = new RoundInfoModel();
         roundInfoModel.parse(roundInfo);
@@ -154,16 +202,17 @@ public class RoundInfoModel implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonRoundInfo{" +
+        return "RoundInfoModel{" +
                 "userID=" + userID +
                 ", playbookID=" + playbookID +
                 ", roundSeq=" + roundSeq +
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +
+                ", startTs=" + startTs +
                 ", endTs=" + endTs +
                 ", sysScore=" + sysScore +
+                ", hasSing=" + hasSing +
+                ", songModel=" + songModel +
                 '}';
     }
-
-
 }

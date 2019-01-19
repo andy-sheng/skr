@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.inter;
 
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundResultType;
@@ -25,7 +26,7 @@ public interface IGrabView {
     /**
      * 别人抢到了
      */
-    void grabByOthers();
+    void grabByOthers(long uid);
 
     /**
      * 轮次结束
@@ -34,18 +35,6 @@ public interface IGrabView {
      */
     void roundOver(int reason,boolean playNextSongInfoCard);
 
-
-    /**
-     * 自己抢到
-     * @param countDownOver
-     */
-    void startSelfCountdown(Runnable countDownOver);
-
-    /**
-     * 别人抢到
-     */
-    void startRivalCountdown(long uid);
-
     /**
      * 抢了唱歌权的人亮灯
      * @param uid
@@ -53,12 +42,6 @@ public interface IGrabView {
     void lightVieUser(long uid);
 
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
-
-    /**
-     * 抢到唱歌权的人亮灯
-     * @param uid
-     */
-    void lightSingUser(long uid);
 
     /**
      * 灭灯用户
@@ -96,4 +79,9 @@ public interface IGrabView {
 
     // 主舞台离开（开始主舞台消失动画）
     void hideMainStage();
+
+    /**
+     * 由于sync接口里放了灭灯和想唱的人的信息，需要更新整个轮次的接口
+     */
+    void updateWholeStatus(RoundInfoModel roundInfoModel);
 }

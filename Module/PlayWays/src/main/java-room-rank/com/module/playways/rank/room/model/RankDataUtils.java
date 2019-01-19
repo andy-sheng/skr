@@ -232,4 +232,19 @@ public class RankDataUtils {
 
         return null;
     }
+
+    public static RoundInfoModel getRoundInfoFromRoundInfoList(RoomData roomData, RoundInfoModel roundInfoModel){
+        if(roundInfoModel == null){
+            return null;
+        }
+
+        for(RoundInfoModel roundInfo : roomData.getRoundInfoModelList()){
+            if(roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()){
+                roundInfo.update(roundInfoModel);
+                return roundInfo;
+            }
+        }
+
+        return null;
+    }
 }
