@@ -15,25 +15,6 @@
         app:antiAlias="true"
         app:autoPlay="false" />
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/stage_people_bg"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="@dimen/view_80_dp"
-        android:scaleType="fitCenter"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:clearsAfterStop="false" />
-
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/stage_ufo_bg"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_300_dp"
-        android:layout_marginTop="@dimen/view_80_dp"
-        android:scaleType="fitCenter"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:clearsAfterStop="false" />
 
     <ImageView
         android:id="@+id/end_round_hint"
@@ -90,13 +71,14 @@
         android:layout_marginLeft="@dimen/view_18_dp"
         android:layout_marginBottom="@dimen/view_10_dp" />
 
-
     <!-- 转场的一些卡片-->
-    <com.common.view.ex.ExImageView
-        android:id="@+id/turn_change_song_seq_iv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/btn_dialog_cancle"
+    <com.module.playways.grab.room.view.TurnInfoCardView
+        android:id="@+id/turn_info_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_container_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.SongInfoCardView
@@ -122,6 +104,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_130_dp"
         android:visibility="gone" />
+
     <!--转场卡片结束-->
 
     <!--演唱时两个主场景view-->

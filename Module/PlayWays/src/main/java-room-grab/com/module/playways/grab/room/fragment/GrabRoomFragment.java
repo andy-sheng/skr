@@ -25,7 +25,6 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
@@ -38,6 +37,7 @@ import com.module.playways.grab.room.view.RoundOverCardView;
 import com.module.playways.grab.room.view.SelfSingCardView;
 import com.module.playways.grab.room.view.SingBeginTipsCardView;
 import com.module.playways.grab.room.view.SongInfoCardView;
+import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
@@ -90,6 +90,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     public static final int MSG_ENSURE_ROUND_OVER_PLAY_OVER = 4;
 
+    public static final int MSG_ENSURE_BATTLE_BEGIN_OVER = 5;
+
     RoomData mRoomData;
 
     RelativeLayout mRankingContainer;
@@ -116,7 +118,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     Disposable mPrepareLyricTask;
 
-    ExImageView mSongSeqIv; //歌曲次序卡片
+    TurnInfoCardView mTurnInfoCardView; //歌曲次序 以及 对战开始卡片
 
     SongInfoCardView mSongInfoCardView; // 歌曲信息卡片
 
@@ -125,6 +127,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     RoundOverCardView mRoundOverCardView; // 轮次结束的卡片
 
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
+
+    AnimatorSet mBattleBeginAnimation; //  对战开始卡片出现动画
 
     AnimatorSet mSongInfoShowAnimation; // 歌曲卡片出现动画
 
@@ -164,6 +168,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 case MSG_ENSURE_READYGO_OVER:
                     onReadyGoOver();
                     break;
+                case MSG_ENSURE_BATTLE_BEGIN_OVER:
+                    onBattleBeginPlayOver();
+                    break;
                 case MSG_ENSURE_SONGCARD_OVER:
                     onSongInfoCardPlayOver((PendingPlaySongCardData) msg.obj);
                     break;
@@ -171,11 +178,32 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     onSingBeginTipsPlayOver(msg.arg1 == 1);
                     break;
                 case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
-                    onRoundOverPlayOver(msg.arg1==1);
+                    onRoundOverPlayOver(msg.arg1 == 1);
                     break;
             }
         }
     };
+
+    /**
+     * 可以在此恢复数据
+     *
+     * @param savedInstanceState
+     */
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        mRoomData = (RoomData) savedInstanceState.getSerializable("roomData");
+    }
+
+    /**
+     * 当系统认为你的fragment存在被销毁的可能时，onSaveInstanceState 就会被调用
+     * 不包括用户主动退出fragment导致其被销毁，比如按BACK键后fragment被主动销毁
+     *
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("roomData", mRoomData);
+    }
 
     @Override
     public int initView() {
@@ -194,7 +222,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         initGiftDisplayView();
         initGrabOpView();
         initSingStageView();
-        showReadyGoView();
+//        showBattleBegin();
+//        showReadyGoView();
 
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
@@ -229,25 +258,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
 
-    /**
-     * 可以在此恢复数据
-     *
-     * @param savedInstanceState
-     */
-    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        mRoomData = (RoomData) savedInstanceState.getSerializable("roomData");
-    }
-
-    /**
-     * 当系统认为你的fragment存在被销毁的可能时，onSaveInstanceState 就会被调用
-     * 不包括用户主动退出fragment导致其被销毁，比如按BACK键后fragment被主动销毁
-     *
-     * @param outState
-     */
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("roomData", mRoomData);
+    public void onStart() {
+        super.onStart();
+        showBattleBegin();
     }
 
     private void initInputView() {
@@ -368,7 +382,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     private void initTurnChangeView() {
         mReadyGoBg = (SVGAImageView) mRootView.findViewById(R.id.ready_go_bg);
 
-        mSongSeqIv = mRootView.findViewById(R.id.turn_change_song_seq_iv);
+        mTurnInfoCardView = mRootView.findViewById(R.id.turn_info_iv);
         mSongInfoCardView = mRootView.findViewById(R.id.turn_change_song_info_card_view);
         mSingBeginTipsCardView = mRootView.findViewById(R.id.turn_change_sing_beign_tips_card_view);
         mRootView.findViewById(R.id.turn_change_round_over_card_view);
@@ -491,6 +505,62 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
     }
 
+    private void showBattleBegin() {
+        mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
+        mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_BATTLE_BEGIN_OVER, 5000);
+
+        mTurnInfoCardView.setModeBattleBegin();
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, -U.getDisplayUtils().getScreenWidth(), 0f);
+        objectAnimator1.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                MyLog.d(TAG,"onAnimationStart" + " animation=" + animation);
+                super.onAnimationStart(animation);
+                mTurnInfoCardView.setVisibility(View.VISIBLE);
+            }
+        });
+        objectAnimator1.setDuration(800);
+        objectAnimator1.setInterpolator(new OvershootInterpolator());
+        objectAnimator1.setStartDelay(500);
+        // 留白动画，只为让其显示一秒
+//        ObjectAnimator objectAnimator2 = new ObjectAnimator();
+//        objectAnimator2.setDuration(1000);
+
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
+        objectAnimator3.setInterpolator(new LinearInterpolator());
+        objectAnimator3.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                mTurnInfoCardView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                onBattleBeginPlayOver();
+            }
+        });
+        objectAnimator3.setStartDelay(1300);
+        objectAnimator3.setDuration(500);
+        if (mBattleBeginAnimation != null) {
+            mBattleBeginAnimation.cancel();
+        }
+        mBattleBeginAnimation = new AnimatorSet();
+        mBattleBeginAnimation.playSequentially(objectAnimator1, objectAnimator3);
+        mBattleBeginAnimation.start();
+    }
+
+    private void onBattleBeginPlayOver() {
+        mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
+        if (mBattleBeginAnimation != null) {
+            mBattleBeginAnimation.cancel();
+        }
+        mTurnInfoCardView.setVisibility(View.GONE);
+        mCorePresenter.onOpeningAnimationOver();
+    }
+
+
     /**
      * 抢唱阶段开始
      *
@@ -505,8 +575,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.obj = pendingPlaySongCardData;
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        mSongSeqIv.setVisibility(View.VISIBLE);
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSongSeqIv, View.TRANSLATION_X, -1000f, 0f);
+        mTurnInfoCardView.setModeSongSeq(seq == 0);
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, -1000f, 0f);
+        objectAnimator1.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mTurnInfoCardView.setVisibility(View.VISIBLE);
+            }
+        });
         objectAnimator1.setDuration(500);
         objectAnimator1.setInterpolator(new OvershootInterpolator());
 
@@ -514,19 +591,19 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 //        ObjectAnimator objectAnimator2 = new ObjectAnimator();
 //        objectAnimator2.setDuration(1000);
 
-        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mSongSeqIv, View.TRANSLATION_X, 0, 1000f);
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, 0, 1000f);
         objectAnimator3.setInterpolator(new LinearInterpolator());
         objectAnimator3.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
-                onAnimationEnd(animation);
+                mTurnInfoCardView.setVisibility(View.GONE);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mSongSeqIv.setVisibility(View.GONE);
+                mTurnInfoCardView.setVisibility(View.GONE);
             }
         });
         objectAnimator3.setStartDelay(1000);
