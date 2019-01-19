@@ -33,6 +33,7 @@ import com.module.playways.RoomData;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
+import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RoundOverCardView;
 import com.module.playways.grab.room.view.SelfSingCardView;
@@ -125,7 +126,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     RoundOverCardView mRoundOverCardView; // 轮次结束的卡片
 
-    ExImageView mGrabOpBtn; // 抢 倒计时 灭 等按钮
+    GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
 
     AnimatorSet mSongInfoShowAnimation; // 歌曲卡片出现动画
 
@@ -387,14 +388,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     private void initGrabOpView() {
         mGrabOpBtn = mRootView.findViewById(R.id.grab_op_btn);
-        RxView.clicks(mGrabOpBtn)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        mCorePresenter.grabThisRound();
-                    }
-                });
+        mGrabOpBtn.setListener(new GrabOpView.Listener() {
+            @Override
+            public void clickGrabBtn() {
+                mCorePresenter.grabThisRound();
+            }
+
+            @Override
+            public void clickLightOff() {
+
+            }
+        });
     }
 
     private void initSingStageView() {
