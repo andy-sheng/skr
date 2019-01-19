@@ -207,6 +207,31 @@ message ScoreItem
     int32 score = 2; //分值变动
 }
 
+// EStarWhy 星星增减原因
+enum EStarWhy {
+    InvalidEStarWhy        = 0; //未知原因
+    RankEscaped            = 1; //中途退出游戏
+    RankEnemyEscapedYouWin = 2; //对手中途离场且你获得机器投票
+    RankUnVote             = 3; //不投票
+    RankEnemyUnVoteYouWin  = 4; //对手没有投票且你获得机器投票
+    Rank3VotesWinner       = 5; //总共获得3票
+    Rank2VotesWinner       = 6; //总共获得2票
+    Rank0VotesLoser        = 7; //得票为0
+    Rank3ComboVictory      = 8; //3连胜
+    Rank5ComboVictory      = 9; //5连胜
+    Rank10ComboVictory     = 10; //10连胜
+    FullFightForce         = 11; //战力值充满
+    RankProtectionIncr     = 12; //段位保护
+}
+
+// EFightForceWhy 战力值增减原因
+enum EFightForceWhy {
+    InvalidEFightForceWhy = 0; // "未知原因"
+    PlayRank              = 1; // "玩了一局排位模式"
+    ExchangeStarDecr      = 2; // "满额兑换星星"
+    ProtectRankingDecr    = 3; // "掉段保护"
+}
+
 //投票信息
 message VoteInfo
 {
