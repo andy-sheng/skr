@@ -118,6 +118,34 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 播放导唱
+     */
+    public void playGuide() {
+
+    }
+
+    /**
+     * 停止播放导唱
+     */
+    public void stopGuide() {
+
+    }
+
+    /**
+     * 我点击了抢唱按钮
+     */
+    public void grabThisRound() {
+
+    }
+
+    /**
+     * 开始演唱
+     */
+    public void beginSing() {
+        // 打开引擎，变为主播
+    }
+
+    /**
      * 抢唱歌权
      */
     public void vie() {

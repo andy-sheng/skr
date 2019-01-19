@@ -90,6 +90,8 @@
         android:layout_marginLeft="@dimen/view_18_dp"
         android:layout_marginBottom="@dimen/view_10_dp" />
 
+
+    <!-- 转场的一些卡片-->
     <com.common.view.ex.ExImageView
         android:id="@+id/turn_change_song_seq_iv"
         android:layout_width="match_parent"
@@ -97,13 +99,57 @@
         android:src="@drawable/btn_dialog_cancle"
         android:visibility="gone" />
 
-    <com.module.playways.rank.room.view.TurnChangeCardView
-        android:id="@+id/turn_change_view"
+    <com.module.playways.grab.room.view.SongInfoCardView
+        android:id="@+id/turn_change_song_info_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_130_dp"
         android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.SingBeginTipsCardView
+        android:id="@+id/turn_change_sing_beign_tips_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_130_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.RoundOverCardView
+        android:id="@+id/turn_change_round_over_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_130_dp"
+        android:visibility="gone" />
+    <!--转场卡片结束-->
+
+    <!--演唱时两个主场景view-->
+    <com.module.playways.grab.room.view.OthersSingCardView
+        android:id="@+id/other_sing_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_130_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.SelfSingCardView
+        android:id="@+id/self_sing_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_130_dp"
+        android:visibility="gone" />
+
+    <!--抢按钮以及倒计时按钮-->
+    <com.common.view.ex.ExImageView
+        android:id="@+id/grab_op_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/comment_view"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:src="@drawable/vote_btn_circle_normal" />
 
     <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"

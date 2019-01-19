@@ -9,13 +9,31 @@ import java.util.List;
 
 public interface IGrabView {
     /**
-     * 抢唱阶段
+     * 抢唱阶段开始
      * 展示要唱的歌儿,《下一首》《东西》
      * @param seq 当前轮次的序号
      * @param songModel 要唱的歌信息
      * @param onFinished 动画执行完毕时，要执行的逻辑
      */
     void showSongInfoCard(int seq,SongModel songModel,Runnable onFinished);
+
+    /**
+     * 自己抢到了
+     */
+    void grabBySelf();
+
+    /**
+     * 别人抢到了
+     */
+    void grabByOthers();
+
+    /**
+     * 轮次结束
+     * @param reason 原因
+     * @param playNextSongInfoCard 是否播放下一场抢唱的歌曲卡片
+     */
+    void roundOver(int reason,boolean playNextSongInfoCard);
+
 
     /**
      * 自己抢到

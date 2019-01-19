@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
@@ -14,21 +15,29 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
+import com.module.playways.grab.room.view.OthersSingCardView;
+import com.module.playways.grab.room.view.RoundOverCardView;
+import com.module.playways.grab.room.view.SelfSingCardView;
+import com.module.playways.grab.room.view.SingBeginTipsCardView;
+import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -40,7 +49,6 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.InputContainerView;
-import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -54,14 +62,17 @@ import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.PersonInfoDialogView;
 import com.zq.live.proto.Room.EQRoundResultType;
-import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
@@ -73,6 +84,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public final static String TAG = "RankingRoomFragment";
 
     public static final int MSG_ENSURE_READYGO_OVER = 1;
+
+    public static final int MSG_ENSURE_SONGCARD_OVER = 2;
+
+    public static final int MSG_ENSURE_SING_BEGIN_TIPS_OVER = 3;
+
+    public static final int MSG_ENSURE_ROUND_OVER_PLAY_OVER = 4;
 
     RoomData mRoomData;
 
@@ -88,10 +105,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     SVGAImageView mReadyGoBg;
 
-    SVGAImageView mStagePeopleBg;
-
-    SVGAImageView mStageUfoBg;
-
     ImageView mEndRoundHint;
 
     ImageView mEndGameIv;
@@ -104,8 +117,25 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     Disposable mPrepareLyricTask;
 
-    ExImageView mTurnSongSeqIv;
-    TurnChangeCardView mTurnChangeView;
+    ExImageView mSongSeqIv; //歌曲次序卡片
+
+    SongInfoCardView mSongInfoCardView; // 歌曲信息卡片
+
+    SingBeginTipsCardView mSingBeginTipsCardView; // 提示xxx演唱开始的卡片
+
+    RoundOverCardView mRoundOverCardView; // 轮次结束的卡片
+
+    ExImageView mGrabOpBtn; // 抢 倒计时 灭 等按钮
+
+    AnimatorSet mSongInfoShowAnimation; // 歌曲卡片出现动画
+
+    AnimatorSet mSingBeginShowAnimation;// 轮到谁唱卡片动画
+
+    AnimatorSet mRoundOverShowAnimation;// 轮次结束卡片动画
+
+    OthersSingCardView mOthersSingCardView;
+
+    SelfSingCardView mSelfSingCardView;
 
     DialogPlus mDialogPlus;
 
@@ -127,8 +157,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
-    PendingPlaySongCardData mPendingPlaySongCardData;
-
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -136,6 +164,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             switch (msg.what) {
                 case MSG_ENSURE_READYGO_OVER:
                     onReadyGoOver();
+                    break;
+                case MSG_ENSURE_SONGCARD_OVER:
+                    onSongInfoCardPlayOver((PendingPlaySongCardData) msg.obj);
+                    break;
+                case MSG_ENSURE_SING_BEGIN_TIPS_OVER:
+                    onSingBeginTipsPlayOver(msg.arg1 == 1);
+                    break;
+                case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
+                    onRoundOverPlayOver(msg.arg1==1);
                     break;
             }
         }
@@ -156,6 +193,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         initTopView();
         initTurnChangeView();
         initGiftDisplayView();
+        initGrabOpView();
+        initSingStageView();
         showReadyGoView();
 
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
@@ -210,208 +249,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("roomData", mRoomData);
-    }
-
-    public void playShowTurnCardAnimator(Runnable countDownRunnable) {
-        mTurnChangeView.setVisibility(View.VISIBLE);
-        if (mTurnChangeCardShowAnimator == null) {
-            mTurnChangeCardShowAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", -U.getDisplayUtils().getScreenWidth(), 0.08f * U.getDisplayUtils().getScreenWidth(), 0);
-            mTurnChangeCardShowAnimator.setDuration(750);
-        }
-        // 这里有坑！！！一直一定要保证 countDownRunnable 每次都要改变，能准确拿到
-        mTurnChangeCardShowAnimator.setListener(new ExObjectAnimator.Listener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-                mTurnChangeView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                mUiHanlder.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        playHideTurnCardAnimator(countDownRunnable);
-                    }
-                }, 1500);
-            }
-        });
-        mTurnChangeCardShowAnimator.start();
-    }
-
-    public void playHideTurnCardAnimator(Runnable countDownRunnable) {
-        mTurnChangeView.setVisibility(View.VISIBLE);
-        if (mTurnChangeCardHideAnimator == null) {
-            mTurnChangeCardHideAnimator = ExObjectAnimator.ofFloat(mTurnChangeView, "translationX", 0, -0.08f * U.getDisplayUtils().getScreenWidth(), U.getDisplayUtils().getScreenWidth());
-            mTurnChangeCardHideAnimator.setDuration(750);
-        }
-        mTurnChangeCardHideAnimator.setListener(new ExObjectAnimator.Listener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                mTurnChangeView.setVisibility(View.GONE);
-                if (countDownRunnable != null) {
-                    countDownRunnable.run();
-                }
-                // TODO: 2018/12/29 先加一个保护 
-                if (mRoomData.getRealRoundInfo() != null) {
-                    if (mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
-                        playShowMainStageAnimator();
-                    }
-                }
-            }
-        });
-        mTurnChangeCardHideAnimator.start();
-    }
-
-    // 播放主舞台动画,入场、循环的离场
-    private void playShowMainStageAnimator() {
-        MyLog.d(TAG, "playShowMainStageAnimator");
-        // 舞台人的动画
-        if (mStagePeopleBg != null) {
-            mStagePeopleBg.setVisibility(View.VISIBLE);
-            try {
-                getSVGAParser().parse(new URL(RoomData.ROOM_STAGE_SVGA), new SVGAParser.ParseCompletion() {
-                    @Override
-                    public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                        SVGADrawable drawable = new SVGADrawable(videoItem);
-                        mStagePeopleBg.setImageDrawable(drawable);
-                        mStagePeopleBg.startAnimation();
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //飞碟动画
-        if (mStageUfoBg == null) {
-            return;
-        }
-        mStageUfoBg.setVisibility(View.VISIBLE);
-        getSVGAParser().parse("ufo_enter.svga", new SVGAParser.ParseCompletion() {
-            @Override
-            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                MyLog.d(TAG, "playUFOStageAnimator");
-                mUFOMode = 1;
-                // 飞碟入场
-                SVGADrawable drawable = new SVGADrawable(videoItem);
-                mStageUfoBg.stopAnimation(true);
-                mStageUfoBg.setLoops(1); // 播一次
-                mStageUfoBg.setImageDrawable(drawable);
-                mStageUfoBg.startAnimation();
-                // 舞台入场,淡入
-                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mStagePeopleBg, View.ALPHA, 0f, 1f);
-                objectAnimator.setDuration(1000);
-                objectAnimator.start();
-                mAnimatorList.add(objectAnimator);
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-
-
-        mStageUfoBg.setCallback(new SVGACallback() {
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onFinished() {
-                if (mUFOMode == 1) {
-                    if (mStageUfoBg.isAnimating()) {
-                        mStageUfoBg.stopAnimation(true);
-                    }
-                    getSVGAParser().parse("ufo_process.svga", new SVGAParser.ParseCompletion() {
-                        @Override
-                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                            mUFOMode = 2;
-                            SVGADrawable drawable = new SVGADrawable(videoItem);
-                            if (mStageUfoBg != null) {
-                                mStageUfoBg.setLoops(0);// 循环播放
-                                mStageUfoBg.setImageDrawable(drawable);
-                                mStageUfoBg.startAnimation();
-                            }
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
-                } else if (mUFOMode == 3) {
-                    if (mStageUfoBg.isAnimating()) {
-                        mStageUfoBg.stopAnimation(true);
-                    }
-                    getSVGAParser().parse("ufo_leave.svga", new SVGAParser.ParseCompletion() {
-                        @Override
-                        public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                            mUFOMode = 4;
-                            // 主舞台消失动画
-                            SVGADrawable drawable = new SVGADrawable(videoItem);
-                            if (mStageUfoBg != null) {
-                                mStageUfoBg.setLoops(1); // 播一次
-                                mStageUfoBg.setImageDrawable(drawable);
-                                mStageUfoBg.startAnimation();
-                            }
-                            // end小卡片，做一个满满消失的动画
-                            ObjectAnimator objectAnimatorEnd = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
-                            objectAnimatorEnd.setDuration(1000);
-                            objectAnimatorEnd.start();
-                            mAnimatorList.add(objectAnimatorEnd);
-                            // 舞台退出，淡出
-                            ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStagePeopleBg, View.ALPHA, 1f, 0f);
-                            objectAnimatorStage.setDuration(1000);
-                            objectAnimatorStage.start();
-                            mAnimatorList.add(objectAnimatorStage);
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
-                } else if (mUFOMode == 4) {
-                    if (mStageUfoBg != null) {
-                        mStageUfoBg.stopAnimation(true);
-                    }
-                }
-            }
-
-            @Override
-            public void onRepeat() {
-                if (mUFOMode == 1) {
-                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
-                        mStageUfoBg.stopAnimation(false);
-                    }
-                } else if (mUFOMode == 3) {
-                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
-                        mStageUfoBg.stopAnimation(false);
-                    }
-                } else if (mUFOMode == 4) {
-                    if (mStageUfoBg != null && mStageUfoBg.isAnimating()) {
-                        mStageUfoBg.stopAnimation(false);
-                    }
-                }
-            }
-
-            @Override
-            public void onStep(int frame, double percentage) {
-
-            }
-        });
     }
 
     private void initInputView() {
@@ -532,15 +369,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     private void initTurnChangeView() {
         mReadyGoBg = (SVGAImageView) mRootView.findViewById(R.id.ready_go_bg);
 
-        mStagePeopleBg = (SVGAImageView) mRootView.findViewById(R.id.stage_people_bg);
-        mStageUfoBg = (SVGAImageView) mRootView.findViewById(R.id.stage_ufo_bg);
-
-        mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
-
-        mTurnSongSeqIv = mRootView.findViewById(R.id.turn_change_song_seq_iv);
-        mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
+        mSongSeqIv = mRootView.findViewById(R.id.turn_change_song_seq_iv);
+        mSongInfoCardView = mRootView.findViewById(R.id.turn_change_song_info_card_view);
+        mSingBeginTipsCardView = mRootView.findViewById(R.id.turn_change_sing_beign_tips_card_view);
+        mRootView.findViewById(R.id.turn_change_round_over_card_view);
 
         mEndGameIv = (ImageView) mRootView.findViewById(R.id.end_game_iv);
+        mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
     }
 
     private void initGiftDisplayView() {
@@ -548,6 +383,24 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         giftContinueViewGroup.setRoomData(mRoomData);
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
+    }
+
+    private void initGrabOpView() {
+        mGrabOpBtn = mRootView.findViewById(R.id.grab_op_btn);
+        RxView.clicks(mGrabOpBtn)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        mCorePresenter.grabThisRound();
+                    }
+                });
+    }
+
+    private void initSingStageView() {
+        mOthersSingCardView = mRootView.findViewById(R.id.other_sing_card_view);
+
+        mSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
     }
 
     private SVGAParser getSVGAParser() {
@@ -636,19 +489,262 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
     }
 
+    /**
+     * 抢唱阶段开始
+     *
+     * @param seq        当前轮次的序号
+     * @param songModel  要唱的歌信息
+     * @param onFinished 动画执行完毕时，要执行的逻辑
+     */
     @Override
     public void showSongInfoCard(int seq, SongModel songModel, Runnable onFinished) {
-        mPendingPlaySongCardData = new PendingPlaySongCardData(seq,songModel,onFinished);
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTurnSongSeqIv,View.TRANSLATION_X,-1000f,0f);
+        PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel, onFinished);
+        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
+        msg.obj = pendingPlaySongCardData;
+        mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
+        mUiHanlder.sendMessageDelayed(msg, 4000);
+        mSongSeqIv.setVisibility(View.VISIBLE);
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSongSeqIv, View.TRANSLATION_X, -1000f, 0f);
         objectAnimator1.setDuration(500);
         objectAnimator1.setInterpolator(new OvershootInterpolator());
 
-        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mTurnSongSeqIv,View.TRANSLATION_X,-1000f,0f);
+        // 留白动画，只为让其显示一秒
+//        ObjectAnimator objectAnimator2 = new ObjectAnimator();
+//        objectAnimator2.setDuration(1000);
+
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mSongSeqIv, View.TRANSLATION_X, 0, 1000f);
+        objectAnimator3.setInterpolator(new LinearInterpolator());
+        objectAnimator3.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mSongSeqIv.setVisibility(View.GONE);
+            }
+        });
+        objectAnimator3.setStartDelay(1000);
+        objectAnimator3.setDuration(500);
+
+
+        ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(mSongInfoCardView, View.TRANSLATION_X, -1000f, 0f);
+        objectAnimator4.setDuration(500);
+        objectAnimator4.setInterpolator(new OvershootInterpolator());
+        objectAnimator4.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mSongInfoCardView.setVisibility(View.VISIBLE);
+                mSingBeginTipsCardView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                onSongInfoCardPlayOver(pendingPlaySongCardData);
+            }
+        });
+        if (mSongInfoShowAnimation != null) {
+            mSongInfoShowAnimation.cancel();
+        }
+        mSongInfoShowAnimation = new AnimatorSet();
+        mSongInfoShowAnimation.playSequentially(objectAnimator1, objectAnimator3, objectAnimator4);
+        mSongInfoShowAnimation.start();
+    }
+
+    void onSongInfoCardPlayOver(PendingPlaySongCardData pendingPlaySongCardData) {
+        mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
+        if (mSongInfoShowAnimation != null) {
+            mSongInfoShowAnimation.cancel();
+        }
+        mSongInfoCardView.setVisibility(View.VISIBLE);
+        mSingBeginTipsCardView.setVisibility(View.GONE);
+        mSongInfoCardView.setTranslationX(0);
+        // 播放3秒导唱
+        mCorePresenter.playGuide();
+        // 播放 3 2 1 导唱倒计时
+        HandlerTaskTimer.newBuilder().interval(1000)
+                .take(3)
+                .compose(this)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        int num = 3 - integer + 1;
+                        switch (num) {
+                            case 3:
+                                break;
+                            case 2:
+                                break;
+                            case 1:
+                                break;
+                        }
+                        mGrabOpBtn.setClickable(false);
+//                        mGrabOpBtn.setBackgroundResource(R.drawable.yanchangjiemian_dabian);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        // 按钮变成抢唱，且可点击
+                        mCorePresenter.stopGuide();
+                        mGrabOpBtn.setBackgroundResource(R.drawable.yanchangjiemian_dabian);
+                        mGrabOpBtn.setClickable(true);
+                    }
+                });
+    }
+
+    @Override
+    public void grabBySelf() {
+        mSongInfoCardView.setVisibility(View.GONE);
+        mSingBeginTipsCardView.setVisibility(View.VISIBLE);
+
+        mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
+        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
+        msg.arg1 = 1;
+        mUiHanlder.sendMessageDelayed(msg, 4000);
+
+        mSingBeginTipsCardView.mDescTv.setText("你抢到了演唱机会");
+        singBeginTipsPlay(new Runnable() {
+            @Override
+            public void run() {
+                onSingBeginTipsPlayOver(true);
+            }
+        });
+    }
+
+    @Override
+    public void grabByOthers() {
+        mSongInfoCardView.setVisibility(View.GONE);
+        mSingBeginTipsCardView.setVisibility(View.VISIBLE);
+
+        mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
+        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
+        msg.arg1 = 2;
+        mUiHanlder.sendMessageDelayed(msg, 4000);
+
+        mSingBeginTipsCardView.mDescTv.setText("丁一抢到了演唱机会");
+        singBeginTipsPlay(new Runnable() {
+            @Override
+            public void run() {
+                onSingBeginTipsPlayOver(false);
+            }
+        });
+    }
+
+    private void singBeginTipsPlay(Runnable runnable) {
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSingBeginTipsCardView, View.TRANSLATION_X, -1000f, 0f);
         objectAnimator1.setDuration(500);
         objectAnimator1.setInterpolator(new OvershootInterpolator());
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playSequentially(objectAnimator1,objectAnimator2);
+        // 留白动画，只为让其显示一秒
+//        ObjectAnimator objectAnimator2 = new ObjectAnimator();
+//        objectAnimator2.setDuration(1000);
+
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mSingBeginTipsCardView, View.TRANSLATION_X, 0, 1000f);
+        objectAnimator3.setInterpolator(new LinearInterpolator());
+        objectAnimator3.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (runnable != null) {
+                    runnable.run();
+                }
+            }
+        });
+        objectAnimator3.setStartDelay(1000);
+        objectAnimator3.setDuration(500);
+
+        if (mSingBeginShowAnimation != null) {
+            mSingBeginShowAnimation.cancel();
+        }
+        mSingBeginShowAnimation = new AnimatorSet();
+        mSingBeginShowAnimation.playSequentially(objectAnimator1, objectAnimator3);
+        mSingBeginShowAnimation.start();
+    }
+
+    private void onSingBeginTipsPlayOver(boolean self) {
+        mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
+        if (mSingBeginShowAnimation != null) {
+            mSingBeginShowAnimation.cancel();
+        }
+        mSingBeginTipsCardView.setVisibility(View.GONE);
+        if (self) {
+            mCorePresenter.beginSing();
+            // 显示歌词
+            mSelfSingCardView.setVisibility(View.VISIBLE);
+        } else {
+            // 显示收音机
+            mOthersSingCardView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void roundOver(int reason, boolean playNextSongInfoCard) {
+        mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
+        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
+        msg.arg1 = playNextSongInfoCard ? 1 : 0;
+        mUiHanlder.sendMessageDelayed(msg, 4000);
+        mSelfSingCardView.setVisibility(View.GONE);
+        mOthersSingCardView.setVisibility(View.GONE);
+        mRoundOverCardView.setVisibility(View.VISIBLE);
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mRoundOverCardView, View.TRANSLATION_X, -1000f, 0f);
+        objectAnimator1.setDuration(500);
+        objectAnimator1.setInterpolator(new OvershootInterpolator());
+
+        // 留白动画，只为让其显示一秒
+//        ObjectAnimator objectAnimator2 = new ObjectAnimator();
+//        objectAnimator2.setDuration(1000);
+
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mRoundOverCardView, View.TRANSLATION_X, 0, 1000f);
+        objectAnimator3.setInterpolator(new LinearInterpolator());
+        objectAnimator3.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                mRoundOverCardView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                onRoundOverPlayOver(playNextSongInfoCard);
+            }
+        });
+        objectAnimator3.setStartDelay(1000);
+        objectAnimator3.setDuration(500);
+
+        if (mRoundOverShowAnimation != null) {
+            mRoundOverShowAnimation.cancel();
+        }
+        mRoundOverShowAnimation = new AnimatorSet();
+        mRoundOverShowAnimation.playSequentially(objectAnimator1, objectAnimator3);
+        mRoundOverShowAnimation.start();
+    }
+
+    private void onRoundOverPlayOver(boolean playNextSongInfoCard) {
+        mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
+        if (mRoundOverShowAnimation != null) {
+            mRoundOverShowAnimation.cancel();
+        }
+        mRoundOverCardView.setVisibility(View.GONE);
+        if (playNextSongInfoCard) {
+            showSongInfoCard(1, null, null);
+        }
     }
 
     @Override
@@ -784,21 +880,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
         // 加保护，确保当前主舞台一定被移除
-        if (mStagePeopleBg.isAnimating()) {
-            mStagePeopleBg.stopAnimation(false);
-        }
-        if (mStageUfoBg.isAnimating()) {
-            mStageUfoBg.stopAnimation();
-        }
-        mStagePeopleBg.setVisibility(View.GONE);
-        mStageUfoBg.setVisibility(View.GONE);
-
-        // 确保演唱逻辑一定要执行
-        if (mTurnChangeView.setData(mRoomData)) {
-            playShowTurnCardAnimator(countDownOver);
-        } else {
-            countDownOver.run();
-        }
     }
 
     /**
@@ -807,21 +888,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 //    @Override
     public void startRivalCountdown(int uid, String avatar) {
         // 加保护，确保当前主舞台一定被移除
-        if (mStagePeopleBg.isAnimating()) {
-            mStagePeopleBg.stopAnimation(false);
-        }
-        if (mStageUfoBg.isAnimating()) {
-            mStageUfoBg.stopAnimation();
-        }
-        mStagePeopleBg.setVisibility(View.GONE);
-        mStageUfoBg.setVisibility(View.GONE);
-
-//        mTopContainerView.cancelShowLastedTimeTask();
-        // 正在播放readyGo动画，保存参数，延迟播放卡片
-        MyLog.w(TAG, "用户" + uid + "的演唱开始了");
-        if (mTurnChangeView.setData(mRoomData)) {
-            playShowTurnCardAnimator(null);
-        }
 
     }
 
@@ -887,20 +953,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void destroyAnimation() {
-        if (mStagePeopleBg != null) {
-            mStagePeopleBg.stopAnimation(true);
-            mStagePeopleBg.setVisibility(View.GONE);
-            mRankingContainer.removeView(mStagePeopleBg);
-            mStagePeopleBg = null;
+        if (mSongInfoShowAnimation != null) {
+            mSongInfoShowAnimation.cancel();
         }
-
-        if (mStageUfoBg != null) {
-            mStageUfoBg.stopAnimation(true);
-            mStageUfoBg.setVisibility(View.GONE);
-            mRankingContainer.removeView(mStageUfoBg);
-            mStageUfoBg = null;
+        if (mSingBeginShowAnimation != null) {
+            mSingBeginShowAnimation.cancel();
         }
-
+        if (mRoundOverShowAnimation != null) {
+            mRoundOverShowAnimation.cancel();
+        }
         if (mReadyGoBg != null) {
             mReadyGoBg.stopAnimation(true);
             mReadyGoBg.setVisibility(View.GONE);

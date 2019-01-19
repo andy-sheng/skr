@@ -20,12 +20,11 @@ public class RoundInfoModel implements Serializable {
     private int roundSeq;
     private int singBeginMs;
     private int singEndMs;
-
     private long startTs;// 开始时间，服务器的
     private long endTs;// 结束时间，服务器的
     private int sysScore;//本轮系统打分，先搞个默认60分
-
     private boolean hasSing = false;
+
 
     public int getUserID() {
         return userID;

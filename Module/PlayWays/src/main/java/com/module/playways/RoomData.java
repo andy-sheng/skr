@@ -38,6 +38,7 @@ public class RoomData implements Serializable {
     private int mGameId; // 房间id
 
     private String mSysAvatar; // 系统头像
+
     /**
      * 当要拿服务器时间和本地时间比较时，请将服务器时间加上这个矫正值
      * 如
