@@ -60,7 +60,6 @@ public class MusicQuestionPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mView.onComplete();
-                    U.getToastUtil().showShort("上传结果成功了");
                 }
             }
         });

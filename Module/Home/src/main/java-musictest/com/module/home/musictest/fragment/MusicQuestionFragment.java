@@ -22,6 +22,7 @@ import com.module.home.musictest.model.Question;
 import com.module.home.musictest.presenter.MusicQuestionPresenter;
 import com.module.home.musictest.view.IQuestionView;
 import com.module.home.musictest.view.QuestionView;
+import com.zq.toast.CommonToastView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,6 +155,10 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
 
     @Override
     public void onComplete() {
+        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                .setImage(R.drawable.touxiangshezhichenggong_icon)
+                .setText("提交成功")
+                .build());
         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                 .setPopFragment(MusicQuestionFragment.this)
                 .setPopAbove(false)

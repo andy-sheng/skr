@@ -738,7 +738,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void quitGame() {
         if (mQuitTipsDialog == null) {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                    .setMessageTip("提前退出会破坏其他玩家的对局体验，确定退出么？")
+                    .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
                     .setConfirmTip("取消")
                     .setCancelTip("确定")
                     .setConfirmBtnClickListener(new View.OnClickListener() {
