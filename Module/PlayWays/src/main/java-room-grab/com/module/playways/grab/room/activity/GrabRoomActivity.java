@@ -13,9 +13,14 @@ import com.module.RouterConstants;
 import com.module.playways.rank.prepare.model.PrepareData;
 
 import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.RoomDataUtils;
+import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_ROOM)
 public class GrabRoomActivity extends BaseActivity {
@@ -44,6 +49,22 @@ public class GrabRoomActivity extends BaseActivity {
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         } else {
 
+        }
+
+        //TODO test
+        {
+            List<RoundInfoModel> roundingModeList = new ArrayList<>();
+            for(int i=0;i<10;i++){
+                RoundInfoModel roundingMode = new RoundInfoModel(RoundInfoModel.TYPE_GRAB);
+                roundingMode.setRoundSeq(i+1);
+                SongModel songModel = new SongModel();
+                songModel.setItemName("歌曲"+i);
+                roundingMode.setSongModel(songModel);
+                roundingModeList.add(roundingMode);
+            }
+
+            mRoomData.setRoundInfoModelList(roundingModeList);
+            mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
         }
 
         U.getFragmentUtils().addFragment(

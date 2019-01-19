@@ -17,7 +17,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;

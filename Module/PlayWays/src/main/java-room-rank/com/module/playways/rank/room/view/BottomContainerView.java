@@ -20,7 +20,7 @@ import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.RoomDataUtils;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.RoomData;

@@ -1,16 +1,24 @@
 package com.module.playways.rank.prepare.model;
 
 import com.common.log.MyLog;
+import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
+import com.module.playways.grab.room.event.SomeOneGrabEvent;
+import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.RoundInfo;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class RoundInfoModel implements Serializable {
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
+    public static final int STATUS_GRAB = 1;
+    public static final int STATUS_SING = 2;
     /**
      * userID : 7
      * playbookID : 1
@@ -29,14 +37,15 @@ public class RoundInfoModel implements Serializable {
     private int sysScore;//本轮系统打分，先搞个默认60分
     private boolean hasSing = false;
 
-    //已经抢了的人
-    private Set<Integer> hasGrabUserSet;
+    private int status = STATUS_GRAB;// 轮次状态，在一唱到底中使用
 
-    //已经灭灯的人
-    private Set<Integer> hasLightOffUserSet;
+    private int overReason; // 结束的原因
 
-    //本轮次要唱的歌儿的详细信息
-    private SongModel songModel;
+    private Set<Integer> hasGrabUserSet = new HashSet<>(); //已经抢了的人
+
+    private Set<Integer> hasLightOffUserSet = new HashSet<>();//已经灭灯的人
+
+    private SongModel songModel;//本轮次要唱的歌儿的详细信息
 
     public RoundInfoModel(int type) {
         this.type = type;
@@ -48,6 +57,22 @@ public class RoundInfoModel implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getOverReason() {
+        return overReason;
+    }
+
+    public void setOverReason(int overReason) {
+        this.overReason = overReason;
     }
 
     public SongModel getSongModel() {
@@ -62,16 +87,8 @@ public class RoundInfoModel implements Serializable {
         return hasGrabUserSet;
     }
 
-    public void setHasGrabUserSet(Set<Integer> hasGrabUserSet) {
-        this.hasGrabUserSet = hasGrabUserSet;
-    }
-
     public Set<Integer> getHasLightOffUserSet() {
         return hasLightOffUserSet;
-    }
-
-    public void setHasLightOffUserSet(Set<Integer> hasLightOffUserSet) {
-        this.hasLightOffUserSet = hasLightOffUserSet;
     }
 
     public int getUserID() {
@@ -162,21 +179,63 @@ public class RoundInfoModel implements Serializable {
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
+        roundInfoModel.setStatus(roundInfo.getStatus().getValue());
         return roundInfoModel;
     }
 
-    public void update(RoundInfoModel roundInfo) {
+    public void tryUpdateByRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {
         if (roundInfo == null) {
             MyLog.e("JsonRoundInfo RoundInfo == null");
             return;
         }
-
         this.setUserID(roundInfo.getUserID());
         this.setPlaybookID(roundInfo.getPlaybookID());
         this.setRoundSeq(roundInfo.getRoundSeq());
         this.setSingBeginMs(roundInfo.getSingBeginMs());
         this.setSingEndMs(roundInfo.getSingEndMs());
+        //TODO 抢 灭 结束原因 补全
+        for (int uid : roundInfo.getHasGrabUserSet()) {
+            addGrabUid(notify, uid);
+        }
+        for (int uid : roundInfo.getHasLightOffUserSet()) {
+            addLightOffUid(notify, uid);
+        }
+        if (roundInfo.getOverReason() > 0) {
+            this.setOverReason(roundInfo.getOverReason());
+        }
+        updateStatus(notify, roundInfo.getStatus());
         return;
+    }
+
+    public void addGrabUid(boolean notify, int userID) {
+        if (!hasGrabUserSet.contains(userID)) {
+            hasGrabUserSet.add(userID);
+            if (notify) {
+                SomeOneGrabEvent event = new SomeOneGrabEvent(userID, this);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
+
+    public void addLightOffUid(boolean notify, Integer userID) {
+        if (!hasGrabUserSet.contains(userID)) {
+            hasGrabUserSet.add(userID);
+            if (notify) {
+                SomeOneLightOffEvent event = new SomeOneLightOffEvent(userID, this);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
+    public void updateStatus(boolean notify, int statusGrab) {
+        if (status < statusGrab) {
+            int old = status;
+            status = statusGrab;
+            if (notify) {
+                EventBus.getDefault().post(new GrabRoundStatusChangeEvent(this, old));
+            }
+        }
     }
 
     @Override
@@ -217,4 +276,5 @@ public class RoundInfoModel implements Serializable {
                 ", songModel=" + songModel +
                 '}';
     }
+
 }

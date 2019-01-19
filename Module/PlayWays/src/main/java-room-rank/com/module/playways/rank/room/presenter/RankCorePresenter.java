@@ -46,7 +46,7 @@ import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
@@ -228,7 +228,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        mRoomData.checkRound();
+        mRoomData.checkRoundInRankMode();
         startSyncGameStateTask(sSyncStateTaskInterval);
     }
 
@@ -566,11 +566,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             // 没结束 current 不应该为null
             if (currentInfo != null) {
                 // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-                if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getExpectRoundInfo())) {
+                if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getRealRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(currentInfo);
-                    mRoomData.checkRound();
+                    mRoomData.checkRoundInRankMode();
                 }
             } else {
                 MyLog.w(TAG, "服务器结束时间不合法 currentInfo=null");
@@ -760,7 +760,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (gameOverTs > mRoomData.getGameStartTs() && gameOverTs > mRoomData.getGameOverTs()) {
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
-            mRoomData.checkRound();
+            mRoomData.checkRoundInRankMode();
         }
     }
 
@@ -1137,7 +1137,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
             mRoomData.setExpectRoundInfo(roundOverEvent.nextRound);
-            mRoomData.checkRound();
+            mRoomData.checkRoundInRankMode();
         }
     }
 

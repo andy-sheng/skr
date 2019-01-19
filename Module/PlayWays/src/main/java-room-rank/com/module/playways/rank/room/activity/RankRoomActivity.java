@@ -15,7 +15,7 @@ import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.room.fragment.RankRoomFragment;
 import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.RoomDataUtils;
 
 @Route(path = RouterConstants.ACTIVITY_RANK_ROOM)
 public class RankRoomActivity extends BaseActivity {

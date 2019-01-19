@@ -30,7 +30,11 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(),R.layout.grab_round_over_card_layout,this);
+        inflate(getContext(), R.layout.grab_round_over_card_layout, this);
         mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
+    }
+
+    public void bindData(int reason) {
+        mDescTv.setText("演唱结束原因：" + reason);
     }
 }

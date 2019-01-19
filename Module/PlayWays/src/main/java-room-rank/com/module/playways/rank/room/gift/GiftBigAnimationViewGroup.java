@@ -8,7 +8,7 @@ import com.common.anim.AnimationPlayControlTemplate;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
 import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.RoomDataUtils;
+import com.module.playways.RoomDataUtils;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;

@@ -3,11 +3,12 @@ package com.module.playways;
 import com.common.core.account.UserAccountManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.module.playways.grab.room.event.GrabGameOverEvent;
+import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
-import com.module.playways.rank.room.model.RoomDataUtils;
 import com.module.playways.rank.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -68,14 +69,12 @@ public class RoomData implements Serializable {
 
     private List<PlayerInfoModel> mPlayerInfoList;//选手信息
 
-    private List<SongModel> mSongModelList;//选手信息
-
     private volatile boolean mIsGameFinish = false;
 
     /**
      * 检查轮次信息是否需要更新
      */
-    public void checkRound() {
+    public void checkRoundInRankMode() {
         MyLog.d(TAG, "checkRound mExcpectRoundInfo=" + mExpectRoundInfo + " mRealRoundInfo=" + mRealRoundInfo);
         if (mIsGameFinish) {
             MyLog.d(TAG, "游戏结束了，不需要再check");
@@ -104,12 +103,31 @@ public class RoomData implements Serializable {
         }
     }
 
-    public List<SongModel> getSongModelList() {
-        return mSongModelList;
-    }
-
-    public void setSongModelList(List<SongModel> songModelList) {
-        mSongModelList = songModelList;
+    /**
+     * 检查轮次信息是否需要更新
+     */
+    public void checkRoundInGrabMode() {
+        MyLog.d(TAG, "checkRound mExcpectRoundInfo=" + mExpectRoundInfo + " mRealRoundInfo=" + mRealRoundInfo);
+        if (mIsGameFinish) {
+            MyLog.d(TAG, "游戏结束了，不需要再check");
+            return;
+        }
+        if (mExpectRoundInfo == null) {
+            // 结束状态了
+            if (mRealRoundInfo != null) {
+                RoundInfoModel lastRoundInfoModel = mRealRoundInfo;
+                mRealRoundInfo = null;
+                EventBus.getDefault().post(new GrabGameOverEvent(lastRoundInfoModel));
+            }
+            return;
+        }
+        if (RoomDataUtils.roundSeqLarger(mExpectRoundInfo, mRealRoundInfo)) {
+            // 轮次大于，才切换
+            RoundInfoModel lastRoundInfoModel = mRealRoundInfo;
+            mRealRoundInfo = mExpectRoundInfo;
+            // 告知切换到新的轮次了
+            EventBus.getDefault().post(new GrabRoundChangeEvent(lastRoundInfoModel, mRealRoundInfo));
+        }
     }
 
     public void setIsGameFinish(boolean isGameFinish) {
@@ -248,13 +266,14 @@ public class RoomData implements Serializable {
         return null;
     }
 
-    public int getRealRoundSeq(){
-        if(mRealRoundInfo != null){
+    public int getRealRoundSeq() {
+        if (mRealRoundInfo != null) {
             return mRealRoundInfo.getRoundSeq();
         }
 
         return -1;
     }
+
     @Override
     public String toString() {
         return "RoomData{" +

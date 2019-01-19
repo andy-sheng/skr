@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.view.ex.ExTextView;
+import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
 /**
@@ -32,5 +33,9 @@ public class SongInfoCardView extends RelativeLayout {
     private void init() {
         inflate(getContext(),R.layout.grab_song_info_card_layout,this);
         mSongName = (ExTextView) this.findViewById(R.id.song_name);
+    }
+
+    public void bindData(SongModel songModel) {
+        mSongName.setText(songModel.getItemName());
     }
 }

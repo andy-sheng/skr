@@ -14,9 +14,8 @@ public interface IGrabView {
      * 展示要唱的歌儿,《下一首》《东西》
      * @param seq 当前轮次的序号
      * @param songModel 要唱的歌信息
-     * @param onFinished 动画执行完毕时，要执行的逻辑
      */
-    void showSongInfoCard(int seq,SongModel songModel,Runnable onFinished);
+    void showSongInfoCard(int seq,SongModel songModel);
 
     /**
      * 自己抢到了
@@ -33,36 +32,9 @@ public interface IGrabView {
      * @param reason 原因
      * @param playNextSongInfoCard 是否播放下一场抢唱的歌曲卡片
      */
-    void roundOver(int reason,boolean playNextSongInfoCard);
-
-    /**
-     * 抢了唱歌权的人亮灯
-     * @param uid
-     */
-    void lightVieUser(long uid);
+    void roundOver(int reason,boolean playNextSongInfoCard,RoundInfoModel now);
 
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
-
-    /**
-     * 灭灯用户
-     * @param uid
-     */
-    void lightOffUser(long uid);
-
-    /**
-     * 没人想唱
-     */
-    void noOneWantSing();
-
-    /**
-     * 挑战成功，一场到底了
-     */
-    void challengeSuccess(EQRoundResultType eqRoundResultType);
-
-    /**
-     * 中途被灭灯，挑战失败
-     */
-    void challengeFaild(EQRoundResultType eqRoundResultType);
 
     /**
      * 中途跑了
@@ -80,8 +52,4 @@ public interface IGrabView {
     // 主舞台离开（开始主舞台消失动画）
     void hideMainStage();
 
-    /**
-     * 由于sync接口里放了灭灯和想唱的人的信息，需要更新整个轮次的接口
-     */
-    void updateWholeStatus(RoundInfoModel roundInfoModel);
 }

@@ -178,7 +178,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     onSingBeginTipsPlayOver(msg.arg1 == 1);
                     break;
                 case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
-                    onRoundOverPlayOver(msg.arg1 == 1);
+                    onRoundOverPlayOver(msg.arg1 == 1, (RoundInfoModel) msg.obj);
                     break;
             }
         }
@@ -410,6 +410,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             public void clickLightOff() {
 
             }
+
+            @Override
+            public void countDownOver() {
+                mCorePresenter.stopGuide();
+            }
         });
     }
 
@@ -514,7 +519,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         objectAnimator1.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                MyLog.d(TAG,"onAnimationStart" + " animation=" + animation);
+                MyLog.d(TAG, "onAnimationStart" + " animation=" + animation);
                 super.onAnimationStart(animation);
                 mTurnInfoCardView.setVisibility(View.VISIBLE);
             }
@@ -564,13 +569,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     /**
      * 抢唱阶段开始
      *
-     * @param seq        当前轮次的序号
-     * @param songModel  要唱的歌信息
-     * @param onFinished 动画执行完毕时，要执行的逻辑
+     * @param seq       当前轮次的序号
+     * @param songModel 要唱的歌信息
      */
     @Override
-    public void showSongInfoCard(int seq, SongModel songModel, Runnable onFinished) {
-        PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel, onFinished);
+    public void showSongInfoCard(int seq, SongModel songModel) {
+        PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
@@ -610,6 +614,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         objectAnimator3.setDuration(500);
 
 
+        mSongInfoCardView.bindData(songModel);
         ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(mSongInfoCardView, View.TRANSLATION_X, -1000f, 0f);
         objectAnimator4.setDuration(500);
         objectAnimator4.setInterpolator(new OvershootInterpolator());
@@ -650,35 +655,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSongInfoCardView.setTranslationX(0);
         // 播放3秒导唱
         mCorePresenter.playGuide();
-        // 播放 3 2 1 导唱倒计时
-        HandlerTaskTimer.newBuilder().interval(1000)
-                .take(3)
-                .compose(this)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        int num = 3 - integer + 1;
-                        switch (num) {
-                            case 3:
-                                break;
-                            case 2:
-                                break;
-                            case 1:
-                                break;
-                        }
-                        mGrabOpBtn.setClickable(false);
-//                        mGrabOpBtn.setBackgroundResource(R.drawable.yanchangjiemian_dabian);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                        // 按钮变成抢唱，且可点击
-                        mCorePresenter.stopGuide();
-                        mGrabOpBtn.setBackgroundResource(R.drawable.yanchangjiemian_dabian);
-                        mGrabOpBtn.setClickable(true);
-                    }
-                });
+        mGrabOpBtn.setVisibility(View.VISIBLE);
+        mGrabOpBtn.playCountDown(3);
     }
 
     @Override
@@ -720,7 +698,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void singBeginTipsPlay(Runnable runnable) {
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSingBeginTipsCardView, View.TRANSLATION_X, -1000f, 0f);
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSingBeginTipsCardView, View.TRANSLATION_X, -U.getDisplayUtils().getScreenWidth(), 0f);
         objectAnimator1.setDuration(500);
         objectAnimator1.setInterpolator(new OvershootInterpolator());
 
@@ -728,7 +706,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 //        ObjectAnimator objectAnimator2 = new ObjectAnimator();
 //        objectAnimator2.setDuration(1000);
 
-        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mSingBeginTipsCardView, View.TRANSLATION_X, 0, 1000f);
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mSingBeginTipsCardView, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
         objectAnimator3.setInterpolator(new LinearInterpolator());
         objectAnimator3.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -773,15 +751,24 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     @Override
-    public void roundOver(int reason, boolean playNextSongInfoCard) {
+    public void roundOver(int reason, boolean playNextSongInfoCard, RoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
+        msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 4000);
         mSelfSingCardView.setVisibility(View.GONE);
         mOthersSingCardView.setVisibility(View.GONE);
-        mRoundOverCardView.setVisibility(View.VISIBLE);
+
+        mRoundOverCardView.bindData(reason);
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mRoundOverCardView, View.TRANSLATION_X, -1000f, 0f);
+        objectAnimator1.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mRoundOverCardView.setVisibility(View.VISIBLE);
+            }
+        });
         objectAnimator1.setDuration(500);
         objectAnimator1.setInterpolator(new OvershootInterpolator());
 
@@ -801,7 +788,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                onRoundOverPlayOver(playNextSongInfoCard);
+                onRoundOverPlayOver(playNextSongInfoCard, now);
             }
         });
         objectAnimator3.setStartDelay(1000);
@@ -815,14 +802,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mRoundOverShowAnimation.start();
     }
 
-    private void onRoundOverPlayOver(boolean playNextSongInfoCard) {
+    private void onRoundOverPlayOver(boolean playNextSongInfoCard, RoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         if (mRoundOverShowAnimation != null) {
             mRoundOverShowAnimation.cancel();
         }
         mRoundOverCardView.setVisibility(View.GONE);
         if (playNextSongInfoCard) {
-            showSongInfoCard(1, null, null);
+            showSongInfoCard(now.getRoundSeq(), now.getSongModel());
         }
     }
 
@@ -873,32 +860,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
         quitGame();
         return true;
-    }
-
-
-    @Override
-    public void lightVieUser(long uid) {
-
-    }
-
-    @Override
-    public void noOneWantSing() {
-
-    }
-
-    @Override
-    public void lightOffUser(long uid) {
-
-    }
-
-    @Override
-    public void challengeSuccess(EQRoundResultType eqRoundResultType) {
-
-    }
-
-    @Override
-    public void challengeFaild(EQRoundResultType eqRoundResultType) {
-
     }
 
     @Override
@@ -1065,30 +1026,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
     }
 
-    @Override
-    public void updateWholeStatus(RoundInfoModel roundInfoModel) {
-
-    }
-
     static class PendingPlaySongCardData {
         int seq;
         SongModel songModel;
-        Runnable onFinished;
 
-        public PendingPlaySongCardData(int seq, SongModel songModel, Runnable onFinished) {
+        public PendingPlaySongCardData(int seq, SongModel songModel) {
             this.seq = seq;
             this.songModel = songModel;
-            this.onFinished = onFinished;
         }
     }
 
-    static class PendingRivalData {
-        int uid;
-        String avatar;
-
-        public PendingRivalData(int uid, String avatar) {
-            this.uid = uid;
-            this.avatar = avatar;
-        }
-    }
 }

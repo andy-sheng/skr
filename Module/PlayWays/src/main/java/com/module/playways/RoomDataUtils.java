@@ -1,9 +1,8 @@
-package com.module.playways.rank.room.model;
+package com.module.playways;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.module.playways.RoomData;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
@@ -69,6 +68,25 @@ public class RoomDataUtils {
             return true;
         }
         return infoModel1.getRoundSeq() > infoModel2.getRoundSeq();
+    }
+
+    /**
+     * 轮次的seq是否大于
+     * 1是否大于等于2
+     *
+     * @param infoModel1
+     * @param infoModel2
+     * @return
+     */
+    public static boolean roundSeqLargerOrEqual(RoundInfoModel infoModel1, RoundInfoModel infoModel2) {
+        if (infoModel2 == null) {
+            // 已经是结束状态
+            return false;
+        }
+        if (infoModel1 == null) {
+            return true;
+        }
+        return infoModel1.getRoundSeq() >= infoModel2.getRoundSeq();
     }
 
     /**
@@ -204,47 +222,45 @@ public class RoomDataUtils {
         return saveAudioForAiFilePath;
     }
 
-    public static boolean isThisUserRound(RoundInfoModel infoModel,int userId) {
-        if(infoModel!=null && infoModel.getUserID() == userId){
+    public static boolean isThisUserRound(RoundInfoModel infoModel, int userId) {
+        if (infoModel != null && infoModel.getUserID() == userId) {
             return true;
         }
         return false;
     }
 
-    public static boolean isCurrentRoundEvent(int eventSeq, RoomData roomData) {
-        if(roomData != null){
-            if(roomData.getRealRoundInfo() == null){
+    /**
+     * 与真实轮次是否一致
+     * @param eventSeq
+     * @param roomData
+     * @return
+     */
+    public static boolean isCurrentRound(int eventSeq, RoomData roomData) {
+        if (roomData != null) {
+            if (roomData.getRealRoundInfo() == null) {
                 return false;
             }
 
-            if(roomData.getRealRoundInfo().getRoundSeq() == eventSeq){
+            if (roomData.getRealRoundInfo().getRoundSeq() == eventSeq) {
                 return true;
             }
         }
-
         return false;
     }
 
-    public static SongModel getCurRoundSongModel(int seq, RoomData roomData) {
-        if(seq >=0 && seq < roomData.getSongModelList().size()){
-            return roomData.getSongModelList().get(seq);
-        }
-
-        return null;
-    }
-
-    public static RoundInfoModel getRoundInfoFromRoundInfoList(RoomData roomData, RoundInfoModel roundInfoModel){
-        if(roundInfoModel == null){
+    public static RoundInfoModel getRoundInfoFromRoundInfoList(RoomData roomData, RoundInfoModel roundInfoModel) {
+        if (roundInfoModel == null) {
             return null;
         }
 
-        for(RoundInfoModel roundInfo : roomData.getRoundInfoModelList()){
-            if(roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()){
-                roundInfo.update(roundInfoModel);
+        for (RoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
+            if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
+                roundInfo.tryUpdateByRoundInfoModel(roundInfoModel,false);
                 return roundInfo;
             }
         }
 
         return null;
     }
+
 }
