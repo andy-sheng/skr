@@ -20,10 +20,10 @@ public class RoundInfoModel implements Serializable {
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
 
-    public static final int STATUS_INIT = 0;
-    public static final int STATUS_GRAB = 1;
-    public static final int STATUS_SING = 2;
-    public static final int STATUS_OVER = 3;
+    public static final int STATUS_INIT = 1;
+    public static final int STATUS_GRAB = 2;
+    public static final int STATUS_SING = 3;
+    public static final int STATUS_OVER = 4;
     /**
      * userID : 7
      * playbookID : 1

@@ -39,6 +39,7 @@ import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.RobotScoreHelper;
+import com.zq.live.proto.Room.RoundInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -485,7 +486,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundChangeEvent event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event);
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         estimateOverTsThisRound();
         closeEngine();
         RoundInfoModel now = event.newRoundInfo;
@@ -518,6 +519,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             } else {
                 mIGrabView.singByOthers(now.getUserID());
             }
+        } else if (now.getStatus() == RoundInfoModel.STATUS_OVER) {
+            MyLog.w(TAG, "GrabRoundChangeEvent 刚切换到该轮次就告诉我轮次结束？？？roundSeq:" + now.getRoundSeq());
+            MyLog.w(TAG, "自动切换到下个轮次");
+            RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), now.getRoundSeq() + 1);
+            mRoomData.setExpectRoundInfo(roundInfoModel);
+            mRoomData.checkRoundInGrabMode();
         }
     }
 
@@ -528,7 +535,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundStatusChangeEvent event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event);
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         estimateOverTsThisRound();
         closeEngine();
         RoundInfoModel now = event.roundInfo;
