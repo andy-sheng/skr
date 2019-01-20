@@ -2,6 +2,7 @@ package com.module.playways.grab.prepare;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -22,7 +23,9 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
@@ -276,6 +279,31 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         loadIcon(mSdvIcon3, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
         loadIcon(mSdvIcon4, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
         loadIcon(mSdvIcon5, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
+
+        ExRelativeLayout rlIcon1Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon1_root);
+        ExRelativeLayout rlIcon2Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon2_root);
+        ExRelativeLayout rlIcon3Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon3_root);
+        ExRelativeLayout rlIcon4Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon4_root);
+        ExRelativeLayout rlIcon5Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon5_root);
+
+        setIconStroke(rlIcon1Root, mLeftPlayer.getUserInfo().getIsMale());
+        setIconStroke(rlIcon2Root, mRightPlayer.getUserInfo().getIsMale());
+        setIconStroke(rlIcon3Root, true);
+        setIconStroke(rlIcon4Root, true);
+        setIconStroke(rlIcon5Root, true);
+
+
+
+    }
+
+    private void setIconStroke(ExRelativeLayout exRelativeLayout, boolean isMale){
+        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(3))
+                .setStrokeColor(isMale ? U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color))
+                .setSolidColor(isMale ? U.getColor(R.color.color_man_stroke_color_trans_20) : U.getColor(R.color.color_woman_stroke_color_trans_20))
+                .build();
+
+        exRelativeLayout.setBackground(drawable);
     }
 
     @Override

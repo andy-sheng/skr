@@ -51,6 +51,7 @@
             android:layout_height="wrap_content" />
 
         <com.common.view.ex.ExRelativeLayout
+            android:id="@+id/rl_icon1_root"
             android:layout_width="@dimen/view_90_dp"
             android:layout_height="@dimen/view_96_dp"
             android:layout_centerHorizontal="true"
@@ -69,6 +70,7 @@
 
 
         <com.common.view.ex.ExRelativeLayout
+            android:id="@+id/rl_icon2_root"
             android:layout_width="@dimen/view_90_dp"
             android:layout_height="@dimen/view_96_dp"
             android:layout_alignParentRight="true"
@@ -88,6 +90,7 @@
         </com.common.view.ex.ExRelativeLayout>
 
         <com.common.view.ex.ExRelativeLayout
+            android:id="@+id/rl_icon3_root"
             android:layout_width="@dimen/view_90_dp"
             android:layout_height="@dimen/view_96_dp"
             android:layout_alignParentRight="true"
@@ -111,6 +114,7 @@
 
 
         <com.common.view.ex.ExRelativeLayout
+            android:id="@+id/rl_icon4_root"
             android:layout_width="@dimen/view_90_dp"
             android:layout_height="@dimen/view_96_dp"
             android:layout_alignParentLeft="true"
@@ -132,6 +136,7 @@
         </com.common.view.ex.ExRelativeLayout>
 
         <com.common.view.ex.ExRelativeLayout
+            android:id="@+id/rl_icon5_root"
             android:layout_marginTop="@dimen/view_90_dp"
             android:layout_width="@dimen/view_90_dp"
             android:layout_height="@dimen/view_96_dp"

@@ -62,4 +62,6 @@
 
     <color name="color_man_stroke_color">#85EAFF</color>
     <color name="color_woman_stroke_color">#FF79A9</color>
+    <color name="color_man_stroke_color_trans_20">#ECFFFF</color>
+    <color name="color_woman_stroke_color_trans_20">#F7D6DB</color>
 </resources>
