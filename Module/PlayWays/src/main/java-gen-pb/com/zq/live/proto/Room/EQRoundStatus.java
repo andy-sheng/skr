@@ -14,9 +14,14 @@ public enum EQRoundStatus implements WireEnum {
   QRS_UNKNOWN(0),
 
   /**
+   * 轮次未开始
+   */
+  QRS_UNBEGIN(1),
+
+  /**
    * 轮次进入导唱阶段
    */
-  QRS_INTRO(1),
+  QRS_INTRO(2),
 
   /**
    * 轮次进入演唱阶段
@@ -42,8 +47,8 @@ public enum EQRoundStatus implements WireEnum {
   public static EQRoundStatus fromValue(int value) {
     switch (value) {
       case 0: return QRS_UNKNOWN;
-      case 1: return QRS_INTRO;
-      case 2: return QRS_SING;
+      case 1: return QRS_UNBEGIN;
+      case 2: return QRS_INTRO;
       case 3: return QRS_SING;
       case 4: return QRS_END;
       default: return null;

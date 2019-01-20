@@ -330,10 +330,10 @@ message RoundInfo
 
 enum EQRoundStatus {
     QRS_UNKNOWN = 0; //轮次状态位置
-    QRS_INTRO   = 1; //轮次进入导唱阶段
-    QRS_SING    = 2; //轮次进入演唱阶段
-    QRS_SING    = 3; //轮次进入演唱阶段
-    QRS_END     = 4; //轮次已结束
+        QRS_UNBEGIN = 1; //轮次未开始
+        QRS_INTRO   = 2; //轮次进入导唱阶段
+        QRS_SING    = 3; //轮次进入演唱阶段
+        QRS_END     = 4; //轮次已结束
 }
 
 message WantSingInfo
