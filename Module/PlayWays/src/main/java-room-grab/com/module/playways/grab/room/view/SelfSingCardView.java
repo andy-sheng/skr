@@ -282,25 +282,25 @@ public class SelfSingCardView extends RelativeLayout {
     }
 
     private void startScroll() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                int[] location = new int[2];
-                mTvLyric.getLocationInWindow(location);
-//                Log.d(TAG, "mTextView.X" + location[0] + " mTextView.Y" + location[1]);
-                if(mSpeed == 0){
-                    int textHeight = mTvLyric.getHeight();
-                    mSpeed = (float)textHeight * (float) UPTATE_TIME / (float) mSongModel.getTotalMs();
-                }
-
-                if (mSpeed != 0) {
-                    mOffsetY += mSpeed;
-                    mSvLyric.scrollTo(0, (int) mOffsetY);
-                }
-
-                startScroll();
-            }
-        }, UPTATE_TIME);
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                int[] location = new int[2];
+//                mTvLyric.getLocationInWindow(location);
+////                Log.d(TAG, "mTextView.X" + location[0] + " mTextView.Y" + location[1]);
+//                if(mSpeed == 0){
+//                    int textHeight = mTvLyric.getHeight();
+//                    mSpeed = (float)textHeight * (float) UPTATE_TIME / (float) mSongModel.getTotalMs();
+//                }
+//
+//                if (mSpeed != 0) {
+//                    mOffsetY += mSpeed;
+//                    mSvLyric.scrollTo(0, (int) mOffsetY);
+//                }
+//
+//                startScroll();
+//            }
+//        }, UPTATE_TIME);
     }
 
     @Override
