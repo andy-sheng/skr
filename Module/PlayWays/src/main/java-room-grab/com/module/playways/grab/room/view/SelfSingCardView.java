@@ -147,7 +147,7 @@ public class SelfSingCardView extends RelativeLayout {
     }
 
     private void countDonw(SongModel songModel) {
-        if(songModel == null){
+        if (songModel == null) {
             return;
         }
 
@@ -164,8 +164,8 @@ public class SelfSingCardView extends RelativeLayout {
                 });
     }
 
-    private void cancelCountDownTask(){
-        if(mCountDownTask != null){
+    private void cancelCountDownTask() {
+        if (mCountDownTask != null) {
             mCountDownTask.dispose();
         }
     }
@@ -240,6 +240,7 @@ public class SelfSingCardView extends RelativeLayout {
     }
 
     public void showBackground(String avatar) {
+        setVisibility(VISIBLE);
         mSingBgSvga.setVisibility(VISIBLE);
         mSingBgSvga.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());

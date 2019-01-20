@@ -58,6 +58,7 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     public void bindData(int reason, int resultType, SVGAListener listener) {
+        setVisibility(VISIBLE);
         int mode = getRoundOver(reason, resultType);
         switch (mode) {
             case NONE_SING_END:

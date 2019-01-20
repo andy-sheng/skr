@@ -2,6 +2,7 @@ package com.module.playways.grab.room.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
@@ -52,6 +53,7 @@ public class TurnInfoCardView extends RelativeLayout {
 
     public void setModeSongSeq(boolean first, SVGAListener listener) {
         MyLog.d(TAG, "setModeSongSeq" + " first=" + first + " listener=" + listener);
+        setVisibility(VISIBLE);
         if (first) {
             firstBegin(listener);
         } else {
@@ -162,5 +164,30 @@ public class TurnInfoCardView extends RelativeLayout {
 
             }
         });
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            if (mFirstSvga != null) {
+                mFirstSvga.stopAnimation(false);
+            }
+
+            if (mNextSvga != null) {
+                mNextSvga.stopAnimation(false);
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mFirstSvga != null) {
+            mFirstSvga.stopAnimation(true);
+        }
+        if (mNextSvga != null) {
+            mNextSvga.stopAnimation(true);
+        }
     }
 }

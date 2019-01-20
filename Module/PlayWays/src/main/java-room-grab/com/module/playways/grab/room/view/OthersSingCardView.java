@@ -43,6 +43,7 @@ public class OthersSingCardView extends RelativeLayout {
     }
 
     public void bindData(String avatar) {
+        setVisibility(VISIBLE);
         mOtherBgSvga.setVisibility(VISIBLE);
         mOtherBgSvga.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());

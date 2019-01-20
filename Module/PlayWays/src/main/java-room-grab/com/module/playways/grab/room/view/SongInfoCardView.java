@@ -73,6 +73,7 @@ public class SongInfoCardView extends RelativeLayout {
         if (songModel == null || TextUtils.isEmpty(songModel.getCover())) {
             return;
         }
+        setVisibility(VISIBLE);
 
         mSongNameTv.setText(songModel.getItemName());
         mSongOwnerTv.setText(songModel.getOwner());
