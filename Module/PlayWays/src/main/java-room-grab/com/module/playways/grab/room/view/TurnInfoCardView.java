@@ -63,6 +63,7 @@ public class TurnInfoCardView extends RelativeLayout {
 
     // 对战开始连着第一首是同一个动画
     private void firstBegin(SVGAListener listener) {
+        mFirstSvga.clearAnimation();
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
@@ -94,6 +95,7 @@ public class TurnInfoCardView extends RelativeLayout {
             public void onFinished() {
                 if (mFirstSvga != null) {
                     mFirstSvga.stopAnimation(true);
+                    mFirstSvga.setVisibility(GONE);
                 }
                 if (listener != null) {
                     listener.onFinished();
@@ -115,6 +117,7 @@ public class TurnInfoCardView extends RelativeLayout {
     }
 
     private void nextBegin(SVGAListener listener) {
+        mNextSvga.clearAnimation();
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
@@ -146,6 +149,7 @@ public class TurnInfoCardView extends RelativeLayout {
             public void onFinished() {
                 if (mNextSvga != null) {
                     mNextSvga.stopAnimation(true);
+                    mNextSvga.setVisibility(GONE);
                 }
                 if (listener != null) {
                     listener.onFinished();
