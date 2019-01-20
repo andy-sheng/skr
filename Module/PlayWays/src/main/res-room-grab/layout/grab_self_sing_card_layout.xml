@@ -1,7 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
@@ -14,11 +14,12 @@
         app:loopCount="0" />
 
     <ScrollView
+        android:scrollbars="none"
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/view_160_dp"
         android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginBottom="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
         android:layout_marginLeft="@dimen/view_50_dp"
         android:layout_marginRight="@dimen/view_50_dp">
 
