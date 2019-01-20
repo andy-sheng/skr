@@ -66,6 +66,8 @@ public class SelfSingCardView extends RelativeLayout {
 
     SongModel mSongModel;
 
+    HandlerTaskTimer mCountDownTask;
+
     /**
      * 歌词在Y轴上的偏移量
      */
@@ -144,16 +146,28 @@ public class SelfSingCardView extends RelativeLayout {
         });
     }
 
-    private void CountDonw() {
-        HandlerTaskTimer.newBuilder()
+    private void countDonw(SongModel songModel) {
+        if(songModel == null){
+            return;
+        }
+
+        cancelCountDownTask();
+
+        mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(30)
+                .take(songModel.getTotalMs() / 1000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        setNum(integer);
+                        setNum((songModel.getTotalMs() / 1000) - integer);
                     }
                 });
+    }
+
+    private void cancelCountDownTask(){
+        if(mCountDownTask != null){
+            mCountDownTask.dispose();
+        }
     }
 
     private void setNum(int num) {
@@ -165,7 +179,7 @@ public class SelfSingCardView extends RelativeLayout {
         int[] index_num = new int[s.length()];
 
         for (int i = 0; i < s.length(); i++) {
-            index_num[i] = Integer.parseInt(getNum(num, i));
+            index_num[i] = Integer.parseInt(getNum(num, i + 1));
 
             if (i == 0) {
                 mIvOStub.setImageDrawable(getNumDrawable(index_num[0]));
@@ -175,40 +189,42 @@ public class SelfSingCardView extends RelativeLayout {
                 mIvHStub.setImageDrawable(getNumDrawable(index_num[2]));
             }
         }
+
+        mIvS.setImageDrawable(U.getDrawable(R.drawable.daojishizi_s));
     }
 
     private Drawable getNumDrawable(int num) {
         Drawable drawable = null;
         switch (num) {
             case 0:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_0);
                 break;
             case 1:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_1);
                 break;
             case 2:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_2);
                 break;
             case 3:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_3);
                 break;
             case 4:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_4);
                 break;
             case 5:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_5);
                 break;
             case 6:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_6);
                 break;
             case 7:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_7);
                 break;
             case 8:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_8);
                 break;
             case 9:
-                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                drawable = U.getDrawable(R.drawable.daojishizi_9);
                 break;
         }
 
@@ -345,6 +361,7 @@ public class SelfSingCardView extends RelativeLayout {
         }
 
         startScroll();
+        countDonw(mSongModel);
     }
 
     private String getLyricFromLyricsLineInfo(LyricsLineInfo info) {
@@ -403,6 +420,8 @@ public class SelfSingCardView extends RelativeLayout {
         if (mSingBgSvga != null) {
             mSingBgSvga.stopAnimation(true);
         }
+
+        cancelCountDownTask();
     }
 
     @Override

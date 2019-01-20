@@ -6,7 +6,7 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.opensource.svgaplayer.SVGAImageView
-        android:layout_marginTop="@dimen/view_50_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
         android:id="@+id/sing_bg_svga"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_240_dp"
@@ -16,19 +16,21 @@
 
     <RelativeLayout
         android:layout_alignParentRight="true"
-        android:layout_width="@dimen/view_85_dp"
-        android:layout_height="@dimen/view_60_dp"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_50_dp"
         >
         <ImageView
+            android:layout_marginRight="@dimen/view_15_dp"
+            android:background="@drawable/daojishi_bj"
             android:layout_alignParentBottom="true"
-            android:layout_width="@dimen/view_85_dp"
+            android:layout_width="@dimen/view_110_dp"
             android:layout_height="@dimen/view_32_dp" />
 
         <LinearLayout
             android:layout_marginRight="@dimen/view_20_dp"
             android:layout_alignParentRight="true"
             android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/view_20_dp"
+            android:layout_marginBottom="@dimen/view_10_dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <ImageView
@@ -56,8 +58,8 @@
         android:scrollbars="none"
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_160_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_height="@dimen/view_150_dp"
+        android:layout_marginTop="@dimen/view_55_dp"
         android:layout_marginBottom="@dimen/view_20_dp"
         android:layout_marginLeft="@dimen/view_50_dp"
         android:layout_marginRight="@dimen/view_50_dp">
