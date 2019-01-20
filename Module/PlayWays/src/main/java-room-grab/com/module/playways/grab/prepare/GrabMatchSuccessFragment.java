@@ -2,7 +2,6 @@ package com.module.playways.grab.prepare;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -37,7 +36,6 @@ import com.module.playways.rank.prepare.view.MatchSucessLeftView;
 import com.module.playways.rank.prepare.view.MatchSucessRightView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGAImageView;
-import com.zq.live.proto.Common.ESex;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -50,6 +48,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     SimpleDraweeView mSdvIcon1;
     SimpleDraweeView mSdvIcon2;
     SimpleDraweeView mSdvIcon3;
+    SimpleDraweeView mSdvIcon4;
+    SimpleDraweeView mSdvIcon5;
 
     SVGAImageView mVsSvga;
     ExImageView mIvPrepare;
@@ -84,6 +84,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
         mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
+        mSdvIcon4 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon4);
+        mSdvIcon5 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon5);
 
         mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
         mIvPrepare = (ExImageView) mRootView.findViewById(R.id.iv_prepare);
@@ -122,16 +124,16 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         U.getSoundUtils().preLoad(TAG, R.raw.pregame_animation, R.raw.pregame_ready, R.raw.general_countdown);
 
         startTimeTask();
-        animationGo();
+//        animationGo();
     }
 
-    private void loadIcon(SimpleDraweeView simpleDraweeView) {
+    private void loadIcon(SimpleDraweeView simpleDraweeView, boolean isGray, String avatar, boolean isMale) {
         AvatarUtils.loadAvatarByUrl(simpleDraweeView,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(avatar)
                         .setCircle(true)
-                        .setGray(false)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
+                        .setGray(isGray)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(6))
+                        .setBorderColor(U.getColor(R.color.white))
                         .build());
     }
 
@@ -269,29 +271,11 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
 
     private void initAvatar(boolean isGray) {
-        AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                AvatarUtils.newParamsBuilder(mLeftPlayer.getUserInfo().getAvatar())
-                        .setCircle(true)
-                        .setGray(isGray)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColorBySex(mLeftPlayer.getUserInfo().getIsMale())
-                        .build());
-
-        AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                AvatarUtils.newParamsBuilder(mRightPlayer.getUserInfo().getAvatar())
-                        .setCircle(true)
-                        .setGray(isGray)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColorBySex(mRightPlayer.getUserInfo().getIsMale())
-                        .build());
-
-        AvatarUtils.loadAvatarByUrl(mSdvIcon3,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setCircle(true)
-                        .setGray(isGray)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue())
-                        .build());
+        loadIcon(mSdvIcon1, isGray, mLeftPlayer.getUserInfo().getAvatar(), mLeftPlayer.getUserInfo().getIsMale());
+        loadIcon(mSdvIcon2, isGray, mRightPlayer.getUserInfo().getAvatar(), mRightPlayer.getUserInfo().getIsMale());
+        loadIcon(mSdvIcon3, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
+        loadIcon(mSdvIcon4, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
+        loadIcon(mSdvIcon5, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
     }
 
     @Override
@@ -329,8 +313,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                         AvatarUtils.newParamsBuilder(mLeftPlayer.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setGray(false)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColorBySex(mLeftPlayer.getUserInfo().getIsMale())
+                                .setBorderWidth(U.getDisplayUtils().dip2px(6))
+                                .setBorderColor(U.getColor(R.color.white))
                                 .build());
             }
 
@@ -339,8 +323,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                         AvatarUtils.newParamsBuilder(mRightPlayer.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setGray(false)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColorBySex(mRightPlayer.getUserInfo().getIsMale())
+                                .setBorderWidth(U.getDisplayUtils().dip2px(6))
+                                .setBorderColor(U.getColor(R.color.white))
                                 .build());
             }
 
@@ -349,8 +333,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                         AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                                 .setCircle(true)
                                 .setGray(false)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                                .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue())
+                                .setBorderWidth(U.getDisplayUtils().dip2px(6))
+                                .setBorderColor(U.getColor(R.color.white))
                                 .build());
             }
         }

@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,23 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.module.playways.rank.prepare.view.MatchSucessBottomView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <com.common.view.ex.ExTextView
-            android:gravity="center"
-            android:background="@drawable/miedeng_daojishi_beijingban"
             android:id="@+id/tv_ready_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/iv_prepare"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/view_16_dp"
+            android:background="@drawable/miedeng_daojishi_beijingban"
+            android:gravity="center"
             android:text="10s"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_24_dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_prepare"
@@ -39,52 +35,124 @@
             android:background="@drawable/btn_pipeichenggong_normal" />
     </RelativeLayout>
 
-    <com.module.playways.rank.prepare.view.MatchSucessLeftView
-        android:id="@+id/bg_left_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
-    <com.module.playways.rank.prepare.view.MatchSucessRightView
-        android:id="@+id/bg_right_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <FrameLayout
-        android:layout_width="@dimen/view_260_dp"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="@dimen/view_341_dp"
+        android:layout_height="@dimen/view_331_dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/view_155_dp"
         android:clipChildren="false">
+        <ImageView
+            android:layout_marginTop="@dimen/view_28_dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/_pipeichenggong_bj2"
+            android:layout_width="@dimen/view_280_dp"
+            android:layout_height="wrap_content" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_240_dp"
-            android:layout_marginTop="@dimen/view_32_dp"
-            android:clipChildren="false">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/sdv_icon1"
-                android:layout_width="@dimen/view_88_dp"
-                android:layout_height="@dimen/view_88_dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/view_20_dp" />
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/sdv_icon2"
-                android:layout_width="@dimen/view_88_dp"
-                android:layout_height="@dimen/view_88_dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/view_20_dp" />
+        <com.common.view.ex.ExRelativeLayout
+            android:layout_width="@dimen/view_90_dp"
+            android:layout_height="@dimen/view_96_dp"
+            android:layout_centerHorizontal="true"
+            app:bl_corners_radius="@dimen/view_45_dp"
+            app:bl_solid_color="#F7D6DB"
+            app:bl_stroke_color="#EF5E85"
+            app:bl_stroke_width="@dimen/view_3_dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/sdv_icon3"
-                android:layout_width="@dimen/view_88_dp"
-                android:layout_height="@dimen/view_88_dp"
-                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/view_3_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/view_20_dp" />
-        </RelativeLayout>
-    </FrameLayout>
+                android:id="@+id/sdv_icon1"
+                android:layout_width="@dimen/view_84_dp"
+                android:layout_height="@dimen/view_84_dp" />
+        </com.common.view.ex.ExRelativeLayout>
+
+
+        <com.common.view.ex.ExRelativeLayout
+            android:layout_width="@dimen/view_90_dp"
+            android:layout_height="@dimen/view_96_dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_90_dp"
+            app:bl_corners_radius="@dimen/view_45_dp"
+            app:bl_solid_color="#F7D6DB"
+            app:bl_stroke_color="#EF5E85"
+            app:bl_stroke_width="@dimen/view_3_dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_marginTop="@dimen/view_3_dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/sdv_icon2"
+                android:layout_width="@dimen/view_84_dp"
+                android:layout_height="@dimen/view_84_dp" />
+        </com.common.view.ex.ExRelativeLayout>
+
+        <com.common.view.ex.ExRelativeLayout
+            android:layout_width="@dimen/view_90_dp"
+            android:layout_height="@dimen/view_96_dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_90_dp"
+            android:layout_marginRight="@dimen/view_49_dp"
+            android:layout_marginBottom="@dimen/view_20_dp"
+            app:bl_corners_radius="@dimen/view_45_dp"
+            app:bl_solid_color="#F7D6DB"
+            app:bl_stroke_color="#EF5E85"
+            app:bl_stroke_width="@dimen/view_3_dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_marginTop="@dimen/view_3_dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/sdv_icon3"
+                android:layout_width="@dimen/view_84_dp"
+                android:layout_height="@dimen/view_84_dp" />
+        </com.common.view.ex.ExRelativeLayout>
+
+
+        <com.common.view.ex.ExRelativeLayout
+            android:layout_width="@dimen/view_90_dp"
+            android:layout_height="@dimen/view_96_dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/view_49_dp"
+            android:layout_marginBottom="@dimen/view_20_dp"
+            app:bl_corners_radius="@dimen/view_45_dp"
+            app:bl_solid_color="#F7D6DB"
+            app:bl_stroke_color="#EF5E85"
+            app:bl_stroke_width="@dimen/view_3_dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_marginTop="@dimen/view_3_dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/sdv_icon4"
+                android:layout_width="@dimen/view_84_dp"
+                android:layout_height="@dimen/view_84_dp" />
+        </com.common.view.ex.ExRelativeLayout>
+
+        <com.common.view.ex.ExRelativeLayout
+            android:layout_marginTop="@dimen/view_90_dp"
+            android:layout_width="@dimen/view_90_dp"
+            android:layout_height="@dimen/view_96_dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="@dimen/view_49_dp"
+            app:bl_corners_radius="@dimen/view_45_dp"
+            app:bl_solid_color="#F7D6DB"
+            app:bl_stroke_color="#EF5E85"
+            app:bl_stroke_width="@dimen/view_3_dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_marginTop="@dimen/view_3_dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/sdv_icon5"
+                android:layout_width="@dimen/view_84_dp"
+                android:layout_height="@dimen/view_84_dp"
+                 />
+        </com.common.view.ex.ExRelativeLayout>
+    </RelativeLayout>
+
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/vs_svga"
