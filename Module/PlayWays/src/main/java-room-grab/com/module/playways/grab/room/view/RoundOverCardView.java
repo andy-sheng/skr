@@ -26,12 +26,19 @@ import org.greenrobot.greendao.annotation.NotNull;
 public class RoundOverCardView extends RelativeLayout {
 
     public final static int UNKNOW_END = 0;                // 未知原因
-    public final static int NONE_SING_END = 1;             // 无人想唱
-    public final static int SING_PERFECT_END = 2;          // 有种优秀叫一唱到底
-    public final static int SING_MOMENT_END = 3;           // 有种结束叫刚刚开始
-    public final static int SING_NO_PASS_END = 4;          // 有种悲伤叫都没及格
-    public final static int SING_PASS_END = 5;             // 有种遗憾叫明明可以
-    public final static int SING_ENOUGH_END = 6;           // 有种可惜叫觉得你行
+    public final static int NONE_SING_END = -1;             // 无人想唱
+    public final static int SING_PERFECT_END = 1;          // 有种优秀叫一唱到底
+    public final static int SING_MOMENT_END = 2;           // 有种结束叫刚刚开始
+    public final static int SING_NO_PASS_END = 3;          // 有种悲伤叫都没及格
+    public final static int SING_PASS_END = 4;             // 有种遗憾叫明明可以
+    public final static int SING_ENOUGH_END = 5;           // 有种可惜叫觉得你行
+
+    //0未知
+    //1有种优秀叫一唱到底（全部唱完）
+    //2有种结束叫刚刚开始（t<30%）
+    //3有份悲伤叫都没及格(30%<=t <60%)
+    //4有种遗憾叫明明可以（60%<=t<90%）
+    //5有种可惜叫我觉得你行（90%<=t<=100%)
 
     SVGAImageView mNoneSingSvga;
     SVGAImageView mSingResultSvga;

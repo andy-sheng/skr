@@ -54,14 +54,12 @@ public class RoundInfoModel implements Serializable {
      */
     private int overReason; // 结束的原因
 
-    /**
-     * 0未知
-     * 1有种结束叫刚刚开始（t<30%）
-     * 2有份悲伤叫都没及格(30%<=t <60%)
-     * 3有种遗憾叫明明可以（60%<=t<90%）
-     * 4有种可惜叫我觉得你行（90%<=t<=100%)
-     * 5有种优秀叫一唱到底（全部唱完）
-     */
+    //0未知
+    //1有种优秀叫一唱到底（全部唱完）
+    //2有种结束叫刚刚开始（t<30%）
+    //3有份悲伤叫都没及格(30%<=t <60%)
+    //4有种遗憾叫明明可以（60%<=t<90%）
+    //5有种可惜叫我觉得你行（90%<=t<=100%)
     private int resultType; // 结果类型
 
     private Set<Integer> hasGrabUserSet = new HashSet<>(); //已经抢了的人
