@@ -171,8 +171,8 @@ public class ImageFactory {
             return this;
         }
 
-        public BaseImage build() {
-            return mBaseImage;
+        public <T extends BaseImage> T build() {
+            return (T) mBaseImage;
         }
     }
 }

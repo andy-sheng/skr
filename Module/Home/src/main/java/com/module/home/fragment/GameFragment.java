@@ -91,6 +91,13 @@ public class GameFragment extends BaseFragment {
                     }
                 });
 
+        RxView.longClicks(mIvYulePk).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                        .navigation();
+            }
+        });
         U.getSoundUtils().preLoad(TAG, R.raw.home_game);
     }
 
@@ -158,12 +165,12 @@ public class GameFragment extends BaseFragment {
                             .navigation();
                 } else if (view.getId() == R.id.iv_grab_game) {
                     // TODO: 2019/1/15 暂时屏蔽一唱到底入口
-                    if(MyLog.isDebugLogOpen()){
+                    if (MyLog.isDebugLogOpen()) {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                                 .withInt("key_game_type", GameModeType.GAME_MODE_GRAB)
                                 .withBoolean("selectSong", false)
                                 .navigation();
-                    }else{
+                    } else {
                         U.getToastUtil().showShort("正在开发中，敬请期待");
                     }
                 }

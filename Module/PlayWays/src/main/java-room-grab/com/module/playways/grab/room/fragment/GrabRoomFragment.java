@@ -611,7 +611,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         objectAnimator3.setStartDelay(1000);
         objectAnimator3.setDuration(500);
 
-
         mSongInfoCardView.bindSongModel(songModel);
         ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(mSongInfoCardView, View.TRANSLATION_X, -1000f, 0f);
         objectAnimator4.setDuration(500);

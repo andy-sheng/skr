@@ -5,6 +5,10 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.image.model.HttpImage;
+import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.view.ex.ExTextView;
 
 import com.module.playways.rank.song.model.SongModel;
@@ -53,7 +57,13 @@ public class SongInfoCardView extends RelativeLayout {
         songModel.setItemID(839);
         songModel.setItemName("卡路里");
         songModel.setOwner("火箭少女101");
-        songModel.setCover("http://online-sound-bja.oss-cn-beijing.aliyuncs.com/cover/fdb383b9eca4cc747dec665a9f97117b.jpg");
+
+        HttpImage httpImage = ImageFactory.newHttpImage("http://online-sound-bja.oss-cn-beijing.aliyuncs.com/cover/fdb383b9eca4cc747dec665a9f97117b.jpg")
+                .addOssProcessors(OssImgFactory.newResizeBuilder()
+                        .setW(160)
+                        .build())
+                .build();
+        songModel.setCover(httpImage.getUrl());
         bindSongModel(songModel);
     }
 
@@ -86,9 +96,14 @@ public class SongInfoCardView extends RelativeLayout {
     }
 
     private SVGADynamicEntity requestDynamicBitmapItem(String cover) {
+        HttpImage httpImage = ImageFactory.newHttpImage(cover)
+                .addOssProcessors(OssImgFactory.newResizeBuilder()
+                        .setW(160)
+                        .build())
+                .build();
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        if (!TextUtils.isEmpty(cover)) {
-            dynamicEntity.setDynamicImage(cover, "cover");
+        if (!TextUtils.isEmpty(httpImage.getUrl())) {
+            dynamicEntity.setDynamicImage(httpImage.getUrl(), "cover");
         }
         return dynamicEntity;
     }
