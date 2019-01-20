@@ -65,6 +65,25 @@ public class OthersSingCardView extends RelativeLayout {
         }
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            // TODO: 2019/1/20  可以验证下
+            if (mOtherBgSvga != null) {
+                mOtherBgSvga.stopAnimation(false);
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mOtherBgSvga != null) {
+            mOtherBgSvga.stopAnimation(true);
+        }
+    }
+
     private SVGADynamicEntity requestDynamicItem(String avatar) {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
         if (!TextUtils.isEmpty(avatar)) {

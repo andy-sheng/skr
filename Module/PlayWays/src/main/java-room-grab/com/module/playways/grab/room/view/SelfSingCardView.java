@@ -265,5 +265,18 @@ public class SelfSingCardView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mHandler.removeCallbacksAndMessages(null);
+        if (mSingBgSvga != null) {
+            mSingBgSvga.stopAnimation(true);
+        }
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            if (mSingBgSvga != null) {
+                mSingBgSvga.stopAnimation(false);
+            }
+        }
     }
 }

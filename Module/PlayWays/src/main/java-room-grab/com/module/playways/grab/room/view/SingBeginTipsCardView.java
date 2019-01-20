@@ -114,4 +114,22 @@ public class SingBeginTipsCardView extends RelativeLayout {
         }
         return dynamicEntity;
     }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            if (mSingBeginSvga != null) {
+                mSingBeginSvga.stopAnimation(false);
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mSingBeginSvga != null) {
+            mSingBeginSvga.stopAnimation(true);
+        }
+    }
 }

@@ -92,5 +92,23 @@ public class SongInfoCardView extends RelativeLayout {
         }
         return dynamicEntity;
     }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            if (mSongCover != null) {
+                mSongCover.stopAnimation(false);
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mSongCover != null) {
+            mSongCover.stopAnimation(true);
+        }
+    }
 }
 

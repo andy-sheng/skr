@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_228_dp"
         app:antiAlias="true"
-        app:autoPlay="false"
-        app:source="other_sing_bg.svga" />
+        app:autoPlay="false" />
 
 </merge>
