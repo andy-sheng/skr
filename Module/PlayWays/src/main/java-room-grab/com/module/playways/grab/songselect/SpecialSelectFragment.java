@@ -52,7 +52,7 @@ public class SpecialSelectFragment extends BaseFragment {
         mSpecialSelectAdapter = new SpecialSelectAdapter(new RecyclerOnItemClickListener<SpecialModel>() {
             @Override
             public void onItemClicked(View view, int position, SpecialModel model) {
-                goMatchFragment(model.getId());
+                goMatchFragment(model.getTagID());
             }
         });
         mContentRv.setAdapter(mSpecialSelectAdapter);
@@ -74,7 +74,7 @@ public class SpecialSelectFragment extends BaseFragment {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    List<SpecialModel> list = JSON.parseArray(obj.getData().toString(), SpecialModel.class);
+                    List<SpecialModel> list = JSON.parseArray(obj.getData().get("tags").toString(), SpecialModel.class);
                     mSpecialSelectAdapter.setDataList(list);
                 }
             }

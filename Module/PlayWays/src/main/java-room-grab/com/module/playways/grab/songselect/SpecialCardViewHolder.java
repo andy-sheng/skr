@@ -30,7 +30,7 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
     public void bindData(SpecialModel specialModel, int postion) {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
-        mSpecialTv.setText(this.mSpecialModel.getSpecialName());
+        mSpecialTv.setText(this.mSpecialModel.getTagName());
     }
 
     public void setItemClickListener(RecyclerOnItemClickListener<SpecialModel> itemClickListener) {

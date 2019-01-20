@@ -3,22 +3,22 @@ package com.module.playways.grab.songselect;
 import java.io.Serializable;
 
 public class SpecialModel implements Serializable {
-    int id;
-    String specialName;
+    int tagID;
+    String tagName;
 
-    public int getId() {
-        return id;
+    public int getTagID() {
+        return tagID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTagID(int tagID) {
+        this.tagID = tagID;
     }
 
-    public String getSpecialName() {
-        return specialName;
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setSpecialName(String specialName) {
-        this.specialName = specialName;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 }
