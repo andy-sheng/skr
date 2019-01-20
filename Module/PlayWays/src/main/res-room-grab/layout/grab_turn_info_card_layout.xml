@@ -5,10 +5,21 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/info_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/vote_btn_circle_normal" />
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/first_svga"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_355_dp"
+        android:layout_marginTop="@dimen/view_50_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/next_svga"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_355_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
 </merge>

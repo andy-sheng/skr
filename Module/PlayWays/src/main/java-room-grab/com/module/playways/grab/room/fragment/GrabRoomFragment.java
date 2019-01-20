@@ -127,10 +127,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
 
-    AnimatorSet mBattleBeginAnimation; //  对战开始卡片出现动画
-
-    AnimatorSet mSongInfoShowAnimation; // 歌曲卡片出现动画
-
     AnimatorSet mSingBeginShowAnimation;// 轮到谁唱卡片动画
 
     AnimatorSet mRoundOverShowAnimation;// 轮次结束卡片动画
@@ -219,8 +215,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         initGiftDisplayView();
         initGrabOpView();
         initSingStageView();
-        showBattleBegin();
-//        showReadyGoView();
 
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
@@ -253,6 +247,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
+
+        // TODO: 2019/1/20 因为接不到event
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onBattleBeginPlayOver();
+            }
+        }, 1000);
+
     }
 
     @Override
@@ -505,57 +508,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
     }
 
-    private void showBattleBegin() {
-        mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
-        mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_BATTLE_BEGIN_OVER, 5000);
-
-        mTurnInfoCardView.setModeBattleBegin();
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, -U.getDisplayUtils().getScreenWidth(), 0f);
-        objectAnimator1.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                MyLog.d(TAG, "onAnimationStart" + " animation=" + animation);
-                super.onAnimationStart(animation);
-                mTurnInfoCardView.setVisibility(View.VISIBLE);
-            }
-        });
-        objectAnimator1.setDuration(800);
-        objectAnimator1.setInterpolator(new OvershootInterpolator());
-        objectAnimator1.setStartDelay(500);
-        // 留白动画，只为让其显示一秒
-//        ObjectAnimator objectAnimator2 = new ObjectAnimator();
-//        objectAnimator2.setDuration(1000);
-
-        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
-        objectAnimator3.setInterpolator(new LinearInterpolator());
-        objectAnimator3.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                super.onAnimationCancel(animation);
-                mTurnInfoCardView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                onBattleBeginPlayOver();
-            }
-        });
-        objectAnimator3.setStartDelay(1300);
-        objectAnimator3.setDuration(500);
-        if (mBattleBeginAnimation != null) {
-            mBattleBeginAnimation.cancel();
-        }
-        mBattleBeginAnimation = new AnimatorSet();
-        mBattleBeginAnimation.playSequentially(objectAnimator1, objectAnimator3);
-        mBattleBeginAnimation.start();
-    }
-
     private void onBattleBeginPlayOver() {
         mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
-        if (mBattleBeginAnimation != null) {
-            mBattleBeginAnimation.cancel();
-        }
         mTurnInfoCardView.setVisibility(View.GONE);
         mCorePresenter.onOpeningAnimationOver();
     }
@@ -569,6 +523,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
      */
     @Override
     public void grabBegin(int seq, SongModel songModel) {
+        MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
         // 播放3秒导唱
         mCorePresenter.playGuide();
 
@@ -577,78 +532,20 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.obj = pendingPlaySongCardData;
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        mTurnInfoCardView.setModeSongSeq(seq == 1);
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, -1000f, 0f);
-        objectAnimator1.addListener(new AnimatorListenerAdapter() {
+        mTurnInfoCardView.setVisibility(View.VISIBLE);
+        mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mTurnInfoCardView.setVisibility(View.VISIBLE);
-            }
-        });
-        objectAnimator1.setDuration(500);
-        objectAnimator1.setInterpolator(new OvershootInterpolator());
-
-        // 留白动画，只为让其显示一秒
-//        ObjectAnimator objectAnimator2 = new ObjectAnimator();
-//        objectAnimator2.setDuration(1000);
-
-        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, 0, 1000f);
-        objectAnimator3.setInterpolator(new LinearInterpolator());
-        objectAnimator3.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                super.onAnimationCancel(animation);
+            public void onFinished() {
                 mTurnInfoCardView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mTurnInfoCardView.setVisibility(View.GONE);
+                // TODO: 2019/1/20 缺一个SongInfoCardView渐入和飞出的动画
+                mSongInfoCardView.bindSongModel(songModel);
             }
         });
-        objectAnimator3.setStartDelay(1000);
-        objectAnimator3.setDuration(500);
-
-        mSongInfoCardView.bindSongModel(songModel);
-        ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(mSongInfoCardView, View.TRANSLATION_X, -1000f, 0f);
-        objectAnimator4.setDuration(500);
-        objectAnimator4.setInterpolator(new OvershootInterpolator());
-        objectAnimator4.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mSongInfoCardView.setVisibility(View.VISIBLE);
-                mSingBeginTipsCardView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                super.onAnimationCancel(animation);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                onSongInfoCardPlayOver(pendingPlaySongCardData);
-            }
-        });
-        if (mSongInfoShowAnimation != null) {
-            mSongInfoShowAnimation.cancel();
-        }
-        mSongInfoShowAnimation = new AnimatorSet();
-        mSongInfoShowAnimation.playSequentially(objectAnimator1, objectAnimator3, objectAnimator4);
-        mSongInfoShowAnimation.start();
-
         mTopContainerView.setModeGrab();
     }
 
     void onSongInfoCardPlayOver(PendingPlaySongCardData pendingPlaySongCardData) {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
-        if (mSongInfoShowAnimation != null) {
-            mSongInfoShowAnimation.cancel();
-        }
         mSongInfoCardView.setVisibility(View.VISIBLE);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.setTranslationX(0);
@@ -986,9 +883,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void destroyAnimation() {
-        if (mSongInfoShowAnimation != null) {
-            mSongInfoShowAnimation.cancel();
-        }
         if (mSingBeginShowAnimation != null) {
             mSingBeginShowAnimation.cancel();
         }

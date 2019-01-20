@@ -7,7 +7,6 @@ import android.widget.RelativeLayout;
 
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.IOssParam;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.utils.ImageUtils;
 import com.common.view.ex.ExTextView;
@@ -20,7 +19,8 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.greenrobot.greendao.annotation.NotNull;
+import org.jetbrains.annotations.NotNull;
+
 
 /**
  * 转场时的歌曲信息页
@@ -70,18 +70,20 @@ public class SongInfoCardView extends RelativeLayout {
 
     // 该动画需要循环播放
     public void bindSongModel(SongModel songModel) {
-        if (songModel == null) {
+        if (songModel == null || TextUtils.isEmpty(songModel.getCover())) {
             return;
         }
 
         mSongNameTv.setText(songModel.getItemName());
         mSongOwnerTv.setText(songModel.getOwner());
+        mSongCover.setVisibility(VISIBLE);
+        mSongCover.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());
         try {
             parser.parse("record_player.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(songModel.getCover()));
+                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity, requestDynamicBitmapItem(songModel.getCover()));
                     mSongCover.setImageDrawable(drawable);
                     mSongCover.startAnimation();
                 }
@@ -97,6 +99,9 @@ public class SongInfoCardView extends RelativeLayout {
     }
 
     private SVGADynamicEntity requestDynamicBitmapItem(String cover) {
+        if (TextUtils.isEmpty(cover)) {
+            return null;
+        }
         HttpImage httpImage = ImageFactory.newHttpImage(cover)
                 .addOssProcessors(OssImgFactory.newResizeBuilder()
                         .setW(ImageUtils.SIZE.SIZE_160.getW())

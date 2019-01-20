@@ -10,9 +10,9 @@
         android:layout_width="@dimen/view_224_dp"
         android:layout_height="@dimen/view_225_dp"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         app:antiAlias="true"
-        app:autoPlay="false"
-        app:loopCount="0" />
+        app:autoPlay="false" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/song_name_tv"
