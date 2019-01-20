@@ -5,14 +5,12 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="你或其他人演唱开始"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_20_dp" />
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/sing_begin_svga"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_160_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="1" />
 </merge>

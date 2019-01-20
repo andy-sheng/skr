@@ -5,14 +5,34 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/song_cover"
+        android:layout_width="@dimen/view_224_dp"
+        android:layout_height="@dimen/view_225_dp"
+        android:layout_centerHorizontal="true"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="0" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/song_name"
+        android:id="@+id/song_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/song_cover"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:textColor="#0C2275"
-        android:text="歌曲信息"
+        android:text="《还有什么可以送给你》"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_20_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/song_owner_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/song_name_tv"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="陈奕迅"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp" />
 </merge>

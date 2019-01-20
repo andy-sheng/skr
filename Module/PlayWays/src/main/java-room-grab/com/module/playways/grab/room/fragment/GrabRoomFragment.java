@@ -28,6 +28,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.inter.IGrabView;
+import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.view.GrabOpView;
@@ -612,7 +613,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         objectAnimator3.setDuration(500);
 
 
-        mSongInfoCardView.bindData(songModel);
+        mSongInfoCardView.bindSongModel(songModel);
         ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(mSongInfoCardView, View.TRANSLATION_X, -1000f, 0f);
         objectAnimator4.setDuration(500);
         objectAnimator4.setInterpolator(new OvershootInterpolator());
@@ -669,7 +670,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
-        mSingBeginTipsCardView.mDescTv.setText("你抢到了演唱机会");
+        mSingBeginTipsCardView.bindData(mRoomData.getUserInfo((int) MyUserInfoManager.getInstance().getUid()), null);
         singBeginTipsPlay(new Runnable() {
             @Override
             public void run() {
@@ -688,7 +689,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.arg1 = (int) uid;
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
-        mSingBeginTipsCardView.mDescTv.setText("丁一抢到了演唱机会");
+
+        mSingBeginTipsCardView.bindData(mRoomData.getUserInfo((int) uid), null);
         singBeginTipsPlay(new Runnable() {
             @Override
             public void run() {
@@ -762,7 +764,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSelfSingCardView.setVisibility(View.GONE);
         mOthersSingCardView.setVisibility(View.GONE);
 
-        mRoundOverCardView.bindData(reason);
+        mRoundOverCardView.bindData(reason, new SVGAListener() {
+            @Override
+            public void onFinished() {
+
+            }
+        });
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mRoundOverCardView, View.TRANSLATION_X, -1000f, 0f);
         objectAnimator1.addListener(new AnimatorListenerAdapter() {
             @Override
