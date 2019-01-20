@@ -249,13 +249,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 
-        // TODO: 2019/1/20 因为接不到event
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
                 onBattleBeginPlayOver();
             }
-        }, 1000);
+        }, 100);
 
     }
 
@@ -532,13 +531,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.obj = pendingPlaySongCardData;
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
+
         mTurnInfoCardView.setVisibility(View.VISIBLE);
         mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
             @Override
             public void onFinished() {
                 mTurnInfoCardView.setVisibility(View.GONE);
-                // TODO: 2019/1/20 缺一个SongInfoCardView渐入和飞出的动画
-                mSongInfoCardView.bindSongModel(songModel);
+                onSongInfoCardPlayOver(pendingPlaySongCardData);
             }
         });
         mTopContainerView.setModeGrab();
@@ -546,10 +545,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     void onSongInfoCardPlayOver(PendingPlaySongCardData pendingPlaySongCardData) {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
-        mSongInfoCardView.setVisibility(View.VISIBLE);
         mSingBeginTipsCardView.setVisibility(View.GONE);
+        mSongInfoCardView.setVisibility(View.VISIBLE);
         mSongInfoCardView.setTranslationX(0);
-
+        mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
         mGrabOpBtn.setVisibility(View.VISIBLE);
         mGrabOpBtn.playCountDown(4);
     }
