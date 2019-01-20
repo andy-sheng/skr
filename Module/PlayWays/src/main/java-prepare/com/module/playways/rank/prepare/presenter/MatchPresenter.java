@@ -71,7 +71,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "startLoopMatchTask");
         this.mCurrentMusicId = playbookItemID;
         this.mGameType = gameType;
-        if(mGameType == GameModeType.GAME_MODE_GRAB){
+        if (mGameType == GameModeType.GAME_MODE_GRAB) {
             ALL_JOIN_NUM = 5;
         }
         disposeLoopMatchTask();
@@ -110,12 +110,16 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("mode", gameType);
-        map.put("playbookItemID", playbookItemID);
+        if (mGameType == GameModeType.GAME_MODE_GRAB) {
+            map.put("playbookTagID", playbookItemID);
+        } else {
+            map.put("playbookItemID", playbookItemID);
+        }
         map.put("platform", 20);   // 代表是android平台
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
 
-        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retryWhen(new RxRetryAssist(1,5,false)), new ApiObserver<ApiResult>() {
+        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
