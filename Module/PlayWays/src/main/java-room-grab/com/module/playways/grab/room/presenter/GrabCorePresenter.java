@@ -156,14 +156,22 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 播放导唱
      */
     public void playGuide() {
-
+        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            if (mExoPlayer == null) {
+                mExoPlayer = new ExoPlayer();
+            }
+            mExoPlayer.startPlay(now.getSongModel().getOri());
+        }
     }
 
     /**
      * 停止播放导唱
      */
     public void stopGuide() {
-
+        if (mExoPlayer != null) {
+            mExoPlayer.stop();
+        }
     }
 
     /**
