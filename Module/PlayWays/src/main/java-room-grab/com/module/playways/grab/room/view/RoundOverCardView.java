@@ -92,20 +92,8 @@ public class RoundOverCardView extends RelativeLayout {
         if (reason == EQRoundOverReason.ROR_NO_ONE_SING.getValue()) {
             return NONE_SING_END;
         } else {
-            if (resultType == EQRoundResultType.ROT_TYPE_1.getValue()) {
-                return SING_MOMENT_END;
-            } else if (resultType == EQRoundResultType.ROT_TYPE_2.getValue()) {
-                return SING_NO_PASS_END;
-            } else if (resultType == EQRoundResultType.ROT_TYPE_3.getValue()) {
-                return SING_PASS_END;
-            } else if (resultType == EQRoundResultType.ROT_TYPE_4.getValue()) {
-                return SING_ENOUGH_END;
-            } else if (resultType == EQRoundResultType.ROT_TYPE_5.getValue()) {
-                return SING_PERFECT_END;
-            }
+            return resultType;
         }
-
-        return UNKNOW_END;
     }
 
     private void startNoneSing(SVGAListener listener) {
