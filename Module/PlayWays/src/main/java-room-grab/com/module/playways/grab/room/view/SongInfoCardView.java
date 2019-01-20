@@ -9,6 +9,7 @@ import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.IOssParam;
 import com.common.image.model.oss.OssImgFactory;
+import com.common.utils.ImageUtils;
 import com.common.view.ex.ExTextView;
 
 import com.module.playways.rank.song.model.SongModel;
@@ -98,7 +99,7 @@ public class SongInfoCardView extends RelativeLayout {
     private SVGADynamicEntity requestDynamicBitmapItem(String cover) {
         HttpImage httpImage = ImageFactory.newHttpImage(cover)
                 .addOssProcessors(OssImgFactory.newResizeBuilder()
-                        .setW(160)
+                        .setW(ImageUtils.SIZE.SIZE_160.getW())
                         .build())
                 .build();
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
