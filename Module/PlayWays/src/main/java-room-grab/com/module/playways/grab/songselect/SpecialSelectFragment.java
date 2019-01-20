@@ -7,7 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -56,14 +61,24 @@ public class SpecialSelectFragment extends BaseFragment {
 
     private void loadData() {
         //TODO TEST
-        List<SpecialModel> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            SpecialModel specialModel = new SpecialModel();
-            specialModel.setId(i);
-            specialModel.setSpecialName("周杰伦专场");
-            list.add(specialModel);
-        }
-        mSpecialSelectAdapter.setDataList(list);
+//        List<SpecialModel> list = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            SpecialModel specialModel = new SpecialModel();
+//            specialModel.setId(i);
+//            specialModel.setSpecialName("周杰伦专场");
+//            list.add(specialModel);
+//        }
+
+        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+        ApiMethods.subscribe(grabSongApi.getSepcialList(0, 10), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    List<SpecialModel> list = JSON.parseArray(obj.getData().toString(), SpecialModel.class);
+                    mSpecialSelectAdapter.setDataList(list);
+                }
+            }
+        });
     }
 
     @Override
