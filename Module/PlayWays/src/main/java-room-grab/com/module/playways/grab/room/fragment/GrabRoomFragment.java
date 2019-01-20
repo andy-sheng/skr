@@ -141,8 +141,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     DialogPlus mDialogPlus;
 
-    SongModel mPlayingSongModel;
-
     boolean mNeedScroll = true;
 
     ExObjectAnimator mTurnChangeCardShowAnimator;
@@ -687,7 +685,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.arg1 = (int) uid;
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
-
         mSingBeginTipsCardView.bindData(mRoomData.getUserInfo((int) uid), null);
         singBeginTipsPlay(new Runnable() {
             @Override
@@ -746,6 +743,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
+            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getSongModel(),true);
         } else {
             mTopContainerView.setModeSing(uid);
             // 显示收音机
