@@ -195,17 +195,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void grabThisRound() {
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         //TEST
-//        if (true) {
-//            now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
-//            mUiHanlder.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    now.setUserID((int) MyUserInfoManager.getInstance().getUid());
-//                    now.updateStatus(true, RoundInfoModel.STATUS_SING);
-//                }
-//            }, 5000);
-//            return;
-//        }
+        if (true) {
+            now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
+            mUiHanlder.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    now.setUserID((int) MyUserInfoManager.getInstance().getUid());
+                    now.updateStatus(true, RoundInfoModel.STATUS_SING);
+                }
+            }, 3000);
+            return;
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", now.getRoundSeq());
@@ -436,7 +436,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
-
+                    currentInfo.setType(RoundInfoModel.TYPE_GRAB);
                     String msg = "";
                     if (currentInfo != null) {
                         msg = "syncGameStatus成功了, currentRound 是 " + currentInfo.getUserID();

@@ -5,8 +5,9 @@
 
     <LinearLayout
         android:id="@+id/content_ll"
+        android:layout_marginTop="@dimen/view_10_dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"></LinearLayout>
 
     <com.common.view.ex.ExImageView

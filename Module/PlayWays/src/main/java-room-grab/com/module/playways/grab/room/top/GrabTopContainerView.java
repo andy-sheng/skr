@@ -97,7 +97,7 @@ public class GrabTopContainerView extends RelativeLayout {
 
     public void setModeSing(long singUid) {
         // 演唱模式
-        mTopContentRv.setModeSing(singUid);
+        mTopContentRv.setModeSing((int) singUid);
     }
 
     @Override

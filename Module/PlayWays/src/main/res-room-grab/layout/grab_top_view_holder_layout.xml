@@ -6,7 +6,7 @@
         android:id="@+id/avatar_container"
         android:layout_width="@dimen/view_45_dp"
         android:layout_height="@dimen/view_45_dp"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:background="@drawable/grab_winner_avatar_bg">
 
         <com.common.image.fresco.BaseImageView

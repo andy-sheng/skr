@@ -19,7 +19,7 @@ public class GrabTopItemView extends RelativeLayout {
 
     ExRelativeLayout mAvatarContainer;
     BaseImageView mAvatarIv;
-    ExImageView mFlagIv;
+    public ExImageView mFlagIv;
 
 
     int mMode = MODE_GRAB;
@@ -41,7 +41,6 @@ public class GrabTopItemView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_top_view_holder_layout, this);
-
         mAvatarContainer = (ExRelativeLayout) this.findViewById(R.id.avatar_container);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
@@ -49,7 +48,7 @@ public class GrabTopItemView extends RelativeLayout {
 
     public void tryAddParent(LinearLayout grabTopRv) {
         if (this.getParent() == null) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
             lp.weight = 1;
             grabTopRv.addView(this, lp);
         }
@@ -64,8 +63,12 @@ public class GrabTopItemView extends RelativeLayout {
         );
     }
 
-    public void setGrap(boolean grap) {
+    public void reset(){
+        mFlagIv.setVisibility(GONE);
         mAvatarContainer.setBackground(null);
+    }
+
+    public void setGrap(boolean grap) {
         if (grap) {
             mFlagIv.setVisibility(VISIBLE);
             mFlagIv.setImageResource(R.drawable.xiangchang_flag);
@@ -75,7 +78,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void setLight(boolean on) {
-        mFlagIv.setVisibility(GONE);
+        mFlagIv.setVisibility(VISIBLE);
         if (on) {
             mFlagIv.setImageResource(R.drawable.liangdeng);
         } else {

@@ -68,9 +68,15 @@ public class RoundInfoModel implements Serializable {
 
     private Set<Integer> hasLightOffUserSet = new HashSet<>();//已经灭灯的人
 
+    public RoundInfoModel() {
+
+    }
+
+
     public RoundInfoModel(int type) {
         this.type = type;
     }
+
 
     public int getType() {
         return type;
