@@ -46,7 +46,6 @@ import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.RoomMsg;
-import com.zq.live.proto.Room.RoundInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -181,11 +180,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 打开引擎，变为主播
         if (mRoomData.getGameId() > 0) {
             EngineManager.getInstance().setClientRole(true);
-        }
-        //开始录制声音
-        if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
-            // 需要上传音频伪装成机器人
-            EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+            //开始录制声音
+            if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+                // 需要上传音频伪装成机器人
+
+                EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+            }
         }
     }
 
@@ -194,6 +194,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void grabThisRound() {
         RoundInfoModel now = mRoomData.getRealRoundInfo();
+        //TEST
+//        if (true) {
+//            now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
+//            mUiHanlder.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    now.setUserID((int) MyUserInfoManager.getInstance().getUid());
+//                    now.updateStatus(true, RoundInfoModel.STATUS_SING);
+//                }
+//            }, 5000);
+//            return;
+//        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", now.getRoundSeq());
@@ -547,7 +559,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                         //属于需要上传音频文件的状态
                         // 上一轮是我的轮次，暂停录音
-                        EngineManager.getInstance().stopAudioRecording();
+                        if (mRoomData.getGameId() > 0) {
+                            EngineManager.getInstance().stopAudioRecording();
+                        }
                         // 上传打分
 //                        RoundInfoModel myRoundInfoModel = event.lastRoundInfo;
 //                        if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {

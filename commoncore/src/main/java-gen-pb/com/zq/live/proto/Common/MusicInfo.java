@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
@@ -60,6 +61,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   public static final Integer DEFAULT_STANDLRCBEGINT = 0;
 
   public static final Integer DEFAULT_STANDLRCENDT = 0;
+
+  public static final Boolean DEFAULT_ISBLANK = false;
 
   /**
    * 音乐条目标识
@@ -223,17 +226,26 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   )
   public final Integer standLrcEndT;
 
+  /**
+   * 一唱到底是否是白板item
+   */
+  @WireField(
+      tag = 19,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  public final Boolean isBlank;
+
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
       Integer endTimeMs, Integer rankLrcBeginT, String standIntro, Integer standIntroBeginT,
-      Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, ByteString.EMPTY);
+      Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT, Boolean isBlank) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, isBlank, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
       Integer endTimeMs, Integer rankLrcBeginT, String standIntro, Integer standIntroBeginT,
-      Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT,
+      Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT, Boolean isBlank,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
@@ -254,6 +266,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.standIntroEndT = standIntroEndT;
     this.standLrcBeginT = standLrcBeginT;
     this.standLrcEndT = standLrcEndT;
+    this.isBlank = isBlank;
   }
 
   @Override
@@ -277,6 +290,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.standIntroEndT = standIntroEndT;
     builder.standLrcBeginT = standLrcBeginT;
     builder.standLrcEndT = standLrcEndT;
+    builder.isBlank = isBlank;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -304,7 +318,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(standIntroBeginT, o.standIntroBeginT)
         && Internal.equals(standIntroEndT, o.standIntroEndT)
         && Internal.equals(standLrcBeginT, o.standLrcBeginT)
-        && Internal.equals(standLrcEndT, o.standLrcEndT);
+        && Internal.equals(standLrcEndT, o.standLrcEndT)
+        && Internal.equals(isBlank, o.isBlank);
   }
 
   @Override
@@ -330,6 +345,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (standIntroEndT != null ? standIntroEndT.hashCode() : 0);
       result = result * 37 + (standLrcBeginT != null ? standLrcBeginT.hashCode() : 0);
       result = result * 37 + (standLrcEndT != null ? standLrcEndT.hashCode() : 0);
+      result = result * 37 + (isBlank != null ? isBlank.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -356,6 +372,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (standIntroEndT != null) builder.append(", standIntroEndT=").append(standIntroEndT);
     if (standLrcBeginT != null) builder.append(", standLrcBeginT=").append(standLrcBeginT);
     if (standLrcEndT != null) builder.append(", standLrcEndT=").append(standLrcEndT);
+    if (isBlank != null) builder.append(", isBlank=").append(isBlank);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -550,6 +567,16 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 一唱到底是否是白板item
+   */
+  public Boolean getIsBlank() {
+    if(isBlank==null){
+        return DEFAULT_ISBLANK;
+    }
+    return isBlank;
+  }
+
+  /**
    * 音乐条目标识
    */
   public boolean hasItemID() {
@@ -675,6 +702,13 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     return standLrcEndT!=null;
   }
 
+  /**
+   * 一唱到底是否是白板item
+   */
+  public boolean hasIsBlank() {
+    return isBlank!=null;
+  }
+
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
     public Integer itemID;
 
@@ -711,6 +745,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     public Integer standLrcBeginT;
 
     public Integer standLrcEndT;
+
+    public Boolean isBlank;
 
     public Builder() {
     }
@@ -859,9 +895,17 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       return this;
     }
 
+    /**
+     * 一唱到底是否是白板item
+     */
+    public Builder setIsBlank(Boolean isBlank) {
+      this.isBlank = isBlank;
+      return this;
+    }
+
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, isBlank, super.buildUnknownFields());
     }
   }
 
@@ -890,6 +934,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(16, value.standIntroEndT)
           + ProtoAdapter.UINT32.encodedSizeWithTag(17, value.standLrcBeginT)
           + ProtoAdapter.UINT32.encodedSizeWithTag(18, value.standLrcEndT)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(19, value.isBlank)
           + value.unknownFields().size();
     }
 
@@ -913,6 +958,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 16, value.standIntroEndT);
       ProtoAdapter.UINT32.encodeWithTag(writer, 17, value.standLrcBeginT);
       ProtoAdapter.UINT32.encodeWithTag(writer, 18, value.standLrcEndT);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 19, value.isBlank);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -940,6 +986,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 16: builder.setStandIntroEndT(ProtoAdapter.UINT32.decode(reader)); break;
           case 17: builder.setStandLrcBeginT(ProtoAdapter.UINT32.decode(reader)); break;
           case 18: builder.setStandLrcEndT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 19: builder.setIsBlank(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

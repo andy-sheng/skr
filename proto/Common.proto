@@ -39,6 +39,7 @@ message MusicInfo {
     uint32 standIntroEndT   = 16; //一唱到底导唱的结束毫秒
     uint32 standLrcBeginT   = 17; //一唱到底第一句歌词的开始毫秒
     uint32 standLrcEndT     = 18; //一唱到底歌词的结束毫秒
+    bool isBlank            = 19; //一唱到底是否是白板item
 }
 
 enum ESex {

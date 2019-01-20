@@ -6,6 +6,7 @@ import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
@@ -70,9 +71,16 @@ public class GrabRoomActivity extends BaseActivity {
                 for (int i = 0; i < 5; i++) {
                     PlayerInfoModel playerInfoModel = new PlayerInfoModel();
                     UserInfoModel userInfoModel = new UserInfoModel();
-                    userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
-                    userInfoModel.setUserId(1 + i * 2);
-                    userInfoModel.setNickname("用户：" + i);
+                    if(i==0){
+                        userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
+                        userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
+                        userInfoModel.setNickname("用户：" + i);
+                    }else{
+                        userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+                        userInfoModel.setUserId(1 + i * 2);
+                        userInfoModel.setNickname("用户：" + i);
+                    }
+
                     playerInfoModel.setUserInfo(userInfoModel);
                     playerInfoModelList.add(playerInfoModel);
                 }

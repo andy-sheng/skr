@@ -44,6 +44,7 @@ public class SongModel implements Serializable {
     private int StandIntroEndT;
     private int totalMs;
     private int rankLrcBeginT;
+    private boolean isblank = false;
 
     public int getRankLrcBeginT() {
         return rankLrcBeginT;
@@ -181,6 +182,14 @@ public class SongModel implements Serializable {
         this.totalMs = totalMs;
     }
 
+    public boolean isIsblank() {
+        return isblank;
+    }
+
+    public void setIsblank(boolean isblank) {
+        this.isblank = isblank;
+    }
+
     public void parse(MusicInfo musicInfo) {
         if (musicInfo == null) {
             MyLog.e("SongModel MusicInfo == null");
@@ -200,7 +209,7 @@ public class SongModel implements Serializable {
         this.setBeginMs(musicInfo.getBeginTimeMs());
         this.setEndMs(musicInfo.getEndTimeMs());
         this.setRankLrcBeginT(musicInfo.getRankLrcBeginT());
-        // todo PB缺两个现在，等服务器完善
+        this.setIsblank(musicInfo.getIsBlank());
     }
 
     public boolean isAllResExist(){
