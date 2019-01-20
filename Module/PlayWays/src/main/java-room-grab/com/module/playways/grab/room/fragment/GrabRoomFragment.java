@@ -381,8 +381,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mTurnInfoCardView = mRootView.findViewById(R.id.turn_info_iv);
         mSongInfoCardView = mRootView.findViewById(R.id.turn_change_song_info_card_view);
         mSingBeginTipsCardView = mRootView.findViewById(R.id.turn_change_sing_beign_tips_card_view);
-        mRootView.findViewById(R.id.turn_change_round_over_card_view);
-
+        mRoundOverCardView = mRootView.findViewById(R.id.turn_change_round_over_card_view);
         mEndGameIv = (ImageView) mRootView.findViewById(R.id.end_game_iv);
         mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
     }
@@ -409,7 +408,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
             @Override
             public void countDownOver() {
-                mCorePresenter.stopGuide();
+
             }
         });
     }
@@ -655,11 +654,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSongInfoCardView.setTranslationX(0);
 
         mGrabOpBtn.setVisibility(View.VISIBLE);
-        mGrabOpBtn.playCountDown(3);
+        mGrabOpBtn.playCountDown(4);
     }
 
     @Override
     public void singBySelf() {
+        mCorePresenter.stopGuide();
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
@@ -679,6 +679,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public void singByOthers(long uid) {
+        mCorePresenter.stopGuide();
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
@@ -734,7 +735,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void onSingBeginTipsPlayOver(long uid) {
-        MyLog.d(TAG,"onSingBeginTipsPlayOver" + " uid=" + uid);
+        MyLog.d(TAG, "onSingBeginTipsPlayOver" + " uid=" + uid);
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         if (mSingBeginShowAnimation != null) {
             mSingBeginShowAnimation.cancel();
@@ -745,7 +746,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
-            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getSongModel(),true);
+            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getSongModel(), true);
         } else {
             mTopContainerView.setModeSing(uid);
             // 显示收音机
@@ -762,7 +763,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mUiHanlder.sendMessageDelayed(msg, 4000);
         mSelfSingCardView.setVisibility(View.GONE);
         mOthersSingCardView.setVisibility(View.GONE);
-
+        mSongInfoCardView.setVisibility(View.GONE);
         mRoundOverCardView.bindData(reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {

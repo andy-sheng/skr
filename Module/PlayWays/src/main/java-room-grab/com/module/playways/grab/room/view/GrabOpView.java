@@ -71,7 +71,7 @@ public class GrabOpView extends RelativeLayout {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num1 = num - integer + 1;
+                        int num1 = num - integer;
                         switch (num1) {
                             case 3:
                                 break;
