@@ -570,12 +570,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
      */
     @Override
     public void grabBegin(int seq, SongModel songModel) {
+        // 播放3秒导唱
+        mCorePresenter.playGuide();
+
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        mTurnInfoCardView.setModeSongSeq(seq == 0);
+        mTurnInfoCardView.setModeSongSeq(seq == 1);
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTurnInfoCardView, View.TRANSLATION_X, -1000f, 0f);
         objectAnimator1.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -650,8 +653,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSongInfoCardView.setVisibility(View.VISIBLE);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.setTranslationX(0);
-        // 播放3秒导唱
-        mCorePresenter.playGuide();
+
         mGrabOpBtn.setVisibility(View.VISIBLE);
         mGrabOpBtn.playCountDown(3);
     }
