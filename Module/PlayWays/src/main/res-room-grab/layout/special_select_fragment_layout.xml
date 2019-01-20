@@ -8,11 +8,19 @@
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_83_dp"
+        app:titleBarHeight="@dimen/view_83_dp"
         app:leftImageResource="@drawable/img_back"
         app:leftType="imageButton"
+        app:showBottomLine="false"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"
+        android:layout_below="@+id/title_view"
+        android:background="#0C2275" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/select_logo_iv"
@@ -20,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_24_dp"
-        android:src="@drawable/img_top_xuanzegequ_bg" />
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:src="@drawable/gequzhuanchang" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/content_rv"

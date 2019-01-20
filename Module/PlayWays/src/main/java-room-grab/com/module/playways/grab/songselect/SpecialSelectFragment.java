@@ -19,6 +19,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.grab.prepare.GrabMatchFragment;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.song.model.SongModel;
@@ -26,6 +27,9 @@ import com.module.rank.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 
 public class SpecialSelectFragment extends BaseFragment {
 
@@ -57,6 +61,15 @@ public class SpecialSelectFragment extends BaseFragment {
         });
         mContentRv.setAdapter(mSpecialSelectAdapter);
         loadData();
+
+        RxView.clicks(mTitleView.getLeftImageButton())
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        getActivity().finish();
+                    }
+                });
     }
 
     private void loadData() {
