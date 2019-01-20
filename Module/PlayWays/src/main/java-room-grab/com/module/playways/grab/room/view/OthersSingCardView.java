@@ -70,9 +70,9 @@ public class OthersSingCardView extends RelativeLayout {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
-            // TODO: 2019/1/20  可以验证下
             if (mOtherBgSvga != null) {
                 mOtherBgSvga.stopAnimation(false);
+                mOtherBgSvga.setVisibility(GONE);
             }
         }
     }
