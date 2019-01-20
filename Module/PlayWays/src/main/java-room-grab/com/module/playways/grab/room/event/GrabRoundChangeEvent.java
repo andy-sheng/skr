@@ -9,4 +9,12 @@ public class GrabRoundChangeEvent {
         this.lastRoundInfo = lastRoundInfo;
         this.newRoundInfo = newRoundInfo;
     }
+
+    @Override
+    public String toString() {
+        return "GrabRoundChangeEvent{" +
+                "lastRoundInfo=" + lastRoundInfo +
+                ", newRoundInfo=" + newRoundInfo +
+                '}';
+    }
 }

@@ -388,7 +388,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, msg);
 
                     if (currentInfo == null) {
-                        cancelSyncGameStateTask();
                         onGameOver("syncGameStatus", gameOverTimeMs);
                         return;
                     }
@@ -423,7 +422,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             });
         }
 
-        //??????
         if (gameOverTimeMs != 0) {
             if (gameOverTimeMs > mRoomData.getGameStartTs()) {
                 MyLog.w(TAG, "gameOverTimeMs ！= 0 游戏应该结束了");
@@ -487,6 +485,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundChangeEvent event) {
+        MyLog.d(TAG,"onEvent" + " event=" + event);
         estimateOverTsThisRound();
         closeEngine();
         RoundInfoModel now = event.newRoundInfo;
@@ -529,6 +528,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundStatusChangeEvent event) {
+        MyLog.d(TAG,"onEvent" + " event=" + event);
         estimateOverTsThisRound();
         closeEngine();
         RoundInfoModel now = event.roundInfo;
@@ -632,8 +632,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.roundInfoModel, true);
         }
-        mRoomData.setExpectRoundInfo(null);
-        mRoomData.checkRoundInGrabMode();
+        onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -645,9 +644,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void onGameOver(String from, long gameOverTs) {
         MyLog.w(TAG, "游戏结束 gameOverTs=" + gameOverTs + " from:" + from);
         if (gameOverTs > mRoomData.getGameStartTs() && gameOverTs > mRoomData.getGameOverTs()) {
+            cancelSyncGameStateTask();
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
             mRoomData.checkRoundInGrabMode();
+        } else {
+            MyLog.w(TAG, "游戏结束 gameOverTs 不合法，取消");
         }
     }
 

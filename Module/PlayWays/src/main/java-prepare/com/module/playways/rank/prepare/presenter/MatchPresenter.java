@@ -160,7 +160,10 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinActionEvent joinActionEvent) {
         if (joinActionEvent != null) {
-            MyLog.w(TAG, "onEventMainThread JoinActionEvent currentGameId is " + joinActionEvent.gameId + " timeMs = " + joinActionEvent.info.getTimeMs());
+            MyLog.w(TAG, "onEventMainThread JoinActionEvent currentGameId is " + joinActionEvent.gameId
+                    + " timeMs = " + joinActionEvent.info.getTimeMs()
+                    + " songSize = " + joinActionEvent.songModelList.size()
+            );
             // 是否要对加入通知进行过滤
             if (mMatchState == MatchState.Matching) {
                 mMatchState = MatchState.MatchSucess;

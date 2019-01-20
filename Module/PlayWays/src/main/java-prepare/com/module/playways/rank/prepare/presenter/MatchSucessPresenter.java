@@ -65,9 +65,11 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         ArrayList<UrlRes> urlResArrayList = new ArrayList<>();
         Observable.fromIterable(prepareData.getPlayerInfoList())
                 .subscribe(playerInfo -> {
-                            String url = playerInfo.getSongList().get(0).getLyric();
-                            UrlRes lyric = new UrlRes(url, SongResUtils.getLyricDir(), U.getFileUtils().getSuffixFromUrl(url,SongResUtils.SUFF_ZRCE));
-                            urlResArrayList.add(lyric);
+                            if (playerInfo.getSongList().size()>0) {
+                                String url = playerInfo.getSongList().get(0).getLyric();
+                                UrlRes lyric = new UrlRes(url, SongResUtils.getLyricDir(), U.getFileUtils().getSuffixFromUrl(url,SongResUtils.SUFF_ZRCE));
+                                urlResArrayList.add(lyric);
+                            }
                         }, throwable -> MyLog.e(TAG, throwable)
                         , () -> {
                             zipUrlResourceManager = new ZipUrlResourceManager(urlResArrayList, null);
@@ -171,16 +173,16 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadyNoticeEvent readyNoticeEvent) {
         MyLog.w(TAG, "onEventMainThread readyNoticeEvent " + readyNoticeEvent + " timeMs = " + readyNoticeEvent.info.getTimeMs());
-        if (readyNoticeEvent.jsonGameReadyInfo.isIsGameStart()) {
+        if (readyNoticeEvent.gameReadyInfo.isIsGameStart()) {
             if (checkTask != null) {
                 checkTask.dispose();
             }
 
-            iMatchSucessView.allPlayerIsReady(readyNoticeEvent.jsonGameReadyInfo);
+            iMatchSucessView.allPlayerIsReady(readyNoticeEvent.gameReadyInfo);
         }
 
         // 已准备人
-        iMatchSucessView.readyList(readyNoticeEvent.jsonGameReadyInfo.getJsonReadyInfo());
+        iMatchSucessView.readyList(readyNoticeEvent.gameReadyInfo.getJsonReadyInfo());
     }
 
     // TODO: 2018/12/18 有人退出游戏了

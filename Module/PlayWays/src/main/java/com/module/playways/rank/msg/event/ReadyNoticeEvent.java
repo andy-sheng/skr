@@ -5,10 +5,17 @@ import com.module.playways.rank.prepare.model.GameReadyModel;
 
 public class ReadyNoticeEvent {
     public BasePushInfo info;
-    public GameReadyModel jsonGameReadyInfo;
+    public GameReadyModel gameReadyInfo;
 
     public ReadyNoticeEvent(BasePushInfo info, GameReadyModel jsonGameReadyInfo) {
         this.info = info;
-        this.jsonGameReadyInfo = jsonGameReadyInfo;
+        this.gameReadyInfo = jsonGameReadyInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "ReadyNoticeEvent{" +
+                "jsonGameReadyInfo=" + gameReadyInfo +
+                '}';
     }
 }
