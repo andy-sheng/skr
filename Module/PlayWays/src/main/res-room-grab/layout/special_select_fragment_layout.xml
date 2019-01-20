@@ -27,8 +27,6 @@
         android:id="@+id/content_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/select_logo_iv"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_below="@+id/select_logo_iv" />
 
 </RelativeLayout>

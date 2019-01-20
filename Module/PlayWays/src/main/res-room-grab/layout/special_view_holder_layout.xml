@@ -1,11 +1,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_act_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/view_15_dp">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="@dimen/view_310_dp"
+        android:layout_height="@dimen/view_108_dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/xuanzezhuanchang_bj" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/special_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/background"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:gravity="left"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_24_dp"
+        android:textStyle="bold" />
+
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/special_tv"
+        android:layout_alignBottom="@+id/background"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:text="专场等你来唱"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp" />
 
 </RelativeLayout>

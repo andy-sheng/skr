@@ -60,22 +60,15 @@ public class SpecialSelectFragment extends BaseFragment {
     }
 
     private void loadData() {
-        //TODO TEST
-//        List<SpecialModel> list = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            SpecialModel specialModel = new SpecialModel();
-//            specialModel.setId(i);
-//            specialModel.setSpecialName("周杰伦专场");
-//            list.add(specialModel);
-//        }
-
         GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
         ApiMethods.subscribe(grabSongApi.getSepcialList(0, 10), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    List<SpecialModel> list = JSON.parseArray(obj.getData().get("tags").toString(), SpecialModel.class);
-                    mSpecialSelectAdapter.setDataList(list);
+                    List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
+                    if (list != null) {
+                        mSpecialSelectAdapter.setDataList(list);
+                    }
                 }
             }
         });
