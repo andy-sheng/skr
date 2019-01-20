@@ -304,8 +304,10 @@ public class RoundInfoModel implements Serializable {
     @Override
     public String toString() {
         return "RoundInfoModel{" +
-                "userID=" + userID +
+                "type=" + type +
+                ", userID=" + userID +
                 ", playbookID=" + playbookID +
+                ", songModel=" + songModel +
                 ", roundSeq=" + roundSeq +
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +
@@ -313,7 +315,11 @@ public class RoundInfoModel implements Serializable {
                 ", endTs=" + endTs +
                 ", sysScore=" + sysScore +
                 ", hasSing=" + hasSing +
-                ", songModel=" + songModel +
+                ", status=" + status +
+                ", overReason=" + overReason +
+                ", resultType=" + resultType +
+                ", hasGrabUserSet=" + hasGrabUserSet +
+                ", hasLightOffUserSet=" + hasLightOffUserSet +
                 '}';
     }
 
