@@ -164,6 +164,7 @@ public class SelfSingCardView extends RelativeLayout {
 
     public void playLyric(SongModel songModel, boolean play) {
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
+        mTvLyric.setText("");
         mHandler.removeCallbacksAndMessages(null);
         showBackground(MyUserInfoManager.getInstance().getAvatar());
         if (songModel == null) {
