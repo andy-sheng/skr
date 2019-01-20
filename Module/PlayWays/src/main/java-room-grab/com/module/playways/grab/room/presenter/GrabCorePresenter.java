@@ -471,7 +471,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHanlder.post(new Runnable() {
             @Override
             public void run() {
-                mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), false, null);
+                mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
             }
         });
         mUiHanlder.postDelayed(new Runnable() {
@@ -494,7 +494,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             //抢唱阶段，播抢唱卡片
             if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() >= RoundInfoModel.STATUS_SING) {
                 // 新一轮的抢唱阶段，得告诉上一轮演唱结束了啊，上一轮演唱结束卡片播完，才播歌曲卡片
-                mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), true, now);
+                mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
                 if (event.lastRoundInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     // 上一轮演唱是自己，开始上传资源
                     if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {

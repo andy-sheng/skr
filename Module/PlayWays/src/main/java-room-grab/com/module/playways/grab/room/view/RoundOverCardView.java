@@ -9,12 +9,15 @@ import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGAImageView;
+import com.zq.live.proto.Room.EQRoundOverReason;
+import com.zq.live.proto.Room.EQRoundResultType;
 
 /**
  * 轮次结束
  */
 public class RoundOverCardView extends RelativeLayout {
 
+    public final static int UNKNOW_END = 0;                // 未知原因
     public final static int NONE_SING_END = 1;             // 无人想唱
     public final static int SING_PERFECT_END = 2;          // 有种优秀叫一唱到底
     public final static int SING_MOMENT_END = 3;           // 有种结束叫刚刚开始
@@ -44,7 +47,8 @@ public class RoundOverCardView extends RelativeLayout {
         mNoneSingSvga = (SVGAImageView) findViewById(R.id.none_sing_svga);
     }
 
-    public void bindData(int mode, SVGAListener listener) {
+    public void bindData(int reason, int resultType, SVGAListener listener) {
+        int mode = getRoundOver(reason, resultType);
         switch (mode) {
             case NONE_SING_END:
                 startNoneSing(listener);
@@ -59,8 +63,31 @@ public class RoundOverCardView extends RelativeLayout {
                 startNotPerfect(listener);
                 break;
             default:
+                if (listener != null) {
+                    listener.onFinished();
+                }
                 break;
         }
+    }
+
+    private int getRoundOver(int reason, int resultType) {
+        if (reason == EQRoundOverReason.ROR_NO_ONE_SING.getValue()) {
+            return NONE_SING_END;
+        } else {
+            if (resultType == EQRoundResultType.ROT_TYPE_1.getValue()) {
+                return SING_MOMENT_END;
+            } else if (resultType == EQRoundResultType.ROT_TYPE_2.getValue()) {
+                return SING_NO_PASS_END;
+            } else if (resultType == EQRoundResultType.ROT_TYPE_3.getValue()) {
+                return SING_PASS_END;
+            } else if (resultType == EQRoundResultType.ROT_TYPE_4.getValue()) {
+                return SING_ENOUGH_END;
+            } else if (resultType == EQRoundResultType.ROT_TYPE_5.getValue()) {
+                return SING_PERFECT_END;
+            }
+        }
+
+        return UNKNOW_END;
     }
 
     private void startNoneSing(SVGAListener listener) {
@@ -100,11 +127,16 @@ public class RoundOverCardView extends RelativeLayout {
 
     // 优秀, 目前缺动画
     private void startPerfect(SVGAListener listener) {
+        if (listener != null) {
+            listener.onFinished();
+        }
 
     }
 
     // 不够优秀，换字即可，目前缺动画
     private void startNotPerfect(SVGAListener listener) {
-
+        if (listener != null) {
+            listener.onFinished();
+        }
     }
 }

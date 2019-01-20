@@ -755,7 +755,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     @Override
-    public void roundOver(int reason, boolean playNextSongInfoCard, RoundInfoModel now) {
+    public void roundOver(int reason, int resultType, boolean playNextSongInfoCard, RoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
@@ -764,12 +764,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSelfSingCardView.setVisibility(View.GONE);
         mOthersSingCardView.setVisibility(View.GONE);
 
-        mRoundOverCardView.bindData(reason, new SVGAListener() {
+        mRoundOverCardView.bindData(reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {
 
             }
         });
+
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mRoundOverCardView, View.TRANSLATION_X, -1000f, 0f);
         objectAnimator1.addListener(new AnimatorListenerAdapter() {
             @Override
