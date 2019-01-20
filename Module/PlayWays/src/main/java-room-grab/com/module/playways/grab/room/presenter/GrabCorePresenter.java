@@ -439,7 +439,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     currentInfo.setType(RoundInfoModel.TYPE_GRAB);
                     String msg = "";
                     if (currentInfo != null) {
-                        msg = "syncGameStatus成功了, currentRound 是 " + currentInfo.getUserID();
+                        msg = "syncGameStatus成功了, currentRound 是 " + currentInfo;
                     } else {
                         msg = "syncGameStatus成功了, currentRound 是 null";
                     }
@@ -674,7 +674,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundOverMsgEvent event) {
-        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是" + event.getCurrentRound().getUserID() + ", timets 是" + event.info.getTimeMs());
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push event:"+event);
         if (mRoomData.getLastSyncTs() >= event.getInfo().getTimeMs()) {
             MyLog.w(TAG, "但是是个旧数据");
             return;

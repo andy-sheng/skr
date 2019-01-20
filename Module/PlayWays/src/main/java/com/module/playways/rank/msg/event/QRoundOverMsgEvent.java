@@ -47,4 +47,12 @@ public final class QRoundOverMsgEvent {
     public RoundInfoModel getNextRound() {
         return nextRound;
     }
+
+    @Override
+    public String toString() {
+        return "QRoundOverMsgEvent{" +
+                "roundOverTimeMs=" + roundOverTimeMs +
+                ", currentRound=" + currentRound +
+                '}';
+    }
 }

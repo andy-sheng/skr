@@ -311,7 +311,7 @@ public class RoundInfoModel implements Serializable {
                 "type=" + type +
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
-                ", songModel=" + songModel +
+//                ", songModel=" + songModel.getItemName() +
                 ", roundSeq=" + roundSeq +
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +
