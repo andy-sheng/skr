@@ -6,7 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,8 +26,6 @@ import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.rank.prepare.fragment.MatchSuccessFragment;
-import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -108,24 +105,20 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                     goBack();
                 });
 
-        AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.WHITE)
-                        .build());
+//        AvatarUtils.loadAvatarByUrl(mSdvIcon2,
+//                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
+//                        .setCircle(true)
+//                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
+//                        .setBorderColor(Color.WHITE)
+//                        .build());
 
         mMatchPresenter = new MatchPresenter(this);
         addPresent(mMatchPresenter);
-        mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID(), mPrepareData.getGameType());
+        mMatchPresenter.startLoopMatchTask(mPrepareData.getTagId(), mPrepareData.getGameType());
 
         startTimeTask();
         startMatchQuotationTask();
         mMatchPresenter.getMatchingUserIconList();
-
-        if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getOri(), mPrepareData.getSongModel().getRankLrcBeginT());
-        }
     }
 
     private HandlerTaskTimer mControlTask;
@@ -358,9 +351,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                                 dialog.dismiss();
                                 mMatchPresenter.cancelMatch();
                                 stopTimeTask();
-                                U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                                        .setPopFragment(GrabMatchFragment.this)
-                                        .build());
+                                getActivity().finish();
                             }
                         }
                     }
@@ -428,9 +419,6 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getOri(), mPrepareData.getSongModel().getRankLrcBeginT());
-        }
         mRootView.setVisibility(View.VISIBLE);
     }
 

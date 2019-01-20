@@ -14,6 +14,16 @@ public class PrepareData implements Serializable {
     private List<PlayerInfoModel> mPlayerInfoList;
     private GameReadyModel mGameReadyInfo;
     private int shiftTs;
+    //一场到底歌曲分类
+    private int tagId;
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
 
     //一场到低所有歌曲
     private List<SongModel> mSongModelList;

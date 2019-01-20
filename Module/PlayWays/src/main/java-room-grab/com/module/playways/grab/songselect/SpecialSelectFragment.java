@@ -7,25 +7,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
-import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.grab.prepare.GrabMatchFragment;
+
+import com.module.RouterConstants;
+
 import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -95,15 +94,11 @@ public class SpecialSelectFragment extends BaseFragment {
     public void goMatchFragment(int specialId) {
         PrepareData prepareData = new PrepareData();
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
-        SongModel songModel = new SongModel();
-        songModel.setItemID(specialId);
-        prepareData.setSongModel(songModel);
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(0, prepareData)
-                .setHasAnimation(true)
-                .build()
-        );
+        prepareData.setTagId(specialId);
 
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                .withSerializable("prepare_data", prepareData)
+                .navigation();
     }
 }

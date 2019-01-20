@@ -15,6 +15,7 @@ public interface RouterConstants {
     String ACTIVITY_PLAY_WAYS = "/rankingmode/PlayWaysActivity";
     String ACTIVITY_RANK_ROOM = "/rankingmode/RankRoomActivity";
     String ACTIVITY_GRAB_ROOM = "/rankingmode/GrabRoomActivity";
+    String ACTIVITY_GRAB_MATCH_ROOM = "/rankingmode/GrabMatchActivity";
 
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";
