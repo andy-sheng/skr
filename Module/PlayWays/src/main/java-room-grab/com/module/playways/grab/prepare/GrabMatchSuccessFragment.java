@@ -17,7 +17,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
@@ -68,10 +67,6 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
     PrepareData mPrepareData;
 
-    PlayerInfoModel mLeftPlayer;
-
-    PlayerInfoModel mRightPlayer;
-
     HandlerTaskTimer mReadyTimeTask;
 
     Handler mUiHandler = new Handler();
@@ -100,15 +95,15 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
             mMatchSucessPresenter.destroy();
         }
 
-        if (mPrepareData.getPlayerInfoList() != null && mPrepareData.getPlayerInfoList().size() > 0) {
-            for (PlayerInfoModel playerInfo : mPrepareData.getPlayerInfoList()) {
-                if (mLeftPlayer != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
-                    mRightPlayer = playerInfo;
-                } else if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
-                    mLeftPlayer = playerInfo;
-                }
-            }
-        }
+//        if (mPrepareData.getPlayerInfoList() != null && mPrepareData.getPlayerInfoList().size() > 0) {
+//            for (PlayerInfoModel playerInfo : mPrepareData.getPlayerInfoList()) {
+//                if (mLeftPlayer != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
+//                    mRightPlayer = playerInfo;
+//                } else if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
+//                    mLeftPlayer = playerInfo;
+//                }
+//            }
+//        }
 
         RxView.clicks(mIvPrepare)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
@@ -130,7 +125,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 //        animationGo();
     }
 
-    private void loadIcon(SimpleDraweeView simpleDraweeView, boolean isGray, String avatar, boolean isMale) {
+    private void loadIcon(SimpleDraweeView simpleDraweeView, boolean isGray, String avatar) {
         AvatarUtils.loadAvatarByUrl(simpleDraweeView,
                 AvatarUtils.newParamsBuilder(avatar)
                         .setCircle(true)
@@ -274,11 +269,18 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
 
     private void initAvatar(boolean isGray) {
-        loadIcon(mSdvIcon1, isGray, mLeftPlayer.getUserInfo().getAvatar(), mLeftPlayer.getUserInfo().getIsMale());
-        loadIcon(mSdvIcon2, isGray, mRightPlayer.getUserInfo().getAvatar(), mRightPlayer.getUserInfo().getIsMale());
-        loadIcon(mSdvIcon3, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
-        loadIcon(mSdvIcon4, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
-        loadIcon(mSdvIcon5, isGray, MyUserInfoManager.getInstance().getAvatar(), true);
+        mPrepareData.getPlayerInfoList().get(0);
+        loadIcon(mSdvIcon1, isGray, mPrepareData.getPlayerInfoList().get(0).getUserInfo().getAvatar());
+        loadIcon(mSdvIcon2, isGray, mPrepareData.getPlayerInfoList().get(1).getUserInfo().getAvatar());
+        loadIcon(mSdvIcon3, isGray, mPrepareData.getPlayerInfoList().get(2).getUserInfo().getAvatar());
+        loadIcon(mSdvIcon4, isGray, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getAvatar());
+        loadIcon(mSdvIcon5, isGray, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getAvatar());
+
+        mSdvIcon1.setTag("sdv" + mPrepareData.getPlayerInfoList().get(0).getUserInfo().getUserId());
+        mSdvIcon2.setTag("sdv" + mPrepareData.getPlayerInfoList().get(1).getUserInfo().getUserId());
+        mSdvIcon3.setTag("sdv" + mPrepareData.getPlayerInfoList().get(2).getUserInfo().getUserId());
+        mSdvIcon4.setTag("sdv" + mPrepareData.getPlayerInfoList().get(3).getUserInfo().getUserId());
+        mSdvIcon5.setTag("sdv" + mPrepareData.getPlayerInfoList().get(4).getUserInfo().getUserId());
 
         ExRelativeLayout rlIcon1Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon1_root);
         ExRelativeLayout rlIcon2Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon2_root);
@@ -286,14 +288,11 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         ExRelativeLayout rlIcon4Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon4_root);
         ExRelativeLayout rlIcon5Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon5_root);
 
-        setIconStroke(rlIcon1Root, mLeftPlayer.getUserInfo().getIsMale());
-        setIconStroke(rlIcon2Root, mRightPlayer.getUserInfo().getIsMale());
-        setIconStroke(rlIcon3Root, true);
-        setIconStroke(rlIcon4Root, true);
-        setIconStroke(rlIcon5Root, true);
-
-
-
+        setIconStroke(rlIcon1Root, mPrepareData.getPlayerInfoList().get(0).getUserInfo().getIsMale());
+        setIconStroke(rlIcon2Root, mPrepareData.getPlayerInfoList().get(1).getUserInfo().getIsMale());
+        setIconStroke(rlIcon3Root, mPrepareData.getPlayerInfoList().get(2).getUserInfo().getIsMale());
+        setIconStroke(rlIcon4Root, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getIsMale());
+        setIconStroke(rlIcon5Root, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getIsMale());
     }
 
     private void setIconStroke(ExRelativeLayout exRelativeLayout, boolean isMale){
@@ -336,34 +335,11 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         }
 
         for (ReadyInfoModel jsonReadyInfo : readyInfos) {
-            if (jsonReadyInfo.getUserID() == mLeftPlayer.getUserInfo().getUserId()) {
-                AvatarUtils.loadAvatarByUrl(mSdvIcon1,
-                        AvatarUtils.newParamsBuilder(mLeftPlayer.getUserInfo().getAvatar())
-                                .setCircle(true)
-                                .setGray(false)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(6))
-                                .setBorderColor(U.getColor(R.color.white))
-                                .build());
-            }
-
-            if (jsonReadyInfo.getUserID() == mRightPlayer.getUserInfo().getUserId()) {
-                AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-                        AvatarUtils.newParamsBuilder(mRightPlayer.getUserInfo().getAvatar())
-                                .setCircle(true)
-                                .setGray(false)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(6))
-                                .setBorderColor(U.getColor(R.color.white))
-                                .build());
-            }
-
-            if (jsonReadyInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                AvatarUtils.loadAvatarByUrl(mSdvIcon3,
-                        AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                                .setCircle(true)
-                                .setGray(false)
-                                .setBorderWidth(U.getDisplayUtils().dip2px(6))
-                                .setBorderColor(U.getColor(R.color.white))
-                                .build());
+            SimpleDraweeView mSdvIcon = mRootView.findViewWithTag("sdv" + jsonReadyInfo.getUserID());
+            for(PlayerInfoModel playerInfoModel : mPrepareData.getPlayerInfoList()){
+                if(playerInfoModel.getUserInfo().getUserId() == jsonReadyInfo.getUserID()){
+                    loadIcon(mSdvIcon, false, playerInfoModel.getUserInfo().getAvatar());
+                }
             }
         }
     }

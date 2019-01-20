@@ -61,6 +61,7 @@
             app:bl_stroke_width="@dimen/view_3_dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
+                android:tag="icon_1"
                 android:layout_marginTop="@dimen/view_3_dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/sdv_icon1"
@@ -82,6 +83,7 @@
             app:bl_stroke_width="@dimen/view_3_dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
+                android:tag="icon_2"
                 android:layout_marginTop="@dimen/view_3_dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/sdv_icon2"
@@ -105,6 +107,7 @@
             app:bl_stroke_width="@dimen/view_3_dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
+                android:tag="icon_3"
                 android:layout_marginTop="@dimen/view_3_dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/sdv_icon3"
@@ -128,6 +131,7 @@
             app:bl_stroke_width="@dimen/view_3_dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
+                android:tag="icon_4"
                 android:layout_marginTop="@dimen/view_3_dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/sdv_icon4"
@@ -149,6 +153,7 @@
             app:bl_stroke_width="@dimen/view_3_dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
+                android:tag="icon_5"
                 android:layout_marginTop="@dimen/view_3_dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/sdv_icon5"
