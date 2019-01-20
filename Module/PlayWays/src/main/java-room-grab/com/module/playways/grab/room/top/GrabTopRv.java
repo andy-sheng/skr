@@ -7,13 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.view.ex.ExLinearLayout;
+import com.module.playways.RoomData;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.rank.R;
+import com.zq.live.proto.Common.UserInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GrabTopRv extends ExLinearLayout {
-    private ArrayList<GrabTopModel> mDataList;
+    private HashMap<Integer, GrabTopItemView> mInfoMap = new HashMap<>();
+    private RoomData mRoomData;
 
     public GrabTopRv(Context context) {
         super(context);
@@ -27,42 +36,81 @@ public class GrabTopRv extends ExLinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void initData(ArrayList<GrabTopModel> dataList) {
-        mDataList = dataList;
-        int i;
-        for (i = 0; i < mDataList.size(); i++) {
-            GrabTopModel grabTopModel = mDataList.get(i);
-            View view = this.getChildAt(i);
-            if (view == null) {
-                view = LayoutInflater.from(getContext()).inflate(R.layout.grab_top_view_holder_layout, this, false);
-                GrabTopViewHolder grabTopViewHolder = new GrabTopViewHolder(view);
-                grabTopModel.setViewHolder(grabTopViewHolder);
-                view.setTag(grabTopViewHolder);
-                LinearLayout.LayoutParams lp = new LayoutParams(0, LayoutParams.WRAP_CONTENT);
-                lp.weight = 1;
-                addView(view, lp);
+    public void setModeGrab() {
+        // 切换到抢唱模式,
+        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        List<PlayerInfoModel> playerInfoModels = mRoomData.getPlayerInfoList();
+        for (PlayerInfoModel playerInfoModel : playerInfoModels) {
+            UserInfoModel userInfo = playerInfoModel.getUserInfo();
+            GrabTopItemView grabTopItemView = mInfoMap.get(userInfo.getUserId());
+            if (grabTopItemView == null) {
+                grabTopItemView = new GrabTopItemView(getContext());
+                mInfoMap.put(userInfo.getUserId(), grabTopItemView);
             }
-            view.setVisibility(VISIBLE);
-            GrabTopViewHolder viewHolder = (GrabTopViewHolder) view.getTag();
-            viewHolder.bindData(grabTopModel, i);
+            grabTopItemView.setVisibility(VISIBLE);
+            grabTopItemView.bindData(userInfo);
+            grabTopItemView.setGrap(false);
+            grabTopItemView.tryAddParent(this);
         }
-        for (; i < this.getChildCount(); i++) {
-            View view = this.getChildAt(i);
-            view.setVisibility(GONE);
+        if (now != null) {
+            for (int uid : now.getHasGrabUserSet()) {
+                GrabTopItemView grabTopItemView = mInfoMap.get(uid);
+                if (grabTopItemView != null) {
+                    grabTopItemView.setGrap(true);
+                }
+            }
+        }
+    }
+
+    public void setModeSing(long singUid) {
+        // 切换到抢唱模式,
+        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        List<PlayerInfoModel> playerInfoModels = mRoomData.getPlayerInfoList();
+        for (PlayerInfoModel playerInfoModel : playerInfoModels) {
+            UserInfoModel userInfo = playerInfoModel.getUserInfo();
+            GrabTopItemView grabTopItemView = mInfoMap.get(userInfo.getUserId());
+            if (grabTopItemView == null) {
+                grabTopItemView = new GrabTopItemView(getContext());
+                mInfoMap.put(userInfo.getUserId(), grabTopItemView);
+            }
+            if (singUid == MyUserInfoManager.getInstance().getUid()) {
+                grabTopItemView.setVisibility(GONE);
+            } else {
+                grabTopItemView.setVisibility(VISIBLE);
+            }
+            grabTopItemView.bindData(userInfo);
+            grabTopItemView.setLight(true);
+            grabTopItemView.tryAddParent(this);
+        }
+
+        if (now != null) {
+            for (int uid : now.getHasLightOffUserSet()) {
+                GrabTopItemView grabTopItemView = mInfoMap.get(uid);
+                if (grabTopItemView != null) {
+                    grabTopItemView.setLight(false);
+                }
+            }
+        }
+    }
+
+    public void grap(int uid) {
+        GrabTopItemView grabTopItemView = mInfoMap.get(uid);
+        if (grabTopItemView != null) {
+            grabTopItemView.setGrap(true);
+        }
+    }
+
+    public void lightOff(int uid) {
+        GrabTopItemView grabTopItemView = mInfoMap.get(uid);
+        if (grabTopItemView != null) {
+            grabTopItemView.setLight(false);
         }
     }
 
 
-    public void lightOn(int fromId) {
-        int index = mDataList.indexOf(new GrabTopModel(fromId));
-        if (index >= 0) {
-            GrabTopModel grabTopModel = mDataList.get(index);
-            grabTopModel.setStatus(GrabTopModel.STATUS_LIGHT_ON);
-            grabTopModel.getViewHolder().bindData(grabTopModel, index);
-        }
+    public void setRoomData(RoomData roomData) {
+        mRoomData = roomData;
     }
 
-    public void lightOff(int fromId) {
 
-    }
 }

@@ -6,10 +6,12 @@ import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 
 import com.module.playways.RoomData;
@@ -54,24 +56,34 @@ public class GrabRoomActivity extends BaseActivity {
         //TODO test
         {
             List<RoundInfoModel> roundingModeList = new ArrayList<>();
-            for(int i=0;i<10;i++){
+            for (int i = 0; i < 10; i++) {
                 RoundInfoModel roundingMode = new RoundInfoModel(RoundInfoModel.TYPE_GRAB);
-                roundingMode.setRoundSeq(i+1);
+                roundingMode.setRoundSeq(i + 1);
                 SongModel songModel = new SongModel();
-                songModel.setItemName("歌曲"+i);
+                songModel.setItemName("歌曲" + i);
                 roundingMode.setSongModel(songModel);
                 roundingModeList.add(roundingMode);
             }
-
+            List<PlayerInfoModel> playerInfoModelList = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                PlayerInfoModel playerInfoModel = new PlayerInfoModel();
+                UserInfoModel userInfoModel = new UserInfoModel();
+                userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+                userInfoModel.setUserId(1 + i * 2);
+                userInfoModel.setNickname("用户：" + i);
+                playerInfoModel.setUserInfo(userInfoModel);
+                playerInfoModelList.add(playerInfoModel);
+            }
+            mRoomData.setPlayerInfoList(playerInfoModelList);
             mRoomData.setRoundInfoModelList(roundingModeList);
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
         }
 
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
-                .setAddToBackStack(false)
-                .addDataBeforeAdd(0, mRoomData)
-                .build()
+                        .setAddToBackStack(false)
+                        .addDataBeforeAdd(0, mRoomData)
+                        .build()
         );
     }
 

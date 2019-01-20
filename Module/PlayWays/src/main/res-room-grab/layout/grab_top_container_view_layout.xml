@@ -18,9 +18,7 @@
             android:layout_marginLeft="@dimen/view_10_dp"
             android:layout_marginRight="@dimen/view_16_dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-        </com.module.playways.grab.room.top.GrabTopRv>
+            android:orientation="horizontal" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/more_btn"

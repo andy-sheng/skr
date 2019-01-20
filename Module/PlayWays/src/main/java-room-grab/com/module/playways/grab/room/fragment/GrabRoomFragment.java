@@ -61,7 +61,6 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.PersonInfoDialogView;
-import com.zq.live.proto.Room.EQRoundResultType;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -174,7 +173,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     onSongInfoCardPlayOver((PendingPlaySongCardData) msg.obj);
                     break;
                 case MSG_ENSURE_SING_BEGIN_TIPS_OVER:
-                    onSingBeginTipsPlayOver(msg.arg1 == 1);
+                    onSingBeginTipsPlayOver(msg.arg1);
                     break;
                 case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
                     onRoundOverPlayOver(msg.arg1 == 1, (RoundInfoModel) msg.obj);
@@ -572,7 +571,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
      * @param songModel 要唱的歌信息
      */
     @Override
-    public void showSongInfoCard(int seq, SongModel songModel) {
+    public void grabBegin(int seq, SongModel songModel) {
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
@@ -642,6 +641,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSongInfoShowAnimation = new AnimatorSet();
         mSongInfoShowAnimation.playSequentially(objectAnimator1, objectAnimator3, objectAnimator4);
         mSongInfoShowAnimation.start();
+
+        mTopContainerView.setModeGrab();
     }
 
     void onSongInfoCardPlayOver(PendingPlaySongCardData pendingPlaySongCardData) {
@@ -659,39 +660,39 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     @Override
-    public void grabBySelf() {
+    public void singBySelf() {
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
-        msg.arg1 = 1;
+        msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
         mSingBeginTipsCardView.mDescTv.setText("你抢到了演唱机会");
         singBeginTipsPlay(new Runnable() {
             @Override
             public void run() {
-                onSingBeginTipsPlayOver(true);
+                onSingBeginTipsPlayOver(MyUserInfoManager.getInstance().getUid());
             }
         });
     }
 
     @Override
-    public void grabByOthers(long uid) {
+    public void singByOthers(long uid) {
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
-        msg.arg1 = 2;
+        msg.arg1 = (int) uid;
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
         mSingBeginTipsCardView.mDescTv.setText("丁一抢到了演唱机会");
         singBeginTipsPlay(new Runnable() {
             @Override
             public void run() {
-                onSingBeginTipsPlayOver(false);
+                onSingBeginTipsPlayOver(uid);
             }
         });
     }
@@ -733,17 +734,19 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSingBeginShowAnimation.start();
     }
 
-    private void onSingBeginTipsPlayOver(boolean self) {
+    private void onSingBeginTipsPlayOver(long uid) {
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         if (mSingBeginShowAnimation != null) {
             mSingBeginShowAnimation.cancel();
         }
         mSingBeginTipsCardView.setVisibility(View.GONE);
-        if (self) {
+        if (uid == MyUserInfoManager.getInstance().getUid()) {
             mCorePresenter.beginSing();
+            mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
         } else {
+            mTopContainerView.setModeSing(uid);
             // 显示收音机
             mOthersSingCardView.setVisibility(View.VISIBLE);
         }
@@ -808,7 +811,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
         mRoundOverCardView.setVisibility(View.GONE);
         if (playNextSongInfoCard) {
-            showSongInfoCard(now.getRoundSeq(), now.getSongModel());
+            grabBegin(now.getRoundSeq(), now.getSongModel());
         }
     }
 

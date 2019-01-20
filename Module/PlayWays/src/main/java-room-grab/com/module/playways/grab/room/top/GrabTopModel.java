@@ -1,7 +1,5 @@
 package com.module.playways.grab.room.top;
 
-import com.orhanobut.dialogplus.ViewHolder;
-
 import java.io.Serializable;
 
 public class GrabTopModel implements Serializable {
@@ -15,8 +13,6 @@ public class GrabTopModel implements Serializable {
     int sex;
 
     int status = STATUS_INIT;
-
-    GrabTopViewHolder viewHolder;
 
     public GrabTopModel(int userId) {
         this.userId = userId;
@@ -52,14 +48,6 @@ public class GrabTopModel implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public GrabTopViewHolder getViewHolder() {
-        return viewHolder;
-    }
-
-    public void setViewHolder(GrabTopViewHolder viewHolder) {
-        this.viewHolder = viewHolder;
     }
 
     @Override

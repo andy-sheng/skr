@@ -12,27 +12,31 @@ public interface IGrabView {
     /**
      * 抢唱阶段开始
      * 展示要唱的歌儿,《下一首》《东西》
-     * @param seq 当前轮次的序号
+     *
+     * @param seq       当前轮次的序号
      * @param songModel 要唱的歌信息
      */
-    void showSongInfoCard(int seq,SongModel songModel);
+    void grabBegin(int seq, SongModel songModel);
 
     /**
      * 自己抢到了
+     * 演唱阶段开始
      */
-    void grabBySelf();
+    void singBySelf();
 
     /**
      * 别人抢到了
+     * 演唱阶段开始
      */
-    void grabByOthers(long uid);
+    void singByOthers(long uid);
 
     /**
      * 轮次结束
-     * @param reason 原因
+     *
+     * @param reason               原因
      * @param playNextSongInfoCard 是否播放下一场抢唱的歌曲卡片
      */
-    void roundOver(int reason,boolean playNextSongInfoCard,RoundInfoModel now);
+    void roundOver(int reason, boolean playNextSongInfoCard, RoundInfoModel now);
 
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
 

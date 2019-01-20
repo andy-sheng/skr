@@ -8,8 +8,9 @@ import android.widget.RelativeLayout;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.RoomData;
+import com.module.playways.grab.room.event.SomeOneGrabEvent;
+import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.score.bar.ScoreTipsView;
 import com.module.playways.rank.room.view.MoreOpView;
 import com.module.rank.R;
 
@@ -32,8 +33,6 @@ public class GrabTopContainerView extends RelativeLayout {
     Listener mListener;
     RoomData mRoomData;
 
-    ScoreTipsView.Item mLastItem;
-
 //    GrabTopAdapter mGrabTopAdapter;
 
     public GrabTopContainerView(Context context) {
@@ -49,7 +48,7 @@ public class GrabTopContainerView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_top_container_view_layout, this);
         mRelativeLayoutIconContainer = (RelativeLayout) this.findViewById(R.id.relativeLayout_icon_container);
-        mTopContentRv =  this.findViewById(R.id.top_content_rv);
+        mTopContentRv = this.findViewById(R.id.top_content_rv);
 
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
         mSongIndexTv = (ExTextView) this.findViewById(R.id.song_index_tv);
@@ -84,19 +83,16 @@ public class GrabTopContainerView extends RelativeLayout {
                 mMoreOpView.showAt(mMoreBtn);
             }
         });
-        test();
     }
 
-    void test() {
-        ArrayList<GrabTopModel> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            GrabTopModel grabTopModel = new GrabTopModel(i);
-            grabTopModel.setUserId(i);
-            grabTopModel.setSex((int) (Math.random() * 2));
-            grabTopModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
-            list.add(grabTopModel);
-        }
-        mTopContentRv.initData(list);
+    public void setModeGrab() {
+        // 抢唱模式
+        mTopContentRv.setModeGrab();
+    }
+
+    public void setModeSing(long singUid) {
+        // 演唱模式
+        mTopContentRv.setModeSing(singUid);
     }
 
     @Override
@@ -122,16 +118,26 @@ public class GrabTopContainerView extends RelativeLayout {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneGrabEvent event) {
+        mTopContentRv.grap(event.uid);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneLightOffEvent event) {
+        mTopContentRv.lightOff(event.uid);
+    }
+
     public void setListener(Listener l) {
         mListener = l;
     }
 
     public void setRoomData(RoomData roomData) {
         mRoomData = roomData;
+        mTopContentRv.setRoomData(roomData);
     }
 
     void reset() {
-        mLastItem = null;
     }
 
     public interface Listener {

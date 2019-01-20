@@ -17,7 +17,6 @@ import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
-import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.playways.RoomData;
@@ -40,8 +39,6 @@ import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.RobotScoreHelper;
-import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -463,7 +460,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      *
      * @param event
      */
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.POSTING,priority = 9)
     public void onEvent(GrabGameOverEvent event) {
         MyLog.d(TAG, "GrabGameOverEvent");
         estimateOverTsThisRound();
@@ -488,7 +485,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 轮次信息有更新
      */
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.POSTING,priority = 9)
     public void onEvent(GrabRoundChangeEvent event) {
         estimateOverTsThisRound();
         closeEngine();
@@ -513,14 +510,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     }
                 }
             } else {
-                mIGrabView.showSongInfoCard(now.getRoundSeq(), now.getSongModel());
+                mIGrabView.grabBegin(now.getRoundSeq(), now.getSongModel());
             }
         } else if (now.getStatus() == RoundInfoModel.STATUS_SING) {
             // 演唱阶段
             if (now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                mIGrabView.grabBySelf();
+                mIGrabView.singBySelf();
             } else {
-                mIGrabView.grabByOthers(now.getUserID());
+                mIGrabView.singByOthers(now.getUserID());
             }
         }
     }
@@ -530,20 +527,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      *
      * @param event
      */
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.POSTING,priority = 9)
     public void onEvent(GrabRoundStatusChangeEvent event) {
         estimateOverTsThisRound();
         closeEngine();
         RoundInfoModel now = event.roundInfo;
         if (now.getStatus() == RoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
-            mIGrabView.showSongInfoCard(now.getRoundSeq(), now.getSongModel());
+            mIGrabView.grabBegin(now.getRoundSeq(), now.getSongModel());
         } else if (now.getStatus() == RoundInfoModel.STATUS_SING) {
             // 演唱阶段
             if (now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                mIGrabView.grabBySelf();
+                mIGrabView.singBySelf();
             } else {
-                mIGrabView.grabByOthers(now.getUserID());
+                mIGrabView.singByOthers(now.getUserID());
             }
         }
     }
