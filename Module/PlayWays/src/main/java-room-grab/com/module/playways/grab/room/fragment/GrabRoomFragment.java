@@ -565,8 +565,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
-        mSingBeginTipsCardView.bindData(mRoomData.getUserInfo((int) MyUserInfoManager.getInstance().getUid()), null);
-        singBeginTipsPlay(new Runnable() {
+        singBeginTipsPlay((int) MyUserInfoManager.getInstance().getUid(), new Runnable() {
             @Override
             public void run() {
                 onSingBeginTipsPlayOver(MyUserInfoManager.getInstance().getUid());
@@ -586,8 +585,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.arg1 = (int) uid;
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
-        mSingBeginTipsCardView.bindData(mRoomData.getUserInfo((int) uid), null);
-        singBeginTipsPlay(new Runnable() {
+        singBeginTipsPlay((int) uid, new Runnable() {
             @Override
             public void run() {
                 onSingBeginTipsPlayOver(uid);
@@ -595,41 +593,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         });
     }
 
-    private void singBeginTipsPlay(Runnable runnable) {
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mSingBeginTipsCardView, View.TRANSLATION_X, -U.getDisplayUtils().getScreenWidth(), 0f);
-        objectAnimator1.setDuration(500);
-        objectAnimator1.setInterpolator(new OvershootInterpolator());
-
-        // 留白动画，只为让其显示一秒
-//        ObjectAnimator objectAnimator2 = new ObjectAnimator();
-//        objectAnimator2.setDuration(1000);
-
-        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mSingBeginTipsCardView, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
-        objectAnimator3.setInterpolator(new LinearInterpolator());
-        objectAnimator3.addListener(new AnimatorListenerAdapter() {
+    private void singBeginTipsPlay(int uid, Runnable runnable) {
+        mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), new SVGAListener() {
             @Override
-            public void onAnimationCancel(Animator animation) {
-                super.onAnimationCancel(animation);
-                onAnimationEnd(animation);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                if (runnable != null) {
-                    runnable.run();
-                }
+            public void onFinished() {
+                runnable.run();
             }
         });
-        objectAnimator3.setStartDelay(1000);
-        objectAnimator3.setDuration(500);
-
-        if (mSingBeginShowAnimation != null) {
-            mSingBeginShowAnimation.cancel();
-        }
-        mSingBeginShowAnimation = new AnimatorSet();
-        mSingBeginShowAnimation.playSequentially(objectAnimator1, objectAnimator3);
-        mSingBeginShowAnimation.start();
     }
 
     private void onSingBeginTipsPlayOver(long uid) {
@@ -665,49 +635,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mRoundOverCardView.bindData(reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {
-
-            }
-        });
-
-        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mRoundOverCardView, View.TRANSLATION_X, -1000f, 0f);
-        objectAnimator1.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mRoundOverCardView.setVisibility(View.VISIBLE);
-            }
-        });
-        objectAnimator1.setDuration(500);
-        objectAnimator1.setInterpolator(new OvershootInterpolator());
-
-        // 留白动画，只为让其显示一秒
-//        ObjectAnimator objectAnimator2 = new ObjectAnimator();
-//        objectAnimator2.setDuration(1000);
-
-        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(mRoundOverCardView, View.TRANSLATION_X, 0, 1000f);
-        objectAnimator3.setInterpolator(new LinearInterpolator());
-        objectAnimator3.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                super.onAnimationCancel(animation);
-                mRoundOverCardView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
                 onRoundOverPlayOver(playNextSongInfoCard, now);
             }
         });
-        objectAnimator3.setStartDelay(1000);
-        objectAnimator3.setDuration(500);
-
-        if (mRoundOverShowAnimation != null) {
-            mRoundOverShowAnimation.cancel();
-        }
-        mRoundOverShowAnimation = new AnimatorSet();
-        mRoundOverShowAnimation.playSequentially(objectAnimator1, objectAnimator3);
-        mRoundOverShowAnimation.start();
     }
 
     private void onRoundOverPlayOver(boolean playNextSongInfoCard, RoundInfoModel now) {
