@@ -182,9 +182,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 灭灯
      */
     public void lightsOff() {
+        RoundInfoModel now = mRoomData.getRealRoundInfo();
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
-        map.put("roundSeq", "");
+        map.put("roundSeq", mRoomData.getRealRoundSeq());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.lightOff(body), new ApiObserver<ApiResult>() {
@@ -192,7 +193,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.e(TAG, "lightsOff erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
-
+                    boolean notify = RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData);
+                    now.addLightOffUid(notify, (int) MyUserInfoManager.getInstance().getUid());
                 } else {
 
                 }

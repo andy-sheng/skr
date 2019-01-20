@@ -219,8 +219,8 @@ public class RoundInfoModel implements Serializable {
 
 
     public void addLightOffUid(boolean notify, Integer userID) {
-        if (!hasGrabUserSet.contains(userID)) {
-            hasGrabUserSet.add(userID);
+        if (!hasLightOffUserSet.contains(userID)) {
+            hasLightOffUserSet.add(userID);
             if (notify) {
                 SomeOneLightOffEvent event = new SomeOneLightOffEvent(userID, this);
                 EventBus.getDefault().post(event);

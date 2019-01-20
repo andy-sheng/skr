@@ -22,7 +22,6 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -408,7 +407,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
             @Override
             public void clickLightOff() {
-
+                mCorePresenter.lightsOff();
             }
 
             @Override
