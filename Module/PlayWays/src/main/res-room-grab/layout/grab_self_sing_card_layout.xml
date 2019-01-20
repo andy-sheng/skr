@@ -17,10 +17,14 @@
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_40_dp"
         android:layout_marginLeft="@dimen/view_50_dp"
         android:layout_marginRight="@dimen/view_50_dp">
 
         <TextView
+            android:layout_marginRight="@dimen/view_20_dp"
+            android:layout_marginLeft="@dimen/view_40_dp"
             android:id="@+id/tv_lyric"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

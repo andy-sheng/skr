@@ -10,7 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -44,19 +46,28 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class SelfSingCardView extends RelativeLayout {
     public final static String TAG = "SelfSingCardView";
+    public final static int UPTATE_TIME = 10;
 
     SVGAImageView mSingBgSvga;
+
+    SimpleDraweeView mSdvIcon;
+
     ScrollView mSvLyric;
     TextView mTvLyric;
 
-    int mSpeed = 0;
+    float mSpeed = 0;
 
     SongModel mSongModel;
 
     /**
      * 歌词在Y轴上的偏移量
      */
-    private int mOffsetY = 0;
+    private float mOffsetY = 0;
+
+    /**
+     * 歌词在Y轴上的偏移量
+     */
+    private Integer initialY = null;
 
     Disposable mDisposable;
 
@@ -89,14 +100,33 @@ public class SelfSingCardView extends RelativeLayout {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        resetOffsetY();
-                        startScroll();
+
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                resetOffsetY();
+                                startScroll();
+                            }
+                        }, 3000);
                         break;
                     default:
                         stopScroll();
                         break;
                 }
                 return false;
+            }
+        });
+
+        HandlerTaskTimer.newBuilder().delay(100).start(new HandlerTaskTimer.ObserverW() {
+            @Override
+            public void onNext(Integer integer) {
+                int[] location = new int[2];
+                mTvLyric.getLocationInWindow(location);
+                //初始的Y轴位置
+                if(initialY == null){
+                    initialY = location[1];
+                    MyLog.d(TAG, "initialY " + initialY);
+                }
             }
         });
     }
@@ -134,6 +164,8 @@ public class SelfSingCardView extends RelativeLayout {
 
     public void playLyric(SongModel songModel, boolean play) {
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
+        mHandler.removeCallbacksAndMessages(null);
+        showBackground(MyUserInfoManager.getInstance().getAvatar());
         if (songModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
@@ -224,17 +256,25 @@ public class SelfSingCardView extends RelativeLayout {
 
     private String getLyricFromLyricsLineInfo(LyricsLineInfo info) {
         String lyric = "";
-        for (int i = 0; i < info.getSplitLyricsLineInfos().size(); i++) {
-            lyric = lyric + info.getSplitLyricsLineInfos().get(i) + "\n";
+        if (info.getSplitLyricsLineInfos() != null && info.getSplitLyricsLineInfos().size() > 0) {
+            for (int i = 0; i < info.getSplitLyricsLineInfos().size(); i++) {
+                lyric = lyric + info.getSplitLyricsLineInfos().get(i) + "\n";
+            }
+        } else {
+            lyric = lyric + info.getLineLyrics() + "\n";
         }
 
         return lyric;
     }
 
     private void resetOffsetY() {
-//        int[] location = new int[2];
-//        mTvLyric.getLocationInWindow(location);
-//        mOffsetY = location[1];
+        int[] location = new int[2];
+        mTvLyric.getLocationInWindow(location);
+        if(initialY == null){
+            initialY = 0;
+        }
+        mOffsetY = initialY - location[1];
+        MyLog.d(TAG, "location[1]:" + location[1] + ", mOffsetY:" + mOffsetY + ",initialY: " + initialY);
     }
 
     private void stopScroll() {
@@ -245,20 +285,22 @@ public class SelfSingCardView extends RelativeLayout {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mSpeed == 0) {
+                int[] location = new int[2];
+                mTvLyric.getLocationInWindow(location);
+//                Log.d(TAG, "mTextView.X" + location[0] + " mTextView.Y" + location[1]);
+                if(mSpeed == 0){
                     int textHeight = mTvLyric.getHeight();
-                    mSpeed = textHeight / mSongModel.getTotalMs();
-                    resetOffsetY();
+                    mSpeed = (float)textHeight * (float) UPTATE_TIME / (float) mSongModel.getTotalMs();
                 }
 
                 if (mSpeed != 0) {
-                    mOffsetY += mSpeed * 30;
-                    mSvLyric.scrollTo(0, mOffsetY);
+                    mOffsetY += mSpeed;
+                    mSvLyric.scrollTo(0, (int) mOffsetY);
                 }
 
                 startScroll();
             }
-        }, 30);
+        }, UPTATE_TIME);
     }
 
     @Override
