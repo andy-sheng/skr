@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
@@ -11,8 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -127,10 +124,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     RoundOverCardView mRoundOverCardView; // 轮次结束的卡片
 
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
-
-    AnimatorSet mSingBeginShowAnimation;// 轮到谁唱卡片动画
-
-    AnimatorSet mRoundOverShowAnimation;// 轮次结束卡片动画
 
     OthersSingCardView mOthersSingCardView;
 
@@ -532,7 +525,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
-        mTurnInfoCardView.setVisibility(View.VISIBLE);
         mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
             @Override
             public void onFinished() {
@@ -556,6 +548,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Override
     public void singBySelf() {
         mCorePresenter.stopGuide();
+        mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
@@ -576,6 +569,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Override
     public void singByOthers(long uid) {
         mCorePresenter.stopGuide();
+        mTopContainerView.setModeSing(uid);
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
@@ -605,18 +599,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     private void onSingBeginTipsPlayOver(long uid) {
         MyLog.d(TAG, "onSingBeginTipsPlayOver" + " uid=" + uid);
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
-        if (mSingBeginShowAnimation != null) {
-            mSingBeginShowAnimation.cancel();
-        }
         mSingBeginTipsCardView.setVisibility(View.GONE);
         if (uid == MyUserInfoManager.getInstance().getUid()) {
             mCorePresenter.beginSing();
-            mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
             mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getSongModel(), true);
         } else {
-            mTopContainerView.setModeSing(uid);
             // 显示收音机
             mOthersSingCardView.setVisibility(View.VISIBLE);
         }
@@ -642,9 +631,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     private void onRoundOverPlayOver(boolean playNextSongInfoCard, RoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
-        if (mRoundOverShowAnimation != null) {
-            mRoundOverShowAnimation.cancel();
-        }
         mRoundOverCardView.setVisibility(View.GONE);
         if (playNextSongInfoCard) {
             grabBegin(now.getRoundSeq(), now.getSongModel());
@@ -814,12 +800,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void destroyAnimation() {
-        if (mSingBeginShowAnimation != null) {
-            mSingBeginShowAnimation.cancel();
-        }
-        if (mRoundOverShowAnimation != null) {
-            mRoundOverShowAnimation.cancel();
-        }
         if (mReadyGoBg != null) {
             mReadyGoBg.stopAnimation(true);
             mReadyGoBg.setVisibility(View.GONE);
