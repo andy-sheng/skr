@@ -25,6 +25,8 @@ import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.inter.IGrabView;
+import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
@@ -33,12 +35,17 @@ import com.module.playways.rank.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.rank.msg.event.QRoundOverMsgEvent;
 import com.module.playways.rank.msg.event.QSyncStatusMsgEvent;
 import com.module.playways.rank.msg.event.QWantSingChanceMsgEvent;
+import com.module.playways.rank.msg.filter.PushMsgFilter;
+import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.RobotScoreHelper;
+import com.zq.live.proto.Common.ESex;
+import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundInfo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -86,6 +93,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
+    PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
+        @Override
+        public boolean doFilter(RoomMsg msg) {
+            if (msg.roomID == mRoomData.getGameId()) {
+                return true;
+            }
+            return false;
+        }
+    };
+
     public GrabCorePresenter(@NotNull IGrabView iGrebView, @NotNull RoomData roomData) {
         mIGrabView = iGrebView;
         mRoomData = roomData;
@@ -96,6 +113,24 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
             // 不发送本地音频
             EngineManager.getInstance().muteLocalAudioStream(true);
+        }
+        if (mRoomData.getGameId() > 0) {
+            BasePushInfo basePushInfo = new BasePushInfo();
+            basePushInfo.setRoomID(mRoomData.getGameId());
+            basePushInfo.setSender(new UserInfo.Builder()
+                    .setUserID(1)
+                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
+                    .setNickName("系统消息")
+                    .setSex(ESex.fromValue(0))
+                    .build());
+            String text = "撕哥一声吼：请文明参赛，发现坏蛋请用力举报！";
+            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+            EventBus.getDefault().post(msgEvent);
+//            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+//            if (msgService != null) {
+//                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
+//            }
+            ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
         }
     }
 
@@ -236,6 +271,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
         EngineManager.getInstance().destroy("grabroom");
         mUiHanlder.removeCallbacksAndMessages(null);
+        ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
     }
 
     /**
