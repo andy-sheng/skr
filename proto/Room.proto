@@ -117,11 +117,11 @@ message QRoundAndGameOverMsg
 
 enum EQRoundResultType {
     ROT_UNKNOWN = 0; //未知
-    ROT_TYPE_1  = 1; //有种结束叫刚刚开始（t<30%）
-    ROT_TYPE_2  = 2; //有份悲伤叫都没及格(30%<=t <60%)
-    ROT_TYPE_3  = 3; //有种遗憾叫明明可以（60%<=t<90%）
-    ROT_TYPE_4  = 4; //有种可惜叫我觉得你行（90%<=t<=100%)
-    ROT_TYPE_5  = 5; //有种优秀叫一唱到底（全部唱完）
+        ROT_TYPE_1  = 1; //有种优秀叫一唱到底（全部唱完）
+        ROT_TYPE_2  = 2; //有种结束叫刚刚开始（t<30%）
+        ROT_TYPE_3  = 3; //有份悲伤叫都没及格(30%<=t <60%)
+        ROT_TYPE_4  = 4; //有种遗憾叫明明可以（60%<=t<90%）
+        ROT_TYPE_5  = 5; //有种可惜叫我觉得你行（90%<=t<=100%)
 }
 
 enum EQRoundOverReason {
