@@ -6,6 +6,7 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.opensource.svgaplayer.SVGAImageView
+        android:layout_marginTop="@dimen/view_50_dp"
         android:id="@+id/sing_bg_svga"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_240_dp"
@@ -13,6 +14,44 @@
         app:autoPlay="false"
         app:loopCount="0" />
 
+    <RelativeLayout
+        android:layout_alignParentRight="true"
+        android:layout_width="@dimen/view_85_dp"
+        android:layout_height="@dimen/view_60_dp"
+        >
+        <ImageView
+            android:layout_alignParentBottom="true"
+            android:layout_width="@dimen/view_85_dp"
+            android:layout_height="@dimen/view_32_dp" />
+
+        <LinearLayout
+            android:layout_marginRight="@dimen/view_20_dp"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/view_20_dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_h_stub"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_t_stub"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_o_stub"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_s"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </RelativeLayout>
     <ScrollView
         android:scrollbars="none"
         android:id="@+id/sv_lyric"

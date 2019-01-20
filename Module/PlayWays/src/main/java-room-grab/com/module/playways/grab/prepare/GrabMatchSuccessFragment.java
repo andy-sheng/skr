@@ -27,8 +27,6 @@ import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
-import com.module.playways.rank.prepare.fragment.MatchFragment;
-import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.prepare.model.GameReadyModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -411,13 +409,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                     .setHasAnimation(true)
                     .build());
         } else {
-            U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                    .setActivity(getActivity())
-                    .setPopFragment(GrabMatchSuccessFragment.this)
-                    .setPopAbove(false)
-                    .setHasAnimation(true)
-                    .setNotifyShowFragment(PrepareResFragment.class)
-                    .build());
+            getActivity().finish();
         }
     }
 
@@ -437,14 +429,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     @Override
     protected boolean onBackPressed() {
         //主动触发回退直接到PrepareResFragment界面
-        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                .setActivity(getActivity())
-                .setPopFragment(GrabMatchSuccessFragment.this)
-                .setPopAbove(false)
-                .setHasAnimation(true)
-                .setNotifyShowFragment(PrepareResFragment.class)
-                .build());
         mMatchSucessPresenter.exitGame();
+        getActivity().finish();
         return true;
     }
 

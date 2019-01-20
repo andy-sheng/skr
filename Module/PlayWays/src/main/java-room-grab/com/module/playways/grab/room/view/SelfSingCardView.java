@@ -1,11 +1,13 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -55,6 +57,11 @@ public class SelfSingCardView extends RelativeLayout {
     ScrollView mSvLyric;
     TextView mTvLyric;
 
+    ImageView mIvHStub;
+    ImageView mIvTStub;
+    ImageView mIvOStub;
+    ImageView mIvS;
+
     float mSpeed = 0;
 
     SongModel mSongModel;
@@ -95,6 +102,12 @@ public class SelfSingCardView extends RelativeLayout {
         mSvLyric = findViewById(R.id.sv_lyric);
         mTvLyric = findViewById(R.id.tv_lyric);
 
+        mIvHStub = (ImageView) findViewById(R.id.iv_h_stub);
+        mIvTStub = (ImageView) findViewById(R.id.iv_t_stub);
+        mIvOStub = (ImageView) findViewById(R.id.iv_o_stub);
+        mIvS = (ImageView) findViewById(R.id.iv_s);
+
+
         mSvLyric.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -123,12 +136,91 @@ public class SelfSingCardView extends RelativeLayout {
                 int[] location = new int[2];
                 mTvLyric.getLocationInWindow(location);
                 //初始的Y轴位置
-                if(initialY == null){
+                if (initialY == null) {
                     initialY = location[1];
                     MyLog.d(TAG, "initialY " + initialY);
                 }
             }
         });
+    }
+
+    private void CountDonw() {
+        HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(30)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        setNum(integer);
+                    }
+                });
+    }
+
+    private void setNum(int num) {
+        mIvOStub.setImageDrawable(null);
+        mIvTStub.setImageDrawable(null);
+        mIvHStub.setImageDrawable(null);
+
+        String s = String.valueOf(num);
+        int[] index_num = new int[s.length()];
+
+        for (int i = 0; i < s.length(); i++) {
+            index_num[i] = Integer.parseInt(getNum(num, i));
+
+            if (i == 0) {
+                mIvOStub.setImageDrawable(getNumDrawable(index_num[0]));
+            } else if (i == 1) {
+                mIvTStub.setImageDrawable(getNumDrawable(index_num[1]));
+            } else if (i == 2) {
+                mIvHStub.setImageDrawable(getNumDrawable(index_num[2]));
+            }
+        }
+    }
+
+    private Drawable getNumDrawable(int num) {
+        Drawable drawable = null;
+        switch (num) {
+            case 0:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 1:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 2:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 3:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 4:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 5:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 6:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 7:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 8:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+            case 9:
+                drawable = U.getDrawable(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                break;
+        }
+
+        return drawable;
+    }
+
+    public String getNum(long num, int index) {
+        String s = String.valueOf(num);
+        String result = String.valueOf(s.charAt(s.length() - index));
+        System.out.println("数字：" + num + "的第" + index + "位数字是" + result);
+
+        return result;
     }
 
     public void showBackground(String avatar) {
@@ -271,7 +363,7 @@ public class SelfSingCardView extends RelativeLayout {
     private void resetOffsetY() {
         int[] location = new int[2];
         mTvLyric.getLocationInWindow(location);
-        if(initialY == null){
+        if (initialY == null) {
             initialY = 0;
         }
         mOffsetY = initialY - location[1];
