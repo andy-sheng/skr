@@ -98,24 +98,21 @@ message QSyncStatusMsg
     sint64 gameOverTimeMs          = 2; //游戏结束时间
     repeated OnlineInfo onlineInfo = 3; //在线状态
     QRoundInfo currentRound        = 4; //当前轮次信息
+    QRoundInfo nextRound           = 5; //下个轮次信息
 }
 
 message QRoundOverMsg
 {
-    sint64 roundOverTimeMs       = 1; //本轮次结束的毫秒时间戳
-    uint32 exitUserID            = 2; //退出用户的ID
-    EQRoundOverReason overReason = 3; //切换轮次原因
-    EQRoundResultType resultType = 4; //演唱结果信息
-    QRoundInfo nextRound         = 5; //下个轮次信息
+     sint64 roundOverTimeMs  = 1; //本轮次结束的毫秒时间戳
+     QRoundInfo currentRound = 2; //当前轮次信息
+     QRoundInfo nextRound    = 3; //下个轮次信息
 }
 
 message QRoundAndGameOverMsg
 {
     sint64 roundOverTimeMs          = 1; //本轮次结束的毫秒时间戳
-    uint32 exitUserID               = 2; //退出用户的ID
-    EQRoundOverReason overReason    = 3; //切换轮次原因
-    EQRoundResultType resultType    = 4; //演唱结果信息
-    repeated QResultInfo resultInfo = 5; //最终结果信息
+    QRoundInfo currentRound         = 2; //当前轮次信息
+    repeated QResultInfo resultInfo = 3; //最终结果信息
 }
 
 enum EQRoundResultType {
@@ -335,17 +332,37 @@ enum EQRoundStatus {
     QRS_UNKNOWN = 0; //轮次状态位置
     QRS_INTRO   = 1; //轮次进入导唱阶段
     QRS_SING    = 2; //轮次进入演唱阶段
+    QRS_SING    = 3; //轮次进入演唱阶段
+    QRS_END     = 4; //轮次已结束
+}
+
+message WantSingInfo
+{
+    uint32 userID = 1; //玩家id
+    sint64 timeMs = 2; //抢唱时间戳
+}
+
+message NoPassSingInfo
+{
+    uint32 userID = 1; //玩家id
+    sint64 timeMs = 2; //灭灯时间戳
 }
 
 message QRoundInfo
 {
-    EQRoundStatus status = 1; //轮次状态
-    uint32 userID        = 2; //玩家id
-    uint32 roundSeq      = 3; //轮次顺序
-    uint32 introBeginMs  = 4; //导唱开始相对时间（相对于startTimeMs时间）
-    uint32 introEndMs    = 5; //导唱结束相对时间（相对于startTimeMs时间）
-    uint32 singBeginMs   = 6; //演唱开始相对时间（相对于startTimeMs时间）
-    uint32 singEndMs     = 7; //演唱结束相对时间（相对于startTimeMs时间）
+    uint32 userID                           = 1; //抢唱成功的玩家id
+    uint32 getSingMs                        = 2; //抢唱成功的时间戳
+    uint32 playbookID                       = 3; //曲库id
+    uint32 roundSeq                         = 4; //轮次顺序
+    uint32 introBeginMs                     = 5; //导唱开始相对时间（相对于startTimeMs时间）
+    uint32 introEndMs                       = 6; //导唱结束相对时间（相对于startTimeMs时间）
+    uint32 singBeginMs                      = 7; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs                        = 8; //演唱结束相对时间（相对于startTimeMs时间）
+    EQRoundStatus status                    = 9; //轮次状态
+    repeated WantSingInfo wantSingInfos     = 10; //抢唱列表
+    repeated NoPassSingInfo noPassSingInfos = 11; //灭灯列表
+    EQRoundOverReason overReason            = 12; //切换轮次原因
+    EQRoundResultType resultType            = 13; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
 }
 
 message ReadyInfo

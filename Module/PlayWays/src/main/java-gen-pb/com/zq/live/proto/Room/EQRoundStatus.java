@@ -21,7 +21,12 @@ public enum EQRoundStatus implements WireEnum {
   /**
    * 轮次进入演唱阶段
    */
-  QRS_SING(2);
+  QRS_SING(3),
+
+  /**
+   * 轮次已结束
+   */
+  QRS_END(4);
 
   public static final ProtoAdapter<EQRoundStatus> ADAPTER = new ProtoAdapter_EQRoundStatus();
 
@@ -39,6 +44,8 @@ public enum EQRoundStatus implements WireEnum {
       case 0: return QRS_UNKNOWN;
       case 1: return QRS_INTRO;
       case 2: return QRS_SING;
+      case 3: return QRS_SING;
+      case 4: return QRS_END;
       default: return null;
     }
   }

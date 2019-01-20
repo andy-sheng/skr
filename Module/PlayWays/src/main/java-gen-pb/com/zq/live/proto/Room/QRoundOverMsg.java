@@ -10,7 +10,6 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
-import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
@@ -25,12 +24,6 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
 
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
 
-  public static final Integer DEFAULT_EXITUSERID = 0;
-
-  public static final EQRoundOverReason DEFAULT_OVERREASON = EQRoundOverReason.ROR_UNKNOWN;
-
-  public static final EQRoundResultType DEFAULT_RESULTTYPE = EQRoundResultType.ROT_UNKNOWN;
-
   /**
    * 本轮次结束的毫秒时间戳
    */
@@ -41,53 +34,32 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   public final Long roundOverTimeMs;
 
   /**
-   * 退出用户的ID
+   * 当前轮次信息
    */
   @WireField(
       tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
   )
-  public final Integer exitUserID;
-
-  /**
-   * 切换轮次原因
-   */
-  @WireField(
-      tag = 3,
-      adapter = "com.zq.live.proto.Room.EQRoundOverReason#ADAPTER"
-  )
-  public final EQRoundOverReason overReason;
-
-  /**
-   * 演唱结果信息
-   */
-  @WireField(
-      tag = 4,
-      adapter = "com.zq.live.proto.Room.EQRoundResultType#ADAPTER"
-  )
-  public final EQRoundResultType resultType;
+  public final QRoundInfo currentRound;
 
   /**
    * 下个轮次信息
    */
   @WireField(
-      tag = 5,
+      tag = 3,
       adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
   )
   public final QRoundInfo nextRound;
 
-  public QRoundOverMsg(Long roundOverTimeMs, Integer exitUserID, EQRoundOverReason overReason,
-      EQRoundResultType resultType, QRoundInfo nextRound) {
-    this(roundOverTimeMs, exitUserID, overReason, resultType, nextRound, ByteString.EMPTY);
+  public QRoundOverMsg(Long roundOverTimeMs, QRoundInfo currentRound, QRoundInfo nextRound) {
+    this(roundOverTimeMs, currentRound, nextRound, ByteString.EMPTY);
   }
 
-  public QRoundOverMsg(Long roundOverTimeMs, Integer exitUserID, EQRoundOverReason overReason,
-      EQRoundResultType resultType, QRoundInfo nextRound, ByteString unknownFields) {
+  public QRoundOverMsg(Long roundOverTimeMs, QRoundInfo currentRound, QRoundInfo nextRound,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
-    this.exitUserID = exitUserID;
-    this.overReason = overReason;
-    this.resultType = resultType;
+    this.currentRound = currentRound;
     this.nextRound = nextRound;
   }
 
@@ -95,9 +67,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.roundOverTimeMs = roundOverTimeMs;
-    builder.exitUserID = exitUserID;
-    builder.overReason = overReason;
-    builder.resultType = resultType;
+    builder.currentRound = currentRound;
     builder.nextRound = nextRound;
     builder.addUnknownFields(unknownFields());
     return builder;
@@ -110,9 +80,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     QRoundOverMsg o = (QRoundOverMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
-        && Internal.equals(exitUserID, o.exitUserID)
-        && Internal.equals(overReason, o.overReason)
-        && Internal.equals(resultType, o.resultType)
+        && Internal.equals(currentRound, o.currentRound)
         && Internal.equals(nextRound, o.nextRound);
   }
 
@@ -122,9 +90,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
-      result = result * 37 + (exitUserID != null ? exitUserID.hashCode() : 0);
-      result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
-      result = result * 37 + (resultType != null ? resultType.hashCode() : 0);
+      result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
       super.hashCode = result;
     }
@@ -135,9 +101,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
-    if (exitUserID != null) builder.append(", exitUserID=").append(exitUserID);
-    if (overReason != null) builder.append(", overReason=").append(overReason);
-    if (resultType != null) builder.append(", resultType=").append(resultType);
+    if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     return builder.replace(0, 2, "QRoundOverMsg{").append('}').toString();
   }
@@ -163,33 +127,13 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   }
 
   /**
-   * 退出用户的ID
+   * 当前轮次信息
    */
-  public Integer getExitUserID() {
-    if(exitUserID==null){
-        return DEFAULT_EXITUSERID;
+  public QRoundInfo getCurrentRound() {
+    if(currentRound==null){
+        return new QRoundInfo.Builder().build();
     }
-    return exitUserID;
-  }
-
-  /**
-   * 切换轮次原因
-   */
-  public EQRoundOverReason getOverReason() {
-    if(overReason==null){
-        return new EQRoundOverReason.Builder().build();
-    }
-    return overReason;
-  }
-
-  /**
-   * 演唱结果信息
-   */
-  public EQRoundResultType getResultType() {
-    if(resultType==null){
-        return new EQRoundResultType.Builder().build();
-    }
-    return resultType;
+    return currentRound;
   }
 
   /**
@@ -210,24 +154,10 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   }
 
   /**
-   * 退出用户的ID
+   * 当前轮次信息
    */
-  public boolean hasExitUserID() {
-    return exitUserID!=null;
-  }
-
-  /**
-   * 切换轮次原因
-   */
-  public boolean hasOverReason() {
-    return overReason!=null;
-  }
-
-  /**
-   * 演唱结果信息
-   */
-  public boolean hasResultType() {
-    return resultType!=null;
+  public boolean hasCurrentRound() {
+    return currentRound!=null;
   }
 
   /**
@@ -240,11 +170,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   public static final class Builder extends Message.Builder<QRoundOverMsg, Builder> {
     public Long roundOverTimeMs;
 
-    public Integer exitUserID;
-
-    public EQRoundOverReason overReason;
-
-    public EQRoundResultType resultType;
+    public QRoundInfo currentRound;
 
     public QRoundInfo nextRound;
 
@@ -260,26 +186,10 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     }
 
     /**
-     * 退出用户的ID
+     * 当前轮次信息
      */
-    public Builder setExitUserID(Integer exitUserID) {
-      this.exitUserID = exitUserID;
-      return this;
-    }
-
-    /**
-     * 切换轮次原因
-     */
-    public Builder setOverReason(EQRoundOverReason overReason) {
-      this.overReason = overReason;
-      return this;
-    }
-
-    /**
-     * 演唱结果信息
-     */
-    public Builder setResultType(EQRoundResultType resultType) {
-      this.resultType = resultType;
+    public Builder setCurrentRound(QRoundInfo currentRound) {
+      this.currentRound = currentRound;
       return this;
     }
 
@@ -293,7 +203,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
 
     @Override
     public QRoundOverMsg build() {
-      return new QRoundOverMsg(roundOverTimeMs, exitUserID, overReason, resultType, nextRound, super.buildUnknownFields());
+      return new QRoundOverMsg(roundOverTimeMs, currentRound, nextRound, super.buildUnknownFields());
     }
   }
 
@@ -305,20 +215,16 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     @Override
     public int encodedSize(QRoundOverMsg value) {
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.exitUserID)
-          + EQRoundOverReason.ADAPTER.encodedSizeWithTag(3, value.overReason)
-          + EQRoundResultType.ADAPTER.encodedSizeWithTag(4, value.resultType)
-          + QRoundInfo.ADAPTER.encodedSizeWithTag(5, value.nextRound)
+          + QRoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
+          + QRoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, QRoundOverMsg value) throws IOException {
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.exitUserID);
-      EQRoundOverReason.ADAPTER.encodeWithTag(writer, 3, value.overReason);
-      EQRoundResultType.ADAPTER.encodeWithTag(writer, 4, value.resultType);
-      QRoundInfo.ADAPTER.encodeWithTag(writer, 5, value.nextRound);
+      QRoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
+      QRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -329,24 +235,8 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 2: builder.setExitUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 3: {
-            try {
-              builder.setOverReason(EQRoundOverReason.ADAPTER.decode(reader));
-            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
-              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
-            }
-            break;
-          }
-          case 4: {
-            try {
-              builder.setResultType(EQRoundResultType.ADAPTER.decode(reader));
-            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
-              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
-            }
-            break;
-          }
-          case 5: builder.setNextRound(QRoundInfo.ADAPTER.decode(reader)); break;
+          case 2: builder.setCurrentRound(QRoundInfo.ADAPTER.decode(reader)); break;
+          case 3: builder.setNextRound(QRoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -361,6 +251,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     @Override
     public QRoundOverMsg redact(QRoundOverMsg value) {
       Builder builder = value.newBuilder();
+      if (builder.currentRound != null) builder.currentRound = QRoundInfo.ADAPTER.redact(builder.currentRound);
       if (builder.nextRound != null) builder.nextRound = QRoundInfo.ADAPTER.redact(builder.nextRound);
       builder.clearUnknownFields();
       return builder.build();

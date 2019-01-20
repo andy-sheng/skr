@@ -460,7 +460,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      *
      * @param event
      */
-    @Subscribe(threadMode = ThreadMode.POSTING,priority = 9)
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabGameOverEvent event) {
         MyLog.d(TAG, "GrabGameOverEvent");
         estimateOverTsThisRound();
@@ -485,14 +485,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 轮次信息有更新
      */
-    @Subscribe(threadMode = ThreadMode.POSTING,priority = 9)
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundChangeEvent event) {
         estimateOverTsThisRound();
         closeEngine();
         RoundInfoModel now = event.newRoundInfo;
         if (now.getStatus() == RoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
-            if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() == RoundInfoModel.STATUS_SING) {
+            if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() >= RoundInfoModel.STATUS_SING) {
                 // 新一轮的抢唱阶段，得告诉上一轮演唱结束了啊，上一轮演唱结束卡片播完，才播歌曲卡片
                 mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), true, now);
                 if (event.lastRoundInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
@@ -527,7 +527,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      *
      * @param event
      */
-    @Subscribe(threadMode = ThreadMode.POSTING,priority = 9)
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundStatusChangeEvent event) {
         estimateOverTsThisRound();
         closeEngine();
@@ -607,20 +607,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundOverMsgEvent event) {
-        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是" + event.exitUserID + ", timets 是" + event.info.getTimeMs());
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是" + event.getCurrentRound().getUserID() + ", timets 是" + event.info.getTimeMs());
         if (mRoomData.getLastSyncTs() >= event.getInfo().getTimeMs()) {
             MyLog.w(TAG, "但是是个旧数据");
             return;
         }
-
-        // TODO 本轮结束原因
-        mRoomData.getRealRoundInfo().setOverReason(event.getOverReason().getValue());
-        //当前轮次是对的
-        if (RoomDataUtils.roundInfoEqual(event.nextRound, mRoomData.getRealRoundInfo())) {
-            if (mRoomData.getRealRoundInfo() != null) {
-                MyLog.w(TAG, "确实是当前轮次");
-                mRoomData.getRealRoundInfo().setEndTs(event.roundOverTimeMs);
-            }
+        if (RoomDataUtils.isCurrentRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
+            // 如果是当前轮次
+            mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.currentRound, true);
         }
         // 游戏轮次结束
         if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
@@ -634,6 +628,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundAndGameOverMsgEvent event) {
         cancelSyncGameStateTask();
+        if (RoomDataUtils.isCurrentRound(event.roundInfoModel.getRoundSeq(), mRoomData)) {
+            // 如果是当前轮次
+            mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.roundInfoModel, true);
+        }
         mRoomData.setExpectRoundInfo(null);
         mRoomData.checkRoundInGrabMode();
     }

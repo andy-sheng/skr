@@ -9,62 +9,42 @@ import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.QRoundOverMsg;
 
 public final class QRoundOverMsgEvent {
-  public BasePushInfo info;
-  /**
-   * 本轮次结束的毫秒时间戳
-   */
-  public   Long roundOverTimeMs;
+    public BasePushInfo info;
+    /**
+     * 本轮次结束的毫秒时间戳
+     */
+    public Long roundOverTimeMs;
 
-  /**
-   * 退出用户的ID
-   */
-  public   Integer exitUserID;
+    /**
+     * 当前轮次信息
+     */
+    public RoundInfoModel currentRound;
 
-  /**
-   * 切换轮次原因
-   */
-  public   EQRoundOverReason overReason;
+    /**
+     * 下个轮次信息
+     */
+    public RoundInfoModel nextRound;
 
-  /**
-   * 演唱结果信息
-   */
-  public   EQRoundResultType resultType;
+    public QRoundOverMsgEvent(BasePushInfo info, QRoundOverMsg qRoundOverMsg) {
+        this.info = info;
+        this.roundOverTimeMs = qRoundOverMsg.getRoundOverTimeMs();
+        this.currentRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.currentRound);
+        this.nextRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.nextRound);
+    }
 
-  /**
-   * 下个轮次信息
-   */
-  public RoundInfoModel nextRound;
+    public BasePushInfo getInfo() {
+        return info;
+    }
 
-  public QRoundOverMsgEvent(BasePushInfo info, QRoundOverMsg qRoundOverMsg) {
-    this.info = info;
-    this.roundOverTimeMs = qRoundOverMsg.getRoundOverTimeMs();
-    this.exitUserID = qRoundOverMsg.getExitUserID();
-    this.overReason = qRoundOverMsg.getOverReason();
-    this.resultType = qRoundOverMsg.getResultType();
-    this.nextRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.nextRound);
-  }
+    public Long getRoundOverTimeMs() {
+        return roundOverTimeMs;
+    }
 
-  public BasePushInfo getInfo() {
-    return info;
-  }
+    public RoundInfoModel getCurrentRound() {
+        return currentRound;
+    }
 
-  public Long getRoundOverTimeMs() {
-    return roundOverTimeMs;
-  }
-
-  public Integer getExitUserID() {
-    return exitUserID;
-  }
-
-  public EQRoundOverReason getOverReason() {
-    return overReason;
-  }
-
-  public EQRoundResultType getResultType() {
-    return resultType;
-  }
-
-  public RoundInfoModel getNextRound() {
-    return nextRound;
-  }
+    public RoundInfoModel getNextRound() {
+        return nextRound;
+    }
 }

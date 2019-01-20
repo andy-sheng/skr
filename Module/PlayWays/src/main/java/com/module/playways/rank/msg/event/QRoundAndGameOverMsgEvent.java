@@ -3,6 +3,7 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.QResultInfo;
@@ -11,64 +12,45 @@ import com.zq.live.proto.Room.QRoundAndGameOverMsg;
 import java.util.List;
 
 public final class QRoundAndGameOverMsgEvent {
-  public BasePushInfo info;
+    public BasePushInfo info;
 
 
-  /**
-   * 本轮次结束的毫秒时间戳
-   */
-  public  Long roundOverTimeMs;
+    /**
+     * 本轮次结束的毫秒时间戳
+     */
+    public Long roundOverTimeMs;
 
-  /**
-   * 退出用户的ID
-   */
-  public  Integer exitUserID;
+    /**
+     * 退出用户的ID
+     */
+    public RoundInfoModel roundInfoModel;
 
-  /**
-   * 切换轮次原因
-   */
-  public   EQRoundOverReason overReason;
+    /**
+     * 最终结果信息
+     */
+    //TODO 自定义一个 MODEL 存起来啊
+    public List<QResultInfo> resultInfo;
 
-  /**
-   * 演唱结果信息
-   */
-  public   EQRoundResultType resultType;
+    public QRoundAndGameOverMsgEvent(BasePushInfo info, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
+        this.info = info;
+        this.roundOverTimeMs = qRoundAndGameOverMsg.getRoundOverTimeMs();
+        this.roundInfoModel = RoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
+        this.resultInfo = qRoundAndGameOverMsg.getResultInfoList();
+    }
 
-  /**
-   * 最终结果信息
-   */
-  public   List<QResultInfo> resultInfo;
+    public BasePushInfo getInfo() {
+        return info;
+    }
 
-  public QRoundAndGameOverMsgEvent(BasePushInfo info, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
-    this.info = info;
-    this.roundOverTimeMs = qRoundAndGameOverMsg.getRoundOverTimeMs();
-    this.exitUserID = qRoundAndGameOverMsg.getExitUserID();
-    this.overReason = qRoundAndGameOverMsg.getOverReason();
-    this.resultType = qRoundAndGameOverMsg.getResultType();
-    this.resultInfo = qRoundAndGameOverMsg.getResultInfoList();
-  }
+    public Long getRoundOverTimeMs() {
+        return roundOverTimeMs;
+    }
 
-  public BasePushInfo getInfo() {
-    return info;
-  }
+    public RoundInfoModel getRoundInfoModel() {
+        return roundInfoModel;
+    }
 
-  public Long getRoundOverTimeMs() {
-    return roundOverTimeMs;
-  }
-
-  public Integer getExitUserID() {
-    return exitUserID;
-  }
-
-  public EQRoundOverReason getOverReason() {
-    return overReason;
-  }
-
-  public EQRoundResultType getResultType() {
-    return resultType;
-  }
-
-  public List<QResultInfo> getResultInfo() {
-    return resultInfo;
-  }
+    public List<QResultInfo> getResultInfo() {
+        return resultInfo;
+    }
 }

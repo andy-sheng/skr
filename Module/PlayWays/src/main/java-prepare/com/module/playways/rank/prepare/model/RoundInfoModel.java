@@ -5,8 +5,10 @@ import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.rank.song.model.SongModel;
+import com.zq.live.proto.Room.NoPassSingInfo;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.RoundInfo;
+import com.zq.live.proto.Room.WantSingInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,8 +19,11 @@ import java.util.Set;
 public class RoundInfoModel implements Serializable {
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
+
+    public static final int STATUS_INIT = 0;
     public static final int STATUS_GRAB = 1;
     public static final int STATUS_SING = 2;
+    public static final int STATUS_OVER = 3;
     /**
      * userID : 7
      * playbookID : 1
@@ -37,9 +42,26 @@ public class RoundInfoModel implements Serializable {
     private int sysScore;//本轮系统打分，先搞个默认60分
     private boolean hasSing = false;
 
-    private int status = STATUS_GRAB;// 轮次状态，在一唱到底中使用
+    private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
 
+    /**
+     * 0未知
+     * 1上个轮次结束
+     * 2没人抢唱
+     * 3当前玩家退出
+     * 4多人灭灯
+     */
     private int overReason; // 结束的原因
+
+    /**
+     * 0未知
+     * 1有种结束叫刚刚开始（t<30%）
+     * 2有份悲伤叫都没及格(30%<=t <60%)
+     * 3有种遗憾叫明明可以（60%<=t<90%）
+     * 4有种可惜叫我觉得你行（90%<=t<=100%)
+     * 5有种优秀叫一唱到底（全部唱完）
+     */
+    private int resultType; // 结果类型
 
     private Set<Integer> hasGrabUserSet = new HashSet<>(); //已经抢了的人
 
@@ -163,6 +185,14 @@ public class RoundInfoModel implements Serializable {
         this.hasSing = hasSing;
     }
 
+    public int getResultType() {
+        return resultType;
+    }
+
+    public void setResultType(int resultType) {
+        this.resultType = resultType;
+    }
+
     public static RoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
         RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_RANK);
         roundInfoModel.setUserID(roundInfo.getUserID());
@@ -176,10 +206,19 @@ public class RoundInfoModel implements Serializable {
     public static RoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
         RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_GRAB);
         roundInfoModel.setUserID(roundInfo.getUserID());
+        roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
+        for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
+            roundInfoModel.addGrabUid(false, wantSingInfo.userID);
+        }
+        for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
+            roundInfoModel.addLightOffUid(false, noPassSingInfo.userID);
+        }
+        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
+        roundInfoModel.setResultType(roundInfo.getResultType().getValue());
         return roundInfoModel;
     }
 
@@ -203,6 +242,9 @@ public class RoundInfoModel implements Serializable {
         if (roundInfo.getOverReason() > 0) {
             this.setOverReason(roundInfo.getOverReason());
         }
+        if (roundInfo.getResultType() > 0) {
+            this.setResultType(roundInfo.getResultType());
+        }
         updateStatus(notify, roundInfo.getStatus());
         return;
     }
@@ -216,7 +258,6 @@ public class RoundInfoModel implements Serializable {
             }
         }
     }
-
 
     public void addLightOffUid(boolean notify, Integer userID) {
         if (!hasLightOffUserSet.contains(userID)) {

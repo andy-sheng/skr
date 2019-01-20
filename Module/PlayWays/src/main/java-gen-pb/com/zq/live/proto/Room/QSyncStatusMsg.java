@@ -64,18 +64,28 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
   )
   public final QRoundInfo currentRound;
 
+  /**
+   * 下个轮次信息
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
+  )
+  public final QRoundInfo nextRound;
+
   public QSyncStatusMsg(Long syncStatusTimeMs, Long gameOverTimeMs, List<OnlineInfo> onlineInfo,
-      QRoundInfo currentRound) {
-    this(syncStatusTimeMs, gameOverTimeMs, onlineInfo, currentRound, ByteString.EMPTY);
+      QRoundInfo currentRound, QRoundInfo nextRound) {
+    this(syncStatusTimeMs, gameOverTimeMs, onlineInfo, currentRound, nextRound, ByteString.EMPTY);
   }
 
   public QSyncStatusMsg(Long syncStatusTimeMs, Long gameOverTimeMs, List<OnlineInfo> onlineInfo,
-      QRoundInfo currentRound, ByteString unknownFields) {
+      QRoundInfo currentRound, QRoundInfo nextRound, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.syncStatusTimeMs = syncStatusTimeMs;
     this.gameOverTimeMs = gameOverTimeMs;
     this.onlineInfo = Internal.immutableCopyOf("onlineInfo", onlineInfo);
     this.currentRound = currentRound;
+    this.nextRound = nextRound;
   }
 
   @Override
@@ -85,6 +95,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
     builder.gameOverTimeMs = gameOverTimeMs;
     builder.onlineInfo = Internal.copyOf("onlineInfo", onlineInfo);
     builder.currentRound = currentRound;
+    builder.nextRound = nextRound;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -98,7 +109,8 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
         && Internal.equals(syncStatusTimeMs, o.syncStatusTimeMs)
         && Internal.equals(gameOverTimeMs, o.gameOverTimeMs)
         && onlineInfo.equals(o.onlineInfo)
-        && Internal.equals(currentRound, o.currentRound);
+        && Internal.equals(currentRound, o.currentRound)
+        && Internal.equals(nextRound, o.nextRound);
   }
 
   @Override
@@ -110,6 +122,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       result = result * 37 + (gameOverTimeMs != null ? gameOverTimeMs.hashCode() : 0);
       result = result * 37 + onlineInfo.hashCode();
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
+      result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -122,6 +135,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
     if (gameOverTimeMs != null) builder.append(", gameOverTimeMs=").append(gameOverTimeMs);
     if (!onlineInfo.isEmpty()) builder.append(", onlineInfo=").append(onlineInfo);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
+    if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     return builder.replace(0, 2, "QSyncStatusMsg{").append('}').toString();
   }
 
@@ -176,6 +190,16 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
   }
 
   /**
+   * 下个轮次信息
+   */
+  public QRoundInfo getNextRound() {
+    if(nextRound==null){
+        return new QRoundInfo.Builder().build();
+    }
+    return nextRound;
+  }
+
+  /**
    * 状态同步时的毫秒时间戳
    */
   public boolean hasSyncStatusTimeMs() {
@@ -203,6 +227,13 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
     return currentRound!=null;
   }
 
+  /**
+   * 下个轮次信息
+   */
+  public boolean hasNextRound() {
+    return nextRound!=null;
+  }
+
   public static final class Builder extends Message.Builder<QSyncStatusMsg, Builder> {
     public Long syncStatusTimeMs;
 
@@ -211,6 +242,8 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
     public List<OnlineInfo> onlineInfo;
 
     public QRoundInfo currentRound;
+
+    public QRoundInfo nextRound;
 
     public Builder() {
       onlineInfo = Internal.newMutableList();
@@ -249,9 +282,17 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       return this;
     }
 
+    /**
+     * 下个轮次信息
+     */
+    public Builder setNextRound(QRoundInfo nextRound) {
+      this.nextRound = nextRound;
+      return this;
+    }
+
     @Override
     public QSyncStatusMsg build() {
-      return new QSyncStatusMsg(syncStatusTimeMs, gameOverTimeMs, onlineInfo, currentRound, super.buildUnknownFields());
+      return new QSyncStatusMsg(syncStatusTimeMs, gameOverTimeMs, onlineInfo, currentRound, nextRound, super.buildUnknownFields());
     }
   }
 
@@ -266,6 +307,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.gameOverTimeMs)
           + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(3, value.onlineInfo)
           + QRoundInfo.ADAPTER.encodedSizeWithTag(4, value.currentRound)
+          + QRoundInfo.ADAPTER.encodedSizeWithTag(5, value.nextRound)
           + value.unknownFields().size();
     }
 
@@ -275,6 +317,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.gameOverTimeMs);
       OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.onlineInfo);
       QRoundInfo.ADAPTER.encodeWithTag(writer, 4, value.currentRound);
+      QRoundInfo.ADAPTER.encodeWithTag(writer, 5, value.nextRound);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -288,6 +331,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
           case 2: builder.setGameOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           case 3: builder.onlineInfo.add(OnlineInfo.ADAPTER.decode(reader)); break;
           case 4: builder.setCurrentRound(QRoundInfo.ADAPTER.decode(reader)); break;
+          case 5: builder.setNextRound(QRoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -304,6 +348,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.onlineInfo, OnlineInfo.ADAPTER);
       if (builder.currentRound != null) builder.currentRound = QRoundInfo.ADAPTER.redact(builder.currentRound);
+      if (builder.nextRound != null) builder.nextRound = QRoundInfo.ADAPTER.redact(builder.nextRound);
       builder.clearUnknownFields();
       return builder.build();
     }
