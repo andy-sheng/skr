@@ -11,7 +11,14 @@
         android:layout_height="@dimen/view_560_dp"
         android:visibility="gone"
         app:antiAlias="true"
-        app:autoPlay="false"
-        app:loopCount="1"
-        app:source="none_sing_end.svga" />
+        app:autoPlay="false" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/sing_result_svga"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_180_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
 </merge>
