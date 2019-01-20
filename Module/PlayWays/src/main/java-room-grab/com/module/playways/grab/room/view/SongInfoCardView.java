@@ -52,20 +52,6 @@ public class SongInfoCardView extends RelativeLayout {
         mSongCover = (SVGAImageView) findViewById(R.id.song_cover);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
         mSongOwnerTv = (ExTextView) findViewById(R.id.song_owner_tv);
-
-        // TODO: 2019/1/20 just for test
-        SongModel songModel = new SongModel();
-        songModel.setItemID(839);
-        songModel.setItemName("卡路里");
-        songModel.setOwner("火箭少女101");
-
-        HttpImage httpImage = ImageFactory.newHttpImage("http://online-sound-bja.oss-cn-beijing.aliyuncs.com/cover/fdb383b9eca4cc747dec665a9f97117b.jpg")
-                .addOssProcessors(OssImgFactory.newResizeBuilder()
-                        .setW(160)
-                        .build())
-                .build();
-        songModel.setCover(httpImage.getUrl());
-        bindSongModel(songModel);
     }
 
     // 该动画需要循环播放
@@ -78,6 +64,8 @@ public class SongInfoCardView extends RelativeLayout {
         mSongNameTv.setText(songModel.getItemName());
         mSongOwnerTv.setText(songModel.getOwner());
         mSongCover.setVisibility(VISIBLE);
+        mSongNameTv.setVisibility(VISIBLE);
+        mSongOwnerTv.setVisibility(VISIBLE);
         mSongCover.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());
         try {

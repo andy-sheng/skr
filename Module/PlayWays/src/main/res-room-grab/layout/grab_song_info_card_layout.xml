@@ -23,7 +23,8 @@
         android:gravity="center"
         android:text="《还有什么可以送给你》"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_20_dp" />
+        android:textSize="@dimen/textsize_20_dp"
+        android:visibility="gone" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/song_owner_tv"
@@ -34,5 +35,6 @@
         android:gravity="center"
         android:text="陈奕迅"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_12_dp" />
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone" />
 </merge>
