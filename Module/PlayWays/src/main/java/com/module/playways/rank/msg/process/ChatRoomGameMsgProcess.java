@@ -95,21 +95,21 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processVoteResult(basePushInfo, msg.getVoteResultMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_MACHINE_SCORE) {
             processMachineScore(basePushInfo, msg.getMachineScore());
-        }else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_ACC_BEGIN) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_ACC_BEGIN) {
             processAccBeigin(basePushInfo);
-        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_WANT_SING_CHANCE) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_WANT_SING_CHANCE) {
             processQWantSingChanceMsg(basePushInfo, msg.getQWantSingChanceMsg());
-        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_GET_SING_CHANCE) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_GET_SING_CHANCE) {
             processQGetSingChanceMsg(basePushInfo, msg.getQGetSingChanceMsg());
-        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_SYNC_STATUS) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_SYNC_STATUS) {
             processQSyncStatusMsg(basePushInfo, msg.getQSyncStatusMsg());
-        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_ROUND_OVER) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_ROUND_OVER) {
             processQRoundOverMsg(basePushInfo, msg.getQRoundOverMsg());
-        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER) {
             processQRoundAndGameOverMsg(basePushInfo, msg.getQRoundAndGameOverMsg());
-        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_NO_PASS_SING) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_NO_PASS_SING) {
             processQNoPassSingMsg(basePushInfo, msg.getQNoPassSingMsg());
-        }else if (msg.getMsgType() == ERoomMsgType.RM_Q_EXIT_GAME) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_EXIT_GAME) {
             processQExitGameMsg(basePushInfo, msg.getQExitGameMsg());
         }
     }
@@ -123,7 +123,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY,
                 ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND,
                 ERoomMsgType.RM_VOTE_RESULT, ERoomMsgType.RM_ROUND_MACHINE_SCORE,
-                ERoomMsgType.RM_ROUND_ACC_BEGIN
+                ERoomMsgType.RM_ROUND_ACC_BEGIN, ERoomMsgType.RM_Q_WANT_SING_CHANCE,
+                ERoomMsgType.RM_Q_GET_SING_CHANCE, ERoomMsgType.RM_Q_SYNC_STATUS,
+                ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
+                ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME
         };
     }
 
@@ -273,7 +276,6 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
 
         RoundInfoModel currentInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getCurrentRound());
-
         RoundInfoModel nextInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getNextRound());
 
         MyLog.d(TAG, " processSyncStatusMsg " + "gameOverTimeMs =" + gameOverTimeMs);
@@ -351,43 +353,36 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     }
 
     private void processQWantSingChanceMsg(BasePushInfo basePushInfo, QWantSingChanceMsg qWantSingChanceMsg) {
-
         QWantSingChanceMsgEvent machineScoreEvent = new QWantSingChanceMsgEvent(basePushInfo, qWantSingChanceMsg);
         EventBus.getDefault().post(machineScoreEvent);
     }
 
     private void processQGetSingChanceMsg(BasePushInfo basePushInfo, QGetSingChanceMsg qGetSingChanceMsg) {
-
         QGetSingChanceMsgEvent machineScoreEvent = new QGetSingChanceMsgEvent(basePushInfo, qGetSingChanceMsg);
         EventBus.getDefault().post(machineScoreEvent);
     }
 
     private void processQSyncStatusMsg(BasePushInfo basePushInfo, QSyncStatusMsg qSyncStatusMsg) {
-
         QSyncStatusMsgEvent machineScoreEvent = new QSyncStatusMsgEvent(basePushInfo, qSyncStatusMsg);
         EventBus.getDefault().post(machineScoreEvent);
     }
 
     private void processQRoundOverMsg(BasePushInfo basePushInfo, QRoundOverMsg qRoundOverMsg) {
-
         QRoundOverMsgEvent machineScoreEvent = new QRoundOverMsgEvent(basePushInfo, qRoundOverMsg);
         EventBus.getDefault().post(machineScoreEvent);
     }
 
     private void processQRoundAndGameOverMsg(BasePushInfo basePushInfo, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
-
         QRoundAndGameOverMsgEvent machineScoreEvent = new QRoundAndGameOverMsgEvent(basePushInfo, qRoundAndGameOverMsg);
         EventBus.getDefault().post(machineScoreEvent);
     }
 
     private void processQNoPassSingMsg(BasePushInfo basePushInfo, QNoPassSingMsg qNoPassSingMsg) {
-
         QNoPassSingMsgEvent machineScoreEvent = new QNoPassSingMsgEvent(basePushInfo, qNoPassSingMsg);
         EventBus.getDefault().post(machineScoreEvent);
     }
 
     private void processQExitGameMsg(BasePushInfo basePushInfo, QExitGameMsg qExitGameMsg) {
-
         QExitGameMsgEvent machineScoreEvent = new QExitGameMsgEvent(basePushInfo, qExitGameMsg);
         EventBus.getDefault().post(machineScoreEvent);
     }
