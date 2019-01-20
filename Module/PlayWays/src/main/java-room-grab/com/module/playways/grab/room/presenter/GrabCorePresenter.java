@@ -65,7 +65,7 @@ import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROU
 public class GrabCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "GrabCorePresenter";
 
-    private static long sSyncStateTaskInterval = 3500;
+    private static long sSyncStateTaskInterval = 4000;
     static final int MSG_ROBOT_SING_BEGIN = 10;
 
     RoomData mRoomData;

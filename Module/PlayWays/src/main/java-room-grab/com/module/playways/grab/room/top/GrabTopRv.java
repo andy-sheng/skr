@@ -139,6 +139,16 @@ public class GrabTopRv extends RelativeLayout {
         GrabTopItemView finalGrabTopItemView = grabTopItemView;
         objectAnimator4.addListener(new AnimatorListenerAdapter() {
             @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mErjiIv.setVisibility(VISIBLE);
+            }
+        });
+
+        AnimatorSet animatorSet1 = new AnimatorSet();
+        animatorSet1.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
+        animatorSet1.addListener(new AnimatorListenerAdapter() {
+            @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
                 onAnimationEnd(animation);
@@ -150,19 +160,17 @@ public class GrabTopRv extends RelativeLayout {
                 finalGrabTopItemView.setVisibility(GONE);
                 finalGrabTopItemView.setAlpha(1);
                 finalGrabTopItemView.setTranslationY(0);
+                finalGrabTopItemView.setScaleX(1);
+                finalGrabTopItemView.setScaleY(1);
                 mErjiIv.setTranslationY(0);
             }
 
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mErjiIv.setVisibility(VISIBLE);
+                finalGrabTopItemView.setVisibility(VISIBLE);
             }
         });
-
-        AnimatorSet animatorSet1 = new AnimatorSet();
-        animatorSet1.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
-
         List<Animator> setList = new ArrayList<>();
         List<Animator> setList2 = new ArrayList<>();
         // 切换到抢唱模式,
@@ -190,7 +198,7 @@ public class GrabTopRv extends RelativeLayout {
                                 finalGrabTopItemView1.setLight(false);
                             }
                         });
-                        animatorSet21.setDuration(500);
+                        animatorSet21.setDuration(200);
                         setList.add(animatorSet21);
                     }
                     // 亮灯动画
@@ -209,16 +217,17 @@ public class GrabTopRv extends RelativeLayout {
                                 finalGrabTopItemView1.setLight(true);
                             }
                         });
-                        objectAnimator.setDuration(10);
-                        objectAnimator.setStartDelay(i * 200);
+                        objectAnimator.setDuration(100);
                         setList2.add(objectAnimator);
                     }
                 }
             }
         }
+        //灭灯动画
         AnimatorSet animatorSet2 = new AnimatorSet();
         animatorSet2.playSequentially(setList);
 
+        //亮灯动画
         AnimatorSet animatorSet3 = new AnimatorSet();
         animatorSet3.addListener(new AnimatorListenerAdapter() {
             @Override
