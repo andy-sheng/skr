@@ -735,6 +735,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void onSingBeginTipsPlayOver(long uid) {
+        MyLog.d(TAG,"onSingBeginTipsPlayOver" + " uid=" + uid);
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         if (mSingBeginShowAnimation != null) {
             mSingBeginShowAnimation.cancel();

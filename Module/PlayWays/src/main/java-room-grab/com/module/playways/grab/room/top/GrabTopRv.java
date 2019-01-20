@@ -73,7 +73,7 @@ public class GrabTopRv extends ExLinearLayout {
                 grabTopItemView = new GrabTopItemView(getContext());
                 mInfoMap.put(userInfo.getUserId(), grabTopItemView);
             }
-            if (singUid == MyUserInfoManager.getInstance().getUid()) {
+            if (singUid == userInfo.getUserId()) {
                 grabTopItemView.setVisibility(GONE);
             } else {
                 grabTopItemView.setVisibility(VISIBLE);
