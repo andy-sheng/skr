@@ -41,7 +41,30 @@
             android:textColor="#0C2275"
             android:textStyle="bold" />
 
+        <com.module.playways.grab.room.view.WaveView
+            android:id="@+id/wave_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.common.view.ex.ExRelativeLayout
+            android:id="@+id/rl_icon1_root"
+            android:layout_width="@dimen/view_90_dp"
+            android:layout_height="@dimen/view_96_dp"
+            android:layout_centerInParent="true"
+            app:bl_corners_radius="@dimen/view_45_dp"
+            app:bl_stroke_width="@dimen/view_3_dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:tag="icon_1"
+                android:layout_marginTop="@dimen/view_3_dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/sdv_own_icon"
+                android:layout_width="@dimen/view_84_dp"
+                android:layout_height="@dimen/view_84_dp" />
+        </com.common.view.ex.ExRelativeLayout>
+
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_icon_container"
             android:layout_width="@dimen/view_262_dp"
             android:layout_height="wrap_content"

@@ -6,9 +6,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -16,16 +20,20 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.grab.room.view.WaveView;
 import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -68,7 +76,14 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
     HandlerTaskTimer mMatchTimeTask;
 
+    SimpleDraweeView mSdvOwnIcon;
+
+    ExRelativeLayout mRlIcon1Root;
+
+
     DialogPlus mExitDialog;
+
+    WaveView mWaveView;
 
     @Override
     public int initView() {
@@ -88,7 +103,32 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         mRlIconContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_icon_container);
         mSdvSubIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon1);
         mSdvSubIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon3);
+        mWaveView = (WaveView)mRootView.findViewById(R.id.wave_view);
+        mSdvOwnIcon = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_own_icon);
+        mRlIcon1Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon1_root);
 
+
+        AvatarUtils.loadAvatarByUrl(mSdvOwnIcon,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .setGray(false)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(6))
+                        .setBorderColor(U.getColor(R.color.white))
+                        .build());
+
+        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(3))
+                .setStrokeColor(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue() ? U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color))
+                .setSolidColor(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue() ? U.getColor(R.color.color_man_stroke_color_trans_20) : U.getColor(R.color.color_woman_stroke_color_trans_20))
+                .build();
+
+        mRlIcon1Root.setBackground(drawable);
+
+        mWaveView.setDuration(10000);
+        mWaveView.setStyle(Paint.Style.FILL);
+        mWaveView.setColor(Color.parseColor("#260288D0"));
+        mWaveView.setInterpolator(new LinearOutSlowInInterpolator());
+        mWaveView.start();
 
         Resources res = getResources();
         mQuotationsArray = Arrays.asList(res.getStringArray(R.array.match_quotations));
@@ -308,6 +348,8 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         if (mExitDialog != null && mExitDialog.isShowing()) {
             mExitDialog.dismiss();
         }
+
+        mWaveView.stop();
     }
 
     @Override

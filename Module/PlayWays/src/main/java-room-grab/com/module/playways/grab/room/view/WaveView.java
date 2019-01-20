@@ -165,9 +165,4 @@ public class WaveView extends View {
         }
     }
 
-//         mWaveView.setDuration(10000);
-//        mWaveView.setStyle(Paint.Style.FILL);
-//        mWaveView.setColor(Color.parseColor("#260288D0"));
-//        mWaveView.setInterpolator(new LinearOutSlowInInterpolator());
-//        mWaveView.start();
 }
