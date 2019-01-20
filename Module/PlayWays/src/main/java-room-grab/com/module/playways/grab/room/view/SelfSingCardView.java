@@ -2,25 +2,36 @@ package com.module.playways.grab.room.view;
 
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.common.log.MyLog;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGADynamicEntity;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsLineInfo;
+
+import org.greenrobot.greendao.annotation.NotNull;
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -33,7 +44,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class SelfSingCardView extends RelativeLayout {
     public final static String TAG = "SelfSingCardView";
-    SimpleDraweeView mSdvIcon;
+
+    SVGAImageView mSingBgSvga;
     ScrollView mSvLyric;
     TextView mTvLyric;
 
@@ -67,7 +79,8 @@ public class SelfSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_self_sing_card_layout, this);
-        mSdvIcon = findViewById(R.id.sdv_icon);
+
+        mSingBgSvga = (SVGAImageView) findViewById(R.id.sing_bg_svga);
         mSvLyric = findViewById(R.id.sv_lyric);
         mTvLyric = findViewById(R.id.tv_lyric);
 
@@ -86,6 +99,37 @@ public class SelfSingCardView extends RelativeLayout {
                 return false;
             }
         });
+    }
+
+    public void showBackground(String avatar) {
+        mSingBgSvga.setVisibility(VISIBLE);
+        mSingBgSvga.setLoops(0);
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("self_sing_bg.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(avatar));
+                    mSingBgSvga.setImageDrawable(drawable);
+                    mSingBgSvga.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+    }
+
+    private SVGADynamicEntity requestDynamicItem(String avatar) {
+        SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
+        if (!TextUtils.isEmpty(avatar)) {
+            dynamicEntity.setDynamicImage(avatar, "avatar");
+        }
+        return dynamicEntity;
     }
 
     public void playLyric(SongModel songModel, boolean play) {
@@ -187,7 +231,7 @@ public class SelfSingCardView extends RelativeLayout {
         return lyric;
     }
 
-    private void resetOffsetY(){
+    private void resetOffsetY() {
 //        int[] location = new int[2];
 //        mTvLyric.getLocationInWindow(location);
 //        mOffsetY = location[1];

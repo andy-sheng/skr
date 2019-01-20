@@ -5,30 +5,30 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:id="@+id/sdv_icon"
-        android:layout_width="@dimen/view_44_dp"
-        android:layout_height="@dimen/view_44_dp"
-        />
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/sing_bg_svga"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_240_dp"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="0" />
 
     <ScrollView
-        android:layout_marginLeft="@dimen/view_50_dp"
-        android:layout_marginRight="@dimen/view_50_dp"
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_50_dp"
+        android:layout_marginRight="@dimen/view_50_dp">
 
         <TextView
             android:id="@+id/tv_lyric"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:lineSpacingExtra="10dp"
             android:text=""
-            android:textStyle="bold"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_18_dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:textStyle="bold" />
     </ScrollView>
 </merge>
