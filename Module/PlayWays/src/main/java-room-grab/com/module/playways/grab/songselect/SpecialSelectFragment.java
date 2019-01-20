@@ -7,13 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
-import com.module.RouterConstants;
+import com.component.busilib.constans.GameModeType;
+import com.module.playways.grab.prepare.GrabMatchFragment;
 import com.module.playways.rank.prepare.model.PrepareData;
+import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
 import java.util.ArrayList;
@@ -44,9 +47,7 @@ public class SpecialSelectFragment extends BaseFragment {
         mSpecialSelectAdapter = new SpecialSelectAdapter(new RecyclerOnItemClickListener<SpecialModel>() {
             @Override
             public void onItemClicked(View view, int position, SpecialModel model) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-//                        .withSerializable("prepare_data",new PrepareData())
-                        .navigation();
+                goMatchFragment(model.getId());
             }
         });
         mContentRv.setAdapter(mSpecialSelectAdapter);
@@ -68,5 +69,20 @@ public class SpecialSelectFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    public void goMatchFragment(int specialId) {
+        PrepareData prepareData = new PrepareData();
+        prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+        SongModel songModel = new SongModel();
+        songModel.setItemID(specialId);
+        prepareData.setSongModel(songModel);
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchFragment.class)
+                .setAddToBackStack(true)
+                .addDataBeforeAdd(0, prepareData)
+                .setHasAnimation(true)
+                .build()
+        );
+
     }
 }

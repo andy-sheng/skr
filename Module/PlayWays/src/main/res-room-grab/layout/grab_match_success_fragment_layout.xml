@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.module.playways.rank.prepare.view.MatchSucessBottomView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.common.view.ex.ExTextView
+            android:gravity="center"
+            android:background="@drawable/miedeng_daojishi_beijingban"
+            android:id="@+id/tv_ready_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/iv_prepare"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_16_dp"
+            android:text="10s"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_24_dp"
+            android:textStyle="bold" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/iv_prepare"
+            android:layout_width="@dimen/view_206_dp"
+            android:layout_height="@dimen/view_54_dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_70_dp"
+            android:background="@drawable/btn_pipeichenggong_normal" />
+    </RelativeLayout>
+
+    <com.module.playways.rank.prepare.view.MatchSucessLeftView
+        android:id="@+id/bg_left_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.module.playways.rank.prepare.view.MatchSucessRightView
+        android:id="@+id/bg_right_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:layout_width="@dimen/view_260_dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:clipChildren="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_240_dp"
+            android:layout_marginTop="@dimen/view_32_dp"
+            android:clipChildren="false">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_icon1"
+                android:layout_width="@dimen/view_88_dp"
+                android:layout_height="@dimen/view_88_dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/view_20_dp" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_icon2"
+                android:layout_width="@dimen/view_88_dp"
+                android:layout_height="@dimen/view_88_dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/view_20_dp" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_icon3"
+                android:layout_width="@dimen/view_88_dp"
+                android:layout_height="@dimen/view_88_dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/view_20_dp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/vs_svga"
+        android:layout_width="@dimen/view_180_dp"
+        android:layout_height="@dimen/view_180_dp"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
+        app:antiAlias="true"
+        app:clearsAfterStop="false"
+        app:loopCount="1"
+        app:source="vs.svga" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_250_dp"
+        android:layout_marginTop="-102dp"
+        android:scaleType="fitCenter"
+        app:antiAlias="true"
+        app:clearsAfterStop="false"
+        app:loopCount="1"
+        app:source="pipei_sucess.svga" />
+
+
+</RelativeLayout>

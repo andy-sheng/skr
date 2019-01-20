@@ -10,6 +10,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.component.busilib.constans.GameModeType;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.playways.rank.msg.event.JoinActionEvent;
@@ -40,23 +41,19 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
     IMatchingView mView;
     MatchServerApi mMatchServerApi;
-
     Disposable mStartMatchTask;
     HandlerTaskTimer mLoopMatchTask;
     HandlerTaskTimer mCheckJoinStateTask;
-
     int mCurrentGameId; // 游戏标识
     long mGameCreateTime;
-
     int mCurrentMusicId; //选择的歌曲id
     int mGameType; // 当前游戏类型
-
     GameInfoModel mJsonGameInfo;
-
     private List<SongModel> mSongModelList;
-
     volatile MatchState mMatchState = MatchState.IDLE;
-    private List<String> avatarURL;
+    private List<String> mAvatarURL;
+
+    int ALL_JOIN_NUM = 3;
 
     public MatchPresenter(@NonNull IMatchingView view) {
         this.mView = view;
@@ -74,7 +71,9 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "startLoopMatchTask");
         this.mCurrentMusicId = playbookItemID;
         this.mGameType = gameType;
-
+        if(mGameType == GameModeType.GAME_MODE_GRAB){
+            ALL_JOIN_NUM = 5;
+        }
         disposeLoopMatchTask();
         mLoopMatchTask = HandlerTaskTimer.newBuilder()
                 .interval(10000)
@@ -298,7 +297,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                                 MyLog.w(TAG, "checkCurrentGameData result = " + result.getErrno() + " traceId = " + result.getTraceId());
                                 if (result.getErrno() == 0) {
                                     GameInfoModel jsonGameInfo = JSON.parseObject(result.getData().toString(), GameInfoModel.class);
-                                    if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
+                                    if (jsonGameInfo.getHasJoinedUserCnt() == ALL_JOIN_NUM) {
                                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                                             mMatchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
@@ -339,7 +338,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                 MyLog.w(TAG, "updateUserListState result = " + result.getErrno() + " traceId = " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     GameInfoModel jsonGameInfo = JSON.parseObject(result.getData().toString(), GameInfoModel.class);
-                    if (jsonGameInfo.getHasJoinedUserCnt() == 3) {
+                    if (jsonGameInfo.getHasJoinedUserCnt() == ALL_JOIN_NUM) {
                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                             mMatchState = MatchState.JoinGameSuccess;
                             mJsonGameInfo = jsonGameInfo;
@@ -361,11 +360,11 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     }
 
     public List<String> getAvatarURL() {
-        return avatarURL;
+        return mAvatarURL;
     }
 
     public void setAvatarURL(List<String> avatarURL) {
-        this.avatarURL = avatarURL;
+        this.mAvatarURL = avatarURL;
     }
 
     enum MatchState {

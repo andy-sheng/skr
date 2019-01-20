@@ -46,37 +46,40 @@ public class GrabRoomActivity extends BaseActivity {
             mRoomData.setShiftTs(prepareData.getShiftTs());
 
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
+            for (int i = 0; i < prepareData.getSongModelList().size(); i++) {
+                SongModel songModel = prepareData.getSongModelList().get(i);
+                RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
+                roundInfoModel.setSongModel(songModel);
+            }
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         } else {
-
-        }
-
-        //TODO test
-        {
-            List<RoundInfoModel> roundingModeList = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                RoundInfoModel roundingMode = new RoundInfoModel(RoundInfoModel.TYPE_GRAB);
-                roundingMode.setRoundSeq(i + 1);
-                SongModel songModel = new SongModel();
-                songModel.setItemName("歌曲" + i);
-                roundingMode.setSongModel(songModel);
-                roundingModeList.add(roundingMode);
+            //TODO test
+            {
+                List<RoundInfoModel> roundingModeList = new ArrayList<>();
+                for (int i = 0; i < 10; i++) {
+                    RoundInfoModel roundingMode = new RoundInfoModel(RoundInfoModel.TYPE_GRAB);
+                    roundingMode.setRoundSeq(i + 1);
+                    SongModel songModel = new SongModel();
+                    songModel.setItemName("歌曲" + i);
+                    roundingMode.setSongModel(songModel);
+                    roundingModeList.add(roundingMode);
+                }
+                List<PlayerInfoModel> playerInfoModelList = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    PlayerInfoModel playerInfoModel = new PlayerInfoModel();
+                    UserInfoModel userInfoModel = new UserInfoModel();
+                    userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+                    userInfoModel.setUserId(1 + i * 2);
+                    userInfoModel.setNickname("用户：" + i);
+                    playerInfoModel.setUserInfo(userInfoModel);
+                    playerInfoModelList.add(playerInfoModel);
+                }
+                mRoomData.setPlayerInfoList(playerInfoModelList);
+                mRoomData.setRoundInfoModelList(roundingModeList);
+                mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             }
-            List<PlayerInfoModel> playerInfoModelList = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                PlayerInfoModel playerInfoModel = new PlayerInfoModel();
-                UserInfoModel userInfoModel = new UserInfoModel();
-                userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
-                userInfoModel.setUserId(1 + i * 2);
-                userInfoModel.setNickname("用户：" + i);
-                playerInfoModel.setUserInfo(userInfoModel);
-                playerInfoModelList.add(playerInfoModel);
-            }
-            mRoomData.setPlayerInfoList(playerInfoModelList);
-            mRoomData.setRoundInfoModelList(roundingModeList);
-            mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
         }
 
         U.getFragmentUtils().addFragment(

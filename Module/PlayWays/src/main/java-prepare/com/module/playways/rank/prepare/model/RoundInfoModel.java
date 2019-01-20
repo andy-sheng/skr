@@ -34,6 +34,7 @@ public class RoundInfoModel implements Serializable {
     private int type = TYPE_RANK;
     private int userID;
     private int playbookID;   //songModelId
+    private SongModel songModel;//本轮次要唱的歌儿的详细信息
     private int roundSeq;
     private int singBeginMs;
     private int singEndMs;
@@ -66,8 +67,6 @@ public class RoundInfoModel implements Serializable {
     private Set<Integer> hasGrabUserSet = new HashSet<>(); //已经抢了的人
 
     private Set<Integer> hasLightOffUserSet = new HashSet<>();//已经灭灯的人
-
-    private SongModel songModel;//本轮次要唱的歌儿的详细信息
 
     public RoundInfoModel(int type) {
         this.type = type;

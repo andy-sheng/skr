@@ -221,7 +221,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         initGiftDisplayView();
         initGrabOpView();
         initSingStageView();
-//        showBattleBegin();
+        showBattleBegin();
 //        showReadyGoView();
 
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
@@ -260,7 +260,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Override
     public void onStart() {
         super.onStart();
-        showBattleBegin();
     }
 
     private void initInputView() {
