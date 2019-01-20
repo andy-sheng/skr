@@ -85,6 +85,11 @@ public class GrabTopContainerView extends RelativeLayout {
         });
     }
 
+    public void setSeqIndex(int seq, int size) {
+        String text = String.format("%s/%s",seq,size);
+        mSongIndexTv.setText(text);
+    }
+
     public void setModeGrab() {
         // 抢唱模式
         mTopContentRv.setModeGrab();
@@ -139,6 +144,7 @@ public class GrabTopContainerView extends RelativeLayout {
 
     void reset() {
     }
+
 
     public interface Listener {
         void closeBtnClick();

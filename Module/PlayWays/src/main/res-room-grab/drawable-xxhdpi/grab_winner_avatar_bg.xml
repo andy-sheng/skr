@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 圆形边框 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"
+    android:useLevel="true">
+
+    <size
+        android:width="@dimen/view_62_dp"
+        android:height="@dimen/view_62_dp" />
+
+    <stroke
+        android:width="@dimen/view_2_dp"
+        android:color="#FFED61" />
+
+</shape>

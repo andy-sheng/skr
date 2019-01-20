@@ -27,6 +27,7 @@ import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
@@ -418,7 +419,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     private void initSingStageView() {
         mOthersSingCardView = mRootView.findViewById(R.id.other_sing_card_view);
-
         mSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
     }
 
@@ -526,7 +526,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
         // 播放3秒导唱
         mCorePresenter.playGuide();
-
+        mTopContainerView.setSeqIndex(seq, mRoomData.getRoundInfoModelList().size());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
@@ -557,6 +557,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Override
     public void singBySelf() {
         mCorePresenter.stopGuide();
+        mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
@@ -577,6 +578,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Override
     public void singByOthers(long uid) {
         mCorePresenter.stopGuide();
+        mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
         mSongInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
