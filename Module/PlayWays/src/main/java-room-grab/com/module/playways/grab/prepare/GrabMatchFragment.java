@@ -360,9 +360,6 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                                 stopTimeTask();
                                 U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                         .setPopFragment(GrabMatchFragment.this)
-                                        .setPopAbove(false)
-                                        .setHasAnimation(true)
-                                        .setNotifyShowFragment(PrepareResFragment.class)
                                         .build());
                             }
                         }
