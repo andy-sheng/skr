@@ -17,10 +17,9 @@ public class GrabTopItemView extends RelativeLayout {
     public static final int MODE_GRAB = 1;
     public static final int MODE_SING = 2;
 
-    ExRelativeLayout mAvatarContainer;
-    BaseImageView mAvatarIv;
+    public CircleAnimationView mCircleAnimationView;
+    public BaseImageView mAvatarIv;
     public ExImageView mFlagIv;
-
 
     int mMode = MODE_GRAB;
 
@@ -41,7 +40,7 @@ public class GrabTopItemView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_top_view_holder_layout, this);
-        mAvatarContainer = (ExRelativeLayout) this.findViewById(R.id.avatar_container);
+        mCircleAnimationView = (CircleAnimationView) this.findViewById(R.id.circle_animation_view);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
     }
@@ -63,9 +62,9 @@ public class GrabTopItemView extends RelativeLayout {
         );
     }
 
-    public void reset(){
+    public void reset() {
         mFlagIv.setVisibility(GONE);
-        mAvatarContainer.setBackground(null);
+//        mCircleAnimationView.setVisibility(GONE);
     }
 
     public void setGrap(boolean grap) {
@@ -87,6 +86,6 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void setGetSingChance() {
-        mAvatarContainer.setBackgroundResource(R.drawable.grab_winner_avatar_bg);
+        mCircleAnimationView.setVisibility(VISIBLE);
     }
 }

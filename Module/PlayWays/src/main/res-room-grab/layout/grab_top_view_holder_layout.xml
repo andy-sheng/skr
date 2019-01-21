@@ -2,26 +2,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.common.view.ex.ExRelativeLayout
-        android:id="@+id/avatar_container"
-        android:layout_width="@dimen/view_45_dp"
-        android:layout_height="@dimen/view_45_dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/grab_winner_avatar_bg">
+    <com.module.playways.grab.room.top.CircleAnimationView
+        android:id="@+id/circle_animation_view"
+        android:layout_width="@dimen/view_55_dp"
+        android:layout_height="@dimen/view_55_dp"
+        android:layout_centerInParent="true" />
 
-        <com.common.image.fresco.BaseImageView
-            android:id="@+id/avatar_iv"
-            android:layout_width="@dimen/view_40_dp"
-            android:layout_height="@dimen/view_40_dp"
-            android:layout_centerInParent="true" />
-
-    </com.common.view.ex.ExRelativeLayout>
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_centerInParent="true" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/flag_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/avatar_container"
+        android:layout_below="@+id/avatar_iv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-10dp"
         android:src="@drawable/xiangchang_flag" />
