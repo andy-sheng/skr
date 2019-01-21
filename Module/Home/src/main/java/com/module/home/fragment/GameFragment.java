@@ -162,7 +162,6 @@ public class GameFragment extends BaseFragment {
                             .withBoolean("selectSong", true)
                             .navigation();
                 } else if (view.getId() == R.id.iv_grab_game) {
-                    // TODO: 2019/1/15 暂时屏蔽一唱到底入口
                     if (MyLog.isDebugLogOpen()) {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                                 .withInt("key_game_type", GameModeType.GAME_MODE_GRAB)
