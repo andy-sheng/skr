@@ -162,6 +162,12 @@ public class GrabResultFragment extends BaseFragment {
         }
     }
 
+    @Override
+    protected boolean onBackPressed() {
+        getActivity().finish();
+        return super.onBackPressed();
+    }
+
     private Drawable getNumDrawable(int num) {
         Drawable drawable = null;
         switch (num) {
