@@ -138,7 +138,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                 mVsSvga.setVisibility(View.VISIBLE);
                 mVsSvga.startAnimation();
             }
-        }, 800);
+        }, 1200);
     }
 
     private void loadIcon(SimpleDraweeView simpleDraweeView, boolean isGray, String avatar) {
@@ -169,16 +169,22 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
     private void playScaleAnim(View simpleDraweeView, long delay){
         AnimatorSet animatorSet = new AnimatorSet();//组合动画
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 0.7f, 1.0f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 0.7f, 1.0f);
-        scaleX.setInterpolator(new OvershootInterpolator(1));
-        scaleY.setInterpolator(new OvershootInterpolator(1));
-        scaleX.setDuration(300);
-        scaleY.setDuration(300);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(simpleDraweeView, "alpha", 0.7f, 1.0f);
-        alpha.setDuration(300);
-        animatorSet.play(scaleX).with(scaleY).with(alpha);
-        animatorSet.setStartDelay(delay);
+        ObjectAnimator scaleXPre = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 1.0f, 0.5f);
+        ObjectAnimator scaleYPre = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 1.0f, 0.5f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 0.5f, 1.0f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 0.5f, 1.0f);
+        scaleX.setInterpolator(new OvershootInterpolator(2));
+        scaleY.setInterpolator(new OvershootInterpolator(2));
+        scaleX.setDuration(500);
+        scaleY.setDuration(500);
+        scaleX.setStartDelay(delay);
+        scaleY.setStartDelay(delay);
+        scaleXPre.setDuration(0);
+        scaleYPre.setDuration(0);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(simpleDraweeView, "alpha", 0.5f, 1.0f);
+        alpha.setDuration(500);
+        alpha.setStartDelay(delay);
+        animatorSet.play(scaleX).with(scaleY).with(alpha).with(scaleXPre).with(scaleYPre);
         animatorSet.start();
     }
 
