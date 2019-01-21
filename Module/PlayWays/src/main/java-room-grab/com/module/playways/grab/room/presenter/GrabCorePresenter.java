@@ -449,7 +449,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, msg);
 
                     if (currentInfo == null) {
-                        onGameOver("syncGameStatus", gameOverTimeMs,null);
+                        onGameOver("syncGameStatus", gameOverTimeMs, null);
                         return;
                     }
 
@@ -487,7 +487,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (gameOverTimeMs > mRoomData.getGameStartTs()) {
                 MyLog.w(TAG, "gameOverTimeMs ！= 0 游戏应该结束了");
                 // 游戏结束了
-                onGameOver("sync", gameOverTimeMs,null);
+                onGameOver("sync", gameOverTimeMs, null);
             } else {
                 MyLog.w(TAG, "服务器结束时间不合法 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
             }
@@ -676,7 +676,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundOverMsgEvent event) {
-        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push event:"+event);
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push event:" + event);
         if (mRoomData.getLastSyncTs() >= event.getInfo().getTimeMs()) {
             MyLog.w(TAG, "但是是个旧数据");
             return;
@@ -701,7 +701,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.roundInfoModel, true);
         }
-        onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs,event.resultInfo);
+        onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs, event.resultInfo);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -714,7 +714,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "游戏结束 gameOverTs=" + gameOverTs + " from:" + from);
         if (gameOverTs > mRoomData.getGameStartTs() && gameOverTs > mRoomData.getGameOverTs()) {
             cancelSyncGameStateTask();
-            if(grabResultInfoModels!=null) {
+            if (grabResultInfoModels != null && grabResultInfoModels.size() > 0) {
                 mRoomData.setResultList(grabResultInfoModels);
             }
             mRoomData.setGameOverTs(gameOverTs);
