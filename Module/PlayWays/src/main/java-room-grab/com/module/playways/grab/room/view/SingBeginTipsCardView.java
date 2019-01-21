@@ -1,12 +1,16 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.view.ex.ExTextView;
+import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -15,8 +19,6 @@ import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.live.proto.Common.UserInfo;
-import com.zq.live.proto.Room.PlayerInfo;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,9 +54,9 @@ public class SingBeginTipsCardView extends RelativeLayout {
     public void bindData(UserInfoModel info, SVGAListener listener) {
         setVisibility(VISIBLE);
         SVGAParser parser = new SVGAParser(getContext());
-        String assetsName = "sing_yourself.svga";
+        String assetsName = "sing_self_chance.svga";
         if (info.getUserId() != MyUserInfoManager.getInstance().getUid()) {
-            assetsName = "sing_yourself.svga";
+            assetsName = "sing_other_chance.svga";
         }
         mSingBeginSvga.setVisibility(VISIBLE);
         try {
@@ -111,7 +113,13 @@ public class SingBeginTipsCardView extends RelativeLayout {
             dynamicEntity.setDynamicImage(userInfoModel.getAvatar(), "avatar");
         } else {
             // 填入名字和头像
+            TextPaint textPaint = new TextPaint();
+            textPaint.setColor(Color.parseColor("#0C2275"));
+            textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+            textPaint.setTextAlign(Paint.Align.LEFT);
+            textPaint.setTextSize(U.getDisplayUtils().dip2px(24));
             dynamicEntity.setDynamicImage(userInfoModel.getAvatar(), "avatar");
+            dynamicEntity.setDynamicText(userInfoModel.getNickname(), textPaint, "name");
         }
         return dynamicEntity;
     }

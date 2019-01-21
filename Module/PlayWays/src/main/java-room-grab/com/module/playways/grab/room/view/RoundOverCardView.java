@@ -92,7 +92,7 @@ public class RoundOverCardView extends RelativeLayout {
         if (reason == EQRoundOverReason.ROR_NO_ONE_SING.getValue()) {
             return NONE_SING_END;
         } else {
-          return resultType;
+            return resultType;
         }
     }
 
@@ -152,10 +152,57 @@ public class RoundOverCardView extends RelativeLayout {
 
     // 优秀, 目前缺动画
     private void startPerfect(SVGAListener listener) {
-        if (listener != null) {
-            listener.onFinished();
+        mSingResultSvga.setVisibility(VISIBLE);
+        mSingResultSvga.setLoops(1);
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("sing_sucess_end.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mSingResultSvga.setImageDrawable(drawable);
+                    mSingResultSvga.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
         }
 
+        mSingResultSvga.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (mSingResultSvga != null) {
+                    mSingResultSvga.stopAnimation(true);
+                    mSingResultSvga.setVisibility(GONE);
+                }
+
+                if (listener != null) {
+                    listener.onFinished();
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mSingResultSvga != null && mSingResultSvga.isAnimating()) {
+                    mSingResultSvga.stopAnimation(false);
+                }
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
     }
 
     // 不够优秀，换字即可，目前缺动画
