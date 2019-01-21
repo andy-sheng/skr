@@ -9,7 +9,7 @@
         android:id="@+id/first_svga"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_355_dp"
-        android:layout_marginTop="@dimen/view_50_dp"
+        android:layout_marginTop="@dimen/view_60_dp"
         android:visibility="gone"
         app:antiAlias="true"
         app:autoPlay="false" />

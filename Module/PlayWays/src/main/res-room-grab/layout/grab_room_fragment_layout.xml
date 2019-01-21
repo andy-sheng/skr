@@ -84,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_130_dp"
+        android:layout_marginTop="@dimen/view_110_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.SingBeginTipsCardView
@@ -100,7 +100,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_130_dp"
         android:visibility="gone" />
 
     <!--转场卡片结束-->

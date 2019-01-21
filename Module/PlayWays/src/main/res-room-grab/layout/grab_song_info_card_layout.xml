@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/song_cover"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="《还有什么可以送给你》"
         android:textColor="@color/white"
@@ -31,10 +31,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/song_name_tv"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="陈奕迅"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/baiban_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/song_cover"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ziji_baibanzi"
         android:visibility="gone" />
 </merge>

@@ -14,6 +14,7 @@ import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 
 import com.module.playways.rank.song.model.SongModel;
@@ -36,6 +37,7 @@ public class SongInfoCardView extends RelativeLayout {
     SVGAImageView mSongCover;
     ExTextView mSongNameTv;
     ExTextView mSongOwnerTv;
+    ExImageView mBaibanIv;
 
     public SongInfoCardView(Context context) {
         super(context);
@@ -57,6 +59,8 @@ public class SongInfoCardView extends RelativeLayout {
         mSongCover = (SVGAImageView) findViewById(R.id.song_cover);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
         mSongOwnerTv = (ExTextView) findViewById(R.id.song_owner_tv);
+        mBaibanIv = (ExImageView) findViewById(R.id.baiban_iv);
+
     }
 
     // 该动画需要循环播放
@@ -70,11 +74,19 @@ public class SongInfoCardView extends RelativeLayout {
         animator.setDuration(200);
         animator.start();
 
-        mSongNameTv.setText(songModel.getItemName());
-        mSongOwnerTv.setText(songModel.getOwner());
+        if (songModel.isIsblank()) {
+            mSongNameTv.setVisibility(GONE);
+            mSongOwnerTv.setVisibility(GONE);
+            mBaibanIv.setVisibility(VISIBLE);
+        } else {
+            mSongNameTv.setVisibility(VISIBLE);
+            mSongOwnerTv.setVisibility(VISIBLE);
+            mBaibanIv.setVisibility(GONE);
+            mSongNameTv.setText(songModel.getItemName());
+            mSongOwnerTv.setText(songModel.getOwner());
+        }
+
         mSongCover.setVisibility(VISIBLE);
-        mSongNameTv.setVisibility(VISIBLE);
-        mSongOwnerTv.setVisibility(VISIBLE);
         mSongCover.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());
         try {

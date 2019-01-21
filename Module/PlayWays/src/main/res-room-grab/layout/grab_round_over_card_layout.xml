@@ -17,6 +17,7 @@
         android:id="@+id/sing_result_svga"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_180_dp"
+        android:layout_marginTop="@dimen/view_120_dp"
         android:visibility="gone"
         app:antiAlias="true"
         app:autoPlay="false" />
