@@ -10,28 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/tv_ready_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/iv_prepare"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/view_16_dp"
-            android:background="@drawable/miedeng_daojishi_beijingban"
-            android:gravity="center"
-            android:text="10s"
-            android:textColor="#0C2275"
-            android:textSize="@dimen/textsize_24_dp"
-            android:textStyle="bold"
-            android:visibility="invisible" />
-
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_prepare"
             android:layout_width="@dimen/view_206_dp"
             android:layout_height="@dimen/view_54_dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/view_70_dp"
+            android:layout_marginBottom="@dimen/view_39_dp"
             android:background="@drawable/btn_pipeichenggong_normal" />
     </RelativeLayout>
 
@@ -48,9 +33,7 @@
         android:visibility="visible"
         android:layout_width="@dimen/view_341_dp"
         android:layout_height="@dimen/view_331_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_155_dp"
+        android:layout_centerInParent="true"
         android:clipChildren="false">
         <ImageView
             android:layout_marginTop="@dimen/view_28_dp"
@@ -186,7 +169,30 @@
         app:loopCount="1"
         app:source="grab_match_success_vs.svga" />
 
+    <ImageView
+        android:background="@drawable/pipeichenggong_head"
+        android:id="@+id/iv_top_bg"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/view_219_dp"
+        android:layout_height="@dimen/view_127_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/view_24_dp"
+        android:layout_alignBottom="@id/iv_top_bg"
+        android:id="@+id/tv_ready_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="10s"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_24_dp"
+        />
+
     <com.opensource.svgaplayer.SVGAImageView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_250_dp"
         android:layout_marginTop="-102dp"
