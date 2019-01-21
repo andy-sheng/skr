@@ -1,12 +1,14 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.utils.HandlerTaskTimer;
-import com.common.view.ex.ExTextView;
+import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.module.rank.R;
 
 /**
@@ -23,7 +25,7 @@ public class GrabOpView extends RelativeLayout {
 
     int mStatus;
 
-    public ExTextView mDescTv;
+    public ExImageView mDescTv;
     Listener mListener;
 
     public GrabOpView(Context context) {
@@ -43,7 +45,7 @@ public class GrabOpView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_op_view_layout, this);
-        mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
+        mDescTv = (ExImageView) this.findViewById(R.id.iv_text);
         mRrlProgress = (RoundRectangleView) findViewById(R.id.rrl_progress);
         mDescTv.setOnClickListener(new OnClickListener() {
             @Override
@@ -75,15 +77,19 @@ public class GrabOpView extends RelativeLayout {
                     @Override
                     public void onNext(Integer integer) {
                         int num1 = num - integer;
+                        Drawable drawable = null;
                         switch (num1) {
                             case 3:
+                                drawable = U.getDrawable(R.drawable.zhanji_3);
                                 break;
                             case 2:
+                                drawable = U.getDrawable(R.drawable.zhanji_2);
                                 break;
                             case 1:
+                                drawable = U.getDrawable(R.drawable.zhanji_1);
                                 break;
                         }
-                        mDescTv.setText(num1 + "");
+                        mDescTv.setImageDrawable(drawable);
 //                        mGrabOpBtn.setBackgroundResource(R.drawable.yanchangjiemian_dabian);
                     }
 
@@ -95,7 +101,7 @@ public class GrabOpView extends RelativeLayout {
                         }
                         // 按钮变成抢唱，且可点击
                         mDescTv.setClickable(true);
-                        mDescTv.setText("抢");
+                        mDescTv.setImageDrawable(U.getDrawable(R.drawable.daojishizi_0));
                         mRrlProgress.startCountDown(30000);
                         mStatus = STATUS_GRAP;
                     }
