@@ -309,7 +309,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(ScoreDetailChangeEvent scoreDetailChangeEvent) {
         mLevelView.bindData(scoreDetailChangeEvent.level, scoreDetailChangeEvent.subLevel,
-                scoreDetailChangeEvent.totalStats, scoreDetailChangeEvent.selecStats, U.getDisplayUtils().dip2px(108));
+                scoreDetailChangeEvent.totalStats, scoreDetailChangeEvent.selecStats);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -406,7 +406,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 starLimit = userLevelModel.getScore();
             }
         }
-        mLevelView.bindData(rank, subRank, starLimit, starNum, U.getDisplayUtils().dip2px(108));
+        mLevelView.bindData(rank, subRank, starLimit, starNum);
     }
 
     @Override

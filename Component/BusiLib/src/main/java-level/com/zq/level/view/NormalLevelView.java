@@ -1,7 +1,9 @@
 package com.zq.level.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -30,14 +32,15 @@ public class NormalLevelView extends RelativeLayout {
 
     public final static String TAG = "NormalLevelView";
 
-    int starTotalWidth = U.getDisplayUtils().dip2px(100);   // 星星的横向排列的长度
-    int starTotalHeight;    //  星星的纵向排列的高度,每增加一颗星星就加6dp
-
-    int widthStar = U.getDisplayUtils().dip2px(18); //普通星星的宽度
-    int heightStar = U.getDisplayUtils().dip2px(18); //普通星星的长度
-
-    int largeStarWidth = U.getDisplayUtils().dip2px(20); //星星的宽度
-    int largeStarHeight = U.getDisplayUtils().dip2px(20); //星星的长度
+    int mainWidth = U.getDisplayUtils().dip2px(99);  // 主段位宽度
+    int mainHeight = U.getDisplayUtils().dip2px(86); // 主段位高度
+    int subWidth = U.getDisplayUtils().dip2px(15);   // 子段位宽度
+    int subHeight = U.getDisplayUtils().dip2px(15);  // 子段位高度
+    int normalStar = U.getDisplayUtils().dip2px(18); // 正常星星的大小
+    int largeStar = U.getDisplayUtils().dip2px(20);  // 大星星的大小
+    int starDiffH = U.getDisplayUtils().dip2px(6);   // 相邻两颗星星高度差
+    int starTotalWidth = U.getDisplayUtils().dip2px(100);  // 所有星星高度总长度
+    int starTotalHeight = 0;
 
     ImageView mLevelIv; // 大段位
     ImageView mSubLeveIv;  // 子段位
@@ -54,20 +57,32 @@ public class NormalLevelView extends RelativeLayout {
 
     public NormalLevelView(Context context) {
         super(context);
-        init();
+        init(context, null);
     }
 
     public NormalLevelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs);
     }
 
     public NormalLevelView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context, attrs);
     }
 
-    private void init() {
+    private void init(Context context, AttributeSet attrs) {
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.levelView);
+        mainWidth = typedArray.getDimensionPixelSize(R.styleable.levelView_mainWidth, U.getDisplayUtils().dip2px(99));
+        mainHeight = typedArray.getDimensionPixelSize(R.styleable.levelView_mainHeight, U.getDisplayUtils().dip2px(86));
+        subWidth = typedArray.getDimensionPixelSize(R.styleable.levelView_subWidth, U.getDisplayUtils().dip2px(15));
+        subHeight = typedArray.getDimensionPixelSize(R.styleable.levelView_subHeight, U.getDisplayUtils().dip2px(15));
+        normalStar = typedArray.getDimensionPixelSize(R.styleable.levelView_normalStar, U.getDisplayUtils().dip2px(18));
+        largeStar = typedArray.getDimensionPixelSize(R.styleable.levelView_largeStar, U.getDisplayUtils().dip2px(20));
+        starDiffH = typedArray.getDimensionPixelSize(R.styleable.levelView_starDiffH, U.getDisplayUtils().dip2px(6));
+        starTotalWidth = typedArray.getDimensionPixelSize(R.styleable.levelView_starTotalWidth, U.getDisplayUtils().dip2px(100));
+        typedArray.recycle();
+
         inflate(getContext(), R.layout.normal_level_view_layout, this);
         mLevelIv = (ImageView) this.findViewById(R.id.level_iv);
         mSubLeveIv = (ImageView) this.findViewById(R.id.sub_leve_iv);
@@ -76,24 +91,27 @@ public class NormalLevelView extends RelativeLayout {
     }
 
     public void bindData(int level, int subLevel, int totalStats, int selecStats) {
-        bindData(level, subLevel, totalStats, selecStats, starTotalWidth);
-    }
-
-    public void bindData(int level, int subLevel, int totalStats, int selecStats, int starTotalWidth) {
         this.level = level;
         this.subLevel = subLevel;
         this.totalStats = totalStats;
         this.selecStats = selecStats;
-        this.starTotalWidth = starTotalWidth;
-        starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
+        starTotalHeight = totalStats * starDiffH;
 
         // 主段位
         if (LevelConfigUtils.getImageResoucesLevel(level) != 0) {
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(mainWidth, mainHeight);
+            params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            mLevelIv.setLayoutParams(params);
             mLevelIv.setImageResource(LevelConfigUtils.getImageResoucesLevel(level));
         }
 
         // 子段位
         if (LevelConfigUtils.getImageResoucesSubLevel(level, subLevel) != 0) {
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(subWidth, subHeight);
+            params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            params.addRule(RelativeLayout.ALIGN_BOTTOM, mLevelIv.getId());
+            params.setMargins(0, 0, 0, U.getDisplayUtils().dip2px(1));
+            mSubLeveIv.setLayoutParams(params);
             mSubLeveIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
         }
 
@@ -121,7 +139,8 @@ public class NormalLevelView extends RelativeLayout {
         if (totalStats == 0 || totalStats > 6) {
             mStarTv.setVisibility(VISIBLE);
             mStarTv.setText("x" + selecStats);
-            mStarTv.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang), null, null, null);
+            Drawable left = ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang);
+            mStarTv.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
             return;
         }
 
@@ -129,7 +148,7 @@ public class NormalLevelView extends RelativeLayout {
             MyLog.e(TAG, "bindStarData" + " level=" + level + " subLevel=" + subLevel + " totalStats=" + totalStats + " selecStats=" + selecStats);
             return;
         }
-        
+
         mStarTv.setVisibility(GONE);
 
         float widDis = starTotalWidth / (totalStats + 1); //横向间距
@@ -146,14 +165,14 @@ public class NormalLevelView extends RelativeLayout {
             // 左边的星星
             ImageView imageView1 = new ImageView(getContext());
             RelativeLayout.LayoutParams rl1;
-            int left = (int) (widDis * (i + 1) - widthStar / 2);
+            int left = (int) (widDis * (i + 1) - normalStar / 2);
             int bottom = Math.abs(starTotalHeight / 2 - (int) (highDis * i));
             if (totalStats % 2 != 0 && i == totalStats / 2) {
-                rl1 = new RelativeLayout.LayoutParams(largeStarWidth, largeStarHeight);
-                left = left - (largeStarWidth - widthStar) / 2;
+                rl1 = new RelativeLayout.LayoutParams(largeStar, largeStar);
+                left = left - (largeStar - normalStar) / 2;
                 rl1.setMargins(left, 0, 0, bottom);
             } else {
-                rl1 = new RelativeLayout.LayoutParams(widthStar, heightStar);
+                rl1 = new RelativeLayout.LayoutParams(normalStar, normalStar);
                 rl1.setMargins(left, 0, 0, bottom);
             }
             rl1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -174,7 +193,7 @@ public class NormalLevelView extends RelativeLayout {
             // 与左边对称的星星
             ImageView imageView2 = new ImageView(getContext());
             RelativeLayout.LayoutParams rl2;
-            rl2 = new RelativeLayout.LayoutParams(widthStar, heightStar);
+            rl2 = new RelativeLayout.LayoutParams(normalStar, normalStar);
             rl2.setMargins(0, 0, left, bottom);
             rl2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             rl2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);

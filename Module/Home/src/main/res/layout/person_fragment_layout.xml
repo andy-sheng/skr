@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:levelView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/person_main_containner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -177,7 +178,8 @@
             android:layout_height="@dimen/view_108_dp"
             android:layout_marginLeft="@dimen/view_16_dp"
             android:layout_marginTop="@dimen/view_22_dp"
-            android:layout_marginBottom="@dimen/textsize_18_dp"></com.zq.level.view.NormalLevelView>
+            android:layout_marginBottom="@dimen/textsize_18_dp"
+            levelView:starTotalWidth="@dimen/view_108_dp"></com.zq.level.view.NormalLevelView>
 
         <com.common.view.ex.ExTextView
             android:id="@+id/rank_tv"

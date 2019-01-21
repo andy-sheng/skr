@@ -33,8 +33,8 @@ public class DrawableFactory {
         return (StateListDrawable) new PressDrawableCreator(drawable, typedArray, pressTa).create();
     }
 
-       //获取SRC selector属性的drawable
-               public static StateListDrawable getSrcSelectorDrawable(TypedArray selectorTa) throws Exception {
-              return (StateListDrawable) new SrcSlecterDrawableCreater(selectorTa).create();
-                }
+    //获取SRC selector属性的drawable
+    public static StateListDrawable getSrcSelectorDrawable(TypedArray selectorTa) throws Exception {
+        return (StateListDrawable) new SrcSlecterDrawableCreater(selectorTa).create();
+    }
 }

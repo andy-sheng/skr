@@ -264,7 +264,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                 starLimit = userLevelModel.getScore();
             }
         }
-        mLevelView.bindData(rank, subRank, starLimit, starNum, U.getDisplayUtils().dip2px(114));
+        mLevelView.bindData(rank, subRank, starLimit, starNum);
     }
 
     @Override

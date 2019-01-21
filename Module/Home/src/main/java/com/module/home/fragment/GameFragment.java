@@ -121,9 +121,7 @@ public class GameFragment extends BaseFragment {
                                 mStarLimit = userLevelModel.getScore();
                             }
                         }
-                        mLevelView.bindData(mRank, mSubRank, mStarLimit, mStarNum, U.getDisplayUtils().dip2px(100));
-                        mLevelView.setScaleX(0.8f);
-                        mLevelView.setScaleY(0.8f);
+                        mLevelView.bindData(mRank, mSubRank, mStarLimit, mStarNum);
                     }
                 }
             });
@@ -204,7 +202,7 @@ public class GameFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(ScoreDetailChangeEvent scoreDetailChangeEvent) {
         mLevelView.bindData(scoreDetailChangeEvent.level, scoreDetailChangeEvent.subLevel,
-                scoreDetailChangeEvent.totalStats, scoreDetailChangeEvent.selecStats, U.getDisplayUtils().dip2px(100));
+                scoreDetailChangeEvent.totalStats, scoreDetailChangeEvent.selecStats);
     }
 
     @Override
