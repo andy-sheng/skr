@@ -7,6 +7,9 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.common.image.model.HttpImage;
@@ -39,6 +42,9 @@ public class SongInfoCardView extends RelativeLayout {
     ExTextView mSongOwnerTv;
     ExImageView mBaibanIv;
 
+    AlphaAnimation mAlphaAnimation; // 渐入的入场动画
+    TranslateAnimation mTranslateAnimation; // 飞出的离场动画
+
     public SongInfoCardView(Context context) {
         super(context);
         init();
@@ -68,11 +74,14 @@ public class SongInfoCardView extends RelativeLayout {
         if (songModel == null || TextUtils.isEmpty(songModel.getCover())) {
             return;
         }
+
         setVisibility(VISIBLE);
         // 淡入效果
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.ALPHA, 0f, 1f);
-        animator.setDuration(200);
-        animator.start();
+        if (mAlphaAnimation == null) {
+            mAlphaAnimation = new AlphaAnimation(0f, 1f);
+            mAlphaAnimation.setDuration(200);
+        }
+        this.startAnimation(mAlphaAnimation);
 
         if (songModel.isIsblank()) {
             mSongNameTv.setVisibility(GONE);
@@ -126,31 +135,29 @@ public class SongInfoCardView extends RelativeLayout {
 
     public void hide() {
         if (this != null && this.getVisibility() == VISIBLE) {
-            ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
-            animator.setDuration(200);
-            animator.start();
-            animator.addListener(new Animator.AnimatorListener() {
+            if (mTranslateAnimation == null) {
+                mTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+                mTranslateAnimation.setDuration(200);
+            }
+
+            this.startAnimation(mTranslateAnimation);
+            mTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animator animator) {
+                public void onAnimationStart(Animation animation) {
 
                 }
 
                 @Override
-                public void onAnimationEnd(Animator animator) {
+                public void onAnimationEnd(Animation animation) {
                     if (mSongCover != null) {
                         mSongCover.stopAnimation(false);
                     }
+                    clearAnimation();
                     setVisibility(GONE);
-                    setTranslationX(0);
                 }
 
                 @Override
-                public void onAnimationCancel(Animator animator) {
-                    onAnimationEnd(animator);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
+                public void onAnimationRepeat(Animation animation) {
 
                 }
             });
@@ -159,7 +166,7 @@ public class SongInfoCardView extends RelativeLayout {
                 mSongCover.stopAnimation(false);
             }
             setVisibility(GONE);
-            setTranslationX(0);
+            clearAnimation();
         }
     }
 

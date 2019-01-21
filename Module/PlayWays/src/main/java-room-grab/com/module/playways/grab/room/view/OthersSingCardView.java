@@ -6,6 +6,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.common.utils.U;
@@ -25,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 public class OthersSingCardView extends RelativeLayout {
 
     SVGAImageView mOtherBgSvga;
+
+    TranslateAnimation mEnterAnimation;   // 进场动画
+    TranslateAnimation mLeaveAnimation;   // 出场动画
 
     public OthersSingCardView(Context context) {
         super(context);
@@ -49,9 +54,11 @@ public class OthersSingCardView extends RelativeLayout {
     public void bindData(String avatar) {
         setVisibility(VISIBLE);
         // 平移动画
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -U.getDisplayUtils().getScreenWidth(), 0);
-        animator.setDuration(200);
-        animator.start();
+        if (mEnterAnimation == null) {
+            mEnterAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0F, 0F, 0F);
+            mEnterAnimation.setDuration(200);
+        }
+        this.startAnimation(mEnterAnimation);
 
         mOtherBgSvga.setVisibility(VISIBLE);
         mOtherBgSvga.setLoops(0);
@@ -77,32 +84,28 @@ public class OthersSingCardView extends RelativeLayout {
 
     public void hide() {
         if (this != null && this.getVisibility() == VISIBLE) {
-            ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
-            animator.setDuration(200);
-            animator.start();
-
-            animator.addListener(new Animator.AnimatorListener() {
+            if (mLeaveAnimation == null) {
+                mLeaveAnimation = new TranslateAnimation(0F, U.getDisplayUtils().getScreenWidth(), 0F, 0F);
+                mLeaveAnimation.setDuration(200);
+            }
+            this.startAnimation(mLeaveAnimation);
+            mLeaveAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animator animator) {
+                public void onAnimationStart(Animation animation) {
 
                 }
 
                 @Override
-                public void onAnimationEnd(Animator animator) {
+                public void onAnimationEnd(Animation animation) {
                     if (mOtherBgSvga != null) {
                         mOtherBgSvga.stopAnimation(false);
                     }
                     setVisibility(GONE);
-                    setTranslationX(0);
+                    clearAnimation();
                 }
 
                 @Override
-                public void onAnimationCancel(Animator animator) {
-                    onAnimationEnd(animator);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
+                public void onAnimationRepeat(Animation animation) {
 
                 }
             });
@@ -111,7 +114,7 @@ public class OthersSingCardView extends RelativeLayout {
                 mOtherBgSvga.stopAnimation(false);
             }
             setVisibility(GONE);
-            setTranslationX(0);
+            clearAnimation();
         }
     }
 

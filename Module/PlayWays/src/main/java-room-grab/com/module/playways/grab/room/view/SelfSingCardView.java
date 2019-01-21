@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -83,6 +85,9 @@ public class SelfSingCardView extends RelativeLayout {
     Disposable mDisposable;
 
     Handler mHandler = new Handler();
+
+    TranslateAnimation mEnterAnimation;   // 进场动画
+    TranslateAnimation mLeaveAnimation;   // 出场动画
 
     public SelfSingCardView(Context context) {
         super(context);
@@ -276,9 +281,11 @@ public class SelfSingCardView extends RelativeLayout {
     public void playLyric(SongModel songModel, boolean play) {
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
         // 平移动画
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -U.getDisplayUtils().getScreenWidth(), 0);
-        animator.setDuration(200);
-        animator.start();
+        if (mEnterAnimation == null) {
+            mEnterAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0F, 0F, 0F);
+            mEnterAnimation.setDuration(200);
+        }
+        this.startAnimation(mEnterAnimation);
 
         mTvLyric.setText("");
         mHandler.removeCallbacksAndMessages(null);
@@ -435,32 +442,28 @@ public class SelfSingCardView extends RelativeLayout {
 
     public void hide() {
         if (this != null && this.getVisibility() == VISIBLE) {
-            ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
-            animator.setDuration(200);
-            animator.start();
-
-            animator.addListener(new Animator.AnimatorListener() {
+            if (mLeaveAnimation == null) {
+                mLeaveAnimation = new TranslateAnimation(0F, U.getDisplayUtils().getScreenWidth(), 0F, 0F);
+                mLeaveAnimation.setDuration(200);
+            }
+            this.startAnimation(mLeaveAnimation);
+            mLeaveAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animator animator) {
+                public void onAnimationStart(Animation animation) {
 
                 }
 
                 @Override
-                public void onAnimationEnd(Animator animator) {
+                public void onAnimationEnd(Animation animation) {
                     if (mSingBgSvga != null) {
                         mSingBgSvga.stopAnimation(false);
                     }
                     setVisibility(GONE);
-                    setTranslationX(0);
+                    clearAnimation();
                 }
 
                 @Override
-                public void onAnimationCancel(Animator animator) {
-                    onAnimationEnd(animator);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
+                public void onAnimationRepeat(Animation animation) {
 
                 }
             });
@@ -469,7 +472,7 @@ public class SelfSingCardView extends RelativeLayout {
                 mSingBgSvga.stopAnimation(false);
             }
             setVisibility(GONE);
-            setTranslationX(0);
+            clearAnimation();
         }
     }
 }
