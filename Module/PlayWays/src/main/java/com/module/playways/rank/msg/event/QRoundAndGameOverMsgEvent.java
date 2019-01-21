@@ -2,6 +2,7 @@
 // Source file: Room.proto
 package com.module.playways.rank.msg.event;
 
+import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.zq.live.proto.Room.EQRoundOverReason;
@@ -9,6 +10,7 @@ import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.QResultInfo;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class QRoundAndGameOverMsgEvent {
@@ -28,14 +30,16 @@ public final class QRoundAndGameOverMsgEvent {
     /**
      * 最终结果信息
      */
-    //TODO 自定义一个 MODEL 存起来啊
-    public List<QResultInfo> resultInfo;
+    public List<GrabResultInfoModel> resultInfo;
 
     public QRoundAndGameOverMsgEvent(BasePushInfo info, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundAndGameOverMsg.getRoundOverTimeMs();
         this.roundInfoModel = RoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
-        this.resultInfo = qRoundAndGameOverMsg.getResultInfoList();
+        resultInfo = new ArrayList<>();
+        for(QResultInfo qResultInfo:qRoundAndGameOverMsg.getResultInfoList()){
+            resultInfo.add(GrabResultInfoModel.parse(qResultInfo));
+        }
     }
 
     public BasePushInfo getInfo() {
@@ -50,7 +54,7 @@ public final class QRoundAndGameOverMsgEvent {
         return roundInfoModel;
     }
 
-    public List<QResultInfo> getResultInfo() {
+    public List<GrabResultInfoModel> getResultInfo() {
         return resultInfo;
     }
 }

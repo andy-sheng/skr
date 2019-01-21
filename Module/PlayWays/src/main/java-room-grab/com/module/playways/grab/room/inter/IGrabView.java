@@ -48,12 +48,5 @@ public interface IGrabView {
 
     void gameFinish();
 
-    /**
-     * 战绩界面
-     */
-    void showRecordView(RecordData recordData);
-
-    // 主舞台离开（开始主舞台消失动画）
-    void hideMainStage();
 
 }

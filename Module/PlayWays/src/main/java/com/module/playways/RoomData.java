@@ -5,6 +5,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
+import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
@@ -70,6 +71,8 @@ public class RoomData implements Serializable {
     private List<PlayerInfoModel> mPlayerInfoList;//选手信息
 
     private volatile boolean mIsGameFinish = false;
+
+    private List<GrabResultInfoModel> mResultList; // 一唱到底对战结果数据
 
     /**
      * 检查轮次信息是否需要更新
@@ -281,6 +284,14 @@ public class RoomData implements Serializable {
         return -1;
     }
 
+    public void setResultList(List<GrabResultInfoModel> resultList) {
+        mResultList = resultList;
+    }
+
+    public List<GrabResultInfoModel> getResultList() {
+        return mResultList;
+    }
+
     @Override
     public String toString() {
         return "RoomData{" +
@@ -301,4 +312,5 @@ public class RoomData implements Serializable {
                 ", mIsGameFinish=" + mIsGameFinish +
                 '}';
     }
+
 }

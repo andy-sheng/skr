@@ -113,8 +113,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     DialogPlus mQuitTipsDialog;
 
-    Disposable mPrepareLyricTask;
-
     TurnInfoCardView mTurnInfoCardView; //歌曲次序 以及 对战开始卡片
 
     SongInfoCardView mSongInfoCardView; // 歌曲信息卡片
@@ -136,8 +134,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
 
     SVGAParser mSVGAParser;
-
-    AnimatorSet mGameEndAnimation;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -657,9 +653,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mUiHanlder.removeCallbacksAndMessages(null);
 
         isGameEndAniamtionShow = false;
-        if (mGameEndAnimation != null) {
-            mGameEndAnimation.cancel();
-        }
 
         if (mAnimatorList != null) {
             for (Animator animator : mAnimatorList) {
@@ -724,77 +717,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mQuitTipsDialog.show();
     }
 
-
-    /**
-     * 保证在主线程
-     */
-//    @Override
-    public void startRivalCountdown(int uid, String avatar) {
-        // 加保护，确保当前主舞台一定被移除
-
-    }
-
-
-    @Override
-    public void showRecordView(RecordData recordData) {
-        MyLog.d(TAG, "showRecordView" + " recordData=" + recordData);
-        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
-        }
-
-        startGameEndAniamtion();
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
-                        .setAddToBackStack(true)
-                        .addDataBeforeAdd(0, recordData)
-                        .addDataBeforeAdd(1, mRoomData)
-                        .build()
-                );
-            }
-        }, 3000);
-    }
-
-    public void showVoteView() {
-        MyLog.d(TAG, "showVoteView");
-        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
-        }
-
-        startGameEndAniamtion();
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                        .setAddToBackStack(true)
-                        .addDataBeforeAdd(0, mRoomData)
-                        .build()
-                );
-            }
-        }, 3000);
-    }
-
-    private void startGameEndAniamtion() {
-        if (isGameEndAniamtionShow) {
-            return;
-        }
-        isGameEndAniamtionShow = true;
-
-        destroyAnimation();
-        // 对战结束动画
-        mEndGameIv.setVisibility(View.VISIBLE);
-        if (mGameEndAnimation == null) {
-            ObjectAnimator a1 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_X, 0.3f, 1f);
-            ObjectAnimator a2 = ObjectAnimator.ofFloat(mEndGameIv, View.SCALE_Y, 0.3f, 1f);
-            mGameEndAnimation = new AnimatorSet();
-            mGameEndAnimation.setDuration(750);
-            mGameEndAnimation.playTogether(a1, a2);
-        }
-        mGameEndAnimation.start();
-
-    }
-
     private void destroyAnimation() {
         if (mReadyGoBg != null) {
             mReadyGoBg.stopAnimation(true);
@@ -804,37 +726,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
     }
 
-
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
-        if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
-            mPrepareLyricTask.dispose();
-        }
-    }
-
-    @Override
-    public void hideMainStage() {
-        MyLog.d(TAG, "hideMainStage");
-        // 显示end小卡片
-        mEndRoundHint.setVisibility(View.VISIBLE);
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // 模式改为3，自动播放主舞台退出的svga动画
-                mUFOMode = 3;
-            }
-        }, 800);
-
-        if (mRoomData.getRealRoundInfo().getRoundSeq() == 3) {
-            // 最后一轮
-            mUiHanlder.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startGameEndAniamtion();
-                }
-            }, 2000);
-        }
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabResultFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .addDataBeforeAdd(0, mRoomData)
+                .build()
+        );
     }
 
     static class PendingPlaySongCardData {

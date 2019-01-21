@@ -25,6 +25,7 @@ import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.inter.IGrabView;
+import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
@@ -448,7 +449,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, msg);
 
                     if (currentInfo == null) {
-                        onGameOver("syncGameStatus", gameOverTimeMs);
+                        onGameOver("syncGameStatus", gameOverTimeMs,null);
                         return;
                     }
 
@@ -486,7 +487,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (gameOverTimeMs > mRoomData.getGameStartTs()) {
                 MyLog.w(TAG, "gameOverTimeMs ！= 0 游戏应该结束了");
                 // 游戏结束了
-                onGameOver("sync", gameOverTimeMs);
+                onGameOver("sync", gameOverTimeMs,null);
             } else {
                 MyLog.w(TAG, "服务器结束时间不合法 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
             }
@@ -532,6 +533,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
             }
         });
+
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -699,7 +701,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.roundInfoModel, true);
         }
-        onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs);
+        onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs,event.resultInfo);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -708,10 +710,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getOnlineInfo(), event.getCurrentRound());
     }
 
-    private void onGameOver(String from, long gameOverTs) {
+    private void onGameOver(String from, long gameOverTs, List<GrabResultInfoModel> grabResultInfoModels) {
         MyLog.w(TAG, "游戏结束 gameOverTs=" + gameOverTs + " from:" + from);
         if (gameOverTs > mRoomData.getGameStartTs() && gameOverTs > mRoomData.getGameOverTs()) {
             cancelSyncGameStateTask();
+            if(grabResultInfoModels!=null) {
+                mRoomData.setResultList(grabResultInfoModels);
+            }
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
             mRoomData.checkRoundInGrabMode();
