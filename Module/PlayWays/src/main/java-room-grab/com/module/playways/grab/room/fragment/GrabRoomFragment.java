@@ -1,8 +1,6 @@
 package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.common.anim.ExObjectAnimator;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -40,11 +37,8 @@ import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
-import com.module.playways.rank.room.fragment.EvaluationFragment;
-import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
-import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.InputContainerView;
@@ -68,7 +62,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.disposables.Disposable;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
@@ -563,6 +556,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mTopContainerView.setModeSing(uid);
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
         mSongInfoCardView.hide();
+        mGrabOpBtn.toSingState();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
