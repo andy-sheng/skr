@@ -19,6 +19,8 @@ public class GrabOpView extends RelativeLayout {
     public static final int STATUS_COUNT_DOWN = 2;
     public static final int STATUS_LIGHT_OFF = 3;
 
+    RoundRectangleView mRrlProgress;
+
     int mStatus;
 
     public ExTextView mDescTv;
@@ -42,6 +44,7 @@ public class GrabOpView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_op_view_layout, this);
         mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
+        mRrlProgress = (RoundRectangleView) findViewById(R.id.rrl_progress);
         mDescTv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +96,7 @@ public class GrabOpView extends RelativeLayout {
                         // 按钮变成抢唱，且可点击
                         mDescTv.setClickable(true);
                         mDescTv.setText("抢");
+                        mRrlProgress.startCountDown(30000);
                         mStatus = STATUS_GRAP;
                     }
                 });

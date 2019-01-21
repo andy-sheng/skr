@@ -128,7 +128,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/comment_view"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_20_dp"
         android:src="@drawable/vote_btn_circle_normal" />
 
     <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup

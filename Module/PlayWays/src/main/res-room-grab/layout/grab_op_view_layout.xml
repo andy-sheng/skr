@@ -5,14 +5,23 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
+    <com.module.playways.grab.room.view.RoundRectangleView
+        android:id="@+id/rrl_progress"
+        android:layout_height="@dimen/view_67_dp"
+        android:layout_width="@dimen/view_128_dp"
+        />
 
     <com.common.view.ex.ExTextView
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_marginLeft="@dimen/view_6_dp"
+        android:background="@drawable/xiangchang_icon"
         android:id="@+id/desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
+        android:layout_width="@dimen/view_141_dp"
+        android:layout_height="@dimen/view_62_dp"
+        android:paddingTop="@dimen/view_12_dp"
+        android:paddingLeft="@dimen/view_28_dp"
         android:text="操作面板"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_20_dp" />
+
 </merge>
