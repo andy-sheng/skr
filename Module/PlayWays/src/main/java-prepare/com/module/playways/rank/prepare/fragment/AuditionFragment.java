@@ -531,7 +531,6 @@ public class AuditionFragment extends BaseFragment {
                 }
             }
         }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

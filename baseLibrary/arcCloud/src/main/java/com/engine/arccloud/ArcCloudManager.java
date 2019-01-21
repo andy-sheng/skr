@@ -45,6 +45,8 @@ public class ArcCloudManager implements IACRCloudListener {
     }
 
     void tryInit() {
+        MyLog.d(TAG, "tryInit");
+
         if (mClient == null) {
             synchronized (this) {
                 if (mClient == null) {
@@ -89,7 +91,9 @@ public class ArcCloudManager implements IACRCloudListener {
         }
     }
 
-    protected void stopRecognize() {
+    public void stopRecognize() {
+        MyLog.d(TAG, "stopRecognize");
+
         if (mProcessing && this.mClient != null) {
             this.mClient.stopRecordToRecognize();
         }
@@ -104,15 +108,18 @@ public class ArcCloudManager implements IACRCloudListener {
         return "";
     }
 
-    protected void cancel() {
+    public void cancel() {
+        MyLog.d(TAG, "cancel");
+
         if (mProcessing && this.mClient != null) {
             mProcessing = false;
             this.mClient.cancel();
         }
     }
 
-    protected void destroy() {
-        Log.e("MainActivity", "release");
+    public void destroy() {
+        MyLog.d(TAG, "destroy");
+
         if (this.mClient != null) {
             this.mClient.release();
             this.mInited = false;
