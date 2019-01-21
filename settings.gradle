@@ -18,5 +18,8 @@ if (repluginHostEnable.toBoolean()) {
 if (repluginPluginEnable.toBoolean()) {
     include ':baseLibrary:replugin-plugin-gradle', ':baseLibrary:replugin-plugin-library'
 }
+if (arcCloud.toBoolean()) {
+    include ':baseLibrary:arcCloud'
+}
 
 
