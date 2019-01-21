@@ -314,6 +314,7 @@ public class SelfSingCardView extends RelativeLayout {
                 .retry(10)
 //                .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(lyricsReader -> {
+                    lyricsReader.cut(mSongModel.getRankLrcBeginT(), mSongModel.getEndMs());
                     drawLyric(fileName.hashCode() + "", lyricsReader, play);
                 }, throwable -> {
                     MyLog.e(TAG, throwable);
