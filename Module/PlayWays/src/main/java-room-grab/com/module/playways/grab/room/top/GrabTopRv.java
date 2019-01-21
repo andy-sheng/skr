@@ -96,6 +96,9 @@ public class GrabTopRv extends RelativeLayout {
 
     public void setModeGrab() {
         // 切换到抢唱模式,
+        if (mAnimatorAllSet != null) {
+            mAnimatorAllSet.cancel();
+        }
         mErjiIv.setVisibility(GONE);
         for (int uId : mInfoMap.keySet()) {
             GrabTopItemView grabTopItemView = mInfoMap.get(uId);
@@ -270,6 +273,12 @@ public class GrabTopRv extends RelativeLayout {
         mAnimatorAllSet = new AnimatorSet();
         mAnimatorAllSet.playSequentially(allAnimator);
         mAnimatorAllSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                //setModeGrab();
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);

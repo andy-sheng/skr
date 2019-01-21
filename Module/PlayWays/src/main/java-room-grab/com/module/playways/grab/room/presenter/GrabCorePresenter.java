@@ -196,18 +196,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void grabThisRound() {
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         //TEST
-        if (true) {
-            U.getToastUtil().showShort("执行测试抢代码");
-            now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
-            mUiHanlder.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    now.setUserID((int) MyUserInfoManager.getInstance().getUid());
-                    now.updateStatus(true, RoundInfoModel.STATUS_SING);
-                }
-            }, 3000);
-            return;
-        }
+//        if (true) {
+//            U.getToastUtil().showShort("执行测试抢代码");
+//            now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
+//            mUiHanlder.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    now.setUserID((int) MyUserInfoManager.getInstance().getUid());
+//                    now.updateStatus(true, RoundInfoModel.STATUS_SING);
+//                }
+//            }, 3000);
+//            return;
+//        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", now.getRoundSeq());
