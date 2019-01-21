@@ -133,10 +133,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     boolean mNeedScroll = true;
 
-    ExObjectAnimator mTurnChangeCardShowAnimator;
-
-    ExObjectAnimator mTurnChangeCardHideAnimator;
-
     int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
 
     SVGAParser mSVGAParser;
@@ -550,7 +546,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
-        mSongInfoCardView.setVisibility(View.GONE);
+        mSongInfoCardView.hide();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
@@ -571,7 +567,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing(uid);
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
-        mSongInfoCardView.setVisibility(View.GONE);
+        mSongInfoCardView.hide();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
@@ -618,9 +614,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        mSelfSingCardView.setVisibility(View.GONE);
-        mOthersSingCardView.setVisibility(View.GONE);
-        mSongInfoCardView.setVisibility(View.GONE);
+        mSelfSingCardView.hide();
+        mOthersSingCardView.hide();
+        mSongInfoCardView.hide();
         mRoundOverCardView.bindData(reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {

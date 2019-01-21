@@ -1,5 +1,7 @@
 package com.module.playways.grab.room.view;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -273,6 +275,11 @@ public class SelfSingCardView extends RelativeLayout {
 
     public void playLyric(SongModel songModel, boolean play) {
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
+        // 平移动画
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -U.getDisplayUtils().getScreenWidth(), 0);
+        animator.setDuration(200);
+        animator.start();
+
         mTvLyric.setText("");
         mHandler.removeCallbacksAndMessages(null);
         showBackground(MyUserInfoManager.getInstance().getAvatar());
@@ -425,13 +432,43 @@ public class SelfSingCardView extends RelativeLayout {
         cancelCountDownTask();
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
+    public void hide() {
+        if (this != null && this.getVisibility() == VISIBLE) {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
+            animator.setDuration(200);
+            animator.start();
+
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    if (mSingBgSvga != null) {
+                        mSingBgSvga.stopAnimation(false);
+                    }
+                    setVisibility(GONE);
+                    setTranslationX(0);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+                    onAnimationEnd(animator);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+        } else {
             if (mSingBgSvga != null) {
                 mSingBgSvga.stopAnimation(false);
             }
+            setVisibility(GONE);
+            setTranslationX(0);
         }
     }
 }

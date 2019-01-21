@@ -1,10 +1,14 @@
 package com.module.playways.grab.room.view;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -44,6 +48,11 @@ public class OthersSingCardView extends RelativeLayout {
 
     public void bindData(String avatar) {
         setVisibility(VISIBLE);
+        // 平移动画
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, -U.getDisplayUtils().getScreenWidth(), 0);
+        animator.setDuration(200);
+        animator.start();
+
         mOtherBgSvga.setVisibility(VISIBLE);
         mOtherBgSvga.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());
@@ -66,16 +75,46 @@ public class OthersSingCardView extends RelativeLayout {
         }
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
+    public void hide() {
+        if (this != null && this.getVisibility() == VISIBLE) {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
+            animator.setDuration(200);
+            animator.start();
+
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    if (mOtherBgSvga != null) {
+                        mOtherBgSvga.stopAnimation(false);
+                    }
+                    setVisibility(GONE);
+                    setTranslationX(0);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+                    onAnimationEnd(animator);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+        } else {
             if (mOtherBgSvga != null) {
                 mOtherBgSvga.stopAnimation(false);
-                mOtherBgSvga.setVisibility(GONE);
             }
+            setVisibility(GONE);
+            setTranslationX(0);
         }
     }
+
 
     @Override
     protected void onDetachedFromWindow() {

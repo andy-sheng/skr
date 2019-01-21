@@ -1,14 +1,19 @@
 package com.module.playways.grab.room.view;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.utils.ImageUtils;
+import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 
 import com.module.playways.rank.song.model.SongModel;
@@ -60,6 +65,10 @@ public class SongInfoCardView extends RelativeLayout {
             return;
         }
         setVisibility(VISIBLE);
+        // 淡入效果
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.ALPHA, 0f, 1f);
+        animator.setDuration(200);
+        animator.start();
 
         mSongNameTv.setText(songModel.getItemName());
         mSongOwnerTv.setText(songModel.getOwner());
@@ -103,13 +112,42 @@ public class SongInfoCardView extends RelativeLayout {
         return dynamicEntity;
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
+    public void hide() {
+        if (this != null && this.getVisibility() == VISIBLE) {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, 0, U.getDisplayUtils().getScreenWidth());
+            animator.setDuration(200);
+            animator.start();
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    if (mSongCover != null) {
+                        mSongCover.stopAnimation(false);
+                    }
+                    setVisibility(GONE);
+                    setTranslationX(0);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+                    onAnimationEnd(animator);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+        } else {
             if (mSongCover != null) {
                 mSongCover.stopAnimation(false);
             }
+            setVisibility(GONE);
+            setTranslationX(0);
         }
     }
 
