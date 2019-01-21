@@ -5,15 +5,17 @@
 
     <LinearLayout
         android:id="@+id/content_ll"
-        android:layout_marginTop="@dimen/view_10_dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"></LinearLayout>
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginRight="@dimen/view_15_dp"
+        android:orientation="horizontal"/>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/erji_iv"
         android:layout_width="wrap_content"
         android:visibility="gone"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/yanchang_erji" />
 </merge>

@@ -63,13 +63,33 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void reset() {
-        mFlagIv.setVisibility(GONE);
-//        mCircleAnimationView.setVisibility(GONE);
+        setGrap(false);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+        lp.weight = 1;
+        setLayoutParams(lp);
+        this.setTranslationY(0);
+        this.setAlpha(1);
+        this.setScaleX(1);
+        this.setScaleY(1);
+
+        mFlagIv.setTranslationY(0);
+        mFlagIv.setAlpha(0xff);
+        mFlagIv.setScaleX(1);
+        mFlagIv.setScaleY(1);
+
+        mAvatarIv.setTranslationY(0);
+        mAvatarIv.setAlpha(0xff);
+        mAvatarIv.setScaleX(1);
+        mAvatarIv.setScaleY(1);
+        mCircleAnimationView.setVisibility(GONE);
     }
 
     public void setGrap(boolean grap) {
         if (grap) {
             mFlagIv.setVisibility(VISIBLE);
+            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+            lp.topMargin = -U.getDisplayUtils().dip2px(10);
+            mFlagIv.setLayoutParams(lp);
             mFlagIv.setImageResource(R.drawable.xiangchang_flag);
         } else {
             mFlagIv.setVisibility(GONE);
@@ -78,6 +98,9 @@ public class GrabTopItemView extends RelativeLayout {
 
     public void setLight(boolean on) {
         mFlagIv.setVisibility(VISIBLE);
+        LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+        lp.topMargin = -U.getDisplayUtils().dip2px(20);
+        mFlagIv.setLayoutParams(lp);
         if (on) {
             mFlagIv.setImageResource(R.drawable.liangdeng);
         } else {

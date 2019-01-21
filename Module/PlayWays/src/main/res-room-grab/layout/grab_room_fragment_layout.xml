@@ -60,7 +60,7 @@
     <com.module.playways.grab.room.top.GrabTopContainerView
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_200_dp"
         android:layout_marginTop="@dimen/view_5_dp" />
 
     <com.module.playways.rank.room.gift.GiftContinueViewGroup

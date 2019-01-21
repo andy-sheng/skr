@@ -269,6 +269,13 @@ public class GrabTopRv extends RelativeLayout {
 
         mAnimatorAllSet = new AnimatorSet();
         mAnimatorAllSet.playSequentially(allAnimator);
+        mAnimatorAllSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                syncLight();
+            }
+        });
         mAnimatorAllSet.start();
     }
 
