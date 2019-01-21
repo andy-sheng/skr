@@ -42,6 +42,7 @@ public class GrabRoomActivity extends BaseActivity {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData != null) {
             mRoomData.setGameId(prepareData.getGameId());
+            mRoomData.setGameType(prepareData.getGameType());
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
             mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
@@ -71,11 +72,11 @@ public class GrabRoomActivity extends BaseActivity {
                 for (int i = 0; i < 5; i++) {
                     PlayerInfoModel playerInfoModel = new PlayerInfoModel();
                     UserInfoModel userInfoModel = new UserInfoModel();
-                    if(i==0){
+                    if (i == 0) {
                         userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
                         userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
                         userInfoModel.setNickname("用户：" + i);
-                    }else{
+                    } else {
                         userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
                         userInfoModel.setUserId(1 + i * 2);
                         userInfoModel.setNickname("用户：" + i);

@@ -732,8 +732,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
                 .addDataBeforeAdd(0, mRoomData)
-                .build()
-        );
+                .build());
+
+        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
+                .setPopFragment(GrabRoomFragment.this)
+                .setPopAbove(false)
+                .setHasAnimation(true)
+                .build());
     }
 
     static class PendingPlaySongCardData {
