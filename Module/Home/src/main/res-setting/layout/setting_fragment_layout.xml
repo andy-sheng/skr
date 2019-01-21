@@ -30,7 +30,7 @@
     <RelativeLayout
         android:id="@+id/edit_person"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_63_dp"
+        android:layout_height="@dimen/view_60_dp"
         android:layout_below="@+id/titlebar"
         android:layout_marginTop="@dimen/view_3_dp">
 
@@ -63,7 +63,7 @@
     <RelativeLayout
         android:id="@+id/clear_cache"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_63_dp"
+        android:layout_height="@dimen/view_60_dp"
         android:layout_below="@id/edit_person">
 
         <com.common.view.ex.ExTextView
@@ -93,12 +93,43 @@
 
     </RelativeLayout>
 
+    <!--音效设置-->
+    <RelativeLayout
+        android:id="@+id/volume_set"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_below="@id/clear_cache">
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_15_dp"
+            android:text="音效设置"
+            android:textColor="#0C2275" />
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_17_dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_back"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_alignParentBottom="true"
+            android:background="#D8D8D8" />
+
+    </RelativeLayout>
+
     <!--意见反馈-->
     <RelativeLayout
         android:id="@+id/user_feedback"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_63_dp"
-        android:layout_below="@+id/clear_cache">
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_below="@+id/volume_set">
 
         <com.common.view.ex.ExTextView
             android:layout_width="wrap_content"
@@ -128,7 +159,7 @@
     <RelativeLayout
         android:id="@+id/service_agreen"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_63_dp"
+        android:layout_height="@dimen/view_60_dp"
         android:layout_below="@+id/user_feedback">
 
         <com.common.view.ex.ExTextView
@@ -159,7 +190,7 @@
     <RelativeLayout
         android:id="@+id/comment"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_63_dp"
+        android:layout_height="@dimen/view_60_dp"
         android:layout_below="@id/service_agreen">
 
         <com.common.view.ex.ExTextView
@@ -189,7 +220,7 @@
     <RelativeLayout
         android:id="@+id/log_update"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_63_dp"
+        android:layout_height="@dimen/view_60_dp"
         android:layout_below="@id/comment">
 
         <com.common.view.ex.ExTextView

@@ -7,16 +7,21 @@ import android.view.animation.LinearInterpolator;
 import com.common.log.MyLog;
 import com.common.player.IPlayerCallback;
 import com.common.player.exoplayer.ExoPlayer;
+import com.common.utils.U;
 
 public class BgMusicManager {
 
     public final static String TAG = "BgMusicManager";
 
+    public static final String PREF_KEY_PIPEI_VOLUME_SWITCH = "pref_pipei_volume_switch";
+
+    boolean isPlay;
+
     ExoPlayer mExoPlayer;
     ValueAnimator animator;  // 用来做淡入的效果
 
     private BgMusicManager() {
-
+        isPlay = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, true);
     }
 
     private static class BgMusicManagerrHolder {
@@ -27,7 +32,19 @@ public class BgMusicManager {
         return BgMusicManagerrHolder.INSTANCE;
     }
 
+    public boolean isPlay() {
+        return isPlay;
+    }
+
+    public void setPlay(boolean play) {
+        isPlay = play;
+    }
+
     public void starPlay(final String path, final long msec) {
+        if (!isPlay) {
+            MyLog.d(TAG, "starPlay" + " isPlay = false ");
+            return;
+        }
         if (mExoPlayer != null && mExoPlayer.isPlaying()) {
             mExoPlayer.stop();
         }

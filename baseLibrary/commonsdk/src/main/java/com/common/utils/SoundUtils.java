@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.common.log.MyLog;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
  */
 public class SoundUtils {
 
+    public static final String PREF_KEY_GAME_VOLUME_SWITCH = "pref_game_volume_switch";
+
     static final int MSG_RELEASE_TAG = 1;
     HashMap<String, Holder> mSoundPoolMap = new HashMap<>();
 
@@ -24,6 +28,8 @@ public class SoundUtils {
     private long mPreventReleaseTime;
 
     private String mPendingReleaseTag;
+
+    private boolean isPlay;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -37,7 +43,15 @@ public class SoundUtils {
     };
 
     SoundUtils() {
+        isPlay = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_GAME_VOLUME_SWITCH, true);
+    }
 
+    public boolean isPlay() {
+        return isPlay;
+    }
+
+    public void setPlay(boolean play) {
+        isPlay = play;
     }
 
     /**
@@ -56,7 +70,7 @@ public class SoundUtils {
         }
         Holder h = new Holder(soundPool, itemList);
         mSoundPoolMap.put(key, h);
-        if(key.equals(mPreventReleaseTag)){
+        if (key.equals(mPreventReleaseTag)) {
             mUiHandler.removeMessages(MSG_RELEASE_TAG);
         }
     }
@@ -74,7 +88,7 @@ public class SoundUtils {
             mPendingReleaseTag = key;
             Message msg = mUiHandler.obtainMessage(MSG_RELEASE_TAG);
             msg.obj = mPendingReleaseTag;
-            mUiHandler.sendMessageDelayed(msg,delay);
+            mUiHandler.sendMessageDelayed(msg, delay);
         } else {
             Holder holder = mSoundPoolMap.get(key);
             if (holder != null) {
@@ -85,14 +99,16 @@ public class SoundUtils {
     }
 
     /**
-     *
      * @param key
      * @param rawId
-     * @param inteceptorReleaseTs
-     * 是否要挂起release，比如 inteceptorReleaseTs = 500，在500ms内，这个key下资源不会被释放
-     * 一般用于返回键的音效播放，因为返回键一般伴随着destroy方法
+     * @param inteceptorReleaseTs 是否要挂起release，比如 inteceptorReleaseTs = 500，在500ms内，这个key下资源不会被释放
+     *                            一般用于返回键的音效播放，因为返回键一般伴随着destroy方法
      */
     public void play(String key, int rawId, int inteceptorReleaseTs) {
+        if (!isPlay) {
+            MyLog.d("SoundUtils", "starPlay" + " isPlay = false ");
+            return;
+        }
         Holder holder = mSoundPoolMap.get(key);
         if (holder != null) {
             for (Item item : holder.mItemList) {

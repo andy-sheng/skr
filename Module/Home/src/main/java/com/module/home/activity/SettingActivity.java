@@ -8,7 +8,7 @@ import com.common.base.BaseActivity;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
-import com.module.home.fragment.SettingFragment;
+import com.module.home.setting.fragment.SettingFragment;
 
 @Route(path = RouterConstants.ACTIVITY_SETTING)
 public class SettingActivity extends BaseActivity {

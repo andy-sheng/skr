@@ -1,4 +1,4 @@
-package com.module.home.fragment;
+package com.module.home.setting.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.utils.FragmentUtils;
 import com.common.utils.RomUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -23,6 +24,7 @@ import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.feedback.FeedbackManager;
 import com.module.home.updateinfo.EditInfoActivity;
+import com.respicker.fragment.ResPickerFragment;
 import com.zq.toast.CommonToastView;
 
 import java.io.File;
@@ -44,6 +46,7 @@ public class SettingFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
     RelativeLayout mEditPerson;
     RelativeLayout mClearCache;
+    RelativeLayout mVolumeSet;
     RelativeLayout mUserFeedback;
     RelativeLayout mServiceAgreen;
     RelativeLayout mComment;
@@ -71,6 +74,7 @@ public class SettingFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mEditPerson = (RelativeLayout) mRootView.findViewById(R.id.edit_person);
         mClearCache = (RelativeLayout) mRootView.findViewById(R.id.clear_cache);
+        mVolumeSet = (RelativeLayout) mRootView.findViewById(R.id.volume_set);
         mUserFeedback = (RelativeLayout) mRootView.findViewById(R.id.user_feedback);
         mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
         mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
@@ -105,6 +109,18 @@ public class SettingFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         clearCache();
+                    }
+                });
+
+        RxView.clicks(mVolumeSet)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), VolumeFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
                     }
                 });
 
