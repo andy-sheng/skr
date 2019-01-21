@@ -6,13 +6,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -33,7 +30,6 @@ import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.grab.room.view.WaveView;
 import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -41,10 +37,16 @@ import com.module.playways.rank.prepare.presenter.MatchPresenter;
 import com.module.playways.rank.prepare.view.IMatchingView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Common.ESex;
+
+import org.greenrobot.greendao.annotation.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -80,10 +82,10 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
     ExRelativeLayout mRlIcon1Root;
 
+    SVGAImageView mSvgaMatchBg;
+
 
     DialogPlus mExitDialog;
-
-    WaveView mWaveView;
 
     @Override
     public int initView() {
@@ -103,9 +105,10 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         mRlIconContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_icon_container);
         mSdvSubIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon1);
         mSdvSubIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon3);
-        mWaveView = (WaveView)mRootView.findViewById(R.id.wave_view);
+//        mWaveView = (WaveView)mRootView.findViewById(R.id.wave_view);
         mSdvOwnIcon = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_own_icon);
         mRlIcon1Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon1_root);
+        mSvgaMatchBg = (SVGAImageView)mRootView.findViewById(R.id.svga_match_bg);
 
 
         AvatarUtils.loadAvatarByUrl(mSdvOwnIcon,
@@ -123,12 +126,6 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                 .build();
 
         mRlIcon1Root.setBackground(drawable);
-
-        mWaveView.setDuration(10000);
-        mWaveView.setStyle(Paint.Style.FILL);
-        mWaveView.setColor(Color.parseColor("#260288D0"));
-        mWaveView.setInterpolator(new LinearOutSlowInInterpolator());
-        mWaveView.start();
 
         Resources res = getResources();
         mQuotationsArray = Arrays.asList(res.getStringArray(R.array.match_quotations));
@@ -158,7 +155,33 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
         startTimeTask();
         startMatchQuotationTask();
-        mMatchPresenter.getMatchingUserIconList();
+
+        showBackground();
+    }
+
+    public void showBackground() {
+        mSvgaMatchBg.setVisibility(View.VISIBLE);
+        mSvgaMatchBg.setLoops(1);
+
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("grab_matching.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mSvgaMatchBg.setLoops(1);
+                    mSvgaMatchBg.setImageDrawable(drawable);
+                    mSvgaMatchBg.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
     }
 
     private HandlerTaskTimer mControlTask;
@@ -348,8 +371,6 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         if (mExitDialog != null && mExitDialog.isShowing()) {
             mExitDialog.dismiss();
         }
-
-        mWaveView.stop();
     }
 
     @Override

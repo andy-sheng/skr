@@ -41,10 +41,19 @@
             android:textColor="#0C2275"
             android:textStyle="bold" />
 
-        <com.module.playways.grab.room.view.WaveView
-            android:id="@+id/wave_view"
+        <com.opensource.svgaplayer.SVGAImageView
+            android:layout_centerInParent="true"
+            android:id="@+id/svga_match_bg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="1000dp"
+            app:antiAlias="true"
+            app:autoPlay="false"
+            app:loopCount="-1" />
+
+        <!--<com.module.playways.grab.room.view.WaveView-->
+            <!--android:id="@+id/wave_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
 
         <com.common.view.ex.ExRelativeLayout
             android:id="@+id/rl_icon1_root"

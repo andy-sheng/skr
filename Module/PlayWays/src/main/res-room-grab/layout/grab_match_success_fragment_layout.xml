@@ -35,8 +35,17 @@
             android:background="@drawable/btn_pipeichenggong_normal" />
     </RelativeLayout>
 
+    <!--<com.opensource.svgaplayer.SVGAImageView-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:id="@+id/svga_match_success_bg"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1000dp"-->
+        <!--app:antiAlias="true"-->
+        <!--app:autoPlay="false"-->
+        <!--app:loopCount="-1" />-->
 
     <RelativeLayout
+        android:visibility="visible"
         android:layout_width="@dimen/view_341_dp"
         android:layout_height="@dimen/view_331_dp"
         android:layout_alignParentBottom="true"
@@ -165,15 +174,17 @@
 
 
     <com.opensource.svgaplayer.SVGAImageView
+        android:visibility="gone"
         android:id="@+id/vs_svga"
-        android:layout_width="@dimen/view_180_dp"
-        android:layout_height="@dimen/view_180_dp"
+        android:layout_width="@dimen/view_300_dp"
+        android:layout_height="@dimen/view_300_dp"
         android:layout_centerInParent="true"
         android:scaleType="fitCenter"
+        app:autoPlay="false"
         app:antiAlias="true"
         app:clearsAfterStop="false"
         app:loopCount="1"
-        app:source="vs.svga" />
+        app:source="grab_match_success_vs.svga" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:layout_width="match_parent"

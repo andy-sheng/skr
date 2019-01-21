@@ -1,16 +1,14 @@
 package com.module.playways.grab.prepare;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -37,6 +35,7 @@ import com.module.playways.rank.prepare.view.IMatchSucessView;
 import com.module.playways.rank.prepare.view.MatchSucessLeftView;
 import com.module.playways.rank.prepare.view.MatchSucessRightView;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 
 import java.util.List;
@@ -53,6 +52,12 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     SimpleDraweeView mSdvIcon4;
     SimpleDraweeView mSdvIcon5;
 
+    ExRelativeLayout mRlIcon1Root;
+    ExRelativeLayout mRlIcon2Root;
+    ExRelativeLayout mRlIcon3Root;
+    ExRelativeLayout mRlIcon4Root;
+    ExRelativeLayout mRlIcon5Root;
+
     SVGAImageView mVsSvga;
     ExImageView mIvPrepare;
 
@@ -68,6 +73,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     PrepareData mPrepareData;
 
     HandlerTaskTimer mReadyTimeTask;
+
+//    SVGAImageView mSvgaMatchSuccessBg;
 
     Handler mUiHandler = new Handler();
 
@@ -90,6 +97,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mBgLeftView = (MatchSucessLeftView) mRootView.findViewById(R.id.bg_left_view);
         mBgRightView = (MatchSucessRightView) mRootView.findViewById(R.id.bg_right_view);
         mBottomContainer = (RelativeLayout) mRootView.findViewById(R.id.bottom_container);
+//        mSvgaMatchSuccessBg = (SVGAImageView)mRootView.findViewById(R.id.svga_match_success_bg);
 
         if (mMatchSucessPresenter != null) {
             mMatchSucessPresenter.destroy();
@@ -122,7 +130,15 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         U.getSoundUtils().preLoad(TAG, R.raw.pregame_animation, R.raw.pregame_ready, R.raw.general_countdown);
 
         startTimeTask();
-//        animationGo();
+        animationGo();
+
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mVsSvga.setVisibility(View.VISIBLE);
+                mVsSvga.startAnimation();
+            }
+        }, 800);
     }
 
     private void loadIcon(SimpleDraweeView simpleDraweeView, boolean isGray, String avatar) {
@@ -143,102 +159,27 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
             }
         }, 500);
 
-        //三块颜色背景
-        TranslateAnimation animationLeft = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+        playScaleAnim(mRlIcon1Root, 0);
+        playScaleAnim(mRlIcon2Root, 50);
+        playScaleAnim(mRlIcon3Root, 100);
+        playScaleAnim(mRlIcon4Root, 150);
+        playScaleAnim(mRlIcon5Root, 200);
 
-        TranslateAnimation animationRight = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+    }
 
-        TranslateAnimation animationBottom = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
-
-        animationLeft.setDuration(300);
-        animationLeft.setRepeatMode(Animation.REVERSE);
-        animationLeft.setInterpolator(new AccelerateInterpolator());
-        animationLeft.setFillAfter(true);
-
-        animationRight.setDuration(300);
-        animationRight.setRepeatMode(Animation.REVERSE);
-        animationRight.setInterpolator(new AccelerateInterpolator());
-        animationRight.setFillAfter(true);
-
-        animationBottom.setDuration(300);
-        animationBottom.setRepeatMode(Animation.REVERSE);
-        animationBottom.setInterpolator(new AccelerateInterpolator());
-        animationBottom.setFillAfter(true);
-
-        mBgLeftView.startAnimation(animationLeft);
-        mBgRightView.startAnimation(animationRight);
-        mBottomContainer.startAnimation(animationBottom);
-
-        //头部文字
-//        AnimatorSet animatorSet = new AnimatorSet();//组合动画
-//        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mIvTop, "scaleX", 3.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
-//        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mIvTop, "scaleY", 3.0f, 0.9f, 1.05f, 0.95f, 1.02f, 0.98f, 1.0f);
-//        scaleX.setInterpolator(new DecelerateInterpolator(1));
-//        scaleY.setInterpolator(new DecelerateInterpolator(1));
-//        scaleX.setDuration(3000);
-//        scaleY.setDuration(3000);
-//        ObjectAnimator alpha = ObjectAnimator.ofFloat(mIvTop, "alpha", 0.4f, 1.0f);
-//        alpha.setDuration(1200);
-//        animatorSet.play(scaleX).with(scaleY).with(alpha);
-//        animatorSet.start();
-
-        //三个头像
-        TranslateAnimation animationIconOne = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth() / 2, 0, -U.getDisplayUtils().getScreenHeight() / 2, 0);
-
-        TranslateAnimation animationIconSecond = new TranslateAnimation(U.getDisplayUtils().getScreenWidth(), 0, -U.getDisplayUtils().getScreenHeight() / 2, 0);
-
-        TranslateAnimation animationIconThird = new TranslateAnimation(0, 0, U.getDisplayUtils().getScreenHeight() / 2, 0);
-
-
-        animationIconOne.setDuration(300);
-        animationIconOne.setStartOffset(300);
-        animationIconOne.setRepeatMode(Animation.REVERSE);
-        animationIconOne.setInterpolator(new OvershootInterpolator());
-        animationIconOne.setFillAfter(true);
-
-        animationIconSecond.setDuration(300);
-        animationIconSecond.setStartOffset(300);
-        animationIconSecond.setRepeatMode(Animation.REVERSE);
-        animationIconSecond.setInterpolator(new OvershootInterpolator());
-        animationIconSecond.setFillAfter(true);
-
-        animationIconThird.setDuration(300);
-        animationIconThird.setStartOffset(300);
-
-        animationIconThird.setRepeatMode(Animation.REVERSE);
-        animationIconThird.setInterpolator(new OvershootInterpolator());
-        animationIconThird.setFillAfter(true);
-
-        mSdvIcon1.startAnimation(animationIconOne);
-        mSdvIcon2.startAnimation(animationIconSecond);
-        mSdvIcon3.startAnimation(animationIconThird);
-
-
-        //3个头像的抖动动画
-        ObjectAnimator animatorOne = ObjectAnimator.ofFloat(mSdvIcon1, "translationX", 0, U.getDisplayUtils().dip2px(20), 0);
-        ObjectAnimator animatorSecond = ObjectAnimator.ofFloat(mSdvIcon2, "translationX", 0, -U.getDisplayUtils().dip2px(20), 0);
-        ObjectAnimator animatorThird = ObjectAnimator.ofFloat(mSdvIcon3, "translationY", 0, -U.getDisplayUtils().dip2px(20), 0);
-
-        animatorOne.setDuration(300);
-        animatorOne.setStartDelay(750);
-        animatorOne.setRepeatMode(ValueAnimator.REVERSE);
-        animatorOne.setInterpolator(new OvershootInterpolator());
-        animatorOne.start();
-
-        animatorSecond.setDuration(300);
-        animatorSecond.setStartDelay(750);
-        animatorSecond.setRepeatMode(ValueAnimator.REVERSE);
-        animatorSecond.setInterpolator(new OvershootInterpolator());
-        animatorSecond.start();
-
-        animatorThird.setDuration(300);
-        animatorThird.setStartDelay(750);
-        animatorThird.setRepeatMode(ValueAnimator.REVERSE);
-        animatorThird.setInterpolator(new OvershootInterpolator());
-        animatorThird.start();
+    private void playScaleAnim(View simpleDraweeView, long delay){
+        AnimatorSet animatorSet = new AnimatorSet();//组合动画
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 0.7f, 1.0f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 0.7f, 1.0f);
+        scaleX.setInterpolator(new OvershootInterpolator(1));
+        scaleY.setInterpolator(new OvershootInterpolator(1));
+        scaleX.setDuration(300);
+        scaleY.setDuration(300);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(simpleDraweeView, "alpha", 0.7f, 1.0f);
+        alpha.setDuration(300);
+        animatorSet.play(scaleX).with(scaleY).with(alpha);
+        animatorSet.setStartDelay(delay);
+        animatorSet.start();
     }
 
 
@@ -282,17 +223,56 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mSdvIcon4.setTag("sdv" + mPrepareData.getPlayerInfoList().get(3).getUserInfo().getUserId());
         mSdvIcon5.setTag("sdv" + mPrepareData.getPlayerInfoList().get(4).getUserInfo().getUserId());
 
-        ExRelativeLayout rlIcon1Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon1_root);
-        ExRelativeLayout rlIcon2Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon2_root);
-        ExRelativeLayout rlIcon3Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon3_root);
-        ExRelativeLayout rlIcon4Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon4_root);
-        ExRelativeLayout rlIcon5Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon5_root);
+        mRlIcon1Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon1_root);
+        mRlIcon2Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon2_root);
+        mRlIcon3Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon3_root);
+        mRlIcon4Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon4_root);
+        mRlIcon5Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon5_root);
 
-        setIconStroke(rlIcon1Root, mPrepareData.getPlayerInfoList().get(0).getUserInfo().getIsMale());
-        setIconStroke(rlIcon2Root, mPrepareData.getPlayerInfoList().get(1).getUserInfo().getIsMale());
-        setIconStroke(rlIcon3Root, mPrepareData.getPlayerInfoList().get(2).getUserInfo().getIsMale());
-        setIconStroke(rlIcon4Root, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getIsMale());
-        setIconStroke(rlIcon5Root, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getIsMale());
+        setIconStroke(mRlIcon1Root, mPrepareData.getPlayerInfoList().get(0).getUserInfo().getIsMale());
+        setIconStroke(mRlIcon2Root, mPrepareData.getPlayerInfoList().get(1).getUserInfo().getIsMale());
+        setIconStroke(mRlIcon3Root, mPrepareData.getPlayerInfoList().get(2).getUserInfo().getIsMale());
+        setIconStroke(mRlIcon4Root, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getIsMale());
+        setIconStroke(mRlIcon5Root, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getIsMale());
+
+        showBackground();
+    }
+
+    public void showBackground() {
+//        mSvgaMatchSuccessBg.setVisibility(View.VISIBLE);
+//        mSvgaMatchSuccessBg.setLoops(1);
+//
+//        SVGAParser parser = new SVGAParser(getContext());
+//        try {
+//            parser.parse("grab_match_success.svga", new SVGAParser.ParseCompletion() {
+//                @Override
+//                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+//                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(MyUserInfoManager.getInstance().getAvatar()));
+//                    mSvgaMatchSuccessBg.setLoops(-1);
+//                    mSvgaMatchSuccessBg.setImageDrawable(drawable);
+//                    mSvgaMatchSuccessBg.startAnimation();
+//                }
+//
+//                @Override
+//                public void onError() {
+//
+//                }
+//            });
+//        } catch (Exception e) {
+//            System.out.print(true);
+//        }
+    }
+
+    private SVGADynamicEntity requestDynamicItem(String avatar) {
+        SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
+        if (!TextUtils.isEmpty(avatar)) {
+            dynamicEntity.setDynamicImage(avatar, "img_10");
+            dynamicEntity.setDynamicImage(avatar, "img_11");
+            dynamicEntity.setDynamicImage(avatar, "img_12");
+            dynamicEntity.setDynamicImage(avatar, "img_13");
+            dynamicEntity.setDynamicImage(avatar, "img_9");
+        }
+        return dynamicEntity;
     }
 
     private void setIconStroke(ExRelativeLayout exRelativeLayout, boolean isMale){
