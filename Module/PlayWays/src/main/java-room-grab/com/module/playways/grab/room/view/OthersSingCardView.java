@@ -1,17 +1,13 @@
 package com.module.playways.grab.room.view;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.common.utils.U;
-import com.common.view.ex.ExTextView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
