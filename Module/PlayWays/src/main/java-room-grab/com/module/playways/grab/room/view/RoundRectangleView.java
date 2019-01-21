@@ -205,6 +205,15 @@ public class RoundRectangleView extends View {
         mAnimatorSet.start();
     }
 
+    public void stopCountDown(){
+        hasData = false;
+        if(mAnimatorSet != null){
+            mAnimatorSet.cancel();
+        }
+
+        invalidate();
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();

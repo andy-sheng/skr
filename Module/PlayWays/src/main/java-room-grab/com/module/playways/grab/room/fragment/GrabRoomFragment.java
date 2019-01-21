@@ -22,6 +22,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
@@ -54,6 +55,9 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.PersonInfoDialogView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -392,6 +396,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
             }
         });
+
+        mGrabOpBtn.hide();
     }
 
     private void initSingStageView() {
@@ -423,6 +429,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             });
         }
         return mSVGAParser;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneLightOffEvent event) {
+        //自己灭了别人的灯成功了
+        if(event.uid == MyUserInfoManager.getInstance().getUid()){
+            mGrabOpBtn.hide();
+        }
     }
 
     private void showReadyGoView() {
@@ -525,7 +539,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.setVisibility(View.VISIBLE);
         mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
-        mGrabOpBtn.setVisibility(View.VISIBLE);
+//        mGrabOpBtn.setVisibility(View.VISIBLE);
         mGrabOpBtn.playCountDown(4);
     }
 
@@ -536,7 +550,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
         mSongInfoCardView.hide();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
-
+        mGrabOpBtn.hide();
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
@@ -606,6 +620,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSelfSingCardView.hide();
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();
+        mGrabOpBtn.hide();
         mRoundOverCardView.bindData(reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {
@@ -624,7 +639,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override

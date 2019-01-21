@@ -4,8 +4,13 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -17,12 +22,15 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 
+import static android.animation.ValueAnimator.REVERSE;
+import static android.view.animation.Animation.INFINITE;
+
 /**
  * 抢唱模式操作面板
  * 倒计时 抢 灭 等按钮都在上面
  */
 public class GrabOpView extends RelativeLayout {
-
+    public final static String TAG = "GrabOpView";
     public static final int STATUS_GRAP = 1;
     public static final int STATUS_COUNT_DOWN = 2;
     public static final int STATUS_LIGHT_OFF = 3;
@@ -97,9 +105,20 @@ public class GrabOpView extends RelativeLayout {
 
     public void playCountDown(int num) {
         // 播放 3 2 1 导唱倒计时
+        MyLog.d(TAG, "toSingState");
+        mDescTv.clearAnimation();
         mDescTv.setClickable(false);
         mIvLightOff.setVisibility(GONE);
+        mGrabContainer.setVisibility(VISIBLE);
         mStatus = STATUS_COUNT_DOWN;
+
+        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
+                Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
+        animation.setDuration(200);
+        animation.setRepeatMode(Animation.REVERSE);
+        animation.setInterpolator(new OvershootInterpolator());
+        animation.setFillAfter(true);
+        startAnimation(animation);
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
@@ -132,21 +151,56 @@ public class GrabOpView extends RelativeLayout {
                         }
                         // 按钮变成抢唱，且可点击
                         mDescTv.setClickable(true);
-                        mDescTv.setImageDrawable(U.getDrawable(R.drawable.daojishizi_0));
+                        mDescTv.setImageDrawable(U.getDrawable(R.drawable.xiangchang));
                         mRrlProgress.startCountDown(30000);
                         mStatus = STATUS_GRAP;
+
+                        // 以view中心为缩放点，由初始状态放大两倍
+                        ScaleAnimation animation = new ScaleAnimation(
+                                1.0f, 1.1f, 1.0f, 1.1f,
+                                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+                        );
+
+                        animation.setRepeatCount(INFINITE);
+                        animation.setRepeatMode(REVERSE);
+                        animation.setDuration(500);
+                        mDescTv.startAnimation(animation);
                     }
                 });
+    }
+
+    public void hide(){
+        MyLog.d(TAG, "hide");
+        cancelCountDownTask();
+        mDescTv.clearAnimation();
+        mRrlProgress.stopCountDown();
+        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,1.0f,
+                Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
+        animation.setDuration(200);
+        animation.setRepeatMode(Animation.REVERSE);
+        animation.setInterpolator(new OvershootInterpolator());
+        animation.setFillAfter(true);
+        startAnimation(animation);
+
+        mIvLightOff.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mIvLightOff.setVisibility(GONE);
+                mGrabContainer.setVisibility(GONE);
+            }
+        }, 200);
     }
 
     /**
      * 开始演唱
      */
     public void toSingState() {
+        MyLog.d(TAG, "toSingState");
+        setVisibility(VISIBLE);
         mStatus = STATUS_LIGHT_OFF;
         mIvLightOff.setVisibility(VISIBLE);
         mGrabContainer.setVisibility(GONE);
-        mIvLightOff.setEnabled(false);
+        mIvLightOff.setClickable(false);
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
@@ -154,7 +208,7 @@ public class GrabOpView extends RelativeLayout {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num1 = 5 - integer;
+                        int num1 = 6 - integer;
                         Drawable drawable = null;
                         switch (num1) {
                             case 5:
@@ -173,6 +227,7 @@ public class GrabOpView extends RelativeLayout {
                                 drawable = U.getDrawable(R.drawable.mie_1);
                                 break;
                         }
+
                         mIvLightOff.setImageDrawable(drawable);
                     }
 
@@ -187,6 +242,13 @@ public class GrabOpView extends RelativeLayout {
                         mIvLightOff.setImageDrawable(U.getDrawable(R.drawable.mie_zi));
                     }
                 });
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mDescTv.clearAnimation();
+        cancelCountDownTask();
     }
 
     private void cancelCountDownTask(){

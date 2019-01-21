@@ -171,7 +171,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mSvgaMatchBg.setLoops(1);
+                    mSvgaMatchBg.setLoops(-1);
                     mSvgaMatchBg.setImageDrawable(drawable);
                     mSvgaMatchBg.startAnimation();
                 }
