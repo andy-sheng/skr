@@ -138,7 +138,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                 mVsSvga.setVisibility(View.VISIBLE);
                 mVsSvga.startAnimation();
             }
-        }, 1200);
+        }, 700);
     }
 
     private void loadIcon(SimpleDraweeView simpleDraweeView, boolean isGray, String avatar) {
