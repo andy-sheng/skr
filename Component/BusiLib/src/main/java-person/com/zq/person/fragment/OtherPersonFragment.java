@@ -198,7 +198,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         }
 
         mNameTv.setText(model.getNickname());
-        mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
+        mUseridTv.setText("撕歌号：" + model.getUserId());
         mSignTv.setText(model.getSignature());
 
         if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity()) && !TextUtils.isEmpty(model.getLocation().getDistrict())) {
