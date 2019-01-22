@@ -161,7 +161,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (mExoPlayer == null) {
                 mExoPlayer = new ExoPlayer();
             }
-            mExoPlayer.startPlay(now.getSongModel().getOri());
+            mExoPlayer.startPlay(now.getSongModel().getStandIntro());
         }
     }
 
@@ -438,7 +438,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
-                    currentInfo.setType(RoundInfoModel.TYPE_GRAB);
                     String msg = "";
                     if (currentInfo != null) {
                         msg = "syncGameStatus成功了, currentRound 是 " + currentInfo;
@@ -454,6 +453,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         return;
                     }
 
+                    currentInfo.setType(RoundInfoModel.TYPE_GRAB);
                     updatePlayerState(gameOverTimeMs, syncStatusTimes, onlineInfos, currentInfo);
                 } else {
                     MyLog.w(TAG, "syncGameStatus失败 traceid is " + result.getTraceId());
@@ -556,7 +556,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             //抢唱阶段，播抢唱卡片
             if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() >= RoundInfoModel.STATUS_SING) {
                 // 新一轮的抢唱阶段，得告诉上一轮演唱结束了啊，上一轮演唱结束卡片播完，才播歌曲卡片
-                mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
+
+                mUiHanlder.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
+                    }
+                });
+
                 if (event.lastRoundInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     // 上一轮演唱是自己，开始上传资源
                     if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {

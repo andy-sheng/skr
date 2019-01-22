@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/ready_go_bg"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_350_dp"
-        android:layout_marginTop="@dimen/view_40_dp"
-        android:scaleType="fitCenter"
-        app:antiAlias="true"
-        app:autoPlay="false" />
-
-
-    <ImageView
-        android:id="@+id/end_round_hint"
-        android:layout_width="@dimen/view_78_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_300_dp"
-        android:src="@drawable/guanzhongjiemian_yanchangjieshu"
-        android:visibility="gone" />
-
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
         android:id="@+id/bottom_container_view"
@@ -121,10 +102,20 @@
         android:layout_marginTop="@dimen/view_130_dp"
         android:visibility="gone" />
 
+    <com.module.playways.grab.room.view.GrabGameOverView
+        android:id="@+id/grab_game_over_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_130_dp"
+        android:visibility="gone">
+
+    </com.module.playways.grab.room.view.GrabGameOverView>
+
     <!--抢按钮以及倒计时按钮-->
     <com.module.playways.grab.room.view.GrabOpView
         android:id="@+id/grab_op_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/view_141_dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/comment_view"
         android:layout_alignParentRight="true"
@@ -134,13 +125,4 @@
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <ImageView
-        android:id="@+id/end_game_iv"
-        android:layout_width="@dimen/view_324_dp"
-        android:layout_height="@dimen/view_160_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_178_dp"
-        android:src="@drawable/img_top_duizhanjieshu_bg"
-        android:visibility="gone" />
 </RelativeLayout>

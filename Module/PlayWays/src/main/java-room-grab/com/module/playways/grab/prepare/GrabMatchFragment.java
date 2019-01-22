@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -30,6 +31,7 @@ import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -169,7 +171,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mSvgaMatchBg.setLoops(1);
+                    mSvgaMatchBg.setLoops(-1);
                     mSvgaMatchBg.setImageDrawable(drawable);
                     mSvgaMatchBg.startAnimation();
                 }
@@ -415,6 +417,10 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                                 mMatchPresenter.cancelMatch();
                                 stopTimeTask();
                                 getActivity().finish();
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                                        .withInt("key_game_type", mPrepareData.getGameType())
+                                        .withBoolean("selectSong", true)
+                                        .navigation();
                             }
                         }
                     }

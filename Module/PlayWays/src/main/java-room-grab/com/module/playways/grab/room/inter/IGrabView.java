@@ -2,9 +2,7 @@ package com.module.playways.grab.room.inter;
 
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
-import com.zq.live.proto.Room.EQRoundResultType;
 
 import java.util.List;
 

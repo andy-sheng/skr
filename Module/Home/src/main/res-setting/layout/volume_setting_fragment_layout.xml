@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="音效设置"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"
+        android:layout_below="@+id/titlebar"
+        android:background="#0C2275" />
+
+    <RelativeLayout
+        android:id="@+id/pipei_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_160_dp"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_35_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/yinxiao_bj">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/view_27_dp"
+            android:layout_marginTop="@dimen/view_31_dp"
+            android:text="匹配音乐"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_16_dp"
+            android:textStyle="bold" />
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/pipei_sb"
+            android:layout_width="@dimen/view_54_dp"
+            android:layout_height="@dimen/view_30_dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/view_26_dp"
+            android:layout_marginRight="@dimen/view_20_dp"
+            android:checked="true"
+            app:kswBackDrawable="@drawable/switch_button_back_drawable"
+            app:kswThumbDrawable="@drawable/switch_button_tumb_drawable"
+            app:kswThumbHeight="@dimen/view_27_dp"
+            app:kswThumbWidth="@dimen/view_27_dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_marginLeft="@dimen/view_26_dp"
+            android:layout_marginTop="@dimen/view_77_dp"
+            android:layout_marginRight="@dimen/view_3_dp"
+            android:background="#D8D8D8" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_20_dp"
+            android:layout_marginTop="@dimen/view_103_dp"
+            android:layout_marginRight="@dimen/view_21_dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/view_7_dp"
+                android:src="@drawable/yinliang_di" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/yinliang_gao" />
+
+            <SeekBar
+                android:id="@+id/pipei_voice_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_2_dp"
+                android:layout_marginRight="@dimen/view_40_dp"
+                android:max="100"
+                android:maxHeight="@dimen/view_3_dp"
+                android:min="0"
+                android:minHeight="@dimen/view_2_dp"
+                android:progressDrawable="@drawable/voice_set_seekbar_bg"
+                android:thumb="@drawable/shiyinmianban_huakuai" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_95_dp"
+        android:layout_below="@id/pipei_area"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/yinxiao_bj">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_27_dp"
+            android:text="游戏音效"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_16_dp"
+            android:textStyle="bold" />
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/game_sb"
+            android:layout_width="@dimen/view_54_dp"
+            android:layout_height="@dimen/view_30_dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_20_dp"
+            android:checked="true"
+            app:kswBackDrawable="@drawable/switch_button_back_drawable"
+            app:kswThumbDrawable="@drawable/switch_button_tumb_drawable"
+            app:kswThumbHeight="@dimen/view_27_dp"
+            app:kswThumbWidth="@dimen/view_27_dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

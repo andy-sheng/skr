@@ -1,8 +1,7 @@
 package com.module.playways.grab.room.view;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -16,7 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.HttpImage;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
@@ -240,8 +242,11 @@ public class SelfSingCardView extends RelativeLayout {
 
     public String getNum(long num, int index) {
         String s = String.valueOf(num);
+        if(index > s.length() || index < 0){
+            return "";
+        }
+
         String result = String.valueOf(s.charAt(s.length() - index));
-        System.out.println("数字：" + num + "的第" + index + "位数字是" + result);
 
         return result;
     }
@@ -252,7 +257,7 @@ public class SelfSingCardView extends RelativeLayout {
         mSingBgSvga.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());
         try {
-            parser.parse("self_sing_bg.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("grab_self_sing_bg.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(avatar));
@@ -271,9 +276,20 @@ public class SelfSingCardView extends RelativeLayout {
     }
 
     private SVGADynamicEntity requestDynamicItem(String avatar) {
+        if (TextUtils.isEmpty(avatar)) {
+            return null;
+        }
+        HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(avatar)
+                .setWidth(U.getDisplayUtils().dip2px(90))
+                .setHeight(U.getDisplayUtils().dip2px(90))
+                .build());
+        File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
+
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        if (!TextUtils.isEmpty(avatar)) {
-            dynamicEntity.setDynamicImage(avatar, "avatar");
+        if (file != null && file.exists()) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar");
+        } else {
+            dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
         }
         return dynamicEntity;
     }

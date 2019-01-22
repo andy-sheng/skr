@@ -69,6 +69,9 @@ android {
             java.srcDirs += 'src/main/java'
             res.srcDirs += ['src/main/res']
 
+            java.srcDirs += 'src/main/java-setting'
+            res.srcDirs += 'src/main/res-setting'
+
             java.srcDirs += 'src/main/java-updateinfo'
             res.srcDirs += 'src/main/res-updateinfo'
 
@@ -77,6 +80,7 @@ android {
 
             java.srcDirs += 'src/main/java-musictest'
             res.srcDirs += 'src/main/res-musictest'
+
         }
     }
 }
@@ -93,7 +97,7 @@ dependencies {
         compileOnly rootProject.ext.dependencies["arouter-compiler"]
     }
 
-    if(aliFeedback.toBoolean()) {
+    if (aliFeedback.toBoolean()) {
         // feedback 的依赖
         implementation 'com.aliyun.ams:alicloud-android-feedback:3.1.8'
         implementation 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'

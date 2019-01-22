@@ -37,14 +37,16 @@ public class SongModel implements Serializable {
     private String midi;    //midi文件
     private String zip;
     private String rankBgm;
-    private int beginMs;
-    private int endMs;
-    private String StandIntro;
-    private int StandIntroBeginT;
-    private int StandIntroEndT;
-    private int totalMs;
-    private int rankLrcBeginT;
-    private boolean isblank = false;
+    private int beginMs;         //开始毫秒
+    private int endMs;           //结束毫秒
+    private int totalMs;         //共计多少毫秒
+    private int rankLrcBeginT;   //匹配玩法第一句歌词开始时间,毫秒
+    private String StandIntro;         //一唱到底的导唱
+    private int StandIntroBeginT;      //一唱到底导唱的开始毫秒
+    private int StandIntroEndT;        //一唱到底导唱的结束毫秒
+    private int standLrcBeginT;        //一唱到底第一句歌词的开始毫秒
+    private int standLrcEndT;          //一唱到底歌词的结束毫秒
+    private boolean isblank = false;   //一唱到底是否是白板item
 
     public int getRankLrcBeginT() {
         return rankLrcBeginT;
@@ -174,6 +176,22 @@ public class SongModel implements Serializable {
         this.StandIntroEndT = StandIntroEndT;
     }
 
+    public int getStandLrcBeginT() {
+        return standLrcBeginT;
+    }
+
+    public void setStandLrcBeginT(int standLrcBeginT) {
+        this.standLrcBeginT = standLrcBeginT;
+    }
+
+    public int getStandLrcEndT() {
+        return standLrcEndT;
+    }
+
+    public void setStandLrcEndT(int standLrcEndT) {
+        this.standLrcEndT = standLrcEndT;
+    }
+
     public int getTotalMs() {
         return totalMs;
     }
@@ -209,31 +227,40 @@ public class SongModel implements Serializable {
         this.setBeginMs(musicInfo.getBeginTimeMs());
         this.setEndMs(musicInfo.getEndTimeMs());
         this.setRankLrcBeginT(musicInfo.getRankLrcBeginT());
+
+        this.setStandIntro(musicInfo.getStandIntro());
+        this.setStandIntroBeginT(musicInfo.getStandIntroBeginT());
+        this.setStandIntroEndT(musicInfo.getStandIntroEndT());
+        this.setStandLrcBeginT(musicInfo.getStandLrcBeginT());
+        this.setStandLrcEndT(musicInfo.getStandLrcEndT());
         this.setIsblank(musicInfo.getIsBlank());
+        setStandIntro(musicInfo.getStandIntro());
+        setStandIntroBeginT(musicInfo.getStandIntroBeginT());
+        setStandIntroEndT(musicInfo.getStandIntroEndT());
     }
 
-    public boolean isAllResExist(){
+    public boolean isAllResExist() {
         File lyricFile = SongResUtils.getZRCELyricFileByUrl(getLyric());
 
-        if(lyricFile == null){
+        if (lyricFile == null) {
             return false;
         }
 
         File acc = SongResUtils.getAccFileByUrl(getAcc());
 
-        if(acc == null){
+        if (acc == null) {
             return false;
         }
 
         File ori = SongResUtils.getORIFileByUrl(getOri());
 
-        if(ori == null){
+        if (ori == null) {
             return false;
         }
 
         File midi = SongResUtils.getMIDIFileByUrl(getMidi());
 
-        if(midi == null){
+        if (midi == null) {
             return false;
         }
 

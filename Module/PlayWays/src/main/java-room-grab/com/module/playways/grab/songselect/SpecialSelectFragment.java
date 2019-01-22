@@ -160,6 +160,7 @@ public class SpecialSelectFragment extends BaseFragment {
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
         prepareData.setTagId(specialId);
 
+        getActivity().finish();
         ARouter.getInstance()
                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
                 .withSerializable("prepare_data", prepareData)
