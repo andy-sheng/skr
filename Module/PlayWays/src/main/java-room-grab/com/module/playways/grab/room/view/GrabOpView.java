@@ -103,7 +103,12 @@ public class GrabOpView extends RelativeLayout {
         mListener = listener;
     }
 
-    public void playCountDown(int num) {
+    /**
+     *
+     * @param num     倒计时时间，倒计时结束后变成想唱
+     * @param waitNum 等待想唱时间
+     */
+    public void playCountDown(int num, int waitNum) {
         // 播放 3 2 1 导唱倒计时
         MyLog.d(TAG, "toSingState");
         mDescTv.clearAnimation();
@@ -152,7 +157,12 @@ public class GrabOpView extends RelativeLayout {
                         // 按钮变成抢唱，且可点击
                         mDescTv.setClickable(true);
                         mDescTv.setImageDrawable(U.getDrawable(R.drawable.xiangchang));
-                        mRrlProgress.startCountDown(30000);
+                        if(waitNum <= 3000){
+                            MyLog.e(TAG, "等待时间是0，很严重的问题");
+                        } else {
+                            mRrlProgress.startCountDown(waitNum - 3000);
+                        }
+
                         mStatus = STATUS_GRAP;
 
                         // 以view中心为缩放点，由初始状态放大两倍

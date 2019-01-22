@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
@@ -46,11 +45,7 @@ import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.opensource.svgaplayer.SVGACallback;
-import com.opensource.svgaplayer.SVGADrawable;
-import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
-import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -62,7 +57,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -485,7 +479,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
 //        mGrabOpBtn.setVisibility(View.VISIBLE);
-        mGrabOpBtn.playCountDown(4);
+        mGrabOpBtn.playCountDown(4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
     }
 
     @Override

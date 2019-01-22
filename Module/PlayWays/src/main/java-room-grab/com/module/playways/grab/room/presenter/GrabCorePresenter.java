@@ -161,7 +161,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (mExoPlayer == null) {
                 mExoPlayer = new ExoPlayer();
             }
-            mExoPlayer.startPlay(now.getSongModel().getOri());
+            mExoPlayer.startPlay(now.getSongModel().getStandIntro());
         }
     }
 

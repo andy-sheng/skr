@@ -210,6 +210,9 @@ public class SongModel implements Serializable {
         this.setEndMs(musicInfo.getEndTimeMs());
         this.setRankLrcBeginT(musicInfo.getRankLrcBeginT());
         this.setIsblank(musicInfo.getIsBlank());
+        setStandIntro(musicInfo.getStandIntro());
+        setStandIntroBeginT(musicInfo.getStandIntroBeginT());
+        setStandIntroEndT(musicInfo.getStandIntroEndT());
     }
 
     public boolean isAllResExist(){
