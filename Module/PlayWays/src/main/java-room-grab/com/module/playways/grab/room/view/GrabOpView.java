@@ -35,6 +35,7 @@ public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
 
     public static final int MSG_HIDE_FROM_END_GUIDE_AUDIO = 0;
+    public static final int MSG_HIDE = 1;
 
     public static final int STATUS_GRAP = 1;
     public static final int STATUS_COUNT_DOWN = 2;
@@ -61,6 +62,10 @@ public class GrabOpView extends RelativeLayout {
             switch (msg.what){
                 case MSG_HIDE_FROM_END_GUIDE_AUDIO:
                     hide();
+                    break;
+                case MSG_HIDE:
+                    mIvLightOff.setVisibility(GONE);
+                    mGrabContainer.setVisibility(GONE);
                     break;
             }
         }
@@ -127,13 +132,14 @@ public class GrabOpView extends RelativeLayout {
      */
     public void playCountDown(int num, int waitNum) {
         // 播放 3 2 1 导唱倒计时
-        MyLog.d(TAG, "toSingState");
+        MyLog.d(TAG, "playCountDown");
         mDescTv.clearAnimation();
         mDescTv.setClickable(false);
         mIvLightOff.setVisibility(GONE);
         mGrabContainer.setVisibility(VISIBLE);
         mStatus = STATUS_COUNT_DOWN;
         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
+        mUiHandler.removeMessages(MSG_HIDE);
 
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
                 Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
@@ -216,15 +222,9 @@ public class GrabOpView extends RelativeLayout {
         animation.setFillAfter(true);
         startAnimation(animation);
 
-        mIvLightOff.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mIvLightOff.setVisibility(GONE);
-                mGrabContainer.setVisibility(GONE);
-            }
-        }, 200);
-
         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
+        Message msg = mUiHandler.obtainMessage(MSG_HIDE);
+        mUiHandler.sendMessageDelayed(msg, 200);
     }
 
     /**
@@ -232,12 +232,22 @@ public class GrabOpView extends RelativeLayout {
      */
     public void toSingState() {
         MyLog.d(TAG, "toSingState");
+
+        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
+                Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
+        animation.setDuration(200);
+        animation.setRepeatMode(Animation.REVERSE);
+        animation.setInterpolator(new OvershootInterpolator());
+        animation.setFillAfter(true);
+        startAnimation(animation);
+
         setVisibility(VISIBLE);
         mStatus = STATUS_LIGHT_OFF;
         mIvLightOff.setVisibility(VISIBLE);
         mGrabContainer.setVisibility(GONE);
         mIvLightOff.setClickable(false);
         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
+        mUiHandler.removeMessages(MSG_HIDE);
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
@@ -286,7 +296,7 @@ public class GrabOpView extends RelativeLayout {
         super.onDetachedFromWindow();
         mDescTv.clearAnimation();
         cancelCountDownTask();
-        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     private void cancelCountDownTask(){
