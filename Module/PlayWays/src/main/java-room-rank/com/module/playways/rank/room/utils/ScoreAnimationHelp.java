@@ -3,9 +3,9 @@ package com.module.playways.rank.room.utils;
 import android.view.ViewGroup;
 
 import com.common.log.MyLog;
-import com.module.playways.rank.room.model.score.ScoreChangeModel;
-import com.module.playways.rank.room.model.score.ScoreItemModel;
+import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.model.score.ScoreStateModel;
+import com.module.playways.rank.room.view.RecordCircleView;
 import com.zq.level.view.NormalLevelView;
 
 // 辅助战绩动画的类
@@ -45,14 +45,20 @@ public class ScoreAnimationHelp {
     }
 
 
-    public static void battleChangeAnimation(ScoreChangeModel battleChange, ScoreStateModel form, ScoreStateModel to) {
+    public static void battleChangeAnimation(RecordCircleView mRecordCircleView, ScoreResultModel scoreResultModel, ScoreStateModel form, ScoreStateModel to, AnimationListener listener) {
+        // TODO: 2019/1/22  just test
+        if (listener != null) {
+            listener.onFinish();
+            return;
+        }
+
         // 战力保护优先算加分，最后算掉段
         if (form.getMaxBattleIndex() == 0) {
             // 之前已无战力上限
-            if (battleChange.isExchangeStar()) {
+            if (scoreResultModel.isExchangeStar()) {
                 MyLog.e(TAG, "battleChangeAnimation error ");
             } else {
-                if (battleChange.isProtectRank()) {
+                if (scoreResultModel.isProtectRank()) {
                     // TODO: 2019/1/19 还有动画么？
                 } else {
                     // 无动画
@@ -60,10 +66,10 @@ public class ScoreAnimationHelp {
             }
         } else if (to.getMaxBattleIndex() == 0) {
             // 当前已无战力上限
-            if (battleChange.isProtectRank()) {
+            if (scoreResultModel.isProtectRank()) {
                 MyLog.e(TAG, "battleChangeAnimation error ");
             } else {
-                if (battleChange.isExchangeStar()) {
+                if (scoreResultModel.isExchangeStar()) {
                     // 之前表盘满
                     // 然后到0 兑换星星
                     // 战力满级，表盘失效
@@ -72,12 +78,12 @@ public class ScoreAnimationHelp {
                 }
             }
         } else {
-            if (form.getCurrBattleIndex() + battleChange.getBattleChange() >= form.getMaxBattleIndex()) {
+            if (form.getCurrBattleIndex() + scoreResultModel.getBattleChange() >= form.getMaxBattleIndex()) {
                 // 之前表盘满
                 // 然后到0 兑换星星
                 // 然后到当前战力
                 // 是否下面有触发段位保护动画
-                if (battleChange.isProtectRank()) {
+                if (scoreResultModel.isProtectRank()) {
                     // 表盘清空
                 } else {
                     // 无动画
@@ -85,7 +91,7 @@ public class ScoreAnimationHelp {
             } else {
                 // 先加上该战力
                 // 是否触发段位保护
-                if (battleChange.isProtectRank()) {
+                if (scoreResultModel.isProtectRank()) {
                     // 表盘清空
                 } else {
                     // 无动画

@@ -21,6 +21,8 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
+import com.module.playways.rank.room.model.score.ScoreStateModel;
+import com.module.playways.rank.room.utils.ScoreAnimationHelp;
 import com.module.playways.rank.room.utils.ScoreConfigUtils;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView;
@@ -148,22 +150,54 @@ public class RecordTitleView extends RelativeLayout {
 
     private void animationGo(ScoreResultModel scoreResultModel) {
         MyLog.d(TAG, "animationGo" + " ScoreResultModel = " + scoreResultModel);
-        if (scoreResultModel == null){
+        if (scoreResultModel == null || scoreResultModel.getStates().size() <= 0) {
             return;
         }
 
         this.scoreResultModel = scoreResultModel;
-//        if (rankLevelModel != null && totalLimit != null && userScoreModel != null) {
-//            mSdvOwnLevel.bindData(rankLevelModel.getLevelBefore(), subLevelModel.getLevelBefore()
-//                    , totalLimit.getLimitBefore(), userScoreModel.getScoreBefore());
-//            mSdvOwnLevel.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    battleAnimationGo();
-//                    scoreAnimationGo();
-//                }
-//            }, 1000);
-//        }
+        ScoreStateModel before = scoreResultModel.getStates().get(0);
+        if (before != null) {
+            mSdvOwnLevel.bindData(before.getMainRanking(), before.getSubRanking(), before.getMaxStar(), before.getCurrStar());
+            mSdvOwnLevel.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    step1();
+                }
+            }, 1000);
+        }
     }
+
+    private void step1() {
+        ScoreAnimationHelp.starChangeAnimation(mSdvOwnLevel, mViewGroup,
+                scoreResultModel.getStates().get(0), scoreResultModel.getStates().get(1),
+                new ScoreAnimationHelp.AnimationListener() {
+                    @Override
+                    public void onFinish() {
+                        step2();
+                    }
+                });
+    }
+
+    private void step2() {
+        ScoreAnimationHelp.battleChangeAnimation(mRecordCircleView, scoreResultModel,
+                scoreResultModel.getStates().get(1), scoreResultModel.getStates().get(2),
+                new ScoreAnimationHelp.AnimationListener() {
+                    @Override
+                    public void onFinish() {
+                        step3();
+                    }
+                });
+    }
+
+    private void step3() {
+        ScoreAnimationHelp.starChangeAnimation(mSdvOwnLevel, mViewGroup,
+                scoreResultModel.getStates().get(1), scoreResultModel.getStates().get(2),
+                new ScoreAnimationHelp.AnimationListener() {
+                    @Override
+                    public void onFinish() {
+                    }
+                });
+    }
+
 
 }

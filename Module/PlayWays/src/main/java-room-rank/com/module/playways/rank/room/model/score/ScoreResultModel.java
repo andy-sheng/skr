@@ -1,6 +1,7 @@
 package com.module.playways.rank.room.model.score;
 
 import com.common.log.MyLog;
+import com.zq.live.proto.Room.EFightForceWhy;
 import com.zq.live.proto.Room.ScoreItem;
 import com.zq.live.proto.Room.ScoreState;
 import com.zq.live.proto.Room.UserScoreResult;
@@ -102,6 +103,44 @@ public class ScoreResultModel implements Serializable {
 
         this.setWinType(userScoreResult.getWinType().getValue());
         this.setSss(userScoreResult.getSss());
+    }
+
+    // 是否战力值满，兑换星星（表示战力变化才有）
+    public boolean isExchangeStar() {
+        if (battleIndexChange != null && battleIndexChange.size() > 0) {
+            for (ScoreItemModel scoreItemModel : battleIndexChange) {
+                if (scoreItemModel.getIndex() == EFightForceWhy.ExchangeStarDecr.getValue()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // 是否掉段保护，兑换星星（表示战力变化才有）
+    public boolean isProtectRank() {
+        if (battleIndexChange != null && battleIndexChange.size() > 0) {
+            for (ScoreItemModel scoreItemModel : battleIndexChange) {
+                if (scoreItemModel.getIndex() == EFightForceWhy.ProtectRankingDecr.getValue()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // 真实战力变化
+    public int getBattleChange() {
+        int total = 0;
+        if (battleIndexChange != null && battleIndexChange.size() > 0) {
+            for (ScoreItemModel scoreItemModel : battleIndexChange) {
+                if (scoreItemModel.getIndex() != EFightForceWhy.ProtectRankingDecr.getValue()
+                        && scoreItemModel.getIndex() != EFightForceWhy.ExchangeStarDecr.getValue()) {
+                    total = total + scoreItemModel.getScore();
+                }
+            }
+        }
+        return total;
     }
 
     @Override
