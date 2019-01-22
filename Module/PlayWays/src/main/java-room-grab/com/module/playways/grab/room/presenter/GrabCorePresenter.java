@@ -280,6 +280,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    private void tryStopRobotPlay() {
+        if (mExoPlayer != null) {
+            mExoPlayer.reset();
+        }
+    }
+
     @Override
     public void destroy() {
         super.destroy();
@@ -692,7 +698,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        tryStopRobotPlay();
         if (RoomDataUtils.isCurrentRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.currentRound, true);
@@ -776,12 +781,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         swapGame(!event.foreground, event.foreground);
         if (mRoomData.getRealRoundInfo() != null
                 && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
-        }
-    }
-
-    private void tryStopRobotPlay() {
-        if (mExoPlayer != null) {
-            mExoPlayer.reset();
         }
     }
 
