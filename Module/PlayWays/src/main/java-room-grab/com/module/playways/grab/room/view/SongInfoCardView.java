@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.view;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.text.TextUtils;
@@ -38,11 +39,13 @@ public class SongInfoCardView extends RelativeLayout {
 
 
     SVGAImageView mSongCover;
+    RelativeLayout mSongInfoArea;
+
     ExTextView mSongNameTv;
     ExTextView mSongOwnerTv;
     ExImageView mBaibanIv;
 
-    AlphaAnimation mAlphaAnimation; // 渐入的入场动画
+    AnimatorSet mAnimatorSet;  // 入场动画
     TranslateAnimation mTranslateAnimation; // 飞出的离场动画
 
     public SongInfoCardView(Context context) {
@@ -63,10 +66,10 @@ public class SongInfoCardView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_song_info_card_layout, this);
         mSongCover = (SVGAImageView) findViewById(R.id.song_cover);
+        mSongInfoArea = (RelativeLayout) findViewById(R.id.song_info_area);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
         mSongOwnerTv = (ExTextView) findViewById(R.id.song_owner_tv);
         mBaibanIv = (ExImageView) findViewById(R.id.baiban_iv);
-
     }
 
     // 该动画需要循环播放
@@ -75,13 +78,8 @@ public class SongInfoCardView extends RelativeLayout {
             return;
         }
 
-        setVisibility(VISIBLE);
-        // 淡入效果
-        if (mAlphaAnimation == null) {
-            mAlphaAnimation = new AlphaAnimation(0f, 1f);
-            mAlphaAnimation.setDuration(200);
-        }
-        this.startAnimation(mAlphaAnimation);
+        // 入场动画
+        animationGo();
 
         if (songModel.isIsblank()) {
             mSongNameTv.setVisibility(GONE);
@@ -115,6 +113,42 @@ public class SongInfoCardView extends RelativeLayout {
         } catch (Exception e) {
             System.out.print(true);
         }
+    }
+
+    private void animationGo() {
+        if (mAnimatorSet == null) {
+            ObjectAnimator animator1 = ObjectAnimator.ofFloat(this, View.ALPHA, 0f, 1f);
+            ObjectAnimator animator2 = ObjectAnimator.ofFloat(this, View.SCALE_X, 0.8f, 1f);
+            ObjectAnimator animator3 = ObjectAnimator.ofFloat(this, View.SCALE_Y, 0.8f, 1f);
+            ObjectAnimator animator4 = ObjectAnimator.ofFloat(mSongInfoArea, View.TRANSLATION_Y, -U.getDisplayUtils().dip2px(50), 0f);
+            mAnimatorSet = new AnimatorSet();
+            mAnimatorSet.playTogether(animator1, animator2, animator3, animator4);
+            mAnimatorSet.setDuration(200);
+        }
+
+        mAnimatorSet.start();
+        mAnimatorSet.removeAllListeners();
+        mAnimatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                setVisibility(VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 
     private SVGADynamicEntity requestDynamicBitmapItem(String cover) {

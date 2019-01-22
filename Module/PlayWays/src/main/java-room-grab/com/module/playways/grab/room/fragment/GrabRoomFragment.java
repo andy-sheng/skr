@@ -27,6 +27,7 @@ import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
+import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RoundOverCardView;
@@ -86,6 +87,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     public static final int MSG_ENSURE_BATTLE_BEGIN_OVER = 5;
 
+    public static final int MSG_ENSURE_GAME_OVER = 6;
+
     RoomData mRoomData;
 
     RelativeLayout mRankingContainer;
@@ -97,12 +100,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     CommentView mCommentView;
 
     GrabTopContainerView mTopContainerView;
-
-    SVGAImageView mReadyGoBg;
-
-    ImageView mEndRoundHint;
-
-    ImageView mEndGameIv;
 
     GrabCorePresenter mCorePresenter;
 
@@ -123,6 +120,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     OthersSingCardView mOthersSingCardView;
 
     SelfSingCardView mSelfSingCardView;
+
+    GrabGameOverView mGrabGameOverView;
 
     DialogPlus mDialogPlus;
 
@@ -155,6 +154,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     break;
                 case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
                     onRoundOverPlayOver(msg.arg1 == 1, (RoundInfoModel) msg.obj);
+                    break;
+                case MSG_ENSURE_GAME_OVER:
+                    onGrabGameOver();
                     break;
             }
         }
@@ -234,6 +236,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
+                // TODO: 2019/1/22 现在的动画，对战开始和第一首是连着一起的
                 onBattleBeginPlayOver();
             }
         }, 100);
@@ -361,14 +364,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
      * 转场动画相关初始化
      */
     private void initTurnChangeView() {
-        mReadyGoBg = (SVGAImageView) mRootView.findViewById(R.id.ready_go_bg);
-
         mTurnInfoCardView = mRootView.findViewById(R.id.turn_info_iv);
         mSongInfoCardView = mRootView.findViewById(R.id.turn_change_song_info_card_view);
         mSingBeginTipsCardView = mRootView.findViewById(R.id.turn_change_sing_beign_tips_card_view);
         mRoundOverCardView = mRootView.findViewById(R.id.turn_change_round_over_card_view);
-        mEndGameIv = (ImageView) mRootView.findViewById(R.id.end_game_iv);
-        mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
+        mGrabGameOverView = (GrabGameOverView) mRootView.findViewById(R.id.grab_game_over_view);
     }
 
     private void initGiftDisplayView() {
@@ -434,69 +434,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
         //自己灭了别人的灯成功了
-        if(event.uid == MyUserInfoManager.getInstance().getUid()){
+        if (event.uid == MyUserInfoManager.getInstance().getUid()) {
             mGrabOpBtn.hide();
         }
-    }
-
-    private void showReadyGoView() {
-        //  播放readgo动画
-        mReadyGoBg.setVisibility(View.VISIBLE);
-        // 防止readygo出现问题导致流程不能继续
-        mUiHanlder.removeMessages(MSG_ENSURE_READYGO_OVER);
-        mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_READYGO_OVER, 2000);
-
-        try {
-            getSVGAParser().parse(new URL(RoomData.READY_GO_SVGA_URL), new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mReadyGoBg.stopAnimation(true);
-                    mReadyGoBg.setImageDrawable(drawable);
-                    mReadyGoBg.startAnimation();
-                    U.getSoundUtils().play(TAG, R.raw.stage_readygo);
-                }
-
-                @Override
-                public void onError() {
-                }
-            });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        mReadyGoBg.setCallback(new SVGACallback() {
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onFinished() {
-                onReadyGoOver();
-            }
-
-            @Override
-            public void onRepeat() {
-                onReadyGoOver();
-            }
-
-            @Override
-            public void onStep(int i, double v) {
-
-            }
-        });
     }
 
     private void onReadyGoOver() {
         MyLog.w(TAG, "onReadyGoOver");
         mUiHanlder.removeMessages(MSG_ENSURE_READYGO_OVER);
-        if (mReadyGoBg != null) {
-            mRankingContainer.removeView(mReadyGoBg);
-            mReadyGoBg.stopAnimation(true);
-            mReadyGoBg = null;
-            mCorePresenter.onOpeningAnimationOver();
-        }
+        mCorePresenter.onOpeningAnimationOver();
     }
 
     private void onBattleBeginPlayOver() {
@@ -537,7 +483,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     void onSongInfoCardPlayOver(PendingPlaySongCardData pendingPlaySongCardData) {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
-        mSongInfoCardView.setVisibility(View.VISIBLE);
         mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
 //        mGrabOpBtn.setVisibility(View.VISIBLE);
         mGrabOpBtn.playCountDown(4);
@@ -654,7 +599,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void destroy() {
         super.destroy();
         MyLog.d(TAG, "destroy");
-        destroyAnimation();
         if (mDialogPlus != null && mDialogPlus.isShowing()) {
             mDialogPlus.dismiss();
             mDialogPlus = null;
@@ -726,18 +670,28 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mQuitTipsDialog.show();
     }
 
-    private void destroyAnimation() {
-        if (mReadyGoBg != null) {
-            mReadyGoBg.stopAnimation(true);
-            mReadyGoBg.setVisibility(View.GONE);
-            mRankingContainer.removeView(mReadyGoBg);
-            mReadyGoBg = null;
-        }
-    }
-
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
+        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
+        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_GAME_OVER);
+        mUiHanlder.sendMessageDelayed(msg, 4000);
+
+        mSelfSingCardView.hide();
+        mOthersSingCardView.hide();
+        mTurnInfoCardView.setVisibility(View.GONE);
+        mSingBeginTipsCardView.setVisibility(View.GONE);
+        mRoundOverCardView.setVisibility(View.GONE);
+        mGrabGameOverView.setVisibility(View.VISIBLE);
+        mGrabGameOverView.starAnimation(new SVGAListener() {
+            @Override
+            public void onFinished() {
+                onGrabGameOver();
+            }
+        });
+    }
+
+    private void onGrabGameOver() {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabResultFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
