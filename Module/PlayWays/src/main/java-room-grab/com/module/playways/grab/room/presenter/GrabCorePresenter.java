@@ -265,7 +265,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     private void robotSingBegin(PlayerInfoModel playerInfo) {
         String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
-        String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
         if (mRobotScoreHelper == null) {
             mRobotScoreHelper = new RobotScoreHelper();
         }
@@ -524,7 +523,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(GrabGameOverEvent event) {
         MyLog.d(TAG, "GrabGameOverEvent");
         estimateOverTsThisRound();
-
+        tryStopRobotPlay();
         mRoomData.setIsGameFinish(true);
         cancelSyncGameStateTask();
         // 游戏结束了,处理相应的ui逻辑
@@ -551,6 +550,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         estimateOverTsThisRound();
         closeEngine();
+        tryStopRobotPlay();
         RoundInfoModel now = event.newRoundInfo;
         if (now.getStatus() == RoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
@@ -691,6 +691,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "但是是个旧数据");
             return;
         }
+
+        tryStopRobotPlay();
         if (RoomDataUtils.isCurrentRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.currentRound, true);
@@ -749,16 +751,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
             RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
             //这个时间现在待定
-            long delayTime = 4000l;
-
-            if (roundInfoModel.getRoundSeq() == 1) {
-                delayTime = 4200l;
-            }
             //移除之前的要发生的机器人演唱
             mUiHanlder.removeMessages(MSG_ROBOT_SING_BEGIN);
             Message message = mUiHanlder.obtainMessage(MSG_ROBOT_SING_BEGIN);
             message.obj = playerInfo;
-            mUiHanlder.sendMessageDelayed(message, delayTime);
+            mUiHanlder.sendMessage(message);
         }
     }
 
