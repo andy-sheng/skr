@@ -22,6 +22,6 @@ android {
 
 dependencies {
     compileOnly project(":baseLibrary:commonsdk")
-    api files('libs/acrcloud-android-sdk-1.5.8.1.jar')
+    api files('libs/acrcloud-universal-sdk-1.2.8.jar')
 }
 

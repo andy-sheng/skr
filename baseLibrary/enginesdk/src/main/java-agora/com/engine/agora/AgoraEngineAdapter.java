@@ -14,9 +14,10 @@ import com.common.utils.U;
 import com.engine.Params;
 import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
+import com.engine.arccloud.ArcCloudManager;
+import com.engine.arccloud.RecognizeConfig;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +70,8 @@ public class AgoraEngineAdapter {
     private HandlerThread mWorkHandler = new HandlerThread("AgoraAdapterWorkThread");
     private AgoraOutCallback mOutCallback;
     private List<EffectModel> mEffectModels = new ArrayList<>();
+    private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
+
     /**
      * 所有的回调都在这
      * 注意回调的运行线程，一般都不会在主线程
@@ -329,7 +332,10 @@ public class AgoraEngineAdapter {
         if (mRtcEngine != null) {
             mRtcEngine.getAudioEffectManager().stopAllEffects();
         }
-
+        if (mArcCloudManager != null) {
+            mArcCloudManager.destroy();
+            mArcCloudManager = null;
+        }
         mUiHandler.removeCallbacksAndMessages(null);
         if (destroyAll) {
             //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
@@ -885,39 +891,48 @@ public class AgoraEngineAdapter {
         mRtcEngine.setAudioMixingPosition(posMs);
     }
 
-    public void setIFAudioEffectEngine(final AudioEffectStyleEnum styleEnum) {
-        tryInitRtcEngine();
-        if (styleEnum == null) {
-            mRtcEngine.registerAudioFrameObserver(null);
-        } else {
-            // 注册这玩意怎么会导致没有声音,return false 就会丢弃
-            mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
-                @Override
-                public boolean onRecordFrame(byte[] samples,
-                                             int numOfSamples,
-                                             int bytesPerSample,
-                                             int channels,
-                                             int samplesPerSec) {
-                    CbEngineAdapter.getInstance().processAudioFrames(samples,
-                            numOfSamples,
-                            bytesPerSample,
-                            channels,
-                            samplesPerSec,
-                            getAudioMixingCurrentPosition() + mConfig.getMixMusicBeginOffset(),
-                            mConfig.getMidiPath());
-                    return true;
-                }
+    int mLogtag = 0;
 
-                @Override
-                public boolean onPlaybackFrame(byte[] samples,
-                                               int numOfSamples,
-                                               int bytesPerSample,
-                                               int channels,
-                                               int samplesPerSec) {
-                    return true;
+    public void setIFAudioEffectEngine(final AudioEffectStyleEnum styleEnum) {
+        MyLog.d(TAG, "setIFAudioEffectEngine" + " styleEnum=" + styleEnum);
+        tryInitRtcEngine();
+//        if (styleEnum == null) {
+//            mRtcEngine.registerAudioFrameObserver(null);
+//        } else {
+        // 注册这玩意怎么会导致没有声音,return false 就会丢弃
+        mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
+            @Override
+            public boolean onRecordFrame(byte[] samples,
+                                         int numOfSamples,
+                                         int bytesPerSample,
+                                         int channels,
+                                         int samplesPerSec) {
+                if (++mLogtag % 500 == 0) {
+                    MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
-            });
-        }
+                if (mArcCloudManager != null) {
+                    mArcCloudManager.putPool(samples, samplesPerSec, channels);
+                }
+                CbEngineAdapter.getInstance().processAudioFrames(samples,
+                        numOfSamples,
+                        bytesPerSample,
+                        channels,
+                        samplesPerSec,
+                        getAudioMixingCurrentPosition() + mConfig.getMixMusicBeginOffset(),
+                        mConfig.getMidiPath());
+                return true;
+            }
+
+            @Override
+            public boolean onPlaybackFrame(byte[] samples,
+                                           int numOfSamples,
+                                           int bytesPerSample,
+                                           int channels,
+                                           int samplesPerSec) {
+                return true;
+            }
+        });
+//        }
     }
 
 
@@ -1102,4 +1117,34 @@ public class AgoraEngineAdapter {
      * 等等 需要时再添加
      */
     /*其他高级选项结束*/
+
+    /*打分相关开始*/
+    private void tryInitArcManager() {
+        if (mArcCloudManager == null) {
+            synchronized (this) {
+                if (mArcCloudManager == null) {
+                    mArcCloudManager = new ArcCloudManager();
+                }
+            }
+        }
+    }
+
+    public void startRecognize(RecognizeConfig recognizeConfig) {
+        tryInitArcManager();
+        mArcCloudManager.startRecognize(recognizeConfig);
+    }
+
+    public void stopRecognize() {
+        if (mArcCloudManager != null) {
+            mArcCloudManager.stopRecognize();
+        }
+    }
+
+    public void recognizeInManualMode() {
+        if (mArcCloudManager != null) {
+            mArcCloudManager.recognizeInManualMode();
+        }
+    }
+
+    /*打分相关结束*/
 }

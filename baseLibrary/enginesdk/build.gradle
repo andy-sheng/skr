@@ -51,7 +51,7 @@ dependencies {
     compileOnly project(":baseLibrary:commonsdk")
     api files('libs/agora-rtc-sdk.jar')
     if (arcCloud.toBoolean()) {
-        implementation project(":baseLibrary:arcCloud")
+        api project(":baseLibrary:arcCloud")
     }
 }
 

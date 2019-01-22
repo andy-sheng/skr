@@ -99,7 +99,6 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
         this.mThis = this;
         this.TAG = this.getClass().getSimpleName();
         this.mConversationsConfig = new ArrayList();
-        EventBus.getDefault().register(this);
         InternalModuleManager.getInstance().onLoaded();
     }
 
@@ -162,6 +161,7 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
         this.mAdapter.setOnPortraitItemClick(this);
         this.mList.setAdapter(this.mAdapter);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -298,7 +298,9 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
             } else if (status.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                 content = this.getResources().getString(R.string.rc_notice_tick);
             } else if (status.equals(ConnectionStatus.CONNECTED)) {
-                this.headerNetWorkView.setVisibility(View.GONE);
+                if (this.headerNetWorkView != null) {
+                    this.headerNetWorkView.setVisibility(View.GONE);
+                }
             } else if (status.equals(ConnectionStatus.DISCONNECTED)) {
                 content = this.getResources().getString(R.string.rc_notice_disconnect);
             } else if (status.equals(ConnectionStatus.CONNECTING)) {

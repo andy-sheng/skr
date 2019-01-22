@@ -24,6 +24,9 @@ import com.component.busilib.SkrConfig;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.RecognizeConfig;
+import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
@@ -118,6 +121,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     RobotScoreHelper mRobotScoreHelper;
 
     ExoPlayer mExoPlayer;
+
+    int mLastLineNum;
 
     PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
         @Override
@@ -219,6 +224,22 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 //                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
 //            }
             ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
+
+            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                    .setMode(RecognizeConfig.MODE_MANUAL)
+                    .setSongName(mRoomData.getSongModel().getItemName())
+                    .setMResultListener(new ArcRecognizeListener() {
+                        @Override
+                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {
+                            // 使用最新的打分方案做优化
+                            int score = 0;
+                            if (targetSongInfo != null) {
+                                score = (int) (targetSongInfo.getScore() * 100);
+                            }
+                            processScore(score, mLastLineNum);
+                        }
+                    }).build()
+            );
         }
     }
 
@@ -365,11 +386,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 .interval(0, sHeartBeatTaskInterval, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .subscribe(new Consumer<Long>() {
-            @Override
-            public void accept(Long aLong) throws Exception {
-                sendHeartBeat();
-            }
-        });
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        sendHeartBeat();
+                    }
+                });
     }
 
     public void cancelHeartBeatTask(String from) {
@@ -420,12 +441,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 .interval(delayTime, sSyncStateTaskInterval, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .subscribe(new Consumer<Long>() {
-            @Override
-            public void accept(Long aLong) throws Exception {
-                MyLog.w(TAG, "12秒钟的 syncGameTask 去更新状态了");
-                syncGameStatus(mRoomData.getGameId());
-            }
-        }, throwable -> MyLog.w(TAG, throwable + ""));
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        MyLog.w(TAG, "12秒钟的 syncGameTask 去更新状态了");
+                        syncGameStatus(mRoomData.getGameId());
+                    }
+                }, throwable -> MyLog.w(TAG, throwable + ""));
 //        mSyncGameStateTask = HandlerTaskTimer.newBuilder()
 //                .delay(delayTime)
 //                .interval(sSyncStateTaskInterval)
@@ -909,7 +930,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             onUserSpeakFromEngine("TYPE_USER_JOIN", userId);
         } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
             EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
-            if(roleChangeInfo.getNewRole() == 1){
+            if (roleChangeInfo.getNewRole() == 1) {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -920,7 +941,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         if (accFile != null && accFile.exists()) {
 
 //                                    EngineManager.getInstance().muteLocalAudioStream(false);
-                            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(),accFile.getAbsolutePath()
+                            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
                                     , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
                             /**
                              * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
@@ -982,7 +1003,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    private void sendUserSpeakEventToOthers(){
+    private void sendUserSpeakEventToOthers() {
         IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
         if (msgService != null) {
             long ts = System.currentTimeMillis();
@@ -1056,7 +1077,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
      */
     private void othersBeginSinging() {
         RoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if(infoModel!=null && !infoModel.isHasSing()) {
+        if (infoModel != null && !infoModel.isHasSing()) {
             infoModel.setHasSing(true);
             mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
             mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
@@ -1120,7 +1141,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(RoundOverEvent roundOverEvent) {
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + roundOverEvent.currenRound.getUserID()
                 + ", exitUserID 是 " + roundOverEvent.exitUserID + " timets 是" + roundOverEvent.info.getTimeMs());
-        if(mRoomData.getLastSyncTs() > roundOverEvent.info.getTimeMs()){
+        if (mRoomData.getLastSyncTs() > roundOverEvent.info.getTimeMs()) {
             MyLog.w(TAG, "但是是旧数据");
             return;
         }
@@ -1181,7 +1202,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         } else if (exitGameEvent.type == EXIT_GAME_OUT_ROUND) {   //我是观众，有一个人退出
             U.getToastUtil().showShort("游戏中，某一个人退出了");
         }
-        
+
         UserInfoModel userInfo = mRoomData.getUserInfo(exitGameEvent.exitUserID);
         BasePushInfo basePushInfo = new BasePushInfo();
         basePushInfo.setRoomID(mRoomData.getGameId());
@@ -1210,24 +1231,13 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LrcEvent.LineEndEvent event) {
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            int score = EngineManager.getInstance().getLineScore();
-            U.getToastUtil().showShort("score:" + score);
-            MyLog.d(TAG, "onEvent" + " 得分=" + score);
-            mIGameRuleView.updateScrollBarProgress(score);
-
-            MachineScoreItem machineScoreItem = new MachineScoreItem();
-            machineScoreItem.setScore(score);
-            long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
-            machineScoreItem.setTs(ts);
-            machineScoreItem.setNo(event.getLineNum());
-            // 打分信息传输给其他人
-            sendScoreToOthers(machineScoreItem);
-            if (mRobotScoreHelper != null) {
-                mRobotScoreHelper.add(machineScoreItem);
-            }
+            mLastLineNum = event.getLineNum();
+            EngineManager.getInstance().recognizeInManualMode();
+//            int score = EngineManager.getInstance().getLineScore();
+//            processScore(score, event.getLineNum());
         } else {
             if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                 // 尝试算机器人的演唱得分
@@ -1235,12 +1245,38 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     int score = mRobotScoreHelper.tryGetScoreByLine(event.getLineNum());
                     if (score >= 0) {
                         U.getToastUtil().showShort("score:" + score);
-                        mIGameRuleView.updateScrollBarProgress(score);
+                        mUiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mIGameRuleView.updateScrollBarProgress(score);
+                            }
+                        });
                     }
                 }
             } else {
                 // 尝试拿其他人的演唱打分
             }
+        }
+    }
+
+    void processScore(int score, int line) {
+        U.getToastUtil().showShort("score:" + score);
+        MyLog.d(TAG, "onEvent" + " 得分=" + score);
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mIGameRuleView.updateScrollBarProgress(score);
+            }
+        });
+        MachineScoreItem machineScoreItem = new MachineScoreItem();
+        machineScoreItem.setScore(score);
+        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+        machineScoreItem.setTs(ts);
+        machineScoreItem.setNo(line);
+        // 打分信息传输给其他人
+        sendScoreToOthers(machineScoreItem);
+        if (mRobotScoreHelper != null) {
+            mRobotScoreHelper.add(machineScoreItem);
         }
     }
 

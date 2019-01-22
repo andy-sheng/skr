@@ -30,6 +30,9 @@ import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.RecognizeConfig;
+import com.engine.arccloud.SongInfo;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
@@ -184,7 +187,8 @@ public class AuditionFragment extends BaseFragment {
 
         RxView.clicks(mIvBack).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    onBackPressed();
+//                    onBackPressed();
+                    EngineManager.getInstance().recognizeInManualMode();
                 });
 
 //        RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -296,7 +300,6 @@ public class AuditionFragment extends BaseFragment {
         mTvRecordTip.setText("点击结束试音演唱");
         mIvPlay.setEnabled(true);
         EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH);
-
         if (mRecordAnimator != null) {
             mRecordAnimator.cancel();
         }
@@ -472,7 +475,7 @@ public class AuditionFragment extends BaseFragment {
 
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
-            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(),accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
+            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
         }
     }
 
@@ -490,11 +493,11 @@ public class AuditionFragment extends BaseFragment {
                         mManyLyricsView.resetData();
                         mManyLyricsView.initLrcData();
                         lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getEndMs());
-                        if(isRecord){
+                        if (isRecord) {
                             Set<Integer> set = new HashSet<>();
                             set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
                             mManyLyricsView.setNeedCountDownLine(set);
-                        }else {
+                        } else {
                             Set<Integer> set = new HashSet<>();
                             mManyLyricsView.setNeedCountDownLine(set);
                         }
@@ -599,20 +602,11 @@ public class AuditionFragment extends BaseFragment {
         if (mRecordAnimator != null) {
             mRecordAnimator.cancel();
         }
-
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                File recordFile = new File(AAC_SAVE_PATH);
-                if (recordFile.exists()) {
-                    recordFile.delete();
-                }
-                EngineManager.getInstance().destroy("prepare");
-                emitter.onComplete();
-            }
-        }).observeOn(Schedulers.io())
-                .subscribe();
-
+        EngineManager.getInstance().destroy("prepare");
+        File recordFile = new File(AAC_SAVE_PATH);
+        if (recordFile != null && recordFile.exists()) {
+            recordFile.delete();
+        }
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 }
