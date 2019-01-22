@@ -16,15 +16,15 @@ public class BgMusicManager {
     public static final String PREF_KEY_PIPEI_VOLUME_SWITCH = "pref_pipei_volume_switch";   // 音量开关
     public static final String PREF_KEY_PIPEI_VOLUME = "pref_pipei_volume";                 // 音量百分比
 
-    boolean isPlay;
-    float maxVolume;  // 最大音量
+    boolean mIsPlay;
+    float mMaxVolume;  // 最大音量
 
     ExoPlayer mExoPlayer;
-    ValueAnimator animator;  // 用来做淡入的效果
+    ValueAnimator mAnimator;  // 用来做淡入的效果
 
     private BgMusicManager() {
-        isPlay = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, true);
-        maxVolume = U.getPreferenceUtils().getSettingInt(PREF_KEY_PIPEI_VOLUME, 100) / 100f;
+        mIsPlay = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, true);
+        mMaxVolume = U.getPreferenceUtils().getSettingInt(PREF_KEY_PIPEI_VOLUME, 100) / 100f;
     }
 
     private static class BgMusicManagerrHolder {
@@ -36,23 +36,23 @@ public class BgMusicManager {
     }
 
     public boolean isPlay() {
-        return isPlay;
+        return mIsPlay;
     }
 
     public void setPlay(boolean play) {
-        isPlay = play;
+        mIsPlay = play;
     }
 
     public float getMaxVolume() {
-        return maxVolume;
+        return mMaxVolume;
     }
 
     public void setMaxVolume(float maxVolume) {
-        this.maxVolume = maxVolume;
+        this.mMaxVolume = maxVolume;
     }
 
     public void starPlay(final String path, final long msec) {
-        if (!isPlay) {
+        if (!mIsPlay) {
             MyLog.d(TAG, "starPlay" + " isPlay = false ");
             return;
         }
@@ -109,14 +109,14 @@ public class BgMusicManager {
     }
 
     private void initVolume() {
-        if (animator == null) {
-            animator = ValueAnimator.ofFloat(0f, maxVolume);
-            animator.setDuration(3000);
-            animator.setInterpolator(new LinearInterpolator());
+        if (mAnimator == null) {
+            mAnimator = ValueAnimator.ofFloat(0f, mMaxVolume);
+            mAnimator.setDuration(3000);
+            mAnimator.setInterpolator(new LinearInterpolator());
         }
-        animator.removeAllUpdateListeners();
-        animator.removeAllListeners();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mAnimator.removeAllUpdateListeners();
+        mAnimator.removeAllListeners();
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 if (valueAnimator.getAnimatedValue() instanceof Float) {
@@ -127,7 +127,7 @@ public class BgMusicManager {
             }
         });
 
-        animator.addListener(new Animator.AnimatorListener() {
+        mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
@@ -136,7 +136,7 @@ public class BgMusicManager {
             @Override
             public void onAnimationEnd(Animator animator) {
                 if (mExoPlayer != null) {
-                    mExoPlayer.setVolume(maxVolume);
+                    mExoPlayer.setVolume(mMaxVolume);
                 }
             }
 
@@ -150,7 +150,7 @@ public class BgMusicManager {
 
             }
         });
-        animator.start();
+        mAnimator.start();
     }
 
 
@@ -160,8 +160,8 @@ public class BgMusicManager {
             mExoPlayer = null;
         }
 
-        if (animator != null) {
-            animator.cancel();
+        if (mAnimator != null) {
+            mAnimator.cancel();
         }
     }
 }

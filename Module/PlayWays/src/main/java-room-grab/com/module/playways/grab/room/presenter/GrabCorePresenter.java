@@ -539,7 +539,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
             }
         });
-
+        // 销毁引擎，减小成本
+        EngineManager.getInstance().destroy("grabroom");
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
