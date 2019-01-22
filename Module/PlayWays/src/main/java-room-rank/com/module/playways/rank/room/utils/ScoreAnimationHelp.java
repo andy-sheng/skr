@@ -46,57 +46,86 @@ public class ScoreAnimationHelp {
 
 
     public static void battleChangeAnimation(RecordCircleView mRecordCircleView, ScoreResultModel scoreResultModel, ScoreStateModel form, ScoreStateModel to, AnimationListener listener) {
-        // TODO: 2019/1/22  just test
-        if (listener != null) {
-            listener.onFinish();
-            return;
-        }
-
         // 战力保护优先算加分，最后算掉段
         if (form.getMaxBattleIndex() == 0) {
             // 之前已无战力上限
-            if (scoreResultModel.isExchangeStar()) {
-                MyLog.e(TAG, "battleChangeAnimation error ");
+            if (to.getMaxBattleIndex() == 0) {
+                //现在依然无上限
+                // TODO: 2019/1/22 变成满级
+                listener.onFinish();
             } else {
-                if (scoreResultModel.isProtectRank()) {
-                    // TODO: 2019/1/19 还有动画么？
-                } else {
-                    // 无动画
-                }
+                // 直接更新表盘，无动画
+                mRecordCircleView.setData(0, to.getMaxBattleIndex(), 0, 0, to.getProtectBattleIndex(), new AnimationListener() {
+                    @Override
+                    public void onFinish() {
+                        listener.onFinish();
+                    }
+                });
             }
         } else if (to.getMaxBattleIndex() == 0) {
-            // 当前已无战力上限
-            if (scoreResultModel.isProtectRank()) {
-                MyLog.e(TAG, "battleChangeAnimation error ");
-            } else {
-                if (scoreResultModel.isExchangeStar()) {
-                    // 之前表盘满
-                    // 然后到0 兑换星星
-                    // 战力满级，表盘失效
-                } else {
-                    // 无动画
+            // 当前已无战力上限, 且之前有
+            // 之前升满，表盘变满级
+            mRecordCircleView.setData(0, form.getMaxBattleIndex(), form.getCurrBattleIndex(), form.getMaxBattleIndex(), form.getProtectBattleIndex(), new AnimationListener() {
+                @Override
+                public void onFinish() {
+                    // TODO: 2019/1/22 变成满级
+                    listener.onFinish();
                 }
-            }
+            });
         } else {
-            if (form.getCurrBattleIndex() + scoreResultModel.getBattleChange() >= form.getMaxBattleIndex()) {
-                // 之前表盘满
-                // 然后到0 兑换星星
-                // 然后到当前战力
-                // 是否下面有触发段位保护动画
-                if (scoreResultModel.isProtectRank()) {
-                    // 表盘清空
-                } else {
-                    // 无动画
-                }
+            if (scoreResultModel.isExchangeStar()) {
+                //TODO: 2019/1/22  涨星了，服务器确定，一定不会触发掉段
+                mRecordCircleView.setData(0, form.getMaxBattleIndex(), form.getCurrBattleIndex(), form.getMaxBattleIndex(), form.getProtectBattleIndex(), new AnimationListener() {
+                    @Override
+                    public void onFinish() {
+                        // 表盘清空
+                        mRecordCircleView.setData(0, form.getMaxBattleIndex(), form.getMaxBattleIndex(), 0, form.getProtectBattleIndex(), new AnimationListener() {
+                            @Override
+                            public void onFinish() {
+                                // 换表盘
+                                mRecordCircleView.setData(0, to.getMaxBattleIndex(), 0, to.getCurrBattleIndex(), to.getProtectBattleIndex(), new AnimationListener() {
+                                    @Override
+                                    public void onFinish() {
+                                        listener.onFinish();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            } else if (scoreResultModel.isProtectRank()) {
+                // TODO: 2019/1/22 触发掉段保护了 服务器确定 一定不回触发兑换星星
+                // 先涨分
+                mRecordCircleView.setData(0, form.getMaxBattleIndex(), form.getCurrBattleIndex(), form.getCurrBattleIndex() + scoreResultModel.getBattleChange()
+                        , form.getProtectBattleIndex(), new AnimationListener() {
+                            @Override
+                            public void onFinish() {
+                                // 清空
+                                mRecordCircleView.setData(0, form.getMaxBattleIndex(), form.getCurrBattleIndex() + scoreResultModel.getBattleChange(), 0,
+                                        form.getProtectBattleIndex(), new AnimationListener() {
+                                            @Override
+                                            public void onFinish() {
+                                                // 换表盘
+                                                mRecordCircleView.setData(0, to.getMaxBattleIndex(), 0, to.getCurrBattleIndex(), to.getProtectBattleIndex(), new AnimationListener() {
+                                                    @Override
+                                                    public void onFinish() {
+                                                        listener.onFinish();
+                                                    }
+                                                });
+                                            }
+                                        });
+                            }
+                        });
             } else {
-                // 先加上该战力
-                // 是否触发段位保护
-                if (scoreResultModel.isProtectRank()) {
-                    // 表盘清空
-                } else {
-                    // 无动画
-                }
+                // 直接涨分即可
+                mRecordCircleView.setData(0, to.getMaxBattleIndex(), form.getCurrBattleIndex(), to.getCurrBattleIndex(), form.getProtectBattleIndex(), new AnimationListener() {
+                    @Override
+                    public void onFinish() {
+                        listener.onFinish();
+                    }
+                });
             }
+
         }
     }
 

@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import com.common.utils.U;
+import com.module.playways.rank.room.utils.ScoreAnimationHelp;
 import com.module.rank.R;
 
 /**
@@ -61,7 +62,7 @@ public class RecordCircleView extends View {
 
     private int mProtect;
 
-    AnimatorListenerAdapter mAnimatorListenerAdapter;
+    ScoreAnimationHelp.AnimationListener mAnimationListener;
     /**
      * 由于真实的芝麻信用界面信用值不是线性排布，所以播放动画时若以信用值为参考，则会出现忽慢忽快
      * 的情况（开始以为是卡顿）。因此，先计算出最终到达角度，以扫过的角度为线性参考，动画就流畅了
@@ -335,14 +336,14 @@ public class RecordCircleView extends View {
         return ((float) mSweepAngle / ((float) mMax - (float) mMin)) * value;
     }
 
-    public void setData(int min, int max, int cur, int target, int protect, AnimatorListenerAdapter animatorListenerAdapter) {
+    public void setData(int min, int max, int cur, int target, int protect, ScoreAnimationHelp.AnimationListener listener) {
         mMin = 0;
         mMax = max;
         mStart = cur;
         mSolidCreditValue = target;
         mProtect = protect;
 
-        mAnimatorListenerAdapter = animatorListenerAdapter;
+        mAnimationListener = listener;
         setCreditValueWithAnim(target);
     }
 
@@ -392,17 +393,14 @@ public class RecordCircleView extends View {
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 isAnimFinish = false;
-                if (mAnimatorListenerAdapter != null) {
-                    mAnimatorListenerAdapter.onAnimationStart(animation);
-                }
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isAnimFinish = true;
-                if (mAnimatorListenerAdapter != null) {
-                    mAnimatorListenerAdapter.onAnimationEnd(animation);
+                if (mAnimationListener != null) {
+                    mAnimationListener.onFinish();
                 }
             }
 
@@ -411,9 +409,6 @@ public class RecordCircleView extends View {
                 super.onAnimationCancel(animation);
                 onAnimationEnd(animation);
                 isAnimFinish = true;
-                if (mAnimatorListenerAdapter != null) {
-                    mAnimatorListenerAdapter.onAnimationCancel(animation);
-                }
             }
         });
         animatorSet.start();

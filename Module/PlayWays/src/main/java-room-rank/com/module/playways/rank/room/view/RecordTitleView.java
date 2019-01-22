@@ -158,6 +158,12 @@ public class RecordTitleView extends RelativeLayout {
         ScoreStateModel before = scoreResultModel.getStates().get(0);
         if (before != null) {
             mSdvOwnLevel.bindData(before.getMainRanking(), before.getSubRanking(), before.getMaxStar(), before.getCurrStar());
+            if (before.getMaxBattleIndex() == 0) {
+                // TODO: 2019/1/22 满级
+            } else {
+                mRecordCircleView.setData(0, before.getMaxBattleIndex(), before.getCurrBattleIndex(), before.getCurrBattleIndex(), before.getProtectBattleIndex(), null);
+            }
+
             mSdvOwnLevel.postDelayed(new Runnable() {
                 @Override
                 public void run() {
