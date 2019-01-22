@@ -74,7 +74,7 @@ public class U {
 
     private static SoundUtils soundUtils;
 
-    public static LogUploadUtils LogUploadUtils;
+    private static LogUploadUtils logUploadUtils;
 
     public static void setApp(Application app) {
         application = app;
@@ -302,6 +302,13 @@ public class U {
             soundUtils = new SoundUtils();
         }
         return soundUtils;
+    }
+
+    public static LogUploadUtils getLogUploadUtils() {
+        if (logUploadUtils == null) {
+            logUploadUtils = new LogUploadUtils();
+        }
+        return logUploadUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;

@@ -18,15 +18,16 @@ import io.reactivex.schedulers.Schedulers;
 
 public class LogUploadUtils {
     public final static String TAG = "LogUploadUtils";
-    static Disposable uploadLogTask;
+    Disposable mUploadLogTask;
 
-    public static void upload(long uid) {
+    public void upload(long uid) {
 
-        if (uploadLogTask != null && !uploadLogTask.isDisposed()) {
+        if (mUploadLogTask != null && !mUploadLogTask.isDisposed()) {
+            U.getToastUtil().showShort("正在上传日志");
             return;
         }
 
-        uploadLogTask = Observable.create(new ObservableOnSubscribe<File>() {
+        mUploadLogTask = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
                 File logDir = new File(U.getAppInfoUtils().getMainDir() + File.separator + "logs/");
@@ -91,15 +92,15 @@ public class LogUploadUtils {
         });
     }
 
-    public static List<String> getLastThreeFile(){
+    public List<String> getLastThreeFile() {
         File logDir = new File(U.getAppInfoUtils().getMainDir() + File.separator + "logs/");
         ArrayList<String> lastThreeFiles = new ArrayList<>();
-        if(logDir.exists() && logDir.isDirectory()){
+        if (logDir.exists() && logDir.isDirectory()) {
             File[] fileList = logDir.listFiles();
-            for (int i = fileList.length - 1; i >= 0; i--){
-                if(fileList[i].isFile() && fileList[i].getName().endsWith(".log")){
+            for (int i = fileList.length - 1; i >= 0; i--) {
+                if (fileList[i].isFile() && fileList[i].getName().endsWith(".log")) {
                     lastThreeFiles.add(fileList[i].getAbsolutePath());
-                    if(lastThreeFiles.size() == 4){
+                    if (lastThreeFiles.size() == 4) {
                         break;
                     }
                 }

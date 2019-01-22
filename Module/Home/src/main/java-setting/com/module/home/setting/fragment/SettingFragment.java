@@ -129,7 +129,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.LogUploadUtils.upload(MyUserInfoManager.getInstance().getUid());
+                        U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid());
                     }
                 });
 
