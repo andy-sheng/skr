@@ -547,7 +547,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         } else {
             // 显示收音机
             mOthersSingCardView.setVisibility(View.VISIBLE);
-            mOthersSingCardView.bindData(mRoomData.getUserInfo((int) uid).getAvatar());
+            mOthersSingCardView.bindData(mRoomData.getUserInfo((int) uid).getAvatar(), mRoomData.getRealRoundInfo().getSongModel());
         }
     }
 

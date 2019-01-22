@@ -242,8 +242,11 @@ public class SelfSingCardView extends RelativeLayout {
 
     public String getNum(long num, int index) {
         String s = String.valueOf(num);
+        if(index > s.length() || index < 0){
+            return "";
+        }
+
         String result = String.valueOf(s.charAt(s.length() - index));
-        System.out.println("数字：" + num + "的第" + index + "位数字是" + result);
 
         return result;
     }
