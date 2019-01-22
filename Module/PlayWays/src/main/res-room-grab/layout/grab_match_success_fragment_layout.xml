@@ -29,18 +29,24 @@
         <!--app:autoPlay="false"-->
         <!--app:loopCount="-1" />-->
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:visibility="visible"
+        android:id="@+id/svga_match_success_bg"
+        android:layout_width="@dimen/view_750_dp"
+        android:layout_height="@dimen/view_980_dp"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
+        app:autoPlay="true"
+        app:antiAlias="true"
+        app:clearsAfterStop="false"
+        app:loopCount="1"
+        app:source="grab_match_success_bg.svga" />
     <RelativeLayout
         android:visibility="visible"
         android:layout_width="@dimen/view_341_dp"
         android:layout_height="@dimen/view_331_dp"
         android:layout_centerInParent="true"
         android:clipChildren="false">
-        <ImageView
-            android:layout_marginTop="@dimen/view_28_dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/_pipeichenggong_bj2"
-            android:layout_width="@dimen/view_280_dp"
-            android:layout_height="wrap_content" />
 
         <com.common.view.ex.ExRelativeLayout
             android:id="@+id/rl_icon1_root"

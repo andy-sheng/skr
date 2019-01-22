@@ -1925,6 +1925,8 @@
     <dimen name="view_639_33_dp">639.33dp</dimen>
     <dimen name="view_639_67_dp">639.67dp</dimen>
     <dimen name="view_640_dp">640dp</dimen>
+    <dimen name="view_750_dp">750dp</dimen>
+    <dimen name="view_980_dp">980dp</dimen>
 
     <dimen name="textsize_0_dp">0dp</dimen>
     <dimen name="textsize_0_33_dp">0.33dp</dimen>
