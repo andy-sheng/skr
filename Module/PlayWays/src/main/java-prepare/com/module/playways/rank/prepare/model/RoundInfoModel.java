@@ -285,6 +285,10 @@ public class RoundInfoModel implements Serializable {
     @Override
     public boolean equals(Object o) {
         RoundInfoModel that = (RoundInfoModel) o;
+        if (that == null) {
+            return false;
+        }
+
         if (this.type != that.type) {
             return false;
         }
