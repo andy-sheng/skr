@@ -214,11 +214,11 @@ public class GrabOpView extends RelativeLayout {
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
-                .take(5)
+                .take(6)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num1 = 6 - integer;
+                        int num1 = 7 - integer - 1;
                         Drawable drawable = null;
                         switch (num1) {
                             case 5:
