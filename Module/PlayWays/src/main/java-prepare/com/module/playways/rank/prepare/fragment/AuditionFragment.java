@@ -181,8 +181,8 @@ public class AuditionFragment extends BaseFragment {
 
         RxView.clicks(mIvBack).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-//                    onBackPressed();
-                    EngineManager.getInstance().recognizeInManualMode();
+                    onBackPressed();
+//                    EngineManager.getInstance().recognizeInManualMode();
                 });
 
 //        RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
