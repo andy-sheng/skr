@@ -610,6 +610,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         estimateOverTsThisRound();
         closeEngine();
         RoundInfoModel now = event.roundInfo;
+        tryStopRobotPlay();
         if (now.getStatus() == RoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
             mIGrabView.grabBegin(now.getRoundSeq(), now.getSongModel());
@@ -619,6 +620,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mIGrabView.singBySelf();
             } else {
                 mIGrabView.singByOthers(now.getUserID());
+                checkMachineUser(now.getUserID());
             }
         }
     }
@@ -750,7 +752,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             long delayTime = 4000l;
 
             if (roundInfoModel.getRoundSeq() == 1) {
-                delayTime = 6000l;
+                delayTime = 4200l;
             }
             //移除之前的要发生的机器人演唱
             mUiHanlder.removeMessages(MSG_ROBOT_SING_BEGIN);
@@ -777,6 +779,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         swapGame(!event.foreground, event.foreground);
         if (mRoomData.getRealRoundInfo() != null
                 && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
+        }
+    }
+
+    private void tryStopRobotPlay() {
+        if (mExoPlayer != null) {
+            mExoPlayer.reset();
         }
     }
 
