@@ -510,7 +510,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mTopContainerView.setModeSing(uid);
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
         mSongInfoCardView.hide();
-        mGrabOpBtn.toSingState();
+
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
@@ -521,6 +521,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         singBeginTipsPlay((int) uid, new Runnable() {
             @Override
             public void run() {
+                mGrabOpBtn.toSingState();
                 onSingBeginTipsPlayOver(uid);
             }
         });
