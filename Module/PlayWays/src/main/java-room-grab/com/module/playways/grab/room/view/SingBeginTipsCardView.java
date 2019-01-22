@@ -1,15 +1,21 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.HttpImage;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
@@ -22,12 +28,16 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+
 /**
  * xxx获得演唱机会
  * 轮到你唱了
  * 演唱提示cardview
  */
 public class SingBeginTipsCardView extends RelativeLayout {
+
+    public final static String TAG = "SingBeginTipsCardView";
 
     SVGAImageView mSingBeginSvga;
 
@@ -109,9 +119,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
 
     private SVGADynamicEntity requestDynamicBitmapItem(UserInfoModel userInfoModel) {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        if (userInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
-            dynamicEntity.setDynamicImage(userInfoModel.getAvatar(), "avatar");
-        } else {
+        if (userInfoModel.getUserId() != MyUserInfoManager.getInstance().getUid()) {
             // 填入名字和头像
             TextPaint textPaint = new TextPaint();
             textPaint.setColor(Color.parseColor("#0C2275"));
@@ -120,6 +128,19 @@ public class SingBeginTipsCardView extends RelativeLayout {
             textPaint.setTextSize(U.getDisplayUtils().dip2px(24));
             dynamicEntity.setDynamicImage(userInfoModel.getAvatar(), "avatar");
             dynamicEntity.setDynamicText(userInfoModel.getNickname(), textPaint, "name");
+        }
+
+        if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
+            HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                    .setWidth(U.getDisplayUtils().dip2px(90))
+                    .setHeight(U.getDisplayUtils().dip2px(90))
+                    .build());
+            File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
+            if (file != null) {
+                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar");
+            } else {
+                dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
+            }
         }
         return dynamicEntity;
     }

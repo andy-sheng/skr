@@ -1,12 +1,16 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
+import com.common.core.avatar.AvatarUtils;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.HttpImage;
 import com.common.utils.U;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -16,6 +20,8 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 /**
  * 其他人主场景收音机
@@ -124,9 +130,20 @@ public class OthersSingCardView extends RelativeLayout {
     }
 
     private SVGADynamicEntity requestDynamicItem(String avatar) {
+        if (TextUtils.isEmpty(avatar)) {
+            return null;
+        }
+
+        HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(avatar)
+                .setWidth(U.getDisplayUtils().dip2px(90))
+                .setHeight(U.getDisplayUtils().dip2px(90))
+                .build());
+        File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        if (!TextUtils.isEmpty(avatar)) {
-            dynamicEntity.setDynamicImage(avatar, "avatar");
+        if (file != null && file.exists()) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar");
+        } else {
+            dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
         }
         return dynamicEntity;
     }
