@@ -340,6 +340,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             WinResultModel model = new WinResultModel();
             model.setUseID(userScoreResult.getUserID());
             model.setType(userScoreResult.getWinType().getValue());
+            winResultModels.add(model);
 
             if (userScoreResult.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 scoreResultModel.parse(userScoreResult);

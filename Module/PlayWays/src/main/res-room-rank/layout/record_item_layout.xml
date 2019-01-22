@@ -30,7 +30,8 @@
         android:layout_width="@dimen/view_28_dp"
         android:layout_height="@dimen/view_28_dp"
         android:layout_marginLeft="@dimen/view_60_dp"
-        android:layout_marginTop="@dimen/view_13_dp" />
+        android:layout_marginTop="@dimen/view_13_dp"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/ll_star_container"

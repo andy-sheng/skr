@@ -130,7 +130,7 @@ public class GrabResultFragment extends BaseFragment {
             mSingNum.setImageDrawable(drawable);
             mSingWantNum.setText(String.valueOf(mGrabResultInfoModel.getWantSingChanceCnt()));
             mSingSelfNum.setText(String.valueOf(mGrabResultInfoModel.getGetSingChanceCnt()));
-            mSingSucessTv.setText(String.valueOf(mGrabResultInfoModel.getWholeTimeSingCnt() * 100) + "%");
+            mSingSucessTv.setText(String.valueOf(mGrabResultInfoModel.getWholeTimeSingRatio() * 100) + "%");
             mSingAboveTv.setText(String.valueOf(mGrabResultInfoModel.getBeyondSkrerRatio() * 100) + "%");
         } else {
             MyLog.d(TAG, "还去同步了一次");

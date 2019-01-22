@@ -28,24 +28,18 @@ public class RecordData {
         return null;
     }
 
-    // 是否有人逃跑
-    public boolean hasEscape() {
-        for (VoteInfoModel voteInfoModel : mVoteInfoModels) {
-            if (voteInfoModel.isIsEscape()) {
-                return true;
+    public WinResultModel getWinResult(int userID) {
+        if (userID == 0) {
+            return null;
+        }
+        if (mWinResultModels == null || mWinResultModels.size() <= 0) {
+            return null;
+        }
+        for (WinResultModel winResultModel : mWinResultModels) {
+            if (winResultModel.getUseID() == userID) {
+                return winResultModel;
             }
         }
-        return false;
-    }
-
-    public boolean hasVote(int useId) {
-        for (VoteInfoModel voteInfoModel : mVoteInfoModels) {
-            for (Integer voterId : voteInfoModel.getVoter()) {
-                if (useId == voterId) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return null;
     }
 }

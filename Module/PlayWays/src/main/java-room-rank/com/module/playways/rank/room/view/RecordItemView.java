@@ -19,6 +19,7 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
+import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
@@ -94,24 +95,15 @@ public class RecordItemView extends RelativeLayout {
             return;
         }
 
-        VoteInfoModel voteInfoModel = recordData.mVoteInfoModels.get(index);
-
         mRoomData = roomData;
 
         mRecordData = recordData;
 
-        init();
+        VoteInfoModel voteInfoModel = mRecordData.mVoteInfoModels.get(index);
 
-        if (recordData.hasEscape()) {
-            // 有人逃跑，显示有人逃跑
-            if (voteInfoModel.isIsEscape()) {
-                mTvHintFlag.setVisibility(VISIBLE);
-                mTvHintFlag.setText("逃跑");
-            }
-        } else if (!recordData.hasVote(voteInfoModel.getUserID())) {
-            mTvHintFlag.setVisibility(VISIBLE);
-            mTvHintFlag.setText("未投票");
-        }
+        WinResultModel winResultModel = mRecordData.getWinResult(voteInfoModel.getUserID());
+
+        init();
 
         UserInfoModel playerInfo = roomData.getUserInfo(voteInfoModel.getUserID());
         SongModel songModel = RoomDataUtils.getPlayerSongInfoUserId(roomData.getPlayerInfoList(), voteInfoModel.getUserID());
@@ -127,17 +119,31 @@ public class RecordItemView extends RelativeLayout {
         mTvSingerName.setText(playerInfo.getNickname());
         mTvSongName.setText("《" + songModel.getItemName() + "》");
 
-        switch (voteInfoModel.getRank()) {
-            case 1:
-                mIvRanking.setBackground(getResources().getDrawable(R.drawable.diyiming_huizhang));
-                break;
-            case 2:
-                mIvRanking.setBackground(getResources().getDrawable(R.drawable.dierming_huizhang));
-                break;
-            case 3:
-                mIvRanking.setBackground(getResources().getDrawable(R.drawable.disanming_huizhang));
-                break;
+        if (winResultModel != null) {
+            switch (winResultModel.getType()) {
+                case 1:
+                    mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal_win));
+                    mIvRanking.setVisibility(VISIBLE);
+                    break;
+                case 2:
+                    mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal_lose));
+                    mIvRanking.setVisibility(VISIBLE);
+                    break;
+                case 3:
+                    mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal_draw));
+                    mIvRanking.setVisibility(VISIBLE);
+                    break;
+                case 4:
+                    mTvHintFlag.setVisibility(VISIBLE);
+                    mTvHintFlag.setText("逃跑");
+                    break;
+                case 5:
+                    mTvHintFlag.setVisibility(VISIBLE);
+                    mTvHintFlag.setText("未投票");
+                    break;
+            }
         }
+
 
         //这里需要判读是娱乐还是竞技
         if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
