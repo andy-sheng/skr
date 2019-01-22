@@ -45,15 +45,27 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
   )
   public final List<UserScoreRecord> userScoreRecord;
 
-  public VoteResultMsg(List<VoteInfo> voteInfo, List<UserScoreRecord> userScoreRecord) {
-    this(voteInfo, userScoreRecord, ByteString.EMPTY);
+  /**
+   * 所有参与者的评分结果，应该使用这个结构
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Room.UserScoreResult#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<UserScoreResult> scoreResults;
+
+  public VoteResultMsg(List<VoteInfo> voteInfo, List<UserScoreRecord> userScoreRecord,
+      List<UserScoreResult> scoreResults) {
+    this(voteInfo, userScoreRecord, scoreResults, ByteString.EMPTY);
   }
 
   public VoteResultMsg(List<VoteInfo> voteInfo, List<UserScoreRecord> userScoreRecord,
-      ByteString unknownFields) {
+      List<UserScoreResult> scoreResults, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.voteInfo = Internal.immutableCopyOf("voteInfo", voteInfo);
     this.userScoreRecord = Internal.immutableCopyOf("userScoreRecord", userScoreRecord);
+    this.scoreResults = Internal.immutableCopyOf("scoreResults", scoreResults);
   }
 
   @Override
@@ -61,6 +73,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     Builder builder = new Builder();
     builder.voteInfo = Internal.copyOf("voteInfo", voteInfo);
     builder.userScoreRecord = Internal.copyOf("userScoreRecord", userScoreRecord);
+    builder.scoreResults = Internal.copyOf("scoreResults", scoreResults);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -72,7 +85,8 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     VoteResultMsg o = (VoteResultMsg) other;
     return unknownFields().equals(o.unknownFields())
         && voteInfo.equals(o.voteInfo)
-        && userScoreRecord.equals(o.userScoreRecord);
+        && userScoreRecord.equals(o.userScoreRecord)
+        && scoreResults.equals(o.scoreResults);
   }
 
   @Override
@@ -82,6 +96,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
       result = unknownFields().hashCode();
       result = result * 37 + voteInfo.hashCode();
       result = result * 37 + userScoreRecord.hashCode();
+      result = result * 37 + scoreResults.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -92,6 +107,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     StringBuilder builder = new StringBuilder();
     if (!voteInfo.isEmpty()) builder.append(", voteInfo=").append(voteInfo);
     if (!userScoreRecord.isEmpty()) builder.append(", userScoreRecord=").append(userScoreRecord);
+    if (!scoreResults.isEmpty()) builder.append(", scoreResults=").append(scoreResults);
     return builder.replace(0, 2, "VoteResultMsg{").append('}').toString();
   }
 
@@ -126,6 +142,16 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
   }
 
   /**
+   * 所有参与者的评分结果，应该使用这个结构
+   */
+  public List<UserScoreResult> getScoreResultsList() {
+    if(scoreResults==null){
+        return new java.util.ArrayList<UserScoreResult>();
+    }
+    return scoreResults;
+  }
+
+  /**
    * 投票打分信息
    */
   public boolean hasVoteInfoList() {
@@ -139,14 +165,24 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     return userScoreRecord!=null;
   }
 
+  /**
+   * 所有参与者的评分结果，应该使用这个结构
+   */
+  public boolean hasScoreResultsList() {
+    return scoreResults!=null;
+  }
+
   public static final class Builder extends Message.Builder<VoteResultMsg, Builder> {
     public List<VoteInfo> voteInfo;
 
     public List<UserScoreRecord> userScoreRecord;
 
+    public List<UserScoreResult> scoreResults;
+
     public Builder() {
       voteInfo = Internal.newMutableList();
       userScoreRecord = Internal.newMutableList();
+      scoreResults = Internal.newMutableList();
     }
 
     /**
@@ -167,9 +203,18 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
       return this;
     }
 
+    /**
+     * 所有参与者的评分结果，应该使用这个结构
+     */
+    public Builder addAllScoreResults(List<UserScoreResult> scoreResults) {
+      Internal.checkElementsNotNull(scoreResults);
+      this.scoreResults = scoreResults;
+      return this;
+    }
+
     @Override
     public VoteResultMsg build() {
-      return new VoteResultMsg(voteInfo, userScoreRecord, super.buildUnknownFields());
+      return new VoteResultMsg(voteInfo, userScoreRecord, scoreResults, super.buildUnknownFields());
     }
   }
 
@@ -182,6 +227,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     public int encodedSize(VoteResultMsg value) {
       return VoteInfo.ADAPTER.asRepeated().encodedSizeWithTag(1, value.voteInfo)
           + UserScoreRecord.ADAPTER.asRepeated().encodedSizeWithTag(2, value.userScoreRecord)
+          + UserScoreResult.ADAPTER.asRepeated().encodedSizeWithTag(3, value.scoreResults)
           + value.unknownFields().size();
     }
 
@@ -189,6 +235,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     public void encode(ProtoWriter writer, VoteResultMsg value) throws IOException {
       VoteInfo.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.voteInfo);
       UserScoreRecord.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.userScoreRecord);
+      UserScoreResult.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.scoreResults);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -200,6 +247,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
         switch (tag) {
           case 1: builder.voteInfo.add(VoteInfo.ADAPTER.decode(reader)); break;
           case 2: builder.userScoreRecord.add(UserScoreRecord.ADAPTER.decode(reader)); break;
+          case 3: builder.scoreResults.add(UserScoreResult.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -216,6 +264,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.voteInfo, VoteInfo.ADAPTER);
       Internal.redactElements(builder.userScoreRecord, UserScoreRecord.ADAPTER);
+      Internal.redactElements(builder.scoreResults, UserScoreResult.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

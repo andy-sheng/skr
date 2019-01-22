@@ -5,6 +5,7 @@ import android.os.Message;
 import android.support.v4.util.Pair;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
@@ -15,7 +16,8 @@ import com.common.utils.U;
 import com.module.playways.rank.msg.event.VoteResultEvent;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
+import com.module.playways.rank.room.model.WinResultModel;
+import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.view.IVoteView;
@@ -24,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -120,26 +123,37 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
-                    List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
+                    List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
 
-                    if (voteInfoModelList != null && voteInfoModelList.size() > 0) {
-                        ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
-                        scoreDetailModel.parse(userScoreModelList);
-                        MyLog.d(TAG, " getVoteResult " + " voteInfoModelList " +  voteInfoModelList.toString());
-                        MyLog.d(TAG, " getVoteResult " + " scoreDetailModel " +  scoreDetailModel.toString());
-                        mView.showRecordView(new RecordData(voteInfoModelList, scoreDetailModel));
+                    if (scoreResultModels != null && scoreResultModels.size() > 0) {
+                        List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
+                        ScoreResultModel myScoreResultModel = new ScoreResultModel();
+                        for (ScoreResultModel scoreResultModel : scoreResultModels) {
+                            WinResultModel model = new WinResultModel();
+                            model.setUseID(scoreResultModel.getUserID());
+                            model.setType(scoreResultModel.getWinType());
+                            winResultModels.add(model);
+
+                            if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                                myScoreResultModel = scoreResultModel;
+                            }
+                        }
+                        MyLog.d(TAG, " getVoteResult " + " voteInfoModelList " + voteInfoModelList.toString());
+                        MyLog.d(TAG, " getVoteResult " + " scoreResultModel " + myScoreResultModel.toString());
+                        MyLog.d(TAG, " getVoteResult " + " winResultModels " + winResultModels.toString());
+                        mView.showRecordView(new RecordData(voteInfoModelList, myScoreResultModel, winResultModels));
                     } else {
                         mUiHandler.removeMessages(MSG_GET_VOTE);
                         Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
                         message.obj = new Pair<Integer, Integer>(gameID, deep + 1);
-                        mUiHandler.sendMessageDelayed(message, 1000*deep);
+                        mUiHandler.sendMessageDelayed(message, 1000 * deep);
                     }
                 } else {
                     MyLog.e(TAG, "getVoteResult result errno is " + result.getErrmsg());
                     mUiHandler.removeMessages(MSG_GET_VOTE);
                     Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
                     message.obj = new Pair<Integer, Integer>(gameID, deep + 1);
-                    mUiHandler.sendMessageDelayed(message, 1000*deep);
+                    mUiHandler.sendMessageDelayed(message, 1000 * deep);
                 }
             }
 
@@ -152,9 +166,10 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(VoteResultEvent event) {
-        MyLog.d(TAG, "VoteResultEvent" + " event TimeMs = " + event.mBasePushInfo.getTimeMs());
-        MyLog.d(TAG, "VoteResultEvent" + " event = " + event.mScoreDetailModel.toString());
-        MyLog.d(TAG, "VoteResultEvent" + " event = " + event.mVoteInfoModels.toString());
-        mView.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreDetailModel));
+        MyLog.d(TAG, "VoteResultEvent" + " mBasePushInfo event TimeMs = " + event.mBasePushInfo.getTimeMs());
+        MyLog.d(TAG, "VoteResultEvent" + " mVoteInfoModels event = " + event.mVoteInfoModels.toString());
+        MyLog.d(TAG, "VoteResultEvent" + " mScoreResultModel event = " + event.mScoreResultModel.toString());
+        MyLog.d(TAG, "VoteResultEvent" + " mWinResultModels event = " + event.mWinResultModels.toString());
+        mView.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreResultModel, event.mWinResultModels));
     }
 }

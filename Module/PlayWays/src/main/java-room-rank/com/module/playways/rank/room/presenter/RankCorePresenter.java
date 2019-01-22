@@ -6,6 +6,7 @@ import android.support.v4.util.Pair;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -51,9 +52,10 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.model.VoteInfoModel;
+import com.module.playways.rank.room.model.WinResultModel;
+import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
-import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
 import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.zq.live.proto.Common.ESex;
@@ -62,6 +64,7 @@ import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
+import com.zq.live.proto.Room.UserScoreResult;
 import com.zq.lyrics.event.LrcEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -70,6 +73,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -175,7 +179,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         if (recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
                             MyLog.w(TAG, "accept 1");
                             //不需要跳转评论页,直接跳转战绩页
-                            mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mScoreDetailModel));
+                            mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mScoreResultModel, recordData.mWinResultModels));
                         } else {
                             MyLog.w(TAG, "accept 1");
                             mIGameRuleView.showVoteView();
@@ -313,6 +317,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     MyLog.w(TAG, "演唱结束上报成功 traceid is " + result.getTraceId());
+                    // TODO: 2019/1/22  可能带回来游戏结束的信息，后期优化
                     // 尝试自己切换到下一个轮次
 //                    if (finalRoundSeq >= 0) {
 //                        RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
@@ -482,14 +487,29 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
-                    List<UserScoreModel> userScoreModelList = JSON.parseArray(result.getData().getString("userScoreRecord"), UserScoreModel.class);
+                    List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
 
-                    if (userScoreModelList != null && userScoreModelList.size() > 0) {
-                        ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
-                        scoreDetailModel.parse(userScoreModelList);
+                    if (scoreResultModels != null && scoreResultModels.size() > 0) {
+
+                        List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
+                        ScoreResultModel myScoreResultModel = new ScoreResultModel();
+                        for (ScoreResultModel scoreResultModel : scoreResultModels) {
+                            WinResultModel model = new WinResultModel();
+                            model.setUseID(scoreResultModel.getUserID());
+                            model.setType(scoreResultModel.getWinType());
+                            winResultModels.add(model);
+
+                            if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                                myScoreResultModel = scoreResultModel;
+                            }
+                        }
                         U.getToastUtil().showShort("获取投票结果成功");
-                        MyLog.w(TAG, "getVoteResult" + " result=" + result);
-                        mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, scoreDetailModel));
+
+                        MyLog.d(TAG, "getVoteResult" + " result=" + voteInfoModelList.toString());
+                        MyLog.d(TAG, "getVoteResult" + " result=" + myScoreResultModel.toString());
+                        MyLog.d(TAG, "getVoteResult" + " result=" + winResultModels.toString());
+
+                        mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, myScoreResultModel, winResultModels));
                         mGameFinishActionSubject.onComplete();
                     } else {
                         mUiHandler.removeMessages(MSG_GET_VOTE);
@@ -1172,7 +1192,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         recvGameOverFromServer("push", roundAndGameOverEvent.roundOverTimeMs);
         cancelSyncGameStateTask();
 
-        mGameFinishActionSubject.onNext(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mScoreDetailModel));
+        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mVoteInfoModels =" + roundAndGameOverEvent.mVoteInfoModels);
+        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mScoreResultModel =" + roundAndGameOverEvent.mScoreResultModel);
+        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mWinResultModels =" + roundAndGameOverEvent.mWinResultModels);
+
+        mGameFinishActionSubject.onNext(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mScoreResultModel, roundAndGameOverEvent.mWinResultModels));
         mGameFinishActionSubject.onComplete();
     }
 

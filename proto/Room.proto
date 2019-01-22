@@ -12,442 +12,440 @@ java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-de
 */
 
 // 房间消息：此结构会通过pb编码后，通过聊天室通道到达客户端
-message RoomMsg
-{
-    sint64 timeMs        = 1; //房间消息产生时间，单位毫秒
+message RoomMsg {
+    sint64 timeMs = 1; //房间消息产生时间，单位毫秒
     ERoomMsgType msgType = 2; //消息类型
-    uint32 roomID        = 3; //房间ID
-    sint64 no            = 4; //房间内的消息序号，每个房间有自己的消息序号,不存在则系统生成,一般情况下调用方不必设置
-    EMsgPosType posType  = 5; //消息显示位置类型
-    Common.UserInfo sender      = 6; //发送者简要信息
+    uint32 roomID = 3; //房间ID
+    sint64 no = 4; //房间内的消息序号，每个房间有自己的消息序号,不存在则系统生成,一般情况下调用方不必设置
+    EMsgPosType posType = 5; //消息显示位置类型
+    Common.UserInfo sender = 6; //发送者简要信息
 
-    CommentMsg commentMsg           = 10; // 评论消息 msgType == RM_COMMENT
+    CommentMsg commentMsg = 10; // 评论消息 msgType == RM_COMMENT
     SpecialEmojiMsg specialEmojiMsg = 11; // 特殊表情消息  msgType == RM_SPECIAL_EMOJI
     DynamicEmojiMsg dynamicemojiMsg = 12; // 动态表情消息  msgType == RM_DYNAMIC_EMOJI
 
-    JoinActionMsg joinActionMsg                 = 100; //加入游戏指令消息 msgType == RM_JOIN_ACTION
-    JoinNoticeMsg joinNoticeMsg                 = 101; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
-    ReadyNoticeMsg readyNoticeMsg               = 102; //准备游戏通知消息 msgType == RM_READY_NOTICE
-    RoundOverMsg roundOverMsg                   = 103; //游戏轮次结束通知消息 msgType == RM_ROUND_OVER
-    RoundAndGameOverMsg roundAndGameOverMsg     = 104; //轮次和游戏结束通知消息 msgType == RM_ROUND_AND_GAME_OVER
-    AppSwapMsg appSwapMsg                       = 105; //app进程后台通知  msgType ==  RM_APP_SWAP
-    SyncStatusMsg syncStatusMsg                 = 106; //状态同步消息 msgType == RM_SYNC_STATUS
+    JoinActionMsg joinActionMsg = 100; //加入游戏指令消息 msgType == RM_JOIN_ACTION
+    JoinNoticeMsg joinNoticeMsg = 101; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
+    ReadyNoticeMsg readyNoticeMsg = 102; //准备游戏通知消息 msgType == RM_READY_NOTICE
+    RoundOverMsg roundOverMsg = 103; //游戏轮次结束通知消息 msgType == RM_ROUND_OVER
+    RoundAndGameOverMsg roundAndGameOverMsg = 104; //轮次和游戏结束通知消息 msgType == RM_ROUND_AND_GAME_OVER
+    AppSwapMsg appSwapMsg = 105; //app进程后台通知  msgType ==  RM_APP_SWAP
+    SyncStatusMsg syncStatusMsg = 106; //状态同步消息 msgType == RM_SYNC_STATUS
     ExitGameBeforePlayMsg exitGameBeforePlayMsg = 107; //再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
-    ExitGameAfterPlayMsg exitGameAfterPlayMsg   = 108; //游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
-    ExitGameOutRoundMsg exitGameOutRoundMsg     = 109; //游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
-    VoteResultMsg voteResultMsg                 = 110; //游戏投票结果消息 msgType == RM_VOTE_RESULT
-    MachineScore machineScore                   = 111; //实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
+    ExitGameAfterPlayMsg exitGameAfterPlayMsg = 108; //游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
+    ExitGameOutRoundMsg exitGameOutRoundMsg = 109; //游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
+    VoteResultMsg voteResultMsg = 110; //游戏投票结果消息 msgType == RM_VOTE_RESULT
+    MachineScore machineScore = 111; //实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
 
-    QWantSingChanceMsg qWantSingChanceMsg     = 112; //一唱到底：想唱消息,即抢唱
-    QGetSingChanceMsg qGetSingChanceMsg       = 113; //一唱到底：获得轮次机会,即抢唱成功
-    QSyncStatusMsg qSyncStatusMsg             = 114; //一唱到底：同步状态
-    QRoundOverMsg qRoundOverMsg               = 115; //一唱到底：轮次结束
+    QWantSingChanceMsg qWantSingChanceMsg = 112; //一唱到底：想唱消息,即抢唱
+    QGetSingChanceMsg qGetSingChanceMsg = 113; //一唱到底：获得轮次机会,即抢唱成功
+    QSyncStatusMsg qSyncStatusMsg = 114; //一唱到底：同步状态
+    QRoundOverMsg qRoundOverMsg = 115; //一唱到底：轮次结束
     QRoundAndGameOverMsg qRoundAndGameOverMsg = 116; //一唱到底：最后轮次结束，即游戏结束，游戏结果数据
-    QNoPassSingMsg qNoPassSingMsg             = 117; //一唱到底：演唱不通过，即灭灯
-    QExitGameMsg qExitGameMsg                 = 118; //一唱到底：退出游戏
+    QNoPassSingMsg qNoPassSingMsg = 117; //一唱到底：演唱不通过，即灭灯
+    QExitGameMsg qExitGameMsg = 118; //一唱到底：退出游戏
 }
 
 // ERoomMsgType 房间消息类型
 enum ERoomMsgType {
     RM_UNKNOWN = 0; //未知消息
 
-    RM_COMMENT       = 10; //普通评论消息
+    RM_COMMENT = 10; //普通评论消息
     RM_SPECIAL_EMOJI = 11; //特殊表情消息
     RM_DYNAMIC_EMOJI = 12; //动态表情消息
 
-    RM_JOIN_ACTION           = 100; //加入游戏指令消息
-    RM_JOIN_NOTICE           = 101; //加入游戏通知消息
-    RM_READY_NOTICE          = 102; //准备游戏通知消息
-    RM_ROUND_OVER            = 103; //游戏轮次结束通知消息
-    RM_ROUND_AND_GAME_OVER   = 104; //轮次和游戏结束通知消息
-    RM_APP_SWAP              = 105; //app进程后台切换通知
-    RM_SYNC_STATUS           = 106; //状态同步
+    RM_JOIN_ACTION = 100; //加入游戏指令消息
+    RM_JOIN_NOTICE = 101; //加入游戏通知消息
+    RM_READY_NOTICE = 102; //准备游戏通知消息
+    RM_ROUND_OVER = 103; //游戏轮次结束通知消息
+    RM_ROUND_AND_GAME_OVER = 104; //轮次和游戏结束通知消息
+    RM_APP_SWAP = 105; //app进程后台切换通知
+    RM_SYNC_STATUS = 106; //状态同步
     RM_EXIT_GAME_BEFORE_PLAY = 107; //在开始游戏前退出
-    RM_EXIT_GAME_AFTER_PLAY  = 108; //在完成游戏后退出
-    RM_EXIT_GAME_OUT_ROUND   = 109; //在游戏中,但不再round时退出
-    RM_VOTE_RESULT           = 110; //游戏投票结果消息
-    RM_ROUND_MACHINE_SCORE   = 111; //实时机器评分
+    RM_EXIT_GAME_AFTER_PLAY = 108; //在完成游戏后退出
+    RM_EXIT_GAME_OUT_ROUND = 109; //在游戏中,但不再round时退出
+    RM_VOTE_RESULT = 110; //游戏投票结果消息
+    RM_ROUND_MACHINE_SCORE = 111; //实时机器评分
 
-    RM_Q_WANT_SING_CHANCE    = 112; //一唱到底：想唱消息
-    RM_Q_GET_SING_CHANCE     = 113; //一唱到底：获得轮次机会
-    RM_Q_SYNC_STATUS         = 114; //一唱到底：同步状态
-    RM_Q_ROUND_OVER          = 115; //一唱到底：轮次结束
+    RM_Q_WANT_SING_CHANCE = 112; //一唱到底：想唱消息
+    RM_Q_GET_SING_CHANCE = 113; //一唱到底：获得轮次机会
+    RM_Q_SYNC_STATUS = 114; //一唱到底：同步状态
+    RM_Q_ROUND_OVER = 115; //一唱到底：轮次结束
     RM_Q_ROUND_AND_GAME_OVER = 116; //一唱到底：最后轮次结束，即游戏结束，游戏结果数据
-    RM_Q_NO_PASS_SING        = 117; //一唱到底：演唱不通过，即灭灯
-    RM_Q_EXIT_GAME           = 118; //一唱到底：退出游戏
+    RM_Q_NO_PASS_SING = 117; //一唱到底：演唱不通过，即灭灯
+    RM_Q_EXIT_GAME = 118; //一唱到底：退出游戏
 
-    RM_ROUND_ACC_BEGIN   = 190; //告知伴奏开始
+    RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
 }
 
-message QWantSingChanceMsg
-{
-    uint32 userID   = 1; // 用户id
+message QWantSingChanceMsg {
+    uint32 userID = 1; // 用户id
     uint32 roundSeq = 2; // 轮次顺序
 }
 
-message QGetSingChanceMsg
-{
-    uint32 userID           = 1; // 用户id
-    uint32 roundSeq         = 2; // 轮次顺序
+message QGetSingChanceMsg {
+    uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
     QRoundInfo currentRound = 3; //当前轮次信息
 }
 
-message QSyncStatusMsg
-{
-    sint64 syncStatusTimeMs        = 1; //状态同步时的毫秒时间戳
-    sint64 gameOverTimeMs          = 2; //游戏结束时间
+message QSyncStatusMsg {
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    sint64 gameOverTimeMs = 2; //游戏结束时间
     repeated OnlineInfo onlineInfo = 3; //在线状态
-    QRoundInfo currentRound        = 4; //当前轮次信息
-    QRoundInfo nextRound           = 5; //下个轮次信息
+    QRoundInfo currentRound = 4; //当前轮次信息
+    QRoundInfo nextRound = 5; //下个轮次信息
 }
 
-message QRoundOverMsg
-{
-     sint64 roundOverTimeMs  = 1; //本轮次结束的毫秒时间戳
-     QRoundInfo currentRound = 2; //当前轮次信息
-     QRoundInfo nextRound    = 3; //下个轮次信息
+message QRoundOverMsg {
+    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
+    QRoundInfo currentRound = 2; //当前轮次信息
+    QRoundInfo nextRound = 3; //下个轮次信息
 }
 
-message QRoundAndGameOverMsg
-{
-    sint64 roundOverTimeMs          = 1; //本轮次结束的毫秒时间戳
-    QRoundInfo currentRound         = 2; //当前轮次信息
+message QRoundAndGameOverMsg {
+    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
+    QRoundInfo currentRound = 2; //当前轮次信息
     repeated QResultInfo resultInfo = 3; //最终结果信息
 }
 
 enum EQRoundResultType {
     ROT_UNKNOWN = 0; //未知
-        ROT_TYPE_1  = 1; //有种优秀叫一唱到底（全部唱完）
-        ROT_TYPE_2  = 2; //有种结束叫刚刚开始（t<30%）
-        ROT_TYPE_3  = 3; //有份悲伤叫都没及格(30%<=t <60%)
-        ROT_TYPE_4  = 4; //有种遗憾叫明明可以（60%<=t<90%）
-        ROT_TYPE_5  = 5; //有种可惜叫我觉得你行（90%<=t<=100%)
+    ROT_TYPE_1 = 1; //有种优秀叫一唱到底（全部唱完）
+    ROT_TYPE_2 = 2; //有种结束叫刚刚开始（t<30%）
+    ROT_TYPE_3 = 3; //有份悲伤叫都没及格(30%<=t <60%)
+    ROT_TYPE_4 = 4; //有种遗憾叫明明可以（60%<=t<90%）
+    ROT_TYPE_5 = 5; //有种可惜叫我觉得你行（90%<=t<=100%)
 }
 
 enum EQRoundOverReason {
-    ROR_UNKNOWN              = 0; //未知
-    ROR_LAST_ROUND_OVER      = 1; //上个轮次结束
-    ROR_NO_ONE_SING          = 2; //没人抢唱
+    ROR_UNKNOWN = 0; //未知
+    ROR_LAST_ROUND_OVER = 1; //上个轮次结束
+    ROR_NO_ONE_SING = 2; //没人抢唱
     ROR_IN_ROUND_PLAYER_EXIT = 3; //当前玩家退出
-    ROR_MULTI_NO_PASS        = 4; //多人灭灯
+    ROR_MULTI_NO_PASS = 4; //多人灭灯
 }
 
-message QResultInfo
-{
-    uint32 userID            = 1; //用户标识
+message QResultInfo {
+    uint32 userID = 1; //用户标识
     uint32 wantSingChanceCnt = 2; //想唱歌数量
-    uint32 getSingChanceCnt  = 3; //演唱机会数量
-    uint32 wholeTimeSingCnt  = 4; //一唱到底数量
+    uint32 getSingChanceCnt = 3; //演唱机会数量
+    uint32 wholeTimeSingCnt = 4; //一唱到底数量
     float wholeTimeSingRatio = 5; //一唱到底成功率
-    float beyondSkrerRatio   = 6; //超过同段位
+    float beyondSkrerRatio = 6; //超过同段位
 }
 
-message QNoPassSingMsg
-{
-    uint32 userID   = 1; // 用户id
+message QNoPassSingMsg {
+    uint32 userID = 1; // 用户id
     uint32 roundSeq = 2; // 轮次顺序
 }
 
-message QExitGameMsg
-{
+message QExitGameMsg {
     uint32 userID = 1; // 用户id
 }
 
-message MachineScore
-{
+message MachineScore {
     uint32 userID = 1; // 演唱者
     uint32 itemID = 2; // 演唱曲目
-    uint32 score  = 3; // 机器分数
-    uint32 no     = 4; // 对应截断后的歌词行号
+    uint32 score = 3; // 机器分数
+    uint32 no = 4; // 对应截断后的歌词行号
 }
 
 // 投票结果
-message VoteResultMsg
-{
-    repeated VoteInfo voteInfo               = 1; //投票打分信息
+message VoteResultMsg {
+    repeated VoteInfo voteInfo = 1; //投票打分信息
     repeated UserScoreRecord userScoreRecord = 2; //分值信息
+    repeated UserScoreResult scoreResults = 3; //所有参与者的评分结果，应该使用这个结构
 }
 
-// 用户分值变动记录
-message UserScoreRecord
-{
-    uint32 userID            = 1; //用户标识
-    EScoreType scoreType     = 2; //分值类型
-    int32 scoreNow           = 3; //当前总分
-    int32 scoreBefore        = 4; //之前总分
-    repeated ScoreItem items = 5; //分值变动详情
-    string scoreTypeDesc     = 6; //分值类型描述
-    string scoreNowDesc      = 7; //当前分值描述
-    string scoreBeforeDesc   = 8; //之前分支描述
+message UserScoreResult {
+    uint32 userID = 1;
+    repeated ScoreState states = 2; //分值状态：初始、中间、最终状态，第0个为占位用
+    repeated ScoreItem starChange = 3; //星星变动详情，通过累加可以判断是加星还是减星
+    repeated ScoreItem battleIndexChange = 4; //战力值变动详情，累加可以判断是增加还是减少
+    EWinType winType = 5; //胜负平等等
+    uint32 sss = 6; //战斗评价, sss or ss or s or a...
 }
 
-enum EScoreType {
-    ST_UNKNOWN                            = 0; //未知
-    ST_RANKING                            = 1; //主段位
-    ST_SUB_RANKING                        = 2; //子段位
-    ST_SUB_RANKING_STAR                   = 3; //子段位当前星星数
-    ST_SUB_RANKING_TOTAL_STAR             = 4; //子段位星星数上限
-    ST_RANKING_UPGRADE                    = 5; //晋级赛开启状态值。可看作布尔值，scoreNow不为0表示处于某种晋级赛当中
-    ST_RANKING_UPGRADE_STAR               = 6; //晋级赛当前星星数
-    ST_RANKING_UPGRADE_TOTAL_STAR         = 7; //晋级赛星星数上限
-    ST_BATTLE_INDEX_REAL                  = 8; //当前战力值
-    ST_BATTLE_INDEX_TOTAL                 = 9; //战力值上限
-    ST_BATTLE_RATING                      = 10; //战斗评价, sss or ss or s or a...
-    ST_RANKING_PROTECT_TOTAL_BATTLE_INDEX = 11; //掉段保护需要的战力值。用作阈值，用scoreNow表示大小
-    ST_STAR                               = 12; //总星星数
+// 某个时刻的分值状态
+message ScoreState {
+    uint32 userID = 1;
+    int32 seq = 2; // 分值状态的时间顺序, 数字越大越晚
+    int64 mainRanking = 3; // 主段位数值
+    int64 subRanking = 4; // 子段位数值
+    int64 currStar = 5; // 子段位当前星星数
+    int64 maxStar = 6; // 子段位星星数上限
+    int64 protectBattleIndex = 7; //掉段保护所需战力分值
+    int64 currBattleIndex = 8; //当前战力分值
+    int64 maxBattleIndex = 9; //战力分值上限
+    int64 totalScore = 10; //用在段位排行榜中的总分值
+}
+
+enum EWinType {
+    InvalidEWinType = 0;
+    Win = 1;
+    Lose = 2;
+    Draw = 3;
+    Flee = 4;
+    NotVote = 5;
 }
 
 // 分值变动条目
-message ScoreItem
-{
-    string why  = 1; //分值变动原因
+message ScoreItem {
+    string why = 1; //分值变动原因
     int32 score = 2; //分值变动
+    int32 index = 3; //原因标识
+}
+
+// 用户分值变动记录
+message UserScoreRecord {
+    uint32 userID = 1; //用户标识
+    EScoreType scoreType = 2; //分值类型
+    int32 scoreNow = 3; //当前总分
+    int32 scoreBefore = 4; //之前总分
+    repeated ScoreItem items = 5; //分值变动详情
+    string scoreTypeDesc = 6; //分值类型描述
+    string scoreNowDesc = 7; //当前分值描述
+    string scoreBeforeDesc = 8; //之前分支描述
+}
+
+enum EScoreType {
+    ST_UNKNOWN = 0; //未知
+    ST_RANKING = 1; //主段位
+    ST_SUB_RANKING = 2; //子段位
+    ST_SUB_RANKING_STAR = 3; //子段位当前星星数
+    ST_SUB_RANKING_TOTAL_STAR = 4; //子段位星星数上限
+    ST_RANKING_UPGRADE = 5; //晋级赛开启状态值。可看作布尔值，scoreNow不为0表示处于某种晋级赛当中
+    ST_RANKING_UPGRADE_STAR = 6; //晋级赛当前星星数
+    ST_RANKING_UPGRADE_TOTAL_STAR = 7; //晋级赛星星数上限
+    ST_BATTLE_INDEX_REAL = 8; //当前战力值
+    ST_BATTLE_INDEX_TOTAL = 9; //战力值上限
+    ST_BATTLE_RATING = 10; //战斗评价, sss or ss or s or a...
+    ST_RANKING_PROTECT_TOTAL_BATTLE_INDEX = 11; //掉段保护需要的战力值。用作阈值，用scoreNow表示大小
+    ST_STAR = 12; //总星星数
 }
 
 // EStarWhy 星星增减原因
 enum EStarWhy {
-    InvalidEStarWhy        = 0; //未知原因
-    RankEscaped            = 1; //中途退出游戏
+    InvalidEStarWhy = 0; //未知原因
+    RankEscaped = 1; //中途退出游戏
     RankEnemyEscapedYouWin = 2; //对手中途离场且你获得机器投票
-    RankUnVote             = 3; //不投票
-    RankEnemyUnVoteYouWin  = 4; //对手没有投票且你获得机器投票
-    Rank3VotesWinner       = 5; //总共获得3票
-    Rank2VotesWinner       = 6; //总共获得2票
-    Rank0VotesLoser        = 7; //得票为0
-    Rank3ComboVictory      = 8; //3连胜
-    Rank5ComboVictory      = 9; //5连胜
-    Rank10ComboVictory     = 10; //10连胜
-    FullFightForce         = 11; //战力值充满
-    RankProtectionIncr     = 12; //段位保护
+    RankUnVote = 3; //不投票
+    RankEnemyUnVoteYouWin = 4; //对手没有投票且你获得机器投票
+    Rank3VotesWinner = 5; //总共获得3票
+    Rank2VotesWinner = 6; //总共获得2票
+    Rank0VotesLoser = 7; //得票为0
+    Rank3ComboVictory = 8; //3连胜
+    Rank5ComboVictory = 9; //5连胜
+    Rank10ComboVictory = 10; //10连胜
+    FullFightForce = 11; //战力值充满
+    RankProtectionIncr = 12; //段位保护
 }
 
 // EFightForceWhy 战力值增减原因
 enum EFightForceWhy {
     InvalidEFightForceWhy = 0; // "未知原因"
-    PlayRank              = 1; // "玩了一局排位模式"
-    ExchangeStarDecr      = 2; // "满额兑换星星"
-    ProtectRankingDecr    = 3; // "掉段保护"
+    PlayRank = 1; // "玩了一局排位模式"
+    ExchangeStarDecr = 2; // "满额兑换星星"
+    ProtectRankingDecr = 3; // "掉段保护"
 }
 
 //投票信息
-message VoteInfo
-{
-    uint32 userID         = 1; //用户标识
-    uint32 itemID         = 2; //演唱曲目ID
-    sint32 rank           = 3; //排名
-    bool isEscape         = 4; //是否逃跑
-    bool sysVote          = 5; //系统是否投票
-    sint32 sysScore       = 6; //系统打分分值
+message VoteInfo {
+    uint32 userID = 1; //用户标识
+    uint32 itemID = 2; //演唱曲目ID
+    sint32 rank = 3; //排名
+    bool isEscape = 4; //是否逃跑
+    bool sysVote = 5; //系统是否投票
+    sint32 sysScore = 6; //系统打分分值
     repeated uint32 voter = 7; //投票者
 }
 
 // 消息位置类型
 enum EMsgPosType {
     EPT_UNKNOWN = 0; // 未知位置
-    EPT_NORMAL  = 1; // 一般评论消息
-    EPT_CENTER  = 2; // 在整个页面中心区域显示的消息
-    EPT_TOP     = 3; // 页面上方
-    EPT_BOTTOM  = 4; // 页面底部
+    EPT_NORMAL = 1; // 一般评论消息
+    EPT_CENTER = 2; // 在整个页面中心区域显示的消息
+    EPT_TOP = 3; // 页面上方
+    EPT_BOTTOM = 4; // 页面底部
 }
 
 // 准备并开始游戏通知消息
-message ReadyAndStartNoticeMsg
-{
-    uint32 readyUserID  = 1; //准备用户ID
-    sint64 readyTimeMs  = 2; //准备的毫秒时间戳
-    sint64 startTimeMS  = 3; //开始的毫秒时间戳
-    uint32 firstUserID  = 4; //第一个用户ID
+message ReadyAndStartNoticeMsg {
+    uint32 readyUserID = 1; //准备用户ID
+    sint64 readyTimeMs = 2; //准备的毫秒时间戳
+    sint64 startTimeMS = 3; //开始的毫秒时间戳
+    uint32 firstUserID = 4; //第一个用户ID
     uint32 firstMusicID = 5; //第一首歌曲ID
 }
 
 // 普通评论消息
-message CommentMsg
-{
+message CommentMsg {
     string text = 1; //发表内容
 }
 
 // 加入指令
-message JoinActionMsg
-{
-    uint32 gameID                      = 1; //游戏ID
-    sint64 CreateTimeMs                = 2; //创建毫秒时间戳
-    repeated PlayerInfo players        = 3; //玩家信息
+message JoinActionMsg {
+    uint32 gameID = 1; //游戏ID
+    sint64 CreateTimeMs = 2; //创建毫秒时间戳
+    repeated PlayerInfo players = 3; //玩家信息
     repeated Common.MusicInfo commonMusicInfo = 4; //共同演唱音乐信息
 }
 
-message PlayerInfo
-{
-    Common.UserInfo userInfo              = 1; //玩家信息
-    repeated Common.MusicInfo musicInfo   = 2; //演唱信息
-    bool isSkrer                   = 3; //是否为机器人
+message PlayerInfo {
+    Common.UserInfo userInfo = 1; //玩家信息
+    repeated Common.MusicInfo musicInfo = 2; //演唱信息
+    bool isSkrer = 3; //是否为机器人
     repeated Common.ResourceInfo resource = 4; //资源信息
 }
 
 enum SpecialEmojiMsgType {
     SP_EMOJI_TYPE_UNKNOWN = 0;
-    SP_EMOJI_TYPE_LIKE    = 1; // 喜欢
-    SP_EMOJI_TYPE_UNLIKE  = 2; // 不喜欢
+    SP_EMOJI_TYPE_LIKE = 1; // 喜欢
+    SP_EMOJI_TYPE_UNLIKE = 2; // 不喜欢
 }
 
 // 特殊表情消息
-message SpecialEmojiMsg
-{
+message SpecialEmojiMsg {
     SpecialEmojiMsgType emojiType = 1; // 表情
-    uint32 count                  = 2; // 数量
-    string emojiAction            = 3; // 动作
-    uint64 continueId             = 4; // 用来标记属于哪一组连送，一般设置为 X1 的时间戳
+    uint32 count = 2; // 数量
+    string emojiAction = 3; // 动作
+    uint64 continueId = 4; // 用来标记属于哪一组连送，一般设置为 X1 的时间戳
 }
 
 // 动态表情消息
-message DynamicEmojiMsg
-{
+message DynamicEmojiMsg {
     uint32 id = 1; //表情包id
 }
 
 // 加入通知消息
-message JoinNoticeMsg
-{
+message JoinNoticeMsg {
     repeated JoinInfo joinInfo = 1; //加入游戏的信息
-    uint32 hasJoinedUserCnt    = 2; //已经加入游戏的人数
-    sint32 readyClockResMs     = 3; //准备时钟剩余秒数,最后一个玩家加入后，赋值
+    uint32 hasJoinedUserCnt = 2; //已经加入游戏的人数
+    sint32 readyClockResMs = 3; //准备时钟剩余秒数,最后一个玩家加入后，赋值
 }
 
-message JoinInfo
-{
-    uint32 userID     = 1; //用户ID
-    uint32 joinSeq    = 2; //加入顺序
+message JoinInfo {
+    uint32 userID = 1; //用户ID
+    uint32 joinSeq = 2; //加入顺序
     sint64 joinTimeMs = 3; //加入毫秒时间戳
 }
 
-message RoundInfo
-{
-    uint32 userID      = 1; //玩家id
-    uint32 playbookID  = 2; //曲库id
-    uint32 roundSeq    = 3; //轮次顺序
+message RoundInfo {
+    uint32 userID = 1; //玩家id
+    uint32 playbookID = 2; //曲库id
+    uint32 roundSeq = 3; //轮次顺序
     uint32 singBeginMs = 4; //演唱开始相对时间（相对于startTimeMs时间）
-    uint32 singEndMs   = 5; //演唱结束相对时间（相对于startTimeMs时间）
+    uint32 singEndMs = 5; //演唱结束相对时间（相对于startTimeMs时间）
 }
 
 enum EQRoundStatus {
     QRS_UNKNOWN = 0; //轮次状态位置
-        QRS_UNBEGIN = 1; //轮次未开始
-        QRS_INTRO   = 2; //轮次进入导唱阶段
-        QRS_SING    = 3; //轮次进入演唱阶段
-        QRS_END     = 4; //轮次已结束
+    QRS_UNBEGIN = 1; //轮次未开始
+    QRS_INTRO = 2; //轮次进入导唱阶段
+    QRS_SING = 3; //轮次进入演唱阶段
+    QRS_END = 4; //轮次已结束
 }
 
-message WantSingInfo
-{
+message WantSingInfo {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //抢唱时间戳
 }
 
-message NoPassSingInfo
-{
+message NoPassSingInfo {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //灭灯时间戳
 }
 
-message QRoundInfo
-{
-    uint32 userID                           = 1; //抢唱成功的玩家id
-    uint32 getSingMs                        = 2; //抢唱成功的时间戳
-    uint32 playbookID                       = 3; //曲库id
-    uint32 roundSeq                         = 4; //轮次顺序
-    uint32 introBeginMs                     = 5; //导唱开始相对时间（相对于startTimeMs时间）
-    uint32 introEndMs                       = 6; //导唱结束相对时间（相对于startTimeMs时间）
-    uint32 singBeginMs                      = 7; //演唱开始相对时间（相对于startTimeMs时间）
-    uint32 singEndMs                        = 8; //演唱结束相对时间（相对于startTimeMs时间）
-    EQRoundStatus status                    = 9; //轮次状态
-    repeated WantSingInfo wantSingInfos     = 10; //抢唱列表
+message QRoundInfo {
+    uint32 userID = 1; //抢唱成功的玩家id
+    uint32 getSingMs = 2; //抢唱成功的时间戳
+    uint32 playbookID = 3; //曲库id
+    uint32 roundSeq = 4; //轮次顺序
+    uint32 introBeginMs = 5; //导唱开始相对时间（相对于startTimeMs时间）
+    uint32 introEndMs = 6; //导唱结束相对时间（相对于startTimeMs时间）
+    uint32 singBeginMs = 7; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs = 8; //演唱结束相对时间（相对于startTimeMs时间）
+    EQRoundStatus status = 9; //轮次状态
+    repeated WantSingInfo wantSingInfos = 10; //抢唱列表
     repeated NoPassSingInfo noPassSingInfos = 11; //灭灯列表
-    EQRoundOverReason overReason            = 12; //切换轮次原因
-    EQRoundResultType resultType            = 13; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
+    EQRoundOverReason overReason = 12; //切换轮次原因
+    EQRoundResultType resultType = 13; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
 }
 
-message ReadyInfo
-{
-    uint32 userID      = 1; //用户id
-    uint32 readySeq    = 2; //准备顺序
+message ReadyInfo {
+    uint32 userID = 1; //用户id
+    uint32 readySeq = 2; //准备顺序
     sint64 readyTimeMs = 3; //准备时间戳
 }
 
-message OnlineInfo
-{
+message OnlineInfo {
     uint32 userID = 1; //用户id
     bool isOnline = 2; //是否在线
 }
 
-message GameStartInfo
-{
-    sint64 startTimeMs   = 1; //开始时间戳
+message GameStartInfo {
+    sint64 startTimeMs = 1; //开始时间戳
     sint64 startPassedMs = 2; //已经开始时间
 }
 
 // 准备游戏通知消息
-message ReadyNoticeMsg
-{
-    repeated ReadyInfo readyInfo   = 1; //准备信息
-    sint32 hasReadyedUserCnt       = 2; //已经准备人数
-    bool isGameStart               = 3; //游戏是否开始
-    repeated RoundInfo roundInfo   = 4; //轮次信息
-    GameStartInfo gameStartInfo    = 5; //游戏信息
+message ReadyNoticeMsg {
+    repeated ReadyInfo readyInfo = 1; //准备信息
+    sint32 hasReadyedUserCnt = 2; //已经准备人数
+    bool isGameStart = 3; //游戏是否开始
+    repeated RoundInfo roundInfo = 4; //轮次信息
+    GameStartInfo gameStartInfo = 5; //游戏信息
     repeated QRoundInfo qRoundInfo = 6; //一场到底轮次信息
 }
 
 // 游戏轮次结束通知消息
-message RoundOverMsg
-{
+message RoundOverMsg {
     sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
     RoundInfo currentRound = 2; //当前轮次信息
-    RoundInfo nextRound    = 3; //下个轮次信息
-    uint32 exitUserID      = 4; //退出用户的ID
+    RoundInfo nextRound = 3; //下个轮次信息
+    uint32 exitUserID = 4; //退出用户的ID
 }
 
 // 轮次和游戏结束通知消息
-message RoundAndGameOverMsg
-{
+message RoundAndGameOverMsg {
     sint64 roundOverTimeMs = 1; //轮次结束的毫秒时间戳
     RoundInfo currentRound = 2; //当前轮次信息
-    uint32 exitUserID      = 3; //退出用户的ID
+    uint32 exitUserID = 3; //退出用户的ID
 
-    repeated VoteInfo voteInfo               = 4; //投票打分信息
+    repeated VoteInfo voteInfo = 4; //投票打分信息
     repeated UserScoreRecord userScoreRecord = 5; //分值信息
+    repeated UserScoreResult scoreResults    = 6; //所有参与者的评分结果，应该使用这个结构
 }
 
-message ExitGameBeforePlayMsg
-{
+message ExitGameBeforePlayMsg {
     uint32 exitUserID = 1; //退出玩家ID
     sint64 exitTimeMs = 2; //退出毫秒时间戳
 }
 
-message ExitGameAfterPlayMsg
-{
+message ExitGameAfterPlayMsg {
     uint32 exitUserID = 1; //退出玩家ID
     sint64 exitTimeMs = 2; //退出毫秒时间戳
 }
 
-message ExitGameOutRoundMsg
-{
+message ExitGameOutRoundMsg {
     uint32 exitUserID = 1; //退出玩家ID
     sint64 exitTimeMs = 2; //退出毫秒时间戳
 }
 
-message AppSwapMsg
-{
+message AppSwapMsg {
     uint32 swapUserID = 1; //玩家ID
     sint64 swapTimsMs = 2; //切换时间戳
-    bool swapOut      = 3; //后台运行
-    bool swapIn       = 4; // 前台运行
+    bool swapOut = 3; //后台运行
+    bool swapIn = 4; // 前台运行
 }
 
-message SyncStatusMsg
-{
-    sint64 syncStatusTimeMs        = 1; //状态同步时的毫秒时间戳
-    sint64 gameOverTimeMs          = 2; //游戏结束时间
+message SyncStatusMsg {
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    sint64 gameOverTimeMs = 2; //游戏结束时间
     repeated OnlineInfo onlineInfo = 3; //在线状态
-    RoundInfo currentRound         = 4; //当前轮次信息
-    RoundInfo nextRound            = 5; //下个轮次信息
+    RoundInfo currentRound = 4; //当前轮次信息
+    RoundInfo nextRound = 5; //下个轮次信息
 }
 
 

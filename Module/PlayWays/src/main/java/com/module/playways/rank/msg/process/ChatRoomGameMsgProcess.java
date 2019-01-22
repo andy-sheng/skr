@@ -27,8 +27,8 @@ import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
-import com.module.playways.rank.room.scoremodel.ScoreDetailModel;
-import com.module.playways.rank.room.scoremodel.UserScoreModel;
+import com.module.playways.rank.room.model.WinResultModel;
+import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Room.AppSwapMsg;
@@ -52,7 +52,7 @@ import com.zq.live.proto.Room.RoomMsg;
 import com.zq.live.proto.Room.RoundAndGameOverMsg;
 import com.zq.live.proto.Room.RoundOverMsg;
 import com.zq.live.proto.Room.SyncStatusMsg;
-import com.zq.live.proto.Room.UserScoreRecord;
+import com.zq.live.proto.Room.UserScoreResult;
 import com.zq.live.proto.Room.VoteInfo;
 import com.zq.live.proto.Room.VoteResultMsg;
 
@@ -230,17 +230,21 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             voteInfoModels.add(voteInfoModel);
         }
 
-        List<UserScoreModel> userScoreModels = new ArrayList<>();
-        for (UserScoreRecord userScoreRecord : roundAndGameOverMsg.getUserScoreRecordList()) {
-            UserScoreModel userScoreModel = new UserScoreModel();
-            userScoreModel.parse(userScoreRecord);
-            userScoreModels.add(userScoreModel);
-        }
-        MyLog.d(TAG, " processRoundAndGameOverMsg " + "roundOverTimeMs" + roundOverTimeMs);
+        List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
+        ScoreResultModel scoreResultModel = new ScoreResultModel();
+        for (UserScoreResult userScoreResult : roundAndGameOverMsg.getScoreResultsList()) {
+            WinResultModel model = new WinResultModel();
+            model.setUseID(userScoreResult.getUserID());
+            model.setType(userScoreResult.getWinType().getValue());
+            winResultModels.add(model);
 
-        ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
-        scoreDetailModel.parse(userScoreModels);
-        EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs, voteInfoModels, scoreDetailModel));
+            if (userScoreResult.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                scoreResultModel.parse(userScoreResult);
+            }
+        }
+
+        MyLog.d(TAG, " processRoundAndGameOverMsg " + "roundOverTimeMs" + roundOverTimeMs);
+        EventBus.getDefault().post(new RoundAndGameOverEvent(info, roundOverTimeMs, voteInfoModels, scoreResultModel, winResultModels));
     }
 
     //app进程后台通知
@@ -330,19 +334,19 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             voteInfoModels.add(voteInfoModel);
         }
 
-        List<UserScoreModel> userScoreModels = new ArrayList<>();
-        for (UserScoreRecord userScoreRecord : voteResultMsg.getUserScoreRecordList()) {
-            if (userScoreRecord.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                UserScoreModel userScoreModel = new UserScoreModel();
-                userScoreModel.parse(userScoreRecord);
-                userScoreModels.add(userScoreModel);
+        List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
+        ScoreResultModel scoreResultModel = new ScoreResultModel();
+        for (UserScoreResult userScoreResult : voteResultMsg.getScoreResultsList()) {
+            WinResultModel model = new WinResultModel();
+            model.setUseID(userScoreResult.getUserID());
+            model.setType(userScoreResult.getWinType().getValue());
+
+            if (userScoreResult.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                scoreResultModel.parse(userScoreResult);
             }
         }
 
-        ScoreDetailModel scoreDetailModel = new ScoreDetailModel();
-        scoreDetailModel.parse(userScoreModels);
-
-        EventBus.getDefault().post(new VoteResultEvent(basePushInfo, voteInfoModels, scoreDetailModel));
+        EventBus.getDefault().post(new VoteResultEvent(basePushInfo, voteInfoModels, scoreResultModel, winResultModels));
     }
 
     // 处理机器打分

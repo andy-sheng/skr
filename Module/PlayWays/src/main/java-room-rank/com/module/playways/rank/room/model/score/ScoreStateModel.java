@@ -1,5 +1,8 @@
 package com.module.playways.rank.room.model.score;
 
+import com.common.log.MyLog;
+import com.zq.live.proto.Room.ScoreState;
+
 import java.io.Serializable;
 
 // 状态信息
@@ -14,6 +17,7 @@ public class ScoreStateModel implements Serializable {
     private int protectBattleIndex; // 掉段保护所需战力分值
     private int currBattleIndex;    // 当前战力分值
     private int maxBattleIndex;     // 战力分值上限
+    private int totalScore;         //用在段位排行榜中的总分值
 
     public int getUserID() {
         return userID;
@@ -85,5 +89,47 @@ public class ScoreStateModel implements Serializable {
 
     public void setMaxBattleIndex(int maxBattleIndex) {
         this.maxBattleIndex = maxBattleIndex;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public void parse(ScoreState scoreState) {
+        if (scoreState == null) {
+            MyLog.e("VoteInfoModel VoteInfo == null");
+            return;
+        }
+
+        this.setUserID(scoreState.getUserID());
+        this.setSeq(scoreState.getSeq());
+        this.setMainRanking(scoreState.getMainRanking().intValue());
+        this.setSubRanking(scoreState.getSubRanking().intValue());
+        this.setCurrStar(scoreState.getCurrStar().intValue());
+        this.setMaxStar(scoreState.getMaxStar().intValue());
+        this.setProtectBattleIndex(scoreState.getProtectBattleIndex().intValue());
+        this.setCurrBattleIndex(scoreState.getCurrBattleIndex().intValue());
+        this.setMaxBattleIndex(scoreState.getMaxBattleIndex().intValue());
+        this.setTotalScore(scoreState.getTotalScore().intValue());
+    }
+
+    @Override
+    public String toString() {
+        return "ScoreStateModel{" +
+                "userID=" + userID +
+                ", seq=" + seq +
+                ", mainRanking=" + mainRanking +
+                ", subRanking=" + subRanking +
+                ", currStar=" + currStar +
+                ", maxStar=" + maxStar +
+                ", protectBattleIndex=" + protectBattleIndex +
+                ", currBattleIndex=" + currBattleIndex +
+                ", maxBattleIndex=" + maxBattleIndex +
+                ", totalScore=" + totalScore +
+                '}';
     }
 }

@@ -29,6 +29,8 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
 
   public static final Integer DEFAULT_SCORE = 0;
 
+  public static final Integer DEFAULT_INDEX = 0;
+
   /**
    * 分值变动原因
    */
@@ -47,14 +49,24 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
   )
   public final Integer score;
 
-  public ScoreItem(String why, Integer score) {
-    this(why, score, ByteString.EMPTY);
+  /**
+   * 原因标识
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#INT32"
+  )
+  public final Integer index;
+
+  public ScoreItem(String why, Integer score, Integer index) {
+    this(why, score, index, ByteString.EMPTY);
   }
 
-  public ScoreItem(String why, Integer score, ByteString unknownFields) {
+  public ScoreItem(String why, Integer score, Integer index, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.why = why;
     this.score = score;
+    this.index = index;
   }
 
   @Override
@@ -62,6 +74,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
     Builder builder = new Builder();
     builder.why = why;
     builder.score = score;
+    builder.index = index;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -73,7 +86,8 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
     ScoreItem o = (ScoreItem) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(why, o.why)
-        && Internal.equals(score, o.score);
+        && Internal.equals(score, o.score)
+        && Internal.equals(index, o.index);
   }
 
   @Override
@@ -83,6 +97,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
       result = unknownFields().hashCode();
       result = result * 37 + (why != null ? why.hashCode() : 0);
       result = result * 37 + (score != null ? score.hashCode() : 0);
+      result = result * 37 + (index != null ? index.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -93,6 +108,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
     StringBuilder builder = new StringBuilder();
     if (why != null) builder.append(", why=").append(why);
     if (score != null) builder.append(", score=").append(score);
+    if (index != null) builder.append(", index=").append(index);
     return builder.replace(0, 2, "ScoreItem{").append('}').toString();
   }
 
@@ -127,6 +143,16 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
   }
 
   /**
+   * 原因标识
+   */
+  public Integer getIndex() {
+    if(index==null){
+        return DEFAULT_INDEX;
+    }
+    return index;
+  }
+
+  /**
    * 分值变动原因
    */
   public boolean hasWhy() {
@@ -140,10 +166,19 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
     return score!=null;
   }
 
+  /**
+   * 原因标识
+   */
+  public boolean hasIndex() {
+    return index!=null;
+  }
+
   public static final class Builder extends Message.Builder<ScoreItem, Builder> {
     public String why;
 
     public Integer score;
+
+    public Integer index;
 
     public Builder() {
     }
@@ -164,9 +199,17 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
       return this;
     }
 
+    /**
+     * 原因标识
+     */
+    public Builder setIndex(Integer index) {
+      this.index = index;
+      return this;
+    }
+
     @Override
     public ScoreItem build() {
-      return new ScoreItem(why, score, super.buildUnknownFields());
+      return new ScoreItem(why, score, index, super.buildUnknownFields());
     }
   }
 
@@ -179,6 +222,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
     public int encodedSize(ScoreItem value) {
       return ProtoAdapter.STRING.encodedSizeWithTag(1, value.why)
           + ProtoAdapter.INT32.encodedSizeWithTag(2, value.score)
+          + ProtoAdapter.INT32.encodedSizeWithTag(3, value.index)
           + value.unknownFields().size();
     }
 
@@ -186,6 +230,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
     public void encode(ProtoWriter writer, ScoreItem value) throws IOException {
       ProtoAdapter.STRING.encodeWithTag(writer, 1, value.why);
       ProtoAdapter.INT32.encodeWithTag(writer, 2, value.score);
+      ProtoAdapter.INT32.encodeWithTag(writer, 3, value.index);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -197,6 +242,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
         switch (tag) {
           case 1: builder.setWhy(ProtoAdapter.STRING.decode(reader)); break;
           case 2: builder.setScore(ProtoAdapter.INT32.decode(reader)); break;
+          case 3: builder.setIndex(ProtoAdapter.INT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
