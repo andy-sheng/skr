@@ -456,7 +456,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void grabBegin(int seq, SongModel songModel) {
         MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
         // 播放3秒导唱
-        mCorePresenter.playGuide();
+
         mTopContainerView.setSeqIndex(seq, mRoomData.getRoundInfoModelList().size());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
@@ -480,6 +480,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
 //        mGrabOpBtn.setVisibility(View.VISIBLE);
         mGrabOpBtn.playCountDown(4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
+        mCorePresenter.playGuide();
     }
 
     @Override

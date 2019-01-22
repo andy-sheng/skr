@@ -157,10 +157,10 @@ public class GrabOpView extends RelativeLayout {
                         // 按钮变成抢唱，且可点击
                         mDescTv.setClickable(true);
                         mDescTv.setImageDrawable(U.getDrawable(R.drawable.xiangchang));
-                        if(waitNum <= 3000){
+                        if(waitNum <= 0){
                             MyLog.e(TAG, "等待时间是0，很严重的问题");
                         } else {
-                            mRrlProgress.startCountDown(waitNum - 3000);
+                            mRrlProgress.startCountDown(waitNum - 2000);
                         }
 
                         mStatus = STATUS_GRAP;
