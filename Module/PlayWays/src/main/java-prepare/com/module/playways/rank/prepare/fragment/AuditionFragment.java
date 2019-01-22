@@ -30,9 +30,6 @@ import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
-import com.engine.arccloud.ArcRecognizeListener;
-import com.engine.arccloud.RecognizeConfig;
-import com.engine.arccloud.SongInfo;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
@@ -59,9 +56,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import io.agora.rtc.Constants;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

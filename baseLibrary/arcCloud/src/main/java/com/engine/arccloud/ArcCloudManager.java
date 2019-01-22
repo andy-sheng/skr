@@ -137,6 +137,11 @@ public class ArcCloudManager implements IACRCloudListener {
             // buffer还没满，足够容纳，那就放呗
             System.arraycopy(buffer, 0, mBuffer, mLenth, buffer.length);
             mLenth += buffer.length;
+            if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL && mLenth > BUFFER_LEN / 2) {
+                if (mRecognizeConfig.isWantRecognizeInManualMode()) {
+                    recognizeInner();
+                }
+            }
         } else {
             // 再放buffer就要满了，头部的要移走
             int left = mLenth + buffer.length - BUFFER_LEN;
