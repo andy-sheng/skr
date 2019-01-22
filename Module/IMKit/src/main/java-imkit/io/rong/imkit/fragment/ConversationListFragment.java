@@ -161,7 +161,9 @@ public class ConversationListFragment extends UriFragment implements OnItemClick
 
         this.mAdapter.setOnPortraitItemClick(this);
         this.mList.setAdapter(this.mAdapter);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         return view;
     }
 
