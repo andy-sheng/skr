@@ -2,6 +2,8 @@ package com.module.playways.grab.room.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
@@ -31,9 +33,13 @@ import static android.view.animation.Animation.INFINITE;
  */
 public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
+
+    public static final int MSG_HIDE_FROM_END_GUIDE_AUDIO = 0;
+
     public static final int STATUS_GRAP = 1;
     public static final int STATUS_COUNT_DOWN = 2;
     public static final int STATUS_LIGHT_OFF = 3;
+
 
     RoundRectangleView mRrlProgress;
 
@@ -48,6 +54,17 @@ public class GrabOpView extends RelativeLayout {
     RelativeLayout mGrabContainer;
 
     HandlerTaskTimer mCountDownTask;
+
+    Handler mUiHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MSG_HIDE_FROM_END_GUIDE_AUDIO:
+                    hide();
+                    break;
+            }
+        }
+    };
 
     public GrabOpView(Context context) {
         super(context);
@@ -116,6 +133,7 @@ public class GrabOpView extends RelativeLayout {
         mIvLightOff.setVisibility(GONE);
         mGrabContainer.setVisibility(VISIBLE);
         mStatus = STATUS_COUNT_DOWN;
+        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
 
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
                 Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
@@ -157,15 +175,21 @@ public class GrabOpView extends RelativeLayout {
                         // 按钮变成抢唱，且可点击
                         mDescTv.setClickable(true);
                         mDescTv.setImageDrawable(U.getDrawable(R.drawable.xiangchang));
+
+                        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
+
                         if(waitNum <= 0){
-                            MyLog.e(TAG, "等待时间是0，很严重的问题");
+                            MyLog.e(TAG, "等待时间是0");
+                            Message msg = mUiHandler.obtainMessage(MSG_HIDE_FROM_END_GUIDE_AUDIO);
+                            mUiHandler.sendMessageDelayed(msg, 0);
                         } else {
                             mRrlProgress.startCountDown(waitNum - 2000);
+                            Message msg = mUiHandler.obtainMessage(MSG_HIDE_FROM_END_GUIDE_AUDIO);
+                            mUiHandler.sendMessageDelayed(msg, waitNum - 2000);
                         }
 
                         mStatus = STATUS_GRAP;
 
-                        // 以view中心为缩放点，由初始状态放大两倍
                         ScaleAnimation animation = new ScaleAnimation(
                                 1.0f, 1.1f, 1.0f, 1.1f,
                                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
@@ -199,6 +223,8 @@ public class GrabOpView extends RelativeLayout {
                 mGrabContainer.setVisibility(GONE);
             }
         }, 200);
+
+        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
     }
 
     /**
@@ -211,6 +237,7 @@ public class GrabOpView extends RelativeLayout {
         mIvLightOff.setVisibility(VISIBLE);
         mGrabContainer.setVisibility(GONE);
         mIvLightOff.setClickable(false);
+        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
@@ -259,6 +286,7 @@ public class GrabOpView extends RelativeLayout {
         super.onDetachedFromWindow();
         mDescTv.clearAnimation();
         cancelCountDownTask();
+        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
     }
 
     private void cancelCountDownTask(){
