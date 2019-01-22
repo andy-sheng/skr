@@ -11,7 +11,7 @@ public class AudioScenesManager {
 
     public static AudioEffect getAudioEffect(AudioEffectStyleEnum styleEnum) {
         if (styleEnum == null) {
-            return null;
+            styleEnum = AudioEffectStyleEnum.ORIGINAL;
         }
         AudioEffect audioEffect = AudioEffectParamController.getInstance().extractParam(styleEnum,
                 AudioEffectEQEnum.STANDARD);

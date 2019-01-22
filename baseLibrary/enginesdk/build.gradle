@@ -32,6 +32,12 @@ android {
 
             java.srcDirs += 'src/main/java-agora'
             res.srcDirs += ['src/main/res-agora']
+
+            if (arcCloud.toBoolean()) {
+                java.srcDirs += 'src/main/java-option1'
+            }else{
+                java.srcDirs += 'src/main/java-option2'
+            }
         }
     }
     externalNativeBuild {
@@ -44,5 +50,8 @@ android {
 dependencies {
     compileOnly project(":baseLibrary:commonsdk")
     api files('libs/agora-rtc-sdk.jar')
+    if (arcCloud.toBoolean()) {
+        api project(":baseLibrary:arcCloud")
+    }
 }
 

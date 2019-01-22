@@ -18,6 +18,9 @@ import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
+import com.engine.arccloud.ArcCloudManager;
+import com.engine.arccloud.RecognizeConfig;
+import com.engine.option.Option;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -265,7 +268,7 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void destroy(final String from) {
         MyLog.d(TAG, "destroy" + " from=" + from + " status=" + mStatus);
-        if (!"force".equals(from)) {
+        if (!"force" .equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
                 return;
             }
@@ -349,7 +352,7 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                MyLog.w(TAG,"setClientRole" + " isAnchor=" + isAnchor);
+                MyLog.w(TAG, "setClientRole" + " isAnchor=" + isAnchor);
                 AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
             }
         });
@@ -955,7 +958,7 @@ public class EngineManager implements AgoraOutCallback {
         }
 
         mMusicTimePlayTimeListener = Observable
-                .interval(0,1000, TimeUnit.MILLISECONDS)
+                .interval(0, 1000, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .subscribe(new Consumer<Long>() {
                     int duration = -1;
@@ -1076,4 +1079,20 @@ public class EngineManager implements AgoraOutCallback {
         return score;
     }
     /*音频高级扩展结束*/
+
+    /*打分相关开始*/
+
+    public void startRecognize(RecognizeConfig recognizeConfig) {
+        AgoraEngineAdapter.getInstance().startRecognize(recognizeConfig);
+    }
+
+    public void stopRecognize() {
+        AgoraEngineAdapter.getInstance().stopRecognize();
+    }
+
+    public void recognizeInManualMode() {
+        AgoraEngineAdapter.getInstance().recognizeInManualMode();
+    }
+
+    /*打分相关结束*/
 }
