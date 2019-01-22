@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
@@ -26,6 +27,8 @@ public class EditInfoSignFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
     NoLeakEditText mSignEt;
     ExTextView mSignTextSize;
+
+    int before;  // 记录之前的位置
 
     @Override
     public int initView() {
@@ -69,10 +72,11 @@ public class EditInfoSignFragment extends BaseFragment {
         } else {
             mSignTextSize.setText("0/20");
         }
+
         mSignEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                before = i;
             }
 
             @Override
@@ -84,10 +88,9 @@ public class EditInfoSignFragment extends BaseFragment {
             public void afterTextChanged(Editable editable) {
                 int length = editable.length();
                 mSignTextSize.setText("" + length + "/20");
-                int selectionStart = mSignEt.getSelectionStart();
                 int selectionEnd = mSignEt.getSelectionEnd();
                 if (length > 20) {
-                    editable.delete(selectionStart - 1, selectionEnd);
+                    editable.delete(before, selectionEnd);
                     mSignEt.setText(editable.toString());
                     int selection = editable.length();
                     mSignEt.setSelection(selection);
