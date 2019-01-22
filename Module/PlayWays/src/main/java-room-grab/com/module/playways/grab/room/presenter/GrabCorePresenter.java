@@ -438,7 +438,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
-                    currentInfo.setType(RoundInfoModel.TYPE_GRAB);
                     String msg = "";
                     if (currentInfo != null) {
                         msg = "syncGameStatus成功了, currentRound 是 " + currentInfo;
@@ -454,6 +453,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         return;
                     }
 
+                    currentInfo.setType(RoundInfoModel.TYPE_GRAB);
                     updatePlayerState(gameOverTimeMs, syncStatusTimes, onlineInfos, currentInfo);
                 } else {
                     MyLog.w(TAG, "syncGameStatus失败 traceid is " + result.getTraceId());
