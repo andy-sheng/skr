@@ -66,7 +66,7 @@ public class OthersSingCardView extends RelativeLayout {
         mOtherBgSvga.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());
         try {
-            parser.parse("other_sing_bg.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("grab_other_sing_bg.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(avatar));

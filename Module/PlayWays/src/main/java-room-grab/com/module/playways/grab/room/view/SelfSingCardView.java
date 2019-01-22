@@ -1,7 +1,5 @@
 package com.module.playways.grab.room.view;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -256,7 +254,7 @@ public class SelfSingCardView extends RelativeLayout {
         mSingBgSvga.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());
         try {
-            parser.parse("self_sing_bg.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("grab_self_sing_bg.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(avatar));

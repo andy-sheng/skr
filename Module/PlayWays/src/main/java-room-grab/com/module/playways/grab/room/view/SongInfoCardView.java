@@ -7,8 +7,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
@@ -97,7 +95,7 @@ public class SongInfoCardView extends RelativeLayout {
         mSongCover.setLoops(0);
         SVGAParser parser = new SVGAParser(getContext());
         try {
-            parser.parse("record_player.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("grab_record_player.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity, requestDynamicBitmapItem(songModel.getCover()));

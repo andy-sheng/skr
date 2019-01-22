@@ -2,11 +2,9 @@ package com.module.playways.grab.room.view;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -16,7 +14,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
 
 import org.greenrobot.greendao.annotation.NotNull;
 
@@ -101,7 +98,7 @@ public class RoundOverCardView extends RelativeLayout {
         mNoneSingSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
         try {
-            parser.parse("none_sing_end.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("grab_none_sing_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -156,7 +153,7 @@ public class RoundOverCardView extends RelativeLayout {
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
         try {
-            parser.parse("sing_sucess_end.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("grab_sing_sucess_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -211,7 +208,7 @@ public class RoundOverCardView extends RelativeLayout {
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
         try {
-            parser.parse("sing_fail_end.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("grab_sing_fail_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(model));

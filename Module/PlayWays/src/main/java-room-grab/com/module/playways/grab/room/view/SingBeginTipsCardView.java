@@ -15,7 +15,6 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
@@ -64,9 +63,9 @@ public class SingBeginTipsCardView extends RelativeLayout {
     public void bindData(UserInfoModel info, SVGAListener listener) {
         setVisibility(VISIBLE);
         SVGAParser parser = new SVGAParser(getContext());
-        String assetsName = "sing_self_chance.svga";
+        String assetsName = "grab_sing_self_chance.svga";
         if (info.getUserId() != MyUserInfoManager.getInstance().getUid()) {
-            assetsName = "sing_other_chance.svga";
+            assetsName = "grab_sing_other_chance.svga";
         }
         mSingBeginSvga.setVisibility(VISIBLE);
         try {
