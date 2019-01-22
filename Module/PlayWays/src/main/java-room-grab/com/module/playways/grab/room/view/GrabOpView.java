@@ -46,7 +46,7 @@ public class GrabOpView extends RelativeLayout {
 
     int mStatus;
 
-    public ExImageView mDescTv;
+    public ExImageView mBtnIv;
 
     ExImageView mIvLightOff;
 
@@ -88,12 +88,12 @@ public class GrabOpView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_op_view_layout, this);
-        mDescTv = (ExImageView) this.findViewById(R.id.iv_text);
+        mBtnIv = (ExImageView) this.findViewById(R.id.iv_text);
         mRrlProgress = (RoundRectangleView) findViewById(R.id.rrl_progress);
         mIvLightOff = (ExImageView) findViewById(R.id.iv_light_off);
         mGrabContainer = (RelativeLayout)findViewById(R.id.grab_container);
 
-        mDescTv.setOnClickListener(new OnClickListener() {
+        mBtnIv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mStatus == STATUS_GRAP) {
@@ -133,8 +133,8 @@ public class GrabOpView extends RelativeLayout {
     public void playCountDown(int num, int waitNum) {
         // 播放 3 2 1 导唱倒计时
         MyLog.d(TAG, "playCountDown");
-        mDescTv.clearAnimation();
-        mDescTv.setClickable(false);
+        mBtnIv.clearAnimation();
+        mBtnIv.setClickable(false);
         mIvLightOff.setVisibility(GONE);
         mGrabContainer.setVisibility(VISIBLE);
         mStatus = STATUS_COUNT_DOWN;
@@ -168,7 +168,7 @@ public class GrabOpView extends RelativeLayout {
                                 drawable = U.getDrawable(R.drawable.zhanji_1);
                                 break;
                         }
-                        mDescTv.setImageDrawable(drawable);
+                        mBtnIv.setImageDrawable(drawable);
 //                        mGrabOpBtn.setBackgroundResource(R.drawable.yanchangjiemian_dabian);
                     }
 
@@ -179,8 +179,8 @@ public class GrabOpView extends RelativeLayout {
                             mListener.countDownOver();
                         }
                         // 按钮变成抢唱，且可点击
-                        mDescTv.setClickable(true);
-                        mDescTv.setImageDrawable(U.getDrawable(R.drawable.xiangchang));
+                        mBtnIv.setClickable(true);
+                        mBtnIv.setImageDrawable(U.getDrawable(R.drawable.xiangchang));
 
                         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
 
@@ -204,7 +204,7 @@ public class GrabOpView extends RelativeLayout {
                         animation.setRepeatCount(INFINITE);
                         animation.setRepeatMode(REVERSE);
                         animation.setDuration(500);
-                        mDescTv.startAnimation(animation);
+                        mBtnIv.startAnimation(animation);
                     }
                 });
     }
@@ -212,7 +212,7 @@ public class GrabOpView extends RelativeLayout {
     public void hide(){
         MyLog.d(TAG, "hide");
         cancelCountDownTask();
-        mDescTv.clearAnimation();
+        mBtnIv.clearAnimation();
         mRrlProgress.stopCountDown();
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,1.0f,
                 Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
@@ -294,7 +294,7 @@ public class GrabOpView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mDescTv.clearAnimation();
+        mBtnIv.clearAnimation();
         cancelCountDownTask();
         mUiHandler.removeCallbacksAndMessages(null);
     }
