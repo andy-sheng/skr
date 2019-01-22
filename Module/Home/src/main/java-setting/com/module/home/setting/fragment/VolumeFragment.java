@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 import com.common.base.BaseFragment;
 import com.common.utils.FragmentUtils;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 
 import static com.common.utils.SoundUtils.PREF_KEY_GAME_VOLUME_SWITCH;
+import static com.component.busilib.manager.BgMusicManager.PREF_KEY_PIPEI_VOLUME;
 import static com.component.busilib.manager.BgMusicManager.PREF_KEY_PIPEI_VOLUME_SWITCH;
 
 public class VolumeFragment extends BaseFragment {
@@ -27,6 +29,7 @@ public class VolumeFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
     RelativeLayout mPipeiArea;
     SwitchButton mPipeiSb;
+    SeekBar mPipeiVoiceSeekbar;
     SwitchButton mGameSb;
 
     @Override
@@ -40,16 +43,36 @@ public class VolumeFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mPipeiArea = (RelativeLayout) mRootView.findViewById(R.id.pipei_area);
         mPipeiSb = (SwitchButton) mRootView.findViewById(R.id.pipei_sb);
+        mPipeiVoiceSeekbar = (SeekBar) mRootView.findViewById(R.id.pipei_voice_seekbar);
         mGameSb = (SwitchButton) mRootView.findViewById(R.id.game_sb);
 
         mPipeiSb.setChecked(U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, true));
         mGameSb.setChecked(U.getPreferenceUtils().getSettingBoolean(PREF_KEY_GAME_VOLUME_SWITCH, true));
+        mPipeiVoiceSeekbar.setProgress(U.getPreferenceUtils().getSettingInt(PREF_KEY_PIPEI_VOLUME, 100));
 
         mPipeiSb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 U.getPreferenceUtils().setSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, isChecked);
                 BgMusicManager.getInstance().setPlay(isChecked);
+            }
+        });
+
+        mPipeiVoiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int process, boolean b) {
+                U.getPreferenceUtils().setSettingInt(PREF_KEY_PIPEI_VOLUME, process);
+                BgMusicManager.getInstance().setMaxVolume(process / 100f);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
