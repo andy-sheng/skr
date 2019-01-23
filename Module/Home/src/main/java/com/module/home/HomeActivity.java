@@ -7,15 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
-import com.common.core.account.UserAccountManager;
+import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
-import com.common.player.exoplayer.ExoPlayer;
 import com.common.utils.ActivityUtils;
-import com.common.utils.AppInfoUtils;
-import com.common.utils.HandlerTaskTimer;
-import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
 import com.common.view.viewpager.NestViewPager;
@@ -149,6 +144,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
             mHomePresenter.checkPermiss(this);
         }
         mFromCreate = false;
+        UpgradeManager.getInstance().checkUpdate();
 //        ExoPlayer exoPlayer = new ExoPlayer();
 //        exoPlayer.startPlay("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/audios/56e25fc3bccff9b8.aac");
 //

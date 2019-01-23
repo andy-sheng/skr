@@ -1,4 +1,4 @@
-package com.respicker;
+package com.common.provideer;
 
 import android.support.v4.content.FileProvider;
 
@@ -10,5 +10,5 @@ import android.support.v4.content.FileProvider;
  * Date: 2017-03-17  16:10
  */
 
-public class ImagePickerProvider extends FileProvider {
+public class MyFileProvider extends FileProvider {
 }
