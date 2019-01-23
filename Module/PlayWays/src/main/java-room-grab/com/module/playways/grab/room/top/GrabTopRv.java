@@ -9,7 +9,6 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -262,7 +261,7 @@ public class GrabTopRv extends RelativeLayout {
             }
             AnimatorSet animatorSet1s = new AnimatorSet();
             animatorSet1s.playTogether(liangdengList);
-            animatorSet1s.setStartDelay(125 * 33);
+            animatorSet1s.setStartDelay(20 * 33);
             allAnimator.add(animatorSet1s);
         }
 
