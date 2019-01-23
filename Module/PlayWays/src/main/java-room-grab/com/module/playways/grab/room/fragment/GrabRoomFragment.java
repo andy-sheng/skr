@@ -352,7 +352,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
             @Override
             public void onVoiceChange(boolean voiceOpen) {
-//                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
+                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
             }
         });
     }

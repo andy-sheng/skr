@@ -286,6 +286,22 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    public void muteAllRemoteAudioStreams(boolean mute) {
+        EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
+        // 如果是机器人的话
+        if (mute) {
+            // 如果是静音
+            if (mExoPlayer != null) {
+                mExoPlayer.setVolume(0);
+            }
+        } else {
+            // 如果打开静音
+            if (mExoPlayer != null) {
+                mExoPlayer.setVolume(1f);
+            }
+        }
+    }
+
     @Override
     public void destroy() {
         super.destroy();
@@ -790,4 +806,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
         return pt;
     }
+
+
 }
