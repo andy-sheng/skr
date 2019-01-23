@@ -30,6 +30,9 @@ import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.RecognizeConfig;
+import com.engine.arccloud.SongInfo;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
@@ -116,6 +119,8 @@ public class AuditionFragment extends BaseFragment {
     ValueAnimator mRecordAnimator;
 
     DialogPlus mQuitTipsDialog;
+
+    static final boolean TEST_SCORE = false;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -294,6 +299,20 @@ public class AuditionFragment extends BaseFragment {
         mTvRecordTip.setText("点击结束试音演唱");
         mIvPlay.setEnabled(true);
         EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH);
+
+        if (TEST_SCORE) {
+            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                    .setMode(RecognizeConfig.MODE_MANUAL)
+                    .setSongName(mSongModel.getItemName())
+                    .setArtist(mSongModel.getOwner())
+                    .setMResultListener(new ArcRecognizeListener() {
+                        @Override
+                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {
+                        }
+                    }).build());
+        }
+
+
         if (mRecordAnimator != null) {
             mRecordAnimator.cancel();
         }
@@ -536,6 +555,9 @@ public class AuditionFragment extends BaseFragment {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         int score = EngineManager.getInstance().getLineScore();
         U.getToastUtil().showShort("score:" + score);
+        if (TEST_SCORE) {
+            EngineManager.getInstance().recognizeInManualMode();
+        }
 //        score = (int) (Math.random() * 100);
     }
 

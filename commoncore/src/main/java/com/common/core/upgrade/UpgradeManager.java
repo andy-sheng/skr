@@ -282,7 +282,7 @@ public class UpgradeManager {
         int status;
 
         public int getProgress() {
-            return (int) (downloaded / (total * 1.0));
+            return (int) (downloaded / (total * 0.01));
         }
     }
 

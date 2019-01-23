@@ -105,4 +105,15 @@ public class RecognizeConfig {
             return mParams;
         }
     }
+
+    @Override
+    public String toString() {
+        return "RecognizeConfig{" +
+                "mode=" + mode +
+                ", songName='" + songName + '\'' +
+                ", artist='" + artist + '\'' +
+                ", autoTimes=" + autoTimes +
+                ", wantRecognizeInManualMode=" + wantRecognizeInManualMode +
+                '}';
+    }
 }

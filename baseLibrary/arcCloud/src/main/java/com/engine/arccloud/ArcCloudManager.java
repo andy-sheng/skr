@@ -15,18 +15,13 @@ import com.common.utils.U;
 import java.util.HashMap;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.schedulers.Schedulers;
-
 public class ArcCloudManager implements IACRCloudListener {
     public final static String TAG = "ArcCloudManager";
 
-    static final int BUFFER_LEN = 44100 * 4 * 10;
+    static final int BUFFER_LEN = 650 * 2048;
 
     byte[] mBuffer = new byte[BUFFER_LEN];
-    int mLenth = 0;
+    int mLength = 0;
     int mSampleRate = -1;
     int mChannels = -1;
 
@@ -53,10 +48,10 @@ public class ArcCloudManager implements IACRCloudListener {
 
 
     void tryInit() {
-        MyLog.d(TAG, "tryInit");
         if (mClient == null) {
             synchronized (this) {
                 if (mClient == null) {
+                    MyLog.d(TAG, "init");
                     ACRCloudConfig mConfig = new ACRCloudConfig();
                     mConfig.acrcloudListener = this;
                     mConfig.context = U.app();
@@ -114,7 +109,7 @@ public class ArcCloudManager implements IACRCloudListener {
     public void stopRecognize() {
         MyLog.d(TAG, "stopCollect");
         // 停止积攒
-        mLenth = 0;
+        setLen(0);
         this.mRecognizeConfig = null;
     }
 
@@ -134,23 +129,25 @@ public class ArcCloudManager implements IACRCloudListener {
         if (mChannels < 0) {
             mChannels = nChannels;
         }
-        if (mLenth + buffer.length <= BUFFER_LEN) {
+        if (mLength + buffer.length <= BUFFER_LEN) {
             // buffer还没满，足够容纳，那就放呗
-            System.arraycopy(buffer, 0, mBuffer, mLenth, buffer.length);
-            mLenth += buffer.length;
-            if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL && mLenth > BUFFER_LEN / 2) {
+            System.arraycopy(buffer, 0, mBuffer, mLength, buffer.length);
+            setLen(mLength + buffer.length);
+            if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL && mLength == BUFFER_LEN) {
                 if (mRecognizeConfig.isWantRecognizeInManualMode()) {
                     recognizeInner();
                 }
             }
         } else {
             // 再放buffer就要满了，头部的要移走
-            int left = mLenth + buffer.length - BUFFER_LEN;
+            int left = mLength + buffer.length - BUFFER_LEN;
+            MyLog.d(TAG, "left=" + left + " mLenth=" + mLength + " buffer.length:" + buffer.length + " BUFFER_LEN:" + BUFFER_LEN);
             // 往左移动 left 个位置
-            System.arraycopy(mBuffer, left, mBuffer, 0, mLenth - left);
-            mLenth = mLenth - left;
-            System.arraycopy(buffer, 0, mBuffer, mLenth, buffer.length);
-            mLenth += buffer.length;
+//            byte [] temp = new byte[BUFFER_LEN];
+
+            System.arraycopy(mBuffer, left, mBuffer, 0, mLength - left);
+            System.arraycopy(buffer, 0, mBuffer, mLength-left, buffer.length);
+            setLen(BUFFER_LEN);
             if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
                 // 自动识别
                 recognizeInner();
@@ -162,46 +159,71 @@ public class ArcCloudManager implements IACRCloudListener {
         }
     }
 
+    int logtag = 0;
+
+    public synchronized void setLen(int len) {
+        if (++logtag % 500 == 0) {
+            MyLog.d(TAG, "setLen" + " len=" + len);
+        }
+        mLength = len;
+    }
+
     private void recognizeInner() {
         tryInit();
         if (this.mClient != null) {
-            if (mLenth > BUFFER_LEN / 2 && !mProcessing) {
-                Observable.create(new ObservableOnSubscribe<Object>() {
-                    @Override
-                    public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                        if (mRecognizeConfig != null && mRecognizeConfig.getResultListener() != null) {
-                            mProcessing = true;
-                            ACRCloudConfig.RecognizerType recType = ACRCloudConfig.RecognizerType.HUMMING;
-                            HashMap hashMap = new HashMap();
-                            String songName = mRecognizeConfig.getSongName();
-                            if (!TextUtils.isEmpty(songName)) {
-                                hashMap.put("title", songName);
-                            }
-                            String artist = mRecognizeConfig.getArtist();
-                            if (!TextUtils.isEmpty(artist)) {
-                                hashMap.put("artist", artist);
-                            }
-                            String result = mClient.recognize(mBuffer, mLenth, mSampleRate, mChannels, recType, hashMap);
-                            mLenth = 0;
-                            mProcessing = false;
-                            if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
-                                mRecognizeConfig.setAutoTimes(mRecognizeConfig.getAutoTimes() - 1);
-                            }
-                            if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
-                                mRecognizeConfig.setWantRecognizeInManualMode(false);
-                            }
-                            process(result);
-
+            if (mLength >= BUFFER_LEN) {
+                if (!mProcessing) {
+//                    Observable.create(new ObservableOnSubscribe<Object>() {
+//                        @Override
+//                        public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                    if (mRecognizeConfig != null
+                            && mRecognizeConfig.getResultListener() != null
+                            && mLength >= BUFFER_LEN) {
+                        mProcessing = true;
+                        MyLog.d(TAG, "开始识别");
+                        ACRCloudConfig.RecognizerType recType = ACRCloudConfig.RecognizerType.HUMMING;
+                        HashMap hashMap = new HashMap();
+                        String songName = mRecognizeConfig.getSongName();
+                        if (!TextUtils.isEmpty(songName)) {
+                            hashMap.put("title", songName);
                         }
-                        emitter.onComplete();
+                        String artist = mRecognizeConfig.getArtist();
+                        if (!TextUtils.isEmpty(artist)) {
+                            hashMap.put("artist", artist);
+                        }
+                        int len = mLength;
+                        byte[] arr = new byte[len];
+                        System.arraycopy(mBuffer, 0, arr, 0, len);
+                        setLen(0);
+                        MyLog.d(TAG, "len:" + len);
+                        String result = mClient.recognize(arr, len, mSampleRate, mChannels, recType, hashMap);
+                        MyLog.d(TAG, "识别结束");
+                        mProcessing = false;
+                        if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
+                            mRecognizeConfig.setAutoTimes(mRecognizeConfig.getAutoTimes() - 1);
+                        }
+                        if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+                            mRecognizeConfig.setWantRecognizeInManualMode(false);
+                        }
+                        process(result);
                     }
-                }).subscribeOn(Schedulers.io())
-                        .subscribe();
+//                            emitter.onComplete();
+//                        }
+//                    }).subscribeOn(Schedulers.io())
+//                            .subscribe();
+                } else {
+                    MyLog.d(TAG, "已经有任务在处理");
+                }
+            } else {
+                MyLog.d(TAG, "buffer 不够");
             }
+        } else {
+            MyLog.d(TAG, "mClient==null");
         }
     }
 
     private void process(String result) {
+        MyLog.d(TAG, "onResult" + " result=" + result);
         if (mRecognizeConfig != null) {
             JSONObject jsonObject = JSON.parseObject(result);
             JSONObject j1 = jsonObject.getJSONObject("metadata");
@@ -217,9 +239,7 @@ public class ArcCloudManager implements IACRCloudListener {
                             break;
                         }
                     }
-                    MyLog.d(TAG, "onResult" + " result=" + result);
                     MyLog.d(TAG, " list=" + list + " targetSongInfo=" + targetSongInfo);
-
                     mRecognizeConfig.getResultListener().onResult(result, list, targetSongInfo);
                 }
             }
