@@ -220,8 +220,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
 
-        U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown);
-
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 
         mUiHanlder.postDelayed(new Runnable() {
@@ -232,6 +230,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             }
         }, 100);
 
+        U.getSoundUtils().preLoad(TAG, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose);
     }
 
     @Override
@@ -381,6 +380,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
             public void clickGrabBtn() {
+                U.getSoundUtils().play(TAG, R.raw.iwannasing);
                 mCorePresenter.grabThisRound();
             }
 
@@ -431,6 +431,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
+        U.getSoundUtils().play(TAG, R.raw.dislike);
         //自己灭了别人的灯成功了
         if (event.uid == MyUserInfoManager.getInstance().getUid()) {
             mGrabOpBtn.hide();

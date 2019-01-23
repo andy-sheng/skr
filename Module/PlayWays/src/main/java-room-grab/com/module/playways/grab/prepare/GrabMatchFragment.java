@@ -57,6 +57,9 @@ import java.util.concurrent.TimeUnit;
 
 //这个是匹配界面，之前的FastMatchingSence
 public class GrabMatchFragment extends BaseFragment implements IMatchingView {
+
+    public final static String TAG = "GrabMatchFragment";
+
     public static final long ANIMATION_DURATION = 1800;
     ExImageView mIvBack;
     ExImageView mIvTop;
@@ -108,10 +111,11 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         mSdvSubIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon1);
         mSdvSubIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon3);
 //        mWaveView = (WaveView)mRootView.findViewById(R.id.wave_view);
-        mSdvOwnIcon = (SimpleDraweeView)mRootView.findViewById(R.id.sdv_own_icon);
-        mRlIcon1Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon1_root);
-        mSvgaMatchBg = (SVGAImageView)mRootView.findViewById(R.id.svga_match_bg);
+        mSdvOwnIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_own_icon);
+        mRlIcon1Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon1_root);
+        mSvgaMatchBg = (SVGAImageView) mRootView.findViewById(R.id.svga_match_bg);
 
+        U.getSoundUtils().preLoad(TAG, R.raw.allclick, R.raw.general_back);
 
         AvatarUtils.loadAvatarByUrl(mSdvOwnIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
@@ -135,12 +139,14 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         RxView.clicks(mIvCancelMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.allclick);
                     goBack();
                 });
 
         RxView.clicks(mIvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.general_back);
                     goBack();
                 });
 
@@ -373,6 +379,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         if (mExitDialog != null && mExitDialog.isShowing()) {
             mExitDialog.dismiss();
         }
+        U.getSoundUtils().release(TAG);
     }
 
     @Override
@@ -410,10 +417,12 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                             if (view.getId() == R.id.confirm_tv) {
                                 // 继续匹配
                                 dialog.dismiss();
+                                U.getSoundUtils().play(TAG, R.raw.allclick);
                             }
 
                             if (view.getId() == R.id.cancel_tv) {
                                 dialog.dismiss();
+                                U.getSoundUtils().play(TAG, R.raw.general_back, 500);
                                 mMatchPresenter.cancelMatch();
                                 stopTimeTask();
                                 getActivity().finish();

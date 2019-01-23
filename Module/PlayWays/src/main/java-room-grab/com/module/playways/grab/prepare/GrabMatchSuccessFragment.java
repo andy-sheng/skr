@@ -167,7 +167,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
     }
 
-    private void playScaleAnim(View simpleDraweeView, long delay){
+    private void playScaleAnim(View simpleDraweeView, long delay) {
         AnimatorSet animatorSet = new AnimatorSet();//组合动画
         ObjectAnimator scaleXPre = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 1.0f, 0.5f);
         ObjectAnimator scaleYPre = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 1.0f, 0.5f);
@@ -200,7 +200,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                     @Override
                     public void onNext(Integer integer) {
                         U.getSoundUtils().play(TAG, R.raw.general_countdown);
-                        if(10 - integer < 0){
+                        if (10 - integer < 0) {
                             return;
                         }
                         mTvReadyTime.setText(String.format(U.app().getString(R.string.ready_time_info), 10 - integer));
@@ -229,11 +229,11 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mSdvIcon4.setTag("sdv" + mPrepareData.getPlayerInfoList().get(3).getUserInfo().getUserId());
         mSdvIcon5.setTag("sdv" + mPrepareData.getPlayerInfoList().get(4).getUserInfo().getUserId());
 
-        mRlIcon1Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon1_root);
-        mRlIcon2Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon2_root);
-        mRlIcon3Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon3_root);
-        mRlIcon4Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon4_root);
-        mRlIcon5Root = (ExRelativeLayout)mRootView.findViewById(R.id.rl_icon5_root);
+        mRlIcon1Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon1_root);
+        mRlIcon2Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon2_root);
+        mRlIcon3Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon3_root);
+        mRlIcon4Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon4_root);
+        mRlIcon5Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon5_root);
 
         setIconStroke(mRlIcon1Root, mPrepareData.getPlayerInfoList().get(0).getUserInfo().getIsMale());
         setIconStroke(mRlIcon2Root, mPrepareData.getPlayerInfoList().get(1).getUserInfo().getIsMale());
@@ -281,7 +281,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         return dynamicEntity;
     }
 
-    private void setIconStroke(ExRelativeLayout exRelativeLayout, boolean isMale){
+    private void setIconStroke(ExRelativeLayout exRelativeLayout, boolean isMale) {
         Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                 .setStrokeWidth(U.getDisplayUtils().dip2px(3))
                 .setStrokeColor(isMale ? U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color))
@@ -322,8 +322,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
         for (ReadyInfoModel jsonReadyInfo : readyInfos) {
             SimpleDraweeView mSdvIcon = mRootView.findViewWithTag("sdv" + jsonReadyInfo.getUserID());
-            for(PlayerInfoModel playerInfoModel : mPrepareData.getPlayerInfoList()){
-                if(playerInfoModel.getUserInfo().getUserId() == jsonReadyInfo.getUserID()){
+            for (PlayerInfoModel playerInfoModel : mPrepareData.getPlayerInfoList()) {
+                if (playerInfoModel.getUserInfo().getUserId() == jsonReadyInfo.getUserID()) {
                     loadIcon(mSdvIcon, false, playerInfoModel.getUserInfo().getAvatar());
                 }
             }

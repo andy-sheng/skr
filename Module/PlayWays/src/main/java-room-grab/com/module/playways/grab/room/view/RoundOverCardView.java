@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.utils.U;
+import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -94,6 +96,7 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     private void startNoneSing(SVGAListener listener) {
+        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.nobodywants);
         mNoneSingSvga.setVisibility(VISIBLE);
         mNoneSingSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
@@ -149,6 +152,7 @@ public class RoundOverCardView extends RelativeLayout {
 
     // 优秀, 目前缺动画
     private void startPerfect(SVGAListener listener) {
+        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.success);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
@@ -204,6 +208,7 @@ public class RoundOverCardView extends RelativeLayout {
 
     // 不够优秀，换字即可，目前缺动画
     private void startFailed(int model, SVGAListener listener) {
+        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lose);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());

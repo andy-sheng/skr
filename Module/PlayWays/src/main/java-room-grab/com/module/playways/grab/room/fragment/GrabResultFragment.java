@@ -2,7 +2,9 @@ package com.module.playways.grab.room.fragment;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +40,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class GrabResultFragment extends BaseFragment {
 
+    public final static String TAG = "GrabResultFragment";
+
     RoomData mRoomData;
     GrabResultInfoModel mGrabResultInfoModel;
 
@@ -54,6 +58,8 @@ public class GrabResultFragment extends BaseFragment {
     LinearLayout mLlBottomArea;
     ExTextView mTvBack;
     ExTextView mTvAgain;
+
+    Handler mUiHandler = new Handler();
 
     @Override
     public int initView() {
@@ -105,6 +111,21 @@ public class GrabResultFragment extends BaseFragment {
 
                     getActivity().finish();
                 });
+
+        U.getSoundUtils().preLoad(TAG, R.raw.result);
+
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getSoundUtils().play(TAG, R.raw.result, 500);
+            }
+        }, 500);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     private void bindData(List<GrabResultInfoModel> list) {

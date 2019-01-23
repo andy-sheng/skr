@@ -15,6 +15,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
@@ -41,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 
 public class SpecialSelectFragment extends BaseFragment {
+
+    public final static String TAG = "SpecialSelectFragment";
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitleView;
@@ -88,6 +91,7 @@ public class SpecialSelectFragment extends BaseFragment {
         mSpecialSelectAdapter = new SpecialSelectAdapter(new RecyclerOnItemClickListener<SpecialModel>() {
             @Override
             public void onItemClicked(View view, int position, SpecialModel model) {
+                U.getSoundUtils().play(TAG, R.raw.general_button, 500);
                 goMatchFragment(model.getTagID());
             }
         });
@@ -99,6 +103,7 @@ public class SpecialSelectFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.general_back, 500);
                         getActivity().finish();
                     }
                 });
@@ -116,6 +121,8 @@ public class SpecialSelectFragment extends BaseFragment {
                 loadData(offset, DEFAULT_COUNT);
             }
         });
+
+        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.general_button);
 
     }
 
@@ -148,6 +155,12 @@ public class SpecialSelectFragment extends BaseFragment {
         } else {
             mLoadService.showCallback(EmptyCallback.class);
         }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override
