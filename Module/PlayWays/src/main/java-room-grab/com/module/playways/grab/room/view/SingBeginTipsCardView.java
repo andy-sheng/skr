@@ -124,7 +124,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
             textPaint.setColor(Color.parseColor("#0C2275"));
             textPaint.setTypeface(Typeface.DEFAULT_BOLD);
             textPaint.setTextAlign(Paint.Align.LEFT);
-            textPaint.setTextSize(U.getDisplayUtils().dip2px(24));
+            textPaint.setTextSize(U.getDisplayUtils().dip2px(16));
             dynamicEntity.setDynamicImage(userInfoModel.getAvatar(), "avatar");
             dynamicEntity.setDynamicText(userInfoModel.getNickname(), textPaint, "name");
         }
