@@ -116,7 +116,7 @@ public class RecordCircleView extends View {
         int width = resolveSize(dp2px(100), widthMeasureSpec);
         mRadius = (width - mPadding * 2) / 2;
 
-        setMeasuredDimension(width, width);
+//        setMeasuredDimension(width, width);
 
         mCenterX = mCenterY = getMeasuredWidth() / 2f;
         mRectFProgressArc.set(
@@ -237,6 +237,7 @@ public class RecordCircleView extends View {
         mPaint.setTextAlign(Paint.Align.CENTER);
         mPaint.setColor(getResources().getColor(R.color.white_trans_50));
         canvas.drawText("当前", mCenterX, mCenterY - dp2px(6), mPaint);
+        canvas.drawText(mMax + "", mCenterX + dp2px(10), mCenterY + dp2px(32), mPaint);
     }
 
     private int dp2px(int dp) {
