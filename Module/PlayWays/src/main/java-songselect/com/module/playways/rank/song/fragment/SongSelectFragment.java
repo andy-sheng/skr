@@ -103,7 +103,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     getActivity().finish();
                 });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.general_button, R.raw.general_back);
+        U.getSoundUtils().preLoad(TAG, R.raw.general_button, R.raw.general_back, R.raw.musiclist_nextpage);
 
         mDeleteList = new ArrayList<>();
 
@@ -294,6 +294,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void onLeftCardExit(Object dataObject) {
+        U.getSoundUtils().play(TAG, R.raw.musiclist_nextpage);
         MyLog.d(TAG, "onLeftCardExit" + " dataObject=" + dataObject);
         if (dataObject instanceof SongCardModel) {
             mDeleteList.add(0, (SongCardModel) dataObject);
@@ -302,6 +303,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void onRightCardExit(Object dataObject) {
+        U.getSoundUtils().play(TAG, R.raw.musiclist_nextpage);
         MyLog.d(TAG, "onRightCardExit" + " dataObject=" + dataObject);
         if (dataObject instanceof SongCardModel) {
             mDeleteList.add(0, (SongCardModel) dataObject);

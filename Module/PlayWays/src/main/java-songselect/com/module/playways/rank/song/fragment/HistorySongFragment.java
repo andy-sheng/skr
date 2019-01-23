@@ -195,6 +195,14 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
                 presenter.getClickedMusicItmes(offset, DEFAULT_SONG_COUNT);
             }
         });
+
+        U.getSoundUtils().preLoad(TAG, R.raw.general_button);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

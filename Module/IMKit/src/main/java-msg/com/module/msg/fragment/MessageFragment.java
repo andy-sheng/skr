@@ -54,6 +54,7 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
         commonTitleBar.getRightCustomView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                U.getSoundUtils().play(TAG, R.raw.allclick);
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
                                 .setAddToBackStack(true)
@@ -73,6 +74,14 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
 //                                .build());
 //            }
 //        });
+
+        U.getSoundUtils().preLoad(TAG, R.raw.allclick);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     // 会话列表的Fragment

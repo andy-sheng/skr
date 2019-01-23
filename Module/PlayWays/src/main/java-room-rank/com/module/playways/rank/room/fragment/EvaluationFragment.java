@@ -472,6 +472,8 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         if (mStartRightSvga != null) {
             mStartRightSvga.stopAnimation(true);
         }
+
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

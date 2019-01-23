@@ -29,6 +29,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.module.home.musictest.fragment.MusicTestFragment;
+import com.module.home.setting.fragment.SettingFragment;
 import com.respicker.ResPicker;
 import com.respicker.fragment.ResPickerFragment;
 import com.respicker.model.ImageItem;
@@ -52,6 +53,8 @@ import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
 
 public class PersonFragment extends BaseFragment implements IPersonView {
+
+    public final static String TAG = "PersonFragment";
 
     RelativeLayout mPersonMainContainner;
     BaseImageView mAvatarIv;
@@ -129,14 +132,19 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mFunnyNumTv = (ExTextView) mRootView.findViewById(R.id.funny_num_tv);
         mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
 
+        U.getSoundUtils().preLoad(TAG, R.raw.allclick);
 
         RxView.clicks(mSettingTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SETTING)
-                                .navigation();
+                        U.getSoundUtils().play(TAG, R.raw.allclick);
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
                     }
                 });
 
@@ -192,6 +200,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.allclick);
                         // 好友，双向关注
                         Bundle bundle = new Bundle();
                         bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FRIENDS);
@@ -210,6 +219,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.allclick);
                         // 粉丝，我关注的
                         Bundle bundle = new Bundle();
                         bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FANS);
@@ -227,6 +237,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.allclick);
                         // 关注, 关注我的
                         Bundle bundle = new Bundle();
                         bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FOLLOW);
@@ -255,6 +266,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.allclick);
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                                 .withBoolean("selectSong", true)
                                 .navigation();
@@ -269,6 +281,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.allclick);
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), MusicTestFragment.class)
                                         .setAddToBackStack(true)

@@ -11,6 +11,7 @@ import com.common.base.BaseActivity;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
 import com.common.view.viewpager.NestViewPager;
@@ -34,6 +35,8 @@ import io.reactivex.functions.Consumer;
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity {
 
+    public final static String TAG = "HomeActivity";
+
     LinearLayout mBottomContainer;
     ExImageView mGameBtn;
     ExImageView mMessageBtn;
@@ -42,6 +45,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
     boolean mFromCreate = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +106,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(1, false);
                         mGameBtn.setSelected(true);
                         mMessageBtn.setSelected(false);
@@ -114,6 +119,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(0, false);
                         mGameBtn.setSelected(false);
                         mMessageBtn.setSelected(true);
@@ -126,6 +132,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(2, false);
                         mGameBtn.setSelected(false);
                         mMessageBtn.setSelected(false);
@@ -134,13 +141,15 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                 });
         mMainVp.setCurrentItem(1, false);
         mFromCreate = true;
+
+        U.getSoundUtils().preLoad(TAG, R.raw.trans_tab);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(mFromCreate){
+        if (mFromCreate) {
             mHomePresenter.checkPermiss(this);
         }
         mFromCreate = false;
@@ -164,11 +173,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         if (mHomePresenter != null) {
             mHomePresenter.destroy();
         }
+        U.getSoundUtils().release(TAG);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActivityUtils.ForeOrBackgroundChange foreOrBackgroundChange){
-        if(foreOrBackgroundChange.foreground){
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange foreOrBackgroundChange) {
+        if (foreOrBackgroundChange.foreground) {
             // 后台到前台了
             mHomePresenter.checkPermiss(this);
         }

@@ -42,6 +42,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SettingFragment extends BaseFragment {
 
+    public final static String TAG = "SettingFragment";
+
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     RelativeLayout mEditPerson;
@@ -56,8 +58,6 @@ public class SettingFragment extends BaseFragment {
     ExTextView mCacheSizeTv;
 
     RelativeLayout mLogUpdate;
-
-    Disposable uploadLogTask;
 
     static final String[] CACHE_CAN_DELETE = {
             "fresco", "gif", "upload"
@@ -83,13 +83,19 @@ public class SettingFragment extends BaseFragment {
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
         mLogUpdate = (RelativeLayout) mRootView.findViewById(R.id.log_update);
 
+        U.getSoundUtils().preLoad(TAG, R.raw.general_back);
 
         RxView.clicks(mTitlebar.getLeftTextView())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        onBackPressed();
+                        U.getSoundUtils().play(TAG, R.raw.general_back);
+                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                                .setPopFragment(SettingFragment.this)
+                                .setPopAbove(false)
+                                .setHasAnimation(true)
+                                .build());
                     }
                 });
 
@@ -287,15 +293,14 @@ public class SettingFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
+    }
 
     @Override
     public boolean useEventBus() {
         return false;
-    }
-
-    @Override
-    protected boolean onBackPressed() {
-        getActivity().finish();
-        return true;
     }
 }
