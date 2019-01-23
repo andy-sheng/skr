@@ -70,7 +70,7 @@ import okhttp3.Response;
 
 public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
-    public final static String TAG = "RankingRoomFragment";
+    public final static String TAG = "GrabRoomFragment";
 
     public static final int MSG_ENSURE_READYGO_OVER = 1;
 
@@ -147,7 +147,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     onRoundOverPlayOver(msg.arg1 == 1, (RoundInfoModel) msg.obj);
                     break;
                 case MSG_ENSURE_GAME_OVER:
-                    onGrabGameOver();
+                    onGrabGameOver("MSG_ENSURE_GAME_OVER");
                     break;
             }
         }
@@ -690,12 +690,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mGrabGameOverView.starAnimation(new SVGAListener() {
             @Override
             public void onFinished() {
-                onGrabGameOver();
+                onGrabGameOver("onFinished");
             }
         });
     }
 
-    private void onGrabGameOver() {
+    private void onGrabGameOver(String from) {
+        MyLog.d(TAG, "onGrabGameOver " + from);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabResultFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
