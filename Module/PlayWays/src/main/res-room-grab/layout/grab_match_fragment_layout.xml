@@ -27,37 +27,43 @@
 
 
 
-
-        <com.opensource.svgaplayer.SVGAImageView
-            android:layout_centerInParent="true"
-            android:id="@+id/svga_match_bg"
+        <FrameLayout
+            android:layout_marginBottom="@dimen/view_69_dp"
             android:layout_width="match_parent"
-            android:layout_height="1000dp"
-            app:antiAlias="true"
-            app:autoPlay="false"
-            app:loopCount="-1" />
+            android:layout_height="match_parent">
+            <com.opensource.svgaplayer.SVGAImageView
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:id="@+id/svga_match_bg"
+                android:layout_width="match_parent"
+                android:layout_height="1000dp"
+                app:antiAlias="true"
+                app:autoPlay="false"
+                app:loopCount="-1" />
 
-        <!--<com.module.playways.grab.room.view.WaveView-->
+            <!--<com.module.playways.grab.room.view.WaveView-->
             <!--android:id="@+id/wave_view"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent" />-->
 
-        <com.common.view.ex.ExRelativeLayout
-            android:id="@+id/rl_icon1_root"
-            android:layout_width="@dimen/view_90_dp"
-            android:layout_height="@dimen/view_96_dp"
-            android:layout_centerInParent="true"
-            app:bl_corners_radius="@dimen/view_45_dp"
-            app:bl_stroke_width="@dimen/view_3_dp">
+            <com.common.view.ex.ExRelativeLayout
+                android:layout_gravity="center"
+                android:id="@+id/rl_icon1_root"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_96_dp"
+                android:layout_centerInParent="true"
+                app:bl_corners_radius="@dimen/view_45_dp"
+                app:bl_stroke_width="@dimen/view_3_dp">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:tag="icon_1"
-                android:layout_marginTop="@dimen/view_3_dp"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/sdv_own_icon"
-                android:layout_width="@dimen/view_84_dp"
-                android:layout_height="@dimen/view_84_dp" />
-        </com.common.view.ex.ExRelativeLayout>
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:tag="icon_1"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/sdv_own_icon"
+                    android:layout_width="@dimen/view_84_dp"
+                    android:layout_height="@dimen/view_84_dp" />
+            </com.common.view.ex.ExRelativeLayout>
+        </FrameLayout>
 
         <RelativeLayout
             android:visibility="gone"
@@ -105,6 +111,7 @@
         </RelativeLayout>
 
         <com.common.view.ex.ExTextView
+            android:visibility="gone"
             android:id="@+id/tv_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
