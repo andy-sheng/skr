@@ -62,6 +62,8 @@ public class RecordCircleView extends View {
 
     private int mProtect;
 
+    boolean mFullLevel = false;
+
     ScoreAnimationHelp.AnimationListener mAnimationListener;
     /**
      * 由于真实的芝麻信用界面信用值不是线性排布，所以播放动画时若以信用值为参考，则会出现忽慢忽快
@@ -161,7 +163,7 @@ public class RecordCircleView extends View {
 
         mPaint.setAlpha(255);
 
-        if(true){
+        if(mFullLevel){
             mPaint.setShader(generateSweepGradient());
             canvas.drawArc(mRectFProgressArc, mStartAngle + 1,
                     mSweepAngle, false, mPaint);
@@ -353,7 +355,13 @@ public class RecordCircleView extends View {
         return ((float) mSweepAngle / ((float) mMax - (float) mMin)) * value;
     }
 
+    public void fullLevel() {
+        mFullLevel = true;
+        postInvalidate();
+    }
+
     public void setData(int min, int max, int cur, int target, int protect, ScoreAnimationHelp.AnimationListener listener) {
+        mFullLevel = false;
         mMin = 0;
         mMax = max;
         mStart = cur;

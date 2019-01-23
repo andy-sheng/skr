@@ -1,7 +1,5 @@
 package com.module.playways.rank.room.view;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -17,8 +15,8 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
+import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.model.score.ScoreStateModel;
@@ -160,6 +158,7 @@ public class RecordTitleView extends RelativeLayout {
             mSdvOwnLevel.bindData(before.getMainRanking(), before.getSubRanking(), before.getMaxStar(), before.getCurrStar());
             if (before.getMaxBattleIndex() == 0) {
                 // TODO: 2019/1/22 满级
+                mRecordCircleView.fullLevel();
             } else {
                 mRecordCircleView.setData(0, before.getMaxBattleIndex(), before.getCurrBattleIndex(), before.getCurrBattleIndex(), before.getProtectBattleIndex(), null);
             }
