@@ -19,17 +19,6 @@
         android:padding="@dimen/view_dimen_10">
 
         <com.common.view.ex.ExImageView
-            android:id="@+id/message_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:scaleType="center"
-            app:src_selected_drawable="@drawable/ic_chat_selected"
-            app:src_unSelected_drawable="@drawable/ic_chat_normal" />
-
-        <com.common.view.ex.ExImageView
             android:id="@+id/game_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,6 +28,17 @@
             android:scaleType="center"
             app:src_selected_drawable="@drawable/ic_home_selected"
             app:src_unSelected_drawable="@drawable/ic_home_normal" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/message_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:scaleType="center"
+            app:src_selected_drawable="@drawable/ic_chat_selected"
+            app:src_unSelected_drawable="@drawable/ic_chat_normal" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/person_info_btn"
