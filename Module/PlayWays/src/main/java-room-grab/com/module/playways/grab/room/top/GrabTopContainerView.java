@@ -18,8 +18,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-
 
 public class GrabTopContainerView extends RelativeLayout {
     public final static String TAG = "GrapTopContainerView";
@@ -116,11 +114,11 @@ public class GrabTopContainerView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InputBoardEvent event) {
-        if (event.show) {
-            setVisibility(GONE);
-        } else {
-            setVisibility(VISIBLE);
-        }
+//        if (event.show) {
+//            setVisibility(GONE);
+//        } else {
+//            setVisibility(VISIBLE);
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
