@@ -14,14 +14,12 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -104,6 +102,8 @@ public class GrabResultFragment extends BaseFragment {
                             .withInt("key_game_type", mRoomData.getGameType())
                             .withBoolean("selectSong", true)
                             .navigation();
+
+                    getActivity().finish();
                 });
     }
 
