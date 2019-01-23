@@ -1,4 +1,4 @@
-package com.zq.dialog.model;
+package com.zq.report.model;
 
 public class ReportModel {
 

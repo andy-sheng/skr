@@ -127,4 +127,6 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getReginRank(@Query("userID") int userID);
 
 
+    @PUT("v1/report/upload")
+    Observable<ApiResult> report(@Body RequestBody body);
 }

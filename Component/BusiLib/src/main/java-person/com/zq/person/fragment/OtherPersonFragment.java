@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -20,6 +19,7 @@ import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
 import com.common.image.fresco.BaseImageView;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -44,6 +44,11 @@ import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
 
 import com.common.core.userinfo.model.UserLevelModel;
+import com.zq.report.fragment.ReportFragment;
+
+import static com.zq.report.fragment.ReportFragment.FORM_PERSON;
+import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
+import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 
 public class OtherPersonFragment extends BaseFragment implements IOtherPersonView {
@@ -63,9 +68,11 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     TagAdapter<String> mTagAdapter;
 
     RelativeLayout mPersonMainContainner;
-    BaseImageView mAvatarIv;
+
     ExImageView mBackIv;
-    ExTextView mShareTv;
+    ExTextView mReport;
+
+    BaseImageView mAvatarIv;
     ExTextView mNameTv;
     ExTextView mUseridTv;
     ExTextView mSignTv;
@@ -97,9 +104,11 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
-        mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
+
         mBackIv = (ExImageView) mRootView.findViewById(R.id.back_iv);
-        mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
+        mReport = (ExTextView) mRootView.findViewById(R.id.report);
+
+        mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
@@ -123,7 +132,6 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
             mOtherPersonPresenter.getHomePage(mUserInfoModel.getUserId());
         }
 
-
         mTagAdapter = new TagAdapter<String>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
@@ -141,6 +149,25 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                     @Override
                     public void accept(Object o) {
                         U.getFragmentUtils().popFragment(OtherPersonFragment.this);
+                    }
+                });
+
+        RxView.clicks(mReport)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(REPORT_FROM_KEY, FORM_PERSON);
+                        bundle.putInt(REPORT_USER_ID, mUserInfoModel.getUserId());
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
+                                        .setBundle(bundle)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .setEnterAnim(R.anim.slide_in_bottom)
+                                        .setExitAnim(R.anim.slide_out_bottom)
+                                        .build());
                     }
                 });
 

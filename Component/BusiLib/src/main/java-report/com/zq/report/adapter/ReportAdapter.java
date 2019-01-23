@@ -1,4 +1,4 @@
-package com.zq.dialog.adapter;
+package com.zq.report.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 
 import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.R;
-import com.zq.dialog.model.ReportModel;
+import com.zq.report.model.ReportModel;
 
 public class ReportAdapter extends DiffAdapter<ReportModel, RecyclerView.ViewHolder> {
 

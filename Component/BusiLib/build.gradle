@@ -32,12 +32,15 @@ android {
 
             java.srcDirs += 'src/main/java-level'
             res.srcDirs += 'src/main/res-level'
+
+            java.srcDirs += 'src/main/java-report'
+            res.srcDirs += 'src/main/res-report'
         }
     }
 }
 
 dependencies {
-    compileOnly project(":commoncore")
+    api project(":commoncore")
 //    implementation 'com.github.zhangliangming:Register:v1.1'
 }
 
