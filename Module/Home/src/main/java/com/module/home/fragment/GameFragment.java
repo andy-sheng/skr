@@ -57,8 +57,7 @@ public class GameFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         ExImageView ivAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
-        ExImageView ivNormalPk = (ExImageView) mRootView.findViewById(R.id.iv_yule_game);
-        ExImageView mIvYulePk = (ExImageView) mRootView.findViewById(R.id.iv_grab_game);
+        ExImageView mIvGrabPk = (ExImageView) mRootView.findViewById(R.id.iv_grab_game);
         mUserTitleView = (UserInfoTitleView) mRootView.findViewById(R.id.user_title_view);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
 
@@ -73,31 +72,15 @@ public class GameFragment extends BaseFragment {
                     }
                 });
 
-        RxView.clicks(ivNormalPk)
+        RxView.clicks(mIvGrabPk)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        clickAnimation(ivNormalPk);
+                        clickAnimation(mIvGrabPk);
                     }
                 });
 
-        RxView.clicks(mIvYulePk)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        clickAnimation(mIvYulePk);
-                    }
-                });
-
-        RxView.longClicks(mIvYulePk).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                        .navigation();
-            }
-        });
         U.getSoundUtils().preLoad(TAG, R.raw.home_game, R.raw.general_button);
     }
 
@@ -154,11 +137,6 @@ public class GameFragment extends BaseFragment {
                 if (view.getId() == R.id.iv_athletics_pk) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                             .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
-                            .withBoolean("selectSong", true)
-                            .navigation();
-                } else if (view.getId() == R.id.iv_yule_game) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                            .withInt("key_game_type", GameModeType.GAME_MODE_FUNNY)
                             .withBoolean("selectSong", true)
                             .navigation();
                 } else if (view.getId() == R.id.iv_grab_game) {

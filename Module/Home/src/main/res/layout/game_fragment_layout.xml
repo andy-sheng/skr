@@ -24,31 +24,19 @@
                 android:layout_marginLeft="@dimen/view_13_dp"
                 android:layout_marginRight="@dimen/view_13_dp">
 
-                <com.common.view.ex.ExImageView
-                    android:id="@+id/iv_athletics_pk"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/btn_paiweisai_shouye_top_normal" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_athletics_pk"
                     android:layout_marginTop="@dimen/view_17_dp"
                     android:orientation="horizontal">
 
                     <com.common.view.ex.ExImageView
-                        android:id="@+id/iv_yule_game"
+                        android:id="@+id/iv_athletics_pk"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/btn_yule_shouye_down_normal" />
-
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="3dp" />
+                        android:src="@drawable/btn_paiweisai_shouye_top_normal" />
 
                     <com.common.view.ex.ExImageView
                         android:id="@+id/iv_grab_game"
@@ -57,7 +45,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/btn_yule_shouye2_down_normal" />
+                        android:src="@drawable/btn_yule_shouye_down_normal" />
                 </LinearLayout>
 
                 <ImageView
