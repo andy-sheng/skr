@@ -19,6 +19,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rank.R;
+import com.zq.level.view.NormalLevelView;
 import com.zq.person.fragment.OtherPersonFragment;
 
 public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.ViewHolder> {
@@ -65,7 +66,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
         SimpleDraweeView mSdvIcon;
         ExTextView mTvName;
         ExTextView mTvSegment;
-        ExTextView mTvStar;
+        NormalLevelView mLevelView;
 
         RankInfoModel mRankInfoModel;
 
@@ -75,7 +76,8 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
             mSdvIcon = (SimpleDraweeView) itemView.findViewById(R.id.sdv_icon);
             mTvName = (ExTextView) itemView.findViewById(R.id.tv_name);
             mTvSegment = (ExTextView) itemView.findViewById(R.id.tv_segment);
-            mTvStar = (ExTextView) itemView.findViewById(R.id.tv_star);
+            mLevelView = (NormalLevelView) itemView.findViewById(R.id.level_view);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,7 +107,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
             mTvRank.setText(rankInfoModel.getRankSeq() + "");
             mTvName.setText(rankInfoModel.getNickname());
             mTvSegment.setText(rankInfoModel.getLevelDesc());
-            mTvStar.setText("X" + rankInfoModel.getStarCnt());
+            mLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking(), rankInfoModel.getMaxStar(), rankInfoModel.getStarCnt());
             AvatarUtils.loadAvatarByUrl(mSdvIcon,
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
                             .setCircle(true)

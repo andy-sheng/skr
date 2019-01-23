@@ -18,14 +18,30 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_70_dp" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/star_tv"
+    <RelativeLayout
+        android:id="@+id/star_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/level_iv"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFED61"
-        android:textSize="@dimen/textsize_16_dp"
-        android:visibility="gone" />
+        android:visibility="gone">
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/image_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/zhanji_daxingxing_dianliang" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/star_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/image_star"
+            android:gravity="center_vertical"
+            android:text="不显示？"
+            android:textColor="#FFED61"
+            android:textSize="@dimen/textsize_16_dp" />
+
+    </RelativeLayout>
 
 </merge>

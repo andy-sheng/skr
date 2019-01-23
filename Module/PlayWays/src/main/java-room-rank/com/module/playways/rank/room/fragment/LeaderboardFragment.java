@@ -38,6 +38,7 @@ import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.level.view.NormalLevelView;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.fragment.OtherPersonFragment;
 
@@ -329,12 +330,13 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         SimpleDraweeView sdvIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon);
         ExTextView tvName = (ExTextView) mRootView.findViewById(R.id.tv_name);
         ExTextView tvSegment = (ExTextView) mRootView.findViewById(R.id.tv_segment);
-        ExTextView tvStar = (ExTextView) mRootView.findViewById(R.id.tv_star);
+        NormalLevelView normalLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
 
         tvRank.setText(userRankModel.getSeq() + "");
         tvName.setText(MyUserInfoManager.getInstance().getNickName());
         tvSegment.setText(userRankModel.getRegionDesc());
-        tvStar.setText("X" + userRankModel.getStarCnt());
+        // TODO: 2019/1/23 等待修改
+        normalLevelView.setVisibility(View.GONE);
         AvatarUtils.loadAvatarByUrl(sdvIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -44,7 +45,11 @@ public class NormalLevelView extends RelativeLayout {
 
     ImageView mLevelIv; // 大段位
     ImageView mSubLeveIv;  // 子段位
-    ExTextView mStarTv;   // 超过星星数限制
+
+    // 超过星星限制
+    RelativeLayout mStarArea;
+    ExImageView mImageStar;
+    ExTextView mStarTv;
 
     List<ImageView> starts = new ArrayList<>(); // 星星数
 
@@ -86,6 +91,8 @@ public class NormalLevelView extends RelativeLayout {
         inflate(getContext(), R.layout.normal_level_view_layout, this);
         mLevelIv = (ImageView) this.findViewById(R.id.level_iv);
         mSubLeveIv = (ImageView) this.findViewById(R.id.sub_leve_iv);
+        mStarArea = (RelativeLayout) this.findViewById(R.id.star_area);
+        mImageStar = (ExImageView) this.findViewById(R.id.image_star);
         mStarTv = (ExTextView) this.findViewById(R.id.star_tv);
 
     }
@@ -137,10 +144,12 @@ public class NormalLevelView extends RelativeLayout {
         }
 
         if (totalStats == 0 || totalStats > 6) {
-            mStarTv.setVisibility(VISIBLE);
+            mStarArea.setVisibility(VISIBLE);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(largeStar, largeStar);
+            params.addRule(RelativeLayout.CENTER_VERTICAL);
+            mImageStar.setLayoutParams(params);
             mStarTv.setText("x" + selecStats);
-            Drawable left = ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang);
-            mStarTv.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+            mStarTv.setTextSize(largeStar / 3);
             return;
         }
 

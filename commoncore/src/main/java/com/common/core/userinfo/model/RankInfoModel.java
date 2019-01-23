@@ -4,13 +4,17 @@ import java.io.Serializable;
 
 // 用来解析排位信息的类
 public class RankInfoModel implements Serializable {
+
     /**
-     * userID : 1000166
+     * userID : 1002020
      * rankSeq : 1
-     * avatar : http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/avatar_default_1.png
-     * nickname : 又是这样
-     * starCnt : 1000
-     * levelDesc : 王者
+     * avatar : http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/41a5c168a7a9e945.jpg
+     * nickname : 我要灯不要脸
+     * starCnt : 0
+     * levelDesc : 荣耀歌王
+     * mainRanking : 6
+     * subRanking : 0
+     * maxStar : 0
      */
 
     private int userID;
@@ -19,6 +23,9 @@ public class RankInfoModel implements Serializable {
     private String nickname;
     private int starCnt;
     private String levelDesc;
+    private int mainRanking;
+    private int subRanking;
+    private int maxStar;
 
     public int getUserID() {
         return userID;
@@ -66,5 +73,45 @@ public class RankInfoModel implements Serializable {
 
     public void setLevelDesc(String levelDesc) {
         this.levelDesc = levelDesc;
+    }
+
+    public int getMainRanking() {
+        return mainRanking;
+    }
+
+    public void setMainRanking(int mainRanking) {
+        this.mainRanking = mainRanking;
+    }
+
+    public int getSubRanking() {
+        return subRanking;
+    }
+
+    public void setSubRanking(int subRanking) {
+        this.subRanking = subRanking;
+    }
+
+    public int getMaxStar() {
+        return maxStar;
+    }
+
+    public void setMaxStar(int maxStar) {
+        this.maxStar = maxStar;
+    }
+
+
+    @Override
+    public String toString() {
+        return "RankInfoModel{" +
+                "userID=" + userID +
+                ", rankSeq=" + rankSeq +
+                ", avatar='" + avatar + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", starCnt=" + starCnt +
+                ", levelDesc='" + levelDesc + '\'' +
+                ", mainRanking=" + mainRanking +
+                ", subRanking=" + subRanking +
+                ", maxStar=" + maxStar +
+                '}';
     }
 }
