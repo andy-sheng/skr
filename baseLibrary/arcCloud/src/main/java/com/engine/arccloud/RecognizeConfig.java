@@ -12,6 +12,7 @@ public class RecognizeConfig {
 
     int mode = MODE_MANUAL;
     String songName;
+    String artist;
     int autoTimes = 1;
 
     boolean wantRecognizeInManualMode = false;
@@ -24,6 +25,14 @@ public class RecognizeConfig {
 
     public void setSongName(String songName) {
         this.songName = songName;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
     public int getMode() {
@@ -70,6 +79,11 @@ public class RecognizeConfig {
 
         public Builder setSongName(String songName) {
             mParams.setSongName(songName);
+            return this;
+        }
+
+        public Builder setArtist(String artist) {
+            mParams.setArtist(artist);
             return this;
         }
 

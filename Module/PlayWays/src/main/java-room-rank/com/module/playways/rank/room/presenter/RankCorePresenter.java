@@ -232,6 +232,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
                     .setMode(RecognizeConfig.MODE_MANUAL)
                     .setSongName(mRoomData.getSongModel().getItemName())
+                    .setArtist(mRoomData.getSongModel().getOwner())
                     .setMResultListener(new ArcRecognizeListener() {
                         @Override
                         public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {

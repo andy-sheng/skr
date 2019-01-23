@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
 import com.common.utils.U;
 
+import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -171,7 +172,16 @@ public class ArcCloudManager implements IACRCloudListener {
                         if (mRecognizeConfig != null && mRecognizeConfig.getResultListener() != null) {
                             mProcessing = true;
                             ACRCloudConfig.RecognizerType recType = ACRCloudConfig.RecognizerType.HUMMING;
-                            String result = mClient.recognize(mBuffer, mLenth, mSampleRate, mChannels, recType);
+                            HashMap hashMap = new HashMap();
+                            String songName = mRecognizeConfig.getSongName();
+                            if (!TextUtils.isEmpty(songName)) {
+                                hashMap.put("title", songName);
+                            }
+                            String artist = mRecognizeConfig.getArtist();
+                            if (!TextUtils.isEmpty(artist)) {
+                                hashMap.put("artist", artist);
+                            }
+                            String result = mClient.recognize(mBuffer, mLenth, mSampleRate, mChannels, recType, hashMap);
                             mLenth = 0;
                             mProcessing = false;
                             if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
@@ -202,7 +212,7 @@ public class ArcCloudManager implements IACRCloudListener {
                     String songName = mRecognizeConfig.getSongName();
                     SongInfo targetSongInfo = null;
                     for (SongInfo songInfo : list) {
-                        if (songInfo.getTitle().equals(songName)) {
+                        if (songInfo.getTitle().equalsIgnoreCase(songName)) {
                             targetSongInfo = songInfo;
                             break;
                         }
