@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:levelView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_80_dp"
@@ -52,15 +53,17 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_28_dp"
-        levelView:largeStar="@dimen/view_8_dp"
+        levelView:horizonStar="@dimen/view_10_dp"
+        levelView:largeStar="@dimen/view_9_dp"
         levelView:mainHeight="@dimen/view_38_dp"
         levelView:mainWidth="@dimen/view_44_dp"
-        levelView:normalStar="@dimen/view_7_dp"
+        levelView:normalStar="@dimen/view_8_dp"
         levelView:starDiffH="@dimen/view_3_dp"
         levelView:starTotalWidth="@dimen/view_44_dp"
         levelView:subHeight="@dimen/view_9_dp"
         levelView:subWidth="@dimen/view_9_dp"
-        levelView:textColor="#0C2275"></com.zq.level.view.NormalLevelView>
+        levelView:txtColor="#0C2275"
+        levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
 
     <View
         android:layout_width="wrap_content"

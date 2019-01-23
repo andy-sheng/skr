@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -43,7 +44,9 @@ public class NormalLevelView extends RelativeLayout {
     int starDiffH = U.getDisplayUtils().dip2px(6);   // 相邻两颗星星高度差
     int starTotalWidth = U.getDisplayUtils().dip2px(100);  // 所有星星高度总长度
     int starTotalHeight = 0;
-    int textColor = Color.parseColor("#FFED61");
+    int textColor = Color.parseColor("#FFED61");   // 字体颜色
+    float textSize = U.getDisplayUtils().dip2px(16); // 字体大小
+    int horizonStar = U.getDisplayUtils().dip2px(20);// 横向星星大小
 
     ImageView mLevelIv; // 大段位
     ImageView mSubLeveIv;  // 子段位
@@ -88,7 +91,9 @@ public class NormalLevelView extends RelativeLayout {
         largeStar = typedArray.getDimensionPixelSize(R.styleable.levelView_largeStar, U.getDisplayUtils().dip2px(20));
         starDiffH = typedArray.getDimensionPixelSize(R.styleable.levelView_starDiffH, U.getDisplayUtils().dip2px(6));
         starTotalWidth = typedArray.getDimensionPixelSize(R.styleable.levelView_starTotalWidth, U.getDisplayUtils().dip2px(100));
-        textColor = typedArray.getColor(R.styleable.levelView_textColor, Color.parseColor("#FFED61"));
+        textColor = typedArray.getColor(R.styleable.levelView_txtColor, Color.parseColor("#FFED61"));
+        textSize = typedArray.getDimension(R.styleable.levelView_txtSize, U.getDisplayUtils().dip2px(16));   // 字体大小
+        horizonStar = typedArray.getDimensionPixelSize(R.styleable.levelView_horizonStar, U.getDisplayUtils().dip2px(20));// 横向星星大小
         typedArray.recycle();
 
         inflate(getContext(), R.layout.normal_level_view_layout, this);
@@ -148,12 +153,12 @@ public class NormalLevelView extends RelativeLayout {
 
         if (totalStats == 0 || totalStats > 6) {
             mStarArea.setVisibility(VISIBLE);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(largeStar, largeStar);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(horizonStar, horizonStar);
             params.addRule(RelativeLayout.CENTER_VERTICAL);
             mImageStar.setLayoutParams(params);
             mStarTv.setText("x" + selecStats);
             mStarTv.setTextColor(textColor);
-            mStarTv.setTextSize(largeStar / 3);
+            mStarTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             return;
         }
 

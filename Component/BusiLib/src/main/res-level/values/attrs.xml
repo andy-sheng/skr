@@ -19,6 +19,10 @@
         <!--所有星星高度总长度-->
         <attr name="starTotalWidth" format="dimension" />
         <!--横向星星文本的颜色-->
-        <attr name="textColor" format="color|reference" />
+        <attr name="txtColor" format="color|reference" />
+        <!--横向星星文本的字大小-->
+        <attr name="txtSize" format="dimension" />
+        <!--横向星星的大小-->
+        <attr name="horizonStar" format="dimension" />
     </declare-styleable>
 </resources>
