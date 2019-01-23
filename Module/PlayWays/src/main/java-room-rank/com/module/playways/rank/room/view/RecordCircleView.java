@@ -160,13 +160,29 @@ public class RecordCircleView extends View {
         canvas.drawArc(mRectFProgressArc, mStartAngle + 1, mSweepAngle - 2, false, mPaint);
 
         mPaint.setAlpha(255);
+
+        if(true){
+            mPaint.setShader(generateSweepGradient());
+            canvas.drawArc(mRectFProgressArc, mStartAngle + 1,
+                    mSweepAngle, false, mPaint);
+
+            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setShader(null);
+            mPaint.setAlpha(255);
+            mPaint.setTextSize(sp2px(15));
+            mPaint.setTextAlign(Paint.Align.CENTER);
+            mPaint.setColor(Color.WHITE);
+            canvas.drawText("满级", mCenterX, mCenterY + U.getDisplayUtils().dip2px(5), mPaint);
+            return;
+        }
+
         if (isAnimFinish) {
             /**
              * 画进度圆弧(起始到信用值)
              */
             mPaint.setShader(generateSweepGradient());
             canvas.drawArc(mRectFProgressArc, mStartAngle + 1,
-                    calculateRelativeAngleWithValue(mCreditValue) - 2, false, mPaint);
+                    mSweepAngle, false, mPaint);
             /**
              * 画信用值指示亮点
              */
