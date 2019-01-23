@@ -6,15 +6,16 @@ import java.io.Serializable;
 public class RankInfoModel implements Serializable {
 
     /**
-     * userID : 1002020
-     * rankSeq : 1
-     * avatar : http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/41a5c168a7a9e945.jpg
-     * nickname : 我要灯不要脸
-     * starCnt : 0
-     * levelDesc : 荣耀歌王
-     * mainRanking : 6
-     * subRanking : 0
-     * maxStar : 0
+     * userID : 1924768
+     * rankSeq : 2
+     * avatar : http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/avatar_default_2.png
+     * nickname : llLINE
+     * starCnt : 4
+     * levelDesc : 铂金唱将I
+     * mainRanking : 4
+     * subRanking : 1
+     * maxStar : 5
+     * sex : 1
      */
 
     private int userID;
@@ -26,6 +27,7 @@ public class RankInfoModel implements Serializable {
     private int mainRanking;
     private int subRanking;
     private int maxStar;
+    private int sex;
 
     public int getUserID() {
         return userID;
@@ -99,19 +101,11 @@ public class RankInfoModel implements Serializable {
         this.maxStar = maxStar;
     }
 
+    public int getSex() {
+        return sex;
+    }
 
-    @Override
-    public String toString() {
-        return "RankInfoModel{" +
-                "userID=" + userID +
-                ", rankSeq=" + rankSeq +
-                ", avatar='" + avatar + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", starCnt=" + starCnt +
-                ", levelDesc='" + levelDesc + '\'' +
-                ", mainRanking=" + mainRanking +
-                ", subRanking=" + subRanking +
-                ", maxStar=" + maxStar +
-                '}';
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 }

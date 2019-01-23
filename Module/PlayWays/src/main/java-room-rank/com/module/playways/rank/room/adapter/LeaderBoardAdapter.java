@@ -20,6 +20,7 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView;
+import com.zq.live.proto.Common.ESex;
 import com.zq.person.fragment.OtherPersonFragment;
 
 public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.ViewHolder> {
@@ -112,7 +113,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
                             .setCircle(true)
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(Color.parseColor("#85EAFF"))
+                            .setBorderColorBySex(rankInfoModel.getSex() == ESex.SX_MALE.getValue())
                             .build());
         }
     }

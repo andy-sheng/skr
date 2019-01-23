@@ -18,5 +18,7 @@
         <attr name="starDiffH" format="dimension" />
         <!--所有星星高度总长度-->
         <attr name="starTotalWidth" format="dimension" />
+        <!--横向星星文本的颜色-->
+        <attr name="textColor" format="color|reference" />
     </declare-styleable>
 </resources>
