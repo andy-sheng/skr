@@ -100,8 +100,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
-    DialogPlus mQuitTipsDialog;
-
     TurnInfoCardView mTurnInfoCardView; //歌曲次序 以及 对战开始卡片
 
     SongInfoCardView mSongInfoCardView; // 歌曲信息卡片
@@ -118,11 +116,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     GrabGameOverView mGrabGameOverView;
 
+    DialogPlus mQuitTipsDialog;
+
     DialogPlus mDialogPlus;
-
-    boolean mNeedScroll = true;
-
-    int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
 
     SVGAParser mSVGAParser;
 
@@ -607,6 +603,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             mDialogPlus.dismiss();
             mDialogPlus = null;
         }
+        if (mQuitTipsDialog != null && mQuitTipsDialog.isShowing()) {
+            mQuitTipsDialog.dismiss();
+            mQuitTipsDialog = null;
+        }
         mUiHanlder.removeCallbacksAndMessages(null);
 
         isGameEndAniamtionShow = false;
@@ -645,7 +645,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     private void quitGame() {
         if (mQuitTipsDialog == null) {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                    .setMessageTip("提前退出会破坏其他玩家的对局体验，确定退出么？")
+                    .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
                     .setConfirmTip("取消")
                     .setCancelTip("确定")
                     .setConfirmBtnClickListener(new View.OnClickListener() {

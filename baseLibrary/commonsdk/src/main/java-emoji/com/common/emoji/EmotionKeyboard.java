@@ -145,7 +145,7 @@ public class EmotionKeyboard {
         mOnEmotionButtonOnClickListener = onEmotionButtonOnClickListener;
     }
 
-    public void setBoardStatusListener(BoardStatusListener boardStatusListener){
+    public void setBoardStatusListener(BoardStatusListener boardStatusListener) {
         mBoardStatusListener = boardStatusListener;
     }
     /*================== 表情按钮点击事件回调 end ==================*/
@@ -203,7 +203,7 @@ public class EmotionKeyboard {
             mEmotionLayout.setVisibility(View.GONE);
             if (showSoftInput) {
                 showSoftInput();
-            }else{
+            } else {
                 // 隐藏表情面板且不显示软键盘
                 mPlaceHolderView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
@@ -282,7 +282,17 @@ public class EmotionKeyboard {
      * 隐藏软件盘
      */
     public void hideSoftInput() {
-        mInputManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+        if (mBoardStatusListener != null) {
+            mBoardStatusListener.onBoradHide();
+        }
+        mEditText.clearFocus();
+        mEditText.post(new Runnable() {
+            @Override
+            public void run() {
+                mInputManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+            }
+        });
+
     }
 
     /**
@@ -338,8 +348,9 @@ public class EmotionKeyboard {
         }
     }
 
-    public interface BoardStatusListener{
+    public interface BoardStatusListener {
         void onBoradShow();
+
         void onBoradHide();
     }
 }
