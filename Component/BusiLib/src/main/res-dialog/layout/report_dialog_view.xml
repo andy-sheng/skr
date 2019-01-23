@@ -1,81 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/view_344_dp"
-    android:layout_height="@dimen/view_467_dp"
+    android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="@dimen/view_17_dp"
     android:background="@drawable/img_dialog_bg"
-    android:paddingTop="@dimen/view_16_dp">
-
-    <CheckBox
-        android:id="@+id/checkbox1"
-        style="@style/LeftCustomCheckTheme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_28_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
-        android:drawablePadding="@dimen/view_18_dp"
-        android:text="违规作弊"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
-
-    <CheckBox
-        android:id="@+id/checkbox2"
-        style="@style/LeftCustomCheckTheme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/checkbox1"
-        android:layout_marginLeft="@dimen/view_28_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
-        android:drawablePadding="@dimen/view_18_dp"
-        android:text="恶意乱唱"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
-
-    <CheckBox
-        android:id="@+id/checkbox3"
-        style="@style/LeftCustomCheckTheme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/checkbox2"
-        android:layout_marginLeft="@dimen/view_28_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
-        android:drawablePadding="@dimen/view_18_dp"
-        android:text="冒充官方"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
-
-    <CheckBox
-        android:id="@+id/checkbox4"
-        style="@style/LeftCustomCheckTheme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/checkbox3"
-        android:layout_marginLeft="@dimen/view_28_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
-        android:drawablePadding="@dimen/view_18_dp"
-        android:text="侮辱谩骂"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
-
-    <CheckBox
-        android:id="@+id/checkbox5"
-        style="@style/LeftCustomCheckTheme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/checkbox4"
-        android:layout_marginLeft="@dimen/view_28_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
-        android:drawablePadding="@dimen/view_18_dp"
-        android:text="色情低俗"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
-
+    android:paddingTop="@dimen/view_16_dp"
+    android:paddingBottom="@dimen/view_24_dp">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/submit_tv"
@@ -83,13 +15,41 @@
         android:layout_height="@dimen/view_54_dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_30_dp"
         android:background="@drawable/img_btn_bg_yellow"
-        android:paddingBottom="@dimen/view_6_dp"
         android:gravity="center"
+        android:paddingBottom="@dimen/view_6_dp"
         android:text="提交"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_20_dp"
         android:textStyle="bold" />
+
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/report_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_89_dp"
+        android:layout_above="@+id/submit_tv"
+        android:layout_marginLeft="@dimen/view_28_dp"
+        android:layout_marginRight="@dimen/view_28_dp"
+        android:layout_marginBottom="@dimen/view_23_dp"
+        android:background="@drawable/jubao_bj"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="left|top"
+        android:lineSpacingExtra="@dimen/view_10_dp"
+        android:maxLength="20"
+        android:paddingLeft="@dimen/view_17_dp"
+        android:paddingTop="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_17_dp"
+        android:paddingBottom="@dimen/view_10_dp"
+        android:textColorHint="#800C2275"
+        android:hint="请输入详细举报内容提交按钮"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/view_16_dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/report_content"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
