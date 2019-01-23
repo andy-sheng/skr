@@ -60,8 +60,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     int mGameType;
     boolean hasMore = true; // 是否还有更多数据标记位
 
-    boolean isScorll = false; //标记当前卡片是否在滚动
-
     @Override
     public int initView() {
         return R.layout.song_select_fragment_layout;
@@ -198,11 +196,9 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     // 返回上一张选歌卡片
     private void backToLastCard() {
         if (mDeleteList != null && mDeleteList.size() != 0) {
-            if (!isScorll) {
-                U.getSoundUtils().play(TAG, R.raw.general_back);
-                mSongCardSwipAdapter.addData(0, mDeleteList.remove(0));
-                mSwipeView.swipeBack();
-            }
+            U.getSoundUtils().play(TAG, R.raw.general_back);
+            mSongCardSwipAdapter.addData(0, mDeleteList.remove(0));
+            mSwipeView.swipeBack();
         } else {
             U.getToastUtil().showShort("没有更多返回了");
         }
@@ -317,13 +313,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void onScroll(float progress, float scrollXProgress) {
-        if (progress == 0 && scrollXProgress == 0) {
-            isScorll = false;
-        } else if (progress == 1 && scrollXProgress == 1) {
-            isScorll = false;
-        } else {
-            isScorll = true;
-        }
+       
     }
 
     @Override
