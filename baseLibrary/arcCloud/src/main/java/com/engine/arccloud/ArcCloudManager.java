@@ -15,6 +15,11 @@ import com.common.utils.U;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
+
 public class ArcCloudManager implements IACRCloudListener {
     public final static String TAG = "ArcCloudManager";
 
@@ -146,7 +151,7 @@ public class ArcCloudManager implements IACRCloudListener {
 //            byte [] temp = new byte[BUFFER_LEN];
 
             System.arraycopy(mBuffer, left, mBuffer, 0, mLength - left);
-            System.arraycopy(buffer, 0, mBuffer, mLength-left, buffer.length);
+            System.arraycopy(buffer, 0, mBuffer, mLength - left, buffer.length);
             setLen(BUFFER_LEN);
             if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
                 // 自动识别
@@ -173,44 +178,44 @@ public class ArcCloudManager implements IACRCloudListener {
         if (this.mClient != null) {
             if (mLength >= BUFFER_LEN) {
                 if (!mProcessing) {
-//                    Observable.create(new ObservableOnSubscribe<Object>() {
-//                        @Override
-//                        public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                    if (mRecognizeConfig != null
-                            && mRecognizeConfig.getResultListener() != null
-                            && mLength >= BUFFER_LEN) {
-                        mProcessing = true;
-                        MyLog.d(TAG, "开始识别");
-                        ACRCloudConfig.RecognizerType recType = ACRCloudConfig.RecognizerType.HUMMING;
-                        HashMap hashMap = new HashMap();
-                        String songName = mRecognizeConfig.getSongName();
-                        if (!TextUtils.isEmpty(songName)) {
-                            hashMap.put("title", songName);
+                    Observable.create(new ObservableOnSubscribe<Object>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                            if (mRecognizeConfig != null
+                                    && mRecognizeConfig.getResultListener() != null
+                                    && mLength >= BUFFER_LEN) {
+                                mProcessing = true;
+                                MyLog.d(TAG, "开始识别");
+                                ACRCloudConfig.RecognizerType recType = ACRCloudConfig.RecognizerType.HUMMING;
+                                HashMap hashMap = new HashMap();
+                                String songName = mRecognizeConfig.getSongName();
+                                if (!TextUtils.isEmpty(songName)) {
+                                    hashMap.put("title", songName);
+                                }
+                                String artist = mRecognizeConfig.getArtist();
+                                if (!TextUtils.isEmpty(artist)) {
+                                    hashMap.put("artist", artist);
+                                }
+                                int len = mLength;
+                                byte[] arr = new byte[len];
+                                System.arraycopy(mBuffer, 0, arr, 0, len);
+//                        setLen(0);
+                                MyLog.d(TAG, "len:" + len);
+                                String result = mClient.recognize(arr, len, mSampleRate, mChannels, recType, hashMap);
+                                MyLog.d(TAG, "识别结束");
+                                mProcessing = false;
+                                if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
+                                    mRecognizeConfig.setAutoTimes(mRecognizeConfig.getAutoTimes() - 1);
+                                }
+                                if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+                                    mRecognizeConfig.setWantRecognizeInManualMode(false);
+                                }
+                                process(result);
+                            }
+                            emitter.onComplete();
                         }
-                        String artist = mRecognizeConfig.getArtist();
-                        if (!TextUtils.isEmpty(artist)) {
-                            hashMap.put("artist", artist);
-                        }
-                        int len = mLength;
-                        byte[] arr = new byte[len];
-                        System.arraycopy(mBuffer, 0, arr, 0, len);
-                        setLen(0);
-                        MyLog.d(TAG, "len:" + len);
-                        String result = mClient.recognize(arr, len, mSampleRate, mChannels, recType, hashMap);
-                        MyLog.d(TAG, "识别结束");
-                        mProcessing = false;
-                        if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
-                            mRecognizeConfig.setAutoTimes(mRecognizeConfig.getAutoTimes() - 1);
-                        }
-                        if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
-                            mRecognizeConfig.setWantRecognizeInManualMode(false);
-                        }
-                        process(result);
-                    }
-//                            emitter.onComplete();
-//                        }
-//                    }).subscribeOn(Schedulers.io())
-//                            .subscribe();
+                    }).subscribeOn(Schedulers.io())
+                            .subscribe();
                 } else {
                     MyLog.d(TAG, "已经有任务在处理");
                 }
@@ -242,6 +247,8 @@ public class ArcCloudManager implements IACRCloudListener {
                     MyLog.d(TAG, " list=" + list + " targetSongInfo=" + targetSongInfo);
                     mRecognizeConfig.getResultListener().onResult(result, list, targetSongInfo);
                 }
+            } else {
+//                mRecognizeConfig.getResultListener().onResult(result, null, null);
             }
         }
     }
