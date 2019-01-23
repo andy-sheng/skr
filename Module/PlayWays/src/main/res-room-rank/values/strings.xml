@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="quick_msg_arr">
+    <string-array name="rank_quick_msg_arr">
         <item>开口跪！</item>
         <item>高手，这是高手</item>
         <item>大家好，我先表演一个劈叉！</item>
@@ -11,5 +11,17 @@
         <item>你这该死的，无处安放的魅力！</item>
         <item>我关注你你就关注我好不好呀</item>
         <item>秀儿，是你吗？</item>
+    </string-array>
+
+    <string-array name="grab_quick_msg_arr">
+        <item>开口跪！</item>
+        <item>灭灯还是灭你！</item>
+        <item>这么快就结束了？！</item>
+        <item>为你转身为你爆灯，选我选我！</item>
+        <item>灯灭情谊在，唱的挺不赖</item>
+        <item>高手，这是高手！</item>
+        <item>好好唱，不然我喊撕哥来揍你！</item>
+        <item>请开始你的表演！</item>
+        <item>你这该死的，无处安放的魅力！</item>
     </string-array>
 </resources>

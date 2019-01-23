@@ -14,6 +14,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.constans.GameModeType;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.EventHelper;
 import com.module.playways.rank.room.RoomServerApi;
@@ -79,8 +80,15 @@ public class QuickMsgView extends RelativeLayout {
         mQuickMsgRv.setAdapter(mQuickMsgAdapter);
         setPadding(U.getDisplayUtils().dip2px(18), U.getDisplayUtils().dip2px(11), U.getDisplayUtils().dip2px(18), U.getDisplayUtils().dip2px(11));
         setBackgroundResource(R.drawable.quick_msg_view_bg);
+    }
 
-        String[] arrays = U.app().getResources().getStringArray(R.array.quick_msg_arr);
+    public void setRoomData(RoomData roomData) {
+        mRoomData = roomData;
+        String[] arrays = U.app().getResources().getStringArray(R.array.rank_quick_msg_arr);
+        if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+            arrays = U.app().getResources().getStringArray(R.array.grab_quick_msg_arr);
+        }
+
         List<QuickMsgModel> list = new ArrayList<>();
         for (String s : arrays) {
             QuickMsgModel quickMsgModel = new QuickMsgModel();
@@ -90,15 +98,11 @@ public class QuickMsgView extends RelativeLayout {
         mQuickMsgAdapter.setDataList(list);
     }
 
-    public void setRoomData(RoomData roomData){
-        mRoomData = roomData;
-    }
-
-    public void setListener(Listener l){
+    public void setListener(Listener l) {
         mListener = l;
     }
 
-    public interface Listener{
+    public interface Listener {
         void onSendMsgOver();
     }
 }
