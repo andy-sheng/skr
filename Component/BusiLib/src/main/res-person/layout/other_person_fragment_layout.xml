@@ -96,8 +96,7 @@
             android:layout_marginLeft="@dimen/view_18_dp"
             android:layout_marginTop="@dimen/view_21_dp"
             android:paddingBottom="@dimen/view_5_dp"
-            levelView:starTotalWidth="@dimen/view_114_dp">
-        </com.zq.level.view.NormalLevelView>
+            levelView:starTotalWidth="@dimen/view_114_dp"></com.zq.level.view.NormalLevelView>
 
         <com.common.view.ex.ExTextView
             android:id="@+id/rank_tv"
@@ -114,30 +113,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/view_13_dp"
             android:layout_marginLeft="@dimen/view_13_dp"
             android:layout_marginTop="@dimen/view_170_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="@dimen/view_0_dp"
-                android:layout_height="@dimen/view_81_dp"
+                android:layout_height="@dimen/view_96_dp"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/view_1_dp"
                 android:paddingRight="@dimen/view_1_dp">
 
                 <ImageView
-                    android:layout_width="@dimen/view_75_dp"
-                    android:layout_height="@dimen/view_81_dp"
+                    android:layout_width="@dimen/view_87_dp"
+                    android:layout_height="@dimen/view_96_dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/game_statistic_bg" />
 
                 <com.common.view.ex.ExTextView
-                    android:layout_width="@dimen/view_106_dp"
-                    android:layout_height="@dimen/view_24_dp"
+                    android:layout_width="@dimen/view_115_dp"
+                    android:layout_height="@dimen/view_26_dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="@dimen/view_12_dp"
+                    android:layout_marginBottom="@dimen/view_15_dp"
                     android:background="@drawable/gerenzhuye_paiwei"
                     android:gravity="center"
                     android:text="-排位赛-"
@@ -148,10 +147,11 @@
                     android:id="@+id/rank_num_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_20_dp"
+                    android:layout_marginTop="@dimen/view_25_dp"
                     android:gravity="center"
                     android:textColor="#0C2275"
-                    android:textSize="@dimen/textsize_22_dp" />
+                    android:textSize="@dimen/textsize_22_dp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -160,20 +160,21 @@
                 android:layout_height="@dimen/view_81_dp"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/view_1_dp"
-                android:paddingRight="@dimen/view_1_dp">
+                android:paddingRight="@dimen/view_1_dp"
+                android:visibility="gone">
 
                 <ImageView
-                    android:layout_width="@dimen/view_75_dp"
-                    android:layout_height="@dimen/view_81_dp"
+                    android:layout_width="@dimen/view_87_dp"
+                    android:layout_height="@dimen/view_96_dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/game_statistic_bg" />
 
                 <com.common.view.ex.ExTextView
-                    android:layout_width="@dimen/view_106_dp"
-                    android:layout_height="@dimen/view_24_dp"
+                    android:layout_width="@dimen/view_115_dp"
+                    android:layout_height="@dimen/view_26_dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="@dimen/view_12_dp"
+                    android:layout_marginBottom="@dimen/view_15_dp"
                     android:background="@drawable/gerenzhuye_yule"
                     android:gravity="center"
                     android:text="-娱乐赛-"
@@ -184,32 +185,33 @@
                     android:id="@+id/funny_num_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_20_dp"
+                    android:layout_marginTop="@dimen/view_25_dp"
                     android:gravity="center"
                     android:textColor="#0C2275"
-                    android:textSize="@dimen/textsize_22_dp" />
+                    android:textSize="@dimen/textsize_22_dp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="@dimen/view_0_dp"
-                android:layout_height="@dimen/view_81_dp"
+                android:layout_height="@dimen/view_96_dp"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/view_1_dp"
                 android:paddingRight="@dimen/view_1_dp">
 
                 <ImageView
-                    android:layout_width="@dimen/view_75_dp"
-                    android:layout_height="@dimen/view_81_dp"
+                    android:layout_width="@dimen/view_87_dp"
+                    android:layout_height="@dimen/view_96_dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/game_statistic_bg" />
 
                 <com.common.view.ex.ExTextView
-                    android:layout_width="@dimen/view_106_dp"
-                    android:layout_height="@dimen/view_24_dp"
+                    android:layout_width="@dimen/view_115_dp"
+                    android:layout_height="@dimen/view_26_dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="@dimen/view_12_dp"
+                    android:layout_marginBottom="@dimen/view_15_dp"
                     android:background="@drawable/gerenzhuye_yichangdaodi"
                     android:gravity="center"
                     android:text="-一唱到底-"
@@ -220,10 +222,11 @@
                     android:id="@+id/singend_num_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_20_dp"
+                    android:layout_marginTop="@dimen/view_25_dp"
                     android:gravity="center"
                     android:textColor="#0C2275"
-                    android:textSize="@dimen/textsize_22_dp" />
+                    android:textSize="@dimen/textsize_22_dp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
         </LinearLayout>
