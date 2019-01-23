@@ -11,6 +11,8 @@ import com.common.view.ex.ExTextView;
 public class ForceUpgradeView extends RelativeLayout {
     ExTextView mInfoTv;
     ExTextView mUpdateBtn;
+    ExTextView mInstallBtn;
+
     Listener mListener;
 
     public ForceUpgradeView(Context context) {
@@ -41,6 +43,15 @@ public class ForceUpgradeView extends RelativeLayout {
                 }
             }
         });
+        mInstallBtn = (ExTextView)this.findViewById(R.id.install_btn);
+        mInstallBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onInstallBtnClick();
+                }
+            }
+        });
     }
 
     void setListener(Listener l){
@@ -55,5 +66,6 @@ public class ForceUpgradeView extends RelativeLayout {
 
     public interface Listener{
         void onUpdateBtnClick();
+        void onInstallBtnClick();
     }
 }

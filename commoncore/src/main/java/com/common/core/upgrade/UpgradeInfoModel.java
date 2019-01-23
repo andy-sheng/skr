@@ -8,6 +8,24 @@ public class UpgradeInfoModel {
     long size;
     String updateTitle;
     String updateMsg;
+    boolean downloading = false;
+    boolean installing = false;
+
+    public boolean isDownloading() {
+        return downloading;
+    }
+
+    public void setDownloading(boolean downloading) {
+        this.downloading = downloading;
+    }
+
+    public boolean isInstalling() {
+        return installing;
+    }
+
+    public void setInstalling(boolean installing) {
+        this.installing = installing;
+    }
 
     public String getDownloadUrl() {
         return downloadUrl;

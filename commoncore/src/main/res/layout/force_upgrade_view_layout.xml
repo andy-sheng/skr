@@ -20,4 +20,12 @@
         android:text="下载"
         android:textSize="@dimen/view_56_dp" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/install_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/update_btn"
+        android:layout_centerInParent="true"
+        android:text="安装"
+        android:textSize="@dimen/view_56_dp" />
 </RelativeLayout>

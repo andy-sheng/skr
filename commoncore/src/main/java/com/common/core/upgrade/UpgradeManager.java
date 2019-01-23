@@ -2,8 +2,10 @@ package com.common.core.upgrade;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
@@ -12,13 +14,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.FileProvider;
-import android.text.TextUtils;
 import android.view.Gravity;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.R;
 import com.common.log.MyLog;
+import com.common.provideer.MyFileProvider;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -41,6 +42,8 @@ public class UpgradeManager {
     UpgradeInfoModel mUpdateInfoModel;
     long mDownloadId;
     ForceUpgradeView mForceUpgradeView;
+    FinishReceiver mFinishReceiver;
+    DownloadChangeObserver mDownloadChangeObserver;
 
     private static class UpgradeManagerHolder {
         private static final UpgradeManager INSTANCE = new UpgradeManager();
@@ -113,7 +116,6 @@ public class UpgradeManager {
                                 showForceUpgradeDialog();
                             }
                             // 需要更新,弹窗
-
                         }
                     }
                 }
@@ -133,6 +135,11 @@ public class UpgradeManager {
                     @Override
                     public void onUpdateBtnClick() {
                         forceDownloadBegin();
+                    }
+
+                    @Override
+                    public void onInstallBtnClick() {
+                        install();
                     }
                 });
                 mForceUpgradeDialog = DialogPlus.newDialog(activity)
@@ -178,6 +185,13 @@ public class UpgradeManager {
         if (mUpdateInfoModel == null) {
             return;
         }
+        if (mUpdateInfoModel.isDownloading()) {
+            return;
+        }
+        File saveFile = getSaveFile();
+        if (saveFile.exists()) {
+            saveFile.delete();
+        }
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mUpdateInfoModel.getDownloadUrl()));
 //        request.setTitle(mUpdateInfoModel.getUpdateTitle());
 
@@ -195,8 +209,8 @@ public class UpgradeManager {
         }
         request.setAllowedNetworkTypes(networkFlag);
         // 设置文件存放路径
-        File saveFile = getSaveFile();
-        request.setDestinationInExternalPublicDir(saveFile.getParent(), saveFile.getName());
+
+        request.setDestinationUri(Uri.fromFile(getSaveFile()));
         // 设置漫游状态下是否可以下载
         request.setAllowedOverRoaming(false);
         // 如果我们希望下载的文件可以被系统的Downloads应用扫描到并管理，
@@ -205,12 +219,40 @@ public class UpgradeManager {
         mDownloadId = mDownloadManager.enqueue(request);
         //执行下载任务时注册广播监听下载成功状态
         registerObserver();
+        registerReceiver();
     }
 
     private void registerObserver() {
-        U.app().getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, new DownloadChangeObserver());
+        if (mDownloadChangeObserver == null) {
+            mDownloadChangeObserver = new DownloadChangeObserver();
+        }
+        U.app().getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, mDownloadChangeObserver);
     }
 
+    private void registerReceiver() {
+        if (mFinishReceiver == null) {
+            mFinishReceiver = new FinishReceiver();
+        }
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
+        intentFilter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+        U.app().registerReceiver(mFinishReceiver, intentFilter);
+    }
+
+    private void unregister() {
+        if (mDownloadId > 0) {
+            mDownloadManager.remove(mDownloadId);
+        }
+        if (mDownloadChangeObserver != null) {
+            U.app().getContentResolver().unregisterContentObserver(mDownloadChangeObserver);
+            mDownloadChangeObserver = null;
+        }
+        if (mFinishReceiver != null) {
+            U.app().unregisterReceiver(mFinishReceiver);
+            mFinishReceiver = null;
+        }
+    }
 
     private void cancelDownload() {
 
@@ -246,6 +288,11 @@ public class UpgradeManager {
 
     private void updateProgress() {
         DS ds = getBytesAndStatus(mDownloadId);
+        if (ds.status == DS.STATUS_DOWNLOADING) {
+            mUpdateInfoModel.setDownloading(true);
+        } else {
+            mUpdateInfoModel.setDownloading(false);
+        }
         MyLog.d(TAG, "updateProgress " + ds);
         Message msg = mUiHandler.obtainMessage(MSG_UPDATE_PROGRESS);
         msg.obj = ds;
@@ -260,18 +307,47 @@ public class UpgradeManager {
     /**
      * 安装逻辑
      */
-    private void install() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= 23) {
-            Uri uri = FileProvider.getUriForFile(U.app().getApplicationContext(), U.getAppInfoUtils().getPackageName() + ".provider", getSaveFile());
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        } else {
-            Uri uri = Uri.fromFile(getSaveFile());
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+    public void install() {
+        MyLog.d(TAG, "install");
+        File file = getSaveFile();
+        if (file == null || !file.exists()) {
+            MyLog.d(TAG, "文件不存在，cancel");
+            return;
         }
-        U.app().getApplicationContext().startActivity(intent);
+        if (mUpdateInfoModel.isInstalling()) {
+            MyLog.d(TAG, "已经在安装，cancel");
+            return;
+        }
+//        mUpdateInfoModel.setInstalling(true);
+        if (mForceUpgradeDialog != null) {
+            mForceUpgradeDialog.dismiss();
+        }
+        if (Build.VERSION.SDK_INT >= 23) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            // 由于没有在Activity环境下启动Activity,设置下面的标签
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //参数1 上下文, 参数2 Provider主机地址 和配置文件中保持一致   参数3  共享的文件
+            Uri apkUri = MyFileProvider.getUriForFile(U.app(), U.getAppInfoUtils().getPackageName()+".provider", file);
+            //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            U.app().startActivity(intent);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Uri uri = Uri.fromFile(file);
+            intent.setDataAndType(uri,
+                    "application/vnd.android.package-archive");
+            U.app().startActivity(intent);
+        }
+    }
+
+    private void onInstallOk() {
+        MyLog.d(TAG, "onInstallOk");
+        unregister();
+        mUpdateInfoModel.setDownloading(false);
+        mUpdateInfoModel.setInstalling(false);
+        U.getToastUtil().showShort("安装成功");
     }
 
     static class DS {
@@ -283,6 +359,15 @@ public class UpgradeManager {
 
         public int getProgress() {
             return (int) (downloaded / (total * 0.01));
+        }
+
+        @Override
+        public String toString() {
+            return "DS{" +
+                    "downloaded=" + downloaded +
+                    ", total=" + total +
+                    ", status=" + status +
+                    '}';
         }
     }
 
@@ -304,6 +389,33 @@ public class UpgradeManager {
         @Override
         public void onChange(boolean selfChange) {
             updateProgress();
+        }
+    }
+
+    /**
+     * 监听下载完成
+     * 安装完成
+     */
+    private class FinishReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(DownloadManager.EXTRA_DOWNLOAD_ID)) {
+                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (id == mDownloadId) {
+                    install();
+                }
+            } else if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
+                String packageName = intent.getData().getSchemeSpecificPart();
+                if (U.getAppInfoUtils().getPackageName().equals(packageName)) {
+                    onInstallOk();
+                }
+            } else if (intent.getAction().equals(Intent.ACTION_PACKAGE_REPLACED)) {
+                String packageName = intent.getData().getSchemeSpecificPart();
+                if (U.getAppInfoUtils().getPackageName().equals(packageName)) {
+                    onInstallOk();
+                }
+            }
         }
     }
 
