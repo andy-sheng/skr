@@ -10,6 +10,7 @@
         android:layout_height="wrap_content" />
 
     <com.youth.banner.Banner
+        app:image_scale_type="fit_xy"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginLeft="@dimen/view_13_dp"
         android:layout_marginRight="@dimen/view_13_dp"
