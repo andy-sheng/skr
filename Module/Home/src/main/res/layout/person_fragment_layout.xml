@@ -179,7 +179,9 @@
             android:layout_marginLeft="@dimen/view_16_dp"
             android:layout_marginTop="@dimen/view_22_dp"
             android:layout_marginBottom="@dimen/textsize_18_dp"
-            levelView:starTotalWidth="@dimen/view_108_dp"></com.zq.level.view.NormalLevelView>
+            levelView:starTotalWidth="@dimen/view_108_dp"
+            levelView:txtColor="#0C2275">
+        </com.zq.level.view.NormalLevelView>
 
         <com.common.view.ex.ExTextView
             android:id="@+id/rank_tv"
@@ -198,25 +200,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/rank_tv"
             android:layout_marginTop="@dimen/view_13_dp"
-            android:layout_marginRight="@dimen/view_6_dp"
+            android:layout_marginRight="@dimen/view_26_dp"
+            android:layout_marginLeft="@dimen/view_20_dp"
             android:layout_toRightOf="@+id/level_view"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="@dimen/view_0_dp"
-                android:layout_height="@dimen/view_51_dp"
+                android:layout_height="@dimen/view_57_dp"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/view_1_dp"
                 android:paddingRight="@dimen/view_1_dp">
 
                 <ImageView
-                    android:layout_width="@dimen/view_47_dp"
-                    android:layout_height="@dimen/view_51_dp"
+                    android:layout_width="@dimen/view_52_dp"
+                    android:layout_height="@dimen/view_57_dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/game_statistic_bg" />
 
                 <com.common.view.ex.ExTextView
-                    android:layout_width="@dimen/view_67_dp"
+                    android:layout_width="@dimen/view_70_dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
@@ -231,7 +234,7 @@
                     android:id="@+id/rank_num_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_8_dp"
+                    android:layout_marginTop="@dimen/view_15_dp"
                     android:gravity="center"
                     android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_14_dp" />
@@ -243,16 +246,17 @@
                 android:layout_height="@dimen/view_51_dp"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/view_1_dp"
-                android:paddingRight="@dimen/view_1_dp">
+                android:paddingRight="@dimen/view_1_dp"
+                android:visibility="gone">
 
                 <ImageView
-                    android:layout_width="@dimen/view_47_dp"
-                    android:layout_height="@dimen/view_51_dp"
+                    android:layout_width="@dimen/view_52_dp"
+                    android:layout_height="@dimen/view_57_dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/game_statistic_bg" />
 
                 <com.common.view.ex.ExTextView
-                    android:layout_width="@dimen/view_67_dp"
+                    android:layout_width="@dimen/view_70_dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
@@ -267,7 +271,7 @@
                     android:id="@+id/funny_num_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_8_dp"
+                    android:layout_marginTop="@dimen/view_15_dp"
                     android:gravity="center"
                     android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_14_dp" />
@@ -276,19 +280,19 @@
 
             <RelativeLayout
                 android:layout_width="@dimen/view_0_dp"
-                android:layout_height="@dimen/view_51_dp"
+                android:layout_height="@dimen/view_57_dp"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/view_1_dp"
                 android:paddingRight="@dimen/view_1_dp">
 
                 <ImageView
-                    android:layout_width="@dimen/view_47_dp"
-                    android:layout_height="@dimen/view_51_dp"
+                    android:layout_width="@dimen/view_52_dp"
+                    android:layout_height="@dimen/view_57_dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/game_statistic_bg" />
 
                 <com.common.view.ex.ExTextView
-                    android:layout_width="@dimen/view_67_dp"
+                    android:layout_width="@dimen/view_70_dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
@@ -303,7 +307,7 @@
                     android:id="@+id/singend_num_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_8_dp"
+                    android:layout_marginTop="@dimen/view_15_dp"
                     android:gravity="center"
                     android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_14_dp" />
