@@ -9,10 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <com.youth.banner.Banner
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginRight="@dimen/view_13_dp"
+        android:layout_below="@+id/user_title_view"
+        android:id="@+id/banner_view"
+        android:layout_width="match_parent"
+        android:layout_height="124dp"/>
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/user_title_view">
+        android:layout_below="@+id/banner_view">
 
         <ScrollView
             android:layout_width="match_parent"

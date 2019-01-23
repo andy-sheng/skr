@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.banner.BannerImageLoader;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -25,13 +26,18 @@ import com.common.view.ex.ExImageView;
 import com.component.busilib.constans.GameModeType;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
+import com.module.home.MainPageSlideApi;
 import com.module.home.R;
+import com.module.home.model.SlideShowModel;
 import com.module.home.widget.UserInfoTitleView;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 import com.zq.level.view.NormalLevelView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -44,10 +50,14 @@ public class GameFragment extends BaseFragment {
     UserInfoTitleView mUserTitleView;
     NormalLevelView mLevelView;
 
+    Banner mBannerView;
+
     int mRank = 0;           //当前父段位
     int mSubRank = 0;        //当前子段位
     int mStarNum = 0;        //当前星星
     int mStarLimit = 0;      //当前星星上限
+
+    MainPageSlideApi mMainPageSlideApi;
 
     @Override
     public int initView() {
@@ -60,6 +70,7 @@ public class GameFragment extends BaseFragment {
         ExImageView mIvGrabPk = (ExImageView) mRootView.findViewById(R.id.iv_grab_game);
         mUserTitleView = (UserInfoTitleView) mRootView.findViewById(R.id.user_title_view);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
+        mBannerView = (Banner)mRootView.findViewById(R.id.banner_view);
 
         initLevel();
 
@@ -82,6 +93,41 @@ public class GameFragment extends BaseFragment {
                 });
 
         U.getSoundUtils().preLoad(TAG, R.raw.home_game, R.raw.general_button);
+
+        initOperationArea();
+    }
+
+    private void initOperationArea(){
+        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
+        ApiMethods.subscribe(mMainPageSlideApi.getSlideList(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<SlideShowModel> slideShowModelList = JSON.parseArray(result.getData().getString("slideshow"), SlideShowModel.class);
+                    mBannerView.setImages(getSlideUrlList(slideShowModelList))
+                            .setImageLoader(new BannerImageLoader())
+                            .setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                            .withString("url", slideShowModelList.get(position).getLinkURL())
+                                            .greenChannel().navigation();
+                                }
+                            })
+                            .start();
+                }
+            }
+        });
+    }
+
+    private ArrayList<String> getSlideUrlList(List<SlideShowModel> slideShowModelList){
+        ArrayList<String> urlList = new ArrayList<>();
+        for (SlideShowModel slideShowModel :
+                slideShowModelList) {
+            urlList.add(slideShowModel.getCoverURL());
+        }
+
+        return urlList;
     }
 
     private void initLevel() {

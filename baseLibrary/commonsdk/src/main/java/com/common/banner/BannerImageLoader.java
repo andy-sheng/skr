@@ -12,8 +12,10 @@ import com.youth.banner.loader.ImageLoader;
 public class BannerImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
-        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         FrescoWorker.loadImage((SimpleDraweeView) imageView, ImageFactory.newHttpImage((String) path)
+                .setWidth(imageView.getMeasuredWidth())
+                .setHeight(imageView.getMeasuredHeight())
                 .build());
     }
 
