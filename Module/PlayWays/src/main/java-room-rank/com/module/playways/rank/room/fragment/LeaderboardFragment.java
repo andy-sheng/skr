@@ -64,19 +64,16 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     SimpleDraweeView mSdvRightChampainIcon;
     ExTextView mTvRightChanpainName;
-    LinearLayout mLlRightChampain;
-    TextView mTvRightChanpianStart;
-    TextView mTvRightSegmentName;
+    NormalLevelView mRightChanpainLevelView;
+
     SimpleDraweeView mSdvLeftChampainIcon;
     ExTextView mTvLeftChanpainName;
-    LinearLayout mLlLeftChampain;
-    TextView mTvLeftChanpianStart;
-    TextView mTvLeftSegmentName;
+    NormalLevelView mLeftChanpainLevelView;
+
     SimpleDraweeView mSdvChampainIcon;
     ExTextView mTvChanpainName;
-    LinearLayout mLlChampain;
-    TextView mTvChanpianStart;
-    TextView mTvSegmentName;
+    NormalLevelView mChanpainLevelView;
+
     TextView mTvArea;
     ExImageView mIvBack;
 
@@ -110,21 +107,19 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mOwnInfoItem = mRootView.findViewById(R.id.own_info_item);
+
         mSdvRightChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_right_champain_icon);
         mTvRightChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_right_chanpain_name);
-        mLlRightChampain = (LinearLayout) mRootView.findViewById(R.id.ll_right_champain);
-        mTvRightChanpianStart = (TextView) mRootView.findViewById(R.id.tv_right_chanpian_start);
-        mTvRightSegmentName = (TextView) mRootView.findViewById(R.id.tv_right_segment_name);
+        mRightChanpainLevelView = (NormalLevelView) mRootView.findViewById(R.id.right_chanpain_level_view);
+
         mSdvLeftChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_left_champain_icon);
         mTvLeftChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_left_chanpain_name);
-        mLlLeftChampain = (LinearLayout) mRootView.findViewById(R.id.ll_left_champain);
-        mTvLeftChanpianStart = (TextView) mRootView.findViewById(R.id.tv_left_chanpian_start);
-        mTvLeftSegmentName = (TextView) mRootView.findViewById(R.id.tv_left_segment_name);
+        mLeftChanpainLevelView = (NormalLevelView) mRootView.findViewById(R.id.left_chanpain_level_view);
+
         mSdvChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_champain_icon);
         mTvChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_chanpain_name);
-        mLlChampain = (LinearLayout) mRootView.findViewById(R.id.ll_champain);
-        mTvChanpianStart = (TextView) mRootView.findViewById(R.id.tv_chanpian_start);
-        mTvSegmentName = (TextView) mRootView.findViewById(R.id.tv_segment_name);
+        mChanpainLevelView = (NormalLevelView) mRootView.findViewById(R.id.chanpain_level_view);
+
         mIvRankLeft = (ImageView) mRootView.findViewById(R.id.iv_rank_left);
         mIvRank = (ImageView) mRootView.findViewById(R.id.iv_rank);
         mIvRankRight = (ImageView) mRootView.findViewById(R.id.iv_rank_right);
@@ -193,7 +188,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                         if (mRankMode == UserRankModel.COUNTRY) {
                             if (MyUserInfoManager.getInstance().hasLocation()) {
                                 mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                            }else {
+                            } else {
                                 mTvOtherArea.setText("地域榜");
                             }
                         } else if (mRankMode == UserRankModel.REGION) {
@@ -335,8 +330,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         tvRank.setText(userRankModel.getSeq() + "");
         tvName.setText(MyUserInfoManager.getInstance().getNickName());
         tvSegment.setText(userRankModel.getRegionDesc());
-        // TODO: 2019/1/23 等待修改
-        normalLevelView.setVisibility(View.GONE);
+        normalLevelView.bindData(userRankModel.getMainRanking(), userRankModel.getSubRanking(), userRankModel.getMaxStar(), userRankModel.getStarCnt());
         AvatarUtils.loadAvatarByUrl(sdvIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
@@ -390,8 +384,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 }
             });
             mTvChanpainName.setText(rankInfoModel.getNickname());
-            mTvChanpianStart.setText("X" + rankInfoModel.getStarCnt());
-            mTvSegmentName.setText(rankInfoModel.getLevelDesc());
+            mChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking(), rankInfoModel.getMaxStar(), rankInfoModel.getStarCnt());
         } else if (rankInfoModel.getRankSeq() == 2) {
             AvatarUtils.loadAvatarByUrl(mSdvRightChampainIcon,
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
@@ -410,8 +403,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 }
             });
             mTvRightChanpainName.setText(rankInfoModel.getNickname());
-            mTvRightChanpianStart.setText("X" + rankInfoModel.getStarCnt());
-            mTvRightSegmentName.setText(rankInfoModel.getLevelDesc());
+            mRightChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking(), rankInfoModel.getMaxStar(), rankInfoModel.getStarCnt());
         } else if (rankInfoModel.getRankSeq() == 3) {
             AvatarUtils.loadAvatarByUrl(mSdvLeftChampainIcon,
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
@@ -431,8 +423,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 }
             });
             mTvLeftChanpainName.setText(rankInfoModel.getNickname());
-            mTvLeftChanpianStart.setText("X" + rankInfoModel.getStarCnt());
-            mTvLeftSegmentName.setText(rankInfoModel.getLevelDesc());
+            mLeftChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking(), rankInfoModel.getMaxStar(), rankInfoModel.getStarCnt());
         }
     }
 
