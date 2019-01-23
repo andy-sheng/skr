@@ -32,25 +32,11 @@
         android:layout_alignTop="@+id/comment_view"
         android:src="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 
-    <com.module.playways.rank.room.view.InputContainerView
-        android:id="@+id/input_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
     <com.module.playways.grab.room.top.GrabTopContainerView
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_200_dp"
         android:layout_marginTop="@dimen/view_5_dp" />
-
-    <com.module.playways.rank.room.gift.GiftContinueViewGroup
-        android:id="@+id/gift_continue_vg"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_75_dp"
-        android:layout_above="@+id/comment_view"
-        android:layout_marginLeft="@dimen/view_18_dp"
-        android:layout_marginBottom="@dimen/view_10_dp" />
 
     <!-- 转场的一些卡片-->
     <com.module.playways.grab.room.view.TurnInfoCardView
@@ -121,8 +107,22 @@
         android:layout_alignParentRight="true"
         android:src="@drawable/vote_btn_circle_normal" />
 
+    <com.module.playways.rank.room.gift.GiftContinueViewGroup
+        android:id="@+id/gift_continue_vg"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_75_dp"
+        android:layout_above="@+id/comment_view"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginBottom="@dimen/view_10_dp" />
+
     <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.module.playways.rank.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
