@@ -31,7 +31,7 @@
             android:textColor="@color/black" />
 
         <com.common.view.ex.ExTextView
-            android:layout_marginLeft="@dimen/view_50_dp"
+            android:layout_marginLeft="@dimen/view_25_dp"
             android:background="@drawable/kaipingye_zhuce"
             android:id="@+id/phone_login_tv"
             android:layout_width="@dimen/view_64_dp"
@@ -40,13 +40,13 @@
             android:textColor="@color/black" />
 
         <com.common.view.ex.ExTextView
-            android:visibility="gone"
-            android:id="@+id/weibo_login_tv"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/view_66_67_dp"
-            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:visibility="visible"
+            android:id="@+id/qq_login_tv"
+            android:layout_width="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_64_dp"
             android:gravity="center"
-            android:text="微博"
+            android:background="@drawable/denglu_qq"
             android:textColor="@color/black" />
 
     </LinearLayout>

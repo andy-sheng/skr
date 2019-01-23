@@ -31,11 +31,13 @@ import io.reactivex.functions.Predicate;
 
 public class LoginFragment extends BaseFragment {
 
+    public static final int QQ_MODE = 4;
+    public static final int WX_MODE = 3;
     RelativeLayout mMainActContainer;
     ExTextView mLogoTv;
     ExTextView mWeixinLoginTv;
     ExTextView mPhoneLoginTv;
-    ExTextView mWeiboLoginTv;
+    ExTextView mQqLoginTv;
     ProgressBar mProgressBar;
 
     TextView mTvUserAgree;
@@ -54,10 +56,10 @@ public class LoginFragment extends BaseFragment {
         mLogoTv = (ExTextView) mRootView.findViewById(R.id.logo_tv);
         mWeixinLoginTv = (ExTextView) mRootView.findViewById(R.id.weixin_login_tv);
         mPhoneLoginTv = (ExTextView) mRootView.findViewById(R.id.phone_login_tv);
-        mWeiboLoginTv = (ExTextView) mRootView.findViewById(R.id.weibo_login_tv);
-        mTvUserAgree = (TextView)mRootView.findViewById(R.id.tv_user_agree);
-        mTvUserAgree.setText(Html.fromHtml("<u>"+"《用户协议》"+"</u>"));
-        mProgressBar = (ProgressBar)mRootView.findViewById(R.id.progress_bar);
+        mQqLoginTv = (ExTextView) mRootView.findViewById(R.id.qq_login_tv);
+        mTvUserAgree = (TextView) mRootView.findViewById(R.id.tv_user_agree);
+        mTvUserAgree.setText(Html.fromHtml("<u>" + "《用户协议》" + "</u>"));
+        mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
 
         RxView.clicks(mPhoneLoginTv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
@@ -86,12 +88,27 @@ public class LoginFragment extends BaseFragment {
                     }
                 })
                 .subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                showLoginingBar(true);
-                UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
-            }
-        });
+                    @Override
+                    public void accept(Object o) {
+                        showLoginingBar(true);
+                        UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
+                    }
+                });
+
+        RxView.clicks(mQqLoginTv)
+                .filter(new Predicate<Object>() {
+                    @Override
+                    public boolean test(Object o) {
+                        return !isWaitOss;
+                    }
+                })
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        showLoginingBar(true);
+                        UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, authListener);
+                    }
+                });
 
         RxView.clicks(mTvUserAgree)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
@@ -102,13 +119,13 @@ public class LoginFragment extends BaseFragment {
                     }
                 })
                 .subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", "https://api.inframe.mobi/user-agreement.html")
-                        .greenChannel().navigation();
-            }
-        });
+                    @Override
+                    public void accept(Object o) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString("url", "https://api.inframe.mobi/user-agreement.html")
+                                .greenChannel().navigation();
+                    }
+                });
     }
 
 
@@ -120,18 +137,27 @@ public class LoginFragment extends BaseFragment {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             showLoginingBar(false);
-            if(platform == SHARE_MEDIA.WEIXIN){
+            if (platform == SHARE_MEDIA.WEIXIN) {
                 Toast.makeText(getContext(), "微信授权成功", Toast.LENGTH_LONG).show();
                 String accessToken = data.get("accessToken");
                 String openid = data.get("openid");
-                loginWithWX(accessToken, openid);
+                loginWithThirdPard(WX_MODE, accessToken, openid);
+            } else if (platform == SHARE_MEDIA.QQ) {
+                Toast.makeText(getContext(), "QQ授权成功", Toast.LENGTH_LONG).show();
+                String accessToken = data.get("accessToken");
+                String openid = data.get("openid");
+                loginWithThirdPard(QQ_MODE, accessToken, openid);
             }
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
             showLoginingBar(false);
-            Toast.makeText(getContext(), "微信授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
+            if (platform == SHARE_MEDIA.WEIXIN) {
+                Toast.makeText(getContext(), "微信授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
+            } else if (platform == SHARE_MEDIA.QQ) {
+                Toast.makeText(getContext(), "QQ授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
 
         @Override
@@ -140,13 +166,13 @@ public class LoginFragment extends BaseFragment {
         }
     };
 
-    private void showLoginingBar(boolean show){
+    private void showLoginingBar(boolean show) {
         isWaitOss = show;
         mProgressBar.setVisibility(isWaitOss ? View.VISIBLE : View.GONE);
     }
 
-    private void loginWithWX(String accessToken, String openId) {
-        UserAccountManager.getInstance().loginByWX(accessToken, openId);
+    private void loginWithThirdPard(int mode, String accessToken, String openId) {
+        UserAccountManager.getInstance().loginByThirdPart(mode, accessToken, openId);
     }
 
     @Override

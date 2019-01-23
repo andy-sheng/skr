@@ -301,10 +301,10 @@ public class UserAccountManager {
     }
 
     // 微信登录
-    public void loginByWX(String accessToken, String openId) {
+    public void loginByThirdPart(int mode, String accessToken, String openId) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 3 为微信登录
-        userAccountServerApi.loginWX(3, accessToken, openId)
+        userAccountServerApi.loginWX(mode, accessToken, openId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
