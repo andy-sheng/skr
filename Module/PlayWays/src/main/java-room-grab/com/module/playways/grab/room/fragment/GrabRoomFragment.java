@@ -21,6 +21,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -277,6 +278,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
         layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ShowPersonCardEvent event) {
+        if (event.getUid() != MyUserInfoManager.getInstance().getUid()) {
+            showPersonInfoView(event.getUid());
+        }
     }
 
     boolean isReport = false;

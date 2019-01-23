@@ -16,14 +16,20 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomData;
+import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.rank.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 public class GrabTopRv extends RelativeLayout {
     public final static String TAG = "GrabTopRv";
@@ -71,6 +77,13 @@ public class GrabTopRv extends RelativeLayout {
             if (grabTopItemView == null) {
                 grabTopItemView = new GrabTopItemView(getContext());
                 mInfoMap.put(userInfo.getUserId(), grabTopItemView);
+                RxView.clicks(grabTopItemView)
+                        .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        EventBus.getDefault().post(new ShowPersonCardEvent(userInfo.getUserId()));
+                    }
+                });
             }
             grabTopItemView.setVisibility(VISIBLE);
             grabTopItemView.bindData(userInfo);
