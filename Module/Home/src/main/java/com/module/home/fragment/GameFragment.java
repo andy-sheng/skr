@@ -98,7 +98,7 @@ public class GameFragment extends BaseFragment {
                         .navigation();
             }
         });
-        U.getSoundUtils().preLoad(TAG, R.raw.home_game);
+        U.getSoundUtils().preLoad(TAG, R.raw.home_game, R.raw.general_button);
     }
 
     private void initLevel() {
