@@ -44,6 +44,9 @@ import static com.common.core.userinfo.model.UserRankModel.COUNTRY;
 import static com.common.core.userinfo.model.UserRankModel.REGION;
 
 public class UserInfoTitleView extends RelativeLayout {
+
+    public final static String TAG = "UserInfoTitleView";
+
     SimpleDraweeView mIvUserIcon;
     ExTextView mTvUserName;
     ExTextView mTvUserLevel;
@@ -80,7 +83,6 @@ public class UserInfoTitleView extends RelativeLayout {
         RxView.clicks(mFlRankRoot).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) {
-                U.getSoundUtils().preLoad(GameFragment.TAG, R.raw.general_button);
                 IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                 Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)

@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -19,11 +21,17 @@ import com.common.utils.RomUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.feedback.FeedbackManager;
 import com.module.home.updateinfo.EditInfoActivity;
+import com.module.home.updateinfo.fragment.EditInfoNameFragment;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.fragment.ResPickerFragment;
 import com.zq.toast.CommonToastView;
 
@@ -59,6 +67,7 @@ public class SettingFragment extends BaseFragment {
 
     RelativeLayout mLogUpdate;
 
+
     static final String[] CACHE_CAN_DELETE = {
             "fresco", "gif", "upload"
     };
@@ -83,7 +92,7 @@ public class SettingFragment extends BaseFragment {
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
         mLogUpdate = (RelativeLayout) mRootView.findViewById(R.id.log_update);
 
-        U.getSoundUtils().preLoad(TAG, R.raw.general_back);
+        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.allclick);
 
         RxView.clicks(mTitlebar.getLeftTextView())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -175,8 +184,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        UserAccountManager.getInstance().logoff();
-                        onBackPressed();
+                        exitLogin();
                     }
                 });
         long cacheSize = U.getPreferenceUtils().getSettingLong("key_cache_size", 0);
@@ -197,6 +205,46 @@ public class SettingFragment extends BaseFragment {
                 return false;
             }
         });
+    }
+
+    private void exitLogin() {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip("确定退出当前账号么？")
+                .setConfirmTip("确定")
+                .setCancelTip("取消")
+                .build();
+
+        DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view instanceof ExTextView) {
+                            if (view.getId() == R.id.confirm_tv) {
+                                dialog.dismiss();
+                                U.getSoundUtils().play(TAG, R.raw.allclick);
+                                U.getFragmentUtils().popFragment(SettingFragment.this);
+                                UserAccountManager.getInstance().logoff();
+                            }
+
+                            if (view.getId() == R.id.cancel_tv) {
+                                U.getSoundUtils().play(TAG, R.raw.general_back);
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+                })
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+
+                    }
+                })
+                .create().show();
     }
 
     void computeCache() {

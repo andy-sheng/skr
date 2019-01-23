@@ -56,6 +56,9 @@ import io.reactivex.functions.Predicate;
  * 排行榜
  */
 public class LeaderboardFragment extends BaseFragment implements ILeaderBoardView {
+
+    public final static String TAG = "LeaderboardFragment";
+
     RecyclerView mRecyclerView;
 
     LeaderBoardAdapter mLeaderBoardAdapter;
@@ -127,9 +130,10 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mTvArea = (ExTextView) mRootView.findViewById(R.id.tv_area);
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
-
         mLlAreaContainer = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_select_popup_window_layout, null);
         mTvOtherArea = (ExTextView) mLlAreaContainer.findViewById(R.id.tv_other_area);
+
+        U.getSoundUtils().preLoad(TAG, R.raw.general_back);
 
         mPopupWindow = new PopupWindow(mLlAreaContainer);
         mPopupWindow.setOutsideTouchable(true);
@@ -237,6 +241,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.general_back, 500);
                         finish();
                     }
                 });
@@ -445,6 +450,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     public void destroy() {
         super.destroy();
         mPopupWindow.dismiss();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

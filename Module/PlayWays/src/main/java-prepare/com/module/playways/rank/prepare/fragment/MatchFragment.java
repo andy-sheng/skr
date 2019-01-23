@@ -46,6 +46,9 @@ import java.util.concurrent.TimeUnit;
 
 //这个是匹配界面，之前的FastMatchingSence
 public class MatchFragment extends BaseFragment implements IMatchingView {
+
+    public final static String TAG = "MatchFragment";
+
     public static final long ANIMATION_DURATION = 1800;
     ExImageView mIvBack;
     ExImageView mIvTop;
@@ -94,9 +97,12 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         Resources res = getResources();
         mQuotationsArray = Arrays.asList(res.getStringArray(R.array.match_quotations));
 
+        U.getSoundUtils().preLoad(TAG, R.raw.allclick, R.raw.general_back);
+
         RxView.clicks(mIvCancelMatch)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.allclick);
                     goBack();
                 });
 
@@ -313,6 +319,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         if (mExitDialog != null && mExitDialog.isShowing()) {
             mExitDialog.dismiss();
         }
+        U.getSoundUtils().release(TAG);
     }
 
     @Override
@@ -350,10 +357,12 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                             if (view.getId() == R.id.confirm_tv) {
                                 // 继续匹配
                                 dialog.dismiss();
+                                U.getSoundUtils().play(TAG, R.raw.allclick);
                             }
 
                             if (view.getId() == R.id.cancel_tv) {
                                 dialog.dismiss();
+                                U.getSoundUtils().play(TAG, R.raw.general_back);
                                 mMatchPresenter.cancelMatch();
                                 stopTimeTask();
                                 U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
