@@ -18,7 +18,7 @@
         android:id="@+id/next_svga"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_160_dp"
-        android:layout_marginTop="@dimen/view_130_dp"
+        android:layout_marginTop="@dimen/view_165_dp"
         android:visibility="gone"
         app:antiAlias="true"
         app:autoPlay="false" />

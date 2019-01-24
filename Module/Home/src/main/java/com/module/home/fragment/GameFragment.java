@@ -115,7 +115,7 @@ public class GameFragment extends BaseFragment {
         mTopArea = (RelativeLayout) mRootView.findViewById(R.id.top_area);
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
-        
+
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mMainRankIv = (ImageView) mRootView.findViewById(R.id.main_rank_iv);
         mSubRankIv = (ImageView) mRootView.findViewById(R.id.sub_rank_iv);

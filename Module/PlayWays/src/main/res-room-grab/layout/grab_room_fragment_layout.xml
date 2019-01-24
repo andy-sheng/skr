@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_110_dp"
+        android:layout_marginTop="@dimen/view_100_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.SingBeginTipsCardView
@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_130_dp"
+        android:layout_marginTop="@dimen/view_175_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.RoundOverCardView
@@ -77,7 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_130_dp"
+        android:layout_marginTop="@dimen/view_135_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.SelfSingCardView
