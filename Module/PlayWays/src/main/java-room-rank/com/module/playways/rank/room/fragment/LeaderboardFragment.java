@@ -106,6 +106,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mLeaderBoardAdapter = new LeaderBoardAdapter();
         mLeaderboardPresenter = new LeaderboardPresenter(this);
+        addPresent(mLeaderboardPresenter);
         mRecyclerView.setAdapter(mLeaderBoardAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -334,7 +335,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
         tvRank.setText(userRankModel.getSeq() + "");
         tvName.setText(MyUserInfoManager.getInstance().getNickName());
-        tvSegment.setText(userRankModel.getRegionDesc());
+        tvSegment.setText(userRankModel.getRankingDesc());
         normalLevelView.bindData(userRankModel.getMainRanking(), userRankModel.getSubRanking(), userRankModel.getMaxStar(), userRankModel.getStarCnt());
         AvatarUtils.loadAvatarByUrl(sdvIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())

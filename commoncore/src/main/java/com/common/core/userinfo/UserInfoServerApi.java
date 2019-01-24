@@ -118,6 +118,15 @@ public interface UserInfoServerApi {
 
 
     /**
+     * 拿到自己的排名
+     *
+     * @return
+     */
+    @GET("/v1/rank/region-mine")
+    Observable<ApiResult> getMyRegion(@Query("category") int category);
+
+
+    /**
      * 获得某人的地域排行榜名次
      *
      * @param userID

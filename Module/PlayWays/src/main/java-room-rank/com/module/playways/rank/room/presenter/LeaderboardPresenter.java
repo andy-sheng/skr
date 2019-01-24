@@ -38,17 +38,17 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
         this.mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
-    public void setRankMode(int rankMode){
+    public void setRankMode(int rankMode) {
         mOffset = 0;
         mRankMode = rankMode;
         mRankInfoModelList.clear();
 
         getLeaderBoardInfo();
-        getOwnInfo();
+        getOwnInfo(rankMode);
     }
 
     public void getLeaderBoardInfo() {
-        if(!U.getNetworkUtils().hasNetwork()){
+        if (!U.getNetworkUtils().hasNetwork()) {
             mILeaderBoardView.noNetWork();
             return;
         }
@@ -58,11 +58,11 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<RankInfoModel> rankInfoModelList = JSON.parseArray(result.getData().getString("users"), RankInfoModel.class);
-                    if(rankInfoModelList != null && rankInfoModelList.size() > 0){
-                        if(mOffset == 0){
+                    if (rankInfoModelList != null && rankInfoModelList.size() > 0) {
+                        if (mOffset == 0) {
                             List<RankInfoModel> threeInfo = null;
                             threeInfo = new ArrayList<>(3);
-                            for (int i = 0; i < (rankInfoModelList.size() >= 3 ? 3 : rankInfoModelList.size()); i++){
+                            for (int i = 0; i < (rankInfoModelList.size() >= 3 ? 3 : rankInfoModelList.size()); i++) {
                                 threeInfo.add(rankInfoModelList.get(i));
                             }
 
@@ -72,35 +72,33 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
                         mRankInfoModelList.addAll(rankInfoModelList);
                         mILeaderBoardView.showRankList(mRankInfoModelList, rankInfoModelList.size() == mLimit);
                         mOffset += rankInfoModelList.size();
-                    }else {
+                    } else {
                         mILeaderBoardView.showRankList(new ArrayList<>(), false);
                         mILeaderBoardView.showFirstThreeRankInfo(new ArrayList<>());
                     }
 
                 }
             }
-        });
+        }, this);
     }
 
-    public void getOwnInfo(){
-        if(!U.getNetworkUtils().hasNetwork()){
+    public void getOwnInfo(int rankMode) {
+        if (!U.getNetworkUtils().hasNetwork()) {
             mILeaderBoardView.noNetWork();
             return;
         }
 
-        ApiMethods.subscribe(mUserInfoServerApi.getReginRank((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getMyRegion(rankMode), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getString("seqInfo"), UserRankModel.class);
-                    for (UserRankModel userRankModel :
-                            userRankModels) {
-                        if (mRankMode == userRankModel.getCategory()){
-                            mILeaderBoardView.showOwnRankInfo(userRankModel);
-                        }
+                    UserRankModel userRankModel = JSON.parseObject(result.getData().toString(), UserRankModel.class);
+                    if (userRankModel != null) {
+                        mILeaderBoardView.showOwnRankInfo(userRankModel);
                     }
                 }
             }
-        });
+        }, this);
     }
 }
+
