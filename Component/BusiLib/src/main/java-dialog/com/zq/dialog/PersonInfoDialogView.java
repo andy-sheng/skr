@@ -100,9 +100,6 @@ public class PersonInfoDialogView extends RelativeLayout {
         mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
         mFollowTv = (ExTextView) this.findViewById(R.id.follow_tv);
 
-        // TODO: 2018/12/26 暂时砍掉举报 
-        mReport.setVisibility(GONE);
-
         mTagAdapter = new TagAdapter<String>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {

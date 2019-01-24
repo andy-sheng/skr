@@ -52,6 +52,7 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.PersonInfoDialogView;
+import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -67,6 +68,10 @@ import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.zq.report.fragment.ReportFragment.FORM_GAME;
+import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
+import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
@@ -323,7 +328,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     @Override
                     public void onDismiss(@NonNull DialogPlus dialog) {
                         if (isReport) {
-                            showReportView();
+                            showReportView(userID);
                         }
                         isReport = false;
                     }
@@ -332,8 +337,18 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mDialogPlus.show();
     }
 
-    private void showReportView() {
-        // TODO: 2018/12/26  等举报完善再写
+    private void showReportView(int userID) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(REPORT_FROM_KEY, FORM_GAME);
+        bundle.putInt(REPORT_USER_ID, userID);
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
+                        .setBundle(bundle)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
+                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                        .build());
     }
 
     private void initTopView() {

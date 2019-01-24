@@ -57,6 +57,7 @@ import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
+import com.zq.report.fragment.ReportFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -83,6 +84,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
+import static com.zq.report.fragment.ReportFragment.FORM_GAME;
+import static com.zq.report.fragment.ReportFragment.FORM_PERSON;
+import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
+import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
@@ -526,7 +531,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     @Override
                     public void onDismiss(@NonNull DialogPlus dialog) {
                         if (isReport) {
-                            showReportView();
+                            showReportView(userID);
                         }
                         isReport = false;
                     }
@@ -535,8 +540,19 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mDialogPlus.show();
     }
 
-    private void showReportView() {
-        // TODO: 2018/12/26  等举报完善再写
+    private void showReportView(int userID) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(REPORT_FROM_KEY, FORM_GAME);
+        bundle.putInt(REPORT_USER_ID, userID);
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
+                        .setBundle(bundle)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
+                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
+                        .build());
+
     }
 
     private void initTopView() {

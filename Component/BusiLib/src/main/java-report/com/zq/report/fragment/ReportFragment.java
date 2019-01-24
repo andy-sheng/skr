@@ -5,15 +5,18 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.KeyboardEvent;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
@@ -21,6 +24,9 @@ import com.component.busilib.R;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.zq.report.adapter.ReportAdapter;
 import com.zq.report.model.ReportModel;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +53,7 @@ public class ReportFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     RelativeLayout mContainer;
     View mPlaceView;
+    View mPlaceHolderView;
 
     ReportAdapter mReportAdapter;
 
@@ -65,6 +72,7 @@ public class ReportFragment extends BaseFragment {
         mReportContent = (NoLeakEditText) mRootView.findViewById(R.id.report_content);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mPlaceView = (View) mRootView.findViewById(R.id.place_view);
+        mPlaceHolderView = (View) mRootView.findViewById(R.id.place_holder_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mReportAdapter = new ReportAdapter(new ReportAdapter.RecyclerOnItemCheckListener() {
@@ -96,6 +104,7 @@ public class ReportFragment extends BaseFragment {
         }
 
         mReportAdapter.setDataList(mReportModels);
+        mRecyclerView.stopScroll();
         mRecyclerView.setAdapter(mReportAdapter);
         mReportAdapter.notifyDataSetChanged();
 
@@ -136,7 +145,7 @@ public class ReportFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     private List<ReportModel> getGameReportList() {
@@ -157,4 +166,24 @@ public class ReportFragment extends BaseFragment {
         personList.add(new ReportModel(4, "头像、昵称违规"));
         return personList;
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(KeyboardEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        switch (event.eventType) {
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN: {
+                mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
+                mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+                break;
+            }
+            case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE: {
+                mPlaceHolderView.getLayoutParams().height = event.keybordHeight - U.getDisplayUtils().dip2px(118);
+                mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+                break;
+            }
+        }
+    }
+
+
 }
