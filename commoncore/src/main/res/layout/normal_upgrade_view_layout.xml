@@ -64,33 +64,8 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/download_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_38_dp">
 
-        <com.common.core.upgrade.DownloadApkProgressBar
-            android:id="@+id/download_apk_progressbar"
-            android:layout_width="@dimen/view_175_dp"
-            android:layout_height="@dimen/view_34_dp"
-            android:layout_centerVertical="true" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/cancel_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_23_dp"
-            android:layout_toRightOf="@+id/download_apk_progressbar"
-            android:background="@drawable/quxiao_btn"
-            android:gravity="center"
-            android:text="取消"
-            android:textColor="#0C2275"
-            android:textSize="@dimen/view_13_dp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+    <include
+        layout="@layout/upgrade_bar_include_layout"/>
 
 </RelativeLayout>

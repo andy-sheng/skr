@@ -29,7 +29,7 @@ public class DownloadApkProgressBar extends View {
     }
 
     Paint mPaint;
-    int mProgress = 0;
+    int mProgress = 50;
     int mStrokeWitdh = U.getDisplayUtils().dip2px(2);
     int mR = U.getDisplayUtils().dip2px(17);
 
@@ -44,28 +44,45 @@ public class DownloadApkProgressBar extends View {
         super.onDraw(canvas);
         {
             mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setColor(Color.parseColor("#0C2275"));
-            RectF rectF = new RectF(0, 0, getWidth(), getHeight());
+            mPaint.setStrokeWidth(0);
+            mPaint.setColor(Color.parseColor("#efefef"));
+            RectF rectF = new RectF(0 + mStrokeWitdh, 0 + mStrokeWitdh, getWidth() - mStrokeWitdh, getHeight() - mStrokeWitdh);
             canvas.drawRoundRect(rectF, mR, mR, mPaint);
 
+        }
+        {
             mPaint.setStyle(Paint.Style.STROKE);
             mPaint.setStrokeWidth(mStrokeWitdh);
+            RectF rectF = new RectF(0 + mStrokeWitdh, 0 + mStrokeWitdh, getWidth() - mStrokeWitdh, getHeight() - mStrokeWitdh);
             mPaint.setColor(Color.parseColor("#0C2275"));
             canvas.drawRoundRect(rectF, mR, mR, mPaint);
         }
 
+        float tx = (getWidth() - mStrokeWitdh) * mProgress / 100;
         {
             mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setColor(Color.parseColor("##E2467A"));
-            RectF rectF = new RectF(0, 0, getWidth() * mProgress / 100, getHeight());
+            mPaint.setColor(Color.parseColor("#E2467A"));
+            RectF rectF = new RectF(0 + mStrokeWitdh, 0 + mStrokeWitdh, tx, getHeight() - mStrokeWitdh);
             canvas.drawRoundRect(rectF, mR, mR, mPaint);
-
+        }
+        {
             mPaint.setStyle(Paint.Style.STROKE);
             mPaint.setStrokeWidth(mStrokeWitdh);
             mPaint.setColor(Color.parseColor("#0C2275"));
+            RectF rectF = new RectF(0 + mStrokeWitdh, 0 + mStrokeWitdh, tx, getHeight() - mStrokeWitdh);
             canvas.drawRoundRect(rectF, mR, mR, mPaint);
         }
-
+        {
+            if(mProgress>15) {
+                int textsize = U.getDisplayUtils().dip2px(13);
+                mPaint.setStyle(Paint.Style.FILL);
+                mPaint.setStrokeWidth(U.getDisplayUtils().dip2px(1));
+                mPaint.setTextSize(textsize);
+                mPaint.setColor(Color.parseColor("#ffffff"));
+                String text = mProgress + "%";
+                canvas.drawText(text, tx - 2 * textsize, (getHeight() + U.getDisplayUtils().dip2px(8)) / 2, mPaint);
+            }
+        }
     }
 
     public void setProgress(int p) {

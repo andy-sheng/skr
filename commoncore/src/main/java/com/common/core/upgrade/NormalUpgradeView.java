@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.core.R;
+import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 
 public class NormalUpgradeView extends RelativeLayout {
@@ -19,6 +20,11 @@ public class NormalUpgradeView extends RelativeLayout {
     RelativeLayout mDownloadContainer;
     DownloadApkProgressBar mDownloadApkProgressbar;
     ExTextView mCancelBtn;
+
+    ExTextView mOldVersionTv;
+    ExTextView mNewVersionTv;
+
+
 
     Listener mListener;
 
@@ -75,6 +81,8 @@ public class NormalUpgradeView extends RelativeLayout {
                 mDownloadContainer.setVisibility(GONE);
             }
         });
+        mOldVersionTv = (ExTextView)this.findViewById(R.id.old_version_tv);
+        mNewVersionTv = (ExTextView)this.findViewById(R.id.new_version_tv);
     }
 
 
@@ -89,9 +97,13 @@ public class NormalUpgradeView extends RelativeLayout {
     }
 
     public void bindData(UpgradeInfoModel upgradeInfoModel) {
-        mVersionTipsTv.setText(upgradeInfoModel.getVersionName());
+        mOpContainer.setVisibility(VISIBLE);
+        mDownloadContainer.setVisibility(GONE);
+        mVersionTipsTv.setText("v"+upgradeInfoModel.getVersionName());
         mSizeTipsTv.setText("更新包"+upgradeInfoModel.getPackageSizeStr()+",建议在wifi环境下载更新");
         mUpdateBtn.setText("更新");
+        mOldVersionTv.setText("v"+U.getAppInfoUtils().getVersionName());
+        mNewVersionTv.setText("v"+upgradeInfoModel.getVersionName());
     }
 
     public void setAlreadyDownloadTips() {

@@ -99,15 +99,16 @@ public class UpgradeManager {
     };
 
     public void checkUpdate1() {
-        if (true) {
+//        if (true) {
 //            UpgradeInfoModel upgradeInfoModel = new UpgradeInfoModel();
 //            upgradeInfoModel.setDownloadURL("https://s1.zb.mi.com/miliao/apk/miliao/7.4/11.apk");
-//            upgradeInfoModel.setForceUpdate(false);
+//            upgradeInfoModel.setForceUpdate(true);
 //            upgradeInfoModel.setLatestVersionCode(2037);
 //            upgradeInfoModel.setPackageSize(1024 * 1024 * 24 + 1024 * 800);
+//            mUpgradeData.setNeedShowDialog(true);
 //            onGetUpgradeInfoModel(upgradeInfoModel);
-            return;
-        }
+//            return;
+//        }
         /**
          * 一旦拿到更新数据了，这个生命周期内就不访问了
          */
@@ -201,6 +202,7 @@ public class UpgradeManager {
                         .create();
             }
         }
+        mNormalUpgradeView.bindData(mUpgradeData.getUpgradeInfoModel());
         int localVersionCode = tryGetSaveFileApkVersion();
         if (localVersionCode == mUpgradeData.getUpgradeInfoModel().getLatestVersionCode()) {
             // 本地包有效，直接安装吧
@@ -283,8 +285,14 @@ public class UpgradeManager {
 
     // 下载apk
     private void downloadApk(final boolean mute) {
+
         if (mUpgradeData.getStatus() >= UpgradeData.STATUS_DOWNLOWNING) {
-            return;
+            File saveFile = getSaveFile();
+            if (saveFile.exists()) {
+                return;
+            }else{
+                mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
+            }
         }
         mUpgradeData.setMute(mute);
         Activity topActivity = U.getActivityUtils().getTopActivity();
@@ -327,18 +335,14 @@ public class UpgradeManager {
         } else {
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
         }
-        // 允许下载的网络状况
-        int networkFlag;
-        if (updateInfoModel.isForceUpdate()) {
-            networkFlag = DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI;
-        } else {
-            networkFlag = DownloadManager.Request.NETWORK_WIFI;
-        }
-        request.setAllowedNetworkTypes(networkFlag);
+//        // 允许下载的网络状况
+//        int networkFlag = DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI;
+//        request.setAllowedNetworkTypes(networkFlag);
+//        // 设置漫游状态下是否可以下载
+//        request.setAllowedOverRoaming(false);
         // 设置文件存放路径
         request.setDestinationUri(Uri.fromFile(getSaveFile()));
-        // 设置漫游状态下是否可以下载
-        request.setAllowedOverRoaming(false);
+
         // 如果我们希望下载的文件可以被系统的Downloads应用扫描到并管理，
         // 我们需要调用Request对象的setVisibleInDownloadsUi方法，传递参数true.
         request.setVisibleInDownloadsUi(true);
