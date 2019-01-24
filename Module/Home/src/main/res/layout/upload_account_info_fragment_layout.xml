@@ -14,10 +14,12 @@
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
-        app:rightType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
         app:rightText="1/3"
         app:rightTextColor="@color/white_trans_70"
         app:rightTextSize="@dimen/textsize_16_dp"
+        app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>

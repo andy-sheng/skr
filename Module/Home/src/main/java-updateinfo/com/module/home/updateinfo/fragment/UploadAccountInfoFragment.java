@@ -9,9 +9,11 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -28,6 +30,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
+import com.module.RouterConstants;
 import com.respicker.ResPicker;
 import com.respicker.fragment.ResPickerFragment;
 import com.respicker.model.ImageItem;
@@ -126,16 +129,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
-        RxView.clicks(mNextTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        String nickName = mNicknameEt.getText().toString().trim();
-                        checkNickName(nickName);
-                    }
-                });
-
         mNicknameEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -165,6 +158,26 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
+        RxView.clicks(mNextTv)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        String nickName = mNicknameEt.getText().toString().trim();
+                        checkNickName(nickName);
+                    }
+                });
+
+        RxView.clicks(mTitlebar.getLeftTextView())
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        getActivity().finish();
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
+                                .greenChannel().navigation();
+                    }
+                });
     }
 
     private void checkNickName(String nickName) {
