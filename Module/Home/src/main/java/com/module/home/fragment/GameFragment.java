@@ -39,9 +39,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.BehaviorSubject;
 
 public class GameFragment extends BaseFragment {
 
@@ -59,6 +61,10 @@ public class GameFragment extends BaseFragment {
 
     MainPageSlideApi mMainPageSlideApi;
 
+    BehaviorSubject<Integer> mIntegerBehaviorSubject;
+
+    Vector<Long> mTag = new Vector<>();
+
     @Override
     public int initView() {
         return R.layout.game_fragment_layout;
@@ -70,7 +76,7 @@ public class GameFragment extends BaseFragment {
         ExImageView mIvGrabPk = (ExImageView) mRootView.findViewById(R.id.iv_grab_game);
         mUserTitleView = (UserInfoTitleView) mRootView.findViewById(R.id.user_title_view);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
-        mBannerView = (Banner)mRootView.findViewById(R.id.banner_view);
+        mBannerView = (Banner) mRootView.findViewById(R.id.banner_view);
 
         initLevel();
 
@@ -79,7 +85,9 @@ public class GameFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        clickAnimation(ivAthleticsPk);
+                        long tag = System.currentTimeMillis();
+                        checkGameConf(1, tag, ivAthleticsPk);
+                        clickAnimation(ivAthleticsPk, tag);
                     }
                 });
 
@@ -88,7 +96,9 @@ public class GameFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        clickAnimation(mIvGrabPk);
+                        long tag = System.currentTimeMillis();
+                        checkGameConf(3, tag, mIvGrabPk);
+                        clickAnimation(mIvGrabPk, tag);
                     }
                 });
 
@@ -97,7 +107,7 @@ public class GameFragment extends BaseFragment {
         initOperationArea();
     }
 
-    private void initOperationArea(){
+    private void initOperationArea() {
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
         ApiMethods.subscribe(mMainPageSlideApi.getSlideList(), new ApiObserver<ApiResult>() {
             @Override
@@ -120,7 +130,7 @@ public class GameFragment extends BaseFragment {
         });
     }
 
-    private ArrayList<String> getSlideUrlList(List<SlideShowModel> slideShowModelList){
+    private ArrayList<String> getSlideUrlList(List<SlideShowModel> slideShowModelList) {
         ArrayList<String> urlList = new ArrayList<>();
         for (SlideShowModel slideShowModel :
                 slideShowModelList) {
@@ -153,12 +163,12 @@ public class GameFragment extends BaseFragment {
                         mLevelView.bindData(mRank, mSubRank, mStarLimit, mStarNum);
                     }
                 }
-            });
+            }, this);
         }
     }
 
     // 点击缩放动画
-    public void clickAnimation(View view) {
+    public void clickAnimation(View view, final long tag) {
         U.getSoundUtils().play(TAG, R.raw.home_game);
 
         ObjectAnimator a1 = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f);
@@ -180,21 +190,13 @@ public class GameFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if (view.getId() == R.id.iv_athletics_pk) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                            .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
-                            .withBoolean("selectSong", true)
-                            .navigation();
-                } else if (view.getId() == R.id.iv_grab_game) {
-                    if (MyLog.isDebugLogOpen()) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                                .withInt("key_game_type", GameModeType.GAME_MODE_GRAB)
-                                .withBoolean("selectSong", false)
-                                .navigation();
-                    } else {
-                        U.getToastUtil().showShort("正在开发中，敬请期待");
-                    }
+                if(mTag.contains(tag)){
+                    jump(view, "onAnimationEnd");
+                    mTag.remove(tag);
+                    return;
                 }
+
+                mTag.add(tag);
             }
 
             @Override
@@ -207,6 +209,46 @@ public class GameFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private void jump(View view, String from){
+        MyLog.d(TAG, "jump" + " view=" + view + " from=" + from);
+        if (view.getId() == R.id.iv_athletics_pk) {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                    .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
+                    .withBoolean("selectSong", true)
+                    .navigation();
+        } else if (view.getId() == R.id.iv_grab_game) {
+            if (MyLog.isDebugLogOpen()) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                        .withInt("key_game_type", GameModeType.GAME_MODE_GRAB)
+                        .withBoolean("selectSong", false)
+                        .navigation();
+            } else {
+                U.getToastUtil().showShort("正在开发中，敬请期待");
+            }
+        }
+    }
+
+    private void checkGameConf(int mode, long tag, final View view) {
+
+        ApiMethods.subscribe(mMainPageSlideApi.getGameConfig(mode), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.d(TAG, "checkGameConf " + result.getErrno());
+                if (result.getErrno() == 0) {
+                    if(mTag.contains(tag)){
+                        jump(view, "checkGameConf");
+                        mTag.remove(tag);
+                        return;
+                    }
+
+                    mTag.add(tag);
+                } else {
+                    MyLog.e(TAG, "checkGameConf failed, traceid is " + result.getTraceId());
+                }
+            }
+        }, this);
     }
 
     @Override

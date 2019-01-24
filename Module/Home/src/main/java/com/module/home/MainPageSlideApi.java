@@ -4,6 +4,7 @@ import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  *
@@ -16,4 +17,7 @@ public interface MainPageSlideApi {
      */
     @GET("v1/kconf/slide-show")
     Observable<ApiResult> getSlideList();
+
+    @GET("http://dev.game.inframe.mobi/v1/kconf/game-play")
+    Observable<ApiResult> getGameConfig(@Query("mode") int mode);
 }
