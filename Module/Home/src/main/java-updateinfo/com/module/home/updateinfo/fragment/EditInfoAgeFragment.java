@@ -39,6 +39,9 @@ import io.reactivex.functions.Consumer;
 public class EditInfoAgeFragment extends BaseFragment {
 
     boolean isUpload = false; //当前是否是完善个人资料
+    String uploadNickname;    //完善资料的昵称
+    int uploadSex;            // 未知、非法参数
+
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
@@ -91,8 +94,7 @@ public class EditInfoAgeFragment extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mTitlebar.getLeftTextView().setVisibility(View.GONE);
-            mTitlebar.getLeftTextView().setClickable(false);
+            mMainActContainer.setBackgroundColor(Color.parseColor("#EFEFEF"));
 
             mTitlebar.getRightTextView().setText("3/3");
             mTitlebar.getCenterTextView().setText("完善个人信息");
@@ -102,7 +104,8 @@ public class EditInfoAgeFragment extends BaseFragment {
 
             mCompleteTv.setVisibility(View.VISIBLE);
             isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
-            mMainActContainer.setBackgroundColor(Color.parseColor("#EFEFEF"));
+            uploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
+            uploadSex = bundle.getInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX);
         }
     }
 
@@ -135,9 +138,18 @@ public class EditInfoAgeFragment extends BaseFragment {
                     // 上传个人信息
                     String bir = U.getDateTimeUtils().formatDateString(date);
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                            .setBirthday(bir)
-                            .build(), true);
-                    getActivity().finish();
+                            .setNickName(uploadNickname).setSex(uploadSex).setBirthday(bir)
+                            .build(), false, new MyUserInfoManager.ServerCallback() {
+                        @Override
+                        public void onSucess() {
+                            getActivity().finish();
+                        }
+
+                        @Override
+                        public void onFail() {
+
+                        }
+                    });
                 } else {
                     // 修改个人信息
                     String bir = U.getDateTimeUtils().formatDateString(date);

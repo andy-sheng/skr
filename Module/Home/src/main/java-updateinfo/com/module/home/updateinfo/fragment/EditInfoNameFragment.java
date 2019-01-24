@@ -88,7 +88,7 @@ public class EditInfoNameFragment extends BaseFragment {
                     mNicknameEt.setText(editable.toString());
                     int selection = editable.length();
                     mNicknameEt.setSelection(selection);
-                    U.getToastUtil().showShort("昵称不能超过7哥汉字或14个英文");
+                    U.getToastUtil().showShort("昵称不能超过7个汉字或14个英文");
                 }
             }
         });

@@ -158,7 +158,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     int selection = editable.length();
                     mNicknameEt.setSelection(selection);
                     mNicknameHintTv.setVisibility(View.VISIBLE);
-                    mNicknameHintTv.setText("昵称不能超过7哥汉字或14个英文");
+                    mNicknameHintTv.setText("昵称不能超过7个汉字或14个英文");
                 } else {
                     mNicknameHintTv.setVisibility(View.GONE);
                 }
@@ -182,35 +182,45 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     String unValidReason = result.getData().getString("unValidReason");
                     if (isValid) {
                         // 昵称可用
-                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                .setNickName(nickName)
-                                .build(), true);
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        if (MyUserInfoManager.getInstance().getSex() == 0) {
-                            // 无性别数据
-                            Bundle bundle = new Bundle();
-                            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-                            U.getFragmentUtils().addFragment(FragmentUtils
-                                    .newAddParamsBuilder(getActivity(), EditInfoSexFragment.class)
-                                    .setBundle(bundle)
-                                    .setNotifyHideFragment(UploadAccountInfoFragment.class)
-                                    .setAddToBackStack(false)
-                                    .setHasAnimation(true)
-                                    .build());
-                        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-                            // 无出生年月数据
-                            Bundle bundle = new Bundle();
-                            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
-                            U.getFragmentUtils().addFragment(FragmentUtils
-                                    .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
-                                    .setNotifyHideFragment(UploadAccountInfoFragment.class)
-                                    .setBundle(bundle)
-                                    .setAddToBackStack(false)
-                                    .setHasAnimation(true)
-                                    .build());
-                        } else {
-                            getActivity().finish();
-                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+                        bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, nickName);
+                        U.getFragmentUtils().addFragment(FragmentUtils
+                                .newAddParamsBuilder(getActivity(), EditInfoSexFragment.class)
+                                .setBundle(bundle)
+                                .setAddToBackStack(false)
+                                .setHasAnimation(true)
+                                .build());
+
+//                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+//                                .setNickName(nickName)
+//                                .build(), true);
+//                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+//                        if (MyUserInfoManager.getInstance().getSex() == 0) {
+//                            // 无性别数据
+//                            Bundle bundle = new Bundle();
+//                            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+//                            U.getFragmentUtils().addFragment(FragmentUtils
+//                                    .newAddParamsBuilder(getActivity(), EditInfoSexFragment.class)
+//                                    .setBundle(bundle)
+//                                    .setNotifyHideFragment(UploadAccountInfoFragment.class)
+//                                    .setAddToBackStack(false)
+//                                    .setHasAnimation(true)
+//                                    .build());
+//                        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+//                            // 无出生年月数据
+//                            Bundle bundle = new Bundle();
+//                            bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+//                            U.getFragmentUtils().addFragment(FragmentUtils
+//                                    .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+//                                    .setNotifyHideFragment(UploadAccountInfoFragment.class)
+//                                    .setBundle(bundle)
+//                                    .setAddToBackStack(false)
+//                                    .setHasAnimation(true)
+//                                    .build());
+//                        } else {
+//                            getActivity().finish();
+//                        }
                     } else {
                         // 昵称不可用
                         mNicknameHintTv.setVisibility(View.VISIBLE);

@@ -42,6 +42,7 @@ import io.reactivex.functions.Consumer;
 public class EditInfoSexFragment extends BaseFragment {
 
     boolean isUpload = false; //当前是否是完善个人资料
+    String uploadNickname;    //完善资料的昵称
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
@@ -60,7 +61,7 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
 
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mMale = (ExImageView) mRootView.findViewById(R.id.male);
@@ -117,8 +118,7 @@ public class EditInfoSexFragment extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mTitlebar.getLeftTextView().setVisibility(View.GONE);
-            mTitlebar.getLeftTextView().setClickable(false);
+            mMainActContainer.setBackgroundColor(Color.parseColor("#EFEFEF"));
 
             mTitlebar.getRightTextView().setText("2/3");
             mTitlebar.getCenterTextView().setText("完善个人信息");
@@ -129,7 +129,7 @@ public class EditInfoSexFragment extends BaseFragment {
             mNextTv.setVisibility(View.VISIBLE);
 
             isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
-            mMainActContainer.setBackgroundColor(Color.parseColor("#EFEFEF"));
+            uploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
         }
     }
 
@@ -139,20 +139,16 @@ public class EditInfoSexFragment extends BaseFragment {
             return;
         }
 
-        // 昵称可用
-        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                .setSex(sex)
-                .build(), true);
-
         if (isUpload) {
             if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
                 // 无出生年月数据
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+                bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, uploadNickname);
+                bundle.putInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX, sex);
                 U.getFragmentUtils().addFragment(FragmentUtils
                         .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
                         .setBundle(bundle)
-                        .setNotifyHideFragment(EditInfoSexFragment.class)
                         .setAddToBackStack(false)
                         .setHasAnimation(true)
                         .build());

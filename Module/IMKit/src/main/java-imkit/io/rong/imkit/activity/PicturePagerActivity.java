@@ -230,19 +230,16 @@ public class PicturePagerActivity extends RongBaseNoActionbarActivity implements
                                 File file1 = new File(localPath);
                                 File file2 = getImageSaveFile(largeImageUri.toString(), defaultPath);
                                 file1.renameTo(file2);
-                                U.getToastUtil().showShort("onCompleted");
                             }
 
                             @Override
                             public void onCanceled() {
                                 MyLog.d(TAG, "onCanceled");
-                                U.getToastUtil().showShort("onCanceled");
                             }
 
                             @Override
                             public void onFailed() {
                                 MyLog.d(TAG, "onFailed");
-                                U.getToastUtil().showShort("onFailed");
                             }
                         });
                         emitter.onComplete();

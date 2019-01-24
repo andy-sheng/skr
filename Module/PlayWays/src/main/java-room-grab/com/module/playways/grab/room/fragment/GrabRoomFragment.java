@@ -310,7 +310,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                             // 举报
                             dialog.dismiss();
                             isReport = true;
-                            U.getToastUtil().showShort("你点击了举报按钮");
                         } else if (view.getId() == R.id.follow_tv) {
                             // 关注
                             if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {

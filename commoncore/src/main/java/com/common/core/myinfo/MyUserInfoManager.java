@@ -143,6 +143,14 @@ public class MyUserInfoManager {
      * 更新用户信息
      */
     public void updateInfo(final MyInfoUpdateParams updateParams, final boolean updateLocalIfServerFailed) {
+        updateInfo(updateParams, updateLocalIfServerFailed, null);
+    }
+
+
+    /**
+     * 更新用户信息
+     */
+    public void updateInfo(final MyInfoUpdateParams updateParams, final boolean updateLocalIfServerFailed, final ServerCallback callback) {
 
         HashMap<String, Object> map = new HashMap<>();
         if (updateParams.nickName != null) {
@@ -224,11 +232,18 @@ public class MyUserInfoManager {
                                 // 有传地址位置
                                 U.getPreferenceUtils().setSettingLong(PREF_KEY_UPDATE_LACATION_TS, System.currentTimeMillis());
                             }
+                            if (callback != null) {
+                                callback.onSucess();
+                            }
                             emitter.onComplete();
                         }
                     })
                             .subscribeOn(Schedulers.io())
                             .subscribe();
+                } else {
+                    if (callback != null) {
+                        callback.onSucess();
+                    }
                 }
             }
         });
@@ -453,5 +468,11 @@ public class MyUserInfoManager {
                 return mParams;
             }
         }
+    }
+
+    public interface ServerCallback {
+        void onSucess();
+
+        void onFail();
     }
 }

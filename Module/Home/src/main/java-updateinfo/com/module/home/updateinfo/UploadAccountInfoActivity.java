@@ -20,6 +20,9 @@ import com.module.home.updateinfo.fragment.UploadAccountInfoFragment;
 public class UploadAccountInfoActivity extends BaseActivity {
 
     public static final String BUNDLE_IS_UPLOAD = "bundle_is_upload";
+    public static final String BUNDLE_UPLOAD_NICKNAME = "upload_nickname";
+    public static final String BUNDLE_UPLOAD_SEX = "upload_sex";
+    public static final String BUNDLE_UPLOAD_AGE = "upload_age";
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -31,23 +34,12 @@ public class UploadAccountInfoActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putBoolean(BUNDLE_IS_UPLOAD, true);
 
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName()) || TextUtils.isEmpty(MyUserInfoManager.getInstance().getAvatar())) {
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
+                || TextUtils.isEmpty(MyUserInfoManager.getInstance().getAvatar())
+                || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())
+                || MyUserInfoManager.getInstance().getSex() == 0) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, UploadAccountInfoFragment.class)
-                    .setBundle(bundle)
-                    .setAddToBackStack(false)
-                    .setHasAnimation(true)
-                    .build());
-        } else if (MyUserInfoManager.getInstance().getSex() == 0) {
-            U.getFragmentUtils().addFragment(FragmentUtils
-                    .newAddParamsBuilder(this, EditInfoSexFragment.class)
-                    .setBundle(bundle)
-                    .setAddToBackStack(false)
-                    .setHasAnimation(true)
-                    .build());
-        } else if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-            U.getFragmentUtils().addFragment(FragmentUtils
-                    .newAddParamsBuilder(this, EditInfoAgeFragment.class)
                     .setBundle(bundle)
                     .setAddToBackStack(false)
                     .setHasAnimation(true)
