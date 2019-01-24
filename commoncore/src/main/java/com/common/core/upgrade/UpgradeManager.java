@@ -36,12 +36,21 @@ public class UpgradeManager {
 
     public static final int MSG_UPDATE_PROGRESS = 1;
     public static final int MSG_INSTALL = 2;
+    private static final int MSG_RESET_INSTALL_FLAG = 3;
 
+    public static final int STATUS_UNLOAD = 1;
+    public static final int STATUS_LOADED = 3;
+
+    int mStatus = STATUS_UNLOAD;
     DownloadManager mDownloadManager;
-    DialogPlus mForceUpgradeDialog;
     UpgradeInfoModel mUpdateInfoModel;
     long mDownloadId;
+
     ForceUpgradeView mForceUpgradeView;
+    DialogPlus mForceUpgradeDialog;
+
+    DialogPlus mTipsInstallDialog;
+
     FinishReceiver mFinishReceiver;
     DownloadChangeObserver mDownloadChangeObserver;
 
@@ -63,59 +72,52 @@ public class UpgradeManager {
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_UPDATE_PROGRESS:
+                    DS ds = (DS) msg.obj;
                     if (mForceUpgradeView != null) {
-                        DS ds = (DS) msg.obj;
                         mForceUpgradeView.updateProgress(ds.getProgress());
-                        if (ds.status == DS.STATUS_SUCCESS) {
-                            // 如果已经下载完成，走安装逻辑
-                            install();
-                        }
+                    }
+                    if (ds.status == DS.STATUS_SUCCESS) {
+                        // 如果已经下载完成，走安装逻辑
+                        install();
                     }
                     break;
                 case MSG_INSTALL:
                     install();
+                    break;
+                case MSG_RESET_INSTALL_FLAG:
+                    if (mUpdateInfoModel != null) {
+                        mUpdateInfoModel.setInstalling(false);
+                    }
                     break;
             }
         }
     };
 
     public void checkUpdate() {
-        if (true) {
-            return;
-        }
         /**
          * 一旦拿到更新数据了，这个生命周期内就不访问了
          */
-        if (mUpdateInfoModel == null) {
-            if (true) {
-                //TEST
-                mUpdateInfoModel = new UpgradeInfoModel();
-                mUpdateInfoModel.setDownloadUrl("https://s1.zb.mi.com/miliao/apk/miliao/7.4/11.apk");
-                mUpdateInfoModel.setForceUpdate(true);
-                mUpdateInfoModel.setVersionCode(50021);
-
-                if (mUpdateInfoModel.isForceUpdate()) {
-                    // 如果是强制更新,不管那么多，直接弹窗
-                    showForceUpgradeDialog();
-                }
-                // 需要更新,弹窗
-                return;
-            }
+        if (true) {
+            //TEST
+            UpgradeInfoModel updateInfoModel = new UpgradeInfoModel();
+            updateInfoModel.setDownloadUrl("https://s1.zb.mi.com/miliao/apk/miliao/7.4/11.apk");
+            updateInfoModel.setForceUpdate(false);
+            updateInfoModel.setVersionCode(50021);
+            onGetUpgradeInfoModel(updateInfoModel);
+            return;
+        }
+        if (mStatus == STATUS_UNLOAD) {
             UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
             ApiMethods.subscribe(checkApi.getUpdateInfo(), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult apiResult) {
                     if (apiResult.getErrno() == 0) {
+                        mStatus = STATUS_LOADED;
                         boolean needUpdate = apiResult.getData().getBoolean("needUpdate");
-                        String updateInfo = apiResult.getData().getString("updateInfo");
-                        UpgradeInfoModel updateInfoModel = JSON.parseObject(updateInfo, UpgradeInfoModel.class);
-                        mUpdateInfoModel = updateInfoModel;
-                        if (needUpdate && updateInfoModel.getVersionCode() > U.getAppInfoUtils().getVersionCode()) {
-                            if (updateInfoModel.isForceUpdate()) {
-                                // 如果是强制更新,不管那么多，直接弹窗
-                                showForceUpgradeDialog();
-                            }
-                            // 需要更新,弹窗
+                        if (needUpdate) {
+                            String updateInfo = apiResult.getData().getString("updateInfo");
+                            UpgradeInfoModel updateInfoModel = JSON.parseObject(updateInfo, UpgradeInfoModel.class);
+                            onGetUpgradeInfoModel(updateInfoModel);
                         }
                     }
                 }
@@ -123,7 +125,56 @@ public class UpgradeManager {
         }
     }
 
-    public void showForceUpgradeDialog() {
+    private void onGetUpgradeInfoModel(UpgradeInfoModel updateInfoModel) {
+        mUpdateInfoModel = updateInfoModel;
+        if (updateInfoModel.getVersionCode() > U.getAppInfoUtils().getVersionCode()) {
+            if (updateInfoModel.isForceUpdate()) {
+                // 如果是强制更新,不管那么多，直接弹窗
+                showForceUpgradeDialog();
+            } else {
+                // 需要更新,弹窗
+                // 先判断本地有没有现成的
+                if (tryGetSaveFileApkVersion() == mUpdateInfoModel.getVersionCode()) {
+                    // 有现成的
+                    showTipsInstallDialog();
+                } else {
+                    if (U.getNetworkUtils().isWifi()) {
+                        // 如果是在wifi环境，默默下载
+                        MyLog.d(TAG, "不是wifi，非强制更新，静默下载");
+                        downloadApk(true);
+                    } else {
+                        MyLog.d(TAG, "不是wifi，非强制更新，算了");
+                    }
+                }
+            }
+        }
+    }
+
+    private void showTipsInstallDialog() {
+        if (mTipsInstallDialog == null) {
+            Activity activity = U.getActivityUtils().getTopActivity();
+            if (activity != null) {
+                TipsInstallView tipsInstallView = new TipsInstallView(activity);
+                tipsInstallView.setListener(new TipsInstallView.Listener() {
+                    @Override
+                    public void onInstallBtnClick() {
+                        install();
+                    }
+                });
+                mTipsInstallDialog = DialogPlus.newDialog(activity)
+                        .setContentHolder(new ViewHolder(tipsInstallView))
+                        .setGravity(Gravity.CENTER)
+                        .setCancelable(false)
+                        .setContentBackgroundResource(R.color.transparent)
+                        .setOverlayBackgroundResource(R.color.black_trans_80)
+                        .setExpanded(false)
+                        .create();
+            }
+        }
+        mTipsInstallDialog.show();
+    }
+
+    private void showForceUpgradeDialog() {
         if (mUpdateInfoModel == null) {
             return;
         }
@@ -159,9 +210,10 @@ public class UpgradeManager {
         int localVersionCode = tryGetSaveFileApkVersion();
         if (localVersionCode == mUpdateInfoModel.getVersionCode()) {
             // 本地包有效，直接安装吧
+            mUiHandler.removeMessages(MSG_INSTALL);
             mUiHandler.sendEmptyMessage(MSG_INSTALL);
         } else {
-            downloadApk();
+            downloadApk(false);
         }
     }
 
@@ -181,7 +233,7 @@ public class UpgradeManager {
     }
 
     // 下载apk
-    private void downloadApk() {
+    private void downloadApk(boolean mute) {
         if (mUpdateInfoModel == null) {
             return;
         }
@@ -193,13 +245,18 @@ public class UpgradeManager {
             saveFile.delete();
         }
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mUpdateInfoModel.getDownloadUrl()));
-//        request.setTitle(mUpdateInfoModel.getUpdateTitle());
-
         request.setMimeType("application/vnd.android.package-archive");
-        // 设置标题
-        request.setTitle(U.getAppInfoUtils().getAppName());
-        // 通知栏可见
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        if (!mute) {
+            // 设置标题
+            request.setTitle(U.getAppInfoUtils().getAppName());
+            // 通知栏可见
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            //执行下载任务时注册广播监听下载成功状态
+            registerObserver();
+            registerReceiver();
+        } else {
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+        }
         // 允许下载的网络状况
         int networkFlag;
         if (mUpdateInfoModel.isForceUpdate()) {
@@ -209,7 +266,6 @@ public class UpgradeManager {
         }
         request.setAllowedNetworkTypes(networkFlag);
         // 设置文件存放路径
-
         request.setDestinationUri(Uri.fromFile(getSaveFile()));
         // 设置漫游状态下是否可以下载
         request.setAllowedOverRoaming(false);
@@ -217,9 +273,6 @@ public class UpgradeManager {
         // 我们需要调用Request对象的setVisibleInDownloadsUi方法，传递参数true.
         request.setVisibleInDownloadsUi(true);
         mDownloadId = mDownloadManager.enqueue(request);
-        //执行下载任务时注册广播监听下载成功状态
-        registerObserver();
-        registerReceiver();
     }
 
     private void registerObserver() {
@@ -304,6 +357,15 @@ public class UpgradeManager {
         return file;
     }
 
+    private void dimissDialog() {
+        if (mForceUpgradeDialog != null) {
+            mForceUpgradeDialog.dismiss();
+        }
+        if (mTipsInstallDialog != null) {
+            mTipsInstallDialog.dismiss();
+        }
+    }
+
     /**
      * 安装逻辑
      */
@@ -318,16 +380,17 @@ public class UpgradeManager {
             MyLog.d(TAG, "已经在安装，cancel");
             return;
         }
-//        mUpdateInfoModel.setInstalling(true);
-        if (mForceUpgradeDialog != null) {
-            mForceUpgradeDialog.dismiss();
-        }
+        mUpdateInfoModel.setInstalling(true);
+        // 防止卡死，做个保护
+        mUiHandler.removeMessages(MSG_RESET_INSTALL_FLAG);
+        mUiHandler.sendEmptyMessageDelayed(MSG_RESET_INSTALL_FLAG, 4000);
+        dimissDialog();
         if (Build.VERSION.SDK_INT >= 23) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             // 由于没有在Activity环境下启动Activity,设置下面的标签
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             //参数1 上下文, 参数2 Provider主机地址 和配置文件中保持一致   参数3  共享的文件
-            Uri apkUri = MyFileProvider.getUriForFile(U.app(), U.getAppInfoUtils().getPackageName()+".provider", file);
+            Uri apkUri = MyFileProvider.getUriForFile(U.app(), U.getAppInfoUtils().getPackageName() + ".provider", file);
             //添加这一句表示对目标应用临时授权该Uri所代表的文件
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
