@@ -5,15 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.core.R;
-import com.module.RouterConstants;
 import com.common.core.cta.CTANotifyFragment;
-import com.common.core.scheme.processor.WaliliveProcessor;
-import com.common.core.scheme.specific.SpecificProcessor;
+import com.common.core.scheme.processor.ZqSchemeProcessorManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
@@ -92,75 +89,7 @@ public class SchemeSdkActivity extends BaseActivity {
 
     private void process(final Uri uri) throws Exception {
         MyLog.w(TAG, "process uri=" + uri);
-        if (uri == null) {
-            finish();
-            return;
-        }
-
-        String scheme = uri.getScheme();
-        MyLog.w(TAG, "process scheme=" + scheme);
-        if (TextUtils.isEmpty(scheme)) {
-            finish();
-            return;
-        }
-
-        final String host = uri.getHost();
-        MyLog.w(TAG, "process host=" + host);
-        if (TextUtils.isEmpty(host)) {
-            finish();
-            return;
-        }
-
-        if (scheme.equals(SchemeConstants.SCHEME_LIVESDK)
-                || host.equals(SchemeConstants.HOST_ZHIBO_COM)) {
-            final int channelId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_CHANNEL, 0);
-            String packageName = uri.getQueryParameter(SchemeConstants.PARAM_PACKAGE_NAME);
-            String channelSecret = uri.getQueryParameter(SchemeConstants.PARAM_CHANNEL_SECRET);
-            if (channelSecret == null) {
-                channelSecret = "";
-            }
-
-//            MiLiveSdkBinder.getInstance().secureOperate(channelId, packageName, channelSecret,
-//                    new SecureCommonCallBack() {
-//                        @Override
-//                        public void postSuccess() {
-//                            MyLog.w(TAG, "postSuccess callback");
-//                            if (SchemeProcessor.process(uri, host, SchemeSdkActivity.this, true)) {
-//                                // activity finish 内置处理
-//                                String key = String.format(StatisticsKey.KEY_VIEW_COUNT, channelId);
-//                                MyLog.d(TAG, "scheme process statistics=" + key);
-//                                if (!TextUtils.isEmpty(key)) {
-//                                    MilinkStatistics.getInstance().statisticsOtherActive(key, 1, channelId);
-//                                }
-//                            } else {
-//                                finish();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void postError() {
-//                            MyLog.w(TAG, "postError");
-//                            finish();
-//                        }
-//
-//                        @Override
-//                        public void processFailure() {
-//                            MyLog.w(TAG, "processFailure");
-//                            finish();
-//                        }
-//                    });
-        } else if (scheme.equals(SchemeConstants.SCHEME_WALILIVE)) {
-            // 内部处理，不对外暴露
-            if (WaliliveProcessor.process(uri, host, this, true)) {
-                // activity finish 内置处理
-            } else {
-                finish();
-            }
-        } else if (SpecificProcessor.process(uri, scheme, this)) {
-            finish();
-        } else {
-            finish();
-        }
+        ZqSchemeProcessorManager.getInstance().process(uri, this);
     }
 
     /**
@@ -170,9 +99,7 @@ public class SchemeSdkActivity extends BaseActivity {
      * @return
      */
     public boolean isNeedShowCtaDialog() {
-        if ("5005_1_android".equals(U.getChannelUtils().getChannel())) {
-            return U.getPreferenceUtils().getSettingBoolean(CTANotifyFragment.PREF_KEY_NEED_SHOW_CTA, true);
-        }
+
         return false;
     }
 }

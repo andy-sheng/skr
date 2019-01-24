@@ -5,10 +5,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.module.RouterConstants;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
 import com.common.log.MyLog;
+import com.module.RouterConstants;
 
 /**
  * Created by lan on 16/10/26.

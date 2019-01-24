@@ -25,7 +25,7 @@ public class SchemeConstants {
     /**
      * @notice Scheme : Walilive
      */
-    public static final String SCHEME_WALILIVE = "walilive";
+    public static final String SCHEME_INFRAMESKER = "inframesker";
 
     /**
      * 安全验证参数
@@ -212,7 +212,7 @@ public class SchemeConstants {
      */
     public static final HashSet<String> ALL_CHANNEL_SCHEME_TYPE = new HashSet<>(Arrays.asList(
             SchemeConstants.SCHEME_LIVESDK,
-            SchemeConstants.SCHEME_WALILIVE,
+            SchemeConstants.SCHEME_INFRAMESKER,
             SpecificConstants.SCHEME_GAMECENTER,
             SpecificConstants.SCHEME_HTTP,
             SpecificConstants.SCHEME_HTTPS

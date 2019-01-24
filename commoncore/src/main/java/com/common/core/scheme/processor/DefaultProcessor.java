@@ -7,22 +7,19 @@ import com.common.base.BaseActivity;
 import com.common.core.scheme.SchemeConstants;
 import com.common.log.MyLog;
 
+public class DefaultProcessor implements ISchemeProcessor {
+    public final static String TAG = SchemeConstants.LOG_PREFIX + "DefaultProcessor";
 
-/**
- * 以后有别的业务需要用再扩充
- */
-public class SchemeProcessor implements ISchemeProcessor {
-    private static final String TAG = SchemeConstants.LOG_PREFIX + SchemeProcessor.class.getSimpleName();
-
+    @Override
     public boolean process(@NonNull Uri uri, @NonNull BaseActivity activity) {
         MyLog.w(TAG, "" + uri);
         activity.finish();
-        return false;
+        return true;
     }
 
     @Override
     public boolean accept(Uri uri) {
         MyLog.w(TAG, "" + uri);
-        return false;
+        return true;
     }
 }
