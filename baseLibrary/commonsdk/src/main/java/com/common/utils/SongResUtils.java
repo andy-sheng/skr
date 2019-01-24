@@ -12,6 +12,7 @@ public class SongResUtils {
     public static final String SUFF_STAND = "mp3";
     public static final String SUFF_MIDI = "mid";
     public static final String SUFF_JSON = "json";
+    public static final String SUFF_TXT = "txt";
 
     //存储目录
     private static final String LYRIC_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "lyrics";
@@ -20,6 +21,7 @@ public class SongResUtils {
     private static final String MIDI_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "midi";
     private static final String SCORE_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "score";
     private static final String STAND_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "stand";
+    private static final String GRAB_LYRIC_DIR = U.getAppInfoUtils().getMainDir() + File.separator + "grabLyric";
 
     public static final String getLyricDir() {
         return LYRIC_DIR;
@@ -43,6 +45,10 @@ public class SongResUtils {
 
     public static final String getStandDir(){
         return STAND_DIR;
+    }
+
+    public static final String getGrabLyricDir(){
+        return GRAB_LYRIC_DIR;
     }
 
     public static final File getZRCELyricFileByUrl(String resUrl) {
@@ -75,6 +81,11 @@ public class SongResUtils {
         return getFile(STAND_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_STAND));
     }
 
+    public static final File getGrabLyricFileByUrl(String resUrl) {
+
+        return getFile(GRAB_LYRIC_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_TXT));
+    }
+
     private static File getFile(String dir, String url, String suff) {
         File file = new File(dir + File.separator + getFileNameWithMD5(url) + "." + suff);
 
@@ -105,5 +116,13 @@ public class SongResUtils {
 
     public static String createTempLyricFileName(String url) {
         return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_ZRCE;
+    }
+
+    public static String createStandLyricTempFileName(String url){
+        return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_TXT;
+    }
+
+    public static String createStandLyricFileName(String url){
+        return SongResUtils.getGrabLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + SUFF_TXT;
     }
 }

@@ -31,23 +31,22 @@ import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsLineInfo;
 
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.IOException;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okio.BufferedSource;
+import okio.Okio;
 
 /**
  * 你的主场景歌词
@@ -242,7 +241,7 @@ public class SelfSingCardView extends RelativeLayout {
 
     public String getNum(long num, int index) {
         String s = String.valueOf(num);
-        if(index > s.length() || index < 0){
+        if (index > s.length() || index < 0) {
             return "";
         }
 
@@ -316,45 +315,29 @@ public class SelfSingCardView extends RelativeLayout {
             mDisposable.dispose();
         }
 
-        File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
+        File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
 
         if (file == null) {
             MyLog.w(TAG, "playLyric is not in local file");
-            fetchLyricTask(songModel, play);
+            fetchLyricTask(songModel);
         } else {
             MyLog.w(TAG, "playLyric is exist");
-            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-            parseLyrics(fileName, play);
+            final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+            drawLyric(fileName);
         }
     }
 
-
-    private void parseLyrics(String fileName, boolean play) {
-        MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
-        mDisposable = LyricsManager.getLyricsManager(U.app()).loadLyricsObserable(fileName, fileName.hashCode() + "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retry(10)
-//                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(lyricsReader -> {
-                    lyricsReader.cut(mSongModel.getRankLrcBeginT(), mSongModel.getEndMs());
-                    drawLyric(fileName.hashCode() + "", lyricsReader, play);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
-    }
-
-    private void fetchLyricTask(SongModel songModel, boolean play) {
+    private void fetchLyricTask(SongModel songModel) {
         MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
         mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
-                File tempFile = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
+                File tempFile = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
 
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getLyric(), tempFile, null);
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), tempFile, null);
 
-                File oldName = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
-                File newName = new File(SongResUtils.createLyricFileName(songModel.getLyric()));
+                File oldName = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
+                File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
 
                 if (isSuccess) {
                     if (oldName.renameTo(newName)) {
@@ -375,22 +358,35 @@ public class SelfSingCardView extends RelativeLayout {
                 .retry(1000)
 //                .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(file -> {
-                    final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-                    parseLyrics(fileName, play);
+                    final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+                    drawLyric(fileName);
                 }, throwable -> {
                     MyLog.e(TAG, throwable);
                 });
     }
 
-    private void drawLyric(String fileNameHash, LyricsReader lyricsReader, boolean play) {
-        if (lyricsReader != null) {
-            lyricsReader.setHash(fileNameHash);
-            TreeMap<Integer, LyricsLineInfo> mLrcLineInfos = lyricsReader.getLrcLineInfos();
-            Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
-            while (it.hasNext()) {
-                mTvLyric.append(getLyricFromLyricsLineInfo(it.next().getValue()));
+    private void drawLyric(final File file) {
+        MyLog.w(TAG, "file is " + file);
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) {
+                if (file != null && file.exists() && file.isFile()) {
+                    try (BufferedSource source = Okio.buffer(Okio.source(file))) {
+                        emitter.onNext(source.readUtf8());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                emitter.onComplete();
             }
-        }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String o) {
+                mTvLyric.append(o);
+            }
+        }, throwable -> MyLog.e(TAG, throwable));
 
         startScroll();
         countDonw(mSongModel);

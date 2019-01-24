@@ -47,6 +47,7 @@ public class SongModel implements Serializable {
     private int standLrcBeginT;        //一唱到底第一句歌词的开始毫秒
     private int standLrcEndT;          //一唱到底歌词的结束毫秒
     private boolean isblank = false;   //一唱到底是否是白板item
+    private String standLrc = "";   //一唱到底是否是白板item
 
     public int getRankLrcBeginT() {
         return rankLrcBeginT;
@@ -94,6 +95,14 @@ public class SongModel implements Serializable {
 
     public void setLyric(String lyric) {
         this.lyric = lyric;
+    }
+
+    public String getStandLrc() {
+        return standLrc;
+    }
+
+    public void setStandLrc(String standLrc) {
+        this.standLrc = standLrc;
     }
 
     public String getOri() {
@@ -234,6 +243,7 @@ public class SongModel implements Serializable {
         this.setStandLrcBeginT(musicInfo.getStandLrcBeginT());
         this.setStandLrcEndT(musicInfo.getStandLrcEndT());
         this.setIsblank(musicInfo.getIsBlank());
+        this.setStandLrc(musicInfo.getStandLrc());
         setStandIntro(musicInfo.getStandIntro());
         setStandIntroBeginT(musicInfo.getStandIntroBeginT());
         setStandIntroEndT(musicInfo.getStandIntroEndT());
