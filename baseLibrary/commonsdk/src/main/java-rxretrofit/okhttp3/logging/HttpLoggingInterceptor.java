@@ -155,9 +155,15 @@ public final class HttpLoggingInterceptor implements Interceptor {
         if (level == Level.NONE) {
             return chain.proceed(request);
         }
-        if (!MyLog.isDebugLogOpen()) {
-            return chain.proceed(request);
+         String alwaysLog = request.header("ALWAYS_LOG");
+        if(TextUtils.isEmpty(alwaysLog)){
+            if (!MyLog.isDebugLogOpen()) {
+                return chain.proceed(request);
+            }
+        }else{
+            request = request.newBuilder().removeHeader("ALWAYS_LOG").build();
         }
+
         String noLog = request.header("NO-LOG");
         if (!TextUtils.isEmpty(noLog)) {
             request = request.newBuilder().removeHeader("NO-LOG").build();

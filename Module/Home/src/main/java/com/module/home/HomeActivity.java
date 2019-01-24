@@ -153,7 +153,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
             mHomePresenter.checkPermiss(this);
         }
         mFromCreate = false;
-        UpgradeManager.getInstance().checkUpdate();
+        UpgradeManager.getInstance().checkUpdate1();
 //        ExoPlayer exoPlayer = new ExoPlayer();
 //        exoPlayer.startPlay("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/audios/56e25fc3bccff9b8.aac");
 //

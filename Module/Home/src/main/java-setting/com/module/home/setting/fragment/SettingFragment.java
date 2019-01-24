@@ -15,6 +15,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.RomUtils;
@@ -203,6 +204,12 @@ public class SettingFragment extends BaseFragment {
                 MyLog.setForceOpenFlag(true);
                 U.getToastUtil().showShort("日志已开");
                 return false;
+            }
+        });
+        mVersionTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpgradeManager.getInstance().checkUpdate2();
             }
         });
     }

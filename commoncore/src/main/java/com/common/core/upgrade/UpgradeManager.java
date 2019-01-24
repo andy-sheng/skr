@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
 import android.view.Gravity;
 
 import com.alibaba.fastjson.JSON;
@@ -24,11 +25,13 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
 import java.io.File;
+import java.util.List;
 
 
 public class UpgradeManager {
@@ -38,18 +41,15 @@ public class UpgradeManager {
     public static final int MSG_INSTALL = 2;
     private static final int MSG_RESET_INSTALL_FLAG = 3;
 
-    public static final int STATUS_UNLOAD = 1;
-    public static final int STATUS_LOADED = 3;
+    UpgradeData mUpgradeData = new UpgradeData();
 
-    int mStatus = STATUS_UNLOAD;
     DownloadManager mDownloadManager;
-    UpgradeInfoModel mUpdateInfoModel;
-    long mDownloadId;
 
     ForceUpgradeView mForceUpgradeView;
     DialogPlus mForceUpgradeDialog;
 
-    DialogPlus mTipsInstallDialog;
+    NormalUpgradeView mNormalUpgradeView;
+    DialogPlus mNarmalUpgradeDialog;
 
     FinishReceiver mFinishReceiver;
     DownloadChangeObserver mDownloadChangeObserver;
@@ -76,108 +76,141 @@ public class UpgradeManager {
                     if (mForceUpgradeView != null) {
                         mForceUpgradeView.updateProgress(ds.getProgress());
                     }
-                    if (ds.status == DS.STATUS_SUCCESS) {
-                        // 如果已经下载完成，走安装逻辑
+                    if (mNormalUpgradeView != null) {
+                        mNormalUpgradeView.updateProgress(ds.getProgress());
+                    }
+                    if (mUpgradeData.getStatus() == UpgradeData.STATUS_DOWNLOWNED) {
                         install();
+                        // 如果已经下载完成，走安装逻辑
                     }
                     break;
                 case MSG_INSTALL:
                     install();
                     break;
                 case MSG_RESET_INSTALL_FLAG:
-                    if (mUpdateInfoModel != null) {
-                        mUpdateInfoModel.setInstalling(false);
+                    if (mUpgradeData.getStatus() == UpgradeData.STATUS_INSTALLING) {
+                        mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
                     }
+                    break;
+                default:
                     break;
             }
         }
     };
 
-    public void checkUpdate() {
+    public void checkUpdate1() {
+        if (true) {
+//            UpgradeInfoModel upgradeInfoModel = new UpgradeInfoModel();
+//            upgradeInfoModel.setDownloadURL("https://s1.zb.mi.com/miliao/apk/miliao/7.4/11.apk");
+//            upgradeInfoModel.setForceUpdate(false);
+//            upgradeInfoModel.setLatestVersionCode(2037);
+//            upgradeInfoModel.setPackageSize(1024 * 1024 * 24 + 1024 * 800);
+//            onGetUpgradeInfoModel(upgradeInfoModel);
+            return;
+        }
         /**
          * 一旦拿到更新数据了，这个生命周期内就不访问了
          */
-        if (true) {
-            //TEST
-            UpgradeInfoModel updateInfoModel = new UpgradeInfoModel();
-            updateInfoModel.setDownloadUrl("https://s1.zb.mi.com/miliao/apk/miliao/7.4/11.apk");
-            updateInfoModel.setForceUpdate(false);
-            updateInfoModel.setVersionCode(50021);
-            onGetUpgradeInfoModel(updateInfoModel);
-            return;
-        }
-        if (mStatus == STATUS_UNLOAD) {
-            UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
-            ApiMethods.subscribe(checkApi.getUpdateInfo(), new ApiObserver<ApiResult>() {
-                @Override
-                public void process(ApiResult apiResult) {
-                    if (apiResult.getErrno() == 0) {
-                        mStatus = STATUS_LOADED;
-                        boolean needUpdate = apiResult.getData().getBoolean("needUpdate");
-                        if (needUpdate) {
-                            String updateInfo = apiResult.getData().getString("updateInfo");
-                            UpgradeInfoModel updateInfoModel = JSON.parseObject(updateInfo, UpgradeInfoModel.class);
-                            onGetUpgradeInfoModel(updateInfoModel);
-                        }
-                    }
-                }
-            });
+        if (mUpgradeData.getStatus() == UpgradeData.STATUS_INIT) {
+            mUpgradeData.setNeedShowDialog(false);
+            loadDataFromServer();
         }
     }
 
+    public void checkUpdate2() {
+        mUpgradeData.setNeedShowDialog(true);
+        loadDataFromServer();
+    }
+
+    private void loadDataFromServer() {
+        UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
+        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 1, 1, U.getAppInfoUtils().getVersionCode()),
+                new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult apiResult) {
+                        if (apiResult.getErrno() == 0) {
+                            mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
+                            boolean needUpdate = apiResult.getData().getBoolean("needUpdate");
+                            if (needUpdate) {
+                                String updateInfo = apiResult.getData().getString("updateInfo");
+                                UpgradeInfoModel updateInfoModel = JSON.parseObject(updateInfo, UpgradeInfoModel.class);
+                                onGetUpgradeInfoModel(updateInfoModel);
+                            }
+                        }
+                    }
+                });
+    }
+
     private void onGetUpgradeInfoModel(UpgradeInfoModel updateInfoModel) {
-        mUpdateInfoModel = updateInfoModel;
-        if (updateInfoModel.getVersionCode() > U.getAppInfoUtils().getVersionCode()) {
-            if (updateInfoModel.isForceUpdate()) {
-                // 如果是强制更新,不管那么多，直接弹窗
-                showForceUpgradeDialog();
-            } else {
-                // 需要更新,弹窗
-                // 先判断本地有没有现成的
-                if (tryGetSaveFileApkVersion() == mUpdateInfoModel.getVersionCode()) {
-                    // 有现成的
-                    showTipsInstallDialog();
+        if (updateInfoModel != null) {
+            mUpgradeData.setUpgradeInfoModel(updateInfoModel);
+            if (updateInfoModel.getLatestVersionCode() > U.getAppInfoUtils().getVersionCode()) {
+                // 需要更新
+                if (updateInfoModel.isForceUpdate()) {
+                    // 如果是强制更新,不管那么多，直接弹窗
+                    showForceUpgradeDialog();
                 } else {
-                    if (U.getNetworkUtils().isWifi()) {
-                        // 如果是在wifi环境，默默下载
-                        MyLog.d(TAG, "不是wifi，非强制更新，静默下载");
-                        downloadApk(true);
+                    // 需要更新,弹窗
+                    // 先判断本地有没有现成的
+                    if (mUpgradeData.isNeedShowDialog()) {
+                        showNormalUpgradeDialog();
                     } else {
-                        MyLog.d(TAG, "不是wifi，非强制更新，算了");
+                        if (U.getNetworkUtils().isWifi()) {
+                            // 如果是在wifi环境，默默下载
+                            MyLog.d(TAG, "不是wifi，非强制更新，静默下载");
+                            downloadApk(true);
+                        } else {
+                            MyLog.d(TAG, "不是wifi，非强制更新，算了");
+                        }
                     }
                 }
             }
         }
     }
 
-    private void showTipsInstallDialog() {
-        if (mTipsInstallDialog == null) {
+    private void showNormalUpgradeDialog() {
+        if (mNarmalUpgradeDialog == null) {
             Activity activity = U.getActivityUtils().getTopActivity();
             if (activity != null) {
-                TipsInstallView tipsInstallView = new TipsInstallView(activity);
-                tipsInstallView.setListener(new TipsInstallView.Listener() {
+                mNormalUpgradeView = new NormalUpgradeView(activity);
+                mNormalUpgradeView.setListener(new NormalUpgradeView.Listener() {
                     @Override
-                    public void onInstallBtnClick() {
-                        install();
+                    public void onUpdateBtnClick() {
+                        forceDownloadBegin();
+                    }
+
+                    @Override
+                    public void onQuitBtnClick() {
+                        cancelDownload();
+                        dimissDialog();
+                    }
+
+                    @Override
+                    public void onCancelBtnClick() {
+                        cancelDownload();
+                        dimissDialog();
                     }
                 });
-                mTipsInstallDialog = DialogPlus.newDialog(activity)
-                        .setContentHolder(new ViewHolder(tipsInstallView))
+                mNarmalUpgradeDialog = DialogPlus.newDialog(activity)
+                        .setContentHolder(new ViewHolder(mNormalUpgradeView))
                         .setGravity(Gravity.CENTER)
-                        .setCancelable(false)
+                        .setCancelable(true)
                         .setContentBackgroundResource(R.color.transparent)
                         .setOverlayBackgroundResource(R.color.black_trans_80)
                         .setExpanded(false)
                         .create();
             }
         }
-        mTipsInstallDialog.show();
+        int localVersionCode = tryGetSaveFileApkVersion();
+        if (localVersionCode == mUpgradeData.getUpgradeInfoModel().getLatestVersionCode()) {
+            // 本地包有效，直接安装吧
+            mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
+            mNormalUpgradeView.setAlreadyDownloadTips();
+        }
+        mNarmalUpgradeDialog.show();
     }
 
     private void showForceUpgradeDialog() {
-        if (mUpdateInfoModel == null) {
-            return;
-        }
         if (mForceUpgradeDialog == null) {
             Activity activity = U.getActivityUtils().getTopActivity();
             if (activity != null) {
@@ -189,8 +222,13 @@ public class UpgradeManager {
                     }
 
                     @Override
-                    public void onInstallBtnClick() {
-                        install();
+                    public void onQuitBtnClick() {
+                        Process.killProcess(Process.myPid());
+                    }
+
+                    @Override
+                    public void onCancelBtnClick() {
+                        cancelDownload();
                     }
                 });
                 mForceUpgradeDialog = DialogPlus.newDialog(activity)
@@ -203,15 +241,22 @@ public class UpgradeManager {
                         .create();
             }
         }
+        mForceUpgradeView.bindData(mUpgradeData.getUpgradeInfoModel());
+        int localVersionCode = tryGetSaveFileApkVersion();
+        if (localVersionCode == mUpgradeData.getUpgradeInfoModel().getLatestVersionCode()) {
+            // 本地包有效，直接安装吧
+            mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
+            mForceUpgradeView.setAlreadyDownloadTips();
+        }
         mForceUpgradeDialog.show();
     }
 
     private void forceDownloadBegin() {
         int localVersionCode = tryGetSaveFileApkVersion();
-        if (localVersionCode == mUpdateInfoModel.getVersionCode()) {
+        if (localVersionCode == mUpgradeData.getUpgradeInfoModel().getLatestVersionCode()) {
             // 本地包有效，直接安装吧
-            mUiHandler.removeMessages(MSG_INSTALL);
-            mUiHandler.sendEmptyMessage(MSG_INSTALL);
+            mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
+            install();
         } else {
             downloadApk(false);
         }
@@ -219,47 +264,72 @@ public class UpgradeManager {
 
     private int tryGetSaveFileApkVersion() {
         File saveFile = getSaveFile();
+        int version = 0;
         if (saveFile.exists()) {
             try {
                 PackageManager pm = U.app().getApplicationContext().getPackageManager();
                 PackageInfo packageInfo = pm.getPackageArchiveInfo(saveFile.getAbsolutePath(), PackageManager.GET_ACTIVITIES);
-                if (U.getAppInfoUtils().getPackageName().equals(packageInfo)) {
-                    return packageInfo.versionCode;
+                if (U.getAppInfoUtils().getPackageName().equals(packageInfo.packageName)) {
+                    version = packageInfo.versionCode;
                 }
             } catch (Exception e) {
             }
+        } else {
+            MyLog.d(TAG, "tryGetSaveFileApkVersion saveFile not exist");
         }
-        return 0;
+        MyLog.d(TAG, "tryGetSaveFileApkVersion saveFileApkVersion:" + version);
+        return version;
     }
 
     // 下载apk
-    private void downloadApk(boolean mute) {
-        if (mUpdateInfoModel == null) {
+    private void downloadApk(final boolean mute) {
+        if (mUpgradeData.getStatus() >= UpgradeData.STATUS_DOWNLOWNING) {
             return;
         }
-        if (mUpdateInfoModel.isDownloading()) {
-            return;
+        mUpgradeData.setMute(mute);
+        Activity topActivity = U.getActivityUtils().getTopActivity();
+        boolean hasPer = U.getPermissionUtils().checkExternalStorage(topActivity);
+        if (!hasPer) {
+            U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    downloadApkInner();
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+
+                }
+            }, topActivity);
+        } else {
+            downloadApkInner();
         }
+    }
+
+    private void downloadApkInner() {
         File saveFile = getSaveFile();
         if (saveFile.exists()) {
             saveFile.delete();
         }
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mUpdateInfoModel.getDownloadUrl()));
+        UpgradeInfoModel updateInfoModel = mUpgradeData.getUpgradeInfoModel();
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(updateInfoModel.getDownloadURL()));
         request.setMimeType("application/vnd.android.package-archive");
-        if (!mute) {
+        if (!mUpgradeData.isMute()) {
             // 设置标题
             request.setTitle(U.getAppInfoUtils().getAppName());
             // 通知栏可见
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            //执行下载任务时注册广播监听下载成功状态
-            registerObserver();
-            registerReceiver();
         } else {
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
         }
         // 允许下载的网络状况
         int networkFlag;
-        if (mUpdateInfoModel.isForceUpdate()) {
+        if (updateInfoModel.isForceUpdate()) {
             networkFlag = DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI;
         } else {
             networkFlag = DownloadManager.Request.NETWORK_WIFI;
@@ -272,7 +342,11 @@ public class UpgradeManager {
         // 如果我们希望下载的文件可以被系统的Downloads应用扫描到并管理，
         // 我们需要调用Request对象的setVisibleInDownloadsUi方法，传递参数true.
         request.setVisibleInDownloadsUi(true);
-        mDownloadId = mDownloadManager.enqueue(request);
+        long downloadId = mDownloadManager.enqueue(request);
+        mUpgradeData.setDownloadId(downloadId);
+        //执行下载任务时注册广播监听下载成功状态
+        registerObserver();
+        registerReceiver();
     }
 
     private void registerObserver() {
@@ -294,8 +368,8 @@ public class UpgradeManager {
     }
 
     private void unregister() {
-        if (mDownloadId > 0) {
-            mDownloadManager.remove(mDownloadId);
+        if (mUpgradeData.getDownloadId() > 0) {
+            mDownloadManager.remove(mUpgradeData.getDownloadId());
         }
         if (mDownloadChangeObserver != null) {
             U.app().getContentResolver().unregisterContentObserver(mDownloadChangeObserver);
@@ -308,7 +382,8 @@ public class UpgradeManager {
     }
 
     private void cancelDownload() {
-
+        unregister();
+        mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
     }
 
     /**
@@ -340,11 +415,17 @@ public class UpgradeManager {
     }
 
     private void updateProgress() {
-        DS ds = getBytesAndStatus(mDownloadId);
+        DS ds = getBytesAndStatus(mUpgradeData.getDownloadId());
         if (ds.status == DS.STATUS_DOWNLOADING) {
-            mUpdateInfoModel.setDownloading(true);
+            if (mUpgradeData.getStatus() < UpgradeData.STATUS_DOWNLOWNING) {
+                mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNING);
+            }
+        } else if (ds.status == DS.STATUS_SUCCESS) {
+            if (mUpgradeData.getStatus() < UpgradeData.STATUS_DOWNLOWNED) {
+                mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
+            }
         } else {
-            mUpdateInfoModel.setDownloading(false);
+            mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
         }
         MyLog.d(TAG, "updateProgress " + ds);
         Message msg = mUiHandler.obtainMessage(MSG_UPDATE_PROGRESS);
@@ -361,26 +442,26 @@ public class UpgradeManager {
         if (mForceUpgradeDialog != null) {
             mForceUpgradeDialog.dismiss();
         }
-        if (mTipsInstallDialog != null) {
-            mTipsInstallDialog.dismiss();
+        if (mNarmalUpgradeDialog != null) {
+            mNarmalUpgradeDialog.dismiss();
         }
     }
 
     /**
      * 安装逻辑
      */
-    public void install() {
+    private void install() {
         MyLog.d(TAG, "install");
         File file = getSaveFile();
         if (file == null || !file.exists()) {
             MyLog.d(TAG, "文件不存在，cancel");
             return;
         }
-        if (mUpdateInfoModel.isInstalling()) {
+        if (mUpgradeData.getStatus() >= UpgradeData.STATUS_INSTALLING) {
             MyLog.d(TAG, "已经在安装，cancel");
             return;
         }
-        mUpdateInfoModel.setInstalling(true);
+        mUpgradeData.setStatus(UpgradeData.STATUS_INSTALLING);
         // 防止卡死，做个保护
         mUiHandler.removeMessages(MSG_RESET_INSTALL_FLAG);
         mUiHandler.sendEmptyMessageDelayed(MSG_RESET_INSTALL_FLAG, 4000);
@@ -408,8 +489,7 @@ public class UpgradeManager {
     private void onInstallOk() {
         MyLog.d(TAG, "onInstallOk");
         unregister();
-        mUpdateInfoModel.setDownloading(false);
-        mUpdateInfoModel.setInstalling(false);
+        mUpgradeData.setStatus(UpgradeData.STATUS_FINISH);
         U.getToastUtil().showShort("安装成功");
     }
 
@@ -465,8 +545,11 @@ public class UpgradeManager {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(DownloadManager.EXTRA_DOWNLOAD_ID)) {
                 long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                if (id == mDownloadId) {
-                    install();
+                if (id == mUpgradeData.getDownloadId()) {
+                    mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
+                    if (!mUpgradeData.isMute()) {
+                        install();
+                    }
                 }
             } else if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
                 String packageName = intent.getData().getSchemeSpecificPart();

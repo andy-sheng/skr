@@ -1,54 +1,41 @@
 package com.common.core.upgrade;
 
+
+import android.text.TextUtils;
+
 public class UpgradeInfoModel {
-    String downloadUrl;
-    long date;
-    int versionCode;
+    String downloadURL;
+    long updateTimeMs;
+    int latestVersionCode;
     boolean forceUpdate;
-    long size;
+    long packageSize;
     String updateTitle;
-    String updateMsg;
-    boolean downloading = false;
-    boolean installing = false;
+    String updateContent;
+    String mVersionName;
+    String mPackageSizeStr;
 
-    public boolean isDownloading() {
-        return downloading;
+    public String getDownloadURL() {
+        return downloadURL;
     }
 
-    public void setDownloading(boolean downloading) {
-        this.downloading = downloading;
+    public void setDownloadURL(String downloadURL) {
+        this.downloadURL = downloadURL;
     }
 
-    public boolean isInstalling() {
-        return installing;
+    public long getUpdateTimeMs() {
+        return updateTimeMs;
     }
 
-    public void setInstalling(boolean installing) {
-        this.installing = installing;
+    public void setUpdateTimeMs(long updateTimeMs) {
+        this.updateTimeMs = updateTimeMs;
     }
 
-    public String getDownloadUrl() {
-        return downloadUrl;
+    public int getLatestVersionCode() {
+        return latestVersionCode;
     }
 
-    public void setDownloadUrl(String downloadUrl) {
-        this.downloadUrl = downloadUrl;
-    }
-
-    public long getDate() {
-        return date;
-    }
-
-    public void setDate(long date) {
-        this.date = date;
-    }
-
-    public int getVersionCode() {
-        return versionCode;
-    }
-
-    public void setVersionCode(int versionCode) {
-        this.versionCode = versionCode;
+    public void setLatestVersionCode(int latestVersionCode) {
+        this.latestVersionCode = latestVersionCode;
     }
 
     public boolean isForceUpdate() {
@@ -59,12 +46,12 @@ public class UpgradeInfoModel {
         this.forceUpdate = forceUpdate;
     }
 
-    public long getSize() {
-        return size;
+    public long getPackageSize() {
+        return packageSize;
     }
 
-    public void setSize(long size) {
-        this.size = size;
+    public void setPackageSize(long packageSize) {
+        this.packageSize = packageSize;
     }
 
     public String getUpdateTitle() {
@@ -75,11 +62,29 @@ public class UpgradeInfoModel {
         this.updateTitle = updateTitle;
     }
 
-    public String getUpdateMsg() {
-        return updateMsg;
+    public String getUpdateContent() {
+        return updateContent;
     }
 
-    public void setUpdateMsg(String updateMsg) {
-        this.updateMsg = updateMsg;
+    public void setUpdateContent(String updateContent) {
+        this.updateContent = updateContent;
+    }
+
+    public String getVersionName() {
+        if (TextUtils.isEmpty(mVersionName)) {
+            int a = latestVersionCode / 1000;
+            int b = (latestVersionCode - a * 1000) / 100;
+            int c = (latestVersionCode - a * 1000 - b * 100);
+            mVersionName = a + "." + b + "." + c;
+        }
+        return mVersionName;
+    }
+
+    public String getPackageSizeStr() {
+        if(TextUtils.isEmpty(mPackageSizeStr)){
+//            int a  = (int) (packageSize/(1024*1024));
+            mPackageSizeStr = String.format("%.1fM",packageSize/(1024*1024.0));
+        }
+        return mPackageSizeStr;
     }
 }

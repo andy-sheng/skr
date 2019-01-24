@@ -33,8 +33,9 @@ public class ApiManager {
      * 会影响 {@link HttpLoggingInterceptor 中的日志打印}
      * 比如 心跳日志就不打印 太多了
      */
-    public static final String NO_LOG_TAG = "NO-LOG: true";
-    public static final String NO_NEED_LOGIN_TAG = "NO_NEED_LOGIN: yes";
+    public static final String NO_LOG_TAG = "NO-LOG: true";// 永远都没日志，不管什么版本
+    public static final String ALWAYS_LOG_TAG = "ALWAYS_LOG: true"; // 永远都有日志，不管什么版本
+    public static final String NO_NEED_LOGIN_TAG = "NO_NEED_LOGIN: yes"; // 这个请求不需要登录也能发
 
     private Retrofit mDefalutRetrofit;
 
@@ -138,9 +139,7 @@ public class ApiManager {
                     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                         @Override
                         public void log(String message) {
-                            if (MyLog.isDebugLogOpen()) {
                                 MyLog.w(TAG, message);
-                            }
                         }
                     });
                     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

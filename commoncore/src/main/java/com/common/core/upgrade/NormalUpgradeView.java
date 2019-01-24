@@ -9,8 +9,7 @@ import android.widget.RelativeLayout;
 import com.common.core.R;
 import com.common.view.ex.ExTextView;
 
-public class ForceUpgradeView extends RelativeLayout {
-    ExTextView mContentTv;
+public class NormalUpgradeView extends RelativeLayout {
     ExTextView mSizeTipsTv;
     LinearLayout mOpContainer;
     ExTextView mQuitBtn;
@@ -23,26 +22,25 @@ public class ForceUpgradeView extends RelativeLayout {
 
     Listener mListener;
 
-    public ForceUpgradeView(Context context) {
+    public NormalUpgradeView(Context context) {
         super(context);
         init();
     }
 
-    public ForceUpgradeView(Context context, AttributeSet attrs) {
+    public NormalUpgradeView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ForceUpgradeView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NormalUpgradeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
 
     private void init() {
-        inflate(getContext(), R.layout.force_upgrade_view_layout, this);
+        inflate(getContext(), R.layout.normal_upgrade_view_layout, this);
 
-        mContentTv = (ExTextView)this.findViewById(R.id.content_tv);
         mVersionTipsTv = this.findViewById(R.id.version_tips_tv);
         mSizeTipsTv = (ExTextView)this.findViewById(R.id.size_tips_tv);
         mOpContainer = (LinearLayout)this.findViewById(R.id.op_container);
@@ -91,7 +89,6 @@ public class ForceUpgradeView extends RelativeLayout {
     }
 
     public void bindData(UpgradeInfoModel upgradeInfoModel) {
-        mContentTv.setText(upgradeInfoModel.getUpdateContent());
         mVersionTipsTv.setText(upgradeInfoModel.getVersionName());
         mSizeTipsTv.setText("更新包"+upgradeInfoModel.getPackageSizeStr()+",建议在wifi环境下载更新");
         mUpdateBtn.setText("更新");

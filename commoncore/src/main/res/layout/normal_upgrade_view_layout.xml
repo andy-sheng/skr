@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/view_345_dp"
-    android:layout_height="@dimen/view_362_dp"
-    android:background="@drawable/qiangzhigengxin_bj">
+    android:layout_width="@dimen/view_347_dp"
+    android:layout_height="@dimen/view_257_dp"
+    android:background="@drawable/xinbanben_bj">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/version_tips_tv"
@@ -16,19 +16,6 @@
         android:textColor="#ffffffff"
         android:textSize="@dimen/view_13_dp" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/content_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/view_52_dp"
-        android:layout_marginTop="@dimen/view_155_dp"
-        android:layout_marginRight="@dimen/view_52_dp"
-        android:gravity="center"
-        android:text="撕歌准备了一个新的大版本给你 为了与其他玩家正常玩耍 快来更新吧～"
-        android:textColor="#ff0c2275"
-        android:textSize="@dimen/view_17_dp"
-        android:textStyle="bold" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/size_tips_tv"
@@ -60,7 +47,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="取消"
+            android:text="退出"
             android:textColor="#0C2275"
             android:textSize="@dimen/view_16_dp"
             android:textStyle="bold" />
