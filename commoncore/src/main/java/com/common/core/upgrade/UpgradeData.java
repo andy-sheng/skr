@@ -13,6 +13,7 @@ public class UpgradeData {
     boolean mute = false;
     long mDownloadId;
     boolean needShowDialog = false;
+    private boolean mNeedUpdate;
 
     public boolean isNeedShowDialog() {
         return needShowDialog;
@@ -52,5 +53,13 @@ public class UpgradeData {
 
     public void setUpgradeInfoModel(UpgradeInfoModel upgradeInfoModel) {
         mUpgradeInfoModel = upgradeInfoModel;
+    }
+
+    public void setNeedUpdate(boolean needUpdate) {
+        mNeedUpdate = needUpdate;
+    }
+
+    public boolean getNeedUpdate() {
+        return mNeedUpdate;
     }
 }

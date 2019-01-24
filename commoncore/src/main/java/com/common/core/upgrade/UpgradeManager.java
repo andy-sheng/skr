@@ -132,6 +132,7 @@ public class UpgradeManager {
                         if (apiResult.getErrno() == 0) {
                             mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
                             boolean needUpdate = apiResult.getData().getBoolean("needUpdate");
+                            mUpgradeData.setNeedUpdate(needUpdate);
                             if (needUpdate) {
                                 String updateInfo = apiResult.getData().getString("updateInfo");
                                 UpgradeInfoModel updateInfoModel = JSON.parseObject(updateInfo, UpgradeInfoModel.class);
