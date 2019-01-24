@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
@@ -42,6 +43,7 @@ public class EditInfoSexFragment extends BaseFragment {
 
     boolean isUpload = false; //当前是否是完善个人资料
 
+    RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     ExImageView mMale;
     ExImageView mMaleTaoxin;
@@ -58,6 +60,8 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
+
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mMale = (ExImageView) mRootView.findViewById(R.id.male);
         mMaleTaoxin = (ExImageView) mRootView.findViewById(R.id.male_taoxin);
@@ -125,6 +129,7 @@ public class EditInfoSexFragment extends BaseFragment {
             mNextTv.setVisibility(View.VISIBLE);
 
             isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
+            mMainActContainer.setBackgroundColor(Color.parseColor("#EFEFEF"));
         }
     }
 

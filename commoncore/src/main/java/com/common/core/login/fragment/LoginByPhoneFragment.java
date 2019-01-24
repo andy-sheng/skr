@@ -65,6 +65,12 @@ public class LoginByPhoneFragment extends BaseFragment {
 
         mPhoneInputTv.setText(U.getPreferenceUtils().getSettingString(PREF_KEY_PHONE_NUM, ""));
 
+        if (TextUtils.isEmpty(mPhoneInputTv.getText().toString().trim())) {
+            mPhoneInputTv.requestFocus();
+        } else {
+            mCodeInputTv.requestFocus();
+        }
+
         RxView.clicks(mGetCodeTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
@@ -114,6 +120,8 @@ public class LoginByPhoneFragment extends BaseFragment {
                                 .build());
                     }
                 });
+
+        mLoginTv.setClickable(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -149,6 +157,8 @@ public class LoginByPhoneFragment extends BaseFragment {
                     mCodeInputTv.setFocusable(true);
                     mCodeInputTv.setFocusableInTouchMode(true);
                     mCodeInputTv.requestFocus();
+                    mLoginTv.setClickable(true);
+                    mLoginTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
                     startTimeTask();
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg());

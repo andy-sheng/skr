@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
@@ -39,6 +40,7 @@ public class EditInfoAgeFragment extends BaseFragment {
 
     boolean isUpload = false; //当前是否是完善个人资料
 
+    RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     FrameLayout mFrameLayout;
 
@@ -52,12 +54,10 @@ public class EditInfoAgeFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
-
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mFrameLayout = (FrameLayout) mRootView.findViewById(R.id.frame_layout);
         mCompleteTv = (ExTextView) mRootView.findViewById(R.id.complete_tv);
-
 
         initTimePicker();
 
@@ -102,6 +102,7 @@ public class EditInfoAgeFragment extends BaseFragment {
 
             mCompleteTv.setVisibility(View.VISIBLE);
             isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
+            mMainActContainer.setBackgroundColor(Color.parseColor("#EFEFEF"));
         }
     }
 
