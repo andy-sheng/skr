@@ -40,9 +40,7 @@
             android:textColor="@color/black" />
 
         <com.common.view.ex.ExTextView
-
             android:layout_marginLeft="@dimen/view_25_dp"
-            android:visibility="gone"
             android:id="@+id/qq_login_tv"
             android:layout_width="@dimen/view_64_dp"
             android:layout_height="@dimen/view_64_dp"

@@ -300,10 +300,15 @@ public class UserAccountManager {
 
     }
 
-    // 微信登录
+    /**
+     * 第三方登录
+     * @param mode 3 为微信登录, 4 为qq
+     * @param accessToken
+     * @param openId
+     */
     public void loginByThirdPart(int mode, String accessToken, String openId) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        // 3 为微信登录
+        //
         userAccountServerApi.loginWX(mode, accessToken, openId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {

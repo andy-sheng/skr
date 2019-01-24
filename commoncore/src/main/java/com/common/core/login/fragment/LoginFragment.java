@@ -31,7 +31,7 @@ import io.reactivex.functions.Predicate;
 
 public class LoginFragment extends BaseFragment {
 
-    public static final int QQ_MODE = 4;
+    public static final int QQ_MODE = 2;
     public static final int WX_MODE = 3;
     RelativeLayout mMainActContainer;
     ExTextView mLogoTv;
