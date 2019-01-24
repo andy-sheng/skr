@@ -127,6 +127,21 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getReginRank(@Query("userID") int userID);
 
 
+    /**
+     * 获取自己的排行榜升降
+     *
+     * @return
+     */
+    @GET("/v1/rank/region-diff")
+    Observable<ApiResult> getReginDiff();
+
+
+    /**
+     * 举报
+     *
+     * @param body
+     * @return
+     */
     @PUT("v1/report/upload")
     Observable<ApiResult> report(@Body RequestBody body);
 }

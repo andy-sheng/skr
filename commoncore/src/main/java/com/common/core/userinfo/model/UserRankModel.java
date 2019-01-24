@@ -34,6 +34,7 @@ public class UserRankModel implements Serializable {
     private String text;       // 排行描述
     private String highlight;  // 排行描述中高亮部分
     private int diff;          // 上升和下降
+    private int badge;         // 类别
 
     public int getCategory() {
         return category;
@@ -121,6 +122,14 @@ public class UserRankModel implements Serializable {
 
     public void setDiff(int diff) {
         this.diff = diff;
+    }
+
+    public int getBadge() {
+        return badge;
+    }
+
+    public void setBadge(int badge) {
+        this.badge = badge;
     }
 
     @Override
