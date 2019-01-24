@@ -185,6 +185,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     }
 
     @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return true;
+    }
+
+    @Override
     public boolean canSlide() {
         return false;
     }
