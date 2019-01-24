@@ -35,6 +35,7 @@ public class GrabMatchActivity extends BaseActivity {
                         .addDataBeforeAdd(0, prepareData)
                         .build()
         );
+        U.getStatusBarUtil().setTransparentBar(this, false);
     }
 
     @Override

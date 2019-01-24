@@ -18,6 +18,7 @@
         android:layout_height="@dimen/view_50_dp"
         >
         <ImageView
+            android:id="@+id/iv_blue_bg"
             android:layout_marginRight="@dimen/view_15_dp"
             android:background="@drawable/daojishi_bj"
             android:layout_alignParentBottom="true"
@@ -25,8 +26,9 @@
             android:layout_height="@dimen/view_32_dp" />
 
         <LinearLayout
-            android:layout_marginRight="@dimen/view_20_dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignRight="@+id/iv_blue_bg"
+            android:layout_alignLeft="@+id/iv_blue_bg"
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_marginBottom="@dimen/view_10_dp"
             android:layout_width="wrap_content"

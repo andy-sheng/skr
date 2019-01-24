@@ -103,7 +103,8 @@
         android:id="@+id/grab_op_btn"
         android:layout_width="@dimen/view_141_dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/comment_view"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_181_dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/vote_btn_circle_normal" />
 

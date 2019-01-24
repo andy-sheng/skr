@@ -21,188 +21,192 @@
     </RelativeLayout>
 
     <!--<com.opensource.svgaplayer.SVGAImageView-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:id="@+id/svga_match_success_bg"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1000dp"-->
-        <!--app:antiAlias="true"-->
-        <!--app:autoPlay="false"-->
-        <!--app:loopCount="-1" />-->
-
-    <com.opensource.svgaplayer.SVGAImageView
-        android:visibility="visible"
-        android:id="@+id/svga_match_success_bg"
-        android:layout_width="@dimen/view_750_dp"
-        android:layout_height="@dimen/view_980_dp"
-        android:layout_centerInParent="true"
-        android:scaleType="fitCenter"
-        app:autoPlay="true"
-        app:antiAlias="true"
-        app:clearsAfterStop="false"
-        app:loopCount="1"
-        app:source="grab_match_success_bg.svga" />
+    <!--android:layout_centerInParent="true"-->
+    <!--android:id="@+id/svga_match_success_bg"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1000dp"-->
+    <!--app:antiAlias="true"-->
+    <!--app:autoPlay="false"-->
+    <!--app:loopCount="-1" />-->
     <RelativeLayout
-        android:visibility="visible"
-        android:layout_width="@dimen/view_341_dp"
-        android:layout_height="@dimen/view_331_dp"
-        android:layout_centerInParent="true"
-        android:clipChildren="false">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_30_dp">
 
-        <com.common.view.ex.ExRelativeLayout
-            android:id="@+id/rl_icon1_root"
-            android:layout_width="@dimen/view_90_dp"
-            android:layout_height="@dimen/view_96_dp"
-            android:layout_centerHorizontal="true"
-            app:bl_corners_radius="@dimen/view_45_dp"
-            app:bl_solid_color="#F7D6DB"
-            app:bl_stroke_color="#EF5E85"
-            app:bl_stroke_width="@dimen/view_3_dp">
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_match_success_bg"
+            android:layout_width="@dimen/view_750_dp"
+            android:layout_height="@dimen/view_980_dp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitCenter"
+            android:visibility="visible"
+            app:antiAlias="true"
+            app:autoPlay="true"
+            app:clearsAfterStop="false"
+            app:loopCount="1"
+            app:source="grab_match_success_bg.svga" />
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:tag="icon_1"
-                android:layout_marginTop="@dimen/view_3_dp"
+        <RelativeLayout
+            android:layout_width="@dimen/view_341_dp"
+            android:layout_height="@dimen/view_331_dp"
+            android:layout_centerInParent="true"
+            android:clipChildren="false"
+            android:visibility="visible">
+
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/rl_icon1_root"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_96_dp"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/sdv_icon1"
-                android:layout_width="@dimen/view_84_dp"
-                android:layout_height="@dimen/view_84_dp" />
-        </com.common.view.ex.ExRelativeLayout>
+                app:bl_corners_radius="@dimen/view_45_dp"
+                app:bl_solid_color="#F7D6DB"
+                app:bl_stroke_color="#EF5E85"
+                app:bl_stroke_width="@dimen/view_3_dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_icon1"
+                    android:layout_width="@dimen/view_84_dp"
+                    android:layout_height="@dimen/view_84_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:tag="icon_1" />
+            </com.common.view.ex.ExRelativeLayout>
 
 
-        <com.common.view.ex.ExRelativeLayout
-            android:id="@+id/rl_icon2_root"
-            android:layout_width="@dimen/view_90_dp"
-            android:layout_height="@dimen/view_96_dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_90_dp"
-            app:bl_corners_radius="@dimen/view_45_dp"
-            app:bl_solid_color="#F7D6DB"
-            app:bl_stroke_color="#EF5E85"
-            app:bl_stroke_width="@dimen/view_3_dp">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:tag="icon_2"
-                android:layout_marginTop="@dimen/view_3_dp"
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/rl_icon2_root"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_96_dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/sdv_icon2"
-                android:layout_width="@dimen/view_84_dp"
-                android:layout_height="@dimen/view_84_dp" />
-        </com.common.view.ex.ExRelativeLayout>
+                android:layout_marginTop="@dimen/view_90_dp"
+                app:bl_corners_radius="@dimen/view_45_dp"
+                app:bl_solid_color="#F7D6DB"
+                app:bl_stroke_color="#EF5E85"
+                app:bl_stroke_width="@dimen/view_3_dp">
 
-        <com.common.view.ex.ExRelativeLayout
-            android:id="@+id/rl_icon3_root"
-            android:layout_width="@dimen/view_90_dp"
-            android:layout_height="@dimen/view_96_dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_90_dp"
-            android:layout_marginRight="@dimen/view_49_dp"
-            android:layout_marginBottom="@dimen/view_20_dp"
-            app:bl_corners_radius="@dimen/view_45_dp"
-            app:bl_solid_color="#F7D6DB"
-            app:bl_stroke_color="#EF5E85"
-            app:bl_stroke_width="@dimen/view_3_dp">
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_icon2"
+                    android:layout_width="@dimen/view_84_dp"
+                    android:layout_height="@dimen/view_84_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:tag="icon_2" />
+            </com.common.view.ex.ExRelativeLayout>
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:tag="icon_3"
-                android:layout_marginTop="@dimen/view_3_dp"
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/rl_icon3_root"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_96_dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/sdv_icon3"
-                android:layout_width="@dimen/view_84_dp"
-                android:layout_height="@dimen/view_84_dp" />
-        </com.common.view.ex.ExRelativeLayout>
+                android:layout_marginTop="@dimen/view_90_dp"
+                android:layout_marginRight="@dimen/view_49_dp"
+                android:layout_marginBottom="@dimen/view_20_dp"
+                app:bl_corners_radius="@dimen/view_45_dp"
+                app:bl_solid_color="#F7D6DB"
+                app:bl_stroke_color="#EF5E85"
+                app:bl_stroke_width="@dimen/view_3_dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_icon3"
+                    android:layout_width="@dimen/view_84_dp"
+                    android:layout_height="@dimen/view_84_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:tag="icon_3" />
+            </com.common.view.ex.ExRelativeLayout>
 
 
-        <com.common.view.ex.ExRelativeLayout
-            android:id="@+id/rl_icon4_root"
-            android:layout_width="@dimen/view_90_dp"
-            android:layout_height="@dimen/view_96_dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/view_49_dp"
-            android:layout_marginBottom="@dimen/view_20_dp"
-            app:bl_corners_radius="@dimen/view_45_dp"
-            app:bl_solid_color="#F7D6DB"
-            app:bl_stroke_color="#EF5E85"
-            app:bl_stroke_width="@dimen/view_3_dp">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:tag="icon_4"
-                android:layout_marginTop="@dimen/view_3_dp"
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/rl_icon4_root"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_96_dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/sdv_icon4"
-                android:layout_width="@dimen/view_84_dp"
-                android:layout_height="@dimen/view_84_dp" />
-        </com.common.view.ex.ExRelativeLayout>
+                android:layout_marginLeft="@dimen/view_49_dp"
+                android:layout_marginBottom="@dimen/view_20_dp"
+                app:bl_corners_radius="@dimen/view_45_dp"
+                app:bl_solid_color="#F7D6DB"
+                app:bl_stroke_color="#EF5E85"
+                app:bl_stroke_width="@dimen/view_3_dp">
 
-        <com.common.view.ex.ExRelativeLayout
-            android:id="@+id/rl_icon5_root"
-            android:layout_marginTop="@dimen/view_90_dp"
-            android:layout_width="@dimen/view_90_dp"
-            android:layout_height="@dimen/view_96_dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="@dimen/view_49_dp"
-            app:bl_corners_radius="@dimen/view_45_dp"
-            app:bl_solid_color="#F7D6DB"
-            app:bl_stroke_color="#EF5E85"
-            app:bl_stroke_width="@dimen/view_3_dp">
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_icon4"
+                    android:layout_width="@dimen/view_84_dp"
+                    android:layout_height="@dimen/view_84_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:tag="icon_4" />
+            </com.common.view.ex.ExRelativeLayout>
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:tag="icon_5"
-                android:layout_marginTop="@dimen/view_3_dp"
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/rl_icon5_root"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_96_dp"
+                android:layout_alignParentLeft="true"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/sdv_icon5"
-                android:layout_width="@dimen/view_84_dp"
-                android:layout_height="@dimen/view_84_dp"
-                 />
-        </com.common.view.ex.ExRelativeLayout>
+                android:layout_marginTop="@dimen/view_90_dp"
+                android:layout_marginRight="@dimen/view_49_dp"
+                app:bl_corners_radius="@dimen/view_45_dp"
+                app:bl_solid_color="#F7D6DB"
+                app:bl_stroke_color="#EF5E85"
+                app:bl_stroke_width="@dimen/view_3_dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_icon5"
+                    android:layout_width="@dimen/view_84_dp"
+                    android:layout_height="@dimen/view_84_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:tag="icon_5" />
+            </com.common.view.ex.ExRelativeLayout>
+        </RelativeLayout>
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/vs_svga"
+            android:layout_width="@dimen/view_300_dp"
+            android:layout_height="@dimen/view_300_dp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:antiAlias="true"
+            app:autoPlay="false"
+            app:clearsAfterStop="false"
+            app:loopCount="1"
+            app:source="grab_match_success_vs.svga" />
     </RelativeLayout>
 
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:visibility="gone"
-        android:id="@+id/vs_svga"
-        android:layout_width="@dimen/view_300_dp"
-        android:layout_height="@dimen/view_300_dp"
-        android:layout_centerInParent="true"
-        android:scaleType="fitCenter"
-        app:autoPlay="false"
-        app:antiAlias="true"
-        app:clearsAfterStop="false"
-        app:loopCount="1"
-        app:source="grab_match_success_vs.svga" />
-
     <ImageView
-        android:background="@drawable/pipeichenggong_head"
         android:id="@+id/iv_top_bg"
-        android:layout_marginTop="@dimen/view_40_dp"
-        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/view_219_dp"
-        android:layout_height="@dimen/view_127_dp" />
+        android:layout_height="@dimen/view_127_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:background="@drawable/pipeichenggong_head" />
 
     <com.common.view.ex.ExTextView
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/view_24_dp"
-        android:layout_alignBottom="@id/iv_top_bg"
         android:id="@+id/tv_ready_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_top_bg"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_24_dp"
         android:gravity="center"
         android:text="10s"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_24_dp"
-        />
+        android:textStyle="bold" />
 
     <com.opensource.svgaplayer.SVGAImageView
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_250_dp"
         android:layout_marginTop="-102dp"
         android:scaleType="fitCenter"
+        android:visibility="gone"
         app:antiAlias="true"
         app:clearsAfterStop="false"
         app:loopCount="1"
