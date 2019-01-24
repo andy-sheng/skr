@@ -120,7 +120,7 @@ public class GameFragment extends BaseFragment {
         mMainRankIv = (ImageView) mRootView.findViewById(R.id.main_rank_iv);
         mSubRankIv = (ImageView) mRootView.findViewById(R.id.sub_rank_iv);
 
-        mRankArea = (RelativeLayout)mRootView.findViewById(R.id.rank_area);
+        mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
         mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
         mRankText = (ExTextView) mRootView.findViewById(R.id.rank_text);
         mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
@@ -346,7 +346,7 @@ public class GameFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if(mTag.contains(tag)){
+                if (mTag.contains(tag)) {
                     jump(view, "onAnimationEnd");
                     mTag.remove(tag);
                     return;
@@ -367,7 +367,7 @@ public class GameFragment extends BaseFragment {
         });
     }
 
-    private void jump(View view, String from){
+    private void jump(View view, String from) {
         MyLog.d(TAG, "jump" + " view=" + view + " from=" + from);
         if (view.getId() == R.id.iv_athletics_pk) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
@@ -393,7 +393,7 @@ public class GameFragment extends BaseFragment {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "checkGameConf " + result.getErrno());
                 if (result.getErrno() == 0) {
-                    if(mTag.contains(tag)){
+                    if (mTag.contains(tag)) {
                         jump(view, "checkGameConf");
                         mTag.remove(tag);
                         return;
@@ -410,6 +410,7 @@ public class GameFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        mPopupWindow.dismiss();
         U.getSoundUtils().release(TAG);
     }
 

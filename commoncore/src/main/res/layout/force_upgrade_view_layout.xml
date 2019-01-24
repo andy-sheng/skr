@@ -60,6 +60,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:paddingBottom="@dimen/view_4_dp"
             android:text="取消"
             android:textColor="#0C2275"
             android:textSize="@dimen/view_16_dp"
@@ -71,13 +72,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:paddingBottom="@dimen/view_4_dp"
             android:text="更新"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/view_16_dp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <include
-        layout="@layout/upgrade_bar_include_layout"/>
+    <include layout="@layout/upgrade_bar_include_layout" />
 
 </RelativeLayout>

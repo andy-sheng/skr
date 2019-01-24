@@ -186,6 +186,7 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         if (userInfo.getUserId() == MyUserInfoManager.getInstance().getUid()) {
             mFollowTv.setVisibility(GONE);
+            mReport.setVisibility(GONE);
         }
 
         if (!TextUtils.isEmpty(userInfo.getLocation().getCity())) {
