@@ -245,7 +245,15 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 songCardModels.add(songCardModel);
             }
         }
-        mSongCardSwipAdapter.addAll(songCardModels);
+
+        if (songCardModels != null && songCardModels.size() > 0) {
+            mSongCardSwipAdapter.addAll(songCardModels);
+        } else {
+            if (mDeleteList != null && mDeleteList.size() > 0) {
+                mSongCardSwipAdapter.addData(mDeleteList.remove(mDeleteList.size() - 1));
+            }
+        }
+
     }
 
     @Override
@@ -313,7 +321,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void onScroll(float progress, float scrollXProgress) {
-       
+
     }
 
     @Override
