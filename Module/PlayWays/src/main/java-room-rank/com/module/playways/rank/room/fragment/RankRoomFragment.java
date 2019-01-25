@@ -3,6 +3,7 @@ package com.module.playways.rank.room.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -120,10 +121,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     SVGAImageView mReadyGoBg;
 
     BaseImageView mStageView;      //主舞台动画，webp形式
+    BaseImageView mSingAvatarView; //主舞台中心，歌唱者头像
 
-    SVGAImageView mStagePeopleBg;
+    SVGAImageView mStagePeopleBg;  //已废弃
 
-    SVGAImageView mStageUfoBg;
+    SVGAImageView mStageUfoBg;     //已废弃
 
     ImageView mEndRoundHint;
 
@@ -355,6 +357,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mAnimatorList.add(objectAnimatorStage);
         objectAnimatorStage.start();
 
+        // 头像退出，淡出
+        ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 1f, 0f);
+        objectAnimatorAvatar.setDuration(1000);
+        mAnimatorList.add(objectAnimatorStage);
+        objectAnimatorAvatar.start();
+
         objectAnimatorStage.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -365,6 +373,29 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             public void onAnimationEnd(Animator animator) {
                 ((RelativeLayout) mRootView).removeView(mStageView);
                 mStageView = null;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                onAnimationEnd(animator);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+
+        objectAnimatorAvatar.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                ((RelativeLayout) mRootView).removeView(mSingAvatarView);
+                mSingAvatarView = null;
             }
 
             @Override
@@ -395,6 +426,14 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             ((RelativeLayout) mRootView).addView(mStageView, lp);
         }
 
+        if (mSingAvatarView == null) {
+            mSingAvatarView = new BaseImageView(getActivity());
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(90), U.getDisplayUtils().dip2px(90));
+            lp.topMargin = U.getDisplayUtils().dip2px(158);
+            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            ((RelativeLayout) mRootView).addView(mSingAvatarView, lp);
+        }
+
         FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
                 .setCallBack(new IFrescoCallBack() {
                     @Override
@@ -405,10 +444,21 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                                 @Override
                                 public void onAnimationStart(AnimatedDrawable2 drawable) {
                                     MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
-                                    objectAnimator.setDuration(1000);
-                                    objectAnimator.start();
-                                    mAnimatorList.add(objectAnimator);
+                                    ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
+                                    objectAnimatorStage.setDuration(1000);
+                                    objectAnimatorStage.start();
+                                    mAnimatorList.add(objectAnimatorStage);
+
+                                    ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
+                                    objectAnimatorAvatar.setDuration(1000);
+                                    objectAnimatorAvatar.start();
+                                    mAnimatorList.add(objectAnimatorAvatar);
+
+                                    String avatar = mRoomData.getUserInfo(mRoomData.getRealRoundInfo().getUserID()).getAvatar();
+                                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+                                            AvatarUtils.newParamsBuilder(avatar)
+                                                    .setCircle(true)
+                                                    .build());
                                 }
 
                                 @Override
@@ -1087,6 +1137,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             ((RelativeLayout) mRootView).removeView(mStageView);
             mStageView = null;
         }
+
+        if (mSingAvatarView != null && mRootView != null) {
+            ((RelativeLayout) mRootView).removeView(mSingAvatarView);
+            mSingAvatarView = null;
+        }
+
     }
 
 
