@@ -157,12 +157,21 @@ public class UpgradeManager {
                     if (mUpgradeData.isNeedShowDialog()) {
                         showNormalUpgradeDialog();
                     } else {
-                        if (U.getNetworkUtils().isWifi()) {
-                            // 如果是在wifi环境，默默下载
-                            MyLog.d(TAG, "不是wifi，非强制更新，静默下载");
-                            downloadApk(true);
-                        } else {
-                            MyLog.d(TAG, "不是wifi，非强制更新，算了");
+                        if(tryGetSaveFileApkVersion()==updateInfoModel.getLatestVersionCode()){
+                            // 包已经ok了,一天最多弹一次
+                            long ts = U.getPreferenceUtils().getSettingLong("lastUpdateTs",0);
+                            if(System.currentTimeMillis() - ts > 24*3600*1000){
+                                U.getPreferenceUtils().setSettingLong("lastUpdateTs",System.currentTimeMillis());
+                                showNormalUpgradeDialog();
+                            }
+                        }else{
+                            if (U.getNetworkUtils().isWifi()) {
+                                // 如果是在wifi环境，默默下载
+                                MyLog.d(TAG, "不是wifi，非强制更新，静默下载");
+                                downloadApk(true);
+                            } else {
+                                MyLog.d(TAG, "不是wifi，非强制更新，算了");
+                            }
                         }
                     }
                 }
