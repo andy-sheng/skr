@@ -9,7 +9,7 @@
         android:id="@+id/rank_diff_icon"
         android:layout_width="@dimen/view_12_dp"
         android:layout_height="@dimen/view_12_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
         android:layout_marginTop="@dimen/view_12_dp" />
 
     <com.common.view.ex.ExTextView

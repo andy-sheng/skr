@@ -75,6 +75,8 @@ import java.util.regex.Pattern;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.BehaviorSubject;
 
+import static android.widget.RelativeLayout.ALIGN_RIGHT;
+
 public class GameFragment extends BaseFragment {
 
     public final static String TAG = "GameFragment";
@@ -273,7 +275,7 @@ public class GameFragment extends BaseFragment {
             mPopArea.setBackground(getResources().getDrawable(R.drawable.shangsheng_bj));
             mRankDiffIcon.setImageResource(R.drawable.shangsheng_smail);
 
-            mPopupWindow.setWidth(U.getDisplayUtils().dip2px(66) + (content.length() - 3) * U.getDisplayUtils().dip2px(5));
+            mPopupWindow.setWidth(U.getDisplayUtils().dip2px(36) + content.length() * U.getDisplayUtils().dip2px(10));
             mPopupWindow.setHeight(U.getDisplayUtils().dip2px(31));
             mPopupWindow.showAsDropDown(mRankText);
 
@@ -283,7 +285,7 @@ public class GameFragment extends BaseFragment {
             mPopArea.setBackground(getResources().getDrawable(R.drawable.xiajiang_bj));
             mRankDiffIcon.setImageResource(R.drawable.xiajiang_cry);
 
-            mPopupWindow.setWidth(U.getDisplayUtils().dip2px(66) + (content.length() - 3) * U.getDisplayUtils().dip2px(5));
+            mPopupWindow.setWidth(U.getDisplayUtils().dip2px(36) + content.length() * U.getDisplayUtils().dip2px(10));
             mPopupWindow.setHeight(U.getDisplayUtils().dip2px(31));
             mPopupWindow.showAsDropDown(mRankText);
         }
@@ -358,7 +360,7 @@ public class GameFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if(!mTag.contains(tag)){
+                if (!mTag.contains(tag)) {
                     mTag.add(tag);
                     return;
                 }
@@ -384,7 +386,7 @@ public class GameFragment extends BaseFragment {
     private boolean isGameOpen() {
         //mGameConfModel不应该为null，加个保护
 //        if(mGameConfModel != null && mGameConfModel.isIsSupport() && !mGameConfModel.getDetail().isIsOpen()){
-        if(false){
+        if (false) {
             GameTimeTipsView gameTimeTipsView = new GameTimeTipsView(getActivity());
             gameTimeTipsView.setGameConfModel(mGameConfModel);
 
