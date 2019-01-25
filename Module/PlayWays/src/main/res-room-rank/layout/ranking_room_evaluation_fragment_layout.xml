@@ -221,4 +221,15 @@
         android:layout_marginTop="@dimen/view_71_dp"
         android:src="@drawable/mietadeng_beijingzi" />
 
+    <com.common.view.ex.ExTextView
+        android:alpha="0.5"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="#0E2274"
+        android:layout_marginBottom="@dimen/view_34_dp"
+        android:text="互相投票，选一个你最喜欢的声音吧～"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>
