@@ -203,6 +203,8 @@ public class RelationView extends RelativeLayout {
                             mLoadService.showCallback(FriendsEmptyCallback.class);
                         } else if (mode == UserInfoManager.RELATION_FANS) {
                             mLoadService.showCallback(FansEmptyCallback.class);
+                        } else if (mode == UserInfoManager.RELATION_FOLLOW){
+                            mLoadService.showCallback(FriendsEmptyCallback.class);
                         }
 
                     }
@@ -335,6 +337,8 @@ public class RelationView extends RelativeLayout {
                 mLoadService.showCallback(FriendsEmptyCallback.class);
             } else if (mMode == UserInfoManager.RELATION_FANS) {
                 mLoadService.showCallback(FansEmptyCallback.class);
+            } else if (mMode == UserInfoManager.RELATION_FOLLOW){
+                mLoadService.showCallback(FriendsEmptyCallback.class);
             }
         }
     }
