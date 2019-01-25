@@ -103,6 +103,9 @@ public class BottomContainerView extends RelativeLayout {
         mQuickBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (U.getCommonUtils().isFastDoubleClick()) {
+                    return;
+                }
                 int w = U.getDisplayUtils().dip2px(343);
                 int h = U.getDisplayUtils().dip2px(146);
                 if (mQuickMsgPopWindow == null) {
