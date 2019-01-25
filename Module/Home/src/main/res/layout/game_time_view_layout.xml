@@ -22,12 +22,12 @@
 
     <LinearLayout
         android:id="@+id/op_container"
-        android:layout_width="@dimen/view_206_dp"
+        android:layout_width="@dimen/view_151_dp"
         android:layout_height="@dimen/view_54_dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_25_dp"
-        android:background="@drawable/bottom_button_left"
+        android:background="@drawable/ok_btn"
         >
 
         <com.common.view.ex.ExTextView
