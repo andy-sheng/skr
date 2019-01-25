@@ -302,8 +302,8 @@ public class GameFragment extends BaseFragment {
                             .setOnBannerListener(new OnBannerListener() {
                                 @Override
                                 public void OnBannerClick(int position) {
-                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                            .withString("url", slideShowModelList.get(position).getLinkURL())
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SHARE_WEB)
+                                            .withString("url", "http://test.static.inframe.mobi/app/")
                                             .greenChannel().navigation();
                                 }
                             })
