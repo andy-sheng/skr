@@ -212,6 +212,7 @@ public class GameFragment extends BaseFragment {
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         initRankLevel();
+        initOperationArea();
     }
 
     private void initRankLevel() {
@@ -310,6 +311,7 @@ public class GameFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    mBannerView.setVisibility(View.VISIBLE);
                     List<SlideShowModel> slideShowModelList = JSON.parseArray(result.getData().getString("slideshow"), SlideShowModel.class);
                     mBannerView.setImages(getSlideUrlList(slideShowModelList))
                             .setImageLoader(new BannerImageLoader())
