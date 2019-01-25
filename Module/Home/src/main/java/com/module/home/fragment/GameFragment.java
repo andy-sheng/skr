@@ -6,10 +6,12 @@ import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +28,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.myinfo.event.ScoreDetailChangeEvent;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
@@ -44,11 +47,18 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
 import com.module.home.R;
+import com.module.home.model.GameConfModel;
 import com.module.home.model.SlideShowModel;
+import com.module.home.view.GameTimeTipsView;
 import com.module.home.widget.UserInfoTitleView;
 import com.module.rank.IRankingModeService;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
+import com.zq.dialog.PersonInfoDialogView;
 import com.zq.level.utils.LevelConfigUtils;
 import com.zq.level.view.NormalLevelView;
 
@@ -101,7 +111,9 @@ public class GameFragment extends BaseFragment {
     MainPageSlideApi mMainPageSlideApi;
     UserInfoServerApi mUserInfoServerApi;
 
-    BehaviorSubject<Integer> mIntegerBehaviorSubject;
+    GameConfModel mGameConfModel;
+
+    DialogPlus mDialogPlus;
 
     Vector<Long> mTag = new Vector<>();
 
@@ -346,13 +358,15 @@ public class GameFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if (mTag.contains(tag)) {
-                    jump(view, "onAnimationEnd");
-                    mTag.remove(tag);
+                if(!mTag.contains(tag)){
+                    mTag.add(tag);
                     return;
                 }
 
-                mTag.add(tag);
+                if (isGameOpen()) {
+                    jump(view, "onAnimationEnd");
+                    mTag.remove(tag);
+                }
             }
 
             @Override
@@ -365,6 +379,30 @@ public class GameFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private boolean isGameOpen() {
+        //mGameConfModel不应该为null，加个保护
+//        if(mGameConfModel != null && mGameConfModel.isIsSupport() && !mGameConfModel.getDetail().isIsOpen()){
+        if(false){
+            GameTimeTipsView gameTimeTipsView = new GameTimeTipsView(getActivity());
+            gameTimeTipsView.setGameConfModel(mGameConfModel);
+
+            mDialogPlus = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(gameTimeTipsView))
+                    .setGravity(Gravity.CENTER)
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                            mDialogPlus.dismiss();
+                        }
+                    }).create();
+
+            mDialogPlus.show();
+            return false;
+        }
+
+        return true;
     }
 
     private void jump(View view, String from) {
@@ -391,17 +429,23 @@ public class GameFragment extends BaseFragment {
         ApiMethods.subscribe(mMainPageSlideApi.getGameConfig(mode), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "checkGameConf " + result.getErrno());
-                if (result.getErrno() == 0) {
-                    if (mTag.contains(tag)) {
-                        jump(view, "checkGameConf");
-                        mTag.remove(tag);
-                        return;
-                    }
+                if (result.getErrno() != 0) {
+                    MyLog.w(TAG, "checkGameConf faild, traceid is " + result.getTraceId());
+                    return;
+                }
 
+                GameConfModel gameConfModel = JSON.parseObject(result.getData().toString(), GameConfModel.class);
+
+                //说明接口的数据在500毫秒内拉到的
+                if (!mTag.contains(tag)) {
+                    mGameConfModel = gameConfModel;
                     mTag.add(tag);
-                } else {
-                    MyLog.e(TAG, "checkGameConf failed, traceid is " + result.getTraceId());
+                    return;
+                }
+
+                if (isGameOpen()) {
+                    jump(view, "checkGameConf");
+                    mTag.remove(tag);
                 }
             }
         }, this);
