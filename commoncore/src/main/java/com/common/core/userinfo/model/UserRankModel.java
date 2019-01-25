@@ -24,13 +24,13 @@ public class UserRankModel implements Serializable {
      */
 
     private int category;      // 类别
-    private int seq;           // 排名
+    private int rankSeq;       // 排名
     private String regionDesc; // 类别描述
     private int starCnt;       // 当前星星数
     private int maxStar;       // 最大星星数
     private int mainRanking;   // 主段位
     private int subRanking;    // 子段位
-    private String rankingDesc;// 段位描述
+    private String levelDesc;// 段位描述
     private String text;       // 排行描述
     private String highlight;  // 排行描述中高亮部分
     private int diff;          // 上升和下降
@@ -44,12 +44,12 @@ public class UserRankModel implements Serializable {
         this.category = category;
     }
 
-    public int getSeq() {
-        return seq;
+    public int getRankSeq() {
+        return rankSeq;
     }
 
-    public void setSeq(int seq) {
-        this.seq = seq;
+    public void setRankSeq(int rankSeq) {
+        this.rankSeq = rankSeq;
     }
 
     public String getRegionDesc() {
@@ -92,12 +92,12 @@ public class UserRankModel implements Serializable {
         this.subRanking = subRanking;
     }
 
-    public String getRankingDesc() {
-        return rankingDesc;
+    public String getLevelDesc() {
+        return levelDesc;
     }
 
-    public void setRankingDesc(String rankingDesc) {
-        this.rankingDesc = rankingDesc;
+    public void setLevelDesc(String levelDesc) {
+        this.levelDesc = levelDesc;
     }
 
     public String getText() {
@@ -136,16 +136,17 @@ public class UserRankModel implements Serializable {
     public String toString() {
         return "UserRankModel{" +
                 "category=" + category +
-                ", seq=" + seq +
+                ", rankSeq=" + rankSeq +
                 ", regionDesc='" + regionDesc + '\'' +
                 ", starCnt=" + starCnt +
                 ", maxStar=" + maxStar +
                 ", mainRanking=" + mainRanking +
                 ", subRanking=" + subRanking +
-                ", rankingDesc='" + rankingDesc + '\'' +
+                ", levelDesc='" + levelDesc + '\'' +
                 ", text='" + text + '\'' +
                 ", highlight='" + highlight + '\'' +
                 ", diff=" + diff +
+                ", badge=" + badge +
                 '}';
     }
 }

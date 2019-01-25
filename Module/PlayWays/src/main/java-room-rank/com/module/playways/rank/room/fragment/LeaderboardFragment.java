@@ -333,10 +333,15 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         ExTextView tvSegment = (ExTextView) mRootView.findViewById(R.id.tv_segment);
         NormalLevelView normalLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
 
-        tvRank.setText(userRankModel.getSeq() + "");
-        tvName.setText(MyUserInfoManager.getInstance().getNickName());
-        tvSegment.setText(userRankModel.getRankingDesc());
+        if (userRankModel.getRankSeq() == 0) {
+            tvRank.setVisibility(View.GONE);
+        } else {
+            tvRank.setText(formatRank(userRankModel.getRankSeq()));
+        }
         normalLevelView.bindData(userRankModel.getMainRanking(), userRankModel.getSubRanking(), userRankModel.getMaxStar(), userRankModel.getStarCnt());
+
+        tvName.setText(MyUserInfoManager.getInstance().getNickName());
+        tvSegment.setText(userRankModel.getLevelDesc());
         AvatarUtils.loadAvatarByUrl(sdvIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
@@ -344,6 +349,16 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                         .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue())
                         .build());
     }
+
+    private String formatRank(int rankSeq) {
+        if (rankSeq < 10000) {
+            return String.valueOf(rankSeq);
+        } else {
+            float result = (float) (Math.round(((float) rankSeq / 10000) * 10)) / 10;
+            return String.valueOf(result) + "w";
+        }
+    }
+
 
     @Override
     public void showFirstThreeRankInfo(List<RankInfoModel> rankInfoModelList) {

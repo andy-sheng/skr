@@ -396,10 +396,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             }
         }
 
-        if (reginRankModel != null && reginRankModel.getSeq() != 0) {
-            mRankTv.setText(reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getSeq()) + "位");
-        } else if (countryRankModel != null && countryRankModel.getSeq() != 0) {
-            mRankTv.setText(countryRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(countryRankModel.getSeq()) + "位");
+        if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
+            mRankTv.setText(reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getRankSeq()) + "位");
+        } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
+            mRankTv.setText(countryRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(countryRankModel.getRankSeq()) + "位");
         } else {
             mRankTv.setText("暂无排名");
         }

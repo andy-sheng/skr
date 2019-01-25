@@ -227,8 +227,8 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         // TODO: 2019/1/6 必须加上策略，比如没有位置信息
         if (reginRankModel != null) {
-            if (reginRankModel.getSeq() != 0) {
-                mHashMap.put(RANK_TAG, reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getSeq()) + "位");
+            if (reginRankModel.getRankSeq() != 0) {
+                mHashMap.put(RANK_TAG, reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getRankSeq()) + "位");
             } else {
                 mHashMap.put(RANK_TAG, "暂无排名");
             }
