@@ -417,20 +417,21 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
         playWebpMainStage();
+//        playSVGAMainStage();
     }
 
     private void playWebpMainStage() {
         if (mStageView == null) {
             mStageView = new BaseImageView(getActivity());
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, U.getDisplayUtils().dip2px(120));
-            lp.topMargin = U.getDisplayUtils().dip2px(143);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, U.getDisplayUtils().dip2px(140));
+            lp.topMargin = U.getDisplayUtils().dip2px(123);
             ((RelativeLayout) mRootView).addView(mStageView, lp);
         }
 
         if (mSingAvatarView == null) {
             mSingAvatarView = new BaseImageView(getActivity());
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(90), U.getDisplayUtils().dip2px(90));
-            lp.topMargin = U.getDisplayUtils().dip2px(158);
+            lp.topMargin = U.getDisplayUtils().dip2px(148);
             lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
             ((RelativeLayout) mRootView).addView(mSingAvatarView, lp);
         }
