@@ -52,6 +52,7 @@ import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.RoomMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -350,7 +351,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
             // 上传打分
             if (mRobotScoreHelper != null) {
-                if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {
+                if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()
+                        && roundInfoModel.getOverReason() == EQRoundResultType.ROT_TYPE_1.getValue()) {
+                    // 是一唱到底的才上传
                     roundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
                     uploadRes1ForAi(roundInfoModel);
                 }

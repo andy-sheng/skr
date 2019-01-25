@@ -28,7 +28,7 @@ public class TopContainerView extends RelativeLayout {
     public final static String TAG = "TopContainerView";
     ExImageView mMoreBtn;
     ScoreProgressBarWithSvga mScoreProgressBar;
-    BaseImageView mAvatarIv;
+    //    BaseImageView mAvatarIv;
     MoreOpView mMoreOpView;
     ExTextView mTvPassedTime;
 
@@ -51,7 +51,7 @@ public class TopContainerView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.top_container_view_layout, this);
-        mAvatarIv = this.findViewById(R.id.avatar_iv);
+//        mAvatarIv = this.findViewById(R.id.avatar_iv);
         mMoreBtn = this.findViewById(R.id.more_btn);
         mScoreProgressBar = this.findViewById(R.id.score_progress_bar);
         mTvPassedTime = this.findViewById(R.id.tv_passed_time);
@@ -124,8 +124,8 @@ public class TopContainerView extends RelativeLayout {
     }
 
     public void loadAvatar(AvatarUtils.LoadParams params) {
-        params.setCircle(true);
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, params);
+//        params.setCircle(true);
+//        AvatarUtils.loadAvatarByUrl(mAvatarIv, params);
     }
 
     public void setScoreProgress(int progress) {
@@ -169,17 +169,17 @@ public class TopContainerView extends RelativeLayout {
         long lastedTime = wholeTile / 1000;
 
         MyLog.d(TAG, "showLastedTime" + " lastedTime=" + lastedTime);
-
+        mTvPassedTime.setVisibility(VISIBLE);
         mShowLastedTimeTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take((int) lastedTime )
+                .take((int) lastedTime)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
                         long lastTime = lastedTime - integer;
                         int p = (int) ((lastedTime - integer) * 100 / lastedTime);
                         mScoreProgressBar.setProgress2(p);
-                        mTvPassedTime.setText(U.getDateTimeUtils().formatTimeStringForDate(lastTime * 1000, "mm:ss"));
+                        mTvPassedTime.setText(lastTime + "s");
                     }
 
                     @Override
@@ -190,7 +190,7 @@ public class TopContainerView extends RelativeLayout {
                 });
     }
 
-    void reset(){
+    void reset() {
         mTvPassedTime.setText("");
         mScoreProgressBar.setProgress1(0);
         mScoreProgressBar.setProgress2(0);
@@ -198,7 +198,7 @@ public class TopContainerView extends RelativeLayout {
     }
 
     public void cancelShowLastedTimeTask() {
-       reset();
+        reset();
         if (mShowLastedTimeTask != null) {
             mShowLastedTimeTask.dispose();
             mShowLastedTimeTask = null;

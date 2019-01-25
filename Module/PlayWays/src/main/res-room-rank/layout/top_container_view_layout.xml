@@ -23,6 +23,22 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/view_8_dp" />
 
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_passed_time"
+            android:layout_width="@dimen/view_47_dp"
+            android:layout_height="@dimen/view_47_dp"
+            android:text="00s"
+            android:visibility="gone"
+            android:textColor="#FF9F64"
+            android:gravity="center"
+            app:bl_shape="oval"
+            app:bl_solid_color="#0e2573"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            android:textSize="@dimen/textsize_22_dp" />
+
+
         <com.common.view.ex.ExImageView
             android:id="@+id/more_btn"
             android:layout_width="wrap_content"
@@ -37,13 +53,4 @@
     </RelativeLayout>
 
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/tv_passed_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout_icon_container"
-        android:layout_marginLeft="@dimen/view_30_dp"
-        android:layout_marginTop="@dimen/view_6_dp"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp" />
 </merge>
