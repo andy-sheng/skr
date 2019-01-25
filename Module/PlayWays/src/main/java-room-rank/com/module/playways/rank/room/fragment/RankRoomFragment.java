@@ -137,8 +137,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     ManyLyricsView mManyLyricsView;
 
-    FloatLyricsView mFloatLyricsView;
-
     DialogPlus mQuitTipsDialog;
 
     Handler mUiHanlder = new Handler() {
@@ -153,7 +151,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 }
                 onReadyGoOver();
             } else if (SHOW_RIVAL_LYRIC == msg.what) {
-                mFloatLyricsView.setVisibility(View.VISIBLE);
+
             }
         }
     };
@@ -328,7 +326,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 // 模式改为3，自动播放主舞台退出的svga动画
                 mUFOMode = 3;
                 hideWebpStage();
-                mFloatLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.setVisibility(View.GONE);
             }
         }, 800);
@@ -413,8 +410,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
-        mFloatLyricsView.setVisibility(View.VISIBLE);
-//        playSVGAMainStage();
         playWebpMainStage();
     }
 
@@ -763,8 +758,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void initLyricsView() {
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
         mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
-        mFloatLyricsView = mRootView.findViewById(R.id.float_lyrics_view);
-        mFloatLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
+
     }
 
     private void initTurnChangeView() {
@@ -907,7 +901,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         mUiHanlder.removeCallbacksAndMessages(null);
         mManyLyricsView.release();
-        mFloatLyricsView.release();
+//        mFloatLyricsView.release();
 
         isGameEndAniamtionShow = false;
         if (mGameEndAnimation != null) {
@@ -975,7 +969,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                 .build());
         mManyLyricsView.setVisibility(View.GONE);
-        mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
         if (mStagePeopleBg.isAnimating()) {
             mStagePeopleBg.stopAnimation(false);
@@ -1017,7 +1010,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void startRivalCountdown(int uid, String avatar) {
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
-        mFloatLyricsView.setVisibility(View.GONE);
         // 加保护，确保当前主舞台一定被移除
         if (mStagePeopleBg.isAnimating()) {
             mStagePeopleBg.stopAnimation(false);
@@ -1153,8 +1145,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
         }
-        mFloatLyricsView.setVisibility(View.GONE);
-        mFloatLyricsView.release();
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.release();
     }
@@ -1231,8 +1221,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             //自己
             if (mRoomData.getRealRoundInfo().getUserID()
                     == MyUserInfoManager.getInstance().getUid()) {
-                mFloatLyricsView.setVisibility(View.GONE);
-                mFloatLyricsView.resetData();
                 mManyLyricsView.setVisibility(View.VISIBLE);
                 mManyLyricsView.initLrcData();
                 lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
@@ -1253,18 +1241,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             } else {
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();
-//                mFloatLyricsView.setVisibility(View.VISIBLE);
-                mFloatLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
-                mFloatLyricsView.setLyricsReader(lyricsReader);
-                if (!play) {
-                    mFloatLyricsView.seekto(mPlayingSongModel.getBeginMs());
-                    mFloatLyricsView.pause();
-                }
-                if (mFloatLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mFloatLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
-                    MyLog.w(TAG, "onEventMainThread " + "play");
-                    mFloatLyricsView.play(mPlayingSongModel.getBeginMs());
-                }
             }
         }
     }
