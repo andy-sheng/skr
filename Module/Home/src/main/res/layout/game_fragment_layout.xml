@@ -63,7 +63,7 @@
             android:layout_below="@id/name_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_3_dp"
-            android:background="@drawable/xianshipaiming_bj">
+            android:background="@drawable/mingci_dianjiu">
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/medal_iv"
