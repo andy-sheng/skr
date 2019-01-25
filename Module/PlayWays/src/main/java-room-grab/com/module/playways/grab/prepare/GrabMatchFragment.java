@@ -27,6 +27,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -159,7 +160,12 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
         mMatchPresenter = new MatchPresenter(this);
         addPresent(mMatchPresenter);
-        mMatchPresenter.startLoopMatchTask(mPrepareData.getTagId(), mPrepareData.getGameType());
+
+        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+            mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID(), mPrepareData.getGameType());
+        }else if(mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB){
+            mMatchPresenter.startLoopMatchTask(mPrepareData.getTagId(), mPrepareData.getGameType());
+        }
 
         startTimeTask();
         startMatchQuotationTask();

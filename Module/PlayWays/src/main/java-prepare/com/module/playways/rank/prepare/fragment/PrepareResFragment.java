@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -19,6 +20,8 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
+import com.module.playways.grab.prepare.GrabMatchFragment;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.PrepareSongPresenter;
@@ -130,18 +133,10 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getSoundUtils().play(TAG, R.raw.song_pairbutton);
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), MatchFragment.class)
-                            .setNotifyHideFragment(PrepareResFragment.class)
-                            .setAddToBackStack(false)
-                            .setHasAnimation(true)
-                            .addDataBeforeAdd(0, mPrepareData)
-                            .setFragmentDataListener(new FragmentDataListener() {
-                                @Override
-                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                }
-                            })
-                            .build());
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                            .withSerializable("prepare_data", mPrepareData)
+                            .navigation();
                 });
 
         RxView.clicks(mIvBack)

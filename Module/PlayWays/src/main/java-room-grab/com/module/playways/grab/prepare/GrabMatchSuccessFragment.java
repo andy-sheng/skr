@@ -23,6 +23,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
@@ -87,9 +88,9 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     public void initData(@Nullable Bundle savedInstanceState) {
         mTvReadyTime = (ExTextView) mRootView.findViewById(R.id.tv_ready_time);
         mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
-        mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
-        mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
-        mSdvIcon4 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon4);
+        mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
+        mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon4);
+        mSdvIcon4 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mSdvIcon5 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon5);
 
         mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
@@ -220,53 +221,43 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         loadIcon(mSdvIcon1, isGray, mPrepareData.getPlayerInfoList().get(0).getUserInfo().getAvatar());
         loadIcon(mSdvIcon2, isGray, mPrepareData.getPlayerInfoList().get(1).getUserInfo().getAvatar());
         loadIcon(mSdvIcon3, isGray, mPrepareData.getPlayerInfoList().get(2).getUserInfo().getAvatar());
-        loadIcon(mSdvIcon4, isGray, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getAvatar());
-        loadIcon(mSdvIcon5, isGray, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getAvatar());
 
         mSdvIcon1.setTag("sdv" + mPrepareData.getPlayerInfoList().get(0).getUserInfo().getUserId());
         mSdvIcon2.setTag("sdv" + mPrepareData.getPlayerInfoList().get(1).getUserInfo().getUserId());
         mSdvIcon3.setTag("sdv" + mPrepareData.getPlayerInfoList().get(2).getUserInfo().getUserId());
-        mSdvIcon4.setTag("sdv" + mPrepareData.getPlayerInfoList().get(3).getUserInfo().getUserId());
-        mSdvIcon5.setTag("sdv" + mPrepareData.getPlayerInfoList().get(4).getUserInfo().getUserId());
 
         mRlIcon1Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon1_root);
-        mRlIcon2Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon2_root);
-        mRlIcon3Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon3_root);
-        mRlIcon4Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon4_root);
+        mRlIcon2Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon3_root);
+        mRlIcon3Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon4_root);
+        mRlIcon4Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon2_root);
         mRlIcon5Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon5_root);
+
+        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+//            android:layout_marginTop="@dimen/view_90_dp"
+//            android:layout_marginRight="@dimen/view_25_dp"
+//            android:layout_marginBottom="@dimen/view_35_dp"
+//
+//            android:layout_marginLeft="@dimen/view_25_dp"
+//            android:layout_marginBottom="@dimen/view_35_dp"
+            ((RelativeLayout.LayoutParams)mRlIcon2Root.getLayoutParams()).setMargins(0, U.getDisplayUtils().dip2px(90), U.getDisplayUtils().dip2px(25), U.getDisplayUtils().dip2px(35));
+            ((RelativeLayout.LayoutParams)mRlIcon3Root.getLayoutParams()).setMargins(U.getDisplayUtils().dip2px(25), 0,0, U.getDisplayUtils().dip2px(35));
+
+            mRlIcon4Root.setVisibility(View.GONE);
+            mRlIcon5Root.setVisibility(View.GONE);
+        }
 
         setIconStroke(mRlIcon1Root, mPrepareData.getPlayerInfoList().get(0).getUserInfo().getIsMale());
         setIconStroke(mRlIcon2Root, mPrepareData.getPlayerInfoList().get(1).getUserInfo().getIsMale());
         setIconStroke(mRlIcon3Root, mPrepareData.getPlayerInfoList().get(2).getUserInfo().getIsMale());
-        setIconStroke(mRlIcon4Root, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getIsMale());
-        setIconStroke(mRlIcon5Root, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getIsMale());
 
-        showBackground();
-    }
-
-    public void showBackground() {
-//        mSvgaMatchSuccessBg.setVisibility(View.VISIBLE);
-//        mSvgaMatchSuccessBg.setLoops(1);
-//
-//        SVGAParser parser = new SVGAParser(getContext());
-//        try {
-//            parser.parse("grab_match_success.svga", new SVGAParser.ParseCompletion() {
-//                @Override
-//                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-//                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(MyUserInfoManager.getInstance().getAvatar()));
-//                    mSvgaMatchSuccessBg.setLoops(-1);
-//                    mSvgaMatchSuccessBg.setImageDrawable(drawable);
-//                    mSvgaMatchSuccessBg.startAnimation();
-//                }
-//
-//                @Override
-//                public void onError() {
-//
-//                }
-//            });
-//        } catch (Exception e) {
-//            System.out.print(true);
-//        }
+        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB){
+            loadIcon(mSdvIcon4, isGray, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getAvatar());
+            loadIcon(mSdvIcon5, isGray, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getAvatar());
+            mSdvIcon4.setTag("sdv" + mPrepareData.getPlayerInfoList().get(3).getUserInfo().getUserId());
+            mSdvIcon5.setTag("sdv" + mPrepareData.getPlayerInfoList().get(4).getUserInfo().getUserId());
+            setIconStroke(mRlIcon4Root, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getIsMale());
+            setIconStroke(mRlIcon5Root, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getIsMale());
+        }
     }
 
     private SVGADynamicEntity requestDynamicItem(String avatar) {
@@ -338,9 +329,15 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
         initAvatar(false);
 
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                .withSerializable("prepare_data", mPrepareData)
-                .navigation();
+        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_RANK_ROOM)
+                    .withSerializable("prepare_data", mPrepareData)
+                    .navigation();
+        }else if(mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB){
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                    .withSerializable("prepare_data", mPrepareData)
+                    .navigation();
+        }
 
         //直接到首页，不是选歌界面
         getActivity().finish();
