@@ -66,6 +66,7 @@ public class SelfSingCardView extends RelativeLayout {
     ImageView mIvTStub;
     ImageView mIvOStub;
     ImageView mIvS;
+    ImageView mIvEmpty;
 
     float mSpeed = 0;
 
@@ -112,6 +113,8 @@ public class SelfSingCardView extends RelativeLayout {
         mSingBgSvga = (SVGAImageView) findViewById(R.id.sing_bg_svga);
         mSvLyric = findViewById(R.id.sv_lyric);
         mTvLyric = findViewById(R.id.tv_lyric);
+        mIvEmpty = (ImageView)findViewById(R.id.iv_empty);
+
 
         mIvHStub = (ImageView) findViewById(R.id.iv_h_stub);
         mIvTStub = (ImageView) findViewById(R.id.iv_t_stub);
@@ -307,6 +310,7 @@ public class SelfSingCardView extends RelativeLayout {
 
     public void playLyric(SongModel songModel, boolean play) {
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
+        mIvEmpty.setVisibility(GONE);
         // 平移动画
         if (mEnterAnimation == null) {
             mEnterAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0F, 0F, 0F);
@@ -325,6 +329,12 @@ public class SelfSingCardView extends RelativeLayout {
 
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
+        }
+
+        if(songModel.isIsblank()){
+            mIvEmpty.setVisibility(VISIBLE);
+            countDonw(mSongModel);
+            return;
         }
 
         File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());

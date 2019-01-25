@@ -14,7 +14,19 @@
         app:autoPlay="false"
         app:loopCount="0" />
 
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/iv_empty"
+        android:background="@drawable/guanzhong_baiban"
+        android:layout_below="@+id/rl_count_down_container"
+        android:layout_marginTop="@dimen/view_54_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/view_162_dp"
+        android:layout_height="@dimen/view_54_dp"
+        />
+
     <RelativeLayout
+        android:id="@+id/rl_count_down_container"
         android:layout_alignParentRight="true"
         android:layout_width="@dimen/view_110_dp"
         android:layout_height="@dimen/view_50_dp"
