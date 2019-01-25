@@ -390,7 +390,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void playWebpMainStage() {
         if (mStageView == null) {
             mStageView = new BaseImageView(getActivity());
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(188));
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, U.getDisplayUtils().dip2px(120));
             lp.topMargin = U.getDisplayUtils().dip2px(143);
             ((RelativeLayout) mRootView).addView(mStageView, lp);
         }

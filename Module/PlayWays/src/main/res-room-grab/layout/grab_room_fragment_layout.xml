@@ -105,8 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/view_181_dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/vote_btn_circle_normal" />
+        android:layout_alignParentRight="true" />
 
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"

@@ -145,13 +145,13 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         RxView.clicks(mVoteLeftMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
+                    mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
                 });
 
         RxView.clicks(mVoteRightMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
+                    mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
                 });
 
         startTimeTask();
@@ -338,7 +338,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     @Override
     public void voteSucess(long votedUserId) {
         mLeftVoteAnimationSet.cancel();
-        U.getSoundUtils().play(TAG, R.raw.select_dislikebutton);
+        U.getSoundUtils().play(TAG, R.raw.select_dislikebutton, 500);
         HandlerTaskTimer.newBuilder().delay(250).start(new HandlerTaskTimer.ObserverW() {
             @Override
             public void onNext(Integer integer) {
@@ -347,20 +347,19 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         });
 
         if (left.getUserInfo().getUserId() == votedUserId) {
-            mVoteLeftMie.setSelected(true);
-            mVoteLeftMie.setClickable(false);
+            mVoteRightMie.setSelected(true);
             mVoteRightMie.setClickable(false);
-            mVoteLeftShadowIv.setVisibility(View.VISIBLE);
-            HandlerTaskTimer.newBuilder()
-                    .delay(200)
-                    .interval(50)
-                    .take(5)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            mVoteLeftShadowIv.setVisibility(integer % 2 == 1 ? View.VISIBLE : View.GONE);
-                        }
-                    });
+            mVoteRightMie.setClickable(false);
+//            HandlerTaskTimer.newBuilder()
+//                    .delay(200)
+//                    .interval(50)
+//                    .take(5)
+//                    .start(new HandlerTaskTimer.ObserverW() {
+//                        @Override
+//                        public void onNext(Integer integer) {
+//                            mVoteLeftShadowIv.setVisibility(integer % 2 == 1 ? View.VISIBLE : View.GONE);
+//                        }
+//                    });
 
             // 右边冒星星
             mStartRightSvga.setVisibility(View.VISIBLE);
@@ -390,21 +389,19 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                 }
             });
         } else if (right.getUserInfo().getUserId() == votedUserId) {
-            mVoteRightMie.setSelected(true);
-            mVoteRightMie.setClickable(false);
+            mVoteLeftMie.setSelected(true);
             mVoteLeftMie.setClickable(false);
-            mVoteRightShadowIv.setVisibility(View.VISIBLE);
-
-            HandlerTaskTimer.newBuilder()
-                    .delay(200)
-                    .interval(50)
-                    .take(5)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            mVoteRightShadowIv.setVisibility(integer % 2 == 1 ? View.VISIBLE : View.GONE);
-                        }
-                    });
+            mVoteRightMie.setClickable(false);
+//            HandlerTaskTimer.newBuilder()
+//                    .delay(200)
+//                    .interval(50)
+//                    .take(5)
+//                    .start(new HandlerTaskTimer.ObserverW() {
+//                        @Override
+//                        public void onNext(Integer integer) {
+//                            mVoteRightShadowIv.setVisibility(integer % 2 == 1 ? View.VISIBLE : View.GONE);
+//                        }
+//                    });
 
             // 左边冒星星
             mStartLeftSvga.setVisibility(View.VISIBLE);

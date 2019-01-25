@@ -197,8 +197,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/view_42_dp"
         android:layout_marginBottom="@dimen/view_62_dp"
-        app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
-        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
+        app:bl_selected_drawable="@drawable/xuanta_dianliang"
+        app:bl_unSelected_drawable="@drawable/xuanta_moren" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/vote_right_mie"
@@ -210,18 +210,15 @@
         android:layout_marginBottom="@dimen/view_62_dp"
         android:clickable="true"
         android:focusable="true"
-        app:bl_selected_drawable="@drawable/vote_btn_circle_pressed"
-        app:bl_unSelected_drawable="@drawable/vote_btn_circle_normal" />
+        app:bl_selected_drawable="@drawable/xuanta_dianliang"
+        app:bl_unSelected_drawable="@drawable/xuanta_moren" />
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_200_dp"
+    <com.common.view.ex.ExImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_2_dp"
-        android:scaleType="fitCenter"
-        app:antiAlias="true"
-        app:clearsAfterStop="false"
-        app:loopCount="1"
-        app:source="mie_deng.svga" />
+        android:layout_marginTop="@dimen/view_71_dp"
+        android:src="@drawable/mietadeng_beijingzi" />
 
 </RelativeLayout>
