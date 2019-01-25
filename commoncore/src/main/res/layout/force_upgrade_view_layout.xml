@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/view_345_dp"
     android:layout_height="@dimen/view_362_dp"
+    android:layout_centerHorizontal="true"
     android:background="@drawable/qiangzhigengxin_bj">
 
     <com.common.view.ex.ExTextView

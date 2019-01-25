@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/view_347_dp"
     android:layout_height="@dimen/view_257_dp"
+    android:layout_centerHorizontal="true"
     android:background="@drawable/xinbanben_bj">
 
     <com.common.view.ex.ExTextView
@@ -65,7 +66,6 @@
     </LinearLayout>
 
 
-    <include
-        layout="@layout/upgrade_bar_include_layout"/>
+    <include layout="@layout/upgrade_bar_include_layout" />
 
 </RelativeLayout>
