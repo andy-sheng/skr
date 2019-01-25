@@ -35,15 +35,6 @@
         app:autoPlay="false"
         app:clearsAfterStop="false" />
 
-    <ImageView
-        android:id="@+id/end_round_hint"
-        android:layout_width="@dimen/view_78_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_300_dp"
-        android:src="@drawable/guanzhongjiemian_yanchangjieshu"
-        android:visibility="gone" />
-
     <com.zq.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"

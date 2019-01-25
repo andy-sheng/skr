@@ -136,8 +136,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     SVGAImageView mStageUfoBg;     //已废弃
 
-    ImageView mEndRoundHint;
-
     ImageView mEndGameIv;
 
     RankCorePresenter mCorePresenter;
@@ -334,7 +332,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void hideMainStage() {
         MyLog.d(TAG, "hideMainStage");
         // 显示end小卡片
-        mEndRoundHint.setVisibility(View.VISIBLE);
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -357,12 +354,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void hideWebpStage() {
-        // end小卡片，做一个满满消失的动画
-        ObjectAnimator objectAnimatorEnd = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
-        objectAnimatorEnd.setDuration(1000);
-        mAnimatorList.add(objectAnimatorEnd);
-        objectAnimatorEnd.start();
-
         // 舞台退出，淡出
         ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 1f, 0f);
         objectAnimatorStage.setDuration(1000);
@@ -600,11 +591,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                                 mStageUfoBg.setImageDrawable(drawable);
                                 mStageUfoBg.startAnimation();
                             }
-                            // end小卡片，做一个满满消失的动画
-                            ObjectAnimator objectAnimatorEnd = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
-                            objectAnimatorEnd.setDuration(1000);
-                            objectAnimatorEnd.start();
-                            mAnimatorList.add(objectAnimatorEnd);
                             // 舞台退出，淡出
                             ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStagePeopleBg, View.ALPHA, 1f, 0f);
                             objectAnimatorStage.setDuration(1000);
@@ -781,8 +767,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
         mStagePeopleBg = (SVGAImageView) mRootView.findViewById(R.id.stage_people_bg);
         mStageUfoBg = (SVGAImageView) mRootView.findViewById(R.id.stage_ufo_bg);
-
-        mEndRoundHint = (ImageView) mRootView.findViewById(R.id.end_round_hint);
 
         mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
 
