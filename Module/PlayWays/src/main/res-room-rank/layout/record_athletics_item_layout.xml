@@ -46,24 +46,21 @@
             android:id="@+id/iv_light_one"
             android:layout_width="@dimen/view_22_dp"
             android:layout_height="@dimen/view_20_dp"
-            app:bl_selected_drawable="@drawable/record_light_enable"
-            app:bl_unSelected_drawable="@drawable/record_light_disable" />
+            app:bl_selected_drawable="@drawable/record_item_like" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_light_two"
             android:layout_width="@dimen/view_22_dp"
             android:layout_height="@dimen/view_20_dp"
             android:layout_marginLeft="@dimen/view_12_dp"
-            app:bl_selected_drawable="@drawable/record_light_enable"
-            app:bl_unSelected_drawable="@drawable/record_light_disable" />
+            app:bl_selected_drawable="@drawable/record_item_like" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_light_three"
             android:layout_width="@dimen/view_22_dp"
             android:layout_height="@dimen/view_20_dp"
             android:layout_marginLeft="@dimen/view_12_dp"
-            app:bl_selected_drawable="@drawable/record_light_enable"
-            app:bl_unSelected_drawable="@drawable/record_light_disable" />
+            app:bl_selected_drawable="@drawable/record_item_like" />
     </LinearLayout>
 
     <LinearLayout

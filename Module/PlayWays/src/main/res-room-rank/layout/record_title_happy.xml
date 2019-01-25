@@ -60,7 +60,7 @@
             android:layout_width="@dimen/view_28_dp"
             android:layout_height="@dimen/view_28_dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/record_light_enable" />
+            android:background="@drawable/record_item_like" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_light_count"
