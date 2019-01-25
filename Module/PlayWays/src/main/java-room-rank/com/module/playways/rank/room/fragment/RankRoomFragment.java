@@ -752,7 +752,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
             @Override
             public void onVoiceChange(boolean voiceOpen) {
-                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen);
+                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen,true);
             }
         });
     }

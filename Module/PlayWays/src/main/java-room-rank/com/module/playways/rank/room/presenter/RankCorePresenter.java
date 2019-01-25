@@ -808,10 +808,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    public void muteAllRemoteAudioStreams(boolean mute) {
+    public void muteAllRemoteAudioStreams(boolean mute, boolean fromUser) {
+        if (fromUser) {
+            mRoomData.setMute(mute);
+        }
         EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
         // 如果是机器人的话
-
         if (mute) {
             // 如果是静音
             if (mExoPlayer != null) {
@@ -1255,6 +1257,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             } else {
                 cancelHeartBeatTask("前后台切换");
             }
+        }
+
+        if (event.foreground) {
+            muteAllRemoteAudioStreams(mRoomData.isMute(), false);
+        } else {
+            muteAllRemoteAudioStreams(true, false);
         }
     }
 

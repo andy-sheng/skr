@@ -74,6 +74,8 @@ public class RoomData implements Serializable {
 
     private List<GrabResultInfoModel> mResultList; // 一唱到底对战结果数据
 
+    private boolean mMute = false;
+
     /**
      * 检查轮次信息是否需要更新
      */
@@ -290,6 +292,14 @@ public class RoomData implements Serializable {
 
     public List<GrabResultInfoModel> getResultList() {
         return mResultList;
+    }
+
+    public boolean isMute() {
+        return mMute;
+    }
+
+    public void setMute(boolean mute) {
+        mMute = mute;
     }
 
     @Override

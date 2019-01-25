@@ -321,7 +321,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    public void muteAllRemoteAudioStreams(boolean mute) {
+    public void muteAllRemoteAudioStreams(boolean mute,boolean fromUser) {
+        if(fromUser){
+            mRoomData.setMute(mute);
+        }
         EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
         // 如果是机器人的话
         if (mute) {
@@ -926,8 +929,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
         MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
         swapGame(!event.foreground, event.foreground);
-        if (mRoomData.getRealRoundInfo() != null
-                && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
+        if(event.foreground){
+            muteAllRemoteAudioStreams(mRoomData.isMute(),false);
+        }else{
+            muteAllRemoteAudioStreams(true,false);
         }
     }
 
