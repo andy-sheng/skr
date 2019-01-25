@@ -2,8 +2,10 @@ package com.module.home.updateinfo.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -17,14 +19,19 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -49,6 +56,8 @@ public class EditInfoAgeFragment extends BaseFragment {
 
     TimePickerView pvCustomLunar;
     ExTextView mCompleteTv;
+
+    DialogPlus mDialogPlus;
 
     @Override
     public int initView() {
@@ -155,12 +164,10 @@ public class EditInfoAgeFragment extends BaseFragment {
                     String bir = U.getDateTimeUtils().formatDateString(date);
                     if (bir.equals(MyUserInfoManager.getInstance().getBirthday())) {
                         // 无任何变化
+                        U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
                     } else {
-                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                .setBirthday(bir)
-                                .build(), false);
+                        changeAge(bir);
                     }
-                    U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
                 }
             }
         })
@@ -222,6 +229,47 @@ public class EditInfoAgeFragment extends BaseFragment {
 
         pvCustomLunar.setKeyBackCancelable(false); //系统返回键监听屏蔽掉
         pvCustomLunar.show();
+    }
+
+    private void changeAge(String bir) {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip("年龄只能修改一次哦～\n确认修改吗？")
+                .setConfirmTip("确认修改")
+                .setCancelTip("取消")
+                .build();
+
+        mDialogPlus = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
+                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_80)
+                .setExpanded(false)
+                .setOnClickListener(new com.orhanobut.dialogplus.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view instanceof ExTextView) {
+                            if (view.getId() == com.component.busilib.R.id.confirm_tv) {
+                                dialog.dismiss();
+                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                        .setBirthday(bir)
+                                        .build(), false);
+                                U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+                            }
+
+                            if (view.getId() == com.component.busilib.R.id.cancel_tv) {
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+                })
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+
+                    }
+                })
+                .create();
+        mDialogPlus.show();
     }
 
     private boolean checkBirthday(Date date) {

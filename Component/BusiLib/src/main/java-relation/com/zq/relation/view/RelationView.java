@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -18,11 +20,17 @@ import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.dialog.view.TipsDialogView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -55,6 +63,8 @@ public class RelationView extends RelativeLayout {
     LoadService mLoadService;
 
     RelationAdapter mRelationAdapter;
+
+    DialogPlus mDialogPlus;
 
     public RelationView(Context context, int mode) {
         super(context);
@@ -90,12 +100,12 @@ public class RelationView extends RelativeLayout {
                     // 关注和好友都是有关系的人
                     if (mMode == UserInfoManager.RELATION_FANS) {
                         if (userInfoModel.isFriend()) {
-                            UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, userInfoModel.isFriend());
+                            unFollow(userInfoModel);
                         } else {
                             UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_BUILD, userInfoModel.isFriend());
                         }
                     } else {
-                        UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, userInfoModel.isFriend());
+                        unFollow(userInfoModel);
                     }
 
                 }
@@ -135,6 +145,44 @@ public class RelationView extends RelativeLayout {
         loadData(mMode, mOffset, DEFAULT_COUNT);
     }
 
+    private void unFollow(final UserInfoModel userInfoModel) {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip("是否取消关注")
+                .setConfirmTip("取消关注")
+                .setCancelTip("不了")
+                .build();
+
+        mDialogPlus = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .setOnClickListener(new com.orhanobut.dialogplus.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view instanceof ExTextView) {
+                            if (view.getId() == R.id.confirm_tv) {
+                                dialog.dismiss();
+                                UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, userInfoModel.isFriend());
+                            }
+
+                            if (view.getId() == R.id.cancel_tv) {
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+                })
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+
+                    }
+                })
+                .create();
+        mDialogPlus.show();
+    }
+
     public void loadData(final int mode, final int offset, int limit) {
         UserInfoManager.getInstance().getRelationList(mode, offset, limit, new UserInfoManager.ResponseCallBack<ApiResult>() {
             @Override
@@ -168,7 +216,18 @@ public class RelationView extends RelativeLayout {
         });
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+        }
+    }
+
     public void destroy() {
+        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+            mDialogPlus.dismiss();
+        }
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
