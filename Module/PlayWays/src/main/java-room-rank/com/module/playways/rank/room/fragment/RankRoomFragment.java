@@ -3,6 +3,7 @@ package com.module.playways.rank.room.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,10 @@ import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.image.fresco.BaseImageView;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.fresco.IFrescoCallBack;
+import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
@@ -25,6 +30,9 @@ import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
+import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
+import com.facebook.fresco.animation.drawable.AnimationListener;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -110,6 +118,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     TopContainerView mTopContainerView;
 
     SVGAImageView mReadyGoBg;
+
+    BaseImageView mStageView;      //主舞台动画，webp形式
 
     SVGAImageView mStagePeopleBg;
 
@@ -305,10 +315,135 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mTurnChangeCardHideAnimator.start();
     }
 
+    @Override
+    public void hideMainStage() {
+        MyLog.d(TAG, "hideMainStage");
+        // 显示end小卡片
+        mEndRoundHint.setVisibility(View.VISIBLE);
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 模式改为3，自动播放主舞台退出的svga动画
+                mUFOMode = 3;
+                hideWebpStage();
+                mFloatLyricsView.setVisibility(View.GONE);
+                mManyLyricsView.setVisibility(View.GONE);
+            }
+        }, 800);
+
+        if (mRoomData.getRealRoundInfo().getRoundSeq() == 3) {
+            // 最后一轮
+            mUiHanlder.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startGameEndAniamtion();
+                }
+            }, 2000);
+        }
+    }
+
+    private void hideWebpStage() {
+        // end小卡片，做一个满满消失的动画
+        ObjectAnimator objectAnimatorEnd = ObjectAnimator.ofFloat(mEndRoundHint, View.ALPHA, 1f, 0f);
+        objectAnimatorEnd.setDuration(1000);
+        mAnimatorList.add(objectAnimatorEnd);
+        objectAnimatorEnd.start();
+
+        // 舞台退出，淡出
+        ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 1f, 0f);
+        objectAnimatorStage.setDuration(1000);
+        mAnimatorList.add(objectAnimatorStage);
+        objectAnimatorStage.start();
+
+        objectAnimatorStage.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                ((RelativeLayout) mRootView).removeView(mStageView);
+                mStageView = null;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                onAnimationEnd(animator);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
+
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
         mFloatLyricsView.setVisibility(View.VISIBLE);
+//        playSVGAMainStage();
+        playWebpMainStage();
+    }
+
+    private void playWebpMainStage() {
+        if (mStageView == null) {
+            mStageView = new BaseImageView(getActivity());
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(188));
+            lp.topMargin = U.getDisplayUtils().dip2px(143);
+            ((RelativeLayout) mRootView).addView(mStageView, lp);
+        }
+
+        FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
+                .setCallBack(new IFrescoCallBack() {
+                    @Override
+                    public void processWithInfo(ImageInfo info, Animatable animatable) {
+                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
+                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
+
+                                @Override
+                                public void onAnimationStart(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
+                                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
+                                    objectAnimator.setDuration(1000);
+                                    objectAnimator.start();
+                                    mAnimatorList.add(objectAnimator);
+                                }
+
+                                @Override
+                                public void onAnimationStop(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
+                                }
+
+                                @Override
+                                public void onAnimationReset(AnimatedDrawable2 drawable) {
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+
+                                }
+
+                                @Override
+                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
+                                }
+                            });
+                            animatable.start();
+                        }
+                    }
+
+                    @Override
+                    public void processWithFailure() {
+                        MyLog.d(TAG, "processWithFailure");
+                    }
+                })
+                .build()
+        );
+    }
+
+    // SVGA 的主舞台动画
+    private void playSVGAMainStage() {
         // 舞台人的动画
         if (mStagePeopleBg != null) {
             mStagePeopleBg.setVisibility(View.VISIBLE);
@@ -947,6 +1082,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mRankingContainer.removeView(mReadyGoBg);
             mReadyGoBg = null;
         }
+
+        if (mStageView != null && mRootView != null) {
+            ((RelativeLayout) mRootView).removeView(mStageView);
+            mStageView = null;
+        }
     }
 
 
@@ -984,32 +1124,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void showLeftTime(long wholeTile) {
         MyLog.d(TAG, "showLastedTime" + " wholeTile=" + wholeTile);
         mTopContainerView.startPlayLeftTime(wholeTile);
-    }
-
-    @Override
-    public void hideMainStage() {
-        MyLog.d(TAG, "hideMainStage");
-        // 显示end小卡片
-        mEndRoundHint.setVisibility(View.VISIBLE);
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // 模式改为3，自动播放主舞台退出的svga动画
-                mUFOMode = 3;
-                mFloatLyricsView.setVisibility(View.GONE);
-                mManyLyricsView.setVisibility(View.GONE);
-            }
-        }, 800);
-
-        if (mRoomData.getRealRoundInfo().getRoundSeq() == 3) {
-            // 最后一轮
-            mUiHanlder.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startGameEndAniamtion();
-                }
-            }, 2000);
-        }
     }
 
     @Override
