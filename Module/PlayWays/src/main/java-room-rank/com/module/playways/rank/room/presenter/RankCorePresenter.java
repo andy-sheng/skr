@@ -102,6 +102,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_START_LAST_TWO_SECONDS_TASK = 30;
 
+    static final int MSG_LYRIC_END_EVENT = 31;
+
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;
 
