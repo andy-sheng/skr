@@ -164,7 +164,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.song_pairbutton);
 
-        BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getOri(), mPrepareData.getSongModel().getRankLrcBeginT());
+        BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
     }
 
     @Override
@@ -211,7 +211,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     @Override
     public void notifyToShow() {
         if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getOri(), mPrepareData.getSongModel().getRankLrcBeginT());
+            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
         }
         MyLog.d(TAG, "toStaskTop");
         mRootView.setVisibility(View.VISIBLE);

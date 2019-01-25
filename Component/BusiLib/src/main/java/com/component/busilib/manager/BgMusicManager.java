@@ -2,6 +2,7 @@ package com.component.busilib.manager;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.text.TextUtils;
 import android.view.animation.LinearInterpolator;
 
 import com.common.log.MyLog;
@@ -56,14 +57,24 @@ public class BgMusicManager {
             MyLog.d(TAG, "starPlay" + " isPlay = false ");
             return;
         }
+
+        if (TextUtils.isEmpty(path)){
+            MyLog.d(TAG, "starPlay" + " path = null ");
+            return;
+        }
+
         if (mExoPlayer != null && mExoPlayer.isPlaying()) {
             mExoPlayer.stop();
         }
         if (mExoPlayer == null) {
             mExoPlayer = new ExoPlayer();
         }
+
         mExoPlayer.startPlay(path);
-        mExoPlayer.seekTo(msec);
+
+        if (msec != 0) {
+            mExoPlayer.seekTo(msec);
+        }
 
         mExoPlayer.setCallback(new IPlayerCallback() {
             @Override
