@@ -204,7 +204,7 @@ public class ShareWebActivity extends BaseActivity {
             @Override
             public void onCancel(SHARE_MEDIA platform) {
 
-                Toast.makeText(mActivity.get(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity.get(), "分享取消了", Toast.LENGTH_SHORT).show();
             }
         }
 
