@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/name_tv"
             android:layout_alignBottom="@+id/name_tv"
+            android:layout_marginRight="@dimen/view_5_dp"
             android:layout_toRightOf="@id/name_tv">
 
             <ImageView
