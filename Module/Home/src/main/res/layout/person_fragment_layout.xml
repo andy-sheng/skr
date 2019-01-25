@@ -4,7 +4,7 @@
     android:id="@+id/person_main_containner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gerenzhuye_bg">
+    android:background="@drawable/gerenzhuye_bj">
 
 
     <com.common.image.fresco.BaseImageView
