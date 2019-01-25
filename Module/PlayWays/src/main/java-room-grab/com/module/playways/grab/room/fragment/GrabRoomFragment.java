@@ -404,6 +404,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             }
 
             @Override
+            public void grabCountDownOver() {
+                mCorePresenter.sendMyGrabOver();
+            }
+
+            @Override
             public void countDownOver() {
 
             }
@@ -415,6 +420,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     private void initSingStageView() {
         mOthersSingCardView = mRootView.findViewById(R.id.other_sing_card_view);
         mSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
+        mSelfSingCardView.setListener(new SelfSingCardView.Listener() {
+            @Override
+            public void onCountDownOver() {
+                mCorePresenter.sendRoundOverInfo();
+            }
+        });
     }
 
     private SVGAParser getSVGAParser() {

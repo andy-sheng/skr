@@ -194,7 +194,7 @@ public class RoundRectangleView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 currentProgress = (int) animation.getAnimatedValue();
-                MyLog.d(TAG, "currentProgress " + currentProgress);
+//                MyLog.d(TAG, "currentProgress " + currentProgress);
                 postInvalidate();
             }
         });

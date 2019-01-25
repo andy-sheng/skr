@@ -85,4 +85,10 @@ public class MachineScoreModel implements Serializable {
         }
         return null;
     }
+
+    public void reset() {
+        mDataList.clear();
+        mAverageScore = -1;
+        mTotalScore = -1;
+    }
 }

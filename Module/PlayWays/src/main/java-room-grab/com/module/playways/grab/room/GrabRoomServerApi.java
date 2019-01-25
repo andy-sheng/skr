@@ -16,9 +16,10 @@ public interface GrabRoomServerApi {
 
     /**
      * {
-     *   "gameID" : 11111,
-     *   "roundSeq" : 1
+     * "gameID" : 11111,
+     * "roundSeq" : 1
      * }
+     *
      * @param body
      * @return
      */
@@ -27,9 +28,10 @@ public interface GrabRoomServerApi {
 
     /**
      * {
-     *   "gameID" : 111,
-     *   "roundSeq" : 1
+     * "gameID" : 111,
+     * "roundSeq" : 1
      * }
+     *
      * @param body
      * @return
      */
@@ -38,12 +40,14 @@ public interface GrabRoomServerApi {
 
     /**
      * {
-     *   "gameID" : 30000004,
-     *   "itemID" : 11,
-     *   "audioURL" : "http://audio-4.xxxxxx.com",
-     *   "timeMs" : 1545312998095,
-     *   "sign" : "b00a2a588cbde171404fc9336bac0d5c"
+     * "gameID" : 30000004,
+     * "itemID" : 11,
+     * "sysScore": 90,
+     * "audioURL" : "http://audio-4.xxxxxx.com",
+     * "timeMs" : 1545312998095,
+     * "sign" : "239f75edd08c029b2dbb012e0c6d931d"
      * }
+     *
      * @param body
      * @return
      */
@@ -52,9 +56,10 @@ public interface GrabRoomServerApi {
 
     /**
      * {
-     *   "gameID" : 111,
-     *   "status" : 1
+     * "gameID" : 111,
+     * "status" : 1
      * }
+     *
      * @param body
      * @return
      */
@@ -63,8 +68,9 @@ public interface GrabRoomServerApi {
 
     /**
      * {
-     *   "gameID" : 111
+     * "gameID" : 111
      * }
+     *
      * @param body
      * @return
      */
@@ -72,19 +78,35 @@ public interface GrabRoomServerApi {
     Observable<ApiResult> exitGame(@Body RequestBody body);
 
     /**
+     * {
+     * 	"gameID" : 20001505,
+     * 	"roundSeq" : 1
+     * }
      * 上报结束一轮游戏
      *
      * @param body 游戏标识 gameID (必选)
      *             机器评分 sysScore (必选)
      *             时间戳 timeMs (必选)
      *             签名  sign (必选)  md5(skrer|gameID|score|timeMs)
-     * @return  当前轮次结束时间戳roundOverTimeMs
-     *          当前轮次信息currentRound
-     *          下个轮次信息nextRound
+     * @return 当前轮次结束时间戳roundOverTimeMs
+     * 当前轮次信息currentRound
+     * 下个轮次信息nextRound
      */
-    @PUT("http://dev.game.inframe.mobi/v1/game/round/over")
+    @PUT("http://dev.game.inframe.mobi/v1/game/stand-round-over")
     Observable<ApiResult> sendRoundOver(@Body RequestBody body);
 
+    /**
+     * 相当于告知服务器，我不抢
+     * {
+     * "gameID" : 20001505,
+     * "roundSeq" : 1
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/stand-intro-over")
+    Observable<ApiResult> sendGrapOver(@Body RequestBody body);
 
     @GET("http://dev.game.inframe.mobi/v1/game/stand-result")
     Observable<ApiResult> getStandResult(@Query("gameID") int gameID);

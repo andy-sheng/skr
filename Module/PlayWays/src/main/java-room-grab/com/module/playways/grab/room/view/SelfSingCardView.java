@@ -71,6 +71,7 @@ public class SelfSingCardView extends RelativeLayout {
 
     SongModel mSongModel;
 
+    Listener mListener;
     HandlerTaskTimer mCountDownTask;
 
     /**
@@ -167,7 +168,18 @@ public class SelfSingCardView extends RelativeLayout {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        setNum((songModel.getTotalMs() / 1000) - integer);
+                        int num = (songModel.getTotalMs() / 1000) - integer;
+                        setNum(num);
+                        if(num==0){
+                            if (mListener != null) {
+                                mListener.onCountDownOver();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
                     }
                 });
     }
@@ -486,5 +498,13 @@ public class SelfSingCardView extends RelativeLayout {
             setVisibility(GONE);
             clearAnimation();
         }
+    }
+
+    public void setListener(Listener l ){
+        mListener = l;
+    }
+
+    public interface Listener{
+        void onCountDownOver();
     }
 }

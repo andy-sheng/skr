@@ -13,12 +13,17 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.RecognizeConfig;
+import com.engine.arccloud.SongInfo;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
@@ -43,6 +48,7 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
@@ -57,6 +63,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.agora.rtc.Constants;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -184,8 +194,32 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             //开始录制声音
             if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                 // 需要上传音频伪装成机器人
-
                 EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                RoundInfoModel now = mRoomData.getRealRoundInfo();
+                if(mRobotScoreHelper==null){
+                    mRobotScoreHelper = new RobotScoreHelper();
+                }
+                mRobotScoreHelper.reset();
+                EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                        .setSongName(now.getSongModel().getItemName())
+                        .setArtist(now.getSongModel().getOwner())
+                        .setMode(RecognizeConfig.MODE_AUTO)
+                        .setMResultListener(new ArcRecognizeListener() {
+                            @Override
+                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {
+                                int score = 0;
+                                if (targetSongInfo != null) {
+                                    score = (int) (targetSongInfo.getScore() * 100);
+                                }
+
+                                MachineScoreItem machineScoreItem = new MachineScoreItem();
+                                machineScoreItem.setNo(0);
+                                machineScoreItem.setTs(System.currentTimeMillis() - mRobotScoreHelper.getBeginRecordTs());
+                                machineScoreItem.setScore(score);
+                                mRobotScoreHelper.add(machineScoreItem);
+                            }
+                        })
+                        .build());
             }
         }
     }
@@ -302,6 +336,99 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 自己的轮次结束了
+     * @param roundInfoModel
+     */
+    private void onSelfRoundOver(RoundInfoModel roundInfoModel){
+        // 上一轮演唱是自己，开始上传资源
+        if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+            //属于需要上传音频文件的状态
+            // 上一轮是我的轮次，暂停录音
+            if (mRoomData.getGameId() > 0) {
+                EngineManager.getInstance().stopAudioRecording();
+            }
+            // 上传打分
+            if (mRobotScoreHelper != null) {
+                if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {
+                    roundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
+                    uploadRes1ForAi(roundInfoModel);
+                }
+            }
+        }
+    }
+
+    /**
+     * 上传音频文件用作机器人
+     *
+     * @param roundInfoModel
+     */
+    private void uploadRes1ForAi(RoundInfoModel roundInfoModel) {
+        if (mRobotScoreHelper != null && mRobotScoreHelper.vilid()) {
+            UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
+                    .setFileType(UploadParams.FileType.audioAi)
+                    .startUploadAsync(new UploadCallback() {
+                        @Override
+                        public void onProgress(long currentSize, long totalSize) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(String url) {
+                            sendUploadRequest(roundInfoModel, url);
+                        }
+
+                        @Override
+                        public void onFailure(String msg) {
+
+                        }
+                    });
+        }
+    }
+
+    /**
+     * 上传机器人资源相关文件到服务器
+     *
+     * @param roundInfoModel
+     * @param audioUrl
+     */
+    private void sendUploadRequest(RoundInfoModel roundInfoModel, String audioUrl) {
+        long timeMs = System.currentTimeMillis();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("itemID", roundInfoModel.getPlaybookID());
+        map.put("sysScore", roundInfoModel.getSysScore());
+        map.put("audioURL", audioUrl);
+//        map.put("midiURL", midiUrl);
+        map.put("timeMs", timeMs);
+        StringBuilder sb = new StringBuilder();
+        sb.append("skrer")
+                .append("|").append(mRoomData.getGameId())
+                .append("|").append(roundInfoModel.getPlaybookID())
+                .append("|").append(roundInfoModel.getSysScore())
+                .append("|").append(audioUrl)
+//                .append("|").append(midiUrl)
+                .append("|").append(timeMs);
+        String sign = U.getMD5Utils().MD5_32(sb.toString());
+        map.put("sign", sign);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.saveRes(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    MyLog.e(TAG, "sendAiUploadRequest success");
+                } else {
+                    MyLog.e(TAG, "sendAiUploadRequest failed， errno is " + result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, "sendUploadRequest error " + e);
+            }
+        }, this);
+    }
+
     @Override
     public void destroy() {
         super.destroy();
@@ -321,33 +448,50 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 告知我的的抢唱阶段结束了
+     */
+    public void sendMyGrabOver() {
+         MyLog.d(TAG,"上报我的抢唱结束 ");
+        RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        if(roundInfoModel==null){
+            return ;
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("roundSeq", roundInfoModel.getRoundSeq());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.sendGrapOver(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    MyLog.w(TAG, "我的抢唱结束上报成功 traceid is " + result.getTraceId());
+                } else {
+                    MyLog.w(TAG, "我的抢唱结束上报失败 traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.w(TAG, "sendRoundOverInfo" + " error " + e);
+            }
+        }, this);
+    }
+
+    /**
      * 上报轮次结束信息
      */
     public void sendRoundOverInfo() {
         MyLog.w(TAG, "上报我的演唱结束");
         estimateOverTsThisRound();
 
-        // TODO: 2018/12/27 机器评分先写死，都给90分
-        long timeMs = System.currentTimeMillis();
-        int sysScore = 90;
-        String sign = U.getMD5Utils().MD5_32("skrer|" +
-                String.valueOf(mRoomData.getGameId()) + "|" +
-                String.valueOf(sysScore) + "|" +
-                String.valueOf(timeMs));
-
-
+        RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        if(roundInfoModel==null  || roundInfoModel.getUserID()!=MyUserInfoManager.getInstance().getUid()){
+            return ;
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
-        map.put("sysScore", sysScore);
-        map.put("timeMs", timeMs);
-        map.put("sign", sign);
-
-        // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
-        int roundSeq = -1;
-        if (mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
-            roundSeq = mRoomData.getRealRoundInfo().getRoundSeq();
-        }
-        int finalRoundSeq = roundSeq;
+        map.put("roundSeq", roundInfoModel.getRoundSeq());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
@@ -355,12 +499,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     MyLog.w(TAG, "演唱结束上报成功 traceid is " + result.getTraceId());
-                    // 尝试自己切换到下一个轮次
-//                    if (finalRoundSeq >= 0) {
-//                        RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
-//                        mRoomData.setExpectRoundInfo(roundInfoModel);
-//                        mRoomData.checkRound();
-//                    }
                 } else {
                     MyLog.w(TAG, "演唱结束上报失败 traceid is " + result.getTraceId());
                 }
@@ -372,6 +510,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         }, this);
     }
+
 
     /**
      * 退出游戏
@@ -454,7 +593,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
@@ -546,6 +684,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "GrabGameOverEvent");
         estimateOverTsThisRound();
         tryStopRobotPlay();
+        EngineManager.getInstance().stopRecognize();
         mRoomData.setIsGameFinish(true);
         cancelSyncGameStateTask();
         // 游戏结束了,处理相应的ui逻辑
@@ -574,6 +713,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         estimateOverTsThisRound();
         closeEngine();
         tryStopRobotPlay();
+        EngineManager.getInstance().stopRecognize();
         RoundInfoModel now = event.newRoundInfo;
         if (now.getStatus() == RoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
@@ -588,20 +728,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 });
 
                 if (event.lastRoundInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                    // 上一轮演唱是自己，开始上传资源
-                    if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
-                        //属于需要上传音频文件的状态
-                        // 上一轮是我的轮次，暂停录音
-                        if (mRoomData.getGameId() > 0) {
-                            EngineManager.getInstance().stopAudioRecording();
-                        }
-                        // 上传打分
-//                        RoundInfoModel myRoundInfoModel = event.lastRoundInfo;
-//                        if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {
-//                            myRoundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
-//                            mRobotScoreHelper.uploadRes1ForAi(myRoundInfoModel);
-//                        }
-                    }
+                    onSelfRoundOver(event.lastRoundInfo);
                 }
             } else {
                 mIGrabView.grabBegin(now.getRoundSeq(), now.getSongModel());
@@ -806,6 +933,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
         return pt;
     }
+
 
 
 }

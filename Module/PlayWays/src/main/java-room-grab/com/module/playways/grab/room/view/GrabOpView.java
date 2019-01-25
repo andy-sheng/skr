@@ -62,6 +62,9 @@ public class GrabOpView extends RelativeLayout {
             switch (msg.what){
                 case MSG_HIDE_FROM_END_GUIDE_AUDIO:
                     hide();
+                    if (mListener != null) {
+                        mListener.grabCountDownOver();
+                    }
                     break;
                 case MSG_HIDE:
                     mIvLightOff.setVisibility(GONE);
@@ -309,6 +312,8 @@ public class GrabOpView extends RelativeLayout {
         void clickGrabBtn();
 
         void clickLightOff();
+
+        void grabCountDownOver();
 
         void countDownOver();
     }
