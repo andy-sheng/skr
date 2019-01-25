@@ -59,13 +59,12 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_light_off"
-        android:layout_width="@dimen/view_64_dp"
-        android:layout_height="@dimen/view_69_dp"
+        android:layout_width="@dimen/view_99_dp"
+        android:layout_height="@dimen/view_76_dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/view_11_dp"
-        android:background="@drawable/miedeng_ic"
-        android:paddingBottom="@dimen/view_6_dp"
+        android:paddingBottom="@dimen/view_12_dp"
         android:scaleType="center"
         android:src="@drawable/mie_1"
-        android:visibility="gone" />
+        android:visibility="visible" />
 </merge>

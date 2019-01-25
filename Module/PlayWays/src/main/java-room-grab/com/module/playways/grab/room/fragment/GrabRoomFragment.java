@@ -459,7 +459,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         U.getSoundUtils().play(TAG, R.raw.dislike);
         //自己灭了别人的灯成功了
         if (event.uid == MyUserInfoManager.getInstance().getUid()) {
-            mGrabOpBtn.hide();
+            mGrabOpBtn.toLightOffState();
         }
     }
 

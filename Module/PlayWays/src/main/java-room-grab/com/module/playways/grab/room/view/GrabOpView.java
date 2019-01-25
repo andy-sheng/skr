@@ -39,7 +39,8 @@ public class GrabOpView extends RelativeLayout {
 
     public static final int STATUS_GRAP = 1;
     public static final int STATUS_COUNT_DOWN = 2;
-    public static final int STATUS_LIGHT_OFF = 3;
+    public static final int STATUS_CAN_LIGHT_OFF = 3;
+    public static final int STATUS_LIGHT_OFF = 4;
 
 
     RoundRectangleView mRrlProgress;
@@ -112,7 +113,7 @@ public class GrabOpView extends RelativeLayout {
                 .filter(new Predicate<Object>() {
             @Override
             public boolean test(Object o) {
-                return mStatus == STATUS_LIGHT_OFF;
+                return mStatus == STATUS_CAN_LIGHT_OFF;
             }
         }).subscribe(new Consumer<Object>() {
             @Override
@@ -245,8 +246,9 @@ public class GrabOpView extends RelativeLayout {
         startAnimation(animation);
 
         setVisibility(VISIBLE);
-        mStatus = STATUS_LIGHT_OFF;
+        mStatus = STATUS_CAN_LIGHT_OFF;
         mIvLightOff.setVisibility(VISIBLE);
+        mIvLightOff.setBackground(U.getDrawable(R.drawable.mie_red_bj));
         mGrabContainer.setVisibility(GONE);
         mIvLightOff.setClickable(false);
         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
@@ -289,9 +291,17 @@ public class GrabOpView extends RelativeLayout {
                         }
                         // 按钮变成抢唱，且可点击
                         mIvLightOff.setClickable(true);
-                        mIvLightOff.setImageDrawable(U.getDrawable(R.drawable.mie_zi));
+                        mIvLightOff.setImageDrawable(U.getDrawable(R.drawable.miedeng_zi));
                     }
                 });
+    }
+
+    public void toLightOffState(){
+        if(mStatus == STATUS_CAN_LIGHT_OFF){
+            mStatus = STATUS_LIGHT_OFF;
+            mIvLightOff.setBackground(U.getDrawable(R.drawable.mie_an_bj));
+            mIvLightOff.setClickable(false);
+        }
     }
 
     @Override
