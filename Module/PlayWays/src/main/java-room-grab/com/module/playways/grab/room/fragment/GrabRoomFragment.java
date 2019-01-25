@@ -21,6 +21,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
@@ -574,11 +575,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             mCorePresenter.beginSing();
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
-            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getSongModel(), true);
+            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getSongModel(), false);
         } else {
             // 显示收音机
             mOthersSingCardView.setVisibility(View.VISIBLE);
             mOthersSingCardView.bindData(mRoomData.getUserInfo((int) uid).getAvatar(), mRoomData.getRealRoundInfo().getSongModel());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LightOffAnimationOverEvent event) {
+        //灭灯动画播放结束
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            mSelfSingCardView.tryStartCountDown();
+        } else {
+            mOthersSingCardView.tryStartCountDown();
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -53,7 +54,10 @@ import okio.Okio;
  */
 public class SelfSingCardView extends RelativeLayout {
     public final static String TAG = "SelfSingCardView";
-    public final static int UPTATE_TIME = 10;
+
+    final static int MSG_ENSURE_PLAY = 1;
+    final static int COUNT_DOWN_STATUS_WAIT = 1;
+    final static int COUNT_DOWN_STATUS_PLAYING = 2;
 
     SVGAImageView mSingBgSvga;
 
@@ -87,10 +91,21 @@ public class SelfSingCardView extends RelativeLayout {
 
     Disposable mDisposable;
 
-    Handler mHandler = new Handler();
+    Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_ENSURE_PLAY) {
+                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
+                countDown();
+            }
+        }
+    };
 
     TranslateAnimation mEnterAnimation;   // 进场动画
     TranslateAnimation mLeaveAnimation;   // 出场动画
+
+    int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
 
     public SelfSingCardView(Context context) {
         super(context);
@@ -113,7 +128,7 @@ public class SelfSingCardView extends RelativeLayout {
         mSingBgSvga = (SVGAImageView) findViewById(R.id.sing_bg_svga);
         mSvLyric = findViewById(R.id.sv_lyric);
         mTvLyric = findViewById(R.id.tv_lyric);
-        mIvEmpty = (ImageView)findViewById(R.id.iv_empty);
+        mIvEmpty = (ImageView) findViewById(R.id.iv_empty);
 
 
         mIvHStub = (ImageView) findViewById(R.id.iv_h_stub);
@@ -128,7 +143,7 @@ public class SelfSingCardView extends RelativeLayout {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
 
-                        mHandler.postDelayed(new Runnable() {
+                        mUiHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 resetOffsetY();
@@ -158,22 +173,36 @@ public class SelfSingCardView extends RelativeLayout {
         });
     }
 
-    private void countDonw(SongModel songModel) {
-        if (songModel == null) {
+
+    public void tryStartCountDown() {
+        if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
+            mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
+            countDown();
+        }
+    }
+
+    private void countDown() {
+        if (mSongModel == null) {
             return;
         }
-
+        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
+        if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
+            // 不需要播放countdown
+            int num = (mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000;
+            setNum(num);
+            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
+            return;
+        }
         cancelCountDownTask();
-
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000 + 1))
+                .take(((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000 + 1))
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num = ((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) - integer + 1;
+                        int num = ((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000) - integer;
                         setNum(num);
-                        if(num==0){
+                        if (num == 0) {
                             if (mListener != null) {
                                 mListener.onCountDownOver();
                             }
@@ -309,7 +338,19 @@ public class SelfSingCardView extends RelativeLayout {
     }
 
     public void playLyric(SongModel songModel, boolean play) {
+        if (songModel == null) {
+            MyLog.d(TAG, "songModel 是空的");
+            return;
+        }
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
+        if (play) {
+            if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
+                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
+            }
+        } else {
+            mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
+        }
+        mSongModel = songModel;
         mIvEmpty.setVisibility(GONE);
         // 平移动画
         if (mEnterAnimation == null) {
@@ -317,23 +358,17 @@ public class SelfSingCardView extends RelativeLayout {
             mEnterAnimation.setDuration(200);
         }
         this.startAnimation(mEnterAnimation);
-
         mTvLyric.setText("");
-        mHandler.removeCallbacksAndMessages(null);
+        mUiHandler.removeCallbacksAndMessages(null);
         showBackground(MyUserInfoManager.getInstance().getAvatar());
-        if (songModel == null) {
-            MyLog.d(TAG, "songModel 是空的");
-            return;
-        }
-        mSongModel = songModel;
 
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
 
-        if(songModel.isIsblank()){
+        if (mSongModel.isIsblank()) {
             mIvEmpty.setVisibility(VISIBLE);
-            countDonw(mSongModel);
+            countDown();
             return;
         }
 
@@ -411,7 +446,7 @@ public class SelfSingCardView extends RelativeLayout {
         }, throwable -> MyLog.e(TAG, throwable));
 
         startScroll();
-        countDonw(mSongModel);
+        countDown();
     }
 
     private String getLyricFromLyricsLineInfo(LyricsLineInfo info) {
@@ -438,7 +473,7 @@ public class SelfSingCardView extends RelativeLayout {
     }
 
     private void stopScroll() {
-        mHandler.removeCallbacksAndMessages(null);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     private void startScroll() {
@@ -466,11 +501,10 @@ public class SelfSingCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mHandler.removeCallbacksAndMessages(null);
+        mUiHandler.removeCallbacksAndMessages(null);
         if (mSingBgSvga != null) {
             mSingBgSvga.stopAnimation(true);
         }
-
         cancelCountDownTask();
     }
 
@@ -510,11 +544,11 @@ public class SelfSingCardView extends RelativeLayout {
         }
     }
 
-    public void setListener(Listener l ){
+    public void setListener(Listener l) {
         mListener = l;
     }
 
-    public interface Listener{
+    public interface Listener {
         void onCountDownOver();
     }
 }

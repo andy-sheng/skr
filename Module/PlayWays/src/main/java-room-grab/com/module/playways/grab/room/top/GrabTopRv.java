@@ -18,6 +18,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomData;
+import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
@@ -295,6 +296,7 @@ public class GrabTopRv extends RelativeLayout {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 syncLight();
+                EventBus.getDefault().post(new LightOffAnimationOverEvent());
             }
         });
         mAnimatorAllSet.start();

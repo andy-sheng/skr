@@ -318,19 +318,19 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
 
         if (num != 1) {
-            iconListIndex += 1;
-            int index1 = iconListIndex % (mAvatarURL.size() - 1);
+            mIconListIndex += 1;
+            int index1 = mIconListIndex % (mAvatarURL.size() - 1);
             loadIconInImage(mAvatarURL.get(index1).getAvatarURL(), mSdvIcon1, mAvatarURL.get(index1).getSex() == ESex.SX_MALE.getValue());
             loadIconInImage(mAvatarURL.get(index1).getAvatarURL(), mSdvSubIcon1, mAvatarURL.get(index1).getSex() == ESex.SX_MALE.getValue());
         }
 
-        iconListIndex += 1;
-        int index2 = iconListIndex % (mAvatarURL.size() - 1);
+        mIconListIndex += 1;
+        int index2 = mIconListIndex % (mAvatarURL.size() - 1);
         loadIconInImage(mAvatarURL.get(index2).getAvatarURL(), mSdvIcon2, mAvatarURL.get(index2).getSex() == ESex.SX_MALE.getValue());
 
         if (num != 3) {
-            iconListIndex += 1;
-            int index3 = iconListIndex % (mAvatarURL.size() - 1);
+            mIconListIndex += 1;
+            int index3 = mIconListIndex % (mAvatarURL.size() - 1);
             loadIconInImage(mAvatarURL.get(index3).getAvatarURL(), mSdvIcon3, mAvatarURL.get(index3).getSex() == ESex.SX_MALE.getValue());
             loadIconInImage(mAvatarURL.get(index3).getAvatarURL(), mSdvSubIcon3, mAvatarURL.get(index3).getSex() == ESex.SX_MALE.getValue());
         }
@@ -479,7 +479,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
     }
 
-    private int iconListIndex = 0;
+    private int mIconListIndex = 0;
 
     List<MatchIconModel> mAvatarURL = null;
 
@@ -488,9 +488,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         if (avatarURL == null || avatarURL.size() == 0) {
             return;
         }
-
         mAvatarURL = avatarURL;
-
         changeIcons(0);
     }
 

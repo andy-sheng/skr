@@ -308,6 +308,9 @@ public class AuditionFragment extends BaseFragment {
                     .setMResultListener(new ArcRecognizeListener() {
                         @Override
                         public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {
+                            if(targetSongInfo!=null){
+                                U.getToastUtil().showShort("score:"+targetSongInfo.getScore());
+                            }
                         }
                     }).build());
         }

@@ -3,6 +3,8 @@ package com.module.playways.grab.room.view;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
@@ -33,6 +35,10 @@ import java.io.File;
  */
 public class OthersSingCardView extends RelativeLayout {
 
+    final static int MSG_ENSURE_PLAY = 1;
+    final static int COUNT_DOWN_STATUS_WAIT = 1;
+    final static int COUNT_DOWN_STATUS_PLAYING = 2;
+
     SVGAImageView mOtherBgSvga;
 
     ImageView mIvHStub;
@@ -44,6 +50,21 @@ public class OthersSingCardView extends RelativeLayout {
     TranslateAnimation mLeaveAnimation;   // 出场动画
 
     HandlerTaskTimer mCountDownTask;
+
+    SongModel mSongModel;
+
+    int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
+
+    Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_ENSURE_PLAY) {
+                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
+                countDown();
+            }
+        }
+    };
 
     public OthersSingCardView(Context context) {
         super(context);
@@ -63,9 +84,6 @@ public class OthersSingCardView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_others_sing_card_layout, this);
         mOtherBgSvga = (SVGAImageView) findViewById(R.id.other_bg_svga);
-
-
-        SVGAImageView mOtherBgSvga;
         mIvHStub = (ImageView)findViewById(R.id.iv_h_stub);
         mIvTStub = (ImageView) findViewById(R.id.iv_t_stub);
         mIvOStub = (ImageView) findViewById(R.id.iv_o_stub);
@@ -74,6 +92,8 @@ public class OthersSingCardView extends RelativeLayout {
 
     public void bindData(String avatar, SongModel songModel) {
         setVisibility(VISIBLE);
+        mSongModel = songModel;
+        mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
         // 平移动画
         if (mEnterAnimation == null) {
             mEnterAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0F, 0F, 0F);
@@ -101,24 +121,36 @@ public class OthersSingCardView extends RelativeLayout {
         } catch (Exception e) {
             MyLog.e(e);
         }
-
-        countDonw(songModel);
+        countDown();
     }
 
-    private void countDonw(SongModel songModel) {
-        if (songModel == null) {
+    public void tryStartCountDown() {
+        if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
+            mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
+            countDown();
+        }
+    }
+
+    private void countDown() {
+        if (mSongModel == null) {
             return;
         }
-
+        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
+        if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
+            // 不需要播放countdown
+            int num = (mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000;
+            setNum(num);
+            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
+            return;
+        }
         cancelCountDownTask();
-
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) + 1)
+                .take(((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000) + 1)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        setNum(((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) - integer + 1);
+                        setNum(((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000) - integer );
                     }
                 });
     }
@@ -242,7 +274,7 @@ public class OthersSingCardView extends RelativeLayout {
         if (mOtherBgSvga != null) {
             mOtherBgSvga.stopAnimation(true);
         }
-
+        mUiHandler.removeCallbacksAndMessages(null);
         cancelCountDownTask();
     }
 
@@ -264,4 +296,5 @@ public class OthersSingCardView extends RelativeLayout {
         }
         return dynamicEntity;
     }
+
 }
