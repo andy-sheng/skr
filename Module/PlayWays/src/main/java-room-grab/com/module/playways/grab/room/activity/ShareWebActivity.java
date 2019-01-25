@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.core.share.SharePanel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
@@ -45,292 +46,213 @@ import static com.common.view.titlebar.CommonTitleBar.ACTION_RIGHT_BUTTON;
 @Route(path = RouterConstants.ACTIVITY_SHARE_WEB)
 public class ShareWebActivity extends BaseActivity {
 
-        protected AgentWeb mAgentWeb;
-        private AgentWebUIControllerImplBase mAgentWebUIController;
-        private ErrorLayoutEntity mErrorLayoutEntity;
-        private MiddlewareWebChromeBase mMiddleWareWebChrome;
-        private MiddlewareWebClientBase mMiddleWareWebClient;
+    protected AgentWeb mAgentWeb;
+    private AgentWebUIControllerImplBase mAgentWebUIController;
+    private ErrorLayoutEntity mErrorLayoutEntity;
+    private MiddlewareWebChromeBase mMiddleWareWebChrome;
+    private MiddlewareWebClientBase mMiddleWareWebClient;
 
 
-        CommonTitleBar mTitlebar;
-        RelativeLayout mContentContainer;
+    CommonTitleBar mTitlebar;
+    RelativeLayout mContentContainer;
 
-        String mTitle;
-        String mDes;
-        String mIcon;
+    String mTitle;
+    String mDes;
+    String mIcon;
 
-        private WebChromeClient mWebChromeClient = new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                //do you work
+    private WebChromeClient mWebChromeClient = new WebChromeClient() {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            //do you work
 //            Log.i("Info","onProgress:"+newProgress);
-            }
-
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
-                mTitle = title;
-                if (mTitlebar != null) {
-                    mTitlebar.getCenterTextView().setText(title);
-                }
-            }
-        };
-
-        private WebViewClient mWebViewClient = new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return super.shouldOverrideUrlLoading(view, request);
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                //do you  work
-                Log.i("Info", "BaseWebActivity onPageStarted");
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                view.loadUrl("javascript:window.local_obj.showSource("
-                        + "document.querySelector('meta[name=\"shareIcon\"]').getAttribute('content'),"
-                        + "document.querySelector('meta[name=\"description\"]').getAttribute('content')"
-                        + ");");
-            }
-        };
+        }
 
         @Override
-        public int initView(@Nullable Bundle savedInstanceState) {
-            return R.layout.share_web_activity_layout;
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            mTitle = title;
+            if (mTitlebar != null) {
+                mTitlebar.getCenterTextView().setText(title);
+            }
         }
+    };
 
-        CustomShareListener mShareListener;
-        private ShareAction mShareAction;
+    private WebViewClient mWebViewClient = new WebViewClient() {
         @Override
-        public void initData(@Nullable Bundle savedInstanceState) {
-            mTitlebar = (CommonTitleBar) this.findViewById(R.id.titlebar);
-            mContentContainer = (RelativeLayout) this.findViewById(R.id.content_container);
-            buildAgentWeb();
-
-            mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
-                @Override
-                public void onClicked(View v, int action, String extra) {
-                    if(action == ACTION_LEFT_TEXT){
-                        finish();
-                    }else if(action == ACTION_RIGHT_BUTTON){
-                        mShareListener = new CustomShareListener(ShareWebActivity.this);
-                        /*增加自定义按钮的分享面板*/
-                    mShareAction = new ShareAction(ShareWebActivity.this).setDisplayList(
-                            SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ)
-                            .setShareboardclickCallback(new ShareBoardlistener() {
-                                @Override
-                                public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-
-                                        UMWeb web = new UMWeb("http://test.static.inframe.mobi/app/");
-                                        web.setTitle(mTitle);
-                                        web.setDescription(mDes);
-                                        web.setThumb(new UMImage(ShareWebActivity.this, R.drawable.share_app_icon));
-                                        new ShareAction(ShareWebActivity.this).withMedia(web)
-                                                .setPlatform(share_media)
-                                                .setCallback(mShareListener)
-                                                .share();
-                                }
-                            });
-                    mShareAction.open();
-                    }
-                }
-            });
-
-            try {
-                injectObj();
-            }catch (Exception e){
-                MyLog.e(e);
-            }
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            return super.shouldOverrideUrlLoading(view, request);
         }
 
-        private static class CustomShareListener implements UMShareListener {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            //do you  work
+            Log.i("Info", "BaseWebActivity onPageStarted");
+        }
 
-            private WeakReference<ShareWebActivity> mActivity;
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            view.loadUrl("javascript:window.local_obj.showSource("
+                    + "document.querySelector('meta[name=\"shareIcon\"]').getAttribute('content'),"
+                    + "document.querySelector('meta[name=\"description\"]').getAttribute('content')"
+                    + ");");
+        }
+    };
 
-            private CustomShareListener(ShareWebActivity activity) {
-                mActivity = new WeakReference(activity);
-            }
+    @Override
+    public int initView(@Nullable Bundle savedInstanceState) {
+        return R.layout.share_web_activity_layout;
+    }
 
+    @Override
+    public void initData(@Nullable Bundle savedInstanceState) {
+        mTitlebar = (CommonTitleBar) this.findViewById(R.id.titlebar);
+        mContentContainer = (RelativeLayout) this.findViewById(R.id.content_container);
+        buildAgentWeb();
+
+        mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
-            public void onStart(SHARE_MEDIA platform) {
-
-            }
-
-            @Override
-            public void onResult(SHARE_MEDIA platform) {
-
-                if (platform.name().equals("WEIXIN_FAVORITE")) {
-                    Toast.makeText(mActivity.get(), platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
-                            && platform != SHARE_MEDIA.EMAIL
-                            && platform != SHARE_MEDIA.FLICKR
-                            && platform != SHARE_MEDIA.FOURSQUARE
-                            && platform != SHARE_MEDIA.TUMBLR
-                            && platform != SHARE_MEDIA.POCKET
-                            && platform != SHARE_MEDIA.PINTEREST
-                            && platform != SHARE_MEDIA.INSTAGRAM
-                            && platform != SHARE_MEDIA.GOOGLEPLUS
-                            && platform != SHARE_MEDIA.YNOTE
-                            && platform != SHARE_MEDIA.EVERNOTE) {
-                        Toast.makeText(mActivity.get(), "分享成功啦", Toast.LENGTH_SHORT).show();
-                    }
+            public void onClicked(View v, int action, String extra) {
+                if (action == ACTION_LEFT_TEXT) {
+                    finish();
+                } else if (action == ACTION_RIGHT_BUTTON) {
+                    SharePanel sharePanel = new SharePanel(ShareWebActivity.this);
+                    sharePanel.setShareContent(mTitle, mDes, "http://test.static.inframe.mobi/app/");
+                    sharePanel.show();
                 }
             }
+        });
 
-            @Override
-            public void onError(SHARE_MEDIA platform, Throwable t) {
-                if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
-                        && platform != SHARE_MEDIA.EMAIL
-                        && platform != SHARE_MEDIA.FLICKR
-                        && platform != SHARE_MEDIA.FOURSQUARE
-                        && platform != SHARE_MEDIA.TUMBLR
-                        && platform != SHARE_MEDIA.POCKET
-                        && platform != SHARE_MEDIA.PINTEREST
-                        && platform != SHARE_MEDIA.INSTAGRAM
-                        && platform != SHARE_MEDIA.GOOGLEPLUS
-                        && platform != SHARE_MEDIA.YNOTE
-                        && platform != SHARE_MEDIA.EVERNOTE) {
-                    Toast.makeText(mActivity.get(), "分享失败啦", Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA platform) {
-
-                Toast.makeText(mActivity.get(), "分享取消了", Toast.LENGTH_SHORT).show();
-            }
+        try {
+            injectObj();
+        } catch (Exception e) {
+            MyLog.e(e);
         }
+    }
 
-        public void injectObj() throws Exception {
-            mAgentWeb.getJsInterfaceHolder().addJavaObject("local_obj", new InJavaScriptLocalObj());
+    public void injectObj() throws Exception {
+        mAgentWeb.getJsInterfaceHolder().addJavaObject("local_obj", new InJavaScriptLocalObj());
+    }
+
+    final class InJavaScriptLocalObj {
+        @JavascriptInterface
+        public void showSource(String shareIcon, String des) {
+            MyLog.d(TAG, "showSource" + " shareIcon=" + shareIcon + " des=" + des);
+            mDes = des;
+            mIcon = shareIcon;
         }
+    }
 
-        final class InJavaScriptLocalObj {
-            @JavascriptInterface
-            public void showSource(String shareIcon, String des) {
-                MyLog.d(TAG, "showSource" + " shareIcon=" + shareIcon + " des=" + des);
-                mDes = des;
-                mIcon = shareIcon;
-            }
-        }
-
-        /**
-         * 更多使用实例，参考 AgentWeb 官网上的 samples
-         */
-        protected void buildAgentWeb() {
-            ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
-            String url = getIntent().getStringExtra("url");
-            mAgentWeb = AgentWeb.with(this)
-                    .setAgentWebParent(mContentContainer, new RelativeLayout.LayoutParams(-1, -1))
-                    .useDefaultIndicator(Color.parseColor("#ff0000"), 3)
-                    .setWebChromeClient(mWebChromeClient)
-                    .setWebViewClient(mWebViewClient)
-                    .setMainFrameErrorView(mErrorLayoutEntity.layoutRes, mErrorLayoutEntity.reloadId)
+    /**
+     * 更多使用实例，参考 AgentWeb 官网上的 samples
+     */
+    protected void buildAgentWeb() {
+        ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
+        String url = getIntent().getStringExtra("url");
+        mAgentWeb = AgentWeb.with(this)
+                .setAgentWebParent(mContentContainer, new RelativeLayout.LayoutParams(-1, -1))
+                .useDefaultIndicator(Color.parseColor("#ff0000"), 3)
+                .setWebChromeClient(mWebChromeClient)
+                .setWebViewClient(mWebViewClient)
+                .setMainFrameErrorView(mErrorLayoutEntity.layoutRes, mErrorLayoutEntity.reloadId)
 //                .setWebView(getWebView())
 //                .setPermissionInterceptor(getPermissionInterceptor())
 //                .setWebLayout(getWebLayout())
 //                .setAgentWebUIController(getAgentWebUIController())
 //                .interceptUnkownUrl()
 //                .setOpenOtherPageWays(getOpenOtherAppWay())
-                    .useMiddlewareWebChrome(getMiddleWareWebChrome())
-                    .useMiddlewareWebClient(getMiddleWareWebClient())
-                    .setAgentWebWebSettings(AgentWebSettingsImpl.getInstance())
+                .useMiddlewareWebChrome(getMiddleWareWebChrome())
+                .useMiddlewareWebClient(getMiddleWareWebClient())
+                .setAgentWebWebSettings(AgentWebSettingsImpl.getInstance())
 //                .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
-                    .createAgentWeb()
-                    .ready()
-                    .go(url);
+                .createAgentWeb()
+                .ready()
+                .go(url);
+    }
+
+
+    protected @NonNull
+    ErrorLayoutEntity getErrorLayoutEntity() {
+        if (this.mErrorLayoutEntity == null) {
+            this.mErrorLayoutEntity = new ErrorLayoutEntity();
         }
+        return mErrorLayoutEntity;
+    }
 
 
-        protected @NonNull
-        ErrorLayoutEntity getErrorLayoutEntity() {
-            if (this.mErrorLayoutEntity == null) {
-                this.mErrorLayoutEntity = new ErrorLayoutEntity();
-            }
-            return mErrorLayoutEntity;
-        }
+    protected static class ErrorLayoutEntity {
+        private int layoutRes = R.layout.agentweb_error_page;
+        private int reloadId;
 
-
-        protected static class ErrorLayoutEntity {
-            private int layoutRes = R.layout.agentweb_error_page;
-            private int reloadId;
-
-            public void setLayoutRes(int layoutRes) {
-                this.layoutRes = layoutRes;
-                if (layoutRes <= 0) {
-                    layoutRes = -1;
-                }
-            }
-
-            public void setReloadId(int reloadId) {
-                this.reloadId = reloadId;
-                if (reloadId <= 0) {
-                    reloadId = -1;
-                }
+        public void setLayoutRes(int layoutRes) {
+            this.layoutRes = layoutRes;
+            if (layoutRes <= 0) {
+                layoutRes = -1;
             }
         }
 
-        @Override
-        public boolean onKeyDown(int keyCode, KeyEvent event) {
-            if (mAgentWeb != null && mAgentWeb.handleKeyEvent(keyCode, event)) {
-                return true;
+        public void setReloadId(int reloadId) {
+            this.reloadId = reloadId;
+            if (reloadId <= 0) {
+                reloadId = -1;
             }
-            return super.onKeyDown(keyCode, event);
-        }
-
-        @Override
-        protected void onPause() {
-            if (mAgentWeb != null) {
-                mAgentWeb.getWebLifeCycle().onPause();
-            }
-            super.onPause();
-        }
-
-        @Override
-        protected void onResume() {
-            if (mAgentWeb != null) {
-                mAgentWeb.getWebLifeCycle().onResume();
-            }
-            super.onResume();
-        }
-
-        @Override
-        protected void destroy() {
-            if (mAgentWeb != null) {
-                mAgentWeb.getWebLifeCycle().onDestroy();
-            }
-            super.destroy();
-        }
-
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-
-        protected @NonNull
-        MiddlewareWebChromeBase getMiddleWareWebChrome() {
-            return this.mMiddleWareWebChrome = new MiddlewareWebChromeBase() {
-            };
-        }
-
-        protected @NonNull
-        MiddlewareWebClientBase getMiddleWareWebClient() {
-            return this.mMiddleWareWebClient = new MiddlewareWebClientBase() {
-            };
-        }
-
-        @Override
-        public boolean useEventBus() {
-            return false;
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (mAgentWeb != null && mAgentWeb.handleKeyEvent(keyCode, event)) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onPause() {
+        if (mAgentWeb != null) {
+            mAgentWeb.getWebLifeCycle().onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        if (mAgentWeb != null) {
+            mAgentWeb.getWebLifeCycle().onResume();
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void destroy() {
+        if (mAgentWeb != null) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.destroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    protected @NonNull
+    MiddlewareWebChromeBase getMiddleWareWebChrome() {
+        return this.mMiddleWareWebChrome = new MiddlewareWebChromeBase() {
+        };
+    }
+
+    protected @NonNull
+    MiddlewareWebClientBase getMiddleWareWebClient() {
+        return this.mMiddleWareWebClient = new MiddlewareWebClientBase() {
+        };
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
+}
 
 
 
