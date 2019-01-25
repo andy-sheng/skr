@@ -164,11 +164,11 @@ public class SelfSingCardView extends RelativeLayout {
 
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(songModel.getTotalMs() / 1000)
+                .take(((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000 + 1))
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num = (songModel.getTotalMs() / 1000) - integer;
+                        int num = ((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) - integer + 1;
                         setNum(num);
                         if(num==0){
                             if (mListener != null) {

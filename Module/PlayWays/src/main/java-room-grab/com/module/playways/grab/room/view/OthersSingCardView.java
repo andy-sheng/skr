@@ -114,11 +114,11 @@ public class OthersSingCardView extends RelativeLayout {
 
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(songModel.getTotalMs() / 1000)
+                .take(((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) + 1)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        setNum((songModel.getTotalMs() / 1000) - integer);
+                        setNum(((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) - integer + 1);
                     }
                 });
     }
