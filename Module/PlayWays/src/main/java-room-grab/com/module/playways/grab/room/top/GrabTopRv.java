@@ -81,11 +81,11 @@ public class GrabTopRv extends RelativeLayout {
                 mInfoMap.put(userInfo.getUserId(), grabTopItemView);
                 RxView.clicks(grabTopItemView)
                         .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        EventBus.getDefault().post(new ShowPersonCardEvent(userInfo.getUserId()));
-                    }
-                });
+                            @Override
+                            public void accept(Object o) {
+                                EventBus.getDefault().post(new ShowPersonCardEvent(userInfo.getUserId()));
+                            }
+                        });
             }
             grabTopItemView.setVisibility(VISIBLE);
             grabTopItemView.bindData(userInfo);
@@ -279,7 +279,13 @@ public class GrabTopRv extends RelativeLayout {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
-                    U.getSoundUtils().play(GrabRoomFragment.TAG,R.raw.lightup);
+                    // TODO: 2019/1/26 临时做法，等音效师改完
+                    GrabTopRv.this.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lightup);
+                        }
+                    }, 100);
                 }
             });
             animatorSet1s.setStartDelay(20 * 33);
