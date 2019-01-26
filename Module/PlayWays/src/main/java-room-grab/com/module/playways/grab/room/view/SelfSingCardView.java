@@ -284,6 +284,7 @@ public class SelfSingCardView extends RelativeLayout {
     }
 
     public String getNum(long num, int index) {
+        MyLog.d(TAG, "getNum" + " num=" + num + " index=" + index);
         String s = String.valueOf(num);
         if (index > s.length() || index < 0) {
             return "";
