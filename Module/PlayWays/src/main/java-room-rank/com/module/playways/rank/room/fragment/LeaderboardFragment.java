@@ -362,21 +362,27 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     @Override
     public void showFirstThreeRankInfo(List<RankInfoModel> rankInfoModelList) {
-        Observable.fromIterable(rankInfoModelList)
-                .filter(new Predicate<RankInfoModel>() {
-                    @Override
-                    public boolean test(RankInfoModel rankInfoModel) throws Exception {
-                        return rankInfoModel.getRankSeq() == 1
-                                || rankInfoModel.getRankSeq() == 2
-                                || rankInfoModel.getRankSeq() == 3;
-                    }
-                })
-                .subscribe(new Consumer<RankInfoModel>() {
-                    @Override
-                    public void accept(RankInfoModel rankInfoModel) throws Exception {
-                        setTopThreeInfo(rankInfoModel);
-                    }
-                }, throwable -> MyLog.e(throwable));
+        for(int i = 0; i < 3; i++){
+            if(rankInfoModelList.size() > i){
+                setTopThreeInfo(rankInfoModelList.get(i));
+                continue;
+            }
+
+            setEmptyTopInfo(i);
+        }
+    }
+
+    public void setEmptyTopInfo(int seq){
+        switch (seq){
+            case 1:
+                mTvRightChanpainName.setText("虚位以待");
+                mSdvRightChampainIcon.setBackground(U.getDrawable(R.drawable.zanwu_dierming));
+                break;
+            case 2:
+                mTvLeftChanpainName.setText("虚位以待");
+                mSdvLeftChampainIcon.setBackground(U.getDrawable(R.drawable.zanwu_disanming));
+                break;
+        }
     }
 
     @Override
