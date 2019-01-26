@@ -38,7 +38,7 @@ public class UpgradeManager {
     public final static String TAG = "UpgradeManager";
 
     public static final int MSG_UPDATE_PROGRESS = 1;
-//    public static final int MSG_INSTALL = 2;
+    //    public static final int MSG_INSTALL = 2;
     private static final int MSG_RESET_INSTALL_FLAG = 3;
 
     UpgradeData mUpgradeData = new UpgradeData();
@@ -137,6 +137,10 @@ public class UpgradeManager {
                                 String updateInfo = apiResult.getData().getString("updateInfo");
                                 UpgradeInfoModel updateInfoModel = JSON.parseObject(updateInfo, UpgradeInfoModel.class);
                                 onGetUpgradeInfoModel(updateInfoModel);
+                            } else {
+                                if (mUpgradeData.isNeedShowDialog()) {
+                                    U.getToastUtil().showShort("已经是最新版本");
+                                }
                             }
                         }
                     }
@@ -157,14 +161,14 @@ public class UpgradeManager {
                     if (mUpgradeData.isNeedShowDialog()) {
                         showNormalUpgradeDialog();
                     } else {
-                        if(tryGetSaveFileApkVersion()==updateInfoModel.getLatestVersionCode()){
+                        if (tryGetSaveFileApkVersion() == updateInfoModel.getLatestVersionCode()) {
                             // 包已经ok了,一天最多弹一次
-                            long ts = U.getPreferenceUtils().getSettingLong("lastUpdateTs",0);
-                            if(System.currentTimeMillis() - ts > 24*3600*1000){
-                                U.getPreferenceUtils().setSettingLong("lastUpdateTs",System.currentTimeMillis());
+                            long ts = U.getPreferenceUtils().getSettingLong("lastUpdateTs", 0);
+                            if (System.currentTimeMillis() - ts > 24 * 3600 * 1000) {
+                                U.getPreferenceUtils().setSettingLong("lastUpdateTs", System.currentTimeMillis());
                                 showNormalUpgradeDialog();
                             }
-                        }else{
+                        } else {
                             if (U.getNetworkUtils().isWifi()) {
                                 // 如果是在wifi环境，默默下载
                                 MyLog.d(TAG, "不是wifi，非强制更新，静默下载");
@@ -300,7 +304,7 @@ public class UpgradeManager {
             File saveFile = getSaveFile();
             if (saveFile.exists()) {
                 return;
-            }else{
+            } else {
                 mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
             }
         }
