@@ -179,22 +179,21 @@
             app:source="grab_match_success_vs.svga" />
     </RelativeLayout>
 
-
-    <ImageView
-        android:id="@+id/iv_top_bg"
-        android:layout_width="@dimen/view_219_dp"
-        android:layout_height="@dimen/view_127_dp"
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/top_svga_view"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_180_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_40_dp"
-        android:background="@drawable/pipeichenggong_head" />
+        app:autoPlay="false"
+        app:antiAlias="true"/>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_ready_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/iv_top_bg"
+        android:layout_alignBottom="@id/top_svga_view"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_35_dp"
         android:gravity="center"
         android:text="10s"
         android:textColor="#0C2275"

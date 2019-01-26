@@ -36,11 +36,19 @@ import com.module.playways.rank.prepare.view.IMatchSucessView;
 import com.module.playways.rank.prepare.view.MatchSucessLeftView;
 import com.module.playways.rank.prepare.view.MatchSucessRightView;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static android.view.View.VISIBLE;
 
 public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSucessView {
 
@@ -59,6 +67,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     ExRelativeLayout mRlIcon4Root;
     ExRelativeLayout mRlIcon5Root;
 
+    SVGAImageView mTopSvgaView;
     SVGAImageView mVsSvga;
     ExImageView mIvPrepare;
 
@@ -86,6 +95,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mTopSvgaView = (SVGAImageView) mRootView.findViewById(R.id.top_svga_view);
         mTvReadyTime = (ExTextView) mRootView.findViewById(R.id.tv_ready_time);
         mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
         mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
@@ -136,7 +146,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mUiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mVsSvga.setVisibility(View.VISIBLE);
+                mVsSvga.setVisibility(VISIBLE);
                 mVsSvga.startAnimation();
             }
         }, 700);
@@ -165,6 +175,57 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         playScaleAnim(mRlIcon3Root, 100);
         playScaleAnim(mRlIcon4Root, 150);
         playScaleAnim(mRlIcon5Root, 200);
+
+        playTopSvgaAnimation();
+    }
+
+    private void playTopSvgaAnimation() {
+        mTopSvgaView.setVisibility(VISIBLE);
+        mTopSvgaView.setLoops(1);
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("match_sucess_top.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mTopSvgaView.setImageDrawable(drawable);
+                    mTopSvgaView.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+
+        mTopSvgaView.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (mTopSvgaView != null) {
+                    mTopSvgaView.stopAnimation(false);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mTopSvgaView != null && mTopSvgaView.isAnimating()) {
+                    mTopSvgaView.stopAnimation(false);
+                }
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
 
     }
 
@@ -232,15 +293,15 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mRlIcon4Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon2_root);
         mRlIcon5Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon5_root);
 
-        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+        if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
 //            android:layout_marginTop="@dimen/view_90_dp"
 //            android:layout_marginRight="@dimen/view_25_dp"
 //            android:layout_marginBottom="@dimen/view_35_dp"
 //
 //            android:layout_marginLeft="@dimen/view_25_dp"
 //            android:layout_marginBottom="@dimen/view_35_dp"
-            ((RelativeLayout.LayoutParams)mRlIcon2Root.getLayoutParams()).setMargins(0, U.getDisplayUtils().dip2px(90), U.getDisplayUtils().dip2px(25), U.getDisplayUtils().dip2px(35));
-            ((RelativeLayout.LayoutParams)mRlIcon3Root.getLayoutParams()).setMargins(U.getDisplayUtils().dip2px(25), 0,0, U.getDisplayUtils().dip2px(35));
+            ((RelativeLayout.LayoutParams) mRlIcon2Root.getLayoutParams()).setMargins(0, U.getDisplayUtils().dip2px(90), U.getDisplayUtils().dip2px(25), U.getDisplayUtils().dip2px(35));
+            ((RelativeLayout.LayoutParams) mRlIcon3Root.getLayoutParams()).setMargins(U.getDisplayUtils().dip2px(25), 0, 0, U.getDisplayUtils().dip2px(35));
 
             mRlIcon4Root.setVisibility(View.GONE);
             mRlIcon5Root.setVisibility(View.GONE);
@@ -250,7 +311,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         setIconStroke(mRlIcon2Root, mPrepareData.getPlayerInfoList().get(1).getUserInfo().getIsMale());
         setIconStroke(mRlIcon3Root, mPrepareData.getPlayerInfoList().get(2).getUserInfo().getIsMale());
 
-        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB){
+        if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
             loadIcon(mSdvIcon4, isGray, mPrepareData.getPlayerInfoList().get(3).getUserInfo().getAvatar());
             loadIcon(mSdvIcon5, isGray, mPrepareData.getPlayerInfoList().get(4).getUserInfo().getAvatar());
             mSdvIcon4.setTag("sdv" + mPrepareData.getPlayerInfoList().get(3).getUserInfo().getUserId());
@@ -329,11 +390,11 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
         initAvatar(false);
 
-        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+        if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_RANK_ROOM)
                     .withSerializable("prepare_data", mPrepareData)
                     .navigation();
-        }else if(mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB){
+        } else if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                     .withSerializable("prepare_data", mPrepareData)
                     .navigation();
@@ -388,6 +449,9 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
+        if (mTopSvgaView != null) {
+            mTopSvgaView.stopAnimation(true);
+        }
     }
 
     @Override
@@ -408,7 +472,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        mRootView.setVisibility(View.VISIBLE);
+        mRootView.setVisibility(VISIBLE);
     }
 
     @Override
