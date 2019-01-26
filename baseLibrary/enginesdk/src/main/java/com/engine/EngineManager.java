@@ -896,6 +896,7 @@ public class EngineManager implements AgoraOutCallback {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
+        MyLog.d(TAG,"stopAudioMixing" );
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -919,6 +920,7 @@ public class EngineManager implements AgoraOutCallback {
      * 继续播放混音
      */
     public void resumeAudioMixing() {
+        MyLog.d(TAG,"resumeAudioMixing" );
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -937,6 +939,7 @@ public class EngineManager implements AgoraOutCallback {
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
+        MyLog.d(TAG,"pauseAudioMixing" );
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {

@@ -75,6 +75,7 @@ public class ArcCloudManager implements IACRCloudListener {
                     mConfig.recorderConfig.channels = 1;
                     // If you do not need volume callback, you set it false.
                     mConfig.recorderConfig.isVolumeCallback = true;
+                    mConfig.recorderConfig.reservedRecordBufferMS = 0;
                     this.mClient = new ACRCloudClient();
                     this.mInited = this.mClient.initWithConfig(mConfig);
                     ACRCloudLogger.setLog(true);
@@ -272,12 +273,13 @@ public class ArcCloudManager implements IACRCloudListener {
                     mRecognizeConfig.getResultListener().onResult(result, list, targetSongInfo);
                 }
             } else {
-//                mRecognizeConfig.getResultListener().onResult(result, null, null);
+                mRecognizeConfig.getResultListener().onResult(result, null, null);
             }
         }
     }
 
     public void recognizeInManualMode() {
+        MyLog.d(TAG,"recognizeInManualMode" );
         if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
             mRecognizeConfig.setWantRecognizeInManualMode(true);
         }

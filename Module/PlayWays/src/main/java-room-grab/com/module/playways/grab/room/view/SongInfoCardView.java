@@ -217,6 +217,9 @@ public class SongInfoCardView extends RelativeLayout {
         if (mSongCover != null) {
             mSongCover.stopAnimation(true);
         }
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+        }
     }
 }
 
