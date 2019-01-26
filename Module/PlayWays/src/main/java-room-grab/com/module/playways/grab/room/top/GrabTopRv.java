@@ -102,11 +102,11 @@ public class GrabTopRv extends RelativeLayout {
         if (mInited) {
             return;
         }
-        mInited = true;
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         List<PlayerInfoModel> playerInfoModels = mRoomData.getPlayerInfoList();
         int i = 0;
         for (PlayerInfoModel playerInfoModel : playerInfoModels) {
+            mInited = true;
             UserInfoModel userInfo = playerInfoModel.getUserInfo();
             VP vp = mInfoMap.get(userInfo.getUserId());
             if(vp==null){
@@ -151,7 +151,7 @@ public class GrabTopRv extends RelativeLayout {
     }
 
     public void setModeGrab() {
-        // 切换到抢唱模式,
+        // 切换到抢唱模式
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
         }

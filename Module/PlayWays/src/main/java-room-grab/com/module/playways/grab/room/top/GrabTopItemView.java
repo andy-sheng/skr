@@ -82,7 +82,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void bindData(PlayerInfoModel userInfoModel) {
-        if(mPlayerInfoModel==null){
+        if(userInfoModel==null){
             return;
         }
         mPlayerInfoModel = userInfoModel;
