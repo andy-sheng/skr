@@ -337,12 +337,17 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     @Override
     public void voteSucess(long votedUserId) {
-        mLeftVoteAnimationSet.cancel();
+        if (mLeftVoteAnimationSet != null) {
+            mLeftVoteAnimationSet.cancel();
+        }
+
         U.getSoundUtils().play(TAG, R.raw.select_dislikebutton, 500);
         HandlerTaskTimer.newBuilder().delay(250).start(new HandlerTaskTimer.ObserverW() {
             @Override
             public void onNext(Integer integer) {
-                mRightVoteAnimationSet.cancel();
+                if (mRightVoteAnimationSet != null) {
+                    mRightVoteAnimationSet.cancel();
+                }
             }
         });
 
