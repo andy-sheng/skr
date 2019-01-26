@@ -49,6 +49,7 @@ import com.example.smartrefresh.SmartRefreshFragment;
 import com.example.wxcontact.PickContactFragment;
 import com.respicker.ResPicker;
 import com.respicker.fragment.ResPickerFragment;
+import com.respicker.model.ResItem;
 import com.respicker.preview.image.ImagePreviewFragment;
 import com.respicker.model.ImageItem;
 import com.respicker.view.CropImageView;
@@ -605,7 +606,7 @@ public class TestSdkActivity extends BaseActivity {
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                                List<ImageItem> list = ResPicker.getInstance().getSelectedResList();
+                                List<ImageItem> list = ResPicker.getInstance().getSelectedImageList();
 
                                 U.getToastUtil().showShort("拿到数据 size:" + list.size());
                                 if (list.size() > 0) {

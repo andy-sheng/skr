@@ -18,6 +18,8 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ArcCloudManager implements IACRCloudListener {
@@ -181,18 +183,20 @@ public class ArcCloudManager implements IACRCloudListener {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                            if (mRecognizeConfig != null
-                                    && mRecognizeConfig.getResultListener() != null
+                            RecognizeConfig recognizeConfig = ArcCloudManager.this.mRecognizeConfig;
+                            if (recognizeConfig != null
+                                    && recognizeConfig.getResultListener() != null
                                     && mLength >= BUFFER_LEN) {
+
                                 mProcessing = true;
                                 MyLog.d(TAG, "开始识别");
                                 ACRCloudConfig.RecognizerType recType = ACRCloudConfig.RecognizerType.HUMMING;
                                 HashMap hashMap = new HashMap();
-                                String songName = mRecognizeConfig.getSongName();
+                                String songName = recognizeConfig.getSongName();
                                 if (!TextUtils.isEmpty(songName)) {
                                     hashMap.put("title", songName);
                                 }
-                                String artist = mRecognizeConfig.getArtist();
+                                String artist = recognizeConfig.getArtist();
                                 if (!TextUtils.isEmpty(artist)) {
                                     hashMap.put("artist", artist);
                                 }
@@ -204,18 +208,38 @@ public class ArcCloudManager implements IACRCloudListener {
                                 String result = mClient.recognize(arr, len, mSampleRate, mChannels, recType, hashMap);
                                 MyLog.d(TAG, "识别结束");
                                 mProcessing = false;
-                                if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
-                                    mRecognizeConfig.setAutoTimes(mRecognizeConfig.getAutoTimes() - 1);
+                                if (recognizeConfig!=null && recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
+                                    recognizeConfig.setAutoTimes(recognizeConfig.getAutoTimes() - 1);
                                 }
-                                if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
-                                    mRecognizeConfig.setWantRecognizeInManualMode(false);
+                                if (recognizeConfig!=null && recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+                                    recognizeConfig.setWantRecognizeInManualMode(false);
                                 }
                                 process(result);
                             }
                             emitter.onComplete();
                         }
                     }).subscribeOn(Schedulers.io())
-                            .subscribe();
+                            .subscribe(new Observer<Object>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+                                    
+                                }
+
+                                @Override
+                                public void onNext(Object o) {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+                            });
                 } else {
                     MyLog.d(TAG, "已经有任务在处理");
                 }
