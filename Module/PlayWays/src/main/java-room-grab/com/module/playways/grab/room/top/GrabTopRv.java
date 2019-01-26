@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -24,14 +25,28 @@ import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class GrabTopRv extends RelativeLayout {
     public final static String TAG = "GrabTopRv";
@@ -43,6 +58,9 @@ public class GrabTopRv extends RelativeLayout {
 
     LinearLayout mContentLl;
     ExImageView mErjiIv;
+
+    SVGAParser mSVGAParser;
+    SVGAImageView mMieDengIv;
 
     public GrabTopRv(Context context) {
         super(context);
@@ -63,6 +81,23 @@ public class GrabTopRv extends RelativeLayout {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
         mErjiIv = (ExImageView) this.findViewById(R.id.erji_iv);
+        mMieDengIv = this.findViewById(R.id.miedeng_iv);
+
+//        HandlerTaskTimer.newBuilder()
+//                .interval(4000)
+//                .start(new HandlerTaskTimer.ObserverW() {
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        int i=0;
+//                        for(int id:mInfoMap.keySet()){
+//                            if(i++==2) {
+//                                lightOff(id);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                });
+
     }
 
     private void initData() {
@@ -337,10 +372,88 @@ public class GrabTopRv extends RelativeLayout {
     public void lightOff(int uid) {
         GrabTopItemView grabTopItemView = mInfoMap.get(uid);
         if (grabTopItemView != null) {
-            grabTopItemView.setLight(false);
+            setLightOffAnimation(grabTopItemView);
         }
     }
 
+    private void setLightOffAnimation(GrabTopItemView grabTopItemView) {
+        grabTopItemView.mFlagIv.setVisibility(GONE);
+
+        int[] position1 = new int[2];
+        grabTopItemView.mFlagIv.getLocationInWindow(position1);
+
+        int[] position2 = new int[2];
+        mMieDengIv.getLocationInWindow(position2);
+
+        mMieDengIv.setTranslationX(position1[0]-U.getDisplayUtils().dip2px(22));
+        mMieDengIv.setTranslationY(U.getDisplayUtils().dip2px(3.5f));
+
+        getSVGAParser().parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                mMieDengIv.setVisibility(VISIBLE);
+                mMieDengIv.stopAnimation(true);
+                mMieDengIv.setImageDrawable(drawable);
+                mMieDengIv.startAnimation();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
+        mMieDengIv.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                mMieDengIv.stopAnimation(true);
+                mMieDengIv.setVisibility(GONE);
+                grabTopItemView.setLight(false);
+            }
+
+            @Override
+            public void onRepeat() {
+                onFinished();
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
+    }
+
+    private SVGAParser getSVGAParser() {
+        if (mSVGAParser == null) {
+            mSVGAParser = new SVGAParser(getContext());
+            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
+                @Override
+                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            OkHttpClient client = new OkHttpClient();
+                            Request request = new Request.Builder().url(url).get().build();
+                            try {
+                                Response response = client.newCall(request).execute();
+                                complete.invoke(response.body().byteStream());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                failure.invoke(e);
+                            }
+                        }
+                    }).start();
+                }
+            });
+        }
+        return mSVGAParser;
+    }
 
     public void setRoomData(RoomData roomData) {
         mRoomData = roomData;

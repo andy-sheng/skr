@@ -1,5 +1,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:parentTag="android.widget.RelativeLayout">
 
 
@@ -18,4 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:src="@drawable/yanchang_erji" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/miedeng_iv"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_100_dp"
+        app:antiAlias="true"
+        app:autoPlay="false" />
 </merge>

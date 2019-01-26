@@ -41,7 +41,7 @@ public class MyLog {
                 sCurrentLogLevel = LogLevel.ALL;
             } else {
                 //这里开发中先全部放开日志
-                sCurrentLogLevel = LogLevel.WARN;
+                sCurrentLogLevel = LogLevel.ALL;
             }
             LogConfiguration config = new LogConfiguration.Builder()
                     .logLevel(sCurrentLogLevel)            // 指定日志级别，低于该级别的日志将不会被打印，默认为 LogLevel.ALL

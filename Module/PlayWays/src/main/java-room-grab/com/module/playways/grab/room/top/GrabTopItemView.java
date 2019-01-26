@@ -8,10 +8,28 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class GrabTopItemView extends RelativeLayout {
     public static final int MODE_GRAB = 1;
@@ -111,4 +129,5 @@ public class GrabTopItemView extends RelativeLayout {
     public void setGetSingChance() {
         mCircleAnimationView.setVisibility(VISIBLE);
     }
+
 }

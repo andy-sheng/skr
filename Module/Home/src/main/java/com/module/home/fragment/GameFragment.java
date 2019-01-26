@@ -173,6 +173,17 @@ public class GameFragment extends BaseFragment {
                     }
                 });
 
+        if(MyLog.isDebugLogOpen()) {
+            RxView.longClicks(mIvGrabPk)
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(Object o) throws Exception {
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                                    .navigation();
+                        }
+                    });
+        }
+
         RxView.clicks(mRankArea).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) {
