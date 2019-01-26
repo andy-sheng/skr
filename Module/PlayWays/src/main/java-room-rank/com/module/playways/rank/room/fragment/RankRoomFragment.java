@@ -360,6 +360,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void hideWebpStage() {
+        MyLog.d(TAG, "hideWebpStage" );
         // 舞台退出，淡出
         ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 1f, 0f);
         objectAnimatorStage.setDuration(1000);
@@ -369,7 +370,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         // 头像退出，淡出
         ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 1f, 0f);
         objectAnimatorAvatar.setDuration(1000);
-        mAnimatorList.add(objectAnimatorStage);
+        mAnimatorList.add(objectAnimatorAvatar);
         objectAnimatorAvatar.start();
 
         objectAnimatorStage.addListener(new Animator.AnimatorListener() {
@@ -958,6 +959,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
+        MyLog.d(TAG, "startSelfCountdown" + " countDownOver=" + countDownOver);
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                 .build());
         mManyLyricsView.setVisibility(View.GONE);
@@ -972,6 +974,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mStagePeopleBg.setVisibility(View.GONE);
         mStageUfoBg.setVisibility(View.GONE);
 
+        MyLog.d(TAG, "主视觉消失保护");
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
 
@@ -1004,6 +1007,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
      */
     @Override
     public void startRivalCountdown(int uid, String avatar) {
+        MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
@@ -1017,6 +1021,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mStagePeopleBg.setVisibility(View.GONE);
         mStageUfoBg.setVisibility(View.GONE);
 
+        MyLog.d(TAG, "主视觉消失保护");
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
 
@@ -1105,6 +1110,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void destroyAnimation() {
+        MyLog.d(TAG, "destroyAnimation" );
         if (mStagePeopleBg != null) {
             mStagePeopleBg.stopAnimation(true);
             mStagePeopleBg.setVisibility(View.GONE);
