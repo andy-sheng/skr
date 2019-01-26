@@ -12,7 +12,11 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
+
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+
+import com.common.view.ex.ExTextView;
+
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -40,6 +44,9 @@ public class GrabTopItemView extends RelativeLayout {
     public BaseImageView mAvatarIv;
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
+
+    public ExTextView mLeaveIv;
+
     int mMode = MODE_GRAB;
 
     public GrabTopItemView(Context context) {
@@ -62,6 +69,13 @@ public class GrabTopItemView extends RelativeLayout {
         mCircleAnimationView = (CircleAnimationView) this.findViewById(R.id.circle_animation_view);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
+        mLeaveIv = (ExTextView) findViewById(R.id.leave_iv);
+
+    }
+
+    public void toLeave(){
+        mLeaveIv.setVisibility(VISIBLE);
+        mFlagIv.setVisibility(GONE);
     }
 
     public void tryAddParent(LinearLayout grabTopRv) {
@@ -84,6 +98,7 @@ public class GrabTopItemView extends RelativeLayout {
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .build()
         );
+
     }
 
     public void reset() {

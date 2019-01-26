@@ -25,4 +25,19 @@
         android:layout_marginTop="-10dp"
         android:src="@drawable/xiangchang_flag" />
 
+    <com.common.view.ex.ExTextView
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_9_dp"
+        app:bl_solid_color="#747474"
+        android:textColor="@color/white_trans_70"
+        android:gravity="center"
+        android:textSize="@dimen/textsize_9_dp"
+        android:text="离线"
+        android:id="@+id/leave_iv"
+        android:layout_width="@dimen/view_35_dp"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_below="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-4dp"
+         />
 </merge>
