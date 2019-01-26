@@ -24,6 +24,15 @@ public class VoiceControlPanelView extends ScrollView {
     ScenesSelectBtn mDianyinSbtn;
     ScenesSelectBtn mKonglingSbtn;
 
+    // 记录值用来标记是否改变
+    AudioEffectStyleEnum beforeMode;
+    int beforePeopleVoice;
+    int beforeMusicVoice;
+
+    AudioEffectStyleEnum afterMode;
+    int afterPeopleVoice;
+    int afterMusicVoice;
+
     public VoiceControlPanelView(Context context) {
         super(context);
         init();
@@ -40,11 +49,11 @@ public class VoiceControlPanelView extends ScrollView {
         mPeopleVoiceSeekbar = (SeekBar) this.findViewById(R.id.people_voice_seekbar);
         mMusicVoiceSeekbar = (SeekBar) this.findViewById(R.id.music_voice_seekbar);
 
-        mDefaultSbtn = (ScenesSelectBtn)this.findViewById(R.id.default_sbtn);
-        mKtvSbtn = (ScenesSelectBtn)this.findViewById(R.id.ktv_sbtn);
-        mRockSbtn = (ScenesSelectBtn)this.findViewById(R.id.rock_sbtn);
-        mDianyinSbtn = (ScenesSelectBtn)this.findViewById(R.id.dianyin_sbtn);
-        mKonglingSbtn = (ScenesSelectBtn)this.findViewById(R.id.kongling_sbtn);
+        mDefaultSbtn = (ScenesSelectBtn) this.findViewById(R.id.default_sbtn);
+        mKtvSbtn = (ScenesSelectBtn) this.findViewById(R.id.ktv_sbtn);
+        mRockSbtn = (ScenesSelectBtn) this.findViewById(R.id.rock_sbtn);
+        mDianyinSbtn = (ScenesSelectBtn) this.findViewById(R.id.dianyin_sbtn);
+        mKonglingSbtn = (ScenesSelectBtn) this.findViewById(R.id.kongling_sbtn);
 
         int marginLeft = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(53 * 5);
         marginLeft = marginLeft / 6;
@@ -61,6 +70,7 @@ public class VoiceControlPanelView extends ScrollView {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 //                EngineManager.getInstance().adjustPlaybackSignalVolume(progress);
+                afterPeopleVoice = progress;
                 EngineManager.getInstance().adjustRecordingSignalVolume(progress);
             }
 
@@ -78,6 +88,7 @@ public class VoiceControlPanelView extends ScrollView {
         mMusicVoiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                afterMusicVoice = progress;
                 EngineManager.getInstance().adjustAudioMixingVolume(progress);
             }
 
@@ -98,26 +109,31 @@ public class VoiceControlPanelView extends ScrollView {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 MyLog.d(TAG, "onCheckedChanged" + " group=" + group + " checkedId=" + checkedId);
                 if (checkedId == R.id.default_sbtn) {
+                    afterMode = AudioEffectStyleEnum.ORIGINAL;
                     EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ORIGINAL);
                 } else if (checkedId == R.id.dianyin_sbtn) {
+                    afterMode = AudioEffectStyleEnum.POPULAR;
                     EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.POPULAR);
                 } else if (checkedId == R.id.kongling_sbtn) {
+                    afterMode = AudioEffectStyleEnum.GRAMOPHONE;
                     EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.GRAMOPHONE);
                 } else if (checkedId == R.id.ktv_sbtn) {
+                    afterMode = AudioEffectStyleEnum.DANCE;
                     EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.DANCE);
                 } else if (checkedId == R.id.rock_sbtn) {
+                    afterMode = AudioEffectStyleEnum.ROCK;
                     EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ROCK);
                 }
             }
         });
     }
 
-    private void setMarginLeft(ScenesSelectBtn scenesSelectBtn, int marginLeft){
+    private void setMarginLeft(ScenesSelectBtn scenesSelectBtn, int marginLeft) {
         RadioGroup.LayoutParams layoutParams = (RadioGroup.LayoutParams) scenesSelectBtn.getLayoutParams();
-        layoutParams.setMargins(marginLeft, 0,0,0);
+        layoutParams.setMargins(marginLeft, 0, 0, 0);
     }
 
-    public void bindData(){
+    public void bindData() {
         AudioEffectStyleEnum styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
 
         if (styleEnum == AudioEffectStyleEnum.POPULAR) {
@@ -133,6 +149,22 @@ public class VoiceControlPanelView extends ScrollView {
         }
         mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
         mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getAudioMixingVolume());
+
+        beforeMode = styleEnum;
+        beforePeopleVoice = EngineManager.getInstance().getParams().getRecordingSignalVolume();
+        beforeMusicVoice = EngineManager.getInstance().getParams().getAudioMixingVolume();
+
+        afterMode = styleEnum;
+        afterPeopleVoice = EngineManager.getInstance().getParams().getRecordingSignalVolume();
+        afterMusicVoice = EngineManager.getInstance().getParams().getAudioMixingVolume();
+    }
+
+    public boolean isChange() {
+        if (beforeMode == afterMode && beforeMusicVoice == afterMusicVoice && beforePeopleVoice == afterPeopleVoice) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
