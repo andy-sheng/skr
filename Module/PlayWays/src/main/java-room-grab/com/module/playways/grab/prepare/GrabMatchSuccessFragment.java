@@ -27,6 +27,7 @@ import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
+import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.rank.prepare.model.GameReadyModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -138,8 +139,6 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mMatchSucessPresenter = new MatchSucessPresenter(this, mPrepareData.getGameId(), mPrepareData);
         addPresent(mMatchSucessPresenter);
 
-        U.getSoundUtils().preLoad(TAG, R.raw.pregame_animation, R.raw.pregame_ready, R.raw.general_countdown);
-
         startTimeTask();
         animationGo();
 
@@ -163,12 +162,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     }
 
     private void animationGo() {
-        mUiHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                U.getSoundUtils().play(TAG, R.raw.pregame_animation);
-            }
-        }, 500);
+        U.getSoundUtils().play(TAG, R.raw.pregame_animation);
 
         playScaleAnim(mRlIcon1Root, 0);
         playScaleAnim(mRlIcon2Root, 50);

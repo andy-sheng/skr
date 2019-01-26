@@ -117,6 +117,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         mSvgaMatchBg = (SVGAImageView) mRootView.findViewById(R.id.svga_match_bg);
 
         U.getSoundUtils().preLoad(TAG, R.raw.allclick, R.raw.general_back);
+        U.getSoundUtils().preLoad(GrabMatchSuccessFragment.TAG, R.raw.pregame_animation, R.raw.pregame_ready, R.raw.general_countdown);
 
         AvatarUtils.loadAvatarByUrl(mSdvOwnIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
@@ -161,9 +162,9 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         mMatchPresenter = new MatchPresenter(this);
         addPresent(mMatchPresenter);
 
-        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+        if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID(), mPrepareData.getGameType());
-        }else if(mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB){
+        } else if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
             mMatchPresenter.startLoopMatchTask(mPrepareData.getTagId(), mPrepareData.getGameType());
         }
 
@@ -429,6 +430,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                             if (view.getId() == R.id.cancel_tv) {
                                 dialog.dismiss();
                                 U.getSoundUtils().play(TAG, R.raw.general_back, 500);
+                                U.getSoundUtils().release(GrabMatchSuccessFragment.TAG);
                                 mMatchPresenter.cancelMatch();
                                 stopTimeTask();
                                 getActivity().finish();

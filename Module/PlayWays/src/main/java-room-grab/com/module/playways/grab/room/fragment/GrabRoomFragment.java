@@ -226,18 +226,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
 
+        U.getSoundUtils().preLoad(TAG, R.raw.startgame, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose, R.raw.lightup);
+
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // TODO: 2019/1/22 现在的动画，对战开始和第一首是连着一起的
                 onBattleBeginPlayOver();
             }
-        }, 100);
-
-
-        U.getSoundUtils().preLoad(TAG, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose, R.raw.lightup, R.raw.startgame);
+        }, 500);
 
     }
 
@@ -502,7 +500,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 public void run() {
                     U.getSoundUtils().play(TAG, R.raw.startgame);
                 }
-            }, 500);
+            },100);
+
         } else {
             mUiHanlder.sendMessageDelayed(msg, 1200);
         }
