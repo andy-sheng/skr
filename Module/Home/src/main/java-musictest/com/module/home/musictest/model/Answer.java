@@ -1,8 +1,9 @@
 package com.module.home.musictest.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Answer {
+public class Answer implements Serializable {
     /**
      * questionID : 1
      * answerIDs : ["b","e"]

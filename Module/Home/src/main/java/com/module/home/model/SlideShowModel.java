@@ -1,6 +1,8 @@
 package com.module.home.model;
 
-public class SlideShowModel {
+import java.io.Serializable;
+
+public class SlideShowModel implements Serializable {
 
     /**
      * roundSeq : 1

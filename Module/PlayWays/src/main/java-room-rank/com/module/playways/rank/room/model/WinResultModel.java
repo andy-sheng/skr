@@ -1,7 +1,9 @@
 package com.module.playways.rank.room.model;
 
+import java.io.Serializable;
+
 // 胜负平结果
-public class WinResultModel {
+public class WinResultModel implements Serializable {
     public static final int InvalidEWinType = 0;   // 无效占位
     public static final int Win = 1;       //胜
     public static final int Lose = 2;      //负

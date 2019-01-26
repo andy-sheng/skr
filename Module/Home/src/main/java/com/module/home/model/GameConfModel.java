@@ -1,6 +1,8 @@
 package com.module.home.model;
 
-public class GameConfModel {
+import java.io.Serializable;
+
+public class GameConfModel implements Serializable {
     /**
      * isSupport : true
      * detail : {"isOpen":true,"content":""}
