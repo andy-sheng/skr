@@ -38,7 +38,7 @@ public class UpgradeManager {
     public final static String TAG = "UpgradeManager";
 
     public static final int MSG_UPDATE_PROGRESS = 1;
-    public static final int MSG_INSTALL = 2;
+//    public static final int MSG_INSTALL = 2;
     private static final int MSG_RESET_INSTALL_FLAG = 3;
 
     UpgradeData mUpgradeData = new UpgradeData();
@@ -79,14 +79,14 @@ public class UpgradeManager {
                     if (mNormalUpgradeView != null) {
                         mNormalUpgradeView.updateProgress(ds.getProgress());
                     }
-                    if (mUpgradeData.getStatus() == UpgradeData.STATUS_DOWNLOWNED) {
+                    if (mUpgradeData.getStatus() == UpgradeData.STATUS_DOWNLOWNED && !mUpgradeData.isMute()) {
                         install();
                         // 如果已经下载完成，走安装逻辑
                     }
                     break;
-                case MSG_INSTALL:
-                    install();
-                    break;
+//                case MSG_INSTALL:
+//                    install();
+//                    break;
                 case MSG_RESET_INSTALL_FLAG:
                     if (mUpgradeData.getStatus() == UpgradeData.STATUS_INSTALLING) {
                         mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);

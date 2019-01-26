@@ -13,6 +13,11 @@ public class AudioScenesManager {
         if (styleEnum == null) {
             styleEnum = AudioEffectStyleEnum.ORIGINAL;
         }
+        // 因为别的音效，效果不好
+        if(styleEnum != AudioEffectStyleEnum.ORIGINAL
+                && styleEnum!= AudioEffectStyleEnum.POPULAR){
+            styleEnum = AudioEffectStyleEnum.POPULAR;
+        }
         AudioEffect audioEffect = AudioEffectParamController.getInstance().extractParam(styleEnum,
                 AudioEffectEQEnum.STANDARD);
         AudioInfo audioInfo = getAudioInfo();
