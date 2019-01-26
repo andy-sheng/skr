@@ -36,7 +36,7 @@ public class CoreInfoInterceptor implements Interceptor {
                 HashMap hashMap = new HashMap<>();
                 hashMap.put("errno",102);
                 hashMap.put("errmsg","未登录不能发送该请求");
-                ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(hashMap))
+                ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(hashMap));
                 Response response = new Response.Builder()
                         .body(responseBody)
                         .build();
