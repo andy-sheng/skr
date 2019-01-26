@@ -20,6 +20,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.rank.R;
@@ -247,7 +248,6 @@ public class GrabTopRv extends RelativeLayout {
         {
             List<Animator> liangdengList = new ArrayList<>();
             int i = 0;
-            // 灯的出现，以灭灯的形式出现
             for (int uId : mInfoMap.keySet()) {
                 if (uId == singUid) {
                     continue;
@@ -275,6 +275,13 @@ public class GrabTopRv extends RelativeLayout {
             }
             AnimatorSet animatorSet1s = new AnimatorSet();
             animatorSet1s.playTogether(liangdengList);
+            animatorSet1s.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    U.getSoundUtils().play(GrabRoomFragment.TAG,R.raw.lightup);
+                }
+            });
             animatorSet1s.setStartDelay(20 * 33);
             allAnimator.add(animatorSet1s);
         }

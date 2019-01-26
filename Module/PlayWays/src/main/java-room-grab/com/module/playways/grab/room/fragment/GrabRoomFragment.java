@@ -236,7 +236,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             }
         }, 100);
 
-        U.getSoundUtils().preLoad(TAG, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose);
+        U.getSoundUtils().preLoad(TAG, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose,R.raw.lightup);
     }
 
     @Override

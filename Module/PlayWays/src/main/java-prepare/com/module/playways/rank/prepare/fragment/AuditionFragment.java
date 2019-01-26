@@ -120,7 +120,7 @@ public class AuditionFragment extends BaseFragment {
 
     DialogPlus mQuitTipsDialog;
 
-    static final boolean TEST_SCORE = true;
+    static final boolean TEST_SCORE = false;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
