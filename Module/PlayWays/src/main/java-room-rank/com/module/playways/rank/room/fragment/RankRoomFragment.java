@@ -1264,7 +1264,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
             msg.arg1 = entry.getKey();
             msg.arg2 = mRoomData.getRealRoundInfo().getUserID();
-            mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mPlayingSongModel.getBeginMs());
+            if(entry.getValue().getEndTime() > mPlayingSongModel.getEndMs()){
+                mUiHanlder.sendMessageDelayed(msg, mPlayingSongModel.getEndMs() - mPlayingSongModel.getBeginMs());
+            }else {
+                mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mPlayingSongModel.getBeginMs());
+            }
         }
     }
 
