@@ -115,24 +115,29 @@ public class MyUserInfoManager {
     private void syncMyInfoFromServer() {
         MyUserInfoServerApi api = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
         Call<ApiResult> apiResultCall = api.getUserInfo((int) getUid());
-        try {
-            Response<ApiResult> resultResponse = apiResultCall.execute();
-            ApiResult obj = resultResponse.body();
-            if (obj != null) {
-                if (obj.getErrno() == 0) {
-                    final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
-                    MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
-                    MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                    setMyUserInfo(myUserInfo, true);
-                } else if (obj.getErrno() == 107) {
-                    UserAccountManager.getInstance().notifyAccountExpired();
+        if (apiResultCall != null) {
+            try {
+                Response<ApiResult> resultResponse = apiResultCall.execute();
+                if (resultResponse != null) {
+                    ApiResult obj = resultResponse.body();
+                    if (obj != null) {
+                        if (obj.getErrno() == 0) {
+                            final UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
+                            MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
+                            MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
+                            setMyUserInfo(myUserInfo, true);
+                        } else if (obj.getErrno() == 107) {
+                            UserAccountManager.getInstance().notifyAccountExpired();
+                        }
+                    } else {
+                        MyLog.w(TAG, "syncMyInfoFromServer obj==null");
+                    }
                 }
-            } else {
-                MyLog.w(TAG, "syncMyInfoFromServer obj==null");
+            } catch (Exception e) {
+                MyLog.d(e);
             }
-        } catch (IOException e) {
-            MyLog.d(e);
         }
+
     }
 
     public void updateInfo(final MyInfoUpdateParams updateParams) {

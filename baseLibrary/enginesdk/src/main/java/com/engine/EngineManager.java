@@ -968,7 +968,7 @@ public class EngineManager implements AgoraOutCallback {
 
                     @Override
                     public void accept(Long aLong) throws Exception {
-                        MyLog.d(TAG, "PlayTimeListener accept aLong");
+                        MyLog.d(TAG, "PlayTimeListener accept ts="+aLong);
                         int currentPostion = getAudioMixingCurrentPosition();
                         if (duration < 0) {
                             duration = getAudioMixingDuration();
