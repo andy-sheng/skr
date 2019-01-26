@@ -25,12 +25,12 @@
 
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/introduction_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/special_tv"
         android:layout_alignBottom="@+id/background"
         android:layout_marginBottom="@dimen/view_16_dp"
-        android:text="专场等你来唱"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp" />
 

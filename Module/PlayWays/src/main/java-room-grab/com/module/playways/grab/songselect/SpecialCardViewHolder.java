@@ -10,6 +10,8 @@ import com.module.rank.R;
 public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
 
     ExTextView mSpecialTv;
+    ExTextView mIntroductionTv;
+
     SpecialModel mSpecialModel;
     int mPosition;
     private RecyclerOnItemClickListener<SpecialModel> mItemClickListener;
@@ -17,6 +19,8 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
     public SpecialCardViewHolder(View itemView) {
         super(itemView);
         mSpecialTv = (ExTextView) itemView.findViewById(R.id.special_tv);
+        mIntroductionTv = (ExTextView) itemView.findViewById(R.id.introduction_tv);
+
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,6 +35,7 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
         mSpecialTv.setText(this.mSpecialModel.getTagName());
+        mIntroductionTv.setText(this.mSpecialModel.getIntroduction());
     }
 
     public void setItemClickListener(RecyclerOnItemClickListener<SpecialModel> itemClickListener) {
