@@ -1240,20 +1240,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
+                    postLyricEndEvent(lyricsReader);
                 }
             } else {
                 if(play){
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
-                    Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
-                    Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
-                    mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
-                    while (it.hasNext()) {
-                        Map.Entry<Integer, LyricsLineInfo> entry = it.next();
-                        Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
-                        msg.arg1 = entry.getKey();
-                        msg.arg2 = mRoomData.getRealRoundInfo().getUserID();
-                        mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mPlayingSongModel.getRankLrcBeginT());
-                    }
+                    postLyricEndEvent(lyricsReader);
                 }
 
                 mManyLyricsView.setVisibility(View.GONE);
@@ -1262,6 +1254,18 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
+    private void postLyricEndEvent(LyricsReader lyricsReader){
+        Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
+        Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
+        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        while (it.hasNext()) {
+            Map.Entry<Integer, LyricsLineInfo> entry = it.next();
+            Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
+            msg.arg1 = entry.getKey();
+            msg.arg2 = mRoomData.getRealRoundInfo().getUserID();
+            mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mPlayingSongModel.getBeginMs());
+        }
+    }
 
     private void fetchLyricTask(SongModel songModel, boolean play) {
         MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);

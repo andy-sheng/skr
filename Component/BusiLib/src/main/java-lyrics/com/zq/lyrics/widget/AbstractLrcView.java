@@ -619,7 +619,7 @@ public abstract class AbstractLrcView extends View {
 //                        + ", end time is " + endTime + ", lyricProgress " + lyricProgress);
 
                 if ((mCurEndLineNum != lyricsLineNum || mCurSplitLyricsEndLineNum != splitLyricsLineNum)) {
-                    EventBus.getDefault().post(new LrcEvent.LineEndEvent(mCurEndLineNum));
+//                    EventBus.getDefault().post(new LrcEvent.LineEndEvent(mCurEndLineNum));
                     MyLog.d("AbstractLrcViewAbstractLrcView", "结束 num is " + mCurEndLineNum);
                     mCurEndLineNum = lyricsLineNum;
                     mCurSplitLyricsEndLineNum = splitLyricsLineNum;
@@ -631,7 +631,7 @@ public abstract class AbstractLrcView extends View {
                     long lyricProgress = getPlayerSpendTime() + getCurPlayingTime();
                     if (endTime < lyricProgress && !mHasPostLastLineEndEvent) {
                         mHasPostLastLineEndEvent = true;
-                        EventBus.getDefault().post(new LrcEvent.LineEndEvent(lyricsLineNum));
+//                        EventBus.getDefault().post(new LrcEvent.LineEndEvent(lyricsLineNum));
                         mCurEndLineNum = lyricsLineNum;
                         mCurSplitLyricsEndLineNum = splitLyricsLineNum;
                         MyLog.d("AbstractLrcViewAbstractLrcView", "结束 num is " + lyricsLineNum);
