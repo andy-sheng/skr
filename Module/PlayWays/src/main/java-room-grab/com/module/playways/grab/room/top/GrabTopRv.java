@@ -109,9 +109,9 @@ public class GrabTopRv extends RelativeLayout {
             mInited = true;
             UserInfoModel userInfo = playerInfoModel.getUserInfo();
             VP vp = mInfoMap.get(userInfo.getUserId());
-            if(vp==null){
+            if (vp == null) {
                 vp = new VP();
-                mInfoMap.put(userInfo.getUserId(),vp);
+                mInfoMap.put(userInfo.getUserId(), vp);
             }
             if (vp.grabTopItemView == null) {
                 vp.grabTopItemView = new GrabTopItemView(getContext());
@@ -127,10 +127,10 @@ public class GrabTopRv extends RelativeLayout {
             vp.grabTopItemView.bindData(playerInfoModel);
             vp.grabTopItemView.setGrap(false);
             vp.grabTopItemView.tryAddParent(mContentLl);
-            if(vp.SVGAImageView==null){
+            if (vp.SVGAImageView == null) {
                 vp.SVGAImageView = new SVGAImageView(getContext());
-                LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100),U.getDisplayUtils().dip2px(100));
-                GrabTopRv.this.addView(vp.SVGAImageView,lp);
+                LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(100));
+                GrabTopRv.this.addView(vp.SVGAImageView, lp);
             }
 
 //            if (i % 2 == 0) {
@@ -143,7 +143,7 @@ public class GrabTopRv extends RelativeLayout {
         if (now != null) {
             for (int uid : now.getHasGrabUserSet()) {
                 VP vp = mInfoMap.get(uid);
-                if (vp!=null && vp.grabTopItemView != null) {
+                if (vp != null && vp.grabTopItemView != null) {
                     vp.grabTopItemView.setGrap(true);
                 }
             }
@@ -158,15 +158,15 @@ public class GrabTopRv extends RelativeLayout {
         mErjiIv.setVisibility(GONE);
         for (int uId : mInfoMap.keySet()) {
             VP vp = mInfoMap.get(uId);
-            if (vp!=null && vp.grabTopItemView != null) {
+            if (vp != null && vp.grabTopItemView != null) {
                 vp.grabTopItemView.setVisibility(VISIBLE);
                 vp.grabTopItemView.reset();
                 if (mRoomData.getRealRoundInfo().getHasGrabUserSet().contains(uId)) {
                     vp.grabTopItemView.setGrap(true);
                 } else {
-                    if(vp.grabTopItemView.getPlayerInfoModel().isOnline()){
+                    if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
                         vp.grabTopItemView.setGrap(false);
-                    }else{
+                    } else {
                         //离线了
                     }
                 }
@@ -261,7 +261,7 @@ public class GrabTopRv extends RelativeLayout {
                 }
                 VP vp1 = mInfoMap.get(uId);
                 GrabTopItemView itemView = vp1.grabTopItemView;
-                if(!itemView.getPlayerInfoModel().isOnline()){
+                if (!itemView.getPlayerInfoModel().isOnline()) {
                     continue;
                 }
                 ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 1, 2);
@@ -305,7 +305,7 @@ public class GrabTopRv extends RelativeLayout {
 
                 VP vp1 = mInfoMap.get(uId);
                 GrabTopItemView itemView = vp1.grabTopItemView;
-                if(!itemView.getPlayerInfoModel().isOnline()){
+                if (!itemView.getPlayerInfoModel().isOnline()) {
                     continue;
                 }
                 ObjectAnimator objectAnimator1 = new ObjectAnimator();
@@ -325,6 +325,27 @@ public class GrabTopRv extends RelativeLayout {
                     }
                 });
                 objectAnimator1.setStartDelay(i * 4 * 33);
+                objectAnimator1.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+                        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lightup);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                });
                 i++;
                 liangdengList.add(objectAnimator1);
             }
@@ -334,13 +355,6 @@ public class GrabTopRv extends RelativeLayout {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
-                    // TODO: 2019/1/26 临时做法，等音效师改完
-                    GrabTopRv.this.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lightup);
-                        }
-                    }, 100);
                 }
             });
             animatorSet1s.setStartDelay(20 * 33);
@@ -375,7 +389,7 @@ public class GrabTopRv extends RelativeLayout {
         if (now != null) {
             for (int uid : now.getHasLightOffUserSet()) {
                 VP vp = mInfoMap.get(uid);
-                if (vp!=null && vp.grabTopItemView != null) {
+                if (vp != null && vp.grabTopItemView != null) {
                     vp.grabTopItemView.setLight(false);
                 }
             }
@@ -384,22 +398,22 @@ public class GrabTopRv extends RelativeLayout {
 
     public void grap(int uid) {
         VP vp = mInfoMap.get(uid);
-        if (vp!=null && vp.grabTopItemView != null) {
+        if (vp != null && vp.grabTopItemView != null) {
             vp.grabTopItemView.setGrap(true);
         }
     }
 
     public void lightOff(int uid) {
         VP vp = mInfoMap.get(uid);
-        if (vp!=null && vp.grabTopItemView != null) {
+        if (vp != null && vp.grabTopItemView != null) {
             setLightOffAnimation(vp);
         }
     }
 
     public void onlineChange(PlayerInfoModel playerInfoModel) {
-        if(playerInfoModel!=null){
+        if (playerInfoModel != null) {
             VP vp = mInfoMap.get(playerInfoModel.getUserInfo().getUserId());
-            if(vp!=null){
+            if (vp != null) {
                 vp.grabTopItemView.bindData(playerInfoModel);
             }
         }
@@ -416,7 +430,7 @@ public class GrabTopRv extends RelativeLayout {
         SVGAImageView mMieDengIv = vp.SVGAImageView;
         mMieDengIv.getLocationInWindow(position2);
 
-        mMieDengIv.setTranslationX(position1[0]-U.getDisplayUtils().dip2px(22));
+        mMieDengIv.setTranslationX(position1[0] - U.getDisplayUtils().dip2px(22));
         mMieDengIv.setTranslationY(U.getDisplayUtils().dip2px(3.5f));
 
         getSVGAParser().parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
@@ -499,7 +513,7 @@ public class GrabTopRv extends RelativeLayout {
         }
     }
 
-    static class VP{
+    static class VP {
         GrabTopItemView grabTopItemView;
         SVGAImageView SVGAImageView;
     }
