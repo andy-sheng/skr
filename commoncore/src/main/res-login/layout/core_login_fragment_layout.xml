@@ -27,12 +27,12 @@
             android:layout_width="@dimen/view_64_dp"
             android:layout_height="@dimen/view_64_dp"
             android:gravity="center"
-            android:background="@drawable/kaipingye_weixin"
+            android:background="@drawable/weixin"
             android:textColor="@color/black" />
 
         <com.common.view.ex.ExTextView
             android:layout_marginLeft="@dimen/view_25_dp"
-            android:background="@drawable/kaipingye_zhuce"
+            android:background="@drawable/denglu_iphone"
             android:id="@+id/phone_login_tv"
             android:layout_width="@dimen/view_64_dp"
             android:layout_height="@dimen/view_64_dp"
