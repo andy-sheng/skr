@@ -367,7 +367,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
             @Override
             public void onVoiceChange(boolean voiceOpen) {
-                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen,true);
+                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
             }
         });
     }
@@ -493,7 +493,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
-        mUiHanlder.sendMessageDelayed(msg, 4000);
+        if (seq == 1) {
+            mUiHanlder.sendMessageDelayed(msg, 4000);
+        } else {
+            mUiHanlder.sendMessageDelayed(msg, 1200);
+        }
 
         mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
             @Override
@@ -506,6 +510,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     void onSongInfoCardPlayOver(PendingPlaySongCardData pendingPlaySongCardData) {
+        MyLog.d(TAG, "onSongInfoCardPlayOver" + " pendingPlaySongCardData=" + pendingPlaySongCardData);
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
@@ -547,7 +552,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         msg.arg1 = (int) uid;
-        mUiHanlder.sendMessageDelayed(msg, 4000);
+        mUiHanlder.sendMessageDelayed(msg, 2600);
 
         singBeginTipsPlay((int) uid, new Runnable() {
             @Override
@@ -599,7 +604,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
-        mUiHanlder.sendMessageDelayed(msg, 4000);
+        mUiHanlder.sendMessageDelayed(msg, 2400);
         mSelfSingCardView.hide();
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();
