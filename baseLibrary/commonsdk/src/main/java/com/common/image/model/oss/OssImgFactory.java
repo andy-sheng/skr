@@ -28,6 +28,10 @@ public class OssImgFactory {
         return new OssImgRounded.Builder();
     }
 
+    public static OssImgCircle.Builder newCircleBuilder() {
+        return new OssImgCircle.Builder();
+    }
+
     /* 图片效果 */
     public static OssImgBlur.Builder newBlurBuilder() {
         return new OssImgBlur.Builder();

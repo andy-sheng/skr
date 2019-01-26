@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
+import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -35,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SongInfoCardView extends RelativeLayout {
 
+    public final static String TAG = "SongInfoCardView";
 
     SVGAImageView mSongCover;
     RelativeLayout mSongInfoArea;
@@ -153,14 +155,21 @@ public class SongInfoCardView extends RelativeLayout {
         if (TextUtils.isEmpty(cover)) {
             return null;
         }
+//        cover = "http://song-static.inframe.mobi/cover/23bd61971ae39700b4a66a6b15bb3338.jpg";
         HttpImage httpImage = ImageFactory.newHttpImage(cover)
                 .addOssProcessors(OssImgFactory.newResizeBuilder()
-                        .setW(ImageUtils.SIZE.SIZE_160.getW())
-                        .build())
+                                .setW(ImageUtils.SIZE.SIZE_160.getW())
+                                .build()
+                        , OssImgFactory.newCircleBuilder()
+                                .setR(500)
+                                .build()
+                )
                 .build();
+        String url  = httpImage.getUrl();
+        MyLog.d(TAG,"requestDynamicBitmapItem" + " url=" + url);
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        if (!TextUtils.isEmpty(httpImage.getUrl())) {
-            dynamicEntity.setDynamicImage(httpImage.getUrl(), "cover");
+        if (!TextUtils.isEmpty(url)) {
+            dynamicEntity.setDynamicImage(url, "cover");
         }
         return dynamicEntity;
     }
