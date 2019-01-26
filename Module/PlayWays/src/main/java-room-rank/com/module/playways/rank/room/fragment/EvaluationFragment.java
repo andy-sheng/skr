@@ -145,13 +145,13 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         RxView.clicks(mVoteLeftMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
+                    mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
                 });
 
         RxView.clicks(mVoteRightMie)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
+                    mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
                 });
 
         startTimeTask();
@@ -351,7 +351,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             }
         });
 
-        if (left.getUserInfo().getUserId() == votedUserId) {
+        if (right.getUserInfo().getUserId() == votedUserId) {
             mVoteRightMie.setSelected(true);
             mVoteRightMie.setClickable(false);
             mVoteRightMie.setClickable(false);
@@ -393,7 +393,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                 }
             });
-        } else if (right.getUserInfo().getUserId() == votedUserId) {
+        } else if (left.getUserInfo().getUserId() == votedUserId) {
             mVoteLeftMie.setSelected(true);
             mVoteLeftMie.setClickable(false);
             mVoteRightMie.setClickable(false);
