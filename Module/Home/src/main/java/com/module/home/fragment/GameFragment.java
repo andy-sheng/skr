@@ -367,9 +367,10 @@ public class GameFragment extends BaseFragment {
                     return;
                 }
 
+                mTag.remove(tag);
+
                 if (isGameOpen()) {
                     jump(view, "onAnimationEnd");
-                    mTag.remove(tag);
                 }
             }
 
@@ -443,9 +444,10 @@ public class GameFragment extends BaseFragment {
                     return;
                 }
 
+                mTag.remove(tag);
+
                 if (isGameOpen()) {
                     jump(view, "checkGameConf");
-                    mTag.remove(tag);
                 }
             }
         }, this);
