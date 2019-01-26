@@ -87,6 +87,21 @@
         android:layout_height="@dimen/view_100_dp"
         android:layout_marginTop="@dimen/view_5_dp" />
 
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/stage_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_140_dp"
+        android:layout_marginTop="@dimen/view_123_dp"
+        android:visibility="gone" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/sing_avatar_view"
+        android:layout_width="@dimen/view_90_dp"
+        android:layout_height="@dimen/view_90_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_148_dp"
+        android:visibility="gone" />
+
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"

@@ -212,6 +212,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         initBottomView();
         initCommentView();
         initTopView();
+        initMainStage();
         initLyricsView();
         initTurnChangeView();
         initGiftDisplayView();
@@ -249,6 +250,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown, R.raw.endgame);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
+    }
+
+    private void initMainStage() {
+        mStageView = (BaseImageView) mRootView.findViewById(R.id.stage_view);
+        mSingAvatarView = (BaseImageView) mRootView.findViewById(R.id.sing_avatar_view);
     }
 
     /**
@@ -374,8 +380,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                ((RelativeLayout) mRootView).removeView(mStageView);
-                mStageView = null;
+                mStageView.setVisibility(View.GONE);
             }
 
             @Override
@@ -397,8 +402,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                ((RelativeLayout) mRootView).removeView(mSingAvatarView);
-                mSingAvatarView = null;
+                mSingAvatarView.setVisibility(View.GONE);
             }
 
             @Override
@@ -421,21 +425,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void playWebpMainStage() {
-        if (mStageView == null) {
-            mStageView = new BaseImageView(getActivity());
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, U.getDisplayUtils().dip2px(140));
-            lp.topMargin = U.getDisplayUtils().dip2px(123);
-            ((RelativeLayout) mRootView).addView(mStageView, lp);
-        }
 
-        if (mSingAvatarView == null) {
-            mSingAvatarView = new BaseImageView(getActivity());
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(90), U.getDisplayUtils().dip2px(90));
-            lp.topMargin = U.getDisplayUtils().dip2px(148);
-            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            ((RelativeLayout) mRootView).addView(mSingAvatarView, lp);
-        }
-
+        mStageView.setVisibility(View.VISIBLE);
+        mSingAvatarView.setVisibility(View.VISIBLE);
         FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
                 .setCallBack(new IFrescoCallBack() {
                     @Override
@@ -1128,15 +1120,14 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mReadyGoBg = null;
         }
 
-        if (mStageView != null && mRootView != null) {
-            ((RelativeLayout) mRootView).removeView(mStageView);
-            mStageView = null;
+        if (mStageView != null && mStageView.getVisibility() == View.VISIBLE) {
+            mStageView.setVisibility(View.GONE);
         }
 
-        if (mSingAvatarView != null && mRootView != null) {
-            ((RelativeLayout) mRootView).removeView(mSingAvatarView);
-            mSingAvatarView = null;
+        if (mSingAvatarView != null && mSingAvatarView.getVisibility() == View.VISIBLE) {
+            mSingAvatarView.setVisibility(View.GONE);
         }
+
 
     }
 
@@ -1264,9 +1255,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
             msg.arg1 = entry.getKey();
             msg.arg2 = mRoomData.getRealRoundInfo().getUserID();
-            if(entry.getValue().getEndTime() > mPlayingSongModel.getEndMs()){
+            if (entry.getValue().getEndTime() > mPlayingSongModel.getEndMs()) {
                 mUiHanlder.sendMessageDelayed(msg, mPlayingSongModel.getEndMs() - mPlayingSongModel.getBeginMs());
-            }else {
+            } else {
                 mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mPlayingSongModel.getBeginMs());
             }
         }
