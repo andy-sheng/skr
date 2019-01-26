@@ -73,11 +73,6 @@ public class GrabTopItemView extends RelativeLayout {
 
     }
 
-    public void toLeave(){
-        mLeaveIv.setVisibility(VISIBLE);
-        mFlagIv.setVisibility(GONE);
-    }
-
     public void tryAddParent(LinearLayout grabTopRv) {
         if (this.getParent() == null) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -98,7 +93,13 @@ public class GrabTopItemView extends RelativeLayout {
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .build()
         );
-
+        if(mPlayerInfoModel.isOnline()){
+            mLeaveIv.setVisibility(GONE);
+            mFlagIv.setVisibility(VISIBLE);
+        }else{
+            mLeaveIv.setVisibility(VISIBLE);
+            mFlagIv.setVisibility(GONE);
+        }
     }
 
     public void reset() {
