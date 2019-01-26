@@ -20,7 +20,7 @@ public class LogListContainer {
         Node next;
     }
 
-    public static final int MAX_COUNT = 10000;
+    public static final int MAX_COUNT = 2000;
 
     HashMap<String, Integer> mTagNumMap = new HashMap<>();
 
