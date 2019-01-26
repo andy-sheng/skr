@@ -248,6 +248,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //            }, 3000);
 //            return;
 //        }
+        if(now == null){
+            return;
+        }
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", now.getRoundSeq());
