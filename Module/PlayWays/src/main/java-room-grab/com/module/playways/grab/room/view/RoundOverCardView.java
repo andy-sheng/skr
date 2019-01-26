@@ -42,6 +42,8 @@ public class RoundOverCardView extends RelativeLayout {
     SVGAImageView mNoneSingSvga;
     SVGAImageView mSingResultSvga;
 
+    SVGAListener mSVGAListener;
+
     public RoundOverCardView(Context context) {
         super(context);
         init();
@@ -64,24 +66,25 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     public void bindData(int reason, int resultType, SVGAListener listener) {
+        this.mSVGAListener = listener;
         setVisibility(VISIBLE);
         int mode = getRoundOver(reason, resultType);
         switch (mode) {
             case NONE_SING_END:
-                startNoneSing(listener);
+                startNoneSing();
                 break;
             case SING_PERFECT_END:
-                startPerfect(listener);
+                startPerfect();
                 break;
             case SING_MOMENT_END:
             case SING_NO_PASS_END:
             case SING_PASS_END:
             case SING_ENOUGH_END:
-                startFailed(mode, listener);
+                startFailed(mode);
                 break;
             default:
-                if (listener != null) {
-                    listener.onFinished();
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
                 break;
         }
@@ -95,7 +98,7 @@ public class RoundOverCardView extends RelativeLayout {
         }
     }
 
-    private void startNoneSing(SVGAListener listener) {
+    private void startNoneSing() {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.nobodywants);
         mNoneSingSvga.setVisibility(VISIBLE);
         mNoneSingSvga.setLoops(1);
@@ -131,8 +134,8 @@ public class RoundOverCardView extends RelativeLayout {
                     mNoneSingSvga.setVisibility(GONE);
                 }
 
-                if (listener != null) {
-                    listener.onFinished();
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
             }
 
@@ -151,7 +154,7 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     // 优秀, 目前缺动画
-    private void startPerfect(SVGAListener listener) {
+    private void startPerfect() {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.success);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
@@ -187,8 +190,8 @@ public class RoundOverCardView extends RelativeLayout {
                     mSingResultSvga.setVisibility(GONE);
                 }
 
-                if (listener != null) {
-                    listener.onFinished();
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
             }
 
@@ -207,7 +210,7 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     // 不够优秀，换字即可，目前缺动画
-    private void startFailed(int model, SVGAListener listener) {
+    private void startFailed(int model) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lose);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
@@ -243,8 +246,8 @@ public class RoundOverCardView extends RelativeLayout {
                     mSingResultSvga.setVisibility(GONE);
                 }
 
-                if (listener != null) {
-                    listener.onFinished();
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
             }
 
@@ -292,5 +295,6 @@ public class RoundOverCardView extends RelativeLayout {
         if (mNoneSingSvga != null) {
             mNoneSingSvga.stopAnimation(true);
         }
+        this.mSVGAListener = null;
     }
 }

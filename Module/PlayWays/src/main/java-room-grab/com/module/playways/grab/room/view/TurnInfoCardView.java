@@ -27,6 +27,8 @@ public class TurnInfoCardView extends RelativeLayout {
 
     int mMode = MODE_BATTLE_BEGIN;
 
+    SVGAListener mSVGAListener;
+
     public TurnInfoCardView(Context context) {
         super(context);
         init();
@@ -50,16 +52,17 @@ public class TurnInfoCardView extends RelativeLayout {
 
     public void setModeSongSeq(boolean first, SVGAListener listener) {
         MyLog.d(TAG, "setModeSongSeq" + " first=" + first + " listener=" + listener);
+        this.mSVGAListener = listener;
         setVisibility(VISIBLE);
         if (first) {
-            firstBegin(listener);
+            firstBegin();
         } else {
-            nextBegin(listener);
+            nextBegin();
         }
     }
 
     // 对战开始连着第一首是同一个动画
-    private void firstBegin(SVGAListener listener) {
+    private void firstBegin() {
         mFirstSvga.clearAnimation();
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
@@ -94,8 +97,8 @@ public class TurnInfoCardView extends RelativeLayout {
                     mFirstSvga.stopAnimation(true);
                     mFirstSvga.setVisibility(GONE);
                 }
-                if (listener != null) {
-                    listener.onFinished();
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
             }
 
@@ -113,7 +116,7 @@ public class TurnInfoCardView extends RelativeLayout {
         });
     }
 
-    private void nextBegin(SVGAListener listener) {
+    private void nextBegin() {
         mNextSvga.clearAnimation();
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
@@ -148,8 +151,8 @@ public class TurnInfoCardView extends RelativeLayout {
                     mNextSvga.stopAnimation(true);
                     mNextSvga.setVisibility(GONE);
                 }
-                if (listener != null) {
-                    listener.onFinished();
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
             }
 
@@ -190,5 +193,6 @@ public class TurnInfoCardView extends RelativeLayout {
         if (mNextSvga != null) {
             mNextSvga.stopAnimation(true);
         }
+        this.mSVGAListener = null;
     }
 }

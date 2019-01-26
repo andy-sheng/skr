@@ -39,6 +39,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
     public final static String TAG = "SingBeginTipsCardView";
 
     SVGAImageView mSingBeginSvga;
+    SVGAListener mSVGAListener;
 
     public SingBeginTipsCardView(Context context) {
         super(context);
@@ -61,6 +62,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
     }
 
     public void bindData(UserInfoModel info, SVGAListener listener) {
+        this.mSVGAListener = listener;
         setVisibility(VISIBLE);
         SVGAParser parser = new SVGAParser(getContext());
         String assetsName = "grab_sing_self_chance.svga";
@@ -97,8 +99,8 @@ public class SingBeginTipsCardView extends RelativeLayout {
                 if (mSingBeginSvga != null) {
                     mSingBeginSvga.stopAnimation(true);
                 }
-                if (listener != null) {
-                    listener.onFinished();
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
             }
 
@@ -160,5 +162,6 @@ public class SingBeginTipsCardView extends RelativeLayout {
         if (mSingBeginSvga != null) {
             mSingBeginSvga.stopAnimation(true);
         }
+        this.mSVGAListener = null;
     }
 }
