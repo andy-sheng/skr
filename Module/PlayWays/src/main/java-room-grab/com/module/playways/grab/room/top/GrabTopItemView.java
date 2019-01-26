@@ -82,21 +82,21 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void bindData(PlayerInfoModel userInfoModel) {
-        if(userInfoModel==null){
+        if (userInfoModel == null) {
             return;
         }
         mPlayerInfoModel = userInfoModel;
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
                 .setCircle(true)
-                .setGray(mPlayerInfoModel.isOnline()?false:true)
+                .setGray(mPlayerInfoModel.isOnline() ? false : true)
                 .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .build()
         );
-        if(mPlayerInfoModel.isOnline()){
+        if (mPlayerInfoModel.isOnline()) {
             mLeaveIv.setVisibility(GONE);
             mFlagIv.setVisibility(VISIBLE);
-        }else{
+        } else {
             mLeaveIv.setVisibility(VISIBLE);
             mFlagIv.setVisibility(GONE);
         }
@@ -125,26 +125,36 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void setGrap(boolean grap) {
-        if (grap) {
-            mFlagIv.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-            lp.topMargin = -U.getDisplayUtils().dip2px(10);
-            mFlagIv.setLayoutParams(lp);
-            mFlagIv.setImageResource(R.drawable.xiangchang_flag);
-        } else {
+        if (!mPlayerInfoModel.isOnline()) {
+            mLeaveIv.setVisibility(VISIBLE);
             mFlagIv.setVisibility(GONE);
+        }else{
+            if (grap) {
+                mFlagIv.setVisibility(VISIBLE);
+                LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+                lp.topMargin = -U.getDisplayUtils().dip2px(10);
+                mFlagIv.setLayoutParams(lp);
+                mFlagIv.setImageResource(R.drawable.xiangchang_flag);
+            } else {
+                mFlagIv.setVisibility(GONE);
+            }
         }
     }
 
     public void setLight(boolean on) {
-        mFlagIv.setVisibility(VISIBLE);
-        LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-        lp.topMargin = -U.getDisplayUtils().dip2px(20);
-        mFlagIv.setLayoutParams(lp);
-        if (on) {
-            mFlagIv.setImageResource(R.drawable.liangdeng);
-        } else {
-            mFlagIv.setImageResource(R.drawable.miedeng);
+        if (!mPlayerInfoModel.isOnline()) {
+            mLeaveIv.setVisibility(VISIBLE);
+            mFlagIv.setVisibility(GONE);
+        }else{
+            mFlagIv.setVisibility(VISIBLE);
+            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+            lp.topMargin = -U.getDisplayUtils().dip2px(20);
+            mFlagIv.setLayoutParams(lp);
+            if (on) {
+                mFlagIv.setImageResource(R.drawable.liangdeng);
+            } else {
+                mFlagIv.setImageResource(R.drawable.miedeng);
+            }
         }
     }
 
