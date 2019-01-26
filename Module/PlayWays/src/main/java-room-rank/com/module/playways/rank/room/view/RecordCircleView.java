@@ -184,7 +184,7 @@ public class RecordCircleView extends View {
              */
             mPaint.setShader(generateSweepGradient());
             canvas.drawArc(mRectFProgressArc, mStartAngle + 1,
-                    mSweepAngle, false, mPaint);
+                    calculateRelativeAngleWithValue(mSolidCreditValue), false, mPaint);
             /**
              * 画信用值指示亮点
              */
