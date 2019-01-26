@@ -116,7 +116,7 @@ public class ArcCloudManager implements IACRCloudListener {
     }
 
     public void stopRecognize() {
-        MyLog.d(TAG, "stopCollect");
+        MyLog.d(TAG,"stopRecognize" );
         // 停止积攒
         setLen(0);
         this.mRecognizeConfig = null;
