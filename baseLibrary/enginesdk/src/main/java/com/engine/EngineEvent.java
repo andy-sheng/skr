@@ -83,6 +83,14 @@ public class EngineEvent {
         public void setVolume(int volume) {
             this.volume = volume;
         }
+
+        @Override
+        public String toString() {
+            return "UserVolumeInfo{" +
+                    "uid=" + uid +
+                    ", volume=" + volume +
+                    '}';
+        }
     }
 
     public static class MixMusicTimeInfo {

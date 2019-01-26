@@ -308,9 +308,13 @@ public class AuditionFragment extends BaseFragment {
                     .setMResultListener(new ArcRecognizeListener() {
                         @Override
                         public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {
+                            int score = 0;
                             if(targetSongInfo!=null){
+                                score = (int) (targetSongInfo.getScore()*100);
                                 U.getToastUtil().showShort("score:"+targetSongInfo.getScore());
                             }
+                            MyLog.d(TAG,"score="+score);
+
                         }
                     }).build());
         }
@@ -544,6 +548,7 @@ public class AuditionFragment extends BaseFragment {
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> l = event.getObj();
             for (EngineEvent.UserVolumeInfo userVolumeInfo : l) {
+                MyLog.d(TAG,"onEventMainThread" + " userVolumeInfo=" + userVolumeInfo);
                 if (userVolumeInfo.getUid() == 0 && userVolumeInfo.getVolume() > 0) {
                     //如果自己在唱歌也延迟关闭
                     resendAutoLeaveChannelMsg();

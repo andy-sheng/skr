@@ -2,6 +2,7 @@ package com.common.rxretrofit.interceptor;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -9,11 +10,15 @@ import com.common.utils.U;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.HashMap;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.BufferedSource;
 
 public class CoreInfoInterceptor implements Interceptor {
     public final static String TAG = "CoreInfoInterceptor";
@@ -28,7 +33,14 @@ public class CoreInfoInterceptor implements Interceptor {
         } else {
             if (!UserAccountManager.getInstance().hasAccount()) {
                 MyLog.e(TAG,"未登录前不能发送该请求");
-                return null;
+                HashMap hashMap = new HashMap<>();
+                hashMap.put("errno",102);
+                hashMap.put("errmsg","未登录不能发送该请求");
+                ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(hashMap))
+                Response response = new Response.Builder()
+                        .body(responseBody)
+                        .build();
+                return response;
             }
         }
         // todo 标识设备的唯一ID

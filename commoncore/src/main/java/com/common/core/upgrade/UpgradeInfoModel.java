@@ -3,7 +3,9 @@ package com.common.core.upgrade;
 
 import android.text.TextUtils;
 
-public class UpgradeInfoModel {
+import java.io.Serializable;
+
+public class UpgradeInfoModel implements Serializable {
     String downloadURL;
     long updateTimeMs;
     int latestVersionCode;
