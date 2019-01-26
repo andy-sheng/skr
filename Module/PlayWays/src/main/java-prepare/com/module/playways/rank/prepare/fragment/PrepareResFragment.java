@@ -205,11 +205,19 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     @Override
     public void notifyToShow() {
+        MyLog.d(TAG, "toStaskTop");
         if (!BgMusicManager.getInstance().isPlaying()) {
             BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
         }
-        MyLog.d(TAG, "toStaskTop");
         mRootView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        if (!BgMusicManager.getInstance().isPlaying()) {
+            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
+        }
     }
 
     @Override

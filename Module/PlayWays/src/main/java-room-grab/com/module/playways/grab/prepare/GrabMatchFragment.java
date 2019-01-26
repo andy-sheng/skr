@@ -172,6 +172,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         startMatchQuotationTask();
 
         showBackground();
+        playBackgroundMusic();
     }
 
     public void showBackground() {
@@ -503,7 +504,16 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
+        playBackgroundMusic();
         mRootView.setVisibility(View.VISIBLE);
+    }
+
+    private void playBackgroundMusic() {
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+            if (mPrepareData.getSongModel() != null) {
+                BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
+            }
+        }
     }
 
     /**
