@@ -27,7 +27,7 @@ public class GameConfModel implements Serializable {
         this.detail = detail;
     }
 
-    public static class DetailBean {
+    public static class DetailBean implements Serializable {
         /**
          * isOpen : true
          * content :
