@@ -595,7 +595,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + currentInfo + " nextInfo=" + nextInfo);
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
-            mRoomData.setOnlineInfoList(onlineInfos);
+            if (onlineInfos != null) {
+                for (OnlineInfoModel onlineInfoModel : onlineInfos) {
+                    mRoomData.setOnline(onlineInfoModel.getUserID(), onlineInfoModel.isIsOnline());
+                }
+            }
             mIGameRuleView.updateUserState(onlineInfos);
         }
         if (gameOverTimeMs != 0) {
@@ -1232,6 +1236,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             U.getToastUtil().showShort("游戏中，某一个人退出了");
         }
 
+        mRoomData.setOnline(exitGameEvent.exitUserID, false);
         UserInfoModel userInfo = mRoomData.getUserInfo(exitGameEvent.exitUserID);
         BasePushInfo basePushInfo = new BasePushInfo();
         basePushInfo.setRoomID(mRoomData.getGameId());

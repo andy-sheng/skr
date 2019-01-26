@@ -649,7 +649,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + newRoundInfo.getRoundSeq());
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
-            mRoomData.setOnlineInfoList(onlineInfos);
+            if(onlineInfos!=null){
+                for(OnlineInfoModel onlineInfoModel:onlineInfos){
+                    mRoomData.setOnline(onlineInfoModel.getUserID(),onlineInfoModel.isIsOnline());
+                }
+            }
             mUiHanlder.post(new Runnable() {
                 @Override
                 public void run() {
@@ -833,6 +837,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
         MyLog.w(TAG, "有人退出了：userID is " + event.getUserID());
+        mRoomData.setOnline(event.userID,false);
     }
 
 
@@ -907,7 +912,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
             return;
         }
-
         /**
          * 机器人
          */
@@ -920,17 +924,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             Message message = mUiHanlder.obtainMessage(MSG_ROBOT_SING_BEGIN);
             message.obj = playerInfo;
             mUiHanlder.sendMessage(message);
-        }
-    }
-
-    // TODO: 2018/12/18 退出游戏了
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(ExitGameEvent exitGameEvent) {
-        MyLog.w(TAG, "收到一个人退出的push了，type是" + exitGameEvent.type + ",timeMs是" + exitGameEvent.info.getTimeMs());
-        if (exitGameEvent.type == EXIT_GAME_AFTER_PLAY) {   //我在唱歌，有一个人退出
-            U.getToastUtil().showShort("游戏结束后，某一个人退出了");
-        } else if (exitGameEvent.type == EXIT_GAME_OUT_ROUND) {   //我是观众，有一个人退出
-            U.getToastUtil().showShort("游戏中，某一个人退出了");
         }
     }
 

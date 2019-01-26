@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -125,7 +124,7 @@ public class GrabTopRv extends RelativeLayout {
                         });
             }
             vp.grabTopItemView.setVisibility(VISIBLE);
-            vp.grabTopItemView.bindData(userInfo);
+            vp.grabTopItemView.bindData(playerInfoModel);
             vp.grabTopItemView.setGrap(false);
             vp.grabTopItemView.tryAddParent(mContentLl);
             if(vp.SVGAImageView==null){
@@ -165,7 +164,11 @@ public class GrabTopRv extends RelativeLayout {
                 if (mRoomData.getRealRoundInfo().getHasGrabUserSet().contains(uId)) {
                     vp.grabTopItemView.setGrap(true);
                 } else {
-                    vp.grabTopItemView.setGrap(false);
+                    if(vp.grabTopItemView.getPlayerInfoModel().isOnline()){
+                        vp.grabTopItemView.setGrap(false);
+                    }else{
+                        //离线了
+                    }
                 }
             }
         }
@@ -258,6 +261,9 @@ public class GrabTopRv extends RelativeLayout {
                 }
                 VP vp1 = mInfoMap.get(uId);
                 GrabTopItemView itemView = vp1.grabTopItemView;
+                if(!itemView.getPlayerInfoModel().isOnline()){
+                    continue;
+                }
                 ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 1, 2);
                 ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_Y, 1, 2);
                 ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.ALPHA, 0, 1);
@@ -296,8 +302,12 @@ public class GrabTopRv extends RelativeLayout {
                 if (uId == singUid) {
                     continue;
                 }
+
                 VP vp1 = mInfoMap.get(uId);
                 GrabTopItemView itemView = vp1.grabTopItemView;
+                if(!itemView.getPlayerInfoModel().isOnline()){
+                    continue;
+                }
                 ObjectAnimator objectAnimator1 = new ObjectAnimator();
                 objectAnimator1.setIntValues(0, 0);
                 objectAnimator1.setDuration(1);
@@ -383,6 +393,15 @@ public class GrabTopRv extends RelativeLayout {
         VP vp = mInfoMap.get(uid);
         if (vp!=null && vp.grabTopItemView != null) {
             setLightOffAnimation(vp);
+        }
+    }
+
+    public void onlineChange(PlayerInfoModel playerInfoModel) {
+        if(playerInfoModel!=null){
+            VP vp = mInfoMap.get(playerInfoModel.getUserInfo().getUserId());
+            if(vp!=null){
+                vp.grabTopItemView.bindData(playerInfoModel);
+            }
         }
     }
 

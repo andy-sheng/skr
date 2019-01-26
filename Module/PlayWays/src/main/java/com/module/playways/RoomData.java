@@ -11,6 +11,7 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.song.model.SongModel;
+import com.zq.live.proto.Room.PlayerInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,7 +67,7 @@ public class RoomData implements Serializable {
 
     private RoundInfoModel mRealRoundInfo;// 实际的当前轮次信息
 
-    private List<OnlineInfoModel> mOnlineInfoList;//所有的用户在线信息
+//    private List<OnlineInfoModel> mOnlineInfoList;//所有的用户在线信息
 
     private List<PlayerInfoModel> mPlayerInfoList;//选手信息
 
@@ -246,14 +247,6 @@ public class RoomData implements Serializable {
         mRealRoundInfo = realRoundInfo;
     }
 
-    public List<OnlineInfoModel> getOnlineInfoList() {
-        return mOnlineInfoList;
-    }
-
-    public void setOnlineInfoList(List<OnlineInfoModel> onlineInfoList) {
-        mOnlineInfoList = onlineInfoList;
-    }
-
     public void setPlayerInfoList(List<PlayerInfoModel> playerInfoList) {
         mPlayerInfoList = playerInfoList;
     }
@@ -302,6 +295,16 @@ public class RoomData implements Serializable {
         mMute = mute;
     }
 
+    public void setOnline(int userID, boolean online) {
+        if (mPlayerInfoList != null) {
+            for (PlayerInfoModel playerInfo : mPlayerInfoList) {
+                if (playerInfo.getUserInfo().getUserId() == userID) {
+                    playerInfo.setOnline(online);
+                }
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "RoomData{" +
@@ -317,10 +320,10 @@ public class RoomData implements Serializable {
                 ", mRoundInfoModelList=" + mRoundInfoModelList +
                 ", mExpectRoundInfo=" + mExpectRoundInfo +
                 ", mRealRoundInfo=" + mRealRoundInfo +
-                ", mOnlineInfoList=" + mOnlineInfoList +
                 ", mPlayerInfoList=" + mPlayerInfoList +
                 ", mIsGameFinish=" + mIsGameFinish +
                 '}';
     }
+
 
 }

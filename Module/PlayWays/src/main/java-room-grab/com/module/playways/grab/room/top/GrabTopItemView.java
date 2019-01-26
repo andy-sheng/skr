@@ -12,6 +12,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -38,7 +39,7 @@ public class GrabTopItemView extends RelativeLayout {
     public CircleAnimationView mCircleAnimationView;
     public BaseImageView mAvatarIv;
     public ExImageView mFlagIv;
-
+    public PlayerInfoModel mPlayerInfoModel;
     int mMode = MODE_GRAB;
 
     public GrabTopItemView(Context context) {
@@ -71,10 +72,15 @@ public class GrabTopItemView extends RelativeLayout {
         }
     }
 
-    public void bindData(UserInfoModel userInfoModel) {
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+    public void bindData(PlayerInfoModel userInfoModel) {
+        if(mPlayerInfoModel==null){
+            return;
+        }
+        mPlayerInfoModel = userInfoModel;
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
                 .setCircle(true)
-                .setBorderColorBySex(userInfoModel.getSex() == 1)
+                .setGray(mPlayerInfoModel.isOnline()?false:true)
+                .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .build()
         );
@@ -130,4 +136,7 @@ public class GrabTopItemView extends RelativeLayout {
         mCircleAnimationView.setVisibility(VISIBLE);
     }
 
+    public PlayerInfoModel getPlayerInfoModel() {
+        return mPlayerInfoModel;
+    }
 }
