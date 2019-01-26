@@ -15,6 +15,7 @@ import java.util.HashMap;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -32,12 +33,16 @@ public class CoreInfoInterceptor implements Interceptor {
             request = request.newBuilder().removeHeader("NO_NEED_LOGIN").build();
         } else {
             if (!UserAccountManager.getInstance().hasAccount()) {
-                MyLog.e(TAG,"未登录前不能发送该请求");
+                MyLog.e(TAG,"未登录前不能发送该请求-->"+request.url());
                 HashMap hashMap = new HashMap<>();
                 hashMap.put("errno",102);
-                hashMap.put("errmsg","未登录不能发送该请求");
+                hashMap.put("errmsg","未登录不能发送该请求-->"+request.url());
                 ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(hashMap));
                 Response response = new Response.Builder()
+                        .request(request)
+                        .code(200)
+                        .message("未登录不能发送该请求")
+                        .protocol(Protocol.HTTP_1_0)
                         .body(responseBody)
                         .build();
                 return response;
