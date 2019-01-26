@@ -918,7 +918,7 @@ public class AgoraEngineAdapter {
                         bytesPerSample,
                         channels,
                         samplesPerSec,
-                        getAudioMixingCurrentPosition() + mConfig.getMixMusicBeginOffset(),
+                        mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs()),
                         mConfig.getMidiPath());
                 return true;
             }

@@ -911,6 +911,8 @@ public class EngineManager implements AgoraOutCallback {
                     AgoraEngineAdapter.getInstance().stopAudioMixing();
                 }
                 mPendingStartMixAudioParams = null;
+                mConfig.setCurrentMusicTs(0);
+                mConfig.setRecordCurrentMusicTsTs(0);
             }
         });
 
@@ -962,7 +964,7 @@ public class EngineManager implements AgoraOutCallback {
 
         mMusicTimePlayTimeListener = Observable
                 .interval(0, 1000, TimeUnit.MILLISECONDS)
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .subscribe(new Consumer<Long>() {
                     int duration = -1;
 
@@ -970,6 +972,8 @@ public class EngineManager implements AgoraOutCallback {
                     public void accept(Long aLong) throws Exception {
                         MyLog.d(TAG, "PlayTimeListener accept ts="+aLong);
                         int currentPostion = getAudioMixingCurrentPosition();
+                        mConfig.setCurrentMusicTs(currentPostion);
+                        mConfig.setRecordCurrentMusicTsTs(System.currentTimeMillis());
                         if (duration < 0) {
                             duration = getAudioMixingDuration();
                         }

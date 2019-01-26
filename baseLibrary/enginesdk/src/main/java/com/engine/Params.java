@@ -97,6 +97,8 @@ public class Params implements Serializable {
     private String mMixMusicFilePath;// 伴奏路径
     private String mMidiPath;// midi打分文件路径
     private long mMixMusicBeginOffset;// midi文件起始偏移量
+    private int mCurrentMusicTs;
+    private long mRecordCurrentMusicTsTs;
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -420,6 +422,22 @@ public class Params implements Serializable {
 
     public long getMixMusicBeginOffset() {
         return mMixMusicBeginOffset;
+    }
+
+    public void setCurrentMusicTs(int currentMusicTs) {
+        mCurrentMusicTs = currentMusicTs;
+    }
+
+    public int getCurrentMusicTs() {
+        return mCurrentMusicTs;
+    }
+
+    public void setRecordCurrentMusicTsTs(long recordCurrentMusicTsTs) {
+        mRecordCurrentMusicTsTs = recordCurrentMusicTsTs;
+    }
+
+    public long getRecordCurrentMusicTsTs() {
+        return mRecordCurrentMusicTsTs;
     }
 
     public static class Builder {

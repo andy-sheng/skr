@@ -392,7 +392,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         cancelHeartBeatTask("startHeartBeatTask");
         mHeartBeatTask = Observable
                 .interval(0, sHeartBeatTaskInterval, TimeUnit.MILLISECONDS)
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
