@@ -236,7 +236,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             }
         }, 100);
 
-        U.getSoundUtils().preLoad(TAG, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose,R.raw.lightup);
+
+        U.getSoundUtils().preLoad(TAG, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose, R.raw.lightup, R.raw.startgame);
+
     }
 
     @Override
@@ -495,6 +497,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         if (seq == 1) {
             mUiHanlder.sendMessageDelayed(msg, 4000);
+            mUiHanlder.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    U.getSoundUtils().play(TAG, R.raw.startgame);
+                }
+            }, 500);
         } else {
             mUiHanlder.sendMessageDelayed(msg, 1200);
         }

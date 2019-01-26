@@ -159,10 +159,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 onReadyGoOver();
             } else if (SHOW_RIVAL_LYRIC == msg.what) {
 
-            } else if(MSG_LYRIC_END_EVENT == msg.what){
+            } else if (MSG_LYRIC_END_EVENT == msg.what) {
                 MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1);
                 int uid = msg.arg2;
-                if(RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == uid){
+                if (RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == uid) {
                     EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
                 }
             }
@@ -246,7 +246,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
 
-        U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown);
+        U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown, R.raw.endgame);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
@@ -752,7 +752,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
             @Override
             public void onVoiceChange(boolean voiceOpen) {
-                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen,true);
+                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
             }
         });
     }
@@ -1092,6 +1092,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         isGameEndAniamtionShow = true;
 
         destroyAnimation();
+        U.getSoundUtils().play(TAG, R.raw.endgame);
         // 对战结束动画
         mEndGameIv.setVisibility(View.VISIBLE);
         if (mGameEndAnimation == null) {
@@ -1243,7 +1244,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     postLyricEndEvent(lyricsReader);
                 }
             } else {
-                if(play){
+                if (play) {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
                     postLyricEndEvent(lyricsReader);
                 }
@@ -1254,7 +1255,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    private void postLyricEndEvent(LyricsReader lyricsReader){
+    private void postLyricEndEvent(LyricsReader lyricsReader) {
         Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
