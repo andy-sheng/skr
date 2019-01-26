@@ -449,6 +449,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHanlder.removeCallbacksAndMessages(null);
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (mExoPlayer != null) {
+            mExoPlayer.pause();
             mExoPlayer.release();
         }
     }
