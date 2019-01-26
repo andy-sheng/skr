@@ -51,7 +51,7 @@ import okhttp3.Response;
 public class GrabTopRv extends RelativeLayout {
     public final static String TAG = "GrabTopRv";
 
-    private LinkedHashMap<Integer, GrabTopItemView> mInfoMap = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
     private RoomData mRoomData;
     private boolean mInited = false;
     AnimatorSet mAnimatorAllSet;
@@ -60,7 +60,7 @@ public class GrabTopRv extends RelativeLayout {
     ExImageView mErjiIv;
 
     SVGAParser mSVGAParser;
-    SVGAImageView mMieDengIv;
+
 
     public GrabTopRv(Context context) {
         super(context);
@@ -81,7 +81,6 @@ public class GrabTopRv extends RelativeLayout {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
         mErjiIv = (ExImageView) this.findViewById(R.id.erji_iv);
-        mMieDengIv = this.findViewById(R.id.miedeng_iv);
 
 //        HandlerTaskTimer.newBuilder()
 //                .interval(4000)
@@ -110,11 +109,14 @@ public class GrabTopRv extends RelativeLayout {
         int i = 0;
         for (PlayerInfoModel playerInfoModel : playerInfoModels) {
             UserInfoModel userInfo = playerInfoModel.getUserInfo();
-            GrabTopItemView grabTopItemView = mInfoMap.get(userInfo.getUserId());
-            if (grabTopItemView == null) {
-                grabTopItemView = new GrabTopItemView(getContext());
-                mInfoMap.put(userInfo.getUserId(), grabTopItemView);
-                RxView.clicks(grabTopItemView)
+            VP vp = mInfoMap.get(userInfo.getUserId());
+            if(vp==null){
+                vp = new VP();
+                mInfoMap.put(userInfo.getUserId(),vp);
+            }
+            if (vp.grabTopItemView == null) {
+                vp.grabTopItemView = new GrabTopItemView(getContext());
+                RxView.clicks(vp.grabTopItemView)
                         .subscribe(new Consumer<Object>() {
                             @Override
                             public void accept(Object o) {
@@ -122,10 +124,16 @@ public class GrabTopRv extends RelativeLayout {
                             }
                         });
             }
-            grabTopItemView.setVisibility(VISIBLE);
-            grabTopItemView.bindData(userInfo);
-            grabTopItemView.setGrap(false);
-            grabTopItemView.tryAddParent(mContentLl);
+            vp.grabTopItemView.setVisibility(VISIBLE);
+            vp.grabTopItemView.bindData(userInfo);
+            vp.grabTopItemView.setGrap(false);
+            vp.grabTopItemView.tryAddParent(mContentLl);
+            if(vp.SVGAImageView==null){
+                vp.SVGAImageView = new SVGAImageView(getContext());
+                LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100),U.getDisplayUtils().dip2px(100));
+                GrabTopRv.this.addView(vp.SVGAImageView,lp);
+            }
+
 //            if (i % 2 == 0) {
 //                grabTopItemView.setBackgroundColor(U.getColor(R.color.yellow));
 //            } else {
@@ -135,9 +143,9 @@ public class GrabTopRv extends RelativeLayout {
         }
         if (now != null) {
             for (int uid : now.getHasGrabUserSet()) {
-                GrabTopItemView grabTopItemView = mInfoMap.get(uid);
-                if (grabTopItemView != null) {
-                    grabTopItemView.setGrap(true);
+                VP vp = mInfoMap.get(uid);
+                if (vp!=null && vp.grabTopItemView != null) {
+                    vp.grabTopItemView.setGrap(true);
                 }
             }
         }
@@ -150,14 +158,14 @@ public class GrabTopRv extends RelativeLayout {
         }
         mErjiIv.setVisibility(GONE);
         for (int uId : mInfoMap.keySet()) {
-            GrabTopItemView grabTopItemView = mInfoMap.get(uId);
-            if (grabTopItemView != null) {
-                grabTopItemView.setVisibility(VISIBLE);
-                grabTopItemView.reset();
+            VP vp = mInfoMap.get(uId);
+            if (vp!=null && vp.grabTopItemView != null) {
+                vp.grabTopItemView.setVisibility(VISIBLE);
+                vp.grabTopItemView.reset();
                 if (mRoomData.getRealRoundInfo().getHasGrabUserSet().contains(uId)) {
-                    grabTopItemView.setGrap(true);
+                    vp.grabTopItemView.setGrap(true);
                 } else {
-                    grabTopItemView.setGrap(false);
+                    vp.grabTopItemView.setGrap(false);
                 }
             }
         }
@@ -165,13 +173,13 @@ public class GrabTopRv extends RelativeLayout {
 
     public void setModeSing(int singUid) {
         MyLog.d(TAG, "setModeSing" + " singUid=" + singUid);
-        GrabTopItemView grabTopItemView = mInfoMap.get(singUid);
-        if (grabTopItemView != null) {
-            grabTopItemView.setGetSingChance();
+        VP vp = mInfoMap.get(singUid);
+        if (vp.grabTopItemView != null) {
+            vp.grabTopItemView.setGetSingChance();
         }
 
         List<Animator> allAnimator = new ArrayList<>();
-        GrabTopItemView finalGrabTopItemView = grabTopItemView;
+        GrabTopItemView finalGrabTopItemView = vp.grabTopItemView;
         {
             // 这是圈圈动画
             ObjectAnimator objectAnimator1 = new ObjectAnimator();
@@ -193,8 +201,8 @@ public class GrabTopRv extends RelativeLayout {
             });
 
             // 接下来是头像放大一点的动画
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.2f);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.2f);
+            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.2f);
+            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.2f);
             AnimatorSet animatorSet23 = new AnimatorSet();
             animatorSet23.playTogether(objectAnimator2, objectAnimator3);
             animatorSet23.setDuration(4 * 33);
@@ -206,9 +214,9 @@ public class GrabTopRv extends RelativeLayout {
         // 等待47个节拍
         {
             // 放大透明度消失
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(grabTopItemView, View.ALPHA, 1, 0);
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(grabTopItemView.mAvatarIv, View.SCALE_X, 1.2f, 2f);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(grabTopItemView.mAvatarIv, View.SCALE_Y, 1.2f, 2f);
+            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(vp.grabTopItemView, View.ALPHA, 1, 0);
+            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1.2f, 2f);
+            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1.2f, 2f);
 
             ObjectAnimator objectAnimator4 = new ObjectAnimator();
             objectAnimator4.setFloatValues(1, 0);
@@ -248,7 +256,8 @@ public class GrabTopRv extends RelativeLayout {
                 if (uId == singUid) {
                     continue;
                 }
-                GrabTopItemView itemView = mInfoMap.get(uId);
+                VP vp1 = mInfoMap.get(uId);
+                GrabTopItemView itemView = vp1.grabTopItemView;
                 ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 1, 2);
                 ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_Y, 1, 2);
                 ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.ALPHA, 0, 1);
@@ -287,7 +296,8 @@ public class GrabTopRv extends RelativeLayout {
                 if (uId == singUid) {
                     continue;
                 }
-                GrabTopItemView itemView = mInfoMap.get(uId);
+                VP vp1 = mInfoMap.get(uId);
+                GrabTopItemView itemView = vp1.grabTopItemView;
                 ObjectAnimator objectAnimator1 = new ObjectAnimator();
                 objectAnimator1.setIntValues(0, 0);
                 objectAnimator1.setDuration(1);
@@ -354,35 +364,37 @@ public class GrabTopRv extends RelativeLayout {
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             for (int uid : now.getHasLightOffUserSet()) {
-                GrabTopItemView grabTopItemView = mInfoMap.get(uid);
-                if (grabTopItemView != null) {
-                    grabTopItemView.setLight(false);
+                VP vp = mInfoMap.get(uid);
+                if (vp!=null && vp.grabTopItemView != null) {
+                    vp.grabTopItemView.setLight(false);
                 }
             }
         }
     }
 
     public void grap(int uid) {
-        GrabTopItemView grabTopItemView = mInfoMap.get(uid);
-        if (grabTopItemView != null) {
-            grabTopItemView.setGrap(true);
+        VP vp = mInfoMap.get(uid);
+        if (vp!=null && vp.grabTopItemView != null) {
+            vp.grabTopItemView.setGrap(true);
         }
     }
 
     public void lightOff(int uid) {
-        GrabTopItemView grabTopItemView = mInfoMap.get(uid);
-        if (grabTopItemView != null) {
-            setLightOffAnimation(grabTopItemView);
+        VP vp = mInfoMap.get(uid);
+        if (vp!=null && vp.grabTopItemView != null) {
+            setLightOffAnimation(vp);
         }
     }
 
-    private void setLightOffAnimation(GrabTopItemView grabTopItemView) {
+    private void setLightOffAnimation(VP vp) {
+        GrabTopItemView grabTopItemView = vp.grabTopItemView;
         grabTopItemView.mFlagIv.setVisibility(GONE);
 
         int[] position1 = new int[2];
         grabTopItemView.mFlagIv.getLocationInWindow(position1);
 
         int[] position2 = new int[2];
+        SVGAImageView mMieDengIv = vp.SVGAImageView;
         mMieDengIv.getLocationInWindow(position2);
 
         mMieDengIv.setTranslationX(position1[0]-U.getDisplayUtils().dip2px(22));
@@ -466,5 +478,10 @@ public class GrabTopRv extends RelativeLayout {
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
         }
+    }
+
+    static class VP{
+        GrabTopItemView grabTopItemView;
+        SVGAImageView SVGAImageView;
     }
 }
