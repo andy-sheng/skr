@@ -388,7 +388,7 @@ public class GameFragment extends BaseFragment {
     private boolean isGameOpen() {
         //mGameConfModel不应该为null，加个保护
 //        if(mGameConfModel != null && mGameConfModel.isIsSupport() && !mGameConfModel.getDetail().isIsOpen()){
-        if (false) {
+        if (!MyLog.isDebugLogOpen()) {
             GameTimeTipsView gameTimeTipsView = new GameTimeTipsView(getActivity());
             gameTimeTipsView.setGameConfModel(mGameConfModel);
 
@@ -417,14 +417,10 @@ public class GameFragment extends BaseFragment {
                     .withBoolean("selectSong", true)
                     .navigation();
         } else if (view.getId() == R.id.iv_grab_game) {
-            if (MyLog.isDebugLogOpen()) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                         .withInt("key_game_type", GameModeType.GAME_MODE_GRAB)
                         .withBoolean("selectSong", false)
                         .navigation();
-            } else {
-                U.getToastUtil().showShort("正在开发中，敬请期待");
-            }
         }
     }
 
