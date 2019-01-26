@@ -399,8 +399,8 @@ public class GameFragment extends BaseFragment {
 
     private boolean isGameOpen() {
         //mGameConfModel不应该为null，加个保护
-//        if(mGameConfModel != null && mGameConfModel.isIsSupport() && !mGameConfModel.getDetail().isIsOpen()){
-        if (!MyLog.isDebugLogOpen()) {
+        if(mGameConfModel != null && mGameConfModel.isIsSupport() && !mGameConfModel.getDetail().isIsOpen()){
+//        if (!MyLog.isDebugLogOpen()) {
             GameTimeTipsView gameTimeTipsView = new GameTimeTipsView(getActivity());
             gameTimeTipsView.setGameConfModel(mGameConfModel);
 
