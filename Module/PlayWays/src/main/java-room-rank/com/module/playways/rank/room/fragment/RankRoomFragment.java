@@ -972,6 +972,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mStagePeopleBg.setVisibility(View.GONE);
         mStageUfoBg.setVisibility(View.GONE);
 
+        mStageView.setVisibility(View.GONE);
+        mSingAvatarView.setVisibility(View.GONE);
+
         // 确保演唱逻辑一定要执行
         Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
         msg.what = ENSURE_RUN;
@@ -1013,6 +1016,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         mStagePeopleBg.setVisibility(View.GONE);
         mStageUfoBg.setVisibility(View.GONE);
+
+        mStageView.setVisibility(View.GONE);
+        mSingAvatarView.setVisibility(View.GONE);
 
 //        mTopContainerView.cancelShowLastedTimeTask();
         if (mReadyGoPlaying) {
