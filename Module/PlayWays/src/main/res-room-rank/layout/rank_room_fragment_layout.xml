@@ -66,8 +66,7 @@
     <com.module.playways.rank.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/float_lyrics_view"
+        android:layout_height="@dimen/view_400_dp"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_128_dp"
         android:layout_marginBottom="@dimen/view_66_dp"
@@ -81,11 +80,6 @@
         android:layout_alignTop="@+id/comment_view"
         android:src="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 
-    <com.module.playways.rank.room.view.InputContainerView
-        android:id="@+id/input_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
 
     <com.module.playways.rank.room.view.TopContainerView
         android:id="@+id/top_container_view"
@@ -122,4 +116,10 @@
         android:layout_marginTop="@dimen/view_178_dp"
         android:src="@drawable/img_top_duizhanjieshu_bg"
         android:visibility="gone" />
+
+    <com.module.playways.rank.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

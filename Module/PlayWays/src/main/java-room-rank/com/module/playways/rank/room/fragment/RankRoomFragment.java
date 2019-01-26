@@ -668,7 +668,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mCommentView.setRoomData(mRoomData);
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
-        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
+        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(370 + 60);
 
     }
 
