@@ -262,7 +262,7 @@ public class MyUserInfoManager {
     }
 
     public int getAge() {
-        if (mUser != null) {
+        if (mUser != null && !TextUtils.isEmpty(mUser.getBirthday())) {
             String[] array = mUser.getBirthday().split("-");
             if (!TextUtils.isEmpty(array[0])) {
                 int year = Integer.valueOf(array[0]);
