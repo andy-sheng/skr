@@ -152,7 +152,7 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_top"
-        android:layout_width="@dimen/view_218_dp"
+        android:layout_width="@dimen/view_318_dp"
         android:layout_height="@dimen/view_128_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_36_dp"
