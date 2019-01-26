@@ -384,6 +384,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
         initAvatar(false);
 
+        U.getSoundUtils().release(TAG);
+        
         if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_RANK_ROOM)
                     .withSerializable("prepare_data", mPrepareData)
@@ -435,6 +437,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                     .setHasAnimation(true)
                     .build());
         } else {
+            U.getSoundUtils().release(TAG);
             getActivity().finish();
         }
     }
@@ -442,7 +445,6 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
         if (mTopSvgaView != null) {
             mTopSvgaView.stopAnimation(true);
         }
