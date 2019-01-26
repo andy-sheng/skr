@@ -12,12 +12,15 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
+import com.module.playways.event.FinishPlayWayActivityEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.view.RecordItemView;
 import com.module.playways.rank.room.view.RecordTitleView;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,6 +62,7 @@ public class RankRecordFragment extends BaseFragment {
         RxView.clicks(mTvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    EventBus.getDefault().post(new FinishPlayWayActivityEvent());
                     getActivity().finish();
                 });
 

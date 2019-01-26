@@ -13,10 +13,15 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
+import com.module.playways.event.FinishPlayWayActivityEvent;
 import com.module.playways.grab.songselect.SpecialSelectFragment;
+import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.rank.R;
 import com.module.playways.rank.room.fragment.PkRoomFragment;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 @Route(path = RouterConstants.ACTIVITY_PLAY_WAYS)
 public class PlayWaysActivity extends BaseActivity {
@@ -60,9 +65,14 @@ public class PlayWaysActivity extends BaseActivity {
         EngineManager.getInstance().destroy("prepare");
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FinishPlayWayActivityEvent event) {
+        finish();
+    }
+
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override
