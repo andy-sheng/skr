@@ -59,6 +59,7 @@ public class ShareWebActivity extends BaseActivity {
     String mTitle;
     String mDes;
     String mIcon;
+    String mUrl;
 
     private WebChromeClient mWebChromeClient = new WebChromeClient() {
         @Override
@@ -110,6 +111,10 @@ public class ShareWebActivity extends BaseActivity {
         mContentContainer = (RelativeLayout) this.findViewById(R.id.content_container);
         buildAgentWeb();
 
+        if(getIntent() != null){
+            mUrl = getIntent().getStringExtra("url");
+        }
+
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
@@ -117,7 +122,7 @@ public class ShareWebActivity extends BaseActivity {
                     finish();
                 } else if (action == ACTION_RIGHT_BUTTON) {
                     SharePanel sharePanel = new SharePanel(ShareWebActivity.this);
-                    sharePanel.setShareContent(mTitle, mDes, "http://test.static.inframe.mobi/app/");
+                    sharePanel.setShareContent(mTitle, mDes, mUrl);
                     sharePanel.show();
                 }
             }
