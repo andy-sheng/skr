@@ -90,6 +90,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     RobotScoreHelper mRobotScoreHelper;
 
+    boolean mDestroyed = false;
+
     ExoPlayer mExoPlayer;
 
     Handler mUiHanlder = new Handler() {
@@ -167,6 +169,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 播放导唱
      */
     public void playGuide() {
+        if(mDestroyed){
+            return;
+        }
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (mExoPlayer == null) {
@@ -437,9 +442,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Override
     public void destroy() {
+        MyLog.d(TAG,"destroy begin" );
         super.destroy();
+        mDestroyed = true;
         exitGame();
-
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -449,9 +455,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHanlder.removeCallbacksAndMessages(null);
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (mExoPlayer != null) {
-            mExoPlayer.pause();
             mExoPlayer.release();
+        }else{
+            MyLog.d(TAG,"mExoPlayer == null " );
         }
+        MyLog.d(TAG,"destroy over" );
     }
 
     /**
