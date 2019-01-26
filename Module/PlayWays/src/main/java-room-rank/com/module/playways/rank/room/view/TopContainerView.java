@@ -185,12 +185,13 @@ public class TopContainerView extends RelativeLayout {
                     @Override
                     public void onComplete() {
                         super.onComplete();
-                        reset();
+                        reset("onComplete");
                     }
                 });
     }
 
-    void reset() {
+    void reset(String from) {
+        MyLog.d(TAG, "reset" + " from=" + from);
         mTvPassedTime.setText("");
         mScoreProgressBar.setProgress1(0);
         mScoreProgressBar.setProgress2(0);
@@ -198,7 +199,7 @@ public class TopContainerView extends RelativeLayout {
     }
 
     public void cancelShowLastedTimeTask() {
-        reset();
+        reset("cancelShowLastedTimeTask");
         if (mShowLastedTimeTask != null) {
             mShowLastedTimeTask.dispose();
             mShowLastedTimeTask = null;
