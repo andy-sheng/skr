@@ -42,7 +42,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/view_27_dp"
             android:layout_marginTop="@dimen/view_31_dp"
-            android:text="匹配音乐"
+            android:text="匹配背景音乐"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_16_dp"
             android:textStyle="bold" />

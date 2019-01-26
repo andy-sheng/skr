@@ -309,11 +309,11 @@ public class AuditionFragment extends BaseFragment {
                         @Override
                         public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {
                             int score = 0;
-                            if(targetSongInfo!=null){
-                                score = (int) (targetSongInfo.getScore()*100);
-                                U.getToastUtil().showShort("score:"+targetSongInfo.getScore());
+                            if (targetSongInfo != null) {
+                                score = (int) (targetSongInfo.getScore() * 100);
+                                U.getToastUtil().showShort("score:" + targetSongInfo.getScore());
                             }
-                            MyLog.d(TAG,"score="+score);
+                            MyLog.d(TAG, "score=" + score);
 
                         }
                     }).build());
@@ -548,7 +548,7 @@ public class AuditionFragment extends BaseFragment {
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> l = event.getObj();
             for (EngineEvent.UserVolumeInfo userVolumeInfo : l) {
-                MyLog.d(TAG,"onEventMainThread" + " userVolumeInfo=" + userVolumeInfo);
+                MyLog.d(TAG, "onEventMainThread" + " userVolumeInfo=" + userVolumeInfo);
                 if (userVolumeInfo.getUid() == 0 && userVolumeInfo.getVolume() > 0) {
                     //如果自己在唱歌也延迟关闭
                     resendAutoLeaveChannelMsg();
@@ -573,7 +573,7 @@ public class AuditionFragment extends BaseFragment {
     protected boolean onBackPressed() {
         if (mQuitTipsDialog == null) {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                    .setMessageTip("是否将这次调音设置应用到所有游戏对局中？")
+                    .setMessageTip("直接返回你的设置变动\n将不回去被保存哦～")
                     .setConfirmTip("保存")
                     .setCancelTip("取消")
                     .setConfirmBtnClickListener(new View.OnClickListener() {
