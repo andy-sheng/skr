@@ -81,17 +81,17 @@ public class ConversationAddMemberFragment extends BaseFragment implements OnIte
         this.mGridList.setOnItemClickListener(this);
         this.mGridList.setOnTouchListener(new OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
-                if (1 == event.getAction() && io.rong.imkit.fragment.ConversationAddMemberFragment.this.mAdapter.isDeleteState()) {
+                if (1 == event.getAction() && ConversationAddMemberFragment.this.mAdapter.isDeleteState()) {
                     UserInfo addBtn = new UserInfo("RongAddBtn", (String) null, (Uri) null);
-                    io.rong.imkit.fragment.ConversationAddMemberFragment.this.mAdapter.add(addBtn);
+                    ConversationAddMemberFragment.this.mAdapter.add(addBtn);
                     String curUserId = RongIM.getInstance().getCurrentUserId();
-                    if (io.rong.imkit.fragment.ConversationAddMemberFragment.this.mAdapter.getCreatorId() != null && io.rong.imkit.fragment.ConversationAddMemberFragment.this.mConversationType.equals(ConversationType.DISCUSSION) && curUserId.equals(io.rong.imkit.fragment.ConversationAddMemberFragment.this.mAdapter.getCreatorId())) {
+                    if (ConversationAddMemberFragment.this.mAdapter.getCreatorId() != null && ConversationAddMemberFragment.this.mConversationType.equals(ConversationType.DISCUSSION) && curUserId.equals(ConversationAddMemberFragment.this.mAdapter.getCreatorId())) {
                         UserInfo deleteBtn = new UserInfo("RongDelBtn", (String) null, (Uri) null);
-                        io.rong.imkit.fragment.ConversationAddMemberFragment.this.mAdapter.add(deleteBtn);
+                        ConversationAddMemberFragment.this.mAdapter.add(deleteBtn);
                     }
 
-                    io.rong.imkit.fragment.ConversationAddMemberFragment.this.mAdapter.setDeleteState(false);
-                    io.rong.imkit.fragment.ConversationAddMemberFragment.this.mAdapter.notifyDataSetChanged();
+                    ConversationAddMemberFragment.this.mAdapter.setDeleteState(false);
+                    ConversationAddMemberFragment.this.mAdapter.notifyDataSetChanged();
                     return true;
                 } else {
                     return false;
@@ -104,16 +104,16 @@ public class ConversationAddMemberFragment extends BaseFragment implements OnIte
         if (this.mConversationType.equals(ConversationType.DISCUSSION)) {
             RongIM.getInstance().getDiscussion(this.mTargetId, new ResultCallback<Discussion>() {
                 public void onSuccess(Discussion discussion) {
-                    io.rong.imkit.fragment.ConversationAddMemberFragment.this.mIdList = discussion.getMemberIdList();
-                    io.rong.imkit.fragment.ConversationAddMemberFragment.this.mAdapter.setCreatorId(discussion.getCreatorId());
+                    ConversationAddMemberFragment.this.mIdList = discussion.getMemberIdList();
+                    ConversationAddMemberFragment.this.mAdapter.setCreatorId(discussion.getCreatorId());
                     Message msg = new Message();
                     msg.what = 1;
-                    msg.obj = io.rong.imkit.fragment.ConversationAddMemberFragment.this.mIdList;
-                    io.rong.imkit.fragment.ConversationAddMemberFragment.this.getHandler().sendMessage(msg);
+                    msg.obj = ConversationAddMemberFragment.this.mIdList;
+                    ConversationAddMemberFragment.this.getHandler().sendMessage(msg);
                 }
 
                 public void onError(ErrorCode errorCode) {
-                    io.rong.imkit.fragment.ConversationAddMemberFragment.this.getHandler().sendEmptyMessage(3);
+                    ConversationAddMemberFragment.this.getHandler().sendEmptyMessage(3);
                 }
             });
         } else if (this.mConversationType.equals(ConversationType.PRIVATE)) {
@@ -142,7 +142,7 @@ public class ConversationAddMemberFragment extends BaseFragment implements OnIte
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        UserInfo userInfo = (UserInfo) this.mAdapter.getItem(position);
+        UserInfo userInfo = this.mAdapter.getItem(position);
         if (userInfo.getUserId().equals("RongDelBtn")) {
             this.mAdapter.setDeleteState(true);
             int count = this.mAdapter.getCount();
@@ -166,11 +166,11 @@ public class ConversationAddMemberFragment extends BaseFragment implements OnIte
                 Message msg = new Message();
                 msg.what = 2;
                 msg.obj = position;
-                io.rong.imkit.fragment.ConversationAddMemberFragment.this.getHandler().sendMessage(msg);
+                ConversationAddMemberFragment.this.getHandler().sendMessage(msg);
             }
 
             public void onError(ErrorCode errorCode) {
-                io.rong.imkit.fragment.ConversationAddMemberFragment.this.getHandler().sendEmptyMessage(3);
+                ConversationAddMemberFragment.this.getHandler().sendEmptyMessage(3);
             }
         });
     }

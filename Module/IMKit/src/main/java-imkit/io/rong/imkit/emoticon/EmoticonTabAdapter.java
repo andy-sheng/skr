@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,11 +50,11 @@ public class EmoticonTabAdapter {
     private View extraTabBarItem;
     private OnClickListener tabClickListener = new OnClickListener() {
         public void onClick(View v) {
-            int count = io.rong.imkit.emoticon.EmoticonTabAdapter.this.mScrollTab.getChildCount();
+            int count = EmoticonTabAdapter.this.mScrollTab.getChildCount();
             if (count > 0) {
                 for (int i = 0; i < count; ++i) {
-                    if (v.equals(io.rong.imkit.emoticon.EmoticonTabAdapter.this.mScrollTab.getChildAt(i))) {
-                        io.rong.imkit.emoticon.EmoticonTabAdapter.this.mViewPager.setCurrentItem(i);
+                    if (v.equals(EmoticonTabAdapter.this.mScrollTab.getChildAt(i))) {
+                        EmoticonTabAdapter.this.mViewPager.setCurrentItem(i);
                         break;
                     }
                 }
@@ -97,7 +98,9 @@ public class EmoticonTabAdapter {
     }
 
     public void initTabs(List<IEmoticonTab> tabs, String tag) {
-        this.mEmotionTabs.put(tag, tabs);
+        if (!TextUtils.isEmpty(tag)) {
+            this.mEmotionTabs.put(tag, tabs);
+        }
     }
 
     public void refreshTabIcon(IEmoticonTab tab, Drawable drawable) {
@@ -111,7 +114,7 @@ public class EmoticonTabAdapter {
     }
 
     public boolean addTab(int index, IEmoticonTab tab, String tag) {
-        List<IEmoticonTab> tabs = (List) this.mEmotionTabs.get(tag);
+        List<IEmoticonTab> tabs = this.mEmotionTabs.get(tag);
         int idx;
         if (tabs == null) {
             tabs = new ArrayList();
@@ -138,7 +141,7 @@ public class EmoticonTabAdapter {
     }
 
     public void addTab(IEmoticonTab tab, String tag) {
-        List<IEmoticonTab> tabs = (List) this.mEmotionTabs.get(tag);
+        List<IEmoticonTab> tabs = this.mEmotionTabs.get(tag);
         if (tabs == null) {
             tabs = new ArrayList();
             tabs.add(tab);
@@ -158,7 +161,7 @@ public class EmoticonTabAdapter {
     }
 
     public List<IEmoticonTab> getTagTabs(String tag) {
-        return (List) this.mEmotionTabs.get(tag);
+        return this.mEmotionTabs.get(tag);
     }
 
     public int getTagTabIndex(String tag) {
@@ -188,8 +191,12 @@ public class EmoticonTabAdapter {
         return list;
     }
 
+    public LinkedHashMap<String, List<IEmoticonTab>> getTabList() {
+        return this.mEmotionTabs;
+    }
+
     private IEmoticonTab getTab(int index) {
-        return (IEmoticonTab) this.getAllTabs().get(index);
+        return this.getAllTabs().get(index);
     }
 
     public boolean removeTab(IEmoticonTab tab, String tag) {
@@ -197,7 +204,7 @@ public class EmoticonTabAdapter {
             return false;
         } else {
             boolean result = false;
-            List<IEmoticonTab> list = (List) this.mEmotionTabs.get(tag);
+            List<IEmoticonTab> list = this.mEmotionTabs.get(tag);
             int index = this.getIndex(tab);
             if (list.remove(tab)) {
                 this.mScrollTab.removeViewAt(index);
@@ -254,7 +261,7 @@ public class EmoticonTabAdapter {
     }
 
     private View initView(Context context, ViewGroup parent) {
-        View container = LayoutInflater.from(context).inflate(R.layout.rc_ext_emoticon_tab_container, (ViewGroup) null);
+        View container = LayoutInflater.from(context).inflate(R.layout.rc_ext_emoticon_tab_container, null);
         Integer height = (int) context.getResources().getDimension(R.dimen.rc_extension_board_height);
         container.setLayoutParams(new LayoutParams(-1, height));
         this.mViewPager = (ViewPager) container.findViewById(R.id.rc_view_pager);
@@ -263,8 +270,8 @@ public class EmoticonTabAdapter {
         this.mTabAdd.setVisibility(this.mAddEnabled ? View.VISIBLE : View.GONE);
         this.mTabAdd.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                if (io.rong.imkit.emoticon.EmoticonTabAdapter.this.mEmoticonClickListener != null) {
-                    io.rong.imkit.emoticon.EmoticonTabAdapter.this.mEmoticonClickListener.onAddClick(v);
+                if (EmoticonTabAdapter.this.mEmoticonClickListener != null) {
+                    EmoticonTabAdapter.this.mEmoticonClickListener.onAddClick(v);
                 }
 
             }
@@ -273,8 +280,8 @@ public class EmoticonTabAdapter {
         this.mTabSetting.setVisibility(this.mSettingEnabled ? View.VISIBLE : View.GONE);
         this.mTabSetting.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                if (io.rong.imkit.emoticon.EmoticonTabAdapter.this.mEmoticonSettingClickListener != null) {
-                    io.rong.imkit.emoticon.EmoticonTabAdapter.this.mEmoticonSettingClickListener.onSettingClick(v);
+                if (EmoticonTabAdapter.this.mEmoticonSettingClickListener != null) {
+                    EmoticonTabAdapter.this.mEmoticonSettingClickListener.onSettingClick(v);
                 }
 
             }
@@ -297,7 +304,7 @@ public class EmoticonTabAdapter {
             this.mScrollTab.addView(view);
         }
 
-        this.mAdapter = new io.rong.imkit.emoticon.EmoticonTabAdapter.TabPagerAdapter();
+        this.mAdapter = new EmoticonTabAdapter.TabPagerAdapter();
         this.mViewPager.setAdapter(this.mAdapter);
         this.mViewPager.setOffscreenPageLimit(6);
         this.mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
@@ -305,8 +312,8 @@ public class EmoticonTabAdapter {
             }
 
             public void onPageSelected(int position) {
-                io.rong.imkit.emoticon.EmoticonTabAdapter.this.onPageChanged(io.rong.imkit.emoticon.EmoticonTabAdapter.this.selected, position);
-                io.rong.imkit.emoticon.EmoticonTabAdapter.this.selected = position;
+                EmoticonTabAdapter.this.onPageChanged(EmoticonTabAdapter.this.selected, position);
+                EmoticonTabAdapter.this.selected = position;
             }
 
             public void onPageScrollStateChanged(int state) {
@@ -331,7 +338,7 @@ public class EmoticonTabAdapter {
     }
 
     private View getTabIcon(Context context, Drawable drawable) {
-        View item = LayoutInflater.from(context).inflate(R.layout.rc_ext_emoticon_tab_item, (ViewGroup) null);
+        View item = LayoutInflater.from(context).inflate(R.layout.rc_ext_emoticon_tab_item, null);
         item.setLayoutParams(new LayoutParams(RongUtils.dip2px(60.0F), RongUtils.dip2px(36.0F)));
         ImageView iv = (ImageView) item.findViewById(R.id.rc_emoticon_tab_iv);
         iv.setImageDrawable(drawable);
@@ -385,11 +392,11 @@ public class EmoticonTabAdapter {
         }
 
         public int getCount() {
-            return io.rong.imkit.emoticon.EmoticonTabAdapter.this.getAllTabs().size();
+            return EmoticonTabAdapter.this.getAllTabs().size();
         }
 
         public View instantiateItem(ViewGroup container, int position) {
-            IEmoticonTab tab = io.rong.imkit.emoticon.EmoticonTabAdapter.this.getTab(position);
+            IEmoticonTab tab = EmoticonTabAdapter.this.getTab(position);
             View view = tab.obtainTabPager(container.getContext());
             if (view.getParent() == null) {
                 container.addView(view);

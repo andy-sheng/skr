@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -56,7 +57,6 @@ import java.util.List;
 import java.util.Locale;
 
 import io.rong.common.RLog;
-import io.rong.common.SystemUtils;
 import io.rong.imkit.DeleteClickActions;
 import io.rong.imkit.IExtensionClickListener;
 import io.rong.imkit.IPublicServiceMenuClickListener;
@@ -101,6 +101,7 @@ import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.utilities.PermissionCheckUtil;
 import io.rong.imkit.utilities.PromptPopupDialog;
 import io.rong.imkit.utilities.PromptPopupDialog.OnPromptButtonClickedListener;
+import io.rong.imkit.utils.SystemUtils;
 import io.rong.imkit.widget.AutoRefreshListView;
 import io.rong.imkit.widget.AutoRefreshListView.Mode;
 import io.rong.imkit.widget.AutoRefreshListView.OnRefreshListener;
@@ -129,6 +130,7 @@ import io.rong.imlib.RongIMClient.ErrorCode;
 import io.rong.imlib.RongIMClient.OperationCallback;
 import io.rong.imlib.RongIMClient.ResultCallback;
 import io.rong.imlib.RongIMClient.SendImageMessageCallback;
+import io.rong.imlib.common.DeviceUtils;
 import io.rong.imlib.model.CSCustomServiceInfo;
 import io.rong.imlib.model.CSGroupItem;
 import io.rong.imlib.model.Conversation;
@@ -179,7 +181,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     public static final int SCROLL_MODE_BOTTOM = 3;
     private static final int DEFAULT_HISTORY_MESSAGE_COUNT = 10;
     private static final int DEFAULT_REMOTE_MESSAGE_COUNT = 10;
-    private static final int TIP_DEFAULT_MESSAGE_COUNT = 2;
+    private static final int TIP_DEFAULT_MESSAGE_COUNT = 1;
     private static final int SHOW_UNREAD_MESSAGE_COUNT = 10;
     private static final String UN_READ_COUNT = "unReadCount";
     private static final String LIST_STATE = "listState";
@@ -215,23 +217,44 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     private final int CS_HUMAN_MODE_CUSTOMER_EXPIRE = 0;
     private final int CS_HUMAN_MODE_SEAT_EXPIRE = 1;
     private Message firstUnreadMessage;
+    private int lastItemBottomOffset = 0;
+    private int lastItemPosition = -1;
+    private int lastItemHeight = 0;
+    private int lastListHeight = 0;
+    private boolean isShowTipMessageCountInBackground = true;
+
     private OnScrollListener mOnScrollListener = new OnScrollListener() {
         public void onScrollStateChanged(AbsListView view, int scrollState) {
         }
 
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            if (io.rong.imkit.fragment.ConversationFragment.this.mUnreadMsgLayout.getVisibility() == View.VISIBLE && io.rong.imkit.fragment.ConversationFragment.this.firstUnreadMessage != null) {
-                int firstPosition = io.rong.imkit.fragment.ConversationFragment.this.mListAdapter.findPosition((long) io.rong.imkit.fragment.ConversationFragment.this.firstUnreadMessage.getMessageId());
+            if (ConversationFragment.this.mUnreadMsgLayout.getVisibility() == View.VISIBLE && ConversationFragment.this.firstUnreadMessage != null) {
+                int firstPosition = ConversationFragment.this.mListAdapter.findPosition((long) ConversationFragment.this.firstUnreadMessage.getMessageId());
                 if (firstVisibleItem <= firstPosition) {
                     TranslateAnimation animation = new TranslateAnimation(0.0F, 700.0F, 0.0F, 0.0F);
                     animation.setDuration(700L);
                     animation.setFillAfter(true);
-                    io.rong.imkit.fragment.ConversationFragment.this.mUnreadMsgLayout.startAnimation(animation);
-                    io.rong.imkit.fragment.ConversationFragment.this.mUnreadMsgLayout.setClickable(false);
-                    io.rong.imkit.fragment.ConversationFragment.this.mList.removeCurrentOnScrollListener();
+                    ConversationFragment.this.mUnreadMsgLayout.startAnimation(animation);
+                    ConversationFragment.this.mUnreadMsgLayout.setClickable(false);
+                    ConversationFragment.this.mList.removeCurrentOnScrollListener();
                 }
             }
 
+        }
+    };
+    private OnGlobalLayoutListener listViewLayoutListener = new OnGlobalLayoutListener() {
+        public void onGlobalLayout() {
+            if (ConversationFragment.this.mList != null) {
+                int height = ConversationFragment.this.mList.getHeight();
+                if (ConversationFragment.this.lastListHeight != height) {
+                    if (ConversationFragment.this.lastItemPosition != -1) {
+                        ConversationFragment.this.mList.setSelectionFromTop(ConversationFragment.this.lastItemPosition, height - ConversationFragment.this.lastItemHeight + ConversationFragment.this.lastItemBottomOffset);
+                    }
+
+                    ConversationFragment.this.lastListHeight = height;
+                }
+
+            }
         }
     };
     private boolean robotType = true;
@@ -241,17 +264,17 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         public void onSuccess(CustomServiceConfig config) {
             io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig = config;
             if (config.isBlack) {
-                io.rong.imkit.fragment.ConversationFragment.this.onCustomServiceWarning(io.rong.imkit.fragment.ConversationFragment.this.getString(R.string.rc_blacklist_prompt), false, io.rong.imkit.fragment.ConversationFragment.this.robotType);
+                ConversationFragment.this.onCustomServiceWarning(io.rong.imkit.fragment.ConversationFragment.this.getString(R.string.rc_blacklist_prompt), false, ConversationFragment.this.robotType);
             }
 
             if (config.robotSessionNoEva) {
-                io.rong.imkit.fragment.ConversationFragment.this.csEvaluate = false;
-                io.rong.imkit.fragment.ConversationFragment.this.mListAdapter.setEvaluateForRobot(true);
+                ConversationFragment.this.csEvaluate = false;
+                ConversationFragment.this.mListAdapter.setEvaluateForRobot(true);
             }
 
-            if (io.rong.imkit.fragment.ConversationFragment.this.mRongExtension != null) {
-                if (config.evaEntryPoint.equals(CSEvaEntryPoint.EVA_EXTENSION) && io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig != null) {
-                    io.rong.imkit.fragment.ConversationFragment.this.mRongExtension.addPlugin(new EvaluatePlugin(io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig.isReportResolveStatus));
+            if (ConversationFragment.this.mRongExtension != null) {
+                if (config.evaEntryPoint.equals(CSEvaEntryPoint.EVA_EXTENSION) && ConversationFragment.this.mCustomServiceConfig != null) {
+                    ConversationFragment.this.mRongExtension.addPlugin(new EvaluatePlugin(ConversationFragment.this.mCustomServiceConfig.isReportResolveStatus));
                 }
 
                 if (config.isDisableLocation) {
@@ -272,50 +295,50 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
             if (config.quitSuspendType.equals(CSQuitSuspendType.NONE)) {
                 try {
-                    io.rong.imkit.fragment.ConversationFragment.this.mCSNeedToQuit = RongContext.getInstance().getResources().getBoolean(R.bool.rc_stop_custom_service_when_quit);
+                    ConversationFragment.this.mCSNeedToQuit = RongContext.getInstance().getResources().getBoolean(R.bool.rc_stop_custom_service_when_quit);
                 } catch (NotFoundException var5) {
                     var5.printStackTrace();
                 }
             } else {
-                io.rong.imkit.fragment.ConversationFragment.this.mCSNeedToQuit = config.quitSuspendType.equals(CSQuitSuspendType.SUSPEND);
+                ConversationFragment.this.mCSNeedToQuit = config.quitSuspendType.equals(CSQuitSuspendType.SUSPEND);
             }
 
-            for (int i = 0; i < io.rong.imkit.fragment.ConversationFragment.this.mListAdapter.getCount(); ++i) {
-                UIMessage uiMessage = (UIMessage) io.rong.imkit.fragment.ConversationFragment.this.mListAdapter.getItem(i);
+            for (int i = 0; i < ConversationFragment.this.mListAdapter.getCount(); ++i) {
+                UIMessage uiMessage = (UIMessage) ConversationFragment.this.mListAdapter.getItem(i);
                 if (uiMessage.getContent() instanceof CSPullLeaveMessage) {
                     uiMessage.setCsConfig(config);
                 }
             }
 
-            io.rong.imkit.fragment.ConversationFragment.this.mListAdapter.notifyDataSetChanged();
+            ConversationFragment.this.mListAdapter.notifyDataSetChanged();
             if (!TextUtils.isEmpty(config.announceMsg)) {
-                io.rong.imkit.fragment.ConversationFragment.this.onShowAnnounceView(config.announceMsg, config.announceClickUrl);
+                ConversationFragment.this.onShowAnnounceView(config.announceMsg, config.announceClickUrl);
             }
 
         }
 
         public void onError(int code, String msg) {
-            io.rong.imkit.fragment.ConversationFragment.this.onCustomServiceWarning(msg, false, io.rong.imkit.fragment.ConversationFragment.this.robotType);
+            ConversationFragment.this.onCustomServiceWarning(msg, false, ConversationFragment.this.robotType);
         }
 
         public void onModeChanged(CustomServiceMode mode) {
-            if (io.rong.imkit.fragment.ConversationFragment.this.mRongExtension != null && io.rong.imkit.fragment.ConversationFragment.this.isActivityExist()) {
-                io.rong.imkit.fragment.ConversationFragment.this.mRongExtension.setExtensionBarMode(mode);
+            if (ConversationFragment.this.mRongExtension != null && ConversationFragment.this.isActivityExist()) {
+                ConversationFragment.this.mRongExtension.setExtensionBarMode(mode);
                 if (!mode.equals(CustomServiceMode.CUSTOM_SERVICE_MODE_HUMAN) && !mode.equals(CustomServiceMode.CUSTOM_SERVICE_MODE_HUMAN_FIRST)) {
                     if (mode.equals(CustomServiceMode.CUSTOM_SERVICE_MODE_NO_SERVICE)) {
-                        io.rong.imkit.fragment.ConversationFragment.this.csEvaluate = false;
+                        ConversationFragment.this.csEvaluate = false;
                     }
                 } else {
-                    if (io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig != null && io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig.userTipTime > 0 && !TextUtils.isEmpty(io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig.userTipWord)) {
-                        io.rong.imkit.fragment.ConversationFragment.this.startTimer(0, io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig.userTipTime * 60 * 1000);
+                    if (ConversationFragment.this.mCustomServiceConfig != null && ConversationFragment.this.mCustomServiceConfig.userTipTime > 0 && !TextUtils.isEmpty(ConversationFragment.this.mCustomServiceConfig.userTipWord)) {
+                        ConversationFragment.this.startTimer(0, ConversationFragment.this.mCustomServiceConfig.userTipTime * 60 * 1000);
                     }
 
-                    if (io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig != null && io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig.adminTipTime > 0 && !TextUtils.isEmpty(io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig.adminTipWord)) {
-                        io.rong.imkit.fragment.ConversationFragment.this.startTimer(1, io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig.adminTipTime * 60 * 1000);
+                    if (ConversationFragment.this.mCustomServiceConfig != null && ConversationFragment.this.mCustomServiceConfig.adminTipTime > 0 && !TextUtils.isEmpty(ConversationFragment.this.mCustomServiceConfig.adminTipWord)) {
+                        ConversationFragment.this.startTimer(1, ConversationFragment.this.mCustomServiceConfig.adminTipTime * 60 * 1000);
                     }
 
-                    io.rong.imkit.fragment.ConversationFragment.this.robotType = false;
-                    io.rong.imkit.fragment.ConversationFragment.this.csEvaluate = true;
+                    ConversationFragment.this.robotType = false;
+                    ConversationFragment.this.csEvaluate = true;
                 }
 
             }
@@ -323,25 +346,25 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
         public void onQuit(String msg) {
             RLog.i("ConversationFragment", "CustomService onQuit.");
-            if (io.rong.imkit.fragment.ConversationFragment.this.getActivity() != null) {
-                if (io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig != null && io.rong.imkit.fragment.ConversationFragment.this.mCustomServiceConfig.evaEntryPoint.equals(CSEvaEntryPoint.EVA_END) && !io.rong.imkit.fragment.ConversationFragment.this.robotType) {
-                    io.rong.imkit.fragment.ConversationFragment.this.csQuitEvaluate(msg);
+            if (ConversationFragment.this.getActivity() != null) {
+                if (ConversationFragment.this.mCustomServiceConfig != null && ConversationFragment.this.mCustomServiceConfig.evaEntryPoint.equals(CSEvaEntryPoint.EVA_END) && !ConversationFragment.this.robotType) {
+                    ConversationFragment.this.csQuitEvaluate(msg);
                 } else {
-                    io.rong.imkit.fragment.ConversationFragment.this.csQuit(msg);
+                    ConversationFragment.this.csQuit(msg);
                 }
 
             }
         }
 
         public void onPullEvaluation(String dialogId) {
-            if (io.rong.imkit.fragment.ConversationFragment.this.mEvaluateDialg == null) {
-                io.rong.imkit.fragment.ConversationFragment.this.onCustomServiceEvaluation(true, dialogId, io.rong.imkit.fragment.ConversationFragment.this.robotType, io.rong.imkit.fragment.ConversationFragment.this.csEvaluate);
+            if (ConversationFragment.this.mEvaluateDialg == null) {
+                ConversationFragment.this.onCustomServiceEvaluation(true, dialogId, ConversationFragment.this.robotType, ConversationFragment.this.csEvaluate);
             }
 
         }
 
         public void onSelectGroup(List<CSGroupItem> groups) {
-            io.rong.imkit.fragment.ConversationFragment.this.onSelectCustomerServiceGroup(groups);
+            ConversationFragment.this.onSelectCustomerServiceGroup(groups);
         }
     };
     private int conversationUnreadCount;
@@ -401,19 +424,19 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         this.mList.setAdapter(this.mListAdapter);
         this.mList.setOnRefreshListener(new OnRefreshListener() {
             public void onRefreshFromStart() {
-                if (io.rong.imkit.fragment.ConversationFragment.this.mHasMoreLocalMessagesUp) {
-                    io.rong.imkit.fragment.ConversationFragment.this.getHistoryMessage(io.rong.imkit.fragment.ConversationFragment.this.mConversationType, io.rong.imkit.fragment.ConversationFragment.this.mTargetId, 10, Mode.START, 1, -1);
+                if (ConversationFragment.this.mHasMoreLocalMessagesUp) {
+                    ConversationFragment.this.getHistoryMessage(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, 10, Mode.START, 1, -1);
                 } else {
-                    io.rong.imkit.fragment.ConversationFragment.this.getRemoteHistoryMessages(io.rong.imkit.fragment.ConversationFragment.this.mConversationType, io.rong.imkit.fragment.ConversationFragment.this.mTargetId, 10);
+                    ConversationFragment.this.getRemoteHistoryMessages(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, 10);
                 }
 
             }
 
             public void onRefreshFromEnd() {
-                if (io.rong.imkit.fragment.ConversationFragment.this.mHasMoreLocalMessagesDown && io.rong.imkit.fragment.ConversationFragment.this.indexMessageTime > 0L) {
-                    io.rong.imkit.fragment.ConversationFragment.this.getHistoryMessage(io.rong.imkit.fragment.ConversationFragment.this.mConversationType, io.rong.imkit.fragment.ConversationFragment.this.mTargetId, 10, Mode.END, 1, -1);
+                if (ConversationFragment.this.mHasMoreLocalMessagesDown && ConversationFragment.this.indexMessageTime > 0L) {
+                    ConversationFragment.this.getHistoryMessage(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, 10, Mode.END, 1, -1);
                 } else {
-                    io.rong.imkit.fragment.ConversationFragment.this.mList.onRefreshComplete(0, 0, false);
+                    ConversationFragment.this.mList.onRefreshComplete(0, 0, false);
                 }
 
             }
@@ -421,16 +444,16 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         this.mList.setOnTouchListener(new OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == 2 && io.rong.imkit.fragment.ConversationFragment.this.mList.getCount() - io.rong.imkit.fragment.ConversationFragment.this.mList.getHeaderViewsCount() - io.rong.imkit.fragment.ConversationFragment.this.mList.getFooterViewsCount() == 0) {
-                    if (io.rong.imkit.fragment.ConversationFragment.this.mHasMoreLocalMessagesUp) {
-                        io.rong.imkit.fragment.ConversationFragment.this.getHistoryMessage(io.rong.imkit.fragment.ConversationFragment.this.mConversationType, io.rong.imkit.fragment.ConversationFragment.this.mTargetId, 10, Mode.START, 1, -1);
+                    if (ConversationFragment.this.mHasMoreLocalMessagesUp) {
+                        ConversationFragment.this.getHistoryMessage(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, 10, Mode.START, 1, -1);
                     } else if (io.rong.imkit.fragment.ConversationFragment.this.mList.getRefreshState() != State.REFRESHING) {
-                        io.rong.imkit.fragment.ConversationFragment.this.getRemoteHistoryMessages(io.rong.imkit.fragment.ConversationFragment.this.mConversationType, io.rong.imkit.fragment.ConversationFragment.this.mTargetId, 10);
+                        ConversationFragment.this.getRemoteHistoryMessages(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, 10);
                     }
 
                     return true;
                 } else {
-                    if (event.getAction() == 1 && io.rong.imkit.fragment.ConversationFragment.this.mRongExtension != null && io.rong.imkit.fragment.ConversationFragment.this.mRongExtension.isExtensionExpanded()) {
-                        io.rong.imkit.fragment.ConversationFragment.this.mRongExtension.collapseExtension();
+                    if (event.getAction() == 1 && ConversationFragment.this.mRongExtension != null && ConversationFragment.this.mRongExtension.isExtensionExpanded()) {
+                        ConversationFragment.this.mRongExtension.collapseExtension();
                     }
 
                     return false;
@@ -442,10 +465,10 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             this.mNewMessageBtn = (ImageButton) this.findViewById(view, R.id.rc_new_message_count);
             this.mNewMessageBtn.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    io.rong.imkit.fragment.ConversationFragment.this.mList.setSelection(io.rong.imkit.fragment.ConversationFragment.this.mListAdapter.getCount());
-                    io.rong.imkit.fragment.ConversationFragment.this.mNewMessageBtn.setVisibility(View.GONE);
-                    io.rong.imkit.fragment.ConversationFragment.this.mNewMessageTextView.setVisibility(View.GONE);
-                    io.rong.imkit.fragment.ConversationFragment.this.mNewMessageCount = 0;
+                    ConversationFragment.this.mList.setSelection(ConversationFragment.this.mListAdapter.getCount());
+                    ConversationFragment.this.mNewMessageBtn.setVisibility(View.GONE);
+                    ConversationFragment.this.mNewMessageTextView.setVisibility(View.GONE);
+                    ConversationFragment.this.mNewMessageCount = 0;
                 }
             });
         }
@@ -461,9 +484,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 RongIMClient.getInstance().deleteMessages(new int[]{data.getMessageId()}, new ResultCallback<Boolean>() {
                     public void onSuccess(Boolean aBoolean) {
                         if (aBoolean) {
-                            io.rong.imkit.fragment.ConversationFragment.this.mListAdapter.remove(position);
+                            ConversationFragment.this.mListAdapter.remove(position);
                             data.setMessageId(0);
-                            io.rong.imkit.fragment.ConversationFragment.this.onResendItemClick(data);
+                            ConversationFragment.this.onResendItemClick(data);
                         }
 
                     }
@@ -475,7 +498,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             }
 
             public void onReadReceiptStateClick(Message message) {
-                io.rong.imkit.fragment.ConversationFragment.this.onReadReceiptStateClick(message);
+                ConversationFragment.this.onReadReceiptStateClick(message);
             }
         });
         this.showNewMessage();
@@ -486,12 +509,13 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 int screenHeight = view.getRootView().getHeight();
                 int keypadHeight = screenHeight - r.bottom;
                 if ((double) keypadHeight > (double) screenHeight * 0.15D) {
-                    io.rong.imkit.fragment.ConversationFragment.this.mList.setSelection(io.rong.imkit.fragment.ConversationFragment.this.mListAdapter.getCount());
+                    ConversationFragment.this.mList.setSelection(ConversationFragment.this.mListAdapter.getCount());
                     view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    if (io.rong.imkit.fragment.ConversationFragment.this.mNewMessageCount > 0 && io.rong.imkit.fragment.ConversationFragment.this.mNewMessageBtn != null) {
-                        io.rong.imkit.fragment.ConversationFragment.this.mNewMessageCount = 0;
-                        io.rong.imkit.fragment.ConversationFragment.this.mNewMessageBtn.setVisibility(View.GONE);
-                        io.rong.imkit.fragment.ConversationFragment.this.mNewMessageTextView.setVisibility(View.GONE);
+                    if (ConversationFragment.this.mNewMessageCount > 0 && ConversationFragment.this.mNewMessageBtn != null) {
+                        ConversationFragment.this.mNewMessageCount = 0;
+                        ConversationFragment.this.mList.setSelection(ConversationFragment.this.mListAdapter.getCount());
+                        ConversationFragment.this.mNewMessageBtn.setVisibility(View.GONE);
+                        ConversationFragment.this.mNewMessageTextView.setVisibility(View.GONE);
                     }
                 }
 
@@ -505,7 +529,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         if (this.showMoreClickItem()) {
             this.clickAction = (new Builder()).title(this.getResources().getString(R.string.rc_dialog_item_message_more)).actionListener(new MessageItemLongClickListener() {
                 public boolean onMessageItemLongClick(Context context, UIMessage message) {
-                    io.rong.imkit.fragment.ConversationFragment.this.setMoreActionState(message);
+                    ConversationFragment.this.setMoreActionState(message);
                     return true;
                 }
             }).build();
@@ -523,6 +547,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             int last = this.mList.getLastVisiblePosition();
             if (this.mNewMessageBtn != null && last == this.mList.getCount() - 1) {
                 this.mNewMessageCount = 0;
+                this.mList.setSelection(this.mListAdapter.getCount());
                 this.mNewMessageBtn.setVisibility(View.GONE);
                 this.mNewMessageTextView.setVisibility(View.GONE);
             }
@@ -531,6 +556,17 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     }
 
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (this.mList != null) {
+            if (this.mList.getHeight() == this.lastListHeight) {
+                int childCount = this.mList.getChildCount();
+                if (childCount != 0) {
+                    View lastView = this.mList.getChildAt(childCount - 1);
+                    this.lastItemBottomOffset = lastView.getBottom() - this.lastListHeight;
+                    this.lastItemHeight = lastView.getHeight();
+                    this.lastItemPosition = firstVisibleItem + visibleItemCount - 1;
+                }
+            }
+        }
     }
 
     public void onSaveInstanceState(Bundle outState) {
@@ -544,6 +580,11 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         if (!this.getActivity().isFinishing() && this.mRongExtension != null) {
             RLog.d("ConversationFragment", "onResume when back from other activity.");
             this.mRongExtension.resetEditTextLayoutDrawnStatus();
+            SharedPreferences sp = this.getActivity().getSharedPreferences("RongKitConfig", 0);
+            long sendReadReceiptTime = sp.getLong(this.getSavedReadReceiptTimeName(), 0L);
+            if (sendReadReceiptTime > 0L) {
+                RongIMClient.getInstance().sendReadReceiptMessage(this.mConversationType, this.mTargetId, sendReadReceiptTime, (ISendMessageCallback) null);
+            }
         }
 
         RongPushClient.clearAllNotifications(this.getActivity());
@@ -558,8 +599,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     }
 
-    public void setMoreActionStateListener(OnMoreActionStateListener moreActionStateListener) {
-        this.moreActionStateListener = moreActionStateListener;
+    private String getSavedReadReceiptTimeName() {
+        String savedId = DeviceUtils.ShortMD5(new String[]{RongIM.getInstance().getCurrentUserId(), this.mTargetId, this.mConversationType.getName()});
+        return "ReadReceipt" + savedId + "Time";
     }
 
     public void setMoreActionState(UIMessage message) {
@@ -613,6 +655,10 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             this.mListAdapter.setMaxMessageSelectedCount(maxMessageSelectedCount);
         }
 
+    }
+
+    public void setMoreActionStateListener(OnMoreActionStateListener moreActionStateListener) {
+        this.moreActionStateListener = moreActionStateListener;
     }
 
     protected void messageSelectedCountDidExceed() {
@@ -862,7 +908,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     protected void updatePublicServiceMenu(PublicServiceProfile publicServiceProfile) {
         List<InputMenu> inputMenuList = new ArrayList();
         PublicServiceMenu menu = publicServiceProfile.getMenu();
-        ArrayList<PublicServiceMenuItem> items = menu != null ? menu.getMenuItems() : null;
+        List<PublicServiceMenuItem> items = menu != null ? menu.getMenuItems() : null;
         if (items != null && this.mRongExtension != null) {
             this.mPublicServiceProfile = publicServiceProfile;
             Iterator var5 = items.iterator();

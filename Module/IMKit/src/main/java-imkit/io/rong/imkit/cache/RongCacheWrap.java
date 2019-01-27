@@ -6,7 +6,6 @@
 package io.rong.imkit.cache;
 
 import io.rong.imkit.RongContext;
-import io.rong.imkit.cache.RongCache;
 
 public abstract class RongCacheWrap<K, V> extends RongCache<K, V> {
     RongContext mContext;
@@ -43,7 +42,7 @@ public abstract class RongCacheWrap<K, V> extends RongCache<K, V> {
     public void executeCacheProvider(final K key) {
         this.mContext.executorBackground(new Runnable() {
             public void run() {
-                io.rong.imkit.cache.RongCacheWrap.this.obtainValue(key);
+                RongCacheWrap.this.obtainValue(key);
             }
         });
     }

@@ -8,7 +8,9 @@ package io.rong.imkit.activity;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,7 +81,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
     private LinearLayout mDownloadProgressView;
     protected TextView mDownloadProgressTextView;
     protected View mCancel;
-    protected io.rong.imkit.activity.FilePreviewActivity.FileDownloadInfo mFileDownloadInfo;
+    protected FilePreviewActivity.FileDownloadInfo mFileDownloadInfo;
     protected FileMessage mFileMessage;
     protected Message mMessage;
     private int mProgress;
@@ -87,13 +89,13 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
     private long mFileSize;
     private List<Toast> mToasts;
     private FrameLayout contentContainer;
-    private io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus supportResumeTransfer;
+    private FilePreviewActivity.SupportResumeStatus supportResumeTransfer;
     private FileInfo info;
     private String pausedPath;
     private long downloadedFileLength;
 
     public FilePreviewActivity() {
-        this.supportResumeTransfer = io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus.NOT_SET;
+        this.supportResumeTransfer = FilePreviewActivity.SupportResumeStatus.NOT_SET;
         this.info = null;
     }
 
@@ -124,19 +126,19 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
             this.pausedPath = FileUtils.getTempFilePath(this, this.mMessage.getMessageId());
             RongIM.getInstance().supportResumeBrokenTransfer(url, new ResultCallback<Boolean>() {
                 public void onSuccess(Boolean aBoolean) {
-                    io.rong.imkit.activity.FilePreviewActivity.this.supportResumeTransfer = aBoolean ? io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus.SUPPORT : io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus.NOT_SUPPORT;
-                    if (io.rong.imkit.activity.FilePreviewActivity.this.supportResumeTransfer == io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus.NOT_SUPPORT) {
-                        io.rong.imkit.activity.FilePreviewActivity.this.setViewStatus();
-                        io.rong.imkit.activity.FilePreviewActivity.this.getFileDownloadInfo();
+                    FilePreviewActivity.this.supportResumeTransfer = aBoolean ? FilePreviewActivity.SupportResumeStatus.SUPPORT : FilePreviewActivity.SupportResumeStatus.NOT_SUPPORT;
+                    if (FilePreviewActivity.this.supportResumeTransfer == FilePreviewActivity.SupportResumeStatus.NOT_SUPPORT) {
+                        FilePreviewActivity.this.setViewStatus();
+                        FilePreviewActivity.this.getFileDownloadInfo();
                     } else {
-                        io.rong.imkit.activity.FilePreviewActivity.this.getFileDownloadInfoInSubThread();
+                        FilePreviewActivity.this.getFileDownloadInfoInSubThread();
                     }
 
                 }
 
                 public void onError(ErrorCode e) {
-                    io.rong.imkit.activity.FilePreviewActivity.this.setViewStatus();
-                    io.rong.imkit.activity.FilePreviewActivity.this.getFileDownloadInfo();
+                    FilePreviewActivity.this.setViewStatus();
+                    FilePreviewActivity.this.getFileDownloadInfo();
                 }
             });
         } else {
@@ -148,7 +150,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
 
     public void setContentView(int resId) {
         this.contentContainer.removeAllViews();
-        View view = LayoutInflater.from(this).inflate(resId, (ViewGroup) null);
+        View view = LayoutInflater.from(this).inflate(resId, null);
         this.contentContainer.addView(view);
     }
 
@@ -159,7 +161,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
         this.mFileNameView.setText(this.mFileName);
         this.mFileSize = this.mFileMessage.getSize();
         this.mFileSizeView.setText(FileTypeUtils.formatFileSize(this.mFileSize));
-        this.mFileDownloadInfo = new io.rong.imkit.activity.FilePreviewActivity.FileDownloadInfo();
+        this.mFileDownloadInfo = new FilePreviewActivity.FileDownloadInfo();
         this.mFileButton.setOnClickListener(this);
         this.mCancel.setOnClickListener(this);
         RongContext.getInstance().getEventBus().register(this);
@@ -167,7 +169,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
 
     private void initView() {
         this.contentContainer = (FrameLayout) this.findViewById(R.id.rc_ac_ll_content_container);
-        View view = LayoutInflater.from(this).inflate(R.layout.rc_ac_file_preview_content, (ViewGroup) null);
+        View view = LayoutInflater.from(this).inflate(R.layout.rc_ac_file_preview_content, null);
         this.contentContainer.addView(view);
         this.mFileTypeImage = (ImageView) this.findViewById(R.id.rc_ac_iv_file_type_image);
         this.mFileNameView = (TextView) this.findViewById(R.id.rc_ac_tv_file_name);
@@ -179,7 +181,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
         this.mDownloadProgressTextView = (TextView) this.findViewById(R.id.rc_ac_tv_download_progress);
         TextView title = (TextView) this.findViewById(R.id.rc_action_bar_title);
         title.setText(R.string.rc_ac_file_download_preview);
-        this.onCreateActionbar(new io.rong.imkit.activity.FilePreviewActivity.ActionBar());
+        this.onCreateActionbar(new ActionBar());
     }
 
     private void setViewStatus() {
@@ -256,33 +258,33 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
         } else if (v == this.mCancel && this.mFileDownloadInfo.state != 5) {
             this.mFileDownloadInfo.state = 5;
             this.refreshDownloadState();
-            RongIM.getInstance().cancelDownloadMediaMessage(this.mMessage, (OperationCallback) null);
+            RongIM.getInstance().cancelDownloadMediaMessage(this.mMessage, null);
         }
 
     }
 
     private void startToDownload() {
-        if (this.mMessage.getContent() instanceof FileMessage) {
+        if (this.mMessage.getContent() instanceof MediaMessageContent) {
             this.resetMediaMessageLocalPath();
             if (RongIM.getInstance().getCurrentConnectionStatus() == ConnectionStatus.NETWORK_UNAVAILABLE) {
                 Toast.makeText(this, this.getString(R.string.rc_notice_network_unavailable), Toast.LENGTH_SHORT).show();
             } else {
                 MediaMessageContent mediaMessage = (MediaMessageContent) ((MediaMessageContent) this.mMessage.getContent());
                 if (mediaMessage == null || mediaMessage.getMediaUrl() != null && !TextUtils.isEmpty(mediaMessage.getMediaUrl().toString())) {
-                    if (this.supportResumeTransfer == io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus.NOT_SET) {
+                    if (this.supportResumeTransfer == FilePreviewActivity.SupportResumeStatus.NOT_SET) {
                         String url = ((FileMessage) this.mMessage.getContent()).getFileUrl().toString();
                         RongIM.getInstance().supportResumeBrokenTransfer(url, new ResultCallback<Boolean>() {
                             public void onSuccess(Boolean aBoolean) {
-                                if (io.rong.imkit.activity.FilePreviewActivity.this.mFileDownloadInfo.state == 0 || io.rong.imkit.activity.FilePreviewActivity.this.mFileDownloadInfo.state == 3 || io.rong.imkit.activity.FilePreviewActivity.this.mFileDownloadInfo.state == 4 || io.rong.imkit.activity.FilePreviewActivity.this.mFileDownloadInfo.state == 5) {
-                                    io.rong.imkit.activity.FilePreviewActivity.this.supportResumeTransfer = io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus.valueOf(aBoolean ? 1 : 0);
-                                    io.rong.imkit.activity.FilePreviewActivity.this.downloadFile();
+                                if (FilePreviewActivity.this.mFileDownloadInfo.state == 0 || FilePreviewActivity.this.mFileDownloadInfo.state == 3 || FilePreviewActivity.this.mFileDownloadInfo.state == 4 || FilePreviewActivity.this.mFileDownloadInfo.state == 5) {
+                                    FilePreviewActivity.this.supportResumeTransfer = FilePreviewActivity.SupportResumeStatus.valueOf(aBoolean ? 1 : 0);
+                                    FilePreviewActivity.this.downloadFile();
                                 }
 
                             }
 
                             public void onError(ErrorCode e) {
-                                io.rong.imkit.activity.FilePreviewActivity.this.mFileDownloadInfo.state = 4;
-                                io.rong.imkit.activity.FilePreviewActivity.this.refreshDownloadState();
+                                FilePreviewActivity.this.mFileDownloadInfo.state = 4;
+                                FilePreviewActivity.this.refreshDownloadState();
                             }
                         });
                     } else if (this.mFileDownloadInfo.state == 0 || this.mFileDownloadInfo.state == 4 || this.mFileDownloadInfo.state == 3 || this.mFileDownloadInfo.state == 5) {
@@ -330,19 +332,38 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
     }
 
     protected boolean openInsidePreview(String fileName, String fileSavePath) {
+        Uri downloaded_apk;
         if (fileSavePath.endsWith(".txt")) {
             Intent webIntent = new Intent(this, RongWebviewActivity.class);
             webIntent.setPackage(this.getPackageName());
-            webIntent.putExtra("url", "file://" + fileSavePath);
+            if (Build.VERSION.SDK_INT >= 24) {
+                downloaded_apk = FileProvider.getUriForFile(RongContext.getInstance(), RongContext.getInstance().getApplicationContext().getPackageName() + RongContext.getInstance().getResources().getString(R.string.rc_authorities_fileprovider), new File(fileSavePath));
+                webIntent.putExtra("url", downloaded_apk.toString());
+            } else {
+                webIntent.putExtra("url", "file://" + fileSavePath);
+            }
             webIntent.putExtra("title", fileName);
             this.startActivity(webIntent);
             return true;
         } else if (fileSavePath.endsWith(".apk")) {
             File file = new File(fileSavePath);
-            Intent installIntent = new Intent("android.intent.action.VIEW");
-            installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-            this.startActivity(installIntent);
+
+            if (Build.VERSION.SDK_INT >= 24) {
+                try {
+                    downloaded_apk = FileProvider.getUriForFile(this, this.getPackageName() + this.getString(R.string.rc_authorities_fileprovider), file);
+                } catch (Exception var6) {
+                    throw new RuntimeException("Please check IMKit Manifest FileProvider config.");
+                }
+
+                Intent intent = (new Intent("android.intent.action.VIEW")).setDataAndType(downloaded_apk, "application/vnd.android.package-archive");
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                this.startActivity(intent);
+            } else {
+                Intent installIntent = new Intent("android.intent.action.VIEW");
+                installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                this.startActivity(installIntent);
+            }
             return true;
         } else {
             return false;
@@ -375,7 +396,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
                 this.mDownloadProgressTextView.setText(this.getString(R.string.rc_ac_file_download_progress_tv, new Object[]{FileTypeUtils.formatFileSize(0), FileTypeUtils.formatFileSize(this.mFileSize)}));
             }
 
-            RongIM.getInstance().downloadMediaMessage(this.mMessage, (IDownloadMediaMessageCallback) null);
+            RongIM.getInstance().downloadMediaMessage(this.mMessage, null);
         }
     }
 
@@ -458,7 +479,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
                 this.mFileButton.setText(this.getString(R.string.rc_ac_file_download_open_file_btn));
                 break;
             case 2:
-                if (this.supportResumeTransfer == io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus.SUPPORT) {
+                if (this.supportResumeTransfer == FilePreviewActivity.SupportResumeStatus.SUPPORT) {
                     this.mDownloadProgressView.setVisibility(View.VISIBLE);
                     this.mFileDownloadProgressBar.setProgress(this.mFileDownloadInfo.progress);
                     this.downloadedFileLength = (long) ((double) this.mFileMessage.getSize() * ((double) this.mFileDownloadInfo.progress / 100.0D) + 0.5D);
@@ -478,7 +499,7 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
                 this.mFileButton.setText(this.getString(R.string.rc_ac_file_preview_begin_download));
                 break;
             case 4:
-                if (this.supportResumeTransfer == io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus.SUPPORT) {
+                if (this.supportResumeTransfer == FilePreviewActivity.SupportResumeStatus.SUPPORT) {
                     this.mDownloadProgressView.setVisibility(View.VISIBLE);
                     this.info = this.getFileInfo();
                     if (this.info != null) {
@@ -572,9 +593,6 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
 
     }
 
-    protected void onCreateActionbar(io.rong.imkit.activity.FilePreviewActivity.ActionBar actionBar) {
-    }
-
     protected void onResume() {
         super.onResume();
     }
@@ -588,11 +606,11 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
     private void getFileDownloadInfoInSubThread() {
         (new Thread(new Runnable() {
             public void run() {
-                io.rong.imkit.activity.FilePreviewActivity.this.info = io.rong.imkit.activity.FilePreviewActivity.this.getFileInfo();
-                io.rong.imkit.activity.FilePreviewActivity.this.runOnUiThread(new Runnable() {
+                FilePreviewActivity.this.info = FilePreviewActivity.this.getFileInfo();
+                FilePreviewActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        io.rong.imkit.activity.FilePreviewActivity.this.setViewStatusForResumeTransfer();
-                        io.rong.imkit.activity.FilePreviewActivity.this.getFileDownloadInfoForResumeTransfer();
+                        FilePreviewActivity.this.setViewStatusForResumeTransfer();
+                        FilePreviewActivity.this.getFileDownloadInfoForResumeTransfer();
                     }
                 });
             }
@@ -672,18 +690,18 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
             return this.value;
         }
 
-        public static io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus valueOf(int code) {
-            io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus[] var1 = values();
+        public static FilePreviewActivity.SupportResumeStatus valueOf(int code) {
+            FilePreviewActivity.SupportResumeStatus[] var1 = values();
             int var2 = var1.length;
 
             for (int var3 = 0; var3 < var2; ++var3) {
-                io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus c = var1[var3];
+                FilePreviewActivity.SupportResumeStatus c = var1[var3];
                 if (code == c.getValue()) {
                     return c;
                 }
             }
 
-            io.rong.imkit.activity.FilePreviewActivity.SupportResumeStatus c = NOT_SET;
+            FilePreviewActivity.SupportResumeStatus c = NOT_SET;
             c.value = code;
             return c;
         }
@@ -698,14 +716,4 @@ public class FilePreviewActivity extends RongBaseActivity implements OnClickList
         }
     }
 
-    public class ActionBar {
-        public ActionBar() {
-        }
-
-        public View setActionBar(int res) {
-            io.rong.imkit.activity.FilePreviewActivity.this.titleContainer.removeAllViews();
-            io.rong.imkit.activity.FilePreviewActivity.this.titleContainer.setBackgroundColor(0);
-            return LayoutInflater.from(io.rong.imkit.activity.FilePreviewActivity.this).inflate(res, io.rong.imkit.activity.FilePreviewActivity.this.titleContainer);
-        }
-    }
 }

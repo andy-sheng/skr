@@ -65,15 +65,15 @@ public class EmojiTab implements IEmoticonTab {
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.rc_view_pager);
         this.mIndicator = (LinearLayout) view.findViewById(R.id.rc_indicator);
         this.mLayoutInflater = LayoutInflater.from(context);
-        viewPager.setAdapter(new io.rong.imkit.emoticon.EmojiTab.EmojiPagerAdapter(pages));
+        viewPager.setAdapter(new EmojiTab.EmojiPagerAdapter(pages));
         viewPager.setOnPageChangeListener(new OnPageChangeListener() {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             public void onPageSelected(int position) {
-                ExtensionHistoryUtil.setEmojiPosition(context, io.rong.imkit.emoticon.EmojiTab.this.mUserId, position);
-                io.rong.imkit.emoticon.EmojiTab.this.onIndicatorChanged(io.rong.imkit.emoticon.EmojiTab.this.selected, position);
-                io.rong.imkit.emoticon.EmojiTab.this.selected = position;
+                ExtensionHistoryUtil.setEmojiPosition(context, EmojiTab.this.mUserId, position);
+                EmojiTab.this.onIndicatorChanged(EmojiTab.this.selected, position);
+                EmojiTab.this.selected = position;
             }
 
             public void onPageScrollStateChanged(int state) {
@@ -89,7 +89,7 @@ public class EmojiTab implements IEmoticonTab {
 
     private void initIndicator(int pages, LinearLayout indicator) {
         for (int i = 0; i < pages; ++i) {
-            ImageView imageView = (ImageView) this.mLayoutInflater.inflate(R.layout.rc_ext_indicator, (ViewGroup) null);
+            ImageView imageView = (ImageView) this.mLayoutInflater.inflate(R.layout.rc_ext_indicator, null);
             imageView.setImageResource(R.drawable.rc_ext_indicator);
             indicator.addView(imageView);
         }
@@ -125,7 +125,7 @@ public class EmojiTab implements IEmoticonTab {
         int index;
 
         public EmojiAdapter(int index, int count) {
-            this.count = Math.min(io.rong.imkit.emoticon.EmojiTab.this.mEmojiCountPerPage, count - index);
+            this.count = Math.min(mEmojiCountPerPage, count - index);
             this.index = index;
         }
 
@@ -142,16 +142,16 @@ public class EmojiTab implements IEmoticonTab {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            io.rong.imkit.emoticon.EmojiTab.ViewHolder viewHolder;
+            EmojiTab.ViewHolder viewHolder;
             if (convertView == null) {
-                viewHolder = io.rong.imkit.emoticon.EmojiTab.this.new ViewHolder();
-                convertView = io.rong.imkit.emoticon.EmojiTab.this.mLayoutInflater.inflate(R.layout.rc_ext_emoji_item, (ViewGroup) null);
+                viewHolder = EmojiTab.this.new ViewHolder();
+                convertView = EmojiTab.this.mLayoutInflater.inflate(R.layout.rc_ext_emoji_item, (ViewGroup) null);
                 viewHolder.emojiIV = (ImageView) convertView.findViewById(R.id.rc_ext_emoji_item);
                 convertView.setTag(viewHolder);
             }
 
-            viewHolder = (io.rong.imkit.emoticon.EmojiTab.ViewHolder) convertView.getTag();
-            if (position != io.rong.imkit.emoticon.EmojiTab.this.mEmojiCountPerPage && position + this.index != AndroidEmoji.getEmojiSize()) {
+            viewHolder = (EmojiTab.ViewHolder) convertView.getTag();
+            if (position != EmojiTab.this.mEmojiCountPerPage && position + this.index != AndroidEmoji.getEmojiSize()) {
                 viewHolder.emojiIV.setImageDrawable(AndroidEmoji.getEmojiDrawable(parent.getContext(), this.index + position));
             } else {
                 viewHolder.emojiIV.setImageResource(R.drawable.rc_icon_emoji_delete);
@@ -169,16 +169,16 @@ public class EmojiTab implements IEmoticonTab {
         }
 
         public Object instantiateItem(ViewGroup container, int position) {
-            GridView gridView = (GridView) io.rong.imkit.emoticon.EmojiTab.this.mLayoutInflater.inflate(R.layout.rc_ext_emoji_grid_view, (ViewGroup) null);
-            gridView.setAdapter(io.rong.imkit.emoticon.EmojiTab.this.new EmojiAdapter(position * io.rong.imkit.emoticon.EmojiTab.this.mEmojiCountPerPage, AndroidEmoji.getEmojiSize()));
+            GridView gridView = (GridView) EmojiTab.this.mLayoutInflater.inflate(R.layout.rc_ext_emoji_grid_view, null);
+            gridView.setAdapter(new EmojiAdapter(position * mEmojiCountPerPage, AndroidEmoji.getEmojiSize()));
             gridView.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (io.rong.imkit.emoticon.EmojiTab.this.mOnItemClickListener != null) {
-                        int index = position + io.rong.imkit.emoticon.EmojiTab.this.selected * io.rong.imkit.emoticon.EmojiTab.this.mEmojiCountPerPage;
-                        if (position == io.rong.imkit.emoticon.EmojiTab.this.mEmojiCountPerPage) {
-                            io.rong.imkit.emoticon.EmojiTab.this.mOnItemClickListener.onDeleteClick();
+                    if (EmojiTab.this.mOnItemClickListener != null) {
+                        int index = position + EmojiTab.this.selected * EmojiTab.this.mEmojiCountPerPage;
+                        if (position == EmojiTab.this.mEmojiCountPerPage) {
+                            EmojiTab.this.mOnItemClickListener.onDeleteClick();
                         } else if (index >= AndroidEmoji.getEmojiSize()) {
-                            io.rong.imkit.emoticon.EmojiTab.this.mOnItemClickListener.onDeleteClick();
+                            EmojiTab.this.mOnItemClickListener.onDeleteClick();
                         } else {
                             int code = AndroidEmoji.getEmojiCode(index);
                             char[] chars = Character.toChars(code);
@@ -188,7 +188,7 @@ public class EmojiTab implements IEmoticonTab {
                                 key = key + Character.toString(chars[i]);
                             }
 
-                            io.rong.imkit.emoticon.EmojiTab.this.mOnItemClickListener.onEmojiClick(key);
+                            EmojiTab.this.mOnItemClickListener.onEmojiClick(key);
                         }
                     }
 

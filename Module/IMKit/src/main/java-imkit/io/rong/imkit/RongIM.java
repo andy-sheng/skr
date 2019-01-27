@@ -27,7 +27,6 @@ import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.facebook.drawee.drawable.ScalingUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -2082,6 +2081,13 @@ public class RongIM {
 
     public void downloadMediaFile(final String uid, String fileUrl, String fileName, String path, final IDownloadMediaFileCallback callback) {
         RongIMClient.getInstance().downloadMediaFile(uid, fileUrl, fileName, path, new IDownloadMediaFileCallback() {
+            @Override
+            public void onFileNameChanged(String newFileName) {
+                if (callback != null) {
+                    callback.onFileNameChanged(newFileName);
+                }
+            }
+
             public void onSuccess() {
                 EventBus.getDefault().post(new MediaFileEvent(uid, 100, 100, (ErrorCode) null));
                 if (callback != null) {

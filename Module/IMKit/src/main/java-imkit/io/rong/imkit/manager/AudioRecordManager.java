@@ -36,8 +36,8 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback.ISendMessageCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.RongIMClient.ErrorCode;
-import io.rong.imlib.TypingMessage.TypingMessageManager;
 import io.rong.imlib.model.Conversation.ConversationType;
+import io.rong.imlib.typingmessage.TypingMessageManager;
 import io.rong.message.VoiceMessage;
 
 public class AudioRecordManager implements Callback {
@@ -65,7 +65,7 @@ public class AudioRecordManager implements Callback {
     IAudioState timerState;
 
     public static io.rong.imkit.manager.AudioRecordManager getInstance() {
-        return io.rong.imkit.manager.AudioRecordManager.SingletonHolder.sInstance;
+        return AudioRecordManager.SingletonHolder.sInstance;
     }
 
     @TargetApi(21)

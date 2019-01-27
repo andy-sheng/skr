@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.rong.imkit">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -27,26 +28,31 @@
 
     <application>
 
+        <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
+        <meta-data
+            android:name="com.module.msg.RongIMConfiguration"
+            android:value="ConfigModule" />
+
+        <!--会话列表-->
+
+        <!--会话界面-->
         <activity
-            android:name="io.rong.imkit.plugin.location.AMapLocationActivity"
-            android:screenOrientation="portrait" />
+            android:name="com.module.msg.activity.ConversationActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait">
 
-        <activity android:name="io.rong.imkit.plugin.location.AMapPreviewActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
 
-        <activity android:name="io.rong.imkit.plugin.location.AMapRealTimeActivity" />
+                <data
+                    android:host="com.zq.live"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
 
-        <activity
-            android:name="io.rong.imkit.plugin.location.SearchLocationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity
-            android:name="io.rong.imkit.plugin.image.PictureSelectorActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="io.rong.imkit.plugin.image.PicturePreviewActivity"
-            android:screenOrientation="portrait" />
+        </activity>
 
         <!-- 开发者可以修改 RongBaseActivity 的 rc_base_activity_layout 布局文件调整 actionbar-->
         <activity
@@ -57,6 +63,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="io.rong.imkit.plugin.image.PictureSelectorActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="io.rong.imkit.plugin.image.PicturePreviewActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="io.rong.imkit.widget.provider.TakingPicturesActivity"

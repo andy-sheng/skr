@@ -16,8 +16,6 @@ android {
             manifest.srcFile 'AndroidManifest.xml'
             res.srcDirs = ['res']
             jniLibs.srcDirs = ['libs']
-
-            java.srcDirs += 'src/main/java'
         }
     }
 }

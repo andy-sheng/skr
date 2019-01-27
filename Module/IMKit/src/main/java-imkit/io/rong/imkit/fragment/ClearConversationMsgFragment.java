@@ -5,6 +5,7 @@
 
 package io.rong.imkit.fragment;
 
+import android.opengl.Visibility;
 import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ public class ClearConversationMsgFragment extends BaseSettingFragment implements
     }
 
     protected int setSwitchBtnVisibility() {
-        return 8;
+        return View.GONE;
     }
 
     protected void onSettingItemClick(View v) {
@@ -55,14 +56,14 @@ public class ClearConversationMsgFragment extends BaseSettingFragment implements
         if (this.conversation != null) {
             RongIM.getInstance().clearMessages(this.conversation.getConversationType(), this.conversation.getTargetId(), new ResultCallback<Boolean>() {
                 public void onSuccess(Boolean aBoolean) {
-                    Toast.makeText(io.rong.imkit.fragment.ClearConversationMsgFragment.this.getActivity(), io.rong.imkit.fragment.ClearConversationMsgFragment.this.getString(R.string.rc_setting_clear_msg_success), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClearConversationMsgFragment.this.getActivity(), io.rong.imkit.fragment.ClearConversationMsgFragment.this.getString(R.string.rc_setting_clear_msg_success), Toast.LENGTH_SHORT).show();
                 }
 
                 public void onError(ErrorCode e) {
-                    Toast.makeText(io.rong.imkit.fragment.ClearConversationMsgFragment.this.getActivity(), io.rong.imkit.fragment.ClearConversationMsgFragment.this.getString(R.string.rc_setting_clear_msg_fail), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClearConversationMsgFragment.this.getActivity(), io.rong.imkit.fragment.ClearConversationMsgFragment.this.getString(R.string.rc_setting_clear_msg_fail), Toast.LENGTH_SHORT).show();
                 }
             });
-            RongIM.getInstance().clearTextMessageDraft(this.conversation.getConversationType(), this.conversation.getTargetId(), (ResultCallback) null);
+            RongIM.getInstance().clearTextMessageDraft(this.conversation.getConversationType(), this.conversation.getTargetId(), null);
         }
     }
 

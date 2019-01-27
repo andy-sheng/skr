@@ -50,6 +50,9 @@ public class RongBaseActivity extends Activity {
         this.mContentView = (ViewFlipper) this.findViewById(R.id.rc_base_container);
     }
 
+    protected void onCreateActionbar(RongBaseActivity.ActionBar actionBar) {
+    }
+
     public void setContentView(int resId) {
         View view = LayoutInflater.from(this).inflate(resId, (ViewGroup) null);
         LayoutParams lp = new LayoutParams(-1, -1, 1.0F);
@@ -63,5 +66,16 @@ public class RongBaseActivity extends Activity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
+    }
+
+    public class ActionBar {
+        public ActionBar() {
+        }
+
+        public View setActionBar(int res) {
+            RongBaseActivity.this.titleContainer.removeAllViews();
+            RongBaseActivity.this.titleContainer.setBackgroundColor(0);
+            return LayoutInflater.from(RongBaseActivity.this).inflate(res, RongBaseActivity.this.titleContainer);
+        }
     }
 }

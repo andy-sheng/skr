@@ -31,8 +31,8 @@ public class ClickImageView extends RelativeLayout {
         int width = context.getResources().getDimensionPixelSize(R.dimen.rc_ext_more_imgage_width);
         int height = context.getResources().getDimensionPixelOffset(R.dimen.rc_ext_more_imgage_height);
         this.imageView.setLayoutParams(new LayoutParams(width, height));
-        LayoutParams params = new LayoutParams(-2, -2);
-        params.addRule(13);
+        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
         this.addView(this.imageView, params);
     }
 

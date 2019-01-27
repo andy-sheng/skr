@@ -27,8 +27,8 @@ public class AndroidEmoji {
     private static float density;
     private static Context mContext;
     private static final int MAX_DISPLAY_EMOJI = 600;
-    private static Map<Integer, io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo> sEmojiMap;
-    private static List<io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo> sEmojiList;
+    private static Map<Integer, AndroidEmoji.EmojiInfo> sEmojiMap;
+    private static List<AndroidEmoji.EmojiInfo> sEmojiList;
 
     public AndroidEmoji() {
     }
@@ -54,7 +54,7 @@ public class AndroidEmoji {
                     return;
                 }
 
-                io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo emoji = new io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo(codes[i], array.getResourceId(i, -1), strArray.getResourceId(i, -1));
+                AndroidEmoji.EmojiInfo emoji = new AndroidEmoji.EmojiInfo(codes[i], array.getResourceId(i, -1), strArray.getResourceId(i, -1));
                 sEmojiMap.put(codes[i], emoji);
                 sEmojiList.add(emoji);
             }
@@ -123,7 +123,7 @@ public class AndroidEmoji {
                     }
 
                     if (sEmojiMap.containsKey(codePoint)) {
-                        ssb.setSpan(new io.rong.imkit.emoticon.AndroidEmoji.EmojiImageSpan(codePoint), isSurrogatePair ? i - 1 : i, i + 1, 33);
+                        ssb.setSpan(new AndroidEmoji.EmojiImageSpan(codePoint), isSurrogatePair ? i - 1 : i, i + 1, 33);
                     }
                 }
             }
@@ -182,7 +182,7 @@ public class AndroidEmoji {
                 }
 
                 if (sEmojiMap.containsKey(codePoint)) {
-                    spannable.setSpan(new io.rong.imkit.emoticon.AndroidEmoji.EmojiImageSpan(codePoint), isSurrogatePair ? i - 1 : i, i + 1, 34);
+                    spannable.setSpan(new AndroidEmoji.EmojiImageSpan(codePoint), isSurrogatePair ? i - 1 : i, i + 1, 34);
                 }
             }
         }
@@ -235,7 +235,7 @@ public class AndroidEmoji {
                     if (spanchars != null && spanchars.length > 0) {
                         if (emojiCount > 600) {
                             resultSpanStr.append("[");
-                            resultSpanStr.append(mContext.getResources().getString(((io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo) sEmojiMap.get(codePoint)).strId));
+                            resultSpanStr.append(mContext.getResources().getString((sEmojiMap.get(codePoint)).strId));
                             resultSpanStr.append("]");
                         } else {
                             resultSpanStr = appendSpanStr(isSurrogatePair, resultSpanStr, chars, i);
@@ -274,14 +274,14 @@ public class AndroidEmoji {
     }
 
     public static int getEmojiCode(int index) {
-        io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo info = (io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo) sEmojiList.get(index);
+        AndroidEmoji.EmojiInfo info = sEmojiList.get(index);
         return info.code;
     }
 
     public static Drawable getEmojiDrawable(Context context, int index) {
         Drawable drawable = null;
         if (index >= 0 && index < sEmojiList.size()) {
-            io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo emoji = (io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo) sEmojiList.get(index);
+            io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo emoji = sEmojiList.get(index);
             drawable = context.getResources().getDrawable(emoji.resId);
         }
 
@@ -312,10 +312,10 @@ public class AndroidEmoji {
         private WeakReference<Drawable> mDrawableRef;
 
         private EmojiImageSpan(int codePoint) {
-            if (io.rong.imkit.emoticon.AndroidEmoji.sEmojiMap.containsKey(codePoint)) {
-                this.mDrawable = io.rong.imkit.emoticon.AndroidEmoji.mContext.getResources().getDrawable(((io.rong.imkit.emoticon.AndroidEmoji.EmojiInfo) io.rong.imkit.emoticon.AndroidEmoji.sEmojiMap.get(codePoint)).resId);
-                int width = this.mDrawable.getIntrinsicWidth() - (int) (4.0F * io.rong.imkit.emoticon.AndroidEmoji.density);
-                int height = this.mDrawable.getIntrinsicHeight() - (int) (4.0F * io.rong.imkit.emoticon.AndroidEmoji.density);
+            if (AndroidEmoji.sEmojiMap.containsKey(codePoint)) {
+                this.mDrawable = AndroidEmoji.mContext.getResources().getDrawable(sEmojiMap.get(codePoint).resId);
+                int width = this.mDrawable.getIntrinsicWidth() - (int) (4.0F * AndroidEmoji.density);
+                int height = this.mDrawable.getIntrinsicHeight() - (int) (4.0F * AndroidEmoji.density);
                 this.mDrawable.setBounds(0, 0, width > 0 ? width : 0, height > 0 ? height : 0);
             }
 
@@ -342,7 +342,7 @@ public class AndroidEmoji {
             Drawable b = this.getCachedDrawable();
             canvas.save();
             int transY = bottom - b.getBounds().bottom;
-            transY = (int) ((float) transY - io.rong.imkit.emoticon.AndroidEmoji.density);
+            transY = (int) ((float) transY - AndroidEmoji.density);
             canvas.translate(x, (float) transY);
             b.draw(canvas);
             canvas.restore();

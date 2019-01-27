@@ -29,7 +29,7 @@ public class MoreClickAdapter implements IMoreClickAdapter {
             this.moreActionLayout.setFragment(fragment);
             this.moreActionLayout.addActions(actions);
             int height = context.getResources().getDimensionPixelOffset(R.dimen.rc_ext_more_layout_height);
-            LayoutParams params = new LayoutParams(-1, height);
+            LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, height);
             this.moreActionLayout.setLayoutParams(params);
             viewGroup.addView(this.moreActionLayout);
         }

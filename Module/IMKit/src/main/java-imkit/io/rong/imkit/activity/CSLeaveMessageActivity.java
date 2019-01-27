@@ -8,12 +8,16 @@ package io.rong.imkit.activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.text.InputFilter;
 import android.text.InputFilter.LengthFilter;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -74,7 +78,7 @@ public class CSLeaveMessageActivity extends RongBaseNoActionbarActivity {
             public void onClick(View v) {
                 if (io.rong.imkit.activity.CSLeaveMessageActivity.this.isContentValid()) {
                     Map<String, String> map = new HashMap();
-                    Iterator var3 = io.rong.imkit.activity.CSLeaveMessageActivity.this.mEditList.iterator();
+                    Iterator var3 = CSLeaveMessageActivity.this.mEditList.iterator();
 
                     while (var3.hasNext()) {
                         EditText editText = (EditText) var3.next();
@@ -85,8 +89,8 @@ public class CSLeaveMessageActivity extends RongBaseNoActionbarActivity {
                     RongIMClient.getInstance().leaveMessageCustomService(io.rong.imkit.activity.CSLeaveMessageActivity.this.mTargetId, map, new OperationCallback() {
                         public void onSuccess() {
                             InformationNotificationMessage notificationMessage = new InformationNotificationMessage(io.rong.imkit.activity.CSLeaveMessageActivity.this.getResources().getString(R.string.rc_cs_message_submited));
-                            RongIM.getInstance().insertMessage(ConversationType.CUSTOMER_SERVICE, io.rong.imkit.activity.CSLeaveMessageActivity.this.mTargetId, RongIMClient.getInstance().getCurrentUserId(), notificationMessage, (ResultCallback) null);
-                            io.rong.imkit.activity.CSLeaveMessageActivity.this.finish();
+                            RongIM.getInstance().insertMessage(ConversationType.CUSTOMER_SERVICE, CSLeaveMessageActivity.this.mTargetId, RongIMClient.getInstance().getCurrentUserId(), notificationMessage, (ResultCallback) null);
+                            CSLeaveMessageActivity.this.finish();
                         }
 
                         public void onError(ErrorCode errorCode) {
@@ -98,8 +102,8 @@ public class CSLeaveMessageActivity extends RongBaseNoActionbarActivity {
         });
         cancelBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                io.rong.imkit.activity.CSLeaveMessageActivity.this.hideSoftInputKeyboard();
-                io.rong.imkit.activity.CSLeaveMessageActivity.this.finish();
+                CSLeaveMessageActivity.this.hideSoftInputKeyboard();
+                CSLeaveMessageActivity.this.finish();
             }
         });
         EventBus.getDefault().register(this);
@@ -112,10 +116,10 @@ public class CSLeaveMessageActivity extends RongBaseNoActionbarActivity {
                 LinearLayout itemContainer = new LinearLayout(this);
                 LayoutParams params;
                 if (item.getType().equals("text")) {
-                    params = new LayoutParams(-1, RongUtils.dip2px(45.0F));
+                    params = new LayoutParams(LayoutParams.MATCH_PARENT, RongUtils.dip2px(45.0F));
                     itemContainer.setOrientation(LinearLayout.HORIZONTAL);
                 } else {
-                    params = new LayoutParams(-1, -2);
+                    params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                     itemContainer.setOrientation(LinearLayout.VERTICAL);
                 }
 
@@ -123,10 +127,10 @@ public class CSLeaveMessageActivity extends RongBaseNoActionbarActivity {
                     params.setMargins(0, RongUtils.dip2px(1.0F), 0, 0);
                 }
 
-                itemContainer.setBackgroundColor(-1);
+                itemContainer.setBackgroundColor(Color.WHITE);
                 itemContainer.setLayoutParams(params);
                 TextView view = new TextView(this);
-                params = new LayoutParams(-2, RongUtils.dip2px(45.0F));
+                params = new LayoutParams(LayoutParams.WRAP_CONTENT, RongUtils.dip2px(45.0F));
                 params.setMargins(RongUtils.dip2px(14.0F), 0, 0, 0);
                 view.setLayoutParams(params);
                 view.setTextColor(this.getResources().getColor(R.color.rc_text_color_primary));
@@ -135,9 +139,9 @@ public class CSLeaveMessageActivity extends RongBaseNoActionbarActivity {
                 view.setText(item.getTitle());
                 itemContainer.addView(view);
                 EditText editText = new EditText(this);
-                params = new LayoutParams(-1, -1);
+                params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
                 editText.setHint(item.getDefaultText());
-                editText.setBackgroundColor(0);
+                editText.setBackgroundColor(Color.TRANSPARENT);
                 if (item.getType().equals("text")) {
                     params.setMargins(RongUtils.dip2px(10.0F), 0, RongUtils.dip2px(14.0F), 0);
                     editText.setGravity(19);
@@ -254,9 +258,9 @@ public class CSLeaveMessageActivity extends RongBaseNoActionbarActivity {
             window.findViewById(R.id.rc_btn_ok).setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
                     alertDialog.dismiss();
-                    io.rong.imkit.activity.CSLeaveMessageActivity.this.hideSoftInputKeyboard();
+                    CSLeaveMessageActivity.this.hideSoftInputKeyboard();
                     event.getActivity().finish();
-                    io.rong.imkit.activity.CSLeaveMessageActivity.this.finish();
+                    CSLeaveMessageActivity.this.finish();
                 }
             });
         }

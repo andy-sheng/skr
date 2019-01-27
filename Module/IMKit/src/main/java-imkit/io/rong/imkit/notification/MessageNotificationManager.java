@@ -18,12 +18,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import io.rong.common.RLog;
-import io.rong.common.SystemUtils;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongNotificationManager;
 import io.rong.imkit.model.ConversationInfo;
 import io.rong.imkit.utils.NotificationUtil;
+import io.rong.imkit.utils.SystemUtils;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.RongIMClient.ErrorCode;
 import io.rong.imlib.RongIMClient.ResultCallback;
