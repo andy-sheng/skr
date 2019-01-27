@@ -130,18 +130,6 @@ public class AuditionFragment extends BaseFragment {
     DialogPlus mQuitTipsDialog;
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("mPrepareData", mPrepareData);
-    }
-
-    @Override
-    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mPrepareData = (PrepareData) savedInstanceState.getSerializable("mPrepareData");
-    }
-
-    @Override
     public int initView() {
         return R.layout.audition_sence_layout;
     }
