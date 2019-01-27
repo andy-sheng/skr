@@ -422,6 +422,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         // 如果已经准备了就从新开始匹配，没有准备就直接跳转到选择歌曲界面
         // 如果rematch的时候是因为别人退出房间的原因导致rematch直接跳转到match界面
         if (isPrepared || otherEr) {
+            U.getToastUtil().showShort("有玩家未准备，为您重新匹配对手");
             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchFragment.class)
                     .setNotifyHideFragment(GrabMatchSuccessFragment.class)
                     .setAddToBackStack(false)
