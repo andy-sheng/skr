@@ -357,6 +357,18 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
+                        if(integer == 61){
+                            U.getToastUtil().showShort("现在小伙伴有点少，稍后再匹配试试吧～");
+                            mMatchPresenter.cancelMatch();
+                            stopTimeTask();
+                            getActivity().finish();
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                                    .withInt("key_game_type", mPrepareData.getGameType())
+                                    .withBoolean("selectSong", true)
+                                    .navigation();
+                            return;
+                        }
+
                         mTvMatchedTime.setText(String.format(U.app().getString(R.string.match_time_info), integer));
                     }
                 });
