@@ -148,7 +148,7 @@ public class RecordTitleView extends RelativeLayout {
 
     private void animationGo(ScoreResultModel scoreResultModel) {
         MyLog.d(TAG, "animationGo" + " ScoreResultModel = " + scoreResultModel);
-        if (scoreResultModel == null || scoreResultModel.getStates().size() <= 0) {
+        if (scoreResultModel == null || scoreResultModel.getStates() == null ||scoreResultModel.getStates().size() <= 0) {
             return;
         }
 
