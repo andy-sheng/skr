@@ -17,6 +17,7 @@ package com.common.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,6 +41,8 @@ import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import io.reactivex.subjects.BehaviorSubject;
@@ -59,6 +62,8 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     protected final String TAG = this.getClass().getSimpleName();
     private final BehaviorSubject<FragmentEvent> mLifecycleSubject = BehaviorSubject.create();
     private Cache<String, Object> mCache;
+
+    private HashMap<Integer, Object> mNeedSaveWhenLowMemory = new HashMap<>();
 
     private HashSet<Presenter> mPresenterSet = new HashSet<>();
 
@@ -129,7 +134,17 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      * @param savedInstanceState
      */
     public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-
+        MyLog.d(TAG, "onRestoreInstanceState" + " savedInstanceState=" + savedInstanceState);
+        if (savedInstanceState != null) {
+            for (String key : savedInstanceState.keySet()) {
+                if (key.startsWith("type_")) {
+                    Object v = savedInstanceState.get(key);
+                    String typeStr = key.substring("type_".length());
+                    int type = Integer.parseInt(typeStr);
+                    setData(type, v);
+                }
+            }
+        }
     }
 
     /**
@@ -140,9 +155,28 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        MyLog.d(TAG, "onSaveInstanceState" + " outState=" + outState);
         super.onSaveInstanceState(outState);
         if (outState != null) {
             outState.putBoolean("firstStart", false);
+            for (int type : mNeedSaveWhenLowMemory.keySet()) {
+                Object object = mNeedSaveWhenLowMemory.get(type);
+                if (object instanceof Serializable) {
+                    outState.putSerializable("type_" + type, (Serializable) object);
+                } else if (object instanceof Parcelable) {
+                    outState.putParcelable("type_" + type, (Parcelable) object);
+                } else if (object instanceof String) {
+                    outState.putString("type_" + type, (String) object);
+                } else if (object instanceof Integer) {
+                    outState.putInt("type_" + type, (Integer) object);
+                } else if (object instanceof Long) {
+                    outState.putLong("type_" + type, (Long) object);
+                } else if (object instanceof Double) {
+                    outState.putDouble("type_" + type, (Double) object);
+                } else if (object instanceof Float) {
+                    outState.putDouble("type_" + type, (Float) object);
+                }
+            }
         }
     }
 
@@ -171,8 +205,9 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
 
     /**
      * 只有LoadSir想要register mRootView 时才需要覆盖这个方法
-     *
+     * <p>
      * 其他的不需要
+     *
      * @return
      */
     protected View loadSirReplaceRootView() {
@@ -259,12 +294,12 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     }
 
     //通知你，你要准备显示了
-    public void notifyToShow(){
+    public void notifyToShow() {
         U.getFragmentUtils().showFragment(this);
     }
 
     //通知你，你要准备隐藏了
-    public void notifyToHide(){
+    public void notifyToHide() {
         U.getFragmentUtils().hideFragment(this);
     }
 
@@ -273,7 +308,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     @Override
     public final void onDestroy() {
-        MyLog.d(TAG,"onDestroy" );
+        MyLog.d(TAG, "onDestroy");
         super.onDestroy();
         if (!isDestroyed) {
             destroy();
@@ -367,7 +402,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     @Override
     public void setData(int type, @Nullable Object data) {
-
+        mNeedSaveWhenLowMemory.put(type, data);
     }
 
     /**
@@ -390,7 +425,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         return RxLifecycle.bindUntilEvent(provideLifecycleSubject(), event);
     }
 
-    public void finish(){
+    public void finish() {
         U.getFragmentUtils().popFragment(this);
     }
 
