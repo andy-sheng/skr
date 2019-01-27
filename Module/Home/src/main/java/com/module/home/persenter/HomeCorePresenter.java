@@ -10,6 +10,7 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
+import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -19,6 +20,7 @@ import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -242,15 +244,18 @@ public class HomeCorePresenter {
         checkUserInfo("UserInfoLoadOkEvent");
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN,priority = 0)
     public void onEvent(AccountEvent.LogoffAccountEvent event) {
         if (event.reason == AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED) {
             MyLog.w(TAG, "LogoffAccountEvent" + " 账号已经过期，需要重新登录,跳到登录页面");
         }
         if (!UserAccountManager.getInstance().hasAccount()) {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
+                    .withInt(LoginActivity.KEY_REASON,LoginActivity.REASON_LOGOFF)
+                    .navigation();
             mView.onLogoff();
         }
+        BgMusicManager.getInstance().destory();
     }
 
     public void checkUserInfo(String from) {
