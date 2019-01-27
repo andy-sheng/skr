@@ -273,6 +273,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     @Override
     public final void onDestroy() {
+        MyLog.d(TAG,"onDestroy" );
         super.onDestroy();
         if (!isDestroyed) {
             destroy();

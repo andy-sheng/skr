@@ -83,8 +83,12 @@ public class MusicTestFragment extends BaseFragment {
                 }
             }
         }, this);
+    }
 
-
+    @Override
+    protected boolean onBackPressed() {
+        U.getFragmentUtils().popFragment(this);
+        return true;
     }
 
     @Override
