@@ -59,7 +59,6 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     List<RankInfoModel> rankInfoModelList = JSON.parseArray(result.getData().getString("users"), RankInfoModel.class);
                     if (rankInfoModelList != null && rankInfoModelList.size() > 0) {
-                        boolean hasMore = rankInfoModelList.size() == mLimit;
                         int listSize = rankInfoModelList.size();
 
                         if (mOffset == 0) {
@@ -78,14 +77,18 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
                         }
 
                         mRankInfoModelList.addAll(rankInfoModelList);
-                        mILeaderBoardView.showRankList(mRankInfoModelList, hasMore);
+                        mILeaderBoardView.showRankList(mRankInfoModelList, true);
                         mOffset += listSize;
                     } else {
-                        mILeaderBoardView.showRankList(new ArrayList<>(), false);
-                        mILeaderBoardView.showFirstThreeRankInfo(new ArrayList<>());
+                        mILeaderBoardView.showRankList(mRankInfoModelList, false);
                     }
-
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mILeaderBoardView.noNetWork();
             }
         }, this);
     }
