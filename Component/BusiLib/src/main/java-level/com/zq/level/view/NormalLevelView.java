@@ -244,9 +244,6 @@ public class NormalLevelView extends RelativeLayout {
                             final SVGAListener listener) {
         // 播放音效
         U.getSoundUtils().play(TAG, R.raw.song_pairbutton);
-        // 先隐藏之前的静态段位
-        mLevelIv.setVisibility(GONE);
-        mSubLeveIv.setVisibility(GONE);
         if (totalStatsNow == 0 || totalStatsNow > 6) {
             // 星星超过限制，不用动
         } else {
@@ -261,6 +258,11 @@ public class NormalLevelView extends RelativeLayout {
 
         int[] location = new int[2];
         mLevelIv.getLocationOnScreen(location);
+        MyLog.d(TAG, "levelChange" + " location 0 = " + location[0] + " location 1 = " + location[1]);
+
+        // 先隐藏之前的静态段位
+        mLevelIv.setVisibility(GONE);
+        mSubLeveIv.setVisibility(GONE);
 
         RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(220), U.getDisplayUtils().dip2px(200));
         rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((220 - 99) / 2),
