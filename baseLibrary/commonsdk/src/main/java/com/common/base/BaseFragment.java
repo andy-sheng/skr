@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import com.common.base.delegate.IFragment;
 import com.common.cache.Cache;
 import com.common.cache.IntelligentCache;
+import com.common.image.model.BaseImage;
 import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
 import com.common.lifecycle.FragmentLifecycleable;
 import com.common.log.MyLog;
@@ -251,9 +252,13 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         }
 
         if (fragmentVisible) {
-            onFragmentVisible();
+            BaseFragment baseFragment = U.getFragmentUtils().getTopFragment(getActivity());
+            if (baseFragment == this) {
+                onFragmentVisible();
+            } else {
+                MyLog.d(TAG, "onResume 不在顶部");
+            }
         }
-
     }
 
     @Override
