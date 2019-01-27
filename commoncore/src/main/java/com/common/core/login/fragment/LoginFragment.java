@@ -91,7 +91,7 @@ public class LoginFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         showLoginingBar(true);
-                        UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
+                        UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
                     }
                 });
 
@@ -106,7 +106,7 @@ public class LoginFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         showLoginingBar(true);
-                        UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, authListener);
+                        UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, authListener);
                     }
                 });
 
@@ -139,7 +139,7 @@ public class LoginFragment extends BaseFragment {
             showLoginingBar(false);
             if (platform == SHARE_MEDIA.WEIXIN) {
                 Toast.makeText(getContext(), "微信授权成功", Toast.LENGTH_LONG).show();
-                String accessToken = data.get("accessToken");
+                String accessToken = data.get("access_token");
                 String openid = data.get("openid");
                 loginWithThirdPard(WX_MODE, accessToken, openid);
             } else if (platform == SHARE_MEDIA.QQ) {
