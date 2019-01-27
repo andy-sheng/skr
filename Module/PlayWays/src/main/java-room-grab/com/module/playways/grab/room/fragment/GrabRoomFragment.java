@@ -395,6 +395,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
             public void clickGrabBtn() {
+                if(U.getCommonUtils().isFastDoubleClick()){
+                    return;
+                }
                 U.getSoundUtils().play(TAG, R.raw.iwannasing);
                 mCorePresenter.grabThisRound();
             }
