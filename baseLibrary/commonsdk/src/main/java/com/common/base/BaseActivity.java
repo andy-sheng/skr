@@ -302,6 +302,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     public final void onBackPressed() {
+        if (U.getTimeUtils().isFastClick()) {
+            return;
+        }
+
         /**
          * 先看看有没有顶层的 fragment 要处理这个事件的
          * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作
@@ -313,11 +317,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                 return;
             }
         }
+
         /**
          * 这里有个问题，就是如果是首页Activity 的Fragment 很可能走不到 super.onBackPressed() 因为被拦截了
          * 所以首页 onBackPressedForActivity 自己特殊处理下
          */
-        if(onBackPressedForActivity()){
+        if (onBackPressedForActivity()) {
             // activity也消费掉了
             return;
         }
@@ -327,6 +332,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     /**
      * activity 请只覆盖这个方法 不覆盖onBackPressed
+     *
      * @return
      */
     public boolean onBackPressedForActivity() {

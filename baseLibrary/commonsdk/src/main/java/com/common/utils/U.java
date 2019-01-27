@@ -76,6 +76,8 @@ public class U {
 
     private static LogUploadUtils logUploadUtils;
 
+    private static TimeUtils timeUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -309,6 +311,14 @@ public class U {
             logUploadUtils = new LogUploadUtils();
         }
         return logUploadUtils;
+    }
+
+    public static TimeUtils getTimeUtils() {
+        if (timeUtils == null) {
+            timeUtils = new TimeUtils();
+        }
+
+        return timeUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;
