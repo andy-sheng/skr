@@ -622,6 +622,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         if (type == 0) {
             mRoomData = (RoomData) data;
         }

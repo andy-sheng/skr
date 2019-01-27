@@ -188,7 +188,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     @Override
     public void setData(int type, @Nullable Object data) {
-//        super.setData(type,data);
+        super.setData(type,data);
         if (type == 0) {
             mPrepareData.setSongModel((SongModel) data);
         }

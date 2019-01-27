@@ -344,6 +344,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         if (type == 0) {
             mPrepareData = (PrepareData) data;
         }

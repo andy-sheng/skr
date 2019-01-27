@@ -222,6 +222,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
      */
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         if (type == 1) {
             mImageItems = (ArrayList<ImageItem>) data;
         }

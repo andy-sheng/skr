@@ -97,11 +97,11 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
 
         mRecordData = mRoomData.getRecordData();
 
-        mTvReload = (ExTextView)mRootView.findViewById(R.id.tv_reload);
-        mLoading = (ProgressBar)mRootView.findViewById(R.id.loading);
-        mRlLoadingArea = (ExRelativeLayout)mRootView.findViewById(R.id.rl_loading_area);
+        mTvReload = (ExTextView) mRootView.findViewById(R.id.tv_reload);
+        mLoading = (ProgressBar) mRootView.findViewById(R.id.loading);
+        mRlLoadingArea = (ExRelativeLayout) mRootView.findViewById(R.id.rl_loading_area);
         mLlLoadFailed = mRootView.findViewById(R.id.ll_load_failed);
-        mRlRecordArea = (ExRelativeLayout)mRootView.findViewById(R.id.rl_record_area);
+        mRlRecordArea = (ExRelativeLayout) mRootView.findViewById(R.id.rl_record_area);
 
         RxView.clicks(mTvReload)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
@@ -149,7 +149,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
         }
     }
 
-    private void getVoteInfo(){
+    private void getVoteInfo() {
         ApiMethods.subscribe(mRoomServerApi.getVoteResult(mRoomData.getGameId()), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -191,21 +191,21 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
         }, this);
     }
 
-    private void toLoadingState(){
+    private void toLoadingState() {
         mRlLoadingArea.setVisibility(View.VISIBLE);
         mLoading.setVisibility(View.VISIBLE);
         mLlLoadFailed.setVisibility(View.GONE);
         mRlRecordArea.setVisibility(View.GONE);
     }
 
-    private void toLoadFaildState(){
+    private void toLoadFaildState() {
         mRlLoadingArea.setVisibility(View.VISIBLE);
         mLoading.setVisibility(View.GONE);
         mLlLoadFailed.setVisibility(View.VISIBLE);
         mRlRecordArea.setVisibility(View.GONE);
     }
 
-    private void toLoadSuccessState(){
+    private void toLoadSuccessState() {
         mRlLoadingArea.setVisibility(View.GONE);
         mLoading.setVisibility(View.GONE);
         mLlLoadFailed.setVisibility(View.GONE);
@@ -229,6 +229,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
 
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         mRoomData = (RoomData) data;
     }
 
@@ -249,7 +250,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
 
     @Override
     public void showRecordView(RecordData recordData) {
-        if(recordData!=null){
+        if (recordData != null) {
             mRoomData.setRecordData(recordData);
         }
         bindData(recordData);

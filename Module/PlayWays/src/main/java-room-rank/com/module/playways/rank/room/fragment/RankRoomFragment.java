@@ -857,6 +857,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         if (type == 0) {
             mRoomData = (RoomData) data;
         }

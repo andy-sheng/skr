@@ -3,9 +3,10 @@ package com.module.playways.rank.room.model;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RecordData {
+public class RecordData implements Serializable {
 
     public List<VoteInfoModel> mVoteInfoModels;
     public ScoreResultModel mScoreResultModel;
