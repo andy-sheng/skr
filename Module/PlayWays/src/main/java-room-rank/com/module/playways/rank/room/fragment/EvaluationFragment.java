@@ -143,13 +143,13 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         addPresent(mPresenter);
 
         RxView.clicks(mVoteLeftMie)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
                 });
 
         RxView.clicks(mVoteRightMie)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
                 });
