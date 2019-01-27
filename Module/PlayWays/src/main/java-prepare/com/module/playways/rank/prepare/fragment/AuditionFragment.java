@@ -120,8 +120,6 @@ public class AuditionFragment extends BaseFragment {
 
     DialogPlus mQuitTipsDialog;
 
-    static final boolean TEST_SCORE = false;
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -301,7 +299,7 @@ public class AuditionFragment extends BaseFragment {
         mIvPlay.setEnabled(true);
         EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH);
 
-        if (TEST_SCORE) {
+        if (MyLog.isDebugLogOpen()) {
             EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
                     .setMode(RecognizeConfig.MODE_MANUAL)
                     .setSongName(mSongModel.getItemName())
@@ -561,10 +559,10 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineEndEvent event) {
         //TODO
-        MyLog.d(TAG, "onEvent" + " event=" + event);
+        MyLog.d(TAG, "onEvent event=" + event);
         int score = EngineManager.getInstance().getLineScore();
         U.getToastUtil().showShort("score:" + score);
-        if (TEST_SCORE) {
+        if (MyLog.isDebugLogOpen()) {
             EngineManager.getInstance().recognizeInManualMode();
         }
 //        score = (int) (Math.random() * 100);
