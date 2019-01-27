@@ -463,6 +463,9 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void showRecordView(RecordData recordData) {
         stopTimeTask();
         mUiHanlder.removeMessages(MSG_GO_RECORD_FRAGMENT);
+        if(recordData!=null){
+            mRoomData.setRecordData(recordData);
+        }
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
                 .setAddToBackStack(true)
                 .addDataBeforeAdd(1, mRoomData)

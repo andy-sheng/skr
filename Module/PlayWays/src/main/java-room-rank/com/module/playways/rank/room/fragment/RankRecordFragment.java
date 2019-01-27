@@ -153,6 +153,9 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
 
     @Override
     public void showRecordView(RecordData recordData) {
+        if(recordData!=null){
+            mRoomData.setRecordData(recordData);
+        }
         bindData(recordData);
     }
 }
