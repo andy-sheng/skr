@@ -353,8 +353,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     // 处理机器打分
     private void processMachineScore(BasePushInfo basePushInfo, MachineScore machineScore) {
         // TODO: 2019/1/4  完善再补充
-        MachineScoreEvent machineScoreEvent = new MachineScoreEvent(basePushInfo, machineScore.userID, machineScore.no, machineScore.score);
-        EventBus.getDefault().post(machineScoreEvent);
+        if (machineScore != null) {
+            MachineScoreEvent machineScoreEvent = new MachineScoreEvent(basePushInfo, machineScore.userID, machineScore.no, machineScore.score);
+            EventBus.getDefault().post(machineScoreEvent);
+        }
     }
 
     private void processQWantSingChanceMsg(BasePushInfo basePushInfo, QWantSingChanceMsg qWantSingChanceMsg) {
