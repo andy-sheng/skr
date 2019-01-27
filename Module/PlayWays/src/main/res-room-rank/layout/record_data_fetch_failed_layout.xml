@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:background="@drawable/zhanji_wuwangicon"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/view_59_dp"
+        android:layout_height="@dimen/view_59_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:textColor="@color/white_trans_50"
+        android:text="你的网络情况让撕歌嫌弃了，刷新一下吧"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.common.view.ex.ExTextView
+        android:paddingBottom="@dimen/view_4_dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/view_16_dp"
+        android:gravity="center"
+        android:text="点击刷新"
+        android:background="@drawable/img_btn_bg_red"
+        android:id="@+id/tv_reload"
+        android:layout_marginTop="@dimen/view_52_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/view_146_dp"
+        android:layout_height="@dimen/view_52_dp" />
+</LinearLayout>

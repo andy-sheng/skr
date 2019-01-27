@@ -317,8 +317,12 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
                     @Override
                     public void onComplete() {
-                        mPresenter.getVoteResult(mRoomData.getGameId(), 1);
-                        mUiHanlder.sendEmptyMessageDelayed(MSG_GO_RECORD_FRAGMENT,10000);
+                        stopTimeTask();
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
+                                .setAddToBackStack(true)
+                                .addDataBeforeAdd(1, mRoomData)
+                                .build()
+                        );
                     }
                 });
     }

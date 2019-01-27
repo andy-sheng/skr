@@ -117,7 +117,7 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
      * @param gameID
      */
     public void getVoteResult(int gameID, int deep) {
-        if (deep > 3) {
+        if (deep > 5) {
             MyLog.d(TAG, "拉了 5次都没数据，过分了。getVoteResult" + " gameID=" + gameID + " deep=" + deep);
             return;
         }

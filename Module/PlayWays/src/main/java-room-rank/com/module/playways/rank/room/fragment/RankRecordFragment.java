@@ -1,9 +1,12 @@
 package com.module.playways.rank.room.fragment;
 
 import android.os.Bundle;
-import android.os.Message;
+
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
+
+import android.view.View;
+import android.widget.ProgressBar;
+
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -11,22 +14,29 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+
+import com.common.rxretrofit.ApiManager;
+
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.playways.event.FinishPlayWayActivityEvent;
+import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
+
 import com.module.playways.rank.room.presenter.EndGamePresenter;
 import com.module.playways.rank.room.view.IVoteView;
+
 import com.module.playways.rank.room.view.RecordItemView;
 import com.module.playways.rank.room.view.RecordTitleView;
 import com.module.rank.R;
@@ -55,7 +65,20 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
 
     RoomData mRoomData;
 
-    EndGamePresenter mEndGamePresenter;
+    ExTextView mTvReload;
+
+    ProgressBar mLoading;
+
+    ExRelativeLayout mRlLoadingArea;
+
+    View mLlLoadFailed;
+
+    ExRelativeLayout mRlRecordArea;
+
+    RecordData mRecordData;
+
+    RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+
     @Override
     public int initView() {
         return R.layout.ranking_record_fragment_layout;
@@ -71,7 +94,22 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
         mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
         mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
         mRecordTitleView = (RecordTitleView) mRootView.findViewById(R.id.record_title_view);
-        RecordData recordData = mRoomData.getRecordData();
+
+        mRecordData = mRoomData.getRecordData();
+
+        mTvReload = (ExTextView)mRootView.findViewById(R.id.tv_reload);
+        mLoading = (ProgressBar)mRootView.findViewById(R.id.loading);
+        mRlLoadingArea = (ExRelativeLayout)mRootView.findViewById(R.id.rl_loading_area);
+        mLlLoadFailed = mRootView.findViewById(R.id.ll_load_failed);
+        mRlRecordArea = (ExRelativeLayout)mRootView.findViewById(R.id.rl_record_area);
+
+        RxView.clicks(mTvReload)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    toLoadingState();
+                    getVoteInfo();
+                });
+
         RxView.clicks(mTvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -89,10 +127,11 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
                             .navigation();
                 });
 
-        if (recordData == null) {
-            loadData();
+        if (mRecordData == null) {
+            toLoadingState();
+            getVoteInfo();
         } else {
-            bindData(recordData);
+            bindData(mRecordData);
         }
         U.getSoundUtils().preLoad(TAG, R.raw.result_win, R.raw.result_lose);
         U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.result_addstar,
@@ -110,12 +149,69 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
         }
     }
 
-    private void loadData() {
-        if(mEndGamePresenter==null){
-            mEndGamePresenter = new EndGamePresenter(this);
-            addPresent(mEndGamePresenter);
-        }
-        mEndGamePresenter.getVoteResult(mRoomData.getGameId(),0);
+    private void getVoteInfo(){
+        ApiMethods.subscribe(mRoomServerApi.getVoteResult(mRoomData.getGameId()), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
+                    List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
+
+                    if (scoreResultModels != null && scoreResultModels.size() > 0) {
+                        List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
+                        ScoreResultModel myScoreResultModel = new ScoreResultModel();
+                        for (ScoreResultModel scoreResultModel : scoreResultModels) {
+                            WinResultModel model = new WinResultModel();
+                            model.setUseID(scoreResultModel.getUserID());
+                            model.setType(scoreResultModel.getWinType());
+                            winResultModels.add(model);
+
+                            if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                                myScoreResultModel = scoreResultModel;
+                            }
+                        }
+                        MyLog.d(TAG, " getVoteResult " + " voteInfoModelList " + voteInfoModelList.toString());
+                        MyLog.d(TAG, " getVoteResult " + " scoreResultModel " + myScoreResultModel.toString());
+                        MyLog.d(TAG, " getVoteResult " + " winResultModels " + winResultModels.toString());
+
+                        mRecordData = new RecordData(voteInfoModelList, myScoreResultModel, winResultModels);
+                        toLoadSuccessState();
+                    }
+                } else {
+                    MyLog.e(TAG, "getVoteResult result errno is " + result.getErrmsg());
+                    toLoadFaildState();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, e);
+                toLoadFaildState();
+            }
+        }, this);
+    }
+
+    private void toLoadingState(){
+        mRlLoadingArea.setVisibility(View.VISIBLE);
+        mLoading.setVisibility(View.VISIBLE);
+        mLlLoadFailed.setVisibility(View.GONE);
+        mRlRecordArea.setVisibility(View.GONE);
+    }
+
+    private void toLoadFaildState(){
+        mRlLoadingArea.setVisibility(View.VISIBLE);
+        mLoading.setVisibility(View.GONE);
+        mLlLoadFailed.setVisibility(View.VISIBLE);
+        mRlRecordArea.setVisibility(View.GONE);
+    }
+
+    private void toLoadSuccessState(){
+        mRlLoadingArea.setVisibility(View.GONE);
+        mLoading.setVisibility(View.GONE);
+        mLlLoadFailed.setVisibility(View.GONE);
+        mRlRecordArea.setVisibility(View.VISIBLE);
+
+        bindData(mRecordData);
     }
 
     @Override
