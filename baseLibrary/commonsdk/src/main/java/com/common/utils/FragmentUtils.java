@@ -209,6 +209,8 @@ public class FragmentUtils {
             if (oldFragment != null) {
                 MyLog.d(TAG, "addFragment" + " oldFragment!=null");
                 if (params.useOldFragmentIfExist) {
+                    // 这个一般设置为true，防止低内存时一些重复添加Fragment的问题
+                    MyLog.d(TAG, "使用老的重建"+oldFragment.getTag());
                     if (!oldFragment.isAdded()) {
                         ft = ft.add(params.containerViewId, oldFragment, showTag);
                     }
@@ -410,7 +412,7 @@ public class FragmentUtils {
          * useOldFragmentIfExist = true
          * 低内存回收时，是否要用原内存中的fragment重建个fragment
          */
-        boolean useOldFragmentIfExist = false;
+        boolean useOldFragmentIfExist = true;
 
         public void setFromFragment(BaseFragment fromFragment) {
             this.fromFragment = fromFragment;
