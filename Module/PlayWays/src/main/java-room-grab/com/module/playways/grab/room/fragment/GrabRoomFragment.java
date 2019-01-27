@@ -736,6 +736,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mRoundOverCardView.setVisibility(View.GONE);
         mGrabGameOverView.setVisibility(View.VISIBLE);
+        mTopContainerView.onGameFinish();
         mGrabGameOverView.starAnimation(new SVGAListener() {
             @Override
             public void onFinished() {

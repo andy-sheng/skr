@@ -99,6 +99,12 @@ public class GrabTopContainerView extends RelativeLayout {
         mTopContentRv.setModeSing((int) singUid);
     }
 
+    public void onGameFinish() {
+        if (mMoreOpView != null) {
+            mMoreOpView.dismiss();
+        }
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -148,7 +154,6 @@ public class GrabTopContainerView extends RelativeLayout {
 
     void reset() {
     }
-
 
     public interface Listener {
         void closeBtnClick();

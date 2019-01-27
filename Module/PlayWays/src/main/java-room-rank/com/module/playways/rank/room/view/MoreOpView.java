@@ -100,6 +100,12 @@ public class MoreOpView extends RelativeLayout {
         }
     }
 
+    public void dismiss() {
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+        }
+    }
+
     public void setListener(Listener listener) {
         mListener = listener;
     }
