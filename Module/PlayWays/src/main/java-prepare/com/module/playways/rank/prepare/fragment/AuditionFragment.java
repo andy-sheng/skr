@@ -223,6 +223,7 @@ public class AuditionFragment extends BaseFragment {
         RxView.clicks(mIvPlay).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     playRecord();
+                    playLyrics(mSongModel, true);
                 });
 
         RxView.clicks(mIvSave).throttleFirst(500, TimeUnit.MILLISECONDS)
