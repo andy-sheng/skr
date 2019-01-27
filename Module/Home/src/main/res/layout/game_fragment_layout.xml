@@ -31,7 +31,6 @@
             android:layout_below="@id/avatar_bg"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_1_dp"
-            android:text="赤-CHVANS"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_20_dp" />
 
@@ -80,7 +79,6 @@
                 android:layout_marginLeft="@dimen/view_6_dp"
                 android:layout_marginTop="@dimen/view_11_dp"
                 android:layout_toRightOf="@id/medal_iv"
-                android:text="朝阳区TOP15%"
                 android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_13_dp" />
 

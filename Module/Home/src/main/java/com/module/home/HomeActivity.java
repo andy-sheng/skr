@@ -70,9 +70,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
             @Override
             public Fragment getItem(int position) {
                 MyLog.d(TAG, "getItem" + " position=" + position);
-                if (position == 1) {
+                if (position == 0) {
                     return new GameFragment();
-                } else if (position == 0) {
+                } else if (position == 1) {
                     if (mMsgService == null) {
                         return new PersonFragment();
                     } else {
@@ -107,7 +107,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                     @Override
                     public void accept(Object o) {
                         U.getSoundUtils().play(TAG, R.raw.trans_tab);
-                        mMainVp.setCurrentItem(1, false);
+                        mMainVp.setCurrentItem(0, false);
                         mGameBtn.setSelected(true);
                         mMessageBtn.setSelected(false);
                         mPersonInfoBtn.setSelected(false);
@@ -120,7 +120,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                     @Override
                     public void accept(Object o) {
                         U.getSoundUtils().play(TAG, R.raw.trans_tab);
-                        mMainVp.setCurrentItem(0, false);
+                        mMainVp.setCurrentItem(1, false);
                         mGameBtn.setSelected(false);
                         mMessageBtn.setSelected(true);
                         mPersonInfoBtn.setSelected(false);
@@ -139,7 +139,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                         mPersonInfoBtn.setSelected(true);
                     }
                 });
-        mMainVp.setCurrentItem(1, false);
+        mMainVp.setCurrentItem(0, false);
         mFromCreate = true;
 
         U.getSoundUtils().preLoad(TAG, R.raw.trans_tab);
