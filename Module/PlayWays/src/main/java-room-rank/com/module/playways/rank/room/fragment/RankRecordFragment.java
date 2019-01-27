@@ -1,12 +1,19 @@
 package com.module.playways.rank.room.fragment;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -15,6 +22,11 @@ import com.module.RouterConstants;
 import com.module.playways.event.FinishPlayWayActivityEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
+import com.module.playways.rank.room.model.VoteInfoModel;
+import com.module.playways.rank.room.model.WinResultModel;
+import com.module.playways.rank.room.model.score.ScoreResultModel;
+import com.module.playways.rank.room.presenter.EndGamePresenter;
+import com.module.playways.rank.room.view.IVoteView;
 import com.module.playways.rank.room.view.RecordItemView;
 import com.module.playways.rank.room.view.RecordTitleView;
 import com.module.rank.R;
@@ -22,9 +34,11 @@ import com.zq.level.view.NormalLevelView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class RankRecordFragment extends BaseFragment {
+public class RankRecordFragment extends BaseFragment implements IVoteView {
 
     public final static String TAG = "RankingRecordFragment";
 
@@ -39,10 +53,9 @@ public class RankRecordFragment extends BaseFragment {
 
     RecordTitleView mRecordTitleView;
 
-    RecordData mRecordData;
-
     RoomData mRoomData;
 
+    EndGamePresenter mEndGamePresenter;
     @Override
     public int initView() {
         return R.layout.ranking_record_fragment_layout;
@@ -58,7 +71,7 @@ public class RankRecordFragment extends BaseFragment {
         mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
         mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
         mRecordTitleView = (RecordTitleView) mRootView.findViewById(R.id.record_title_view);
-
+        RecordData recordData = mRoomData.getRecordData();
         RxView.clicks(mTvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -76,18 +89,33 @@ public class RankRecordFragment extends BaseFragment {
                             .navigation();
                 });
 
-        try {
-            mRecordTitleView.setData(mRankingRecord, mRecordData, mRoomData);
-            mRecordItemOne.setData(mRoomData, mRecordData, 0, 0xFFFF79A9);
-            mRecordItemTwo.setData(mRoomData, mRecordData, 1, 0xFF85EAFF);
-            mRecordItemThree.setData(mRoomData, mRecordData, 2, 0xFF85EAFF);
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
+        if (recordData == null) {
+            loadData();
+        } else {
+            bindData(recordData);
         }
-
         U.getSoundUtils().preLoad(TAG, R.raw.result_win, R.raw.result_lose);
         U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.result_addstar,
                 R.raw.result_deductstar, R.raw.song_pairbutton);
+    }
+
+    void bindData(RecordData recordData) {
+        try {
+            mRecordTitleView.setData(mRankingRecord, recordData, mRoomData);
+            mRecordItemOne.setData(mRoomData, recordData, 0, 0xFFFF79A9);
+            mRecordItemTwo.setData(mRoomData, recordData, 1, 0xFF85EAFF);
+            mRecordItemThree.setData(mRoomData, recordData, 2, 0xFF85EAFF);
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        }
+    }
+
+    private void loadData() {
+        if(mEndGamePresenter==null){
+            mEndGamePresenter = new EndGamePresenter(this);
+            addPresent(mEndGamePresenter);
+        }
+        mEndGamePresenter.getVoteResult(mRoomData.getGameId(),0);
     }
 
     @Override
@@ -105,11 +133,7 @@ public class RankRecordFragment extends BaseFragment {
 
     @Override
     public void setData(int type, @Nullable Object data) {
-        if (type == 0) {
-            mRecordData = (RecordData) data;
-        } else if (type == 1) {
-            mRoomData = (RoomData) data;
-        }
+        mRoomData = (RoomData) data;
     }
 
     @Override
@@ -117,4 +141,18 @@ public class RankRecordFragment extends BaseFragment {
         return false;
     }
 
+    @Override
+    public void voteSucess(long votedUserId) {
+
+    }
+
+    @Override
+    public void voteFailed() {
+
+    }
+
+    @Override
+    public void showRecordView(RecordData recordData) {
+        bindData(recordData);
+    }
 }

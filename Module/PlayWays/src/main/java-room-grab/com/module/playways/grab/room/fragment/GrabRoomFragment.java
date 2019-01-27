@@ -18,6 +18,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
@@ -236,7 +237,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 onBattleBeginPlayOver();
             }
         }, 500);
-
+        BgMusicManager.getInstance().setRoom(true);
     }
 
     @Override
@@ -671,8 +672,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             }
             mAnimatorList.clear();
         }
-
         U.getSoundUtils().release(TAG);
+        BgMusicManager.getInstance().setRoom(false);
     }
 
     @Override

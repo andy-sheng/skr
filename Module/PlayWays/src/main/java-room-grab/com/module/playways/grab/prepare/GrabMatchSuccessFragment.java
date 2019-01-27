@@ -458,7 +458,6 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         if (mTopSvgaView != null) {
             mTopSvgaView.stopAnimation(true);
         }
-
         // 加上保护
         BgMusicManager.getInstance().setRoom(false);
     }
@@ -482,7 +481,6 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
         mRootView.setVisibility(VISIBLE);
-
         // 加上保护
         BgMusicManager.getInstance().setRoom(true);
         BgMusicManager.getInstance().destory();

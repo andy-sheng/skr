@@ -1,6 +1,7 @@
 package com.module.playways.rank.room.fragment;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
@@ -189,7 +191,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     PendingRivalData mPendingRivalCountdown;
 
-    int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
+//    int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
 
     SVGAParser mSVGAParser;
 
@@ -216,12 +218,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         initLyricsView();
         initTurnChangeView();
         initGiftDisplayView();
-
         showReadyGoView();
 
         mCorePresenter = new RankCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
-
         mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
             @Override
             public void onDownloaded(long downloaded, long totalLength) {
@@ -243,12 +243,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
             }
         }, mRoomData.getPlayerInfoList());
-
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
-
         U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown, R.raw.endgame);
-
+        BgMusicManager.getInstance().setRoom(true);
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
     }
 
@@ -342,7 +340,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             @Override
             public void run() {
                 // 模式改为3，自动播放主舞台退出的svga动画
-                mUFOMode = 3;
+//                mUFOMode = 3;
                 hideWebpStage();
                 mManyLyricsView.setVisibility(View.GONE);
             }
@@ -360,7 +358,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void hideWebpStage() {
-        MyLog.d(TAG, "hideWebpStage" );
+        MyLog.d(TAG, "hideWebpStage");
         // 舞台退出，淡出
         ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 1f, 0f);
         objectAnimatorStage.setDuration(1000);
@@ -435,59 +433,59 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                         .setCircle(true)
                         .build());
         FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
-                .setCallBack(new IFrescoCallBack() {
-                    @Override
-                    public void processWithInfo(ImageInfo info, Animatable animatable) {
-                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
-                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
+                        .setCallBack(new IFrescoCallBack() {
+                            @Override
+                            public void processWithInfo(ImageInfo info, Animatable animatable) {
+                                if (animatable != null && animatable instanceof AnimatedDrawable2) {
+                                    ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
 
-                                @Override
-                                public void onAnimationStart(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                    ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
-                                    objectAnimatorStage.setDuration(1000);
-                                    objectAnimatorStage.start();
-                                    mAnimatorList.add(objectAnimatorStage);
+                                        @Override
+                                        public void onAnimationStart(AnimatedDrawable2 drawable) {
+                                            MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
+                                            ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
+                                            objectAnimatorStage.setDuration(1000);
+                                            objectAnimatorStage.start();
+                                            mAnimatorList.add(objectAnimatorStage);
 
-                                    ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
-                                    objectAnimatorAvatar.setDuration(1000);
-                                    objectAnimatorAvatar.start();
-                                    mAnimatorList.add(objectAnimatorAvatar);
+                                            ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
+                                            objectAnimatorAvatar.setDuration(1000);
+                                            objectAnimatorAvatar.start();
+                                            mAnimatorList.add(objectAnimatorAvatar);
 //                                    String avatar = mRoomData.getUserInfo(mRoomData.getRealRoundInfo().getUserID()).getAvatar();
 //                                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
 //                                            AvatarUtils.newParamsBuilder(avatar)
 //                                                    .setCircle(true)
 //                                                    .build());
+                                        }
+
+                                        @Override
+                                        public void onAnimationStop(AnimatedDrawable2 drawable) {
+                                            MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
+                                        }
+
+                                        @Override
+                                        public void onAnimationReset(AnimatedDrawable2 drawable) {
+                                        }
+
+                                        @Override
+                                        public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+
+                                        }
+
+                                        @Override
+                                        public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
+                                        }
+                                    });
+                                    animatable.start();
                                 }
+                            }
 
-                                @Override
-                                public void onAnimationStop(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
-                                }
-
-                                @Override
-                                public void onAnimationReset(AnimatedDrawable2 drawable) {
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
-
-                                }
-
-                                @Override
-                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
-                                }
-                            });
-                            animatable.start();
-                        }
-                    }
-
-                    @Override
-                    public void processWithFailure() {
-                        MyLog.d(TAG, "processWithFailure");
-                    }
-                })
-                .build()
+                            @Override
+                            public void processWithFailure() {
+                                MyLog.d(TAG, "processWithFailure");
+                            }
+                        })
+                        .build()
         );
     }
 
@@ -912,6 +910,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
 
         U.getSoundUtils().release(TAG);
+        BgMusicManager.getInstance().setRoom(false);
     }
 
     @Override
@@ -1048,45 +1047,22 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     }
 
-    @Override
-    public void showRecordView(RecordData recordData) {
-        MyLog.d(TAG, "showRecordView" + " recordData=" + recordData);
-        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
-        }
-
-        startGameEndAniamtion();
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
-                        .setAddToBackStack(true)
-                        .addDataBeforeAdd(0, recordData)
-                        .addDataBeforeAdd(1, mRoomData)
-                        .build()
-                );
-            }
-        }, 3000);
+    public void showRecordView() {
+        MyLog.d(TAG, "showRecordView" + " recordData=" + mRoomData.getRecordData());
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
+                .setAddToBackStack(true)
+                .addDataBeforeAdd(1, mRoomData)
+                .build()
+        );
     }
 
-    @Override
     public void showVoteView() {
         MyLog.d(TAG, "showVoteView");
-        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
-        }
-
-        startGameEndAniamtion();
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                        .setAddToBackStack(true)
-                        .addDataBeforeAdd(0, mRoomData)
-                        .build()
-                );
-            }
-        }, 3000);
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
+                .setAddToBackStack(true)
+                .addDataBeforeAdd(0, mRoomData)
+                .build()
+        );
     }
 
     private void startGameEndAniamtion() {
@@ -1107,12 +1083,38 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mGameEndAnimation.setDuration(750);
             mGameEndAnimation.playTogether(a1, a2);
         }
+        mGameEndAnimation.removeAllListeners();
+        mGameEndAnimation.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mDialogPlus != null && mDialogPlus.isShowing()) {
+                            mDialogPlus.dismiss();
+                        }
+                        RecordData recordData = mRoomData.getRecordData();
+                        if (recordData != null && recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
+                            showRecordView();
+                        } else {
+                            showVoteView();
+                        }
+                    }
+                }, 2250);
+            }
+        });
         mGameEndAnimation.start();
 
     }
 
     private void destroyAnimation() {
-        MyLog.d(TAG, "destroyAnimation" );
+        MyLog.d(TAG, "destroyAnimation");
 //        if (mStagePeopleBg != null) {
 //            mStagePeopleBg.stopAnimation(true);
 //            mStagePeopleBg.setVisibility(View.GONE);
@@ -1141,8 +1143,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         if (mSingAvatarView != null && mSingAvatarView.getVisibility() == View.VISIBLE) {
             mSingAvatarView.setVisibility(View.GONE);
         }
-
-
     }
 
 
@@ -1156,6 +1156,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.release();
+        startGameEndAniamtion();
     }
 
     @Override

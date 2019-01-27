@@ -4,6 +4,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -81,6 +83,18 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     AnimatorSet mRightVoteAnimationSet;
 
 //    RelativeLayout mRlCountDownContainer;
+
+    static final int MSG_GO_RECORD_FRAGMENT = 1;
+
+    Handler mUiHanlder = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == MSG_GO_RECORD_FRAGMENT){
+                showRecordView(null);
+            }
+        }
+    };
 
     @Override
     public int initView() {
@@ -304,6 +318,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     @Override
                     public void onComplete() {
                         mPresenter.getVoteResult(mRoomData.getGameId(), 1);
+                        mUiHanlder.sendEmptyMessageDelayed(MSG_GO_RECORD_FRAGMENT,10000);
                     }
                 });
     }
@@ -447,9 +462,9 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     @Override
     public void showRecordView(RecordData recordData) {
         stopTimeTask();
+        mUiHanlder.removeMessages(MSG_GO_RECORD_FRAGMENT);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
                 .setAddToBackStack(true)
-                .addDataBeforeAdd(0, recordData)
                 .addDataBeforeAdd(1, mRoomData)
                 .build()
         );
@@ -474,7 +489,9 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         if (mStartRightSvga != null) {
             mStartRightSvga.stopAnimation(true);
         }
-
+        if (mUiHanlder != null) {
+            mUiHanlder.removeCallbacksAndMessages(null);
+        }
         U.getSoundUtils().release(TAG);
     }
 

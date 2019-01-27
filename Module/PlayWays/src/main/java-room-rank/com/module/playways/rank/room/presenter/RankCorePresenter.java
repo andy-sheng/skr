@@ -98,7 +98,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_ROBOT_SING_BEGIN = 10;
     //    static final int MSG_ROBOT_SING_END = 11;
-    static final int MSG_GET_VOTE = 20;
+//    static final int MSG_GET_VOTE = 20;
 
     static final int MSG_START_LAST_TWO_SECONDS_TASK = 30;
 
@@ -114,13 +114,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     Disposable mHeartBeatTask;
 
     Disposable mSyncGameStateTask;
-
-    PublishSubject<RecordData> mGameFinishActionSubject = PublishSubject.create();
-
-    /**
-     * 服务器确定已结束，收到RoundAndGameOver事件
-     */
-    volatile boolean isConfirmRoundAndGameOver = false;
 
     IGameRuleView mIGameRuleView;
 
@@ -150,11 +143,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     break;
 //                case MSG_ROBOT_SING_END:
 //                    break;
-                case MSG_GET_VOTE:
-                    MyLog.d(TAG, "handleMessage MSG_GET_VOTE");
-                    Pair<Integer, Integer> pair = (Pair<Integer, Integer>) msg.obj;
-                    getVoteResult(pair.first, pair.second);
-                    break;
                 case MSG_START_LAST_TWO_SECONDS_TASK:
                     RoundInfoModel roundInfoModel = (RoundInfoModel) msg.obj;
                     if (roundInfoModel != null && roundInfoModel == mRoomData.getRealRoundInfo()) {
@@ -173,21 +161,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
         MyLog.w(TAG, "player info is " + mRoomData.toString());
 
-        mGameFinishActionSubject
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<RecordData>() {
-                    @Override
-                    public void accept(RecordData recordData) throws Exception {
-                        if (recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
-                            MyLog.w(TAG, "accept 1");
-                            //不需要跳转评论页,直接跳转战绩页
-                            mIGameRuleView.showRecordView(new RecordData(recordData.mVoteInfoModels, recordData.mScoreResultModel, recordData.mWinResultModels));
-                        } else {
-                            MyLog.w(TAG, "accept 1");
-                            mIGameRuleView.showVoteView();
-                        }
-                    }
-                });
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
             EngineManager.getInstance().init("rankingroom", params);
@@ -274,10 +247,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (mExoPlayer != null) {
             mExoPlayer.release();
             mExoPlayer = null;
-        }
-
-        if (mGameFinishActionSubject != null) {
-            mGameFinishActionSubject.onComplete();
         }
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
     }
@@ -474,72 +443,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    /**
-     * 获取投票结果
-     *
-     * @param gameID
-     */
-    public void getVoteResult(int gameID, int deep) {
-        MyLog.w(TAG, "getVoteResult" + " gameID=" + gameID);
-        if (deep > 3) {
-            MyLog.d(TAG, "拉了 5次都没数据，过分了。getVoteResult" + " gameID=" + gameID + " deep=" + deep);
-            return;
-        }
-        ApiMethods.subscribe(mRoomServerApi.getVoteResult(gameID), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
-                    List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
-
-                    if (scoreResultModels != null && scoreResultModels.size() > 0) {
-
-                        List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
-                        ScoreResultModel myScoreResultModel = new ScoreResultModel();
-                        for (ScoreResultModel scoreResultModel : scoreResultModels) {
-                            WinResultModel model = new WinResultModel();
-                            model.setUseID(scoreResultModel.getUserID());
-                            model.setType(scoreResultModel.getWinType());
-                            winResultModels.add(model);
-
-                            if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                                myScoreResultModel = scoreResultModel;
-                            }
-                        }
-                        U.getToastUtil().showShort("获取投票结果成功");
-
-                        MyLog.d(TAG, "getVoteResult" + " result=" + voteInfoModelList.toString());
-                        MyLog.d(TAG, "getVoteResult" + " result=" + myScoreResultModel.toString());
-                        MyLog.d(TAG, "getVoteResult" + " result=" + winResultModels.toString());
-
-                        mGameFinishActionSubject.onNext(new RecordData(voteInfoModelList, myScoreResultModel, winResultModels));
-                        mGameFinishActionSubject.onComplete();
-                    } else {
-                        mUiHandler.removeMessages(MSG_GET_VOTE);
-                        Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
-                        message.obj = new Pair<>(gameID, deep + 1);
-                        mUiHandler.sendMessageDelayed(message, 1000 * deep);
-                    }
-                } else {
-                    MyLog.e(TAG, "getVoteResult result failed, msg is " + result.getErrmsg());
-                    mUiHandler.removeMessages(MSG_GET_VOTE);
-                    Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
-                    message.obj = new Pair<>(gameID, deep + 1);
-                    mUiHandler.sendMessageDelayed(message, 1000 * deep);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, "getVoteResult error " + e);
-                mUiHandler.removeMessages(MSG_GET_VOTE);
-                Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
-                message.obj = new Pair<Integer, Integer>(gameID, deep + 1);
-                mUiHandler.sendMessageDelayed(message, 1000 * deep);
-            }
-        }, this);
-    }
-
     // 同步游戏详情状态(检测不到长连接调用)
     public void syncGameStatus(int gameID) {
         ApiMethods.subscribe(mRoomServerApi.syncGameStatus(gameID), new ApiObserver<ApiResult>() {
@@ -713,8 +616,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     mUiHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mIGameRuleView.gameFinish();
                             gameIsFinish();
+                            mIGameRuleView.gameFinish();
                         }
                     });
                 } else {
@@ -794,13 +697,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         cancelSyncGameStateTask();
         // 游戏结束，直接关闭引擎，节省计费
         EngineManager.getInstance().destroy("rankingroom");
-
-        if (!isConfirmRoundAndGameOver) {
-            mUiHandler.removeMessages(MSG_GET_VOTE);
-            Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
-            message.obj = new Pair<>(mRoomData.getGameId(), 1);
-            mUiHandler.sendMessageDelayed(message, 3000);
-        }
     }
 
     private void recvGameOverFromServer(String from, long gameOverTs) {
@@ -1195,18 +1091,16 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
         MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
-        isConfirmRoundAndGameOver = true;
-
-        mUiHandler.removeMessages(MSG_GET_VOTE);
-        recvGameOverFromServer("push", roundAndGameOverEvent.roundOverTimeMs);
-        cancelSyncGameStateTask();
 
         MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mVoteInfoModels =" + roundAndGameOverEvent.mVoteInfoModels);
         MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mScoreResultModel =" + roundAndGameOverEvent.mScoreResultModel);
         MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mWinResultModels =" + roundAndGameOverEvent.mWinResultModels);
 
-        mGameFinishActionSubject.onNext(new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mScoreResultModel, roundAndGameOverEvent.mWinResultModels));
-        mGameFinishActionSubject.onComplete();
+        RecordData recordData = new RecordData(roundAndGameOverEvent.mVoteInfoModels, roundAndGameOverEvent.mScoreResultModel, roundAndGameOverEvent.mWinResultModels);
+        mRoomData.setRecordData(recordData);
+
+        recvGameOverFromServer("push", roundAndGameOverEvent.roundOverTimeMs);
+        cancelSyncGameStateTask();
     }
 
     // 应用进程切到后台通知

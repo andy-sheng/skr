@@ -10,6 +10,7 @@ import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
+import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Room.PlayerInfo;
 
@@ -71,11 +72,14 @@ public class RoomData implements Serializable {
 
     private List<PlayerInfoModel> mPlayerInfoList;//选手信息
 
+    private RecordData mRecordData; // PK赛的结果信息
+
     private volatile boolean mIsGameFinish = false;
 
     private List<GrabResultInfoModel> mResultList; // 一唱到底对战结果数据
 
     private boolean mMute = false;
+
 
     /**
      * 检查轮次信息是否需要更新
@@ -287,6 +291,14 @@ public class RoomData implements Serializable {
         return mResultList;
     }
 
+    public void setRecordData(RecordData recordData) {
+        mRecordData = recordData;
+    }
+
+    public RecordData getRecordData() {
+        return mRecordData;
+    }
+
     public boolean isMute() {
         return mMute;
     }
@@ -324,6 +336,5 @@ public class RoomData implements Serializable {
                 ", mIsGameFinish=" + mIsGameFinish +
                 '}';
     }
-
 
 }

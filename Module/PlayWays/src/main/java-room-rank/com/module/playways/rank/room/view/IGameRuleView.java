@@ -15,12 +15,12 @@ public interface IGameRuleView {
 
     void gameFinish();
 
-    void showVoteView();
+//    void showVoteView();
 
-    /**
-     * 战绩界面
-     */
-    void showRecordView(RecordData recordData);
+//    /**
+//     * 战绩界面
+//     */
+//    void showRecordView(RecordData recordData);
 
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
 
