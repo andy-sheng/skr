@@ -164,7 +164,7 @@ public class AuditionFragment extends BaseFragment {
                     // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
                     U.getFragmentUtils().popFragment(AuditionFragment.this);
                     return;
-                }else if (MSG_LYRIC_END_EVENT == msg.what) {
+                } else if (MSG_LYRIC_END_EVENT == msg.what) {
                     MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1);
                     EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
                 }
@@ -302,7 +302,7 @@ public class AuditionFragment extends BaseFragment {
 
         playLyrics(mSongModel, true);
         playMusic(mSongModel);
-        if(MyLog.isDebugLogOpen()){
+        if (MyLog.isDebugLogOpen()) {
             postLyricEndEvent(mLyricsReader);
         }
 
@@ -325,10 +325,12 @@ public class AuditionFragment extends BaseFragment {
                             int score = 0;
                             if (targetSongInfo != null) {
                                 score = (int) (targetSongInfo.getScore() * 100);
-                                U.getToastUtil().showShort("score:" + targetSongInfo.getScore());
+                                U.getToastUtil().showShort("acrscore:" + targetSongInfo.getScore());
+                                MyLog.d(TAG, "acrscore=" + score);
+                            } else {
+                                score = EngineManager.getInstance().getLineScore();
+                                MyLog.d(TAG, "changba score=" + score);
                             }
-                            MyLog.d(TAG, "score=" + score);
-
                         }
                     }).build());
         }
@@ -557,7 +559,7 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void postLyricEndEvent(LyricsReader lyricsReader) {
-        if(lyricsReader == null){
+        if (lyricsReader == null) {
             return;
         }
         Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
@@ -599,9 +601,8 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineEndEvent event) {
         //TODO
-        MyLog.d(TAG, "onEvent event=" + event);
         int score = EngineManager.getInstance().getLineScore();
-        U.getToastUtil().showShort("score:" + score);
+        U.getToastUtil().showShort("changba score:" + score);
         if (MyLog.isDebugLogOpen()) {
             EngineManager.getInstance().recognizeInManualMode();
         }
