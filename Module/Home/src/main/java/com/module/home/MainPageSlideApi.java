@@ -19,5 +19,5 @@ public interface MainPageSlideApi {
     Observable<ApiResult> getSlideList();
 
     @GET("http://dev.game.inframe.mobi/v1/kconf/game-play")
-    Observable<ApiResult> getGameConfig(@Query("mode") int mode);
+    Observable<ApiResult> getGameConfig(@Query("mode") int mode, @Query("debugOpen") boolean debug);
 }

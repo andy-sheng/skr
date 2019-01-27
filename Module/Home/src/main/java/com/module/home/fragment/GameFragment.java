@@ -438,7 +438,7 @@ public class GameFragment extends BaseFragment {
 
     private void checkGameConf(int mode, long tag, final View view) {
 
-        ApiMethods.subscribe(mMainPageSlideApi.getGameConfig(mode), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mMainPageSlideApi.getGameConfig(mode, true), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() != 0) {
