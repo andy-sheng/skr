@@ -463,13 +463,13 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfoModel> playerInfoList, String avatar, List<SongModel> songModels) {
         MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " playerInfoList=" + playerInfoList);
+        BgMusicManager.getInstance().destory();
         mPrepareData.setGameId(gameId);
         mPrepareData.setSysAvatar(avatar);
         mPrepareData.setGameCreatMs(gameCreatMs);
         mPrepareData.setPlayerInfoList(playerInfoList);
         mPrepareData.setSongModelList(songModels);
         stopTimeTask();
-        BgMusicManager.getInstance().destory();
 
         //先添加成功界面面
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchSuccessFragment.class)
@@ -523,7 +523,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
     private void playBackgroundMusic() {
         if (!BgMusicManager.getInstance().isPlaying() && mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             if (mPrepareData.getSongModel() != null) {
-                BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
+                BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0, "GrabMatchFragment");
             }
         }
     }

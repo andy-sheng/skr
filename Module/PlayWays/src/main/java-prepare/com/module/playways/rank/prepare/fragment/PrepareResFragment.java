@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
@@ -17,11 +16,11 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
-import com.module.playways.grab.prepare.GrabMatchFragment;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.PrepareSongPresenter;
@@ -158,8 +157,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mPrepareSongPresenter.prepareRes();
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.song_pairbutton);
-
-        BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
+        playBackgroundMusic();
     }
 
     @Override
@@ -179,6 +177,12 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     public void onDetach() {
         super.onDetach();
         mPrepareSongPresenter.cancelTask();
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        playBackgroundMusic();
     }
 
     @Override
@@ -206,17 +210,15 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
-        }
+        playBackgroundMusic();
         mRootView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    protected void onFragmentVisible() {
-        super.onFragmentVisible();
-        if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
+    private void playBackgroundMusic() {
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+            if (mPrepareData.getSongModel() != null) {
+                BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0, "PrepareResFragment");
+            }
         }
     }
 

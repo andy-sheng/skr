@@ -17,8 +17,9 @@ public class BgMusicManager {
     public static final String PREF_KEY_PIPEI_VOLUME_SWITCH = "pref_pipei_volume_switch";   // 音量开关
     public static final String PREF_KEY_PIPEI_VOLUME = "pref_pipei_volume";                 // 音量百分比
 
-    boolean mIsPlay;
+    boolean mIsPlay;   // 音效开关
     float mMaxVolume;  // 最大音量
+    boolean mIsRoom = false;   // 是否在房间内，可以直接在GraMatchSucessFragment
 
     ExoPlayer mExoPlayer;
     ValueAnimator mAnimator;  // 用来做淡入的效果
@@ -52,13 +53,19 @@ public class BgMusicManager {
         this.mMaxVolume = maxVolume;
     }
 
-    public void starPlay(final String path, final long msec) {
+    public void starPlay(final String path, final long msec, final String from) {
+        MyLog.d(TAG, "starPlay" + " path=" + path + " msec=" + msec + " from=" + from);
         if (!mIsPlay) {
             MyLog.d(TAG, "starPlay" + " isPlay = false ");
             return;
         }
 
-        if (TextUtils.isEmpty(path)){
+        if (mIsRoom) {
+            MyLog.d(TAG, "starPlay" + " mIsRoom = true ");
+            return;
+        }
+
+        if (TextUtils.isEmpty(path)) {
             MyLog.d(TAG, "starPlay" + " path = null ");
             return;
         }
@@ -84,7 +91,7 @@ public class BgMusicManager {
 
             @Override
             public void onCompletion() {
-                starPlay(path, msec);
+                starPlay(path, msec, from);
             }
 
             @Override
@@ -109,6 +116,14 @@ public class BgMusicManager {
         });
 
         initVolume();
+    }
+
+    public boolean isRoom() {
+        return mIsRoom;
+    }
+
+    public void setRoom(boolean room) {
+        mIsRoom = room;
     }
 
     public boolean isPlaying() {
@@ -166,7 +181,9 @@ public class BgMusicManager {
 
 
     public void destory() {
+        MyLog.d(TAG, "destory");
         if (mExoPlayer != null) {
+            mExoPlayer.setCallback(null);
             mExoPlayer.release();
             mExoPlayer = null;
         }

@@ -24,6 +24,7 @@ import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
@@ -149,6 +150,10 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                 mVsSvga.startAnimation();
             }
         }, 700);
+
+        // 加上保护
+        BgMusicManager.getInstance().setRoom(true);
+        BgMusicManager.getInstance().destory();
     }
 
     private void loadIcon(SimpleDraweeView simpleDraweeView, boolean isGray, String avatar) {
@@ -385,7 +390,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         initAvatar(false);
 
         U.getSoundUtils().release(TAG);
-        
+
         if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_RANK_ROOM)
                     .withSerializable("prepare_data", mPrepareData)
@@ -452,6 +457,9 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         if (mTopSvgaView != null) {
             mTopSvgaView.stopAnimation(true);
         }
+
+        // 加上保护
+        BgMusicManager.getInstance().setRoom(false);
     }
 
     @Override
@@ -473,12 +481,18 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
         mRootView.setVisibility(VISIBLE);
+
+        // 加上保护
+        BgMusicManager.getInstance().setRoom(true);
+        BgMusicManager.getInstance().destory();
     }
 
     @Override
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
         mRootView.setVisibility(View.GONE);
+        // 加上保护
+        BgMusicManager.getInstance().setRoom(false);
 //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
 //                .setPopFragment(this)
 //                .setPopAbove(false)

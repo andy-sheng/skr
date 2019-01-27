@@ -128,7 +128,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         mMatchPresenter.getMatchingUserIconList();
 
         if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
+            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0, "MatchFragment");
         }
     }
 
@@ -439,7 +439,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
         if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0);
+            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0, "MatchFragment");
         }
         mRootView.setVisibility(View.VISIBLE);
     }
