@@ -80,7 +80,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
-
         AvatarUtils.loadAvatarByUrl(mSongIcon,
                 AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
                         .setBorderColor(Color.parseColor("#0C2275"))
@@ -143,12 +142,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getSoundUtils().play(TAG, R.raw.general_back);
-                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                            .setPopFragment(PrepareResFragment.this)
-                            .setNotifyShowFragment(SongSelectFragment.class)
-                            .setHasAnimation(true)
-                            .setPopAbove(false)
-                            .build());
+                    onBackPressed();
                 });
 
         mIvStartMatch.setEnabled(false);
@@ -203,7 +197,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                 .setPopFragment(PrepareResFragment.this)
                 .setNotifyShowFragment(SongSelectFragment.class)
                 .setHasAnimation(true)
-                .setPopAbove(false)
+//                .setPopAbove(false)
                 .build());
         return true;
     }
