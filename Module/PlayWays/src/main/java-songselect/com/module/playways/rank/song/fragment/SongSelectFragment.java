@@ -108,6 +108,11 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSongCardSwipAdapter = new SongCardSwipAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
+                if (!U.getNetworkUtils().hasNetwork()) {
+                    U.getToastUtil().showShort("无网络连接，请检查网络后重试");
+                    return;
+                }
+
                 U.getSoundUtils().play(TAG, R.raw.general_button);
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
