@@ -302,7 +302,7 @@ public class AuditionFragment extends BaseFragment {
 
         playLyrics(mSongModel, true);
         playMusic(mSongModel);
-        if(BuildConfig.DEBUG){
+        if(MyLog.isDebugLogOpen()){
             postLyricEndEvent(mLyricsReader);
         }
 
