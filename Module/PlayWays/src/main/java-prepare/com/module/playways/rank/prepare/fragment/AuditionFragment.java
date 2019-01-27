@@ -34,27 +34,34 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.song.model.SongModel;
+import com.module.rank.BuildConfig;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.lyrics.LyricsManager;
+import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
+import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.toast.CommonToastView;
 import com.zq.toast.NoImageCommonToastView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -69,6 +76,8 @@ public class AuditionFragment extends BaseFragment {
     public static final String TAG = "AuditionFragment";
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
+
+    static final int MSG_LYRIC_END_EVENT = 10;
 
     static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.aac").getAbsolutePath();
 
@@ -155,6 +164,9 @@ public class AuditionFragment extends BaseFragment {
                     // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
                     U.getFragmentUtils().popFragment(AuditionFragment.this);
                     return;
+                }else if (MSG_LYRIC_END_EVENT == msg.what) {
+                    MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1);
+                    EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
                 }
             }
         };
@@ -290,6 +302,9 @@ public class AuditionFragment extends BaseFragment {
 
         playLyrics(mSongModel, true);
         playMusic(mSongModel);
+        if(BuildConfig.DEBUG){
+            postLyricEndEvent(mLyricsReader);
+        }
 
         mStartRecordTs = System.currentTimeMillis();
         mIvRecordStart.setVisibility(View.GONE);
@@ -356,6 +371,8 @@ public class AuditionFragment extends BaseFragment {
         if (!isRecord) {
             return;
         }
+
+        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
 
         if (System.currentTimeMillis() - mStartRecordTs < 5000) {
             U.getToastUtil().showSkrCustomShort(new NoImageCommonToastView.Builder(getContext())
@@ -498,6 +515,8 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
+    LyricsReader mLyricsReader;
+
     private void playLyrics(SongModel songModel, boolean play) {
         final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
 
@@ -522,6 +541,7 @@ public class AuditionFragment extends BaseFragment {
                         }
                         MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
                         mManyLyricsView.setLyricsReader(lyricsReader);
+                        mLyricsReader = lyricsReader;
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                             mManyLyricsView.play(songModel.getBeginMs());
                             MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
@@ -533,6 +553,26 @@ public class AuditionFragment extends BaseFragment {
                     }, throwable -> MyLog.e(throwable));
         } else {
             MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
+        }
+    }
+
+    private void postLyricEndEvent(LyricsReader lyricsReader) {
+        if(lyricsReader == null){
+            return;
+        }
+        Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
+        Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
+        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        while (it.hasNext()) {
+            Map.Entry<Integer, LyricsLineInfo> entry = it.next();
+            Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
+            msg.arg1 = entry.getKey();
+
+            if (entry.getValue().getEndTime() > mSongModel.getEndMs()) {
+                mUiHanlder.sendMessageDelayed(msg, mSongModel.getEndMs() - mSongModel.getBeginMs());
+            } else {
+                mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mSongModel.getBeginMs());
+            }
         }
     }
 
@@ -622,6 +662,7 @@ public class AuditionFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
 
+        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
         mManyLyricsView.release();
         if (mExoPlayer != null) {
             mExoPlayer.release();
