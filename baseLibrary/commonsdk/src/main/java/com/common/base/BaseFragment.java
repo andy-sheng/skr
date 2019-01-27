@@ -118,12 +118,13 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        MyLog.d(TAG, "onActivityCreated" + " savedInstanceState=" + savedInstanceState);
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             boolean firstStart = savedInstanceState.getBoolean("firstStart", true);
             if (!firstStart) {
                 // 需要恢复状态
-                onRestoreInstanceState(savedInstanceState);
+                onRestoreInstanceState("onActivityCreated", savedInstanceState);
             }
         }
     }
@@ -133,9 +134,9 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      *
      * @param savedInstanceState
      */
-    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        MyLog.d(TAG, "onRestoreInstanceState" + " savedInstanceState=" + savedInstanceState);
-        if (savedInstanceState != null) {
+    public void onRestoreInstanceState(String from, @NonNull Bundle savedInstanceState) {
+        MyLog.d(TAG, "onRestoreInstanceState" + " from=" + from + " savedInstanceState=" + savedInstanceState);
+        if (savedInstanceState != null && mNeedSaveWhenLowMemory.isEmpty()) {
             for (String key : savedInstanceState.keySet()) {
                 if (key.startsWith("type_")) {
                     Object v = savedInstanceState.get(key);
@@ -211,7 +212,6 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      * @return
      */
     protected View loadSirReplaceRootView() {
-
         return null;
     }
 
@@ -222,6 +222,13 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
         if (useEventBus()) {
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this);
+            }
+        }
+        if (savedInstanceState != null) {
+            boolean firstStart = savedInstanceState.getBoolean("firstStart", true);
+            if (!firstStart) {
+                // 需要恢复状态
+                onRestoreInstanceState("onCreate", savedInstanceState);
             }
         }
     }
@@ -402,6 +409,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
      */
     @Override
     public void setData(int type, @Nullable Object data) {
+        MyLog.d(TAG, "setData" + " type=" + type + " data=" + data);
         mNeedSaveWhenLowMemory.put(type, data);
     }
 
