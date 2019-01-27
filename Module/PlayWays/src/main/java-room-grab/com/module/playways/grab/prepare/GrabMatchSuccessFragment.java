@@ -460,8 +460,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     @Override
     protected boolean onBackPressed() {
         //主动触发回退直接到PrepareResFragment界面
-        mMatchSucessPresenter.exitGame();
-        getActivity().finish();
+//        mMatchSucessPresenter.exitGame();
+//        getActivity().finish();
         return true;
     }
 
