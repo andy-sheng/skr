@@ -19,7 +19,9 @@ public interface UserAccountServerApi {
      */
     @Headers(ApiManager.NO_NEED_LOGIN_TAG)
     @GET("v1/passport/login-sms-code")
-    Observable<ApiResult> sendSmsVerifyCode(@Query("phoneNum") String phoneNum);
+    Observable<ApiResult> sendSmsVerifyCode(@Query("phoneNum") String phoneNum,
+                                            @Query("timeMs") long timeMs,
+                                            @Query("sign") String sign);
 
     /**
      * 登陆
@@ -37,6 +39,7 @@ public interface UserAccountServerApi {
 
     /**
      * 微信登录
+     *
      * @param loginType
      * @param accessToken
      * @param openID
