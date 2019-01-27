@@ -15,25 +15,25 @@
         app:antiAlias="true"
         app:autoPlay="false" />
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/stage_people_bg"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="@dimen/view_80_dp"
-        android:scaleType="fitCenter"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:clearsAfterStop="false" />
+    <!--<com.opensource.svgaplayer.SVGAImageView-->
+        <!--android:id="@+id/stage_people_bg"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="300dp"-->
+        <!--android:layout_marginTop="@dimen/view_80_dp"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--app:antiAlias="true"-->
+        <!--app:autoPlay="false"-->
+        <!--app:clearsAfterStop="false" />-->
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/stage_ufo_bg"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_300_dp"
-        android:layout_marginTop="@dimen/view_80_dp"
-        android:scaleType="fitCenter"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:clearsAfterStop="false" />
+    <!--<com.opensource.svgaplayer.SVGAImageView-->
+        <!--android:id="@+id/stage_ufo_bg"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/view_300_dp"-->
+        <!--android:layout_marginTop="@dimen/view_80_dp"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--app:antiAlias="true"-->
+        <!--app:autoPlay="false"-->
+        <!--app:clearsAfterStop="false" />-->
 
     <com.zq.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"

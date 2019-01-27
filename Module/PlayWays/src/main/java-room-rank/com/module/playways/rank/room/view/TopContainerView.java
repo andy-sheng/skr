@@ -198,6 +198,12 @@ public class TopContainerView extends RelativeLayout {
         mLastItem = null;
     }
 
+    public void onGameFinish() {
+        if (mMoreOpView != null) {
+            mMoreOpView.dismiss();
+        }
+    }
+
     public void cancelShowLastedTimeTask() {
         reset("cancelShowLastedTimeTask");
         if (mShowLastedTimeTask != null) {
