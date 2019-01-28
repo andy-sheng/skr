@@ -50,6 +50,8 @@ public class LoginFragment extends BaseFragment {
 
     volatile boolean isWaitOss = false;
 
+    ObjectAnimator mAnimator;
+
     @Override
     public int initView() {
         return R.layout.core_login_fragment_layout;
@@ -139,10 +141,10 @@ public class LoginFragment extends BaseFragment {
 
     private void animationGo() {
         mContainer.setVisibility(View.VISIBLE);
-        ObjectAnimator animator = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 0f, 1f);
-        animator.setDuration(600);
-        animator.start();
-        animator.addListener(new Animator.AnimatorListener() {
+        mAnimator = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 0f, 1f);
+        mAnimator.setDuration(600);
+        mAnimator.start();
+        mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
@@ -214,5 +216,13 @@ public class LoginFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mAnimator != null) {
+            mAnimator.cancel();
+        }
     }
 }
