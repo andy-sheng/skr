@@ -219,6 +219,7 @@ public class VideoPreviewFragment extends ImageBaseFragment implements ResPicker
      */
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         if (type == 1) {
             mVideoItems = (ArrayList<VideoItem>) data;
         }

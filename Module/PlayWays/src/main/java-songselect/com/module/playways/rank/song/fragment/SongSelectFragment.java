@@ -155,7 +155,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
                 if (getActivity() instanceof PlayWaysActivity) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                            .setAddToBackStack(false)
+                            .setAddToBackStack(true)
                             .setNotifyHideFragment(SongSelectFragment.class)
                             .setHasAnimation(true)
                             .addDataBeforeAdd(0, songModel)

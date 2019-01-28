@@ -86,11 +86,11 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     static final int MSG_GO_RECORD_FRAGMENT = 1;
 
-    Handler mUiHanlder = new Handler(){
+    Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what == MSG_GO_RECORD_FRAGMENT){
+            if (msg.what == MSG_GO_RECORD_FRAGMENT) {
                 showRecordView(null);
             }
         }
@@ -340,6 +340,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         if (type == 0) {
             mRoomData = (RoomData) data;
             if (mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0) {
@@ -467,7 +468,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void showRecordView(RecordData recordData) {
         stopTimeTask();
         mUiHanlder.removeMessages(MSG_GO_RECORD_FRAGMENT);
-        if(recordData!=null){
+        if (recordData != null) {
             mRoomData.setRecordData(recordData);
         }
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)

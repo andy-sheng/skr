@@ -308,6 +308,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         if (type == 0) {
             mPrepareData = (PrepareData) data;
         }

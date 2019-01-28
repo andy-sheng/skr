@@ -160,27 +160,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
     };
 
-    /**
-     * 可以在此恢复数据
-     *
-     * @param savedInstanceState
-     */
-    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        mRoomData = (RoomData) savedInstanceState.getSerializable("roomData");
-    }
-
-    /**
-     * 当系统认为你的fragment存在被销毁的可能时，onSaveInstanceState 就会被调用
-     * 不包括用户主动退出fragment导致其被销毁，比如按BACK键后fragment被主动销毁
-     *
-     * @param outState
-     */
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("roomData", mRoomData);
-    }
-
     @Override
     public int initView() {
         return R.layout.grab_room_fragment_layout;
@@ -643,6 +622,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type, data);
         if (type == 0) {
             mRoomData = (RoomData) data;
         }

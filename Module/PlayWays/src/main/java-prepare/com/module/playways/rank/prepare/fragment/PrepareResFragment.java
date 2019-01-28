@@ -3,6 +3,7 @@ package com.module.playways.rank.prepare.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -79,7 +80,6 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
-
         AvatarUtils.loadAvatarByUrl(mSongIcon,
                 AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
                         .setBorderColor(Color.parseColor("#0C2275"))
@@ -142,12 +142,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getSoundUtils().play(TAG, R.raw.general_back);
-                    U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                            .setPopFragment(PrepareResFragment.this)
-                            .setNotifyShowFragment(SongSelectFragment.class)
-                            .setHasAnimation(true)
-                            .setPopAbove(false)
-                            .build());
+                    onBackPressed();
                 });
 
         mIvStartMatch.setEnabled(false);
@@ -187,10 +182,10 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     @Override
     public void setData(int type, @Nullable Object data) {
+        super.setData(type,data);
         if (type == 0) {
             mPrepareData.setSongModel((SongModel) data);
         }
-
         if (type == 1) {
             mPrepareData.setGameType((int) data);
         }
@@ -202,7 +197,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                 .setPopFragment(PrepareResFragment.this)
                 .setNotifyShowFragment(SongSelectFragment.class)
                 .setHasAnimation(true)
-                .setPopAbove(false)
+//                .setPopAbove(false)
                 .build());
         return true;
     }

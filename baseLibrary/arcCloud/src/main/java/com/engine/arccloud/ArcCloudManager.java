@@ -150,7 +150,7 @@ public class ArcCloudManager implements IACRCloudListener {
         } else {
             // 再放buffer就要满了，头部的要移走
             int left = mLength + buffer.length - BUFFER_LEN;
-            MyLog.d(TAG, "left=" + left + " mLenth=" + mLength + " buffer.length:" + buffer.length + " BUFFER_LEN:" + BUFFER_LEN);
+            //MyLog.d(TAG, "left=" + left + " mLenth=" + mLength + " buffer.length:" + buffer.length + " BUFFER_LEN:" + BUFFER_LEN);
             // 往左移动 left 个位置
 //            byte [] temp = new byte[BUFFER_LEN];
 

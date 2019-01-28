@@ -145,7 +145,13 @@ public class LoginByPhoneFragment extends BaseFragment {
         }
 
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode(phoneNumber), new ApiObserver<ApiResult>() {
+
+        long timeMs = System.currentTimeMillis();
+        String sign = U.getMD5Utils().MD5_32("skrer|sms|" +
+                String.valueOf(phoneNumber) + "|" +
+                String.valueOf(timeMs));
+
+        ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode(phoneNumber, timeMs, sign), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

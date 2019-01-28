@@ -215,6 +215,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                             int score = 0;
                             if (targetSongInfo != null) {
                                 score = (int) (targetSongInfo.getScore() * 100);
+                            }else{
+                                score = EngineManager.getInstance().getLineScore();
                             }
                             processScore(score, mLastLineNum);
                         }

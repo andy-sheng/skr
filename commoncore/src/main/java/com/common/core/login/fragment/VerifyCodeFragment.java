@@ -25,6 +25,7 @@ import com.common.view.titlebar.CommonTitleBar;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -49,6 +50,7 @@ public class VerifyCodeFragment extends BaseFragment {
 
     String mPhoneNumber; //发送验证码的电话号码
     HandlerTaskTimer mDisposable;
+
     @Override
     public int initView() {
         return R.layout.core_verify_code_layout;
@@ -127,7 +129,7 @@ public class VerifyCodeFragment extends BaseFragment {
 
                     @Override
                     public void onNext(Integer aLong) {
-                        mCountDownTv.setText(String.format("%ds", count-aLong));
+                        mCountDownTv.setText(String.format("%ds", count - aLong));
                     }
 
                     @Override
@@ -164,7 +166,11 @@ public class VerifyCodeFragment extends BaseFragment {
         }
         initCounDown(COUNT_DOWN_DEAFAULT);
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode(phoneNumber), new ApiObserver<ApiResult>() {
+        long timeMs = System.currentTimeMillis();
+        String sign = U.getMD5Utils().MD5_32("skrer|sms|" +
+                String.valueOf(phoneNumber) + "|" +
+                String.valueOf(timeMs));
+        ApiMethods.subscribe(userAccountServerApi.sendSmsVerifyCode(phoneNumber, timeMs, sign), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -172,7 +178,7 @@ public class VerifyCodeFragment extends BaseFragment {
                     mVerifyHintTv.setText(String.format("验证码已发送至%s", phoneNumber));
                 }
             }
-        },this);
+        }, this);
 
 //        userAccountServerApi.sendSmsVerifyCode(phoneNumber)
 //                .subscribeOn(Schedulers.io())
