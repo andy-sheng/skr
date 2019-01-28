@@ -18,7 +18,6 @@
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/float_lyrics_view"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_128_dp"
         android:layout_marginBottom="@dimen/view_66_dp"
@@ -51,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_100_dp"
+        android:layout_marginTop="@dimen/view_107_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.SingBeginTipsCardView
@@ -85,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_130_dp"
+        android:layout_marginTop="@dimen/view_144_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.GrabGameOverView
@@ -93,19 +92,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_130_dp"
-        android:visibility="gone">
-
-    </com.module.playways.grab.room.view.GrabGameOverView>
+        android:layout_marginTop="@dimen/view_148_dp"
+        android:visibility="gone" />
 
     <!--抢按钮以及倒计时按钮-->
     <com.module.playways.grab.room.view.GrabOpView
         android:id="@+id/grab_op_btn"
         android:layout_width="@dimen/view_141_dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_181_dp"
-        android:layout_alignParentRight="true" />
+        android:layout_marginBottom="@dimen/view_181_dp" />
 
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
