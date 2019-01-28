@@ -226,7 +226,7 @@ public class RecordCircleView extends View {
 
         }
 
-        float degree = calculateRelativeAngleWithValue(mSolidCreditValue) + mStartAngle;
+        float degree = calculateRelativeAngleWithValue(mProtect) + mStartAngle;
         canvas.save();
         canvas.rotate(degree + 90, mCenterX, mCenterY);
         Drawable d = getResources().getDrawable(R.drawable.zhanji_sanjiaoxing);

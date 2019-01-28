@@ -185,7 +185,7 @@ public class RecordTitleView extends RelativeLayout {
 
     private void step2() {
         ScoreAnimationHelp.battleChangeAnimation(mRecordCircleView, scoreResultModel,
-                scoreResultModel.getStates().get(1), scoreResultModel.getStates().get(2),
+                scoreResultModel.getStates().get(0), scoreResultModel.getStates().get(2),
                 new ScoreAnimationHelp.AnimationListener() {
                     @Override
                     public void onFinish() {
