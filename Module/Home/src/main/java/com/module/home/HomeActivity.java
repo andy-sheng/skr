@@ -1,5 +1,6 @@
 package com.module.home;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -54,6 +55,13 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (!UserAccountManager.getInstance().hasAccount()) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+        }
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof HomeActivity) {
+                MyLog.w(TAG, "已经有HomeActivity在堆栈中，取消当前的");
+                finish();
+                return;
+            }
         }
         super.onCreate(savedInstanceState);
     }
