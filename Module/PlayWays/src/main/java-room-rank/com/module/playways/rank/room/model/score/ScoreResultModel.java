@@ -143,6 +143,18 @@ public class ScoreResultModel implements Serializable {
         return total;
     }
 
+    public ScoreStateModel getSeq(int index) {
+        if (states != null && states.size() > 0) {
+            for (ScoreStateModel scoreStateModel : states) {
+                if (scoreStateModel.getSeq() == index) {
+                    return scoreStateModel;
+                }
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public String toString() {
         return "ScoreResultModel{" +

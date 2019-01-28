@@ -174,7 +174,7 @@ public class RecordTitleView extends RelativeLayout {
 
     private void step1() {
         ScoreAnimationHelp.starChangeAnimation(mSdvOwnLevel, mViewGroup,
-                scoreResultModel.getStates().get(0), scoreResultModel.getStates().get(1),
+                scoreResultModel.getSeq(1), scoreResultModel.getSeq(2),
                 new ScoreAnimationHelp.AnimationListener() {
                     @Override
                     public void onFinish() {
@@ -185,7 +185,7 @@ public class RecordTitleView extends RelativeLayout {
 
     private void step2() {
         ScoreAnimationHelp.battleChangeAnimation(mRecordCircleView, scoreResultModel,
-                scoreResultModel.getStates().get(0), scoreResultModel.getStates().get(2),
+                scoreResultModel.getSeq(1), scoreResultModel.getSeq(3),
                 new ScoreAnimationHelp.AnimationListener() {
                     @Override
                     public void onFinish() {
@@ -196,7 +196,7 @@ public class RecordTitleView extends RelativeLayout {
 
     private void step3() {
         ScoreAnimationHelp.starChangeAnimation(mSdvOwnLevel, mViewGroup,
-                scoreResultModel.getStates().get(1), scoreResultModel.getStates().get(2),
+                scoreResultModel.getSeq(2), scoreResultModel.getSeq(3),
                 new ScoreAnimationHelp.AnimationListener() {
                     @Override
                     public void onFinish() {
