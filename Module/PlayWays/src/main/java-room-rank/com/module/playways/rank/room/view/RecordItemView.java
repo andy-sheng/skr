@@ -90,7 +90,10 @@ public class RecordItemView extends RelativeLayout {
     }
 
     public void setData(RoomData roomData, RecordData recordData, int index, int strokeColor) {
-        if (recordData == null || recordData.mVoteInfoModels == null || recordData.mVoteInfoModels.get(index) == null) {
+        if (recordData == null
+                || recordData.mVoteInfoModels == null
+                || recordData.mVoteInfoModels.size() <= index
+                || recordData.mVoteInfoModels.get(index) == null) {
             MyLog.e(TAG, "setData data 为 null");
             return;
         }
