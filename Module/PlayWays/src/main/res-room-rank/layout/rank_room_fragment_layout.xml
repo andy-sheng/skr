@@ -10,7 +10,7 @@
         android:id="@+id/ready_go_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_350_dp"
-        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_75_dp"
         android:scaleType="fitCenter"
         app:antiAlias="true"
         app:autoPlay="false" />
@@ -91,7 +91,7 @@
         android:id="@+id/stage_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_140_dp"
-        android:layout_marginTop="@dimen/view_123_dp"
+        android:layout_marginTop="@dimen/view_155_dp"
         android:visibility="gone" />
 
     <com.common.image.fresco.BaseImageView
@@ -99,7 +99,7 @@
         android:layout_width="@dimen/view_90_dp"
         android:layout_height="@dimen/view_90_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_148_dp"
+        android:layout_marginTop="@dimen/view_180_dp"
         android:visibility="gone" />
 
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
@@ -115,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_130_dp"
+        android:layout_marginTop="@dimen/view_110_dp"
         android:visibility="gone" />
 
     <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup
