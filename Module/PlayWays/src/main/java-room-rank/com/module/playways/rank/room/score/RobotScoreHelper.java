@@ -78,7 +78,7 @@ public class RobotScoreHelper {
             return;
         }
         File file = SongResUtils.getScoreFileByUrl(midiUrl);
-        if (file.exists() && file.length() > 10) {
+        if (file != null && file.exists() && file.length() > 10) {
             loadDataFromFile(file.getAbsolutePath());
         } else {
             U.getHttpUtils().downloadFileSync(midiUrl, file, new HttpUtils.OnDownloadProgress() {
@@ -90,7 +90,9 @@ public class RobotScoreHelper {
                 @Override
                 public void onCompleted(String localPath) {
                     //success
-                    loadDataFromFile(file.getAbsolutePath());
+                    if (file != null) {
+                        loadDataFromFile(file.getAbsolutePath());
+                    }
                 }
 
                 @Override
@@ -119,10 +121,6 @@ public class RobotScoreHelper {
             if (machineScoreModel != null) {
                 mRobotScoreModel = machineScoreModel;
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             MyLog.e(TAG, e);
         } finally {
@@ -174,11 +172,11 @@ public class RobotScoreHelper {
         mBeginRecordTs = System.currentTimeMillis();
     }
 
-    public void setBeginRecordTs(long ts){
+    public void setBeginRecordTs(long ts) {
         mBeginRecordTs = ts;
     }
 
-    public long getBeginRecordTs(){
+    public long getBeginRecordTs() {
         return mBeginRecordTs;
     }
 

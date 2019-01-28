@@ -78,7 +78,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
 
     private void fetchLyric(){
         File lyricFile = SongResUtils.getZRCELyricFileByUrl(mSongModel.getLyric());
-        if(lyricFile == null){
+        if(lyricFile == null || !lyricFile.exists()){
             LyricsManager.getLyricsManager(U.app())
                     .fetchLyricTask(mSongModel.getLyric())
                     .compose(bindUntilEvent(PresenterEvent.DESTROY))

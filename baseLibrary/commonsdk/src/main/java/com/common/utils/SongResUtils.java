@@ -93,7 +93,7 @@ public class SongResUtils {
             return file;
         }
 
-        return null;
+        return file;
     }
 
     /**

@@ -1178,7 +1178,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
         File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
 
-        if (file == null) {
+        if (file == null || !file.exists()) {
             MyLog.w(TAG, "playLyric is not in local file");
             fetchLyricTask(songModel, play);
         } else {

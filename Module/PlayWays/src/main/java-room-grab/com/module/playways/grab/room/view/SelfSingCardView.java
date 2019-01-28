@@ -375,7 +375,7 @@ public class SelfSingCardView extends RelativeLayout {
 
         File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
 
-        if (file == null) {
+        if (file == null || !file.exists()) {
             MyLog.w(TAG, "playLyric is not in local file");
             fetchLyricTask(songModel);
         } else {

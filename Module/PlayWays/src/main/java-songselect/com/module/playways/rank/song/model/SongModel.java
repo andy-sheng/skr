@@ -259,25 +259,25 @@ public class SongModel implements Serializable {
     public boolean isAllResExist() {
         File lyricFile = SongResUtils.getZRCELyricFileByUrl(getLyric());
 
-        if (lyricFile == null) {
+        if (lyricFile == null || !lyricFile.exists()) {
             return false;
         }
 
         File acc = SongResUtils.getAccFileByUrl(getAcc());
 
-        if (acc == null) {
+        if (acc == null || !acc.exists()) {
             return false;
         }
 
         File ori = SongResUtils.getORIFileByUrl(getOri());
 
-        if (ori == null) {
+        if (ori == null || !ori.exists()) {
             return false;
         }
 
         File midi = SongResUtils.getMIDIFileByUrl(getMidi());
 
-        if (midi == null) {
+        if (midi == null || !midi.exists()) {
             return false;
         }
 
