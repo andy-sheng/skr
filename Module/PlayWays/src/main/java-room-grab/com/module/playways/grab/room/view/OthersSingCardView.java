@@ -34,7 +34,7 @@ import java.io.File;
  * 其他人主场景收音机
  */
 public class OthersSingCardView extends RelativeLayout {
-
+    public final static String TAG = "OthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
     final static int COUNT_DOWN_STATUS_WAIT = 1;
     final static int COUNT_DOWN_STATUS_PLAYING = 2;
@@ -223,6 +223,7 @@ public class OthersSingCardView extends RelativeLayout {
     }
 
     public String getNum(long num, int index) {
+        MyLog.d(TAG, "getNum" + " num=" + num + " index=" + index);
         String s = String.valueOf(num);
         if(index > s.length() || index < 0){
             return "";
