@@ -79,6 +79,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         @Override
         public boolean onReceived(Message message, int left) {
             MyLog.d(TAG, "onReceived" + " message=" + message + " left=" + left);
+            if (message == null) {
+                return false;
+            }
             if (message.getContent() instanceof CustomChatRoomMsg) {
                 // 是自定义消息 其content即整个RoomMsg
                 CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) message.getContent();
