@@ -24,6 +24,7 @@ import com.common.banner.BannerImageLoader;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -173,7 +174,7 @@ public class GameFragment extends BaseFragment {
                     }
                 });
 
-        if(MyLog.isDebugLogOpen()) {
+        if (MyLog.isDebugLogOpen()) {
             RxView.longClicks(mIvGrabPk)
                     .subscribe(new Consumer<Object>() {
                         @Override
@@ -399,7 +400,7 @@ public class GameFragment extends BaseFragment {
 
     private boolean isGameOpen() {
         //mGameConfModel不应该为null，加个保护
-        if(mGameConfModel != null && mGameConfModel.isIsSupport() && !mGameConfModel.getDetail().isIsOpen()){
+        if (mGameConfModel != null && mGameConfModel.isIsSupport() && !mGameConfModel.getDetail().isIsOpen()) {
 //        if (!MyLog.isDebugLogOpen()) {
             GameTimeTipsView gameTimeTipsView = new GameTimeTipsView(getActivity());
             gameTimeTipsView.setGameConfModel(mGameConfModel);
@@ -429,10 +430,10 @@ public class GameFragment extends BaseFragment {
                     .withBoolean("selectSong", true)
                     .navigation();
         } else if (view.getId() == R.id.iv_grab_game) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                        .withInt("key_game_type", GameModeType.GAME_MODE_GRAB)
-                        .withBoolean("selectSong", false)
-                        .navigation();
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                    .withInt("key_game_type", GameModeType.GAME_MODE_GRAB)
+                    .withBoolean("selectSong", false)
+                    .navigation();
         }
     }
 
@@ -472,8 +473,14 @@ public class GameFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+    public void onEvent(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         initBaseInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AccountEvent.SetAccountEvent event) {
+        initRankLevel();
+        initOperationArea();
     }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
