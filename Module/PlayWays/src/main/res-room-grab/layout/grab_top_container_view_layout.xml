@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
-
     <com.module.playways.grab.room.top.GrabTopRv
         android:id="@+id/top_content_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_toLeftOf="@+id/more_btn" />
 
     <com.common.view.ex.ExImageView
@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_21_dp"
         android:layout_marginRight="@dimen/view_12_dp"
         android:padding="@dimen/view_10_dp"
         android:scaleType="centerInside"
@@ -27,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/more_btn"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_17_dp"
         android:layout_marginRight="@dimen/view_12_dp"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp" />

@@ -148,6 +148,10 @@ public class GrabTopRv extends RelativeLayout {
                 }
             }
         }
+        RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
+        lp.leftMargin = U.getDisplayUtils().dip2px(15);
+        lp.rightMargin = U.getDisplayUtils().dip2px(15);
+        mContentLl.setLayoutParams(lp);
     }
 
     public void setModeGrab() {
@@ -172,6 +176,10 @@ public class GrabTopRv extends RelativeLayout {
                 }
             }
         }
+        RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
+        lp.leftMargin = U.getDisplayUtils().dip2px(15);
+        lp.rightMargin = U.getDisplayUtils().dip2px(15);
+        mContentLl.setLayoutParams(lp);
     }
 
     public void setModeSing(int singUid) {
@@ -230,6 +238,12 @@ public class GrabTopRv extends RelativeLayout {
                     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) finalGrabTopItemView.getLayoutParams();
                     lp.weight = weight;
                     finalGrabTopItemView.setLayoutParams(lp);
+
+                    RelativeLayout.LayoutParams lp2 = (LayoutParams) mContentLl.getLayoutParams();
+                    int t = (int) (U.getDisplayUtils().dip2px(15) * weight);
+                    lp2.leftMargin = U.getDisplayUtils().dip2px(30) - t;
+                    lp2.rightMargin = U.getDisplayUtils().dip2px(30) - t;
+                    mContentLl.setLayoutParams(lp2);
                 }
             });
             AnimatorSet animatorSet123 = new AnimatorSet();
@@ -430,8 +444,8 @@ public class GrabTopRv extends RelativeLayout {
         SVGAImageView mMieDengIv = vp.SVGAImageView;
         mMieDengIv.getLocationInWindow(position2);
 
-        mMieDengIv.setTranslationX(position1[0] - U.getDisplayUtils().dip2px(22));
-        mMieDengIv.setTranslationY(U.getDisplayUtils().dip2px(3.5f));
+        mMieDengIv.setTranslationX(position1[0] - U.getDisplayUtils().dip2px(32));
+        mMieDengIv.setTranslationY(U.getDisplayUtils().dip2px(12f));
 
         getSVGAParser().parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
             @Override

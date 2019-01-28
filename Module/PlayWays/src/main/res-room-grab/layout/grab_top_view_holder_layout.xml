@@ -5,8 +5,8 @@
 
     <com.module.playways.grab.room.top.CircleAnimationView
         android:id="@+id/circle_animation_view"
-        android:layout_width="@dimen/view_60_dp"
-        android:layout_height="@dimen/view_60_dp"
+        android:layout_width="@dimen/view_62_dp"
+        android:layout_height="@dimen/view_62_dp"
         android:layout_centerHorizontal="true" />
 
     <com.common.image.fresco.BaseImageView
@@ -14,7 +14,7 @@
         android:layout_width="@dimen/view_40_dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_10_dp" />
+        android:layout_marginTop="@dimen/view_11_dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/flag_iv"

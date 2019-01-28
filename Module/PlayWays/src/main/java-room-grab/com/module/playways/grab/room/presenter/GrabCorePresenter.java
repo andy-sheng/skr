@@ -29,6 +29,7 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
+import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
@@ -236,7 +237,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void grabThisRound() {
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         //TEST
-//        if (true) {
+//        if (true && MyLog.isDebugLogOpen()) {
 //            U.getToastUtil().showShort("执行测试抢代码");
 //            now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
 //            mUiHanlder.postDelayed(new Runnable() {
@@ -246,6 +247,23 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //                    now.updateStatus(true, RoundInfoModel.STATUS_SING);
 //                }
 //            }, 3000);
+//
+//            HandlerTaskTimer.newBuilder()
+//                    .interval(4000)
+//                    .start(new HandlerTaskTimer.ObserverW() {
+//                        @Override
+//                        public void onNext(Integer integer) {
+//                            SomeOneLightOffEvent event = new SomeOneLightOffEvent(5, now);
+//                            EventBus.getDefault().post(event);
+//                            mUiHanlder.postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    SomeOneLightOffEvent event2 = new SomeOneLightOffEvent(3, now);
+//                                    EventBus.getDefault().post(event2);
+//                                }
+//                            },1000);
+//                        }
+//                    });
 //            return;
 //        }
         if(now == null){
