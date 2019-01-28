@@ -82,7 +82,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     AnimatorSet mLeftVoteAnimationSet;
     AnimatorSet mRightVoteAnimationSet;
 
-    boolean isJumpToRecord = false;
+    volatile boolean isJumpToRecord = false;
 
 //    RelativeLayout mRlCountDownContainer;
 
