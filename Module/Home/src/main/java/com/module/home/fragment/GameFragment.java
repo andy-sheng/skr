@@ -221,6 +221,14 @@ public class GameFragment extends BaseFragment {
     }
 
     @Override
+    protected void onFragmentInvisible() {
+        super.onFragmentInvisible();
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+        }
+    }
+
+    @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         initRankLevel();
@@ -468,7 +476,9 @@ public class GameFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        mPopupWindow.dismiss();
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+        }
         U.getSoundUtils().release(TAG);
     }
 
