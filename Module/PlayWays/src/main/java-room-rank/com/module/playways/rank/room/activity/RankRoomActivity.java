@@ -48,6 +48,8 @@ public class RankRoomActivity extends BaseActivity {
         } else {
 
         }
+
+        U.getStatusBarUtil().setTransparentBar(this, false);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, RankRoomFragment.class)
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0, mRoomData)

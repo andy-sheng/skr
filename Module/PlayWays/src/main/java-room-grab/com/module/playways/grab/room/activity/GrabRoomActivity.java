@@ -91,6 +91,8 @@ public class GrabRoomActivity extends BaseActivity {
             }
         }
 
+        U.getStatusBarUtil().setTransparentBar(this, false);
+
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
                         .setAddToBackStack(false)

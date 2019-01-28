@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/view_50_dp"
+        android:layout_marginTop="@dimen/view_90_dp"
         android:visibility="gone"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
