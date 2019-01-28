@@ -54,7 +54,7 @@ import static android.view.View.VISIBLE;
 
 public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSucessView {
 
-    public final static String TAG = "MatchSuccessFragment";
+    public final static String TAG = "GrabMatchSuccessFragment";
 
     ExTextView mTvReadyTime;
     SimpleDraweeView mSdvIcon1;
