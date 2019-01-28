@@ -56,7 +56,6 @@ import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
-import com.module.playways.rank.room.scoremodel.UserScoreModel;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;

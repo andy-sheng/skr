@@ -33,11 +33,13 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
 
   public static final Integer DEFAULT_RANK = 0;
 
-  public static final Boolean DEFAULT_ISESCAPE = false;
-
   public static final Boolean DEFAULT_SYSVOTE = false;
 
   public static final Integer DEFAULT_SYSSCORE = 0;
+
+  public static final Boolean DEFAULT_ISESCAPE = false;
+
+  public static final Boolean DEFAULT_HASVOTE = false;
 
   /**
    * 用户标识
@@ -67,19 +69,10 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
   public final Integer rank;
 
   /**
-   * 是否逃跑
-   */
-  @WireField(
-      tag = 4,
-      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
-  )
-  public final Boolean isEscape;
-
-  /**
    * 系统是否投票
    */
   @WireField(
-      tag = 5,
+      tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
   public final Boolean sysVote;
@@ -88,36 +81,67 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
    * 系统打分分值
    */
   @WireField(
-      tag = 6,
+      tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
   public final Integer sysScore;
 
   /**
-   * 投票者
+   * 给我投票的用户IDs
    */
   @WireField(
-      tag = 7,
+      tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32",
       label = WireField.Label.REPEATED
   )
   public final List<Integer> voter;
 
-  public VoteInfo(Integer userID, Integer itemID, Integer rank, Boolean isEscape, Boolean sysVote,
-      Integer sysScore, List<Integer> voter) {
-    this(userID, itemID, rank, isEscape, sysVote, sysScore, voter, ByteString.EMPTY);
+  /**
+   * 是否逃跑
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  public final Boolean isEscape;
+
+  /**
+   * 是否给出投票
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  public final Boolean hasVote;
+
+  /**
+   * 投票给哪些用户IDs
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32",
+      label = WireField.Label.REPEATED
+  )
+  public final List<Integer> otherVoters;
+
+  public VoteInfo(Integer userID, Integer itemID, Integer rank, Boolean sysVote, Integer sysScore,
+      List<Integer> voter, Boolean isEscape, Boolean hasVote, List<Integer> otherVoters) {
+    this(userID, itemID, rank, sysVote, sysScore, voter, isEscape, hasVote, otherVoters, ByteString.EMPTY);
   }
 
-  public VoteInfo(Integer userID, Integer itemID, Integer rank, Boolean isEscape, Boolean sysVote,
-      Integer sysScore, List<Integer> voter, ByteString unknownFields) {
+  public VoteInfo(Integer userID, Integer itemID, Integer rank, Boolean sysVote, Integer sysScore,
+      List<Integer> voter, Boolean isEscape, Boolean hasVote, List<Integer> otherVoters,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.itemID = itemID;
     this.rank = rank;
-    this.isEscape = isEscape;
     this.sysVote = sysVote;
     this.sysScore = sysScore;
     this.voter = Internal.immutableCopyOf("voter", voter);
+    this.isEscape = isEscape;
+    this.hasVote = hasVote;
+    this.otherVoters = Internal.immutableCopyOf("otherVoters", otherVoters);
   }
 
   @Override
@@ -126,10 +150,12 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
     builder.userID = userID;
     builder.itemID = itemID;
     builder.rank = rank;
-    builder.isEscape = isEscape;
     builder.sysVote = sysVote;
     builder.sysScore = sysScore;
     builder.voter = Internal.copyOf("voter", voter);
+    builder.isEscape = isEscape;
+    builder.hasVote = hasVote;
+    builder.otherVoters = Internal.copyOf("otherVoters", otherVoters);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -143,10 +169,12 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
         && Internal.equals(userID, o.userID)
         && Internal.equals(itemID, o.itemID)
         && Internal.equals(rank, o.rank)
-        && Internal.equals(isEscape, o.isEscape)
         && Internal.equals(sysVote, o.sysVote)
         && Internal.equals(sysScore, o.sysScore)
-        && voter.equals(o.voter);
+        && voter.equals(o.voter)
+        && Internal.equals(isEscape, o.isEscape)
+        && Internal.equals(hasVote, o.hasVote)
+        && otherVoters.equals(o.otherVoters);
   }
 
   @Override
@@ -157,10 +185,12 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
       result = result * 37 + (rank != null ? rank.hashCode() : 0);
-      result = result * 37 + (isEscape != null ? isEscape.hashCode() : 0);
       result = result * 37 + (sysVote != null ? sysVote.hashCode() : 0);
       result = result * 37 + (sysScore != null ? sysScore.hashCode() : 0);
       result = result * 37 + voter.hashCode();
+      result = result * 37 + (isEscape != null ? isEscape.hashCode() : 0);
+      result = result * 37 + (hasVote != null ? hasVote.hashCode() : 0);
+      result = result * 37 + otherVoters.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -172,10 +202,12 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
     if (userID != null) builder.append(", userID=").append(userID);
     if (itemID != null) builder.append(", itemID=").append(itemID);
     if (rank != null) builder.append(", rank=").append(rank);
-    if (isEscape != null) builder.append(", isEscape=").append(isEscape);
     if (sysVote != null) builder.append(", sysVote=").append(sysVote);
     if (sysScore != null) builder.append(", sysScore=").append(sysScore);
     if (!voter.isEmpty()) builder.append(", voter=").append(voter);
+    if (isEscape != null) builder.append(", isEscape=").append(isEscape);
+    if (hasVote != null) builder.append(", hasVote=").append(hasVote);
+    if (!otherVoters.isEmpty()) builder.append(", otherVoters=").append(otherVoters);
     return builder.replace(0, 2, "VoteInfo{").append('}').toString();
   }
 
@@ -220,16 +252,6 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
   }
 
   /**
-   * 是否逃跑
-   */
-  public Boolean getIsEscape() {
-    if(isEscape==null){
-        return DEFAULT_ISESCAPE;
-    }
-    return isEscape;
-  }
-
-  /**
    * 系统是否投票
    */
   public Boolean getSysVote() {
@@ -250,13 +272,43 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
   }
 
   /**
-   * 投票者
+   * 给我投票的用户IDs
    */
   public List<Integer> getVoterList() {
     if(voter==null){
         return new java.util.ArrayList<Integer>();
     }
     return voter;
+  }
+
+  /**
+   * 是否逃跑
+   */
+  public Boolean getIsEscape() {
+    if(isEscape==null){
+        return DEFAULT_ISESCAPE;
+    }
+    return isEscape;
+  }
+
+  /**
+   * 是否给出投票
+   */
+  public Boolean getHasVote() {
+    if(hasVote==null){
+        return DEFAULT_HASVOTE;
+    }
+    return hasVote;
+  }
+
+  /**
+   * 投票给哪些用户IDs
+   */
+  public List<Integer> getOtherVotersList() {
+    if(otherVoters==null){
+        return new java.util.ArrayList<Integer>();
+    }
+    return otherVoters;
   }
 
   /**
@@ -281,13 +333,6 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
   }
 
   /**
-   * 是否逃跑
-   */
-  public boolean hasIsEscape() {
-    return isEscape!=null;
-  }
-
-  /**
    * 系统是否投票
    */
   public boolean hasSysVote() {
@@ -302,10 +347,31 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
   }
 
   /**
-   * 投票者
+   * 给我投票的用户IDs
    */
   public boolean hasVoterList() {
     return voter!=null;
+  }
+
+  /**
+   * 是否逃跑
+   */
+  public boolean hasIsEscape() {
+    return isEscape!=null;
+  }
+
+  /**
+   * 是否给出投票
+   */
+  public boolean hasHasVote() {
+    return hasVote!=null;
+  }
+
+  /**
+   * 投票给哪些用户IDs
+   */
+  public boolean hasOtherVotersList() {
+    return otherVoters!=null;
   }
 
   public static final class Builder extends Message.Builder<VoteInfo, Builder> {
@@ -315,16 +381,21 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
 
     public Integer rank;
 
-    public Boolean isEscape;
-
     public Boolean sysVote;
 
     public Integer sysScore;
 
     public List<Integer> voter;
 
+    public Boolean isEscape;
+
+    public Boolean hasVote;
+
+    public List<Integer> otherVoters;
+
     public Builder() {
       voter = Internal.newMutableList();
+      otherVoters = Internal.newMutableList();
     }
 
     /**
@@ -352,14 +423,6 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
     }
 
     /**
-     * 是否逃跑
-     */
-    public Builder setIsEscape(Boolean isEscape) {
-      this.isEscape = isEscape;
-      return this;
-    }
-
-    /**
      * 系统是否投票
      */
     public Builder setSysVote(Boolean sysVote) {
@@ -376,7 +439,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
     }
 
     /**
-     * 投票者
+     * 给我投票的用户IDs
      */
     public Builder addAllVoter(List<Integer> voter) {
       Internal.checkElementsNotNull(voter);
@@ -384,9 +447,34 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       return this;
     }
 
+    /**
+     * 是否逃跑
+     */
+    public Builder setIsEscape(Boolean isEscape) {
+      this.isEscape = isEscape;
+      return this;
+    }
+
+    /**
+     * 是否给出投票
+     */
+    public Builder setHasVote(Boolean hasVote) {
+      this.hasVote = hasVote;
+      return this;
+    }
+
+    /**
+     * 投票给哪些用户IDs
+     */
+    public Builder addAllOtherVoters(List<Integer> otherVoters) {
+      Internal.checkElementsNotNull(otherVoters);
+      this.otherVoters = otherVoters;
+      return this;
+    }
+
     @Override
     public VoteInfo build() {
-      return new VoteInfo(userID, itemID, rank, isEscape, sysVote, sysScore, voter, super.buildUnknownFields());
+      return new VoteInfo(userID, itemID, rank, sysVote, sysScore, voter, isEscape, hasVote, otherVoters, super.buildUnknownFields());
     }
   }
 
@@ -400,10 +488,12 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.itemID)
           + ProtoAdapter.SINT32.encodedSizeWithTag(3, value.rank)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(4, value.isEscape)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(5, value.sysVote)
-          + ProtoAdapter.SINT32.encodedSizeWithTag(6, value.sysScore)
-          + ProtoAdapter.UINT32.asRepeated().encodedSizeWithTag(7, value.voter)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(4, value.sysVote)
+          + ProtoAdapter.SINT32.encodedSizeWithTag(5, value.sysScore)
+          + ProtoAdapter.UINT32.asRepeated().encodedSizeWithTag(6, value.voter)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(7, value.isEscape)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(8, value.hasVote)
+          + ProtoAdapter.UINT32.asRepeated().encodedSizeWithTag(9, value.otherVoters)
           + value.unknownFields().size();
     }
 
@@ -412,10 +502,12 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.itemID);
       ProtoAdapter.SINT32.encodeWithTag(writer, 3, value.rank);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 4, value.isEscape);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 5, value.sysVote);
-      ProtoAdapter.SINT32.encodeWithTag(writer, 6, value.sysScore);
-      ProtoAdapter.UINT32.asRepeated().encodeWithTag(writer, 7, value.voter);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 4, value.sysVote);
+      ProtoAdapter.SINT32.encodeWithTag(writer, 5, value.sysScore);
+      ProtoAdapter.UINT32.asRepeated().encodeWithTag(writer, 6, value.voter);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 7, value.isEscape);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 8, value.hasVote);
+      ProtoAdapter.UINT32.asRepeated().encodeWithTag(writer, 9, value.otherVoters);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -428,10 +520,12 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setRank(ProtoAdapter.SINT32.decode(reader)); break;
-          case 4: builder.setIsEscape(ProtoAdapter.BOOL.decode(reader)); break;
-          case 5: builder.setSysVote(ProtoAdapter.BOOL.decode(reader)); break;
-          case 6: builder.setSysScore(ProtoAdapter.SINT32.decode(reader)); break;
-          case 7: builder.voter.add(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: builder.setSysVote(ProtoAdapter.BOOL.decode(reader)); break;
+          case 5: builder.setSysScore(ProtoAdapter.SINT32.decode(reader)); break;
+          case 6: builder.voter.add(ProtoAdapter.UINT32.decode(reader)); break;
+          case 7: builder.setIsEscape(ProtoAdapter.BOOL.decode(reader)); break;
+          case 8: builder.setHasVote(ProtoAdapter.BOOL.decode(reader)); break;
+          case 9: builder.otherVoters.add(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

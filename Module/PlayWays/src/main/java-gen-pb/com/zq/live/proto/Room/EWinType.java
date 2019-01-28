@@ -12,13 +12,9 @@ public enum EWinType implements WireEnum {
 
   Win(1),
 
-  Lose(2),
+  Draw(2),
 
-  Draw(3),
-
-  Flee(4),
-
-  NotVote(5);
+  Lose(3);
 
   public static final ProtoAdapter<EWinType> ADAPTER = new ProtoAdapter_EWinType();
 
@@ -35,10 +31,8 @@ public enum EWinType implements WireEnum {
     switch (value) {
       case 0: return InvalidEWinType;
       case 1: return Win;
-      case 2: return Lose;
-      case 3: return Draw;
-      case 4: return Flee;
-      case 5: return NotVote;
+      case 2: return Draw;
+      case 3: return Lose;
       default: return null;
     }
   }

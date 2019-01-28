@@ -126,24 +126,25 @@ public class RecordItemView extends RelativeLayout {
                     mIvRanking.setVisibility(VISIBLE);
                     break;
                 case 2:
-                    mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal_lose));
-                    mIvRanking.setVisibility(VISIBLE);
-                    break;
-                case 3:
                     mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal_draw));
                     mIvRanking.setVisibility(VISIBLE);
                     break;
-                case 4:
-                    mTvHintFlag.setVisibility(VISIBLE);
-                    mTvHintFlag.setText("逃跑");
-                    break;
-                case 5:
-                    mTvHintFlag.setVisibility(VISIBLE);
-                    mTvHintFlag.setText("未投票");
+                case 3:
+                    mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal_lose));
+                    mIvRanking.setVisibility(VISIBLE);
                     break;
             }
         }
 
+        if (voteInfoModel.isEscape()) {
+            mTvHintFlag.setVisibility(VISIBLE);
+            mTvHintFlag.setText("逃跑");
+        }
+
+        if (!voteInfoModel.isHasVote()) {
+            mTvHintFlag.setVisibility(VISIBLE);
+            mTvHintFlag.setText("未投票");
+        }
 
         //这里需要判读是娱乐还是竞技
         if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {

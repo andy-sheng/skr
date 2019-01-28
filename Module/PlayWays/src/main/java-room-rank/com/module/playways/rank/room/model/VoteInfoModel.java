@@ -18,10 +18,13 @@ public class VoteInfoModel implements Serializable {
 
     private int userID;
     private int itemID;
-    private boolean isEscape;
-    private int sysScore;
     private int rank;
+    private boolean sysVote;
+    private int sysScore;
     private List<Integer> voter;
+    private boolean isEscape;
+    private boolean hasVote;
+    private List<Integer> otherVoters;
 
     public int getUserID() {
         return userID;
@@ -39,12 +42,20 @@ public class VoteInfoModel implements Serializable {
         this.itemID = itemID;
     }
 
-    public boolean isIsEscape() {
-        return isEscape;
+    public int getRank() {
+        return rank;
     }
 
-    public void setIsEscape(boolean isEscape) {
-        this.isEscape = isEscape;
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public boolean isSysVote() {
+        return sysVote;
+    }
+
+    public void setSysVote(boolean sysVote) {
+        this.sysVote = sysVote;
     }
 
     public int getSysScore() {
@@ -63,12 +74,28 @@ public class VoteInfoModel implements Serializable {
         this.voter = voter;
     }
 
-    public int getRank() {
-        return rank;
+    public boolean isEscape() {
+        return isEscape;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
+    public void setEscape(boolean escape) {
+        isEscape = escape;
+    }
+
+    public boolean isHasVote() {
+        return hasVote;
+    }
+
+    public void setHasVote(boolean hasVote) {
+        this.hasVote = hasVote;
+    }
+
+    public List<Integer> getOtherVoters() {
+        return otherVoters;
+    }
+
+    public void setOtherVoters(List<Integer> otherVoters) {
+        this.otherVoters = otherVoters;
     }
 
     public void parse(VoteInfo voteInfo) {
@@ -77,13 +104,30 @@ public class VoteInfoModel implements Serializable {
             return;
         }
 
-        this.setRank(voteInfo.getRank());
         this.setUserID(voteInfo.getUserID());
         this.setItemID(voteInfo.getItemID());
-        this.setIsEscape(voteInfo.getIsEscape());
+        this.setRank(voteInfo.getRank());
+        this.setSysVote(voteInfo.getSysVote());
         this.setSysScore(voteInfo.getSysScore());
         this.setVoter(voteInfo.getVoterList());
-
+        this.setEscape(voteInfo.getIsEscape());
+        this.setHasVote(voteInfo.getHasVote());
+        this.setOtherVoters(voteInfo.getOtherVotersList());
         return;
+    }
+
+    @Override
+    public String toString() {
+        return "VoteInfoModel{" +
+                "userID=" + userID +
+                ", itemID=" + itemID +
+                ", rank=" + rank +
+                ", sysVote=" + sysVote +
+                ", sysScore=" + sysScore +
+                ", voter=" + voter +
+                ", isEscape=" + isEscape +
+                ", hasVote=" + hasVote +
+                ", otherVoters=" + otherVoters +
+                '}';
     }
 }

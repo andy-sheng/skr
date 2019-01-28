@@ -154,8 +154,7 @@ message MachineScore {
 // 投票结果
 message VoteResultMsg {
     repeated VoteInfo voteInfo = 1; //投票打分信息
-    repeated UserScoreRecord userScoreRecord = 2; //分值信息
-    repeated UserScoreResult scoreResults = 3; //所有参与者的评分结果，应该使用这个结构
+    repeated UserScoreResult scoreResults = 2; //所有参与者的评分结果，应该使用这个结构
 }
 
 message UserScoreResult {
@@ -184,10 +183,8 @@ message ScoreState {
 enum EWinType {
     InvalidEWinType = 0;
     Win = 1;
-    Lose = 2;
-    Draw = 3;
-    Flee = 4;
-    NotVote = 5;
+    Draw = 2;
+    Lose = 3;
 }
 
 // 分值变动条目
@@ -195,34 +192,6 @@ message ScoreItem {
     string why = 1; //分值变动原因
     int32 score = 2; //分值变动
     int32 index = 3; //原因标识
-}
-
-// 用户分值变动记录
-message UserScoreRecord {
-    uint32 userID = 1; //用户标识
-    EScoreType scoreType = 2; //分值类型
-    int32 scoreNow = 3; //当前总分
-    int32 scoreBefore = 4; //之前总分
-    repeated ScoreItem items = 5; //分值变动详情
-    string scoreTypeDesc = 6; //分值类型描述
-    string scoreNowDesc = 7; //当前分值描述
-    string scoreBeforeDesc = 8; //之前分支描述
-}
-
-enum EScoreType {
-    ST_UNKNOWN = 0; //未知
-    ST_RANKING = 1; //主段位
-    ST_SUB_RANKING = 2; //子段位
-    ST_SUB_RANKING_STAR = 3; //子段位当前星星数
-    ST_SUB_RANKING_TOTAL_STAR = 4; //子段位星星数上限
-    ST_RANKING_UPGRADE = 5; //晋级赛开启状态值。可看作布尔值，scoreNow不为0表示处于某种晋级赛当中
-    ST_RANKING_UPGRADE_STAR = 6; //晋级赛当前星星数
-    ST_RANKING_UPGRADE_TOTAL_STAR = 7; //晋级赛星星数上限
-    ST_BATTLE_INDEX_REAL = 8; //当前战力值
-    ST_BATTLE_INDEX_TOTAL = 9; //战力值上限
-    ST_BATTLE_RATING = 10; //战斗评价, sss or ss or s or a...
-    ST_RANKING_PROTECT_TOTAL_BATTLE_INDEX = 11; //掉段保护需要的战力值。用作阈值，用scoreNow表示大小
-    ST_STAR = 12; //总星星数
 }
 
 // EStarWhy 星星增减原因
@@ -251,15 +220,19 @@ enum EFightForceWhy {
 }
 
 //投票信息
-message VoteInfo {
-    uint32 userID = 1; //用户标识
-    uint32 itemID = 2; //演唱曲目ID
-    sint32 rank = 3; //排名
-    bool isEscape = 4; //是否逃跑
-    bool sysVote = 5; //系统是否投票
-    sint32 sysScore = 6; //系统打分分值
-    repeated uint32 voter = 7; //投票者
+message VoteInfo
+{
+    uint32 userID               = 1; //用户标识
+    uint32 itemID               = 2; //演唱曲目ID
+    sint32 rank                 = 3; //排名
+    bool sysVote                = 4; //系统是否投票
+    sint32 sysScore             = 5; //系统打分分值
+    repeated uint32 voter       = 6; //给我投票的用户IDs
+    bool isEscape               = 7; //是否逃跑
+    bool hasVote                = 8; //是否给出投票
+    repeated uint32 otherVoters = 9; //投票给哪些用户IDs
 }
+
 
 // 消息位置类型
 enum EMsgPosType {
@@ -414,8 +387,7 @@ message RoundAndGameOverMsg {
     uint32 exitUserID = 3; //退出用户的ID
 
     repeated VoteInfo voteInfo = 4; //投票打分信息
-    repeated UserScoreRecord userScoreRecord = 5; //分值信息
-    repeated UserScoreResult scoreResults    = 6; //所有参与者的评分结果，应该使用这个结构
+    repeated UserScoreResult scoreResults    = 5; //所有参与者的评分结果，应该使用这个结构
 }
 
 message ExitGameBeforePlayMsg {
