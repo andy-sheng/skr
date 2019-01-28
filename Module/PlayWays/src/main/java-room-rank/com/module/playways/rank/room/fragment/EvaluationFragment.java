@@ -82,6 +82,8 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     AnimatorSet mLeftVoteAnimationSet;
     AnimatorSet mRightVoteAnimationSet;
 
+    boolean isJumpToRecord = false;
+
 //    RelativeLayout mRlCountDownContainer;
 
     static final int MSG_GO_RECORD_FRAGMENT = 1;
@@ -318,11 +320,14 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     @Override
                     public void onComplete() {
                         stopTimeTask();
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
-                                .setAddToBackStack(true)
-                                .addDataBeforeAdd(1, mRoomData)
-                                .build()
-                        );
+                        if(!isJumpToRecord){
+                            isJumpToRecord = true;
+                            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
+                                    .setAddToBackStack(true)
+                                    .addDataBeforeAdd(1, mRoomData)
+                                    .build()
+                            );
+                        }
                     }
                 });
     }
@@ -468,14 +473,18 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void showRecordView(RecordData recordData) {
         stopTimeTask();
         mUiHanlder.removeMessages(MSG_GO_RECORD_FRAGMENT);
-        if (recordData != null) {
-            mRoomData.setRecordData(recordData);
+
+        if(!isJumpToRecord){
+            isJumpToRecord = true;
+            if (recordData != null) {
+                mRoomData.setRecordData(recordData);
+            }
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
+                    .setAddToBackStack(true)
+                    .addDataBeforeAdd(1, mRoomData)
+                    .build()
+            );
         }
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(1, mRoomData)
-                .build()
-        );
 
     }
 
