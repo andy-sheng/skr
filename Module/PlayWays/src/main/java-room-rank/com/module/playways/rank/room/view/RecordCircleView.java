@@ -22,6 +22,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.rank.room.utils.ScoreAnimationHelp;
 import com.module.rank.R;
@@ -32,7 +33,7 @@ import com.module.rank.R;
  */
 
 public class RecordCircleView extends View {
-
+    public final static String TAG = "RecordCircleView";
     private int mRadius; // 画布边缘半径（去除padding后的半径）
     private int mStartAngle = 120; // 起始角度
     private int mSweepAngle = 300; // 绘制角度
@@ -361,6 +362,7 @@ public class RecordCircleView extends View {
     }
 
     public void setData(int min, int max, int cur, int target, int protect, ScoreAnimationHelp.AnimationListener listener) {
+        MyLog.d(TAG, "setData" + " min=" + min + " max=" + max + " cur=" + cur + " target=" + target + " protect=" + protect + " listener=" + listener);
         mFullLevel = false;
         mMin = 0;
         mMax = max;
@@ -423,6 +425,7 @@ public class RecordCircleView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                MyLog.d(TAG, "onAnimationEnd" + " animation=" + animation);
                 isAnimFinish = true;
                 if (mAnimationListener != null) {
                     mAnimationListener.onFinish();
