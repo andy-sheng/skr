@@ -94,7 +94,7 @@
             android:layout_width="@dimen/view_114_dp"
             android:layout_height="@dimen/view_114_dp"
             android:layout_marginLeft="@dimen/view_18_dp"
-            android:layout_marginTop="@dimen/view_21_dp"
+            android:layout_marginTop="@dimen/view_23_dp"
             android:paddingBottom="@dimen/view_5_dp"
             levelView:starTotalWidth="@dimen/view_114_dp"></com.zq.level.view.NormalLevelView>
 
