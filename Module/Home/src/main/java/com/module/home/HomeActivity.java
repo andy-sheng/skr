@@ -7,8 +7,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+
 import com.common.core.upgrade.UpgradeManager;
+import com.common.core.account.UserAccountManager;
+import com.common.core.login.interceptor.JudgeLoginInterceptor;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
@@ -32,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 
 
-@Route(path = RouterConstants.ACTIVITY_HOME)
+@Route(path = RouterConstants.ACTIVITY_HOME, extras = JudgeLoginInterceptor.NO_NEED_LOGIN)
 public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     public final static String TAG = "HomeActivity";
@@ -48,6 +52,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if (!UserAccountManager.getInstance().hasAccount()) {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+        }
         super.onCreate(savedInstanceState);
     }
 

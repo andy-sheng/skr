@@ -5,77 +5,101 @@
     android:layout_height="match_parent">
 
     <com.common.view.ex.ExTextView
-        android:layout_marginTop="@dimen/view_137_dp"
         android:id="@+id/logo_tv"
-        android:layout_width="@dimen/view_104_dp"
-        android:layout_height="@dimen/view_104_dp"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:background="@drawable/logo"
-        android:textSize="80dp" />
-
-    <LinearLayout
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_135_dp"
-        android:orientation="horizontal">
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/weixin_login_tv"
-            android:layout_width="@dimen/view_64_dp"
-            android:layout_height="@dimen/view_64_dp"
-            android:gravity="center"
-            android:background="@drawable/weixin"
-            android:textColor="@color/black" />
-
-        <com.common.view.ex.ExTextView
-            android:layout_marginLeft="@dimen/view_25_dp"
-            android:background="@drawable/denglu_iphone"
-            android:id="@+id/phone_login_tv"
-            android:layout_width="@dimen/view_64_dp"
-            android:layout_height="@dimen/view_64_dp"
-            android:gravity="center"
-            android:textColor="@color/black" />
-
-        <com.common.view.ex.ExTextView
-            android:layout_marginLeft="@dimen/view_25_dp"
-            android:id="@+id/qq_login_tv"
-            android:layout_width="@dimen/view_64_dp"
-            android:layout_height="@dimen/view_64_dp"
-            android:gravity="center"
-            android:background="@drawable/denglu_qq"
-            android:textColor="@color/black" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginBottom="@dimen/view_90_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="登录注册即表示同意撕歌的"
-            android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_user_agree"
-            android:textSize="@dimen/textsize_14_dp"
-            android:textColor="#011F7D"
-            android:text="《用户协议》"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <ProgressBar
-        android:visibility="invisible"
-        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/view_183_dp"
+        android:layout_height="@dimen/view_115_dp"
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:background="@drawable/skrer_logo"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="@dimen/view_277_dp"
+            android:layout_height="@dimen/view_187_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_91_dp"
+            android:background="@drawable/denglu_logo" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_245_dp"
+            android:text="- 选择以下方式登录 —"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_16_dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_153_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/weixin_login_tv"
+                android:layout_width="@dimen/view_64_dp"
+                android:layout_height="@dimen/view_64_dp"
+                android:background="@drawable/weixin"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/phone_login_tv"
+                android:layout_width="@dimen/view_64_dp"
+                android:layout_height="@dimen/view_64_dp"
+                android:layout_marginLeft="@dimen/view_25_dp"
+                android:background="@drawable/denglu_iphone"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/qq_login_tv"
+                android:layout_width="@dimen/view_64_dp"
+                android:layout_height="@dimen/view_64_dp"
+                android:layout_marginLeft="@dimen/view_25_dp"
+                android:background="@drawable/denglu_qq"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/view_40_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="登录注册即表示同意撕歌的"
+                android:textSize="@dimen/textsize_12_dp" />
+
+            <TextView
+                android:id="@+id/tv_user_agree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="《服务协议》"
+                android:textColor="#0E2274"
+                android:textSize="@dimen/textsize_12_dp" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
 </RelativeLayout>

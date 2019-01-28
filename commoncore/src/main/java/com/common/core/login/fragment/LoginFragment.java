@@ -1,8 +1,12 @@
 package com.common.core.login.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.Spannable;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -35,6 +39,8 @@ public class LoginFragment extends BaseFragment {
     public static final int WX_MODE = 3;
     RelativeLayout mMainActContainer;
     ExTextView mLogoTv;
+
+    RelativeLayout mContainer;
     ExTextView mWeixinLoginTv;
     ExTextView mPhoneLoginTv;
     ExTextView mQqLoginTv;
@@ -54,11 +60,12 @@ public class LoginFragment extends BaseFragment {
         ShareManager.init();
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mLogoTv = (ExTextView) mRootView.findViewById(R.id.logo_tv);
+        mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
         mWeixinLoginTv = (ExTextView) mRootView.findViewById(R.id.weixin_login_tv);
         mPhoneLoginTv = (ExTextView) mRootView.findViewById(R.id.phone_login_tv);
         mQqLoginTv = (ExTextView) mRootView.findViewById(R.id.qq_login_tv);
         mTvUserAgree = (TextView) mRootView.findViewById(R.id.tv_user_agree);
-        mTvUserAgree.setText(Html.fromHtml("<u>" + "《用户协议》" + "</u>"));
+        mTvUserAgree.setText(Html.fromHtml("<u>" + "《服务协议》" + "</u>"));
         mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
 
         RxView.clicks(mPhoneLoginTv)
@@ -126,6 +133,35 @@ public class LoginFragment extends BaseFragment {
                                 .greenChannel().navigation();
                     }
                 });
+
+        animationGo();
+    }
+
+    private void animationGo() {
+        mContainer.setVisibility(View.VISIBLE);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 0f, 1f);
+        animator.setDuration(600);
+        animator.start();
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                onAnimationEnd(animator);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 
 

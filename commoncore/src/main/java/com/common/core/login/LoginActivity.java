@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity {
         U.getFragmentUtils().addFragment(FragmentUtils
                 .newAddParamsBuilder(LoginActivity.this, LoginFragment.class)
                 .setAddToBackStack(false)
-                .setHasAnimation(true)
+                .setHasAnimation(false)
                 .build());
         if (mReason == REASON_LOGOFF) {
             // 因为是因为退出登录 或者 被踢 才到这个登录页面的，所以要清除除了 LoginActivity 外的所有 Activity
