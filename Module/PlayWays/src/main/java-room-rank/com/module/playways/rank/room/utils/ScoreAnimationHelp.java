@@ -118,7 +118,7 @@ public class ScoreAnimationHelp {
                         });
             } else {
                 // 直接涨分即可
-                mRecordCircleView.setData(0, to.getMaxBattleIndex(), form.getCurrBattleIndex(), to.getCurrBattleIndex(), form.getProtectBattleIndex(), new AnimationListener() {
+                mRecordCircleView.setData(0, to.getMaxBattleIndex(), form.getCurrBattleIndex(), to.getCurrBattleIndex(), to.getProtectBattleIndex(), new AnimationListener() {
                     @Override
                     public void onFinish() {
                         listener.onFinish();
@@ -197,6 +197,7 @@ public class ScoreAnimationHelp {
     private static void afterLevelChangeAnimation(NormalLevelView view, ViewGroup viewGroup, ScoreStateModel form, ScoreStateModel to, AnimationListener listener) {
         int leveChange = getLevelChange(form, to);
         if (leveChange > 0) {
+            MyLog.d(TAG, "afterLevelChangeAnimation" + " 升段 星星增加 ");
             // 升段 星星增加
             if (to.getMaxStar() == 0 || to.getMaxStar() > 6) {
                 // 星星限制已经取消,直接显示几颗星即可
@@ -223,6 +224,7 @@ public class ScoreAnimationHelp {
                 MyLog.d(TAG, "afterLevelChangeAnimation 数据异常 leveChange > 0 error to currStar > maxStar");
             }
         } else if (leveChange < 0) {
+            MyLog.d(TAG, "afterLevelChangeAnimation" + "降段 星星减少");
             // 降段 星星减少
             if (to.getMaxStar() == 0 || to.getMaxStar() > 6) {
                 // 星星限制已经取消,直接显示几颗星即可
@@ -232,6 +234,7 @@ public class ScoreAnimationHelp {
                 }
             } else if (to.getMaxStar() == to.getCurrStar()) {
                 // 新段位满星, 无动画
+                view.bindStarData(to.getMaxStar(), to.getCurrStar());
                 if (listener != null) {
                     listener.onFinish();
                 }
@@ -249,6 +252,7 @@ public class ScoreAnimationHelp {
                 MyLog.d(TAG, "afterLevelChangeAnimation 数据异常 leveChange < 0 error to currStar > maxStar");
             }
         } else {
+            MyLog.d(TAG, "afterLevelChangeAnimation" + " 只有星星变化 ");
             // 只有星星变化
             if (to.getMaxStar() == 0 || to.getMaxStar() > 6) {
                 // 星星限制已经取消,直接显示几颗星即可
