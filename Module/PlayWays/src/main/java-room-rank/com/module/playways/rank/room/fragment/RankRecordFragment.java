@@ -127,7 +127,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
                             .navigation();
                 });
 
-        if (mRecordData == null) {
+        if (mRecordData == null || mRecordData.mVoteInfoModels == null || mRecordData.mVoteInfoModels.size() == 0) {
             toLoadingState();
             getVoteInfo();
         } else {
