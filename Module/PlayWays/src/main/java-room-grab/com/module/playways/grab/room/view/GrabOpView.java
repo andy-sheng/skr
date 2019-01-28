@@ -109,7 +109,7 @@ public class GrabOpView extends RelativeLayout {
         });
 
         RxView.clicks(mIvLightOff)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .filter(new Predicate<Object>() {
             @Override
             public boolean test(Object o) {
