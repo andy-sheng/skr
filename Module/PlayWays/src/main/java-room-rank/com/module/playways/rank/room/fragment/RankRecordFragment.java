@@ -2,6 +2,7 @@ package com.module.playways.rank.room.fragment;
 
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.support.annotation.Nullable;
 
 import android.view.View;
@@ -115,10 +116,9 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
         RxView.clicks(mTvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-//                    EventBus.getDefault().post(new FinishPlayWayActivityEvent());
-//                    getActivity().finish();
-
+                    EventBus.getDefault().post(new FinishPlayWayActivityEvent());
                     getActivity().finish();
+
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                             .withInt("key_game_type", mRoomData.getGameType())
                             .withBoolean("selectSong", true)
