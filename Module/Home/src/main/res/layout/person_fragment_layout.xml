@@ -23,7 +23,7 @@
         android:layout_marginTop="@dimen/view_28_dp"
         android:drawableTop="@drawable/gerenzhuye_fenxiangicon"
         android:text="分享"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/setting_tv"

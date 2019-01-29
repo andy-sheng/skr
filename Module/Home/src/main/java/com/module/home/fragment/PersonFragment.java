@@ -12,6 +12,8 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.myinfo.event.ScoreDetailChangeEvent;
+import com.common.core.share.SharePanel;
+import com.common.core.share.ShareType;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
@@ -133,6 +135,17 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
 
         U.getSoundUtils().preLoad(TAG, R.raw.allclick);
+
+        RxView.clicks(mShareTv)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        SharePanel sharePanel = new SharePanel(getActivity());
+                        sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png", R.drawable.share_sker);
+                        sharePanel.show(ShareType.IMAGE_RUL);
+                    }
+                });
 
         RxView.clicks(mSettingTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
