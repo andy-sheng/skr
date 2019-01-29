@@ -40,8 +40,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     public final static String TAG = "SongSelectFragment";
 
-    public static final int DEFAULT_FIRST_COUNT = 30; // 第一次从推荐页面拉去歌曲数
-    public static final int DEFAULT_COUNT = 6;  // 从服务器拉去歌曲数
+    public int DEFAULT_COUNT = 6;  // 从服务器拉去歌曲数，即每个页面默认个数
+    public int DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5; // 第一次从推荐页面拉去歌曲数
 
     RelativeLayout mMainActContainer;
 
@@ -68,7 +68,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-
         mSwipeView = (SwipeFlingAdapterView) mRootView.findViewById(R.id.swipe_view);
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
@@ -81,6 +80,9 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             mGameType = bundle.getInt(KEY_GAME_TYPE);
         }
 
+
+        int songCardHeight = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(200);
+        DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
         RxView.clicks(mSelectBackIv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -181,7 +183,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 //                        })
 //                        .build());
             }
-        });
+        }, DEFAULT_COUNT);
 
         // 默认推荐
         presenter = new SongTagDetailsPresenter(this);
@@ -242,7 +244,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 }
                 songCardModel.getList().add(list.get(i));
 
-                if ((i + 1) % SongCardModel.MAX_COUNT == 0) {
+                if ((i + 1) % DEFAULT_COUNT == 0) {
                     songCardModels.add(songCardModel);
                     songCardModel = null;
                 }

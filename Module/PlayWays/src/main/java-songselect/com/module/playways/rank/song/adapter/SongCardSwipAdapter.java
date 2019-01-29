@@ -19,9 +19,11 @@ public class SongCardSwipAdapter extends BaseAdapter {
     ArrayList<SongCardModel> mSongCardHolderArrayList = new ArrayList<>();
 
     RecyclerOnItemClickListener mListener;
+    int defaultCount;   // 每张卡片上多少个元素
 
-    public SongCardSwipAdapter(RecyclerOnItemClickListener listener) {
+    public SongCardSwipAdapter(RecyclerOnItemClickListener listener, int defaultCount) {
         this.mListener = listener;
+        this.defaultCount = defaultCount;
     }
 
     public void addAll(Collection<SongCardModel> collection) {
@@ -76,7 +78,7 @@ public class SongCardSwipAdapter extends BaseAdapter {
         SongCardHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_card_item_view, parent, false);
-            holder = new SongCardHolder(convertView, mListener);
+            holder = new SongCardHolder(convertView, mListener, defaultCount);
             convertView.setTag(holder);
         } else {
             holder = (SongCardHolder) convertView.getTag();

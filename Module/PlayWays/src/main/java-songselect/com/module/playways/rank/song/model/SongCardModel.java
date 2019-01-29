@@ -5,12 +5,11 @@ import java.util.List;
 
 public class SongCardModel {
 
+    // list 最大限制即SongSelectFragment中DEFAULT_COUNT
     List<SongModel> list;
 
-    public static int MAX_COUNT = 6; // 每张卡片可容纳最多SongModer
-
     public SongCardModel() {
-        list = new ArrayList<>(MAX_COUNT);
+        list = new ArrayList<>();
     }
 
     public List<SongModel> getList() {
