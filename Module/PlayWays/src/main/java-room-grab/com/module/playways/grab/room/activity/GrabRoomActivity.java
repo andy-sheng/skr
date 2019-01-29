@@ -11,6 +11,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -46,6 +47,9 @@ public class GrabRoomActivity extends BaseActivity {
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
             mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
+            if(mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB){
+                mRoomData.setTagId(prepareData.getTagId());
+            }
 
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
             for (int i = 0; i < prepareData.getSongModelList().size(); i++) {

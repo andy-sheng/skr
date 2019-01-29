@@ -80,6 +80,16 @@ public class RoomData implements Serializable {
 
     private boolean mMute = false;
 
+    //一场到底歌曲分类
+    private int tagId;
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
 
     /**
      * 检查轮次信息是否需要更新

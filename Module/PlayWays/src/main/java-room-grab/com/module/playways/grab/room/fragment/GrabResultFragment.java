@@ -26,6 +26,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
@@ -33,6 +34,7 @@ import com.module.playways.RoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.ShareWebActivity;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
+import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;
 
 import java.util.List;
@@ -118,9 +120,12 @@ public class GrabResultFragment extends BaseFragment {
         RxView.clicks(mTvAgain)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                            .withInt("key_game_type", mRoomData.getGameType())
-                            .withBoolean("selectSong", true)
+                    PrepareData prepareData = new PrepareData();
+                    prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+                    prepareData.setTagId(mRoomData.getTagId());
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                            .withSerializable("prepare_data", prepareData)
                             .navigation();
 
                     getActivity().finish();
