@@ -83,6 +83,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
         int songCardHeight = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(200);
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
+        DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
+
         RxView.clicks(mSelectBackIv)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
