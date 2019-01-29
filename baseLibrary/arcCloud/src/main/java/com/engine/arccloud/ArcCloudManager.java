@@ -31,7 +31,7 @@ public class ArcCloudManager implements IACRCloudListener {
     int mLength = 0;
     int mSampleRate = -1;
     int mChannels = -1;
-
+    int mLineNo = 0;
     RecognizeConfig mRecognizeConfig;
 
     @Override
@@ -144,7 +144,7 @@ public class ArcCloudManager implements IACRCloudListener {
             setLen(mLength + buffer.length);
             if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL && mLength == BUFFER_LEN) {
                 if (mRecognizeConfig.isWantRecognizeInManualMode()) {
-                    recognizeInner();
+                    recognizeInner(mLineNo);
                 }
             }
         } else {
@@ -162,7 +162,7 @@ public class ArcCloudManager implements IACRCloudListener {
                 recognizeInner();
             } else if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
                 if (mRecognizeConfig.isWantRecognizeInManualMode()) {
-                    recognizeInner();
+                    recognizeInner(mLineNo);
                 }
             }
         }
@@ -177,7 +177,7 @@ public class ArcCloudManager implements IACRCloudListener {
         mLength = len;
     }
 
-    private void recognizeInner() {
+    private void recognizeInner(final int lineNo) {
         tryInit();
         if (this.mClient != null) {
             if (mLength >= BUFFER_LEN) {
@@ -216,7 +216,7 @@ public class ArcCloudManager implements IACRCloudListener {
                                 if (recognizeConfig!=null && recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
                                     recognizeConfig.setWantRecognizeInManualMode(false);
                                 }
-                                process(result);
+                                process(result,lineNo);
                             }
                             emitter.onComplete();
                         }
@@ -253,7 +253,7 @@ public class ArcCloudManager implements IACRCloudListener {
         }
     }
 
-    private void process(String result) {
+    private void process(String result,int lineNo) {
         MyLog.d(TAG, "onResult" + " result=" + result);
         if (mRecognizeConfig != null) {
             JSONObject jsonObject = JSON.parseObject(result);
@@ -271,17 +271,18 @@ public class ArcCloudManager implements IACRCloudListener {
                         }
                     }
                     MyLog.d(TAG, " list=" + list + " targetSongInfo=" + targetSongInfo);
-                    mRecognizeConfig.getResultListener().onResult(result, list, targetSongInfo);
+                    mRecognizeConfig.getResultListener().onResult(result, list, targetSongInfo,lineNo);
                 }
             } else {
-                mRecognizeConfig.getResultListener().onResult(result, null, null);
+                mRecognizeConfig.getResultListener().onResult(result, null, null,lineNo);
             }
         }
     }
 
-    public void recognizeInManualMode() {
+    public void recognizeInManualMode(int lineNo) {
         MyLog.d(TAG,"recognizeInManualMode" );
         if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+            mLineNo = lineNo;
             mRecognizeConfig.setWantRecognizeInManualMode(true);
         }
     }

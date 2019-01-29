@@ -1099,8 +1099,8 @@ public class EngineManager implements AgoraOutCallback {
         AgoraEngineAdapter.getInstance().stopRecognize();
     }
 
-    public void recognizeInManualMode() {
-        AgoraEngineAdapter.getInstance().recognizeInManualMode();
+    public void recognizeInManualMode(int lineNo) {
+        AgoraEngineAdapter.getInstance().recognizeInManualMode(lineNo);
     }
 
     /*打分相关结束*/

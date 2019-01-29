@@ -103,6 +103,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_LYRIC_END_EVENT = 31;
 
+    static final int MSG_SHOW_SCORE_EVENT = 32;
+
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;
 
@@ -148,6 +150,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         mIGameRuleView.hideMainStage();
                     }
                     break;
+                default:
+                    int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
+                    if (lineNo >= mLastLineNum) {
+                        int score = EngineManager.getInstance().getLineScore();
+                        processScore(score, lineNo);
+                    }
             }
 
         }
@@ -209,15 +217,21 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     .setArtist(mRoomData.getSongModel().getOwner())
                     .setMResultListener(new ArcRecognizeListener() {
                         @Override
-                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {
-                            // 使用最新的打分方案做优化
-                            int score = 0;
-                            if (targetSongInfo != null) {
-                                score = (int) (targetSongInfo.getScore() * 100);
-                            }else{
-                                score = EngineManager.getInstance().getLineScore();
+                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                            mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
+                            if (lineNo >= mLastLineNum) {
+                                // 使用最新的打分方案做优化
+                                int score = EngineManager.getInstance().getLineScore();
+                                if (targetSongInfo != null) {
+                                    int t = (int) (targetSongInfo.getScore() * 100);
+                                    if (t > score) {
+                                        score = t;
+                                    }
+                                } else {
+
+                                }
+                                processScore(score, lineNo);
                             }
-                            processScore(score, mLastLineNum);
                         }
                     }).build()
             );
@@ -1169,8 +1183,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LrcEvent.LineEndEvent event) {
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            mLastLineNum = event.getLineNum();
-            EngineManager.getInstance().recognizeInManualMode();
+
+            EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
+            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.getLineNum() * 100);
+            mUiHandler.sendMessageDelayed(msg, 1000);
 //            int score = EngineManager.getInstance().getLineScore();
 //            processScore(score, event.getLineNum());
         } else {
@@ -1194,7 +1210,19 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LrcEvent.LineStartEvent event) {
+        Params params = EngineManager.getInstance().getParams();
+        if (params != null) {
+            params.setLrcHasStart(true);
+        }
+    }
+
     void processScore(int score, int line) {
+        if (line < mLastLineNum) {
+            return;
+        }
+        mLastLineNum = line;
 //        U.getToastUtil().showShort("score:" + score);
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
         mUiHandler.post(new Runnable() {

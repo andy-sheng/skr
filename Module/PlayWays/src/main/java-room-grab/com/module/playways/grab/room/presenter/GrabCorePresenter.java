@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
+import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
@@ -124,6 +125,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         TAG = "GrabCorePresenter";
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
+            params.setStyleEnum(AudioEffectStyleEnum.ORIGINAL);
             EngineManager.getInstance().init("grabroom", params);
             EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
             // 不发送本地音频

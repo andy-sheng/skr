@@ -1145,9 +1145,9 @@ public class AgoraEngineAdapter {
         }
     }
 
-    public void recognizeInManualMode() {
+    public void recognizeInManualMode(int lineNo) {
         if (mArcCloudManager != null) {
-            mArcCloudManager.recognizeInManualMode();
+            mArcCloudManager.recognizeInManualMode(lineNo);
         }
     }
 
