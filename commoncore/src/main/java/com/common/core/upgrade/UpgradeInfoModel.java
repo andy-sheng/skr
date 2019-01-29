@@ -74,18 +74,18 @@ public class UpgradeInfoModel implements Serializable {
 
     public String getVersionName() {
         if (TextUtils.isEmpty(mVersionName)) {
-            int a = latestVersionCode / 1000;
-            int b = (latestVersionCode - a * 1000) / 100;
-            int c = (latestVersionCode - a * 1000 - b * 100);
+            int a = latestVersionCode / (1000 * 1000);
+            int b = (latestVersionCode - a * (1000 * 1000)) / 1000;
+            int c = (latestVersionCode - a * (1000 * 1000) - b * 1000);
             mVersionName = a + "." + b + "." + c;
         }
         return mVersionName;
     }
 
     public String getPackageSizeStr() {
-        if(TextUtils.isEmpty(mPackageSizeStr)){
+        if (TextUtils.isEmpty(mPackageSizeStr)) {
 //            int a  = (int) (packageSize/(1024*1024));
-            mPackageSizeStr = String.format("%.1fM",packageSize/(1024*1024.0));
+            mPackageSizeStr = String.format("%.1fM", packageSize / (1024 * 1024.0));
         }
         return mPackageSizeStr;
     }
