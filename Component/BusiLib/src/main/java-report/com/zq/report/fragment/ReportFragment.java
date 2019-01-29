@@ -132,13 +132,20 @@ public class ReportFragment extends BaseFragment {
         String content = mReportContent.getText().toString().trim();
 
         HashMap<String, Object> map = new HashMap<>();
+        map.put("targetID", mUserID);
+        if (mSelectModels != null && mSelectModels.size() > 0) {
+            map.put("rtype", mSelectModels.get(0).getType());
+        }
+        map.put("content", content);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
 
         UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         ApiMethods.subscribe(userInfoServerApi.report(body), new ApiObserver<ApiResult>() {
             @Override
-            public void process(ApiResult obj) {
-                // TODO: 2019/1/24  需要服务器接口完善
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    U.getFragmentUtils().popFragment(ReportFragment.this);
+                }
             }
         }, this);
     }
