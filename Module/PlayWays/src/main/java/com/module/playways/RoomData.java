@@ -29,11 +29,11 @@ public class RoomData implements Serializable {
 
     public static final int SYSTEM_ID = 1;
 
-    public final static String PK_MAIN_STAGE_WEBP = "https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/android_resource/pk_main_stage.webp";
-    public final static String READY_GO_SVGA_URL = "https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/android_resource/sige_go.svga";
-    public final static String ROOM_STAGE_SVGA = "https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/android_resource/main_stage_people.svga";
-    public final static String ROOM_SPECAIL_EMOJI_DABIAN = "https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/android_resource/emoji_bianbian.svga";
-    public final static String ROOM_SPECAIL_EMOJI_AIXIN = "https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/android_resource/emoji_love.svga";
+    public final static String PK_MAIN_STAGE_WEBP = "http://res-static.inframe.mobi/app/pk_main_stage.webp";
+    public final static String READY_GO_SVGA_URL = "http://res-static.inframe.mobi/app/sige_go.svga";
+    public final static String ROOM_STAGE_SVGA = "http://res-static.inframe.mobi/app/main_stage_people.svga";
+    public final static String ROOM_SPECAIL_EMOJI_DABIAN = "http://res-static.inframe.mobi/app/emoji_bianbian.svga";
+    public final static String ROOM_SPECAIL_EMOJI_AIXIN = "http://res-static.inframe.mobi/app/emoji_love.svga";
     public static final String AUDIO_FOR_AI_PATH = "audioforai.aac";
     public static final String MATCHING_SCORE_FOR_AI_PATH = "matchingscore.json";
 
