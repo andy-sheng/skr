@@ -54,6 +54,7 @@ import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EQRoundResultType;
+import com.zq.live.proto.Room.PlayerInfo;
 import com.zq.live.proto.Room.RoomMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -110,7 +111,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
         @Override
         public boolean doFilter(RoomMsg msg) {
-            if (msg!=null && msg.roomID == mRoomData.getGameId()) {
+            if (msg != null && msg.roomID == mRoomData.getGameId()) {
                 return true;
             }
             return false;
@@ -129,6 +130,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {
+            for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
+                BasePushInfo basePushInfo = new BasePushInfo();
+                basePushInfo.setRoomID(mRoomData.getGameId());
+                basePushInfo.setSender(new UserInfo.Builder()
+                        .setUserID(playerInfoModel.getUserInfo().getUserId())
+                        .setAvatar(playerInfoModel.getUserInfo().getAvatar())
+                        .setNickName(playerInfoModel.getUserInfo().getNickname())
+                        .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
+                        .build());
+                String text = String.format("%s加入房间", playerInfoModel.getUserInfo().getNickname());
+                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+                EventBus.getDefault().post(msgEvent);
+            }
+
             BasePushInfo basePushInfo = new BasePushInfo();
             basePushInfo.setRoomID(mRoomData.getGameId());
             basePushInfo.setSender(new UserInfo.Builder()
@@ -170,7 +185,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 播放导唱
      */
     public void playGuide() {
-        if(mDestroyed){
+        if (mDestroyed) {
             return;
         }
         RoundInfoModel now = mRoomData.getRealRoundInfo();
@@ -203,7 +218,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 // 需要上传音频伪装成机器人
                 EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
                 RoundInfoModel now = mRoomData.getRealRoundInfo();
-                if(mRobotScoreHelper==null){
+                if (mRobotScoreHelper == null) {
                     mRobotScoreHelper = new RobotScoreHelper();
                 }
                 mRobotScoreHelper.reset();
@@ -266,7 +281,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //                    });
 //            return;
 //        }
-        if(now == null){
+        if (now == null) {
             return;
         }
 
@@ -348,8 +363,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    public void muteAllRemoteAudioStreams(boolean mute,boolean fromUser) {
-        if(fromUser){
+    public void muteAllRemoteAudioStreams(boolean mute, boolean fromUser) {
+        if (fromUser) {
             mRoomData.setMute(mute);
         }
         EngineManager.getInstance().muteAllRemoteAudioStreams(mute);
@@ -369,9 +384,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 自己的轮次结束了
+     *
      * @param roundInfoModel
      */
-    private void onSelfRoundOver(RoundInfoModel roundInfoModel){
+    private void onSelfRoundOver(RoundInfoModel roundInfoModel) {
         // 上一轮演唱是自己，开始上传资源
         if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
             //属于需要上传音频文件的状态
@@ -464,7 +480,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Override
     public void destroy() {
-        MyLog.d(TAG,"destroy begin" );
+        MyLog.d(TAG, "destroy begin");
         super.destroy();
         mDestroyed = true;
         exitGame();
@@ -478,20 +494,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (mExoPlayer != null) {
             mExoPlayer.release();
-        }else{
-            MyLog.d(TAG,"mExoPlayer == null " );
+        } else {
+            MyLog.d(TAG, "mExoPlayer == null ");
         }
-        MyLog.d(TAG,"destroy over" );
+        MyLog.d(TAG, "destroy over");
     }
 
     /**
      * 告知我的的抢唱阶段结束了
      */
     public void sendMyGrabOver() {
-         MyLog.d(TAG,"上报我的抢唱结束 ");
+        MyLog.d(TAG, "上报我的抢唱结束 ");
         RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-        if(roundInfoModel==null){
-            return ;
+        if (roundInfoModel == null) {
+            return;
         }
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
@@ -523,8 +539,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         estimateOverTsThisRound();
 
         RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-        if(roundInfoModel==null  || roundInfoModel.getUserID()!=MyUserInfoManager.getInstance().getUid()){
-            return ;
+        if (roundInfoModel == null || roundInfoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
+            return;
         }
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
@@ -671,9 +687,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + newRoundInfo.getRoundSeq());
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
-            if(onlineInfos!=null){
-                for(OnlineInfoModel onlineInfoModel:onlineInfos){
-                    mRoomData.setOnline(onlineInfoModel.getUserID(),onlineInfoModel.isIsOnline());
+            if (onlineInfos != null) {
+                for (OnlineInfoModel onlineInfoModel : onlineInfos) {
+                    mRoomData.setOnline(onlineInfoModel.getUserID(), onlineInfoModel.isIsOnline());
                 }
             }
             mUiHanlder.post(new Runnable() {
@@ -859,7 +875,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
         MyLog.w(TAG, "有人退出了：userID is " + event.getUserID());
-        mRoomData.setOnline(event.userID,false);
+        mRoomData.setOnline(event.userID, false);
     }
 
 
@@ -953,10 +969,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
         MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
         swapGame(!event.foreground, event.foreground);
-        if(event.foreground){
-            muteAllRemoteAudioStreams(mRoomData.isMute(),false);
-        }else{
-            muteAllRemoteAudioStreams(true,false);
+        if (event.foreground) {
+            muteAllRemoteAudioStreams(mRoomData.isMute(), false);
+        } else {
+            muteAllRemoteAudioStreams(true, false);
         }
     }
 
@@ -965,7 +981,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
         return pt;
     }
-
 
 
 }
