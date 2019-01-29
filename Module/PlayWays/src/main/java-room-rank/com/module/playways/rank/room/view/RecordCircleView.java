@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -173,9 +174,11 @@ public class RecordCircleView extends View {
             mPaint.setShader(null);
             mPaint.setAlpha(255);
             mPaint.setTextSize(sp2px(15));
+            mPaint.setTypeface(Typeface.DEFAULT_BOLD);
             mPaint.setTextAlign(Paint.Align.CENTER);
-            mPaint.setColor(Color.WHITE);
+            mPaint.setColor(Color.parseColor("#0C2275"));
             canvas.drawText("满级", mCenterX, mCenterY + U.getDisplayUtils().dip2px(5), mPaint);
+            mPaint.setTypeface(Typeface.DEFAULT);
             return;
         }
 
@@ -248,13 +251,15 @@ public class RecordCircleView extends View {
         mPaint.setAlpha(255);
         mPaint.setTextSize(sp2px(15));
         mPaint.setTextAlign(Paint.Align.CENTER);
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(Color.parseColor("#0C2275"));
         String value = String.valueOf(mSolidCreditValue);
+        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
         canvas.drawText(value, mCenterX, mCenterY + dp2px(10), mPaint);
+        mPaint.setTypeface(Typeface.DEFAULT);
 
         mPaint.setTextSize(sp2px(8));
         mPaint.setTextAlign(Paint.Align.CENTER);
-        mPaint.setColor(getResources().getColor(R.color.white_trans_50));
+        mPaint.setColor(Color.parseColor("#7f0C2275"));
         canvas.drawText("当前", mCenterX, mCenterY - dp2px(6), mPaint);
         canvas.drawText(mMax + "", mCenterX + dp2px(10), mCenterY + dp2px(32), mPaint);
     }
@@ -271,7 +276,7 @@ public class RecordCircleView extends View {
 
     private SweepGradient generateInnerSweepGradient() {
         SweepGradient sweepGradient = new SweepGradient(mCenterX, mCenterY,
-                new int[]{Color.GRAY, Color.GRAY},
+                new int[]{Color.parseColor("#6F4909"), Color.parseColor("#6F4909")},
                 new float[]{0, 0}
         );
 
