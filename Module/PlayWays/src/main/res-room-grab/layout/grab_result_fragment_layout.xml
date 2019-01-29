@@ -208,7 +208,7 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_back"
-            android:layout_width="@dimen/view_121_dp"
+            android:layout_width="@dimen/view_91_dp"
             android:layout_height="@dimen/view_54_dp"
             android:background="@drawable/zhanjijieguo_back"
             android:gravity="center"
