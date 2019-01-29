@@ -125,7 +125,7 @@ public class UpgradeManager {
 
     private void loadDataFromServer() {
         UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
-        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 1, 1, U.getAppInfoUtils().getVersionCode()),
+        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode()),
                 new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult apiResult) {

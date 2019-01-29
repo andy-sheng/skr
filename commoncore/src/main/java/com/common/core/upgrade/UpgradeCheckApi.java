@@ -28,7 +28,7 @@ public interface UpgradeCheckApi {
      *     "traceId": "5c497e5c53a42b4b6e00006f"
      * }
      * @param packageName
-     * @param platform
+     * @param platform   1表示ios  2表示android
      * @param channel
      * @param versionCode
      * @return
