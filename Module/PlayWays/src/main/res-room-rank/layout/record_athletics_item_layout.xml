@@ -18,7 +18,7 @@
         android:layout_height="@dimen/view_28_dp"
         android:layout_marginLeft="@dimen/view_60_dp"
         android:layout_marginTop="@dimen/view_13_dp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_hint_flag"
@@ -29,7 +29,7 @@
         android:layout_marginBottom="@dimen/view_6_dp"
         android:background="@drawable/zhanji_jingshi"
         android:gravity="center"
-        android:textColor="#0C2275"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_12_dp"
         android:visibility="gone" />
 
