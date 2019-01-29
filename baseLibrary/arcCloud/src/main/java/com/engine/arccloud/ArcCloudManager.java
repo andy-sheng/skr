@@ -159,7 +159,7 @@ public class ArcCloudManager implements IACRCloudListener {
             setLen(BUFFER_LEN);
             if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
                 // 自动识别
-                recognizeInner();
+                recognizeInner(mLineNo);
             } else if (mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
                 if (mRecognizeConfig.isWantRecognizeInManualMode()) {
                     recognizeInner(mLineNo);

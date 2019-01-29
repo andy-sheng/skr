@@ -315,7 +315,7 @@ public class AuditionFragment extends BaseFragment {
                     .setArtist(mSongModel.getOwner())
                     .setMResultListener(new ArcRecognizeListener() {
                         @Override
-                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo) {
+                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo,int lineNo) {
                             int score = 0;
                             if (targetSongInfo != null) {
                                 score = (int) (targetSongInfo.getScore() * 100);
