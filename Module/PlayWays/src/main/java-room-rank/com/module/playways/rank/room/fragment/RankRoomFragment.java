@@ -407,59 +407,59 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mStageView.setVisibility(View.VISIBLE);
         String avatar = mRoomData.getUserInfo(mRoomData.getRealRoundInfo().getUserID()).getAvatar();
         FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
-                        .setCallBack(new IFrescoCallBack() {
-                            @Override
-                            public void processWithInfo(ImageInfo info, Animatable animatable) {
-                                if (animatable != null && animatable instanceof AnimatedDrawable2) {
-                                    ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
+                .setCallBack(new IFrescoCallBack() {
+                    @Override
+                    public void processWithInfo(ImageInfo info, Animatable animatable) {
+                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
+                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
 
-                                        @Override
-                                        public void onAnimationStart(AnimatedDrawable2 drawable) {
-                                            MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                            mSingAvatarView.setVisibility(View.VISIBLE);
-                                            AvatarUtils.loadAvatarByUrl(mSingAvatarView,
-                                                    AvatarUtils.newParamsBuilder(avatar)
-                                                            .setCircle(true)
-                                                            .build());
-                                            ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
-                                            objectAnimatorStage.setDuration(1000);
-                                            objectAnimatorStage.start();
-                                            mAnimatorList.add(objectAnimatorStage);
+                                @Override
+                                public void onAnimationStart(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
+                                    mSingAvatarView.setVisibility(View.VISIBLE);
+                                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+                                            AvatarUtils.newParamsBuilder(avatar)
+                                                    .setCircle(true)
+                                                    .build());
+                                    ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
+                                    objectAnimatorStage.setDuration(1000);
+                                    objectAnimatorStage.start();
+                                    mAnimatorList.add(objectAnimatorStage);
 
-                                            ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
-                                            objectAnimatorAvatar.setDuration(1000);
-                                            objectAnimatorAvatar.start();
-                                            mAnimatorList.add(objectAnimatorAvatar);
-                                        }
-
-                                        @Override
-                                        public void onAnimationStop(AnimatedDrawable2 drawable) {
-                                            MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
-                                        }
-
-                                        @Override
-                                        public void onAnimationReset(AnimatedDrawable2 drawable) {
-                                        }
-
-                                        @Override
-                                        public void onAnimationRepeat(AnimatedDrawable2 drawable) {
-
-                                        }
-
-                                        @Override
-                                        public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
-                                        }
-                                    });
-                                    animatable.start();
+                                    ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
+                                    objectAnimatorAvatar.setDuration(1000);
+                                    objectAnimatorAvatar.start();
+                                    mAnimatorList.add(objectAnimatorAvatar);
                                 }
-                            }
 
-                            @Override
-                            public void processWithFailure() {
-                                MyLog.d(TAG, "processWithFailure");
-                            }
-                        })
-                        .build()
+                                @Override
+                                public void onAnimationStop(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
+                                }
+
+                                @Override
+                                public void onAnimationReset(AnimatedDrawable2 drawable) {
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+
+                                }
+
+                                @Override
+                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
+                                }
+                            });
+                            animatable.start();
+                        }
+                    }
+
+                    @Override
+                    public void processWithFailure() {
+                        MyLog.d(TAG, "processWithFailure");
+                    }
+                })
+                .build()
         );
     }
 
@@ -901,19 +901,19 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         if (mQuitTipsDialog == null) {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                     .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
-                    .setConfirmTip("取消")
-                    .setCancelTip("确定")
+                    .setConfirmTip("确定")
+                    .setCancelTip("取消")
                     .setConfirmBtnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             mQuitTipsDialog.dismiss(false);
+                            getActivity().finish();
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             mQuitTipsDialog.dismiss(false);
-                            getActivity().finish();
                         }
                     })
                     .build();

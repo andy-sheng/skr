@@ -375,7 +375,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
             public void clickGrabBtn() {
-                if(U.getCommonUtils().isFastDoubleClick()){
+                if (U.getCommonUtils().isFastDoubleClick()) {
                     return;
                 }
                 U.getSoundUtils().play(TAG, R.raw.iwannasing);
@@ -483,7 +483,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 public void run() {
                     U.getSoundUtils().play(TAG, R.raw.startgame);
                 }
-            },100);
+            }, 100);
 
         } else {
             mUiHanlder.sendMessageDelayed(msg, 1200);
@@ -679,19 +679,19 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         if (mQuitTipsDialog == null) {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                     .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
-                    .setConfirmTip("取消")
-                    .setCancelTip("确定")
+                    .setConfirmTip("确定")
+                    .setCancelTip("取消")
                     .setConfirmBtnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             mQuitTipsDialog.dismiss(false);
+                            getActivity().finish();
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             mQuitTipsDialog.dismiss(false);
-                            getActivity().finish();
                         }
                     })
                     .build();
