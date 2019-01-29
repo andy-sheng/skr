@@ -405,13 +405,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void playWebpMainStage() {
         mStageView.setVisibility(View.VISIBLE);
-
-        mSingAvatarView.setVisibility(View.VISIBLE);
         String avatar = mRoomData.getUserInfo(mRoomData.getRealRoundInfo().getUserID()).getAvatar();
-        AvatarUtils.loadAvatarByUrl(mSingAvatarView,
-                AvatarUtils.newParamsBuilder(avatar)
-                        .setCircle(true)
-                        .build());
         FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
                         .setCallBack(new IFrescoCallBack() {
                             @Override
@@ -422,6 +416,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                                         @Override
                                         public void onAnimationStart(AnimatedDrawable2 drawable) {
                                             MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
+                                            mSingAvatarView.setVisibility(View.VISIBLE);
+                                            AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+                                                    AvatarUtils.newParamsBuilder(avatar)
+                                                            .setCircle(true)
+                                                            .build());
                                             ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
                                             objectAnimatorStage.setDuration(1000);
                                             objectAnimatorStage.start();
@@ -431,11 +430,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                                             objectAnimatorAvatar.setDuration(1000);
                                             objectAnimatorAvatar.start();
                                             mAnimatorList.add(objectAnimatorAvatar);
-//                                    String avatar = mRoomData.getUserInfo(mRoomData.getRealRoundInfo().getUserID()).getAvatar();
-//                                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
-//                                            AvatarUtils.newParamsBuilder(avatar)
-//                                                    .setCircle(true)
-//                                                    .build());
                                         }
 
                                         @Override
