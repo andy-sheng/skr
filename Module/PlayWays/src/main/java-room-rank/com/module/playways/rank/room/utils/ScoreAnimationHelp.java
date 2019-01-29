@@ -173,7 +173,12 @@ public class ScoreAnimationHelp {
                 MyLog.d(TAG, "beforeLevelChangeAnimation 数据异常 leveChange < 0 error form currStar > maxStar");
             }
         } else {
-            listener.onFinish();
+            if (to.getMaxStar() == 0 || to.getMaxStar() > 6) {
+                view.bindStarData(to.getMaxStar(), to.getCurrStar());
+                listener.onFinish();
+            } else {
+                listener.onFinish();
+            }
         }
     }
 

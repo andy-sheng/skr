@@ -4,7 +4,7 @@
     android:id="@+id/ranking_record"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dabeijing">
+    android:background="@drawable/pipeichenggong_bj">
 
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/rl_loading_area"
