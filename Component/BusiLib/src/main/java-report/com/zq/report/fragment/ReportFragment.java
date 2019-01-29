@@ -129,6 +129,10 @@ public class ReportFragment extends BaseFragment {
     }
 
     private void submitReport() {
+        if (mSelectModels == null || mSelectModels.size() == 0) {
+            U.getToastUtil().showShort("请选择举报类型");
+            return;
+        }
         String content = mReportContent.getText().toString().trim();
 
         HashMap<String, Object> map = new HashMap<>();
