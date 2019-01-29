@@ -51,7 +51,7 @@ public class ScoreAnimationHelp {
             // 之前已无战力上限
             if (to.getMaxBattleIndex() == 0) {
                 //现在依然无上限
-                // TODO: 2019/1/22 变成满级
+                mRecordCircleView.fullLevel();
                 listener.onFinish();
             } else {
                 // 直接更新表盘，无动画
@@ -68,7 +68,7 @@ public class ScoreAnimationHelp {
             mRecordCircleView.setData(0, form.getMaxBattleIndex(), form.getCurrBattleIndex(), form.getMaxBattleIndex(), form.getProtectBattleIndex(), new AnimationListener() {
                 @Override
                 public void onFinish() {
-                    // TODO: 2019/1/22 变成满级
+                    mRecordCircleView.fullLevel();
                     listener.onFinish();
                 }
             });
