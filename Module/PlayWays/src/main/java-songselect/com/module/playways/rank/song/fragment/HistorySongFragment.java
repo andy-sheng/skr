@@ -93,6 +93,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
                     if (songModel.isAllResExist()) {
                         PrepareData prepareData = new PrepareData();
                         prepareData.setSongModel(songModel);
+                        prepareData.setBgMusic(songModel.getRankUserVoice());
 
                         mRootView.post(new Runnable() {
                             @Override

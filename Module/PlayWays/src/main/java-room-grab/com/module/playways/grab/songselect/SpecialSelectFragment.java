@@ -58,6 +58,8 @@ public class SpecialSelectFragment extends BaseFragment {
     int offset = 0;          //偏移量
     int DEFAULT_COUNT = 10;  // 每次拉去列表数目
 
+    List<String> musicURLs;  //背景音乐
+
     @Override
     public int initView() {
         return R.layout.special_select_fragment_layout;
@@ -97,6 +99,7 @@ public class SpecialSelectFragment extends BaseFragment {
         });
         mContentRv.setAdapter(mSpecialSelectAdapter);
         loadData(offset, DEFAULT_COUNT);
+        getBackgroundMusic();
 
         RxView.clicks(mTitleView.getLeftImageButton())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -142,6 +145,18 @@ public class SpecialSelectFragment extends BaseFragment {
         });
     }
 
+    private void getBackgroundMusic() {
+        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+        ApiMethods.subscribe(grabSongApi.getSepcialBgVoice(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    musicURLs = JSON.parseArray(result.getData().getString("musicURL"), String.class);
+                }
+            }
+        });
+    }
+
     private void refreshView(List<SpecialModel> list, int offset) {
         this.offset = offset;
         mRefreshLayout.finishLoadMore();
@@ -173,6 +188,10 @@ public class SpecialSelectFragment extends BaseFragment {
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
         prepareData.setTagId(specialId);
 
+
+        if (musicURLs != null && musicURLs.size() > 0) {
+            prepareData.setBgMusic(musicURLs.get(0));
+        }
         getActivity().finish();
         ARouter.getInstance()
                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)

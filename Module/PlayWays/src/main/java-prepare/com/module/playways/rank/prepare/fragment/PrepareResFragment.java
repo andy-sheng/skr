@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -182,9 +183,10 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     @Override
     public void setData(int type, @Nullable Object data) {
-        super.setData(type,data);
+        super.setData(type, data);
         if (type == 0) {
             mPrepareData.setSongModel((SongModel) data);
+            mPrepareData.setBgMusic(((SongModel) data).getRankUserVoice());
         }
         if (type == 1) {
             mPrepareData.setGameType((int) data);
@@ -210,9 +212,9 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     }
 
     private void playBackgroundMusic() {
-        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-            if (mPrepareData.getSongModel() != null) {
-                BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0, "PrepareResFragment");
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null) {
+            if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
+                BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "PrepareResFragment");
             }
         }
     }

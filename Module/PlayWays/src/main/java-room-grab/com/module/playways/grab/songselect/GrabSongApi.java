@@ -34,4 +34,12 @@ public interface GrabSongApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-tags")
     Observable<ApiResult> getSepcialList(@Query("offset") int offset,@Query("cnt") int count);
+
+    /**
+     * 获取一唱到底匹配中播放的音乐
+     *
+     * @return
+     */
+    @GET("http://dev.game.inframe.mobi/v1/game/on-match-player-music")
+    Observable<ApiResult> getSepcialBgVoice();
 }

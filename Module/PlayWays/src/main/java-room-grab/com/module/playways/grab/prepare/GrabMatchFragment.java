@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -357,7 +358,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        if(integer == 61){
+                        if (integer == 61) {
                             U.getToastUtil().showShort("现在小伙伴有点少，稍后再匹配试试吧～");
                             mMatchPresenter.cancelMatch();
                             stopTimeTask();
@@ -446,6 +447,9 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                                 U.getSoundUtils().play(TAG, R.raw.general_back, 500);
                                 U.getSoundUtils().release(GrabMatchSuccessFragment.TAG);
                                 mMatchPresenter.cancelMatch();
+                                if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+                                    BgMusicManager.getInstance().destory();
+                                }
                                 stopTimeTask();
                                 getActivity().finish();
                                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
@@ -522,9 +526,9 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
     }
 
     private void playBackgroundMusic() {
-        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-            if (mPrepareData.getSongModel() != null) {
-                BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0, "GrabMatchFragment");
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null) {
+            if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
+                BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "GrabMatchFragment");
             }
         }
     }

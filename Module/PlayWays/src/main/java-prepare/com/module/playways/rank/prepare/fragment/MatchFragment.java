@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -127,9 +128,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
         startMatchQuotationTask();
         mMatchPresenter.getMatchingUserIconList();
 
-        if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0, "MatchFragment");
-        }
+        playBackgroundMusic();
     }
 
     private HandlerTaskTimer mControlTask;
@@ -144,6 +143,14 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                         changeQuotation(integer);
                     }
                 });
+    }
+
+    private void playBackgroundMusic() {
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null) {
+            if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
+                BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "MatchFragment");
+            }
+        }
     }
 
     private void doAnimation(final Integer integer) {
@@ -439,9 +446,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        if (!BgMusicManager.getInstance().isPlaying()) {
-            BgMusicManager.getInstance().starPlay(mPrepareData.getSongModel().getRankUserVoice(), 0, "MatchFragment");
-        }
+        playBackgroundMusic();
         mRootView.setVisibility(View.VISIBLE);
     }
 

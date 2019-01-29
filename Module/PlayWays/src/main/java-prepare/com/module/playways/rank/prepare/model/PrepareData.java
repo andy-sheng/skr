@@ -17,6 +17,8 @@ public class PrepareData implements Serializable {
     //一场到底歌曲分类
     private int tagId;
 
+    private String bgMusic; // 背景音乐
+
     public int getTagId() {
         return tagId;
     }
@@ -98,5 +100,14 @@ public class PrepareData implements Serializable {
 
     public int getShiftTs() {
         return shiftTs;
+    }
+
+
+    public String getBgMusic() {
+        return bgMusic;
+    }
+
+    public void setBgMusic(String bgMusic) {
+        this.bgMusic = bgMusic;
     }
 }

@@ -120,6 +120,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     if (songModel.isAllResExist()) {
                         PrepareData prepareData = new PrepareData();
                         prepareData.setSongModel(songModel);
+                        prepareData.setBgMusic(songModel.getRankUserVoice());
 
                         mRootView.post(new Runnable() {
                             @Override
