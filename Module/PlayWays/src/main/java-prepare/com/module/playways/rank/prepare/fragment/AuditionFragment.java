@@ -316,8 +316,8 @@ public class AuditionFragment extends BaseFragment {
                                 U.getToastUtil().showShort("acrscore:" + targetSongInfo.getScore());
                                 MyLog.d(TAG, "acrscore=" + score);
                             } else {
-                                score = EngineManager.getInstance().getLineScore();
-                                MyLog.d(TAG, "changba score=" + score);
+//                                score = EngineManager.getInstance().getLineScore();
+//                                MyLog.d(TAG, "changba score=" + score);
                             }
                         }
                     }).build());
@@ -592,9 +592,10 @@ public class AuditionFragment extends BaseFragment {
         //TODO
         int score = EngineManager.getInstance().getLineScore();
         U.getToastUtil().showShort("changba score:" + score);
-        if (MyLog.isDebugLogOpen()) {
-            EngineManager.getInstance().recognizeInManualMode();
-        }
+        MyLog.d(TAG,"changba score:" + score);
+//        if (MyLog.isDebugLogOpen()) {
+//            EngineManager.getInstance().recognizeInManualMode();
+//        }
 //        score = (int) (Math.random() * 100);
     }
 

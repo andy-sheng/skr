@@ -6,7 +6,7 @@
 BaseScoring::BaseScoring() {
     //LOGI("enter BaseScoring::BaseScoring()");
     UNIT_LEN_IN_MS = 40;
-    currentTimeMills = 0;
+//    currentTimeMills = 0;
     sampleCursor = 0;
     samples = NULL;
     isNeedDestroy = false;
@@ -114,17 +114,17 @@ void BaseScoring::consumeRecordRawQueue() {
 
 void BaseScoring::reset() {
     LOGI("BaseScoring::reset()....");
-    currentTimeMills = 0;
+//    currentTimeMills = 0;
     recordRawQueue->flush();
     recordLevelQueue->flush();
 }
 
-void BaseScoring::pushSamplesToRecordRawQueue() {
+void BaseScoring::pushSamplesToRecordRawQueue(long endCurrentTimeMills) {
     RecordLevel *recordLevel = new RecordLevel();
-    recordLevel->setTimeMills(currentTimeMills);
+    recordLevel->setTimeMills(endCurrentTimeMills);
     recordLevel->setSamples(samples);
     recordRawQueue->push(recordLevel);
-    currentTimeMills += UNIT_LEN_IN_MS;
+//    currentTimeMills += UNIT_LEN_IN_MS;
     sampleCursor = 0;
     samples = NULL;
 }
@@ -134,13 +134,17 @@ void BaseScoring::pushSamplesToRecordRawQueue() {
  * sampleCursor 当前buffer的index
  * */
 void BaseScoring::mergeRecordRaw(short *buffer, int bufferSize, long currentTime) {
-    if (currentTimeMills == 0) {
-        currentTimeMills = currentTime;
+    if(currentTime==0){
+        return;
     }
+//    if (currentTimeMills > currentTime) {
+//        currentTimeMills = currentTime;
+//        LOGI("mergeRecordRaw 赋值");
+//    }
     int bufferCursor = 0;
     // 每次都是512
             //
-    LOGI("mergeRecordRaw 1 currentTime=%ld currentTimeMills=%ld AUDIO_DATA_SAMPLE_FOR_SCORE=%d ",currentTime,currentTimeMills,AUDIO_DATA_SAMPLE_FOR_SCORE);
+    //LOGI("mergeRecordRaw 1 currentTime=%ld currentTimeMills=%ld AUDIO_DATA_SAMPLE_FOR_SCORE=%d ",currentTime,currentTimeMills,AUDIO_DATA_SAMPLE_FOR_SCORE);
     if (sampleCursor > 0 && NULL != samples) {
         // 处理残留数据
         if (bufferSize + sampleCursor >= AUDIO_DATA_SAMPLE_FOR_SCORE) {
@@ -148,7 +152,7 @@ void BaseScoring::mergeRecordRaw(short *buffer, int bufferSize, long currentTime
             int subSampleSize = AUDIO_DATA_SAMPLE_FOR_SCORE - sampleCursor;
             memcpy(samples + sampleCursor, buffer, subSampleSize * 2);
             // 满足一个单位了，丢
-            this->pushSamplesToRecordRawQueue();
+            this->pushSamplesToRecordRawQueue(currentTime);
             bufferSize -= subSampleSize;
             bufferCursor += subSampleSize;
             if (bufferSize <= 0) {
@@ -168,7 +172,7 @@ void BaseScoring::mergeRecordRaw(short *buffer, int bufferSize, long currentTime
             //LOGI("setTimeMills 2: %ld",currentTimeMills);
             samples = new short[AUDIO_DATA_SAMPLE_FOR_SCORE];
             memcpy(samples, buffer + bufferCursor, AUDIO_DATA_SAMPLE_FOR_SCORE * 2);
-            this->pushSamplesToRecordRawQueue();
+            this->pushSamplesToRecordRawQueue(currentTime);
             bufferSize -= AUDIO_DATA_SAMPLE_FOR_SCORE;
             bufferCursor += AUDIO_DATA_SAMPLE_FOR_SCORE;
         }

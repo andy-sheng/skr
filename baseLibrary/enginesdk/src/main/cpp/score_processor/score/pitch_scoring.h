@@ -25,7 +25,7 @@ private:
 	int 					mLastScore;
 	int 					mCurrentLineLevelSum;
 	int 					mCurrentLineSampleCount;
-	int 					getSingingIndex(long currentTimeMills);
+	int 					getSingingIndex(long currentTimeMills,int *f);
 	float 					noteDiff(float curNote, float targetNote);
 	int                     mLogOpen = 1;
 public:

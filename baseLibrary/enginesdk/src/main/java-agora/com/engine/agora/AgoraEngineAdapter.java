@@ -914,12 +914,16 @@ public class AgoraEngineAdapter {
                 if (mArcCloudManager != null) {
                     mArcCloudManager.putPool(samples, samplesPerSec, channels);
                 }
+                long ts = 0;
+                if (mConfig.isMixMusicPlaying()) {
+                    ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
+                }
                 CbEngineAdapter.getInstance().processAudioFrames(samples,
                         numOfSamples,
                         bytesPerSample,
                         channels,
                         samplesPerSec,
-                        mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs()),
+                        ts,
                         mConfig.getMidiPath());
                 return true;
             }
