@@ -20,4 +20,16 @@ public class LrcEvent {
             return lineNum;
         }
     }
+
+    public static class LineStartEvent{
+        int lineNum;
+
+        public LineStartEvent(int lineNum) {
+            this.lineNum = lineNum;
+        }
+
+        public int getLineNum() {
+            return lineNum;
+        }
+    }
 }

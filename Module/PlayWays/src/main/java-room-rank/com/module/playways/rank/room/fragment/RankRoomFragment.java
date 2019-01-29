@@ -165,7 +165,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1);
                 int uid = msg.arg2;
                 if (RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == uid) {
-                    EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
+                    if(msg.arg2 == 1 && msg.arg1 == 0){
+                        EventBus.getDefault().post(new LrcEvent.LineStartEvent(msg.arg1));
+                    }else {
+                        EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
+                    }
                 }
             }
         }
@@ -1245,6 +1249,15 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
             msg.arg1 = entry.getKey();
             msg.arg2 = mRoomData.getRealRoundInfo().getUserID();
+
+            if(entry.getKey() == 0){
+                //暂定   1为开始，0为结束
+                Message message = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
+                message.arg1 = entry.getKey();
+                message.arg2 = 1;
+                mUiHanlder.sendMessageDelayed(message, entry.getValue().getStartTime() - mPlayingSongModel.getBeginMs());
+            }
+
             if (entry.getValue().getEndTime() > mPlayingSongModel.getEndMs()) {
                 mUiHanlder.sendMessageDelayed(msg, mPlayingSongModel.getEndMs() - mPlayingSongModel.getBeginMs());
             } else {

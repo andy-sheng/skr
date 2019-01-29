@@ -153,8 +153,14 @@ public class AuditionFragment extends BaseFragment {
                     U.getFragmentUtils().popFragment(AuditionFragment.this);
                     return;
                 } else if (MSG_LYRIC_END_EVENT == msg.what) {
-                    MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1);
-                    EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
+                    MyLog.d(TAG, "handleMessage" + ", msg.arg1" + msg.arg1 + ", msg.arg2=" + msg.arg2);
+                    if(msg.arg2 == 1){
+                        if(msg.arg1 == 0){
+                            EventBus.getDefault().post(new LrcEvent.LineStartEvent(msg.arg1));
+                        }
+                    }else {
+                        EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
+                    }
                 }
             }
         };
@@ -558,6 +564,14 @@ public class AuditionFragment extends BaseFragment {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
             Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
             msg.arg1 = entry.getKey();
+
+            if(entry.getKey() == 0){
+                //暂定   1为开始，0为结束
+                Message message = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
+                message.arg1 = entry.getKey();
+                message.arg2 = 1;
+                mUiHanlder.sendMessageDelayed(message, entry.getValue().getStartTime() - mSongModel.getBeginMs());
+            }
 
             if (entry.getValue().getEndTime() > mSongModel.getEndMs()) {
                 mUiHanlder.sendMessageDelayed(msg, mSongModel.getEndMs() - mSongModel.getBeginMs());
