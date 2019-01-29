@@ -14,6 +14,7 @@ import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.login.LoginActivity;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -178,6 +179,10 @@ public class UploadAccountInfoFragment extends BaseFragment {
                                 .greenChannel().navigation();
                     }
                 });
+
+        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+            mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
+        }
     }
 
     private void checkNickName(String nickName) {
@@ -201,7 +206,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                         U.getFragmentUtils().addFragment(FragmentUtils
                                 .newAddParamsBuilder(getActivity(), EditInfoSexFragment.class)
                                 .setBundle(bundle)
-                                .setAddToBackStack(false)
+                                .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
 

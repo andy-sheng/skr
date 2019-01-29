@@ -149,7 +149,7 @@ public class EditInfoSexFragment extends BaseFragment {
                 U.getFragmentUtils().addFragment(FragmentUtils
                         .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
                         .setBundle(bundle)
-                        .setAddToBackStack(false)
+                        .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
             } else {
