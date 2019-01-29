@@ -29,7 +29,7 @@
         android:layout_marginBottom="@dimen/view_6_dp"
         android:background="@drawable/zhanji_jingshi"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="#0C2275"
         android:textSize="@dimen/textsize_12_dp"
         android:visibility="gone" />
 
@@ -102,8 +102,7 @@
         android:ellipsize="end"
         android:gravity="left"
         android:maxLines="1"
-        android:text="酒彪子"
-        android:textColor="@color/white"
+        android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold" />
 
@@ -119,8 +118,7 @@
         android:ellipsize="end"
         android:gravity="left"
         android:maxLines="1"
-        android:text="天空"
-        android:textColor="@color/white_trans_50"
+        android:textColor="#800C2275"
         android:textSize="@dimen/textsize_12_dp"
         android:textStyle="bold" />
 </RelativeLayout>

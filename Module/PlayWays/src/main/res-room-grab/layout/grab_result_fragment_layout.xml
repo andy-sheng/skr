@@ -13,10 +13,7 @@
         android:layout_marginLeft="@dimen/view_15_dp"
         android:layout_marginTop="@dimen/view_124_dp"
         android:layout_marginRight="@dimen/view_15_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_solid_color="#2E3041"
-        app:bl_stroke_color="#0C2275"
-        app:bl_stroke_width="@dimen/view_3_dp">
+        android:background="@drawable/img_kaishipipei_bg">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/avatar_iv"

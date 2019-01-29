@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="@dimen/view_124_dp"
     android:layout_width="@dimen/view_311_dp"
-    android:layout_gravity="center_horizontal"
     android:layout_height="@dimen/view_479_dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="@dimen/view_124_dp"
     android:background="@drawable/img_kaishipipei_bg">
 
     <com.module.playways.rank.song.holder.SongCardRecycleView
         android:id="@+id/song_list_recycle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </com.module.playways.rank.song.holder.SongCardRecycleView>
+        android:layout_height="wrap_content"></com.module.playways.rank.song.holder.SongCardRecycleView>
 
 </com.common.view.ex.ExLinearLayout>

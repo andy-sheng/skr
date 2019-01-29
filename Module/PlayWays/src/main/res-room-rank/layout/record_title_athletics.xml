@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:levelView="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clipChildren="false"
@@ -11,7 +12,8 @@
         android:layout_width="@dimen/view_100_dp"
         android:layout_height="@dimen/view_110_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_24_dp"></com.zq.level.view.NormalLevelView>
+        android:layout_marginTop="@dimen/view_24_dp"
+        levelView:txtColor="#0C2275"></com.zq.level.view.NormalLevelView>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_own_record"
@@ -31,17 +33,16 @@
         android:layout_marginRight="@dimen/view_34_dp" />
 
     <com.common.view.ex.ExTextView
-        android:ellipsize="end"
-        android:maxWidth="@dimen/view_160_dp"
-        android:maxLines="1"
         android:id="@+id/tv_song_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_143_dp"
         android:layout_marginRight="@dimen/view_140_dp"
-        android:text="《印第安老斑鸠》"
-        android:textColor="@color/white_trans_50"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_160_dp"
+        android:maxLines="1"
+        android:textColor="#800C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
     <com.common.view.ex.ExImageView

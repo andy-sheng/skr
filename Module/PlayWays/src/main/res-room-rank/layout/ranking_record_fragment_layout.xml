@@ -7,9 +7,7 @@
     android:background="@drawable/dabeijing">
 
     <com.common.view.ex.ExRelativeLayout
-        android:visibility="gone"
         android:id="@+id/rl_loading_area"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/ll_bottom_area"
@@ -17,25 +15,24 @@
         android:layout_marginTop="@dimen/view_124_dp"
         android:layout_marginRight="@dimen/view_15_dp"
         android:layout_marginBottom="@dimen/view_26_dp"
+        android:background="@drawable/img_kaishipipei_bg"
+        android:gravity="center"
         android:padding="@dimen/view_3_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_solid_color="#2E3041"
-        app:bl_stroke_color="#0C2275"
-        app:bl_stroke_width="@dimen/view_3_dp">
+        android:visibility="gone">
+
         <ProgressBar
             android:id="@+id/loading"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
         <include
             android:id="@+id/ll_load_failed"
-            layout="@layout/record_data_fetch_failed_layout"/>
+            layout="@layout/record_data_fetch_failed_layout" />
     </com.common.view.ex.ExRelativeLayout>
 
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/rl_record_area"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/ll_bottom_area"
@@ -43,11 +40,9 @@
         android:layout_marginTop="@dimen/view_124_dp"
         android:layout_marginRight="@dimen/view_15_dp"
         android:layout_marginBottom="@dimen/view_26_dp"
+        android:background="@drawable/img_kaishipipei_bg"
         android:padding="@dimen/view_3_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_solid_color="#2E3041"
-        app:bl_stroke_color="#0C2275"
-        app:bl_stroke_width="@dimen/view_3_dp">
+        android:visibility="visible">
 
         <com.module.playways.rank.room.view.RecordTitleView
             android:id="@+id/record_title_view"
@@ -67,7 +62,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/white_trans_10" />
+                    android:background="#0C2275" />
 
                 <com.module.playways.rank.room.view.RecordItemView
                     android:id="@+id/record_item_one"
@@ -77,7 +72,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/white_trans_10" />
+                    android:background="#0C2275" />
 
                 <com.module.playways.rank.room.view.RecordItemView
                     android:id="@+id/record_item_two"
@@ -87,7 +82,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/white_trans_10" />
+                    android:background="#0C2275" />
 
                 <com.module.playways.rank.room.view.RecordItemView
                     android:id="@+id/record_item_three"

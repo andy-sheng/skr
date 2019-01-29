@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_6_dp"
         android:text="CHSNN"
-        android:textColor="@color/white"
+        android:textColor="#0C2275"
         android:textSize="@dimen/view_20_dp" />
 
     <LinearLayout
@@ -43,7 +43,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/view_7_dp"
             android:text="亚军"
-            android:textColor="@color/white_trans_50"
+            android:textColor="#800C2275"
             android:textSize="@dimen/textsize_16_dp" />
     </LinearLayout>
 
@@ -74,16 +74,16 @@
     </LinearLayout>
 
     <com.common.view.ex.ExTextView
-        android:ellipsize="end"
-        android:maxWidth="@dimen/view_160_dp"
-        android:maxLines="1"
         android:id="@+id/tv_song_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_143_dp"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_160_dp"
+        android:maxLines="1"
         android:text=""
-        android:textColor="@color/white_trans_50"
+        android:textColor="#800C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
     <com.common.view.ex.ExImageView
