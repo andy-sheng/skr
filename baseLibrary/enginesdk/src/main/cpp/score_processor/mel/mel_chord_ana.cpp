@@ -7,7 +7,11 @@
 #include <string.h>
 #include <math.h>
 #include <assert.h>
+#include <common/CommonTools.h>
+
 using namespace std;
+#define LOG_TAG "MelChordAna"
+
 MelChordAna::MelChordAna(int sampleRate)
 {
     m_sampleRate = sampleRate;
@@ -82,6 +86,7 @@ void MelChordAna::_InitByOldMelFile(string filename)
 
 void MelChordAna::InitByMelFile(string filename, int tag)
 {
+    LOGI("InitByMelFile filename=%s tag=%d",filename.c_str(),tag);
     _Init(tag);
     if (filename != "")
     {
@@ -217,7 +222,7 @@ void MelChordAna::_AnalyzeMelString(const string &_contents)
 {
 
     string contents = _TrimContents(_contents);
-
+    LOGI("_AnalyzeMelString contents=%s",contents.c_str());
     if (contents != "")
     {
         stringstream ss(contents);
@@ -237,6 +242,7 @@ void MelChordAna::_AnalyzeMelString(const string &_contents)
             vector<int> tmpTime;
             tmpTime.resize(2);
 
+            LOGI("sec=%d lines=%d",sec,lines);
             char tmpBuf[10240];
             switch (sec)
             {
@@ -267,6 +273,8 @@ void MelChordAna::_AnalyzeMelString(const string &_contents)
                         >> tmpMN.endTimeMs
                         >> tmpMN.note_org
                         >> tmpMN.exhibitionPos;
+
+                    LOGI("1——> %d %d %d %d",tmpMN.beginTimeMs,tmpMN.endTimeMs,tmpMN.note_org,tmpMN.exhibitionPos);
                     if (tmpMN.exhibitionPos > m_melMaxPos)
                     {
                         m_melMaxPos = tmpMN.exhibitionPos;
@@ -274,6 +282,7 @@ void MelChordAna::_AnalyzeMelString(const string &_contents)
                     tmpMN.beginTime = (tmpMN.beginTimeMs / 1000.0) * m_sampleRate;
                     tmpMN.endTime = (tmpMN.endTimeMs / 1000.0) * m_sampleRate;
                     tmpMN.note = MelodyNote::TransNote(tmpMN.note_org);
+                    LOGI("2——> %d %d %d",tmpMN.beginTime,tmpMN.endTime,tmpMN.note);
                     m_melNote.push_back(tmpMN);
                 }
                 m_melMaxPos += 1;

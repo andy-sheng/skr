@@ -902,11 +902,12 @@ public class AgoraEngineAdapter {
         // 注册这玩意怎么会导致没有声音,return false 就会丢弃
         mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
             @Override
-            public boolean onRecordFrame(byte[] samples,
-                                         int numOfSamples,
-                                         int bytesPerSample,
-                                         int channels,
-                                         int samplesPerSec) {
+            public boolean onRecordFrame(byte[] samples, // 2048
+                                         int numOfSamples, // 512
+                                         int bytesPerSample,// 2
+                                         int channels,// 2
+                                         int samplesPerSec//44100
+            ) {
                 if (++mLogtag % 500 == 0) {
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }

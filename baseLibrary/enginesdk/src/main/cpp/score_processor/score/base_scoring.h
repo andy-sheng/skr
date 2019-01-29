@@ -12,7 +12,7 @@ private:
 	RecordLevelQueue* recordRawQueue;
 	short* samples;
 	int sampleCursor;
-	long currentTimeMills;
+	long currentTimeMills = 0;
 	long mPushTime;//levelbuffer计算完成后push进去的时间
 	long mMaxT1;//最大延迟时间
 	long mRearLevelMills;//level队列中队尾buffer对应的时间

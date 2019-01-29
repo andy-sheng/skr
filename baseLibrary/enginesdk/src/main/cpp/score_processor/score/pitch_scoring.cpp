@@ -47,7 +47,9 @@ void PitchScoring::getRenderData(long currentTimeMills, float* meta){
 	}
 }
 
+// 44100 1 2
 void PitchScoring::onInit(int sampleRateParam, int channelNumParam, int bitParam, char *melFilePath) {
+	LOGI("onInit melFilePath=%s",melFilePath);
 	//1:初始化参数
 	sampleRate = sampleRateParam;
 	channelNum = channelNumParam;
@@ -93,7 +95,7 @@ void PitchScoring::processRecordLevel(RecordLevel* recordLevel) {
 	if(singingIndex < 0) {
 		//没找到这句对应的音符位置，直接返回
 		mCurScore = 0;
-//		LOGI("没找到这句对应的音符位置，直接返回");
+		LOGI("没找到这句对应的音符位置，直接返回");
 		return;
 	}
 	float conf = 0.0;
@@ -111,7 +113,7 @@ void PitchScoring::processRecordLevel(RecordLevel* recordLevel) {
 		note = (float) (69000.5 + 12000 * (log10(f0 / 440.0) / log10(2)));
 		note = float((int) note % 12000) / 1000.0;
 	}
-//	LOGI("conf is : %.3f note is %.2f", conf, note);
+	LOGI("conf is : %.3f note is %.2f", conf, note);
 	//4:根据note计算score
 	if(note > -0.5) {
 		MelodyNote melodyNote = mMelodyNotes.at(singingIndex);
@@ -145,6 +147,9 @@ int PitchScoring::getScore(){
 	if (mCurrentLineSampleCount >0) {
 		lineScore = mCurrentLineLevelSum / mCurrentLineSampleCount;
 	}
+	if(mLogOpen){
+		LOGI("mCurrentLineSampleCount:%d mCurrentLineLevelSum:%d lineScore:%d",mCurrentLineSampleCount,mCurrentLineLevelSum,lineScore);
+	}
 	float x=(float)lineScore*0.01;
 	x = (x*(1-x)+x) * 0.2 + 0.8*x;
 	lineScore = 100*(x*(1-x)+x);
@@ -155,6 +160,7 @@ int PitchScoring::getScore(){
 }
 
 int PitchScoring::getSingingIndex(long currentTimeMills) {
+	LOGI("currentTimeMills=%ld",currentTimeMills);
 	int singingIndex = -1;
 	for (int i = 0; i < mMelodyNotes.size(); i++) {
 		MelodyNote melodyNote = mMelodyNotes.at(i);

@@ -39,19 +39,28 @@ JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_proces
          jint channels, jint sampleRate, jlong currentTimeMills) {
     if (NULL != effectProcessor) {
         byte *data = (byte *) env->GetByteArrayElements(samplesJni, 0);
-        short *samples = (short *) data;
+        // 2048 512 下来
+        short *samples = (short *) data; // 长度只有1024了
         //1:转换为单声道数据
-        int length = numOfSamples * 2;
+        int length = numOfSamples * 2; // 长度变为1024
 //        fwrite(samples, 2, length, file);
         if (channels == 2) {
             for (int i = 0; i < length / 2; i++) {
-                samples[i] = samples[i * 2];
+                samples[i] = samples[i * 2];// 0123456-->0246
+            }
+            //2:送入打分处理器
+            if(NULL != scoring) {
+                // 512个 short 类型
+                scoring->doScoring(samples, length / 2, currentTimeMills);
+            }
+        }else if(channels == 1){
+            //2:送入打分处理器
+            if(NULL != scoring) {
+                // 512个 short 类型
+                scoring->doScoring(samples, length, currentTimeMills);
             }
         }
-        //2:送入打分处理器
-        if(NULL != scoring) {
-            scoring->doScoring(samples, length / 2, currentTimeMills);
-        }
+
         //3:送入音效处理器
         effectProcessor->process(samples, length, 0, 0);
         env->SetByteArrayRegion(samplesJni, 0, numOfSamples, (jbyte *) samples);

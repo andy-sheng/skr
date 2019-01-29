@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.changba.songstudio.audioeffect.AudioEffect;
 import com.changba.songstudio.audioeffect.AudioEffectParamController;
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import media.ushow.score.ScoreProcessor;
@@ -33,15 +34,23 @@ public class IFAudioEffectEngine {
 
     private String mLastMelpPath;
 
+    /**
+     * @param samples 2048
+     * @param numOfSamples 512
+     * @param bytesPerSample 2
+     * @param channels 2
+     * @param samplesPerSec 44100
+     * @param currentTimeMills 当前时间戳
+     * @param melpPath 有的为null
+     */
     public void processAudioBuffer(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec, long currentTimeMills, String melpPath) {
-//        MyLog.d(TAG,"processAudioBuffer" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec + " currentTimeMills=" + currentTimeMills + " melpPath=" + melpPath);
+        //MyLog.d(TAG,"processAudioBuffer" + " samples.length=" + samples.length + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec + " currentTimeMills=" + currentTimeMills + " melpPath=" + melpPath);
         if (null == mScoreProcessor ) {
             mScoreProcessor = new ScoreProcessor();
         }
 
         if(!TextUtils.isEmpty(melpPath) && !melpPath.equals(mLastMelpPath)){
-            channels = 1;
-            mScoreProcessor.init(samplesPerSec, channels, bytesPerSample * 8, numOfSamples, melpPath);
+            mScoreProcessor.init(samplesPerSec, 1, bytesPerSample * 8, numOfSamples, melpPath);
             mLastMelpPath = melpPath;
         }
 
