@@ -6,10 +6,8 @@ import java.io.Serializable;
 public class WinResultModel implements Serializable {
     public static final int InvalidEWinType = 0;   // 无效占位
     public static final int Win = 1;       //胜
-    public static final int Lose = 2;      //负
-    public static final int Draw = 3;      //平
-    public static final int Flee = 4;      //逃跑
-    public static final int NotVote = 5;   //未投票
+    public static final int Draw = 2;      //负
+    public static final int Lose = 3;      //平
 
     int useID;   //用户id
     int type;    //结果类型

@@ -18,6 +18,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.VoteInfoModel;
+import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.model.score.ScoreStateModel;
 import com.module.playways.rank.room.utils.ScoreAnimationHelp;
@@ -111,39 +112,69 @@ public class RecordTitleView extends RelativeLayout {
             }
         }
 
-        Observable.fromIterable(mRecordData.mVoteInfoModels)
-                .filter(new Predicate<VoteInfoModel>() {
-                    @Override
-                    public boolean test(VoteInfoModel voteInfoModel) throws Exception {
-                        return voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
-                    }
-                })
-                .subscribe(new Consumer<VoteInfoModel>() {
-                    @Override
-                    public void accept(VoteInfoModel voteInfoModel) throws Exception {
-                        Drawable drawable = null;
-                        String str = "";
-                        switch (voteInfoModel.getRank()) {
-                            case 1:
-                                drawable = getResources().getDrawable(R.drawable.diyiming_huizhang);
-                                str = "冠军";
-                                break;
-                            case 2:
-                                drawable = getResources().getDrawable(R.drawable.dierming_huizhang);
-                                str = "亚军";
-                                break;
-                            case 3:
-                                drawable = getResources().getDrawable(R.drawable.disanming_huizhang);
-                                str = "季军";
-                                break;
+        if (roomData.getGameType() == GameModeType.GAME_MODE_FUNNY) {
+            Observable.fromIterable(mRecordData.mVoteInfoModels)
+                    .filter(new Predicate<VoteInfoModel>() {
+                        @Override
+                        public boolean test(VoteInfoModel voteInfoModel) throws Exception {
+                            return voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
                         }
-                        mIvOwnRecord.setBackground(drawable);
+                    })
+                    .subscribe(new Consumer<VoteInfoModel>() {
+                        @Override
+                        public void accept(VoteInfoModel voteInfoModel) throws Exception {
+                            Drawable drawable = null;
+                            String str = "";
+                            switch (voteInfoModel.getRank()) {
+                                case 1:
+                                    drawable = getResources().getDrawable(R.drawable.diyiming_huizhang);
+                                    str = "冠军";
+                                    break;
+                                case 2:
+                                    drawable = getResources().getDrawable(R.drawable.dierming_huizhang);
+                                    str = "亚军";
+                                    break;
+                                case 3:
+                                    drawable = getResources().getDrawable(R.drawable.disanming_huizhang);
+                                    str = "季军";
+                                    break;
+                            }
+                            mIvOwnRecord.setBackground(drawable);
 
-                        if (mTvOwnRecord != null) {
-                            mTvOwnRecord.setText(str);
+                            if (mTvOwnRecord != null) {
+                                mTvOwnRecord.setText(str);
+                            }
                         }
-                    }
-                }, throwable -> MyLog.e(throwable));
+                    }, throwable -> MyLog.e(throwable));
+        } else if (roomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+            Observable.fromIterable(mRecordData.mWinResultModels)
+                    .filter(new Predicate<WinResultModel>() {
+                        @Override
+                        public boolean test(WinResultModel winResultModel) throws Exception {
+                            return winResultModel.getUseID() == MyUserInfoManager.getInstance().getUid();
+                        }
+                    })
+                    .subscribe(new Consumer<WinResultModel>() {
+                        @Override
+                        public void accept(WinResultModel winResultModel) throws Exception {
+                            Drawable drawable = null;
+                            String str = "";
+                            switch (winResultModel.getType()) {
+                                case WinResultModel.Win:
+                                    drawable = getResources().getDrawable(R.drawable.ic_medal_win);
+                                    break;
+                                case WinResultModel.Draw:
+                                    drawable = getResources().getDrawable(R.drawable.ic_medal_draw);
+                                    break;
+                                case WinResultModel.Lose:
+                                    drawable = getResources().getDrawable(R.drawable.ic_medal_lose);
+                                    break;
+                            }
+                            mIvOwnRecord.setBackground(drawable);
+                        }
+                    }, throwable -> MyLog.e(throwable));
+        }
+
     }
 
     private void animationGo(ScoreResultModel scoreResultModel) {
