@@ -33,7 +33,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:textColor="@color/white"
+            android:textColor="#0C2275"
             android:textSize="@dimen/textsize_20_dp" />
 
         <ImageView
@@ -74,7 +74,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="3"
-                    android:textColor="@color/white"
+                    android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_24_dp" />
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="首想唱的歌"
-                    android:textColor="@color/white_trans_40"
+                    android:textColor="#660C2275"
                     android:textSize="@dimen/textsize_13_dp" />
 
             </RelativeLayout>
@@ -102,7 +102,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="2"
-                    android:textColor="@color/white"
+                    android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_24_dp" />
 
                 <TextView
@@ -112,7 +112,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="次演唱机会"
-                    android:textColor="@color/white_trans_40"
+                    android:textColor="#660C2275"
                     android:textSize="@dimen/textsize_13_dp" />
 
             </RelativeLayout>
@@ -140,7 +140,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="50%"
-                    android:textColor="@color/white"
+                    android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_24_dp" />
 
                 <TextView
@@ -150,7 +150,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="一唱到底成功率"
-                    android:textColor="@color/white_trans_40"
+                    android:textColor="#660C2275"
                     android:textSize="@dimen/textsize_13_dp" />
 
             </RelativeLayout>
@@ -168,7 +168,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="66%"
-                    android:textColor="@color/white"
+                    android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_24_dp" />
 
                 <TextView
@@ -178,7 +178,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="超过同段位skr人数"
-                    android:textColor="@color/white_trans_40"
+                    android:textColor="#660C2275"
                     android:textSize="@dimen/textsize_13_dp" />
 
             </RelativeLayout>
