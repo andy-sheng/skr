@@ -124,7 +124,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
                 if (result.getErrno() == 0) {
-                    U.getToastUtil().showShort("开始匹配");
+//                    U.getToastUtil().showShort("开始匹配");
                 } else {
                     onError(new Throwable("开始匹配失败"));
                 }
@@ -222,7 +222,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onFailed(Object obj, int errcode, String message) {
-                U.getToastUtil().showShort("加入房间失败");
+//                U.getToastUtil().showShort("加入房间失败");
                 startLoopMatchTask(mCurrentMusicId, mGameType);
             }
         });
@@ -250,7 +250,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onError(Throwable e) {
-                U.getToastUtil().showShort("加入房间失败");
+//                U.getToastUtil().showShort("加入房间失败");
                 startLoopMatchTask(mCurrentMusicId, mGameType);
             }
         }, this);

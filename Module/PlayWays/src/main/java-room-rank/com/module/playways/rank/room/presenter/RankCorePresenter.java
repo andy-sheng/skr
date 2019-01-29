@@ -342,7 +342,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    U.getToastUtil().showShort("切换请求发送成功");
+//                    U.getToastUtil().showShort("切换请求发送成功");
                 } else {
                     MyLog.e(TAG, "swapGame result errno is " + result.getErrmsg());
                 }
@@ -1126,9 +1126,9 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEventMainThread(ExitGameEvent exitGameEvent) {
         MyLog.w(TAG, "收到一个人退出的push了，type是" + exitGameEvent.type + ",timeMs是" + exitGameEvent.info.getTimeMs());
         if (exitGameEvent.type == EXIT_GAME_AFTER_PLAY) {   //我在唱歌，有一个人退出
-            U.getToastUtil().showShort("游戏结束后，某一个人退出了");
+//            U.getToastUtil().showShort("游戏结束后，某一个人退出了");
         } else if (exitGameEvent.type == EXIT_GAME_OUT_ROUND) {   //我是观众，有一个人退出
-            U.getToastUtil().showShort("游戏中，某一个人退出了");
+//            U.getToastUtil().showShort("游戏中，某一个人退出了");
         }
 
         mRoomData.setOnline(exitGameEvent.exitUserID, false);
@@ -1179,7 +1179,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 if (mRobotScoreHelper != null) {
                     int score = mRobotScoreHelper.tryGetScoreByLine(event.getLineNum());
                     if (score >= 0) {
-                        U.getToastUtil().showShort("score:" + score);
+//                        U.getToastUtil().showShort("score:" + score);
                         mUiHandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -1195,7 +1195,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     void processScore(int score, int line) {
-        U.getToastUtil().showShort("score:" + score);
+//        U.getToastUtil().showShort("score:" + score);
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
         mUiHandler.post(new Runnable() {
             @Override

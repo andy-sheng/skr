@@ -597,7 +597,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    U.getToastUtil().showShort("切换请求发送成功");
+//                    U.getToastUtil().showShort("切换请求发送成功");
                 } else {
                     MyLog.e(TAG, "swapGame result errno is " + result.getErrmsg());
                 }

@@ -361,7 +361,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         isPrepared = isPrepareState;
         if (isPrepared) {
 //            stopTimeTask();
-            U.getToastUtil().showShort("已准备");
+//            U.getToastUtil().showShort("已准备");
             mIvPrepare.setEnabled(false);
         }
     }
@@ -411,7 +411,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         MyLog.d(TAG, "needReMatch 有人没准备，需要重新匹配");
         mMatchSucessPresenter.exitGame();
         goMatch(otherEr);
-        U.getToastUtil().showShort("有人没有准备，需要重新匹配");
+//        U.getToastUtil().showShort("有人没有准备，需要重新匹配");
     }
 
     @Override
