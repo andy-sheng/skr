@@ -915,7 +915,7 @@ public class AgoraEngineAdapter {
                     mArcCloudManager.putPool(samples, samplesPerSec, channels);
                 }
                 long ts = 0;
-                if (mConfig.isMixMusicPlaying()) {
+                if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
                     ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
                 CbEngineAdapter.getInstance().processAudioFrames(samples,

@@ -99,6 +99,7 @@ public class Params implements Serializable {
     private long mMixMusicBeginOffset;// midi文件起始偏移量
     private int mCurrentMusicTs;
     private long mRecordCurrentMusicTsTs;
+    private boolean mLrcHasStart;
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -438,6 +439,14 @@ public class Params implements Serializable {
 
     public long getRecordCurrentMusicTsTs() {
         return mRecordCurrentMusicTsTs;
+    }
+
+    public void setLrcHasStart(boolean lrcHasStart) {
+        mLrcHasStart = lrcHasStart;
+    }
+
+    public boolean getLrcHasStart() {
+        return mLrcHasStart;
     }
 
     public static class Builder {

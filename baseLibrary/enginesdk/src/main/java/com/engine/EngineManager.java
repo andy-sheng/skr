@@ -913,6 +913,7 @@ public class EngineManager implements AgoraOutCallback {
                 mPendingStartMixAudioParams = null;
                 mConfig.setCurrentMusicTs(0);
                 mConfig.setRecordCurrentMusicTsTs(0);
+                mConfig.setLrcHasStart(false);
             }
         });
 

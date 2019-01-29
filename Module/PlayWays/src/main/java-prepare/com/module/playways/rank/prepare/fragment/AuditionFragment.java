@@ -154,11 +154,11 @@ public class AuditionFragment extends BaseFragment {
                     return;
                 } else if (MSG_LYRIC_END_EVENT == msg.what) {
                     MyLog.d(TAG, "handleMessage" + ", msg.arg1" + msg.arg1 + ", msg.arg2=" + msg.arg2);
-                    if(msg.arg2 == 1){
-                        if(msg.arg1 == 0){
+                    if (msg.arg2 == 1) {
+                        if (msg.arg1 == 0) {
                             EventBus.getDefault().post(new LrcEvent.LineStartEvent(msg.arg1));
                         }
-                    }else {
+                    } else {
                         EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
                     }
                 }
@@ -493,7 +493,7 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     public void setData(int type, @Nullable Object data) {
-        super.setData(type,data);
+        super.setData(type, data);
         if (type == 0) {
             mPrepareData = (PrepareData) data;
         }
@@ -565,7 +565,7 @@ public class AuditionFragment extends BaseFragment {
             Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
             msg.arg1 = entry.getKey();
 
-            if(entry.getKey() == 0){
+            if (entry.getKey() == 0) {
                 //暂定   1为开始，0为结束
                 Message message = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
                 message.arg1 = entry.getKey();
@@ -604,13 +604,19 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineEndEvent event) {
         //TODO
-        int score = EngineManager.getInstance().getLineScore();
-        U.getToastUtil().showShort("changba score:" + score);
-        MyLog.d(TAG,"changba score:" + score);
-//        if (MyLog.isDebugLogOpen()) {
-//            EngineManager.getInstance().recognizeInManualMode();
-//        }
-//        score = (int) (Math.random() * 100);
+        if (MyLog.isDebugLogOpen()) {
+            int score = EngineManager.getInstance().getLineScore();
+            U.getToastUtil().showShort("changba score:" + score);
+            MyLog.d(TAG, "changba score:" + score);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LrcEvent.LineStartEvent event) {
+        Params params = EngineManager.getInstance().getParams();
+        if (params != null) {
+            params.setLrcHasStart(true);
+        }
     }
 
     @Override
