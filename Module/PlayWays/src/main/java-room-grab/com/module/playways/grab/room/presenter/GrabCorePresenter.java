@@ -876,6 +876,21 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QExitGameMsgEvent event) {
         MyLog.w(TAG, "有人退出了：userID is " + event.getUserID());
         mRoomData.setOnline(event.userID, false);
+        BasePushInfo basePushInfo = new BasePushInfo();
+        basePushInfo.setRoomID(mRoomData.getGameId());
+        basePushInfo.setSender(new UserInfo.Builder()
+                .setUserID(1)
+                .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
+                .setNickName("系统消息")
+                .setSex(ESex.fromValue(0))
+                .build());
+        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.getUserID());
+        if(playerInfoModel != null){
+            String text = playerInfoModel.getUserInfo().getNickname() + "偷偷溜走啦～";
+            MyLog.d(TAG, "onEvent" + " event.getInfo().getSender:" + event.getInfo().getSender());
+            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+            EventBus.getDefault().post(msgEvent);
+        }
     }
 
 
