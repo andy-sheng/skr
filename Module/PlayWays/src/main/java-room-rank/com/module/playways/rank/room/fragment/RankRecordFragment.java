@@ -115,18 +115,19 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
         RxView.clicks(mTvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    EventBus.getDefault().post(new FinishPlayWayActivityEvent());
+//                    EventBus.getDefault().post(new FinishPlayWayActivityEvent());
+//                    getActivity().finish();
+
                     getActivity().finish();
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                            .withInt("key_game_type", mRoomData.getGameType())
+                            .withBoolean("selectSong", true)
+                            .navigation();
                 });
 
         RxView.clicks(mTvShare)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-//                    getActivity().finish();
-//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-//                            .withInt("key_game_type", mRoomData.getGameType())
-//                            .withBoolean("selectSong", true)
-//                            .navigation();
                     SharePanel sharePanel = new SharePanel(getActivity());
                     sharePanel.setShareContent("https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/slideshow/slideshow-pic.jpeg");
                     sharePanel.show(ShareType.IMAGE_RUL);
