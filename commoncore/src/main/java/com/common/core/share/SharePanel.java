@@ -1,6 +1,7 @@
 package com.common.core.share;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.Gravity;
 
 import com.common.core.R;
@@ -34,6 +35,10 @@ public class SharePanel {
         mUrl = url;
     }
 
+    public void setShareContent(String url) {
+        mUrl = url;
+    }
+
     /**
      * 留着以后用，现在写死
      *
@@ -43,13 +48,13 @@ public class SharePanel {
 
     }
 
-    public void show() {
+    public void show(final ShareType shareType) {
         ShareView shareView = new ShareView(mActivity);
         shareView.setOnClickShareListener(new ShareView.OnClickShareListener() {
             @Override
             public void click(SharePlatform sharePlatform) {
                 mDialogPlus.dismiss();
-                share(sharePlatform);
+                share(sharePlatform, shareType);
             }
         });
 
@@ -86,7 +91,19 @@ public class SharePanel {
         }
     };
 
-    public void share(SharePlatform sharePlatform) {
+    public void share(SharePlatform sharePlatform, ShareType type) {
+        switch (type){
+            case URL:
+                shareUrl(sharePlatform);
+                break;
+            case IMAGE_RUL:
+                shareImageUrl(sharePlatform);
+                break;
+        }
+
+    }
+
+    public void shareUrl(SharePlatform sharePlatform){
         UMWeb web = new UMWeb(mUrl);
         web.setTitle(mTitle);
         web.setThumb(new UMImage(mActivity, R.drawable.share_app_icon));
@@ -111,5 +128,25 @@ public class SharePanel {
         }
     }
 
-
+    public void shareImageUrl(SharePlatform sharePlatform){
+        UMImage imageurl = new UMImage(mActivity, mUrl);
+        imageurl.setThumb(new UMImage(mActivity , mUrl));
+        switch (sharePlatform) {
+            case WEIXIN:
+                new ShareAction(mActivity).withMedia(imageurl)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case QQ:
+                new ShareAction(mActivity).withMedia(imageurl)
+                        .setPlatform(SHARE_MEDIA.QQ)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case WEIXIN_CIRCLE:
+                new ShareAction(mActivity).withMedia(imageurl)
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(mUMShareListener).share();
+                break;
+        }
+    }
 }

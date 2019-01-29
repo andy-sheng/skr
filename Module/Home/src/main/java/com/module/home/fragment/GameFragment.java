@@ -333,6 +333,7 @@ public class GameFragment extends BaseFragment {
                 if (result.getErrno() == 0) {
                     mBannerView.setVisibility(View.VISIBLE);
                     List<SlideShowModel> slideShowModelList = JSON.parseArray(result.getData().getString("slideshow"), SlideShowModel.class);
+                    MyLog.d(TAG, "initOperationArea " + slideShowModelList.get(0).getCoverURL());
                     mBannerView.setImages(getSlideUrlList(slideShowModelList))
                             .setImageLoader(new BannerImageLoader())
                             .setOnBannerListener(new OnBannerListener() {

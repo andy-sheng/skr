@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.core.share.SharePanel;
+import com.common.core.share.ShareType;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
@@ -123,7 +124,7 @@ public class ShareWebActivity extends BaseActivity {
                 } else if (action == ACTION_RIGHT_BUTTON) {
                     SharePanel sharePanel = new SharePanel(ShareWebActivity.this);
                     sharePanel.setShareContent(mTitle, mDes, mUrl);
-                    sharePanel.show();
+                    sharePanel.show(ShareType.URL);
                 }
             }
         });

@@ -113,24 +113,25 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_back"
-            android:layout_width="@dimen/view_140_dp"
+            android:layout_width="@dimen/view_151_dp"
             android:layout_height="@dimen/view_54_dp"
-            android:background="@drawable/btn_dialog_cancle"
+            android:background="@drawable/img_btn_bg_yellow"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
-            android:text="返回大厅"
+            android:text="返回"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_20_dp"
             android:textStyle="bold" />
 
         <com.common.view.ex.ExTextView
-            android:id="@+id/tv_again"
-            android:layout_width="@dimen/view_140_dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:id="@+id/tv_share"
+            android:layout_width="@dimen/view_151_dp"
             android:layout_height="@dimen/view_54_dp"
-            android:background="@drawable/btn_dialog_confirm"
+            android:background="@drawable/img_btn_bg_red"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
-            android:text="再开一局"
+            android:text="分享"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp"
             android:textStyle="bold" />

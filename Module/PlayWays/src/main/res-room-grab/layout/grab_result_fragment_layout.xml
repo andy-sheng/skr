@@ -208,24 +208,35 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_back"
-            android:layout_width="@dimen/view_140_dp"
+            android:layout_width="@dimen/view_121_dp"
             android:layout_height="@dimen/view_54_dp"
-            android:background="@drawable/btn_dialog_cancle"
+            android:background="@drawable/zhanjijieguo_back"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
-            android:text="返回大厅"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_20_dp"
             android:textStyle="bold" />
 
         <com.common.view.ex.ExTextView
+            android:layout_marginLeft="@dimen/view_7_dp"
             android:id="@+id/tv_again"
             android:layout_width="@dimen/view_140_dp"
             android:layout_height="@dimen/view_54_dp"
-            android:background="@drawable/btn_dialog_confirm"
+            android:background="@drawable/zhanjijieguo_zailai"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
-            android:text="再开一局"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_marginLeft="@dimen/view_7_dp"
+            android:id="@+id/tv_share"
+            android:layout_width="@dimen/view_91_dp"
+            android:layout_height="@dimen/view_54_dp"
+            android:background="@drawable/zhanjijieguo_fenxiang"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_7_dp"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp"
             android:textStyle="bold" />

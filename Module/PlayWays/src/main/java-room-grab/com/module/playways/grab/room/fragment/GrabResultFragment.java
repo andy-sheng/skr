@@ -16,6 +16,8 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.share.SharePanel;
+import com.common.core.share.ShareType;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -29,6 +31,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.activity.ShareWebActivity;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.rank.R;
 
@@ -58,6 +61,7 @@ public class GrabResultFragment extends BaseFragment {
     LinearLayout mLlBottomArea;
     ExTextView mTvBack;
     ExTextView mTvAgain;
+    ExTextView mTvShare;
 
     Handler mUiHandler = new Handler();
 
@@ -82,6 +86,8 @@ public class GrabResultFragment extends BaseFragment {
         mLlBottomArea = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_area);
         mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
         mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
+        mTvShare = (ExTextView)mRootView.findViewById(R.id.tv_share);
+
 
         List<GrabResultInfoModel> list = mRoomData.getResultList();
         if (list == null || list.size() <= 0) {
@@ -99,6 +105,14 @@ public class GrabResultFragment extends BaseFragment {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     getActivity().finish();
+                });
+
+        RxView.clicks(mTvShare)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    SharePanel sharePanel = new SharePanel(getActivity());
+                    sharePanel.setShareContent("https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/slideshow/slideshow-pic.jpeg");
+                    sharePanel.show(ShareType.IMAGE_RUL);
                 });
 
         RxView.clicks(mTvAgain)

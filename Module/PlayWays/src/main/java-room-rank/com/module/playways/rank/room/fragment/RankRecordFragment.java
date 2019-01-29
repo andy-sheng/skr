@@ -13,6 +13,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.share.SharePanel;
+import com.common.core.share.ShareType;
 import com.common.log.MyLog;
 
 import com.common.rxretrofit.ApiManager;
@@ -59,7 +61,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
     RecordItemView mRecordItemTwo;
     RecordItemView mRecordItemThree;
     ExTextView mTvBack;
-    ExTextView mTvAgain;
+    ExTextView mTvShare;
 
     RecordTitleView mRecordTitleView;
 
@@ -92,7 +94,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
         mRecordItemTwo = (RecordItemView) mRootView.findViewById(R.id.record_item_two);
         mRecordItemThree = (RecordItemView) mRootView.findViewById(R.id.record_item_three);
         mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
-        mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
+        mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
         mRecordTitleView = (RecordTitleView) mRootView.findViewById(R.id.record_title_view);
 
         mRecordData = mRoomData.getRecordData();
@@ -117,14 +119,18 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
                     getActivity().finish();
                 });
 
-        RxView.clicks(mTvAgain)
+        RxView.clicks(mTvShare)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    getActivity().finish();
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                            .withInt("key_game_type", mRoomData.getGameType())
-                            .withBoolean("selectSong", true)
-                            .navigation();
+//                    getActivity().finish();
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+//                            .withInt("key_game_type", mRoomData.getGameType())
+//                            .withBoolean("selectSong", true)
+//                            .navigation();
+                    SharePanel sharePanel = new SharePanel(getActivity());
+                    sharePanel.setShareContent("https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/slideshow/slideshow-pic.jpeg");
+                    sharePanel.show(ShareType.IMAGE_RUL);
+
                 });
 
         if (mRecordData == null || mRecordData.mVoteInfoModels == null || mRecordData.mVoteInfoModels.size() == 0) {
