@@ -246,6 +246,7 @@ public class MyUserInfoManager {
                             .subscribeOn(Schedulers.io())
                             .subscribe();
                 } else {
+                    U.getToastUtil().showShort(obj.getErrmsg());
                     if (callback != null) {
                         callback.onSucess();
                     }
