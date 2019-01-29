@@ -200,6 +200,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     String unValidReason = result.getData().getString("unValidReason");
                     if (isValid) {
                         // 昵称可用
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         Bundle bundle = new Bundle();
                         bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
                         bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, nickName);
