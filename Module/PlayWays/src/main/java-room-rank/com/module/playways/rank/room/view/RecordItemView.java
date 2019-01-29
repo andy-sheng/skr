@@ -171,30 +171,32 @@ public class RecordItemView extends RelativeLayout {
         }
 
         if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-            Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
-                @Override
-                public void accept(Integer integer) throws Exception {
-                    int voterId = voteInfoModel.getVoter().get(integer);
-                    if (voterId == 1) {
-                        AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
-                                AvatarUtils.newParamsBuilder(mRoomData.getSysAvatar())
-                                        .setCircle(true)
-                                        .setGray(false)
-                                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                        .setBorderColor(Color.WHITE)
-                                        .build());
-                    } else {
-                        UserInfoModel playerInfo = roomData.getUserInfo(voterId);
-                        AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
-                                AvatarUtils.newParamsBuilder(playerInfo.getAvatar())
-                                        .setCircle(true)
-                                        .setGray(false)
-                                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                        .setBorderColorBySex(playerInfo.getIsMale())
-                                        .build());
+            if(voteInfoModel.getVoter() != null){
+                Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        int voterId = voteInfoModel.getVoter().get(integer);
+                        if (voterId == 1) {
+                            AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
+                                    AvatarUtils.newParamsBuilder(mRoomData.getSysAvatar())
+                                            .setCircle(true)
+                                            .setGray(false)
+                                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                            .setBorderColor(Color.WHITE)
+                                            .build());
+                        } else {
+                            UserInfoModel playerInfo = roomData.getUserInfo(voterId);
+                            AvatarUtils.loadAvatarByUrl(mSimpleDraweeViews[integer],
+                                    AvatarUtils.newParamsBuilder(playerInfo.getAvatar())
+                                            .setCircle(true)
+                                            .setGray(false)
+                                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                            .setBorderColorBySex(playerInfo.getIsMale())
+                                            .build());
+                        }
                     }
-                }
-            }, throwable -> MyLog.e(throwable));
+                }, throwable -> MyLog.e(throwable));
+            }
         }
     }
 
