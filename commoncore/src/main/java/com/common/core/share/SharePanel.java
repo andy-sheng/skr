@@ -2,6 +2,7 @@ package com.common.core.share;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 
 import com.common.core.R;
@@ -24,6 +25,7 @@ public class SharePanel {
     String mTitle;
     String mDes;
     String mUrl;
+    int mImageDrawable;
 
     public SharePanel(Activity activity) {
         mActivity = activity;
@@ -35,8 +37,9 @@ public class SharePanel {
         mUrl = url;
     }
 
-    public void setShareContent(String url) {
+    public void setShareContent(String url, int imageurlDrawable) {
         mUrl = url;
+        mImageDrawable = imageurlDrawable;
     }
 
     /**
@@ -130,7 +133,7 @@ public class SharePanel {
 
     public void shareImageUrl(SharePlatform sharePlatform){
         UMImage imageurl = new UMImage(mActivity, mUrl);
-        imageurl.setThumb(new UMImage(mActivity , mUrl));
+        imageurl.setThumb(new UMImage(mActivity , mImageDrawable));
         switch (sharePlatform) {
             case WEIXIN:
                 new ShareAction(mActivity).withMedia(imageurl)

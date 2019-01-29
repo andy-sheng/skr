@@ -113,7 +113,7 @@ public class GrabResultFragment extends BaseFragment {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     SharePanel sharePanel = new SharePanel(getActivity());
-                    sharePanel.setShareContent("https://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/slideshow/slideshow-pic.jpeg");
+                    sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png", R.drawable.share_sker);
                     sharePanel.show(ShareType.IMAGE_RUL);
                 });
 
