@@ -16,7 +16,7 @@ public class UmengInit {
             if (hasInited) {
                 return;
             }
-            UMConfigure.init(U.app(), "5bf40cc8f1f556f36200032b"
+            UMConfigure.init(U.app(), "5c5044c1f1f556c70000049f"
                     , U.getChannelUtils().getChannel(), UMConfigure.DEVICE_TYPE_PHONE, "");
             MobclickAgent.setScenarioType(U.app(), MobclickAgent.EScenarioType.E_UM_NORMAL);
             hasInited = true;
