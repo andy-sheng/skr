@@ -29,6 +29,16 @@ public class RecordData implements Serializable {
         return null;
     }
 
+    // 是否有人逃跑
+    public boolean hasEscape() {
+        for (VoteInfoModel voteInfoModel : mVoteInfoModels) {
+            if (voteInfoModel.isEscape()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public WinResultModel getWinResult(int userID) {
         if (userID == 0) {
             return null;

@@ -139,15 +139,18 @@ public class RecordItemView extends RelativeLayout {
             }
         }
 
-        if (voteInfoModel.isEscape()) {
-            mTvHintFlag.setVisibility(VISIBLE);
-            mTvHintFlag.setText("逃跑");
+        if (mRecordData.hasEscape()) {
+            if (voteInfoModel.isEscape()) {
+                mTvHintFlag.setVisibility(VISIBLE);
+                mTvHintFlag.setText("逃跑");
+            }
+        } else {
+            if (!voteInfoModel.isHasVote()) {
+                mTvHintFlag.setVisibility(VISIBLE);
+                mTvHintFlag.setText("未投票");
+            }
         }
 
-        if (!voteInfoModel.isHasVote()) {
-            mTvHintFlag.setVisibility(VISIBLE);
-            mTvHintFlag.setText("未投票");
-        }
 
         //这里需要判读是娱乐还是竞技
         if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
