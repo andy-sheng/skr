@@ -305,22 +305,12 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     }
 
     private void initViewData() {
-        if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
-                    .getAvatar())
-                    .setCircle(true)
-                    .setBorderColor(Color.parseColor("#33A4E1"))
-                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .build());
-        } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
-                    .getAvatar())
-                    .setCircle(true)
-                    .setBorderColor(Color.parseColor("#FF75A2"))
-                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .build());
-
-        }
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
+                .getAvatar())
+                .setCircle(true)
+                .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == 1)
+                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                .build());
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());

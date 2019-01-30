@@ -115,13 +115,6 @@ public class GrabTopRv extends RelativeLayout {
             }
             if (vp.grabTopItemView == null) {
                 vp.grabTopItemView = new GrabTopItemView(getContext());
-                RxView.clicks(vp.grabTopItemView)
-                        .subscribe(new Consumer<Object>() {
-                            @Override
-                            public void accept(Object o) {
-                                EventBus.getDefault().post(new ShowPersonCardEvent(userInfo.getUserId()));
-                            }
-                        });
             }
             vp.grabTopItemView.setVisibility(VISIBLE);
             vp.grabTopItemView.bindData(playerInfoModel);

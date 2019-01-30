@@ -179,7 +179,7 @@ public class PersonInfoDialogView extends RelativeLayout {
                 AvatarUtils.newParamsBuilder(userInfo.getAvatar())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.parseColor("#33A4E1"))
+                        .setBorderColorBySex(userInfo.getIsMale())
                         .build());
         mNameTv.setText(userInfo.getNickname());
         mSignTv.setText(userInfo.getSignature());

@@ -13,6 +13,8 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 
+import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 
 import com.common.view.ex.ExTextView;
@@ -24,12 +26,14 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import io.reactivex.functions.Consumer;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
@@ -71,6 +75,15 @@ public class GrabTopItemView extends RelativeLayout {
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
         mLeaveIv = (ExTextView) findViewById(R.id.leave_iv);
 
+        RxView.clicks(mAvatarIv)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        if (mPlayerInfoModel != null && mPlayerInfoModel.getUserInfo() != null) {
+                            EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
+                        }
+                    }
+                });
     }
 
     public void tryAddParent(LinearLayout grabTopRv) {
@@ -128,7 +141,7 @@ public class GrabTopItemView extends RelativeLayout {
         if (!mPlayerInfoModel.isOnline()) {
             mLeaveIv.setVisibility(VISIBLE);
             mFlagIv.setVisibility(GONE);
-        }else{
+        } else {
             if (grap) {
                 mFlagIv.setVisibility(VISIBLE);
                 LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
@@ -145,7 +158,7 @@ public class GrabTopItemView extends RelativeLayout {
         if (!mPlayerInfoModel.isOnline()) {
             mLeaveIv.setVisibility(VISIBLE);
             mFlagIv.setVisibility(GONE);
-        }else{
+        } else {
             mFlagIv.setVisibility(VISIBLE);
             LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
             lp.topMargin = -U.getDisplayUtils().dip2px(20);
