@@ -161,12 +161,16 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         RxView.clicks(mVoteLeftMie)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    mVoteLeftMie.setClickable(false);
+                    mVoteRightMie.setClickable(false);
                     mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
                 });
 
         RxView.clicks(mVoteRightMie)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    mVoteLeftMie.setClickable(false);
+                    mVoteRightMie.setClickable(false);
                     mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
                 });
 
@@ -320,7 +324,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                     @Override
                     public void onComplete() {
                         stopTimeTask();
-                        if(!isJumpToRecord){
+                        if (!isJumpToRecord) {
                             isJumpToRecord = true;
                             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
                                     .setAddToBackStack(true)
@@ -378,7 +382,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
         if (right.getUserInfo().getUserId() == votedUserId) {
             mVoteRightMie.setSelected(true);
-            mVoteRightMie.setClickable(false);
+            mVoteLeftMie.setClickable(false);
             mVoteRightMie.setClickable(false);
 //            HandlerTaskTimer.newBuilder()
 //                    .delay(200)
@@ -466,7 +470,8 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     @Override
     public void voteFailed() {
-
+        mVoteLeftMie.setClickable(true);
+        mVoteRightMie.setClickable(true);
     }
 
     @Override
@@ -474,7 +479,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         stopTimeTask();
         mUiHanlder.removeMessages(MSG_GO_RECORD_FRAGMENT);
 
-        if(!isJumpToRecord){
+        if (!isJumpToRecord) {
             isJumpToRecord = true;
             if (recordData != null) {
                 mRoomData.setRecordData(recordData);
