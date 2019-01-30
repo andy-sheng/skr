@@ -36,6 +36,7 @@ import com.dialog.view.TipsDialogView;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
@@ -87,12 +88,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -165,9 +168,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1);
                 int uid = msg.arg2;
                 if (RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == uid) {
-                    if(msg.arg2 == 1 && msg.arg1 == 0){
+                    if (msg.arg2 == 1 && msg.arg1 == 0) {
                         EventBus.getDefault().post(new LrcEvent.LineStartEvent(msg.arg1));
-                    }else {
+                    } else {
                         EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
                     }
                 }
@@ -409,7 +412,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void playWebpMainStage() {
         mStageView.setVisibility(View.VISIBLE);
-        String avatar = mRoomData.getUserInfo(mRoomData.getRealRoundInfo().getUserID()).getAvatar();
+        int userId = mRoomData.getRealRoundInfo().getUserID();
+        String avatar = mRoomData.getUserInfo(userId).getAvatar();
         FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
                 .setCallBack(new IFrescoCallBack() {
                     @Override
@@ -465,6 +469,15 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 })
                 .build()
         );
+
+        RxView.clicks(mSingAvatarView)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        showPersonInfoView(userId);
+                    }
+                });
     }
 
     // SVGA 的主舞台动画
@@ -1250,7 +1263,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             msg.arg1 = entry.getKey();
             msg.arg2 = mRoomData.getRealRoundInfo().getUserID();
 
-            if(entry.getKey() == 0){
+            if (entry.getKey() == 0) {
                 //暂定   1为开始，0为结束
                 Message message = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
                 message.arg1 = entry.getKey();
