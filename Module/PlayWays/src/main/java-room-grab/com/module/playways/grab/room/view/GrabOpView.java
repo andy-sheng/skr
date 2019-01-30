@@ -103,6 +103,7 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
                         mListener.clickGrabBtn();
+                        mBtnIv.setClickable(false);
                     }
                 }
             }
