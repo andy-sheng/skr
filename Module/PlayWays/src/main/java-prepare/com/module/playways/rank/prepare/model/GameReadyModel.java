@@ -96,17 +96,19 @@ public class GameReadyModel implements Serializable {
         }
         this.setReadyInfo(readyInfoModels);
 
-        List<RoundInfoModel> jsonRoundInfos = new ArrayList<>();
+        List<RoundInfoModel> roundInfoModels = new ArrayList<>();
         for (RoundInfo roundInfo : msg.getRoundInfoList()) {
             RoundInfoModel jsonRoundInfo = RoundInfoModel.parseFromRoundInfo(roundInfo);
-            jsonRoundInfos.add(jsonRoundInfo);
+            roundInfoModels.add(jsonRoundInfo);
         }
+        this.setRoundInfo(roundInfoModels);
 
+        List<RoundInfoModel> qroundInfoModels = new ArrayList<>();
         for (QRoundInfo roundInfo : msg.getQRoundInfoList()) {
             RoundInfoModel jsonRoundInfo = RoundInfoModel.parseFromRoundInfo(roundInfo);
-            jsonRoundInfos.add(jsonRoundInfo);
+            qroundInfoModels.add(jsonRoundInfo);
         }
-        this.setRoundInfo(jsonRoundInfos);
+        this.setqRoundInfo(qroundInfoModels);
 
         return;
     }

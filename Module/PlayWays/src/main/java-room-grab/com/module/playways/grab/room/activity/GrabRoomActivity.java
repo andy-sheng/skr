@@ -51,7 +51,7 @@ public class GrabRoomActivity extends BaseActivity {
                 mRoomData.setTagId(prepareData.getTagId());
             }
 
-            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getRoundInfo());
+            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getqRoundInfo());
             for (int i = 0; i < prepareData.getSongModelList().size(); i++) {
                 SongModel songModel = prepareData.getSongModelList().get(i);
                 RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
