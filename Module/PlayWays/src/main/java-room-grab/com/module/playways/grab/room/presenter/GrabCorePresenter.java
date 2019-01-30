@@ -251,8 +251,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 抢唱歌权
      */
-    public void grabThisRound() {
-        RoundInfoModel now = mRoomData.getRealRoundInfo();
+    public void grabThisRound(int seq) {
+//        RoundInfoModel now = mRoomData.getRealRoundInfo();
         //TEST
 //        if (true && MyLog.isDebugLogOpen()) {
 //            U.getToastUtil().showShort("执行测试抢代码");
@@ -283,13 +283,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //                    });
 //            return;
 //        }
-        if (now == null) {
-            return;
-        }
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
-        map.put("roundSeq", now.getRoundSeq());
+        map.put("roundSeq", seq);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
@@ -297,8 +294,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.e(TAG, "grabThisRound erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
-                    // 抢成功了
-                    now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
+                    //抢成功了
+                    RoundInfoModel now = mRoomData.getRealRoundInfo();
+                    if(now != null && now.getRoundSeq() == seq){
+                        now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
+                    }
                 } else {
 
                 }

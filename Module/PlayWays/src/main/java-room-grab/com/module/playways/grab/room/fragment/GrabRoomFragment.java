@@ -374,12 +374,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mGrabOpBtn = mRootView.findViewById(R.id.grab_op_btn);
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
-            public void clickGrabBtn() {
+            public void clickGrabBtn(int seq) {
                 if (U.getCommonUtils().isFastDoubleClick()) {
                     return;
                 }
                 U.getSoundUtils().play(TAG, R.raw.iwannasing);
-                mCorePresenter.grabThisRound();
+                mCorePresenter.grabThisRound(seq);
             }
 
             @Override
@@ -505,7 +505,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
 //        mGrabOpBtn.setVisibility(View.VISIBLE);
-        mGrabOpBtn.playCountDown(4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
+        mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
         mCorePresenter.playGuide();
     }
 
@@ -751,6 +751,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         public PendingPlaySongCardData(int seq, SongModel songModel) {
             this.seq = seq;
             this.songModel = songModel;
+        }
+
+        public int getSeq() {
+            return seq;
         }
     }
 

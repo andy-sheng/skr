@@ -42,6 +42,7 @@ public class GrabOpView extends RelativeLayout {
     public static final int STATUS_CAN_LIGHT_OFF = 3;
     public static final int STATUS_LIGHT_OFF = 4;
 
+    int mSeq = -1;
 
     RoundRectangleView mRrlProgress;
 
@@ -102,7 +103,7 @@ public class GrabOpView extends RelativeLayout {
             public void onClick(View v) {
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
-                        mListener.clickGrabBtn();
+                        mListener.clickGrabBtn(mSeq);
                         mBtnIv.setClickable(false);
                     }
                 }
@@ -135,9 +136,10 @@ public class GrabOpView extends RelativeLayout {
      * @param num     倒计时时间，倒计时结束后变成想唱
      * @param waitNum 等待想唱时间
      */
-    public void playCountDown(int num, int waitNum) {
+    public void playCountDown(int seq, int num, int waitNum) {
         // 播放 3 2 1 导唱倒计时
         MyLog.d(TAG, "playCountDown");
+        mSeq = seq;
         mBtnIv.clearAnimation();
         mBtnIv.setClickable(false);
         mIvLightOff.setVisibility(GONE);
@@ -320,7 +322,7 @@ public class GrabOpView extends RelativeLayout {
     }
 
     public interface Listener {
-        void clickGrabBtn();
+        void clickGrabBtn(int seq);
 
         void clickLightOff();
 
