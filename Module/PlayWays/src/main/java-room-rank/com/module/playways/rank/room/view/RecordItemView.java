@@ -102,9 +102,9 @@ public class RecordItemView extends RelativeLayout {
 
         mRecordData = recordData;
 
-        VoteInfoModel voteInfoModel = mRecordData.mVoteInfoModels.get(index);
+        WinResultModel winResultModel = mRecordData.mWinResultModels.get(index);
 
-        WinResultModel winResultModel = mRecordData.getWinResult(voteInfoModel.getUserID());
+        VoteInfoModel voteInfoModel = mRecordData.getVoteInfoModel(winResultModel.getUseID());
 
         init();
 
@@ -171,7 +171,7 @@ public class RecordItemView extends RelativeLayout {
         }
 
         if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-            if(voteInfoModel.getVoter() != null){
+            if (voteInfoModel.getVoter() != null) {
                 Observable.range(0, voteInfoModel.getVoter().size()).subscribe(new Consumer<Integer>() {
                     @Override
                     public void accept(Integer integer) throws Exception {

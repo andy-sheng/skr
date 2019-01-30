@@ -53,4 +53,21 @@ public class RecordData implements Serializable {
         }
         return null;
     }
+
+
+    public VoteInfoModel getVoteInfoModel(int userID) {
+        if (userID == 0) {
+            return null;
+        }
+        if (mVoteInfoModels == null || mVoteInfoModels.size() <= 0) {
+            return null;
+        }
+        for (VoteInfoModel voteInfoModel : mVoteInfoModels) {
+            if (voteInfoModel.getUserID() == userID) {
+                return voteInfoModel;
+            }
+        }
+        return null;
+    }
+
 }
