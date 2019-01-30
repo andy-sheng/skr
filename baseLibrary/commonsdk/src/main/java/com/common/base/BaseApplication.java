@@ -123,8 +123,6 @@ public class BaseApplication extends Application {
                 this.mAppDelegate.onOtherProcessCreate(this);
             }
         }
-
-        UmengInit.init();
     }
 
 //    private ClientAppInfo getClientAppInfo() {

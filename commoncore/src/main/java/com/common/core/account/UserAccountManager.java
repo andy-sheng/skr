@@ -302,11 +302,12 @@ public class UserAccountManager {
 
     /**
      * 第三方登录
-     * @param mode 3 为微信登录, 4 为qq
+     *
+     * @param mode        3 为微信登录, 2 为qq
      * @param accessToken
      * @param openId
      */
-    public void loginByThirdPart(int mode, String accessToken, String openId) {
+    public void loginByThirdPart(final int mode, String accessToken, String openId) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         //
         userAccountServerApi.loginWX(mode, accessToken, openId)
@@ -352,7 +353,11 @@ public class UserAccountManager {
                             userAccount.setNeedEditUserInfo(isFirstLogin);
                             userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
                             onLoginResult(userAccount);
-                            UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
+                            if (mode == 3) {
+                                UmengStatistics.onProfileSignIn("wx", userAccount.getUid());
+                            } else if (mode == 2) {
+                                UmengStatistics.onProfileSignIn("qq", userAccount.getUid());
+                            }
                         } else {
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
                         }
@@ -360,6 +365,7 @@ public class UserAccountManager {
                 });
 
     }
+
     /**
      * 用户主动退出登录
      */
@@ -380,7 +386,7 @@ public class UserAccountManager {
      * @param deleteAccount
      */
     private void logoff(final boolean deleteAccount, final int reason, boolean notifyServer) {
-        MyLog.w(TAG,"logoff" + " deleteAccount=" + deleteAccount + " reason=" + reason + " notifyServer=" + notifyServer);
+        MyLog.w(TAG, "logoff" + " deleteAccount=" + deleteAccount + " reason=" + reason + " notifyServer=" + notifyServer);
         if (!UserAccountManager.getInstance().hasAccount()) {
             MyLog.w(TAG, "logoff but hasAccount = false");
             return;
@@ -470,7 +476,7 @@ public class UserAccountManager {
                 @Override
                 public void onSucess(Object obj) {
 //                    U.getToastUtil().showShort("与服务器连接成功");
-                    MyLog.e(TAG,"与融云服务器连接成功");
+                    MyLog.e(TAG, "与融云服务器连接成功");
                 }
 
                 @Override

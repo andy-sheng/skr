@@ -154,6 +154,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
                     if (lineNo > mLastLineNum) {
                         int score = EngineManager.getInstance().getLineScore();
+                        MyLog.d(TAG,"handleMessage acr超时 本地获取得分:"+score);
                         processScore(score, lineNo);
                     }
             }

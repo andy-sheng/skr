@@ -12,6 +12,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
 import com.common.utils.U;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,11 +24,14 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Sink;
 
 public class ArcCloudManager implements IACRCloudListener {
     public final static String TAG = "ArcCloudManager";
 
-    static final int BUFFER_LEN = 650 * 2048;
+    static final int BUFFER_LEN = 400 * 2048;
 
     byte[] mBuffer = new byte[BUFFER_LEN];
     int mLength = 0;
@@ -33,6 +39,8 @@ public class ArcCloudManager implements IACRCloudListener {
     int mChannels = -1;
     int mLineNo = 0;
     RecognizeConfig mRecognizeConfig;
+
+    static final boolean DEBUG = false;
 
     @Override
     public void onResult(ACRCloudResult acrCloudResult) {
@@ -113,19 +121,66 @@ public class ArcCloudManager implements IACRCloudListener {
         MyLog.d(TAG, "startCollect" + " recognizeConfig=" + recognizeConfig);
         // 开始积攒
         this.mRecognizeConfig = recognizeConfig;
+
+        if (DEBUG) {
+            File file = new File(U.getAppInfoUtils().getSubDirPath("acr"));
+            if (file.exists()) {
+                file.delete();
+            }
+        }
     }
 
     public void stopRecognize() {
-        MyLog.d(TAG,"stopRecognize" );
+        MyLog.d(TAG, "stopRecognize");
         // 停止积攒
         setLen(0);
         this.mRecognizeConfig = null;
     }
 
     public void putPool(byte[] buffer, int sampleRate, int nChannels) {
+        MyLog.d(TAG, "putPool" + " buffer=" + buffer.length + " sampleRate=" + sampleRate + " nChannels=" + nChannels);
         if (mRecognizeConfig == null) {
             return;
         }
+        byte[] newBuffer = buffer;
+        if (nChannels == 2) {
+            nChannels = 1;
+            newBuffer = new byte[buffer.length / 2];
+            for (int i = 0; i < buffer.length / 4; i++) {
+                newBuffer[i * 2] = buffer[i * 4];// 0123456-->0246
+                newBuffer[i * 2 + 1] = buffer[i * 4 + 1];
+            }
+        }
+
+//        {
+//            File file = new File(U.getAppInfoUtils().getFilePathInSubDir("acr", "line.pcm"));
+////            if (file != null) {
+////                file.delete();
+////            }
+//            if (!file.getParentFile().exists()) {
+//                file.getParentFile().mkdirs();
+//            }
+//            BufferedSink bufferedSink = null;
+//            try {
+//                Sink sink = Okio.appendingSink(file);
+//                bufferedSink = Okio.buffer(sink);
+//                bufferedSink.write(newBuffer);
+//                MyLog.d(TAG, "写入文件 path:" + file.getAbsolutePath());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                if (null != bufferedSink) {
+//                    bufferedSink.close();
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        if(true){
+//            return;
+//        }
+
         RecognizeConfig recognizeConfig = mRecognizeConfig;
 
         if (recognizeConfig.mode == RecognizeConfig.MODE_AUTO) {
@@ -140,24 +195,26 @@ public class ArcCloudManager implements IACRCloudListener {
         if (mChannels < 0) {
             mChannels = nChannels;
         }
-        if (mLength + buffer.length <= BUFFER_LEN) {
+        if (mLength + newBuffer.length <= BUFFER_LEN) {
             // buffer还没满，足够容纳，那就放呗
-            System.arraycopy(buffer, 0, mBuffer, mLength, buffer.length);
-            setLen(mLength + buffer.length);
-            if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL && mLength == BUFFER_LEN) {
-                if (recognizeConfig.isWantRecognizeInManualMode()) {
-                    recognizeInner(mLineNo);
+            System.arraycopy(newBuffer, 0, mBuffer, mLength, newBuffer.length);
+            setLen(mLength + newBuffer.length);
+            if (mLength == BUFFER_LEN) {
+                if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+                    if (recognizeConfig.isWantRecognizeInManualMode()) {
+                        recognizeInner(mLineNo);
+                    }
                 }
             }
         } else {
             // 再放buffer就要满了，头部的要移走
-            int left = mLength + buffer.length - BUFFER_LEN;
+            int left = mLength + newBuffer.length - BUFFER_LEN;
             //MyLog.d(TAG, "left=" + left + " mLenth=" + mLength + " buffer.length:" + buffer.length + " BUFFER_LEN:" + BUFFER_LEN);
             // 往左移动 left 个位置
 //            byte [] temp = new byte[BUFFER_LEN];
 
             System.arraycopy(mBuffer, left, mBuffer, 0, mLength - left);
-            System.arraycopy(buffer, 0, mBuffer, mLength - left, buffer.length);
+            System.arraycopy(newBuffer, 0, mBuffer, mLength - left, newBuffer.length);
             setLen(BUFFER_LEN);
             if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
                 // 自动识别
@@ -184,6 +241,9 @@ public class ArcCloudManager implements IACRCloudListener {
         if (this.mClient != null) {
             if (mLength >= BUFFER_LEN) {
                 if (!mProcessing) {
+                    int len = mLength;
+                    final byte[] arr = new byte[len];
+                    System.arraycopy(mBuffer, 0, arr, 0, len);
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
@@ -204,21 +264,64 @@ public class ArcCloudManager implements IACRCloudListener {
                                 if (!TextUtils.isEmpty(artist)) {
                                     hashMap.put("artist", artist);
                                 }
-                                int len = mLength;
-                                byte[] arr = new byte[len];
-                                System.arraycopy(mBuffer, 0, arr, 0, len);
-//                        setLen(0);
-                                MyLog.d(TAG, "len:" + len);
-                                String result = mClient.recognize(arr, len, mSampleRate, mChannels, recType, hashMap);
+
+                                String result = mClient.recognize(arr, arr.length, mSampleRate, mChannels, recType, hashMap);
                                 MyLog.d(TAG, "识别结束");
+
+                                if (DEBUG) {
+                                    {
+                                        File file = new File(U.getAppInfoUtils().getFilePathInSubDir("acr", "line" + mLineNo + ".pcm"));
+                                        if (!file.getParentFile().exists()) {
+                                            file.getParentFile().mkdirs();
+                                        }
+                                        BufferedSink bufferedSink = null;
+                                        try {
+                                            Sink sink = Okio.sink(file);
+                                            bufferedSink = Okio.buffer(sink);
+                                            bufferedSink.write(arr);
+                                            MyLog.d(TAG, "写入文件 path:" + file.getAbsolutePath());
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            if (null != bufferedSink) {
+                                                bufferedSink.close();
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    {
+                                        File file = new File(U.getAppInfoUtils().getFilePathInSubDir("acr", "识别结果" + mLineNo + ".txt"));
+                                        if (!file.getParentFile().exists()) {
+                                            file.getParentFile().mkdirs();
+                                        }
+                                        BufferedSink bufferedSink = null;
+                                        try {
+                                            Sink sink = Okio.sink(file);
+                                            bufferedSink = Okio.buffer(sink);
+                                            bufferedSink.writeString(result, Charset.forName("UTF-8"));
+                                            MyLog.d(TAG, "写入结果 path:" + file.getAbsolutePath());
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            if (null != bufferedSink) {
+                                                bufferedSink.close();
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
                                 mProcessing = false;
-                                if (recognizeConfig!=null && recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
+                                if (recognizeConfig != null && recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
                                     recognizeConfig.setAutoTimes(recognizeConfig.getAutoTimes() - 1);
                                 }
-                                if (recognizeConfig!=null && recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+                                if (recognizeConfig != null && recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
                                     recognizeConfig.setWantRecognizeInManualMode(false);
                                 }
-                                process(result,lineNo);
+                                process(result, lineNo);
                             }
                             emitter.onComplete();
                         }
@@ -226,7 +329,7 @@ public class ArcCloudManager implements IACRCloudListener {
                             .subscribe(new Observer<Object>() {
                                 @Override
                                 public void onSubscribe(Disposable d) {
-                                    
+
                                 }
 
                                 @Override
@@ -255,7 +358,7 @@ public class ArcCloudManager implements IACRCloudListener {
         }
     }
 
-    private void process(String result,int lineNo) {
+    private void process(String result, int lineNo) {
         MyLog.d(TAG, "onResult" + " result=" + result);
         if (mRecognizeConfig != null) {
             RecognizeConfig recognizeConfig = mRecognizeConfig;
@@ -274,17 +377,17 @@ public class ArcCloudManager implements IACRCloudListener {
                         }
                     }
                     MyLog.d(TAG, " list=" + list + " targetSongInfo=" + targetSongInfo);
-                    recognizeConfig.getResultListener().onResult(result, list, targetSongInfo,lineNo);
+                    recognizeConfig.getResultListener().onResult(result, list, targetSongInfo, lineNo);
                 }
             } else {
-                recognizeConfig.getResultListener().onResult(result, null, null,lineNo);
+                recognizeConfig.getResultListener().onResult(result, null, null, lineNo);
             }
         }
     }
 
     public void recognizeInManualMode(int lineNo) {
-        MyLog.d(TAG,"recognizeInManualMode" );
-        if (mRecognizeConfig!=null && mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
+        MyLog.d(TAG, "recognizeInManualMode");
+        if (mRecognizeConfig != null && mRecognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
             mLineNo = lineNo;
             mRecognizeConfig.setWantRecognizeInManualMode(true);
         }
