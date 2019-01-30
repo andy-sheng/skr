@@ -129,7 +129,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
                 if (getActivity() instanceof PlayWaysActivity) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                            .setAddToBackStack(false)
+                            .setAddToBackStack(true)
                             .setNotifyHideFragment(SongSelectFragment.class)
                             .setHasAnimation(true)
                             .addDataBeforeAdd(0, songModel)
