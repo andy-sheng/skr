@@ -331,8 +331,14 @@ public class GameFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    mBannerView.setVisibility(View.VISIBLE);
                     List<SlideShowModel> slideShowModelList = JSON.parseArray(result.getData().getString("slideshow"), SlideShowModel.class);
+                    if(slideShowModelList == null || slideShowModelList.size() == 0){
+                        MyLog.d(TAG, "initOperationArea 为null");
+                        return;
+                    }
+
+                    mBannerView.setVisibility(View.VISIBLE);
+
                     MyLog.d(TAG, "initOperationArea " + slideShowModelList.get(0).getCoverURL());
                     mBannerView.setImages(getSlideUrlList(slideShowModelList))
                             .setImageLoader(new BannerImageLoader())
