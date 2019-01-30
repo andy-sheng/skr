@@ -215,10 +215,10 @@ public class RoundInfoModel implements Serializable {
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
         for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
-            roundInfoModel.addGrabUid(false, wantSingInfo.userID);
+            roundInfoModel.addGrabUid(false, wantSingInfo.getUserID());
         }
         for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
-            roundInfoModel.addLightOffUid(false, noPassSingInfo.userID);
+            roundInfoModel.addLightOffUid(false, noPassSingInfo.getUserID());
         }
         roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
         roundInfoModel.setResultType(roundInfo.getResultType().getValue());

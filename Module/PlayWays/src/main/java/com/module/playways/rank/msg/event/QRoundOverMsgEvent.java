@@ -28,8 +28,8 @@ public final class QRoundOverMsgEvent {
     public QRoundOverMsgEvent(BasePushInfo info, QRoundOverMsg qRoundOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundOverMsg.getRoundOverTimeMs();
-        this.currentRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.currentRound);
-        this.nextRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.nextRound);
+        this.currentRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getCurrentRound());
+        this.nextRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getNextRound());
     }
 
     public BasePushInfo getInfo() {
