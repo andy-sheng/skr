@@ -134,6 +134,7 @@ public class NormalLevelView extends RelativeLayout {
     }
 
     public void bindStarData(int totalStats, int selecStats) {
+        MyLog.d(TAG, "bindStarData" + " totalStats=" + totalStats + " selecStats=" + selecStats);
         this.totalStats = totalStats;
         this.selecStats = selecStats;
         starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
@@ -153,8 +154,11 @@ public class NormalLevelView extends RelativeLayout {
 
         if (totalStats == 0 || totalStats > 6) {
             mStarArea.setVisibility(VISIBLE);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(horizonStar, horizonStar);
-            params.addRule(RelativeLayout.CENTER_VERTICAL);
+            mStarTv.setVisibility(VISIBLE);
+            mImageStar.setVisibility(VISIBLE);
+            ViewGroup.LayoutParams params = mImageStar.getLayoutParams();
+            params.width = horizonStar;
+            params.height = horizonStar;
             mImageStar.setLayoutParams(params);
             mStarTv.setText("x" + selecStats);
             mStarTv.setTextColor(textColor);
@@ -167,7 +171,7 @@ public class NormalLevelView extends RelativeLayout {
             return;
         }
 
-        mStarTv.setVisibility(GONE);
+        mStarArea.setVisibility(GONE);
 
         float widDis = starTotalWidth / (totalStats + 1); //横向间距
         float highDis = starTotalHeight / (totalStats - 1); //纵向间距
