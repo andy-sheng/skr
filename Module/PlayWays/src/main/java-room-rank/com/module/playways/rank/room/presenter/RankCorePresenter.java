@@ -1213,6 +1213,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineStartEvent event) {
+        MyLog.d(TAG,"onEvent LineStartEvent");
         Params params = EngineManager.getInstance().getParams();
         if (params != null) {
             params.setLrcHasStart(true);

@@ -253,7 +253,6 @@ public class ArcCloudManager implements IACRCloudListener {
                                     && mLength >= BUFFER_LEN) {
 
                                 mProcessing = true;
-                                MyLog.d(TAG, "开始识别");
                                 ACRCloudConfig.RecognizerType recType = ACRCloudConfig.RecognizerType.HUMMING;
                                 HashMap hashMap = new HashMap();
                                 String songName = recognizeConfig.getSongName();
@@ -264,7 +263,7 @@ public class ArcCloudManager implements IACRCloudListener {
                                 if (!TextUtils.isEmpty(artist)) {
                                     hashMap.put("artist", artist);
                                 }
-
+                                MyLog.d(TAG, "开始识别 arr.length="+arr.length+" mSampleRate="+mSampleRate+" mChannels="+mChannels);
                                 String result = mClient.recognize(arr, arr.length, mSampleRate, mChannels, recType, hashMap);
                                 MyLog.d(TAG, "识别结束");
 
