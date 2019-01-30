@@ -282,7 +282,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 .setContentHolder(new ViewHolder(personInfoDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_60)
                 .setExpanded(false)
                 .setOnClickListener(new OnClickListener() {
                     @Override
