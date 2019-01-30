@@ -138,7 +138,7 @@ public class ArcCloudManager implements IACRCloudListener {
     }
 
     public void putPool(byte[] buffer, int sampleRate, int nChannels) {
-        MyLog.d(TAG, "putPool" + " buffer=" + buffer.length + " sampleRate=" + sampleRate + " nChannels=" + nChannels);
+        //MyLog.d(TAG, "putPool" + " buffer=" + buffer.length + " sampleRate=" + sampleRate + " nChannels=" + nChannels);
         if (mRecognizeConfig == null) {
             return;
         }
@@ -347,7 +347,7 @@ public class ArcCloudManager implements IACRCloudListener {
                                 }
                             });
                 } else {
-                    MyLog.d(TAG, "已经有任务在处理");
+                    //MyLog.d(TAG, "已经有任务在处理");
                 }
             } else {
                 MyLog.d(TAG, "buffer 不够");

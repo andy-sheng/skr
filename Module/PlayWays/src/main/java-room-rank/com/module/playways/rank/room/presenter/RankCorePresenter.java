@@ -122,7 +122,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     ExoPlayer mExoPlayer;
 
-    int mLastLineNum;
+    int mLastLineNum = -1;
 
     PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
         @Override
@@ -152,6 +152,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     break;
                 default:
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
+                    MyLog.d(TAG,"handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
                         int score = EngineManager.getInstance().getLineScore();
                         MyLog.d(TAG,"handleMessage acr超时 本地获取得分:"+score);
@@ -1183,8 +1184,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LrcEvent.LineEndEvent event) {
+        MyLog.d(TAG,"onEvent LineEndEvent lineno=" + event.getLineNum());
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-
             EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
             Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.getLineNum() * 100);
             mUiHandler.sendMessageDelayed(msg, 1000);

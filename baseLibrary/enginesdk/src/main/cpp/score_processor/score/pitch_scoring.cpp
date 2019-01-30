@@ -116,7 +116,7 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
         note = (float) (69000.5 + 12000 * (log10(f0 / 440.0) / log10(2)));
         note = float((int) note % 12000) / 1000.0;
     }
-    LOGI("conf is : %.3f note is %.2f", conf, note);
+    //LOGI("conf is : %.3f note is %.2f", conf, note);
     //4:根据note计算score
     if (note > -0.5) {
         MelodyNote melodyNote = mMelodyNotes.at(singingIndex);
@@ -167,7 +167,7 @@ int PitchScoring::getScore() {
 }
 
 int PitchScoring::getSingingIndex(long currentTimeMills,int *ff) {
-    LOGI("currentTimeMills=%ld", currentTimeMills);
+    //LOGI("currentTimeMills=%ld", currentTimeMills);
     int singingIndex = -1;
     int f = 100;// 宽松一点
     bool find = false;
